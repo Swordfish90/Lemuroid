@@ -1,0 +1,16 @@
+build/
+out/
+dist/
+bin/
+gen/
+captures/
+classes/
+projectFilesBackup/
+project.properties
+.DS_Store
+.idea
+*.iml
+*.iws
+.gradle
+.externalNativeBuild
+local.properties
