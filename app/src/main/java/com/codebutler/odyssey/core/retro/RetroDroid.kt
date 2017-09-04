@@ -24,6 +24,10 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         Retro.InputPollCallback,
         Retro.InputStateCallback {
 
+    companion object {
+        const val TAG = "RetroDroid"
+    }
+
     private val retro: Retro
     private val timer = Timer()
 
@@ -45,17 +49,6 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         val coreName = copyCoreToCacheDir()
 
         retro = Retro(coreName)
-
-        retro.logCallback = { level: LibRetro.retro_log_level, message: String ->
-            when (level) {
-                LibRetro.retro_log_level.RETRO_LOG_DEBUG -> logCallback?.invoke(Retro.LogLevel.DEBUG, message)
-                LibRetro.retro_log_level.RETRO_LOG_INFO -> logCallback?.invoke(Retro.LogLevel.INFO, message)
-                LibRetro.retro_log_level.RETRO_LOG_WARN -> logCallback?.invoke(Retro.LogLevel.WARN, message)
-                LibRetro.retro_log_level.RETRO_LOG_ERROR -> logCallback?.invoke(Retro.LogLevel.ERROR, message)
-                else -> { }
-            }
-        }
-
         retro.setEnvironment(this)
         retro.setVideoRefresh(this)
         retro.setAudioSample(this)
@@ -65,15 +58,18 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         retro.init()
     }
 
+    fun deinit() {
+        retro.deinit()
+    }
+
     fun loadGame(filePath: String) {
         if (!retro.loadGame(filePath)) {
             throw Exception("Failed to load game")
         }
-
-        Log.d("Retro", "GAME LOADED!!")
-        Log.d("Retro", "Got Region: ${retro.getRegion()}")
-        Log.d("Retro", "Got Info: ${retro.getSystemInfo()}")
-        Log.d("Retro", "Got AV Info: ${retro.getSystemAVInfo()}")
+        Log.d(TAG, "GAME LOADED!!")
+        Log.d(TAG, "Got Region: ${retro.getRegion()}")
+        Log.d(TAG, "Got Info: ${retro.getSystemInfo()}")
+        Log.d(TAG, "Got AV Info: ${retro.getSystemAVInfo()}")
     }
 
     fun start() {
@@ -95,20 +91,32 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         return coreFileName.substringBeforeLast(".")
     }
 
+    override fun onGetLogInterface(): Retro.LogInterface {
+        return object : Retro.LogInterface {
+            override fun onLogMessage(level: Retro.LogLevel, message: String) {
+                logCallback?.invoke(level, message)
+            }
+        }
+    }
+
     override fun onSetVariables(variables: Map<String, String>) {
-        Log.d("Retro", "onSetVariables: $variables")
+        // FIXME: Implement
+        Log.d(TAG, "onSetVariables: $variables")
     }
 
     override fun onSetSupportAchievements(supportsAchievements: Boolean) {
-        Log.d("Retro", "onSetSupportAchievements: $supportsAchievements")
+        // FIXME: Implement
+        Log.d(TAG, "onSetSupportAchievements: $supportsAchievements")
     }
 
     override fun onSetPerformanceLevel(performanceLevel: Int) {
-        Log.d("Retro", "onSetPerformanceLevel: $performanceLevel")
+        // FIXME: Implement
+        Log.d(TAG, "onSetPerformanceLevel: $performanceLevel")
     }
 
     override fun onGetVariable(name: String): String? {
-        Log.d("Retro", "onGetVariable: $name")
+        // FIXME: Implement
+        Log.d(TAG, "onGetVariable: $name")
         return null
     }
 
@@ -136,9 +144,11 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
 
         val pixelFormatInfo = PixelFormat()
         PixelFormat.getPixelFormatInfo(pixelFormat, pixelFormatInfo)
-        Log.d("Retro", "onSetPixelFormat: $pixelFormat " +
-                "bitsPerPixel: ${pixelFormatInfo.bitsPerPixel} " +
-                "bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}")
+
+        // FIXME: Implement
+        Log.d(TAG, """onSetPixelFormat: $pixelFormat
+                bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
+                bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}""")
 
         videoPixelFormat = pixelFormat
         videoBitmapConfig = bitmapConfig
@@ -148,20 +158,24 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     override fun onSetInputDescriptors(descriptors: List<Retro.InputDescriptor>) {
-        Log.d("Retro", "onSetInputDescriptors: $descriptors")
+        // FIXME: Implement
+        Log.d(TAG, "onSetInputDescriptors: $descriptors")
     }
 
     override fun onSetControllerInfo(info: List<Retro.ControllerInfo>) {
-        Log.d("Retro", "onSetControllerInfo: $info")
+        // FIXME: Implement
+        Log.d(TAG, "onSetControllerInfo: $info")
     }
 
     override fun onGetVariableUpdate(): Boolean {
-        Log.d("Retro", "onGetVariableUpdate")
+        // FIXME: Implement
+        Log.d(TAG, "onGetVariableUpdate")
         return false
     }
 
     override fun onSetMemoryMaps() {
-        Log.d("Retro", "onSetMemoryMaps")
+        // FIXME: Implement
+        Log.d(TAG, "onSetMemoryMaps")
     }
 
     override fun onVideoRefresh(data: ByteArray?, width: Int, height: Int, pitch: Int) {
@@ -199,10 +213,12 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     override fun onInputPoll() {
+        // FIXME: Implement
         //Log.d("RETRO", "ON INPUT POLL")
     }
 
     override fun onInputState(port: Int, device: Int, index: Int, id: Int): Short {
+        // FIXME: Implement
         //Log.d("RETRO", "ON INPUT STATE!! $port $device $index $id")
         return 0
     }

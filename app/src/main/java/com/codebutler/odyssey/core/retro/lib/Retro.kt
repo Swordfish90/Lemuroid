@@ -16,16 +16,6 @@ class Retro(coreLibraryName: String) {
             coreLibraryName,
             LibRetro::class.java)
 
-    private val logPrintf = object : LibRetro.retro_log_printf_t {
-        override fun invoke(log_level: Int, fmt: Pointer) {
-            // FIXME: fmt is varargs
-            val message = fmt.getString(0)
-            val level = LibRetro.retro_log_level.values().find { it.value == log_level }
-                    ?: LibRetro.retro_log_level.RETRO_LOG_DUMMY
-            logCallback?.invoke(level, message)
-        }
-    }
-
     // These are here to prevent the GC from reaping our callbacks.
     private var videoRefreshCb: LibRetro.retro_video_refresh_t? = null
     private var envCb: LibRetro.retro_environment_t? = null
@@ -33,8 +23,7 @@ class Retro(coreLibraryName: String) {
     private var audioSampleBatchCb: LibRetro.retro_audio_sample_batch_t? = null
     private var inputPollCb: LibRetro.retro_input_poll_t? = null
     private var inputStateCb: LibRetro.retro_input_state_t? = null
-
-    var logCallback: ((level: LibRetro.retro_log_level, message: String) -> Unit)? = null
+    private var logPrintfCb: LibRetro.retro_log_printf_t? = null
 
     enum class LogLevel {
         DEBUG,
@@ -58,6 +47,24 @@ class Retro(coreLibraryName: String) {
             val validExtensions: String,
             val needFullpath: Boolean,
             val blockExtract: Boolean
+    )
+
+    data class GameGeometry(
+            val baseWidth: Int? = null,
+            val baseHeight: Int? = null,
+            val maxWidth: Int? = null,
+            var maxHeight: Int? = null,
+            var aspectRatio: Float? = null
+    )
+
+    data class SystemTiming(
+            val fps: Double? = null,
+            val sample_rate: Double? = null
+    )
+
+    data class SystemAVInfo(
+            val geometry: GameGeometry? = null,
+            val timing: SystemTiming? = null
     )
 
     data class InputDescriptor(
@@ -127,6 +134,13 @@ class Retro(coreLibraryName: String) {
         fun onGetVariableUpdate(): Boolean
 
         fun onSetMemoryMaps()
+
+        fun onGetLogInterface(): LogInterface
+    }
+
+    interface LogInterface {
+
+        fun onLogMessage(level: LogLevel, message: String)
     }
 
     interface VideoRefreshCallback {
@@ -164,10 +178,22 @@ class Retro(coreLibraryName: String) {
         )
     }
 
-    fun getSystemAVInfo(): LibRetro.retro_system_av_info {
+    fun getSystemAVInfo(): SystemAVInfo {
         val info = LibRetro.retro_system_av_info()
         libRetro.retro_get_system_av_info(info)
-        return info
+        return SystemAVInfo(
+                GameGeometry(
+                        info.geometry?.base_width?.toInt(),
+                        info.geometry?.base_height?.toInt(),
+                        info.geometry?.max_width?.toInt(),
+                        info.geometry?.max_height?.toInt(),
+                        info.geometry?.aspect_ratio
+                ),
+                SystemTiming(
+                        info.timing?.fps,
+                        info.timing?.sample_rate
+                )
+        )
     }
 
     fun getRegion(): Region {
@@ -207,9 +233,30 @@ class Retro(coreLibraryName: String) {
                         return true
                     }
                     LibRetro.RETRO_ENVIRONMENT_GET_LOG_INTERFACE -> {
+                        val logInterface = callback.onGetLogInterface()
+                        val logCb = object : LibRetro.retro_log_printf_t {
+                            override fun invoke(log_level: Int, fmt: Pointer) {
+                                // FIXME: fmt is varargs
+                                val message = fmt.getString(0)
+                                val level = LibRetro.retro_log_level.values().find { it.value == log_level }
+                                        ?: LibRetro.retro_log_level.RETRO_LOG_DUMMY
+                                val newLevel = when (level) {
+                                    LibRetro.retro_log_level.RETRO_LOG_DEBUG -> LogLevel.DEBUG
+                                    LibRetro.retro_log_level.RETRO_LOG_INFO -> LogLevel.INFO
+                                    LibRetro.retro_log_level.RETRO_LOG_WARN -> LogLevel.WARN
+                                    LibRetro.retro_log_level.RETRO_LOG_ERROR -> LogLevel.ERROR
+                                    else -> TODO()
+                                }
+                                logInterface.onLogMessage(newLevel, message)
+                            }
+                        }
+
+                        logPrintfCb = logCb
+
                         val logCallback = LibRetro.retro_log_callback(data)
-                        logCallback.log = logPrintf
+                        logCallback.log = logCb
                         logCallback.write()
+
                         return true
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS -> {
@@ -257,7 +304,6 @@ class Retro(coreLibraryName: String) {
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_CONTROLLER_INFO -> {
                         val infos = mutableListOf<ControllerInfo>()
-
                         var offset = 0L
                         while (true) {
                             val info = LibRetro.retro_controller_info(data.share(offset))

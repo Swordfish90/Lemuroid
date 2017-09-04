@@ -2,10 +2,6 @@ package com.codebutler.odyssey
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.media.AudioAttributes
-import android.media.AudioFormat
-import android.media.AudioManager
-import android.media.AudioTrack
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -56,10 +52,10 @@ class MainActivity : AppCompatActivity() {
 
         retroDroid.logCallback = { level, message ->
             when (level) {
-                Retro.LogLevel.DEBUG -> Log.d("Retro", message)
-                Retro.LogLevel.INFO -> Log.i("Retro", message)
-                Retro.LogLevel.WARN -> Log.w("Retro", message)
-                Retro.LogLevel.ERROR -> Log.e("Retro", message)
+                Retro.LogLevel.DEBUG -> Log.d("RetroLog", message)
+                Retro.LogLevel.INFO -> Log.i("RetroLog", message)
+                Retro.LogLevel.WARN -> Log.w("RetroLog", message)
+                Retro.LogLevel.ERROR -> Log.e("RetroLog", message)
             }
         }
 
