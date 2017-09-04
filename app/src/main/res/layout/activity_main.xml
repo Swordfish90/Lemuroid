@@ -9,12 +9,6 @@
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <TextView
-        android:id="@+id/sample_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="Hello World!"/>
+        android:layout_height="match_parent"
+        tools:ignore="ContentDescription" />
 </FrameLayout>

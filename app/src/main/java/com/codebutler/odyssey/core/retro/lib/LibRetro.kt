@@ -1,4 +1,4 @@
-package com.codebutler.odyssey.core.retro
+package com.codebutler.odyssey.core.retro.lib
 
 import com.codebutler.odyssey.SizeT
 import com.codebutler.odyssey.UnsignedInt
@@ -8,23 +8,24 @@ import com.sun.jna.Pointer
 import com.sun.jna.Structure
 import com.sun.jna.ptr.ShortByReference
 
+/**
+ * Based on libretro.h
+ */
 interface LibRetro : Library {
 
     companion object {
-        val RETRO_ENVIRONMENT_EXPERIMENTAL = 0x10000
+        const val RETRO_ENVIRONMENT_EXPERIMENTAL = 0x10000
 
-        // FIXME Should not be Longs
-        // FIXME Should be an enum
-        val RETRO_ENVIRONMENT_SET_VARIABLES = 16L
-        val RETRO_ENVIRONMENT_GET_LOG_INTERFACE = 27L
-        val RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS = 42L or RETRO_ENVIRONMENT_EXPERIMENTAL.toLong()
-        val RETRO_ENVIRONMENT_SET_MEMORY_MAPS = 36L or RETRO_ENVIRONMENT_EXPERIMENTAL.toLong()
-        val RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL = 8L
-        val RETRO_ENVIRONMENT_GET_VARIABLE = 15L
-        val RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE = 17L
-        val RETRO_ENVIRONMENT_SET_PIXEL_FORMAT = 10L
-        val RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS = 11L
-        val RETRO_ENVIRONMENT_SET_CONTROLLER_INFO = 35L
+        const val RETRO_ENVIRONMENT_SET_VARIABLES = 16
+        const val RETRO_ENVIRONMENT_GET_LOG_INTERFACE = 27
+        const val RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS = 42 or RETRO_ENVIRONMENT_EXPERIMENTAL
+        const val RETRO_ENVIRONMENT_SET_MEMORY_MAPS = 36 or RETRO_ENVIRONMENT_EXPERIMENTAL
+        const val RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL = 8
+        const val RETRO_ENVIRONMENT_GET_VARIABLE = 15
+        const val RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE = 17
+        const val RETRO_ENVIRONMENT_SET_PIXEL_FORMAT = 10
+        const val RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS = 11
+        const val RETRO_ENVIRONMENT_SET_CONTROLLER_INFO = 35
     }
 
     enum class retro_pixel_format(val value: Int) {
@@ -50,8 +51,15 @@ interface LibRetro : Library {
         RETRO_PIXEL_FORMAT_UNKNOWN(Int.MAX_VALUE)
     }
 
-    class retro_system_info : Structure() {
+    enum class retro_log_level(val value: Int) {
+        RETRO_LOG_DEBUG(0),
+        RETRO_LOG_INFO(1),
+        RETRO_LOG_WARN(2),
+        RETRO_LOG_ERROR(3),
+        RETRO_LOG_DUMMY(Int.MAX_VALUE)
+    }
 
+    class retro_system_info : Structure() {
         @JvmField
         var library_name : String? = null
 
@@ -67,6 +75,10 @@ interface LibRetro : Library {
         @JvmField
         var block_extract: Boolean = false
 
+        init {
+            setAlignType(ALIGN_NONE)
+        }
+
         override fun getFieldOrder() = listOf(
                 "library_name",
                 "library_version",
@@ -76,7 +88,6 @@ interface LibRetro : Library {
     }
 
     class retro_game_info : Structure() {
-
         @JvmField
         var path: String? = null
 
@@ -89,6 +100,10 @@ interface LibRetro : Library {
         @JvmField
         var meta: String? = null
 
+        init {
+            setAlignType(ALIGN_NONE)
+        }
+
         override fun getFieldOrder() = listOf(
                 "path",
                 "data",
@@ -97,7 +112,6 @@ interface LibRetro : Library {
     }
 
     class retro_game_geometry(pointer: Pointer? = null) : Structure(pointer) {
-
         /**
          * Nominal video width of game.
          */
@@ -132,6 +146,10 @@ interface LibRetro : Library {
         @JvmField
         var aspect_ratio: Float? = null
 
+        init {
+            setAlignType(ALIGN_NONE)
+        }
+
         override fun getFieldOrder() = listOf(
                 "base_width",
                 "base_height",
@@ -141,44 +159,117 @@ interface LibRetro : Library {
     }
 
     class retro_system_timing(pointer: Pointer? = null) : Structure(pointer) {
-
-        init {
-            setAlignType(ALIGN_NONE)
-        }
-
         @JvmField
         var fps: Double? = null
 
         @JvmField
         var sample_rate: Double? = null
 
+        init {
+            setAlignType(ALIGN_NONE)
+        }
+
         override fun getFieldOrder() = listOf("fps", "sample_rate")
     }
 
     class retro_system_av_info(pointer: Pointer? = null) : Structure(pointer) {
-
         @JvmField
         var geometry: retro_game_geometry? = null
 
         @JvmField
         var timing: retro_system_timing? = null
 
+        init {
+            setAlignType(ALIGN_NONE)
+        }
+
         override fun getFieldOrder() = listOf("geometry", "timing")
     }
 
-    open class retro_variable(p: Pointer? = null) : Structure(p) {
-
+    class retro_variable(p: Pointer? = null) : Structure(p) {
         @JvmField
         var key: String? = null
 
         @JvmField
         var value: String? = null
 
-        override fun getFieldOrder() = listOf("key", "value")
-
         init {
+            setAlignType(ALIGN_NONE)
             read()
         }
+
+        override fun getFieldOrder() = listOf("key", "value")
+    }
+
+    class retro_log_callback(pointer: Pointer? = null) : Structure(pointer) {
+
+        @JvmField
+        var log: retro_log_printf_t? = null
+
+        init {
+            setAlignType(ALIGN_NONE)
+            read()
+        }
+
+        override fun getFieldOrder(): List<String> = listOf("log")
+    }
+
+    class retro_input_descriptor(pointer: Pointer?): Structure(pointer) {
+
+        @JvmField
+        var port: UnsignedInt? = null
+
+        @JvmField
+        var device: UnsignedInt? = null
+
+        @JvmField
+        var index: UnsignedInt? = null
+
+        @JvmField
+        var id: UnsignedInt? = null
+
+        @JvmField
+        var description: String? = null
+
+        init {
+            setAlignType(ALIGN_NONE)
+            read()
+        }
+
+        override fun getFieldOrder(): List<String> = listOf("port", "device", "index", "id", "description")
+    }
+
+    class retro_controller_description(pointer: Pointer?): Structure(pointer) {
+
+        @JvmField
+        var desc: String? = null
+
+        @JvmField
+        var id: UnsignedInt? = null
+
+        init {
+            setAlignType(ALIGN_NONE)
+            read()
+        }
+
+        override fun getFieldOrder(): List<String> = listOf("desc", "id")
+    }
+
+    class retro_controller_info(pointer: Pointer?): Structure(pointer) {
+
+        @JvmField
+        // FIXME: var types: retro_controller_description? = null
+        var types: Pointer? = null
+
+        @JvmField
+        var num_types: UnsignedInt? = null
+
+        init {
+            setAlignType(ALIGN_NONE)
+            read()
+        }
+
+        override fun getFieldOrder(): List<String> = listOf("types", "num_types")
     }
 
     interface retro_environment_t : Callback {
@@ -199,7 +290,7 @@ interface LibRetro : Library {
     }
 
     interface retro_audio_sample_batch_t : Callback {
-        fun apply(data: ShortByReference, frames: SizeT): SizeT
+        fun apply(data: Pointer, frames: SizeT): SizeT
     }
 
     interface retro_input_poll_t : Callback {
@@ -222,7 +313,7 @@ interface LibRetro : Library {
 
     fun retro_set_input_poll(cb: retro_input_poll_t)
 
-    fun retro_set_input_state(cb:retro_input_state_t)
+    fun retro_set_input_state(cb: retro_input_state_t)
 
     fun retro_init()
 
@@ -235,79 +326,4 @@ interface LibRetro : Library {
     fun retro_get_system_av_info(info: retro_system_av_info)
 
     fun retro_get_region(): UnsignedInt
-
-    class retro_log_callback(pointer: Pointer? = null) : Structure(pointer) {
-
-        @JvmField
-        var log: retro_log_printf_t? = null
-
-        init {
-            read()
-        }
-
-        override fun getFieldOrder(): List<String> = listOf("log")
-    }
-
-    enum class retro_log_level(val value: Int) {
-        RETRO_LOG_DEBUG(0),
-        RETRO_LOG_INFO(1),
-        RETRO_LOG_WARN(2),
-        RETRO_LOG_ERROR(3),
-        RETRO_LOG_DUMMY(Int.MAX_VALUE)
-    }
-
-    class retro_input_descriptor(pointer: Pointer?): Structure(pointer)
-    {
-        @JvmField
-        var port: UnsignedInt? = null
-
-        @JvmField
-        var device: UnsignedInt? = null
-
-        @JvmField
-        var index: UnsignedInt? = null
-
-        @JvmField
-        var id: UnsignedInt? = null
-
-        @JvmField
-        var description: String? = null
-
-        override fun getFieldOrder(): List<String> = listOf("port", "device", "index", "id", "description")
-
-        init {
-            read()
-        }
-    }
-
-    class retro_controller_description(pointer: Pointer?): Structure(pointer) {
-
-        @JvmField
-        var desc: String? = null
-
-        @JvmField
-        var id: UnsignedInt? = null
-
-        override fun getFieldOrder(): List<String> = listOf("desc", "id")
-
-        init {
-            read()
-        }
-    }
-
-    class retro_controller_info(pointer: Pointer?): Structure(pointer) {
-
-        @JvmField
-        //var types: retro_controller_description? = null
-        var types: Pointer? = null
-
-        @JvmField
-        var num_types: UnsignedInt? = null
-
-        override fun getFieldOrder(): List<String> = listOf("types", "num_types")
-
-        init {
-            read()
-        }
-    }
 }
