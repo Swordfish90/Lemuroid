@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.util.Log
+import android.view.KeyEvent
+import android.view.MotionEvent
 import com.codebutler.odyssey.core.retro.lib.LibRetro
 import com.codebutler.odyssey.core.retro.lib.Retro
 import java.io.BufferedOutputStream
@@ -25,20 +27,31 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         Retro.InputStateCallback {
 
     companion object {
-        const val TAG = "RetroDroid"
+        private const val TAG = "RetroDroid"
     }
 
     private val retro: Retro
     private val timer = Timer()
 
+    private val pressedKeys = mutableSetOf<Int>()
+
     private var videoPixelFormat: Int = PixelFormat.RGBA_8888
     private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
     private var videoBytesPerPixel: Int = 0
 
+    /**
+     * Callback for log events, should be set by frontend.
+     */
     var logCallback: ((level: Retro.LogLevel, message: String) -> Unit)? = null
 
+    /**
+     * Callback for video data, should be set by frontend.
+     */
     var videoCallback: ((bitmap: Bitmap) -> Unit)? = null
 
+    /**
+     * Callback for audio data, should be set by frontend.
+     */
     var audioCallback: ((buffer: ByteArray) -> Unit)? = null
 
     init {
@@ -81,14 +94,8 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         }, 0, 10)
     }
 
-    private fun copyCoreToCacheDir(): String {
-        val cachedCoreFile = File(context.cacheDir.absoluteFile, "lib$coreFileName")
-        val stream = BufferedOutputStream(FileOutputStream(cachedCoreFile))
-        stream.use { output ->
-            context.resources.assets.open(coreFileName).copyTo(output)
-            output.flush()
-        }
-        return coreFileName.substringBeforeLast(".")
+    fun stop() {
+        timer.cancel()
     }
 
     override fun onGetLogInterface(): Retro.LogInterface {
@@ -122,7 +129,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
 
     override fun onSetPixelFormat(retroPixelFormat: LibRetro.retro_pixel_format): Boolean {
         val pixelFormat = when (retroPixelFormat) {
-            LibRetro.retro_pixel_format .RETRO_PIXEL_FORMAT_0RGB1555 -> {
+            LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_0RGB1555 -> {
                 // The image is stored using a 16-bit RGB format (5-5-5). The unused most significant bit is always zero.
                 PixelFormat.RGBA_5551
             }
@@ -169,18 +176,17 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
 
     override fun onGetVariableUpdate(): Boolean {
         // FIXME: Implement
-        Log.d(TAG, "onGetVariableUpdate")
+        //Log.d(TAG, "onGetVariableUpdate")
         return false
     }
 
     override fun onSetMemoryMaps() {
         // FIXME: Implement
-        Log.d(TAG, "onSetMemoryMaps")
+        //Log.d(TAG, "onSetMemoryMaps")
     }
 
     override fun onVideoRefresh(data: ByteArray?, width: Int, height: Int, pitch: Int) {
         data ?: return
-
         val newBuffer = ByteArray(width * height * videoBytesPerPixel)
         for (i in 0 until height) {
             System.arraycopy(
@@ -191,10 +197,8 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
                     width * videoBytesPerPixel      // LENGTH
             )
         }
-
         val bitmap = Bitmap.createBitmap(width, height, videoBitmapConfig)
         bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
-
         videoCallback?.invoke(bitmap)
     }
 
@@ -213,13 +217,72 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     override fun onInputPoll() {
-        // FIXME: Implement
-        //Log.d("RETRO", "ON INPUT POLL")
+        /* Nothing to do here? */
     }
 
-    override fun onInputState(port: Int, device: Int, index: Int, id: Int): Short {
-        // FIXME: Implement
-        //Log.d("RETRO", "ON INPUT STATE!! $port $device $index $id")
-        return 0
+    override fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean {
+        if (port != 0) {
+            // Only P1 supported for now.
+            return false
+        }
+
+        when (Retro.RetroDevice.fromValue(device)) {
+            Retro.RetroDevice.RETRO_DEVICE_NONE -> { }
+            Retro.RetroDevice.RETRO_DEVICE_JOYPAD -> {
+                return when (Retro.RetroDeviceId.fromValue(id)) {
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_A ->
+                        pressedKeys.contains(KeyEvent.KEYCODE_A) || pressedKeys.contains(KeyEvent.KEYCODE_SPACE)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_B -> pressedKeys.contains(KeyEvent.KEYCODE_B)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_DOWN -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_DOWN)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_L -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_L2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_L2)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_L3 -> false
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_LEFT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_R -> pressedKeys.contains(KeyEvent.KEYCODE_R)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_R2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_R2)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_R3 -> false
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_RIGHT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_RIGHT)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_SELECT -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_SELECT)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_START ->
+                        pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_START) || pressedKeys.contains(KeyEvent.KEYCODE_ENTER)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_UP -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_UP)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_X -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_X)
+                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_Y -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_Y)
+                }
+            }
+            Retro.RetroDevice.RETRO_DEVICE_MOUSE -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_KEYBOARD -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_ANALOG -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_POINTER -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_JOYPAD_MULTITAP -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN_JUSTIFIER -> TODO()
+            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN_JUSTIFIERS -> TODO()
+        }
+        return false
+    }
+
+    // FIXME: Refactor into some sort of CoreManager.
+    private fun copyCoreToCacheDir(): String {
+        val cachedCoreFile = File(context.cacheDir.absoluteFile, "lib$coreFileName")
+        val stream = BufferedOutputStream(FileOutputStream(cachedCoreFile))
+        stream.use { output ->
+            context.resources.assets.open(coreFileName).copyTo(output)
+            output.flush()
+        }
+        return coreFileName.substringBeforeLast(".")
+    }
+
+    fun onKeyEvent(event: KeyEvent) {
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            pressedKeys.add(event.keyCode)
+        } else if (event.action == KeyEvent.ACTION_UP) {
+            pressedKeys.remove(event.keyCode)
+        }
+    }
+
+    fun onMotionEvent(event: MotionEvent) {
+        Log.d(TAG, "onMotionEvent: $event")
     }
 }

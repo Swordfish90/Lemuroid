@@ -88,7 +88,12 @@ class Retro(coreLibraryName: String) {
         RETRO_DEVICE_JOYPAD_MULTITAP ((1 shl 8) or RETRO_DEVICE_JOYPAD.value),
         RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE ((1 shl 8) or RETRO_DEVICE_LIGHTGUN.value),
         RETRO_DEVICE_LIGHTGUN_JUSTIFIER ((2 shl 8) or RETRO_DEVICE_LIGHTGUN.value),
-        RETRO_DEVICE_LIGHTGUN_JUSTIFIERS ((3 shl 8) or RETRO_DEVICE_LIGHTGUN.value),
+        RETRO_DEVICE_LIGHTGUN_JUSTIFIERS ((3 shl 8) or RETRO_DEVICE_LIGHTGUN.value);
+
+        companion object {
+            // FIXME: probs not fast enough
+            fun fromValue(value: Int): RetroDevice = RetroDevice.values().find { it.value == value }!!
+        }
     }
 
     enum class RetroDeviceId(val value: Int) {
@@ -107,7 +112,12 @@ class Retro(coreLibraryName: String) {
         RETRO_DEVICE_ID_JOYPAD_L2(12),
         RETRO_DEVICE_ID_JOYPAD_R2(13),
         RETRO_DEVICE_ID_JOYPAD_L3(14),
-        RETRO_DEVICE_ID_JOYPAD_R3(15)
+        RETRO_DEVICE_ID_JOYPAD_R3(15);
+
+        companion object {
+            // FIXME: probs not fast enough
+            fun fromValue(value: Int): RetroDeviceId = RetroDeviceId.values().find { it.value == value }!!
+        }
     }
 
     enum class Region(val value: Int) {
@@ -163,7 +173,7 @@ class Retro(coreLibraryName: String) {
     }
 
     interface InputStateCallback {
-        fun onInputState(port: Int, device: Int, index: Int, id: Int): Short
+        fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean
     }
 
     fun getSystemInfo(): SystemInfo {
@@ -379,7 +389,7 @@ class Retro(coreLibraryName: String) {
     fun setInputState(callback: InputStateCallback) {
         val cb = object : LibRetro.retro_input_state_t {
             override fun apply(port: UnsignedInt, device: UnsignedInt, index: UnsignedInt, id: UnsignedInt): Short {
-                return callback.onInputState(port.toInt(), device.toInt(), index.toInt(), id.toInt())
+                return if (callback.onInputState(port.toInt(), device.toInt(), index.toInt(), id.toInt())) 1 else 0
             }
         }
         inputStateCb = cb
