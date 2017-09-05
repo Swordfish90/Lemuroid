@@ -155,7 +155,7 @@ class Retro(coreLibraryName: String) {
 
     interface AudioSampleBatchCallback {
 
-        fun onAudioSampleBatch(data: ByteArray, frames: Int): Long
+        fun onAudioSampleBatch(data: ByteArray?, frames: Int): Long
     }
 
     interface InputPollCallback {
@@ -352,13 +352,12 @@ class Retro(coreLibraryName: String) {
     fun setAudioSampleBatch(callback: AudioSampleBatchCallback) {
         val cb = object : LibRetro.retro_audio_sample_batch_t {
             override fun apply(data: Pointer, frames: SizeT): SizeT {
-                // FIXME: Implement audio correctly...
-                val buffer = ByteArray(frames.toInt())
-                //var offset = 0L
-                //for (i in 0 until frames.toInt()) {
-                //    buffer[i] = data.getShort(offset).toByte()
-                //    offset += 2
-                //}
+                val buffer = when {
+                    data == Pointer.NULL || data.getByte(0) == 0x0.toByte() -> null
+
+                    // Each frame is 4 bytes (16-bit stereo)
+                    else -> data.getByteArray(0L, frames.toInt() * 4)
+                }
                 return SizeT(callback.onAudioSampleBatch(buffer, frames.toInt()))
             }
         }

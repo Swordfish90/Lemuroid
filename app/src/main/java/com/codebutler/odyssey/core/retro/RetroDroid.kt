@@ -12,6 +12,7 @@ import java.io.FileOutputStream
 import java.nio.ByteBuffer
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.experimental.and
 
 /**
  * Native Android frontend for LibRetro!
@@ -199,17 +200,17 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     override fun onAudioSample(left: Short, right: Short) {
-        // FIXME: Implement audio correctly
         val buffer = ByteArray(2)
-        //buffer[0] = left.toByte()
-        //buffer[1] = right.toByte()
-        //audioCallback?.invoke(buffer)
+        buffer[0] = left.toByte() and 0xff.toByte()
+        buffer[1] = (right.toInt() shr 8).toByte() and 0xff.toByte()
+        audioCallback?.invoke(buffer)
     }
 
-    override fun onAudioSampleBatch(data: ByteArray, frames: Int): Long {
-        // FIXME: Implement audio correctly
-        //audioCallback?.invoke(data)
-        return 0
+    override fun onAudioSampleBatch(data: ByteArray?, frames: Int): Long {
+        data ?: return 0
+
+        audioCallback?.invoke(data)
+        return data.size.toLong()
     }
 
     override fun onInputPoll() {
