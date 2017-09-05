@@ -2,6 +2,9 @@ package com.codebutler.odyssey
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.media.AudioFormat
+import android.media.AudioTrack
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -70,21 +73,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val audioTrack = AudioTrack.Builder()
+                .setAudioAttributes(AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build())
+                .setAudioFormat(AudioFormat.Builder()
+                        .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                        .setSampleRate(44100)
+                        .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
+                        .build())
+                .setBufferSizeInBytes(4)
+                .build()
+
         retroDroid.audioCallback = { buffer ->
-            // FIXME: Pull all these values from retro!
-            // val audioTrack = AudioTrack.Builder()
-            //         .setAudioAttributes(AudioAttributes.Builder()
-            //                 .setUsage(AudioAttributes.USAGE_ALARM)
-            //                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            //                 .build())
-            //         .setAudioFormat(AudioFormat.Builder()
-            //                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-            //                 .setSampleRate(44100)
-            //                 .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
-            //                 .build())
-            //         .build()
-            // audioTrack.write(buffer, 0, buffer.size)
-            // audioTrack.play()
+             audioTrack.write(buffer, 0, buffer.size)
+             audioTrack.play()
         }
 
         val gameFile = File(Environment.getExternalStorageDirectory(), "Super Mario All-Stars (U) [!].smc")
