@@ -92,7 +92,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
             override fun run() {
                 retro.run()
             }
-        }, 0, 10)
+        }, 0, 20)
     }
 
     fun stop() {
@@ -128,7 +128,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         return null
     }
 
-    override fun onSetPixelFormat(retroPixelFormat: LibRetro.retro_pixel_format): Boolean {
+    override fun onSetPixelFormat(retroPixelFormat: Int): Boolean {
         val pixelFormat = when (retroPixelFormat) {
             LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_0RGB1555 -> {
                 // The image is stored using a 16-bit RGB format (5-5-5). The unused most significant bit is always zero.
@@ -141,7 +141,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
                 // The image is stored using a 16-bit RGB format (5-6-5).
                 PixelFormat.RGB_565
             }
-            LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_UNKNOWN -> TODO()
+            else -> TODO()
         }
 
         // FIXME: This will likely need to be replaced with a conversion function
@@ -186,8 +186,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         //Log.d(TAG, "onSetMemoryMaps")
     }
 
-    override fun onVideoRefresh(data: ByteArray?, width: Int, height: Int, pitch: Int) {
-        data ?: return
+    override fun onVideoRefresh(data: ByteArray, width: Int, height: Int, pitch: Int) {
         val newBuffer = ByteArray(width * height * videoBytesPerPixel)
         for (i in 0 until height) {
             System.arraycopy(
@@ -210,9 +209,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         audioCallback?.invoke(buffer)
     }
 
-    override fun onAudioSampleBatch(data: ByteArray?, frames: Int): Long {
-        data ?: return 0
-
+    override fun onAudioSampleBatch(data: ByteArray, frames: Int): Long {
         audioCallback?.invoke(data)
         return data.size.toLong()
     }
@@ -227,39 +224,41 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
             return false
         }
 
-        when (Retro.RetroDevice.fromValue(device)) {
-            Retro.RetroDevice.RETRO_DEVICE_NONE -> { }
-            Retro.RetroDevice.RETRO_DEVICE_JOYPAD -> {
-                return when (Retro.RetroDeviceId.fromValue(id)) {
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_A ->
+        when (Retro.Device.fromValue(device)) {
+            Retro.Device.NONE -> { }
+            Retro.Device.JOYPAD -> {
+                return when (Retro.DeviceId.fromValue(id)) {
+                    Retro.DeviceId.JOYPAD_A ->
                         pressedKeys.contains(KeyEvent.KEYCODE_A) || pressedKeys.contains(KeyEvent.KEYCODE_SPACE)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_B -> pressedKeys.contains(KeyEvent.KEYCODE_B)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_DOWN -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_DOWN)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_L -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_L2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_L2)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_L3 -> false
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_LEFT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_R -> pressedKeys.contains(KeyEvent.KEYCODE_R)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_R2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_R2)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_R3 -> false
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_RIGHT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_RIGHT)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_SELECT -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_SELECT)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_START ->
-                        pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_START) || pressedKeys.contains(KeyEvent.KEYCODE_ENTER)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_UP -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_UP)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_X -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_X)
-                    Retro.RetroDeviceId.RETRO_DEVICE_ID_JOYPAD_Y -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_Y)
+                    Retro.DeviceId.JOYPAD_B -> pressedKeys.contains(KeyEvent.KEYCODE_B)
+                    Retro.DeviceId.JOYPAD_DOWN -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_DOWN)
+                    Retro.DeviceId.JOYPAD_L -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
+                    Retro.DeviceId.JOYPAD_L2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_L2)
+                    Retro.DeviceId.JOYPAD_L3 -> false
+                    Retro.DeviceId.JOYPAD_LEFT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
+                    Retro.DeviceId.JOYPAD_R -> pressedKeys.contains(KeyEvent.KEYCODE_R)
+                    Retro.DeviceId.JOYPAD_R2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_R2)
+                    Retro.DeviceId.JOYPAD_R3 -> false
+                    Retro.DeviceId.JOYPAD_RIGHT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_RIGHT)
+                    Retro.DeviceId.JOYPAD_SELECT -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_SELECT)
+                    Retro.DeviceId.JOYPAD_START -> {
+                        pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_START)
+                                || pressedKeys.contains(KeyEvent.KEYCODE_ENTER)
+                    }
+                    Retro.DeviceId.JOYPAD_UP -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_UP)
+                    Retro.DeviceId.JOYPAD_X -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_X)
+                    Retro.DeviceId.JOYPAD_Y -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_Y)
                 }
             }
-            Retro.RetroDevice.RETRO_DEVICE_MOUSE -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_KEYBOARD -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_ANALOG -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_POINTER -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_JOYPAD_MULTITAP -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN_JUSTIFIER -> TODO()
-            Retro.RetroDevice.RETRO_DEVICE_LIGHTGUN_JUSTIFIERS -> TODO()
+            Retro.Device.MOUSE -> TODO()
+            Retro.Device.KEYBOARD -> TODO()
+            Retro.Device.LIGHTGUN -> TODO()
+            Retro.Device.ANALOG -> TODO()
+            Retro.Device.POINTER -> TODO()
+            Retro.Device.JOYPAD_MULTITAP -> TODO()
+            Retro.Device.LIGHTGUN_SUPER_SCOPE -> TODO()
+            Retro.Device.LIGHTGUN_JUSTIFIER -> TODO()
+            Retro.Device.LIGHTGUN_JUSTIFIERS -> TODO()
         }
         return false
     }
@@ -276,10 +275,9 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     fun onKeyEvent(event: KeyEvent) {
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            pressedKeys.add(event.keyCode)
-        } else if (event.action == KeyEvent.ACTION_UP) {
-            pressedKeys.remove(event.keyCode)
+        when(event.action) {
+            KeyEvent.ACTION_DOWN -> pressedKeys.add(event.keyCode)
+            KeyEvent.ACTION_UP -> pressedKeys.remove(event.keyCode)
         }
     }
 

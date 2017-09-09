@@ -34,95 +34,94 @@ class Retro(coreLibraryName: String) {
 
     data class ControllerDescription(
             val desc: String,
-            val id: RetroDevice
-    )
+            val id: Device)
 
     data class ControllerInfo(
-            val types: List<ControllerDescription>
-    )
+            val types: List<ControllerDescription>)
 
     data class SystemInfo(
             val libraryName: String,
             val libraryVersion: String,
             val validExtensions: String,
             val needFullpath: Boolean,
-            val blockExtract: Boolean
-    )
+            val blockExtract: Boolean)
 
     data class GameGeometry(
-            val baseWidth: Int? = null,
-            val baseHeight: Int? = null,
-            val maxWidth: Int? = null,
-            var maxHeight: Int? = null,
-            var aspectRatio: Float? = null
-    )
+            val baseWidth: Int,
+            val baseHeight: Int,
+            val maxWidth: Int,
+            var maxHeight: Int,
+            var aspectRatio: Float)
 
     data class SystemTiming(
-            val fps: Double? = null,
-            val sample_rate: Double? = null
-    )
+            val fps: Double,
+            val sample_rate: Double)
 
     data class SystemAVInfo(
-            val geometry: GameGeometry? = null,
-            val timing: SystemTiming? = null
-    )
+            val geometry: GameGeometry,
+            val timing: SystemTiming)
 
     data class InputDescriptor(
             val port: Int,
-            val device: RetroDevice,
+            val device: Device,
             val index: Int,
-            val id: RetroDeviceId,
-            val description: String
-    )
+            val id: DeviceId,
+            val description: String)
 
-    enum class RetroDevice(val value: Int) {
-        RETRO_DEVICE_NONE(0),
-        RETRO_DEVICE_JOYPAD(1),
-        RETRO_DEVICE_MOUSE(2),
-        RETRO_DEVICE_KEYBOARD(3),
-        RETRO_DEVICE_LIGHTGUN(4),
-        RETRO_DEVICE_ANALOG(5),
-        RETRO_DEVICE_POINTER(6),
+    enum class Device(val value: Int) {
+        NONE(0),
+        JOYPAD(1),
+        MOUSE(2),
+        KEYBOARD(3),
+        LIGHTGUN(4),
+        ANALOG(5),
+        POINTER(6),
 
         // FIXME: What's the deal with these...
-        RETRO_DEVICE_JOYPAD_MULTITAP ((1 shl 8) or RETRO_DEVICE_JOYPAD.value),
-        RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE ((1 shl 8) or RETRO_DEVICE_LIGHTGUN.value),
-        RETRO_DEVICE_LIGHTGUN_JUSTIFIER ((2 shl 8) or RETRO_DEVICE_LIGHTGUN.value),
-        RETRO_DEVICE_LIGHTGUN_JUSTIFIERS ((3 shl 8) or RETRO_DEVICE_LIGHTGUN.value);
+        JOYPAD_MULTITAP ((1 shl 8) or JOYPAD.value),
+        LIGHTGUN_SUPER_SCOPE ((1 shl 8) or LIGHTGUN.value),
+        LIGHTGUN_JUSTIFIER ((2 shl 8) or LIGHTGUN.value),
+        LIGHTGUN_JUSTIFIERS ((3 shl 8) or LIGHTGUN.value);
 
         companion object {
-            // FIXME: probs not fast enough
-            fun fromValue(value: Int): RetroDevice = RetroDevice.values().find { it.value == value }!!
+            private val valueCache = mapOf(*Device.values().map { it.value to it }.toTypedArray())
+            fun fromValue(value: Int) = valueCache[value]!!
         }
     }
 
-    enum class RetroDeviceId(val value: Int) {
-        RETRO_DEVICE_ID_JOYPAD_B(0),
-        RETRO_DEVICE_ID_JOYPAD_Y(1),
-        RETRO_DEVICE_ID_JOYPAD_SELECT(2),
-        RETRO_DEVICE_ID_JOYPAD_START(3),
-        RETRO_DEVICE_ID_JOYPAD_UP(4),
-        RETRO_DEVICE_ID_JOYPAD_DOWN(5),
-        RETRO_DEVICE_ID_JOYPAD_LEFT(6),
-        RETRO_DEVICE_ID_JOYPAD_RIGHT(7),
-        RETRO_DEVICE_ID_JOYPAD_A(8),
-        RETRO_DEVICE_ID_JOYPAD_X(9),
-        RETRO_DEVICE_ID_JOYPAD_L(10),
-        RETRO_DEVICE_ID_JOYPAD_R(11),
-        RETRO_DEVICE_ID_JOYPAD_L2(12),
-        RETRO_DEVICE_ID_JOYPAD_R2(13),
-        RETRO_DEVICE_ID_JOYPAD_L3(14),
-        RETRO_DEVICE_ID_JOYPAD_R3(15);
+    enum class DeviceId(val value: Int) {
+        JOYPAD_B(0),
+        JOYPAD_Y(1),
+        JOYPAD_SELECT(2),
+        JOYPAD_START(3),
+        JOYPAD_UP(4),
+        JOYPAD_DOWN(5),
+        JOYPAD_LEFT(6),
+        JOYPAD_RIGHT(7),
+        JOYPAD_A(8),
+        JOYPAD_X(9),
+        JOYPAD_L(10),
+        JOYPAD_R(11),
+        JOYPAD_L2(12),
+        JOYPAD_R2(13),
+        JOYPAD_L3(14),
+        JOYPAD_R3(15);
 
         companion object {
-            // FIXME: probs not fast enough
-            fun fromValue(value: Int): RetroDeviceId = RetroDeviceId.values().find { it.value == value }!!
+            private val valueCache = mapOf(*DeviceId.values().map { it.value to it }.toTypedArray())
+            fun fromValue(value: Int) = valueCache[value]!!
         }
     }
 
     enum class Region(val value: Int) {
-        RETRO_REGION_NTSC(0),
-        RETRO_REGION_PAL(1)
+        REGION_NTSC(0),
+        REGION_PAL(1);
+
+        companion object {
+            private val valueCache = mapOf(*Region.values().map { it.value to it }.toTypedArray())
+            fun fromValue(value: Int) = valueCache[value]!!
+        }
+
     }
 
     interface EnvironmentCallback {
@@ -135,7 +134,7 @@ class Retro(coreLibraryName: String) {
 
         fun onGetVariable(name: String): String?
 
-        fun onSetPixelFormat(retroPixelFormat: LibRetro.retro_pixel_format): Boolean
+        fun onSetPixelFormat(retroPixelFormat: Int): Boolean
 
         fun onSetInputDescriptors(descriptors: List<InputDescriptor>)
 
@@ -155,7 +154,7 @@ class Retro(coreLibraryName: String) {
 
     interface VideoRefreshCallback {
 
-        fun onVideoRefresh(data: ByteArray?, width: Int, height: Int, pitch: Int)
+        fun onVideoRefresh(data: ByteArray, width: Int, height: Int, pitch: Int)
     }
 
     interface AudioSampleCallback {
@@ -165,7 +164,7 @@ class Retro(coreLibraryName: String) {
 
     interface AudioSampleBatchCallback {
 
-        fun onAudioSampleBatch(data: ByteArray?, frames: Int): Long
+        fun onAudioSampleBatch(data: ByteArray, frames: Int): Long
     }
 
     interface InputPollCallback {
@@ -193,33 +192,29 @@ class Retro(coreLibraryName: String) {
         libRetro.retro_get_system_av_info(info)
         return SystemAVInfo(
                 GameGeometry(
-                        info.geometry?.base_width?.toInt(),
-                        info.geometry?.base_height?.toInt(),
-                        info.geometry?.max_width?.toInt(),
-                        info.geometry?.max_height?.toInt(),
-                        info.geometry?.aspect_ratio
+                        info.geometry!!.base_width!!.toInt(),
+                        info.geometry!!.base_height!!.toInt(),
+                        info.geometry!!.max_width!!.toInt(),
+                        info.geometry!!.max_height!!.toInt(),
+                        info.geometry!!.aspect_ratio!!
                 ),
                 SystemTiming(
-                        info.timing?.fps,
-                        info.timing?.sample_rate
+                        info.timing!!.fps!!,
+                        info.timing!!.sample_rate!!
                 )
         )
     }
 
     fun getRegion(): Region {
         val region = libRetro.retro_get_region()
-        return Region.values().find { it.value == region.toInt() }
-                ?: throw Exception("Unknown Region: $region")
+        return Region.fromValue(region.toInt())
     }
 
     fun setVideoRefresh(callback: VideoRefreshCallback) {
 
         val cb = object : LibRetro.retro_video_refresh_t {
             override fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT) {
-                val buffer = when {
-                    data == Pointer.NULL || data.getByte(0) == 0x0.toByte() -> null
-                    else -> data.getByteArray(0, height.toInt() * pitch.toInt())
-                }
+                val buffer = data.getByteArray(0, height.toInt() * pitch.toInt())
                 callback.onVideoRefresh(buffer, width.toInt(), height.toInt(), pitch.toInt())
             }
         }
@@ -248,14 +243,12 @@ class Retro(coreLibraryName: String) {
                             override fun invoke(log_level: Int, fmt: Pointer) {
                                 // FIXME: fmt is varargs
                                 val message = fmt.getString(0)
-                                val level = LibRetro.retro_log_level.values().find { it.value == log_level }
-                                        ?: LibRetro.retro_log_level.RETRO_LOG_DUMMY
-                                val newLevel = when (level) {
+                                val newLevel = when (log_level) {
                                     LibRetro.retro_log_level.RETRO_LOG_DEBUG -> LogLevel.DEBUG
                                     LibRetro.retro_log_level.RETRO_LOG_INFO -> LogLevel.INFO
                                     LibRetro.retro_log_level.RETRO_LOG_WARN -> LogLevel.WARN
                                     LibRetro.retro_log_level.RETRO_LOG_ERROR -> LogLevel.ERROR
-                                    else -> TODO()
+                                    else -> throw IllegalArgumentException()
                                 }
                                 logInterface.onLogMessage(newLevel, message)
                             }
@@ -289,9 +282,7 @@ class Retro(coreLibraryName: String) {
                         return updated
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_PIXEL_FORMAT -> {
-                        val pixelFormatInt = data.getInt(0)
-                        val pixelFormat = LibRetro.retro_pixel_format.values().find { it.value == pixelFormatInt }
-                                ?: LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_UNKNOWN
+                        val pixelFormat = data.getInt(0)
                         return callback.onSetPixelFormat(pixelFormat)
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS -> {
@@ -302,9 +293,9 @@ class Retro(coreLibraryName: String) {
                             descriptor.description ?: break
                             descriptors.add(InputDescriptor(
                                     descriptor.port!!.toInt(),
-                                    RetroDevice.values().find { it.value == descriptor.device!!.toInt() }!!,
+                                    Device.fromValue(descriptor.device!!.toInt()),
                                     descriptor.index!!.toInt(),
-                                    RetroDeviceId.values().find { it.value == descriptor.id!!.toInt() }!!,
+                                    DeviceId.fromValue(descriptor.id!!.toInt()),
                                     descriptor.description!!))
 
                             offset += descriptor.size()
@@ -324,7 +315,7 @@ class Retro(coreLibraryName: String) {
                                         (it as LibRetro.retro_controller_description).let { desc ->
                                             ControllerDescription(
                                                     desc.desc!!,
-                                                    RetroDevice.values().find { it.value == desc.id!!.toInt() }!!
+                                                    Device.fromValue(desc.id!!.toInt())
                                             )
                                         }
                                     }
@@ -362,12 +353,8 @@ class Retro(coreLibraryName: String) {
     fun setAudioSampleBatch(callback: AudioSampleBatchCallback) {
         val cb = object : LibRetro.retro_audio_sample_batch_t {
             override fun apply(data: Pointer, frames: SizeT): SizeT {
-                val buffer = when {
-                    data == Pointer.NULL || data.getByte(0) == 0x0.toByte() -> null
-
-                    // Each frame is 4 bytes (16-bit stereo)
-                    else -> data.getByteArray(0L, frames.toInt() * 4)
-                }
+                // Each frame is 4 bytes (16-bit stereo)
+                val buffer = data.getByteArray(0L, frames.toInt() * 4)
                 return SizeT(callback.onAudioSampleBatch(buffer, frames.toInt()))
             }
         }
