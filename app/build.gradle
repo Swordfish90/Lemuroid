@@ -6,10 +6,10 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.codebutler.odyssey"
-        minSdkVersion 25
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

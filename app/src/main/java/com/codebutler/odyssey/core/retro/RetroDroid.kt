@@ -3,6 +3,7 @@ package com.codebutler.odyssey.core.retro
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
+import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -11,6 +12,7 @@ import com.codebutler.odyssey.core.retro.lib.Retro
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.nio.ByteBuffer
 import java.util.Timer
 import java.util.TimerTask
@@ -266,12 +268,25 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     // FIXME: Refactor into some sort of CoreManager.
     private fun copyCoreToCacheDir(): String {
         val cachedCoreFile = File(context.cacheDir.absoluteFile, "lib$coreFileName")
-        val stream = BufferedOutputStream(FileOutputStream(cachedCoreFile))
-        stream.use { output ->
-            context.resources.assets.open(coreFileName).copyTo(output)
-            output.flush()
+        Log.d(TAG, "Device ABIs: ${Build.SUPPORTED_ABIS.contentToString()}")
+        Log.d(TAG, "Supported ABIs: ${context.resources.assets.list("cores").contentToString()}")
+        Build.SUPPORTED_ABIS.forEach { abi ->
+            try {
+                val assetName = "cores/$abi/$coreFileName"
+                Log.d(TAG, "Trying $assetName")
+                context.resources.assets.open(assetName).use { input ->
+                    val stream = BufferedOutputStream(FileOutputStream(cachedCoreFile))
+                    stream.use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                Log.d(TAG, "Good! Copied to: ${cachedCoreFile.absolutePath}")
+                return coreFileName.substringBeforeLast(".")
+            } catch (ex: IOException) {
+                Log.d(TAG, "Failed.", ex)
+            }
         }
-        return coreFileName.substringBeforeLast(".")
+        throw Exception("Unable to find core")
     }
 
     fun onKeyEvent(event: KeyEvent) {
