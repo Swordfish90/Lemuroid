@@ -1,11 +1,14 @@
 package com.codebutler.odyssey.core.retro.lib
 
+import android.os.Build
 import com.codebutler.odyssey.SizeT
 import com.codebutler.odyssey.UnsignedInt
 import com.codebutler.odyssey.core.retro.lib.LibRetro.retro_system_info
 import com.codebutler.odyssey.core.retro.lib.LibRetro.retro_variable
+import com.sun.jna.Library
 import com.sun.jna.Native
 import com.sun.jna.Pointer
+import com.sun.jna.Structure
 
 /**
  * Java idomatic wrapper around [LibRetro].
@@ -14,7 +17,15 @@ class Retro(coreLibraryName: String) {
 
     private val libRetro : LibRetro = Native.loadLibrary(
             coreLibraryName,
-            LibRetro::class.java)
+            LibRetro::class.java,
+            mapOf(Library.OPTION_STRUCTURE_ALIGNMENT to
+                // Using ALIGN_DEFAULT on x86 caused issues with float field alignment (retro_system_timing).
+                if ("x86" in Build.SUPPORTED_32_BIT_ABIS && Build.SUPPORTED_64_BIT_ABIS.isEmpty()) {
+                    Structure.ALIGN_NONE
+                } else {
+                    Structure.ALIGN_DEFAULT
+                }
+            ))
 
     // These are here to prevent the GC from reaping our callbacks.
     private var videoRefreshCb: LibRetro.retro_video_refresh_t? = null

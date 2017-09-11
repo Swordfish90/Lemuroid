@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -56,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadRetro() {
-
         val retroDroid = RetroDroid(this, "snes9x_libretro_android.so")
 
         retroDroid.logCallback = { level, message ->

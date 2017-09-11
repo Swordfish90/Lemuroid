@@ -70,10 +70,6 @@ interface LibRetro : Library {
         @JvmField
         var block_extract: Boolean = false
 
-        init {
-            setAlignType(ALIGN_NONE)
-        }
-
         override fun getFieldOrder() = listOf(
                 "library_name",
                 "library_version",
@@ -94,10 +90,6 @@ interface LibRetro : Library {
 
         @JvmField
         var meta: String? = null
-
-        init {
-            setAlignType(ALIGN_NONE)
-        }
 
         override fun getFieldOrder() = listOf(
                 "path",
@@ -141,10 +133,6 @@ interface LibRetro : Library {
         @JvmField
         var aspect_ratio: Float? = null
 
-        init {
-            setAlignType(ALIGN_NONE)
-        }
-
         override fun getFieldOrder() = listOf(
                 "base_width",
                 "base_height",
@@ -160,10 +148,6 @@ interface LibRetro : Library {
         @JvmField
         var sample_rate: Double? = null
 
-        init {
-            setAlignType(ALIGN_NONE)
-        }
-
         override fun getFieldOrder() = listOf("fps", "sample_rate")
     }
 
@@ -173,10 +157,6 @@ interface LibRetro : Library {
 
         @JvmField
         var timing: retro_system_timing? = null
-
-        init {
-            setAlignType(ALIGN_NONE)
-        }
 
         override fun getFieldOrder() = listOf("geometry", "timing")
     }
@@ -189,7 +169,6 @@ interface LibRetro : Library {
         var value: String? = null
 
         init {
-            setAlignType(ALIGN_NONE)
             read()
         }
 
@@ -202,14 +181,13 @@ interface LibRetro : Library {
         var log: retro_log_printf_t? = null
 
         init {
-            setAlignType(ALIGN_NONE)
             read()
         }
 
         override fun getFieldOrder(): List<String> = listOf("log")
     }
 
-    class retro_input_descriptor(pointer: Pointer?): Structure(pointer) {
+    class retro_input_descriptor(pointer: Pointer? = null): Structure(pointer) {
 
         @JvmField
         var port: UnsignedInt? = null
@@ -227,14 +205,13 @@ interface LibRetro : Library {
         var description: String? = null
 
         init {
-            setAlignType(ALIGN_NONE)
             read()
         }
 
         override fun getFieldOrder(): List<String> = listOf("port", "device", "index", "id", "description")
     }
 
-    class retro_controller_description(pointer: Pointer?): Structure(pointer) {
+    class retro_controller_description(pointer: Pointer? = null): Structure(pointer) {
 
         @JvmField
         var desc: String? = null
@@ -243,14 +220,13 @@ interface LibRetro : Library {
         var id: UnsignedInt? = null
 
         init {
-            setAlignType(ALIGN_NONE)
             read()
         }
 
         override fun getFieldOrder(): List<String> = listOf("desc", "id")
     }
 
-    class retro_controller_info(pointer: Pointer?): Structure(pointer) {
+    class retro_controller_info(pointer: Pointer? = null): Structure(pointer) {
 
         @JvmField
         // FIXME: var types: retro_controller_description? = null
@@ -260,7 +236,6 @@ interface LibRetro : Library {
         var num_types: UnsignedInt? = null
 
         init {
-            setAlignType(ALIGN_NONE)
             read()
         }
 
