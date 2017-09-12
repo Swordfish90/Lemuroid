@@ -1,6 +1,8 @@
 package com.codebutler.odyssey
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.AudioFormat
@@ -21,7 +23,20 @@ import java.io.File
 
 class GameActivity : AppCompatActivity() {
 
-    private val REQUEST_CODE_PERMISSION = 10001
+    companion object {
+        private const val REQUEST_CODE_PERMISSION = 10001
+
+        private const val EXTRA_FILE_CORE = "file_core"
+        private const val EXTRA_FILE_GAME = "file_game"
+
+        fun newIntent(context: Context, coreFileName: String, gameFileName: String): Intent {
+            return Intent(context, GameActivity::class.java).apply {
+                putExtra(EXTRA_FILE_CORE, coreFileName)
+                putExtra(EXTRA_FILE_GAME, gameFileName)
+            }
+        }
+    }
+
 
     lateinit private var imageView: ImageView
 
@@ -42,7 +57,8 @@ class GameActivity : AppCompatActivity() {
         if (!hasPermission) {
             ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_PERMISSION)
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_CODE_PERMISSION)
         } else {
             loadRetro()
         }
@@ -74,7 +90,10 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun loadRetro() {
-        val retroDroid = RetroDroid(this, "snes9x_libretro_android.so")
+        val coreFileName = intent.getStringExtra(EXTRA_FILE_CORE)
+        val gameFileName = intent.getStringExtra(EXTRA_FILE_GAME)
+
+        val retroDroid = RetroDroid(this, coreFileName)
 
         retroDroid.logCallback = { level, message ->
             val tag = "RetroLog"
@@ -110,7 +129,7 @@ class GameActivity : AppCompatActivity() {
              audioTrack.play()
         }
 
-        val gameFile = File(Environment.getExternalStorageDirectory(), "Super Mario All-Stars (U) [!].smc")
+        val gameFile = File(Environment.getExternalStorageDirectory(), gameFileName)
         retroDroid.loadGame(gameFile.absolutePath)
         retroDroid.start()
 
