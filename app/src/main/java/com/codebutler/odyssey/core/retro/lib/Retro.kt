@@ -408,6 +408,10 @@ class Retro(coreLibraryName: String) {
         return libRetro.retro_load_game(info)
     }
 
+    fun unloadGame() {
+        libRetro.retro_unload_game()
+    }
+
     fun run() {
         libRetro.retro_run()
     }

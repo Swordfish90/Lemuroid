@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.os.Build
+import android.support.annotation.WorkerThread
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -41,6 +42,8 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     private var videoPixelFormat: Int = PixelFormat.RGBA_8888
     private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
     private var videoBytesPerPixel: Int = 0
+
+    private var timerTask: TimerTask? = null
 
     /**
      * Callback for log events, should be set by frontend.
@@ -88,17 +91,27 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         Log.d(TAG, "Got AV Info: ${retro.getSystemAVInfo()}")
     }
 
+    fun unloadGame() {
+        retro.unloadGame()
+    }
+
     fun start() {
+        if (timerTask != null) {
+            return
+        }
         // FIXME: Implement proper timing
-        timer.scheduleAtFixedRate(object : TimerTask() {
+        val timerTask = object : TimerTask() {
             override fun run() {
                 retro.run()
             }
-        }, 0, 20)
+        }
+        timer.scheduleAtFixedRate(timerTask, 0, 20)
+        this.timerTask = timerTask
     }
 
     fun stop() {
-        timer.cancel()
+        timerTask?.cancel()
+        timer.purge()
     }
 
     override fun onGetLogInterface(): Retro.LogInterface {

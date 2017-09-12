@@ -291,6 +291,8 @@ interface LibRetro : Library {
 
     fun retro_load_game(game: retro_game_info): Boolean
 
+    fun retro_unload_game()
+
     fun retro_run()
 
     fun retro_get_system_av_info(info: retro_system_av_info)
