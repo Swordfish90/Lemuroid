@@ -1,7 +1,7 @@
 package com.codebutler.odyssey.core.retro.lib
 
-import com.codebutler.odyssey.SizeT
-import com.codebutler.odyssey.UnsignedInt
+import com.codebutler.odyssey.core.jna.SizeT
+import com.codebutler.odyssey.core.jna.UnsignedInt
 import com.sun.jna.Callback
 import com.sun.jna.Library
 import com.sun.jna.Pointer

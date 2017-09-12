@@ -1,8 +1,10 @@
-package com.codebutler.odyssey
+package com.codebutler.odyssey.feature.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
+import com.codebutler.odyssey.feature.game.GameActivity
+import com.codebutler.odyssey.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

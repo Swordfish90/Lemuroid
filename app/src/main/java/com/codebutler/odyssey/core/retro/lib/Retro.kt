@@ -1,8 +1,8 @@
 package com.codebutler.odyssey.core.retro.lib
 
 import android.os.Build
-import com.codebutler.odyssey.SizeT
-import com.codebutler.odyssey.UnsignedInt
+import com.codebutler.odyssey.core.jna.SizeT
+import com.codebutler.odyssey.core.jna.UnsignedInt
 import com.codebutler.odyssey.core.retro.lib.LibRetro.retro_system_info
 import com.codebutler.odyssey.core.retro.lib.LibRetro.retro_variable
 import com.sun.jna.Library

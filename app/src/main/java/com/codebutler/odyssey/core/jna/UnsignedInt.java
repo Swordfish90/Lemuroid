@@ -1,4 +1,4 @@
-package com.codebutler.odyssey;
+package com.codebutler.odyssey.core.jna;
 
 import com.sun.jna.IntegerType;
 

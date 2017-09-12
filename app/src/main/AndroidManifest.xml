@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:process=":main">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name=".GameActivity"
+            android:name=".feature.game.GameActivity"
             android:process=":game"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>

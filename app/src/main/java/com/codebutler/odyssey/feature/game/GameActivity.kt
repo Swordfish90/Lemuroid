@@ -1,4 +1,4 @@
-package com.codebutler.odyssey
+package com.codebutler.odyssey.feature.game
 
 import android.Manifest
 import android.content.Context
@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.ImageView
+import com.codebutler.odyssey.R
 import com.codebutler.odyssey.core.retro.RetroDroid
 import com.codebutler.odyssey.core.retro.lib.Retro
 import java.io.File
