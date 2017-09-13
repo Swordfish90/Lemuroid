@@ -43,6 +43,7 @@ class GameActivity : AppCompatActivity() {
     private val handler = Handler()
 
     private var retroDroid: RetroDroid? = null
+    private var audioTrack: AudioTrack? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,28 +106,31 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
+        retroDroid.prepareAudioCallback = { sampleRate ->
+            audioTrack = AudioTrack.Builder()
+                    .setAudioAttributes(AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_ALARM)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build())
+                    .setAudioFormat(AudioFormat.Builder()
+                            .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                            .setSampleRate(sampleRate)
+                            .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
+                            .build())
+                    .build()
+        }
+
         retroDroid.videoCallback = { bitmap ->
             handler.post {
                 imageView.setImageBitmap(bitmap)
             }
         }
 
-        val audioTrack = AudioTrack.Builder()
-                .setAudioAttributes(AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_ALARM)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build())
-                .setAudioFormat(AudioFormat.Builder()
-                        .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                        .setSampleRate(44100)
-                        .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
-                        .build())
-                .setBufferSizeInBytes(4)
-                .build()
-
         retroDroid.audioCallback = { buffer ->
-             audioTrack.write(buffer, 0, buffer.size)
-             audioTrack.play()
+             audioTrack?.let { audioTrack ->
+                 audioTrack.write(buffer, 0, buffer.size)
+                 audioTrack.play()
+             }
         }
 
         val gameFile = File(Environment.getExternalStorageDirectory(), gameFileName)

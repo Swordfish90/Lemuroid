@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.os.Build
-import android.support.annotation.WorkerThread
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -45,10 +44,19 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
 
     private var timerTask: TimerTask? = null
 
+    private var region: Retro.Region? = null
+    private var systemAVInfo: Retro.SystemAVInfo? = null
+    private var systemInfo: Retro.SystemInfo? = null
+
     /**
      * Callback for log events, should be set by frontend.
      */
     var logCallback: ((level: Retro.LogLevel, message: String) -> Unit)? = null
+
+    /**
+     * Callback for preparing audio playback.
+     */
+    var prepareAudioCallback: ((sampleRate: Int) -> Unit)? = null
 
     /**
      * Callback for video data, should be set by frontend.
@@ -85,10 +93,21 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         if (!retro.loadGame(filePath)) {
             throw Exception("Failed to load game")
         }
+
+        val region = retro.getRegion()
+        val systemAVInfo = retro.getSystemAVInfo()
+        val systemInfo = retro.getSystemInfo()
+
         Log.d(TAG, "GAME LOADED!!")
-        Log.d(TAG, "Got Region: ${retro.getRegion()}")
-        Log.d(TAG, "Got Info: ${retro.getSystemInfo()}")
-        Log.d(TAG, "Got AV Info: ${retro.getSystemAVInfo()}")
+        Log.d(TAG, "Got Region: $region")
+        Log.d(TAG, "Got Info: $systemInfo")
+        Log.d(TAG, "Got AV Info: $systemAVInfo")
+
+        prepareAudioCallback?.invoke(systemAVInfo.timing.sample_rate.toInt())
+
+        this.region = region
+        this.systemAVInfo = systemAVInfo
+        this.systemInfo = systemInfo
     }
 
     fun unloadGame() {
@@ -96,16 +115,16 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     fun start() {
-        if (timerTask != null) {
+        val avInfo = systemAVInfo
+        if (timerTask != null || avInfo == null) {
             return
         }
-        // FIXME: Implement proper timing
         val timerTask = object : TimerTask() {
             override fun run() {
                 retro.run()
             }
         }
-        timer.scheduleAtFixedRate(timerTask, 0, 20)
+        timer.scheduleAtFixedRate(timerTask, 0, 1000L / avInfo.timing.fps.toLong())
         this.timerTask = timerTask
     }
 
