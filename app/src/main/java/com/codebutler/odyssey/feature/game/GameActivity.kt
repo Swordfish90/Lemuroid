@@ -38,7 +38,6 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-
     lateinit private var imageView: ImageView
 
     private val handler = Handler()
