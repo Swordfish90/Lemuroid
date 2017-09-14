@@ -109,7 +109,7 @@ class GameActivity : AppCompatActivity() {
         retroDroid.prepareAudioCallback = { sampleRate ->
             audioTrack = AudioTrack.Builder()
                     .setAudioAttributes(AudioAttributes.Builder()
-                            .setUsage(AudioAttributes.USAGE_ALARM)
+                            .setUsage(AudioAttributes.USAGE_GAME)
                             .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                             .build())
                     .setAudioFormat(AudioFormat.Builder()
