@@ -20,6 +20,7 @@
 package com.codebutler.odyssey.core.retro.lib
 
 import android.os.Build
+import com.codebutler.odyssey.core.BufferCache
 import com.codebutler.odyssey.core.jna.SizeT
 import com.codebutler.odyssey.core.jna.UnsignedInt
 import com.codebutler.odyssey.core.retro.lib.LibRetro.retro_system_info
@@ -54,6 +55,9 @@ class Retro(coreLibraryName: String) {
     private var inputPollCb: LibRetro.retro_input_poll_t? = null
     private var inputStateCb: LibRetro.retro_input_state_t? = null
     private var logPrintfCb: LibRetro.retro_log_printf_t? = null
+
+    private val videoBufferCache = BufferCache()
+    private val audioBufferCache: BufferCache = BufferCache()
 
     enum class LogLevel {
         DEBUG,
@@ -252,13 +256,14 @@ class Retro(coreLibraryName: String) {
     }
 
     fun setVideoRefresh(callback: VideoRefreshCallback) {
-
         val cb = object : LibRetro.retro_video_refresh_t {
             override fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT) {
-                val buffer = data.getByteArray(0, height.toInt() * pitch.toInt())
+                val buffer = videoBufferCache.getBuffer(height.toInt() * pitch.toInt())
+                data.read(0, buffer, 0, buffer.size)
                 callback.onVideoRefresh(buffer, width.toInt(), height.toInt(), pitch.toInt())
             }
         }
+
         videoRefreshCb = cb
         libRetro.retro_set_video_refresh(cb)
     }
@@ -395,7 +400,8 @@ class Retro(coreLibraryName: String) {
         val cb = object : LibRetro.retro_audio_sample_batch_t {
             override fun apply(data: Pointer, frames: SizeT): SizeT {
                 // Each frame is 4 bytes (16-bit stereo)
-                val buffer = data.getByteArray(0L, frames.toInt() * 4)
+                val buffer = audioBufferCache.getBuffer(frames.toInt() * 4)
+                data.read(0, buffer, 0, buffer.size)
                 return SizeT(callback.onAudioSampleBatch(buffer, frames.toInt()))
             }
         }

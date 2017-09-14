@@ -26,6 +26,7 @@ import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
+import com.codebutler.odyssey.core.BufferCache
 import com.codebutler.odyssey.core.kotlin.toHexString
 import com.codebutler.odyssey.core.retro.lib.LibRetro
 import com.codebutler.odyssey.core.retro.lib.Retro
@@ -55,15 +56,14 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
 
     private val retro: Retro
     private val timer = Timer()
-
     private val pressedKeys = mutableSetOf<Int>()
+    private val videoBufferCache = BufferCache()
+    private val audioSampleBufferCache = BufferCache()
 
     private var videoPixelFormat: Int = PixelFormat.RGBA_8888
     private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
     private var videoBytesPerPixel: Int = 0
-
     private var timerTask: TimerTask? = null
-
     private var region: Retro.Region? = null
     private var systemAVInfo: Retro.SystemAVInfo? = null
     private var systemInfo: Retro.SystemInfo? = null
@@ -140,7 +140,6 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     fun unloadGame() {
         val saveRam = retro.getMemoryData(Retro.Memory.SAVE_RAM)
         Log.d(TAG, "Got SAVE RAM: ${saveRam.toHexString()}")
-
         File(context.cacheDir.absoluteFile, "savedata").writeBytes(saveRam)
 
         retro.unloadGame()
@@ -253,7 +252,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     override fun onVideoRefresh(data: ByteArray, width: Int, height: Int, pitch: Int) {
-        val newBuffer = ByteArray(width * height * videoBytesPerPixel)
+        val newBuffer = videoBufferCache.getBuffer(width * height * videoBytesPerPixel)
         for (i in 0 until height) {
             System.arraycopy(
                     data,                           // SRC
@@ -269,7 +268,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     override fun onAudioSample(left: Short, right: Short) {
-        val buffer = ByteArray(2)
+        val buffer = audioSampleBufferCache.getBuffer(2)
         buffer[0] = left.toByte() and 0xff.toByte()
         buffer[1] = (right.toInt() shr 8).toByte() and 0xff.toByte()
         audioCallback?.invoke(buffer)
