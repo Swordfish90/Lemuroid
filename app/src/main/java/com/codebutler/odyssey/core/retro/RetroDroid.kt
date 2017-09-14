@@ -26,6 +26,7 @@ import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
+import com.codebutler.odyssey.core.kotlin.toHexString
 import com.codebutler.odyssey.core.retro.lib.LibRetro
 import com.codebutler.odyssey.core.retro.lib.Retro
 import java.io.BufferedOutputStream
@@ -127,9 +128,21 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         this.region = region
         this.systemAVInfo = systemAVInfo
         this.systemInfo = systemInfo
+
+        val file = File(context.cacheDir.absoluteFile, "savedata")
+        if (file.exists()) {
+            val saveData = file.readBytes()
+            retro.setMemoryData(Retro.Memory.SAVE_RAM, saveData)
+            Log.d(TAG, "Load SAVE RAM: ${saveData.toHexString()}")
+        }
     }
 
     fun unloadGame() {
+        val saveRam = retro.getMemoryData(Retro.Memory.SAVE_RAM)
+        Log.d(TAG, "Got SAVE RAM: ${saveRam.toHexString()}")
+
+        File(context.cacheDir.absoluteFile, "savedata").writeBytes(saveRam)
+
         retro.unloadGame()
     }
 

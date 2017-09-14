@@ -22,8 +22,14 @@ package com.codebutler.odyssey.core.jna;
 import com.sun.jna.IntegerType;
 
 public class UnsignedInt extends IntegerType {
+
+    private static final int SIZE = 4;
+
     public UnsignedInt() {
-        super(4, true);
+        super(SIZE, true);
     }
 
+    public UnsignedInt(long value) {
+        super(SIZE, value, true);
+    }
 }

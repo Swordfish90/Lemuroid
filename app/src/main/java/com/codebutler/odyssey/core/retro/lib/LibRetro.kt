@@ -317,4 +317,8 @@ interface LibRetro : Library {
     fun retro_get_system_av_info(info: retro_system_av_info)
 
     fun retro_get_region(): UnsignedInt
+
+    fun retro_get_memory_data(id: UnsignedInt): Pointer
+
+    fun retro_get_memory_size(id: UnsignedInt): SizeT
 }

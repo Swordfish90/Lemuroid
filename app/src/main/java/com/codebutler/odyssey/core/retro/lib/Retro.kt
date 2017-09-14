@@ -151,7 +151,18 @@ class Retro(coreLibraryName: String) {
             private val valueCache = mapOf(*Region.values().map { it.value to it }.toTypedArray())
             fun fromValue(value: Int) = valueCache[value]!!
         }
+    }
 
+    enum class Memory(val value: Int) {
+        SAVE_RAM(0),
+        MEMORY_RTC(1),
+        SYSTEM_RAM(2),
+        VIDEO_RAM(3);
+
+        companion object {
+            private val valueCache = mapOf(*Memory.values().map { it.value to it }.toTypedArray())
+            fun fromValue(value: Int) = valueCache[value]!!
+        }
     }
 
     interface EnvironmentCallback {
@@ -433,5 +444,18 @@ class Retro(coreLibraryName: String) {
 
     fun run() {
         libRetro.retro_run()
+    }
+
+    fun getMemoryData(memory: Memory): ByteArray {
+        val id = UnsignedInt(memory.value.toLong())
+        val size = libRetro.retro_get_memory_size(id).toInt()
+        val pointer = libRetro.retro_get_memory_data(id)
+        return pointer.getByteArray(0, size)
+    }
+
+    fun setMemoryData(memory: Memory, data: ByteArray) {
+        val id = UnsignedInt(memory.value.toLong())
+        val pointer = libRetro.retro_get_memory_data(id)
+        pointer.write(0, data, 0, data.size)
     }
 }
