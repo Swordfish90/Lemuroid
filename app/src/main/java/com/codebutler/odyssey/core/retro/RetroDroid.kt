@@ -27,6 +27,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.core.BufferCache
+import com.codebutler.odyssey.core.kotlin.containsAny
 import com.codebutler.odyssey.core.kotlin.toHexString
 import com.codebutler.odyssey.core.retro.lib.LibRetro
 import com.codebutler.odyssey.core.retro.lib.Retro
@@ -293,26 +294,32 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
             Retro.Device.NONE -> { }
             Retro.Device.JOYPAD -> {
                 return when (Retro.DeviceId.fromValue(id)) {
-                    Retro.DeviceId.JOYPAD_A ->
-                        pressedKeys.contains(KeyEvent.KEYCODE_A) || pressedKeys.contains(KeyEvent.KEYCODE_SPACE)
-                    Retro.DeviceId.JOYPAD_B -> pressedKeys.contains(KeyEvent.KEYCODE_B)
+                    Retro.DeviceId.JOYPAD_A -> pressedKeys.containsAny(
+                            KeyEvent.KEYCODE_A,
+                            KeyEvent.KEYCODE_BUTTON_A)
+                    Retro.DeviceId.JOYPAD_B -> pressedKeys.containsAny(
+                            KeyEvent.KEYCODE_B,
+                            KeyEvent.KEYCODE_BUTTON_B)
                     Retro.DeviceId.JOYPAD_DOWN -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_DOWN)
-                    Retro.DeviceId.JOYPAD_L -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
+                    Retro.DeviceId.JOYPAD_L -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_L1)
                     Retro.DeviceId.JOYPAD_L2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_L2)
                     Retro.DeviceId.JOYPAD_L3 -> false
                     Retro.DeviceId.JOYPAD_LEFT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
-                    Retro.DeviceId.JOYPAD_R -> pressedKeys.contains(KeyEvent.KEYCODE_R)
+                    Retro.DeviceId.JOYPAD_R -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_R1)
                     Retro.DeviceId.JOYPAD_R2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_R2)
                     Retro.DeviceId.JOYPAD_R3 -> false
                     Retro.DeviceId.JOYPAD_RIGHT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_RIGHT)
                     Retro.DeviceId.JOYPAD_SELECT -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_SELECT)
-                    Retro.DeviceId.JOYPAD_START -> {
-                        pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_START)
-                                || pressedKeys.contains(KeyEvent.KEYCODE_ENTER)
-                    }
+                    Retro.DeviceId.JOYPAD_START -> pressedKeys.containsAny(
+                            KeyEvent.KEYCODE_BUTTON_START,
+                            KeyEvent.KEYCODE_ENTER)
                     Retro.DeviceId.JOYPAD_UP -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_UP)
-                    Retro.DeviceId.JOYPAD_X -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_X)
-                    Retro.DeviceId.JOYPAD_Y -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_Y)
+                    Retro.DeviceId.JOYPAD_X -> pressedKeys.containsAny(
+                            KeyEvent.KEYCODE_BUTTON_X,
+                            KeyEvent.KEYCODE_X)
+                    Retro.DeviceId.JOYPAD_Y -> pressedKeys.containsAny(
+                            KeyEvent.KEYCODE_BUTTON_Y,
+                            KeyEvent.KEYCODE_Y)
                 }
             }
             Retro.Device.MOUSE -> TODO()
@@ -363,3 +370,4 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
         Log.d(TAG, "onMotionEvent: $event")
     }
 }
+
