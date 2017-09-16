@@ -19,18 +19,14 @@
 
 package com.codebutler.odyssey.feature.game
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.KeyEvent
@@ -44,8 +40,6 @@ import java.io.File
 class GameActivity : AppCompatActivity() {
 
     companion object {
-        private const val REQUEST_CODE_PERMISSION = 10001
-
         private const val EXTRA_FILE_CORE = "file_core"
         private const val EXTRA_FILE_GAME = "file_game"
 
@@ -70,18 +64,7 @@ class GameActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.image)
 
-        val hasPermission = ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
-        if (!hasPermission) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    REQUEST_CODE_PERMISSION)
-        } else {
-            loadRetro()
-        }
+        loadRetro()
     }
 
     override fun onResume() {
@@ -101,12 +84,6 @@ class GameActivity : AppCompatActivity() {
 
         // This activity runs in its own process which should not live beyond the activity lifecycle.
         System.exit(0)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE_PERMISSION && grantResults.get(0) == PackageManager.PERMISSION_GRANTED) {
-            loadRetro()
-        }
     }
 
     private fun loadRetro() {
