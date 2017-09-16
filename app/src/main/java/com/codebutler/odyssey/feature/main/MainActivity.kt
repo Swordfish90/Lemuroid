@@ -20,6 +20,7 @@
 package com.codebutler.odyssey.feature.main
 
 import android.Manifest
+import android.app.ProgressDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
@@ -31,15 +32,18 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.core.kotlin.bindView
 import com.codebutler.odyssey.core.kotlin.inflate
+import com.codebutler.odyssey.feature.core.CoreManager
 import com.codebutler.odyssey.feature.game.GameActivity
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
+        private const val TAG = "MainActivity"
         private const val REQUEST_CODE_PERMISSION = 10001
     }
 
@@ -72,13 +76,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadGames() {
+        val coreManager = CoreManager(File(cacheDir, "cores"))
+        val coreName = "snes9x_libretro_android"
+
         val sdcardDir = Environment.getExternalStorageDirectory()
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recycler.adapter = RomFilesAdapter(sdcardDir.listFiles().filter { it.isFile }.toList(), { file ->
-            startActivity(GameActivity.newIntent(
-                    context = this,
-                    coreFileName = "snes9x_libretro_android.so",
-                    gameFileName = file.name))
+        recycler.adapter = RomFilesAdapter(sdcardDir.listFiles().filter { it.isFile }.toList(), { romFile ->
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setMessage("Loading...")
+            progressDialog.show()
+
+            coreManager.downloadCore(coreName, { coreFile ->
+                recycler.post {
+                    progressDialog.cancel()
+                    if (coreFile == null) {
+                        Toast.makeText(this@MainActivity, "Failed to download core", Toast.LENGTH_SHORT).show()
+                        return@post
+                    }
+                    startActivity(GameActivity.newIntent(
+                            context = this,
+                            coreFilePath = coreFile.absolutePath,
+                            gameFilePath = romFile.absolutePath))
+                }
+            })
         })
     }
 

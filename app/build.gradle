@@ -35,6 +35,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'net.java.dev.jna:jna:4.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 
     implementation 'com.android.support:appcompat-v7:26.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'

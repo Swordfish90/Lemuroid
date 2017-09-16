@@ -25,7 +25,6 @@ import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -44,10 +43,10 @@ class GameActivity : AppCompatActivity() {
         private const val EXTRA_FILE_CORE = "file_core"
         private const val EXTRA_FILE_GAME = "file_game"
 
-        fun newIntent(context: Context, coreFileName: String, gameFileName: String): Intent {
+        fun newIntent(context: Context, coreFilePath: String, gameFilePath: String): Intent {
             return Intent(context, GameActivity::class.java).apply {
-                putExtra(EXTRA_FILE_CORE, coreFileName)
-                putExtra(EXTRA_FILE_GAME, gameFileName)
+                putExtra(EXTRA_FILE_CORE, coreFilePath)
+                putExtra(EXTRA_FILE_GAME, gameFilePath)
             }
         }
     }
@@ -86,10 +85,10 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun loadRetro() {
-        val coreFileName = intent.getStringExtra(EXTRA_FILE_CORE)
-        val gameFileName = intent.getStringExtra(EXTRA_FILE_GAME)
+        val coreFilePath = intent.getStringExtra(EXTRA_FILE_CORE)
+        val gameFilePath = intent.getStringExtra(EXTRA_FILE_GAME)
 
-        val retroDroid = RetroDroid(this, coreFileName)
+        val retroDroid = RetroDroid(this, File(coreFilePath))
 
         retroDroid.logCallback = { level, message ->
             val tag = "RetroLog"
@@ -128,8 +127,7 @@ class GameActivity : AppCompatActivity() {
              }
         }
 
-        val gameFile = File(Environment.getExternalStorageDirectory(), gameFileName)
-        retroDroid.loadGame(gameFile.absolutePath)
+        retroDroid.loadGame(gameFilePath)
         retroDroid.start()
 
         this.retroDroid = retroDroid

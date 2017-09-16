@@ -22,19 +22,14 @@ package com.codebutler.odyssey.core.retro
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
-import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.core.BufferCache
 import com.codebutler.odyssey.core.kotlin.containsAny
-import com.codebutler.odyssey.core.kotlin.toHexString
 import com.codebutler.odyssey.core.retro.lib.LibRetro
 import com.codebutler.odyssey.core.retro.lib.Retro
-import java.io.BufferedOutputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.nio.ByteBuffer
 import java.util.Timer
 import java.util.TimerTask
@@ -43,7 +38,7 @@ import kotlin.experimental.and
 /**
  * Native Android frontend for LibRetro!
  */
-class RetroDroid(private val context: Context, private val coreFileName: String) :
+class RetroDroid(private val context: Context, coreFile: File) :
         Retro.EnvironmentCallback,
         Retro.VideoRefreshCallback,
         Retro.AudioSampleCallback,
@@ -92,11 +87,11 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     init {
         System.setProperty("jna.debug_load", "true")
         System.setProperty("jna.dump_memory", "true")
-        System.setProperty("jna.library.path", context.cacheDir.absolutePath)
+        System.setProperty("jna.library.path", coreFile.parentFile.absolutePath)
 
-        val coreName = copyCoreToCacheDir()
+        val coreLibraryName = coreFile.nameWithoutExtension.substring(3) // FIXME
 
-        retro = Retro(coreName)
+        retro = Retro(coreLibraryName)
         retro.setEnvironment(this)
         retro.setVideoRefresh(this)
         retro.setAudioSample(this)
@@ -112,7 +107,7 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
 
     fun loadGame(filePath: String) {
         if (!retro.loadGame(filePath)) {
-            throw Exception("Failed to load game")
+            throw Exception("Failed to load game: $filePath")
         }
 
         val region = retro.getRegion()
@@ -333,30 +328,6 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
             Retro.Device.LIGHTGUN_JUSTIFIERS -> TODO()
         }
         return false
-    }
-
-    // FIXME: Refactor into some sort of CoreManager.
-    private fun copyCoreToCacheDir(): String {
-        val cachedCoreFile = File(context.cacheDir.absoluteFile, "lib$coreFileName")
-        Log.d(TAG, "Device ABIs: ${Build.SUPPORTED_ABIS.contentToString()}")
-        Log.d(TAG, "Supported ABIs: ${context.resources.assets.list("cores").contentToString()}")
-        Build.SUPPORTED_ABIS.forEach { abi ->
-            try {
-                val assetName = "cores/$abi/$coreFileName"
-                Log.d(TAG, "Trying $assetName")
-                context.resources.assets.open(assetName).use { input ->
-                    val stream = BufferedOutputStream(FileOutputStream(cachedCoreFile))
-                    stream.use { output ->
-                        input.copyTo(output)
-                    }
-                }
-                Log.d(TAG, "Good! Copied to: ${cachedCoreFile.absolutePath}")
-                return coreFileName.substringBeforeLast(".")
-            } catch (ex: IOException) {
-                Log.d(TAG, "Failed.", ex)
-            }
-        }
-        throw Exception("Unable to find core")
     }
 
     fun onKeyEvent(event: KeyEvent) {
