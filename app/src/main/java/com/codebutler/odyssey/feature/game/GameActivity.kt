@@ -33,6 +33,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.ImageView
 import com.codebutler.odyssey.R
+import com.codebutler.odyssey.core.kotlin.bindView
 import com.codebutler.odyssey.core.retro.RetroDroid
 import com.codebutler.odyssey.core.retro.lib.Retro
 import java.io.File
@@ -51,7 +52,7 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    lateinit private var imageView: ImageView
+    private val imageView: ImageView by bindView(R.id.image)
 
     private val handler = Handler()
 
@@ -61,8 +62,6 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
-
-        imageView = findViewById(R.id.image)
 
         loadRetro()
     }

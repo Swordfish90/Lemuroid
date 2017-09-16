@@ -22,12 +22,20 @@ package com.codebutler.odyssey.feature.main
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.widget.Button
-import com.codebutler.odyssey.feature.game.GameActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import com.codebutler.odyssey.R
+import com.codebutler.odyssey.core.kotlin.bindView
+import com.codebutler.odyssey.core.kotlin.inflate
+import com.codebutler.odyssey.feature.game.GameActivity
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,20 +43,12 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSION = 10001
     }
 
-    lateinit private var button: Button
+    private val recycler: RecyclerView by bindView(R.id.recycler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button = findViewById(R.id.button_launch)
-        button.setOnClickListener {
-            startActivity(GameActivity.newIntent(
-                    context = this,
-                    coreFileName = "snes9x_libretro_android.so",
-                    gameFileName = "Super Mario All-Stars (U) [!].smc"))
-        }
-        
         val hasPermission = ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -59,15 +59,57 @@ class MainActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     REQUEST_CODE_PERMISSION)
         } else {
-            button.isEnabled = true
+            loadGames()
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            button.isEnabled = true
+            loadGames()
         } else {
             finish()
+        }
+    }
+
+    private fun loadGames() {
+        val sdcardDir = Environment.getExternalStorageDirectory()
+        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recycler.adapter = RomFilesAdapter(sdcardDir.listFiles().filter { it.isFile }.toList(), { file ->
+            startActivity(GameActivity.newIntent(
+                    context = this,
+                    coreFileName = "snes9x_libretro_android.so",
+                    gameFileName = file.name))
+        })
+    }
+
+    private class RomFilesAdapter(private val files: List<File>, private val clickListener: (file: File) -> Unit)
+        : RecyclerView.Adapter<RomFileViewHolder>() {
+
+        override fun onBindViewHolder(holder: RomFileViewHolder, position: Int) {
+            holder.bind(files[position])
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RomFileViewHolder
+                = RomFileViewHolder(parent.inflate(R.layout.listitem_rom_file), { position ->
+            clickListener(files[position])
+        })
+
+        override fun getItemCount(): Int = files.size
+    }
+
+    private class RomFileViewHolder(itemView: View, private val clickListener: (position: Int) -> Unit)
+        : RecyclerView.ViewHolder(itemView) {
+
+        private val textView: TextView by bindView(R.id.text)
+
+        init {
+            itemView.setOnClickListener {
+                clickListener(adapterPosition)
+            }
+        }
+
+        fun bind(file: File) {
+            textView.text = file.name
         }
     }
 }

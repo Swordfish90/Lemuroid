@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="grid_unit_1x">8dp</dimen>
+    <dimen name="grid_unit_2x">16dp</dimen>
+    <dimen name="grid_unit_3x">24dp</dimen>
+    <dimen name="grid_unit_4x">32dp</dimen>
+    <dimen name="grid_unit_5x">40dp</dimen>
+    <dimen name="grid_unit_6x">48dp</dimen>
+    <dimen name="grid_unit_9x">72dp</dimen>
+</resources>
