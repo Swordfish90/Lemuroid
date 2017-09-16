@@ -22,19 +22,14 @@ package com.codebutler.odyssey.core.retro
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
-import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.core.BufferCache
 import com.codebutler.odyssey.core.kotlin.containsAny
-import com.codebutler.odyssey.core.kotlin.toHexString
 import com.codebutler.odyssey.core.retro.lib.LibRetro
 import com.codebutler.odyssey.core.retro.lib.Retro
-import java.io.BufferedOutputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.nio.ByteBuffer
 import java.util.Timer
 import java.util.TimerTask
@@ -43,7 +38,7 @@ import kotlin.experimental.and
 /**
  * Native Android frontend for LibRetro!
  */
-class RetroDroid(private val context: Context, private val coreFileName: String) :
+class RetroDroid(private val context: Context, coreFile: File) :
         Retro.EnvironmentCallback,
         Retro.VideoRefreshCallback,
         Retro.AudioSampleCallback,
@@ -92,11 +87,11 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     init {
         System.setProperty("jna.debug_load", "true")
         System.setProperty("jna.dump_memory", "true")
-        System.setProperty("jna.library.path", context.cacheDir.absolutePath)
+        System.setProperty("jna.library.path", coreFile.parentFile.absolutePath)
 
-        val coreName = copyCoreToCacheDir()
+        val coreLibraryName = coreFile.nameWithoutExtension.substring(3) // FIXME
 
-        retro = Retro(coreName)
+        retro = Retro(coreLibraryName)
         retro.setEnvironment(this)
         retro.setVideoRefresh(this)
         retro.setAudioSample(this)
@@ -111,18 +106,22 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
     }
 
     fun loadGame(filePath: String) {
-        if (!retro.loadGame(filePath)) {
-            throw Exception("Failed to load game")
-        }
-
         val region = retro.getRegion()
         val systemAVInfo = retro.getSystemAVInfo()
         val systemInfo = retro.getSystemInfo()
 
-        Log.d(TAG, "GAME LOADED!!")
-        Log.d(TAG, "Got Region: $region")
-        Log.d(TAG, "Got Info: $systemInfo")
-        Log.d(TAG, "Got AV Info: $systemAVInfo")
+        if (systemInfo.needFullpath) {
+            if (!retro.loadGame(filePath)) {
+                throw Exception("Failed to load game via path: $filePath")
+            }
+        } else {
+            Log.d(TAG, "Load game with data!!")
+            if (!retro.loadGame(File(filePath).readBytes())) {
+                throw Exception("Failed to load game via buffer: $filePath")
+            }
+        }
+
+        Log.d(TAG, "Game loaded!")
 
         prepareAudioCallback?.invoke(systemAVInfo.timing.sample_rate.toInt())
 
@@ -132,16 +131,16 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
 
         val file = File(context.cacheDir.absoluteFile, "savedata")
         if (file.exists()) {
-            val saveData = file.readBytes()
-            retro.setMemoryData(Retro.Memory.SAVE_RAM, saveData)
-            Log.d(TAG, "Load SAVE RAM: ${saveData.toHexString()}")
+            //val saveData = file.readBytes()
+            //retro.setMemoryData(Retro.Memory.SAVE_RAM, saveData)
+            //Log.d(TAG, "Load SAVE RAM: ${saveData.toHexString()}")
         }
     }
 
     fun unloadGame() {
-        val saveRam = retro.getMemoryData(Retro.Memory.SAVE_RAM)
-        Log.d(TAG, "Got SAVE RAM: ${saveRam.toHexString()}")
-        File(context.cacheDir.absoluteFile, "savedata").writeBytes(saveRam)
+        //val saveRam = retro.getMemoryData(Retro.Memory.SAVE_RAM)
+        //Log.d(TAG, "Got SAVE RAM: ${saveRam.toHexString()}")
+        //File(context.cacheDir.absoluteFile, "savedata").writeBytes(saveRam)
 
         retro.unloadGame()
     }
@@ -201,19 +200,20 @@ class RetroDroid(private val context: Context, private val coreFileName: String)
                 PixelFormat.RGBA_5551
             }
             LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_XRGB8888 -> {
-                PixelFormat.RGB_332 // FIXME Not sure if right. Should be 32-bit RGB format (0xffRRGGBB).
+                PixelFormat.RGBX_8888 // FIXME Not sure if right. Should be 32-bit RGB format (0xffRRGGBB).
             }
             LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_RGB565 -> {
                 // The image is stored using a 16-bit RGB format (5-6-5).
                 PixelFormat.RGB_565
             }
-            else -> TODO()
+            else -> throw IllegalArgumentException("Unsupported retro pixel format: $retroPixelFormat")
         }
 
         // FIXME: This will likely need to be replaced with a conversion function
         val bitmapConfig = when (pixelFormat) {
             PixelFormat.RGB_565 -> Bitmap.Config.RGB_565
-            else -> TODO()
+            PixelFormat.RGBX_8888 -> Bitmap.Config.ARGB_8888
+            else -> throw IllegalArgumentException("Unsupported pixel format: $pixelFormat")
         }
 
         val pixelFormatInfo = PixelFormat()

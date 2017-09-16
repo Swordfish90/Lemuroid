@@ -26,6 +26,7 @@ import com.codebutler.odyssey.core.jna.UnsignedInt
 import com.codebutler.odyssey.core.retro.lib.LibRetro.retro_system_info
 import com.codebutler.odyssey.core.retro.lib.LibRetro.retro_variable
 import com.sun.jna.Library
+import com.sun.jna.Memory
 import com.sun.jna.Native
 import com.sun.jna.Pointer
 import com.sun.jna.Structure
@@ -441,6 +442,18 @@ class Retro(coreLibraryName: String) {
         val info = LibRetro.retro_game_info()
         info.path = filePath
         info.write()
+        return libRetro.retro_load_game(info)
+    }
+
+    fun loadGame(data: ByteArray): Boolean {
+        val memory = com.sun.jna.Memory(data.size.toLong())
+        memory.write(0, data, 0, data.size)
+
+        val info = LibRetro.retro_game_info()
+        info.data = memory
+        info.size = SizeT(data.size.toLong())
+        info.write()
+
         return libRetro.retro_load_game(info)
     }
 
