@@ -22,14 +22,19 @@ package com.codebutler.odyssey.core.retro
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
+import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.core.BufferCache
 import com.codebutler.odyssey.core.kotlin.containsAny
+import com.codebutler.odyssey.core.kotlin.toHexString
 import com.codebutler.odyssey.core.retro.lib.LibRetro
 import com.codebutler.odyssey.core.retro.lib.Retro
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.nio.ByteBuffer
 import java.util.Timer
 import java.util.TimerTask
@@ -38,7 +43,7 @@ import kotlin.experimental.and
 /**
  * Native Android frontend for LibRetro!
  */
-class RetroDroid(private val context: Context, coreFile: File) :
+class RetroDroid(private val context: Context, private val coreFileName: String) :
         Retro.EnvironmentCallback,
         Retro.VideoRefreshCallback,
         Retro.AudioSampleCallback,
@@ -87,11 +92,11 @@ class RetroDroid(private val context: Context, coreFile: File) :
     init {
         System.setProperty("jna.debug_load", "true")
         System.setProperty("jna.dump_memory", "true")
-        System.setProperty("jna.library.path", coreFile.parentFile.absolutePath)
+        System.setProperty("jna.library.path", context.cacheDir.absolutePath)
 
-        val coreLibraryName = coreFile.nameWithoutExtension.substring(3) // FIXME
+        val coreName = copyCoreToCacheDir()
 
-        retro = Retro(coreLibraryName)
+        retro = Retro(coreName)
         retro.setEnvironment(this)
         retro.setVideoRefresh(this)
         retro.setAudioSample(this)
@@ -107,7 +112,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
     fun loadGame(filePath: String) {
         if (!retro.loadGame(filePath)) {
-            throw Exception("Failed to load game: $filePath")
+            throw Exception("Failed to load game")
         }
 
         val region = retro.getRegion()
