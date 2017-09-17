@@ -19,13 +19,12 @@
 
 package com.codebutler.odyssey.core.binding;
 
-import java.nio.ByteBuffer;
-
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
+
+import java.nio.ByteBuffer;
 
 /**
  * Minimal interface to the standard "C" library.
@@ -55,98 +54,5 @@ public interface LibC extends Library {
      * @return length of the formatted string, which may exceed the capacity of the buffer, or less than zero on error
      */
     int vsnprintf(ByteBuffer str, int size, String format, Pointer args);
-
-    /**
-     * Locks (pins) parts of virtual address space into RAM so it can not be swapped out.
-     *
-     * @param addr address pointer
-     * @param length length
-     * @return 0 if successful; -1 if not, setting <code>errno</code> to an error code
-     */
-    int mlock(Pointer addr, NativeLong length);
-
-    /**
-     * Unlock previously locked memory.
-     *
-     * @param addr address pointer
-     * @param length length
-     * @return 0 if successful; -1 if not, setting <code>errno</code> to an error code
-     */
-    int munlock(Pointer addr, NativeLong length);
-
-    /**
-     * Open a stream for a file descriptor.
-     *
-     * @param filedes file descriptor
-     * @param mode open mode
-     * @return file descriptor; or <code>NULL</code>, setting <code>errno</code> to an error code
-     */
-    Pointer fdopen(int filedes, String mode);
-
-    /**
-     * Associate an existing stream to a new file.
-     *
-     * @param path new file path
-     * @param mode open mode
-     * @param stream file stream
-     * @return file descriptor; or <code>NULL</code>, setting <code>errno</code> to an error code
-     */
-    Pointer freopen(String path, String mode, Pointer stream);
-
-    /**
-     * Close a file stream.
-     *
-     * @param stream stream
-     * @return 0 if successful; -1 if not, setting <code>errno</code> to an error code
-     */
-    int fclose(Pointer stream);
-
-    /**
-     * Change or add an evironment variable.
-     * <p>
-     * The value strings are copied (natively).
-     * <p>
-     * <em>Not available on Windows.</em>
-     *
-     * @param name name of environment variable
-     * @param value value of the environment variable
-     * @param overwrite non-zero to replace any existing value
-     * @return 0 if successful; -1 if not, setting <code>errno</code> to an error code
-     */
-    int setenv(String name, String value, int overwrite);
-
-    /**
-     * Unset an environment variable.
-     * <p>
-     * <em>Not available on Windows.</em>
-     *
-     * @param name name of environment variable
-     * @return 0 if successful; -1 if not, setting <code>errno</code> to an error code
-     */
-    int unsetenv(String name);
-
-    /**
-     * Get the current process id.
-     * <p>
-     * <em>Not available on Windows.</em>
-     *
-     * @return process id
-     */
-    int getpid();
-
-    /**
-     * Closest Windows equivalent to {@link #setenv(String, String, int)}.
-     * <p>
-     * Note that after setting an environment variable, it will <em>not</em> show up via
-     * System#getenv even if it was successfully set.
-     * <p>
-     * Use with case, it is not guaranteed to be thread-safe.
-     * <p>
-     * <em>Only available on Windows.</em>
-     *
-     * @param envstring variable and value to set, in the format "variable=value", without quotes.
-     * @return zero on success, non-zero on error
-     */
-    int _putenv(String envstring);
 }
 
