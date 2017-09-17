@@ -479,10 +479,13 @@ class Retro(coreLibraryName: String) {
 
                     logPrintfCb = logCb
 
+                    // Can't use our callback with libretro directly because
+                    // JNA does not support variadic function callbacks.
                     LibOdyssey.INSTANCE.odyssey_set_log_callback(logCb)
+                    val odysseyLog = LibOdyssey.INSTANCE.odyssey_get_retro_log_printf()
 
                     val logCallback = LibRetro.retro_log_callback(data)
-                    logCallback.log = LibOdyssey.INSTANCE.odyssey_get_retro_log_printf()
+                    logCallback.log = odysseyLog
                     logCallback.write()
 
                     return true

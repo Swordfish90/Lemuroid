@@ -94,8 +94,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
             }
         }
 
-        System.setProperty("jna.debug_load", "true")
-        System.setProperty("jna.dump_memory", "true")
         System.setProperty("jna.library.path", coreFile.parentFile.absolutePath)
 
         val coreLibraryName = coreFile.nameWithoutExtension.substring(3) // FIXME
