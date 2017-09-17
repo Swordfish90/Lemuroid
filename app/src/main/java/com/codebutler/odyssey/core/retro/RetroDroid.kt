@@ -22,13 +22,14 @@ package com.codebutler.odyssey.core.retro
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
+import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.core.BufferCache
+import com.codebutler.odyssey.core.binding.LibRetro
 import com.codebutler.odyssey.core.kotlin.containsAny
-import com.codebutler.odyssey.core.retro.lib.LibRetro
-import com.codebutler.odyssey.core.retro.lib.Retro
+import com.sun.jna.Native
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.Timer
@@ -55,6 +56,8 @@ class RetroDroid(private val context: Context, coreFile: File) :
     private val pressedKeys = mutableSetOf<Int>()
     private val videoBufferCache = BufferCache()
     private val audioSampleBufferCache = BufferCache()
+    private val variables: MutableMap<String, String> = mutableMapOf()
+    private val handler = Handler()
 
     private var videoPixelFormat: Int = PixelFormat.RGBA_8888
     private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
@@ -85,6 +88,12 @@ class RetroDroid(private val context: Context, coreFile: File) :
     var audioCallback: ((buffer: ByteArray) -> Unit)? = null
 
     init {
+        Native.setCallbackExceptionHandler { c, e ->
+            handler.post {
+                throw Exception("JNA: Callback $c threw exception", e)
+            }
+        }
+
         System.setProperty("jna.debug_load", "true")
         System.setProperty("jna.dump_memory", "true")
         System.setProperty("jna.library.path", coreFile.parentFile.absolutePath)
@@ -106,9 +115,8 @@ class RetroDroid(private val context: Context, coreFile: File) :
     }
 
     fun loadGame(filePath: String) {
-        val region = retro.getRegion()
-        val systemAVInfo = retro.getSystemAVInfo()
         val systemInfo = retro.getSystemInfo()
+        Log.d(TAG, "System Info: $systemInfo")
 
         if (systemInfo.needFullpath) {
             if (!retro.loadGame(filePath)) {
@@ -123,10 +131,14 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
         Log.d(TAG, "Game loaded!")
 
-        prepareAudioCallback?.invoke(systemAVInfo.timing.sample_rate.toInt())
+        val region = retro.getRegion()
+        Log.d(TAG, "Region: $region")
+
+        val systemAVInfo = retro.getSystemAVInfo()
+        Log.d(TAG, "System AV Info: $systemAVInfo")
+        updateSystemAVInfo(systemAVInfo)
 
         this.region = region
-        this.systemAVInfo = systemAVInfo
         this.systemInfo = systemInfo
 
         val file = File(context.cacheDir.absoluteFile, "savedata")
@@ -172,9 +184,9 @@ class RetroDroid(private val context: Context, coreFile: File) :
         }
     }
 
-    override fun onSetVariables(variables: Map<String, String>) {
-        // FIXME: Implement
-        Log.d(TAG, "onSetVariables: $variables")
+    override fun onSetVariables(newVariables: Map<String, String>) {
+        Log.d(TAG, "onSetVariables: $newVariables")
+        variables.putAll(newVariables)
     }
 
     override fun onSetSupportAchievements(supportsAchievements: Boolean) {
@@ -187,20 +199,32 @@ class RetroDroid(private val context: Context, coreFile: File) :
         Log.d(TAG, "onSetPerformanceLevel: $performanceLevel")
     }
 
+    override fun onSetSystemAvInfo(info: Retro.SystemAVInfo) {
+        Log.d(TAG, "onSetSystemAvInfo: $info")
+        updateSystemAVInfo(info)
+    }
+
+    override fun onSetGeometry(geometry: Retro.GameGeometry) {
+        Log.d(TAG, "onSetGeometry: $geometry")
+        val systemAVInfo = this.systemAVInfo ?: retro.getSystemAVInfo()
+        updateSystemAVInfo(systemAVInfo.copy(geometry = geometry))
+    }
+
     override fun onGetVariable(name: String): String? {
-        // FIXME: Implement
-        Log.d(TAG, "onGetVariable: $name")
-        return null
+        Log.d(TAG, "onGetVariable: $name, value: ${variables[name]}")
+        return variables[name]
     }
 
     override fun onSetPixelFormat(retroPixelFormat: Int): Boolean {
         val pixelFormat = when (retroPixelFormat) {
             LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_0RGB1555 -> {
-                // The image is stored using a 16-bit RGB format (5-5-5). The unused most significant bit is always zero.
+                // The image is stored using a 16-bit RGB format (5-5-5).
+                // The unused most significant bit is always zero.
                 PixelFormat.RGBA_5551
             }
             LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_XRGB8888 -> {
-                PixelFormat.RGBX_8888 // FIXME Not sure if right. Should be 32-bit RGB format (0xffRRGGBB).
+                // FIXME Not sure if right. Should be 32-bit RGB format (0xffRRGGBB).
+                PixelFormat.RGBX_8888
             }
             LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_RGB565 -> {
                 // The image is stored using a 16-bit RGB format (5-6-5).
@@ -219,7 +243,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
         val pixelFormatInfo = PixelFormat()
         PixelFormat.getPixelFormatInfo(pixelFormat, pixelFormatInfo)
 
-        // FIXME: Implement
         Log.d(TAG, """onSetPixelFormat: $pixelFormat
                 bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
                 bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}""")
@@ -247,6 +270,20 @@ class RetroDroid(private val context: Context, coreFile: File) :
         return false
     }
 
+    override fun onGetSystemDirectory(): String? {
+        val dir = File(context.filesDir, "system")
+        dir.mkdirs()
+        Log.d(TAG, "onGetSystemDirectory ${dir.absolutePath}")
+        return dir.absolutePath
+    }
+
+    override fun onGetSaveDirectory(): String? {
+        val dir = File(context.filesDir, "save")
+        dir.mkdirs()
+        Log.d(TAG, "onGetSaveDirectory ${dir.absolutePath}")
+        return dir.absolutePath
+    }
+
     override fun onSetMemoryMaps() {
         // FIXME: Implement
         //Log.d(TAG, "onSetMemoryMaps")
@@ -263,6 +300,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
                     width * videoBytesPerPixel      // LENGTH
             )
         }
+        //Log.d(TAG, "onVideoRefresh: ${newBuffer.toHexString()}")
         val bitmap = Bitmap.createBitmap(width, height, videoBitmapConfig)
         bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
         videoCallback?.invoke(bitmap)
@@ -327,10 +365,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
             Retro.Device.LIGHTGUN -> TODO()
             Retro.Device.ANALOG -> TODO()
             Retro.Device.POINTER -> TODO()
-            Retro.Device.JOYPAD_MULTITAP -> TODO()
-            Retro.Device.LIGHTGUN_SUPER_SCOPE -> TODO()
-            Retro.Device.LIGHTGUN_JUSTIFIER -> TODO()
-            Retro.Device.LIGHTGUN_JUSTIFIERS -> TODO()
         }
         return false
     }
@@ -344,6 +378,11 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
     fun onMotionEvent(event: MotionEvent) {
         Log.d(TAG, "onMotionEvent: $event")
+    }
+
+    private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {
+        prepareAudioCallback?.invoke(systemAVInfo.timing.sample_rate.toInt())
+        this.systemAVInfo = systemAVInfo
     }
 }
 

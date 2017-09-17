@@ -34,7 +34,7 @@ import android.widget.ImageView
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.core.kotlin.bindView
 import com.codebutler.odyssey.core.retro.RetroDroid
-import com.codebutler.odyssey.core.retro.lib.Retro
+import com.codebutler.odyssey.core.retro.Retro
 import java.io.File
 
 class GameActivity : AppCompatActivity() {

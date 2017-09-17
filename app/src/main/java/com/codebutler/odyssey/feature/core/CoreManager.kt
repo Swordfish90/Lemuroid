@@ -46,6 +46,7 @@ class CoreManager(private val coresDir: File) {
 
         Log.d(TAG, "Downloading: ${request.url()}")
 
+        // FIXME: Clean up this mess
         client.newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 Log.d(TAG, "Got Response: ${response.code()}")

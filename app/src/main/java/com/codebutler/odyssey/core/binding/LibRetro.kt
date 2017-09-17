@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.core.retro.lib
+package com.codebutler.odyssey.core.binding
 
 import com.codebutler.odyssey.core.jna.SizeT
 import com.codebutler.odyssey.core.jna.UnsignedInt
@@ -34,16 +34,23 @@ interface LibRetro : Library {
     companion object {
         const val RETRO_ENVIRONMENT_EXPERIMENTAL = 0x10000
 
-        const val RETRO_ENVIRONMENT_SET_VARIABLES = 16
-        const val RETRO_ENVIRONMENT_GET_LOG_INTERFACE = 27
-        const val RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS = 42 or RETRO_ENVIRONMENT_EXPERIMENTAL
-        const val RETRO_ENVIRONMENT_SET_MEMORY_MAPS = 36 or RETRO_ENVIRONMENT_EXPERIMENTAL
         const val RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL = 8
-        const val RETRO_ENVIRONMENT_GET_VARIABLE = 15
-        const val RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE = 17
+        const val RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY = 9
         const val RETRO_ENVIRONMENT_SET_PIXEL_FORMAT = 10
         const val RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS = 11
+        const val RETRO_ENVIRONMENT_GET_VARIABLE = 15
+        const val RETRO_ENVIRONMENT_SET_VARIABLES = 16
+        const val RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE = 17
+        const val RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE = 23
+        const val RETRO_ENVIRONMENT_GET_LOG_INTERFACE = 27
+        const val RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY = 31
+        const val RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO = 32
         const val RETRO_ENVIRONMENT_SET_CONTROLLER_INFO = 35
+        const val RETRO_ENVIRONMENT_SET_GEOMETRY = 37
+        const val RETRO_ENVIRONMENT_SET_SERIALIZATION_QUIRKS = 44
+
+        const val RETRO_ENVIRONMENT_SET_MEMORY_MAPS = 36 or RETRO_ENVIRONMENT_EXPERIMENTAL
+        const val RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS = 42 or RETRO_ENVIRONMENT_EXPERIMENTAL
     }
 
     object retro_pixel_format {
@@ -152,6 +159,10 @@ interface LibRetro : Library {
         @JvmField
         var aspect_ratio: Float? = null
 
+        init {
+            read()
+        }
+
         override fun getFieldOrder() = listOf(
                 "base_width",
                 "base_height",
@@ -176,6 +187,10 @@ interface LibRetro : Library {
 
         @JvmField
         var timing: retro_system_timing? = null
+
+        init {
+            read()
+        }
 
         override fun getFieldOrder() = listOf("geometry", "timing")
     }
@@ -267,7 +282,7 @@ interface LibRetro : Library {
 
     interface retro_log_printf_t : Callback {
         //num retro_log_level level, const char *fmt, ...
-        fun invoke(log_level: Int, fmt: Pointer)
+        fun invoke(log_level: Int, fmt: String, arg: Pointer)
     }
 
     interface retro_video_refresh_t : Callback {
