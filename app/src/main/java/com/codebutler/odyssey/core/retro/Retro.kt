@@ -21,6 +21,7 @@ package com.codebutler.odyssey.core.retro
 
 import android.graphics.PixelFormat
 import android.os.Build
+import android.util.Log
 import com.codebutler.odyssey.core.BufferCache
 import com.codebutler.odyssey.core.binding.LibC
 import com.codebutler.odyssey.core.binding.LibOdyssey
@@ -202,16 +203,17 @@ class Retro(coreLibraryName: String) {
             fun fromValue(value: Int) = valueCache[value]!!
         }
 
-        fun getPixelFormatInfo(): android.graphics.PixelFormat {
-            val format = when(this) {
-                Retro.PixelFormat.XRGB8888 -> android.graphics.PixelFormat.RGBA_8888
-                Retro.PixelFormat.RGB565 -> android.graphics.PixelFormat.RGB_565
-                else -> TODO()
+        val info: android.graphics.PixelFormat
+            get() {
+                val format = when (this) {
+                    Retro.PixelFormat.XRGB8888 -> android.graphics.PixelFormat.RGBA_8888
+                    Retro.PixelFormat.RGB565 -> android.graphics.PixelFormat.RGB_565
+                    else -> TODO()
+                }
+                val pixelFormatInfo = PixelFormat()
+                android.graphics.PixelFormat.getPixelFormatInfo(format, pixelFormatInfo)
+                return pixelFormatInfo
             }
-            val pixelFormatInfo = PixelFormat()
-            android.graphics.PixelFormat.getPixelFormatInfo(format, pixelFormatInfo)
-            return pixelFormatInfo
-        }
     }
 
     interface EnvironmentCallback {
@@ -243,6 +245,8 @@ class Retro(coreLibraryName: String) {
         fun onSetGeometry(geometry: GameGeometry)
 
         fun onGetSaveDirectory(): String?
+
+        fun onUnsupportedCommand(cmd: Int)
     }
 
     interface LogInterface {
@@ -565,7 +569,8 @@ class Retro(coreLibraryName: String) {
                     return true
                 }
                 else -> {
-                    throw IllegalArgumentException("Unsupported env command: $cmd")
+                    callback.onUnsupportedCommand(cmd.toInt())
+                    return false
                 }
             }
         }

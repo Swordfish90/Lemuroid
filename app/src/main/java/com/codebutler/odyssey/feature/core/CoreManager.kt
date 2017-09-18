@@ -1,79 +1,138 @@
+/*
+ * CoreManager.kt
+ *
+ * Copyright (C) 2017 Odyssey Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.codebutler.odyssey.feature.core
 
 import android.net.Uri
 import android.os.Build
-import android.util.Log
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import com.codebutler.odyssey.core.http.OdysseyHttp
+import com.codebutler.odyssey.core.http.OdysseyHttp.Response
+import com.codebutler.odyssey.feature.core.model.CoreFileInfo
+import com.codebutler.odyssey.feature.core.model.CoreInfo
+import com.codebutler.odyssey.feature.core.model.CoreMetadata
 import okio.Okio
 import java.io.File
-import java.io.IOException
-import java.util.zip.ZipInputStream
+import java.io.InputStreamReader
 
-class CoreManager(private val coresDir: File) {
+class CoreManager(private val http: OdysseyHttp, private val coresDir: File) {
 
-    companion object {
-        private const val TAG = "CoreManager"
-    }
-
-    private val baseUri = Uri.parse("https://buildbot.libretro.com/nightly/android/latest/")
-
-    private val client = OkHttpClient()
+    private val baseUri = Uri.parse("https://buildbot.libretro.com/")
+    private val infoZipUri = baseUri.buildUpon().appendEncodedPath("assets/frontend/info.zip").build()
+    private val coresUri = baseUri.buildUpon()
+            .appendEncodedPath("nightly/android/latest/")
+            .appendPath(Build.SUPPORTED_ABIS.first())
+            .build()
+    private val coresIndexUri = coresUri.buildUpon().appendEncodedPath(".index-extended").build()
 
     init {
         coresDir.mkdirs()
     }
 
-    fun downloadCore(name: String, callback: ((coreFile: File?) -> Unit)) {
-        val destFile = File(coresDir, "lib$name.so") // FIXME
+    fun downloadAllCoreInfo(callback: (response: Response<List<CoreInfo>>) -> Unit) {
+        // FIXME: Cache result to disk
+        downloadCoreIndex { indexResponse ->
+            when (indexResponse) {
+                is Response.Success -> downloadCoreMetadata { metadataResponse ->
+                    when (metadataResponse) {
+                        is Response.Success -> {
+                            val index = indexResponse.body
+                            val metadata = metadataResponse.body
+                            val coreInfoList = index
+                                    .filter { coreFileInfo -> metadata.containsKey(coreFileInfo.coreName) }
+                                    .map { coreFileInfo -> CoreInfo(coreFileInfo, metadata[coreFileInfo.coreName]!!) }
+                            callback(Response.Success(coreInfoList))
+                        }
+                        is Response.Failure -> callback(Response.Failure(metadataResponse.error))
+                    }
+                }
+                is Response.Failure -> callback(Response.Failure(indexResponse.error))
+            }
+        }
+    }
 
-        Log.d(TAG, "downloadCore: $name, exists: ${destFile.exists()}")
+    fun downloadCore(zipFileName: String, callback: (response: Response<File>) -> Unit) {
+        val libFileName = zipFileName.substringBeforeLast(".zip")
+        val destFile = File(coresDir, "lib$libFileName")
 
-        if (destFile.exists()) {
-            callback(destFile)
+         if (destFile.exists()) {
+            callback(Response.Success(destFile))
             return
         }
 
-        val request = Request.Builder()
-                .url(baseUri.buildUpon()
-                        .appendPath(Build.SUPPORTED_ABIS.first())
-                        .appendPath("$name.so.zip") // FIXME
-                        .build().toString())
+        val uri = coresUri.buildUpon()
+                .appendPath(zipFileName)
                 .build()
 
-        Log.d(TAG, "Downloading: ${request.url()}")
-
-        // FIXME: Clean up this mess
-        client.newCall(request).enqueue(object : Callback {
-            override fun onResponse(call: Call, response: Response) {
-                Log.d(TAG, "Got Response: ${response.code()}")
-                val source = response.body()!!.source()
-                Okio.buffer(source).use { buffer ->
-                    ZipInputStream(buffer.inputStream()).use { zipStream ->
-                        while (true) {
-                            val entry = zipStream.nextEntry ?: break
-                            Log.d(TAG, "Found zip entry: ${entry.name}")
-                            if (entry.name.startsWith(name)) {
-                                Okio.source(zipStream).use { zipSource ->
-                                    Okio.sink(destFile).use { fileSink ->
-                                        Okio.buffer(zipSource).readAll(fileSink)
-                                        callback(destFile)
-                                        return
-                                    }
+        http.downloadZip(uri, { response ->
+            when (response) {
+                is Response.Success -> {
+                    val zipStream = response.body
+                    while (true) {
+                        val entry = zipStream.nextEntry ?: break
+                        if (entry.name == libFileName) {
+                            Okio.source(zipStream).use { zipSource ->
+                                Okio.sink(destFile).use { fileSink ->
+                                    Okio.buffer(zipSource).readAll(fileSink)
+                                    callback(Response.Success(destFile))
+                                    return@downloadZip
                                 }
                             }
                         }
                     }
+                    callback(Response.Failure(Exception("Library not found in zip")))
                 }
-                callback(null)
+                is Response.Failure -> callback(Response.Failure(response.error))
             }
+        })
+    }
 
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d(TAG, "Failed to download: $name", e)
-                callback(null)
+    private fun downloadCoreIndex(callback: (response: Response<List<CoreFileInfo>>) -> Unit) {
+        http.download(coresIndexUri, { response ->
+            when (response) {
+                is Response.Success -> {
+                    val stream = response.body
+                    val coreFileInfos = InputStreamReader(stream).readText().lines()
+                            .filter { line -> line.isNotEmpty() }
+                            .map { line -> CoreFileInfo.parseText(line) }
+                    callback(Response.Success(coreFileInfos))
+                }
+                is Response.Failure -> callback(Response.Failure(response.error))
+            }
+        })
+    }
+
+    private fun downloadCoreMetadata(callback: (response: Response<Map<String, CoreMetadata>>) -> Unit) {
+        http.downloadZip(infoZipUri, { response ->
+            when (response) {
+                is Response.Success -> {
+                    val zipStream = response.body
+                    val metadataMap = mutableMapOf<String, CoreMetadata>()
+                    while (true) {
+                        val entry = zipStream.nextEntry ?: break
+                        val name = entry.name.substringBefore(".")
+                        val text = zipStream.bufferedReader().readText()
+                        val info = CoreMetadata.parseInfoFile(text)
+                        metadataMap[name] = info
+                    }
+                    callback(Response.Success(metadataMap.toMap()))
+                }
+                is Response.Failure -> callback(Response.Failure(response.error))
             }
         })
     }

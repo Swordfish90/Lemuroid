@@ -26,6 +26,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.core.BufferCache
+import com.codebutler.odyssey.core.jna.UnsignedInt
 import com.codebutler.odyssey.core.kotlin.containsAny
 import com.sun.jna.Native
 import java.io.File
@@ -217,7 +218,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
             else -> TODO()
         }
 
-        val pixelFormatInfo = pixelFormat.getPixelFormatInfo()
+        val pixelFormatInfo = pixelFormat.info
 
         Log.d(TAG, """onSetPixelFormat: $pixelFormat
                 bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
@@ -342,6 +343,10 @@ class RetroDroid(private val context: Context, coreFile: File) :
             Retro.Device.POINTER -> TODO()
         }
         return false
+    }
+
+    override fun onUnsupportedCommand(cmd: Int) {
+        Log.e(TAG, "Unsupported env command: $cmd")
     }
 
     fun onKeyEvent(event: KeyEvent) {

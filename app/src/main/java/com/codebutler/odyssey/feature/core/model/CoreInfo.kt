@@ -1,5 +1,5 @@
 /*
- * LibOdyssey.kt
+ * CoreInfo.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,18 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.core.binding
+package com.codebutler.odyssey.feature.core.model
 
-import com.sun.jna.Library
-import com.sun.jna.Native
-
-interface LibOdyssey: Library {
-
-    companion object {
-        val INSTANCE = Native.loadLibrary("odyssey", LibOdyssey::class.java)
-    }
-
-    fun odyssey_set_log_callback(cb: LibRetro.retro_log_printf_t)
-
-    fun odyssey_get_retro_log_printf(): LibRetro.retro_log_printf_t
-}
+data class CoreInfo(val fileInfo: CoreFileInfo, val metadata: CoreMetadata)

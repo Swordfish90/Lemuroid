@@ -26,18 +26,24 @@ import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
 import com.codebutler.odyssey.R
+import com.codebutler.odyssey.core.http.OdysseyHttp
 import com.codebutler.odyssey.core.kotlin.bindView
 import com.codebutler.odyssey.core.kotlin.inflate
 import com.codebutler.odyssey.feature.core.CoreManager
+import com.codebutler.odyssey.feature.core.model.CoreInfo
 import com.codebutler.odyssey.feature.game.GameActivity
+import okhttp3.OkHttpClient
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -76,38 +82,75 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadGames() {
-        val coreManager = CoreManager(File(cacheDir, "cores"))
+        val coreManager = CoreManager(OdysseyHttp(OkHttpClient()), File(cacheDir, "cores"))
 
-        // FIXME: Automatically pick correct core
-        //val coreName = "snes9x_libretro_android"
-        //val coreName = "snes9x2005_libretro_android"
-        //val coreName = "snes9x2010_libretro_android"
-        //val coreName = "bsnes_accuracy_libretro_android"
-        val coreName = "genesis_plus_gx_libretro_android"
-        //val coreName = "picodrive_libretro_android"
-        //val coreName = "mgba_libretro_android"
+        val files = Environment.getExternalStorageDirectory()
+                .listFiles()
+                .filter { it.isFile }.toList()
 
-        // FIXME: Clean up this mess
-        val sdcardDir = Environment.getExternalStorageDirectory()
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recycler.adapter = RomFilesAdapter(sdcardDir.listFiles().filter { it.isFile }.toList(), { romFile ->
-            val progressDialog = ProgressDialog(this)
-            progressDialog.setMessage("Loading...")
-            progressDialog.show()
 
-            coreManager.downloadCore(coreName, { coreFile ->
-                recycler.post {
-                    progressDialog.cancel()
-                    if (coreFile == null) {
-                        Toast.makeText(this@MainActivity, "Failed to download core", Toast.LENGTH_SHORT).show()
-                        return@post
+        // FIXME: This disaster is temporary
+        recycler.adapter = RomFilesAdapter(files, { romFile ->
+            recycler.post {
+                val progressDialog = ProgressDialog(this)
+                progressDialog.setMessage(getString(R.string.loading))
+                progressDialog.show()
+
+                coreManager.downloadAllCoreInfo { response ->
+                    recycler.post {
+                        if (!progressDialog.isShowing) {
+                            return@post
+                        }
+                        progressDialog.cancel()
+
+                        when (response) {
+                            is OdysseyHttp.Response.Success -> {
+                                val coreInfos = response.body
+
+                                val cores = coreInfos.filter { info ->
+                                    info.metadata.supportedExtensions?.contains(romFile.extension) ?: false
+                                }
+
+                                Log.d(TAG, "Got matching cores: $cores")
+
+                                AlertDialog.Builder(this@MainActivity)
+                                        .setAdapter(CoreAdapter(cores)) { dialog, which ->
+                                            val core = cores[which]
+                                            val progressDialog = ProgressDialog(this)
+                                            progressDialog.setMessage(getString(R.string.loading_x, core.fileInfo.coreName))
+                                            progressDialog.show()
+                                            coreManager.downloadCore(core.fileInfo.fileName, { response ->
+                                                recycler.post {
+                                                    if (!progressDialog.isShowing) {
+                                                        return@post
+                                                    }
+                                                    progressDialog.cancel()
+                                                    when (response) {
+                                                        is OdysseyHttp.Response.Success -> {
+                                                            val coreFile = response.body
+                                                            startActivity(GameActivity.newIntent(
+                                                                    context = this,
+                                                                    coreFilePath = coreFile.absolutePath,
+                                                                    gameFilePath = romFile.absolutePath))
+                                                        }
+                                                        is OdysseyHttp.Response.Failure -> {
+                                                            Toast.makeText(
+                                                                    this@MainActivity,
+                                                                    "Failed to download core: ${response.error}",
+                                                                    Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                }
+                                            })
+                                        }
+                                        .show()
+                            }
+                            is OdysseyHttp.Response.Failure -> Log.e(TAG, "Failed to get cores: ${response.error}")
+                        }
                     }
-                    startActivity(GameActivity.newIntent(
-                            context = this,
-                            coreFilePath = coreFile.absolutePath,
-                            gameFilePath = romFile.absolutePath))
                 }
-            })
+            }
         })
     }
 
@@ -141,4 +184,19 @@ class MainActivity : AppCompatActivity() {
             textView.text = file.name
         }
     }
+}
+
+class CoreAdapter(private val cores: List<CoreInfo>) : BaseAdapter() {
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val view = convertView ?: parent.inflate(android.R.layout.simple_list_item_1, false)
+        view.findViewById<TextView>(android.R.id.text1).text = cores[position].metadata.displayName
+        return view
+    }
+
+    override fun getItem(position: Int): Any = cores[position]
+
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun getCount(): Int = cores.size
 }
