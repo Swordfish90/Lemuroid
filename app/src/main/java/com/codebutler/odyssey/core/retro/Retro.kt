@@ -19,6 +19,7 @@
 
 package com.codebutler.odyssey.core.retro
 
+import android.graphics.PixelFormat
 import android.os.Build
 import com.codebutler.odyssey.core.BufferCache
 import com.codebutler.odyssey.core.binding.LibC
@@ -36,7 +37,6 @@ import com.sun.jna.Pointer
 import com.sun.jna.Structure
 import com.sun.jna.ptr.PointerByReference
 import java.nio.ByteBuffer
-
 
 /**
  * Java idomatic wrapper around [LibRetro].
@@ -65,13 +65,6 @@ class Retro(coreLibraryName: String) {
 
     private val videoBufferCache = BufferCache()
     private val audioBufferCache: BufferCache = BufferCache()
-
-    enum class LogLevel {
-        DEBUG,
-        INFO,
-        WARN,
-        ERROR
-    }
 
     data class ControllerDescription(
             val desc: String,
@@ -129,6 +122,14 @@ class Retro(coreLibraryName: String) {
             val index: Int,
             val id: DeviceId,
             val description: String)
+
+
+    enum class LogLevel {
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR
+    }
 
     enum class Device(val value: Int) {
         NONE(0),
@@ -191,6 +192,28 @@ class Retro(coreLibraryName: String) {
         }
     }
 
+    enum class PixelFormat(val value: Int) {
+        `0RGB1555`(0),
+        XRGB8888(1),
+        RGB565(2);
+
+        companion object {
+            private val valueCache = mapOf(*PixelFormat.values().map { it.value to it }.toTypedArray())
+            fun fromValue(value: Int) = valueCache[value]!!
+        }
+
+        fun getPixelFormatInfo(): android.graphics.PixelFormat {
+            val format = when(this) {
+                Retro.PixelFormat.XRGB8888 -> android.graphics.PixelFormat.RGBA_8888
+                Retro.PixelFormat.RGB565 -> android.graphics.PixelFormat.RGB_565
+                else -> TODO()
+            }
+            val pixelFormatInfo = PixelFormat()
+            android.graphics.PixelFormat.getPixelFormatInfo(format, pixelFormatInfo)
+            return pixelFormatInfo
+        }
+    }
+
     interface EnvironmentCallback {
 
         fun onSetVariables(variables: Map<String, String>)
@@ -201,7 +224,7 @@ class Retro(coreLibraryName: String) {
 
         fun onGetVariable(name: String): String?
 
-        fun onSetPixelFormat(retroPixelFormat: Int): Boolean
+        fun onSetPixelFormat(pixelFormat: PixelFormat): Boolean
 
         fun onSetInputDescriptors(descriptors: List<InputDescriptor>)
 
@@ -404,7 +427,7 @@ class Retro(coreLibraryName: String) {
                 }
                 LibRetro.RETRO_ENVIRONMENT_SET_PIXEL_FORMAT -> {
                     val pixelFormat = data.getInt(0)
-                    return callback.onSetPixelFormat(pixelFormat)
+                    return callback.onSetPixelFormat(PixelFormat.fromValue(pixelFormat))
                 }
                 LibRetro.RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS -> {
                     val descriptors = mutableListOf<InputDescriptor>()

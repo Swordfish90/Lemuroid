@@ -21,13 +21,11 @@ package com.codebutler.odyssey.core.retro
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.PixelFormat
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.core.BufferCache
-import com.codebutler.odyssey.core.binding.LibRetro
 import com.codebutler.odyssey.core.kotlin.containsAny
 import com.sun.jna.Native
 import java.io.File
@@ -59,7 +57,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
     private val variables: MutableMap<String, String> = mutableMapOf()
     private val handler = Handler()
 
-    private var videoPixelFormat: Int = PixelFormat.RGBA_8888
     private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
     private var videoBytesPerPixel: Int = 0
     private var timerTask: TimerTask? = null
@@ -213,39 +210,19 @@ class RetroDroid(private val context: Context, coreFile: File) :
         return variables[name]
     }
 
-    override fun onSetPixelFormat(retroPixelFormat: Int): Boolean {
-        val pixelFormat = when (retroPixelFormat) {
-            LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_0RGB1555 -> {
-                // The image is stored using a 16-bit RGB format (5-5-5).
-                // The unused most significant bit is always zero.
-                PixelFormat.RGBA_5551
-            }
-            LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_XRGB8888 -> {
-                // FIXME Not sure if right. Should be 32-bit RGB format (0xffRRGGBB).
-                PixelFormat.RGBX_8888
-            }
-            LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_RGB565 -> {
-                // The image is stored using a 16-bit RGB format (5-6-5).
-                PixelFormat.RGB_565
-            }
-            else -> throw IllegalArgumentException("Unsupported retro pixel format: $retroPixelFormat")
-        }
-
-        // FIXME: This will likely need to be replaced with a conversion function
+    override fun onSetPixelFormat(pixelFormat: Retro.PixelFormat): Boolean {
         val bitmapConfig = when (pixelFormat) {
-            PixelFormat.RGB_565 -> Bitmap.Config.RGB_565
-            PixelFormat.RGBX_8888 -> Bitmap.Config.ARGB_8888
-            else -> throw IllegalArgumentException("Unsupported pixel format: $pixelFormat")
+            Retro.PixelFormat.XRGB8888 -> Bitmap.Config.ARGB_8888
+            Retro.PixelFormat.RGB565 -> Bitmap.Config.RGB_565
+            else -> TODO()
         }
 
-        val pixelFormatInfo = PixelFormat()
-        PixelFormat.getPixelFormatInfo(pixelFormat, pixelFormatInfo)
+        val pixelFormatInfo = pixelFormat.getPixelFormatInfo()
 
         Log.d(TAG, """onSetPixelFormat: $pixelFormat
                 bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
                 bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}""")
 
-        videoPixelFormat = pixelFormat
         videoBitmapConfig = bitmapConfig
         videoBytesPerPixel = pixelFormatInfo.bytesPerPixel
 

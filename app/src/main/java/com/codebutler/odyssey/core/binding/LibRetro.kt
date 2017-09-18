@@ -281,7 +281,6 @@ interface LibRetro : Library {
     }
 
     interface retro_log_printf_t : Callback {
-        //num retro_log_level level, const char *fmt, ...
         fun invoke(log_level: Int, fmt: String, arg: Pointer)
     }
 

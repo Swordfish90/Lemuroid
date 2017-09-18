@@ -77,8 +77,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadGames() {
         val coreManager = CoreManager(File(cacheDir, "cores"))
-        val coreName = "snes9x_libretro_android"
 
+        // FIXME: Automatically pick correct core
+        //val coreName = "snes9x_libretro_android"
+        //val coreName = "snes9x2005_libretro_android"
+        //val coreName = "snes9x2010_libretro_android"
+        //val coreName = "bsnes_accuracy_libretro_android"
+        val coreName = "genesis_plus_gx_libretro_android"
+        //val coreName = "picodrive_libretro_android"
+        //val coreName = "mgba_libretro_android"
+
+        // FIXME: Clean up this mess
         val sdcardDir = Environment.getExternalStorageDirectory()
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recycler.adapter = RomFilesAdapter(sdcardDir.listFiles().filter { it.isFile }.toList(), { romFile ->
