@@ -1,0 +1,14 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+dependencies {
+    implementation libs.jna
+    implementation libs.kotlinStdlib
+    implementation libs.okHttp3
+    implementation libs.roomRuntime
+    implementation libs.rxJava2
+    implementation libs.supportAppCompatV7
+    implementation libs.supportRecyclerViewV7
+}
+
+android { }

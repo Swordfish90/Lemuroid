@@ -1,0 +1,26 @@
+ext {
+    vers = [
+        compileSdkVersion: 26,
+        targetSdkVersion: 26,
+        minSdkVersion: 23,
+        buildToolsVersion: '26.0.1'
+    ]
+
+    def supportVersion  = '26.1.0'
+    def archVersion = '1.0.0-alpha9-1'
+
+    libs = [
+        jna:                   'net.java.dev.jna:jna:4.4.0',
+        okHttp3:               'com.squareup.okhttp3:okhttp:3.9.0',
+        roomRuntime:           "android.arch.persistence.room:runtime:${archVersion}",
+        roomRxJava2:           "android.arch.persistence.room:rxjava2:${archVersion}",
+        roomCompiler:          "android.arch.persistence.room:compiler:${archVersion}",
+        kotlinStdlib:          "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
+        picasso:               'com.squareup.picasso:picasso:2.5.2',
+        rxAndroid2:            'io.reactivex.rxjava2:rxandroid:2.0.1',
+        rxJava2:               'io.reactivex.rxjava2:rxjava:2.1.1',
+        rxRelay2:              'com.jakewharton.rxrelay2:rxrelay:2.0.0',
+        supportAppCompatV7:    "com.android.support:appcompat-v7:${supportVersion}",
+        supportRecyclerViewV7: "com.android.support:recyclerview-v7:${supportVersion}"
+    ]
+}

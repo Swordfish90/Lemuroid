@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation project(':odyssey-common')
+
+    implementation libs.jna
+    implementation libs.kotlinStdlib
+    implementation libs.okHttp3
+    implementation libs.roomRuntime
+    implementation libs.roomRxJava2
+    implementation libs.rxJava2
+    implementation libs.rxRelay2
+
+    kapt libs.roomCompiler
+}
+
+android {
+    defaultConfig {
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}

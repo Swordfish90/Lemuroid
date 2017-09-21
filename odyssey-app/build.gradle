@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    defaultConfig {
+        applicationId "com.codebutler.odyssey"
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation project(":odyssey-common")
+    implementation project(":odyssey-lib")
+
+    implementation libs.kotlinStdlib
+    implementation libs.supportAppCompatV7
+    implementation libs.supportRecyclerViewV7
+    implementation libs.okHttp3
+    implementation libs.roomRuntime
+    implementation libs.rxAndroid2
+    implementation libs.rxJava2
+    implementation libs.picasso
+
+    testImplementation 'junit:junit:4.12'
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
