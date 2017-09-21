@@ -21,6 +21,8 @@ package com.codebutler.odyssey.feature.game
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
@@ -116,7 +118,11 @@ class GameActivity : AppCompatActivity() {
 
         retroDroid.videoCallback = { bitmap ->
             handler.post {
-                imageView.setImageBitmap(bitmap)
+                val drawable = BitmapDrawable(resources, bitmap)
+                drawable.paint.isAntiAlias = false
+                drawable.paint.isDither = false
+                drawable.paint.isFilterBitmap = false
+                imageView.setImageDrawable(drawable)
             }
         }
 
