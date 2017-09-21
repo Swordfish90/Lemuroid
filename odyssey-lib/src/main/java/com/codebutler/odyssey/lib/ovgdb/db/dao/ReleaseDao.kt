@@ -1,5 +1,5 @@
 /*
- * GameDao.kt
+ * ReleaseDao.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,23 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.db.dao
+package com.codebutler.odyssey.lib.ovgdb.db.dao
 
 import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
-import com.codebutler.odyssey.common.db.entity.Game
-import io.reactivex.Flowable
+import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
+import io.reactivex.Maybe
 
 @Dao
-interface GameDao {
+interface ReleaseDao {
 
-    @Query("SELECT * FROM games ORDER BY title")
-    fun getAll(): Flowable<List<Game>>
+    @Query("SELECT * FROM releases WHERE releaseID = :releaseId")
+    fun getReleaseById(releaseId: Int): Maybe<Release>
 
-    @Insert
-    fun insert(game: Game)
-
-    @Query("DELETE FROM games")
-    fun deleteAll()
+    @Query("SELECT * FROM releases WHERE romID = :romId")
+    fun findByRomId(romId: Int): Maybe<Release>
 }

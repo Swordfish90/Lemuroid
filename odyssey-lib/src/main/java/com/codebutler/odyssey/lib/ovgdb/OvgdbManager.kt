@@ -21,6 +21,7 @@ package com.codebutler.odyssey.lib.ovgdb
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.codebutler.odyssey.lib.ovgdb.db.OvgdbDatabase
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
 import java.io.FileOutputStream
@@ -58,6 +59,7 @@ class OvgdbManager(context: Context, executorService: ExecutorService) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val dbFile = context.getDatabasePath(DB_NAME)
         val dbVersion = prefs.getInt(PREFS_KEY_VERSION, 0)
+        // FIXME
         //if (!dbFile.exists() || dbVersion != DB_VERSION) {
             context.assets.open(ASSET_NAME_DB).use { input ->
                 FileOutputStream(dbFile).use { output ->

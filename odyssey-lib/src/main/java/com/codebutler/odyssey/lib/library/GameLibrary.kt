@@ -19,16 +19,19 @@
 
 package com.codebutler.odyssey.lib.library
 
+import android.arch.persistence.room.EmptyResultSetException
 import android.util.Log
 import com.codebutler.odyssey.common.Optional
-import com.codebutler.odyssey.lib.db.OdysseyDatabase
-import com.codebutler.odyssey.common.db.entity.Game
-import com.codebutler.odyssey.lib.library.sdcard.LocalGameLibraryProvider
+import com.codebutler.odyssey.common.filterAndGetOptional
+import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
+import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
-import com.codebutler.odyssey.lib.ovgdb.entity.Release
-import com.codebutler.odyssey.lib.ovgdb.entity.Rom
+import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
+import com.codebutler.odyssey.lib.ovgdb.db.entity.Rom
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
 class GameLibrary(
@@ -66,7 +69,7 @@ class GameLibrary(
                                         .map { rom -> Pair(file, rom) }
                             }
                             .flatMapMaybe { (file, rom) ->
-                                val releaseOptionalMaybe = if (rom.isPresent) {
+                                val releaseMaybe = if (rom.isPresent) {
                                     ovgdb.releaseDao().findByRomId(rom.get.id)
                                             .map { release -> Optional(release) }
                                             .switchIfEmpty(Maybe.just<Optional<Release>>(Optional())
@@ -75,13 +78,43 @@ class GameLibrary(
                                 } else {
                                     Maybe.just<Optional<Release>>(Optional())
                                 }
-                                releaseOptionalMaybe
-                                        .map { release -> Game(
-                                                fileName = file.name,
-                                                fileUri = file.uri,
-                                                title = release.getOrNull?.titleName ?: file.name,
-                                                coverFrontUrl = release.getOrNull?.coverFront)
+                                releaseMaybe
+                                        .map { release -> Triple(file, rom, release) }
+                            }
+                            .flatMapMaybe { (file, rom, release) ->
+                                val systemSingle = if (rom.isPresent) {
+                                    ovgdb.systemDao().findById(rom.get.systemId)
+                                } else {
+                                    Single.error(EmptyResultSetException(""))
+                                }
+                                systemSingle
+                                        .map { ovgdbSystem ->
+                                            val system = GameSystem.findByOeid(ovgdbSystem.oeid)
+                                                    ?: throw EmptyResultSetException("")
+                                            Log.d(TAG, "Found system!! $system")
+                                            Optional(system)
                                         }
+                                        .onErrorResumeNext { ex ->
+                                            if (ex is EmptyResultSetException) {
+                                                Log.d(TAG, "System not found, trying file extension: ${file.name}")
+                                                val system = GameSystem.findByFileExtension(file.extension)
+                                                if (system == null) {
+                                                    Log.d(TAG, "Giving up on ${file.name}")
+                                                }
+                                                Single.just(Optional(system))
+                                            } else {
+                                                throw ex
+                                            }
+                                        }
+                                        .filterAndGetOptional()
+                                        .map { system -> Triple(file, release, system) }
+                            }
+                            .map { (file, release, system) -> Game(
+                                    fileName = file.name,
+                                    fileUri = file.uri,
+                                    title = release.getOrNull?.titleName ?: file.name,
+                                    systemId = system.id,
+                                    coverFrontUrl = release.getOrNull?.coverFront)
                             }
                             .subscribe(
                                     { game ->

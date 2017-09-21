@@ -25,25 +25,23 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.codebutler.odyssey.app.OdysseyApplication
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.common.db.entity.Game
+import com.codebutler.odyssey.app.OdysseyApplication
+import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.common.http.OdysseyHttp
 import com.codebutler.odyssey.common.kotlin.bindView
 import com.codebutler.odyssey.common.kotlin.inflate
-import com.codebutler.odyssey.lib.core.model.CoreInfo
-import com.codebutler.odyssey.app.feature.game.GameActivity
+import com.codebutler.odyssey.lib.library.GameSystem
+import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -53,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
         private const val REQUEST_CODE_PERMISSION = 10001
     }
+
+    private val coreManager by lazy { OdysseyApplication.get(this).coreManager }
 
     private val recycler: RecyclerView by bindView(R.id.recycler)
 
@@ -94,67 +94,37 @@ class MainActivity : AppCompatActivity() {
                 }
     }
 
-    // FIXME: This method needs to be rewritten
     private fun onGameClick(game: Game) {
+        Log.d(TAG, "onGameClick: $game")
+
+        val gameSystem = GameSystem.findById(game.systemId) ?: return
+
         val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage(getString(R.string.loading))
+        progressDialog.setMessage(getString(R.string.loading_x, gameSystem.coreFileName))
         progressDialog.show()
-
-        val coreManager = OdysseyApplication.get(this).coreManager
-
-        coreManager.downloadAllCoreInfo { response ->
+        coreManager.downloadCore(gameSystem.coreFileName, { response ->
             recycler.post {
                 if (!progressDialog.isShowing) {
                     return@post
                 }
                 progressDialog.cancel()
-
                 when (response) {
                     is OdysseyHttp.Response.Success -> {
-                        val coreInfos = response.body
-
-                        val cores = coreInfos.filter { info ->
-                            info.metadata.supportedExtensions?.contains(game.fileExtension) ?: false
-                        }
-
-                        Log.d(TAG, "Got matching cores: $cores")
-
-                        AlertDialog.Builder(this@MainActivity)
-                                .setAdapter(CoreAdapter(cores)) { dialog, which ->
-                                    val core = cores[which]
-                                    val progressDialog = ProgressDialog(this)
-                                    progressDialog.setMessage(getString(R.string.loading_x, core.fileInfo.coreName))
-                                    progressDialog.show()
-                                    coreManager.downloadCore(core.fileInfo.fileName, { response ->
-                                        recycler.post {
-                                            if (!progressDialog.isShowing) {
-                                                return@post
-                                            }
-                                            progressDialog.cancel()
-                                            when (response) {
-                                                is OdysseyHttp.Response.Success -> {
-                                                    val coreFile = response.body
-                                                    startActivity(GameActivity.newIntent(
-                                                            context = this,
-                                                            coreFilePath = coreFile.absolutePath,
-                                                            gameFilePath = game.fileUri.path))
-                                                }
-                                                is OdysseyHttp.Response.Failure -> {
-                                                    Toast.makeText(
-                                                            this@MainActivity,
-                                                            "Failed to download core: ${response.error}",
-                                                            Toast.LENGTH_SHORT).show()
-                                                }
-                                            }
-                                        }
-                                    })
-                                }
-                                .show()
+                        val coreFile = response.body
+                        startActivity(GameActivity.newIntent(
+                                context = this,
+                                coreFilePath = coreFile.absolutePath,
+                                gameFilePath = game.fileUri.path))
                     }
-                    is OdysseyHttp.Response.Failure -> Log.e(TAG, "Failed to get cores: ${response.error}")
+                    is OdysseyHttp.Response.Failure -> {
+                        Toast.makeText(
+                                this@MainActivity,
+                                "Failed to download core: ${response.error}",
+                                Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
+        })
     }
 
     private class GamesAdapter(private val games: List<Game>, private val clickListener: (game: Game) -> Unit)
@@ -195,20 +165,5 @@ class MainActivity : AppCompatActivity() {
                 imageView.setImageDrawable(null)
             }
         }
-    }
-
-    class CoreAdapter(private val cores: List<CoreInfo>) : BaseAdapter() {
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val view = convertView ?: parent.inflate(android.R.layout.simple_list_item_1, false)
-            view.findViewById<TextView>(android.R.id.text1).text = cores[position].metadata.displayName
-            return view
-        }
-
-        override fun getItem(position: Int): Any = cores[position]
-
-        override fun getItemId(position: Int): Long = position.toLong()
-
-        override fun getCount(): Int = cores.size
     }
 }

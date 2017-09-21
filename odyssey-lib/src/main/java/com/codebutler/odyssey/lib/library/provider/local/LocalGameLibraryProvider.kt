@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.library.sdcard
+package com.codebutler.odyssey.lib.library.provider.local
 
 import android.os.Environment
 import com.codebutler.odyssey.common.kotlin.calculateCrc32

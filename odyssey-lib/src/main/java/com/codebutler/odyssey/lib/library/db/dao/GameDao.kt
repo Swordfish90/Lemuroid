@@ -1,5 +1,5 @@
 /*
- * SystemDao.kt
+ * GameDao.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,9 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.ovgdb.dao
+package com.codebutler.odyssey.lib.library.db.dao
 
 import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.Query
+import com.codebutler.odyssey.lib.library.db.entity.Game
+import io.reactivex.Flowable
 
 @Dao
-interface SystemDao
+interface GameDao {
+
+    @Query("SELECT * FROM games ORDER BY title")
+    fun getAll(): Flowable<List<Game>>
+
+    @Insert
+    fun insert(game: Game)
+
+    @Query("DELETE FROM games")
+    fun deleteAll()
+}

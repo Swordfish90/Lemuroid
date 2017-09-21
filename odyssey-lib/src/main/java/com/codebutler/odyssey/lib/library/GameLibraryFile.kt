@@ -28,4 +28,7 @@ interface GameLibraryFile {
     val crc: String
 
     val uri: Uri
+
+    val extension: String
+        get() = name.substringAfterLast('.', "")
 }

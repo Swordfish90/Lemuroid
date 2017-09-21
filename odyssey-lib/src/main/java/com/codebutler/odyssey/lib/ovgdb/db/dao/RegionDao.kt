@@ -1,5 +1,5 @@
 /*
- * CoreInfo.kt
+ * RegionDao.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,6 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.core.model
+package com.codebutler.odyssey.lib.ovgdb.db.dao
 
-data class CoreInfo(val fileInfo: CoreFileInfo, val metadata: CoreMetadata)
+import android.arch.persistence.room.Dao
+
+@Dao
+interface RegionDao

@@ -1,5 +1,5 @@
 /*
- * Game.kt
+ * SystemDao.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,21 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.common.db.entity
+package com.codebutler.odyssey.lib.ovgdb.db.dao
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.net.Uri
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Query
+import com.codebutler.odyssey.lib.ovgdb.db.entity.System
+import io.reactivex.Single
 
-@Entity(tableName = "games")
-data class Game(
-        @PrimaryKey(autoGenerate = true)
-        val id: Int = 0,
-        val fileName: String,
-        val fileUri: Uri,
-        val title: String,
-        val coverFrontUrl: String?) {
+@Dao
+interface SystemDao {
 
-    val fileExtension: String
-        get() = fileName.substringAfterLast('.', "")
+    @Query("SELECT * FROM systems WHERE systemID = :systemId")
+    fun findById(systemId: Int): Single<System>
 }

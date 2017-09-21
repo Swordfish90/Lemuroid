@@ -1,5 +1,5 @@
 /*
- * Region.kt
+ * Game.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,18 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.ovgdb.entity
+package com.codebutler.odyssey.lib.library.db.entity
 
-import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.net.Uri
+import java.util.Date
 
-@Entity(tableName = "regions")
-data class Region(
-        @PrimaryKey
-        @ColumnInfo(name = "regionID")
-        val id: Int,
-
-        @ColumnInfo(name = "regionName")
-        val name: String
-)
+@Entity(tableName = "games")
+data class Game(
+        @PrimaryKey(autoGenerate = true)
+        val id: Int = 0,
+        val fileName: String,
+        val fileUri: Uri,
+        val title: String,
+        val systemId: String,
+        val coverFrontUrl: String?)

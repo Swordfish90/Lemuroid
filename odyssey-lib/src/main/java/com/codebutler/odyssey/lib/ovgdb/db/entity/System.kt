@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.ovgdb.entity
+package com.codebutler.odyssey.lib.ovgdb.db.entity
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
@@ -36,16 +36,16 @@ data class System(
         val shortName: String,
 
         @ColumnInfo(name = "systemHeaderSizeBytes")
-        val headerSizeBytes: Int,
+        val headerSizeBytes: Int?,
 
         @ColumnInfo(name = "systemHashless")
-        val hashless: Int,
+        val hashless: Int?,
 
         @ColumnInfo(name = "systemHeader")
-        val header: Int,
+        val header: Int?,
 
         @ColumnInfo(name = "systemSerial")
-        val serial: String,
+        val serial: String?,
 
         @ColumnInfo(name = "systemOEID")
         val oeid: String

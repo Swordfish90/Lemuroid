@@ -1,5 +1,5 @@
 /*
- * RomDao.kt
+ * Region.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,19 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.ovgdb.dao
+package com.codebutler.odyssey.lib.ovgdb.db.entity
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
-import com.codebutler.odyssey.lib.ovgdb.entity.Rom
-import io.reactivex.Maybe
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 
-@Dao
-interface RomDao {
+@Entity(tableName = "regions")
+data class Region(
+        @PrimaryKey
+        @ColumnInfo(name = "regionID")
+        val id: Int,
 
-    @Query("SELECT * FROM roms WHERE romFileName = :romFileName LIMIT 1")
-    fun findByFileName(romFileName: String): Maybe<Rom>
-
-    @Query("SELECT * FROM roms WHERE romHashCRC = :crc LIMIT 1")
-    fun findByCRC(crc: String): Maybe<Rom>
-}
+        @ColumnInfo(name = "regionName")
+        val name: String
+)

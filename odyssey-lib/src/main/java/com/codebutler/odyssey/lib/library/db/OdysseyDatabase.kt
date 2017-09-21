@@ -1,5 +1,5 @@
 /*
- * CoreFileInfo.kt
+ * OdysseyDatabase.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,22 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.core.model
+package com.codebutler.odyssey.lib.library.db
 
-data class CoreFileInfo(
-        val date: String,
-        val crc: String,
-        val fileName: String) {
+import android.arch.persistence.room.Database
+import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
+import com.codebutler.odyssey.common.db.Converters
+import com.codebutler.odyssey.lib.library.db.dao.GameDao
+import com.codebutler.odyssey.lib.library.db.entity.Game
+
+@Database(
+        entities = arrayOf(Game::class),
+        version = 2,
+        exportSchema = true)
+@TypeConverters(Converters::class)
+abstract class OdysseyDatabase : RoomDatabase() {
 
     companion object {
-        fun parseText(text: String): CoreFileInfo {
-            val (date, crc, fileName) = text.split(" ")
-            return CoreFileInfo(date, crc, fileName)
-        }
+        const val DB_NAME = "odyssey"
     }
 
-    val coreName: String by lazy {
-        // "genesis_plus_gx_libretro_android.so.zip" => "genesis_plus_gx_libretro"
-        fileName.substringBefore(".").substringBeforeLast("_")
-    }
+    abstract fun gameDao(): GameDao
 }
+

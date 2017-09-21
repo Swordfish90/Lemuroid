@@ -17,18 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.ovgdb
+package com.codebutler.odyssey.lib.ovgdb.db
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
-import com.codebutler.odyssey.lib.ovgdb.dao.RegionDao
-import com.codebutler.odyssey.lib.ovgdb.dao.ReleaseDao
-import com.codebutler.odyssey.lib.ovgdb.dao.RomDao
-import com.codebutler.odyssey.lib.ovgdb.dao.SystemDao
-import com.codebutler.odyssey.lib.ovgdb.entity.Region
-import com.codebutler.odyssey.lib.ovgdb.entity.Release
-import com.codebutler.odyssey.lib.ovgdb.entity.Rom
-import com.codebutler.odyssey.lib.ovgdb.entity.System
+import com.codebutler.odyssey.lib.ovgdb.db.dao.RegionDao
+import com.codebutler.odyssey.lib.ovgdb.db.dao.ReleaseDao
+import com.codebutler.odyssey.lib.ovgdb.db.dao.RomDao
+import com.codebutler.odyssey.lib.ovgdb.db.dao.SystemDao
+import com.codebutler.odyssey.lib.ovgdb.db.entity.Region
+import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
+import com.codebutler.odyssey.lib.ovgdb.db.entity.Rom
+import com.codebutler.odyssey.lib.ovgdb.db.entity.System
 
 @Database(
         entities = arrayOf(

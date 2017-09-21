@@ -1,5 +1,5 @@
 /*
- * OdysseyDatabase.kt
+ * RomDao.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,26 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.db
+package com.codebutler.odyssey.lib.ovgdb.db.dao
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
-import com.codebutler.odyssey.common.db.Converters
-import com.codebutler.odyssey.lib.db.dao.GameDao
-import com.codebutler.odyssey.common.db.entity.Game
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Query
+import com.codebutler.odyssey.lib.ovgdb.db.entity.Rom
+import io.reactivex.Maybe
 
-@Database(
-        entities = arrayOf(Game::class),
-        version = 1,
-        exportSchema = true)
-@TypeConverters(Converters::class)
-abstract class OdysseyDatabase : RoomDatabase() {
+@Dao
+interface RomDao {
 
-    companion object {
-        const val DB_NAME = "odyssey"
-    }
+    @Query("SELECT * FROM roms WHERE romFileName = :romFileName LIMIT 1")
+    fun findByFileName(romFileName: String): Maybe<Rom>
 
-    abstract fun gameDao(): GameDao
+    @Query("SELECT * FROM roms WHERE romHashCRC = :crc LIMIT 1")
+    fun findByCRC(crc: String): Maybe<Rom>
 }
-

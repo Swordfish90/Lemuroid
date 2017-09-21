@@ -23,10 +23,10 @@ import android.app.Application
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.codebutler.odyssey.BuildConfig
-import com.codebutler.odyssey.lib.db.OdysseyDatabase
 import com.codebutler.odyssey.common.http.OdysseyHttp
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
+import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import okhttp3.OkHttpClient
 import java.io.File
