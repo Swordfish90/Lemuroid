@@ -112,7 +112,7 @@ interface LibRetro : Library {
         var data: Pointer? = null
 
         @JvmField
-        var size: com.codebutler.odyssey.common.jna.SizeT = com.codebutler.odyssey.common.jna.SizeT()
+        var size: SizeT = SizeT()
 
         @JvmField
         var meta: String? = null
@@ -129,25 +129,25 @@ interface LibRetro : Library {
          * Nominal video width of game.
          */
         @JvmField
-        var base_width: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var base_width: UnsignedInt? = null
 
         /**
          * Nominal video height of game.
          */
         @JvmField
-        var base_height: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var base_height: UnsignedInt? = null
 
         /**
          * possible width of game.
          */
         @JvmField
-        var max_width: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var max_width: UnsignedInt? = null
 
         /**
          * Maximum possible height of game.
          */
         @JvmField
-        var max_height: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var max_height: UnsignedInt? = null
 
         /**
          * Nominal aspect ratio of game. If
@@ -224,16 +224,16 @@ interface LibRetro : Library {
     class retro_input_descriptor(pointer: Pointer? = null): Structure(pointer) {
 
         @JvmField
-        var port: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var port: UnsignedInt? = null
 
         @JvmField
-        var device: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var device: UnsignedInt? = null
 
         @JvmField
-        var index: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var index: UnsignedInt? = null
 
         @JvmField
-        var id: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var id: UnsignedInt? = null
 
         @JvmField
         var description: String? = null
@@ -251,7 +251,7 @@ interface LibRetro : Library {
         var desc: String? = null
 
         @JvmField
-        var id: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var id: UnsignedInt? = null
 
         init {
             read()
@@ -267,7 +267,7 @@ interface LibRetro : Library {
         var types: Pointer? = null
 
         @JvmField
-        var num_types: com.codebutler.odyssey.common.jna.UnsignedInt? = null
+        var num_types: UnsignedInt? = null
 
         init {
             read()
@@ -277,7 +277,7 @@ interface LibRetro : Library {
     }
 
     interface retro_environment_t : Callback {
-        fun invoke(cmd: com.codebutler.odyssey.common.jna.UnsignedInt, data: Pointer) : Boolean
+        fun invoke(cmd: UnsignedInt, data: Pointer) : Boolean
     }
 
     interface retro_log_printf_t : Callback {
@@ -285,7 +285,7 @@ interface LibRetro : Library {
     }
 
     interface retro_video_refresh_t : Callback {
-        fun invoke(data: Pointer, width: com.codebutler.odyssey.common.jna.UnsignedInt, height: com.codebutler.odyssey.common.jna.UnsignedInt, pitch: com.codebutler.odyssey.common.jna.SizeT)
+        fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT)
     }
 
     interface retro_audio_sample_t : Callback {
@@ -293,7 +293,7 @@ interface LibRetro : Library {
     }
 
     interface retro_audio_sample_batch_t : Callback {
-        fun apply(data: Pointer, frames: com.codebutler.odyssey.common.jna.SizeT): com.codebutler.odyssey.common.jna.SizeT
+        fun apply(data: Pointer, frames: SizeT): SizeT
     }
 
     interface retro_input_poll_t : Callback {
@@ -301,7 +301,7 @@ interface LibRetro : Library {
     }
 
     interface retro_input_state_t : Callback {
-        fun apply(port: com.codebutler.odyssey.common.jna.UnsignedInt, device: com.codebutler.odyssey.common.jna.UnsignedInt, index: com.codebutler.odyssey.common.jna.UnsignedInt, id: com.codebutler.odyssey.common.jna.UnsignedInt): Short
+        fun apply(port: UnsignedInt, device: UnsignedInt, index: UnsignedInt, id: UnsignedInt): Short
     }
 
     fun retro_get_system_info(info: retro_system_info)
@@ -330,9 +330,9 @@ interface LibRetro : Library {
 
     fun retro_get_system_av_info(info: retro_system_av_info)
 
-    fun retro_get_region(): com.codebutler.odyssey.common.jna.UnsignedInt
+    fun retro_get_region(): UnsignedInt
 
-    fun retro_get_memory_data(id: com.codebutler.odyssey.common.jna.UnsignedInt): Pointer
+    fun retro_get_memory_data(id: UnsignedInt): Pointer
 
-    fun retro_get_memory_size(id: com.codebutler.odyssey.common.jna.UnsignedInt): com.codebutler.odyssey.common.jna.SizeT
+    fun retro_get_memory_size(id: UnsignedInt): SizeT
 }
