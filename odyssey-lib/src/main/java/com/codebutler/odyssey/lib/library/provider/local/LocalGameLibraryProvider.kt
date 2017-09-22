@@ -19,19 +19,20 @@
 
 package com.codebutler.odyssey.lib.library.provider.local
 
+import android.net.Uri
 import android.os.Environment
 import com.codebutler.odyssey.common.kotlin.calculateCrc32
 import com.codebutler.odyssey.common.rx.Irrelevant
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import io.reactivex.Single
+import java.io.File
 
 class LocalGameLibraryProvider : GameLibraryProvider {
-
     override val uriScheme: String
         get() = "file"
 
-    override fun listItems(): Single<Iterable<GameLibraryFile>> {
+    override fun listFiles(): Single<Iterable<GameLibraryFile>> {
         return Single.create<Iterable<GameLibraryFile>> { emitter ->
             try {
                 val items = Environment.getExternalStorageDirectory()
@@ -46,6 +47,8 @@ class LocalGameLibraryProvider : GameLibraryProvider {
             }
         }
     }
+
+    override fun fileExists(uri: Uri): Boolean = File(uri.path).exists()
 
     override fun getGameRom(file: GameLibraryFile): Single<ByteArray> {
         val localFile = file as LocalGameLibraryFile

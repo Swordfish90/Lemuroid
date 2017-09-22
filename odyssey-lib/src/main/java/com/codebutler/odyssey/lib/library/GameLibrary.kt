@@ -20,6 +20,7 @@
 package com.codebutler.odyssey.lib.library
 
 import android.arch.persistence.room.EmptyResultSetException
+import android.net.Uri
 import android.util.Log
 import com.codebutler.odyssey.common.Optional
 import com.codebutler.odyssey.common.filterAndGetOptional
@@ -44,22 +45,35 @@ class GameLibrary(
 
     private val providers = listOf(LocalGameLibraryProvider())
 
-    val games = odysseydb.gameDao().getAll()
+    val games = odysseydb.gameDao().watchAll()
 
     fun indexGames() {
+        addNewGames()
+        removeDeletedGames()
+    }
+
+    private fun addNewGames() {
         ovgdbManager.dbReady
                 .observeOn(Schedulers.io())
                 .subscribe { ovgdb ->
-                    odysseydb.gameDao().deleteAll()
                     Observable.fromIterable(providers)
                             .flatMapSingle { provider ->
-                                provider.listItems()
+                                provider.listFiles()
                             }
                             .flatMap { files ->
                                 Observable.fromIterable(files)
                             }
                             .flatMapMaybe { file ->
-                                Log.d(TAG, "Got file: $file")
+                                Log.d(TAG, "Got file: $file ${file.uri}")
+                                odysseydb.gameDao().selectByFileUri(file.uri.toString())
+                                        .map { Optional(it) }
+                                        .switchIfEmpty(Maybe.just(Optional()))
+                                        .map { game -> Pair(file, game) }
+                            }
+                            .doOnNext{ (file, game) -> Log.d(TAG, "Game found: ${file.name} ${game.isPresent}") }
+                            .filter { (_, game) -> !game.isPresent }
+                            .map { (file, _) -> file }
+                            .flatMapMaybe { file ->
                                 ovgdb.romDao().findByCRC(file.crc)
                                         .switchIfEmpty(ovgdb.romDao().findByFileName(file.name))
                                         .map { rom -> Optional(rom) }
@@ -125,4 +139,21 @@ class GameLibrary(
                                     { Log.d(TAG, "Indexing complete") })
                 }
     }
+
+    private fun removeDeletedGames() {
+        odysseydb.gameDao().selectAll()
+                .subscribeOn(Schedulers.io())
+                .toObservable()
+                .switchMap { Observable.fromIterable(it) }
+                .filter { game -> getProvider(game.fileUri)?.fileExists(game.fileUri)?.not() ?: true }
+                .collectInto(mutableListOf<Game>(), { list, game -> list.add(game) })
+                .subscribe { games ->
+                    Log.d(TAG, "Removing games: $games")
+                    odysseydb.gameDao().delete(games)
+                }
+
+    }
+
+    private fun getProvider(uri: Uri)
+            = providers.find { it.uriScheme == uri.scheme }
 }

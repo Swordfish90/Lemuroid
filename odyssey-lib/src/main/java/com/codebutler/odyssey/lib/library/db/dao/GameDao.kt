@@ -20,20 +20,29 @@
 package com.codebutler.odyssey.lib.library.db.dao
 
 import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import io.reactivex.Flowable
+import io.reactivex.Maybe
+import io.reactivex.Single
 
 @Dao
 interface GameDao {
 
     @Query("SELECT * FROM games ORDER BY title")
-    fun getAll(): Flowable<List<Game>>
+    fun watchAll(): Flowable<List<Game>>
+
+    @Query("SELECT * FROM games ORDER BY title")
+    fun selectAll(): Single<List<Game>>
+
+    @Query("SELECT * FROM games WHERE fileUri = :fileUri")
+    fun selectByFileUri(fileUri: String): Maybe<Game>
 
     @Insert
     fun insert(game: Game)
 
-    @Query("DELETE FROM games")
-    fun deleteAll()
+    @Delete
+    fun delete(games: List<Game>)
 }

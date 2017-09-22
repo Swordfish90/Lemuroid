@@ -19,6 +19,7 @@
 
 package com.codebutler.odyssey.lib.library.provider
 
+import android.net.Uri
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.common.rx.Irrelevant
 import io.reactivex.Single
@@ -27,7 +28,9 @@ interface GameLibraryProvider {
 
     val uriScheme: String
 
-    fun listItems(): Single<Iterable<GameLibraryFile>>
+    fun listFiles(): Single<Iterable<GameLibraryFile>>
+
+    fun fileExists(uri: Uri): Boolean
 
     fun getGameRom(file: GameLibraryFile): Single<ByteArray>
 
