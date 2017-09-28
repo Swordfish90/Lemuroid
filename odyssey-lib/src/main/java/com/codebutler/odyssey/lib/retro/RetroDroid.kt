@@ -357,6 +357,36 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
     fun onMotionEvent(event: MotionEvent) {
         Log.d(TAG, "onMotionEvent: $event")
+
+        when (event.rawX) {
+            1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_RIGHT)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
+            }
+            -1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_LEFT)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
+            }
+            else -> {
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
+            }
+        }
+
+        when(event.rawY) {
+            1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_DOWN)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
+            }
+            -1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_UP)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
+            }
+            else -> {
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
+            }
+        }
     }
 
     private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {
