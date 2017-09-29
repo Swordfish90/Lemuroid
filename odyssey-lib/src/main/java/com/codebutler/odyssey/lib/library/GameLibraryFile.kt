@@ -21,13 +21,15 @@ package com.codebutler.odyssey.lib.library
 
 import android.net.Uri
 
-interface GameLibraryFile {
+data class GameLibraryFile(
 
-    val name: String
+    val name: String,
 
-    val crc: String
+    val size: Long,
 
-    val uri: Uri
+    val crc: String? = null,
+
+    val uri: Uri) {
 
     val extension: String
         get() = name.substringAfterLast('.', "")

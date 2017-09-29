@@ -22,11 +22,11 @@ package com.codebutler.odyssey.lib.ovgdb.db.dao
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
 import com.codebutler.odyssey.lib.ovgdb.db.entity.System
-import io.reactivex.Single
+import io.reactivex.Maybe
 
 @Dao
 interface SystemDao {
 
     @Query("SELECT * FROM systems WHERE systemID = :systemId")
-    fun findById(systemId: Int): Single<System>
+    fun findById(systemId: Int): Maybe<System>
 }

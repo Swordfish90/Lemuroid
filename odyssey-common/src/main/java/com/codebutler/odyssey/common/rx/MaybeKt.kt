@@ -1,5 +1,5 @@
 /*
- * Irrelevant.kt
+ * MaybeKt.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -19,6 +19,11 @@
 
 package com.codebutler.odyssey.common.rx
 
-enum class Irrelevant {
-    INSTANCE
-}
+import com.gojuno.koptional.None
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.toOptional
+import io.reactivex.Maybe
+import io.reactivex.Single
+
+fun <T : Any> Maybe<T>.toSingleAsOptional(): Single<Optional<T>>
+        = this.map { it.toOptional() }.toSingle(None)

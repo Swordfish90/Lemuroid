@@ -19,23 +19,26 @@
 
 package com.codebutler.odyssey.lib.library
 
-import android.arch.persistence.room.EmptyResultSetException
+import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.codebutler.odyssey.common.Optional
-import com.codebutler.odyssey.common.filterAndGetOptional
+import com.codebutler.odyssey.common.rx.toSingleAsOptional
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
-import com.codebutler.odyssey.lib.ovgdb.db.entity.Rom
-import io.reactivex.Maybe
+import com.gojuno.koptional.None
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.Some
+import com.gojuno.koptional.rxjava2.filterSome
+import com.gojuno.koptional.toOptional
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
 class GameLibrary(
+        context: Context,
         private val odysseydb: OdysseyDatabase,
         private val ovgdbManager: OvgdbManager) {
 
@@ -60,76 +63,72 @@ class GameLibrary(
                             .flatMapSingle { provider ->
                                 provider.listFiles()
                             }
-                            .flatMap { files ->
-                                Observable.fromIterable(files)
-                            }
-                            .flatMapMaybe { file ->
+                            .flatMapIterable { it }
+                            .flatMapSingle { file ->
                                 Log.d(TAG, "Got file: $file ${file.uri}")
                                 odysseydb.gameDao().selectByFileUri(file.uri.toString())
-                                        .map { Optional(it) }
-                                        .switchIfEmpty(Maybe.just(Optional()))
+                                        .toSingleAsOptional()
                                         .map { game -> Pair(file, game) }
                             }
-                            .doOnNext{ (file, game) -> Log.d(TAG, "Game found: ${file.name} ${game.isPresent}") }
-                            .filter { (_, game) -> !game.isPresent }
+                            .doOnNext{ (file, game) -> Log.d(TAG, "Game already indexed? ${file.name} ${game is Some}") }
+                            .filter { (_, game) -> game is None }
                             .map { (file, _) -> file }
-                            .flatMapMaybe { file ->
-                                ovgdb.romDao().findByCRC(file.crc)
-                                        .switchIfEmpty(ovgdb.romDao().findByFileName(file.name))
-                                        .map { rom -> Optional(rom) }
-                                        .switchIfEmpty(Maybe.just<Optional<Rom>>(Optional())
-                                                .doOnSuccess { Log.d(TAG, "Rom not found ${file.name}") }
-                                        )
-                                        .map { rom -> Pair(file, rom) }
-                            }
-                            .flatMapMaybe { (file, rom) ->
-                                val releaseMaybe = if (rom.isPresent) {
-                                    ovgdb.releaseDao().findByRomId(rom.get.id)
-                                            .map { release -> Optional(release) }
-                                            .switchIfEmpty(Maybe.just<Optional<Release>>(Optional())
-                                                    .doOnSuccess { Log.d(TAG, "Release not found: ${rom.get.id}") }
-                                            )
+                            .flatMapSingle { file ->
+                                if (file.crc != null) {
+                                    ovgdb.romDao().findByCRC(file.crc)
+                                            .switchIfEmpty(ovgdb.romDao().findByFileName(file.name))
+                                            .toSingleAsOptional()
+                                            .map { rom -> Pair(file, rom) }
                                 } else {
-                                    Maybe.just<Optional<Release>>(Optional())
+                                    Single.just(Pair(file, None))
                                 }
-                                releaseMaybe
-                                        .map { release -> Triple(file, rom, release) }
                             }
-                            .flatMapMaybe { (file, rom, release) ->
-                                val systemSingle = if (rom.isPresent) {
-                                    ovgdb.systemDao().findById(rom.get.systemId)
+                            .doOnNext { (file, rom) -> Log.d(TAG, "Rom Found: ${file.name} ${rom is Some}")}
+                            .flatMapSingle { (file, rom) ->
+                                when (rom) {
+                                    is Some -> ovgdb.releaseDao().findByRomId(rom.value.id)
+                                            .toSingleAsOptional()
+                                    else -> Single.just<Optional<Release>>(None)
+                                }.map { release -> Triple(file, rom, release) }
+                            }
+                            .doOnNext { (file, _, release) -> Log.d(TAG, "Release found: ${file.name}, ${release is Some}") }
+                            .flatMapSingle { (file, rom, release) ->
+                                when (rom) {
+                                    is Some -> ovgdb.systemDao().findById(rom.value.systemId)
+                                            .toSingleAsOptional()
+                                    else -> Single.just(None)
+                                }.map { ovgdbSystem -> Triple(file, release, ovgdbSystem) }
+                            }
+                            .doOnNext { (file, _, ovgdbSystem) -> Log.d(TAG, "OVGDB System Found: ${file.name}, ${ovgdbSystem is Some}") }
+                            .map { (file, release, ovgdbSystem) ->
+                                var system = when (ovgdbSystem) {
+                                    is Some -> GameSystem.findByOeid(ovgdbSystem.value.oeid)
+                                    else -> null
+                                }
+                                if (system == null) {
+                                    Log.d(TAG, "System not found, trying file extension: ${file.name}")
+                                    system = GameSystem.findByFileExtension(file.extension)
+                                }
+                                if (system == null) {
+                                    Log.d(TAG, "Giving up on ${file.name}")
                                 } else {
-                                    Single.error(EmptyResultSetException(""))
+                                    Log.d(TAG, "Found system!! $system")
                                 }
-                                systemSingle
-                                        .map { ovgdbSystem ->
-                                            val system = GameSystem.findByOeid(ovgdbSystem.oeid)
-                                                    ?: throw EmptyResultSetException("")
-                                            Log.d(TAG, "Found system!! $system")
-                                            Optional(system)
-                                        }
-                                        .onErrorResumeNext { ex ->
-                                            if (ex is EmptyResultSetException) {
-                                                Log.d(TAG, "System not found, trying file extension: ${file.name}")
-                                                val system = GameSystem.findByFileExtension(file.extension)
-                                                if (system == null) {
-                                                    Log.d(TAG, "Giving up on ${file.name}")
-                                                }
-                                                Single.just(Optional(system))
-                                            } else {
-                                                throw ex
-                                            }
-                                        }
-                                        .filterAndGetOptional()
-                                        .map { system -> Triple(file, release, system) }
+                                Triple(file, release, system.toOptional())
                             }
-                            .map { (file, release, system) -> Game(
-                                    fileName = file.name,
-                                    fileUri = file.uri,
-                                    title = release.getOrNull?.titleName ?: file.name,
-                                    systemId = system.id,
-                                    coverFrontUrl = release.getOrNull?.coverFront)
+                            .map { (file, release, system) ->
+                                when (system) {
+                                    is Some -> Game(
+                                            fileName = file.name,
+                                            fileUri = file.uri,
+                                            title = release.toNullable()?.titleName ?: file.name,
+                                            systemId = system.value.id,
+                                            coverFrontUrl = release.toNullable()?.coverFront
+                                    ).toOptional()
+                                    else -> None
+                                }
                             }
+                            .filterSome()
                             .subscribe(
                                     { game ->
                                         Log.d(TAG, "Insert: $game")
@@ -144,14 +143,23 @@ class GameLibrary(
         odysseydb.gameDao().selectAll()
                 .subscribeOn(Schedulers.io())
                 .toObservable()
-                .switchMap { Observable.fromIterable(it) }
-                .filter { game -> getProvider(game.fileUri)?.fileExists(game.fileUri)?.not() ?: true }
+                .flatMapIterable { it }
+                .switchMapSingle { game ->
+                    val provider = getProvider(game.fileUri)
+                    if (provider != null) {
+                        provider.fileExists(game.fileUri)
+                                .map { exists -> Pair(game, exists) }
+                    } else {
+                        Single.just(Pair(game, false))
+                    }
+                }
+                .filter { (_, exists) -> exists.not() }
+                .map { (game, _) -> game }
                 .collectInto(mutableListOf<Game>(), { list, game -> list.add(game) })
                 .subscribe { games ->
                     Log.d(TAG, "Removing games: $games")
                     odysseydb.gameDao().delete(games)
                 }
-
     }
 
     private fun getProvider(uri: Uri)

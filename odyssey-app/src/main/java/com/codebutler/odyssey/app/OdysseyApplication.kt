@@ -53,6 +53,6 @@ class OdysseyApplication : Application() {
                 .fallbackToDestructiveMigration()
                 .build()
     }
-    val library by lazy { GameLibrary(db, ovgdb) }
+    val library by lazy { GameLibrary(this, db, ovgdb) }
     val coreManager by lazy { CoreManager(OdysseyHttp(OkHttpClient()), File(cacheDir, "cores")) }
 }

@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 
 dependencies {
     implementation libs.jna
+    implementation libs.koptional
+    implementation libs.koptionalRxJava2
     implementation libs.kotlinStdlib
     implementation libs.okHttp3
     implementation libs.roomRuntime

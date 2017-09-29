@@ -22,7 +22,6 @@ package com.codebutler.odyssey.lib.library.provider.local
 import android.net.Uri
 import android.os.Environment
 import com.codebutler.odyssey.common.kotlin.calculateCrc32
-import com.codebutler.odyssey.common.rx.Irrelevant
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import io.reactivex.Single
@@ -39,7 +38,12 @@ class LocalGameLibraryProvider : GameLibraryProvider {
                         .walk()
                         .maxDepth(1)
                         .filter { it.isFile }
-                        .map { file -> LocalGameLibraryFile(file, file.calculateCrc32().toUpperCase()) }
+                        .map { file -> GameLibraryFile(
+                                name = file.name,
+                                size = file.length(),
+                                crc = file.calculateCrc32().toUpperCase(),
+                                uri = Uri.parse(file.toURI().toString()))
+                        }
                         .asIterable()
                 emitter.onSuccess(items)
             } catch (e: Throwable) {
@@ -48,13 +52,12 @@ class LocalGameLibraryProvider : GameLibraryProvider {
         }
     }
 
-    override fun fileExists(uri: Uri): Boolean = File(uri.path).exists()
+    override fun fileExists(uri: Uri): Single<Boolean> = Single.just(File(uri.path).exists())
 
     override fun getGameRom(file: GameLibraryFile): Single<ByteArray> {
-        val localFile = file as LocalGameLibraryFile
         return Single.create { emitter ->
             try {
-                emitter.onSuccess(localFile.file.readBytes())
+                emitter.onSuccess(File(file.uri.path).readBytes())
             } catch (e: Throwable) {
                 emitter.onError(e)
             }
@@ -62,10 +65,10 @@ class LocalGameLibraryProvider : GameLibraryProvider {
     }
 
     override fun getGameSave(coreId: String, file: GameLibraryFile): Single<ByteArray> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
-    override fun setGameSave(coreId: String, file: GameLibraryFile, data: ByteArray): Single<Irrelevant> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun setGameSave(coreId: String, file: GameLibraryFile, data: ByteArray): Single<Unit> {
+        TODO("not implemented")
     }
 }
