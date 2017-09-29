@@ -300,7 +300,7 @@ class Retro(coreLibraryName: String) {
 
     fun setVideoRefresh(callback: VideoRefreshCallback) {
         val cb = object : LibRetro.retro_video_refresh_t {
-            override fun invoke(data: Pointer, width: com.codebutler.odyssey.common.jna.UnsignedInt, height: com.codebutler.odyssey.common.jna.UnsignedInt, pitch: com.codebutler.odyssey.common.jna.SizeT) {
+            override fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT) {
                 val buffer = videoBufferCache.getBuffer(height.toInt() * pitch.toInt())
                 data.read(0, buffer, 0, buffer.size)
                 callback.onVideoRefresh(buffer, width.toInt(), height.toInt(), pitch.toInt())
@@ -329,11 +329,11 @@ class Retro(coreLibraryName: String) {
 
     fun setAudioSampleBatch(callback: AudioSampleBatchCallback) {
         val cb = object : LibRetro.retro_audio_sample_batch_t {
-            override fun apply(data: Pointer, frames: com.codebutler.odyssey.common.jna.SizeT): com.codebutler.odyssey.common.jna.SizeT {
+            override fun apply(data: Pointer, frames: SizeT): SizeT {
                 // Each frame is 4 bytes (16-bit stereo)
                 val buffer = audioBufferCache.getBuffer(frames.toInt() * 4)
                 data.read(0, buffer, 0, buffer.size)
-                return com.codebutler.odyssey.common.jna.SizeT(callback.onAudioSampleBatch(buffer, frames.toInt()))
+                return SizeT(callback.onAudioSampleBatch(buffer, frames.toInt()))
             }
         }
         audioSampleBatchCb = cb
@@ -352,7 +352,7 @@ class Retro(coreLibraryName: String) {
 
     fun setInputState(callback: InputStateCallback) {
         val cb = object : LibRetro.retro_input_state_t {
-            override fun apply(port: com.codebutler.odyssey.common.jna.UnsignedInt, device: com.codebutler.odyssey.common.jna.UnsignedInt, index: com.codebutler.odyssey.common.jna.UnsignedInt, id: com.codebutler.odyssey.common.jna.UnsignedInt): Short {
+            override fun apply(port: UnsignedInt, device: UnsignedInt, index: UnsignedInt, id: UnsignedInt): Short {
                 return if (callback.onInputState(port.toInt(), device.toInt(), index.toInt(), id.toInt())) 1 else 0
             }
         }
@@ -381,7 +381,7 @@ class Retro(coreLibraryName: String) {
 
         val info = LibRetro.retro_game_info()
         info.data = memory
-        info.size = com.codebutler.odyssey.common.jna.SizeT(data.size.toLong())
+        info.size = SizeT(data.size.toLong())
         info.write()
 
         return libRetro.retro_load_game(info)
@@ -396,14 +396,14 @@ class Retro(coreLibraryName: String) {
     }
 
     fun getMemoryData(memory: MemoryId): ByteArray {
-        val id = com.codebutler.odyssey.common.jna.UnsignedInt(memory.value.toLong())
+        val id = UnsignedInt(memory.value.toLong())
         val size = libRetro.retro_get_memory_size(id).toInt()
         val pointer = libRetro.retro_get_memory_data(id)
         return pointer.getByteArray(0, size)
     }
 
     fun setMemoryData(memory: MemoryId, data: ByteArray) {
-        val id = com.codebutler.odyssey.common.jna.UnsignedInt(memory.value.toLong())
+        val id = UnsignedInt(memory.value.toLong())
         val pointer = libRetro.retro_get_memory_data(id)
         pointer.write(0, data, 0, data.size)
     }
@@ -412,7 +412,7 @@ class Retro(coreLibraryName: String) {
 
         private var logPrintfCb: LibRetro.retro_log_printf_t? = null
 
-        override fun invoke(cmd: com.codebutler.odyssey.common.jna.UnsignedInt, data: Pointer): Boolean {
+        override fun invoke(cmd: UnsignedInt, data: Pointer): Boolean {
 
             when (cmd.toInt()) {
                 LibRetro.RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL -> {
