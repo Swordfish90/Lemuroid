@@ -27,6 +27,7 @@ import com.codebutler.odyssey.common.http.OdysseyHttp
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
+import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import okhttp3.OkHttpClient
 import java.io.File
@@ -53,6 +54,6 @@ class OdysseyApplication : Application() {
                 .fallbackToDestructiveMigration()
                 .build()
     }
-    val library by lazy { GameLibrary(this, db, ovgdb) }
+    val library by lazy { GameLibrary(db, ovgdb, listOf(LocalGameLibraryProvider())) }
     val coreManager by lazy { CoreManager(OdysseyHttp(OkHttpClient()), File(cacheDir, "cores")) }
 }

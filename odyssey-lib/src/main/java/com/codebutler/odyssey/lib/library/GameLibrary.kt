@@ -19,17 +19,15 @@
 
 package com.codebutler.odyssey.lib.library
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.codebutler.odyssey.common.rx.toSingleAsOptional
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
+import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import com.codebutler.odyssey.lib.ovgdb.db.OvgdbDatabase
 import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
-import com.codebutler.odyssey.lib.ovgdb.db.entity.Rom
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
@@ -41,15 +39,13 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
 class GameLibrary(
-        context: Context,
         private val odysseydb: OdysseyDatabase,
-        private val ovgdbManager: OvgdbManager) {
+        private val ovgdbManager: OvgdbManager,
+        private val libraryProviders: List<GameLibraryProvider>) {
 
     companion object {
         const val TAG = "OdysseyLibrary"
     }
-
-    private val providers = listOf(LocalGameLibraryProvider())
 
     val games = odysseydb.gameDao().watchAll()
 
@@ -65,7 +61,7 @@ class GameLibrary(
     }
 
     private fun addNewGamesWithDb(ovgdb: OvgdbDatabase) {
-        Observable.fromIterable(providers)
+        Observable.fromIterable(libraryProviders)
                 .flatMapSingle { provider ->
                     provider.listFiles()
                 }
@@ -166,5 +162,5 @@ class GameLibrary(
     }
 
     private fun getProvider(uri: Uri)
-            = providers.find { it.uriScheme == uri.scheme }
+            = libraryProviders.find { it.uriScheme == uri.scheme }
 }
