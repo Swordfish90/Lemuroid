@@ -79,6 +79,13 @@ data class GameSystem(
                         R.string.game_system_abbr_gbc,
                         "mgba_libretro_android.so.zip",
                         listOf("gbc")
+                ),
+                GameSystem(
+                        "mame",
+                        R.string.game_system_title_mame,
+                        R.string.game_system_abbr_mame,
+                        "mame2003_libretro_android.so.zip",
+                        listOf("zip")
                 )
         )
 

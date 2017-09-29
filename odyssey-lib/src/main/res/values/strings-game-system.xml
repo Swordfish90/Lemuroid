@@ -25,6 +25,7 @@
     <string name="game_system_abbr_gb">Game Boy</string>
     <string name="game_system_abbr_gba">GBA</string>
     <string name="game_system_abbr_gbc">GBC</string>
+    <string name="game_system_abbr_mame">MAME</string>
 
     <string name="game_system_title_nes">Nintendo Entertainment System</string>
     <string name="game_system_title_snes">Super Nintendo</string>
@@ -32,4 +33,5 @@
     <string name="game_system_title_gb">Game Boy</string>
     <string name="game_system_title_gba">Game Boy Advance</string>
     <string name="game_system_title_gbc">Game Boy Color</string>
+    <string name="game_system_title_mame">Multiple Arcade Machine Emulator</string>
 </resources>
