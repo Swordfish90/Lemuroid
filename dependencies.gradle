@@ -6,8 +6,8 @@ ext {
         buildToolsVersion: '26.0.1'
     ]
 
-    def supportVersion  = '26.1.0'
     def archVersion = '1.0.0-alpha9-1'
+    def supportVersion  = '26.1.0'
 
     libs = [
         jna:                   'net.java.dev.jna:jna:4.4.0',
