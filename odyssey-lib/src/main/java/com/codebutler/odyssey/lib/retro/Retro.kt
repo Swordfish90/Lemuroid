@@ -23,12 +23,11 @@ import android.graphics.PixelFormat
 import android.os.Build
 import com.codebutler.odyssey.common.BufferCache
 import com.codebutler.odyssey.common.binding.LibC
+import com.codebutler.odyssey.common.jna.SizeT
+import com.codebutler.odyssey.common.jna.UnsignedInt
 import com.codebutler.odyssey.lib.binding.LibOdyssey
 import com.codebutler.odyssey.lib.retro.LibRetro.retro_system_info
 import com.codebutler.odyssey.lib.retro.LibRetro.retro_variable
-import com.codebutler.odyssey.common.jna.NativeString
-import com.codebutler.odyssey.common.jna.SizeT
-import com.codebutler.odyssey.common.jna.UnsignedInt
 import com.sun.jna.Library
 import com.sun.jna.Memory
 import com.sun.jna.Native
@@ -121,7 +120,6 @@ class Retro(coreLibraryName: String) {
             val index: Int,
             val id: DeviceId,
             val description: String)
-
 
     enum class LogLevel {
         DEBUG,
@@ -479,11 +477,11 @@ class Retro(coreLibraryName: String) {
                     val logInterface = callback.onGetLogInterface()
                     val logCb = object : LibRetro.retro_log_printf_t {
                         override fun invoke(log_level: Int, fmt: String, arg: Pointer) {
-                            val size = com.codebutler.odyssey.common.binding.LibC.INSTANCE.vsnprintf(null, 0, fmt, arg)
+                            val size = LibC.INSTANCE.vsnprintf(null, 0, fmt, arg)
                             if (size <= 0) return
 
                             val byteBuffer = ByteBuffer.allocateDirect(size + 1)
-                            com.codebutler.odyssey.common.binding.LibC.INSTANCE.vsnprintf(byteBuffer, byteBuffer.capacity(), fmt, arg)
+                            LibC.INSTANCE.vsnprintf(byteBuffer, byteBuffer.capacity(), fmt, arg)
 
                             val bytes = ByteArray(size)
                             byteBuffer.get(bytes)

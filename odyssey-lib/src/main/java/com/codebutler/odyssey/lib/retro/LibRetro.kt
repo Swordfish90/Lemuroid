@@ -221,7 +221,7 @@ interface LibRetro : Library {
         override fun getFieldOrder(): List<String> = listOf("log")
     }
 
-    class retro_input_descriptor(pointer: Pointer? = null): Structure(pointer) {
+    class retro_input_descriptor(pointer: Pointer? = null) : Structure(pointer) {
 
         @JvmField
         var port: UnsignedInt? = null
@@ -245,7 +245,7 @@ interface LibRetro : Library {
         override fun getFieldOrder(): List<String> = listOf("port", "device", "index", "id", "description")
     }
 
-    class retro_controller_description(pointer: Pointer? = null): Structure(pointer) {
+    class retro_controller_description(pointer: Pointer? = null) : Structure(pointer) {
 
         @JvmField
         var desc: String? = null
@@ -260,7 +260,7 @@ interface LibRetro : Library {
         override fun getFieldOrder(): List<String> = listOf("desc", "id")
     }
 
-    class retro_controller_info(pointer: Pointer? = null): Structure(pointer) {
+    class retro_controller_info(pointer: Pointer? = null) : Structure(pointer) {
 
         @JvmField
         // FIXME: var types: retro_controller_description? = null

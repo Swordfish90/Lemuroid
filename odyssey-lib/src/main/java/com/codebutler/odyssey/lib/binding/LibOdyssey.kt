@@ -23,7 +23,7 @@ import com.codebutler.odyssey.lib.retro.LibRetro
 import com.sun.jna.Library
 import com.sun.jna.Native
 
-interface LibOdyssey: Library {
+interface LibOdyssey : Library {
 
     companion object {
         val INSTANCE = Native.loadLibrary("odyssey", LibOdyssey::class.java)

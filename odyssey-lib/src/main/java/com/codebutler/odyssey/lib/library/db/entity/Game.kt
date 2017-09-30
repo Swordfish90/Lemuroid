@@ -22,7 +22,6 @@ package com.codebutler.odyssey.lib.library.db.entity
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.net.Uri
-import java.util.Date
 
 @Entity(tableName = "games")
 data class Game(

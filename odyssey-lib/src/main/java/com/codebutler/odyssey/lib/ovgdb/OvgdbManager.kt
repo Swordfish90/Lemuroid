@@ -30,13 +30,13 @@ import java.util.concurrent.ExecutorService
 class OvgdbManager(context: Context, executorService: ExecutorService) {
 
     companion object {
-        const private val ASSET_NAME_DB = "openvgdb.sqlite"
+        private const val ASSET_NAME_DB = "openvgdb.sqlite"
 
-        const private val PREFS_NAME = "openvgdb"
-        const private val PREFS_KEY_VERSION = "version"
+        private const val PREFS_NAME = "openvgdb"
+        private const val PREFS_KEY_VERSION = "version"
 
-        const private val DB_NAME = "openvgdb"
-        const private val DB_VERSION = 1
+        private const val DB_NAME = "openvgdb"
+        private const val DB_VERSION = 1
     }
 
     private val dbRelay = BehaviorRelay.create<OvgdbDatabase>()

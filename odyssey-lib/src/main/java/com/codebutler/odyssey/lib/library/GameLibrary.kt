@@ -76,7 +76,7 @@ class GameLibrary(
                 .filter { (_, game) -> game is None }
                 .map { (file, _) -> file }
                 .flatMapSingle { file ->
-                    when(file.crc) {
+                    when (file.crc) {
                         null -> Maybe.empty()
                         else -> ovgdb.romDao().findByCRC(file.crc)
                     }.switchIfEmpty(ovgdb.romDao().findByFileName(file.name))

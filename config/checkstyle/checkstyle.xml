@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<!--
+Checkstyle-Configuration: Android Style
+Description: https://source.android.com/source/code-style.html
+-->
+<module name="Checker">
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- Require UTF-8 encoding for all files -->
+    <property name="charset" value="UTF-8"/>
+
+    <module name="SuppressWarningsFilter" />
+
+    <module name="TreeWalker">
+
+        <module name="SuppressWarningsHolder" />
+
+        <!--#################################################################-->
+        <!--################ NAMING CHECKS ##################################-->
+        <!--#################################################################-->
+
+        <!-- Require package names to be all lower-case -->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9_]*)*$"/>
+            <message key="name.invalidPattern"
+                value="Package name ''{0}'' must be lower-case."/>
+        </module>
+
+        <!-- Require standard type names -->
+        <module name="TypeName">
+            <message key="name.invalidPattern"
+                value="Type name ''{0}'' must begin with a capital letter."/>
+        </module>
+
+        <!--
+        Type parameters must either be a single upper-case character, or must begin
+        with an upper-case character and end with "T" (e.g. DataT).
+        -->
+        <module name="ClassTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]+[T]$)"/>
+            <message key="name.invalidPattern"
+                value="Class type parameter ''{0}'' must either be a single upper-case character, or begin with an upper-case character and end with 'T'."/>
+        </module>
+
+       <module name="MemberName">
+            <property name="format" value="^(id)|([a-z][a-z0-9][a-zA-Z0-9]+)$"/>
+       </module>
+
+        <!--
+        Require method names to be at least two characters long, and start with a
+        lower case letter.
+        -->
+        <module name="MethodName">
+            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
+            <message key="name.invalidPattern"
+                value="Method name ''{0}'' must be at least two characters long."/>
+        </module>
+
+        <!--
+        Type parameters must either be a single upper-case character, or must begin
+        with an upper-case character and end with "T" (e.g. DataT).
+        -->
+        <module name="MethodTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]+[T]$)"/>
+            <message key="name.invalidPattern"
+                value="Method type parameter ''{0}'' must either be a single upper-case character or begin with an upper-case character and end with 'T'."/>
+        </module>
+
+        <!-- Require parameter names to be at least two characters long -->
+        <module name="ParameterName">
+            <property name="format" value="^[a-z][A-z0-9]*$"/>
+            <message key="name.invalidPattern"
+                value="Parameter name ''{0}'' must be at least two characters long."/>
+        </module>
+
+        <!--
+        Require local variables to be at least two characters long,
+        unless they are counters on a for loop.
+        -->
+        <module name="LocalVariableName">
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="format" value="^[a-z][A-z0-9]*$"/>
+            <property name="allowOneCharVarInForLoop" value="true"/>
+            <message key="name.invalidPattern"
+                value="Local variable name ''{0}'' must be at least two characters long."/>
+        </module>
+
+        <!-- Require that constants be capitalized. -->
+        <module name="ConstantName"/>
+
+        <module name="LocalFinalVariableName"/>
+
+        <!--
+        Require that static, non-public, non-final variable names be prefixed
+        with "s".
+        -->
+        <module name="StaticVariableName">
+            <property name="format" value="^s[A-Z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                value="Static variable name ''{0}'' must be prefixed with s and be at least two characters long."/>
+        </module>
+
+        <!-- Forbid unnecessary escaping. -->
+        <module name="IllegalTokenText">
+            <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
+            <property name="format" value="\\u00(08|09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
+            <property name="message" value="Avoid using corresponding octal or Unicode escape."/>
+        </module>
+
+        <!-- Forbid unnecessary unicode escapes -->
+        <module name="AvoidEscapedUnicodeCharacters">
+            <property name="allowEscapesForControlCharacters" value="true"/>
+            <property name="allowByTailComment" value="true"/>
+            <property name="allowNonPrintableEscapes" value="true"/>
+        </module>
+
+        <!-- Require array notation on type (e.g. int[] x, not int x[]) -->
+        <module name="ArrayTypeStyle"/>
+
+        <!--###################################################-->
+        <!--################ IMPORTS ##########################-->
+        <!--###################################################-->
+
+        <!-- Star imports are forbidden. -->
+        <module name="AvoidStarImport"/>
+
+        <!-- Forbid imports from sun.* -->
+        <module name="IllegalImport"/>
+
+        <!-- Forbid redudant imports (e.g. import java.lang.String;) -->
+        <module name="RedundantImport"/>
+
+        <!-- Forbid unused imports -->
+        <module name="UnusedImports"/>
+
+        <!-- Forbid redundant modifiers -->
+        <module name="RedundantModifier"/>
+
+        <!--##############################################################-->
+        <!--################ STRUCTURAL / WRAPPING CHECKS ################-->
+        <!--##############################################################-->
+
+        <!-- Require One top-level class per file -->
+        <module name="OneTopLevelClass"/>
+
+        <!-- Line-wrapping in import statements is forbidden. -->
+        <module name="NoLineWrap"/>
+
+        <!-- Empty catch blocks are forbidden. -->
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="expected|ignore"/>
+        </module>
+
+        <!-- Require braces for all code blocks -->
+        <module name="NeedBraces"/>
+
+        <!-- Require One statement per line (e.g. no "a = b; c = d;") -->
+        <module name="OneStatementPerLine"/>
+
+        <!-- Multiple variable declarations on one line is forbidden. -->
+        <module name="MultipleVariableDeclarations"/>
+
+        <!--
+        Case fall-through in switch statements is forbidden, except where an
+        explicit "// fall-through" comment exists.
+        -->
+        <module name="FallThrough">
+            <property name="reliefPattern" value="fall-through"/>
+        </module>
+
+        <!-- Require empty lines between definitions -->
+        <module name="EmptyLineSeparator">
+            <property name="allowNoEmptyLineBetweenFields" value="true"/>
+        </module>
+
+        <!-- Wrap only permitted before dot, e.g.
+        fluentInterface.doX()
+            .doY()
+            .doZ();
+        -->
+        <module name="SeparatorWrap">
+            <property name="tokens" value="DOT"/>
+            <property name="option" value="nl"/>
+        </module>
+
+        <!-- Wrap only permitted after comma, e.g.
+        doThings(withA,
+            withB,
+            withC);
+        -->
+        <module name="SeparatorWrap">
+            <property name="tokens" value="COMMA"/>
+            <property name="option" value="EOL"/>
+        </module>
+
+        <!-- require line breaks before common binary operators -->
+        <module name="OperatorWrap">
+            <property name="option" value="NL"/>
+            <property name="tokens" value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR "/>
+        </module>
+
+        <!--
+        Require that annotations on type, method and constructor definitions be on
+        a separate line.
+        -->
+        <module name="AnnotationLocation">
+            <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF"/>
+        </module>
+
+        <!--
+        Variable declarations may have annotations on the same line.
+        -->
+        <module name="AnnotationLocation">
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="allowSamelineMultipleAnnotations" value="true"/>
+        </module>
+
+        <!-- Forbid empty statements -->
+        <module name="EmptyStatement"/>
+
+        <!--#################################################################-->
+        <!--################ WHITESPACE / LINE LENGTH CHECKS ################-->
+        <!--#################################################################-->
+
+        <!-- Forbid whitespace after prefix unary operators and accessors -->
+        <module name="NoWhitespaceAfter">
+            <property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS"/>
+        </module>
+
+        <!--
+        Forbid whitespace before comma, semi-colon, and postfix unary operators
+        -->
+        <module name="NoWhitespaceBefore"/>
+
+        <!-- Require whitespace around common tokens (=, if, etc.) -->
+        <module name="WhitespaceAround">
+            <property name="allowEmptyConstructors" value="true"/>
+            <property name="allowEmptyMethods" value="true"/>
+            <property name="allowEmptyTypes" value="true"/>
+            <property name="allowEmptyLoops" value="true"/>
+            <message key="ws.notFollowed"
+                value="WhitespaceAround: ''{0}'' is not followed by whitespace. Empty blocks may only be represented as '{}' when not part of a multi-block statement (4.1.3)"/>
+            <message key="ws.notPreceded"
+                value="WhitespaceAround: ''{0}'' is not preceded with whitespace."/>
+        </module>
+
+        <!-- Require standard whitespace around type parameters -->
+        <module name="GenericWhitespace">
+            <message key="ws.followed"
+                value="GenericWhitespace ''{0}'' is followed by whitespace."/>
+            <message key="ws.preceded"
+                value="GenericWhitespace ''{0}'' is preceded with whitespace."/>
+            <message key="ws.illegalFollow"
+                value="GenericWhitespace ''{0}'' should followed by whitespace."/>
+            <message key="ws.notPreceded"
+                value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
+        </module>
+
+        <!-- Require Android standard indentation. -->
+        <!-- FIXME
+        <module name="Indentation">
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="4"/>
+            <property name="throwsIndent" value="8"/>
+            <property name="lineWrappingIndentation" value="8"/>
+            <property name="arrayInitIndent" value="4"/>
+        </module>
+        -->
+
+        <!--
+        Require that comments be placed at the same level of indentation as
+        surrounding code.
+        -->
+        <module name="CommentsIndentation"/>
+
+        <!-- 120 char per line max, unless unavoidable -->
+        <module name="LineLength">
+            <property name="max" value="120"/>
+            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+        </module>
+
+        <!--#################################################################-->
+        <!--################ MISC. LANGUAGE CHECKS ##########################-->
+        <!--#################################################################-->
+
+        <!-- File name must correspond to contained class -->
+        <module name="OuterTypeFilename"/>
+
+        <!--
+        Long constants must be suffixed with L:
+        "The suffix L is preferred, because the letter l (ell) is often hard to
+        distinguish from the digit 1 (one)."
+        http://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10.1
+        -->
+        <module name="UpperEll"/>
+
+        <!--
+        Require modifier order consistent with recommends in JLS:
+        http://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html
+        -->
+        <module name="ModifierOrder"/>
+
+        <!-- Finalizers are forbidden. -->
+        <module name="NoFinalizer"/>
+
+        <!-- overloaded methods must be grouped together -->
+        <module name="OverloadMethodsDeclarationOrder"/>
+
+        <!-- some sanity for declaration order -->
+        <module name="DeclarationOrder"/>
+
+        <module name="InnerTypeLast"/>
+
+        <module name="RedundantModifier"/>
+
+        <!-- Require variables to be declared close to where they are used -->
+        <!--<module name="VariableDeclarationUsageDistance"/>-->
+
+        <!-- Require that equals() and hashCode() are overridden together -->
+        <module name="EqualsHashCode"/>
+
+        <!-- Forbid shadowing fields or variables -->
+        <module name="HiddenField">
+            <!-- exception: constructor parameters -->
+            <property name="ignoreConstructorParameter" value="true"/>
+            <!-- exception: setter method parameters -->
+            <property name="ignoreSetter" value="true"/>
+        </module>
+
+        <!--
+        Forbid assignments in expressions, with the exception of loop conditions
+        -->
+        <module name="InnerAssignment"/>
+
+        <!-- Require @Override on overridden methods -->
+        <module name="MissingOverride"/>
+
+        <!-- Forbid arbitrarily nested blocks -->
+        <module name="AvoidNestedBlocks"/>
+
+        <!-- Require boolean expressions to be simplifed -->
+        <module name="SimplifyBooleanExpression"/>
+
+        <!-- Require boolean returns to be simplified -->
+        <module name="SimplifyBooleanReturn"/>
+
+        <!-- Forbid interfaces with no methods -->
+        <module name="InterfaceIsType"/>
+
+        <module name="VisibilityModifier"/>
+    </module>
+
+    <!--################################################-->
+    <!--################ Non-AST checks ################-->
+    <!--################################################-->
+
+    <!-- Report every line containing a tab character" -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <!-- Forbid trailing whitespace -->
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Line has trailing whitespace."/>
+    </module>
+
+    <!-- No trailing comments -->
+    <!--<module name="TrailingComment"/>-->
+
+    <!-- Require a new line at the end of all files -->
+    <module name="NewlineAtEndOfFile"/>
+
+    <!-- Trailing spaces -->
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Line has trailing spaces."/>
+    </module>
+
+    <!-- Double blank lines -->
+    <module name="RegexpMultiline">
+        <property name="format" value="\n\n\n"/>
+        <property name="message" value="Double blank lines."/>
+    </module>
+</module>

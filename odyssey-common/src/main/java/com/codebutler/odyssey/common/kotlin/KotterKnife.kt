@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_ANONYMOUS_PARAMETER")
 
 package com.codebutler.odyssey.common.kotlin
 
@@ -126,7 +126,7 @@ private val SupportFragment.viewFinder: SupportFragment.(Int) -> View?
 private val ViewHolder.viewFinder: ViewHolder.(Int) -> View?
     get() = { itemView.findViewById(it) }
 
-private fun viewNotFound(id:Int, desc: KProperty<*>): Nothing =
+private fun viewNotFound(id: Int, desc: KProperty<*>): Nothing =
         throw IllegalStateException("View ID $id for '${desc.name}' not found.")
 
 @Suppress("UNCHECKED_CAST")
@@ -135,7 +135,7 @@ private fun <T, V : View> required(id: Int, finder: T.(Int) -> View?)
 
 @Suppress("UNCHECKED_CAST")
 private fun <T, V : View> optional(id: Int, finder: T.(Int) -> View?)
-        = Lazy { t: T, desc ->  t.finder(id) as V? }
+        = Lazy { t: T, desc -> t.finder(id) as V? }
 
 @Suppress("UNCHECKED_CAST")
 private fun <T, V : View> required(ids: IntArray, finder: T.(Int) -> View?)

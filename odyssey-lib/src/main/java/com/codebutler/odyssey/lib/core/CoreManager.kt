@@ -42,7 +42,7 @@ class CoreManager(private val http: OdysseyHttp, private val coresDir: File) {
         val libFileName = zipFileName.substringBeforeLast(".zip")
         val destFile = File(coresDir, "lib$libFileName")
 
-         if (destFile.exists()) {
+        if (destFile.exists()) {
             callback(Response.Success(destFile))
             return
         }

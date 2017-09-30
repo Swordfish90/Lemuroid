@@ -23,6 +23,7 @@
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.codebutler.odyssey">
 
     <uses-feature
@@ -43,7 +44,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:process=":main">
+        android:process=":main"
+        android:isGame="true"
+        tools:ignore="MissingTvBanner">
 
         <activity android:name="com.codebutler.odyssey.app.feature.main.MainActivity">
             <intent-filter>

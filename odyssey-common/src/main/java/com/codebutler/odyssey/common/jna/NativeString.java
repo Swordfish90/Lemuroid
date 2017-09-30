@@ -95,10 +95,9 @@ public class NativeString implements CharSequence, Comparable {
     }
 
     public int compareTo(Object other) {
-
-        if (other == null)
+        if (other == null) {
             return 1;
-
+        }
         return toString().compareTo(other.toString());
     }
 }

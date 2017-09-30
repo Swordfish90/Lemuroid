@@ -349,7 +349,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
     }
 
     fun onKeyEvent(event: KeyEvent) {
-        when(event.action) {
+        when (event.action) {
             KeyEvent.ACTION_DOWN -> pressedKeys.add(event.keyCode)
             KeyEvent.ACTION_UP -> pressedKeys.remove(event.keyCode)
         }
@@ -373,7 +373,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
             }
         }
 
-        when(event.rawY) {
+        when (event.rawY) {
             1.0F -> {
                 pressedKeys.add(KeyEvent.KEYCODE_DPAD_DOWN)
                 pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)

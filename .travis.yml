@@ -1,0 +1,29 @@
+language: android
+addons:
+  artifacts:
+    debug: true
+    s3_region: "us-west-1"
+    paths:
+      - $(ls $TRAVIS_BUILD_DIR/*/build/outputs/lint-results-debug.html)
+jdk:
+  - oraclejdk8
+android:
+  components:
+    - tools
+    - android-25
+    - build-tools-25.0.2
+    - platform-tools
+    - build-tools-25.0.2
+    - android-25
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+script: ./gradlew assembleDebug checkstyle lintDebug lintKotlin checkDebug
