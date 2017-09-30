@@ -65,5 +65,9 @@
             android:process=":game"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="83662f2d278441bb282ae75bb1372d250b1bdc04"/>
     </application>
 </manifest>

@@ -29,6 +29,8 @@ import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import okhttp3.OkHttpClient
 import java.io.File
 import java.util.concurrent.Executors
@@ -56,4 +58,9 @@ class OdysseyApplication : Application() {
     }
     val library by lazy { GameLibrary(db, ovgdb, listOf(LocalGameLibraryProvider())) }
     val coreManager by lazy { CoreManager(OdysseyHttp(OkHttpClient()), File(cacheDir, "cores")) }
+
+    override fun onCreate() {
+        super.onCreate()
+        Fabric.with(this, Crashlytics())
+    }
 }
