@@ -1,5 +1,5 @@
 /*
- * OdysseyDatabase.kt
+ * OdysseyActivity.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,26 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.library.db
+package com.codebutler.odyssey.lib.android
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
-import com.codebutler.odyssey.common.db.Converters
-import com.codebutler.odyssey.lib.library.db.dao.GameDao
-import com.codebutler.odyssey.lib.library.db.entity.Game
+import android.support.v4.app.FragmentActivity
 
-@Database(
-        entities = arrayOf(Game::class),
-        version = 3,
-        exportSchema = true)
-@TypeConverters(Converters::class)
-abstract class OdysseyDatabase : RoomDatabase() {
-
-    companion object {
-        const val DB_NAME = "odyssey"
-    }
-
-    abstract fun gameDao(): GameDao
-}
-
+open class OdysseyActivity: FragmentActivity()

@@ -123,6 +123,7 @@ class GameLibrary(
                                 fileUri = file.uri,
                                 title = release.toNullable()?.titleName ?: file.name,
                                 systemId = system.value.id,
+                                developer = release.toNullable()?.developer,
                                 coverFrontUrl = release.toNullable()?.coverFront
                         ).toOptional()
                         else -> None

@@ -30,14 +30,22 @@ dependencies {
     implementation project(":odyssey-common")
     implementation project(":odyssey-lib")
 
+    implementation libs.autoDispose
+    implementation libs.autoDisposeAndroid
+    implementation libs.autoDisposeAndroidArch
+    implementation libs.autoDisposeKotlin
     implementation libs.dagger
     implementation libs.kotlinStdlib
     implementation libs.supportAppCompatV7
+    implementation libs.supportLeanbackV17
+    implementation libs.supportPaletteV7
+    implementation libs.supportPrefLeanbackV17
     implementation libs.supportRecyclerViewV7
     implementation libs.okHttp3
     implementation libs.roomRuntime
     implementation libs.rxAndroid2
     implementation libs.rxJava2
+    implementation libs.rxPermissions2
     implementation libs.picasso
 
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {

@@ -19,7 +19,6 @@
 
 package com.codebutler.odyssey.app
 
-import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import dagger.BindsInstance
@@ -31,8 +30,6 @@ interface OdysseyApplicationComponent {
     fun coreManager(): CoreManager
 
     fun gameLibrary(): GameLibrary
-
-    fun inject(activity: MainActivity)
 
     fun inject(app: OdysseyApplication)
 

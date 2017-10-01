@@ -20,10 +20,32 @@
 package com.codebutler.odyssey.app.feature.main
 
 import com.codebutler.odyssey.app.OdysseyApplicationComponent
+import com.codebutler.odyssey.lib.core.CoreManager
+import com.codebutler.odyssey.lib.library.GameLibrary
+import dagger.BindsInstance
 import dagger.Component
 
-@Component(dependencies = arrayOf(OdysseyApplicationComponent::class))
+@Component(
+        dependencies = arrayOf(OdysseyApplicationComponent::class),
+        modules = arrayOf(MainModule::class))
 interface MainComponent {
 
+    fun coreManager(): CoreManager
+
+    fun gameLibrary(): GameLibrary
+
     fun inject(activity: MainActivity)
+
+    @Component.Builder
+    interface Builder {
+
+        fun appComponent(appComponent: OdysseyApplicationComponent): Builder
+
+        fun module(module: MainModule): Builder
+
+        @BindsInstance
+        fun activity(activity: MainActivity): Builder
+
+        fun build(): MainComponent
+    }
 }

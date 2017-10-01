@@ -23,6 +23,7 @@ import android.net.Uri
 import android.os.Build
 import com.codebutler.odyssey.common.http.OdysseyHttp
 import com.codebutler.odyssey.common.http.OdysseyHttp.Response
+import io.reactivex.Single
 import okio.Okio
 import java.io.File
 
@@ -38,39 +39,41 @@ class CoreManager(private val http: OdysseyHttp, private val coresDir: File) {
         coresDir.mkdirs()
     }
 
-    fun downloadCore(zipFileName: String, callback: (response: Response<File>) -> Unit) {
-        val libFileName = zipFileName.substringBeforeLast(".zip")
-        val destFile = File(coresDir, "lib$libFileName")
+    fun downloadCore(zipFileName: String): Single<Response<File>> {
+        return Single.create { emitter ->
+            val libFileName = zipFileName.substringBeforeLast(".zip")
+            val destFile = File(coresDir, "lib$libFileName")
 
-        if (destFile.exists()) {
-            callback(Response.Success(destFile))
-            return
-        }
+            if (destFile.exists()) {
+                emitter.onSuccess(Response.Success(destFile))
+                return@create
+            }
 
-        val uri = coresUri.buildUpon()
-                .appendPath(zipFileName)
-                .build()
+            val uri = coresUri.buildUpon()
+                    .appendPath(zipFileName)
+                    .build()
 
-        http.downloadZip(uri, { response ->
-            when (response) {
-                is Response.Success -> {
-                    val zipStream = response.body
-                    while (true) {
-                        val entry = zipStream.nextEntry ?: break
-                        if (entry.name == libFileName) {
-                            Okio.source(zipStream).use { zipSource ->
-                                Okio.sink(destFile).use { fileSink ->
-                                    Okio.buffer(zipSource).readAll(fileSink)
-                                    callback(Response.Success(destFile))
-                                    return@downloadZip
+            http.downloadZip(uri, { response ->
+                when (response) {
+                    is Response.Success -> {
+                        val zipStream = response.body
+                        while (true) {
+                            val entry = zipStream.nextEntry ?: break
+                            if (entry.name == libFileName) {
+                                Okio.source(zipStream).use { zipSource ->
+                                    Okio.sink(destFile).use { fileSink ->
+                                        Okio.buffer(zipSource).readAll(fileSink)
+                                        emitter.onSuccess(Response.Success(destFile))
+                                        return@downloadZip
+                                    }
                                 }
                             }
                         }
+                        emitter.onSuccess(Response.Failure(Exception("Library not found in zip")))
                     }
-                    callback(Response.Failure(Exception("Library not found in zip")))
+                    is Response.Failure -> emitter.onSuccess(Response.Failure(response.error))
                 }
-                is Response.Failure -> callback(Response.Failure(response.error))
-            }
-        })
+            })
+        }
     }
 }

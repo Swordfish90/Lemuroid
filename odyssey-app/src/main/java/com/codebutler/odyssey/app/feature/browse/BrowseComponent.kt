@@ -1,5 +1,5 @@
 /*
- * OdysseyDatabase.kt
+ * BrowseComponent.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,26 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.library.db
+package com.codebutler.odyssey.app.feature.browse
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
-import com.codebutler.odyssey.common.db.Converters
-import com.codebutler.odyssey.lib.library.db.dao.GameDao
-import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.codebutler.odyssey.app.feature.main.MainComponent
+import dagger.Component
 
-@Database(
-        entities = arrayOf(Game::class),
-        version = 3,
-        exportSchema = true)
-@TypeConverters(Converters::class)
-abstract class OdysseyDatabase : RoomDatabase() {
+@Component(dependencies = arrayOf(MainComponent::class))
+interface BrowseComponent {
 
-    companion object {
-        const val DB_NAME = "odyssey"
-    }
-
-    abstract fun gameDao(): GameDao
+    fun inject(fragment: BrowseFragment)
 }
-

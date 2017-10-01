@@ -31,4 +31,5 @@ data class Game(
         val fileUri: Uri,
         val title: String,
         val systemId: String,
+        val developer: String?,
         val coverFrontUrl: String?)

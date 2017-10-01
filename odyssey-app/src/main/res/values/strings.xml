@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
 <resources>
     <string name="app_name">Odyssey</string>
+    <string name="dismiss_error">Dismiss</string>
     <string name="loading">Loading…</string>
-    <string name="loading_x">Loading %s…</string>
 </resources>
