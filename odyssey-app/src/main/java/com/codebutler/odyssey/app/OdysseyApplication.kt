@@ -20,20 +20,10 @@
 package com.codebutler.odyssey.app
 
 import android.app.Application
-import android.arch.persistence.room.Room
 import android.content.Context
 import com.codebutler.odyssey.BuildConfig
-import com.codebutler.odyssey.common.http.OdysseyHttp
-import com.codebutler.odyssey.lib.core.CoreManager
-import com.codebutler.odyssey.lib.library.GameLibrary
-import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
-import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
-import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
-import okhttp3.OkHttpClient
-import java.io.File
-import java.util.concurrent.Executors
 
 class OdysseyApplication : Application() {
 
@@ -48,19 +38,18 @@ class OdysseyApplication : Application() {
         fun get(context: Context) = context.applicationContext as OdysseyApplication
     }
 
-    // FIXME: Dagger goes here
-    val executorService by lazy { Executors.newSingleThreadExecutor() }
-    val ovgdb by lazy { OvgdbManager(this, executorService) }
-    val db by lazy {
-        Room.databaseBuilder(this, OdysseyDatabase::class.java, OdysseyDatabase.DB_NAME)
-                .fallbackToDestructiveMigration()
-                .build()
-    }
-    val library by lazy { GameLibrary(db, ovgdb, listOf(LocalGameLibraryProvider())) }
-    val coreManager by lazy { CoreManager(OdysseyHttp(OkHttpClient()), File(cacheDir, "cores")) }
+    lateinit var component: OdysseyApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
-        Fabric.with(this, Crashlytics())
+
+        component = DaggerOdysseyApplicationComponent.builder()
+                .application(this)
+                .module(OdysseyApplicationModule())
+                .build()
+
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, Crashlytics())
+        }
     }
 }

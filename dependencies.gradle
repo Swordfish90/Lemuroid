@@ -7,10 +7,13 @@ ext {
     ]
 
     def archVersion = '1.0.0-alpha9-1'
+    def daggerVersion = '2.11'
     def koptionalVersion = '1.2.0'
     def supportVersion  = '26.1.0'
 
     libs = [
+        dagger:                "com.google.dagger:dagger:${daggerVersion}",
+        daggerCompiler:        "com.google.dagger:dagger-compiler:${daggerVersion}",
         jna:                   'net.java.dev.jna:jna:4.4.0',
         okHttp3:               'com.squareup.okhttp3:okhttp:3.9.0',
         roomRuntime:           "android.arch.persistence.room:runtime:${archVersion}",

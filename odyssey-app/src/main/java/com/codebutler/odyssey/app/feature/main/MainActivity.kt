@@ -40,10 +40,13 @@ import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.common.http.OdysseyHttp
 import com.codebutler.odyssey.common.kotlin.bindView
 import com.codebutler.odyssey.common.kotlin.inflate
+import com.codebutler.odyssey.lib.core.CoreManager
+import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,13 +55,21 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSION = 10001
     }
 
-    private val coreManager by lazy { OdysseyApplication.get(this).coreManager }
+    @Inject lateinit var coreManager: CoreManager
+    @Inject lateinit var gameLibrary: GameLibrary
+
+    private lateinit var component: MainComponent
 
     private val recycler: RecyclerView by bindView(R.id.recycler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        component = DaggerMainComponent.builder()
+                .odysseyApplicationComponent(OdysseyApplication.get(this).component)
+                .build()
+        component.inject(this)
 
         recycler.layoutManager = GridLayoutManager(this, 3)
 
@@ -85,7 +96,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCreateWithPermission() {
-        val gameLibrary = OdysseyApplication.get(this).library
         gameLibrary.indexGames()
         gameLibrary.games
                 .observeOn(AndroidSchedulers.mainThread())

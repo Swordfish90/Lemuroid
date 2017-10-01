@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     defaultConfig {
@@ -29,6 +30,7 @@ dependencies {
     implementation project(":odyssey-common")
     implementation project(":odyssey-lib")
 
+    implementation libs.dagger
     implementation libs.kotlinStdlib
     implementation libs.supportAppCompatV7
     implementation libs.supportRecyclerViewV7
@@ -41,6 +43,10 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
+
+    annotationProcessor libs.daggerCompiler
+    kapt libs.daggerCompiler
+
     testImplementation 'junit:junit:4.12'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
