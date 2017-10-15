@@ -24,10 +24,10 @@ import android.support.v17.leanback.app.ErrorSupportFragment
 import android.view.View
 import com.codebutler.odyssey.R
 
-class BrowseErrorFragment: ErrorSupportFragment() {
+class BrowseErrorFragment : ErrorSupportFragment() {
 
     companion object {
-        private const val ARG_MESSAGE = "message";
+        private const val ARG_MESSAGE = "message"
 
         fun create(message: String): BrowseErrorFragment {
             val fragment = BrowseErrorFragment()

@@ -40,7 +40,7 @@ import com.uber.autodispose.kotlin.autoDisposeWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class BrowseFragment: BrowseSupportFragment() {
+class BrowseFragment : BrowseSupportFragment() {
 
     lateinit var component: BrowseComponent
 

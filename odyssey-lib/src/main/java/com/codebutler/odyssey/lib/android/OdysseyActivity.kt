@@ -21,4 +21,4 @@ package com.codebutler.odyssey.lib.android
 
 import android.support.v4.app.FragmentActivity
 
-open class OdysseyActivity: FragmentActivity()
+open class OdysseyActivity : FragmentActivity()
