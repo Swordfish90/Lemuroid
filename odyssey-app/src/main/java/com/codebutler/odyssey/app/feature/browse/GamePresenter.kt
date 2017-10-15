@@ -72,13 +72,12 @@ class GamePresenter : Presenter() {
         cardView.titleText = game.title
         cardView.contentText = game.developer
 
-        if (game.coverFrontUrl != null) {
-            // Set card size from dimension resources.
-            val res = cardView.resources
-            val width = res.getDimensionPixelSize(R.dimen.card_width)
-            val height = res.getDimensionPixelSize(R.dimen.card_height)
-            cardView.setMainImageDimensions(width, height)
+        val res = cardView.resources
+        val width = res.getDimensionPixelSize(R.dimen.card_width)
+        val height = res.getDimensionPixelSize(R.dimen.card_height)
+        cardView.setMainImageDimensions(width, height)
 
+        if (game.coverFrontUrl != null) {
             Picasso.with(cardView.context)
                     .load(game.coverFrontUrl)
                     .error(mDefaultCardImage)
