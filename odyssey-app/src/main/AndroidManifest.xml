@@ -66,6 +66,10 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
+        <activity android:name=".app.feature.settings.SettingsActivity"
+            android:exported="true"
+            android:theme="@style/LeanbackPreferences"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="83662f2d278441bb282ae75bb1372d250b1bdc04"/>

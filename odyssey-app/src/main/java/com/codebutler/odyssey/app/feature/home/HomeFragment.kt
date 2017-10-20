@@ -21,6 +21,7 @@ package com.codebutler.odyssey.app.feature.home
 
 import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
+import android.content.Intent
 import android.os.Bundle
 import android.support.v17.leanback.app.BrowseFragment
 import android.support.v17.leanback.app.BrowseSupportFragment
@@ -29,11 +30,14 @@ import android.support.v17.leanback.widget.HeaderItem
 import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.OnItemViewClickedListener
+import android.support.v4.app.ActivityOptionsCompat
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
+import com.codebutler.odyssey.app.feature.common.SimpleErrorFragment
 import com.codebutler.odyssey.app.feature.common.SimpleItem
 import com.codebutler.odyssey.app.feature.common.SimpleItemPresenter
 import com.codebutler.odyssey.app.feature.main.MainActivity
+import com.codebutler.odyssey.app.feature.settings.SettingsActivity
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
@@ -50,6 +54,7 @@ class HomeFragment : BrowseSupportFragment() {
     private object AboutItem : SimpleItem(R.string.about)
     private object RescanItem : SimpleItem(R.string.rescan)
     private object AllGamesItem : SimpleItem(R.string.all_games)
+    private object SettingsItem : SimpleItem(R.string.settings)
 
     @Inject lateinit var gameLauncher: GameLauncher
     @Inject lateinit var gameLibrary: GameLibrary
@@ -113,6 +118,7 @@ class HomeFragment : BrowseSupportFragment() {
                 }
 
         val settingsAdapter = ArrayObjectAdapter(SimpleItemPresenter()).apply {
+            add(SettingsItem)
             add(RescanItem)
             add(AboutItem)
         }
@@ -135,7 +141,28 @@ class HomeFragment : BrowseSupportFragment() {
                         .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.ALL))
                         .addToBackStack(null)
                         .commit()
-                is RescanItem -> gameLibrary.indexGames()
+                is RescanItem -> {
+                    progressBarManager.show()
+                    gameLibrary.indexGames()
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
+                            .subscribe(
+                                    { progressBarManager.hide() },
+                                    { error ->
+                                        progressBarManager.hide()
+                                        val errorFragment = SimpleErrorFragment.create(error.toString())
+                                        fragmentManager.beginTransaction()
+                                                .replace(R.id.content, errorFragment)
+                                                .addToBackStack(null)
+                                                .commit()
+                                    })
+                }
+                is SettingsItem -> {
+                    val intent = Intent(activity, SettingsActivity::class.java)
+                    val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity)
+                            .toBundle()
+                    startActivity(intent, bundle)
+                }
                 is AboutItem -> {}
             }
         }

@@ -17,6 +17,7 @@ allprojects {
         google()
         jcenter()
         mavenLocal()
+        mavenCentral()
     }
 }
 
@@ -57,6 +58,11 @@ subprojects {
                 dexOptions {
                     dexInProcess = true
                 }
+            }
+        }
+        kotlin {
+            experimental {
+                coroutines "enable"
             }
         }
     }

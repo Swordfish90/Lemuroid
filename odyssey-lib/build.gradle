@@ -17,9 +17,9 @@ dependencies {
     implementation libs.rxJava2
     implementation libs.rxRelay2
     implementation libs.supportAppCompatV7
+    implementation libs.supportPrefLeanbackV17
 
     kapt libs.roomCompiler
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 android {
@@ -40,12 +40,4 @@ android {
             path "CMakeLists.txt"
         }
     }
-}
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
-repositories {
-    mavenCentral()
 }

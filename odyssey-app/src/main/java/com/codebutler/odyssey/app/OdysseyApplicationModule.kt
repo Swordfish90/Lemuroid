@@ -24,8 +24,10 @@ import com.codebutler.odyssey.common.http.OdysseyHttp
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
+import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
+import com.codebutler.odyssey.provider.webdav.WebDavLibraryProvider
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -50,8 +52,15 @@ class OdysseyApplicationModule {
                 .build()
 
     @Provides
-    fun gameLibrary(app: OdysseyApplication, db: OdysseyDatabase, ovgdbManager: OvgdbManager)
-            = GameLibrary(db, ovgdbManager, listOf(LocalGameLibraryProvider()))
+    fun gameLibraryProviders(app: OdysseyApplication): Set<@JvmSuppressWildcards GameLibraryProvider>
+            = setOf(LocalGameLibraryProvider(app), WebDavLibraryProvider(app))
+
+    @Provides
+    fun gameLibrary(
+            db: OdysseyDatabase,
+            ovgdbManager: OvgdbManager,
+            gameLibraryProviders: Set<@JvmSuppressWildcards GameLibraryProvider>)
+            = GameLibrary(db, ovgdbManager, gameLibraryProviders)
 
     @Provides
     fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
@@ -60,5 +69,6 @@ class OdysseyApplicationModule {
             .build()
 
     @Provides
-    fun coreManager(app: OdysseyApplication, okHttpClient: OkHttpClient) = CoreManager(OdysseyHttp(okHttpClient), File(app.cacheDir, "cores"))
+    fun coreManager(app: OdysseyApplication, okHttpClient: OkHttpClient)
+            = CoreManager(OdysseyHttp(okHttpClient), File(app.cacheDir, "cores"))
 }

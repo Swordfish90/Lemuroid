@@ -1,3 +1,4 @@
 include ':odyssey-common'
 include ':odyssey-lib'
+include ':odyssey-provider-webdav'
 include ':odyssey-app'

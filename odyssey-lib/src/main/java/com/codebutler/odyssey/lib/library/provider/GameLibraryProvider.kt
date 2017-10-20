@@ -19,6 +19,7 @@
 
 package com.codebutler.odyssey.lib.library.provider
 
+import android.support.v17.preference.LeanbackPreferenceFragment
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import io.reactivex.Single
@@ -26,7 +27,11 @@ import java.io.File
 
 interface GameLibraryProvider {
 
+    val name: String
+
     val uriScheme: String
+
+    val prefsFragmentClass: Class<out LeanbackPreferenceFragment>?
 
     fun listFiles(): Single<Iterable<GameLibraryFile>>
 

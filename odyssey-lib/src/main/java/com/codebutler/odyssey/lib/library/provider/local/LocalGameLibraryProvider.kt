@@ -19,18 +19,26 @@
 
 package com.codebutler.odyssey.lib.library.provider.local
 
+import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import android.support.v17.preference.LeanbackPreferenceFragment
 import com.codebutler.odyssey.common.kotlin.calculateCrc32
+import com.codebutler.odyssey.lib.R
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import io.reactivex.Single
 import java.io.File
 
-class LocalGameLibraryProvider : GameLibraryProvider {
+class LocalGameLibraryProvider(context: Context) : GameLibraryProvider {
+
+    override val name: String = context.getString(R.string.local_storage)
+
     override val uriScheme: String
         get() = "file"
+
+    override val prefsFragmentClass: Class<LeanbackPreferenceFragment>? = null
 
     override fun listFiles(): Single<Iterable<GameLibraryFile>> = Single.fromCallable {
         Environment.getExternalStorageDirectory()

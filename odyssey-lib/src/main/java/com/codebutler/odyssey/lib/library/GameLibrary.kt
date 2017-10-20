@@ -32,6 +32,8 @@ import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
 import com.gojuno.koptional.rxjava2.filterSome
 import com.gojuno.koptional.toOptional
+import io.reactivex.Completable
+import io.reactivex.CompletableEmitter
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -40,22 +42,22 @@ import io.reactivex.schedulers.Schedulers
 class GameLibrary(
         private val odysseydb: OdysseyDatabase,
         private val ovgdbManager: OvgdbManager,
-        private val libraryProviders: List<GameLibraryProvider>) {
+        private val libraryProviders: Set<GameLibraryProvider>) {
 
     companion object {
         const val TAG = "OdysseyLibrary"
     }
 
-    fun indexGames() {
+    fun indexGames(): Completable = Completable.create { emitter ->
         ovgdbManager.dbReady
                 .observeOn(Schedulers.io())
-                .subscribe { ovgdb -> indexGamesWithDb(ovgdb) }
+                .subscribe { ovgdb -> indexGamesWithDb(ovgdb, emitter) }
     }
 
     // FIXME: Move this somewhere else.
     fun getProvider(game: Game) = libraryProviders.find { it.uriScheme == game.fileUri.scheme }!!
 
-    private fun indexGamesWithDb(ovgdb: OvgdbDatabase) {
+    private fun indexGamesWithDb(ovgdb: OvgdbDatabase, emitter: CompletableEmitter) {
         val startedAtMs = System.currentTimeMillis()
         Observable.fromIterable(libraryProviders)
                 .flatMapSingle { provider -> provider.listFiles() }
@@ -143,10 +145,14 @@ class GameLibrary(
                             Log.d(TAG, "Insert: $game")
                             odysseydb.gameDao().insert(game)
                         },
-                        { error -> Log.e(TAG, "Error while indexing", error) },
+                        { error ->
+                            Log.e(TAG, "Error while indexing", error)
+                            emitter.onError(error)
+                        },
                         {
                             Log.d(TAG, "Done inserting. Looking for games to remove...")
                             removeDeletedGames(startedAtMs)
+                            emitter.onComplete()
                         })
     }
 

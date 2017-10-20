@@ -6,4 +6,6 @@
 
     <color name="default_background">#78909C</color>
     <color name="selected_background">#CFD8DC</color>
+
+    <color name="fastlane_background">#0096a6</color>
 </resources>

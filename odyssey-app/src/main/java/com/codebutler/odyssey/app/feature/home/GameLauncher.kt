@@ -40,25 +40,28 @@ class GameLauncher(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDisposeWith(AndroidLifecycleScopeProvider.from(fragment))
-                .subscribe({ (gameFile, coreFile) ->
-                    fragment.progressBarManager.hide()
+                .subscribe(
+                        { (gameFile, coreFile) ->
+                            fragment.progressBarManager.hide()
 
-                    Completable.fromCallable {
-                        odysseyDb.gameDao().update(game.copy(lastPlayedAt = System.currentTimeMillis()))
-                    }
-                            .subscribeOn(Schedulers.io())
-                            .subscribe()
+                            Completable.fromCallable {
+                                odysseyDb.gameDao().update(game.copy(lastPlayedAt = System.currentTimeMillis()))
+                            }
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe()
 
-                    fragment.startActivity(GameActivity.newIntent(
-                            context = fragment.context,
-                            coreFilePath = coreFile.absolutePath,
-                            gameFilePath = gameFile.absolutePath))
-                }, { error ->
-                    val errorFragment = SimpleErrorFragment.create(error.toString())
-                    fragment.fragmentManager.beginTransaction()
-                            .replace(R.id.content, errorFragment)
-                            .addToBackStack(null)
-                            .commit()
-                })
+                            fragment.startActivity(GameActivity.newIntent(
+                                    context = fragment.context,
+                                    coreFilePath = coreFile.absolutePath,
+                                    gameFilePath = gameFile.absolutePath))
+                        },
+                        { error ->
+                            fragment.progressBarManager.hide()
+                            val errorFragment = SimpleErrorFragment.create(error.toString())
+                            fragment.fragmentManager.beginTransaction()
+                                    .replace(R.id.content, errorFragment)
+                                    .addToBackStack(null)
+                                    .commit()
+                        })
     }
 }

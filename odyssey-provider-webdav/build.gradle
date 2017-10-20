@@ -1,0 +1,16 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation project(':odyssey-lib')
+
+    implementation libs.kotlinStdlib
+    implementation libs.okHttp3
+    implementation libs.rxJava2
+    implementation libs.supportPrefLeanbackV17
+}
+
+android {
+    resourcePrefix 'webdav_'
+}
