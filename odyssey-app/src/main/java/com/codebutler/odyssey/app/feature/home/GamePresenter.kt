@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.codebutler.odyssey.app.feature.browse
+package com.codebutler.odyssey.app.feature.home
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -65,7 +65,11 @@ class GamePresenter : Presenter() {
         // view.findViewById<View>(R.id.info_field).setBackgroundColor(color)
     }
 
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any?) {
+        if (item == null) {
+            return
+        }
+
         val game = item as Game
 
         val cardView = viewHolder.view as ImageCardView

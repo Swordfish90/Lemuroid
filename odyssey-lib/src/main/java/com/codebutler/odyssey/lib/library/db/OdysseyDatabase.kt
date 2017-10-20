@@ -28,7 +28,7 @@ import com.codebutler.odyssey.lib.library.db.entity.Game
 
 @Database(
         entities = arrayOf(Game::class),
-        version = 3,
+        version = 5,
         exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class OdysseyDatabase : RoomDatabase() {

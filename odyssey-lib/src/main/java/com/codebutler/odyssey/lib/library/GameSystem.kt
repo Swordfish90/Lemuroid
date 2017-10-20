@@ -52,7 +52,7 @@ data class GameSystem(
                         listOf("smc", "sfc", "swc", "fig")
                 ),
                 GameSystem(
-                        "genesis",
+                        "md",
                         R.string.game_system_title_genesis,
                         R.string.game_system_abbr_genesis,
                         "picodrive_libretro_android.so.zip",
@@ -91,8 +91,8 @@ data class GameSystem(
 
         fun findById(id: String): GameSystem? = SYSTEMS.find { it.id == id }
 
-        fun findByOeid(oeid: String): GameSystem?
-                = findById(oeid.replaceFirst("openemu.system.", ""))
+        fun findByShortName(shortName: String): GameSystem?
+                = findById(shortName.toLowerCase())
 
         fun findByFileExtension(fileExtension: String): GameSystem? =
                 SYSTEMS.find { it.supportedExtensions.contains(fileExtension) }

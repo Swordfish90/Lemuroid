@@ -17,13 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.app.feature.browse
+package com.codebutler.odyssey.app.feature.home
 
 import com.codebutler.odyssey.app.feature.main.MainComponent
 import dagger.Component
 
-@Component(dependencies = arrayOf(MainComponent::class))
-interface BrowseComponent {
+@Component(modules = arrayOf(HomeModule::class), dependencies = arrayOf(MainComponent::class))
+interface HomeComponent {
 
-    fun inject(fragment: BrowseFragment)
+    fun inject(homeFragment: HomeFragment)
+
+    fun inject(gamesGridFragment: GamesGridFragment)
 }

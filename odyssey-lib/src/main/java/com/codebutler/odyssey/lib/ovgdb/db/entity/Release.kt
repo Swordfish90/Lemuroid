@@ -21,9 +21,12 @@ package com.codebutler.odyssey.lib.ovgdb.db.entity
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Index
 import android.arch.persistence.room.PrimaryKey
 
-@Entity(tableName = "releases")
+@Entity(
+        tableName = "releases",
+        indices = arrayOf(Index("releaseID"), Index("romID")))
 data class Release(
         @PrimaryKey
         @ColumnInfo(name = "releaseID")

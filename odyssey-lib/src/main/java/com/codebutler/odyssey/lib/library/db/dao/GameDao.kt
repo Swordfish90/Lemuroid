@@ -19,30 +19,46 @@
 
 package com.codebutler.odyssey.lib.library.db.dao
 
+import android.arch.paging.LivePagedListProvider
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
 
 @Dao
 interface GameDao {
 
-    @Query("SELECT * FROM games ORDER BY title")
-    fun watchAll(): Flowable<List<Game>>
-
-    @Query("SELECT * FROM games ORDER BY title")
-    fun selectAll(): Single<List<Game>>
+    @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
+    fun selectAll(): LivePagedListProvider<Int, Game>
 
     @Query("SELECT * FROM games WHERE fileUri = :fileUri")
     fun selectByFileUri(fileUri: String): Maybe<Game>
+
+    @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
+    fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): Single<List<Game>>
+
+    @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC")
+    fun selectRecentlyPlayed(): LivePagedListProvider<Int, Game>
+
+    @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC")
+    fun selectFavorites(): LivePagedListProvider<Int, Game>
+
+    @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY title ASC, id DESC")
+    fun selectBySystem(systemId: String): LivePagedListProvider<Int, Game>
+
+    @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
+    fun selectSystems(): Single<List<String>>
 
     @Insert
     fun insert(game: Game)
 
     @Delete
     fun delete(games: List<Game>)
+
+    @Update
+    fun update(game: Game)
 }

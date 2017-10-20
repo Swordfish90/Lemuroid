@@ -11,6 +11,10 @@ dependencies {
     implementation libs.rxJava2
     implementation libs.supportAppCompatV7
     implementation libs.supportRecyclerViewV7
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 android { }
+repositories {
+    mavenCentral()
+}

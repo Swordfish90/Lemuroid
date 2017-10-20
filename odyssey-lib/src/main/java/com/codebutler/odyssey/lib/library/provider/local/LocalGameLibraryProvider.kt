@@ -23,6 +23,7 @@ import android.net.Uri
 import android.os.Environment
 import com.codebutler.odyssey.common.kotlin.calculateCrc32
 import com.codebutler.odyssey.lib.library.GameLibraryFile
+import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import io.reactivex.Single
 import java.io.File
@@ -31,44 +32,29 @@ class LocalGameLibraryProvider : GameLibraryProvider {
     override val uriScheme: String
         get() = "file"
 
-    override fun listFiles(): Single<Iterable<GameLibraryFile>> {
-        return Single.create<Iterable<GameLibraryFile>> { emitter ->
-            try {
-                val items = Environment.getExternalStorageDirectory()
-                        .walk()
-                        .maxDepth(1)
-                        .filter { it.isFile }
-                        .map { file -> GameLibraryFile(
-                                name = file.name,
-                                size = file.length(),
-                                crc = file.calculateCrc32().toUpperCase(),
-                                uri = Uri.parse(file.toURI().toString()))
-                        }
-                        .asIterable()
-                emitter.onSuccess(items)
-            } catch (e: Throwable) {
-                emitter.onError(e)
-            }
-        }
+    override fun listFiles(): Single<Iterable<GameLibraryFile>> = Single.fromCallable {
+        Environment.getExternalStorageDirectory()
+                .walk()
+                .maxDepth(1)
+                .filter { file -> file.isFile && file.name.startsWith(".").not() }
+                .map { file -> GameLibraryFile(
+                        name = file.name,
+                        size = file.length(),
+                        crc = file.calculateCrc32().toUpperCase(),
+                        uri = Uri.parse(file.toURI().toString()))
+                }
+                .asIterable()
     }
 
-    override fun fileExists(uri: Uri): Single<Boolean> = Single.just(File(uri.path).exists())
-
-    override fun getGameRom(file: GameLibraryFile): Single<ByteArray> {
-        return Single.create { emitter ->
-            try {
-                emitter.onSuccess(File(file.uri.path).readBytes())
-            } catch (e: Throwable) {
-                emitter.onError(e)
-            }
-        }
+    override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
+        File(game.fileUri.path)
     }
 
-    override fun getGameSave(coreId: String, file: GameLibraryFile): Single<ByteArray> {
-        TODO("not implemented")
+    override fun getGameSave(coreId: String, game: Game): Single<ByteArray> {
+        TODO()
     }
 
-    override fun setGameSave(coreId: String, file: GameLibraryFile, data: ByteArray): Single<Unit> {
-        TODO("not implemented")
+    override fun setGameSave(coreId: String, game: Game, data: ByteArray): Single<Unit> {
+        TODO()
     }
 }

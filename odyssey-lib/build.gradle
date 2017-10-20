@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     implementation project(':odyssey-common')
 
+    implementation libs.archPaging
     implementation libs.autoDispose
     implementation libs.jna
     implementation libs.koptional
@@ -18,6 +19,7 @@ dependencies {
     implementation libs.supportAppCompatV7
 
     kapt libs.roomCompiler
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 android {
@@ -38,4 +40,12 @@ android {
             path "CMakeLists.txt"
         }
     }
+}
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+repositories {
+    mavenCentral()
 }

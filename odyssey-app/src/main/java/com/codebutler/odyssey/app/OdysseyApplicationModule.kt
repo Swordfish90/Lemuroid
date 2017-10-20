@@ -32,6 +32,7 @@ import okhttp3.OkHttpClient
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @Module
 class OdysseyApplicationModule {
@@ -49,9 +50,15 @@ class OdysseyApplicationModule {
                 .build()
 
     @Provides
-    fun gameLibrary(db: OdysseyDatabase, ovgdbManager: OvgdbManager)
+    fun gameLibrary(app: OdysseyApplication, db: OdysseyDatabase, ovgdbManager: OvgdbManager)
             = GameLibrary(db, ovgdbManager, listOf(LocalGameLibraryProvider()))
 
     @Provides
-    fun coreManager(app: OdysseyApplication) = CoreManager(OdysseyHttp(OkHttpClient()), File(app.cacheDir, "cores"))
+    fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(1, TimeUnit.MINUTES)
+            .build()
+
+    @Provides
+    fun coreManager(app: OdysseyApplication, okHttpClient: OkHttpClient) = CoreManager(OdysseyHttp(okHttpClient), File(app.cacheDir, "cores"))
 }

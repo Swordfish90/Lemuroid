@@ -19,9 +19,10 @@
 
 package com.codebutler.odyssey.lib.library.provider
 
-import android.net.Uri
 import com.codebutler.odyssey.lib.library.GameLibraryFile
+import com.codebutler.odyssey.lib.library.db.entity.Game
 import io.reactivex.Single
+import java.io.File
 
 interface GameLibraryProvider {
 
@@ -29,11 +30,9 @@ interface GameLibraryProvider {
 
     fun listFiles(): Single<Iterable<GameLibraryFile>>
 
-    fun fileExists(uri: Uri): Single<Boolean>
+    fun getGameRom(game: Game): Single<File>
 
-    fun getGameRom(file: GameLibraryFile): Single<ByteArray>
+    fun getGameSave(coreId: String, game: Game): Single<ByteArray>
 
-    fun getGameSave(coreId: String, file: GameLibraryFile): Single<ByteArray>
-
-    fun setGameSave(coreId: String, file: GameLibraryFile, data: ByteArray): Single<Unit>
+    fun setGameSave(coreId: String, game: Game, data: ByteArray): Single<Unit>
 }

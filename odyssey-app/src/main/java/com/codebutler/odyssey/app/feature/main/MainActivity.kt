@@ -23,7 +23,7 @@ import android.Manifest
 import android.os.Bundle
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.OdysseyApplication
-import com.codebutler.odyssey.app.feature.browse.BrowseFragment
+import com.codebutler.odyssey.app.feature.home.HomeFragment
 import com.codebutler.odyssey.lib.android.OdysseyActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
@@ -54,7 +54,7 @@ class MainActivity : OdysseyActivity() {
                 .subscribe { granted ->
                     if (granted) {
                         supportFragmentManager.beginTransaction()
-                                .replace(R.id.content, BrowseFragment())
+                                .replace(R.id.content, HomeFragment())
                                 .commit()
 
                     } else {

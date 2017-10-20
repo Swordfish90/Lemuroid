@@ -20,10 +20,22 @@
 package com.codebutler.odyssey.lib.library.db.entity
 
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Index
 import android.arch.persistence.room.PrimaryKey
 import android.net.Uri
+import android.support.v7.recyclerview.extensions.DiffCallback
 
-@Entity(tableName = "games")
+@Entity(
+        tableName = "games",
+        indices = arrayOf(
+                Index("id", unique = true),
+                Index("fileUri", unique = true),
+                Index( "title"),
+                Index("systemId"),
+                Index("lastIndexedAt"),
+                Index("lastPlayedAt"),
+                Index("isFavorite")
+        ))
 data class Game(
         @PrimaryKey(autoGenerate = true)
         val id: Int = 0,
@@ -32,4 +44,20 @@ data class Game(
         val title: String,
         val systemId: String,
         val developer: String?,
-        val coverFrontUrl: String?)
+        val coverFrontUrl: String?,
+        val lastIndexedAt: Long,
+        val lastPlayedAt: Long? = null,
+        val isFavorite: Boolean = false) {
+
+        companion object {
+                val DIFF_CALLBACK = object : DiffCallback<Game>() {
+                        override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
+                                return oldItem.id == newItem.id
+                        }
+
+                        override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
+                                return oldItem == newItem
+                        }
+                }
+        }
+}

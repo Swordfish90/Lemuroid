@@ -19,7 +19,6 @@
 
 package com.codebutler.odyssey.lib.library
 
-import android.net.Uri
 import android.util.Log
 import com.codebutler.odyssey.common.rx.toSingleAsOptional
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
@@ -47,24 +46,19 @@ class GameLibrary(
         const val TAG = "OdysseyLibrary"
     }
 
-    val games = odysseydb.gameDao().watchAll()
-
     fun indexGames() {
-        addNewGames()
-        removeDeletedGames()
-    }
-
-    private fun addNewGames() {
         ovgdbManager.dbReady
                 .observeOn(Schedulers.io())
-                .subscribe { ovgdb -> addNewGamesWithDb(ovgdb) }
+                .subscribe { ovgdb -> indexGamesWithDb(ovgdb) }
     }
 
-    private fun addNewGamesWithDb(ovgdb: OvgdbDatabase) {
+    // FIXME: Move this somewhere else.
+    fun getProvider(game: Game) = libraryProviders.find { it.uriScheme == game.fileUri.scheme }!!
+
+    private fun indexGamesWithDb(ovgdb: OvgdbDatabase) {
+        val startedAtMs = System.currentTimeMillis()
         Observable.fromIterable(libraryProviders)
-                .flatMapSingle { provider ->
-                    provider.listFiles()
-                }
+                .flatMapSingle { provider -> provider.listFiles() }
                 .flatMapIterable { it }
                 .flatMapSingle { file ->
                     Log.d(TAG, "Got file: $file ${file.uri}")
@@ -73,13 +67,20 @@ class GameLibrary(
                             .map { game -> Pair(file, game) }
                 }
                 .doOnNext { (file, game) -> Log.d(TAG, "Game already indexed? ${file.name} ${game is Some}") }
+                .doOnNext { (_, game) ->
+                    if (game is Some) {
+                        val updatedGame = game.value.copy(lastIndexedAt = startedAtMs)
+                        Log.d(TAG, "Update: $updatedGame")
+                        odysseydb.gameDao().update(updatedGame)
+                    }
+                }
                 .filter { (_, game) -> game is None }
                 .map { (file, _) -> file }
                 .flatMapSingle { file ->
                     when (file.crc) {
                         null -> Maybe.empty()
                         else -> ovgdb.romDao().findByCRC(file.crc)
-                    }.switchIfEmpty(ovgdb.romDao().findByFileName(file.name))
+                    }.switchIfEmpty(ovgdb.romDao().findByFileName(sanitizeRomFileName(file.name)))
                             .toSingleAsOptional()
                             .map { rom -> Pair(file, rom) }
                 }
@@ -102,7 +103,13 @@ class GameLibrary(
                 .doOnNext { (file, _, ovgdbSystem) -> Log.d(TAG, "OVGDB System Found: ${file.name}, ${ovgdbSystem is Some}") }
                 .map { (file, release, ovgdbSystem) ->
                     var system = when (ovgdbSystem) {
-                        is Some -> GameSystem.findByOeid(ovgdbSystem.value.oeid)
+                        is Some -> {
+                            val gs = GameSystem.findByShortName(ovgdbSystem.value.shortName)
+                            if (gs == null) {
+                                Log.e(TAG, "System '${ovgdbSystem.value.shortName}' not found")
+                            }
+                            gs
+                        }
                         else -> null
                     }
                     if (system == null) {
@@ -124,7 +131,8 @@ class GameLibrary(
                                 title = release.toNullable()?.titleName ?: file.name,
                                 systemId = system.value.id,
                                 developer = release.toNullable()?.developer,
-                                coverFrontUrl = release.toNullable()?.coverFront
+                                coverFrontUrl = release.toNullable()?.coverFront,
+                                lastIndexedAt = startedAtMs
                         ).toOptional()
                         else -> None
                     }
@@ -136,32 +144,29 @@ class GameLibrary(
                             odysseydb.gameDao().insert(game)
                         },
                         { error -> Log.e(TAG, "Error while indexing", error) },
-                        { Log.d(TAG, "Indexing complete") })
+                        {
+                            Log.d(TAG, "Done inserting. Looking for games to remove...")
+                            removeDeletedGames(startedAtMs)
+                        })
     }
 
-    private fun removeDeletedGames() {
-        odysseydb.gameDao().selectAll()
+    private fun removeDeletedGames(startedAtMs: Long) {
+        odysseydb.gameDao().selectByLastIndexedAtLessThan(startedAtMs)
                 .subscribeOn(Schedulers.io())
-                .toObservable()
-                .flatMapIterable { it }
-                .switchMapSingle { game ->
-                    val provider = getProvider(game.fileUri)
-                    if (provider != null) {
-                        provider.fileExists(game.fileUri)
-                                .map { exists -> Pair(game, exists) }
-                    } else {
-                        Single.just(Pair(game, false))
-                    }
-                }
-                .filter { (_, exists) -> exists.not() }
-                .map { (game, _) -> game }
-                .collectInto(mutableListOf<Game>(), { list, game -> list.add(game) })
-                .subscribe { games ->
-                    Log.d(TAG, "Removing games: $games")
-                    odysseydb.gameDao().delete(games)
-                }
+                .subscribe(
+                        { games ->
+                            Log.d(TAG, "Removing games: $games")
+                            odysseydb.gameDao().delete(games)
+                        },
+                        { error -> Log.e(TAG, "Error while removing", error) })
     }
 
-    private fun getProvider(uri: Uri)
-            = libraryProviders.find { it.uriScheme == uri.scheme }
+    private fun sanitizeRomFileName(fileName: String): String {
+        return fileName
+                .replace("(U)", "(USA)")
+                .replace("(J)", "(Japan)")
+                .replace(" [!]", "")
+                .replace(Regex("\\.v64$"), ".n64")
+                .replace(Regex("\\.z64$"), ".n64")
+    }
 }

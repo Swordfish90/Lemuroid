@@ -21,9 +21,12 @@ package com.codebutler.odyssey.lib.ovgdb.db.entity
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Index
 import android.arch.persistence.room.PrimaryKey
 
-@Entity(tableName = "roms")
+@Entity(
+        tableName = "roms",
+        indices = arrayOf(Index("romFileName"), Index("romHashCRC")))
 data class Rom(
     @PrimaryKey
     @ColumnInfo(name = "romID")

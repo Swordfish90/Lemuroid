@@ -17,20 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.app.feature.browse
+package com.codebutler.odyssey.app.feature.common
 
 import android.os.Bundle
 import android.support.v17.leanback.app.ErrorSupportFragment
 import android.view.View
 import com.codebutler.odyssey.R
 
-class BrowseErrorFragment : ErrorSupportFragment() {
+class SimpleErrorFragment : ErrorSupportFragment() {
 
     companion object {
         private const val ARG_MESSAGE = "message"
 
-        fun create(message: String): BrowseErrorFragment {
-            val fragment = BrowseErrorFragment()
+        fun create(message: String): SimpleErrorFragment {
+            val fragment = SimpleErrorFragment()
             fragment.arguments = Bundle().apply {
                 putString(ARG_MESSAGE, message)
             }
@@ -47,7 +47,7 @@ class BrowseErrorFragment : ErrorSupportFragment() {
 
         buttonText = resources.getString(R.string.dismiss_error)
         buttonClickListener = View.OnClickListener {
-            fragmentManager.beginTransaction().remove(this@BrowseErrorFragment).commit()
+            fragmentManager.beginTransaction().remove(this@SimpleErrorFragment).commit()
             fragmentManager.popBackStack()
         }
     }

@@ -39,7 +39,7 @@ class OdysseyHttp(private val client: OkHttpClient) {
 
     sealed class Response<T> {
         class Success<T>(val body: T) : Response<T>()
-        class Failure<T>(val error: Exception) : Response<T>()
+        class Failure<T>(val error: Throwable) : Response<T>()
     }
 
     fun download(uri: Uri, callback: (response: Response<InputStream>) -> Unit) {

@@ -39,13 +39,13 @@ class CoreManager(private val http: OdysseyHttp, private val coresDir: File) {
         coresDir.mkdirs()
     }
 
-    fun downloadCore(zipFileName: String): Single<Response<File>> {
+    fun downloadCore(zipFileName: String): Single<File> {
         return Single.create { emitter ->
             val libFileName = zipFileName.substringBeforeLast(".zip")
             val destFile = File(coresDir, "lib$libFileName")
 
             if (destFile.exists()) {
-                emitter.onSuccess(Response.Success(destFile))
+                emitter.onSuccess(destFile)
                 return@create
             }
 
@@ -63,15 +63,15 @@ class CoreManager(private val http: OdysseyHttp, private val coresDir: File) {
                                 Okio.source(zipStream).use { zipSource ->
                                     Okio.sink(destFile).use { fileSink ->
                                         Okio.buffer(zipSource).readAll(fileSink)
-                                        emitter.onSuccess(Response.Success(destFile))
+                                        emitter.onSuccess(destFile)
                                         return@downloadZip
                                     }
                                 }
                             }
                         }
-                        emitter.onSuccess(Response.Failure(Exception("Library not found in zip")))
+                        emitter.onError(Exception("Library not found in zip"))
                     }
-                    is Response.Failure -> emitter.onSuccess(Response.Failure(response.error))
+                    is Response.Failure -> emitter.onError(response.error)
                 }
             })
         }
