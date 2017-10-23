@@ -19,6 +19,7 @@
 
 package com.codebutler.odyssey.lib.webdav
 
+import android.net.Uri
 import com.codebutler.odyssey.common.xml.XmlPullParserUtil.readText
 import com.codebutler.odyssey.common.xml.XmlPullParserUtil.skip
 import okhttp3.OkHttpClient
@@ -45,6 +46,15 @@ class WebDavClient(private val client: OkHttpClient, private val xmlPullParserFa
         parser.nextTag()
 
         return readMultiStatus(parser)
+    }
+
+    fun downloadFile(uri: Uri): ByteArray {
+        val response = client.newCall(Request.Builder()
+                .url(uri.toString())
+                .method("GET", null)
+                .build()
+        ).execute()
+        return response.body()!!.bytes()
     }
 
     private fun readMultiStatus(parser: XmlPullParser): Iterator<DavResponse> {

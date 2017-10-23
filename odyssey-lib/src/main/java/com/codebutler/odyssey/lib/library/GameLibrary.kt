@@ -23,7 +23,7 @@ import android.util.Log
 import com.codebutler.odyssey.common.rx.toSingleAsOptional
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
+import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import com.codebutler.odyssey.lib.ovgdb.db.OvgdbDatabase
 import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
@@ -42,7 +42,7 @@ import io.reactivex.schedulers.Schedulers
 class GameLibrary(
         private val odysseydb: OdysseyDatabase,
         private val ovgdbManager: OvgdbManager,
-        private val libraryProviders: Set<GameLibraryProvider>) {
+        private val providerRegistry: GameLibraryProviderRegistry) {
 
     companion object {
         const val TAG = "OdysseyLibrary"
@@ -54,12 +54,9 @@ class GameLibrary(
                 .subscribe { ovgdb -> indexGamesWithDb(ovgdb, emitter) }
     }
 
-    // FIXME: Move this somewhere else.
-    fun getProvider(game: Game) = libraryProviders.find { it.uriScheme == game.fileUri.scheme }!!
-
     private fun indexGamesWithDb(ovgdb: OvgdbDatabase, emitter: CompletableEmitter) {
         val startedAtMs = System.currentTimeMillis()
-        Observable.fromIterable(libraryProviders)
+        Observable.fromIterable(providerRegistry.providers)
                 .flatMapSingle { provider -> provider.listFiles() }
                 .flatMapIterable { it }
                 .flatMapSingle { file ->

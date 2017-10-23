@@ -35,8 +35,7 @@ class LocalGameLibraryProvider(context: Context) : GameLibraryProvider {
 
     override val name: String = context.getString(R.string.local_storage)
 
-    override val uriScheme: String
-        get() = "file"
+    override val uriSchemes = listOf("file")
 
     override val prefsFragmentClass: Class<LeanbackPreferenceFragment>? = null
 

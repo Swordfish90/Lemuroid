@@ -23,6 +23,7 @@ import com.codebutler.odyssey.app.OdysseyApplicationComponent
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
+import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import dagger.BindsInstance
 import dagger.Component
 
@@ -34,6 +35,8 @@ interface MainComponent {
     fun coreManager(): CoreManager
 
     fun gameLibrary(): GameLibrary
+
+    fun gameLibraryProviderRegistry(): GameLibraryProviderRegistry
 
     fun odysseyDb(): OdysseyDatabase
 

@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.net.Uri
 import android.support.v17.preference.LeanbackPreferenceFragment
+import android.util.Log
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
@@ -31,7 +32,6 @@ import com.codebutler.odyssey.lib.webdav.WebDavScanner
 import io.reactivex.Single
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.File
 import java.net.URI
@@ -39,6 +39,10 @@ import java.net.URLDecoder
 import java.util.concurrent.TimeUnit
 
 class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider {
+
+    companion object {
+        const val TAG = "WebDavLibraryProvider"
+    }
 
     private val httpClient: OkHttpClient
     private val webDavClient: WebDavClient
@@ -66,7 +70,7 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
 
     override val name: String = context.getString(R.string.webdav_webdav)
 
-    override val uriScheme = "webdav"
+    override val uriSchemes = listOf("webdav", "webdavs")
 
     override val prefsFragmentClass: Class<out LeanbackPreferenceFragment>? = WebDavPreferenceFragment::class.java
 
@@ -78,10 +82,7 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
                 .map { davResponse ->
                     val displayName = URLDecoder.decode(davResponse.propStat?.prop?.displayName, "UTF-8")
                     val contentLength = davResponse.propStat?.prop?.contentLength ?: 0
-                    val uri = Uri.parse(baseUri.resolve(davResponse.href).toString())
-                            .buildUpon()
-                            .scheme(uriScheme)
-                            .build()
+                    val uri = UriTransformer(Uri.parse(baseUri.resolve(davResponse.href).toString())).libraryUri
                     GameLibraryFile(displayName, contentLength, null, uri)
                 }
                 .asIterable()
@@ -92,15 +93,9 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
         gamesCacheDir.mkdirs()
         val gameFile = File(gamesCacheDir, game.fileName)
         if (!gameFile.exists()) {
-            val response = httpClient.newCall(Request.Builder()
-                    .url(game.fileUri.buildUpon()
-                            .scheme("http")
-                            .build()
-                            .toString())
-                    .method("GET", null)
-                    .build()
-            ).execute()
-            gameFile.writeBytes(response.body()!!.bytes())
+            val httpUri = UriTransformer(game.fileUri).httpUri
+            Log.d(TAG, "Downloading game: $httpUri")
+            gameFile.writeBytes(webDavClient.downloadFile(httpUri))
         }
         gameFile
     }
@@ -125,4 +120,28 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
             val url: String?,
             val username: String?,
             val password: String?)
+
+    /**
+     * Games URIs are webdav:// or webdavs:// in the game database,
+     * but need to be http:// or https:// for the http client.
+     */
+    private class UriTransformer(val uri: Uri) {
+        val httpUri: Uri
+            get() = when (uri.scheme) {
+                "http", "https" -> uri
+                "webdav" -> uri.replaceScheme("http")
+                "webdavs" -> uri.replaceScheme("https")
+                else -> throw IllegalArgumentException()
+            }
+
+        val libraryUri: Uri
+            get() = when (uri.scheme) {
+                "webdav", "webdavs" -> uri
+                "http" -> uri.replaceScheme("webdav")
+                "https" -> uri.replaceScheme("webdavs")
+                else -> throw IllegalArgumentException()
+            }
+
+        private fun Uri.replaceScheme(newScheme: String): Uri = this.buildUpon().scheme(newScheme).build()
+    }
 }

@@ -22,7 +22,7 @@ package com.codebutler.odyssey.app
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
-import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
+import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import dagger.BindsInstance
 import dagger.Component
 
@@ -33,7 +33,7 @@ interface OdysseyApplicationComponent {
 
     fun gameLibrary(): GameLibrary
 
-    fun gameLibraryProviders(): Set<GameLibraryProvider>
+    fun gameLibraryProviderRegistry(): GameLibraryProviderRegistry
 
     fun odysseyDb(): OdysseyDatabase
 

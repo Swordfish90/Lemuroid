@@ -1,14 +1,15 @@
 package com.codebutler.odyssey.app.feature.home
 
 import android.support.v17.leanback.app.BaseSupportFragment
+import android.util.Log
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.common.SimpleErrorFragment
 import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.lib.core.CoreManager
-import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
 import io.reactivex.Completable
@@ -19,15 +20,19 @@ import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 class GameLauncher(
-        private val gameLibrary: GameLibrary,
+        private val libraryProviderRegistry: GameLibraryProviderRegistry,
         private val coreManager: CoreManager,
         private val odysseyDb: OdysseyDatabase) {
+
+    companion object {
+        private const val TAG = "GameLauncher"
+    }
 
     fun launchGame(fragment: BaseSupportFragment, game: Game) {
         fragment.progressBarManager.show()
 
         val gameSystem = GameSystem.findById(game.systemId)!!
-        val provider = gameLibrary.getProvider(game)
+        val provider = libraryProviderRegistry.getProvider(game)
 
         val gameObservable = provider.getGameRom(game).toObservable()
         val coreObservable = coreManager.downloadCore(gameSystem.coreFileName).toObservable()
@@ -56,6 +61,7 @@ class GameLauncher(
                                     gameFilePath = gameFile.absolutePath))
                         },
                         { error ->
+                            Log.e(TAG, "Download failed", error)
                             fragment.progressBarManager.hide()
                             val errorFragment = SimpleErrorFragment.create(error.toString())
                             fragment.fragmentManager.beginTransaction()

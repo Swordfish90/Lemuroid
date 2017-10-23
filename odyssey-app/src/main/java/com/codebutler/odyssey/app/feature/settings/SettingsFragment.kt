@@ -13,7 +13,7 @@ import android.view.ContextThemeWrapper
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.OdysseyApplication
 import com.codebutler.odyssey.app.OdysseyApplicationComponent
-import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
+import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import dagger.Component
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class SettingsFragment : LeanbackSettingsFragment() {
 
     class PrefFragment : LeanbackPreferenceFragment() {
 
-        @Inject lateinit var libraryProviders: Set<@JvmSuppressWildcards GameLibraryProvider>
+        @Inject lateinit var libraryProviderRegistry: GameLibraryProviderRegistry
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             val component = DaggerSettingsFragment_PrefFragment_PrefComponent.builder()
@@ -48,7 +48,7 @@ class SettingsFragment : LeanbackSettingsFragment() {
             val contextThemeWrapper = ContextThemeWrapper(activity, themeTypedValue.resourceId)
 
             val sourcesCategory = findPreference("sources") as PreferenceCategory
-            for (provider in libraryProviders) {
+            for (provider in libraryProviderRegistry.providers) {
                 val prefsFragmentClass = provider.prefsFragmentClass
                 if (prefsFragmentClass != null) {
                     val pref = preferenceManager.createPreferenceScreen(contextThemeWrapper)

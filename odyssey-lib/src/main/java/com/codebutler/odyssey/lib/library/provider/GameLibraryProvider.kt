@@ -29,7 +29,7 @@ interface GameLibraryProvider {
 
     val name: String
 
-    val uriScheme: String
+    val uriSchemes: List<String>
 
     val prefsFragmentClass: Class<out LeanbackPreferenceFragment>?
 
