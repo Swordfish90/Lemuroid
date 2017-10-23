@@ -36,6 +36,7 @@ import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
 import com.codebutler.odyssey.app.feature.common.SimpleErrorFragment
 import com.codebutler.odyssey.app.feature.common.SimpleItem
 import com.codebutler.odyssey.app.feature.common.SimpleItemPresenter
+import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.feature.settings.SettingsActivity
 import com.codebutler.odyssey.lib.library.GameLibrary
@@ -56,7 +57,6 @@ class HomeFragment : BrowseSupportFragment() {
     private object AllGamesItem : SimpleItem(R.string.all_games)
     private object SettingsItem : SimpleItem(R.string.settings)
 
-    @Inject lateinit var gameLauncher: GameLauncher
     @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var odysseyDb: OdysseyDatabase
 
@@ -132,7 +132,7 @@ class HomeFragment : BrowseSupportFragment() {
 
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             when (item) {
-                is Game -> gameLauncher.launchGame(this, item)
+                is Game -> startActivity(GameActivity.newIntent(context, item))
                 is GameSystemItem -> fragmentManager.beginTransaction()
                         .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.SYSTEM, item.system.id))
                         .addToBackStack(null)

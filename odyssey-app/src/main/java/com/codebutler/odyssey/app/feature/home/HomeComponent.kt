@@ -22,7 +22,7 @@ package com.codebutler.odyssey.app.feature.home
 import com.codebutler.odyssey.app.feature.main.MainComponent
 import dagger.Component
 
-@Component(modules = arrayOf(HomeModule::class), dependencies = arrayOf(MainComponent::class))
+@Component(dependencies = arrayOf(MainComponent::class))
 interface HomeComponent {
 
     fun inject(homeFragment: HomeFragment)

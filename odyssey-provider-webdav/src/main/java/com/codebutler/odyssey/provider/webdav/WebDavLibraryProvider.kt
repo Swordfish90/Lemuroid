@@ -29,11 +29,15 @@ import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import com.codebutler.odyssey.lib.webdav.WebDavClient
 import com.codebutler.odyssey.lib.webdav.WebDavScanner
+import com.gojuno.koptional.None
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.toOptional
+import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.xmlpull.v1.XmlPullParserFactory
-import retrofit2.Retrofit
 import java.io.File
 import java.net.URI
 import java.net.URLDecoder
@@ -49,25 +53,27 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
     private val webDavScanner: WebDavScanner
 
     init {
-        val retrofit = Retrofit.Builder()
-                .baseUrl("https://example.com")
-                .client(OkHttpClient.Builder()
-                        .connectTimeout(1, TimeUnit.MINUTES)
-                        .readTimeout(1, TimeUnit.MINUTES)
-                        .addNetworkInterceptor { chain ->
-                            val config = readConfig()
-                            if (config.username != null && config.password != null) {
-                                val credentials = Credentials.basic(config.username, config.password)
-                                chain.proceed(chain.request().newBuilder()
-                                        .header("Authorization", credentials)
-                                        .build())
-                            } else {
-                                chain.proceed(chain.request())
-                            }
-                        }
-                        .build())
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
+
+        val okHttpClient = OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .addInterceptor(loggingInterceptor)
+                .addNetworkInterceptor { chain ->
+                    val config = readConfig()
+                    if (config.username != null && config.password != null) {
+                        val credentials = Credentials.basic(config.username, config.password)
+                        chain.proceed(chain.request().newBuilder()
+                                .header("Authorization", credentials)
+                                .build())
+                    } else {
+                        chain.proceed(chain.request())
+                    }
+                }
                 .build()
-        webDavClient = WebDavClient(retrofit, XmlPullParserFactory.newInstance())
+
+        webDavClient = WebDavClient(okHttpClient, XmlPullParserFactory.newInstance())
         webDavScanner = WebDavScanner(webDavClient)
     }
 
@@ -91,25 +97,29 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
                 .asIterable()
     }
 
-    override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
+    override fun getGameRom(game: Game): Single<File> {
         val gamesCacheDir = File(context.cacheDir, "dav-games")
         gamesCacheDir.mkdirs()
         val gameFile = File(gamesCacheDir, game.fileName)
-        if (!gameFile.exists()) {
-            val httpUri = UriTransformer(game.fileUri).httpUri
-            Log.d(TAG, "Downloading game: $httpUri")
-            gameFile.writeBytes(webDavClient.downloadFile(httpUri))
+        if (gameFile.exists()) {
+            return Single.just(gameFile)
         }
-        gameFile
+        val httpUri = UriTransformer(game.fileUri).httpUri
+        Log.d(TAG, "Downloading game: $httpUri")
+        return webDavClient.downloadFile(httpUri)
+                .map { bytes ->
+                    gameFile.writeBytes(bytes)
+                    gameFile
+                }
     }
 
-    override fun getGameSave(coreId: String, game: Game): Single<ByteArray> {
-        TODO()
-    }
+    override fun getGameSave(game: Game): Single<Optional<ByteArray>>
+            = webDavClient.downloadFile(getSaveUri(game))
+            .map { saveData -> saveData.toOptional() }
+            .onErrorReturnItem(None)
 
-    override fun setGameSave(coreId: String, game: Game, data: ByteArray): Single<Unit> {
-        TODO()
-    }
+    override fun setGameSave(game: Game, data: ByteArray): Completable
+            = webDavClient.uploadFile(getSaveUri(game), data)
 
     private fun readConfig(): Configuration {
         val prefs = context.getSharedPreferences(WebDavPreferenceFragment.PREFS_NAME, MODE_PRIVATE)
@@ -118,6 +128,13 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
                 prefs.getString(context.getString(R.string.webdav_pref_key_username), null),
                 prefs.getString(context.getString(R.string.webdav_pref_key_password), null))
     }
+
+    private fun getSaveUri(game: Game) = Uri.parse(readConfig().url)
+            .buildUpon()
+            .appendPath(".odyssey")
+            .appendPath("saves")
+            .appendPath(game.fileName + ".sram")
+            .build()
 
     private data class Configuration(
             val url: String?,

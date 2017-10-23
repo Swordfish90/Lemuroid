@@ -23,6 +23,7 @@ ext {
         daggerCompiler:         "com.google.dagger:dagger-compiler:${daggerVersion}",
         jna:                    'net.java.dev.jna:jna:4.4.0',
         okHttp3:                'com.squareup.okhttp3:okhttp:3.9.0',
+        okHttp3Logging:         'com.squareup.okhttp3:logging-interceptor:3.9.0',
         roomRuntime:            "android.arch.persistence.room:runtime:${archVersion}",
         roomRxJava2:            "android.arch.persistence.room:rxjava2:${archVersion}",
         roomCompiler:           "android.arch.persistence.room:compiler:${archVersion}",

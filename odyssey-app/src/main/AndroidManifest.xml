@@ -64,7 +64,7 @@
             android:name="com.codebutler.odyssey.app.feature.game.GameActivity"
             android:process=":game"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/GameTheme"/>
 
         <activity android:name=".app.feature.settings.SettingsActivity"
             android:exported="true"

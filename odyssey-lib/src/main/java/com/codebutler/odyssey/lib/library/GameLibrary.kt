@@ -38,6 +38,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class GameLibrary(
         private val odysseydb: OdysseyDatabase,
@@ -53,6 +54,15 @@ class GameLibrary(
                 .observeOn(Schedulers.io())
                 .subscribe { ovgdb -> indexGamesWithDb(ovgdb, emitter) }
     }
+
+    fun getGameRom(game: Game): Single<File>
+            = providerRegistry.getProvider(game).getGameRom(game)
+
+    fun getGameSave(game: Game): Single<Optional<ByteArray>>
+            = providerRegistry.getProvider(game).getGameSave(game)
+
+    fun setGameSave(game: Game, data: ByteArray): Completable
+            = providerRegistry.getProvider(game).setGameSave(game, data)
 
     private fun indexGamesWithDb(ovgdb: OvgdbDatabase, emitter: CompletableEmitter) {
         val startedAtMs = System.currentTimeMillis()

@@ -7,9 +7,13 @@ dependencies {
 
     implementation libs.kotlinStdlib
     implementation libs.okHttp3
+    implementation libs.okHttp3Logging
     implementation libs.rxJava2
     implementation libs.supportPrefLeanbackV17
     implementation libs.retrofit
+    implementation libs.retrofitRxJava2
+    implementation libs.koptional
+    implementation libs.koptionalRxJava2
 }
 
 android {

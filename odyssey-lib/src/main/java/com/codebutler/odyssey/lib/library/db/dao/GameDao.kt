@@ -26,14 +26,19 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import com.codebutler.odyssey.lib.library.db.entity.Game
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 @Dao
 interface GameDao {
 
     @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
     fun selectAll(): LivePagedListProvider<Int, Game>
+
+    @Query("SELECT * FROM games WHERE id = :id")
+    fun selectById(id: Int): Maybe<Game>
 
     @Query("SELECT * FROM games WHERE fileUri = :fileUri")
     fun selectByFileUri(fileUri: String): Maybe<Game>
@@ -62,3 +67,7 @@ interface GameDao {
     @Update
     fun update(game: Game)
 }
+
+fun GameDao.updateAsync(game: Game): Completable = Completable.fromCallable {
+    update(game)
+}.subscribeOn(Schedulers.io())

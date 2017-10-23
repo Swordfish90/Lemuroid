@@ -28,10 +28,14 @@ import com.codebutler.odyssey.lib.R
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
+import com.gojuno.koptional.None
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.toOptional
+import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.File
 
-class LocalGameLibraryProvider(context: Context) : GameLibraryProvider {
+class LocalGameLibraryProvider(private val context: Context) : GameLibraryProvider {
 
     override val name: String = context.getString(R.string.local_storage)
 
@@ -57,11 +61,25 @@ class LocalGameLibraryProvider(context: Context) : GameLibraryProvider {
         File(game.fileUri.path)
     }
 
-    override fun getGameSave(coreId: String, game: Game): Single<ByteArray> {
-        TODO()
+    override fun getGameSave(game: Game): Single<Optional<ByteArray>> {
+        val saveFile = getSaveFile(game)
+        return if (saveFile.exists()) {
+            Single.just(saveFile.readBytes().toOptional())
+        } else {
+            Single.just(None)
+        }
     }
 
-    override fun setGameSave(coreId: String, game: Game, data: ByteArray): Single<Unit> {
-        TODO()
+    override fun setGameSave(game: Game, data: ByteArray): Completable
+            = Completable.fromCallable {
+        val saveFile = getSaveFile(game)
+        saveFile.writeBytes(data)
+    }
+
+    private fun getSaveFile(game: Game): File {
+        val odysseyDir = File(Environment.getExternalStorageDirectory(), "odyssey")
+        val savesDir = File(odysseyDir, "saves")
+        savesDir.mkdirs()
+        return File(savesDir, game.fileName + ".sram")
     }
 }

@@ -109,18 +109,18 @@ class RetroDroid(private val context: Context, coreFile: File) :
         retro.deinit()
     }
 
-    fun loadGame(filePath: String) {
+    fun loadGame(gamePath: String, saveData: ByteArray?) {
         val systemInfo = retro.getSystemInfo()
         Log.d(TAG, "System Info: $systemInfo")
 
         if (systemInfo.needFullpath) {
-            if (!retro.loadGame(filePath)) {
-                throw Exception("Failed to load game via path: $filePath")
+            if (!retro.loadGame(gamePath)) {
+                throw Exception("Failed to load game via path: $gamePath")
             }
         } else {
             Log.d(TAG, "Load game with data!!")
-            if (!retro.loadGame(File(filePath).readBytes())) {
-                throw Exception("Failed to load game via buffer: $filePath")
+            if (!retro.loadGame(File(gamePath).readBytes())) {
+                throw Exception("Failed to load game via buffer: $gamePath")
             }
         }
 
@@ -136,20 +136,15 @@ class RetroDroid(private val context: Context, coreFile: File) :
         this.region = region
         this.systemInfo = systemInfo
 
-        val file = File(context.cacheDir.absoluteFile, "savedata")
-        if (file.exists()) {
-            //val saveData = file.readBytes()
-            //retro.setMemoryData(Retro.Memory.SAVE_RAM, saveData)
-            //Log.d(TAG, "Load SAVE RAM: ${saveData.toHexString()}")
+        if (saveData != null) {
+            retro.setMemoryData(Retro.MemoryId.SAVE_RAM, saveData)
         }
     }
 
-    fun unloadGame() {
-        //val saveRam = retro.getMemoryData(Retro.Memory.SAVE_RAM)
-        //Log.d(TAG, "Got SAVE RAM: ${saveRam.toHexString()}")
-        //File(context.cacheDir.absoluteFile, "savedata").writeBytes(saveRam)
-
+    fun unloadGame(): ByteArray? {
+        val saveRam = retro.getMemoryData(Retro.MemoryId.SAVE_RAM)
         retro.unloadGame()
+        return saveRam
     }
 
     fun start() {

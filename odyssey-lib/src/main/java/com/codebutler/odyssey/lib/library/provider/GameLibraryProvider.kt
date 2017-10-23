@@ -22,6 +22,8 @@ package com.codebutler.odyssey.lib.library.provider
 import android.support.v17.preference.LeanbackPreferenceFragment
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.gojuno.koptional.Optional
+import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.File
 
@@ -37,7 +39,7 @@ interface GameLibraryProvider {
 
     fun getGameRom(game: Game): Single<File>
 
-    fun getGameSave(coreId: String, game: Game): Single<ByteArray>
+    fun getGameSave(game: Game): Single<Optional<ByteArray>>
 
-    fun setGameSave(coreId: String, game: Game, data: ByteArray): Single<Unit>
+    fun setGameSave(game: Game, data: ByteArray): Completable
 }

@@ -9,6 +9,7 @@ import android.support.v17.leanback.widget.OnItemViewClickedListener
 import android.support.v17.leanback.widget.VerticalGridPresenter
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
+import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
@@ -43,7 +44,6 @@ class GamesGridFragment : VerticalGridSupportFragment() {
     lateinit var component: HomeComponent
 
     @Inject lateinit var coreManager: CoreManager
-    @Inject lateinit var gameLauncher: GameLauncher
     @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var odysseyDb: OdysseyDatabase
 
@@ -85,7 +85,7 @@ class GamesGridFragment : VerticalGridSupportFragment() {
 
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             when (item) {
-                is Game -> gameLauncher.launchGame(this, item)
+                is Game -> startActivity(GameActivity.newIntent(context, item))
             }
         }
     }

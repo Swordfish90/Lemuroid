@@ -22,24 +22,38 @@ package com.codebutler.odyssey.lib.webdav
 import android.net.Uri
 import com.codebutler.odyssey.common.xml.XmlPullParserUtil.readText
 import com.codebutler.odyssey.common.xml.XmlPullParserUtil.skip
+import io.reactivex.Completable
+import io.reactivex.Single
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import retrofit2.Call
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
+import retrofit2.http.PUT
 import retrofit2.http.Streaming
 import retrofit2.http.Url
 import kotlin.coroutines.experimental.buildIterator
 
 class WebDavClient(
-        retrofit: Retrofit,
+        okHttpClient: OkHttpClient,
         private val xmlPullParserFactory: XmlPullParserFactory) {
 
     companion object {
         private const val NS = "DAV:"
     }
+
+    private val retrofit = Retrofit.Builder()
+            .baseUrl("https://example.com")
+            .client(okHttpClient)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+            .build()
 
     private val api = retrofit.create(WebDavApi::class.java)
 
@@ -54,24 +68,13 @@ class WebDavClient(
         return readMultiStatus(parser)
     }
 
-    fun downloadFile(uri: Uri): ByteArray {
-        val response = api.downloadFile(uri.toString()).execute()
-        return response.body()!!.bytes()
-    }
+    fun downloadFile(uri: Uri): Single<ByteArray>
+            = api.downloadFile(uri.toString())
+                .map { it.bytes() }
 
-    private fun readMultiStatus(parser: XmlPullParser): Iterator<DavResponse> {
-        return buildIterator {
-            parser.require(XmlPullParser.START_TAG, NS, "multistatus")
-            while (parser.next() != XmlPullParser.END_TAG) {
-                if (parser.eventType != XmlPullParser.START_TAG) {
-                    continue
-                }
-                when (parser.name) {
-                    "response" -> yield(readResponse(parser))
-                    else -> skip(parser)
-                }
-            }
-        }
+    fun uploadFile(uri: Uri, data: ByteArray): Completable {
+        val requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), data)
+        return api.uploadFile(uri.toString(), requestBody)
     }
 
     private fun readResponse(parser: XmlPullParser): DavResponse {
@@ -93,6 +96,21 @@ class WebDavClient(
         }
 
         return DavResponse(href, propstat)
+    }
+
+    private fun readMultiStatus(parser: XmlPullParser): Iterator<DavResponse> {
+        return buildIterator {
+            parser.require(XmlPullParser.START_TAG, NS, "multistatus")
+            while (parser.next() != XmlPullParser.END_TAG) {
+                if (parser.eventType != XmlPullParser.START_TAG) {
+                    continue
+                }
+                when (parser.name) {
+                    "response" -> yield(readResponse(parser))
+                    else -> skip(parser)
+                }
+            }
+        }
     }
 
     private fun readPropstat(parser: XmlPullParser): DavPropStat {
@@ -182,6 +200,9 @@ class WebDavClient(
 
         @GET
         @Streaming
-        fun downloadFile(@Url url: String): Call<ResponseBody>
+        fun downloadFile(@Url url: String): Single<ResponseBody>
+
+        @PUT
+        fun uploadFile(@Url url: String, @Body file: RequestBody): Completable
     }
 }

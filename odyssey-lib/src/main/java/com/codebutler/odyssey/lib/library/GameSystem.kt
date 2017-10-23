@@ -21,6 +21,7 @@ package com.codebutler.odyssey.lib.library
 
 import android.support.annotation.StringRes
 import com.codebutler.odyssey.lib.R
+import java.util.Locale
 
 data class GameSystem(
         val id: String,
@@ -89,12 +90,23 @@ data class GameSystem(
                 )
         )
 
-        fun findById(id: String): GameSystem? = SYSTEMS.find { it.id == id }
+        private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id to it }.toTypedArray()) }
+        private val byExtensionCache by lazy {
+            val mutableMap = mutableMapOf<String, GameSystem>()
+            for (system in SYSTEMS) {
+                for (extension in system.supportedExtensions) {
+                    mutableMap[extension.toLowerCase(Locale.US)] = system
+                }
+            }
+            mutableMap.toMap()
+        }
+
+        fun findById(id: String): GameSystem? = byIdCache[id]
 
         fun findByShortName(shortName: String): GameSystem?
                 = findById(shortName.toLowerCase())
 
-        fun findByFileExtension(fileExtension: String): GameSystem? =
-                SYSTEMS.find { it.supportedExtensions.contains(fileExtension) }
+        fun findByFileExtension(fileExtension: String): GameSystem?
+                = byExtensionCache[fileExtension.toLowerCase(Locale.US)]
     }
 }

@@ -31,31 +31,55 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import com.codebutler.odyssey.R
+import com.codebutler.odyssey.app.OdysseyApplication
+import com.codebutler.odyssey.app.OdysseyApplicationComponent
 import com.codebutler.odyssey.common.kotlin.bindView
-import com.codebutler.odyssey.lib.retro.RetroDroid
+import com.codebutler.odyssey.common.kotlin.isAllZeros
+import com.codebutler.odyssey.lib.core.CoreManager
+import com.codebutler.odyssey.lib.library.GameLibrary
+import com.codebutler.odyssey.lib.library.GameSystem
+import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
+import com.codebutler.odyssey.lib.library.db.dao.updateAsync
+import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.retro.Retro
+import com.codebutler.odyssey.lib.retro.RetroDroid
+import com.gojuno.koptional.Optional
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import com.uber.autodispose.kotlin.autoDisposeWith
+import dagger.Component
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function3
+import io.reactivex.schedulers.Schedulers
 import java.io.File
+import javax.inject.Inject
 
 class GameActivity : AppCompatActivity() {
 
     companion object {
-        private const val EXTRA_FILE_CORE = "file_core"
-        private const val EXTRA_FILE_GAME = "file_game"
+        private const val EXTRA_GAME_ID = "game_id"
 
-        fun newIntent(context: Context, coreFilePath: String, gameFilePath: String): Intent {
-            return Intent(context, GameActivity::class.java).apply {
-                putExtra(EXTRA_FILE_CORE, coreFilePath)
-                putExtra(EXTRA_FILE_GAME, gameFilePath)
-            }
+        fun newIntent(context: Context, game: Game)
+                = Intent(context, GameActivity::class.java).apply {
+            putExtra(EXTRA_GAME_ID, game.id)
         }
     }
 
+    @Inject lateinit var coreManager: CoreManager
+    @Inject lateinit var odysseyDatabase: OdysseyDatabase
+    @Inject lateinit var gameLibrary: GameLibrary
+
     private val imageView: ImageView by bindView(R.id.image)
+    private val progressBar: ProgressBar by bindView(R.id.progress)
 
     private val handler = Handler()
 
+    private var game: Game? = null
     private var retroDroid: RetroDroid? = null
     private var audioTrack: AudioTrack? = null
 
@@ -63,7 +87,33 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        loadRetro()
+        val component = DaggerGameActivity_GameComponent.builder()
+                .odysseyApplicationComponent((application as OdysseyApplication).component)
+                .build()
+        component.inject(this)
+
+        // FIXME: Full Activity lifecycle handling.
+        if (savedInstanceState != null) {
+            return
+        }
+
+        val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
+
+        odysseyDatabase.gameDao().selectById(gameId)
+                .flatMapSingle { game -> prepareGame(game) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .autoDisposeWith(AndroidLifecycleScopeProvider.from(this@GameActivity))
+                .subscribe({ data ->
+                    odysseyDatabase.gameDao()
+                            .updateAsync(data.game.copy(lastPlayedAt = System.currentTimeMillis()))
+                            .subscribe()
+                    progressBar.visibility = View.GONE
+                    loadRetro(data)
+                }, { error ->
+                    Log.e("GameActivity", "Failed to load game", error)
+                    finish()
+                })
     }
 
     override fun onResume() {
@@ -78,11 +128,23 @@ class GameActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        retroDroid?.unloadGame()
+
+        val saveData = retroDroid?.unloadGame()
         retroDroid?.deinit()
 
-        // This activity runs in its own process which should not live beyond the activity lifecycle.
-        System.exit(0)
+        val game = this.game
+        val saveCompletable = if (saveData != null && saveData.isAllZeros().not() && game != null) {
+            gameLibrary.setGameSave(game, saveData)
+        } else {
+            Completable.complete()
+        }
+
+        saveCompletable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    // This activity runs in its own process which should not live beyond the activity lifecycle.
+                    System.exit(0)
+                }
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
@@ -98,11 +160,24 @@ class GameActivity : AppCompatActivity() {
         return true
     }
 
-    private fun loadRetro() {
-        val coreFilePath = intent.getStringExtra(EXTRA_FILE_CORE)
-        val gameFilePath = intent.getStringExtra(EXTRA_FILE_GAME)
+    private fun prepareGame(game: Game): Single<PreparedGameData> {
+        val gameSystem = GameSystem.findById(game.systemId)!!
 
-        val retroDroid = RetroDroid(this, File(coreFilePath))
+        val coreObservable = coreManager.downloadCore(gameSystem.coreFileName)
+        val gameObservable = gameLibrary.getGameRom(game)
+        val saveObservable = gameLibrary.getGameSave(game)
+
+        return Single.zip(
+                coreObservable,
+                gameObservable,
+                saveObservable,
+                Function3<File, File, Optional<ByteArray>, PreparedGameData> { coreFile, gameFile, saveData ->
+                    PreparedGameData(game, coreFile, gameFile, saveData.toNullable())
+                })
+    }
+
+    private fun loadRetro(data: PreparedGameData) {
+        val retroDroid = RetroDroid(this, data.coreFile)
 
         retroDroid.logCallback = { level, message ->
             val tag = "RetroLog"
@@ -145,9 +220,23 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        retroDroid.loadGame(gameFilePath)
+        retroDroid.loadGame(data.gameFile.absolutePath, data.saveData)
         retroDroid.start()
 
+        this.game = data.game
         this.retroDroid = retroDroid
+    }
+
+    @Suppress("ArrayInDataClass")
+    private data class PreparedGameData(
+            val game: Game,
+            val coreFile: File,
+            val gameFile: File,
+            val saveData: ByteArray?)
+
+    @Component(dependencies = arrayOf(OdysseyApplicationComponent::class))
+    interface GameComponent {
+
+        fun inject(activity: GameActivity)
     }
 }

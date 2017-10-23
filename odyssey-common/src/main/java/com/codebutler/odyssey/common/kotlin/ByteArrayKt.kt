@@ -37,3 +37,5 @@ internal fun ByteArray.toHexString() : String {
     }
     return builder.toString()
 }
+
+fun ByteArray.isAllZeros(): Boolean = this.firstOrNull { it != 0x0.toByte() } == null

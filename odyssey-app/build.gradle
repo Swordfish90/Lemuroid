@@ -37,6 +37,8 @@ dependencies {
     implementation libs.autoDisposeAndroidArch
     implementation libs.autoDisposeKotlin
     implementation libs.dagger
+    implementation libs.koptional
+    implementation libs.koptionalRxJava2
     implementation libs.kotlinStdlib
     implementation libs.supportAppCompatV7
     implementation libs.supportLeanbackV17
