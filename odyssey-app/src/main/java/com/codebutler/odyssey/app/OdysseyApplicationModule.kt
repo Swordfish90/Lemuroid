@@ -20,7 +20,6 @@
 package com.codebutler.odyssey.app
 
 import android.arch.persistence.room.Room
-import com.codebutler.odyssey.common.http.OdysseyHttp
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
@@ -31,10 +30,16 @@ import com.codebutler.odyssey.provider.webdav.WebDavLibraryProvider
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import retrofit2.Converter
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.io.File
+import java.lang.reflect.Type
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.zip.ZipInputStream
 
 @Module
 class OdysseyApplicationModule {
@@ -69,6 +74,25 @@ class OdysseyApplicationModule {
             .build()
 
     @Provides
-    fun coreManager(app: OdysseyApplication, okHttpClient: OkHttpClient)
-            = CoreManager(OdysseyHttp(okHttpClient), File(app.cacheDir, "cores"))
+    fun retrofit(): Retrofit = Retrofit.Builder()
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+            .baseUrl("https://example.com")
+            .addConverterFactory(object : Converter.Factory() {
+                override fun responseBodyConverter(
+                        type: Type?,
+                        annotations: Array<out Annotation>?,
+                        retrofit: Retrofit?): Converter<ResponseBody, *>? {
+                    if (type == ZipInputStream::class.java) {
+                        return Converter<ResponseBody, ZipInputStream> { responseBody ->
+                            ZipInputStream(responseBody.byteStream())
+                        }
+                    }
+                    return null
+                }
+            })
+            .build()
+
+    @Provides
+    fun coreManager(app: OdysseyApplication, retrofit: Retrofit)
+            = CoreManager(retrofit, File(app.cacheDir, "cores"))
 }

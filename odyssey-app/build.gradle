@@ -44,6 +44,8 @@ dependencies {
     implementation libs.supportPrefLeanbackV17
     implementation libs.supportRecyclerViewV7
     implementation libs.okHttp3
+    implementation libs.retrofit
+    implementation libs.retrofitRxJava2
     implementation libs.roomRuntime
     implementation libs.rxAndroid2
     implementation libs.rxJava2

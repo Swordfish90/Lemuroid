@@ -33,6 +33,7 @@ import io.reactivex.Single
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import org.xmlpull.v1.XmlPullParserFactory
+import retrofit2.Retrofit
 import java.io.File
 import java.net.URI
 import java.net.URLDecoder
@@ -44,27 +45,29 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
         const val TAG = "WebDavLibraryProvider"
     }
 
-    private val httpClient: OkHttpClient
     private val webDavClient: WebDavClient
     private val webDavScanner: WebDavScanner
 
     init {
-        httpClient = OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(1, TimeUnit.MINUTES)
-                .addNetworkInterceptor { chain ->
-                    val config = readConfig()
-                    if (config.username != null && config.password != null) {
-                        val credentials = Credentials.basic(config.username, config.password)
-                        chain.proceed(chain.request().newBuilder()
-                                .header("Authorization", credentials)
-                                .build())
-                    } else {
-                        chain.proceed(chain.request())
-                    }
-                }
+        val retrofit = Retrofit.Builder()
+                .baseUrl("https://example.com")
+                .client(OkHttpClient.Builder()
+                        .connectTimeout(1, TimeUnit.MINUTES)
+                        .readTimeout(1, TimeUnit.MINUTES)
+                        .addNetworkInterceptor { chain ->
+                            val config = readConfig()
+                            if (config.username != null && config.password != null) {
+                                val credentials = Credentials.basic(config.username, config.password)
+                                chain.proceed(chain.request().newBuilder()
+                                        .header("Authorization", credentials)
+                                        .build())
+                            } else {
+                                chain.proceed(chain.request())
+                            }
+                        }
+                        .build())
                 .build()
-        webDavClient = WebDavClient(httpClient, XmlPullParserFactory.newInstance())
+        webDavClient = WebDavClient(retrofit, XmlPullParserFactory.newInstance())
         webDavScanner = WebDavScanner(webDavClient)
     }
 

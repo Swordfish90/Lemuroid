@@ -30,9 +30,10 @@ class WebDavScanner(private val webDavClient: WebDavClient) {
             for (davResponse in responses) {
                 val collectionUri = uri.resolve(davResponse.href)
                 if (collectionUri != uri) {
-                    yield(davResponse)
                     if (davResponse.propStat?.prop?.resourceType == WebDavClient.DavResourceType.COLLECTION) {
                         yieldAll(scan(collectionUri))
+                    } else {
+                        yield(davResponse)
                     }
                 }
             }

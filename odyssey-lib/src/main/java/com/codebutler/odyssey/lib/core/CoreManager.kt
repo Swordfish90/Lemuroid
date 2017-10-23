@@ -21,13 +21,17 @@ package com.codebutler.odyssey.lib.core
 
 import android.net.Uri
 import android.os.Build
-import com.codebutler.odyssey.common.http.OdysseyHttp
-import com.codebutler.odyssey.common.http.OdysseyHttp.Response
 import io.reactivex.Single
 import okio.Okio
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.http.GET
+import retrofit2.http.Streaming
+import retrofit2.http.Url
 import java.io.File
+import java.util.zip.ZipInputStream
 
-class CoreManager(private val http: OdysseyHttp, private val coresDir: File) {
+class CoreManager(retrofit: Retrofit, private val coresDir: File) {
 
     private val baseUri = Uri.parse("https://buildbot.libretro.com/")
     private val coresUri = baseUri.buildUpon()
@@ -35,45 +39,50 @@ class CoreManager(private val http: OdysseyHttp, private val coresDir: File) {
             .appendPath(Build.SUPPORTED_ABIS.first())
             .build()
 
+    private val api = retrofit.create(CoreManagerApi::class.java)
+
     init {
         coresDir.mkdirs()
     }
 
     fun downloadCore(zipFileName: String): Single<File> {
-        return Single.create { emitter ->
-            val libFileName = zipFileName.substringBeforeLast(".zip")
-            val destFile = File(coresDir, "lib$libFileName")
+        val libFileName = zipFileName.substringBeforeLast(".zip")
+        val destFile = File(coresDir, "lib$libFileName")
 
-            if (destFile.exists()) {
-                emitter.onSuccess(destFile)
-                return@create
-            }
+        if (destFile.exists()) {
+            return Single.just(destFile)
+        }
 
-            val uri = coresUri.buildUpon()
-                    .appendPath(zipFileName)
-                    .build()
+        val uri = coresUri.buildUpon()
+                .appendPath(zipFileName)
+                .build()
 
-            http.downloadZip(uri, { response ->
-                when (response) {
-                    is Response.Success -> {
-                        val zipStream = response.body
+        return api.downloadZip(uri.toString())
+                .map { response ->
+                    if (response.isSuccessful) {
+                        val zipStream = response.body()!!
                         while (true) {
                             val entry = zipStream.nextEntry ?: break
                             if (entry.name == libFileName) {
                                 Okio.source(zipStream).use { zipSource ->
                                     Okio.sink(destFile).use { fileSink ->
                                         Okio.buffer(zipSource).readAll(fileSink)
-                                        emitter.onSuccess(destFile)
-                                        return@downloadZip
+                                        return@map destFile
                                     }
                                 }
                             }
                         }
-                        emitter.onError(Exception("Library not found in zip"))
+                        throw Exception("Library not found in zip")
+                    } else {
+                        throw Exception(response.errorBody()!!.string())
                     }
-                    is Response.Failure -> emitter.onError(response.error)
                 }
-            })
-        }
+    }
+
+    private interface CoreManagerApi {
+
+        @GET
+        @Streaming
+        fun downloadZip(@Url url: String): Single<Response<ZipInputStream>>
     }
 }

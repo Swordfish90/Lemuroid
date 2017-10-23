@@ -11,6 +11,7 @@ ext {
     def daggerVersion = '2.11'
     def koptionalVersion = '1.2.0'
     def supportVersion  = '26.1.0'
+    def retrofitVersion = '2.3.0'
 
     libs = [
         archPaging:             'android.arch.paging:runtime:1.0.0-alpha1',
@@ -29,6 +30,8 @@ ext {
         koptionalRxJava2:       "com.gojuno.koptional:koptional-rxjava2-extensions:${koptionalVersion}",
         kotlinStdlib:           "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
         picasso:                'com.squareup.picasso:picasso:2.5.2',
+        retrofit:               "com.squareup.retrofit2:retrofit:$retrofitVersion",
+        retrofitRxJava2:        "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
         rxAndroid2:             'io.reactivex.rxjava2:rxandroid:2.0.1',
         rxJava2:                'io.reactivex.rxjava2:rxjava:2.1.1',
         rxPermissions2:         'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar',

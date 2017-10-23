@@ -9,6 +9,7 @@ dependencies {
     implementation libs.okHttp3
     implementation libs.rxJava2
     implementation libs.supportPrefLeanbackV17
+    implementation libs.retrofit
 }
 
 android {

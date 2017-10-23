@@ -22,23 +22,29 @@ package com.codebutler.odyssey.lib.webdav
 import android.net.Uri
 import com.codebutler.odyssey.common.xml.XmlPullParserUtil.readText
 import com.codebutler.odyssey.common.xml.XmlPullParserUtil.skip
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.ResponseBody
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.Streaming
+import retrofit2.http.Url
 import kotlin.coroutines.experimental.buildIterator
 
-class WebDavClient(private val client: OkHttpClient, private val xmlPullParserFactory: XmlPullParserFactory) {
+class WebDavClient(
+        retrofit: Retrofit,
+        private val xmlPullParserFactory: XmlPullParserFactory) {
 
     companion object {
         private const val NS = "DAV:"
     }
 
+    private val api = retrofit.create(WebDavApi::class.java)
+
     fun propfind(url: String): Iterator<DavResponse> {
-        val response = client.newCall(Request.Builder()
-                .url(url)
-                .method("PROPFIND", null).build())
-                .execute()
+        val response = api.propfind(url).execute()
 
         val parser = xmlPullParserFactory.newPullParser()
         parser.setInput(response.body()!!.byteStream(), "UTF-8")
@@ -49,11 +55,7 @@ class WebDavClient(private val client: OkHttpClient, private val xmlPullParserFa
     }
 
     fun downloadFile(uri: Uri): ByteArray {
-        val response = client.newCall(Request.Builder()
-                .url(uri.toString())
-                .method("GET", null)
-                .build()
-        ).execute()
+        val response = api.downloadFile(uri.toString()).execute()
         return response.body()!!.bytes()
     }
 
@@ -172,4 +174,14 @@ class WebDavClient(private val client: OkHttpClient, private val xmlPullParserFa
             val displayName: String?,
             val contentLength: Long,
             val resourceType: DavResourceType)
+
+    private interface WebDavApi {
+
+        @HTTP(method = "PROPFIND")
+        fun propfind(@Url url: String): Call<ResponseBody>
+
+        @GET
+        @Streaming
+        fun downloadFile(@Url url: String): Call<ResponseBody>
+    }
 }
