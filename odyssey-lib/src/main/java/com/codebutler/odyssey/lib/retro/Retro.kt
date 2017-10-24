@@ -41,7 +41,7 @@ import java.nio.ByteBuffer
  */
 class Retro(coreLibraryName: String) {
 
-    private val libRetro : LibRetro = Native.loadLibrary(
+    private val libRetro: LibRetro = Native.loadLibrary(
             coreLibraryName,
             LibRetro::class.java,
             mapOf(Library.OPTION_STRUCTURE_ALIGNMENT to

@@ -82,7 +82,7 @@ interface LibRetro : Library {
 
     class retro_system_info : Structure() {
         @JvmField
-        var library_name : String? = null
+        var library_name: String? = null
 
         @JvmField
         var library_version: String? = null
@@ -277,7 +277,7 @@ interface LibRetro : Library {
     }
 
     interface retro_environment_t : Callback {
-        fun invoke(cmd: UnsignedInt, data: Pointer) : Boolean
+        fun invoke(cmd: UnsignedInt, data: Pointer): Boolean
     }
 
     interface retro_log_printf_t : Callback {

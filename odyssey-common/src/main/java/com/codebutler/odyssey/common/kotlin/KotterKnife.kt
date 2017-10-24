@@ -13,6 +13,8 @@ import kotlin.reflect.KProperty
 import android.support.v4.app.DialogFragment as SupportDialogFragment
 import android.support.v4.app.Fragment as SupportFragment
 
+/* ktlint-disable colon-spacing */
+
 fun <V : View> View.bindView(id: Int)
         : ReadOnlyProperty<View, V> = required(id, viewFinder)
 
