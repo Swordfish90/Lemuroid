@@ -37,7 +37,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.PUT
-import retrofit2.http.Streaming
 import retrofit2.http.Url
 import kotlin.coroutines.experimental.buildIterator
 
@@ -59,13 +58,15 @@ class WebDavClient(
 
     fun propfind(url: String): Iterator<DavResponse> {
         val response = api.propfind(url).execute()
-
-        val parser = xmlPullParserFactory.newPullParser()
-        parser.setInput(response.body()!!.byteStream(), "UTF-8")
-        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true)
-        parser.nextTag()
-
-        return readMultiStatus(parser)
+        if (response.isSuccessful) {
+            val parser = xmlPullParserFactory.newPullParser()
+            parser.setInput(response.body()!!.byteStream(), "UTF-8")
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true)
+            parser.nextTag()
+            return readMultiStatus(parser)
+        } else {
+            throw Exception("${response.code()} ${response.message()}")
+        }
     }
 
     fun downloadFile(uri: Uri): Single<ByteArray>
@@ -199,7 +200,6 @@ class WebDavClient(
         fun propfind(@Url url: String): Call<ResponseBody>
 
         @GET
-        @Streaming
         fun downloadFile(@Url url: String): Single<ResponseBody>
 
         @PUT
