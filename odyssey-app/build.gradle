@@ -18,7 +18,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -54,11 +54,10 @@ dependencies {
     implementation libs.supportPrefLeanbackV17
     implementation libs.supportRecyclerViewV7
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }
 
-    annotationProcessor libs.daggerCompiler
     kapt libs.daggerCompiler
 
     testImplementation 'junit:junit:4.12'

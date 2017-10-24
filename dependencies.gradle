@@ -6,22 +6,22 @@ ext {
         buildToolsVersion: '26.0.2'
     ]
 
-    def archVersion = '1.0.0-alpha9-1'
-    def autoDisposeVersion = '0.3.0'
-    def daggerVersion = '2.11'
+    def archVersion = '1.0.0-rc1'
+    def autoDisposeVersion = '0.4.0'
+    def daggerVersion = '2.12'
     def koptionalVersion = '1.2.0'
     def retrofitVersion = '2.3.0'
     def supportVersion  = '26.1.0'
 
     libs = [
-        archPaging:             'android.arch.paging:runtime:1.0.0-alpha1',
+        archPaging:             'android.arch.paging:runtime:1.0.0-alpha3',
         autoDispose:            "com.uber.autodispose:autodispose:${autoDisposeVersion}",
         autoDisposeAndroid:     "com.uber.autodispose:autodispose-android:${autoDisposeVersion}",
         autoDisposeAndroidArch: "com.uber.autodispose:autodispose-android-archcomponents:${autoDisposeVersion}",
         autoDisposeKotlin:      "com.uber.autodispose:autodispose-kotlin:${autoDisposeVersion}",
         dagger:                 "com.google.dagger:dagger:${daggerVersion}",
         daggerCompiler:         "com.google.dagger:dagger-compiler:${daggerVersion}",
-        jna:                    'net.java.dev.jna:jna:4.4.0',
+        jna:                    'net.java.dev.jna:jna:4.5.0@aar',
         koptional:              "com.gojuno.koptional:koptional:${koptionalVersion}",
         koptionalRxJava2:       "com.gojuno.koptional:koptional-rxjava2-extensions:${koptionalVersion}",
         kotlinStdlib:           "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
@@ -34,7 +34,7 @@ ext {
         roomRuntime:            "android.arch.persistence.room:runtime:${archVersion}",
         roomRxJava2:            "android.arch.persistence.room:rxjava2:${archVersion}",
         rxAndroid2:             'io.reactivex.rxjava2:rxandroid:2.0.1',
-        rxJava2:                'io.reactivex.rxjava2:rxjava:2.1.1',
+        rxJava2:                'io.reactivex.rxjava2:rxjava:2.1.5',
         rxPermissions2:         'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar',
         rxRelay2:               'com.jakewharton.rxrelay2:rxrelay:2.0.0',
         supportAppCompatV7:     "com.android.support:appcompat-v7:${supportVersion}",

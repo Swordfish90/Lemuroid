@@ -1,25 +1,48 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /usr/local/opt/android-sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+## Arch Components
+-keep class * implements android.arch.lifecycle.GeneratedAdapter {<init>(...);}
 
-# Add any project specific keep options here:
+## Fabric
+-dontnote com.google.android.gms.**
+-keep class com.codebutler.odyssey.common.jna.**
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+## JNA
+-dontwarn java.awt.*
+-keep class com.sun.jna.* { *; }
+-keepclassmembers class * extends com.sun.jna.* { public *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+## Kotlin
+-dontwarn kotlin.**
+-dontnote kotlin.**
+-keep class android.arch.lifecycle.**
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+## Odyssey
+-keep class com.codebutler.odyssey.lib.retro.**
+
+## OkHttp
+-dontwarn okhttp3.**
+-dontnote com.android.org.conscrypt.SSLParametersImpl
+-dontnote org.apache.harmony.xnet.provider.jsse.SSLParametersImpl
+-dontnote dalvik.system.CloseGuard
+-dontnote sun.security.ssl.SSLContextImpl
+
+## Okio
+-dontwarn okio.**
+
+## Picasso
+-dontwarn com.squareup.okhttp.**
+-dontnote com.squareup.okhttp.**
+
+## Retrofit
+-dontnote retrofit2.Platform
+-dontwarn retrofit2.Platform$Java8
+
+## Misc
+-dontwarn com.uber.javaxextras.**
+-dontwarn java.lang.management.**
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+-dontwarn junit.**
+-dontnote android.net.http.*
+-dontnote org.apache.http.**
+-keepattributes SourceFile,LineNumberTable,Signature,JavascriptInterface,Exceptions
+-verbose

@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 dependencies {
-    compile libs.timber
+    api libs.timber
 
     implementation libs.jna
     implementation libs.koptional
