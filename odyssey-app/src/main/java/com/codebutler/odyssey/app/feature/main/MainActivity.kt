@@ -20,9 +20,7 @@
 package com.codebutler.odyssey.app.feature.main
 
 import android.Manifest
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.OdysseyApplication
 import com.codebutler.odyssey.app.feature.home.HomeFragment
@@ -63,10 +61,5 @@ class MainActivity : OdysseyActivity() {
                         finish()
                     }
                 }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d("MainActivity", "Got activity result!! $requestCode $resultCode $data")
     }
 }

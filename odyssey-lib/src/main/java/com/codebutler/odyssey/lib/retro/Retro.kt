@@ -232,7 +232,7 @@ class Retro(coreLibraryName: String) {
 
         fun onSetMemoryMaps()
 
-        fun onGetLogInterface(): LogInterface
+        fun onGetLogInterface(): LogInterface?
 
         fun onSetSystemAvInfo(info: SystemAVInfo)
 
@@ -474,7 +474,7 @@ class Retro(coreLibraryName: String) {
                     return false // FIXME
                 }
                 LibRetro.RETRO_ENVIRONMENT_GET_LOG_INTERFACE -> {
-                    val logInterface = callback.onGetLogInterface()
+                    val logInterface = callback.onGetLogInterface() ?: return false
                     val logCb = object : LibRetro.retro_log_printf_t {
                         override fun invoke(log_level: Int, fmt: String, arg: Pointer) {
                             val size = LibC.INSTANCE.vsnprintf(null, 0, fmt, arg)

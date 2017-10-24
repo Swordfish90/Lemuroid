@@ -19,7 +19,6 @@
 
 package com.codebutler.odyssey.lib.library
 
-import android.util.Log
 import com.codebutler.odyssey.common.rx.toSingleAsOptional
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
@@ -38,16 +37,13 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.io.File
 
 class GameLibrary(
         private val odysseydb: OdysseyDatabase,
         private val ovgdbManager: OvgdbManager,
         private val providerRegistry: GameLibraryProviderRegistry) {
-
-    companion object {
-        const val TAG = "OdysseyLibrary"
-    }
 
     fun indexGames(): Completable = Completable.create { emitter ->
         ovgdbManager.dbReady
@@ -70,16 +66,16 @@ class GameLibrary(
                 .flatMapSingle { provider -> provider.listFiles() }
                 .flatMapIterable { it }
                 .flatMapSingle { file ->
-                    Log.d(TAG, "Got file: $file ${file.uri}")
+                    Timber.d("Got file: $file ${file.uri}")
                     odysseydb.gameDao().selectByFileUri(file.uri.toString())
                             .toSingleAsOptional()
                             .map { game -> Pair(file, game) }
                 }
-                .doOnNext { (file, game) -> Log.d(TAG, "Game already indexed? ${file.name} ${game is Some}") }
+                .doOnNext { (file, game) -> Timber.d("Game already indexed? ${file.name} ${game is Some}") }
                 .doOnNext { (_, game) ->
                     if (game is Some) {
                         val updatedGame = game.value.copy(lastIndexedAt = startedAtMs)
-                        Log.d(TAG, "Update: $updatedGame")
+                        Timber.d("Update: $updatedGame")
                         odysseydb.gameDao().update(updatedGame)
                     }
                 }
@@ -93,7 +89,7 @@ class GameLibrary(
                             .toSingleAsOptional()
                             .map { rom -> Pair(file, rom) }
                 }
-                .doOnNext { (file, rom) -> Log.d(TAG, "Rom Found: ${file.name} ${rom is Some}") }
+                .doOnNext { (file, rom) -> Timber.d("Rom Found: ${file.name} ${rom is Some}") }
                 .flatMapSingle { (file, rom) ->
                     when (rom) {
                         is Some -> ovgdb.releaseDao().findByRomId(rom.value.id)
@@ -101,7 +97,7 @@ class GameLibrary(
                         else -> Single.just<Optional<Release>>(None)
                     }.map { release -> Triple(file, rom, release) }
                 }
-                .doOnNext { (file, _, release) -> Log.d(TAG, "Release found: ${file.name}, ${release is Some}") }
+                .doOnNext { (file, _, release) -> Timber.d("Release found: ${file.name}, ${release is Some}") }
                 .flatMapSingle { (file, rom, release) ->
                     when (rom) {
                         is Some -> ovgdb.systemDao().findById(rom.value.systemId)
@@ -109,26 +105,26 @@ class GameLibrary(
                         else -> Single.just(None)
                     }.map { ovgdbSystem -> Triple(file, release, ovgdbSystem) }
                 }
-                .doOnNext { (file, _, ovgdbSystem) -> Log.d(TAG, "OVGDB System Found: ${file.name}, ${ovgdbSystem is Some}") }
+                .doOnNext { (file, _, ovgdbSystem) -> Timber.d("OVGDB System Found: ${file.name}, ${ovgdbSystem is Some}") }
                 .map { (file, release, ovgdbSystem) ->
                     var system = when (ovgdbSystem) {
                         is Some -> {
                             val gs = GameSystem.findByShortName(ovgdbSystem.value.shortName)
                             if (gs == null) {
-                                Log.e(TAG, "System '${ovgdbSystem.value.shortName}' not found")
+                                Timber.e("System '${ovgdbSystem.value.shortName}' not found")
                             }
                             gs
                         }
                         else -> null
                     }
                     if (system == null) {
-                        Log.d(TAG, "System not found, trying file extension: ${file.name}")
+                        Timber.d("System not found, trying file extension: ${file.name}")
                         system = GameSystem.findByFileExtension(file.extension)
                     }
                     if (system == null) {
-                        Log.d(TAG, "Giving up on ${file.name}")
+                        Timber.d("Giving up on ${file.name}")
                     } else {
-                        Log.d(TAG, "Found system!! $system")
+                        Timber.d("Found system!! $system")
                     }
                     Triple(file, release, system.toOptional())
                 }
@@ -149,15 +145,15 @@ class GameLibrary(
                 .filterSome()
                 .subscribe(
                         { game ->
-                            Log.d(TAG, "Insert: $game")
+                            Timber.d("Insert: $game")
                             odysseydb.gameDao().insert(game)
                         },
                         { error ->
-                            Log.e(TAG, "Error while indexing", error)
+                            Timber.e("Error while indexing", error)
                             emitter.onError(error)
                         },
                         {
-                            Log.d(TAG, "Done inserting. Looking for games to remove...")
+                            Timber.d("Done inserting. Looking for games to remove...")
                             removeDeletedGames(startedAtMs)
                             emitter.onComplete()
                         })
@@ -168,10 +164,10 @@ class GameLibrary(
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         { games ->
-                            Log.d(TAG, "Removing games: $games")
+                            Timber.d("Removing games: $games")
                             odysseydb.gameDao().delete(games)
                         },
-                        { error -> Log.e(TAG, "Error while removing", error) })
+                        { error -> Timber.e("Error while removing", error) })
     }
 
     private fun sanitizeRomFileName(fileName: String): String {

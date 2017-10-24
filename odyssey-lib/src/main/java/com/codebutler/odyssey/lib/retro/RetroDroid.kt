@@ -22,12 +22,12 @@ package com.codebutler.odyssey.lib.retro
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Handler
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.common.BufferCache
 import com.codebutler.odyssey.common.kotlin.containsAny
 import com.sun.jna.Native
+import timber.log.Timber
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.Timer
@@ -44,10 +44,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
         Retro.AudioSampleBatchCallback,
         Retro.InputPollCallback,
         Retro.InputStateCallback {
-
-    companion object {
-        private const val TAG = "RetroDroid"
-    }
 
     private val retro: Retro
     private val timer = Timer()
@@ -111,26 +107,26 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
     fun loadGame(gamePath: String, saveData: ByteArray?) {
         val systemInfo = retro.getSystemInfo()
-        Log.d(TAG, "System Info: $systemInfo")
+        Timber.d("System Info: $systemInfo")
 
         if (systemInfo.needFullpath) {
             if (!retro.loadGame(gamePath)) {
                 throw Exception("Failed to load game via path: $gamePath")
             }
         } else {
-            Log.d(TAG, "Load game with data!!")
+            Timber.d("Load game with data!!")
             if (!retro.loadGame(File(gamePath).readBytes())) {
                 throw Exception("Failed to load game via buffer: $gamePath")
             }
         }
 
-        Log.d(TAG, "Game loaded!")
+        Timber.d("Game loaded!")
 
         val region = retro.getRegion()
-        Log.d(TAG, "Region: $region")
+        Timber.d("Region: $region")
 
         val systemAVInfo = retro.getSystemAVInfo()
-        Log.d(TAG, "System AV Info: $systemAVInfo")
+        Timber.d("System AV Info: $systemAVInfo")
         updateSystemAVInfo(systemAVInfo)
 
         this.region = region
@@ -166,42 +162,46 @@ class RetroDroid(private val context: Context, coreFile: File) :
         timer.purge()
     }
 
-    override fun onGetLogInterface(): Retro.LogInterface {
-        return object : Retro.LogInterface {
-            override fun onLogMessage(level: Retro.LogLevel, message: String) {
-                logCallback?.invoke(level, message)
+    override fun onGetLogInterface(): Retro.LogInterface? {
+        // Retro logging is somewhat expensive, so skip entirely in production builds.
+        if (Timber.treeCount() > 0) {
+            return object : Retro.LogInterface {
+                override fun onLogMessage(level: Retro.LogLevel, message: String) {
+                    logCallback?.invoke(level, message)
+                }
             }
         }
+        return null
     }
 
     override fun onSetVariables(newVariables: Map<String, String>) {
-        Log.d(TAG, "onSetVariables: $newVariables")
+        Timber.d("onSetVariables: $newVariables")
         variables.putAll(newVariables)
     }
 
     override fun onSetSupportAchievements(supportsAchievements: Boolean) {
         // FIXME: Implement
-        Log.d(TAG, "onSetSupportAchievements: $supportsAchievements")
+        Timber.d("onSetSupportAchievements: $supportsAchievements")
     }
 
     override fun onSetPerformanceLevel(performanceLevel: Int) {
         // FIXME: Implement
-        Log.d(TAG, "onSetPerformanceLevel: $performanceLevel")
+        Timber.d("onSetPerformanceLevel: $performanceLevel")
     }
 
     override fun onSetSystemAvInfo(info: Retro.SystemAVInfo) {
-        Log.d(TAG, "onSetSystemAvInfo: $info")
+        Timber.d("onSetSystemAvInfo: $info")
         updateSystemAVInfo(info)
     }
 
     override fun onSetGeometry(geometry: Retro.GameGeometry) {
-        Log.d(TAG, "onSetGeometry: $geometry")
+        Timber.d("onSetGeometry: $geometry")
         val systemAVInfo = this.systemAVInfo ?: retro.getSystemAVInfo()
         updateSystemAVInfo(systemAVInfo.copy(geometry = geometry))
     }
 
     override fun onGetVariable(name: String): String? {
-        Log.d(TAG, "onGetVariable: $name, value: ${variables[name]}")
+        Timber.d("onGetVariable: $name, value: ${variables[name]}")
         return variables[name]
     }
 
@@ -214,7 +214,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
         val pixelFormatInfo = pixelFormat.info
 
-        Log.d(TAG, """onSetPixelFormat: $pixelFormat
+        Timber.d("""onSetPixelFormat: $pixelFormat
                 bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
                 bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}""")
 
@@ -226,37 +226,37 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
     override fun onSetInputDescriptors(descriptors: List<Retro.InputDescriptor>) {
         // FIXME: Implement
-        Log.d(TAG, "onSetInputDescriptors: $descriptors")
+        Timber.d("onSetInputDescriptors: $descriptors")
     }
 
     override fun onSetControllerInfo(info: List<Retro.ControllerInfo>) {
         // FIXME: Implement
-        Log.d(TAG, "onSetControllerInfo: $info")
+        Timber.d("onSetControllerInfo: $info")
     }
 
     override fun onGetVariableUpdate(): Boolean {
         // FIXME: Implement
-        //Log.d(TAG, "onGetVariableUpdate")
+        //Timber.d("onGetVariableUpdate")
         return false
     }
 
     override fun onGetSystemDirectory(): String? {
         val dir = File(context.filesDir, "system")
         dir.mkdirs()
-        Log.d(TAG, "onGetSystemDirectory ${dir.absolutePath}")
+        Timber.d("onGetSystemDirectory ${dir.absolutePath}")
         return dir.absolutePath
     }
 
     override fun onGetSaveDirectory(): String? {
         val dir = File(context.filesDir, "save")
         dir.mkdirs()
-        Log.d(TAG, "onGetSaveDirectory ${dir.absolutePath}")
+        Timber.d("onGetSaveDirectory ${dir.absolutePath}")
         return dir.absolutePath
     }
 
     override fun onSetMemoryMaps() {
         // FIXME: Implement
-        //Log.d(TAG, "onSetMemoryMaps")
+        //Timber.d("onSetMemoryMaps")
     }
 
     override fun onVideoRefresh(data: ByteArray, width: Int, height: Int, pitch: Int) {
@@ -270,7 +270,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
                     width * videoBytesPerPixel      // LENGTH
             )
         }
-        //Log.d(TAG, "onVideoRefresh: ${newBuffer.toHexString()}")
+        //Timber.d("onVideoRefresh: ${newBuffer.toHexString()}")
         val bitmap = Bitmap.createBitmap(width, height, videoBitmapConfig)
         bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
         videoCallback?.invoke(bitmap)
@@ -340,7 +340,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
     }
 
     override fun onUnsupportedCommand(cmd: Int) {
-        Log.e(TAG, "Unsupported env command: $cmd")
+        Timber.e("Unsupported env command: $cmd")
     }
 
     fun onKeyEvent(event: KeyEvent) {
@@ -351,7 +351,7 @@ class RetroDroid(private val context: Context, coreFile: File) :
     }
 
     fun onMotionEvent(event: MotionEvent) {
-        Log.d(TAG, "onMotionEvent: $event")
+        Timber.d("onMotionEvent: $event")
 
         when (event.rawX) {
             1.0F -> {

@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.codebutler.odyssey"
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -40,19 +40,19 @@ dependencies {
     implementation libs.koptional
     implementation libs.koptionalRxJava2
     implementation libs.kotlinStdlib
-    implementation libs.supportAppCompatV7
-    implementation libs.supportLeanbackV17
-    implementation libs.supportPaletteV7
-    implementation libs.supportPrefLeanbackV17
-    implementation libs.supportRecyclerViewV7
     implementation libs.okHttp3
+    implementation libs.picasso
     implementation libs.retrofit
     implementation libs.retrofitRxJava2
     implementation libs.roomRuntime
     implementation libs.rxAndroid2
     implementation libs.rxJava2
     implementation libs.rxPermissions2
-    implementation libs.picasso
+    implementation libs.supportAppCompatV7
+    implementation libs.supportLeanbackV17
+    implementation libs.supportPaletteV7
+    implementation libs.supportPrefLeanbackV17
+    implementation libs.supportRecyclerViewV7
 
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;

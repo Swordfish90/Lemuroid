@@ -28,7 +28,6 @@ import android.media.AudioTrack
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -56,6 +55,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -111,7 +111,7 @@ class GameActivity : AppCompatActivity() {
                     progressBar.visibility = View.GONE
                     loadRetro(data)
                 }, { error ->
-                    Log.e("GameActivity", "Failed to load game", error)
+                    Timber.e("Failed to load game", error)
                     finish()
                 })
     }
@@ -155,7 +155,6 @@ class GameActivity : AppCompatActivity() {
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         super.dispatchKeyEvent(event)
-        Log.d("Retro", "dispatchKeyEvent ${event.action} ${event.keyCode}")
         retroDroid?.onKeyEvent(event)
         return true
     }
@@ -180,12 +179,12 @@ class GameActivity : AppCompatActivity() {
         val retroDroid = RetroDroid(this, data.coreFile)
 
         retroDroid.logCallback = { level, message ->
-            val tag = "RetroLog"
+            val timber = Timber.tag("RetroLog")
             when (level) {
-                Retro.LogLevel.DEBUG -> Log.d(tag, message)
-                Retro.LogLevel.INFO -> Log.i(tag, message)
-                Retro.LogLevel.WARN -> Log.w(tag, message)
-                Retro.LogLevel.ERROR -> Log.e(tag, message)
+                Retro.LogLevel.DEBUG -> timber.d(message)
+                Retro.LogLevel.INFO -> timber.i(message)
+                Retro.LogLevel.WARN -> timber.w(message)
+                Retro.LogLevel.ERROR -> timber.e(message)
             }
         }
 

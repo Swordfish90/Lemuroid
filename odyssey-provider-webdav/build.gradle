@@ -3,17 +3,18 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 dependencies {
+    implementation project(':odyssey-common')
     implementation project(':odyssey-lib')
 
+    implementation libs.koptional
+    implementation libs.koptionalRxJava2
     implementation libs.kotlinStdlib
     implementation libs.okHttp3
     implementation libs.okHttp3Logging
-    implementation libs.rxJava2
-    implementation libs.supportPrefLeanbackV17
     implementation libs.retrofit
     implementation libs.retrofitRxJava2
-    implementation libs.koptional
-    implementation libs.koptionalRxJava2
+    implementation libs.rxJava2
+    implementation libs.supportPrefLeanbackV17
 }
 
 android {

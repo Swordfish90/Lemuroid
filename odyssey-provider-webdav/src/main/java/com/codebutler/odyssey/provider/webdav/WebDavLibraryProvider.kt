@@ -23,7 +23,6 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.net.Uri
 import android.support.v17.preference.LeanbackPreferenceFragment
-import android.util.Log
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
@@ -38,6 +37,7 @@ import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.xmlpull.v1.XmlPullParserFactory
+import timber.log.Timber
 import java.io.File
 import java.net.URI
 import java.net.URLDecoder
@@ -45,15 +45,11 @@ import java.util.concurrent.TimeUnit
 
 class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider {
 
-    companion object {
-        const val TAG = "WebDavLibraryProvider"
-    }
-
     private val webDavClient: WebDavClient
     private val webDavScanner: WebDavScanner
 
     init {
-        val loggingInterceptor = HttpLoggingInterceptor()
+        val loggingInterceptor = HttpLoggingInterceptor { message -> Timber.d(message) }
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
 
         val okHttpClient = OkHttpClient.Builder()
@@ -105,7 +101,7 @@ class WebDavLibraryProvider(private val context: Context) : GameLibraryProvider 
             return Single.just(gameFile)
         }
         val httpUri = UriTransformer(game.fileUri).httpUri
-        Log.d(TAG, "Downloading game: $httpUri")
+        Timber.d("Downloading game: $httpUri")
         return webDavClient.downloadFile(httpUri)
                 .map { bytes ->
                     gameFile.writeBytes(bytes)

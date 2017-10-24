@@ -24,6 +24,7 @@ import android.content.Context
 import com.codebutler.odyssey.BuildConfig
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
+import timber.log.Timber
 
 class OdysseyApplication : Application() {
 
@@ -42,6 +43,10 @@ class OdysseyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         component = DaggerOdysseyApplicationComponent.builder()
                 .application(this)
