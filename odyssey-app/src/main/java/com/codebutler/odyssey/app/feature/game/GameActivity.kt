@@ -21,17 +21,16 @@ package com.codebutler.odyssey.app.feature.game
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.OdysseyApplication
@@ -44,6 +43,8 @@ import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.dao.updateAsync
 import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.codebutler.odyssey.lib.rendering.GameDisplay
+import com.codebutler.odyssey.lib.rendering.sw.SwGameDisplay
 import com.codebutler.odyssey.lib.retro.Retro
 import com.codebutler.odyssey.lib.retro.RetroDroid
 import com.gojuno.koptional.Optional
@@ -60,7 +61,6 @@ import java.io.File
 import javax.inject.Inject
 
 class GameActivity : AppCompatActivity() {
-
     companion object {
         private const val EXTRA_GAME_ID = "game_id"
 
@@ -74,10 +74,10 @@ class GameActivity : AppCompatActivity() {
     @Inject lateinit var odysseyDatabase: OdysseyDatabase
     @Inject lateinit var gameLibrary: GameLibrary
 
-    private val imageView: ImageView by bindView(R.id.image)
-    private val progressBar: ProgressBar by bindView(R.id.progress)
+    private val progressBar by bindView<ProgressBar>(R.id.progress)
+    private val gameDisplayLayout by bindView<FrameLayout>(R.id.game_display_layout)
 
-    private val handler = Handler()
+    private lateinit var gameDisplay: GameDisplay
 
     private var game: Game? = null
     private var retroDroid: RetroDroid? = null
@@ -86,6 +86,11 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+        gameDisplay = SwGameDisplay(this)
+
+        gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)
+        lifecycle.addObserver(gameDisplay)
 
         val component = DaggerGameActivity_GameComponent.builder()
                 .odysseyApplicationComponent((application as OdysseyApplication).component)
@@ -173,13 +178,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         retroDroid.videoCallback = { bitmap ->
-            handler.post {
-                val drawable = BitmapDrawable(resources, bitmap)
-                drawable.paint.isAntiAlias = false
-                drawable.paint.isDither = false
-                drawable.paint.isFilterBitmap = false
-                imageView.setImageDrawable(drawable)
-            }
+            gameDisplay.update(bitmap)
         }
 
         retroDroid.audioCallback = { buffer ->
