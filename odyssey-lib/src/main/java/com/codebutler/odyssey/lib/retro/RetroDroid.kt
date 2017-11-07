@@ -26,8 +26,10 @@ import android.graphics.Bitmap
 import android.os.Handler
 import android.view.KeyEvent
 import android.view.MotionEvent
+import com.codebutler.odyssey.common.BitmapCache
 import com.codebutler.odyssey.common.BufferCache
 import com.codebutler.odyssey.common.kotlin.containsAny
+import com.codebutler.odyssey.lib.rendering.FpsCalculator
 import com.sun.jna.Native
 import timber.log.Timber
 import java.io.File
@@ -42,11 +44,13 @@ import kotlin.experimental.and
 class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycleObserver {
 
     private val audioSampleBufferCache = BufferCache()
+    private val fpsCalculator = FpsCalculator()
     private val handler = Handler()
     private val pressedKeys = mutableSetOf<Int>()
     private val retro: Retro
     private val variables: MutableMap<String, String> = mutableMapOf()
     private val videoBufferCache = BufferCache()
+    private val videoBitmapCache = BitmapCache()
 
     private var region: Retro.Region? = null
     private var systemAVInfo: Retro.SystemAVInfo? = null
@@ -54,6 +58,9 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
     private var timer: Timer? = null
     private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
     private var videoBytesPerPixel: Int = 0
+
+    val fps: Long
+        get() = fpsCalculator.fps
 
     /**
      * Callback for audio data, should be set by frontend.
@@ -107,7 +114,7 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
                         widthAsBytes      // LENGTH
                 )
             }
-            val bitmap = Bitmap.createBitmap(width, height, videoBitmapConfig)
+            val bitmap = videoBitmapCache.getBitmap(width, height, videoBitmapConfig)
             bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
             videoCallback?.invoke(bitmap)
         }
@@ -170,6 +177,7 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
         }
         this.timer = fixedRateTimer(period = 1000L / avInfo.timing.fps.toLong()) {
             retro.run()
+            fpsCalculator.update()
         }
     }
 

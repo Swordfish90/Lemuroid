@@ -12,4 +12,5 @@
     <string name="favorites">Favorites</string>
     <string name="all_games">All Games</string>
     <string name="sources">Sources</string>
+    <string name="fps_format">Render: %1$d\nGame: %2$d</string>
 </resources>

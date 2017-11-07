@@ -1,5 +1,5 @@
 /*
- * GameView.kt
+ * FpsCalculator.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -19,15 +19,30 @@
 
 package com.codebutler.odyssey.lib.rendering
 
-import android.arch.lifecycle.DefaultLifecycleObserver
-import android.graphics.Bitmap
-import android.view.View
+class FpsCalculator {
 
-interface GameDisplay : DefaultLifecycleObserver {
+    companion object {
+        private var size: Int = 100
+    }
 
-    val view: View
+    private var lastUpdate = System.currentTimeMillis()
+    private var lastFpsWrite = 0
+    private var totalFps = 0L
+    private val fpsHistory = LongArray(size)
+
+    fun update() {
+        val currentUpdate = System.currentTimeMillis()
+        val deltaTime = currentUpdate - lastUpdate + 1 // Add 1 to make sure delta time is non-zero.
+        val fps = 1000 / deltaTime
+
+        totalFps -= fpsHistory[lastFpsWrite]
+        totalFps += fps
+
+        fpsHistory[lastFpsWrite++] = fps
+        lastFpsWrite %= 100
+        lastUpdate = currentUpdate
+    }
 
     val fps: Long
-
-    fun update(bitmap: Bitmap)
+        get() = totalFps / 100
 }

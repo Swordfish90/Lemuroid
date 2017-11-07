@@ -1,5 +1,5 @@
 /*
- * GameView.kt
+ * BitmapCache.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,17 +17,20 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.rendering
+package com.codebutler.odyssey.common
 
-import android.arch.lifecycle.DefaultLifecycleObserver
 import android.graphics.Bitmap
-import android.view.View
 
-interface GameDisplay : DefaultLifecycleObserver {
+class BitmapCache {
 
-    val view: View
+    private var bitmap: Bitmap? = null
 
-    val fps: Long
-
-    fun update(bitmap: Bitmap)
+    fun getBitmap(width: Int, height: Int, videoBitmapConfig: Bitmap.Config): Bitmap {
+        var bitmap = bitmap
+        if (bitmap == null || bitmap.width != width || bitmap.height != height || bitmap.config != videoBitmapConfig) {
+            bitmap = Bitmap.createBitmap(width, height, videoBitmapConfig)
+            this@BitmapCache.bitmap = bitmap
+        }
+        return bitmap!!
+    }
 }

@@ -21,6 +21,7 @@ package com.codebutler.odyssey.app.feature.game
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
@@ -32,6 +33,8 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.TextView
+import com.codebutler.odyssey.BuildConfig
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.OdysseyApplication
 import com.codebutler.odyssey.app.OdysseyApplicationComponent
@@ -119,6 +122,10 @@ class GameActivity : AppCompatActivity() {
                     Timber.e(error, "Failed to load game")
                     finish()
                 })
+
+        if (BuildConfig.DEBUG) {
+            addFpsView()
+        }
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
@@ -131,6 +138,23 @@ class GameActivity : AppCompatActivity() {
         super.dispatchKeyEvent(event)
         retroDroid?.onKeyEvent(event)
         return true
+    }
+
+    private fun addFpsView() {
+        val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
+
+        val fpsView = TextView(this)
+        fpsView.textSize = 18f
+        fpsView.setTextColor(Color.WHITE)
+        fpsView.setShadowLayer(2f, 0f, 0f, Color.BLACK)
+
+        frameLayout.addView(fpsView)
+
+        fun updateFps() {
+            fpsView.text = getString(R.string.fps_format, gameDisplay.fps, retroDroid?.fps ?: 0L)
+            fpsView.postDelayed({ updateFps() }, 1000)
+        }
+        updateFps()
     }
 
     private fun prepareGame(game: Game): Single<PreparedGameData> {

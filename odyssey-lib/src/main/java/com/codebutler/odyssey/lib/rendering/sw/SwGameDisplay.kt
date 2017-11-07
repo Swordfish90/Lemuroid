@@ -23,11 +23,17 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
+import com.codebutler.odyssey.lib.rendering.FpsCalculator
 import com.codebutler.odyssey.lib.rendering.GameDisplay
 
 class SwGameDisplay(context: Context) : GameDisplay {
 
+    private val fpsCalculator = FpsCalculator()
+
     override val view: ImageView = ImageView(context)
+
+    override val fps
+        get() = fpsCalculator.fps
 
     override fun update(bitmap: Bitmap) {
         view.handler.post {
@@ -36,6 +42,7 @@ class SwGameDisplay(context: Context) : GameDisplay {
             drawable.paint.isDither = false
             drawable.paint.isFilterBitmap = false
             view.setImageDrawable(drawable)
+            fpsCalculator.update()
         }
     }
 }
