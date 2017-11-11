@@ -70,8 +70,7 @@ class LocalGameLibraryProvider(private val context: Context) : GameLibraryProvid
         }
     }
 
-    override fun setGameSave(game: Game, data: ByteArray): Completable
-            = Completable.fromCallable {
+    override fun setGameSave(game: Game, data: ByteArray): Completable = Completable.fromCallable {
         val saveFile = getSaveFile(game)
         saveFile.writeBytes(data)
     }
@@ -80,6 +79,6 @@ class LocalGameLibraryProvider(private val context: Context) : GameLibraryProvid
         val odysseyDir = File(Environment.getExternalStorageDirectory(), "odyssey")
         val savesDir = File(odysseyDir, "saves")
         savesDir.mkdirs()
-        return File(savesDir, game.fileName + ".sram")
+        return File(savesDir, "${game.fileName}.sram")
     }
 }

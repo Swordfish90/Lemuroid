@@ -33,35 +33,32 @@ import timber.log.Timber
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.Timer
-import java.util.TimerTask
+import kotlin.concurrent.fixedRateTimer
 import kotlin.experimental.and
 
 /**
  * Native Android frontend for LibRetro!
  */
-class RetroDroid(private val context: Context, coreFile: File) :
-        Retro.EnvironmentCallback,
-        Retro.VideoRefreshCallback,
-        Retro.AudioSampleCallback,
-        Retro.AudioSampleBatchCallback,
-        Retro.InputPollCallback,
-        Retro.InputStateCallback,
-        DefaultLifecycleObserver {
+class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycleObserver {
 
-    private val retro: Retro
-    private val timer = Timer()
-    private val pressedKeys = mutableSetOf<Int>()
-    private val videoBufferCache = BufferCache()
     private val audioSampleBufferCache = BufferCache()
-    private val variables: MutableMap<String, String> = mutableMapOf()
     private val handler = Handler()
+    private val pressedKeys = mutableSetOf<Int>()
+    private val retro: Retro
+    private val variables: MutableMap<String, String> = mutableMapOf()
+    private val videoBufferCache = BufferCache()
 
-    private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
-    private var videoBytesPerPixel: Int = 0
-    private var timerTask: TimerTask? = null
     private var region: Retro.Region? = null
     private var systemAVInfo: Retro.SystemAVInfo? = null
     private var systemInfo: Retro.SystemInfo? = null
+    private var timer: Timer? = null
+    private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
+    private var videoBytesPerPixel: Int = 0
+
+    /**
+     * Callback for audio data, should be set by frontend.
+     */
+    var audioCallback: ((buffer: ByteArray) -> Unit)? = null
 
     /**
      * Callback for log events, should be set by frontend.
@@ -77,11 +74,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
      * Callback for video data, should be set by frontend.
      */
     var videoCallback: ((bitmap: Bitmap) -> Unit)? = null
-
-    /**
-     * Callback for audio data, should be set by frontend.
-     */
-    var audioCallback: ((buffer: ByteArray) -> Unit)? = null
 
     /**
      * Callback when game is unloaded, to allow for persisting save ram.
@@ -100,12 +92,42 @@ class RetroDroid(private val context: Context, coreFile: File) :
         val coreLibraryName = coreFile.nameWithoutExtension.substring(3) // FIXME
 
         retro = Retro(coreLibraryName)
-        retro.setEnvironment(this)
-        retro.setVideoRefresh(this)
-        retro.setAudioSample(this)
-        retro.setAudioSampleBatch(this)
-        retro.setInputPoll(this)
-        retro.setInputState(this)
+
+        retro.environmentCallback = RetroDroidEnvironmentCallback()
+
+        retro.videoCallback = { data, width, height, pitch ->
+            val newBuffer = videoBufferCache.getBuffer(width * height * videoBytesPerPixel)
+            for (i in 0 until height) {
+                val widthAsBytes = width * videoBytesPerPixel
+                System.arraycopy(
+                        data,             // SRC
+                        i * pitch,        // SRC POS
+                        newBuffer,        // DST
+                        i * widthAsBytes, // DST POS
+                        widthAsBytes      // LENGTH
+                )
+            }
+            val bitmap = Bitmap.createBitmap(width, height, videoBitmapConfig)
+            bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
+            videoCallback?.invoke(bitmap)
+        }
+
+        retro.audioSampleCallback = { left, right ->
+            val buffer = audioSampleBufferCache.getBuffer(2)
+            buffer[0] = left.toByte() and 0xff.toByte()
+            buffer[1] = (right.toInt() shr 8).toByte() and 0xff.toByte()
+            audioCallback?.invoke(buffer)
+        }
+
+        retro.audioSampleBatchCallback = { data ->
+            audioCallback?.invoke(data)
+            data.size.toLong()
+        }
+
+        retro.inputPollCallback = { /* Nothing to do here? */ }
+
+        retro.inputStateCallback = this::onInputState
+
         retro.init()
     }
 
@@ -143,16 +165,13 @@ class RetroDroid(private val context: Context, coreFile: File) :
 
     fun start() {
         val avInfo = systemAVInfo
-        if (timerTask != null || avInfo == null) {
+        if (this.timer != null || avInfo == null) {
             return
         }
-        val timerTask = object : TimerTask() {
-            override fun run() {
-                retro.run()
-            }
+
+        this.timer = fixedRateTimer(period = 1000L / avInfo.timing.fps.toLong()) {
+            retro.run()
         }
-        timer.scheduleAtFixedRate(timerTask, 0, 1000L / avInfo.timing.fps.toLong())
-        this.timerTask = timerTask
     }
 
     fun unloadGame() {
@@ -174,137 +193,49 @@ class RetroDroid(private val context: Context, coreFile: File) :
         deinit()
     }
 
-    override fun onGetLogInterface(): Retro.LogInterface? {
-        // Retro logging is somewhat expensive, so skip entirely in production builds.
-        if (Timber.treeCount() > 0) {
-            return object : Retro.LogInterface {
-                override fun onLogMessage(level: Retro.LogLevel, message: String) {
-                    logCallback?.invoke(level, message)
-                }
+    fun onKeyEvent(event: KeyEvent) {
+        when (event.action) {
+            KeyEvent.ACTION_DOWN -> pressedKeys.add(event.keyCode)
+            KeyEvent.ACTION_UP -> pressedKeys.remove(event.keyCode)
+        }
+    }
+
+    fun onMotionEvent(event: MotionEvent) {
+        Timber.d("onMotionEvent: $event")
+
+        when (event.rawX) {
+            1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_RIGHT)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
+            }
+            -1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_LEFT)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
+            }
+            else -> {
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
             }
         }
-        return null
-    }
 
-    override fun onSetVariables(newVariables: Map<String, String>) {
-        Timber.d("onSetVariables: $newVariables")
-        variables.putAll(newVariables)
-    }
-
-    override fun onSetSupportAchievements(supportsAchievements: Boolean) {
-        // FIXME: Implement
-        Timber.d("onSetSupportAchievements: $supportsAchievements")
-    }
-
-    override fun onSetPerformanceLevel(performanceLevel: Int) {
-        // FIXME: Implement
-        Timber.d("onSetPerformanceLevel: $performanceLevel")
-    }
-
-    override fun onSetSystemAvInfo(info: Retro.SystemAVInfo) {
-        Timber.d("onSetSystemAvInfo: $info")
-        updateSystemAVInfo(info)
-    }
-
-    override fun onSetGeometry(geometry: Retro.GameGeometry) {
-        Timber.d("onSetGeometry: $geometry")
-        val systemAVInfo = this.systemAVInfo ?: retro.getSystemAVInfo()
-        updateSystemAVInfo(systemAVInfo.copy(geometry = geometry))
-    }
-
-    override fun onGetVariable(name: String): String? {
-        Timber.d("onGetVariable: $name, value: ${variables[name]}")
-        return variables[name]
-    }
-
-    override fun onSetPixelFormat(pixelFormat: Retro.PixelFormat): Boolean {
-        val bitmapConfig = when (pixelFormat) {
-            Retro.PixelFormat.XRGB8888 -> Bitmap.Config.ARGB_8888
-            Retro.PixelFormat.RGB565 -> Bitmap.Config.RGB_565
-            else -> TODO()
+        when (event.rawY) {
+            1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_DOWN)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
+            }
+            -1.0F -> {
+                pressedKeys.add(KeyEvent.KEYCODE_DPAD_UP)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
+            }
+            else -> {
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
+                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
+            }
         }
-
-        val pixelFormatInfo = pixelFormat.info
-
-        Timber.d("""onSetPixelFormat: $pixelFormat
-                bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
-                bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}""")
-
-        videoBitmapConfig = bitmapConfig
-        videoBytesPerPixel = pixelFormatInfo.bytesPerPixel
-
-        return true
     }
 
-    override fun onSetInputDescriptors(descriptors: List<Retro.InputDescriptor>) {
-        // FIXME: Implement
-        Timber.d("onSetInputDescriptors: $descriptors")
-    }
-
-    override fun onSetControllerInfo(info: List<Retro.ControllerInfo>) {
-        // FIXME: Implement
-        Timber.d("onSetControllerInfo: $info")
-    }
-
-    override fun onGetVariableUpdate(): Boolean {
-        // FIXME: Implement
-        //Timber.d("onGetVariableUpdate")
-        return false
-    }
-
-    override fun onGetSystemDirectory(): String? {
-        val dir = File(context.filesDir, "system")
-        dir.mkdirs()
-        Timber.d("onGetSystemDirectory ${dir.absolutePath}")
-        return dir.absolutePath
-    }
-
-    override fun onGetSaveDirectory(): String? {
-        val dir = File(context.filesDir, "save")
-        dir.mkdirs()
-        Timber.d("onGetSaveDirectory ${dir.absolutePath}")
-        return dir.absolutePath
-    }
-
-    override fun onSetMemoryMaps() {
-        // FIXME: Implement
-        //Timber.d("onSetMemoryMaps")
-    }
-
-    override fun onVideoRefresh(data: ByteArray, width: Int, height: Int, pitch: Int) {
-        val newBuffer = videoBufferCache.getBuffer(width * height * videoBytesPerPixel)
-        for (i in 0 until height) {
-            System.arraycopy(
-                    data,                           // SRC
-                    i * pitch,                      // SRC POS
-                    newBuffer,                      // DST
-                    i * width * videoBytesPerPixel, // DST POS
-                    width * videoBytesPerPixel      // LENGTH
-            )
-        }
-        //Timber.d("onVideoRefresh: ${newBuffer.toHexString()}")
-        val bitmap = Bitmap.createBitmap(width, height, videoBitmapConfig)
-        bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
-        videoCallback?.invoke(bitmap)
-    }
-
-    override fun onAudioSample(left: Short, right: Short) {
-        val buffer = audioSampleBufferCache.getBuffer(2)
-        buffer[0] = left.toByte() and 0xff.toByte()
-        buffer[1] = (right.toInt() shr 8).toByte() and 0xff.toByte()
-        audioCallback?.invoke(buffer)
-    }
-
-    override fun onAudioSampleBatch(data: ByteArray, frames: Int): Long {
-        audioCallback?.invoke(data)
-        return data.size.toLong()
-    }
-
-    override fun onInputPoll() {
-        /* Nothing to do here? */
-    }
-
-    override fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean {
+    @Suppress("UNUSED_PARAMETER")
+    private fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean {
         if (port != 0) {
             // Only P1 supported for now.
             return false
@@ -351,63 +282,121 @@ class RetroDroid(private val context: Context, coreFile: File) :
         return false
     }
 
-    override fun onUnsupportedCommand(cmd: Int) {
-        Timber.e("Unsupported env command: $cmd")
-    }
-
-    fun onKeyEvent(event: KeyEvent) {
-        when (event.action) {
-            KeyEvent.ACTION_DOWN -> pressedKeys.add(event.keyCode)
-            KeyEvent.ACTION_UP -> pressedKeys.remove(event.keyCode)
-        }
-    }
-
-    fun onMotionEvent(event: MotionEvent) {
-        Timber.d("onMotionEvent: $event")
-
-        when (event.rawX) {
-            1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_RIGHT)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
-            }
-            -1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_LEFT)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
-            }
-            else -> {
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
-            }
-        }
-
-        when (event.rawY) {
-            1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_DOWN)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
-            }
-            -1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_UP)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
-            }
-            else -> {
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
-            }
-        }
-    }
-
     private fun deinit() {
         retro.deinit()
     }
 
     private fun stop() {
-        timerTask?.cancel()
-        timer.purge()
+        timer?.cancel()
+        timer = null
     }
 
     private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {
         prepareAudioCallback?.invoke(systemAVInfo.timing.sample_rate.toInt())
         this.systemAVInfo = systemAVInfo
+    }
+
+    inner class RetroDroidEnvironmentCallback : Retro.EnvironmentCallback {
+        override fun onGetLogInterface(): Retro.LogInterface? {
+            // Retro logging is somewhat expensive, so skip entirely in production builds.
+            if (Timber.treeCount() > 0) {
+                return object : Retro.LogInterface {
+                    override fun onLogMessage(level: Retro.LogLevel, message: String) {
+                        logCallback?.invoke(level, message)
+                    }
+                }
+            }
+            return null
+        }
+
+        override fun onSetVariables(variables: Map<String, String>) {
+            Timber.d("onSetVariables: $variables")
+            this@RetroDroid.variables.putAll(variables)
+        }
+
+        override fun onSetSupportAchievements(supportsAchievements: Boolean) {
+            // FIXME: Implement
+            Timber.d("onSetSupportAchievements: $supportsAchievements")
+        }
+
+        override fun onSetPerformanceLevel(performanceLevel: Int) {
+            // FIXME: Implement
+            Timber.d("onSetPerformanceLevel: $performanceLevel")
+        }
+
+        override fun onSetSystemAvInfo(info: Retro.SystemAVInfo) {
+            Timber.d("onSetSystemAvInfo: $info")
+            updateSystemAVInfo(info)
+        }
+
+        override fun onSetGeometry(geometry: Retro.GameGeometry) {
+            Timber.d("onSetGeometry: $geometry")
+            val systemAVInfo = systemAVInfo ?: retro.getSystemAVInfo()
+            updateSystemAVInfo(systemAVInfo.copy(geometry = geometry))
+        }
+
+        override fun onGetVariable(name: String): String? {
+            Timber.d("onGetVariable: $name, value: ${variables[name]}")
+            return variables[name]
+        }
+
+        override fun onSetPixelFormat(pixelFormat: Retro.PixelFormat): Boolean {
+            val bitmapConfig = when (pixelFormat) {
+                Retro.PixelFormat.XRGB8888 -> Bitmap.Config.ARGB_8888
+                Retro.PixelFormat.RGB565 -> Bitmap.Config.RGB_565
+                else -> TODO()
+            }
+
+            val pixelFormatInfo = pixelFormat.info
+
+            Timber.d("""onSetPixelFormat: $pixelFormat
+                bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
+                bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}""")
+
+            videoBitmapConfig = bitmapConfig
+            videoBytesPerPixel = pixelFormatInfo.bytesPerPixel
+
+            return true
+        }
+
+        override fun onSetInputDescriptors(descriptors: List<Retro.InputDescriptor>) {
+            // FIXME: Implement
+            Timber.d("onSetInputDescriptors: $descriptors")
+        }
+
+        override fun onSetControllerInfo(info: List<Retro.ControllerInfo>) {
+            // FIXME: Implement
+            Timber.d("onSetControllerInfo: $info")
+        }
+
+        override fun onGetVariableUpdate(): Boolean {
+            // FIXME: Implement
+            //Timber.d("onGetVariableUpdate")
+            return false
+        }
+
+        override fun onGetSystemDirectory(): String? {
+            val dir = File(context.filesDir, "system")
+            dir.mkdirs()
+            Timber.d("onGetSystemDirectory ${dir.absolutePath}")
+            return dir.absolutePath
+        }
+
+        override fun onGetSaveDirectory(): String? {
+            val dir = File(context.filesDir, "save")
+            dir.mkdirs()
+            Timber.d("onGetSaveDirectory ${dir.absolutePath}")
+            return dir.absolutePath
+        }
+
+        override fun onSetMemoryMaps() {
+            // FIXME: Implement
+            //Timber.d("onSetMemoryMaps")
+        }
+
+        override fun onUnsupportedCommand(cmd: Int) {
+            Timber.e("Unsupported env command: $cmd")
+        }
     }
 }
 

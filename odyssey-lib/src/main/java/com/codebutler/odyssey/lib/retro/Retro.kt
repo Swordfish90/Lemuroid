@@ -53,16 +53,53 @@ class Retro(coreLibraryName: String) {
                 }
             ))
 
-    // These are here to prevent the GC from reaping our callbacks.
-    private var videoRefreshCb: LibRetro.retro_video_refresh_t? = null
-    private var envCb: LibRetro.retro_environment_t? = null
-    private var audioSampleCb: LibRetro.retro_audio_sample_t? = null
-    private var audioSampleBatchCb: LibRetro.retro_audio_sample_batch_t? = null
-    private var inputPollCb: LibRetro.retro_input_poll_t? = null
-    private var inputStateCb: LibRetro.retro_input_state_t? = null
+    var environmentCallback: EnvironmentCallback? = null
+    var videoCallback: ((data: ByteArray, width: Int, height: Int, pitch: Int) -> Unit)? = null
+    var audioSampleCallback: ((left: Short, right: Short) -> Unit)? = null
+    var audioSampleBatchCallback: ((data: ByteArray) -> Long)? = null
+    var inputPollCallback: (() -> Unit)? = null
+    var inputStateCallback: ((port: Int, device: Int, index: Int, id: Int) -> Boolean)? = null
+
+    private val environment = RetroEnvironmentT(this)
+
+    private val videoRefresh = object : LibRetro.retro_video_refresh_t {
+        override fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT) {
+            val buffer = videoBufferCache.getBuffer(height.toInt() * pitch.toInt())
+            data.read(0, buffer, 0, buffer.size)
+            videoCallback?.invoke(buffer, width.toInt(), height.toInt(), pitch.toInt())
+        }
+    }
+
+    private val audioSample = object : LibRetro.retro_audio_sample_t {
+        override fun apply(left: Short, right: Short) {
+            audioSampleCallback?.invoke(left, right)
+        }
+    }
+
+    private val audioSampleBatch = object : LibRetro.retro_audio_sample_batch_t {
+        override fun apply(data: Pointer, frames: SizeT): SizeT {
+            // Each frame is 4 bytes (16-bit stereo)
+            val buffer = audioBufferCache.getBuffer(frames.toInt() * 4)
+            data.read(0, buffer, 0, buffer.size)
+            return SizeT(audioSampleBatchCallback?.invoke(buffer) ?: 0)
+        }
+    }
+
+    private val inputPoll = object : LibRetro.retro_input_poll_t {
+        override fun apply() {
+            inputPollCallback?.invoke()
+        }
+    }
+
+    private val inputState = object : LibRetro.retro_input_state_t {
+        override fun apply(port: UnsignedInt, device: UnsignedInt, index: UnsignedInt, id: UnsignedInt): Short {
+            val isPressed = inputStateCallback?.invoke(port.toInt(), device.toInt(), index.toInt(), id.toInt()) == true
+            return if (isPressed) 1 else 0
+        }
+    }
 
     private val videoBufferCache = BufferCache()
-    private val audioBufferCache: BufferCache = BufferCache()
+    private val audioBufferCache = BufferCache()
 
     data class ControllerDescription(
             val desc: String,
@@ -189,6 +226,7 @@ class Retro(coreLibraryName: String) {
         }
     }
 
+    @Suppress("EnumEntryName")
     enum class PixelFormat(val value: Int) {
         `0RGB1555`(0),
         XRGB8888(1),
@@ -250,29 +288,6 @@ class Retro(coreLibraryName: String) {
         fun onLogMessage(level: LogLevel, message: String)
     }
 
-    interface VideoRefreshCallback {
-
-        fun onVideoRefresh(data: ByteArray, width: Int, height: Int, pitch: Int)
-    }
-
-    interface AudioSampleCallback {
-
-        fun onAudioSample(left: Short, right: Short)
-    }
-
-    interface AudioSampleBatchCallback {
-
-        fun onAudioSampleBatch(data: ByteArray, frames: Int): Long
-    }
-
-    interface InputPollCallback {
-        fun onInputPoll()
-    }
-
-    interface InputStateCallback {
-        fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean
-    }
-
     fun getSystemInfo(): SystemInfo {
         val info = retro_system_info()
         libRetro.retro_get_system_info(info)
@@ -296,69 +311,13 @@ class Retro(coreLibraryName: String) {
         return Region.fromValue(region.toInt())
     }
 
-    fun setVideoRefresh(callback: VideoRefreshCallback) {
-        val cb = object : LibRetro.retro_video_refresh_t {
-            override fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT) {
-                val buffer = videoBufferCache.getBuffer(height.toInt() * pitch.toInt())
-                data.read(0, buffer, 0, buffer.size)
-                callback.onVideoRefresh(buffer, width.toInt(), height.toInt(), pitch.toInt())
-            }
-        }
-
-        videoRefreshCb = cb
-        libRetro.retro_set_video_refresh(cb)
-    }
-
-    fun setEnvironment(callback: EnvironmentCallback) {
-        val env = RetroEnvironmentT(callback)
-        envCb = env
-        libRetro.retro_set_environment(env)
-    }
-
-    fun setAudioSample(callback: AudioSampleCallback) {
-        val cb = object : LibRetro.retro_audio_sample_t {
-            override fun apply(left: Short, right: Short) {
-                callback.onAudioSample(left, right)
-            }
-        }
-        audioSampleCb = cb
-        libRetro.retro_set_audio_sample(cb)
-    }
-
-    fun setAudioSampleBatch(callback: AudioSampleBatchCallback) {
-        val cb = object : LibRetro.retro_audio_sample_batch_t {
-            override fun apply(data: Pointer, frames: SizeT): SizeT {
-                // Each frame is 4 bytes (16-bit stereo)
-                val buffer = audioBufferCache.getBuffer(frames.toInt() * 4)
-                data.read(0, buffer, 0, buffer.size)
-                return SizeT(callback.onAudioSampleBatch(buffer, frames.toInt()))
-            }
-        }
-        audioSampleBatchCb = cb
-        libRetro.retro_set_audio_sample_batch(cb)
-    }
-
-    fun setInputPoll(callback: InputPollCallback) {
-        val cb = object : LibRetro.retro_input_poll_t {
-            override fun apply() {
-                callback.onInputPoll()
-            }
-        }
-        inputPollCb = cb
-        libRetro.retro_set_input_poll(cb)
-    }
-
-    fun setInputState(callback: InputStateCallback) {
-        val cb = object : LibRetro.retro_input_state_t {
-            override fun apply(port: UnsignedInt, device: UnsignedInt, index: UnsignedInt, id: UnsignedInt): Short {
-                return if (callback.onInputState(port.toInt(), device.toInt(), index.toInt(), id.toInt())) 1 else 0
-            }
-        }
-        inputStateCb = cb
-        libRetro.retro_set_input_state(cb)
-    }
-
     fun init() {
+        libRetro.retro_set_video_refresh(videoRefresh)
+        libRetro.retro_set_environment(environment)
+        libRetro.retro_set_audio_sample(audioSample)
+        libRetro.retro_set_audio_sample_batch(audioSampleBatch)
+        libRetro.retro_set_input_poll(inputPoll)
+        libRetro.retro_set_input_state(inputState)
         libRetro.retro_init()
     }
 
@@ -406,11 +365,11 @@ class Retro(coreLibraryName: String) {
         pointer.write(0, data, 0, data.size)
     }
 
-    private class RetroEnvironmentT(private val callback: EnvironmentCallback) : LibRetro.retro_environment_t {
-
+    private class RetroEnvironmentT(private val retro: Retro) : LibRetro.retro_environment_t {
         private var logPrintfCb: LibRetro.retro_log_printf_t? = null
 
         override fun invoke(cmd: UnsignedInt, data: Pointer): Boolean {
+            val callback = retro.environmentCallback ?: return false
             when (cmd.toInt()) {
                 LibRetro.RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL -> {
                     callback.onSetPerformanceLevel(data.getInt(0))

@@ -48,7 +48,7 @@ class MainActivity : OdysseyActivity() {
                 .build()
         component.inject(this)
 
-        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
                 .subscribe { granted ->

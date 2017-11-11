@@ -111,7 +111,7 @@ class GameActivity : AppCompatActivity() {
                     progressBar.visibility = View.GONE
                     loadRetro(data)
                 }, { error ->
-                    Timber.e("Failed to load game", error)
+                    Timber.e(error, "Failed to load game")
                     finish()
                 })
     }

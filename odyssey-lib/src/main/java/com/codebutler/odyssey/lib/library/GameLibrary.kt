@@ -149,7 +149,7 @@ class GameLibrary(
                             odysseydb.gameDao().insert(game)
                         },
                         { error ->
-                            Timber.e("Error while indexing", error)
+                            Timber.e(error, "Error while indexing")
                             emitter.onError(error)
                         },
                         {
@@ -167,7 +167,7 @@ class GameLibrary(
                             Timber.d("Removing games: $games")
                             odysseydb.gameDao().delete(games)
                         },
-                        { error -> Timber.e("Error while removing", error) })
+                        { error -> Timber.e(error, "Error while removing") })
     }
 
     private fun sanitizeRomFileName(fileName: String): String {
