@@ -44,7 +44,6 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import java.io.File
 import java.lang.reflect.Type
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -142,7 +141,6 @@ abstract class OdysseyApplicationModule {
 
         @Provides
         @JvmStatic
-        fun coreManager(app: OdysseyApplication, retrofit: Retrofit)
-                = CoreManager(retrofit, File(app.cacheDir, "cores"))
+        fun coreManager(context: Context, retrofit: Retrofit) = CoreManager(context, retrofit)
     }
 }

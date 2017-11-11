@@ -19,8 +19,11 @@
 
 package com.codebutler.odyssey.lib.core
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
+import com.codebutler.odyssey.lib.BuildConfig
 import io.reactivex.Single
 import okio.Okio
 import retrofit2.Response
@@ -31,7 +34,7 @@ import retrofit2.http.Url
 import java.io.File
 import java.util.zip.ZipInputStream
 
-class CoreManager(retrofit: Retrofit, private val coresDir: File) {
+class CoreManager(context: Context, retrofit: Retrofit) {
 
     private val baseUri = Uri.parse("https://buildbot.libretro.com/")
     private val coresUri = baseUri.buildUpon()
@@ -41,11 +44,22 @@ class CoreManager(retrofit: Retrofit, private val coresDir: File) {
 
     private val api = retrofit.create(CoreManagerApi::class.java)
 
+    private val coresDir = File(context.cacheDir, "cores")
+
     init {
         coresDir.mkdirs()
     }
 
     fun downloadCore(zipFileName: String): Single<File> {
+        if (BuildConfig.DEBUG) {
+            val overrideFile = File(Environment.getExternalStorageDirectory(), "libretro.so")
+            if (overrideFile.exists()) {
+                val overrideDestFile = File(coresDir, overrideFile.name)
+                overrideFile.copyTo(overrideDestFile, true)
+                return Single.just(overrideDestFile)
+            }
+        }
+
         val libFileName = zipFileName.substringBeforeLast(".zip")
         val destFile = File(coresDir, "lib$libFileName")
 
