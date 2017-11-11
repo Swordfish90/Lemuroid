@@ -116,37 +116,6 @@ class GameActivity : AppCompatActivity() {
                 })
     }
 
-    override fun onResume() {
-        super.onResume()
-        retroDroid?.start()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        retroDroid?.stop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        val saveData = retroDroid?.unloadGame()
-        retroDroid?.deinit()
-
-        val game = this.game
-        val saveCompletable = if (saveData != null && saveData.isAllZeros().not() && game != null) {
-            gameLibrary.setGameSave(game, saveData)
-        } else {
-            Completable.complete()
-        }
-
-        saveCompletable
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    // This activity runs in its own process which should not live beyond the activity lifecycle.
-                    System.exit(0)
-                }
-    }
-
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
         super.dispatchGenericMotionEvent(event)
         retroDroid?.onMotionEvent(event)
@@ -177,6 +146,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun loadRetro(data: PreparedGameData) {
         val retroDroid = RetroDroid(this, data.coreFile)
+        lifecycle.addObserver(retroDroid)
 
         retroDroid.logCallback = { level, message ->
             val timber = Timber.tag("RetroLog")
@@ -217,6 +187,21 @@ class GameActivity : AppCompatActivity() {
                 audioTrack.write(buffer, 0, buffer.size)
                 audioTrack.play()
             }
+        }
+
+        retroDroid.gameUnloadedCallback = { saveData ->
+            val game = this.game
+            val saveCompletable = if (saveData != null && saveData.isAllZeros().not() && game != null) {
+                gameLibrary.setGameSave(game, saveData)
+            } else {
+                Completable.complete()
+            }
+            saveCompletable
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        // This activity runs in its own process which should not live beyond the activity lifecycle.
+                        System.exit(0)
+                    }
         }
 
         retroDroid.loadGame(data.gameFile.absolutePath, data.saveData)

@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     implementation project(':odyssey-common')
 
+    api libs.archLifecycleCommonJava8
     implementation libs.archPaging
     implementation libs.autoDispose
     implementation libs.jna

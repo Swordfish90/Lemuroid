@@ -19,6 +19,8 @@
 
 package com.codebutler.odyssey.lib.retro
 
+import android.arch.lifecycle.DefaultLifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Handler
@@ -43,7 +45,8 @@ class RetroDroid(private val context: Context, coreFile: File) :
         Retro.AudioSampleCallback,
         Retro.AudioSampleBatchCallback,
         Retro.InputPollCallback,
-        Retro.InputStateCallback {
+        Retro.InputStateCallback,
+        DefaultLifecycleObserver {
 
     private val retro: Retro
     private val timer = Timer()
@@ -80,6 +83,11 @@ class RetroDroid(private val context: Context, coreFile: File) :
      */
     var audioCallback: ((buffer: ByteArray) -> Unit)? = null
 
+    /**
+     * Callback when game is unloaded, to allow for persisting save ram.
+     */
+    var gameUnloadedCallback: ((saveData: ByteArray?) -> Unit)? = null
+
     init {
         Native.setCallbackExceptionHandler { c, e ->
             handler.post {
@@ -99,10 +107,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
         retro.setInputPoll(this)
         retro.setInputState(this)
         retro.init()
-    }
-
-    fun deinit() {
-        retro.deinit()
     }
 
     fun loadGame(gamePath: String, saveData: ByteArray?) {
@@ -137,12 +141,6 @@ class RetroDroid(private val context: Context, coreFile: File) :
         }
     }
 
-    fun unloadGame(): ByteArray? {
-        val saveRam = retro.getMemoryData(Retro.MemoryId.SAVE_RAM)
-        retro.unloadGame()
-        return saveRam
-    }
-
     fun start() {
         val avInfo = systemAVInfo
         if (timerTask != null || avInfo == null) {
@@ -157,9 +155,23 @@ class RetroDroid(private val context: Context, coreFile: File) :
         this.timerTask = timerTask
     }
 
-    fun stop() {
-        timerTask?.cancel()
-        timer.purge()
+    fun unloadGame() {
+        val saveRam = retro.getMemoryData(Retro.MemoryId.SAVE_RAM)
+        retro.unloadGame()
+        gameUnloadedCallback?.invoke(saveRam)
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        start()
+    }
+
+    override fun onPause(owner: LifecycleOwner) {
+        stop()
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        unloadGame()
+        deinit()
     }
 
     override fun onGetLogInterface(): Retro.LogInterface? {
@@ -382,6 +394,15 @@ class RetroDroid(private val context: Context, coreFile: File) :
                 pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
             }
         }
+    }
+
+    private fun deinit() {
+        retro.deinit()
+    }
+
+    private fun stop() {
+        timerTask?.cancel()
+        timer.purge()
     }
 
     private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {

@@ -411,7 +411,6 @@ class Retro(coreLibraryName: String) {
         private var logPrintfCb: LibRetro.retro_log_printf_t? = null
 
         override fun invoke(cmd: UnsignedInt, data: Pointer): Boolean {
-
             when (cmd.toInt()) {
                 LibRetro.RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL -> {
                     callback.onSetPerformanceLevel(data.getInt(0))
