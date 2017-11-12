@@ -168,16 +168,9 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
         if (this.timer != null || avInfo == null) {
             return
         }
-
         this.timer = fixedRateTimer(period = 1000L / avInfo.timing.fps.toLong()) {
             retro.run()
         }
-    }
-
-    fun unloadGame() {
-        val saveRam = retro.getMemoryData(Retro.MemoryId.SAVE_RAM)
-        retro.unloadGame()
-        gameUnloadedCallback?.invoke(saveRam)
     }
 
     override fun onResume(owner: LifecycleOwner) {
@@ -234,6 +227,21 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
         }
     }
 
+    private fun stop() {
+        timer?.cancel()
+        timer = null
+    }
+
+    private fun unloadGame() {
+        val saveRam = retro.getMemoryData(Retro.MemoryId.SAVE_RAM)
+        retro.unloadGame()
+        gameUnloadedCallback?.invoke(saveRam)
+    }
+
+    private fun deinit() {
+        retro.deinit()
+    }
+
     @Suppress("UNUSED_PARAMETER")
     private fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean {
         if (port != 0) {
@@ -280,15 +288,6 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
             Retro.Device.POINTER -> TODO()
         }
         return false
-    }
-
-    private fun deinit() {
-        retro.deinit()
-    }
-
-    private fun stop() {
-        timer?.cancel()
-        timer = null
     }
 
     private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {
@@ -396,6 +395,10 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
 
         override fun onUnsupportedCommand(cmd: Int) {
             Timber.e("Unsupported env command: $cmd")
+        }
+
+        override fun onUnhandledException(error: Throwable) {
+            throw RuntimeException("Unhandled Exception in Environment Callback", error)
         }
     }
 }

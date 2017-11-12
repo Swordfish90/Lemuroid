@@ -23,6 +23,7 @@ import android.graphics.PixelFormat
 import android.os.Build
 import com.codebutler.odyssey.common.BufferCache
 import com.codebutler.odyssey.common.binding.LibC
+import com.codebutler.odyssey.common.jna.NativeString
 import com.codebutler.odyssey.common.jna.SizeT
 import com.codebutler.odyssey.common.jna.UnsignedInt
 import com.codebutler.odyssey.lib.binding.LibOdyssey
@@ -281,6 +282,8 @@ class Retro(coreLibraryName: String) {
         fun onGetSaveDirectory(): String?
 
         fun onUnsupportedCommand(cmd: Int)
+
+        fun onUnhandledException(error: Throwable)
     }
 
     interface LogInterface {
@@ -370,162 +373,167 @@ class Retro(coreLibraryName: String) {
 
         override fun invoke(cmd: UnsignedInt, data: Pointer): Boolean {
             val callback = retro.environmentCallback ?: return false
-            when (cmd.toInt()) {
-                LibRetro.RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL -> {
-                    callback.onSetPerformanceLevel(data.getInt(0))
-                    return true
-                }
-                LibRetro.RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY -> {
-                    val directory = callback.onGetSystemDirectory()
-                    if (directory != null) {
-                        val ref = PointerByReference(data)
-                        ref.value.setPointer(0, com.codebutler.odyssey.common.jna.NativeString(directory).pointer)
+            try {
+                when (cmd.toInt()) {
+                    LibRetro.RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL -> {
+                        callback.onSetPerformanceLevel(data.getInt(0))
+                        return true
                     }
-                    return directory != null
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_PIXEL_FORMAT -> {
-                    val pixelFormat = data.getInt(0)
-                    return callback.onSetPixelFormat(PixelFormat.fromValue(pixelFormat))
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS -> {
-                    val descriptors = mutableListOf<InputDescriptor>()
-                    var offset = 0L
-                    while (true) {
-                        val descriptor = LibRetro.retro_input_descriptor(data.share(offset))
-                        descriptor.description ?: break
-                        val device = Device.fromValue(descriptor.device!!.toInt()) ?: continue
-                        descriptors.add(InputDescriptor(
-                                descriptor.port!!.toInt(),
-                                device,
-                                descriptor.index!!.toInt(),
-                                DeviceId.fromValue(descriptor.id!!.toInt()),
-                                descriptor.description!!))
-
-                        offset += descriptor.size()
-                    }
-                    callback.onSetInputDescriptors(descriptors.toList())
-                    return true
-                }
-                LibRetro.RETRO_ENVIRONMENT_GET_VARIABLE -> {
-                    val variable = retro_variable(data)
-                    variable.value = callback.onGetVariable(variable.key!!)
-                    variable.write()
-                    return variable.value != null
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_VARIABLES -> {
-                    val variables = mutableMapOf<String, String>()
-                    var offset = 0L
-                    while (true) {
-                        val v = retro_variable(data.share(offset))
-                        variables[v.key ?: break] = v.value ?: break
-                        offset += v.size()
-                    }
-                    callback.onSetVariables(variables)
-                    return true
-                }
-                LibRetro.RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE -> {
-                    val updated = callback.onGetVariableUpdate()
-                    data.setByte(0, if (updated) 1 else 0)
-                    return updated
-                }
-                LibRetro.RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE -> {
-                    return false // FIXME
-                }
-                LibRetro.RETRO_ENVIRONMENT_GET_LOG_INTERFACE -> {
-                    val logInterface = callback.onGetLogInterface() ?: return false
-                    val logCb = object : LibRetro.retro_log_printf_t {
-                        override fun invoke(log_level: Int, fmt: String, arg: Pointer) {
-                            val size = LibC.INSTANCE.vsnprintf(null, 0, fmt, arg)
-                            if (size <= 0) return
-
-                            val byteBuffer = ByteBuffer.allocateDirect(size + 1)
-                            LibC.INSTANCE.vsnprintf(byteBuffer, byteBuffer.capacity(), fmt, arg)
-
-                            val bytes = ByteArray(size)
-                            byteBuffer.get(bytes)
-
-                            val message = String(bytes)
-
-                            val newLevel = when (log_level) {
-                                LibRetro.retro_log_level.RETRO_LOG_DEBUG -> LogLevel.DEBUG
-                                LibRetro.retro_log_level.RETRO_LOG_INFO -> LogLevel.INFO
-                                LibRetro.retro_log_level.RETRO_LOG_WARN -> LogLevel.WARN
-                                LibRetro.retro_log_level.RETRO_LOG_ERROR -> LogLevel.ERROR
-                                else -> throw IllegalArgumentException()
-                            }
-
-                            logInterface.onLogMessage(newLevel, message)
+                    LibRetro.RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY -> {
+                        val directory = callback.onGetSystemDirectory()
+                        if (directory != null) {
+                            val ref = PointerByReference(data)
+                            ref.value.setPointer(0, NativeString(directory).pointer)
                         }
+                        return directory != null
                     }
-
-                    logPrintfCb = logCb
-
-                    // Can't use our callback with libretro directly because
-                    // JNA does not support variadic function callbacks.
-                    LibOdyssey.INSTANCE.odyssey_set_log_callback(logCb)
-                    val odysseyLog = LibOdyssey.INSTANCE.odyssey_get_retro_log_printf()
-
-                    val logCallback = LibRetro.retro_log_callback(data)
-                    logCallback.log = odysseyLog
-                    logCallback.write()
-
-                    return true
-                }
-                LibRetro.RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY -> {
-                    val directory = callback.onGetSaveDirectory()
-                    if (directory != null) {
-                        val ref = PointerByReference(data)
-                        ref.value.setPointer(0, com.codebutler.odyssey.common.jna.NativeString(directory).pointer)
+                    LibRetro.RETRO_ENVIRONMENT_SET_PIXEL_FORMAT -> {
+                        val pixelFormat = data.getInt(0)
+                        return callback.onSetPixelFormat(PixelFormat.fromValue(pixelFormat))
                     }
-                    return directory != null
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO -> {
-                    callback.onSetSystemAvInfo(SystemAVInfo.create(LibRetro.retro_system_av_info(data)))
-                    return true
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_CONTROLLER_INFO -> {
-                    val infos = mutableListOf<ControllerInfo>()
-                    var offset = 0L
-                    while (true) {
-                        val info = LibRetro.retro_controller_info(data.share(offset))
-                        info.types ?: break
-                        val descriptions = LibRetro.retro_controller_description(info.types)
-                                .toArray(info.num_types!!.toInt())
-                                .map { it as LibRetro.retro_controller_description }
-                        val types = mutableListOf<ControllerDescription>()
-                        for (desc in descriptions) {
-                            val device = Device.fromValue(desc.id!!.toInt())
-                            if (device != null) {
-                                types.add(ControllerDescription(desc.desc!!, device))
+                    LibRetro.RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS -> {
+                        val descriptors = mutableListOf<InputDescriptor>()
+                        var offset = 0L
+                        while (true) {
+                            val descriptor = LibRetro.retro_input_descriptor(data.share(offset))
+                            descriptor.description ?: break
+                            val device = Device.fromValue(descriptor.device!!.toInt()) ?: continue
+                            descriptors.add(InputDescriptor(
+                                    descriptor.port!!.toInt(),
+                                    device,
+                                    descriptor.index!!.toInt(),
+                                    DeviceId.fromValue(descriptor.id!!.toInt()),
+                                    descriptor.description!!))
+
+                            offset += descriptor.size()
+                        }
+                        callback.onSetInputDescriptors(descriptors.toList())
+                        return true
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_GET_VARIABLE -> {
+                        val variable = retro_variable(data)
+                        variable.value = callback.onGetVariable(variable.key!!)
+                        variable.write()
+                        return variable.value != null
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_SET_VARIABLES -> {
+                        val variables = mutableMapOf<String, String>()
+                        var offset = 0L
+                        while (true) {
+                            val v = retro_variable(data.share(offset))
+                            variables[v.key ?: break] = v.value ?: break
+                            offset += v.size()
+                        }
+                        callback.onSetVariables(variables)
+                        return true
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE -> {
+                        val updated = callback.onGetVariableUpdate()
+                        data.setByte(0, if (updated) 1 else 0)
+                        return updated
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE -> {
+                        return false // FIXME
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_GET_LOG_INTERFACE -> {
+                        val logInterface = callback.onGetLogInterface() ?: return false
+                        val logCb = object : LibRetro.retro_log_printf_t {
+                            override fun invoke(log_level: Int, fmt: String, arg: Pointer) {
+                                val size = LibC.INSTANCE.vsnprintf(null, 0, fmt, arg)
+                                if (size <= 0) return
+
+                                val byteBuffer = ByteBuffer.allocateDirect(size + 1)
+                                LibC.INSTANCE.vsnprintf(byteBuffer, byteBuffer.capacity(), fmt, arg)
+
+                                val bytes = ByteArray(size)
+                                byteBuffer.get(bytes)
+
+                                val message = String(bytes)
+
+                                val newLevel = when (log_level) {
+                                    LibRetro.retro_log_level.RETRO_LOG_DEBUG -> LogLevel.DEBUG
+                                    LibRetro.retro_log_level.RETRO_LOG_INFO -> LogLevel.INFO
+                                    LibRetro.retro_log_level.RETRO_LOG_WARN -> LogLevel.WARN
+                                    LibRetro.retro_log_level.RETRO_LOG_ERROR -> LogLevel.ERROR
+                                    else -> throw IllegalArgumentException()
+                                }
+
+                                logInterface.onLogMessage(newLevel, message)
                             }
                         }
-                        infos.add(ControllerInfo(types.toList()))
-                        offset += info.size()
+
+                        logPrintfCb = logCb
+
+                        // Can't use our callback with libretro directly because
+                        // JNA does not support variadic function callbacks.
+                        LibOdyssey.INSTANCE.odyssey_set_log_callback(logCb)
+                        val odysseyLog = LibOdyssey.INSTANCE.odyssey_get_retro_log_printf()
+
+                        val logCallback = LibRetro.retro_log_callback(data)
+                        logCallback.log = odysseyLog
+                        logCallback.write()
+
+                        return true
                     }
-                    callback.onSetControllerInfo(infos.toList())
-                    return true
+                    LibRetro.RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY -> {
+                        val directory = callback.onGetSaveDirectory()
+                        if (directory != null) {
+                            val ref = PointerByReference(data)
+                            ref.value.setPointer(0, NativeString(directory).pointer)
+                        }
+                        return directory != null
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO -> {
+                        callback.onSetSystemAvInfo(SystemAVInfo.create(LibRetro.retro_system_av_info(data)))
+                        return true
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_SET_CONTROLLER_INFO -> {
+                        val infos = mutableListOf<ControllerInfo>()
+                        var offset = 0L
+                        while (true) {
+                            val info = LibRetro.retro_controller_info(data.share(offset))
+                            info.types ?: break
+                            val descriptions = LibRetro.retro_controller_description(info.types)
+                                    .toArray(info.num_types!!.toInt())
+                                    .map { it as LibRetro.retro_controller_description }
+                            val types = mutableListOf<ControllerDescription>()
+                            for (desc in descriptions) {
+                                val device = Device.fromValue(desc.id!!.toInt())
+                                if (device != null) {
+                                    types.add(ControllerDescription(desc.desc!!, device))
+                                }
+                            }
+                            infos.add(ControllerInfo(types.toList()))
+                            offset += info.size()
+                        }
+                        callback.onSetControllerInfo(infos.toList())
+                        return true
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_SET_GEOMETRY -> {
+                        val geometry = LibRetro.retro_game_geometry(data)
+                        callback.onSetGeometry(GameGeometry.create(geometry))
+                        return true
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_SET_SERIALIZATION_QUIRKS -> {
+                        return false // FIXME
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_SET_MEMORY_MAPS -> {
+                        callback.onSetMemoryMaps()
+                        return false
+                    }
+                    LibRetro.RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS -> {
+                        val supportsAchievements = data.getByte(0).toInt() == 1
+                        callback.onSetSupportAchievements(supportsAchievements)
+                        return true
+                    }
+                    else -> {
+                        callback.onUnsupportedCommand(cmd.toInt())
+                        return false
+                    }
                 }
-                LibRetro.RETRO_ENVIRONMENT_SET_GEOMETRY -> {
-                    val geometry = LibRetro.retro_game_geometry(data)
-                    callback.onSetGeometry(GameGeometry.create(geometry))
-                    return true
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_SERIALIZATION_QUIRKS -> {
-                    return false // FIXME
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_MEMORY_MAPS -> {
-                    callback.onSetMemoryMaps()
-                    return false
-                }
-                LibRetro.RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS -> {
-                    val supportsAchievements = data.getByte(0).toInt() == 1
-                    callback.onSetSupportAchievements(supportsAchievements)
-                    return true
-                }
-                else -> {
-                    callback.onUnsupportedCommand(cmd.toInt())
-                    return false
-                }
+            } catch (error: Throwable) {
+                callback.onUnhandledException(error)
+                return false
             }
         }
     }
