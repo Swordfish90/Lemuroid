@@ -34,6 +34,9 @@ import io.reactivex.schedulers.Schedulers
 @Dao
 interface GameDao {
 
+    @Query("SELECT * FROM games WHERE title LIKE '%' || REPLACE(:query, ' ', '%') || '%' ORDER BY title ASC, id DESC")
+    fun search(query: String): LivePagedListProvider<Int, Game>
+
     @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
     fun selectAll(): LivePagedListProvider<Int, Game>
 

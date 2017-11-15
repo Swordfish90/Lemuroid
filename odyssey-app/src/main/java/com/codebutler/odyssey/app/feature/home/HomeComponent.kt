@@ -20,6 +20,7 @@
 package com.codebutler.odyssey.app.feature.home
 
 import com.codebutler.odyssey.app.feature.main.MainComponent
+import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
 import dagger.Component
 
 @Component(dependencies = arrayOf(MainComponent::class))
@@ -28,4 +29,6 @@ interface HomeComponent {
     fun inject(homeFragment: HomeFragment)
 
     fun inject(gamesGridFragment: GamesGridFragment)
+
+    fun inject(gamesSearchFragment: GamesSearchFragment)
 }

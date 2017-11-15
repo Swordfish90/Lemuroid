@@ -11,8 +11,6 @@ import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
 import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
-import com.codebutler.odyssey.lib.core.CoreManager
-import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
@@ -41,10 +39,8 @@ class GamesGridFragment : VerticalGridSupportFragment() {
         private val NUM_COLUMNS = 5
     }
 
-    lateinit var component: HomeComponent
+    private lateinit var component: HomeComponent
 
-    @Inject lateinit var coreManager: CoreManager
-    @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var odysseyDb: OdysseyDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,10 +86,8 @@ class GamesGridFragment : VerticalGridSupportFragment() {
         }
     }
 
-    private fun getQuery(mode: Mode, param: String?): LivePagedListProvider<Int, Game> {
-        return when (mode) {
-            Mode.ALL -> odysseyDb.gameDao().selectAll()
-            Mode.SYSTEM -> odysseyDb.gameDao().selectBySystem(param!!)
-        }
+    private fun getQuery(mode: Mode, param: String?): LivePagedListProvider<Int, Game> = when (mode) {
+        Mode.ALL -> odysseyDb.gameDao().selectAll()
+        Mode.SYSTEM -> odysseyDb.gameDao().selectBySystem(param!!)
     }
 }

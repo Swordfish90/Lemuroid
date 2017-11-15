@@ -38,6 +38,7 @@ import com.codebutler.odyssey.app.feature.common.SimpleItem
 import com.codebutler.odyssey.app.feature.common.SimpleItemPresenter
 import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
+import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
 import com.codebutler.odyssey.app.feature.settings.SettingsActivity
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.GameSystem
@@ -77,7 +78,10 @@ class HomeFragment : BrowseSupportFragment() {
         title = getString(R.string.app_name)
 
         setOnSearchClickedListener {
-            // TODO
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content, GamesSearchFragment.create())
+                    .addToBackStack(null)
+                    .commit()
         }
 
         val favoritesAdapter = PagedListObjectAdapter(GamePresenter(), Game.DIFF_CALLBACK)
