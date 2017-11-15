@@ -38,6 +38,7 @@ import com.codebutler.odyssey.BuildConfig
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.OdysseyApplication
 import com.codebutler.odyssey.app.OdysseyApplicationComponent
+import com.codebutler.odyssey.app.OdysseyConfig
 import com.codebutler.odyssey.common.kotlin.bindView
 import com.codebutler.odyssey.common.kotlin.isAllZeros
 import com.codebutler.odyssey.lib.core.CoreManager
@@ -47,6 +48,7 @@ import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.dao.updateAsync
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.rendering.GameDisplay
+import com.codebutler.odyssey.lib.rendering.gl.GlGameDisplay
 import com.codebutler.odyssey.lib.rendering.sw.SwGameDisplay
 import com.codebutler.odyssey.lib.retro.Retro
 import com.codebutler.odyssey.lib.retro.RetroDroid
@@ -90,7 +92,11 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        gameDisplay = SwGameDisplay(this)
+        if (OdysseyConfig.ENABLE_GLSURFACEVIEW) {
+            gameDisplay = GlGameDisplay(this)
+        } else {
+            gameDisplay = SwGameDisplay(this)
+        }
 
         gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)
         lifecycle.addObserver(gameDisplay)
