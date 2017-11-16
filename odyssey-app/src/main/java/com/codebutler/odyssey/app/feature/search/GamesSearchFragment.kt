@@ -30,6 +30,7 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.ObjectAdapter
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
+import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.home.DaggerHomeComponent
 import com.codebutler.odyssey.app.feature.home.GamePresenter
 import com.codebutler.odyssey.app.feature.home.HomeComponent
@@ -49,13 +50,12 @@ class GamesSearchFragment : SearchSupportFragment(), SearchSupportFragment.Searc
         fun create(): GamesSearchFragment = GamesSearchFragment()
     }
 
-    @Inject lateinit var odysseyDb: OdysseyDatabase
+    private val queryTextChangeRelay = PublishRelay.create<String>()
+    private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
     private lateinit var component: HomeComponent
 
-    private val queryTextChangeRelay = PublishRelay.create<String>()
-
-    private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
+    @Inject lateinit var odysseyDb: OdysseyDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +72,12 @@ class GamesSearchFragment : SearchSupportFragment(), SearchSupportFragment.Searc
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
                 .subscribe(this::search)
+
+        setOnItemViewClickedListener { _, item, _, _ ->
+            when (item) {
+                is Game -> startActivity(GameActivity.newIntent(context, item))
+            }
+        }
     }
 
     override fun getResultsAdapter(): ObjectAdapter = rowsAdapter
