@@ -23,6 +23,7 @@ import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
@@ -48,6 +49,7 @@ class GamePresenter : Presenter() {
             }
         }
 
+        cardView.setMainImageScaleType(ImageView.ScaleType.CENTER)
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
         updateCardBackgroundColor(cardView, false)
@@ -85,7 +87,8 @@ class GamePresenter : Presenter() {
             Picasso.with(cardView.context)
                     .load(game.coverFrontUrl)
                     .error(mDefaultCardImage)
-                    .fit()
+                    .resize(width, height)
+                    .centerInside()
                     .into(cardView.mainImageView)
         }
     }
