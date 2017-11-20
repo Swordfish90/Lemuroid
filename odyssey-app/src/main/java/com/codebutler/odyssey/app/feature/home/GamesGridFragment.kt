@@ -8,7 +8,7 @@ import android.support.v17.leanback.app.VerticalGridSupportFragment
 import android.support.v17.leanback.widget.OnItemViewClickedListener
 import android.support.v17.leanback.widget.VerticalGridPresenter
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
+import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
 import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.lib.library.GameSystem

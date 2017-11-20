@@ -32,10 +32,10 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.OnItemViewClickedListener
 import android.support.v4.app.ActivityOptionsCompat
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
-import com.codebutler.odyssey.app.feature.common.SimpleErrorFragment
-import com.codebutler.odyssey.app.feature.common.SimpleItem
-import com.codebutler.odyssey.app.feature.common.SimpleItemPresenter
+import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
+import com.codebutler.odyssey.lib.ui.SimpleErrorFragment
+import com.codebutler.odyssey.lib.ui.SimpleItem
+import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.feature.search.GamesSearchFragment

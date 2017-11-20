@@ -45,8 +45,6 @@ interface OdysseyApplicationComponent {
         @BindsInstance
         fun application(application: OdysseyApplication): Builder
 
-        fun module(module: OdysseyApplicationModule): Builder
-
         fun build(): OdysseyApplicationComponent
     }
 }

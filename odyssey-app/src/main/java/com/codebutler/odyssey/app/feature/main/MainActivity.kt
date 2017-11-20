@@ -61,7 +61,6 @@ class MainActivity : OdysseyActivity() {
                         supportFragmentManager.beginTransaction()
                                 .replace(R.id.content, HomeFragment())
                                 .commit()
-
                     } else {
                         finish()
                     }

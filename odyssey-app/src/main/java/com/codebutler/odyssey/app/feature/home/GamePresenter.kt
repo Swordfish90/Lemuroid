@@ -1,17 +1,20 @@
 /*
- * Copyright (c) 2015 The Android Open Source Project
+ * GamePresenter.kt
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (C) 2017 Odyssey Project
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.codebutler.odyssey.app.feature.home
@@ -21,50 +24,33 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.Presenter
-import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 
-/*
- * A CardPresenter is used to generate Views and bind Objects to them on demand.
- * It contains an Image CardView
- */
 class GamePresenter : Presenter() {
-    private var mSelectedBackgroundColor = -1
-    private var mDefaultBackgroundColor = -1
-    private var mDefaultCardImage: Drawable? = null
+
+    private lateinit var defaultCardImage: Drawable
+
+    private var imageWidth: Int = -1
+    private var imageHeight: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
-        mDefaultBackgroundColor = ContextCompat.getColor(parent.context, R.color.default_background)
-        mSelectedBackgroundColor = ContextCompat.getColor(parent.context, R.color.selected_background)
-        mDefaultCardImage = ColorDrawable(Color.BLACK)
+        defaultCardImage = ColorDrawable(Color.BLACK)
 
-        val cardView = object : ImageCardView(parent.context) {
-            override fun setSelected(selected: Boolean) {
-                updateCardBackgroundColor(this, selected)
-                super.setSelected(selected)
-            }
-        }
+        val cardView = ImageCardView(parent.context)
+        val res = cardView.resources
+        imageWidth = res.getDimensionPixelSize(R.dimen.card_width)
+        imageHeight = res.getDimensionPixelSize(R.dimen.card_height)
 
         cardView.setMainImageScaleType(ImageView.ScaleType.CENTER)
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
-        updateCardBackgroundColor(cardView, false)
+        cardView.setMainImageDimensions(imageWidth, imageHeight)
+
         return Presenter.ViewHolder(cardView)
-    }
-
-    private fun updateCardBackgroundColor(view: ImageCardView, selected: Boolean) {
-        val color = if (selected) mSelectedBackgroundColor else mDefaultBackgroundColor
-
-        // Both background colors should be set because the view's
-        // background is temporarily visible during animations.
-
-        // FIXME
-        // view.setBackgroundColor(color)
-        // view.findViewById<View>(R.id.info_field).setBackgroundColor(color)
     }
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any?) {
@@ -78,16 +64,11 @@ class GamePresenter : Presenter() {
         cardView.titleText = game.title
         cardView.contentText = game.developer
 
-        val res = cardView.resources
-        val width = res.getDimensionPixelSize(R.dimen.card_width)
-        val height = res.getDimensionPixelSize(R.dimen.card_height)
-        cardView.setMainImageDimensions(width, height)
-
         if (game.coverFrontUrl != null) {
             Picasso.with(cardView.context)
                     .load(game.coverFrontUrl)
-                    .error(mDefaultCardImage)
-                    .resize(width, height)
+                    .error(defaultCardImage)
+                    .resize(imageWidth, imageHeight)
                     .centerInside()
                     .into(cardView.mainImageView)
         }
@@ -95,8 +76,7 @@ class GamePresenter : Presenter() {
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
         val cardView = viewHolder.view as ImageCardView
-
-        // Remove references to images so that the garbage collector can free up memory.
+        Picasso.with(cardView.context).cancelRequest(cardView.mainImageView)
         cardView.badgeImage = null
         cardView.mainImage = null
     }

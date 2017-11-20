@@ -1,5 +1,5 @@
 /*
- * BrowseErrorFragment.kt
+ * SimpleErrorFragment.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -13,16 +13,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.app.feature.common
+package com.codebutler.odyssey.lib.ui
 
 import android.os.Bundle
 import android.support.v17.leanback.app.ErrorSupportFragment
 import android.view.View
-import com.codebutler.odyssey.R
+import com.codebutler.odyssey.lib.R
 
 class SimpleErrorFragment : ErrorSupportFragment() {
 
@@ -45,7 +45,7 @@ class SimpleErrorFragment : ErrorSupportFragment() {
         message = arguments.getString(ARG_MESSAGE)
         setDefaultBackground(true)
 
-        buttonText = resources.getString(R.string.dismiss_error)
+        buttonText = resources.getString(R.string.dismiss)
         buttonClickListener = View.OnClickListener {
             fragmentManager.beginTransaction().remove(this@SimpleErrorFragment).commit()
             fragmentManager.popBackStack()

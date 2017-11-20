@@ -1,4 +1,4 @@
-package com.codebutler.odyssey.app.feature.common
+package com.codebutler.odyssey.lib.ui
 
 import android.arch.paging.PagedList
 import android.arch.paging.PagedListAdapterHelper

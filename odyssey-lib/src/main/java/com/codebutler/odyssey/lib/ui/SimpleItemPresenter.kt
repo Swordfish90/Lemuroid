@@ -1,5 +1,5 @@
 /*
- * SettingsPresenter.kt
+ * SimpleItemPresenter.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -13,11 +13,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.app.feature.common
+package com.codebutler.odyssey.lib.ui
 
 import android.graphics.Color
 import android.support.annotation.StringRes
@@ -26,7 +26,7 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
-import com.codebutler.odyssey.R
+import com.codebutler.odyssey.lib.R
 
 sealed class TextOrResource {
     class Text(val value: String) : TextOrResource()
@@ -49,8 +49,7 @@ class SimpleItemPresenter : Presenter() {
         view.layoutParams = ViewGroup.LayoutParams(width, height)
         view.isFocusable = true
         view.isFocusableInTouchMode = true
-        view.setBackgroundColor(ContextCompat.getColor(parent.context,
-                R.color.default_background))
+        view.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.default_background))
         view.setTextColor(Color.WHITE)
         view.gravity = Gravity.CENTER
         return Presenter.ViewHolder(view)

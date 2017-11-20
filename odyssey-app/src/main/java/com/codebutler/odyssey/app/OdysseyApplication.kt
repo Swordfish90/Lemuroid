@@ -50,7 +50,6 @@ class OdysseyApplication : Application() {
 
         component = DaggerOdysseyApplicationComponent.builder()
                 .application(this)
-                .module(OdysseyApplicationModule())
                 .build()
 
         if (!BuildConfig.DEBUG) {

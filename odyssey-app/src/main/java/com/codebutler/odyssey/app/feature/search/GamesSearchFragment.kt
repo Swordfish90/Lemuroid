@@ -29,7 +29,7 @@ import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.ObjectAdapter
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.feature.common.PagedListObjectAdapter
+import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
 import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.home.DaggerHomeComponent
 import com.codebutler.odyssey.app.feature.home.GamePresenter

@@ -42,57 +42,67 @@ import java.util.concurrent.TimeUnit
 import java.util.zip.ZipInputStream
 
 @Module
-class OdysseyApplicationModule {
+abstract class OdysseyApplicationModule {
+    @Module
+    companion object {
+        @Provides
+        @JvmStatic
+        fun executorService() = Executors.newSingleThreadExecutor()
 
-    @Provides
-    fun executorService() = Executors.newSingleThreadExecutor()
+        @Provides
+        @JvmStatic
+        fun ovgdbManager(app: OdysseyApplication, executorService: ExecutorService) = OvgdbManager(app, executorService)
 
-    @Provides
-    fun ovgdbManager(app: OdysseyApplication, executorService: ExecutorService) = OvgdbManager(app, executorService)
-
-    @Provides
-    fun odysseyDb(app: OdysseyApplication)
-            = Room.databaseBuilder(app, OdysseyDatabase::class.java, OdysseyDatabase.DB_NAME)
+        @Provides
+        @JvmStatic
+        fun odysseyDb(app: OdysseyApplication)
+                = Room.databaseBuilder(app, OdysseyDatabase::class.java, OdysseyDatabase.DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
 
-    @Provides
-    fun gameLibraryProviderRegistry(app: OdysseyApplication)
-            = GameLibraryProviderRegistry(setOf(LocalGameLibraryProvider(app), WebDavLibraryProvider(app)))
+        @Provides
+        @JvmStatic
+        fun gameLibraryProviderRegistry(app: OdysseyApplication)
+                = GameLibraryProviderRegistry(setOf(LocalGameLibraryProvider(app), WebDavLibraryProvider(app)))
 
-    @Provides
-    fun gameLibrary(
-            db: OdysseyDatabase,
-            ovgdbManager: OvgdbManager,
-            gameLibraryProviderRegistry: GameLibraryProviderRegistry)
-            = GameLibrary(db, ovgdbManager, gameLibraryProviderRegistry)
+        @Provides
+        @JvmStatic
+        fun gameLibrary(
+                db: OdysseyDatabase,
+                ovgdbManager: OvgdbManager,
+                gameLibraryProviderRegistry: GameLibraryProviderRegistry)
+                = GameLibrary(db, ovgdbManager, gameLibraryProviderRegistry)
 
-    @Provides
-    fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(1, TimeUnit.MINUTES)
-            .build()
+        @Provides
+        @JvmStatic
+        fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build()
 
-    @Provides
-    fun retrofit(): Retrofit = Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-            .baseUrl("https://example.com")
-            .addConverterFactory(object : Converter.Factory() {
-                override fun responseBodyConverter(
-                        type: Type?,
-                        annotations: Array<out Annotation>?,
-                        retrofit: Retrofit?): Converter<ResponseBody, *>? {
-                    if (type == ZipInputStream::class.java) {
-                        return Converter<ResponseBody, ZipInputStream> { responseBody ->
-                            ZipInputStream(responseBody.byteStream())
+        @Provides
+        @JvmStatic
+        fun retrofit(): Retrofit = Retrofit.Builder()
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+                .baseUrl("https://example.com")
+                .addConverterFactory(object : Converter.Factory() {
+                    override fun responseBodyConverter(
+                            type: Type?,
+                            annotations: Array<out Annotation>?,
+                            retrofit: Retrofit?): Converter<ResponseBody, *>? {
+                        if (type == ZipInputStream::class.java) {
+                            return Converter<ResponseBody, ZipInputStream> { responseBody ->
+                                ZipInputStream(responseBody.byteStream())
+                            }
                         }
+                        return null
                     }
-                    return null
-                }
-            })
-            .build()
+                })
+                .build()
 
-    @Provides
-    fun coreManager(app: OdysseyApplication, retrofit: Retrofit)
-            = CoreManager(retrofit, File(app.cacheDir, "cores"))
+        @Provides
+        @JvmStatic
+        fun coreManager(app: OdysseyApplication, retrofit: Retrofit)
+                = CoreManager(retrofit, File(app.cacheDir, "cores"))
+    }
 }
