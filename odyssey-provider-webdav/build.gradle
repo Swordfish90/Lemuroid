@@ -6,6 +6,7 @@ dependencies {
     implementation project(':odyssey-common')
     implementation project(':odyssey-lib')
 
+    implementation libs.dagger
     implementation libs.koptional
     implementation libs.koptionalRxJava2
     implementation libs.kotlinStdlib
@@ -15,6 +16,8 @@ dependencies {
     implementation libs.retrofitRxJava2
     implementation libs.rxJava2
     implementation libs.supportPrefLeanbackV17
+
+    kapt libs.daggerCompiler
 }
 
 android {

@@ -28,7 +28,6 @@ import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
 import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
-import com.codebutler.odyssey.provider.webdav.WebDavLibraryProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -72,11 +71,6 @@ abstract class OdysseyApplicationModule {
         @IntoSet
         @JvmStatic
         fun localGameLibraryProvider(app: OdysseyApplication): GameLibraryProvider = LocalGameLibraryProvider(app)
-
-        @Provides
-        @IntoSet
-        @JvmStatic
-        fun webDavGameLibraryProvider(app: OdysseyApplication): GameLibraryProvider = WebDavLibraryProvider(app)
 
         @Provides
         @JvmStatic

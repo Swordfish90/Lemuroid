@@ -24,10 +24,15 @@ import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import com.codebutler.odyssey.provider.gdrive.GDriveApplicationModule
+import com.codebutler.odyssey.provider.webdav.WebDavApplicationModule
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = arrayOf(OdysseyApplicationModule::class, GDriveApplicationModule::class))
+@Component(modules = arrayOf(
+        OdysseyApplicationModule::class,
+        GDriveApplicationModule::class,
+        WebDavApplicationModule::class
+))
 interface OdysseyApplicationComponent {
 
     fun coreManager(): CoreManager
