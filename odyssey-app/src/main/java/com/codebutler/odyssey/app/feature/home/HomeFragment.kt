@@ -32,10 +32,6 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.OnItemViewClickedListener
 import android.support.v4.app.ActivityOptionsCompat
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
-import com.codebutler.odyssey.lib.ui.SimpleErrorFragment
-import com.codebutler.odyssey.lib.ui.SimpleItem
-import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
@@ -44,6 +40,10 @@ import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
+import com.codebutler.odyssey.lib.ui.SimpleErrorFragment
+import com.codebutler.odyssey.lib.ui.SimpleItem
+import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -84,6 +84,50 @@ class HomeFragment : BrowseSupportFragment() {
                     .commit()
         }
 
+        onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
+            when (item) {
+                is Game -> startActivity(GameActivity.newIntent(context, item))
+                is GameSystemItem -> fragmentManager.beginTransaction()
+                        .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.SYSTEM, item.system.id))
+                        .addToBackStack(null)
+                        .commit()
+                is AllGamesItem -> fragmentManager.beginTransaction()
+                        .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.ALL))
+                        .addToBackStack(null)
+                        .commit()
+                is RescanItem -> {
+                    progressBarManager.show()
+                    gameLibrary.indexGames()
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
+                            .subscribe(
+                                    {
+                                        loadContents()
+                                        progressBarManager.hide()
+                                    },
+                                    { error ->
+                                        progressBarManager.hide()
+                                        val errorFragment = SimpleErrorFragment.create(error.toString())
+                                        fragmentManager.beginTransaction()
+                                                .replace(R.id.content, errorFragment)
+                                                .addToBackStack(null)
+                                                .commit()
+                                    })
+                }
+                is SettingsItem -> {
+                    val intent = Intent(activity, SettingsActivity::class.java)
+                    val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity)
+                            .toBundle()
+                    startActivity(intent, bundle)
+                }
+                is AboutItem -> {}
+            }
+        }
+
+        loadContents()
+    }
+
+    private fun loadContents() {
         val favoritesAdapter = PagedListObjectAdapter(GamePresenter(), Game.DIFF_CALLBACK)
         odysseyDb.gameDao().selectFavorites()
                 .create(0, PagedList.Config.Builder()
@@ -133,42 +177,5 @@ class HomeFragment : BrowseSupportFragment() {
         categoryRowAdapter.add(ListRow(HeaderItem(getString(R.string.library)), systemsAdapter))
         categoryRowAdapter.add(ListRow(HeaderItem(getString(R.string.settings)), settingsAdapter))
         adapter = categoryRowAdapter
-
-        onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
-            when (item) {
-                is Game -> startActivity(GameActivity.newIntent(context, item))
-                is GameSystemItem -> fragmentManager.beginTransaction()
-                        .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.SYSTEM, item.system.id))
-                        .addToBackStack(null)
-                        .commit()
-                is AllGamesItem -> fragmentManager.beginTransaction()
-                        .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.ALL))
-                        .addToBackStack(null)
-                        .commit()
-                is RescanItem -> {
-                    progressBarManager.show()
-                    gameLibrary.indexGames()
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
-                            .subscribe(
-                                    { progressBarManager.hide() },
-                                    { error ->
-                                        progressBarManager.hide()
-                                        val errorFragment = SimpleErrorFragment.create(error.toString())
-                                        fragmentManager.beginTransaction()
-                                                .replace(R.id.content, errorFragment)
-                                                .addToBackStack(null)
-                                                .commit()
-                                    })
-                }
-                is SettingsItem -> {
-                    val intent = Intent(activity, SettingsActivity::class.java)
-                    val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity)
-                            .toBundle()
-                    startActivity(intent, bundle)
-                }
-                is AboutItem -> {}
-            }
-        }
     }
 }
