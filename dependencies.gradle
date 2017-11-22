@@ -9,6 +9,8 @@ ext {
     def archVersion = '1.0.0'
     def autoDisposeVersion = '0.4.0'
     def daggerVersion = '2.12'
+    def gmsVersion = '11.6.0'
+    def googleApiClientVersion = '1.23.0'
     def koptionalVersion = '1.2.0'
     def retrofitVersion = '2.3.0'
     def supportVersion  = '26.1.0'
@@ -21,7 +23,14 @@ ext {
         autoDisposeAndroidArch:   "com.uber.autodispose:autodispose-android-archcomponents:${autoDisposeVersion}",
         autoDisposeKotlin:        "com.uber.autodispose:autodispose-kotlin:${autoDisposeVersion}",
         dagger:                   "com.google.dagger:dagger:${daggerVersion}",
+        daggerAndroid:            "com.google.dagger:dagger-android:${daggerVersion}",
+        daggerAndroidSupport:     "com.google.dagger:dagger-android-support:${daggerVersion}",
+        daggerAndroidProcessor:   "com.google.dagger:dagger-android-processor:${daggerVersion}",
         daggerCompiler:           "com.google.dagger:dagger-compiler:${daggerVersion}",
+        gmsAuth:                  "com.google.android.gms:play-services-auth:${gmsVersion}",
+        googleApiClient:          "com.google.api-client:google-api-client:${googleApiClientVersion}",
+        googleApiClientAndroid:   "com.google.api-client:google-api-client-android:${googleApiClientVersion}",
+        googleApiServicesDrive:   "com.google.apis:google-api-services-drive:v3-rev90-1.23.0",
         jna:                      'net.java.dev.jna:jna:4.5.0@aar',
         koptional:                "com.gojuno.koptional:koptional:${koptionalVersion}",
         koptionalRxJava2:         "com.gojuno.koptional:koptional-rxjava2-extensions:${koptionalVersion}",

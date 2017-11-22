@@ -19,14 +19,19 @@
 
 package com.codebutler.odyssey.app
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import com.codebutler.odyssey.BuildConfig
 import com.crashlytics.android.Crashlytics
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
+import javax.inject.Inject
 
-class OdysseyApplication : Application() {
+class OdysseyApplication : Application(), HasActivityInjector {
 
     companion object {
         init {
@@ -41,6 +46,8 @@ class OdysseyApplication : Application() {
 
     lateinit var component: OdysseyApplicationComponent
 
+    @Inject lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
+
     override fun onCreate() {
         super.onCreate()
 
@@ -51,9 +58,12 @@ class OdysseyApplication : Application() {
         component = DaggerOdysseyApplicationComponent.builder()
                 .application(this)
                 .build()
+        component.inject(this)
 
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, Crashlytics())
         }
     }
+
+    override fun activityInjector(): AndroidInjector<Activity> = dispatchingActivityInjector
 }

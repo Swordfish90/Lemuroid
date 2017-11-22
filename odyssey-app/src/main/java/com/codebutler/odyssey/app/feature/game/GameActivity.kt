@@ -226,6 +226,7 @@ class GameActivity : AppCompatActivity() {
                 Completable.complete()
             }
             saveCompletable
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         // This activity runs in its own process which should not live beyond the activity lifecycle.

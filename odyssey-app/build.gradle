@@ -29,6 +29,7 @@ dependencies {
 
     implementation project(":odyssey-common")
     implementation project(":odyssey-lib")
+    implementation project(":odyssey-provider-gdrive")
     implementation project(":odyssey-provider-webdav")
 
     implementation libs.archPaging
@@ -54,6 +55,10 @@ dependencies {
     implementation libs.supportPaletteV7
     implementation libs.supportPrefLeanbackV17
     implementation libs.supportRecyclerViewV7
+
+    implementation libs.daggerAndroid
+    implementation libs.daggerAndroidSupport
+    kapt libs.daggerAndroidProcessor
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;

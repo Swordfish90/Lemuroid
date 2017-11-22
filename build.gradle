@@ -49,10 +49,10 @@ subprojects {
             android {
                 compileSdkVersion vers.compileSdkVersion
                 buildToolsVersion vers.buildToolsVersion
-
                 defaultConfig {
                     minSdkVersion vers.minSdkVersion
                     targetSdkVersion vers.targetSdkVersion
+                    multiDexEnabled true
                 }
                 lintOptions {
                     abortOnError true

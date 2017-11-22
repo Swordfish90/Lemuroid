@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
-  dimens.xml
+  AndroidManifest.xml
 
   Copyright (C) 2017 Odyssey Project
 
@@ -14,19 +15,14 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <dimen name="grid_unit_1x">8dp</dimen>
-    <dimen name="grid_unit_2x">16dp</dimen>
-    <dimen name="grid_unit_3x">24dp</dimen>
-    <dimen name="grid_unit_4x">32dp</dimen>
-    <dimen name="grid_unit_5x">40dp</dimen>
-    <dimen name="grid_unit_6x">48dp</dimen>
-    <dimen name="grid_unit_9x">72dp</dimen>
-
-    <dimen name="card_width">156dp</dimen>
-    <dimen name="card_height">88dp</dimen>
-</resources>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.codebutler.odyssey.provider.gdrive">
+    <application>
+        <activity android:name=".GDriveBrowseActivity"/>
+    </application>
+</manifest>

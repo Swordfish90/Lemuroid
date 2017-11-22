@@ -1,5 +1,5 @@
 /*
- * GameLibraryProviderRegistry.kt
+ * Component.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,17 +17,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.library.provider
+package com.codebutler.odyssey.provider.gdrive
 
-import com.codebutler.odyssey.lib.library.db.entity.Game
+import dagger.Subcomponent
+import javax.inject.Scope
 
-class GameLibraryProviderRegistry(val providers: Set<GameLibraryProvider>) {
+@GDriveScope
+@Subcomponent(modules = arrayOf(GDriveModule::class))
+interface GDriveComponent {
 
-    private val providersByScheme = mapOf(*providers.map { provider ->
-        provider.uriSchemes.map { scheme ->
-            scheme to provider
-        }
-    }.flatten().toTypedArray())
+    fun activitySubcomponentBuilder(): GDriveBrowseActivityComponent.Builder
 
-    fun getProvider(game: Game) = providersByScheme[game.fileUri.scheme]!!
+    fun gdriveBrowser(): GDriveBrowser
+
+    fun inject(provider: GDriveGameLibraryProvider)
+
+    @Subcomponent.Builder
+    interface Builder {
+        fun build(): GDriveComponent
+    }
 }
+
+@Scope
+annotation class GDriveScope

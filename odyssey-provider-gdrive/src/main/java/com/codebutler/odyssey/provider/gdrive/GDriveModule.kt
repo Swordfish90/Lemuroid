@@ -1,5 +1,5 @@
 /*
- * GameLibraryProviderRegistry.kt
+ * GDriveModule.kt
  *
  * Copyright (C) 2017 Odyssey Project
  *
@@ -17,17 +17,22 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.library.provider
+package com.codebutler.odyssey.provider.gdrive
 
-import com.codebutler.odyssey.lib.library.db.entity.Game
+import android.content.Context
+import dagger.Module
+import dagger.Provides
 
-class GameLibraryProviderRegistry(val providers: Set<GameLibraryProvider>) {
+@Module(subcomponents = arrayOf(GDriveBrowseActivityComponent::class))
+internal abstract class GDriveModule {
+    @Module
+    companion object {
+        @Provides
+        @JvmStatic
+        fun driveFactory(context: Context) = DriveFactory(context)
 
-    private val providersByScheme = mapOf(*providers.map { provider ->
-        provider.uriSchemes.map { scheme ->
-            scheme to provider
-        }
-    }.flatten().toTypedArray())
-
-    fun getProvider(game: Game) = providersByScheme[game.fileUri.scheme]!!
+        @Provides
+        @JvmStatic
+        fun gdriveBrowser(driveFactory: DriveFactory) = GDriveBrowser(driveFactory)
+    }
 }

@@ -6,7 +6,7 @@ import android.support.v17.preference.LeanbackPreferenceFragment
 class WebDavPreferenceFragment : LeanbackPreferenceFragment() {
 
     companion object {
-        val PREFS_NAME = "webdav"
+        const val PREFS_NAME = "webdav"
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

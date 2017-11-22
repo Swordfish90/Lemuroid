@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
-  dimens.xml
+  ic_folder_white_48dp.xml
 
   Copyright (C) 2017 Odyssey Project
 
@@ -18,15 +17,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <dimen name="grid_unit_1x">8dp</dimen>
-    <dimen name="grid_unit_2x">16dp</dimen>
-    <dimen name="grid_unit_3x">24dp</dimen>
-    <dimen name="grid_unit_4x">32dp</dimen>
-    <dimen name="grid_unit_5x">40dp</dimen>
-    <dimen name="grid_unit_6x">48dp</dimen>
-    <dimen name="grid_unit_9x">72dp</dimen>
-
-    <dimen name="card_width">156dp</dimen>
-    <dimen name="card_height">88dp</dimen>
-</resources>
+<vector android:height="8dp" android:viewportHeight="24.0"
+    android:viewportWidth="24.0" android:width="8dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#7FFFFFFF" android:pathData="M10,4H4c-1.1,0 -1.99,0.9 -1.99,2L2,18c0,1.1 0.9,2 2,2h16c1.1,0 2,-0.9 2,-2V8c0,-1.1 -0.9,-2 -2,-2h-8l-2,-2z"/>
+</vector>
