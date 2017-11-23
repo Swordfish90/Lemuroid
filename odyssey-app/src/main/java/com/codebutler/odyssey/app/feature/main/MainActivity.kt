@@ -21,32 +21,37 @@ package com.codebutler.odyssey.app.feature.main
 
 import android.Manifest
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.OdysseyApplication
+import com.codebutler.odyssey.app.feature.home.GamesGridFragment
 import com.codebutler.odyssey.app.feature.home.HomeFragment
+import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
 import com.codebutler.odyssey.lib.android.OdysseyActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
+import dagger.Binds
+import dagger.Provides
+import dagger.Subcomponent
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.FragmentKey
+import dagger.android.support.HasSupportFragmentInjector
+import dagger.multibindings.IntoMap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class MainActivity : OdysseyActivity() {
+class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
 
-    lateinit var component: MainComponent
-
+    @Inject lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
     @Inject lateinit var rxPermissions: RxPermissions
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        component = DaggerMainComponent.builder()
-                .appComponent(OdysseyApplication.get(this).component)
-                .module(MainModule())
-                .activity(this)
-                .build()
-        component.inject(this)
+        setContentView(R.layout.activity_main)
 
         val permissions = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -65,5 +70,47 @@ class MainActivity : OdysseyActivity() {
                         finish()
                     }
                 }
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
+
+    @Subcomponent(modules = arrayOf(Module::class))
+    interface Component : AndroidInjector<MainActivity> {
+
+        @Subcomponent.Builder
+        abstract class Builder : AndroidInjector.Builder<MainActivity>()
+    }
+
+    @dagger.Module(subcomponents = arrayOf(
+            HomeFragment.Component::class,
+            GamesGridFragment.Component::class,
+            GamesSearchFragment.Component::class
+    ))
+    abstract class Module {
+
+        @Binds
+        @IntoMap
+        @FragmentKey(HomeFragment::class)
+        abstract fun homeFragmentInjectorFactory(builder: HomeFragment.Component.Builder):
+                AndroidInjector.Factory<out Fragment>
+
+        @Binds
+        @IntoMap
+        @FragmentKey(GamesGridFragment::class)
+        abstract fun gamesGridFragmentInjectorFactory(builder: GamesGridFragment.Component.Builder):
+                AndroidInjector.Factory<out Fragment>
+
+        @Binds
+        @IntoMap
+        @FragmentKey(GamesSearchFragment::class)
+        abstract fun gamesSearchFragmentInjectorFactory(builder: GamesSearchFragment.Component.Builder):
+                AndroidInjector.Factory<out Fragment>
+
+        @dagger.Module
+        companion object {
+            @Provides
+            @JvmStatic
+            fun rxPermissions(activity: MainActivity): RxPermissions = RxPermissions(activity)
+        }
     }
 }

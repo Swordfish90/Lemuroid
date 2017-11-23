@@ -36,8 +36,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.codebutler.odyssey.BuildConfig
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.OdysseyApplication
-import com.codebutler.odyssey.app.OdysseyApplicationComponent
 import com.codebutler.odyssey.app.OdysseyConfig
 import com.codebutler.odyssey.common.kotlin.bindView
 import com.codebutler.odyssey.common.kotlin.isAllZeros
@@ -55,7 +53,9 @@ import com.codebutler.odyssey.lib.retro.RetroDroid
 import com.gojuno.koptional.Optional
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
-import dagger.Component
+import dagger.Subcomponent
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -89,6 +89,7 @@ class GameActivity : AppCompatActivity() {
     private var audioTrack: AudioTrack? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
@@ -100,11 +101,6 @@ class GameActivity : AppCompatActivity() {
 
         gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)
         lifecycle.addObserver(gameDisplay)
-
-        val component = DaggerGameActivity_GameComponent.builder()
-                .odysseyApplicationComponent((application as OdysseyApplication).component)
-                .build()
-        component.inject(this)
 
         // FIXME: Full Activity lifecycle handling.
         if (savedInstanceState != null) {
@@ -248,9 +244,10 @@ class GameActivity : AppCompatActivity() {
             val gameFile: File,
             val saveData: ByteArray?)
 
-    @Component(dependencies = arrayOf(OdysseyApplicationComponent::class))
-    interface GameComponent {
+    @Subcomponent
+    interface Component : AndroidInjector<GameActivity> {
 
-        fun inject(activity: GameActivity)
+        @Subcomponent.Builder
+        abstract class Builder : AndroidInjector.Builder<GameActivity>()
     }
 }

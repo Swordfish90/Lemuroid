@@ -21,6 +21,7 @@ package com.codebutler.odyssey.app.feature.home
 
 import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v17.leanback.app.BrowseFragment
@@ -33,7 +34,6 @@ import android.support.v17.leanback.widget.OnItemViewClickedListener
 import android.support.v4.app.ActivityOptionsCompat
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.game.GameActivity
-import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
 import com.codebutler.odyssey.app.feature.settings.SettingsActivity
 import com.codebutler.odyssey.lib.library.GameLibrary
@@ -46,6 +46,9 @@ import com.codebutler.odyssey.lib.ui.SimpleItem
 import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
+import dagger.Subcomponent
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -61,13 +64,9 @@ class HomeFragment : BrowseSupportFragment() {
     @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var odysseyDb: OdysseyDatabase
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val component = DaggerHomeComponent.builder()
-                .mainComponent((activity as MainActivity).component)
-                .build()
-        component.inject(this)
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -177,5 +176,12 @@ class HomeFragment : BrowseSupportFragment() {
         categoryRowAdapter.add(ListRow(HeaderItem(getString(R.string.library)), systemsAdapter))
         categoryRowAdapter.add(ListRow(HeaderItem(getString(R.string.settings)), settingsAdapter))
         adapter = categoryRowAdapter
+    }
+
+    @Subcomponent
+    interface Component : AndroidInjector<HomeFragment> {
+
+        @Subcomponent.Builder
+        abstract class Builder : AndroidInjector.Builder<HomeFragment>()
     }
 }

@@ -3,17 +3,20 @@ package com.codebutler.odyssey.app.feature.home
 import android.arch.lifecycle.Observer
 import android.arch.paging.LivePagedListProvider
 import android.arch.paging.PagedList
+import android.content.Context
 import android.os.Bundle
 import android.support.v17.leanback.app.VerticalGridSupportFragment
 import android.support.v17.leanback.widget.OnItemViewClickedListener
 import android.support.v17.leanback.widget.VerticalGridPresenter
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
 import com.codebutler.odyssey.app.feature.game.GameActivity
-import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
+import dagger.Subcomponent
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class GamesGridFragment : VerticalGridSupportFragment() {
@@ -39,21 +42,19 @@ class GamesGridFragment : VerticalGridSupportFragment() {
         private val NUM_COLUMNS = 5
     }
 
-    private lateinit var component: HomeComponent
-
     @Inject lateinit var odysseyDb: OdysseyDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        component = DaggerHomeComponent.builder()
-                .mainComponent((activity as MainActivity).component)
-                .build()
-        component.inject(this)
-
         val gridPresenter = VerticalGridPresenter()
         gridPresenter.numberOfColumns = NUM_COLUMNS
         setGridPresenter(gridPresenter)
+    }
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -89,5 +90,12 @@ class GamesGridFragment : VerticalGridSupportFragment() {
     private fun getQuery(mode: Mode, param: String?): LivePagedListProvider<Int, Game> = when (mode) {
         Mode.ALL -> odysseyDb.gameDao().selectAll()
         Mode.SYSTEM -> odysseyDb.gameDao().selectBySystem(param!!)
+    }
+
+    @Subcomponent
+    interface Component : AndroidInjector<GamesGridFragment> {
+
+        @Subcomponent.Builder
+        abstract class Builder : AndroidInjector.Builder<GamesGridFragment>()
     }
 }

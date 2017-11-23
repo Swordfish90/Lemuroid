@@ -1,6 +1,7 @@
 package com.codebutler.odyssey.app.feature.settings
 
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
 import android.support.v14.preference.PreferenceFragment
 import android.support.v17.preference.LeanbackPreferenceFragment
@@ -11,10 +12,10 @@ import android.support.v7.preference.PreferenceScreen
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.OdysseyApplication
-import com.codebutler.odyssey.app.OdysseyApplicationComponent
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
-import dagger.Component
+import dagger.Subcomponent
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
 import javax.inject.Inject
 
 class SettingsFragment : LeanbackSettingsFragment() {
@@ -35,12 +36,12 @@ class SettingsFragment : LeanbackSettingsFragment() {
 
         @Inject lateinit var libraryProviderRegistry: GameLibraryProviderRegistry
 
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            val component = DaggerSettingsFragment_PrefFragment_PrefComponent.builder()
-                    .odysseyApplicationComponent((activity.application as OdysseyApplication).component)
-                    .build()
-            component.inject(this)
+        override fun onAttach(context: Context?) {
+            AndroidInjection.inject(this)
+            super.onAttach(context)
+        }
 
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.prefs)
 
             val themeTypedValue = TypedValue()
@@ -59,10 +60,11 @@ class SettingsFragment : LeanbackSettingsFragment() {
             }
         }
 
-        @Component(dependencies = arrayOf(OdysseyApplicationComponent::class))
-        interface PrefComponent {
+        @Subcomponent
+        interface Component : AndroidInjector<PrefFragment> {
 
-            fun inject(prefFragment: PrefFragment)
+            @Subcomponent.Builder
+            abstract class Builder : AndroidInjector.Builder<PrefFragment>()
         }
     }
 }

@@ -19,8 +19,12 @@
 
 package com.codebutler.odyssey.app
 
+import android.app.Activity
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.codebutler.odyssey.app.feature.game.GameActivity
+import com.codebutler.odyssey.app.feature.main.MainActivity
+import com.codebutler.odyssey.app.feature.settings.SettingsActivity
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
@@ -31,6 +35,9 @@ import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.android.ActivityKey
+import dagger.android.AndroidInjector
+import dagger.multibindings.IntoMap
 import dagger.multibindings.IntoSet
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -44,17 +51,38 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.zip.ZipInputStream
 
-@Module
+@Module(subcomponents = arrayOf(
+        MainActivity.Component::class,
+        GameActivity.Component::class,
+        SettingsActivity.Component::class))
 abstract class OdysseyApplicationModule {
 
     @Binds
     abstract fun context(app: OdysseyApplication): Context
 
+    @Binds
+    @IntoMap
+    @ActivityKey(MainActivity::class)
+    abstract fun mainActivityInjectorFactory(builder: MainActivity.Component.Builder):
+            AndroidInjector.Factory<out Activity>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(GameActivity::class)
+    abstract fun gameActivityInjectorFactory(builder: GameActivity.Component.Builder):
+            AndroidInjector.Factory<out Activity>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(SettingsActivity::class)
+    abstract fun settingsActivityInjectorFactory(builder: SettingsActivity.Component.Builder):
+            AndroidInjector.Factory<out Activity>
+
     @Module
     companion object {
         @Provides
         @JvmStatic
-        fun executorService() = Executors.newSingleThreadExecutor()
+        fun executorService(): ExecutorService = Executors.newSingleThreadExecutor()
 
         @Provides
         @JvmStatic
