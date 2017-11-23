@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.webdav
+package com.codebutler.odyssey.provider.webdav.client
 
 import java.net.URI
 import kotlin.coroutines.experimental.buildSequence

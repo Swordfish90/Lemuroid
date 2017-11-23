@@ -26,8 +26,8 @@ import android.support.v17.preference.LeanbackPreferenceFragment
 import com.codebutler.odyssey.lib.library.GameLibraryFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
-import com.codebutler.odyssey.lib.webdav.WebDavClient
-import com.codebutler.odyssey.lib.webdav.WebDavScanner
+import com.codebutler.odyssey.provider.webdav.client.WebDavClient
+import com.codebutler.odyssey.provider.webdav.client.WebDavScanner
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional

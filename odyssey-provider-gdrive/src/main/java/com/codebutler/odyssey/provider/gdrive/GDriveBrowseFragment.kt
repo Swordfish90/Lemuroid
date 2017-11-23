@@ -35,7 +35,6 @@ import com.google.api.services.drive.model.File
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
 import dagger.Binds
-import dagger.Module
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjection
@@ -151,20 +150,20 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
     interface Listener {
         fun onFolderSelected(folderId: String)
     }
-}
 
-@Subcomponent
-internal interface GDriveBrowseFragmentComponent : AndroidInjector<GDriveBrowseFragment> {
-    @Subcomponent.Builder
-    abstract class Builder : AndroidInjector.Builder<GDriveBrowseFragment>()
-}
+    @Subcomponent
+    internal interface Component : AndroidInjector<GDriveBrowseFragment> {
+        @Subcomponent.Builder
+        abstract class Builder : AndroidInjector.Builder<GDriveBrowseFragment>()
+    }
 
-@Module(subcomponents = arrayOf(GDriveBrowseFragmentComponent::class))
-internal abstract class GDriveBrowseFragmentModule {
-    @Binds
-    @IntoMap
-    @FragmentKey(GDriveBrowseFragment::class)
-    internal abstract fun bindsFragmentInjectorFactory(
-            builder: GDriveBrowseFragmentComponent.Builder): AndroidInjector.Factory<out Fragment>
+    @dagger.Module(subcomponents = arrayOf(Component::class))
+    internal abstract class Module {
+        @Binds
+        @IntoMap
+        @FragmentKey(GDriveBrowseFragment::class)
+        internal abstract fun bindsFragmentInjectorFactory(
+                builder: GDriveBrowseFragment.Component.Builder): AndroidInjector.Factory<out Fragment>
+    }
 }
 

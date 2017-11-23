@@ -67,11 +67,11 @@ class GDriveBrowseActivity : OdysseyActivity(), GDriveBrowseFragment.Listener, H
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
-}
 
-@Subcomponent(modules = arrayOf(GDriveBrowseFragmentModule::class))
-interface GDriveBrowseActivityComponent : AndroidInjector<GDriveBrowseActivity> {
+    @Subcomponent(modules = arrayOf(GDriveBrowseFragment.Module::class))
+    interface Component : AndroidInjector<GDriveBrowseActivity> {
 
-    @Subcomponent.Builder
-    abstract class Builder : AndroidInjector.Builder<GDriveBrowseActivity>()
+        @Subcomponent.Builder
+        abstract class Builder : AndroidInjector.Builder<GDriveBrowseActivity>()
+    }
 }

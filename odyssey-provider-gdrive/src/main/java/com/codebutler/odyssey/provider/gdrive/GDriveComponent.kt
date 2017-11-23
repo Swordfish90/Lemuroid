@@ -26,7 +26,7 @@ import javax.inject.Scope
 @Subcomponent(modules = arrayOf(GDriveModule::class))
 interface GDriveComponent {
 
-    fun activitySubcomponentBuilder(): GDriveBrowseActivityComponent.Builder
+    fun activityComponentBuilder(): GDriveBrowseActivity.Component.Builder
 
     fun gdriveBrowser(): GDriveBrowser
 

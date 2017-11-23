@@ -40,13 +40,14 @@ abstract class GDriveApplicationModule {
     companion object {
         @Provides
         @JvmStatic
-        fun gameLibraryProvider(componentBuilder: GDriveComponent.Builder) = GDriveGameLibraryProvider(componentBuilder)
+        fun gameLibraryProvider(componentBuilder: GDriveComponent.Builder)
+                = GDriveGameLibraryProvider(componentBuilder)
 
         @Provides
         @IntoMap
         @JvmStatic
         @ActivityKey(GDriveBrowseActivity::class)
         fun activityInjectorFactory(provider: GDriveGameLibraryProvider): AndroidInjector.Factory<out Activity>
-                = provider.component.activitySubcomponentBuilder()
+                = provider.component.activityComponentBuilder()
     }
 }

@@ -23,7 +23,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 
-@Module(subcomponents = arrayOf(GDriveBrowseActivityComponent::class))
+@Module(subcomponents = arrayOf(GDriveBrowseActivity.Component::class))
 internal abstract class GDriveModule {
     @Module
     companion object {
