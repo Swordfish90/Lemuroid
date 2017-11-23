@@ -105,7 +105,9 @@ class GameLibrary(
                         else -> Single.just(None)
                     }.map { ovgdbSystem -> Triple(file, release, ovgdbSystem) }
                 }
-                .doOnNext { (file, _, ovgdbSystem) -> Timber.d("OVGDB System Found: ${file.name}, ${ovgdbSystem is Some}") }
+                .doOnNext { (file, _, ovgdbSystem) ->
+                    Timber.d("OVGDB System Found: ${file.name}, ${ovgdbSystem is Some}")
+                }
                 .map { (file, release, ovgdbSystem) ->
                     var system = when (ovgdbSystem) {
                         is Some -> {

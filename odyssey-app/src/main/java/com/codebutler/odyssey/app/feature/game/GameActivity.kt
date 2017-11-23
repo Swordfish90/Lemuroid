@@ -245,7 +245,8 @@ class GameActivity : AppCompatActivity() {
             val saveData: ByteArray?)
 
     @Subcomponent
-    interface Component : AndroidInjector<GameActivity> {
+    interface Component
+        : AndroidInjector<GameActivity> {
 
         @Subcomponent.Builder
         abstract class Builder : AndroidInjector.Builder<GameActivity>()
