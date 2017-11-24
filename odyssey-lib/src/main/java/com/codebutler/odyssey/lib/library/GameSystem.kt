@@ -82,10 +82,10 @@ data class GameSystem(
                         listOf("gbc")
                 ),
                 GameSystem(
-                        "mame",
-                        R.string.game_system_title_mame,
-                        R.string.game_system_abbr_mame,
-                        "mame2003_libretro_android.so.zip",
+                        "arcade",
+                        R.string.game_system_title_arcade,
+                        R.string.game_system_abbr_arcade,
+                        "fbalpha_libretro_android.so.zip",
                         listOf("zip")
                 )
         )

@@ -29,7 +29,6 @@ import com.codebutler.odyssey.metadata.ovgdb.db.OvgdbManager
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
-import com.gojuno.koptional.rxjava2.filterSome
 import com.gojuno.koptional.toOptional
 import io.reactivex.Maybe
 import io.reactivex.ObservableTransformer
@@ -37,7 +36,7 @@ import io.reactivex.Single
 import timber.log.Timber
 
 class OvgdbMetadataProvider(private val ovgdbManager: OvgdbManager) : GameMetadataProvider {
-    override fun transformer(startedAtMs: Long) = ObservableTransformer<StorageFile, Game> { upstream ->
+    override fun transformer(startedAtMs: Long) = ObservableTransformer<StorageFile, Optional<Game>> { upstream ->
         ovgdbManager.dbReady
                 .flatMapObservable { ovgdb: OvgdbDatabase -> upstream
                         .flatMapSingle { file ->
@@ -107,7 +106,6 @@ class OvgdbMetadataProvider(private val ovgdbManager: OvgdbManager) : GameMetada
                                 else -> None
                             }
                         }
-                        .filterSome()
                 }
     }
 

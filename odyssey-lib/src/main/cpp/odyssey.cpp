@@ -54,4 +54,13 @@ extern "C" {
     retro_log_printf_t odyssey_get_retro_log_printf() {
         return _retro_log_printf;
     }
+
+    JNIEXPORT
+    void odyssey_redirect_stdio(char *stdout_path, char* stderr_path) {
+        freopen(stdout_path, "w", stdout);
+        freopen(stderr_path, "w", stderr);
+
+        setvbuf(stdout, NULL, _IONBF, 0);
+        setvbuf(stderr, NULL, _IONBF, 0);
+    }
 }

@@ -201,7 +201,7 @@ class Retro(coreLibraryName: String) {
 
         companion object {
             private val valueCache = mapOf(*DeviceId.values().map { it.value to it }.toTypedArray())
-            fun fromValue(value: Int) = valueCache[value]!!
+            fun fromValue(value: Int) = valueCache[value]
         }
     }
 
@@ -355,17 +355,17 @@ class Retro(coreLibraryName: String) {
         libRetro.retro_run()
     }
 
-    fun getMemoryData(memory: MemoryId): ByteArray {
+    fun getMemoryData(memory: MemoryId): ByteArray? {
         val id = UnsignedInt(memory.value.toLong())
         val size = libRetro.retro_get_memory_size(id).toInt()
         val pointer = libRetro.retro_get_memory_data(id)
-        return pointer.getByteArray(0, size)
+        return pointer?.getByteArray(0, size)
     }
 
     fun setMemoryData(memory: MemoryId, data: ByteArray) {
         val id = UnsignedInt(memory.value.toLong())
         val pointer = libRetro.retro_get_memory_data(id)
-        pointer.write(0, data, 0, data.size)
+        pointer?.write(0, data, 0, data.size)
     }
 
     private class RetroEnvironmentT(private val retro: Retro) : LibRetro.retro_environment_t {
@@ -402,7 +402,7 @@ class Retro(coreLibraryName: String) {
                                     descriptor.port!!.toInt(),
                                     device,
                                     descriptor.index!!.toInt(),
-                                    DeviceId.fromValue(descriptor.id!!.toInt()),
+                                    DeviceId.fromValue(descriptor.id!!.toInt())!!,
                                     descriptor.description!!))
 
                             offset += descriptor.size()

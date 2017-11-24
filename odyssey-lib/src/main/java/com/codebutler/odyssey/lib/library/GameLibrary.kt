@@ -26,6 +26,7 @@ import com.codebutler.odyssey.lib.storage.StorageProviderRegistry
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
+import com.gojuno.koptional.rxjava2.filterSome
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -60,6 +61,7 @@ class GameLibrary(
                             .filter { (_, game) -> game is None }
                             .map { (file, _) -> file }
                             .compose(provider.metadataProvider.transformer(startedAtMs))
+                            .filterSome()
                 }
                 .subscribeOn(Schedulers.io())
                 .subscribe(

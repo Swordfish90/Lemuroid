@@ -12,6 +12,7 @@ ext {
     def gmsVersion = '11.6.0'
     def googleApiClientVersion = '1.23.0'
     def koptionalVersion = '1.2.0'
+    def moshiVersion = '1.5.0'
     def retrofitVersion = '2.3.0'
     def supportVersion  = '26.1.0'
 
@@ -35,11 +36,14 @@ ext {
         koptional:                "com.gojuno.koptional:koptional:${koptionalVersion}",
         koptionalRxJava2:         "com.gojuno.koptional:koptional-rxjava2-extensions:${koptionalVersion}",
         kotlinStdlib:             "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
+        moshi:                    "com.squareup.moshi:moshi:$moshiVersion",
+        moshiKotlin:              "com.squareup.moshi:moshi-kotlin:$moshiVersion",
         okHttp3:                  'com.squareup.okhttp3:okhttp:3.9.0',
         okHttp3Logging:           'com.squareup.okhttp3:logging-interceptor:3.9.0',
         picasso:                  'com.squareup.picasso:picasso:2.5.2',
         retrofit:                 "com.squareup.retrofit2:retrofit:$retrofitVersion",
         retrofitRxJava2:          "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+        retrofitConverterMoshi:   "com.squareup.retrofit2:converter-moshi:$retrofitVersion",
         roomCompiler:             "android.arch.persistence.room:compiler:${archVersion}",
         roomRuntime:              "android.arch.persistence.room:runtime:${archVersion}",
         roomRxJava2:              "android.arch.persistence.room:rxjava2:${archVersion}",

@@ -19,6 +19,7 @@
 
 package com.codebutler.odyssey.app.feature.game
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -126,6 +127,12 @@ class GameActivity : OdysseyActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // This activity runs in its own process which should not live beyond the activity lifecycle.
+        System.exit(0)
+    }
+
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
         super.dispatchGenericMotionEvent(event)
         retroDroid?.onMotionEvent(event)
@@ -172,65 +179,70 @@ class GameActivity : OdysseyActivity() {
     }
 
     private fun loadRetro(data: PreparedGameData) {
-        val retroDroid = RetroDroid(this, data.coreFile)
-        lifecycle.addObserver(retroDroid)
+        try {
+            val retroDroid = RetroDroid(this, data.coreFile)
+            lifecycle.addObserver(retroDroid)
 
-        retroDroid.logCallback = { level, message ->
-            val timber = Timber.tag("RetroLog")
-            when (level) {
-                Retro.LogLevel.DEBUG -> timber.d(message)
-                Retro.LogLevel.INFO -> timber.i(message)
-                Retro.LogLevel.WARN -> timber.w(message)
-                Retro.LogLevel.ERROR -> timber.e(message)
+            retroDroid.logCallback = { level, message ->
+                val timber = Timber.tag("RetroLog")
+                when (level) {
+                    Retro.LogLevel.DEBUG -> timber.d(message)
+                    Retro.LogLevel.INFO -> timber.i(message)
+                    Retro.LogLevel.WARN -> timber.w(message)
+                    Retro.LogLevel.ERROR -> timber.e(message)
+                }
             }
-        }
 
-        retroDroid.prepareAudioCallback = { sampleRate ->
-            audioTrack = AudioTrack.Builder()
-                    .setAudioAttributes(AudioAttributes.Builder()
-                            .setUsage(AudioAttributes.USAGE_GAME)
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                            .build())
-                    .setAudioFormat(AudioFormat.Builder()
-                            .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                            .setSampleRate(sampleRate)
-                            .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
-                            .build())
-                    .build()
-        }
-
-        retroDroid.videoCallback = { bitmap ->
-            gameDisplay.update(bitmap)
-        }
-
-        retroDroid.audioCallback = { buffer ->
-            audioTrack?.let { audioTrack ->
-                audioTrack.write(buffer, 0, buffer.size)
-                audioTrack.play()
+            retroDroid.prepareAudioCallback = { sampleRate ->
+                audioTrack = AudioTrack.Builder()
+                        .setAudioAttributes(AudioAttributes.Builder()
+                                .setUsage(AudioAttributes.USAGE_GAME)
+                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                .build())
+                        .setAudioFormat(AudioFormat.Builder()
+                                .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                                .setSampleRate(sampleRate)
+                                .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
+                                .build())
+                        .build()
             }
-        }
 
-        retroDroid.gameUnloadedCallback = { saveData ->
-            val game = this.game
-            val saveCompletable = if (saveData != null && saveData.isAllZeros().not() && game != null) {
-                gameLibrary.setGameSave(game, saveData)
-            } else {
-                Completable.complete()
+            retroDroid.videoCallback = { bitmap ->
+                gameDisplay.update(bitmap)
             }
-            saveCompletable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        // This activity runs in its own process which should not live beyond the activity lifecycle.
-                        System.exit(0)
-                    }
+
+            retroDroid.audioCallback = { buffer ->
+                audioTrack?.let { audioTrack ->
+                    audioTrack.write(buffer, 0, buffer.size)
+                    audioTrack.play()
+                }
+            }
+
+            retroDroid.gameUnloadedCallback = { saveData ->
+                val game = this.game
+                val saveCompletable = if (saveData != null && saveData.isAllZeros().not() && game != null) {
+                    gameLibrary.setGameSave(game, saveData)
+                } else {
+                    Completable.complete()
+                }
+                saveCompletable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
+            }
+
+            retroDroid.loadGame(data.gameFile.absolutePath, data.saveData)
+            retroDroid.start()
+
+            this.game = data.game
+            this.retroDroid = retroDroid
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception during retro initialization")
+            finish()
         }
-
-        retroDroid.loadGame(data.gameFile.absolutePath, data.saveData)
-        retroDroid.start()
-
-        this.game = data.game
-        this.retroDroid = retroDroid
     }
 
     @Suppress("ArrayInDataClass")

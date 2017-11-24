@@ -21,9 +21,10 @@ package com.codebutler.odyssey.lib.library.metadata
 
 import com.codebutler.odyssey.lib.storage.StorageFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
+import com.gojuno.koptional.Optional
 import io.reactivex.ObservableTransformer
 
 interface GameMetadataProvider {
 
-    fun transformer(startedAtMs: Long): ObservableTransformer<StorageFile, Game>
+    fun transformer(startedAtMs: Long): ObservableTransformer<StorageFile, Optional<Game>>
 }

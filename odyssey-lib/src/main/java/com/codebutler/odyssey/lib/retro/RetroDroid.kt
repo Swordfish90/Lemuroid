@@ -28,7 +28,9 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import com.codebutler.odyssey.common.BitmapCache
 import com.codebutler.odyssey.common.BufferCache
+import com.codebutler.odyssey.common.BuildConfig
 import com.codebutler.odyssey.common.kotlin.containsAny
+import com.codebutler.odyssey.lib.binding.LibOdyssey
 import com.codebutler.odyssey.lib.rendering.FpsCalculator
 import com.sun.jna.Native
 import timber.log.Timber
@@ -95,6 +97,12 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
         }
 
         System.setProperty("jna.library.path", coreFile.parentFile.absolutePath)
+
+        if (BuildConfig.DEBUG) {
+            val stdoutFile = File(context.filesDir, "stdout.log")
+            val stderrFile = File(context.filesDir, "stderr.log")
+            LibOdyssey.INSTANCE.odyssey_redirect_stdio(stdoutFile.path, stderrFile.path)
+        }
 
         val coreLibraryName = coreFile.nameWithoutExtension.substring(3) // FIXME
 
@@ -287,12 +295,13 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
                     Retro.DeviceId.JOYPAD_Y -> pressedKeys.containsAny(
                             KeyEvent.KEYCODE_BUTTON_Y,
                             KeyEvent.KEYCODE_Y)
+                    else -> return false
                 }
             }
             Retro.Device.MOUSE -> TODO()
-            Retro.Device.KEYBOARD -> TODO()
+            Retro.Device.KEYBOARD -> return false
             Retro.Device.LIGHTGUN -> TODO()
-            Retro.Device.ANALOG -> TODO()
+            Retro.Device.ANALOG -> return false
             Retro.Device.POINTER -> TODO()
         }
         return false

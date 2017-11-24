@@ -33,6 +33,7 @@ import com.codebutler.odyssey.lib.storage.StorageProvider
 import com.codebutler.odyssey.lib.storage.StorageProviderRegistry
 import com.codebutler.odyssey.lib.storage.local.LocalStorageProvider
 import com.codebutler.odyssey.metadata.ovgdb.db.OvgdbManager
+import com.codebutler.odyssey.storage.archiveorg.ArchiveOrgStorageProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -94,6 +95,11 @@ abstract class OdysseyApplicationModule {
         @JvmStatic
         fun localGameStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider
                 = LocalStorageProvider(context, metadataProvider)
+
+        @Provides
+        @IntoSet
+        @JvmStatic
+        fun archiveorgStorageProvider(context: Context): StorageProvider = ArchiveOrgStorageProvider(context)
 
         @Provides
         @JvmStatic
