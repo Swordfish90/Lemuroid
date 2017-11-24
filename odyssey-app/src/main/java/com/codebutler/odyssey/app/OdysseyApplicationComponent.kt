@@ -20,8 +20,8 @@
 package com.codebutler.odyssey.app
 
 import com.codebutler.odyssey.lib.injection.PerApp
-import com.codebutler.odyssey.provider.gdrive.GDriveApplicationModule
-import com.codebutler.odyssey.provider.webdav.WebDavApplicationModule
+import com.codebutler.odyssey.storage.gdrive.GDriveApplicationModule
+import com.codebutler.odyssey.storage.webdav.WebDavApplicationModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule

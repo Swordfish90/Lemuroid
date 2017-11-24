@@ -22,7 +22,7 @@ package com.codebutler.odyssey.lib.retro
 import android.graphics.PixelFormat
 import android.os.Build
 import com.codebutler.odyssey.common.BufferCache
-import com.codebutler.odyssey.common.binding.LibC
+import com.codebutler.odyssey.lib.binding.LibC
 import com.codebutler.odyssey.common.jna.NativeString
 import com.codebutler.odyssey.common.jna.SizeT
 import com.codebutler.odyssey.common.jna.UnsignedInt

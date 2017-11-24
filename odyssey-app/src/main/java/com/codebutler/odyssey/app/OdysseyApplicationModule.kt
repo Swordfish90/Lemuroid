@@ -28,10 +28,11 @@ import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.injection.PerActivity
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
-import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
-import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
-import com.codebutler.odyssey.lib.library.provider.local.LocalGameLibraryProvider
-import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
+import com.codebutler.odyssey.lib.ovgdb.db.OvgdbMetadataProvider
+import com.codebutler.odyssey.lib.storage.StorageProvider
+import com.codebutler.odyssey.lib.storage.StorageProviderRegistry
+import com.codebutler.odyssey.lib.storage.local.LocalStorageProvider
+import com.codebutler.odyssey.metadata.ovgdb.db.OvgdbManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -85,22 +86,26 @@ abstract class OdysseyApplicationModule {
                 .build()
 
         @Provides
+        @JvmStatic
+        fun ovgdbMetadataProvider(ovgdbManager: OvgdbManager) = OvgdbMetadataProvider(ovgdbManager)
+
+        @Provides
         @IntoSet
         @JvmStatic
-        fun localGameLibraryProvider(app: OdysseyApplication): GameLibraryProvider = LocalGameLibraryProvider(app)
+        fun localGameStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider
+                = LocalStorageProvider(context, metadataProvider)
 
         @Provides
         @JvmStatic
-        fun gameLibraryProviderRegistry(providers: Set<@JvmSuppressWildcards GameLibraryProvider>)
-                = GameLibraryProviderRegistry(providers)
+        fun gameStorageProviderRegistry(providers: Set<@JvmSuppressWildcards StorageProvider>)
+                = StorageProviderRegistry(providers)
 
         @Provides
         @JvmStatic
         fun gameLibrary(
                 db: OdysseyDatabase,
-                ovgdbManager: OvgdbManager,
-                gameLibraryProviderRegistry: GameLibraryProviderRegistry)
-                = GameLibrary(db, ovgdbManager, gameLibraryProviderRegistry)
+                storageProviderRegistry: StorageProviderRegistry)
+                = GameLibrary(db, storageProviderRegistry)
 
         @Provides
         @JvmStatic

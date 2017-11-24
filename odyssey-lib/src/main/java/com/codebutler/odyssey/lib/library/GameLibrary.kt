@@ -22,18 +22,11 @@ package com.codebutler.odyssey.lib.library
 import com.codebutler.odyssey.common.rx.toSingleAsOptional
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
-import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
-import com.codebutler.odyssey.lib.ovgdb.db.OvgdbDatabase
-import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
+import com.codebutler.odyssey.lib.storage.StorageProviderRegistry
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
-import com.gojuno.koptional.rxjava2.filterSome
-import com.gojuno.koptional.toOptional
 import io.reactivex.Completable
-import io.reactivex.CompletableEmitter
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -42,109 +35,33 @@ import java.io.File
 
 class GameLibrary(
         private val odysseydb: OdysseyDatabase,
-        private val ovgdbManager: OvgdbManager,
-        private val providerRegistry: GameLibraryProviderRegistry) {
+        private val providerProviderRegistry: StorageProviderRegistry) {
 
     fun indexGames(): Completable = Completable.create { emitter ->
-        ovgdbManager.dbReady
-                .observeOn(Schedulers.io())
-                .subscribe { ovgdb -> indexGamesWithDb(ovgdb, emitter) }
-    }
-
-    fun getGameRom(game: Game): Single<File>
-            = providerRegistry.getProvider(game).getGameRom(game)
-
-    fun getGameSave(game: Game): Single<Optional<ByteArray>>
-            = providerRegistry.getProvider(game).getGameSave(game)
-
-    fun setGameSave(game: Game, data: ByteArray): Completable
-            = providerRegistry.getProvider(game).setGameSave(game, data)
-
-    private fun indexGamesWithDb(ovgdb: OvgdbDatabase, emitter: CompletableEmitter) {
         val startedAtMs = System.currentTimeMillis()
-        Observable.fromIterable(providerRegistry.providers)
-                .flatMapSingle { provider -> provider.listFiles() }
-                .flatMapIterable { it }
-                .flatMapSingle { file ->
-                    Timber.d("Got file: $file ${file.uri}")
-                    odysseydb.gameDao().selectByFileUri(file.uri.toString())
-                            .toSingleAsOptional()
-                            .map { game -> Pair(file, game) }
-                }
-                .doOnNext { (file, game) -> Timber.d("Game already indexed? ${file.name} ${game is Some}") }
-                .doOnNext { (_, game) ->
-                    if (game is Some) {
-                        val updatedGame = game.value.copy(lastIndexedAt = startedAtMs)
-                        Timber.d("Update: $updatedGame")
-                        odysseydb.gameDao().update(updatedGame)
-                    }
-                }
-                .filter { (_, game) -> game is None }
-                .map { (file, _) -> file }
-                .flatMapSingle { file ->
-                    when (file.crc) {
-                        null -> Maybe.empty()
-                        else -> ovgdb.romDao().findByCRC(file.crc)
-                    }.switchIfEmpty(ovgdb.romDao().findByFileName(sanitizeRomFileName(file.name)))
-                            .toSingleAsOptional()
-                            .map { rom -> Pair(file, rom) }
-                }
-                .doOnNext { (file, rom) -> Timber.d("Rom Found: ${file.name} ${rom is Some}") }
-                .flatMapSingle { (file, rom) ->
-                    when (rom) {
-                        is Some -> ovgdb.releaseDao().findByRomId(rom.value.id)
-                                .toSingleAsOptional()
-                        else -> Single.just<Optional<Release>>(None)
-                    }.map { release -> Triple(file, rom, release) }
-                }
-                .doOnNext { (file, _, release) -> Timber.d("Release found: ${file.name}, ${release is Some}") }
-                .flatMapSingle { (file, rom, release) ->
-                    when (rom) {
-                        is Some -> ovgdb.systemDao().findById(rom.value.systemId)
-                                .toSingleAsOptional()
-                        else -> Single.just(None)
-                    }.map { ovgdbSystem -> Triple(file, release, ovgdbSystem) }
-                }
-                .doOnNext { (file, _, ovgdbSystem) ->
-                    Timber.d("OVGDB System Found: ${file.name}, ${ovgdbSystem is Some}")
-                }
-                .map { (file, release, ovgdbSystem) ->
-                    var system = when (ovgdbSystem) {
-                        is Some -> {
-                            val gs = GameSystem.findByShortName(ovgdbSystem.value.shortName)
-                            if (gs == null) {
-                                Timber.e("System '${ovgdbSystem.value.shortName}' not found")
+        Observable.fromIterable(providerProviderRegistry.providers)
+                .flatMap { provider ->
+                    provider.listFiles()
+                            .flattenAsObservable { it }
+                            .flatMapSingle { file ->
+                                Timber.d("Got file: $file ${file.uri}")
+                                odysseydb.gameDao().selectByFileUri(file.uri.toString())
+                                        .toSingleAsOptional()
+                                        .map { game -> Pair(file, game) }
                             }
-                            gs
-                        }
-                        else -> null
-                    }
-                    if (system == null) {
-                        Timber.d("System not found, trying file extension: ${file.name}")
-                        system = GameSystem.findByFileExtension(file.extension)
-                    }
-                    if (system == null) {
-                        Timber.d("Giving up on ${file.name}")
-                    } else {
-                        Timber.d("Found system!! $system")
-                    }
-                    Triple(file, release, system.toOptional())
+                            .doOnNext { (file, game) ->
+                                Timber.d("Game already indexed? ${file.name} ${game is Some}")
+                                if (game is Some) {
+                                    val updatedGame = game.value.copy(lastIndexedAt = startedAtMs)
+                                    Timber.d("Update: $updatedGame")
+                                    odysseydb.gameDao().update(updatedGame)
+                                }
+                            }
+                            .filter { (_, game) -> game is None }
+                            .map { (file, _) -> file }
+                            .compose(provider.metadataProvider.transformer(startedAtMs))
                 }
-                .map { (file, release, system) ->
-                    when (system) {
-                        is Some -> Game(
-                                fileName = file.name,
-                                fileUri = file.uri,
-                                title = release.toNullable()?.titleName ?: file.name,
-                                systemId = system.value.id,
-                                developer = release.toNullable()?.developer,
-                                coverFrontUrl = release.toNullable()?.coverFront,
-                                lastIndexedAt = startedAtMs
-                        ).toOptional()
-                        else -> None
-                    }
-                }
-                .filterSome()
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         { game ->
                             Timber.d("Insert: $game")
@@ -161,6 +78,15 @@ class GameLibrary(
                         })
     }
 
+    fun getGameRom(game: Game): Single<File>
+            = providerProviderRegistry.getProvider(game).getGameRom(game)
+
+    fun getGameSave(game: Game): Single<Optional<ByteArray>>
+            = providerProviderRegistry.getProvider(game).getGameSave(game)
+
+    fun setGameSave(game: Game, data: ByteArray): Completable
+            = providerProviderRegistry.getProvider(game).setGameSave(game, data)
+
     private fun removeDeletedGames(startedAtMs: Long) {
         odysseydb.gameDao().selectByLastIndexedAtLessThan(startedAtMs)
                 .subscribeOn(Schedulers.io())
@@ -170,14 +96,5 @@ class GameLibrary(
                             odysseydb.gameDao().delete(games)
                         },
                         { error -> Timber.e(error, "Error while removing") })
-    }
-
-    private fun sanitizeRomFileName(fileName: String): String {
-        return fileName
-                .replace("(U)", "(USA)")
-                .replace("(J)", "(Japan)")
-                .replace(" [!]", "")
-                .replace(Regex("\\.v64$"), ".n64")
-                .replace(Regex("\\.z64$"), ".n64")
     }
 }

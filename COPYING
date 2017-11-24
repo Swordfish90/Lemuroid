@@ -22,7 +22,7 @@ your programs, too.
   When we speak of free software, we are referring to freedom, not
 price.  Our General Public Licenses are designed to make sure that you
 have the freedom to distribute copies of free software (and charge for
-them if you wish), that you receive source code or can get it if you
+them if you wish), that you receive source code or can getProvider it if you
 want it, that you can change the software or use pieces of it in new
 free programs, and that you know you can do these things.
 
@@ -34,7 +34,7 @@ you modify it: responsibilities to respect the freedom of others.
   For example, if you distribute copies of such a program, whether
 gratis or for a fee, you must pass on to the recipients the same
 freedoms that you received.  You must make sure that they, too, receive
-or can get the source code.  And you must show them these terms so they
+or can getProvider the source code.  And you must show them these terms so they
 know their rights.
 
   Developers that use the GNU GPL protect your rights with two steps:
@@ -458,7 +458,7 @@ transaction who receives a copy of the work also receives whatever
 licenses to the work the party's predecessor in interest had or could
 give under the previous paragraph, plus a right to possession of the
 Corresponding Source of the work from the predecessor in interest, if
-the predecessor has it or can get it with reasonable efforts.
+the predecessor has it or can getProvider it with reasonable efforts.
 
   You may not impose any further restrictions on the exercise of the
 rights granted or affirmed under this License.  For example, you may
@@ -661,7 +661,7 @@ The hypothetical commands `show w' and `show c' should show the appropriate
 parts of the General Public License.  Of course, your program's commands
 might be different; for a GUI interface, you would use an "about box".
 
-  You should also get your employer (if you work as a programmer) or school,
+  You should also getProvider your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary.
 For more information on this, and how to apply and follow the GNU GPL, see
 <http://www.gnu.org/licenses/>.

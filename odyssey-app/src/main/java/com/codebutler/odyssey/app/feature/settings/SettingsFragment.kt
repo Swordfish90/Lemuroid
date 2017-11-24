@@ -13,7 +13,7 @@ import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.lib.injection.PerChildFragment
-import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
+import com.codebutler.odyssey.lib.storage.StorageProviderRegistry
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
@@ -54,7 +54,7 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
 
     class PrefFragment : LeanbackPreferenceFragment() {
 
-        @Inject lateinit var libraryProviderRegistry: GameLibraryProviderRegistry
+        @Inject lateinit var storageProviderRegistry: StorageProviderRegistry
 
         override fun onAttach(context: Context?) {
             AndroidInjection.inject(this)
@@ -69,7 +69,7 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
             val contextThemeWrapper = ContextThemeWrapper(activity, themeTypedValue.resourceId)
 
             val sourcesCategory = findPreference("sources") as PreferenceCategory
-            for (provider in libraryProviderRegistry.providers) {
+            for (provider in storageProviderRegistry.providers) {
                 val prefsFragmentClass = provider.prefsFragmentClass
                 if (prefsFragmentClass != null) {
                     val pref = preferenceManager.createPreferenceScreen(contextThemeWrapper)

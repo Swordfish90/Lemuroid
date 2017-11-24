@@ -203,7 +203,7 @@ class Square {
         val transformLocation = glGetUniformLocation(program, "u_Transform")
         glUniformMatrix4fv(transformLocation, 1, false, transform, 0)
 
-        // get handle to vertex shader's vPosition member
+        // getProvider handle to vertex shader's vPosition member
         val positionHandle = glGetAttribLocation(program, "vPosition")
 
         // Enable a handle to the triangle vertices

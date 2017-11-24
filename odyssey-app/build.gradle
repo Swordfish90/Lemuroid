@@ -29,8 +29,9 @@ dependencies {
 
     implementation project(":odyssey-common")
     implementation project(":odyssey-lib")
-    implementation project(":odyssey-provider-gdrive")
-    implementation project(":odyssey-provider-webdav")
+    implementation project(":odyssey-metadata-ovgdb")
+    implementation project(":odyssey-storage-gdrive")
+    implementation project(":odyssey-storage-webdav")
 
     implementation libs.archPaging
     implementation libs.autoDispose
