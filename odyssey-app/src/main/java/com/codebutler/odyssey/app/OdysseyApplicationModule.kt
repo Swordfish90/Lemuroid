@@ -25,6 +25,7 @@ import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.feature.settings.SettingsActivity
 import com.codebutler.odyssey.lib.core.CoreManager
+import com.codebutler.odyssey.lib.injection.PerActivity
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
@@ -54,12 +55,15 @@ abstract class OdysseyApplicationModule {
     @Binds
     abstract fun context(app: OdysseyApplication): Context
 
+    @PerActivity
     @ContributesAndroidInjector(modules = arrayOf(MainActivity.Module::class))
     abstract fun mainActivity(): MainActivity
 
+    @PerActivity
     @ContributesAndroidInjector
     abstract fun gameActivity(): GameActivity
 
+    @PerActivity
     @ContributesAndroidInjector(modules = arrayOf(SettingsActivity.Module::class))
     abstract fun settingsActivity(): SettingsActivity
 

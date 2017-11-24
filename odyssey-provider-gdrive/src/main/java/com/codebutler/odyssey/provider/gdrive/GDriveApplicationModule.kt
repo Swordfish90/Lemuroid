@@ -20,6 +20,7 @@
 package com.codebutler.odyssey.provider.gdrive
 
 import android.app.Activity
+import com.codebutler.odyssey.lib.injection.PerApp
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProvider
 import dagger.Binds
 import dagger.Module
@@ -34,19 +35,22 @@ abstract class GDriveApplicationModule {
 
     @Binds
     @IntoSet
+    @PerApp
     abstract fun bindsProviderIntoSet(provider: GDriveGameLibraryProvider): GameLibraryProvider
 
     @Module
     companion object {
+
         @Provides
+        @PerApp
         @JvmStatic
         fun gameLibraryProvider(componentBuilder: GDriveComponent.Builder)
                 = GDriveGameLibraryProvider(componentBuilder)
 
         @Provides
         @IntoMap
-        @JvmStatic
         @ActivityKey(GDriveBrowseActivity::class)
+        @JvmStatic
         fun activityInjectorFactory(provider: GDriveGameLibraryProvider): AndroidInjector.Factory<out Activity>
                 = provider.component.activityComponentBuilder()
     }

@@ -28,11 +28,14 @@ internal abstract class GDriveModule {
 
     @Module
     companion object {
+
         @Provides
+        @GDriveScope
         @JvmStatic
         fun driveFactory(context: Context) = DriveFactory(context)
 
         @Provides
+        @GDriveScope
         @JvmStatic
         fun gdriveBrowser(driveFactory: DriveFactory) = GDriveBrowser(driveFactory)
     }

@@ -19,6 +19,7 @@
 
 package com.codebutler.odyssey.app
 
+import com.codebutler.odyssey.lib.injection.PerApp
 import com.codebutler.odyssey.provider.gdrive.GDriveApplicationModule
 import com.codebutler.odyssey.provider.webdav.WebDavApplicationModule
 import dagger.Component
@@ -31,6 +32,7 @@ import dagger.android.support.AndroidSupportInjectionModule
         GDriveApplicationModule::class,
         WebDavApplicationModule::class
 ))
+@PerApp
 interface OdysseyApplicationComponent : AndroidInjector<OdysseyApplication> {
 
     @Component.Builder

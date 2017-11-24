@@ -27,6 +27,8 @@ import com.codebutler.odyssey.app.feature.home.GamesGridFragment
 import com.codebutler.odyssey.app.feature.home.HomeFragment
 import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
 import com.codebutler.odyssey.lib.android.OdysseyActivity
+import com.codebutler.odyssey.lib.injection.PerActivity
+import com.codebutler.odyssey.lib.injection.PerFragment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
@@ -72,18 +74,23 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
     @dagger.Module
     abstract class Module {
 
+        @PerFragment
         @ContributesAndroidInjector
         abstract fun homeFragment(): HomeFragment
 
+        @PerFragment
         @ContributesAndroidInjector
         abstract fun gamesGridFragment(): GamesGridFragment
 
+        @PerFragment
         @ContributesAndroidInjector
         abstract fun gamesSearchFragment(): GamesSearchFragment
 
         @dagger.Module
         companion object {
+
             @Provides
+            @PerActivity
             @JvmStatic
             fun rxPermissions(activity: MainActivity): RxPermissions = RxPermissions(activity)
         }

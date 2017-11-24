@@ -12,6 +12,7 @@ import android.support.v7.preference.PreferenceScreen
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import com.codebutler.odyssey.R
+import com.codebutler.odyssey.lib.injection.PerChildFragment
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -46,6 +47,7 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
     @dagger.Module
     abstract class Module {
 
+        @PerChildFragment
         @ContributesAndroidInjector
         abstract fun prefFragment(): PrefFragment
     }
