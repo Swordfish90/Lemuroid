@@ -46,8 +46,6 @@ import com.codebutler.odyssey.lib.ui.SimpleItem
 import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
-import dagger.Subcomponent
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -176,12 +174,5 @@ class HomeFragment : BrowseSupportFragment() {
         categoryRowAdapter.add(ListRow(HeaderItem(getString(R.string.library)), systemsAdapter))
         categoryRowAdapter.add(ListRow(HeaderItem(getString(R.string.settings)), settingsAdapter))
         adapter = categoryRowAdapter
-    }
-
-    @Subcomponent
-    interface Component : AndroidInjector<HomeFragment> {
-
-        @Subcomponent.Builder
-        abstract class Builder : AndroidInjector.Builder<HomeFragment>()
     }
 }

@@ -21,24 +21,18 @@ package com.codebutler.odyssey.app
 
 import com.codebutler.odyssey.provider.gdrive.GDriveApplicationModule
 import com.codebutler.odyssey.provider.webdav.WebDavApplicationModule
-import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 
 @Component(modules = arrayOf(
+        AndroidSupportInjectionModule::class,
         OdysseyApplicationModule::class,
         GDriveApplicationModule::class,
         WebDavApplicationModule::class
 ))
-interface OdysseyApplicationComponent {
-
-    fun inject(app: OdysseyApplication)
+interface OdysseyApplicationComponent : AndroidInjector<OdysseyApplication> {
 
     @Component.Builder
-    interface Builder {
-
-        @BindsInstance
-        fun application(application: OdysseyApplication): Builder
-
-        fun build(): OdysseyApplicationComponent
-    }
+    abstract class Builder : AndroidInjector.Builder<OdysseyApplication>()
 }

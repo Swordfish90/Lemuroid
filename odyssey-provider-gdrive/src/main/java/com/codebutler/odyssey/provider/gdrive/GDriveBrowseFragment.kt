@@ -27,19 +27,13 @@ import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.Presenter
-import android.support.v4.app.Fragment
 import android.view.ViewGroup
 import com.codebutler.odyssey.lib.ui.SimpleItem
 import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.google.api.services.drive.model.File
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
-import dagger.Binds
-import dagger.Subcomponent
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.FragmentKey
-import dagger.multibindings.IntoMap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -149,21 +143,6 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
 
     interface Listener {
         fun onFolderSelected(folderId: String)
-    }
-
-    @Subcomponent
-    internal interface Component : AndroidInjector<GDriveBrowseFragment> {
-        @Subcomponent.Builder
-        abstract class Builder : AndroidInjector.Builder<GDriveBrowseFragment>()
-    }
-
-    @dagger.Module(subcomponents = arrayOf(Component::class))
-    internal abstract class Module {
-        @Binds
-        @IntoMap
-        @FragmentKey(GDriveBrowseFragment::class)
-        internal abstract fun bindsFragmentInjectorFactory(
-                builder: GDriveBrowseFragment.Component.Builder): AndroidInjector.Factory<out Fragment>
     }
 }
 

@@ -30,15 +30,12 @@ import com.codebutler.odyssey.lib.android.OdysseyActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
-import dagger.Binds
 import dagger.Provides
-import dagger.Subcomponent
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
+import dagger.android.ContributesAndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.FragmentKey
 import dagger.android.support.HasSupportFragmentInjector
-import dagger.multibindings.IntoMap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -48,7 +45,6 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
     @Inject lateinit var rxPermissions: RxPermissions
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -74,37 +70,17 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 
-    @Subcomponent(modules = arrayOf(Module::class))
-    interface Component : AndroidInjector<MainActivity> {
-
-        @Subcomponent.Builder
-        abstract class Builder : AndroidInjector.Builder<MainActivity>()
-    }
-
-    @dagger.Module(subcomponents = arrayOf(
-            HomeFragment.Component::class,
-            GamesGridFragment.Component::class,
-            GamesSearchFragment.Component::class
-    ))
+    @dagger.Module
     abstract class Module {
 
-        @Binds
-        @IntoMap
-        @FragmentKey(HomeFragment::class)
-        abstract fun homeFragmentInjectorFactory(builder: HomeFragment.Component.Builder):
-                AndroidInjector.Factory<out Fragment>
+        @ContributesAndroidInjector
+        abstract fun homeFragment(): HomeFragment
 
-        @Binds
-        @IntoMap
-        @FragmentKey(GamesGridFragment::class)
-        abstract fun gamesGridFragmentInjectorFactory(builder: GamesGridFragment.Component.Builder):
-                AndroidInjector.Factory<out Fragment>
+        @ContributesAndroidInjector
+        abstract fun gamesGridFragment(): GamesGridFragment
 
-        @Binds
-        @IntoMap
-        @FragmentKey(GamesSearchFragment::class)
-        abstract fun gamesSearchFragmentInjectorFactory(builder: GamesSearchFragment.Component.Builder):
-                AndroidInjector.Factory<out Fragment>
+        @ContributesAndroidInjector
+        abstract fun gamesSearchFragment(): GamesSearchFragment
 
         @dagger.Module
         companion object {

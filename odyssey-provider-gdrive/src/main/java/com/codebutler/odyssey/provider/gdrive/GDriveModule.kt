@@ -25,6 +25,7 @@ import dagger.Provides
 
 @Module(subcomponents = arrayOf(GDriveBrowseActivity.Component::class))
 internal abstract class GDriveModule {
+
     @Module
     companion object {
         @Provides

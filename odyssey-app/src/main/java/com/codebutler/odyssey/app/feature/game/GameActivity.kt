@@ -26,7 +26,6 @@ import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -39,6 +38,7 @@ import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.OdysseyConfig
 import com.codebutler.odyssey.common.kotlin.bindView
 import com.codebutler.odyssey.common.kotlin.isAllZeros
+import com.codebutler.odyssey.lib.android.OdysseyActivity
 import com.codebutler.odyssey.lib.core.CoreManager
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.GameSystem
@@ -53,9 +53,6 @@ import com.codebutler.odyssey.lib.retro.RetroDroid
 import com.gojuno.koptional.Optional
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
-import dagger.Subcomponent
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -65,7 +62,7 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : OdysseyActivity() {
     companion object {
         private const val EXTRA_GAME_ID = "game_id"
 
@@ -89,7 +86,6 @@ class GameActivity : AppCompatActivity() {
     private var audioTrack: AudioTrack? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
@@ -243,11 +239,4 @@ class GameActivity : AppCompatActivity() {
             val coreFile: File,
             val gameFile: File,
             val saveData: ByteArray?)
-
-    @Subcomponent
-    interface Component : AndroidInjector<GameActivity> {
-
-        @Subcomponent.Builder
-        abstract class Builder : AndroidInjector.Builder<GameActivity>()
-    }
 }

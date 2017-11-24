@@ -13,12 +13,21 @@ import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.lib.library.provider.GameLibraryProviderRegistry
-import dagger.Subcomponent
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
+import dagger.android.ContributesAndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasFragmentInjector
 import javax.inject.Inject
 
-class SettingsFragment : LeanbackSettingsFragment() {
+class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
+
+    @Inject lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun onAttach(context: Context?) {
+        AndroidInjection.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onPreferenceStartInitialScreen() {
         startPreferenceFragment(PrefFragment())
@@ -30,6 +39,15 @@ class SettingsFragment : LeanbackSettingsFragment() {
         val fragment = Class.forName(pref.fragment).newInstance() as Fragment
         startPreferenceFragment(fragment)
         return true
+    }
+
+    override fun fragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
+
+    @dagger.Module
+    abstract class Module {
+
+        @ContributesAndroidInjector
+        abstract fun prefFragment(): PrefFragment
     }
 
     class PrefFragment : LeanbackPreferenceFragment() {
@@ -58,13 +76,6 @@ class SettingsFragment : LeanbackSettingsFragment() {
                     sourcesCategory.addPreference(pref)
                 }
             }
-        }
-
-        @Subcomponent
-        interface Component : AndroidInjector<PrefFragment> {
-
-            @Subcomponent.Builder
-            abstract class Builder : AndroidInjector.Builder<PrefFragment>()
         }
     }
 }

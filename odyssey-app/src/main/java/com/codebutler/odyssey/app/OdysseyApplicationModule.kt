@@ -19,7 +19,6 @@
 
 package com.codebutler.odyssey.app
 
-import android.app.Activity
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.codebutler.odyssey.app.feature.game.GameActivity
@@ -35,9 +34,7 @@ import com.codebutler.odyssey.lib.ovgdb.OvgdbManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import dagger.android.ActivityKey
-import dagger.android.AndroidInjector
-import dagger.multibindings.IntoMap
+import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoSet
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -51,32 +48,20 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.zip.ZipInputStream
 
-@Module(subcomponents = arrayOf(
-        MainActivity.Component::class,
-        GameActivity.Component::class,
-        SettingsActivity.Component::class))
+@Module
 abstract class OdysseyApplicationModule {
 
     @Binds
     abstract fun context(app: OdysseyApplication): Context
 
-    @Binds
-    @IntoMap
-    @ActivityKey(MainActivity::class)
-    abstract fun mainActivityInjectorFactory(builder: MainActivity.Component.Builder):
-            AndroidInjector.Factory<out Activity>
+    @ContributesAndroidInjector(modules = arrayOf(MainActivity.Module::class))
+    abstract fun mainActivity(): MainActivity
 
-    @Binds
-    @IntoMap
-    @ActivityKey(GameActivity::class)
-    abstract fun gameActivityInjectorFactory(builder: GameActivity.Component.Builder):
-            AndroidInjector.Factory<out Activity>
+    @ContributesAndroidInjector
+    abstract fun gameActivity(): GameActivity
 
-    @Binds
-    @IntoMap
-    @ActivityKey(SettingsActivity::class)
-    abstract fun settingsActivityInjectorFactory(builder: SettingsActivity.Component.Builder):
-            AndroidInjector.Factory<out Activity>
+    @ContributesAndroidInjector(modules = arrayOf(SettingsActivity.Module::class))
+    abstract fun settingsActivity(): SettingsActivity
 
     @Module
     companion object {

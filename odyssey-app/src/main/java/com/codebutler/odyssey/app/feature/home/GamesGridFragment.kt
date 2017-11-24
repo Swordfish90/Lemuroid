@@ -14,8 +14,6 @@ import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
-import dagger.Subcomponent
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -90,12 +88,5 @@ class GamesGridFragment : VerticalGridSupportFragment() {
     private fun getQuery(mode: Mode, param: String?): LivePagedListProvider<Int, Game> = when (mode) {
         Mode.ALL -> odysseyDb.gameDao().selectAll()
         Mode.SYSTEM -> odysseyDb.gameDao().selectBySystem(param!!)
-    }
-
-    @Subcomponent
-    interface Component : AndroidInjector<GamesGridFragment> {
-
-        @Subcomponent.Builder
-        abstract class Builder : AndroidInjector.Builder<GamesGridFragment>()
     }
 }

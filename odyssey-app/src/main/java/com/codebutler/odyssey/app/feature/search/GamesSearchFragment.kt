@@ -38,8 +38,6 @@ import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
 import com.jakewharton.rxrelay2.PublishRelay
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
-import dagger.Subcomponent
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
@@ -103,12 +101,5 @@ class GamesSearchFragment : SearchSupportFragment(), SearchSupportFragment.Searc
                     adapter.pagedList = pagedList
                     rowsAdapter.add(ListRow(header, adapter))
                 })
-    }
-
-    @Subcomponent
-    interface Component : AndroidInjector<GamesSearchFragment> {
-
-        @Subcomponent.Builder
-        abstract class Builder : AndroidInjector.Builder<GamesSearchFragment>()
     }
 }

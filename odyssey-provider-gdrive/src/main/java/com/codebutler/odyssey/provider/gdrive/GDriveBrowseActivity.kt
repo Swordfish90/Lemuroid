@@ -21,26 +21,18 @@ package com.codebutler.odyssey.provider.gdrive
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import com.codebutler.odyssey.lib.android.OdysseyActivity
 import dagger.Subcomponent
-import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import javax.inject.Inject
+import dagger.android.ContributesAndroidInjector
 
-class GDriveBrowseActivity : OdysseyActivity(), GDriveBrowseFragment.Listener, HasSupportFragmentInjector {
+class GDriveBrowseActivity : OdysseyActivity(), GDriveBrowseFragment.Listener {
 
     companion object {
         const val BUNDLE_FOLDER_ID = "folder_id"
     }
 
-    @Inject lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.gdrive_activity_browse)
@@ -66,12 +58,17 @@ class GDriveBrowseActivity : OdysseyActivity(), GDriveBrowseFragment.Listener, H
         finish()
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
-
-    @Subcomponent(modules = arrayOf(GDriveBrowseFragment.Module::class))
+    @Subcomponent(modules = arrayOf(Module::class))
     interface Component : AndroidInjector<GDriveBrowseActivity> {
 
         @Subcomponent.Builder
         abstract class Builder : AndroidInjector.Builder<GDriveBrowseActivity>()
+    }
+
+    @dagger.Module
+    abstract class Module {
+
+        @ContributesAndroidInjector
+        abstract fun browseFragment(): GDriveBrowseFragment
     }
 }
