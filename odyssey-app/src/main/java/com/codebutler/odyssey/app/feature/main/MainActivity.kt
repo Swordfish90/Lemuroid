@@ -32,6 +32,7 @@ import com.codebutler.odyssey.lib.injection.PerFragment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
+import dagger.Lazy
 import dagger.Provides
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
@@ -43,7 +44,7 @@ import javax.inject.Inject
 class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
 
     @Inject lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-    @Inject lateinit var rxPermissions: RxPermissions
+    @Inject lateinit var rxPermissions: Lazy<RxPermissions>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +56,7 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.RECORD_AUDIO)
 
-        rxPermissions.request(*permissions)
+        rxPermissions.get().request(*permissions)
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
                 .subscribe { granted ->
