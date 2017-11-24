@@ -31,7 +31,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
 import dagger.Provides
-import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
 import dagger.android.DispatchingAndroidInjector
