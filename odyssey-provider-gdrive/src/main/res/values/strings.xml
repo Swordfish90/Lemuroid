@@ -21,7 +21,7 @@
 <resources>
     <string name="gdrive_google_drive">Google Drive</string>
     <string name="gdrive_configure">Configure</string>
-    <string name="gdrive_sign_in_failed">Google Sign In Failed: %s</string>
+    <string name="gdrive_sign_in_failed">Google Sign In Failed: %s (%s)</string>
     <string name="gdrive_sign_in_success">Logged in to Google as %s</string>
     <string name="gdrive_pref_key_configure" translatable="false">configure</string>
     <string name="gdrive_use_this_folder">Use This Folder</string>

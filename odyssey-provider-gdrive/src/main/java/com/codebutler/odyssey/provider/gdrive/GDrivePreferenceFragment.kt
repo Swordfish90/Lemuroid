@@ -65,7 +65,7 @@ class GDrivePreferenceFragment : LeanbackPreferenceFragment() {
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     authenticateGoogleComplete()
                 } catch (e: ApiException) {
-                    val message = getString(R.string.gdrive_sign_in_failed, e.statusCode.toString())
+                    val message = getString(R.string.gdrive_sign_in_failed, e.message, e.statusCode.toString())
                     Timber.e(e, message)
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
