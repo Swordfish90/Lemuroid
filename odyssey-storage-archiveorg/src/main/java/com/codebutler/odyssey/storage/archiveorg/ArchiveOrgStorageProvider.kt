@@ -63,7 +63,10 @@ class ArchiveOrgStorageProvider(private val context: Context) : StorageProvider 
         return api.advancedSearch()
                 .map { body -> body.response.docs
                         .map { doc ->
-                            val uri = Uri.Builder().scheme(uriSchemes.first()).authority(doc.identifier).build()
+                            val uri = Uri.Builder()
+                                    .scheme(uriSchemes.first())
+                                    .authority(doc.identifier)
+                                    .build()
                             StorageFile(doc.identifier, 0, null, uri)
                         }
                 }

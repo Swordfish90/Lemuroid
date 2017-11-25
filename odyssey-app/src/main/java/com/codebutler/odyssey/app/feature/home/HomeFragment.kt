@@ -156,17 +156,14 @@ class HomeFragment : BrowseSupportFragment() {
                 .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
                 .subscribe { systems ->
                     systemsAdapter.clear()
-                    for (system in systems) {
-                        systemsAdapter.add(GameSystemItem(system))
-                    }
+                    systemsAdapter.addAll(0, systems.map { system -> GameSystemItem(system) })
                     systemsAdapter.add(AllGamesItem)
                 }
 
-        val settingsAdapter = ArrayObjectAdapter(SimpleItemPresenter()).apply {
-            add(SettingsItem)
-            add(RescanItem)
-            add(AboutItem)
-        }
+        val settingsAdapter = ArrayObjectAdapter(SimpleItemPresenter())
+        settingsAdapter.add(SettingsItem)
+        settingsAdapter.add(RescanItem)
+        settingsAdapter.add(AboutItem)
 
         val categoryRowAdapter = ArrayObjectAdapter(ListRowPresenter())
         categoryRowAdapter.add(ListRow(HeaderItem(getString(R.string.favorites)), favoritesAdapter))
