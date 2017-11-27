@@ -83,7 +83,10 @@ class WebDavStorageProvider(
     override val prefsFragmentClass: Class<out LeanbackPreferenceFragment>? = WebDavPreferenceFragment::class.java
 
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
-        val url = readConfig().url ?: return@fromCallable listOf<StorageFile>()
+        val url = readConfig().url
+        if (url.isNullOrBlank()) {
+            return@fromCallable listOf<StorageFile>()
+        }
         val baseUri = URI.create(url)
         webDavScanner.scan(baseUri)
                 .filter { davResponse -> davResponse.propStat?.prop?.displayName?.startsWith(".")?.not() ?: false }
