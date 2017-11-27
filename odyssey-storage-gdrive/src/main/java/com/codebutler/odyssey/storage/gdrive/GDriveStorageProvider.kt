@@ -21,10 +21,10 @@ package com.codebutler.odyssey.storage.gdrive
 
 import android.content.Context
 import android.net.Uri
-import com.codebutler.odyssey.lib.storage.StorageFile
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.metadata.GameMetadataProvider
 import com.codebutler.odyssey.lib.ovgdb.db.OvgdbMetadataProvider
+import com.codebutler.odyssey.lib.storage.StorageFile
 import com.codebutler.odyssey.lib.storage.StorageProvider
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
@@ -53,6 +53,8 @@ class GDriveStorageProvider(componentBuilder: GDriveComponent.Builder) : Storage
     init {
         component.inject(this)
     }
+
+    override val id = "gdrive"
 
     override val name: String = context.getString(R.string.gdrive_google_drive)
 

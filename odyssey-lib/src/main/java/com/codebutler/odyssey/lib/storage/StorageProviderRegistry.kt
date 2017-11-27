@@ -19,15 +19,26 @@
 
 package com.codebutler.odyssey.lib.storage
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.codebutler.odyssey.lib.library.db.entity.Game
 
-class StorageProviderRegistry(val providers: Set<StorageProvider>) {
+class StorageProviderRegistry(context: Context, val providers: Set<StorageProvider>) {
+
+    companion object {
+        const val PREF_NAME = "storage_providers"
+    }
 
     private val providersByScheme = mapOf(*providers.map { provider ->
         provider.uriSchemes.map { scheme ->
             scheme to provider
         }
     }.flatten().toTypedArray())
+
+    private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+    val enabledProviders: Iterable<StorageProvider>
+        get() = providers.filter { prefs.getBoolean(it.id, true) }
 
     fun getProvider(game: Game) = providersByScheme[game.fileUri.scheme]!!
 }

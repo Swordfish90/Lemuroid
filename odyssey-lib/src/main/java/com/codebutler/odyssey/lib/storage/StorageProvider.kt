@@ -29,6 +29,8 @@ import java.io.File
 
 interface StorageProvider {
 
+    val id: String
+
     val name: String
 
     val uriSchemes: List<String>

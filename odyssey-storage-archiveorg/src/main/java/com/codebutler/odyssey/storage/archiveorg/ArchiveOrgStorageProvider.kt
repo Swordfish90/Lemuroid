@@ -51,6 +51,8 @@ class ArchiveOrgStorageProvider(private val context: Context) : StorageProvider 
             .build()
             .create(ArchiveOrgApi::class.java)
 
+    override val id: String = "archiveorg"
+
     override val name: String = "Archive.org Internet Arcade"
 
     override val uriSchemes: List<String> = listOf("archiveorg")

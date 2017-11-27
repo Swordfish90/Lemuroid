@@ -76,6 +76,8 @@ class WebDavStorageProvider(
         webDavScanner = WebDavScanner(webDavClient)
     }
 
+    override val id: String = "webdav"
+
     override val name: String = context.getString(R.string.webdav_webdav)
 
     override val uriSchemes = listOf("webdav", "webdavs")

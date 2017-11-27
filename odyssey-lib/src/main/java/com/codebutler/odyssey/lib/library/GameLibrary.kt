@@ -40,7 +40,7 @@ class GameLibrary(
 
     fun indexGames(): Completable = Completable.create { emitter ->
         val startedAtMs = System.currentTimeMillis()
-        Observable.fromIterable(providerProviderRegistry.providers)
+        Observable.fromIterable(providerProviderRegistry.enabledProviders)
                 .flatMap { provider ->
                     provider.listFiles()
                             .flattenAsObservable { it }

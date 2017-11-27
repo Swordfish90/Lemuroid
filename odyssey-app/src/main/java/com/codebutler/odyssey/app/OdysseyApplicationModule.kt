@@ -103,8 +103,8 @@ abstract class OdysseyApplicationModule {
 
         @Provides
         @JvmStatic
-        fun gameStorageProviderRegistry(providers: Set<@JvmSuppressWildcards StorageProvider>)
-                = StorageProviderRegistry(providers)
+        fun gameStorageProviderRegistry(context: Context, providers: Set<@JvmSuppressWildcards StorageProvider>)
+                = StorageProviderRegistry(context, providers)
 
         @Provides
         @JvmStatic

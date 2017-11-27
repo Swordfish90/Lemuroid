@@ -40,6 +40,8 @@ class LocalStorageProvider(
         context: Context,
         override val metadataProvider: GameMetadataProvider) : StorageProvider {
 
+    override val id: String = "local"
+
     override val name: String = context.getString(R.string.local_storage)
 
     override val uriSchemes = listOf("file")

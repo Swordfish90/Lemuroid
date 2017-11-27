@@ -69,14 +69,19 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
             val contextThemeWrapper = ContextThemeWrapper(activity, themeTypedValue.resourceId)
 
             val sourcesCategory = findPreference("sources") as PreferenceCategory
-            for (provider in storageProviderRegistry.providers) {
+            sourcesCategory.preferenceManager.sharedPreferencesName = StorageProviderRegistry.PREF_NAME
+
+            val providers = storageProviderRegistry.providers.sortedBy { it.name }
+            for (provider in providers) {
+                val pref = MasterSwitchPreference(contextThemeWrapper)
+                pref.setDefaultValue(true)
+                pref.key = provider.id
+                pref.title = provider.name
                 val prefsFragmentClass = provider.prefsFragmentClass
                 if (prefsFragmentClass != null) {
-                    val pref = preferenceManager.createPreferenceScreen(contextThemeWrapper)
-                    pref.title = provider.name
                     pref.fragment = prefsFragmentClass.name
-                    sourcesCategory.addPreference(pref)
                 }
+                sourcesCategory.addPreference(pref)
             }
         }
     }
