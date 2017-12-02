@@ -46,7 +46,7 @@ class HomeAdapterFactory(
     object RescanItem : SimpleItem(R.string.rescan, R.drawable.ic_refresh_white_64dp)
     object AllGamesItem : SimpleItem(R.string.all_games, R.drawable.ic_all_games_white_64dp)
     object SettingsItem : SimpleItem(R.string.settings, R.drawable.ic_settings_white_64dp)
-    object NoGamesItem : SimpleItem(R.string.no_games)
+    object NoGamesItem : SimpleItem(R.string.no_games, R.drawable.ic_no_games_white_64dp)
 
     fun buildFavoritesAdapter(): PagedListObjectAdapter<Game> {
         val favoritesAdapter = PagedListObjectAdapter(GamePresenter(), Game.DIFF_CALLBACK)
