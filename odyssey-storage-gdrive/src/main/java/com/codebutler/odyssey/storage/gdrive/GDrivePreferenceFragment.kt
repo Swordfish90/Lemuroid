@@ -28,6 +28,8 @@ import android.support.v7.preference.Preference
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.ApiException
 import timber.log.Timber
 
@@ -48,7 +50,13 @@ class GDrivePreferenceFragment : LeanbackPreferenceFragment() {
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key == getString(R.string.gdrive_pref_key_configure)) {
-            authenticateGoogle()
+            val apiAvailability = GoogleApiAvailability.getInstance()
+            val errorCode = apiAvailability.isGooglePlayServicesAvailable(activity)
+            if (errorCode == ConnectionResult.SUCCESS) {
+                authenticateGoogle()
+            } else {
+                apiAvailability.showErrorDialogFragment(activity, errorCode, 0)
+            }
             return true
         }
         return super.onPreferenceTreeClick(preference)
