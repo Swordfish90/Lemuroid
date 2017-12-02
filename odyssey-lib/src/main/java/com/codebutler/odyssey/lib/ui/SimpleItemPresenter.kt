@@ -19,48 +19,61 @@
 
 package com.codebutler.odyssey.lib.ui
 
-import android.graphics.Color
+import android.content.res.Resources
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
+import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.Presenter
-import android.support.v4.content.ContextCompat
-import android.view.Gravity
+import android.view.ContextThemeWrapper
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import com.codebutler.odyssey.lib.R
 
 sealed class TextOrResource {
     class Text(val value: String) : TextOrResource()
     class Resource(@StringRes val value: Int) : TextOrResource()
+    fun getText(resources: Resources): String = when (this) {
+        is TextOrResource.Text -> value
+        is TextOrResource.Resource -> resources.getString(value)
+    }
 }
 
-open class SimpleItem(val title: TextOrResource) {
-    constructor(text: String) : this(TextOrResource.Text(text))
-    constructor(@StringRes resId: Int) : this (TextOrResource.Resource(resId))
+open class SimpleItem private constructor (val title: TextOrResource, @DrawableRes val image: Int?) {
+    constructor(text: String, @DrawableRes image: Int? = 0) : this(TextOrResource.Text(text), image)
+    constructor(@StringRes resId: Int, @DrawableRes image: Int = 0) : this (TextOrResource.Resource(resId), image)
 }
 
 class SimpleItemPresenter : Presenter() {
+
+    private var imageWidth: Int = -1
+    private var imageHeight: Int = -1
+
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-        val view = TextView(parent.context)
+        val cardView = ImageCardView(ContextThemeWrapper(parent.context, R.style.SimpleImageCardTheme))
+        val res = cardView.resources
+        imageWidth = res.getDimensionPixelSize(R.dimen.card_width)
+        imageHeight = res.getDimensionPixelSize(R.dimen.card_height)
 
-        val res = parent.resources
-        val width = res.getDimensionPixelSize(R.dimen.card_width)
-        val height = res.getDimensionPixelSize(R.dimen.card_height)
+        cardView.setMainImageScaleType(ImageView.ScaleType.CENTER)
+        cardView.isFocusable = true
+        cardView.isFocusableInTouchMode = true
+        cardView.setMainImageDimensions(imageWidth, imageHeight)
 
-        view.layoutParams = ViewGroup.LayoutParams(width, height)
-        view.isFocusable = true
-        view.isFocusableInTouchMode = true
-        view.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.default_background))
-        view.setTextColor(Color.WHITE)
-        view.gravity = Gravity.CENTER
-        return Presenter.ViewHolder(view)
+        return Presenter.ViewHolder(cardView)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
-        val textView = viewHolder.view as TextView
-        val title = (item as SimpleItem).title
-        textView.text = when (title) {
-            is TextOrResource.Text -> title.value
-            is TextOrResource.Resource -> textView.resources.getString(title.value)
+        when (item) {
+            is SimpleItem -> {
+                val resources = viewHolder.view.resources
+                val cardView = viewHolder.view as ImageCardView
+                cardView.titleText = item.title.getText(resources)
+                if (item.image != null && item.image != 0) {
+                    cardView.mainImage = resources.getDrawable(item.image)
+                } else {
+                    cardView.mainImage = null
+                }
+            }
         }
     }
 

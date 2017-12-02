@@ -19,6 +19,7 @@
 
 package com.codebutler.odyssey.lib.library
 
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import com.codebutler.odyssey.lib.R
 import java.util.Locale
@@ -32,6 +33,11 @@ data class GameSystem(
         @StringRes
         val shortTitleResId: Int,
 
+        @DrawableRes
+        val imageResId: Int,
+
+        val sortKey: String,
+
         val coreFileName: String,
 
         val supportedExtensions: List<String>) {
@@ -42,6 +48,8 @@ data class GameSystem(
                         "nes",
                         R.string.game_system_title_nes,
                         R.string.game_system_abbr_nes,
+                        R.drawable.game_system_nes,
+                        "nintendo0",
                         "quicknes_libretro_android.so.zip",
                         listOf("nes")
                 ),
@@ -49,6 +57,8 @@ data class GameSystem(
                         "snes",
                         R.string.game_system_title_snes,
                         R.string.game_system_abbr_snes,
+                        R.drawable.game_system_snes,
+                        "nintendo1",
                         "snes9x_libretro_android.so.zip",
                         listOf("smc", "sfc", "swc", "fig")
                 ),
@@ -56,6 +66,8 @@ data class GameSystem(
                         "md",
                         R.string.game_system_title_genesis,
                         R.string.game_system_abbr_genesis,
+                        R.drawable.game_system_genesis,
+                        "sega0",
                         "picodrive_libretro_android.so.zip",
                         listOf("gen", "smd", "md")
                 ),
@@ -63,28 +75,36 @@ data class GameSystem(
                         "gb",
                         R.string.game_system_title_gb,
                         R.string.game_system_abbr_gb,
+                        R.drawable.game_system_gb,
+                        "nintendo2",
                         "mgba_libretro_android.so.zip",
                         listOf("gb")
 
                 ),
                 GameSystem(
-                        "gba",
-                        R.string.game_system_title_gba,
-                        R.string.game_system_abbr_gba,
-                        "mgba_libretro_android.so.zip",
-                        listOf("gba")
-                ),
-                GameSystem(
                         "gbc",
                         R.string.game_system_title_gbc,
                         R.string.game_system_abbr_gbc,
+                        R.drawable.game_system_gbc,
+                        "nintendo3",
                         "mgba_libretro_android.so.zip",
                         listOf("gbc")
+                ),
+                GameSystem(
+                        "gba",
+                        R.string.game_system_title_gba,
+                        R.string.game_system_abbr_gba,
+                        R.drawable.game_system_gba,
+                        "nintendo4",
+                        "mgba_libretro_android.so.zip",
+                        listOf("gba")
                 ),
                 GameSystem(
                         "arcade",
                         R.string.game_system_title_arcade,
                         R.string.game_system_abbr_arcade,
+                        R.drawable.game_system_arcade,
+                        "arcade",
                         "fbalpha_libretro_android.so.zip",
                         listOf("zip")
                 )

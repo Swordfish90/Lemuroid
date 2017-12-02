@@ -27,7 +27,7 @@
     <string name="game_system_abbr_gbc">GBC</string>
     <string name="game_system_abbr_arcade">Arcade</string>
 
-    <string name="game_system_title_nes">Nintendo Entertainment System</string>
+    <string name="game_system_title_nes">Nintendo</string>
     <string name="game_system_title_snes">Super Nintendo</string>
     <string name="game_system_title_genesis">Sega Genesis</string>
     <string name="game_system_title_gb">Game Boy</string>

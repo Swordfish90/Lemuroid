@@ -40,11 +40,12 @@ class HomeAdapterFactory(
         private var lifecycleOwner: LifecycleOwner,
         private var odysseyDb: OdysseyDatabase) {
 
-    data class GameSystemItem(val system: GameSystem) : SimpleItem(system.titleResId)
-    object AboutItem : SimpleItem(R.string.about)
-    object RescanItem : SimpleItem(R.string.rescan)
-    object AllGamesItem : SimpleItem(R.string.all_games)
-    object SettingsItem : SimpleItem(R.string.settings)
+    data class GameSystemItem(val system: GameSystem) : SimpleItem(system.titleResId, system.imageResId)
+    object AboutItem : SimpleItem(R.string.about, R.drawable.ic_info_outline_white_64dp)
+    object HelpItem : SimpleItem(R.string.help, R.drawable.ic_help_outline_white_64dp)
+    object RescanItem : SimpleItem(R.string.rescan, R.drawable.ic_refresh_white_64dp)
+    object AllGamesItem : SimpleItem(R.string.all_games, R.drawable.ic_all_games_white_64dp)
+    object SettingsItem : SimpleItem(R.string.settings, R.drawable.ic_settings_white_64dp)
     object NoGamesItem : SimpleItem(R.string.no_games)
 
     fun buildFavoritesAdapter(): PagedListObjectAdapter<Game> {
@@ -82,7 +83,7 @@ class HomeAdapterFactory(
                     .toObservable()
                     .flatMapIterable { it }
                     .map { GameSystem.findById(it)!! }
-                    .toList()
+                    .toSortedList { o1, o2 -> o1.sortKey.compareTo(o2.sortKey) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .autoDisposeWith(AndroidLifecycleScopeProvider.from(lifecycleOwner))
@@ -99,6 +100,7 @@ class HomeAdapterFactory(
         val settingsAdapter = ArrayObjectAdapter(SimpleItemPresenter())
         settingsAdapter.add(SettingsItem)
         settingsAdapter.add(RescanItem)
+        settingsAdapter.add(HelpItem)
         settingsAdapter.add(AboutItem)
         return settingsAdapter
     }
