@@ -30,9 +30,20 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import org.intellij.lang.annotations.Language
 
 @Dao
 interface GameDao {
+
+    @Language("RoomSql")
+    @Query("""
+        SELECT
+            count(*) totalCount,
+            sum(CASE WHEN isFavorite = 1 THEN 1 ELSE 0 END) favoritesCount,
+            sum(CASE WHEN lastPlayedAt IS NOT NULL THEN 1 ELSE 0 END) recentsCount
+        FROM games
+        """)
+    fun selectCounts(): Single<GameLibraryCounts>
 
     @Query("SELECT * FROM games WHERE title LIKE '%' || REPLACE(:query, ' ', '%') || '%' ORDER BY title ASC, id DESC")
     fun search(query: String): LivePagedListProvider<Int, Game>
@@ -70,6 +81,8 @@ interface GameDao {
     @Update
     fun update(game: Game)
 }
+
+data class GameLibraryCounts(val totalCount: Long, val favoritesCount: Long, val recentsCount: Long)
 
 fun GameDao.updateAsync(game: Game): Completable = Completable.fromCallable {
     update(game)

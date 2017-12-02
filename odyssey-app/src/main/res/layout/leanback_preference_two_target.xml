@@ -102,5 +102,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true"
+        android:descendantFocusability="blocksDescendants"
+        android:background="?android:selectableItemBackground"/>
 </LinearLayout>

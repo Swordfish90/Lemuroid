@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <resources>
-    <string name="app_name">Odyssey</string>
-    <string name="loading">Loading…</string>
-    <string name="settings">Settings</string>
-    <string name="rescan">Rescan</string>
     <string name="about">About</string>
-    <string name="library">Library</string>
-    <string name="recently_played">Recently Played</string>
-    <string name="favorites">Favorites</string>
     <string name="all_games">All Games</string>
-    <string name="sources">Sources</string>
+    <string name="app_name">Odyssey</string>
+    <string name="favorites">Favorites</string>
     <string name="fps_format">Render: %1$d\nGame: %2$d</string>
+    <string name="library">Library</string>
+    <string name="loading">Loading…</string>
+    <string name="no_games">No Games</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="rescan">Rescan</string>
     <string name="search_results">Search Results \'%s\'</string>
+    <string name="settings">Settings</string>
+    <string name="sources">Sources</string>
 </resources>

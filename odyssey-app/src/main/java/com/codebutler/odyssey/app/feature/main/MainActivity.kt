@@ -76,7 +76,7 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
     abstract class Module {
 
         @PerFragment
-        @ContributesAndroidInjector
+        @ContributesAndroidInjector(modules = arrayOf(HomeFragment.Module::class))
         abstract fun homeFragment(): HomeFragment
 
         @PerFragment

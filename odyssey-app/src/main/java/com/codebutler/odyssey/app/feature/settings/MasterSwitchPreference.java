@@ -22,7 +22,6 @@ package com.codebutler.odyssey.app.feature.settings;
 import android.content.Context;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.Switch;
 
 import com.codebutler.odyssey.R;
@@ -62,31 +61,27 @@ public class MasterSwitchPreference extends TwoTargetPreference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-        final View widgetView = holder.findViewById(android.R.id.widget_frame);
-        if (widgetView != null) {
-            widgetView.setOnClickListener(v -> {
-                if (mSwitch != null && !mSwitch.isEnabled()) {
-                    return;
-                }
-                setChecked(!mChecked);
-                if (!callChangeListener(mChecked)) {
-                    setChecked(!mChecked);
-                } else {
-                    persistBoolean(mChecked);
-                }
-            });
-        }
 
         holder.itemView.setFocusable(false);
         holder.itemView.setClickable(false);
         holder.findViewById(R.id.left_frame).setOnClickListener(v -> holder.itemView.performClick());
+        holder.findViewById(android.R.id.widget_frame).setOnClickListener((view) -> {
+            if (mSwitch != null) {
+                mSwitch.toggle();
+            }
+        });
 
         mSwitch = (Switch) holder.findViewById(R.id.switchWidget);
         if (mSwitch != null) {
             mSwitch.setContentDescription(getTitle());
             mSwitch.setChecked(mChecked);
             mSwitch.setEnabled(mEnableSwitch);
-
+            mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (callChangeListener(isChecked)) {
+                    persistBoolean(isChecked);
+                    mChecked = isChecked;
+                }
+            });
         }
     }
 
