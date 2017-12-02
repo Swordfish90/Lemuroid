@@ -71,6 +71,7 @@ class HomeFragment : BrowseSupportFragment(), OnItemViewClickedListener {
         isHeadersTransitionOnBackEnabled = true
         title = getString(R.string.app_name)
         onItemViewClickedListener = this
+        loadContents()
     }
 
     override fun onItemClicked(
@@ -115,8 +116,6 @@ class HomeFragment : BrowseSupportFragment(), OnItemViewClickedListener {
             }
             is AboutItem -> {}
         }
-
-        loadContents()
     }
 
     private fun loadContents() {

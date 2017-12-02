@@ -21,10 +21,12 @@ package com.codebutler.odyssey.app.feature.main
 
 import android.Manifest
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.home.GamesGridFragment
 import com.codebutler.odyssey.app.feature.home.HomeFragment
+import com.codebutler.odyssey.app.feature.onboarding.OnboardingFragment
 import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
 import com.codebutler.odyssey.lib.android.OdysseyActivity
 import com.codebutler.odyssey.lib.injection.PerActivity
@@ -41,7 +43,11 @@ import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
+class MainActivity : OdysseyActivity(), HasSupportFragmentInjector, OnboardingFragment.Listener {
+
+    companion object {
+        private const val PREF_ONBOARDING_COMPLETE = "completed_onboarding"
+    }
 
     @Inject lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
     @Inject lateinit var rxPermissions: Lazy<RxPermissions>
@@ -61,16 +67,35 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector {
                 .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
                 .subscribe { granted ->
                     if (granted) {
-                        supportFragmentManager.beginTransaction()
-                                .replace(R.id.content, HomeFragment())
-                                .commit()
+                        loadContent()
                     } else {
                         finish()
                     }
                 }
     }
 
+    override fun onOnboardingComplete() {
+        val editor = PreferenceManager.getDefaultSharedPreferences(this).edit()
+        editor.putBoolean(PREF_ONBOARDING_COMPLETE, true)
+        editor.apply()
+
+        loadContent()
+    }
+
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
+
+    private fun loadContent() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        if (prefs.getBoolean(PREF_ONBOARDING_COMPLETE, false)) {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.content, HomeFragment())
+                    .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.content, OnboardingFragment())
+                    .commit()
+        }
+    }
 
     @dagger.Module
     abstract class Module {

@@ -9,6 +9,8 @@
     <string name="library">Library</string>
     <string name="loading">Loading…</string>
     <string name="no_games">No Games</string>
+    <string name="onboarding_description">Retro gaming for Android TV</string>
+    <string name="onboarding_title">Welcome to Odyssey</string>
     <string name="recently_played">Recently Played</string>
     <string name="rescan">Rescan</string>
     <string name="search_results">Search Results \'%s\'</string>
