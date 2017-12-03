@@ -159,6 +159,8 @@ class Retro(coreLibraryName: String) {
             val id: DeviceId,
             val description: String)
 
+    data class Variable(val description: String, val choices: List<String>, var value: String? = null)
+
     enum class LogLevel {
         DEBUG,
         INFO,
@@ -253,7 +255,7 @@ class Retro(coreLibraryName: String) {
 
     interface EnvironmentCallback {
 
-        fun onSetVariables(variables: Map<String, String>)
+        fun onSetVariables(variables: Map<String, Variable>)
 
         fun onSetSupportAchievements(supportsAchievements: Boolean)
 
@@ -417,11 +419,15 @@ class Retro(coreLibraryName: String) {
                         return variable.value != null
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_VARIABLES -> {
-                        val variables = mutableMapOf<String, String>()
+                        val variables = mutableMapOf<String, Variable>()
                         var offset = 0L
                         while (true) {
                             val v = retro_variable(data.share(offset))
-                            variables[v.key ?: break] = v.value ?: break
+                            val name = v.key ?: break
+                            val value = v.value ?: break
+                            val (description, choicesString) = value.split("; ", limit = 2)
+                            val choices = choicesString.split("|")
+                            variables[name] = Variable(description, choices)
                             offset += v.size()
                         }
                         callback.onSetVariables(variables)

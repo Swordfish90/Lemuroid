@@ -56,7 +56,7 @@ class RetroDroid(
     private val handler = Handler()
     private val pressedKeys = mutableSetOf<Int>()
     private val retro: Retro
-    private val variables: MutableMap<String, String> = mutableMapOf()
+    private val variables: MutableMap<String, Retro.Variable> = mutableMapOf()
     private val videoBufferCache = BufferCache()
     private val videoBitmapCache = BitmapCache()
 
@@ -316,7 +316,7 @@ class RetroDroid(
             return null
         }
 
-        override fun onSetVariables(variables: Map<String, String>) {
+        override fun onSetVariables(variables: Map<String, Retro.Variable>) {
             Timber.d("onSetVariables: $variables")
             this@RetroDroid.variables.putAll(variables)
         }
@@ -344,7 +344,7 @@ class RetroDroid(
 
         override fun onGetVariable(name: String): String? {
             Timber.d("onGetVariable: $name, value: ${variables[name]}")
-            return variables[name]
+            return variables[name]?.value
         }
 
         override fun onSetPixelFormat(pixelFormat: Retro.PixelFormat): Boolean {
