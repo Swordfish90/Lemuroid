@@ -22,10 +22,10 @@ package com.codebutler.odyssey.lib.retro
 import android.graphics.PixelFormat
 import android.os.Build
 import com.codebutler.odyssey.common.BufferCache
-import com.codebutler.odyssey.lib.binding.LibC
 import com.codebutler.odyssey.common.jna.NativeString
 import com.codebutler.odyssey.common.jna.SizeT
 import com.codebutler.odyssey.common.jna.UnsignedInt
+import com.codebutler.odyssey.lib.binding.LibC
 import com.codebutler.odyssey.lib.binding.LibOdyssey
 import com.codebutler.odyssey.lib.retro.LibRetro.retro_system_info
 import com.codebutler.odyssey.lib.retro.LibRetro.retro_variable

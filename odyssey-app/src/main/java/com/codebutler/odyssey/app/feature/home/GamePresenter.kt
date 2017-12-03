@@ -33,17 +33,20 @@ import com.squareup.picasso.Picasso
 class GamePresenter : Presenter() {
 
     private lateinit var defaultCardImage: Drawable
+    private lateinit var starImage: Drawable
 
     private var imageWidth: Int = -1
     private var imageHeight: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
-        defaultCardImage = ColorDrawable(Color.BLACK)
+        val context = parent.context
 
-        val cardView = ImageCardView(parent.context)
-        val res = cardView.resources
-        imageWidth = res.getDimensionPixelSize(R.dimen.card_width)
-        imageHeight = res.getDimensionPixelSize(R.dimen.card_height)
+        defaultCardImage = ColorDrawable(Color.BLACK)
+        starImage = context.resources.getDrawable(R.drawable.ic_favorite_white_16dp, context.theme)
+
+        val cardView = ImageCardView(context)
+        imageWidth = context.resources.getDimensionPixelSize(R.dimen.card_width)
+        imageHeight = context.resources.getDimensionPixelSize(R.dimen.card_height)
 
         cardView.setMainImageScaleType(ImageView.ScaleType.CENTER)
         cardView.isFocusable = true
@@ -54,30 +57,30 @@ class GamePresenter : Presenter() {
     }
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any?) {
-        if (item == null) {
-            return
-        }
-
-        val game = item as Game
-
-        val cardView = viewHolder.view as ImageCardView
-        cardView.titleText = game.title
-        cardView.contentText = game.developer
-
-        if (game.coverFrontUrl != null) {
-            Picasso.with(cardView.context)
-                    .load(game.coverFrontUrl)
-                    .error(defaultCardImage)
-                    .resize(imageWidth, imageHeight)
-                    .centerInside()
-                    .into(cardView.mainImageView)
+        when (item) {
+            is Game -> {
+                val cardView = viewHolder.view as ImageCardView
+                cardView.titleText = item.title
+                cardView.contentText = item.developer
+                cardView.badgeImage = if (item.isFavorite) starImage else null
+                if (item.coverFrontUrl != null) {
+                    Picasso.with(cardView.context)
+                            .load(item.coverFrontUrl)
+                            .error(defaultCardImage)
+                            .resize(imageWidth, imageHeight)
+                            .centerInside()
+                            .into(cardView.mainImageView)
+                } else {
+                    cardView.mainImage = defaultCardImage
+                }
+            }
         }
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
         val cardView = viewHolder.view as ImageCardView
         Picasso.with(cardView.context).cancelRequest(cardView.mainImageView)
-        cardView.badgeImage = null
         cardView.mainImage = null
+        cardView.badgeImage = null
     }
 }
