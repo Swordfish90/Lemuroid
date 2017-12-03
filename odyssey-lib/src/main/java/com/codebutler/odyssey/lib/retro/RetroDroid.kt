@@ -31,7 +31,9 @@ import com.codebutler.odyssey.common.BufferCache
 import com.codebutler.odyssey.common.BuildConfig
 import com.codebutler.odyssey.common.kotlin.containsAny
 import com.codebutler.odyssey.lib.binding.LibOdyssey
-import com.codebutler.odyssey.lib.rendering.FpsCalculator
+import com.codebutler.odyssey.lib.game.audio.GameAudio
+import com.codebutler.odyssey.lib.game.display.FpsCalculator
+import com.codebutler.odyssey.lib.game.display.GameDisplay
 import com.sun.jna.Native
 import timber.log.Timber
 import java.io.File
@@ -43,7 +45,11 @@ import kotlin.experimental.and
 /**
  * Native Android frontend for LibRetro!
  */
-class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycleObserver {
+class RetroDroid(
+        private val gameDisplay: GameDisplay,
+        private val gameAudio: GameAudio,
+        private val context: Context,
+        coreFile: File) : DefaultLifecycleObserver {
 
     private val audioSampleBufferCache = BufferCache()
     private val fpsCalculator = FpsCalculator()
@@ -63,26 +69,6 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
 
     val fps: Long
         get() = fpsCalculator.fps
-
-    /**
-     * Callback for audio data, should be set by frontend.
-     */
-    var audioCallback: ((buffer: ByteArray) -> Unit)? = null
-
-    /**
-     * Callback for log events, should be set by frontend.
-     */
-    var logCallback: ((level: Retro.LogLevel, message: String) -> Unit)? = null
-
-    /**
-     * Callback for preparing audio playback.
-     */
-    var prepareAudioCallback: ((sampleRate: Int) -> Unit)? = null
-
-    /**
-     * Callback for video data, should be set by frontend.
-     */
-    var videoCallback: ((bitmap: Bitmap) -> Unit)? = null
 
     /**
      * Callback when game is unloaded, to allow for persisting save ram.
@@ -124,19 +110,18 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
             }
             val bitmap = videoBitmapCache.getBitmap(width, height, videoBitmapConfig)
             bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
-            videoCallback?.invoke(bitmap)
+            gameDisplay.update(bitmap)
         }
 
         retro.audioSampleCallback = { left, right ->
             val buffer = audioSampleBufferCache.getBuffer(2)
             buffer[0] = left.toByte() and 0xff.toByte()
             buffer[1] = (right.toInt() shr 8).toByte() and 0xff.toByte()
-            audioCallback?.invoke(buffer)
+            gameAudio.play(buffer)
         }
 
         retro.audioSampleBatchCallback = { data ->
-            audioCallback?.invoke(data)
-            data.size.toLong()
+            gameAudio.play(data).toLong()
         }
 
         retro.inputPollCallback = { /* Nothing to do here? */ }
@@ -308,7 +293,7 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
     }
 
     private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {
-        prepareAudioCallback?.invoke(systemAVInfo.timing.sample_rate.toInt())
+        gameAudio.init(systemAVInfo.timing.sample_rate.toInt())
         this.systemAVInfo = systemAVInfo
     }
 
@@ -318,7 +303,13 @@ class RetroDroid(private val context: Context, coreFile: File) : DefaultLifecycl
             if (Timber.treeCount() > 0) {
                 return object : Retro.LogInterface {
                     override fun onLogMessage(level: Retro.LogLevel, message: String) {
-                        logCallback?.invoke(level, message)
+                        val timber = Timber.tag("RetroLog")
+                        when (level) {
+                            Retro.LogLevel.DEBUG -> timber.d(message)
+                            Retro.LogLevel.INFO -> timber.i(message)
+                            Retro.LogLevel.WARN -> timber.w(message)
+                            Retro.LogLevel.ERROR -> timber.e(message)
+                        }
                     }
                 }
             }

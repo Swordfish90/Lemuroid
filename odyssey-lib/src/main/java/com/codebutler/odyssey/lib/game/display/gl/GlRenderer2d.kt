@@ -17,7 +17,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.rendering.gl
+package com.codebutler.odyssey.lib.game.display.gl
 
 import android.graphics.Bitmap
 import android.opengl.GLES20

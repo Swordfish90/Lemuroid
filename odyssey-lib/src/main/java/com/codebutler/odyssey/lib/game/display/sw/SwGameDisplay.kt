@@ -17,14 +17,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.rendering.sw
+package com.codebutler.odyssey.lib.game.display.sw
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
-import com.codebutler.odyssey.lib.rendering.FpsCalculator
-import com.codebutler.odyssey.lib.rendering.GameDisplay
+import com.codebutler.odyssey.lib.game.display.FpsCalculator
+import com.codebutler.odyssey.lib.game.display.GameDisplay
 
 class SwGameDisplay(context: Context) : GameDisplay {
 

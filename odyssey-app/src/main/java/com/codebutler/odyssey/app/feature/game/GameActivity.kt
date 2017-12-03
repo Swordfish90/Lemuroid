@@ -23,9 +23,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.media.AudioAttributes
-import android.media.AudioFormat
-import android.media.AudioTrack
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -41,26 +38,22 @@ import com.codebutler.odyssey.common.kotlin.bindView
 import com.codebutler.odyssey.common.kotlin.isAllZeros
 import com.codebutler.odyssey.lib.android.OdysseyActivity
 import com.codebutler.odyssey.lib.core.CoreManager
+import com.codebutler.odyssey.lib.game.GameLoader
+import com.codebutler.odyssey.lib.game.audio.GameAudio
+import com.codebutler.odyssey.lib.game.display.GameDisplay
+import com.codebutler.odyssey.lib.game.display.gl.GlGameDisplay
+import com.codebutler.odyssey.lib.game.display.sw.SwGameDisplay
 import com.codebutler.odyssey.lib.library.GameLibrary
-import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
-import com.codebutler.odyssey.lib.library.db.dao.updateAsync
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.rendering.GameDisplay
-import com.codebutler.odyssey.lib.rendering.gl.GlGameDisplay
-import com.codebutler.odyssey.lib.rendering.sw.SwGameDisplay
-import com.codebutler.odyssey.lib.retro.Retro
 import com.codebutler.odyssey.lib.retro.RetroDroid
-import com.gojuno.koptional.Optional
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposeWith
+import dagger.Provides
 import io.reactivex.Completable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.io.File
 import javax.inject.Inject
 
 class GameActivity : OdysseyActivity() {
@@ -73,9 +66,8 @@ class GameActivity : OdysseyActivity() {
         }
     }
 
-    @Inject lateinit var coreManager: CoreManager
-    @Inject lateinit var odysseyDatabase: OdysseyDatabase
     @Inject lateinit var gameLibrary: GameLibrary
+    @Inject lateinit var gameLoader: GameLoader
 
     private val progressBar by bindView<ProgressBar>(R.id.progress)
     private val gameDisplayLayout by bindView<FrameLayout>(R.id.game_display_layout)
@@ -84,7 +76,6 @@ class GameActivity : OdysseyActivity() {
 
     private var game: Game? = null
     private var retroDroid: RetroDroid? = null
-    private var audioTrack: AudioTrack? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,22 +96,19 @@ class GameActivity : OdysseyActivity() {
         }
 
         val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
-
-        odysseyDatabase.gameDao().selectById(gameId)
-                .flatMapSingle { game -> prepareGame(game) }
+        gameLoader.load(gameId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDisposeWith(AndroidLifecycleScopeProvider.from(this@GameActivity))
-                .subscribe({ data ->
-                    odysseyDatabase.gameDao()
-                            .updateAsync(data.game.copy(lastPlayedAt = System.currentTimeMillis()))
-                            .subscribe()
-                    progressBar.visibility = View.GONE
-                    loadRetro(data)
-                }, { error ->
-                    Timber.e(error, "Failed to load game")
-                    finish()
-                })
+                .subscribe(
+                        { data ->
+                            progressBar.visibility = View.GONE
+                            loadRetro(data)
+                        },
+                        { error ->
+                            Timber.e(error, "Failed to load game")
+                            finish()
+                        })
 
         if (BuildConfig.DEBUG) {
             addFpsView()
@@ -162,61 +150,10 @@ class GameActivity : OdysseyActivity() {
         updateFps()
     }
 
-    private fun prepareGame(game: Game): Single<PreparedGameData> {
-        val gameSystem = GameSystem.findById(game.systemId)!!
-
-        val coreObservable = coreManager.downloadCore(gameSystem.coreFileName)
-        val gameObservable = gameLibrary.getGameRom(game)
-        val saveObservable = gameLibrary.getGameSave(game)
-
-        return Single.zip(
-                coreObservable,
-                gameObservable,
-                saveObservable,
-                Function3<File, File, Optional<ByteArray>, PreparedGameData> { coreFile, gameFile, saveData ->
-                    PreparedGameData(game, coreFile, gameFile, saveData.toNullable())
-                })
-    }
-
-    private fun loadRetro(data: PreparedGameData) {
+    private fun loadRetro(data: GameLoader.GameData) {
         try {
-            val retroDroid = RetroDroid(this, data.coreFile)
+            val retroDroid = RetroDroid(gameDisplay, GameAudio(), this, data.coreFile)
             lifecycle.addObserver(retroDroid)
-
-            retroDroid.logCallback = { level, message ->
-                val timber = Timber.tag("RetroLog")
-                when (level) {
-                    Retro.LogLevel.DEBUG -> timber.d(message)
-                    Retro.LogLevel.INFO -> timber.i(message)
-                    Retro.LogLevel.WARN -> timber.w(message)
-                    Retro.LogLevel.ERROR -> timber.e(message)
-                }
-            }
-
-            retroDroid.prepareAudioCallback = { sampleRate ->
-                audioTrack = AudioTrack.Builder()
-                        .setAudioAttributes(AudioAttributes.Builder()
-                                .setUsage(AudioAttributes.USAGE_GAME)
-                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                                .build())
-                        .setAudioFormat(AudioFormat.Builder()
-                                .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                                .setSampleRate(sampleRate)
-                                .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
-                                .build())
-                        .build()
-            }
-
-            retroDroid.videoCallback = { bitmap ->
-                gameDisplay.update(bitmap)
-            }
-
-            retroDroid.audioCallback = { buffer ->
-                audioTrack?.let { audioTrack ->
-                    audioTrack.write(buffer, 0, buffer.size)
-                    audioTrack.play()
-                }
-            }
 
             retroDroid.gameUnloadedCallback = { saveData ->
                 val game = this.game
@@ -245,10 +182,11 @@ class GameActivity : OdysseyActivity() {
         }
     }
 
-    @Suppress("ArrayInDataClass")
-    private data class PreparedGameData(
-            val game: Game,
-            val coreFile: File,
-            val gameFile: File,
-            val saveData: ByteArray?)
+    @dagger.Module
+    class Module {
+
+        @Provides
+        fun gameLoader(coreManager: CoreManager, odysseyDatabase: OdysseyDatabase, gameLibrary: GameLibrary)
+                = GameLoader(coreManager, odysseyDatabase, gameLibrary)
+    }
 }

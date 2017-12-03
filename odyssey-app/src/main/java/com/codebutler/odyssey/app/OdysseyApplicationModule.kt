@@ -62,7 +62,7 @@ abstract class OdysseyApplicationModule {
     abstract fun mainActivity(): MainActivity
 
     @PerActivity
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = arrayOf(GameActivity.Module::class))
     abstract fun gameActivity(): GameActivity
 
     @PerActivity

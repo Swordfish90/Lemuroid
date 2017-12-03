@@ -17,15 +17,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.rendering.gl
+package com.codebutler.odyssey.lib.game.display.gl
 
 import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
 import android.view.Choreographer
-import com.codebutler.odyssey.lib.rendering.FpsCalculator
-import com.codebutler.odyssey.lib.rendering.GameDisplay
+import com.codebutler.odyssey.lib.game.display.FpsCalculator
+import com.codebutler.odyssey.lib.game.display.GameDisplay
 
 class GlGameDisplay(context: Context) :
         GameDisplay,
