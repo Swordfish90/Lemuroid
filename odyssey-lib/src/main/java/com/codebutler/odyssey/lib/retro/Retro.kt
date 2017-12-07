@@ -82,7 +82,8 @@ class Retro(coreLibraryName: String) {
             // Each frame is 4 bytes (16-bit stereo)
             val buffer = audioBufferCache.getBuffer(frames.toInt() * 4)
             data.read(0, buffer, 0, buffer.size)
-            return SizeT(audioSampleBatchCallback?.invoke(buffer) ?: 0)
+            audioSampleBatchCallback?.invoke(buffer)
+            return frames
         }
     }
 
