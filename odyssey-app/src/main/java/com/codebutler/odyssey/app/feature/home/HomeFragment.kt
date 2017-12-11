@@ -34,14 +34,16 @@ import android.support.v17.leanback.widget.Row
 import android.support.v17.leanback.widget.RowPresenter
 import android.support.v4.app.ActivityOptionsCompat
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.feature.game.GameActivity
 import com.codebutler.odyssey.app.feature.home.HomeAdapterFactory.AboutItem
 import com.codebutler.odyssey.app.feature.home.HomeAdapterFactory.AllGamesItem
 import com.codebutler.odyssey.app.feature.home.HomeAdapterFactory.GameSystemItem
 import com.codebutler.odyssey.app.feature.home.HomeAdapterFactory.RescanItem
 import com.codebutler.odyssey.app.feature.home.HomeAdapterFactory.SettingsItem
+import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.feature.search.GamesSearchFragment
 import com.codebutler.odyssey.app.feature.settings.SettingsActivity
+import com.codebutler.odyssey.app.shared.GameInteractionHandler
+import com.codebutler.odyssey.lib.injection.PerFragment
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
@@ -54,15 +56,24 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class HomeFragment : BrowseSupportFragment(), OnItemViewClickedListener {
+class HomeFragment : BrowseSupportFragment(),
+        OnItemViewClickedListener {
 
     @Inject lateinit var adapterFactory: HomeAdapterFactory
     @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var odysseyDb: OdysseyDatabase
+    @Inject lateinit var gameInteractionHandler: GameInteractionHandler
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        gameInteractionHandler.onRefreshListener = {
+            loadContents()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -80,7 +91,7 @@ class HomeFragment : BrowseSupportFragment(), OnItemViewClickedListener {
             rowViewHolder: RowPresenter.ViewHolder,
             row: Row) {
         when (item) {
-            is Game -> startActivity(GameActivity.newIntent(context, item))
+            is Game -> gameInteractionHandler.onItemClick(item)
             is GameSystemItem -> fragmentManager.beginTransaction()
                     .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.SYSTEM, item.system.id))
                     .addToBackStack(null)
@@ -160,6 +171,13 @@ class HomeFragment : BrowseSupportFragment(), OnItemViewClickedListener {
     class Module {
 
         @Provides
-        fun adapterFactory(fragment: HomeFragment, odysseyDb: OdysseyDatabase) = HomeAdapterFactory(fragment, odysseyDb)
+        @PerFragment
+        fun gameInteractionHandler(activity: MainActivity, odysseyDb: OdysseyDatabase)
+                = GameInteractionHandler(activity, odysseyDb)
+
+        @Provides
+        @PerFragment
+        fun adapterFactory(fragment: HomeFragment, odysseyDb: OdysseyDatabase, handler: GameInteractionHandler)
+                = HomeAdapterFactory(fragment, odysseyDb, handler)
     }
 }

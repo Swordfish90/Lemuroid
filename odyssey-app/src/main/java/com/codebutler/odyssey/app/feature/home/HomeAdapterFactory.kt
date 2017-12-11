@@ -24,6 +24,7 @@ import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
 import android.support.v17.leanback.widget.ArrayObjectAdapter
 import com.codebutler.odyssey.R
+import com.codebutler.odyssey.app.shared.ItemViewLongClickListener
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.dao.GameLibraryCounts
@@ -38,7 +39,8 @@ import io.reactivex.schedulers.Schedulers
 
 class HomeAdapterFactory(
         private var lifecycleOwner: LifecycleOwner,
-        private var odysseyDb: OdysseyDatabase) {
+        private var odysseyDb: OdysseyDatabase,
+        longClickListener: ItemViewLongClickListener) {
 
     data class GameSystemItem(val system: GameSystem) : SimpleItem(system.titleResId, system.imageResId)
     object AboutItem : SimpleItem(R.string.about, R.drawable.ic_info_outline_white_64dp)
@@ -48,8 +50,10 @@ class HomeAdapterFactory(
     object SettingsItem : SimpleItem(R.string.settings, R.drawable.ic_settings_white_64dp)
     object NoGamesItem : SimpleItem(R.string.no_games, R.drawable.ic_no_games_white_64dp)
 
+    private val gamePresenter = GamePresenter(longClickListener)
+
     fun buildFavoritesAdapter(): PagedListObjectAdapter<Game> {
-        val favoritesAdapter = PagedListObjectAdapter(GamePresenter(), Game.DIFF_CALLBACK)
+        val favoritesAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
         odysseyDb.gameDao().selectFavorites()
                 .create(0, PagedList.Config.Builder()
                         .setPageSize(50)
@@ -62,7 +66,7 @@ class HomeAdapterFactory(
     }
 
     fun buildRecentsAdapter(): PagedListObjectAdapter<Game> {
-        val recentsAdapter = PagedListObjectAdapter(GamePresenter(), Game.DIFF_CALLBACK)
+        val recentsAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
         odysseyDb.gameDao().selectRecentlyPlayed()
                 .create(0, PagedList.Config.Builder()
                         .setPageSize(50)

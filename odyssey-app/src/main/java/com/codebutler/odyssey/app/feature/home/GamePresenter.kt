@@ -27,10 +27,11 @@ import android.support.v17.leanback.widget.Presenter
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.codebutler.odyssey.R
+import com.codebutler.odyssey.app.shared.ItemViewLongClickListener
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 
-class GamePresenter : Presenter() {
+class GamePresenter(private val longClickListener: ItemViewLongClickListener) : Presenter() {
 
     private lateinit var defaultCardImage: Drawable
     private lateinit var starImage: Drawable
@@ -56,7 +57,10 @@ class GamePresenter : Presenter() {
         return Presenter.ViewHolder(cardView)
     }
 
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any?) {
+    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
+        viewHolder.view.setOnLongClickListener { _ ->
+            longClickListener.onItemLongClicked(viewHolder, item)
+        }
         when (item) {
             is Game -> {
                 val cardView = viewHolder.view as ImageCardView

@@ -17,4 +17,7 @@
     <string name="search_results">Search Results \'%s\'</string>
     <string name="settings">Settings</string>
     <string name="sources">Sources</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="play">Play</string>
 </resources>
