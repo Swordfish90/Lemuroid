@@ -1,8 +1,8 @@
 package com.codebutler.odyssey.app.feature.home
 
 import android.arch.lifecycle.Observer
-import android.arch.paging.LivePagedListProvider
-import android.arch.paging.PagedList
+import android.arch.paging.DataSource
+import android.arch.paging.LivePagedListBuilder
 import android.content.Context
 import android.os.Bundle
 import android.support.v17.leanback.app.VerticalGridSupportFragment
@@ -91,12 +91,8 @@ class GamesGridFragment : VerticalGridSupportFragment(), OnItemViewClickedListen
             Mode.SYSTEM -> getString(GameSystem.findById(param!!)!!.titleResId)
         }
 
-        getQuery(mode, param)
-                .create(0, PagedList.Config.Builder()
-                        .setPageSize(50)
-                        .setPrefetchDistance(50)
-                        .build()
-                )
+        LivePagedListBuilder(getQuery(mode, param), 50)
+                .build()
                 .observe(this, Observer { pagedList ->
                     val adapter = PagedListObjectAdapter(GamePresenter(gameInteractionHandler), Game.DIFF_CALLBACK)
                     adapter.pagedList = pagedList
@@ -104,7 +100,7 @@ class GamesGridFragment : VerticalGridSupportFragment(), OnItemViewClickedListen
                 })
     }
 
-    private fun getQuery(mode: Mode, param: String?): LivePagedListProvider<Int, Game> = when (mode) {
+    private fun getQuery(mode: Mode, param: String?): DataSource.Factory<Int, Game> = when (mode) {
         Mode.ALL -> odysseyDb.gameDao().selectAll()
         Mode.SYSTEM -> odysseyDb.gameDao().selectBySystem(param!!)
     }

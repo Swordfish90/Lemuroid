@@ -19,7 +19,7 @@
 
 package com.codebutler.odyssey.lib.library.db.dao
 
-import android.arch.paging.LivePagedListProvider
+import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
@@ -46,10 +46,10 @@ interface GameDao {
     fun selectCounts(): Single<GameLibraryCounts>
 
     @Query("SELECT * FROM games WHERE title LIKE '%' || REPLACE(:query, ' ', '%') || '%' ORDER BY title ASC, id DESC")
-    fun search(query: String): LivePagedListProvider<Int, Game>
+    fun search(query: String): DataSource.Factory<Int, Game>
 
     @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
-    fun selectAll(): LivePagedListProvider<Int, Game>
+    fun selectAll(): DataSource.Factory<Int, Game>
 
     @Query("SELECT * FROM games WHERE id = :id")
     fun selectById(id: Int): Maybe<Game>
@@ -61,13 +61,13 @@ interface GameDao {
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): Single<List<Game>>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC")
-    fun selectRecentlyPlayed(): LivePagedListProvider<Int, Game>
+    fun selectRecentlyPlayed(): DataSource.Factory<Int, Game>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC")
-    fun selectFavorites(): LivePagedListProvider<Int, Game>
+    fun selectFavorites(): DataSource.Factory<Int, Game>
 
     @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY title ASC, id DESC")
-    fun selectBySystem(systemId: String): LivePagedListProvider<Int, Game>
+    fun selectBySystem(systemId: String): DataSource.Factory<Int, Game>
 
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
     fun selectSystems(): Single<List<String>>

@@ -20,7 +20,7 @@
 package com.codebutler.odyssey.app.feature.search
 
 import android.arch.lifecycle.Observer
-import android.arch.paging.PagedList
+import android.arch.paging.LivePagedListBuilder
 import android.content.Context
 import android.os.Bundle
 import android.support.v17.leanback.app.SearchSupportFragment
@@ -113,11 +113,8 @@ class GamesSearchFragment : SearchSupportFragment(),
     private fun search(query: String) {
         lastQuery = query
         rowsAdapter.clear()
-        odysseyDb.gameDao().search(query)
-                .create(0, PagedList.Config.Builder()
-                        .setPageSize(50)
-                        .setPrefetchDistance(50)
-                        .build())
+        LivePagedListBuilder(odysseyDb.gameDao().search(query), 50)
+                .build()
                 .observe(this, Observer { pagedList ->
                     val header = HeaderItem(getString(R.string.search_results, query))
                     val adapter = PagedListObjectAdapter(GamePresenter(gameInteractionHandler), Game.DIFF_CALLBACK)

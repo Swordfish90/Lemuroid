@@ -21,7 +21,7 @@ package com.codebutler.odyssey.app.feature.home
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
-import android.arch.paging.PagedList
+import android.arch.paging.LivePagedListBuilder
 import android.support.v17.leanback.widget.ArrayObjectAdapter
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.shared.ItemViewLongClickListener
@@ -54,11 +54,8 @@ class HomeAdapterFactory(
 
     fun buildFavoritesAdapter(): PagedListObjectAdapter<Game> {
         val favoritesAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
-        odysseyDb.gameDao().selectFavorites()
-                .create(0, PagedList.Config.Builder()
-                        .setPageSize(50)
-                        .setPrefetchDistance(50)
-                        .build())
+        LivePagedListBuilder(odysseyDb.gameDao().selectFavorites(), 50)
+                .build()
                 .observe(lifecycleOwner, Observer {
                     pagedList -> favoritesAdapter.pagedList = pagedList
                 })
@@ -67,11 +64,8 @@ class HomeAdapterFactory(
 
     fun buildRecentsAdapter(): PagedListObjectAdapter<Game> {
         val recentsAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
-        odysseyDb.gameDao().selectRecentlyPlayed()
-                .create(0, PagedList.Config.Builder()
-                        .setPageSize(50)
-                        .setPrefetchDistance(50)
-                        .build())
+        LivePagedListBuilder(odysseyDb.gameDao().selectRecentlyPlayed(), 50)
+                .build()
                 .observe(lifecycleOwner, Observer {
                     pagedList -> recentsAdapter.pagedList = pagedList
                 })
