@@ -195,37 +195,38 @@ class RetroDroid(
     }
 
     fun onMotionEvent(event: MotionEvent) {
-        Timber.d("onMotionEvent: $event")
+        var left = false
+        var right = false
+        var up = false
+        var down = false
+
+        val coords = MotionEvent.PointerCoords()
+        event.getPointerCoords(0, coords)
+
+        when (coords.getAxisValue(MotionEvent.AXIS_HAT_X)) {
+            1.0F -> right = true
+            -1.0F -> left = true
+        }
+
+        when (coords.getAxisValue(MotionEvent.AXIS_HAT_Y)) {
+            1.0F -> down = true
+            -1.0F -> up = true
+        }
 
         when (event.rawX) {
-            1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_RIGHT)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
-            }
-            -1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_LEFT)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
-            }
-            else -> {
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_RIGHT)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_LEFT)
-            }
+            1.0F -> right = true
+            -1.0F -> left = true
         }
 
         when (event.rawY) {
-            1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_DOWN)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
-            }
-            -1.0F -> {
-                pressedKeys.add(KeyEvent.KEYCODE_DPAD_UP)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
-            }
-            else -> {
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_UP)
-                pressedKeys.remove(KeyEvent.KEYCODE_DPAD_DOWN)
-            }
+            1.0F -> down = true
+            -1.0F -> up = true
         }
+
+        updateKey(KeyEvent.KEYCODE_DPAD_LEFT, left)
+        updateKey(KeyEvent.KEYCODE_DPAD_RIGHT, right)
+        updateKey(KeyEvent.KEYCODE_DPAD_UP, up)
+        updateKey(KeyEvent.KEYCODE_DPAD_DOWN, down)
     }
 
     private fun stop() {
@@ -295,6 +296,14 @@ class RetroDroid(
     private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {
         gameAudio.init(systemAVInfo.timing.sample_rate.toInt())
         this.systemAVInfo = systemAVInfo
+    }
+
+    private fun updateKey(keyCode: Int, isPressed: Boolean) {
+        if (isPressed) {
+            pressedKeys.add(keyCode)
+        } else {
+            pressedKeys.remove(keyCode)
+        }
     }
 
     inner class RetroDroidEnvironmentCallback : Retro.EnvironmentCallback {
