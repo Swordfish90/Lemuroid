@@ -26,7 +26,7 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(
         tableName = "roms",
-        indices = arrayOf(Index("romFileName"), Index("romHashCRC")))
+        indices = [Index("romFileName"), Index("romHashCRC")])
 data class Rom(
     @PrimaryKey
     @ColumnInfo(name = "romID")

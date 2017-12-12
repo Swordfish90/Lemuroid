@@ -25,6 +25,7 @@ import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.library.metadata.GameMetadataProvider
 import com.codebutler.odyssey.lib.ovgdb.db.entity.Release
 import com.codebutler.odyssey.lib.storage.StorageFile
+import com.codebutler.odyssey.metadata.ovgdb.db.OvgdbDatabase
 import com.codebutler.odyssey.metadata.ovgdb.db.OvgdbManager
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional

@@ -58,7 +58,7 @@ class GDriveBrowseActivity : OdysseyActivity(), GDriveBrowseFragment.Listener {
         finish()
     }
 
-    @Subcomponent(modules = arrayOf(Module::class))
+    @Subcomponent(modules = [Module::class])
     interface Component : AndroidInjector<GDriveBrowseActivity> {
 
         @Subcomponent.Builder

@@ -30,7 +30,7 @@ import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
 import dagger.multibindings.IntoSet
 
-@Module(subcomponents = arrayOf(GDriveComponent::class))
+@Module(subcomponents = [GDriveComponent::class])
 abstract class GDriveApplicationModule {
 
     @Binds

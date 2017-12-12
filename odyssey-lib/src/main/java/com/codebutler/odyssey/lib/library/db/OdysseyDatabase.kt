@@ -27,7 +27,7 @@ import com.codebutler.odyssey.lib.library.db.dao.GameDao
 import com.codebutler.odyssey.lib.library.db.entity.Game
 
 @Database(
-        entities = arrayOf(Game::class),
+        entities = [Game::class],
         version = 7,
         exportSchema = true)
 @TypeConverters(Converters::class)

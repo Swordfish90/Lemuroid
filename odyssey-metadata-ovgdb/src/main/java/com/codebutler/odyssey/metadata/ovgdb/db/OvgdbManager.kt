@@ -21,7 +21,6 @@ package com.codebutler.odyssey.metadata.ovgdb.db
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import com.codebutler.odyssey.lib.ovgdb.db.OvgdbDatabase
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
 import java.io.FileOutputStream

@@ -27,15 +27,16 @@ import android.support.v7.recyclerview.extensions.DiffCallback
 
 @Entity(
         tableName = "games",
-        indices = arrayOf(
-                Index("id", unique = true),
-                Index("fileUri", unique = true),
-                Index( "title"),
-                Index("systemId"),
-                Index("lastIndexedAt"),
-                Index("lastPlayedAt"),
-                Index("isFavorite")
-        ))
+        indices = [
+            Index("id", unique = true),
+            Index("fileUri", unique = true),
+            Index("title"),
+            Index("systemId"),
+            Index("lastIndexedAt"),
+            Index("lastPlayedAt"),
+            Index("isFavorite")
+        ]
+)
 data class Game(
         @PrimaryKey(autoGenerate = true)
         val id: Int = 0,

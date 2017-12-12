@@ -57,15 +57,15 @@ abstract class OdysseyApplicationModule {
     abstract fun context(app: OdysseyApplication): Context
 
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(MainActivity.Module::class))
+    @ContributesAndroidInjector(modules = [MainActivity.Module::class])
     abstract fun mainActivity(): MainActivity
 
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(GameActivity.Module::class))
+    @ContributesAndroidInjector(modules = [GameActivity.Module::class])
     abstract fun gameActivity(): GameActivity
 
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(SettingsActivity.Module::class))
+    @ContributesAndroidInjector(modules = [SettingsActivity.Module::class])
     abstract fun settingsActivity(): SettingsActivity
 
     @Module

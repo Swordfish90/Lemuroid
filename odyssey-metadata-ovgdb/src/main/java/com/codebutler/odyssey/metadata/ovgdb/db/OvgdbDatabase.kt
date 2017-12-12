@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.ovgdb.db
+package com.codebutler.odyssey.metadata.ovgdb.db
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
@@ -31,11 +31,11 @@ import com.codebutler.odyssey.lib.ovgdb.db.entity.Rom
 import com.codebutler.odyssey.lib.ovgdb.db.entity.System
 
 @Database(
-        entities = arrayOf(
-                Region::class,
-                Release::class,
-                Rom::class,
-                System::class),
+        entities = [
+            Region::class,
+            Release::class,
+            Rom::class,
+            System::class],
         version = 1,
         exportSchema = false)
 abstract class OvgdbDatabase : RoomDatabase() {

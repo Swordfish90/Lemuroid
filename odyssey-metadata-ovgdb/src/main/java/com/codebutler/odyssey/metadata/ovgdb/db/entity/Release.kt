@@ -26,7 +26,7 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(
         tableName = "releases",
-        indices = arrayOf(Index("releaseID"), Index("romID")))
+        indices = [Index("releaseID"), Index("romID")])
 data class Release(
         @PrimaryKey
         @ColumnInfo(name = "releaseID")

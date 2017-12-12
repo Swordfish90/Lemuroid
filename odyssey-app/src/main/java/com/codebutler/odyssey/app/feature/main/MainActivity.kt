@@ -101,15 +101,15 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector, OnboardingFr
     abstract class Module {
 
         @PerFragment
-        @ContributesAndroidInjector(modules = arrayOf(HomeFragment.Module::class))
+        @ContributesAndroidInjector(modules = [HomeFragment.Module::class])
         abstract fun homeFragment(): HomeFragment
 
         @PerFragment
-        @ContributesAndroidInjector(modules = arrayOf(GamesGridFragment.Module::class))
+        @ContributesAndroidInjector(modules = [GamesGridFragment.Module::class])
         abstract fun gamesGridFragment(): GamesGridFragment
 
         @PerFragment
-        @ContributesAndroidInjector(modules = arrayOf(GamesSearchFragment.Module::class))
+        @ContributesAndroidInjector(modules = [GamesSearchFragment.Module::class])
         abstract fun gamesSearchFragment(): GamesSearchFragment
 
         @dagger.Module

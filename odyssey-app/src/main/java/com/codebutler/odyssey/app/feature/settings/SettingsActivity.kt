@@ -17,7 +17,7 @@ class SettingsActivity : OdysseyActivity() {
     abstract class Module {
 
         @PerFragment
-        @ContributesAndroidInjector(modules = arrayOf(SettingsFragment.Module::class))
+        @ContributesAndroidInjector(modules = [SettingsFragment.Module::class])
         abstract fun settingsFragment(): SettingsFragment
     }
 }

@@ -23,7 +23,7 @@ import dagger.Subcomponent
 import javax.inject.Scope
 
 @GDriveScope
-@Subcomponent(modules = arrayOf(GDriveModule::class))
+@Subcomponent(modules = [GDriveModule::class])
 interface GDriveComponent {
 
     fun activityComponentBuilder(): GDriveBrowseActivity.Component.Builder
