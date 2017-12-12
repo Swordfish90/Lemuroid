@@ -47,7 +47,7 @@ import com.codebutler.odyssey.lib.injection.PerFragment
 import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.ui.SimpleErrorFragment
+import com.codebutler.odyssey.app.shared.ui.SimpleErrorFragment
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.kotlin.autoDisposable
 import dagger.Provides

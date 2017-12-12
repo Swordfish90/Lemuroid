@@ -17,7 +17,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.lib.ui
+package com.codebutler.odyssey.app.shared.ui
 
 import android.os.Bundle
 import android.support.v17.leanback.app.ErrorSupportFragment

@@ -34,13 +34,13 @@ import android.support.v17.leanback.widget.Presenter
 import android.support.v17.leanback.widget.Row
 import android.support.v17.leanback.widget.RowPresenter
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.feature.home.GamePresenter
+import com.codebutler.odyssey.app.shared.GamePresenter
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.shared.GameInteractionHandler
 import com.codebutler.odyssey.lib.injection.PerFragment
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
+import com.codebutler.odyssey.app.shared.ui.PagedListObjectAdapter
 import com.jakewharton.rxrelay2.PublishRelay
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.kotlin.autoDisposable

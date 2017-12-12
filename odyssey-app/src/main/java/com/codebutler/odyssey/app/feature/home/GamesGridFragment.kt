@@ -14,11 +14,12 @@ import android.support.v17.leanback.widget.VerticalGridPresenter
 import com.codebutler.odyssey.R
 import com.codebutler.odyssey.app.feature.main.MainActivity
 import com.codebutler.odyssey.app.shared.GameInteractionHandler
+import com.codebutler.odyssey.app.shared.GamePresenter
 import com.codebutler.odyssey.lib.injection.PerFragment
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
+import com.codebutler.odyssey.app.shared.ui.PagedListObjectAdapter
 import dagger.Provides
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.codebutler.odyssey.app.shared
+package com.codebutler.odyssey.app.shared.ui
 
 import android.support.v17.leanback.widget.Presenter
 

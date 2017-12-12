@@ -33,8 +33,8 @@ sealed class TextOrResource {
     class Text(val value: String) : TextOrResource()
     class Resource(@StringRes val value: Int) : TextOrResource()
     fun getText(resources: Resources): String = when (this) {
-        is TextOrResource.Text -> value
-        is TextOrResource.Resource -> resources.getString(value)
+        is Text -> value
+        is Resource -> resources.getString(value)
     }
 }
 

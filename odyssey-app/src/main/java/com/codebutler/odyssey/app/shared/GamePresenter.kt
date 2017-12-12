@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.odyssey.app.feature.home
+package com.codebutler.odyssey.app.shared
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -27,7 +27,7 @@ import android.support.v17.leanback.widget.Presenter
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.shared.ItemViewLongClickListener
+import com.codebutler.odyssey.app.shared.ui.ItemViewLongClickListener
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 

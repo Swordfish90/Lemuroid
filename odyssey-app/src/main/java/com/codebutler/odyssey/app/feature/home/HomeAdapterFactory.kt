@@ -24,12 +24,13 @@ import android.arch.lifecycle.Observer
 import android.arch.paging.LivePagedListBuilder
 import android.support.v17.leanback.widget.ArrayObjectAdapter
 import com.codebutler.odyssey.R
-import com.codebutler.odyssey.app.shared.ItemViewLongClickListener
+import com.codebutler.odyssey.app.shared.GamePresenter
+import com.codebutler.odyssey.app.shared.ui.ItemViewLongClickListener
 import com.codebutler.odyssey.lib.library.GameSystem
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.dao.GameLibraryCounts
 import com.codebutler.odyssey.lib.library.db.entity.Game
-import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
+import com.codebutler.odyssey.app.shared.ui.PagedListObjectAdapter
 import com.codebutler.odyssey.lib.ui.SimpleItem
 import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.uber.autodispose.android.lifecycle.scope
