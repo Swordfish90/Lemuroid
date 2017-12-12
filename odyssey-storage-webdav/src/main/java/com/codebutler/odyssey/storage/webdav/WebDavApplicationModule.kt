@@ -34,7 +34,7 @@ abstract class WebDavApplicationModule {
         @Provides
         @IntoSet
         @JvmStatic
-        fun webDavGameLibraryProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider
-                = WebDavStorageProvider(context, metadataProvider)
+        fun webDavGameLibraryProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider =
+                WebDavStorageProvider(context, metadataProvider)
     }
 }

@@ -42,12 +42,15 @@ class SimpleErrorFragment : ErrorSupportFragment() {
         super.onCreate(savedInstanceState)
 
         imageDrawable = resources.getDrawable(R.drawable.lb_ic_sad_cloud, null)
-        message = arguments.getString(ARG_MESSAGE)
+        message = arguments?.getString(ARG_MESSAGE)
         setDefaultBackground(true)
 
         buttonText = resources.getString(R.string.dismiss)
         buttonClickListener = View.OnClickListener {
-            fragmentManager.beginTransaction().remove(this@SimpleErrorFragment).commit()
+            val fragmentManager = fragmentManager!!
+            fragmentManager.beginTransaction()
+                    .remove(this@SimpleErrorFragment)
+                    .commit()
             fragmentManager.popBackStack()
         }
     }

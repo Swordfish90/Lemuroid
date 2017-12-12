@@ -31,8 +31,8 @@ import android.view.ViewGroup
 import com.codebutler.odyssey.lib.ui.SimpleItem
 import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
 import com.google.api.services.drive.model.File
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.kotlin.autoDisposeWith
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.kotlin.autoDisposable
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -95,7 +95,7 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
         gdriveBrowser.list(parentId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
+                .autoDisposable(scope())
                 .subscribe { files ->
                     val folders = files.filter { file -> file.mimeType == "application/vnd.google-apps.folder" }
                     val foldersAdapter = ArrayObjectAdapter(FilePresenter())
@@ -145,4 +145,3 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
         fun onFolderSelected(folderId: String)
     }
 }
-

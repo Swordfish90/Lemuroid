@@ -71,8 +71,10 @@ class GDriveBrowser(private val driveFactory: DriveFactory) {
         var pageToken: String? = null
         do {
             val result = drive.files().list()
-                .setQ("'$parentId' in parents")
-                .setFields("nextPageToken, files(id, name, mimeType, size)").setPageToken(pageToken).execute()
+                    .setQ("'$parentId' in parents")
+                    .setFields("nextPageToken, files(id, name, mimeType, size)")
+                    .setPageToken(pageToken)
+                    .execute()
             mutableList.addAll(result.files)
             pageToken = result.nextPageToken
         } while (pageToken != null)

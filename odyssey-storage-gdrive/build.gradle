@@ -10,6 +10,8 @@ dependencies {
     implementation libs.autoDispose
     implementation libs.autoDisposeAndroid
     implementation libs.autoDisposeAndroidArch
+    implementation libs.autoDisposeAndroidArchKotlin
+    implementation libs.autoDisposeAndroidKotlin
     implementation libs.autoDisposeKotlin
     implementation libs.dagger
     implementation libs.daggerAndroid

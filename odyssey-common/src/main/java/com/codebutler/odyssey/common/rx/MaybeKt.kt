@@ -25,5 +25,5 @@ import com.gojuno.koptional.toOptional
 import io.reactivex.Maybe
 import io.reactivex.Single
 
-fun <T : Any> Maybe<T>.toSingleAsOptional(): Single<Optional<T>>
-        = this.map { it.toOptional() }.toSingle(None)
+fun <T : Any> Maybe<T>.toSingleAsOptional(): Single<Optional<T>> =
+        this.map { it.toOptional() }.toSingle(None)

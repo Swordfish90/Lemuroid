@@ -39,4 +39,3 @@ abstract class OdysseyDatabase : RoomDatabase() {
 
     abstract fun gameDao(): GameDao
 }
-

@@ -80,8 +80,8 @@ abstract class OdysseyApplicationModule {
 
         @Provides
         @JvmStatic
-        fun odysseyDb(app: OdysseyApplication)
-                = Room.databaseBuilder(app, OdysseyDatabase::class.java, OdysseyDatabase.DB_NAME)
+        fun odysseyDb(app: OdysseyApplication) =
+                Room.databaseBuilder(app, OdysseyDatabase::class.java, OdysseyDatabase.DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
 
@@ -92,8 +92,8 @@ abstract class OdysseyApplicationModule {
         @Provides
         @IntoSet
         @JvmStatic
-        fun localGameStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider
-                = LocalStorageProvider(context, metadataProvider)
+        fun localGameStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider =
+                LocalStorageProvider(context, metadataProvider)
 
         @Provides
         @IntoSet
@@ -102,15 +102,15 @@ abstract class OdysseyApplicationModule {
 
         @Provides
         @JvmStatic
-        fun gameStorageProviderRegistry(context: Context, providers: Set<@JvmSuppressWildcards StorageProvider>)
-                = StorageProviderRegistry(context, providers)
+        fun gameStorageProviderRegistry(context: Context, providers: Set<@JvmSuppressWildcards StorageProvider>) =
+                StorageProviderRegistry(context, providers)
 
         @Provides
         @JvmStatic
         fun gameLibrary(
                 db: OdysseyDatabase,
-                storageProviderRegistry: StorageProviderRegistry)
-                = GameLibrary(db, storageProviderRegistry)
+                storageProviderRegistry: StorageProviderRegistry) =
+                GameLibrary(db, storageProviderRegistry)
 
         @Provides
         @JvmStatic

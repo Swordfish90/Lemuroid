@@ -32,8 +32,8 @@ import com.codebutler.odyssey.lib.android.OdysseyActivity
 import com.codebutler.odyssey.lib.injection.PerActivity
 import com.codebutler.odyssey.lib.injection.PerFragment
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.kotlin.autoDisposeWith
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.kotlin.autoDisposable
 import dagger.Lazy
 import dagger.Provides
 import dagger.android.AndroidInjector
@@ -64,7 +64,7 @@ class MainActivity : OdysseyActivity(), HasSupportFragmentInjector, OnboardingFr
 
         rxPermissions.get().request(*permissions)
                 .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
+                .autoDisposable(scope())
                 .subscribe { granted ->
                     if (granted) {
                         loadContent()

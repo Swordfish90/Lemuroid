@@ -83,8 +83,8 @@ class GamesGridFragment : VerticalGridSupportFragment(), OnItemViewClickedListen
     }
 
     private fun loadContents() {
-        val mode: Mode = Mode.values().find { it.value == arguments.getString(ARG_MODE) }!!
-        val param: String? = arguments.getString(ARG_PARAM)
+        val mode: Mode = Mode.values().find { it.value == arguments!!.getString(ARG_MODE) }!!
+        val param: String? = arguments!!.getString(ARG_PARAM)
 
         title = when (mode) {
             Mode.ALL -> getString(R.string.all_games)
@@ -114,7 +114,7 @@ class GamesGridFragment : VerticalGridSupportFragment(), OnItemViewClickedListen
 
         @Provides
         @PerFragment
-        fun gameInteractionHandler(activity: MainActivity, odysseyDb: OdysseyDatabase)
-                = GameInteractionHandler(activity, odysseyDb)
+        fun gameInteractionHandler(activity: MainActivity, odysseyDb: OdysseyDatabase) =
+                GameInteractionHandler(activity, odysseyDb)
     }
 }

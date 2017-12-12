@@ -48,8 +48,8 @@ import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.ui.SimpleErrorFragment
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.kotlin.autoDisposeWith
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.kotlin.autoDisposable
 import dagger.Provides
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -92,11 +92,11 @@ class HomeFragment : BrowseSupportFragment(),
             row: Row) {
         when (item) {
             is Game -> gameInteractionHandler.onItemClick(item)
-            is GameSystemItem -> fragmentManager.beginTransaction()
+            is GameSystemItem -> fragmentManager!!.beginTransaction()
                     .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.SYSTEM, item.system.id))
                     .addToBackStack(null)
                     .commit()
-            is AllGamesItem -> fragmentManager.beginTransaction()
+            is AllGamesItem -> fragmentManager!!.beginTransaction()
                     .replace(R.id.content, GamesGridFragment.create(GamesGridFragment.Mode.ALL))
                     .addToBackStack(null)
                     .commit()
@@ -104,7 +104,7 @@ class HomeFragment : BrowseSupportFragment(),
                 progressBarManager.show()
                 gameLibrary.indexGames()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
+                        .autoDisposable(scope())
                         .subscribe(
                                 {
                                     loadContents()
@@ -113,7 +113,7 @@ class HomeFragment : BrowseSupportFragment(),
                                 { error ->
                                     progressBarManager.hide()
                                     val errorFragment = SimpleErrorFragment.create(error.toString())
-                                    fragmentManager.beginTransaction()
+                                    fragmentManager!!.beginTransaction()
                                             .replace(R.id.content, errorFragment)
                                             .addToBackStack(null)
                                             .commit()
@@ -121,7 +121,7 @@ class HomeFragment : BrowseSupportFragment(),
             }
             is SettingsItem -> {
                 val intent = Intent(activity, SettingsActivity::class.java)
-                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity)
+                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!)
                         .toBundle()
                 startActivity(intent, bundle)
             }
@@ -133,7 +133,7 @@ class HomeFragment : BrowseSupportFragment(),
         odysseyDb.gameDao().selectCounts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
+                .autoDisposable(scope())
                 .subscribe { counts ->
                     val categoryRowAdapter = ArrayObjectAdapter(ListRowPresenter())
                     if (counts.favoritesCount > 0) {
@@ -156,7 +156,7 @@ class HomeFragment : BrowseSupportFragment(),
 
                     if (counts.totalCount > 0) {
                         setOnSearchClickedListener {
-                            fragmentManager.beginTransaction()
+                            fragmentManager!!.beginTransaction()
                                     .replace(R.id.content, GamesSearchFragment.create())
                                     .addToBackStack(null)
                                     .commit()
@@ -172,12 +172,12 @@ class HomeFragment : BrowseSupportFragment(),
 
         @Provides
         @PerFragment
-        fun gameInteractionHandler(activity: MainActivity, odysseyDb: OdysseyDatabase)
-                = GameInteractionHandler(activity, odysseyDb)
+        fun gameInteractionHandler(activity: MainActivity, odysseyDb: OdysseyDatabase) =
+                GameInteractionHandler(activity, odysseyDb)
 
         @Provides
         @PerFragment
-        fun adapterFactory(fragment: HomeFragment, odysseyDb: OdysseyDatabase, handler: GameInteractionHandler)
-                = HomeAdapterFactory(fragment, odysseyDb, handler)
+        fun adapterFactory(fragment: HomeFragment, odysseyDb: OdysseyDatabase, handler: GameInteractionHandler) =
+                HomeAdapterFactory(fragment, odysseyDb, handler)
     }
 }

@@ -47,8 +47,8 @@ import com.codebutler.odyssey.lib.library.GameLibrary
 import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.retro.RetroDroid
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.kotlin.autoDisposeWith
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.kotlin.autoDisposable
 import dagger.Provides
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -60,8 +60,8 @@ class GameActivity : OdysseyActivity() {
     companion object {
         private const val EXTRA_GAME_ID = "game_id"
 
-        fun newIntent(context: Context, game: Game)
-                = Intent(context, GameActivity::class.java).apply {
+        fun newIntent(context: Context, game: Game) =
+                Intent(context, GameActivity::class.java).apply {
             putExtra(EXTRA_GAME_ID, game.id)
         }
     }
@@ -99,7 +99,7 @@ class GameActivity : OdysseyActivity() {
         gameLoader.load(gameId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposeWith(AndroidLifecycleScopeProvider.from(this@GameActivity))
+                .autoDisposable(scope())
                 .subscribe(
                         { data ->
                             progressBar.visibility = View.GONE
@@ -186,7 +186,7 @@ class GameActivity : OdysseyActivity() {
     class Module {
 
         @Provides
-        fun gameLoader(coreManager: CoreManager, odysseyDatabase: OdysseyDatabase, gameLibrary: GameLibrary)
-                = GameLoader(coreManager, odysseyDatabase, gameLibrary)
+        fun gameLoader(coreManager: CoreManager, odysseyDatabase: OdysseyDatabase, gameLibrary: GameLibrary) =
+                GameLoader(coreManager, odysseyDatabase, gameLibrary)
     }
 }

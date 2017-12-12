@@ -117,13 +117,13 @@ class WebDavStorageProvider(
                 }
     }
 
-    override fun getGameSave(game: Game): Single<Optional<ByteArray>>
-            = webDavClient.downloadFile(getSaveUri(game))
+    override fun getGameSave(game: Game): Single<Optional<ByteArray>> =
+            webDavClient.downloadFile(getSaveUri(game))
             .map { saveData -> saveData.toOptional() }
             .onErrorReturnItem(None)
 
-    override fun setGameSave(game: Game, data: ByteArray): Completable
-            = webDavClient.uploadFile(getSaveUri(game), data)
+    override fun setGameSave(game: Game, data: ByteArray): Completable =
+            webDavClient.uploadFile(getSaveUri(game), data)
 
     private fun readConfig(): Configuration {
         val prefs = context.getSharedPreferences(WebDavPreferenceFragment.PREFS_NAME, MODE_PRIVATE)

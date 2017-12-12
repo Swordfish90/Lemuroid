@@ -42,8 +42,8 @@ import com.codebutler.odyssey.lib.library.db.OdysseyDatabase
 import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
 import com.jakewharton.rxrelay2.PublishRelay
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.kotlin.autoDisposeWith
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.kotlin.autoDisposable
 import dagger.Provides
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -78,7 +78,7 @@ class GamesSearchFragment : SearchSupportFragment(),
         queryTextChangeRelay
                 .debounce(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposeWith(AndroidLifecycleScopeProvider.from(this))
+                .autoDisposable(scope())
                 .subscribe(this::search)
 
         setOnItemViewClickedListener(this)
@@ -131,7 +131,7 @@ class GamesSearchFragment : SearchSupportFragment(),
 
         @Provides
         @PerFragment
-        fun gameInteractionHandler(activity: MainActivity, odysseyDb: OdysseyDatabase)
-                = GameInteractionHandler(activity, odysseyDb)
+        fun gameInteractionHandler(activity: MainActivity, odysseyDb: OdysseyDatabase) =
+                GameInteractionHandler(activity, odysseyDb)
     }
 }

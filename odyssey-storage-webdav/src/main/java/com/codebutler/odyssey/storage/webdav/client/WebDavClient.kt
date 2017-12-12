@@ -69,9 +69,9 @@ class WebDavClient(
         }
     }
 
-    fun downloadFile(uri: Uri): Single<ByteArray>
-            = api.downloadFile(uri.toString())
-                .map { it.bytes() }
+    fun downloadFile(uri: Uri): Single<ByteArray> =
+            api.downloadFile(uri.toString())
+                    .map { it.bytes() }
 
     fun uploadFile(uri: Uri, data: ByteArray): Completable {
         val requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), data)

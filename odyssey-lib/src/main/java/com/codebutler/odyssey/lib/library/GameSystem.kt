@@ -123,10 +123,10 @@ data class GameSystem(
 
         fun findById(id: String): GameSystem? = byIdCache[id]
 
-        fun findByShortName(shortName: String): GameSystem?
-                = findById(shortName.toLowerCase())
+        fun findByShortName(shortName: String): GameSystem? =
+                findById(shortName.toLowerCase())
 
-        fun findByFileExtension(fileExtension: String): GameSystem?
-                = byExtensionCache[fileExtension.toLowerCase(Locale.US)]
+        fun findByFileExtension(fileExtension: String): GameSystem? =
+                byExtensionCache[fileExtension.toLowerCase(Locale.US)]
     }
 }

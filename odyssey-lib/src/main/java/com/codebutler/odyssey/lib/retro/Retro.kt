@@ -46,12 +46,12 @@ class Retro(coreLibraryName: String) {
             coreLibraryName,
             LibRetro::class.java,
             mapOf(Library.OPTION_STRUCTURE_ALIGNMENT to
-                // Using ALIGN_DEFAULT on x86 caused issues with float field alignment (retro_system_timing).
-                if ("x86" in Build.SUPPORTED_32_BIT_ABIS && Build.SUPPORTED_64_BIT_ABIS.isEmpty()) {
-                    Structure.ALIGN_NONE
-                } else {
-                    Structure.ALIGN_DEFAULT
-                }
+                    // Using ALIGN_DEFAULT on x86 caused issues with float field alignment (retro_system_timing).
+                    if ("x86" in Build.SUPPORTED_32_BIT_ABIS && Build.SUPPORTED_64_BIT_ABIS.isEmpty()) {
+                        Structure.ALIGN_NONE
+                    } else {
+                        Structure.ALIGN_DEFAULT
+                    }
             ))
 
     var environmentCallback: EnvironmentCallback? = null
@@ -545,4 +545,3 @@ class Retro(coreLibraryName: String) {
         }
     }
 }
-

@@ -44,14 +44,14 @@ abstract class GDriveApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gameLibraryProvider(componentBuilder: GDriveComponent.Builder)
-                = GDriveStorageProvider(componentBuilder)
+        fun gameLibraryProvider(componentBuilder: GDriveComponent.Builder) =
+                GDriveStorageProvider(componentBuilder)
 
         @Provides
         @IntoMap
         @ActivityKey(GDriveBrowseActivity::class)
         @JvmStatic
-        fun activityInjectorFactory(provider: GDriveStorageProvider): AndroidInjector.Factory<out Activity>
-                = provider.component.activityComponentBuilder()
+        fun activityInjectorFactory(provider: GDriveStorageProvider): AndroidInjector.Factory<out Activity> =
+                provider.component.activityComponentBuilder()
     }
 }

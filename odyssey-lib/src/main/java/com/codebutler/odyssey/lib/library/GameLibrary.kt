@@ -80,14 +80,14 @@ class GameLibrary(
                         })
     }
 
-    fun getGameRom(game: Game): Single<File>
-            = providerProviderRegistry.getProvider(game).getGameRom(game)
+    fun getGameRom(game: Game): Single<File> =
+            providerProviderRegistry.getProvider(game).getGameRom(game)
 
-    fun getGameSave(game: Game): Single<Optional<ByteArray>>
-            = providerProviderRegistry.getProvider(game).getGameSave(game)
+    fun getGameSave(game: Game): Single<Optional<ByteArray>> =
+            providerProviderRegistry.getProvider(game).getGameSave(game)
 
-    fun setGameSave(game: Game, data: ByteArray): Completable
-            = providerProviderRegistry.getProvider(game).setGameSave(game, data)
+    fun setGameSave(game: Game, data: ByteArray): Completable =
+            providerProviderRegistry.getProvider(game).setGameSave(game, data)
 
     private fun removeDeletedGames(startedAtMs: Long) {
         odysseydb.gameDao().selectByLastIndexedAtLessThan(startedAtMs)

@@ -32,8 +32,8 @@ import com.codebutler.odyssey.lib.library.db.entity.Game
 import com.codebutler.odyssey.lib.ui.PagedListObjectAdapter
 import com.codebutler.odyssey.lib.ui.SimpleItem
 import com.codebutler.odyssey.lib.ui.SimpleItemPresenter
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.kotlin.autoDisposeWith
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -90,7 +90,7 @@ class HomeAdapterFactory(
                     .toSortedList { o1, o2 -> o1.sortKey.compareTo(o2.sortKey) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .autoDisposeWith(AndroidLifecycleScopeProvider.from(lifecycleOwner))
+                    .autoDisposable(lifecycleOwner.scope())
                     .subscribe { systems ->
                         systemsAdapter.clear()
                         systemsAdapter.addAll(0, systems.map { system -> GameSystemItem(system) })
