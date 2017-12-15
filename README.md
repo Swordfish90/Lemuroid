@@ -17,7 +17,7 @@ Supported Systems:
 
 Chat: https://discord.gg/UuDmP3v
 
-
+![Screenshot](https://retrograde.github.io/images/screenshot1.png)
 
 ## License
 
