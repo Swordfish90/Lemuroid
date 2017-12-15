@@ -113,7 +113,7 @@ class Retro(coreLibraryName: String) {
     data class SystemInfo(
             val libraryName: String,
             val libraryVersion: String,
-            val validExtensions: String,
+            val validExtensions: String?,
             val needFullpath: Boolean,
             val blockExtract: Boolean)
 
@@ -300,7 +300,7 @@ class Retro(coreLibraryName: String) {
         return SystemInfo(
                 libraryName = info.library_name!!,
                 libraryVersion = info.library_version!!,
-                validExtensions = info.valid_extensions!!,
+                validExtensions = info.valid_extensions,
                 needFullpath = info.need_fullpath,
                 blockExtract = info.block_extract
         )

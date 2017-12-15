@@ -76,8 +76,8 @@ class GamesGridFragment : VerticalGridSupportFragment(), OnItemViewClickedListen
     override fun onItemClicked(
             itemViewHolder: Presenter.ViewHolder,
             item: Any,
-            rowViewHolder: RowPresenter.ViewHolder,
-            row: Row) {
+            rowViewHolder: RowPresenter.ViewHolder?,
+            row: Row?) {
         when (item) {
             is Game -> gameInteractionHandler.onItemClick(item)
         }
