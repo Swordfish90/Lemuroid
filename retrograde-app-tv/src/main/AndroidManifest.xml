@@ -50,7 +50,7 @@
         android:theme="@style/AppTheme"
         android:process=":main"
         android:isGame="true"
-        tools:ignore="MissingTvBanner">
+        android:banner="@mipmap/ic_banner">
 
         <activity android:name="com.codebutler.retrograde.app.feature.main.MainActivity">
             <intent-filter>
