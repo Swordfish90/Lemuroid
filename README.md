@@ -1,8 +1,6 @@
-# Odyssey
+# Retrograde
 
-native android libretro frontend 
-
-more info here soon
+Play retro video games on your Android TV!
 
 Chat: https://discord.gg/UuDmP3v
 

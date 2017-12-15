@@ -1,0 +1,24 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation project(':retrograde-util')
+    implementation project(':retrograde-app-shared')
+
+    implementation libs.dagger
+    implementation libs.koptional
+    implementation libs.koptionalRxJava2
+    implementation libs.kotlinStdlib
+    implementation libs.roomRuntime
+    implementation libs.roomRxJava2
+    implementation libs.rxJava2
+    implementation libs.rxRelay2
+
+    kapt libs.daggerCompiler
+    kapt libs.roomCompiler
+}
+
+android {
+    resourcePrefix 'webdav_'
+}
