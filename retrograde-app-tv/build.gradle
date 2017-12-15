@@ -15,11 +15,18 @@ android {
         debug {
             storeFile file('../debug.keystore')
         }
+        release {
+            storeFile file('../release.keystore')
+            keyAlias 'retrograde'
+            storePassword ''
+            keyPassword ''
+        }
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -75,4 +82,16 @@ dependencies {
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+static def askPassword() {
+    return 'security -q find-generic-password -w -g -l retrograde-release'.execute().text.trim()
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if(taskGraph.hasTask(':retrograde-app-tv:packageRelease')) {
+        def password = askPassword()
+        android.signingConfigs.release.storePassword = password
+        android.signingConfigs.release.keyPassword = password
+    }
 }
