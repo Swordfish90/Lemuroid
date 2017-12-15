@@ -2,7 +2,22 @@
 
 Play retro video games on your Android TV!
 
+Features:
+- Designed and built for Android TV, looks and feels at home on your device.
+- Works with most bluetooth game controllers without any configuration.
+- Automatically indexes your game library and downloads game titles and artwork.
+- Play games from Google Drive, no need to worry about limited storage space.
+- One app for multiple retro game systems, no additional downloads needed!
+
+Supported Systems:
+- Nintendo (NES)
+- Super Nintendo (SNES)
+- Game Boy, Game Boy Color, Game Boy Advance (GB, GBC, GBA)
+- Sega Genesis (aka Megadrive)
+
 Chat: https://discord.gg/UuDmP3v
+
+
 
 ## License
 
