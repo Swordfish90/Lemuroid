@@ -34,13 +34,13 @@ import android.support.v17.leanback.widget.Presenter
 import android.support.v17.leanback.widget.Row
 import android.support.v17.leanback.widget.RowPresenter
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.shared.GamePresenter
 import com.codebutler.retrograde.app.feature.main.MainActivity
 import com.codebutler.retrograde.app.shared.GameInteractionHandler
+import com.codebutler.retrograde.app.shared.GamePresenter
+import com.codebutler.retrograde.app.shared.ui.PagedListObjectAdapter
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.entity.Game
-import com.codebutler.retrograde.app.shared.ui.PagedListObjectAdapter
 import com.jakewharton.rxrelay2.PublishRelay
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.kotlin.autoDisposable

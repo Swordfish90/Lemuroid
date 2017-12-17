@@ -32,6 +32,7 @@ import android.support.v17.leanback.widget.OnItemViewClickedListener
 import android.support.v17.leanback.widget.Presenter
 import android.support.v17.leanback.widget.Row
 import android.support.v17.leanback.widget.RowPresenter
+import android.support.v17.leanback.widget.SearchOrbView
 import android.support.v4.app.ActivityOptionsCompat
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.home.HomeAdapterFactory.AboutItem
@@ -43,11 +44,11 @@ import com.codebutler.retrograde.app.feature.main.MainActivity
 import com.codebutler.retrograde.app.feature.search.GamesSearchFragment
 import com.codebutler.retrograde.app.feature.settings.SettingsActivity
 import com.codebutler.retrograde.app.shared.GameInteractionHandler
+import com.codebutler.retrograde.app.shared.ui.SimpleErrorFragment
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.entity.Game
-import com.codebutler.retrograde.app.shared.ui.SimpleErrorFragment
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.kotlin.autoDisposable
 import dagger.Provides
@@ -79,10 +80,16 @@ class HomeFragment : BrowseSupportFragment(),
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val theme = activity?.theme
+
         headersState = BrowseFragment.HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
         title = getString(R.string.app_name)
+        badgeDrawable = resources.getDrawable(R.drawable.logo, theme)
+        searchAffordanceColors = SearchOrbView.Colors(resources.getColor(R.color.colorPrimary, theme))
         onItemViewClickedListener = this
+
         loadContents()
     }
 

@@ -35,7 +35,7 @@ class OnboardingFragment : OnboardingSupportFragment() {
 
     override fun onCreateBackgroundView(inflater: LayoutInflater, container: ViewGroup): View {
         val bgView = View(activity)
-        bgView.setBackgroundColor(resources.getColor(R.color.fastlane_background, activity!!.theme))
+        bgView.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight, activity!!.theme))
         return bgView
     }
 
