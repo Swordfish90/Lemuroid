@@ -19,6 +19,8 @@
 
 package com.codebutler.retrograde.storage.archiveorg
 
+import com.codebutler.retrograde.storage.archiveorg.model.AdvancedSearchResponse
+import com.codebutler.retrograde.storage.archiveorg.model.DetailsResponse
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -28,28 +30,15 @@ import retrofit2.http.Url
 internal interface ArchiveOrgApi {
 
     @GET("/advancedsearch.php?q=collection:internetarcade&fl=identifier&rows=999&output=json")
+    @Throws(Throwable::class)
     fun advancedSearch(): Single<AdvancedSearchResponse>
 
     @GET("/details/{identifier}?output=json")
+    @Throws(Throwable::class)
     fun details(@Path("identifier") identifier: String): Single<DetailsResponse>
 
     @GET
+    @Throws(Throwable::class)
     fun downloadFile(@Url url: String): Single<ResponseBody>
 
-    data class AdvancedSearchResponse(val response: Response) {
-        data class Response(val docs: List<Doc>) {
-            data class Doc(val identifier: String)
-        }
-    }
-
-    data class DetailsResponse(
-            val server: String,
-            val dir: String,
-            val metadata: Metadata,
-            val files: Map<String, File>,
-            val misc: Misc) {
-        data class Metadata(val title: List<String>, val creator: List<String>?)
-        data class File(val format: String)
-        data class Misc(val image: String)
-    }
 }

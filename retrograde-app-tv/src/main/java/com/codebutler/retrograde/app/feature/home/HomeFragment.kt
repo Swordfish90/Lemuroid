@@ -54,6 +54,7 @@ import dagger.Provides
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeFragment : BrowseSupportFragment(),
@@ -111,6 +112,7 @@ class HomeFragment : BrowseSupportFragment(),
                                     progressBarManager.hide()
                                 },
                                 { error ->
+                                    Timber.e(error)
                                     progressBarManager.hide()
                                     val errorFragment = SimpleErrorFragment.create(error.toString())
                                     fragmentManager!!.beginTransaction()

@@ -26,6 +26,7 @@ import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
 import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.storage.StorageProvider
+import com.codebutler.retrograde.storage.archiveorg.model.DetailsResponse
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
@@ -115,10 +116,10 @@ class ArchiveOrgStorageProvider(private val context: Context) : StorageProvider 
             }
         }
 
-        private fun getTitle(response: ArchiveOrgApi.DetailsResponse) =
+        private fun getTitle(response: DetailsResponse) =
                 response.metadata.title.first().replace(Regex("^Internet Arcade: "), "")
 
-        private fun getRomUrl(response: ArchiveOrgApi.DetailsResponse): Uri? {
+        private fun getRomUrl(response: DetailsResponse): Uri? {
             val zipFilePath = response.files.entries.find { (_, value) -> value.format == "ZIP" }?.key ?: return null
             return Uri.Builder()
                     .scheme("https")

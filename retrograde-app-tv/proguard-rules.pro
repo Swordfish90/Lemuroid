@@ -1,3 +1,10 @@
+## Options
+-dontoptimize
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
+-keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
+-keepattributes SourceFile,LineNumberTable,Signature,JavascriptInterface,Exceptions
+-verbose
+
 ## Arch Components
 -keep class * implements android.arch.lifecycle.GeneratedAdapter {<init>(...);}
 
@@ -14,10 +21,9 @@
 ## Kotlin
 -dontwarn kotlin.**
 -dontnote kotlin.**
+-dontwarn org.jetbrains.annotations.**
+-keep class kotlin.Metadata { *; }
 -keep class android.arch.lifecycle.**
-
-## Retrograde
--keep class com.codebutler.retrograde.lib.retro.**
 
 ## OkHttp
 -dontwarn okhttp3.**
@@ -34,8 +40,8 @@
 -dontnote com.squareup.okhttp.**
 
 ## Retrofit
--dontnote retrofit2.Platform
--dontwarn retrofit2.Platform$Java8
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
 
 ## Moshi
 -dontnote sun.misc.Unsafe
@@ -48,10 +54,16 @@
 -dontwarn junit.**
 -dontwarn com.google.errorprone.**
 -dontnote android.net.http.*
--keepattributes SourceFile,LineNumberTable,Signature,JavascriptInterface,Exceptions
--verbose
 
-# The Google API library pulled in a bunch of apache/guava crap.
+## Google API
+-keep class com.google.** { *;}
+-keep interface com.google.** { *;}
+-keepclassmembers class * {
+  @com.google.api.client.util.Key <fields>;
+}
+
+
+## The Google API library pulled in a bunch of apache/guava crap.
 # TODO: Get rid of this soon.
 -dontwarn org.apache.http.**
 -dontwarn org.apache.log.**
@@ -61,3 +73,11 @@
 -dontnote org.apache.log4j.**
 -dontnote com.google.appengine.api.ThreadManager
 -dontnote com.google.apphosting.api.ApiProxy
+
+## Retrograde
+-keep class com.codebutler.retrograde.lib.retro.**
+-keep class **.model.**
+-keepclassmembers class **.model.** {
+  <init>(...);
+  <fields>;
+}
