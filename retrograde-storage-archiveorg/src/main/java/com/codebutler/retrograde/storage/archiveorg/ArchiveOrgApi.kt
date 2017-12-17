@@ -40,5 +40,4 @@ internal interface ArchiveOrgApi {
     @GET
     @Throws(Throwable::class)
     fun downloadFile(@Url url: String): Single<ResponseBody>
-
 }

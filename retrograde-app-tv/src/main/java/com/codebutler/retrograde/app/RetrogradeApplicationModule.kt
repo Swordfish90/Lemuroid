@@ -76,7 +76,8 @@ abstract class RetrogradeApplicationModule {
 
         @Provides
         @JvmStatic
-        fun ovgdbManager(app: RetrogradeApplication, executorService: ExecutorService) = OvgdbManager(app, executorService)
+        fun ovgdbManager(app: RetrogradeApplication, executorService: ExecutorService) =
+                OvgdbManager(app, executorService)
 
         @Provides
         @JvmStatic
