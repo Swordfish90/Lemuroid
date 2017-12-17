@@ -2,6 +2,8 @@
 
 Play retro video games on your Android TV!
 
+[![Build Status](https://travis-ci.org/retrograde/retrograde-android.svg?branch=fix-travis)](https://travis-ci.org/retrograde/retrograde-android)
+
 Features:
 - Designed and built for Android TV, looks and feels at home on your device.
 - Works with most bluetooth game controllers without any configuration.
