@@ -36,6 +36,7 @@ import com.uber.autodispose.kotlin.autoDisposable
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class GDriveBrowseFragment : BrowseSupportFragment() {
@@ -63,7 +64,7 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
                 is File -> navigateDownTo(item.id)
                 is UseFolderItem -> {
                     val currentFolderId = navigationStack[navigationStack.lastIndex]
-                    (activity as Listener).onFolderSelected(currentFolderId)
+                    (activity as Listener).onGDriveFolderSelected(currentFolderId)
                 }
             }
         }
@@ -96,7 +97,7 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDisposable(scope())
-                .subscribe { files ->
+                .subscribe({ files ->
                     val folders = files.filter { file -> file.mimeType == "application/vnd.google-apps.folder" }
                     val foldersAdapter = ArrayObjectAdapter(FilePresenter())
                     foldersAdapter.addAll(0, folders)
@@ -111,7 +112,10 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
                     adapter = categoryRowAdapter
 
                     progressBarManager.hide()
-                }
+                }, { error ->
+                    Timber.e(error)
+                    (activity as Listener).onGDriveError(error)
+                })
     }
 
     private class FilePresenter : Presenter() {
@@ -142,6 +146,7 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
     }
 
     interface Listener {
-        fun onFolderSelected(folderId: String)
+        fun onGDriveFolderSelected(folderId: String)
+        fun onGDriveError(error: Throwable)
     }
 }

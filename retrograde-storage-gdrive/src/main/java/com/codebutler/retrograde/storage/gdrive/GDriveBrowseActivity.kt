@@ -19,9 +19,12 @@
 
 package com.codebutler.retrograde.storage.gdrive
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
+import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
@@ -51,10 +54,20 @@ class GDriveBrowseActivity : RetrogradeActivity(), GDriveBrowseFragment.Listener
         }
     }
 
-    override fun onFolderSelected(folderId: String) {
+    override fun onGDriveFolderSelected(folderId: String) {
         val data = Intent()
         data.putExtra(BUNDLE_FOLDER_ID, folderId)
         setResult(RESULT_OK, data)
+        finish()
+    }
+
+    override fun onGDriveError(error: Throwable) {
+        val message = when (error) {
+            is GoogleJsonResponseException -> error.details.message
+            else -> error.message
+        }
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        setResult(Activity.RESULT_CANCELED)
         finish()
     }
 
