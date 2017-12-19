@@ -64,6 +64,7 @@ dependencies {
     implementation libs.rxAndroid2
     implementation libs.rxJava2
     implementation libs.rxPermissions2
+    implementation libs.rxPreferences
     implementation libs.rxRelay2
     implementation libs.supportAppCompatV7
     implementation libs.supportLeanbackV17

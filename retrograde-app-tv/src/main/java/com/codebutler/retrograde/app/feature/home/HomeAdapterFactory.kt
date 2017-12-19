@@ -26,11 +26,11 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.shared.GamePresenter
 import com.codebutler.retrograde.app.shared.ui.ItemViewLongClickListener
+import com.codebutler.retrograde.app.shared.ui.PagedListObjectAdapter
 import com.codebutler.retrograde.lib.library.GameSystem
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.dao.GameLibraryCounts
 import com.codebutler.retrograde.lib.library.db.entity.Game
-import com.codebutler.retrograde.app.shared.ui.PagedListObjectAdapter
 import com.codebutler.retrograde.lib.ui.SimpleItem
 import com.codebutler.retrograde.lib.ui.SimpleItemPresenter
 import com.uber.autodispose.android.lifecycle.scope
@@ -44,7 +44,6 @@ class HomeAdapterFactory(
         longClickListener: ItemViewLongClickListener) {
 
     data class GameSystemItem(val system: GameSystem) : SimpleItem(system.titleResId, system.imageResId)
-    object AboutItem : SimpleItem(R.string.about, R.drawable.ic_info_outline_white_64dp)
     object HelpItem : SimpleItem(R.string.help, R.drawable.ic_help_outline_white_64dp)
     object RescanItem : SimpleItem(R.string.rescan, R.drawable.ic_refresh_white_64dp)
     object AllGamesItem : SimpleItem(R.string.all_games, R.drawable.ic_all_games_white_64dp)
@@ -100,7 +99,6 @@ class HomeAdapterFactory(
         settingsAdapter.add(SettingsItem)
         settingsAdapter.add(RescanItem)
         settingsAdapter.add(HelpItem)
-        settingsAdapter.add(AboutItem)
         return settingsAdapter
     }
 }

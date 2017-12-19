@@ -3,9 +3,13 @@
 <resources>
     <string name="about">About</string>
     <string name="add_to_favorites">Add to Favorites</string>
+    <string name="advanced">Advanced</string>
     <string name="all_games">All Games</string>
     <string name="app_name">Retrograde</string>
+    <string name="debug_log">Debug Log</string>
+    <string name="debug_logging">Debug Logging</string>
     <string name="favorites">Favorites</string>
+    <string name="flags">Flags</string>
     <string name="fps_format">Render: %1$d\nGame: %2$d</string>
     <string name="help">Help</string>
     <string name="library">Library</string>
@@ -13,6 +17,7 @@
     <string name="no_games">No Games</string>
     <string name="onboarding_description">Retro gaming for Android TV</string>
     <string name="onboarding_title">Welcome to Retrograde</string>
+    <string name="opengl_rendering">OpenGL Rendering</string>
     <string name="play">Play</string>
     <string name="recently_played">Recently Played</string>
     <string name="remove_from_favorites">Remove from Favorites</string>
@@ -20,4 +25,5 @@
     <string name="search_results">Search Results \'%s\'</string>
     <string name="settings">Settings</string>
     <string name="sources">Sources</string>
+    <string name="version">Version</string>
 </resources>

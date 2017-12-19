@@ -21,11 +21,15 @@ package com.codebutler.retrograde.app
 
 import android.content.Context
 import com.codebutler.retrograde.BuildConfig
+import com.codebutler.retrograde.R
 import com.crashlytics.android.Crashlytics
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
+import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
+import javax.inject.Inject
 
 class RetrogradeApplication : DaggerApplication() {
     companion object {
@@ -39,16 +43,32 @@ class RetrogradeApplication : DaggerApplication() {
         fun get(context: Context) = context.applicationContext as RetrogradeApplication
     }
 
+    @Inject lateinit var rxTimberTree: RxTimberTree
+    @Inject lateinit var rxPrefs: RxSharedPreferences
+
     override fun onCreate() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-        }
-
-        if (!BuildConfig.DEBUG) {
+        } else {
             Fabric.with(this, Crashlytics())
         }
+
+        var isPlanted = false
+        rxPrefs.getBoolean(getString(R.string.pref_key_flags_logging)).asObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { value ->
+                    if (value) {
+                        Timber.plant(rxTimberTree)
+                        isPlanted = true
+                    } else {
+                        if (isPlanted) {
+                            Timber.uproot(rxTimberTree)
+                            isPlanted = false
+                        }
+                    }
+                }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

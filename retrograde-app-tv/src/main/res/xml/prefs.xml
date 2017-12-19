@@ -3,6 +3,32 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings">
     <PreferenceCategory
-        android:key="sources"
+        android:key="@string/pref_key_sources"
         android:title="@string/sources" />
+
+    <PreferenceCategory
+        android:key="@string/pref_key_advanced"
+        android:title="@string/advanced">
+        <PreferenceScreen
+            android:key="@string/pref_key_flags"
+            android:title="@string/flags">
+            <SwitchPreference
+                android:key="@string/pref_key_flags_logging"
+                android:title="@string/debug_logging"/>
+            <SwitchPreference
+                android:key="@string/pref_key_flags_opengl"
+                android:title="@string/opengl_rendering"/>
+        </PreferenceScreen>
+        <Preference
+            android:key="@string/pref_key_advanced_log"
+            android:title="@string/debug_log"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/app_name">
+        <Preference
+            android:key="about"
+            android:title="@string/about"
+            android:fragment="com.codebutler.retrograde.app.feature.settings.AboutFragment"/>
+    </PreferenceCategory>
 </PreferenceScreen>

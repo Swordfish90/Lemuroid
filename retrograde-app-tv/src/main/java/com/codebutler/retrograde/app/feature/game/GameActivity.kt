@@ -24,6 +24,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -33,7 +34,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.RetrogradeConfig
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.common.kotlin.isAllZeros
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
@@ -81,10 +81,13 @@ class GameActivity : RetrogradeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        if (RetrogradeConfig.ENABLE_GLSURFACEVIEW) {
-            gameDisplay = GlGameDisplay(this)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val enableOpengl = prefs.getBoolean(getString(R.string.pref_key_flags_opengl), false)
+
+        gameDisplay = if (enableOpengl) {
+            GlGameDisplay(this)
         } else {
-            gameDisplay = SwGameDisplay(this)
+            SwGameDisplay(this)
         }
 
         gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)

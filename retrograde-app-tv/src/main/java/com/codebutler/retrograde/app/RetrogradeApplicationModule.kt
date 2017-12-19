@@ -21,11 +21,14 @@ package com.codebutler.retrograde.app
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import android.preference.PreferenceManager
 import com.codebutler.retrograde.app.feature.game.GameActivity
 import com.codebutler.retrograde.app.feature.main.MainActivity
+import com.codebutler.retrograde.app.feature.settings.DebugLogActivity
 import com.codebutler.retrograde.app.feature.settings.SettingsActivity
 import com.codebutler.retrograde.lib.core.CoreManager
 import com.codebutler.retrograde.lib.injection.PerActivity
+import com.codebutler.retrograde.lib.injection.PerApp
 import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.ovgdb.db.OvgdbMetadataProvider
@@ -34,6 +37,7 @@ import com.codebutler.retrograde.lib.storage.StorageProviderRegistry
 import com.codebutler.retrograde.lib.storage.local.LocalStorageProvider
 import com.codebutler.retrograde.metadata.ovgdb.db.OvgdbManager
 import com.codebutler.retrograde.storage.archiveorg.ArchiveOrgStorageProvider
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -68,18 +72,25 @@ abstract class RetrogradeApplicationModule {
     @ContributesAndroidInjector(modules = [SettingsActivity.Module::class])
     abstract fun settingsActivity(): SettingsActivity
 
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun debugLogActivity(): DebugLogActivity
+
     @Module
     companion object {
         @Provides
+        @PerApp
         @JvmStatic
         fun executorService(): ExecutorService = Executors.newSingleThreadExecutor()
 
         @Provides
+        @PerApp
         @JvmStatic
         fun ovgdbManager(app: RetrogradeApplication, executorService: ExecutorService) =
                 OvgdbManager(app, executorService)
 
         @Provides
+        @PerApp
         @JvmStatic
         fun retrogradeDb(app: RetrogradeApplication) =
                 Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
@@ -87,26 +98,31 @@ abstract class RetrogradeApplicationModule {
                 .build()
 
         @Provides
+        @PerApp
         @JvmStatic
         fun ovgdbMetadataProvider(ovgdbManager: OvgdbManager) = OvgdbMetadataProvider(ovgdbManager)
 
         @Provides
+        @PerApp
         @IntoSet
         @JvmStatic
         fun localGameStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider =
                 LocalStorageProvider(context, metadataProvider)
 
         @Provides
+        @PerApp
         @IntoSet
         @JvmStatic
         fun archiveorgStorageProvider(context: Context): StorageProvider = ArchiveOrgStorageProvider(context)
 
         @Provides
+        @PerApp
         @JvmStatic
         fun gameStorageProviderRegistry(context: Context, providers: Set<@JvmSuppressWildcards StorageProvider>) =
                 StorageProviderRegistry(context, providers)
 
         @Provides
+        @PerApp
         @JvmStatic
         fun gameLibrary(
                 db: RetrogradeDatabase,
@@ -114,6 +130,7 @@ abstract class RetrogradeApplicationModule {
                 GameLibrary(db, storageProviderRegistry)
 
         @Provides
+        @PerApp
         @JvmStatic
         fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.MINUTES)
@@ -121,6 +138,7 @@ abstract class RetrogradeApplicationModule {
                 .build()
 
         @Provides
+        @PerApp
         @JvmStatic
         fun retrofit(): Retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
@@ -141,7 +159,19 @@ abstract class RetrogradeApplicationModule {
                 .build()
 
         @Provides
+        @PerApp
         @JvmStatic
         fun coreManager(context: Context, retrofit: Retrofit) = CoreManager(context, retrofit)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun rxTree() = RxTimberTree()
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun rxPrefs(context: Context) =
+                RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
     }
 }

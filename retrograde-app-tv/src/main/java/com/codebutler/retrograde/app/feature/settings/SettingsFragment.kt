@@ -2,7 +2,9 @@ package com.codebutler.retrograde.app.feature.settings
 
 import android.app.Fragment
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.support.v14.preference.PreferenceFragment
 import android.support.v17.preference.LeanbackPreferenceFragment
 import android.support.v17.preference.LeanbackSettingsFragment
@@ -31,10 +33,17 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
     }
 
     override fun onPreferenceStartInitialScreen() {
-        startPreferenceFragment(PrefFragment())
+        startPreferenceFragment(PrefScreenFragment())
     }
 
-    override fun onPreferenceStartScreen(caller: PreferenceFragment, pref: PreferenceScreen): Boolean = false
+    override fun onPreferenceStartScreen(caller: PreferenceFragment, pref: PreferenceScreen): Boolean {
+        val fragment = PrefScreenFragment()
+        fragment.arguments = Bundle().apply {
+            putString(LeanbackPreferenceFragment.ARG_PREFERENCE_ROOT, pref.key)
+        }
+        startPreferenceFragment(fragment)
+        return true
+    }
 
     override fun onPreferenceStartFragment(caller: PreferenceFragment, pref: Preference): Boolean {
         val fragment = Class.forName(pref.fragment).newInstance() as Fragment
@@ -49,10 +58,14 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
 
         @PerChildFragment
         @ContributesAndroidInjector
-        abstract fun prefFragment(): PrefFragment
+        abstract fun prefFragment(): PrefScreenFragment
+
+        @PerChildFragment
+        @ContributesAndroidInjector
+        abstract fun logFragment(): DebugLogActivity
     }
 
-    class PrefFragment : LeanbackPreferenceFragment() {
+    class PrefScreenFragment : LeanbackPreferenceFragment() {
 
         @Inject lateinit var storageProviderRegistry: StorageProviderRegistry
 
@@ -62,26 +75,48 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            addPreferencesFromResource(R.xml.prefs)
+            setPreferencesFromResource(R.xml.prefs, rootKey)
 
-            val themeTypedValue = TypedValue()
-            activity.theme.resolveAttribute(R.attr.preferenceTheme, themeTypedValue, true)
-            val contextThemeWrapper = ContextThemeWrapper(activity, themeTypedValue.resourceId)
+            if (rootKey == null) {
+                val themeTypedValue = TypedValue()
+                activity.theme.resolveAttribute(R.attr.preferenceTheme, themeTypedValue, true)
+                val contextThemeWrapper = ContextThemeWrapper(activity, themeTypedValue.resourceId)
 
-            val sourcesCategory = findPreference("sources") as PreferenceCategory
-            sourcesCategory.preferenceManager.sharedPreferencesName = StorageProviderRegistry.PREF_NAME
+                val sourcesCategory = findPreference(getString(R.string.pref_key_sources)) as PreferenceCategory
+                sourcesCategory.preferenceManager.sharedPreferencesName = StorageProviderRegistry.PREF_NAME
 
-            val providers = storageProviderRegistry.providers.sortedBy { it.name }
-            for (provider in providers) {
-                val pref = MasterSwitchPreference(contextThemeWrapper)
-                pref.setDefaultValue(true)
-                pref.key = provider.id
-                pref.title = provider.name
-                val prefsFragmentClass = provider.prefsFragmentClass
-                if (prefsFragmentClass != null) {
-                    pref.fragment = prefsFragmentClass.name
+                val providers = storageProviderRegistry.providers.sortedBy { it.name }
+                for (provider in providers) {
+                    val pref = MasterSwitchPreference(contextThemeWrapper)
+                    pref.setDefaultValue(true)
+                    pref.key = provider.id
+                    pref.title = provider.name
+                    val prefsFragmentClass = provider.prefsFragmentClass
+                    if (prefsFragmentClass != null) {
+                        pref.fragment = prefsFragmentClass.name
+                    }
+                    sourcesCategory.addPreference(pref)
                 }
-                sourcesCategory.addPreference(pref)
+            }
+        }
+
+        override fun onResume() {
+            super.onResume()
+            if (preferenceScreen.key == null) {
+                val defaultPrefs = getDefaultSharedPreferences(activity)
+                val showLogPref = findPreference(getString(R.string.pref_key_advanced_log))
+                val loggingEnabledKey = getString(R.string.pref_key_flags_logging)
+                showLogPref.isVisible = defaultPrefs.getBoolean(loggingEnabledKey, false)
+            }
+        }
+
+        override fun onPreferenceTreeClick(preference: Preference): Boolean {
+            return when (preference.key) {
+                getString(R.string.pref_key_advanced_log) -> {
+                    startActivity(Intent(activity, DebugLogActivity::class.java))
+                    true
+                }
+                else -> super.onPreferenceTreeClick(preference)
             }
         }
     }

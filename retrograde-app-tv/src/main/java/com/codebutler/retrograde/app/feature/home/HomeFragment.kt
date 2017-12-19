@@ -35,7 +35,6 @@ import android.support.v17.leanback.widget.RowPresenter
 import android.support.v17.leanback.widget.SearchOrbView
 import android.support.v4.app.ActivityOptionsCompat
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.feature.home.HomeAdapterFactory.AboutItem
 import com.codebutler.retrograde.app.feature.home.HomeAdapterFactory.AllGamesItem
 import com.codebutler.retrograde.app.feature.home.HomeAdapterFactory.GameSystemItem
 import com.codebutler.retrograde.app.feature.home.HomeAdapterFactory.RescanItem
@@ -134,7 +133,6 @@ class HomeFragment : BrowseSupportFragment(),
                         .toBundle()
                 startActivity(intent, bundle)
             }
-            is AboutItem -> {}
         }
     }
 

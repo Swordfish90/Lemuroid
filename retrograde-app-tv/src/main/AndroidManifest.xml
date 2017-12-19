@@ -23,7 +23,6 @@
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.codebutler.retrograde">
 
     <uses-feature
@@ -70,9 +69,13 @@
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
-        <activity android:name=".app.feature.settings.SettingsActivity"
+        <activity
+            android:name=".app.feature.settings.SettingsActivity"
             android:exported="true"
             android:theme="@style/LeanbackPreferences"/>
+
+        <activity
+            android:name=".app.feature.settings.DebugLogActivity"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
