@@ -22,6 +22,7 @@ package com.codebutler.retrograde.app
 import android.content.Context
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.R
+import com.codebutler.retrograde.storage.gdrive.GDriveStorageProvider
 import com.crashlytics.android.Crashlytics
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.android.AndroidInjector
@@ -45,6 +46,7 @@ class RetrogradeApplication : DaggerApplication() {
 
     @Inject lateinit var rxTimberTree: RxTimberTree
     @Inject lateinit var rxPrefs: RxSharedPreferences
+    @Inject lateinit var gdriveStorageProvider: GDriveStorageProvider
 
     override fun onCreate() {
         super.onCreate()
@@ -59,6 +61,7 @@ class RetrogradeApplication : DaggerApplication() {
         rxPrefs.getBoolean(getString(R.string.pref_key_flags_logging)).asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { value ->
+                    gdriveStorageProvider.loggingEnabled = value
                     if (value) {
                         Timber.plant(rxTimberTree)
                         isPlanted = true

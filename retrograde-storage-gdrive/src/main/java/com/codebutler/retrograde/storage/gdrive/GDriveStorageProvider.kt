@@ -23,17 +23,21 @@ import android.content.Context
 import android.net.Uri
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
+import com.codebutler.retrograde.lib.logging.TimberLoggingHandler
 import com.codebutler.retrograde.lib.ovgdb.db.OvgdbMetadataProvider
 import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
 import com.google.android.gms.common.api.Scope
+import com.google.api.client.http.HttpTransport
 import com.google.api.services.drive.DriveScopes
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.File
 import java.io.FileOutputStream
+import java.util.logging.Level
+import java.util.logging.Logger
 import javax.inject.Inject
 
 class GDriveStorageProvider(componentBuilder: GDriveComponent.Builder) : StorageProvider {
@@ -50,8 +54,11 @@ class GDriveStorageProvider(componentBuilder: GDriveComponent.Builder) : Storage
     @Inject lateinit var driveBrowser: GDriveBrowser
     @Inject lateinit var ovgdbMetadataProvider: OvgdbMetadataProvider
 
+    private val googleLogger = Logger.getLogger(HttpTransport::class.java.name)
+
     init {
         component.inject(this)
+        googleLogger.addHandler(TimberLoggingHandler())
     }
 
     override val id = "gdrive"
@@ -109,4 +116,13 @@ class GDriveStorageProvider(componentBuilder: GDriveComponent.Builder) : Storage
     }
 
     private fun getSaveFileName(game: Game) = "${game.fileName}.sram"
+
+    var loggingEnabled: Boolean = false
+        set(value) {
+            if (value) {
+                googleLogger.level = Level.CONFIG
+            } else {
+                googleLogger.level = Level.OFF
+            }
+        }
 }
