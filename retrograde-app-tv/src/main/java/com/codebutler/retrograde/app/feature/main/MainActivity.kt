@@ -59,8 +59,7 @@ class MainActivity : RetrogradeActivity(), HasSupportFragmentInjector, Onboardin
 
         val permissions = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO)
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         rxPermissions.get().request(*permissions)
                 .observeOn(AndroidSchedulers.mainThread())
