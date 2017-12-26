@@ -1,6 +1,7 @@
 package com.codebutler.retrograde.app.feature.settings
 
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.support.v14.preference.PreferenceFragment
 import android.support.v17.preference.LeanbackPreferenceFragment
@@ -28,7 +29,17 @@ class AboutFragment : LeanbackSettingsFragment() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.about)
 
-            findPreference("version").summary = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+            val versionPref = findPreference(getString(R.string.pref_key_version))
+            versionPref.summary = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
         }
+
+        override fun onPreferenceTreeClick(preference: Preference): Boolean =
+                when (preference.key) {
+                    getString(R.string.pref_key_licenses) -> {
+                        startActivity(Intent(activity, LicensesActivity::class.java))
+                        true
+                    }
+                    else -> super.onPreferenceTreeClick(preference)
+                }
     }
 }

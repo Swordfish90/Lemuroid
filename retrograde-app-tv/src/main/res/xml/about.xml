@@ -4,6 +4,10 @@
     android:title="@string/about">
 
     <Preference
-        android:key="version"
+        android:key="@string/pref_key_version"
         android:title="@string/version"/>
+
+    <Preference
+        android:key="@string/pref_key_licenses"
+        android:title="@string/licenses"/>
 </PreferenceScreen>

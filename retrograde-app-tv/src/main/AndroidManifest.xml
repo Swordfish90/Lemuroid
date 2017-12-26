@@ -75,7 +75,12 @@
             android:theme="@style/LeanbackPreferences"/>
 
         <activity
-            android:name=".app.feature.settings.DebugLogActivity"/>
+            android:name=".app.feature.settings.DebugLogActivity"
+            android:label="@string/debug_log"/>
+
+        <activity
+            android:name=".app.feature.settings.LicensesActivity"
+            android:label="@string/licenses"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"

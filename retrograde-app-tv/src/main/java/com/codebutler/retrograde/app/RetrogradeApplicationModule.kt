@@ -25,6 +25,7 @@ import android.preference.PreferenceManager
 import com.codebutler.retrograde.app.feature.game.GameActivity
 import com.codebutler.retrograde.app.feature.main.MainActivity
 import com.codebutler.retrograde.app.feature.settings.DebugLogActivity
+import com.codebutler.retrograde.app.feature.settings.LicensesActivity
 import com.codebutler.retrograde.app.feature.settings.SettingsActivity
 import com.codebutler.retrograde.lib.core.CoreManager
 import com.codebutler.retrograde.lib.injection.PerActivity
@@ -71,6 +72,10 @@ abstract class RetrogradeApplicationModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [SettingsActivity.Module::class])
     abstract fun settingsActivity(): SettingsActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun licensesActivity(): LicensesActivity
 
     @PerActivity
     @ContributesAndroidInjector

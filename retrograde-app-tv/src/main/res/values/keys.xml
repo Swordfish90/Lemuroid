@@ -6,4 +6,6 @@
     <string name="pref_key_flags_logging" translatable="false">flags.debug_logging</string>
     <string name="pref_key_flags_opengl" translatable="false">flags.opengl_rendering</string>
     <string name="pref_key_sources" translatable="false">sources</string>
+    <string name="pref_key_licenses" translatable="false">licenses</string>
+    <string name="pref_key_version" translatable="false">version</string>
 </resources>

@@ -12,6 +12,7 @@
     <string name="flags">Flags</string>
     <string name="fps_format">Render: %1$d\nGame: %2$d</string>
     <string name="help">Help</string>
+    <string name="licenses">Licenses</string>
     <string name="library">Library</string>
     <string name="loading">Loading…</string>
     <string name="no_games">No Games</string>

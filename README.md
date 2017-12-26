@@ -21,6 +21,29 @@ Chat: https://discord.gg/UuDmP3v
 
 ![Screenshot](https://retrograde.github.io/images/screenshot1.png)
 
+## Open-Source Libraries
+
+Retrograde uses the following open-source libraries:
+
+* [Anko](https://github.com/Kotlin/anko)
+* [AutoDispose](https://github.com/uber/AutoDispose)
+* [Dagger](https://google.github.io/dagger)
+* [Google API Client](https://github.com/google/google-api-java-client)
+* [Java Native Access](https://github.com/java-native-access/jna)
+* [Koptional](https://github.com/gojuno/koptional)
+* [Kotlin](https://kotlinlang.org)
+* [LibRetro](https://www.libretro.com)
+* [Moshi](https://github.com/square/moshi)
+* [OkHttp](https://github.com/square/okhttp)
+* [Picasso](https://github.com/square/picasso)
+* [Retrofit](https://github.com/square/retrofit)
+* [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [RxJava](https://github.com/ReactiveX/RxJava)
+* [RxPermissions](https://github.com/tbruyelle/RxPermissions)
+* [RxPreferences](https://github.com/f2prateek/rx-preferences)
+* [RxRelay](https://github.com/JakeWharton/RxRelay)
+* [Timber](https://github.com/JakeWharton/timber)
+
 ## License
 
     This program is free software: you can redistribute it and/or modify
