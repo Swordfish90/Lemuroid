@@ -71,6 +71,8 @@ class GDriveStorageProvider(componentBuilder: GDriveComponent.Builder) : Storage
 
     override val metadataProvider: GameMetadataProvider = ovgdbMetadataProvider
 
+    override val enabledByDefault = false
+
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
         val folderId = getGameLibraryFolderId() ?: return@fromCallable listOf<StorageFile>()
         driveBrowser.listRecursive(folderId)

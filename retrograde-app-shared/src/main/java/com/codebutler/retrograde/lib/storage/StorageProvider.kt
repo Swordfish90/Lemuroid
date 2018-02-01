@@ -39,6 +39,8 @@ interface StorageProvider {
 
     val metadataProvider: GameMetadataProvider
 
+    val enabledByDefault: Boolean
+
     fun listFiles(): Single<Iterable<StorageFile>>
 
     fun getGameRom(game: Game): Single<File>

@@ -84,6 +84,8 @@ class WebDavStorageProvider(
 
     override val prefsFragmentClass: Class<out LeanbackPreferenceFragment>? = WebDavPreferenceFragment::class.java
 
+    override val enabledByDefault = false
+
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
         val url = readConfig().url
         if (url.isNullOrBlank()) {

@@ -62,6 +62,8 @@ class ArchiveOrgStorageProvider(private val context: Context) : StorageProvider 
 
     override val metadataProvider: GameMetadataProvider = ArchiveOrgMetadataProvider(api)
 
+    override val enabledByDefault = false
+
     override fun listFiles(): Single<Iterable<StorageFile>> {
         return api.advancedSearch()
                 .map { body -> body.response.docs

@@ -48,6 +48,8 @@ class LocalStorageProvider(
 
     override val prefsFragmentClass: Class<LeanbackPreferenceFragment>? = null
 
+    override val enabledByDefault = true
+
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
         Environment.getExternalStorageDirectory()
                 .walk()

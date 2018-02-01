@@ -38,7 +38,7 @@ class StorageProviderRegistry(context: Context, val providers: Set<StorageProvid
     private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
     val enabledProviders: Iterable<StorageProvider>
-        get() = providers.filter { prefs.getBoolean(it.id, true) }
+        get() = providers.filter { prefs.getBoolean(it.id, it.enabledByDefault) }
 
     fun getProvider(game: Game) = providersByScheme[game.fileUri.scheme]!!
 }

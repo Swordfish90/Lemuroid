@@ -88,7 +88,7 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
                 val providers = storageProviderRegistry.providers.sortedBy { it.name }
                 for (provider in providers) {
                     val pref = MasterSwitchPreference(contextThemeWrapper)
-                    pref.setDefaultValue(true)
+                    pref.setDefaultValue(provider.enabledByDefault)
                     pref.key = provider.id
                     pref.title = provider.name
                     val prefsFragmentClass = provider.prefsFragmentClass
