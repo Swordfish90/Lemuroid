@@ -39,9 +39,10 @@ class TimberLoggingHandler : Handler() {
             return loggerName
         }
         val lastPeriod = loggerName.lastIndexOf(".")
-        return if (length - (lastPeriod + 1) <= 23)
+        return if (length - (lastPeriod + 1) <= 23) {
             loggerName.substring(lastPeriod + 1)
-        else
+        } else {
             loggerName.substring(loggerName.length - 23)
+        }
     }
 }

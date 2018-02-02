@@ -1,7 +1,0 @@
-include ':retrograde-util'
-include ':retrograde-metadata-ovgdb'
-include ':retrograde-storage-gdrive'
-include ':retrograde-storage-webdav'
-include ':retrograde-storage-archiveorg'
-include ':retrograde-app-shared'
-include ':retrograde-app-tv'
