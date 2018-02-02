@@ -27,7 +27,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(
         tableName = "releases",
         indices = [Index("releaseID"), Index("romID")])
-data class Release(
+data class OvgdbRelease(
         @PrimaryKey
         @ColumnInfo(name = "releaseID")
         val id: Int,

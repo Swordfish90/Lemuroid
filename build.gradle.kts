@@ -56,7 +56,7 @@ subprojects {
 
     extensions.configure(CheckstyleExtension::class.java) {
         isIgnoreFailures = false
-        toolVersion = "8.7"
+        toolVersion = "8.8"
     }
 
     afterEvaluate {

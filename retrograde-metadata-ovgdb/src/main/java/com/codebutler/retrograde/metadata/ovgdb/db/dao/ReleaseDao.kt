@@ -21,15 +21,15 @@ package com.codebutler.retrograde.lib.ovgdb.db.dao
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
-import com.codebutler.retrograde.lib.ovgdb.db.entity.Release
+import com.codebutler.retrograde.lib.ovgdb.db.entity.OvgdbRelease
 import io.reactivex.Maybe
 
 @Dao
 interface ReleaseDao {
 
     @Query("SELECT * FROM releases WHERE releaseID = :releaseId")
-    fun getReleaseById(releaseId: Int): Maybe<Release>
+    fun getReleaseById(releaseId: Int): Maybe<OvgdbRelease>
 
     @Query("SELECT * FROM releases WHERE romID = :romId")
-    fun findByRomId(romId: Int): Maybe<Release>
+    fun findByRomId(romId: Int): Maybe<OvgdbRelease>
 }

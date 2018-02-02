@@ -25,17 +25,17 @@ import com.codebutler.retrograde.lib.ovgdb.db.dao.RegionDao
 import com.codebutler.retrograde.lib.ovgdb.db.dao.ReleaseDao
 import com.codebutler.retrograde.lib.ovgdb.db.dao.RomDao
 import com.codebutler.retrograde.lib.ovgdb.db.dao.SystemDao
-import com.codebutler.retrograde.lib.ovgdb.db.entity.Region
-import com.codebutler.retrograde.lib.ovgdb.db.entity.Release
-import com.codebutler.retrograde.lib.ovgdb.db.entity.Rom
-import com.codebutler.retrograde.lib.ovgdb.db.entity.System
+import com.codebutler.retrograde.lib.ovgdb.db.entity.OvgdbRegion
+import com.codebutler.retrograde.lib.ovgdb.db.entity.OvgdbRelease
+import com.codebutler.retrograde.lib.ovgdb.db.entity.OvgdbRom
+import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbSystem
 
 @Database(
         entities = [
-            Region::class,
-            Release::class,
-            Rom::class,
-            System::class],
+            OvgdbRegion::class,
+            OvgdbRelease::class,
+            OvgdbRom::class,
+            OvgdbSystem::class],
         version = 1,
         exportSchema = false)
 abstract class OvgdbDatabase : RoomDatabase() {

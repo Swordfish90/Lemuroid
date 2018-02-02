@@ -24,7 +24,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "regions")
-data class Region(
+data class OvgdbRegion(
         @PrimaryKey
         @ColumnInfo(name = "regionID")
         val id: Int,
