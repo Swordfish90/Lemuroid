@@ -19,6 +19,7 @@
 
 package com.codebutler.retrograde.lib.retro
 
+import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.os.Build
 import com.codebutler.retrograde.common.BufferCache
@@ -27,6 +28,8 @@ import com.codebutler.retrograde.common.jna.SizeT
 import com.codebutler.retrograde.common.jna.UnsignedInt
 import com.codebutler.retrograde.lib.binding.LibC
 import com.codebutler.retrograde.lib.binding.LibRetrograde
+import com.codebutler.retrograde.lib.retro.LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_RGB565
+import com.codebutler.retrograde.lib.retro.LibRetro.retro_pixel_format.RETRO_PIXEL_FORMAT_XRGB8888
 import com.codebutler.retrograde.lib.retro.LibRetro.retro_system_info
 import com.codebutler.retrograde.lib.retro.LibRetro.retro_variable
 import com.sun.jna.Library
@@ -232,26 +235,37 @@ class Retro(coreLibraryName: String) {
 
     @Suppress("EnumEntryName")
     enum class PixelFormat(val value: Int) {
-        `0RGB1555`(0),
-        XRGB8888(1),
-        RGB565(2);
+        XRGB8888(RETRO_PIXEL_FORMAT_XRGB8888),
+        RGB565(RETRO_PIXEL_FORMAT_RGB565);
+
+        private val pixelFormatInfo = getPixelFormatInfo(value)
+
+        val bitmapConfig = getBitmapConfig(value)
+        val bytesPerPixel = pixelFormatInfo.bytesPerPixel
+
+        private fun getPixelFormatInfo(value: Int): android.graphics.PixelFormat {
+            val format = when (value) {
+                RETRO_PIXEL_FORMAT_XRGB8888 -> android.graphics.PixelFormat.RGBA_8888
+                RETRO_PIXEL_FORMAT_RGB565 -> android.graphics.PixelFormat.RGB_565
+                else -> TODO()
+            }
+            val pixelFormatInfo = PixelFormat()
+            android.graphics.PixelFormat.getPixelFormatInfo(format, pixelFormatInfo)
+            return pixelFormatInfo
+        }
+
+        private fun getBitmapConfig(value: Int): Bitmap.Config {
+            return when (value) {
+                RETRO_PIXEL_FORMAT_XRGB8888 -> Bitmap.Config.ARGB_8888
+                RETRO_PIXEL_FORMAT_RGB565 -> Bitmap.Config.RGB_565
+                else -> TODO()
+            }
+        }
 
         companion object {
             private val valueCache = mapOf(*PixelFormat.values().map { it.value to it }.toTypedArray())
             fun fromValue(value: Int) = valueCache[value]!!
         }
-
-        val info: android.graphics.PixelFormat
-            get() {
-                val format = when (this) {
-                    XRGB8888 -> android.graphics.PixelFormat.RGBA_8888
-                    RGB565 -> android.graphics.PixelFormat.RGB_565
-                    else -> TODO()
-                }
-                val pixelFormatInfo = PixelFormat()
-                android.graphics.PixelFormat.getPixelFormatInfo(format, pixelFormatInfo)
-                return pixelFormatInfo
-            }
     }
 
     interface EnvironmentCallback {

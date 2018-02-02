@@ -22,7 +22,6 @@ package com.codebutler.retrograde.lib.retro
 import android.arch.lifecycle.DefaultLifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Handler
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -64,8 +63,7 @@ class RetroDroid(
     private var systemAVInfo: Retro.SystemAVInfo? = null
     private var systemInfo: Retro.SystemInfo? = null
     private var timer: Timer? = null
-    private var videoBitmapConfig: Bitmap.Config = Bitmap.Config.ARGB_8888
-    private var videoBytesPerPixel: Int = 0
+    private var pixelFormat: Retro.PixelFormat? = null
 
     val fps: Long
         get() = fpsCalculator.fps
@@ -97,6 +95,9 @@ class RetroDroid(
         retro.environmentCallback = RetroDroidEnvironmentCallback()
 
         retro.videoCallback = { data, width, height, pitch ->
+            val pixelFormat = pixelFormat!!
+            val videoBytesPerPixel = pixelFormat.bytesPerPixel
+
             val newBuffer = videoBufferCache.getBuffer(width * height * videoBytesPerPixel)
             for (i in 0 until height) {
                 val widthAsBytes = width * videoBytesPerPixel
@@ -108,7 +109,19 @@ class RetroDroid(
                         widthAsBytes      // LENGTH
                 )
             }
-            val bitmap = videoBitmapCache.getBitmap(width, height, videoBitmapConfig)
+
+            // This is actually BGRx
+            if (pixelFormat == Retro.PixelFormat.XRGB8888) {
+                for (i in 0 until newBuffer.size step videoBytesPerPixel) {
+                    val r = newBuffer[i + 2]
+                    val b = newBuffer[i]
+                    newBuffer[i] = r
+                    newBuffer[i + 2] = b
+                    newBuffer[i + 3] = 0xFF.toByte()
+                }
+            }
+
+            val bitmap = videoBitmapCache.getBitmap(width, height, pixelFormat.bitmapConfig)
             bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer))
             gameDisplay.update(bitmap)
         }
@@ -357,21 +370,8 @@ class RetroDroid(
         }
 
         override fun onSetPixelFormat(pixelFormat: Retro.PixelFormat): Boolean {
-            val bitmapConfig = when (pixelFormat) {
-                Retro.PixelFormat.XRGB8888 -> Bitmap.Config.ARGB_8888
-                Retro.PixelFormat.RGB565 -> Bitmap.Config.RGB_565
-                else -> TODO()
-            }
-
-            val pixelFormatInfo = pixelFormat.info
-
-            Timber.d("""onSetPixelFormat: $pixelFormat
-                bitsPerPixel: ${pixelFormatInfo.bitsPerPixel}
-                bytesPerPixel: ${pixelFormatInfo.bytesPerPixel}""")
-
-            videoBitmapConfig = bitmapConfig
-            videoBytesPerPixel = pixelFormatInfo.bytesPerPixel
-
+            Timber.d("""onSetPixelFormat: $pixelFormat (bytesPerPixel: ${pixelFormat.bytesPerPixel})""")
+            this@RetroDroid.pixelFormat = pixelFormat
             return true
         }
 
