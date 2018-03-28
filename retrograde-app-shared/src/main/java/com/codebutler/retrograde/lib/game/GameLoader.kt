@@ -31,9 +31,10 @@ import io.reactivex.functions.Function3
 import java.io.File
 
 class GameLoader(
-        private val coreManager: CoreManager,
-        private val retrogradeDatabase: RetrogradeDatabase,
-        private val gameLibrary: GameLibrary) {
+    private val coreManager: CoreManager,
+    private val retrogradeDatabase: RetrogradeDatabase,
+    private val gameLibrary: GameLibrary
+) {
 
     fun load(gameId: Int): Single<GameData> {
         return retrogradeDatabase.gameDao().selectById(gameId)
@@ -65,8 +66,9 @@ class GameLoader(
 
     @Suppress("ArrayInDataClass")
     data class GameData(
-            val game: Game,
-            val coreFile: File,
-            val gameFile: File,
-            val saveData: ByteArray?)
+        val game: Game,
+        val coreFile: File,
+        val gameFile: File,
+        val saveData: ByteArray?
+    )
 }

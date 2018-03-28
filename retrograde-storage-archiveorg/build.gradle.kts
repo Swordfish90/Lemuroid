@@ -12,7 +12,6 @@ dependencies {
     implementation(deps.libs.dagger)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
-    implementation(deps.libs.kotlinStdlib)
     implementation(deps.libs.moshi)
     implementation(deps.libs.moshiKotlin)
     implementation(deps.libs.okHttp3)

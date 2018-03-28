@@ -29,7 +29,8 @@ data class StorageFile(
 
     val crc: String? = null,
 
-    val uri: Uri) {
+    val uri: Uri
+) {
 
     val extension: String
         get() = name.substringAfterLast('.', "")

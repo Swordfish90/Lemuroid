@@ -11,7 +11,6 @@ dependencies {
     implementation(deps.libs.dagger)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
-    implementation(deps.libs.kotlinStdlib)
     implementation(deps.libs.roomRuntime)
     implementation(deps.libs.roomRxJava2)
     implementation(deps.libs.rxJava2)

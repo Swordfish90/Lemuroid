@@ -15,9 +15,10 @@ class RxTimberTree : Timber.DebugTree() {
     }
 
     data class LogEntry(
-            val timestamp: Long,
-            val priority: Int,
-            val tag: String?,
-            val message: String?,
-            val error: Throwable?)
+        val timestamp: Long,
+        val priority: Int,
+        val tag: String?,
+        val message: String?,
+        val error: Throwable?
+    )
 }

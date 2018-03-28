@@ -25,10 +25,10 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "regions")
 data class OvgdbRegion(
-        @PrimaryKey
-        @ColumnInfo(name = "regionID")
-        val id: Int,
+    @PrimaryKey
+    @ColumnInfo(name = "regionID")
+    val id: Int,
 
-        @ColumnInfo(name = "regionName")
-        val name: String
+    @ColumnInfo(name = "regionName")
+    val name: String
 )

@@ -58,7 +58,6 @@ dependencies {
     implementation(deps.libs.daggerAndroidSupport)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
-    implementation(deps.libs.kotlinStdlib)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.picasso)

@@ -19,6 +19,7 @@
 
 package com.codebutler.retrograde.storage.gdrive
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
@@ -29,6 +30,9 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.services.drive.Drive
 
+// RestrictedApi warning is a known issue:
+// https://developers.google.com/android/guides/releases#march_20_2018_-_version_1200
+@SuppressLint("RestrictedApi")
 class DriveFactory(private val context: Context) {
     fun create(): Optional<Drive> {
         val googleAccount = GoogleSignIn.getLastSignedInAccount(context) ?: return None

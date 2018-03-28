@@ -38,17 +38,18 @@ import android.support.v7.recyclerview.extensions.DiffCallback
         ]
 )
 data class Game(
-        @PrimaryKey(autoGenerate = true)
-        val id: Int = 0,
-        val fileName: String,
-        val fileUri: Uri,
-        val title: String,
-        val systemId: String,
-        val developer: String?,
-        val coverFrontUrl: String?,
-        val lastIndexedAt: Long,
-        val lastPlayedAt: Long? = null,
-        val isFavorite: Boolean = false) {
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val fileName: String,
+    val fileUri: Uri,
+    val title: String,
+    val systemId: String,
+    val developer: String?,
+    val coverFrontUrl: String?,
+    val lastIndexedAt: Long,
+    val lastPlayedAt: Long? = null,
+    val isFavorite: Boolean = false
+) {
 
         companion object {
                 val DIFF_CALLBACK = object : DiffCallback<Game>() {

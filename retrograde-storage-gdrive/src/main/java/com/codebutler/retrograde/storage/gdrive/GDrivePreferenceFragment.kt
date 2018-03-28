@@ -19,6 +19,7 @@
 
 package com.codebutler.retrograde.storage.gdrive
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
@@ -33,6 +34,9 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.ApiException
 import timber.log.Timber
 
+// RestrictedApi warning is a known issue:
+// https://developers.google.com/android/guides/releases#march_20_2018_-_version_1200
+@SuppressLint("RestrictedApi")
 class GDrivePreferenceFragment : LeanbackPreferenceFragment() {
 
     companion object {

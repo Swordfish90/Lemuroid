@@ -28,28 +28,28 @@ import android.arch.persistence.room.PrimaryKey
         tableName = "systems",
         indices = [Index("systemID")])
 data class OvgdbSystem(
-        @PrimaryKey
-        @ColumnInfo(name = "systemID")
-        val id: Int,
+    @PrimaryKey
+    @ColumnInfo(name = "systemID")
+    val id: Int,
 
-        @ColumnInfo(name = "systemName")
-        val name: String,
+    @ColumnInfo(name = "systemName")
+    val name: String,
 
-        @ColumnInfo(name = "systemShortName")
-        val shortName: String,
+    @ColumnInfo(name = "systemShortName")
+    val shortName: String,
 
-        @ColumnInfo(name = "systemHeaderSizeBytes")
-        val headerSizeBytes: Int?,
+    @ColumnInfo(name = "systemHeaderSizeBytes")
+    val headerSizeBytes: Int?,
 
-        @ColumnInfo(name = "systemHashless")
-        val hashless: Int?,
+    @ColumnInfo(name = "systemHashless")
+    val hashless: Int?,
 
-        @ColumnInfo(name = "systemHeader")
-        val header: Int?,
+    @ColumnInfo(name = "systemHeader")
+    val header: Int?,
 
-        @ColumnInfo(name = "systemSerial")
-        val serial: String?,
+    @ColumnInfo(name = "systemSerial")
+    val serial: String?,
 
-        @ColumnInfo(name = "systemOEID")
-        val oeid: String
+    @ColumnInfo(name = "systemOEID")
+    val oeid: String
 )

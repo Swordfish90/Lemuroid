@@ -10,10 +10,9 @@ jdk:
 android:
   components:
     - tools
-    - android-26
-    - build-tools-26.0.2
+    - android-27
+    - build-tools-27.0.3
     - platform-tools
-    - android-26
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository

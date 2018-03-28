@@ -35,8 +35,9 @@ import timber.log.Timber
 import java.io.File
 
 class GameLibrary(
-        private val retrogradedb: RetrogradeDatabase,
-        private val providerProviderRegistry: StorageProviderRegistry) {
+    private val retrogradedb: RetrogradeDatabase,
+    private val providerProviderRegistry: StorageProviderRegistry
+) {
 
     fun indexGames(): Completable = Completable.create { emitter ->
         val startedAtMs = System.currentTimeMillis()

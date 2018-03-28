@@ -39,9 +39,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class HomeAdapterFactory(
-        private var lifecycleOwner: LifecycleOwner,
-        private var retrogradeDb: RetrogradeDatabase,
-        longClickListener: ItemViewLongClickListener) {
+    private var lifecycleOwner: LifecycleOwner,
+    private var retrogradeDb: RetrogradeDatabase,
+    longClickListener: ItemViewLongClickListener
+) {
 
     data class GameSystemItem(val system: GameSystem) : SimpleItem(system.titleResId, system.imageResId)
     object HelpItem : SimpleItem(R.string.help, R.drawable.ic_help_outline_white_64dp)

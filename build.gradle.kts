@@ -21,11 +21,11 @@ buildscript {
     dependencies {
         classpath(deps.plugins.android)
         classpath(deps.plugins.fabric)
-        classpath(deps.plugins.kotlin)
     }
 }
 
 plugins {
+    id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
     id("com.github.ben-manes.versions") version "0.17.0"
     checkstyle
 }
@@ -36,6 +36,20 @@ allprojects {
         jcenter()
         mavenLocal()
         mavenCentral()
+    }
+
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            when (requested.group) {
+                "com.android.support" -> {
+                    if ("multidex" !in requested.name) {
+                        useVersion(deps.versions.support)
+                    }
+                }
+                "com.google.android.gms" -> useVersion(deps.versions.gms)
+                "org.jetbrains.kotlin" -> useVersion(deps.versions.kotlin)
+            }
+        }
     }
 }
 
@@ -100,7 +114,7 @@ configurations {
 }
 
 dependencies {
-    "ktlint"("com.github.shyiko:ktlint:0.15.0")
+    "ktlint"("com.github.shyiko:ktlint:0.20.0")
 }
 
 tasks {

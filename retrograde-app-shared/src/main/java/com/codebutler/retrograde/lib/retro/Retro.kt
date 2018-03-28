@@ -107,25 +107,29 @@ class Retro(coreLibraryName: String) {
     private val audioBufferCache = BufferCache()
 
     data class ControllerDescription(
-            val desc: String,
-            val id: Device)
+        val desc: String,
+        val id: Device
+    )
 
     data class ControllerInfo(
-            val types: List<ControllerDescription>)
+        val types: List<ControllerDescription>
+    )
 
     data class SystemInfo(
-            val libraryName: String,
-            val libraryVersion: String,
-            val validExtensions: String?,
-            val needFullpath: Boolean,
-            val blockExtract: Boolean)
+        val libraryName: String,
+        val libraryVersion: String,
+        val validExtensions: String?,
+        val needFullpath: Boolean,
+        val blockExtract: Boolean
+    )
 
     data class GameGeometry(
-            val baseWidth: Int,
-            val baseHeight: Int,
-            val maxWidth: Int,
-            var maxHeight: Int,
-            var aspectRatio: Float) {
+        val baseWidth: Int,
+        val baseHeight: Int,
+        val maxWidth: Int,
+        var maxHeight: Int,
+        var aspectRatio: Float
+    ) {
 
         companion object {
             fun create(geometry: LibRetro.retro_game_geometry) = GameGeometry(
@@ -138,12 +142,14 @@ class Retro(coreLibraryName: String) {
     }
 
     data class SystemTiming(
-            val fps: Double,
-            val sample_rate: Double)
+        val fps: Double,
+        val sample_rate: Double
+    )
 
     data class SystemAVInfo(
-            val geometry: GameGeometry,
-            val timing: SystemTiming) {
+        val geometry: GameGeometry,
+        val timing: SystemTiming
+    ) {
 
         companion object {
             fun create(info: LibRetro.retro_system_av_info): SystemAVInfo = SystemAVInfo(
@@ -157,11 +163,12 @@ class Retro(coreLibraryName: String) {
     }
 
     data class InputDescriptor(
-            val port: Int,
-            val device: Device,
-            val index: Int,
-            val id: DeviceId,
-            val description: String)
+        val port: Int,
+        val device: Device,
+        val index: Int,
+        val id: DeviceId,
+        val description: String
+    )
 
     data class Variable(val description: String, val choices: List<String>, var value: String? = null)
 

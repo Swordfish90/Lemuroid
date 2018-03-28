@@ -9,7 +9,6 @@ dependencies {
     implementation(deps.libs.jna)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
-    implementation(deps.libs.kotlinStdlib)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.roomRuntime)
     implementation(deps.libs.rxJava2)

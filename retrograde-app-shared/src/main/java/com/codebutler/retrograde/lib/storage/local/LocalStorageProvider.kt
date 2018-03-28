@@ -37,8 +37,9 @@ import io.reactivex.Single
 import java.io.File
 
 class LocalStorageProvider(
-        context: Context,
-        override val metadataProvider: GameMetadataProvider) : StorageProvider {
+    context: Context,
+    override val metadataProvider: GameMetadataProvider
+) : StorageProvider {
 
     override val id: String = "local"
 

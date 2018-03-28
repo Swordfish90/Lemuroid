@@ -45,10 +45,11 @@ import kotlin.experimental.and
  * Native Android frontend for LibRetro!
  */
 class RetroDroid(
-        private val gameDisplay: GameDisplay,
-        private val gameAudio: GameAudio,
-        private val context: Context,
-        coreFile: File) : DefaultLifecycleObserver {
+    private val gameDisplay: GameDisplay,
+    private val gameAudio: GameAudio,
+    private val context: Context,
+    coreFile: File
+) : DefaultLifecycleObserver {
 
     private val audioSampleBufferCache = BufferCache()
     private val fpsCalculator = FpsCalculator()

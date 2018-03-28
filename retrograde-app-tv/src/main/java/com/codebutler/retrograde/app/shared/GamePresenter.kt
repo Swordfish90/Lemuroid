@@ -68,7 +68,7 @@ class GamePresenter(private val longClickListener: ItemViewLongClickListener) : 
                 cardView.contentText = item.developer
                 cardView.badgeImage = if (item.isFavorite) starImage else null
                 if (item.coverFrontUrl != null) {
-                    Picasso.with(cardView.context)
+                    Picasso.get()
                             .load(item.coverFrontUrl)
                             .error(defaultCardImage)
                             .resize(imageWidth, imageHeight)
@@ -83,7 +83,7 @@ class GamePresenter(private val longClickListener: ItemViewLongClickListener) : 
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
         val cardView = viewHolder.view as ImageCardView
-        Picasso.with(cardView.context).cancelRequest(cardView.mainImageView)
+        Picasso.get().cancelRequest(cardView.mainImageView)
         cardView.mainImage = null
         cardView.badgeImage = null
     }

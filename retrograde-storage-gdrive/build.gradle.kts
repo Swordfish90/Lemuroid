@@ -26,7 +26,6 @@ dependencies {
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.koptionalRxJava2)
-    implementation(deps.libs.kotlinStdlib)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.okHttp3Logging)
     implementation(deps.libs.retrofit)

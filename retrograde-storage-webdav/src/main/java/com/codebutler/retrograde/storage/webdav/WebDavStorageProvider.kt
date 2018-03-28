@@ -45,8 +45,9 @@ import java.net.URLDecoder
 import java.util.concurrent.TimeUnit
 
 class WebDavStorageProvider(
-        private val context: Context,
-        override val metadataProvider: GameMetadataProvider) : StorageProvider {
+    private val context: Context,
+    override val metadataProvider: GameMetadataProvider
+) : StorageProvider {
 
     private val webDavClient: WebDavClient
     private val webDavScanner: WebDavScanner
@@ -143,9 +144,10 @@ class WebDavStorageProvider(
             .build()
 
     private data class Configuration(
-            val url: String?,
-            val username: String?,
-            val password: String?)
+        val url: String?,
+        val username: String?,
+        val password: String?
+    )
 
     /**
      * Games URIs are webdav:// or webdavs:// in the game database,

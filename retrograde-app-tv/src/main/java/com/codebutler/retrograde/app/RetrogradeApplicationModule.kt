@@ -130,8 +130,9 @@ abstract class RetrogradeApplicationModule {
         @PerApp
         @JvmStatic
         fun gameLibrary(
-                db: RetrogradeDatabase,
-                storageProviderRegistry: StorageProviderRegistry) =
+            db: RetrogradeDatabase,
+            storageProviderRegistry: StorageProviderRegistry
+        ) =
                 GameLibrary(db, storageProviderRegistry)
 
         @Provides
@@ -150,9 +151,10 @@ abstract class RetrogradeApplicationModule {
                 .baseUrl("https://example.com")
                 .addConverterFactory(object : Converter.Factory() {
                     override fun responseBodyConverter(
-                            type: Type?,
-                            annotations: Array<out Annotation>?,
-                            retrofit: Retrofit?): Converter<ResponseBody, *>? {
+                        type: Type?,
+                        annotations: Array<out Annotation>?,
+                        retrofit: Retrofit?
+                    ): Converter<ResponseBody, *>? {
                         if (type == ZipInputStream::class.java) {
                             return Converter<ResponseBody, ZipInputStream> { responseBody ->
                                 ZipInputStream(responseBody.byteStream())

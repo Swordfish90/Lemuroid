@@ -28,49 +28,49 @@ import android.arch.persistence.room.PrimaryKey
         tableName = "releases",
         indices = [Index("releaseID"), Index("romID")])
 data class OvgdbRelease(
-        @PrimaryKey
-        @ColumnInfo(name = "releaseID")
-        val id: Int,
+    @PrimaryKey
+    @ColumnInfo(name = "releaseID")
+    val id: Int,
 
-        @ColumnInfo(name = "romID")
-        val romId: Int,
+    @ColumnInfo(name = "romID")
+    val romId: Int,
 
-        @ColumnInfo(name = "releaseTitleName")
-        val titleName: String,
+    @ColumnInfo(name = "releaseTitleName")
+    val titleName: String,
 
-        @ColumnInfo(name = "regionLocalizedID")
-        val regionLocalizedId: Int,
+    @ColumnInfo(name = "regionLocalizedID")
+    val regionLocalizedId: Int,
 
-        @ColumnInfo(name = "releaseCoverFront")
-        val coverFront: String?,
+    @ColumnInfo(name = "releaseCoverFront")
+    val coverFront: String?,
 
-        @ColumnInfo(name = "releaseCoverBack")
-        val coverBack: String?,
+    @ColumnInfo(name = "releaseCoverBack")
+    val coverBack: String?,
 
-        @ColumnInfo(name = "releaseCoverCart")
-        val coverCart: String?,
+    @ColumnInfo(name = "releaseCoverCart")
+    val coverCart: String?,
 
-        @ColumnInfo(name = "releaseCoverDisc")
-        val coverDisc: String?,
+    @ColumnInfo(name = "releaseCoverDisc")
+    val coverDisc: String?,
 
-        @ColumnInfo(name = "releaseDescription")
-        val description: String?,
+    @ColumnInfo(name = "releaseDescription")
+    val description: String?,
 
-        @ColumnInfo(name = "releaseDeveloper")
-        val developer: String?,
+    @ColumnInfo(name = "releaseDeveloper")
+    val developer: String?,
 
-        @ColumnInfo(name = "releasePublisher")
-        val publisher: String?,
+    @ColumnInfo(name = "releasePublisher")
+    val publisher: String?,
 
-        @ColumnInfo(name = "releaseGenre")
-        val genre: String?,
+    @ColumnInfo(name = "releaseGenre")
+    val genre: String?,
 
-        @ColumnInfo(name = "releaseDate")
-        val date: String?,
+    @ColumnInfo(name = "releaseDate")
+    val date: String?,
 
-        @ColumnInfo(name = "releaseReferenceURL")
-        val referenceURL: String?,
+    @ColumnInfo(name = "releaseReferenceURL")
+    val referenceURL: String?,
 
-        @ColumnInfo(name = "releaseReferenceImageURL")
-        val referenceImageURL: String?
+    @ColumnInfo(name = "releaseReferenceImageURL")
+    val referenceImageURL: String?
 )
