@@ -54,7 +54,6 @@ class LocalStorageProvider(
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
         Environment.getExternalStorageDirectory()
                 .walk()
-                .maxDepth(1)
                 .filter { file -> file.isFile && file.name.startsWith(".").not() }
                 .map { file ->
                     StorageFile(
