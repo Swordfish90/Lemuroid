@@ -79,8 +79,7 @@ class HomeAdapterFactory(
             systemsAdapter.add(NoGamesItem)
         } else {
             retrogradeDb.gameDao().selectSystems()
-                    .toObservable()
-                    .flatMapIterable { it }
+                    .flattenAsObservable { it }
                     .map { GameSystem.findById(it)!! }
                     .toSortedList { o1, o2 -> o1.sortKey.compareTo(o2.sortKey) }
                     .subscribeOn(Schedulers.io())
