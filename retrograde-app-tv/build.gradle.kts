@@ -1,5 +1,3 @@
-import kotlin.concurrent.thread
-
 plugins {
     id("com.android.application")
     id("io.fabric")
@@ -83,9 +81,7 @@ dependencies {
     kapt(deps.libs.daggerCompiler)
 }
 
-fun askPassword(): String {
-    return "security -q find-generic-password -w -g -l retrograde-release".execute().trim()
-}
+fun askPassword() = "security -q find-generic-password -w -g -l retrograde-release".execute().trim()
 
 gradle.taskGraph.whenReady {
     if (hasTask(":retrograde-app-tv:packageRelease")) {
@@ -97,26 +93,18 @@ gradle.taskGraph.whenReady {
     }
 }
 
-fun String.execute(wd: String? = null, ignoreExitCode: Boolean = false): String =
-        split(" ").execute(wd, ignoreExitCode)
-
-fun List<String>.execute(wd: String? = null, ignoreExitCode: Boolean = false): String {
-    val process = ProcessBuilder(this)
-            .also { pb -> wd?.let { pb.directory(File(it)) } }
+fun String.execute(): String {
+    val process = ProcessBuilder(this.split(" "))
+            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+            .redirectError(ProcessBuilder.Redirect.PIPE)
             .start()
-    var result = ""
-    val errReader = thread { process.errorStream.bufferedReader().forEachLine { println(it) } }
-    val outReader = thread {
-        process.inputStream.bufferedReader().forEachLine { line ->
-            println(line)
-            result += line
-        }
-    }
+
     process.waitFor()
-    outReader.join()
-    errReader.join()
-    if (process.exitValue() != 0 && !ignoreExitCode) {
-        error("Non-zero exit status for `${this.joinToString(separator = " ")}`")
+
+    if (process.exitValue() != 0) {
+        val errorText = process.errorStream.bufferedReader().use { it.readText() }
+        error("Non-zero exit status for `$this`: $errorText")
     }
-    return result
+
+    return process.inputStream.bufferedReader().use { it.readText() }
 }
