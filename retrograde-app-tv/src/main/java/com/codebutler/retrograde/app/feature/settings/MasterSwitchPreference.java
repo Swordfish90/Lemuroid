@@ -22,6 +22,8 @@ package com.codebutler.retrograde.app.feature.settings;
 import android.content.Context;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.codebutler.retrograde.R;
@@ -30,6 +32,7 @@ import com.codebutler.retrograde.R;
  * A custom preference that provides inline switch toggle. It has a mandatory field for title, and
  * optional fields for icon and sub-text.
  */
+@SuppressWarnings("ALL")
 public class MasterSwitchPreference extends TwoTargetPreference {
 
     private Switch mSwitch;
@@ -64,10 +67,18 @@ public class MasterSwitchPreference extends TwoTargetPreference {
 
         holder.itemView.setFocusable(false);
         holder.itemView.setClickable(false);
-        holder.findViewById(R.id.left_frame).setOnClickListener(v -> holder.itemView.performClick());
-        holder.findViewById(android.R.id.widget_frame).setOnClickListener((view) -> {
-            if (mSwitch != null) {
-                mSwitch.toggle();
+        holder.findViewById(R.id.left_frame).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.itemView.performClick();
+            }
+        });
+        holder.findViewById(android.R.id.widget_frame).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mSwitch != null) {
+                    mSwitch.toggle();
+                }
             }
         });
 
@@ -76,10 +87,13 @@ public class MasterSwitchPreference extends TwoTargetPreference {
             mSwitch.setContentDescription(getTitle());
             mSwitch.setChecked(mChecked);
             mSwitch.setEnabled(mEnableSwitch);
-            mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (callChangeListener(isChecked)) {
-                    persistBoolean(isChecked);
-                    mChecked = isChecked;
+            mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (MasterSwitchPreference.this.callChangeListener(isChecked)) {
+                        MasterSwitchPreference.this.persistBoolean(isChecked);
+                        mChecked = isChecked;
+                    }
                 }
             });
         }

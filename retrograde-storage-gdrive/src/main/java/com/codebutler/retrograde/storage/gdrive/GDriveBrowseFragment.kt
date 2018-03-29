@@ -131,7 +131,7 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
             cardView.isFocusableInTouchMode = true
             cardView.setMainImageDimensions(width, height)
             cardView.mainImageView.setPadding(padding, padding, padding, padding)
-            cardView.mainImage = resources.getDrawable(R.drawable.ic_folder_white_48dp)
+            cardView.mainImage = resources.getDrawable(R.drawable.ic_folder_white_48dp, parent.context.theme)
 
             return Presenter.ViewHolder(cardView)
         }

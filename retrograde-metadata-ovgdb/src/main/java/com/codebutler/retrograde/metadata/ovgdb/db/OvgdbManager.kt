@@ -57,8 +57,8 @@ class OvgdbManager(context: Context, executorService: ExecutorService) {
     private fun copyDbFromAssets(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val dbFile = context.getDatabasePath(DB_NAME)
-        val dbVersion = prefs.getInt(PREFS_KEY_VERSION, 0)
         // FIXME
+        //val dbVersion = prefs.getInt(PREFS_KEY_VERSION, 0)
         //if (!dbFile.exists() || dbVersion != DB_VERSION) {
             context.assets.open(ASSET_NAME_DB).use { input ->
                 FileOutputStream(dbFile).use { output ->

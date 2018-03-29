@@ -15,6 +15,7 @@ import java.nio.CharBuffer;
  *
  * https://stackoverflow.com/questions/10158582/converting-string-to-pointer-for-jna
  */
+@SuppressWarnings({"WeakerAccess", "NullableProblems"})
 public class NativeString implements CharSequence, Comparable {
 
     private Pointer pointer;
@@ -50,7 +51,7 @@ public class NativeString implements CharSequence, Comparable {
         if (wide) {
             int len = (string.length() + 1 ) * Native.WCHAR_SIZE;
             pointer = new Memory(len);
-            pointer.setString(0, string, true);
+            pointer.setWideString(0, string);
         }
         else {
             byte[] data = Native.toByteArray(string);
@@ -65,17 +66,15 @@ public class NativeString implements CharSequence, Comparable {
     }
 
     public boolean equals(Object other) {
-
-        if (other instanceof CharSequence) {
-            return compareTo(other) == 0;
-        }
-        return false;
+        return other instanceof CharSequence && compareTo(other) == 0;
     }
 
     public String toString() {
-        String s = wide ? "const wchar_t*" : "const char*";
-        s += "(" + pointer.getString(0, wide) + ")";
-        return s;
+        if (wide) {
+            return String.format("const wchar_t*(%s)", pointer.getWideString(0));
+        } else {
+            return String.format("const char*(%s)", pointer.getString(0));
+        }
     }
 
     public Pointer getPointer() {
