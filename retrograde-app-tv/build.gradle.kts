@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("io.fabric")
+    id("com.bugsnag.android.gradle")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
@@ -29,8 +29,8 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs["release"]
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 }
@@ -51,6 +51,7 @@ dependencies {
     implementation(deps.libs.autoDisposeAndroidArchKotlin)
     implementation(deps.libs.autoDisposeAndroidKotlin)
     implementation(deps.libs.autoDisposeKotlin)
+    implementation(deps.libs.bugsnagAndroidNdk)
     implementation(deps.libs.dagger)
     implementation(deps.libs.daggerAndroid)
     implementation(deps.libs.daggerAndroidSupport)
@@ -72,10 +73,6 @@ dependencies {
     implementation(deps.libs.supportPaletteV7)
     implementation(deps.libs.supportPrefLeanbackV17)
     implementation(deps.libs.supportRecyclerViewV7)
-
-    implementation(deps.libs.crashlytics) {
-        isTransitive = true
-    }
 
     kapt(deps.libs.daggerAndroidProcessor)
     kapt(deps.libs.daggerCompiler)

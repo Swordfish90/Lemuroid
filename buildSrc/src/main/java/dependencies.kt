@@ -32,7 +32,7 @@ object deps {
         const val autoDisposeAndroidArchKotlin = "com.uber.autodispose:autodispose-android-archcomponents-kotlin:${versions.autoDispose}"
         const val autoDisposeAndroidKotlin     = "com.uber.autodispose:autodispose-android-kotlin:${versions.autoDispose}"
         const val autoDisposeKotlin            = "com.uber.autodispose:autodispose-kotlin:${versions.autoDispose}"
-        const val crashlytics                  = "com.crashlytics.sdk.android:crashlytics:2.9.1"
+        const val bugsnagAndroidNdk            = "com.bugsnag:bugsnag-android-ndk:1.1.2"
         const val dagger                       = "com.google.dagger:dagger:${versions.dagger}"
         const val daggerAndroid                = "com.google.dagger:dagger-android:${versions.dagger}"
         const val daggerAndroidProcessor       = "com.google.dagger:dagger-android-processor:${versions.dagger}"
@@ -73,7 +73,6 @@ object deps {
 
     object plugins {
         const val android = "com.android.tools.build:gradle:3.1.0"
-        const val fabric  = "io.fabric.tools:gradle:1.25.2"
-        const val kotlin  = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        const val bugsnag = "com.bugsnag:bugsnag-android-gradle-plugin:3.2.5"
     }
 }

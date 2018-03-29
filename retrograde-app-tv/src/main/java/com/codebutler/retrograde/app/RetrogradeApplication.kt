@@ -20,14 +20,13 @@
 package com.codebutler.retrograde.app
 
 import android.content.Context
+import com.bugsnag.android.Bugsnag
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.storage.gdrive.GDriveStorageProvider
-import com.crashlytics.android.Crashlytics
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
-import io.fabric.sdk.android.Fabric
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -54,7 +53,7 @@ class RetrogradeApplication : DaggerApplication() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         } else {
-            Fabric.with(this, Crashlytics())
+            Bugsnag.init(this)
         }
 
         var isPlanted = false

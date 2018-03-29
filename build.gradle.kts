@@ -2,7 +2,6 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.api.plugins.quality.CheckstyleExtension
 
@@ -14,13 +13,10 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url = uri("https://maven.fabric.io/public")
-        }
     }
     dependencies {
         classpath(deps.plugins.android)
-        classpath(deps.plugins.fabric)
+        classpath(deps.plugins.bugsnag)
     }
 }
 

@@ -83,7 +83,7 @@
             android:label="@string/licenses"/>
 
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="83662f2d278441bb282ae75bb1372d250b1bdc04"/>
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="c29c39914cff446185ffeb61a6badda7"/>
     </application>
 </manifest>
