@@ -38,6 +38,13 @@ dependencies {
     kapt(deps.libs.daggerAndroidProcessor)
 }
 
+configurations {
+    all {
+        exclude(group = "org.apache.httpcomponents", module = "httpclient")
+        exclude(group = "com.google.http-client", module = "google-http-client-jackson2")
+    }
+}
+
 android {
     resourcePrefix("gdrive_")
 }

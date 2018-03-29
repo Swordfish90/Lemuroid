@@ -100,6 +100,11 @@ subprojects {
         extensions.configure(KotlinProjectExtension::class.java) {
             experimental.coroutines = Coroutines.ENABLE
         }
+
+        kapt {
+            useBuildCache = true
+            mapDiagnosticLocations = true
+        }
     }
 
     configurations {
