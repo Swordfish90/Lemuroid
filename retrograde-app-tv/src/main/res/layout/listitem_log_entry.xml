@@ -7,8 +7,7 @@
     android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/grid_unit_1x"
-    android:background="?android:selectableItemBackground">
+    android:padding="@dimen/grid_unit_1x">
 
     <TextView
         android:id="@+id/timestamp"

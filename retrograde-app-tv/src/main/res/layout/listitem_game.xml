@@ -28,7 +28,6 @@
     android:gravity="start|center_vertical"
     android:minHeight="?listPreferredItemHeight"
     android:padding="@dimen/grid_unit_1x"
-    android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     tools:ignore="UseCompoundDrawables">

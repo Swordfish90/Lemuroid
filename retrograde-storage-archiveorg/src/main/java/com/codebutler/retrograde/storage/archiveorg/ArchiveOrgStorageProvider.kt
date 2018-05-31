@@ -30,8 +30,8 @@ import com.codebutler.retrograde.storage.archiveorg.model.DetailsResponse
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
-import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.Completable
 import io.reactivex.ObservableTransformer
 import io.reactivex.Single

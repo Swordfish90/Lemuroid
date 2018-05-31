@@ -388,7 +388,7 @@ class RetroDroid(
 
         override fun onGetVariableUpdate(): Boolean {
             // FIXME: Implement
-            //Timber.d("onGetVariableUpdate")
+            // Timber.d("onGetVariableUpdate")
             return false
         }
 
@@ -408,7 +408,7 @@ class RetroDroid(
 
         override fun onSetMemoryMaps() {
             // FIXME: Implement
-            //Timber.d("onSetMemoryMaps")
+            // Timber.d("onSetMemoryMaps")
         }
 
         override fun onUnsupportedCommand(cmd: Int) {
