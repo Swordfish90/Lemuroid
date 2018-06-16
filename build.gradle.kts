@@ -22,7 +22,7 @@ buildscript {
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
-    id("com.github.ben-manes.versions") version "0.17.0"
+    id("com.github.ben-manes.versions") version "0.19.0"
     checkstyle
 }
 

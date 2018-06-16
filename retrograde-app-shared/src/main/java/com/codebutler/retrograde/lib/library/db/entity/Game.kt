@@ -23,7 +23,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Index
 import android.arch.persistence.room.PrimaryKey
 import android.net.Uri
-import android.support.v7.recyclerview.extensions.DiffCallback
+import android.support.v7.util.DiffUtil
 
 @Entity(
         tableName = "games",
@@ -50,9 +50,8 @@ data class Game(
     val lastPlayedAt: Long? = null,
     val isFavorite: Boolean = false
 ) {
-
         companion object {
-                val DIFF_CALLBACK = object : DiffCallback<Game>() {
+                val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Game>() {
                         override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
                                 return oldItem.id == newItem.id
                         }

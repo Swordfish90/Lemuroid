@@ -45,7 +45,7 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path = File("$projectDir/CMakeLists.txt")
+            setPath(File("$projectDir/CMakeLists.txt"))
         }
     }
 }

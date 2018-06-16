@@ -19,15 +19,15 @@
 
 package com.codebutler.retrograde.app.shared.ui
 
+import android.arch.paging.AsyncPagedListDiffer
 import android.arch.paging.PagedList
-import android.arch.paging.PagedListAdapterHelper
 import android.support.v17.leanback.widget.ObjectAdapter
 import android.support.v17.leanback.widget.Presenter
-import android.support.v7.recyclerview.extensions.DiffCallback
-import android.support.v7.recyclerview.extensions.ListAdapterConfig
+import android.support.v7.recyclerview.extensions.AsyncDifferConfig
+import android.support.v7.util.DiffUtil
 import android.support.v7.util.ListUpdateCallback
 
-class PagedListObjectAdapter<T>(presenter: Presenter, diffCallback: DiffCallback<T>)
+class PagedListObjectAdapter<T>(presenter: Presenter, diffCallback: DiffUtil.ItemCallback<T>)
     : ObjectAdapter(presenter) {
 
     private val listUpdateCallback = object : ListUpdateCallback {
@@ -48,15 +48,17 @@ class PagedListObjectAdapter<T>(presenter: Presenter, diffCallback: DiffCallback
         }
     }
 
-    private val helper = PagedListAdapterHelper(listUpdateCallback, ListAdapterConfig.Builder<T>()
-            .setDiffCallback(diffCallback)
-            .build())
+    private val differ = AsyncPagedListDiffer<T>(
+            listUpdateCallback,
+            AsyncDifferConfig.Builder<T>(diffCallback)
+                    .build()
+    )
 
     var pagedList: PagedList<T>?
-        get() = helper.currentList
-        set(list) { helper.setList(list) }
+        get() = differ.currentList
+        set(list) { differ.submitList(list) }
 
-    override fun size(): Int = helper.itemCount
+    override fun size(): Int = differ.itemCount
 
-    override fun get(position: Int): Any? = helper.getItem(position)
+    override fun get(position: Int): Any? = differ.getItem(position )
 }
