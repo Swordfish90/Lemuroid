@@ -118,7 +118,10 @@ class GamesSearchFragment : SearchSupportFragment(),
                 .build()
                 .observe(this, Observer { pagedList ->
                     val header = HeaderItem(getString(R.string.search_results, query))
-                    val adapter = PagedListObjectAdapter(GamePresenter(gameInteractionHandler), Game.DIFF_CALLBACK)
+                    val adapter = PagedListObjectAdapter(
+                            GamePresenter(requireActivity(), gameInteractionHandler),
+                            Game.DIFF_CALLBACK
+                    )
                     adapter.pagedList = pagedList
                     rowsAdapter.add(ListRow(header, adapter))
                 })

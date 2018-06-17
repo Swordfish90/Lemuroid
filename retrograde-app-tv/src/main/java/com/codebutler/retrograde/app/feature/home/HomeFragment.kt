@@ -186,6 +186,6 @@ class HomeFragment : BrowseSupportFragment(),
         @Provides
         @PerFragment
         fun adapterFactory(fragment: HomeFragment, retrogradeDb: RetrogradeDatabase, handler: GameInteractionHandler) =
-                HomeAdapterFactory(fragment, retrogradeDb, handler)
+                HomeAdapterFactory(fragment.requireActivity(), fragment, retrogradeDb, handler)
     }
 }

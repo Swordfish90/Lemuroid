@@ -23,13 +23,21 @@
         <item name="lbImageCardViewType">Title</item>
     </style>
     <style name="SimpleCardViewColoredTitle" parent="Widget.Leanback.ImageCardView.TitleStyle">
-        <!--<item name="android:gravity">center</item>-->
         <item name="android:textAlignment">center</item>
+
     </style>
     <style name="SimpleImageCardTheme" parent="Theme.Leanback">
         <item name="imageCardViewStyle">@style/SimpleCardViewStyle</item>
-        <!--<item name="imageCardViewInfoAreaStyle">@style/ImageCardViewColoredInfoArea</item>-->
         <item name="imageCardViewTitleStyle">@style/SimpleCardViewColoredTitle</item>
     </style>
 
+    <style name="GameCardTitle" parent="Widget.Leanback.ImageCardView.TitleStyle">
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="GameCardTheme" parent="Theme.Leanback">
+        <item name="imageCardViewTitleStyle">@style/GameCardTitle</item>
+    </style>
 </resources>

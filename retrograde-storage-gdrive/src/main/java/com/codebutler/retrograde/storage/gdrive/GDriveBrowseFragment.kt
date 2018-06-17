@@ -102,7 +102,7 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
                     val foldersAdapter = ArrayObjectAdapter(FilePresenter())
                     foldersAdapter.addAll(0, folders)
 
-                    val actionsAdapter = ArrayObjectAdapter(SimpleItemPresenter())
+                    val actionsAdapter = ArrayObjectAdapter(SimpleItemPresenter(requireActivity()))
                     actionsAdapter.add(UseFolderItem)
 
                     val categoryRowAdapter = ArrayObjectAdapter(ListRowPresenter())

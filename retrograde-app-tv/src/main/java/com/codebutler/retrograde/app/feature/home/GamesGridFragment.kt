@@ -15,11 +15,11 @@ import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.main.MainActivity
 import com.codebutler.retrograde.app.shared.GameInteractionHandler
 import com.codebutler.retrograde.app.shared.GamePresenter
+import com.codebutler.retrograde.app.shared.ui.PagedListObjectAdapter
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.codebutler.retrograde.lib.library.GameSystem
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.entity.Game
-import com.codebutler.retrograde.app.shared.ui.PagedListObjectAdapter
 import dagger.Provides
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -96,7 +96,10 @@ class GamesGridFragment : VerticalGridSupportFragment(), OnItemViewClickedListen
         LivePagedListBuilder(getQuery(mode, param), 50)
                 .build()
                 .observe(this, Observer { pagedList ->
-                    val adapter = PagedListObjectAdapter(GamePresenter(gameInteractionHandler), Game.DIFF_CALLBACK)
+                    val adapter = PagedListObjectAdapter(GamePresenter(
+                            requireActivity(),
+                            gameInteractionHandler
+                    ), Game.DIFF_CALLBACK)
                     adapter.pagedList = pagedList
                     this.adapter = adapter
                 })

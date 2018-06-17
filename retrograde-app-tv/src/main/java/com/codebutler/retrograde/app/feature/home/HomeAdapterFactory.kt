@@ -22,6 +22,7 @@ package com.codebutler.retrograde.app.feature.home
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.paging.LivePagedListBuilder
+import android.content.Context
 import android.support.v17.leanback.widget.ArrayObjectAdapter
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.shared.GamePresenter
@@ -39,8 +40,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class HomeAdapterFactory(
-    private var lifecycleOwner: LifecycleOwner,
-    private var retrogradeDb: RetrogradeDatabase,
+    private val context: Context,
+    private val lifecycleOwner: LifecycleOwner,
+    private val retrogradeDb: RetrogradeDatabase,
     longClickListener: ItemViewLongClickListener
 ) {
 
@@ -51,7 +53,7 @@ class HomeAdapterFactory(
     object SettingsItem : SimpleItem(R.string.settings, R.drawable.ic_settings_white_64dp)
     object NoGamesItem : SimpleItem(R.string.no_games, R.drawable.ic_no_games_white_64dp)
 
-    private val gamePresenter = GamePresenter(longClickListener)
+    private val gamePresenter = GamePresenter(context, longClickListener)
 
     fun buildFavoritesAdapter(): PagedListObjectAdapter<Game> {
         val favoritesAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
@@ -74,7 +76,7 @@ class HomeAdapterFactory(
     }
 
     fun buildSystemsAdapter(counts: GameLibraryCounts): ArrayObjectAdapter {
-        val systemsAdapter = ArrayObjectAdapter(SimpleItemPresenter())
+        val systemsAdapter = ArrayObjectAdapter(SimpleItemPresenter(context))
         if (counts.totalCount == 0L) {
             systemsAdapter.add(NoGamesItem)
         } else {
@@ -95,7 +97,7 @@ class HomeAdapterFactory(
     }
 
     fun buildSettingsAdapter(): ArrayObjectAdapter {
-        val settingsAdapter = ArrayObjectAdapter(SimpleItemPresenter())
+        val settingsAdapter = ArrayObjectAdapter(SimpleItemPresenter(context))
         settingsAdapter.add(SettingsItem)
         settingsAdapter.add(RescanItem)
         settingsAdapter.add(HelpItem)
