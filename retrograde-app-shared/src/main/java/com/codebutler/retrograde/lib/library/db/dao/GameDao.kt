@@ -45,9 +45,6 @@ interface GameDao {
         """)
     fun selectCounts(): Single<GameLibraryCounts>
 
-    @Query("SELECT * FROM games WHERE title LIKE '%' || REPLACE(:query, ' ', '%') || '%' ORDER BY title ASC, id DESC")
-    fun search(query: String): DataSource.Factory<Int, Game>
-
     @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
     fun selectAll(): DataSource.Factory<Int, Game>
 

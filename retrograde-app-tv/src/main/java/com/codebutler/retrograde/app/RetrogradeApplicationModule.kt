@@ -32,6 +32,7 @@ import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerApp
 import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
+import com.codebutler.retrograde.lib.library.db.dao.GameSearchDao
 import com.codebutler.retrograde.lib.ovgdb.db.OvgdbMetadataProvider
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.codebutler.retrograde.lib.storage.StorageProviderRegistry
@@ -99,8 +100,10 @@ abstract class RetrogradeApplicationModule {
         @JvmStatic
         fun retrogradeDb(app: RetrogradeApplication) =
                 Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
-                .fallbackToDestructiveMigration()
-                .build()
+                        .addCallback(GameSearchDao.CALLBACK)
+                        .addMigrations(GameSearchDao.MIGRATION)
+                        .fallbackToDestructiveMigration()
+                        .build()
 
         @Provides
         @PerApp

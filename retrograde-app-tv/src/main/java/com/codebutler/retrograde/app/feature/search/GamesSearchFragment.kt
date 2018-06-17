@@ -114,7 +114,7 @@ class GamesSearchFragment : SearchSupportFragment(),
     private fun search(query: String) {
         lastQuery = query
         rowsAdapter.clear()
-        LivePagedListBuilder(retrogradeDb.gameDao().search(query), 50)
+        LivePagedListBuilder(retrogradeDb.gameSearchDao().search(query), 50)
                 .build()
                 .observe(this, Observer { pagedList ->
                     val header = HeaderItem(getString(R.string.search_results, query))

@@ -24,11 +24,12 @@ import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import com.codebutler.retrograde.common.db.Converters
 import com.codebutler.retrograde.lib.library.db.dao.GameDao
+import com.codebutler.retrograde.lib.library.db.dao.GameSearchDao
 import com.codebutler.retrograde.lib.library.db.entity.Game
 
 @Database(
         entities = [Game::class],
-        version = 7,
+        version = 8,
         exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class RetrogradeDatabase : RoomDatabase() {
@@ -38,4 +39,8 @@ abstract class RetrogradeDatabase : RoomDatabase() {
     }
 
     abstract fun gameDao(): GameDao
+
+    fun gameSearchDao() = GameSearchDao(gameSearchDaoInternal())
+
+    protected abstract fun gameSearchDaoInternal(): GameSearchDao.Internal
 }
