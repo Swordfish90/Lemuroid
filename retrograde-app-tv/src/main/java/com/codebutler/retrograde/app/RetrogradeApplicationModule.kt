@@ -23,17 +23,20 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import android.preference.PreferenceManager
 import com.codebutler.retrograde.app.feature.game.GameActivity
+import com.codebutler.retrograde.app.feature.game.GameLauncherActivity
 import com.codebutler.retrograde.app.feature.main.MainActivity
 import com.codebutler.retrograde.app.feature.settings.DebugLogActivity
 import com.codebutler.retrograde.app.feature.settings.LicensesActivity
 import com.codebutler.retrograde.app.feature.settings.SettingsActivity
 import com.codebutler.retrograde.lib.core.CoreManager
+import com.codebutler.retrograde.lib.game.GameLoader
 import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerApp
 import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.dao.GameSearchDao
-import com.codebutler.retrograde.lib.ovgdb.db.OvgdbMetadataProvider
+import com.codebutler.retrograde.lib.logging.RxTimberTree
+import com.codebutler.retrograde.metadata.ovgdb.OvgdbMetadataProvider
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.codebutler.retrograde.lib.storage.StorageProviderRegistry
 import com.codebutler.retrograde.lib.storage.local.LocalStorageProvider
@@ -65,6 +68,10 @@ abstract class RetrogradeApplicationModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [MainActivity.Module::class])
     abstract fun mainActivity(): MainActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun gameLauncherActivity(): GameLauncherActivity
 
     @PerActivity
     @ContributesAndroidInjector(modules = [GameActivity.Module::class])
@@ -183,5 +190,11 @@ abstract class RetrogradeApplicationModule {
         @JvmStatic
         fun rxPrefs(context: Context) =
                 RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun gameLoader(coreManager: CoreManager, retrogradeDatabase: RetrogradeDatabase, gameLibrary: GameLibrary) =
+                GameLoader(coreManager, retrogradeDatabase, gameLibrary)
     }
 }

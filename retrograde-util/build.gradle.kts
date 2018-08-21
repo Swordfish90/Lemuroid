@@ -10,8 +10,8 @@ dependencies {
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.okHttp3)
-    implementation(deps.libs.roomRuntime)
+    implementation(deps.libs.arch.room.runtime)
     implementation(deps.libs.rxJava2)
-    implementation(deps.libs.supportAppCompatV7)
-    implementation(deps.libs.supportRecyclerViewV7)
+    implementation(deps.libs.support.appCompatV7)
+    implementation(deps.libs.support.recyclerViewV7)
 }

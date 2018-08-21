@@ -24,7 +24,7 @@ import android.net.Uri
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
 import com.codebutler.retrograde.lib.logging.TimberLoggingHandler
-import com.codebutler.retrograde.lib.ovgdb.db.OvgdbMetadataProvider
+import com.codebutler.retrograde.metadata.ovgdb.OvgdbMetadataProvider
 import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.gojuno.koptional.Optional

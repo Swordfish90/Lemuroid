@@ -6,6 +6,7 @@ import org.gradle.kotlin.dsl.repositories
 import org.gradle.api.plugins.quality.CheckstyleExtension
 
 import com.android.build.gradle.BaseExtension
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
@@ -22,7 +23,7 @@ buildscript {
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
-    id("com.github.ben-manes.versions") version "0.19.0"
+    id("com.github.ben-manes.versions") version "0.20.0"
     checkstyle
 }
 
@@ -105,11 +106,6 @@ subprojects {
         extensions.configure(KotlinProjectExtension::class.java) {
             experimental.coroutines = Coroutines.ENABLE
         }
-
-        kapt {
-            useBuildCache = true
-            mapDiagnosticLocations = true
-        }
     }
 
     configurations {
@@ -138,4 +134,19 @@ tasks {
     }
 
     findByName("check")?.dependsOn("lintKotlin")
+
+    "dependencyUpdates"(DependencyUpdatesTask::class) {
+        resolutionStrategy {
+            componentSelection {
+                all {
+                    val rejected = listOf("alpha", "beta", "rc", "cr", "m")
+                            .map { qualifier -> Regex("(?i).*[.-]$qualifier[.\\d-]*") }
+                            .any { it.matches(candidate.version) }
+                    if (rejected) {
+                        reject("Release candidate")
+                    }
+                }
+            }
+        }
+    }
 }

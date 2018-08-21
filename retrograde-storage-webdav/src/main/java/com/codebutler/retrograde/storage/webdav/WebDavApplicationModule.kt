@@ -21,7 +21,7 @@ package com.codebutler.retrograde.storage.webdav
 
 import android.content.Context
 import com.codebutler.retrograde.lib.storage.StorageProvider
-import com.codebutler.retrograde.lib.ovgdb.db.OvgdbMetadataProvider
+import com.codebutler.retrograde.metadata.ovgdb.OvgdbMetadataProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet

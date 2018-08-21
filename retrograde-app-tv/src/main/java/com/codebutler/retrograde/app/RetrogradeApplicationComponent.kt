@@ -19,6 +19,8 @@
 
 package com.codebutler.retrograde.app
 
+import com.codebutler.retrograde.lib.game.GameSaveWorker
+import com.codebutler.retrograde.lib.injection.AndroidWorkerInjectionModule
 import com.codebutler.retrograde.lib.injection.PerApp
 import com.codebutler.retrograde.storage.gdrive.GDriveApplicationModule
 import com.codebutler.retrograde.storage.webdav.WebDavApplicationModule
@@ -28,9 +30,11 @@ import dagger.android.support.AndroidSupportInjectionModule
 
 @Component(modules = [
     AndroidSupportInjectionModule::class,
+    AndroidWorkerInjectionModule::class,
     RetrogradeApplicationModule::class,
     GDriveApplicationModule::class,
-    WebDavApplicationModule::class
+    WebDavApplicationModule::class,
+    GameSaveWorker.Module::class
 ])
 @PerApp
 interface RetrogradeApplicationComponent : AndroidInjector<RetrogradeApplication> {

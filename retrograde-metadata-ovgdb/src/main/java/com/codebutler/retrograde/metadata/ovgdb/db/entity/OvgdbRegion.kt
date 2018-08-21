@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.retrograde.lib.ovgdb.db.entity
+package com.codebutler.retrograde.metadata.ovgdb.db.entity
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

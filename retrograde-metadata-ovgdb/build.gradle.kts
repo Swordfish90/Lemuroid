@@ -8,16 +8,16 @@ dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
 
-    implementation(deps.libs.dagger)
+    implementation(deps.libs.dagger.core)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
-    implementation(deps.libs.roomRuntime)
-    implementation(deps.libs.roomRxJava2)
+    implementation(deps.libs.arch.room.runtime)
+    implementation(deps.libs.arch.room.rxjava2)
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxRelay2)
 
-    kapt(deps.libs.daggerCompiler)
-    kapt(deps.libs.roomCompiler)
+    kapt(deps.libs.dagger.compiler)
+    kapt(deps.libs.arch.room.compiler)
 }
 
 android {

@@ -19,6 +19,7 @@
 
 package com.codebutler.retrograde.lib.retro
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.DefaultLifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
@@ -33,7 +34,13 @@ import com.codebutler.retrograde.lib.binding.LibRetrograde
 import com.codebutler.retrograde.lib.game.audio.GameAudio
 import com.codebutler.retrograde.lib.game.display.FpsCalculator
 import com.codebutler.retrograde.lib.game.display.GameDisplay
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.toOptional
+import com.jakewharton.rxrelay2.PublishRelay
 import com.sun.jna.Native
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
 import java.nio.ByteBuffer
@@ -60,6 +67,8 @@ class RetroDroid(
     private val videoBufferCache = BufferCache()
     private val videoBitmapCache = BitmapCache()
 
+    private val gameUnloadedRelay = PublishRelay.create<Optional<ByteArray>>()
+
     private var region: Retro.Region? = null
     private var systemAVInfo: Retro.SystemAVInfo? = null
     private var systemInfo: Retro.SystemInfo? = null
@@ -72,7 +81,7 @@ class RetroDroid(
     /**
      * Callback when game is unloaded, to allow for persisting save ram.
      */
-    var gameUnloadedCallback: ((saveData: ByteArray?) -> Unit)? = null
+    val gameUnloaded: Observable<Optional<ByteArray>> = gameUnloadedRelay.hide()
 
     init {
         Native.setCallbackExceptionHandler { c, e ->
@@ -188,6 +197,24 @@ class RetroDroid(
         }
     }
 
+    fun stop() {
+        timer?.cancel()
+        timer = null
+    }
+
+    @SuppressLint("CheckResult")
+    fun unloadGame() {
+        Single
+            .fromCallable {
+                retro.getMemoryData(Retro.MemoryId.SAVE_RAM).toOptional()
+            }
+            .subscribeOn(Schedulers.io())
+            .doOnSuccess {
+                retro.unloadGame()
+            }
+            .subscribe(gameUnloadedRelay)
+    }
+
     override fun onResume(owner: LifecycleOwner) {
         start()
     }
@@ -197,7 +224,6 @@ class RetroDroid(
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        unloadGame()
         deinit()
     }
 
@@ -241,17 +267,6 @@ class RetroDroid(
         updateKey(KeyEvent.KEYCODE_DPAD_RIGHT, right)
         updateKey(KeyEvent.KEYCODE_DPAD_UP, up)
         updateKey(KeyEvent.KEYCODE_DPAD_DOWN, down)
-    }
-
-    private fun stop() {
-        timer?.cancel()
-        timer = null
-    }
-
-    private fun unloadGame() {
-        val saveRam = retro.getMemoryData(Retro.MemoryId.SAVE_RAM)
-        retro.unloadGame()
-        gameUnloadedCallback?.invoke(saveRam)
     }
 
     private fun deinit() {

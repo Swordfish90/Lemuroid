@@ -23,6 +23,7 @@
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.codebutler.retrograde">
 
     <uses-feature
@@ -49,7 +50,8 @@
         android:theme="@style/AppTheme"
         android:process=":main"
         android:isGame="true"
-        android:banner="@mipmap/ic_banner">
+        android:banner="@mipmap/ic_banner"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name="com.codebutler.retrograde.app.feature.main.MainActivity">
             <intent-filter>
@@ -62,6 +64,11 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.codebutler.retrograde.app.feature.game.GameLauncherActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/GameTheme"/>
 
         <activity
             android:name="com.codebutler.retrograde.app.feature.game.GameActivity"

@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.RxTimberTree
+import com.codebutler.retrograde.lib.logging.RxTimberTree
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.common.kotlin.inflate
 import com.codebutler.retrograde.lib.android.RetrogradeActivity

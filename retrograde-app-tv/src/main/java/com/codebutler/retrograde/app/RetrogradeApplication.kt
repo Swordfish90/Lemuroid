@@ -19,34 +19,41 @@
 
 package com.codebutler.retrograde.app
 
+import android.annotation.SuppressLint
 import android.content.Context
+import androidx.work.Worker
 import com.bugsnag.android.Bugsnag
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.R
+import com.codebutler.retrograde.lib.injection.HasWorkerInjector
+import com.codebutler.retrograde.lib.logging.RxTimberTree
 import com.codebutler.retrograde.storage.gdrive.GDriveStorageProvider
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerApplication
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class RetrogradeApplication : DaggerApplication() {
+class RetrogradeApplication : DaggerApplication(), HasWorkerInjector {
     companion object {
+
         init {
             if (BuildConfig.DEBUG) {
                 System.setProperty("jna.debug_load", "true")
                 System.setProperty("jna.dump_memory", "true")
             }
         }
-
         fun get(context: Context) = context.applicationContext as RetrogradeApplication
     }
 
     @Inject lateinit var rxTimberTree: RxTimberTree
     @Inject lateinit var rxPrefs: RxSharedPreferences
     @Inject lateinit var gdriveStorageProvider: GDriveStorageProvider
+    @Inject lateinit var workerInjector: DispatchingAndroidInjector<Worker>
 
+    @SuppressLint("CheckResult")
     override fun onCreate() {
         super.onCreate()
 
@@ -77,4 +84,6 @@ class RetrogradeApplication : DaggerApplication() {
         return DaggerRetrogradeApplicationComponent.builder()
                 .create(this)
     }
+
+    override fun workerInjector(): AndroidInjector<Worker> = workerInjector
 }

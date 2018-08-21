@@ -7,7 +7,7 @@ import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.MenuItem
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.feature.game.GameActivity
+import com.codebutler.retrograde.app.feature.game.GameLauncherActivity
 import com.codebutler.retrograde.app.shared.ui.ItemViewLongClickListener
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.entity.Game
@@ -25,7 +25,7 @@ class GameInteractionHandler(private val activity: Activity, private val retrogr
     private var gameForPopupMenu: Game? = null
 
     fun onItemClick(item: Game) {
-        activity.startActivity(GameActivity.newIntent(activity, item))
+        activity.startActivity(GameLauncherActivity.newIntent(activity, item))
     }
 
     override fun onItemLongClicked(itemViewHolder: Presenter.ViewHolder, item: Any): Boolean {

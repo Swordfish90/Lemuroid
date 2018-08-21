@@ -60,5 +60,5 @@ class PagedListObjectAdapter<T>(presenter: Presenter, diffCallback: DiffUtil.Ite
 
     override fun size(): Int = differ.itemCount
 
-    override fun get(position: Int): Any? = differ.getItem(position )
+    override fun get(position: Int): Any? = differ.getItem(position)
 }

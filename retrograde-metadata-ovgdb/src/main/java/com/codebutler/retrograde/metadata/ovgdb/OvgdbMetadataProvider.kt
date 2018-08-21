@@ -17,16 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.codebutler.retrograde.lib.ovgdb.db
+package com.codebutler.retrograde.metadata.ovgdb
 
 import com.codebutler.retrograde.common.rx.toSingleAsOptional
 import com.codebutler.retrograde.lib.library.GameSystem
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
-import com.codebutler.retrograde.lib.ovgdb.db.entity.OvgdbRelease
 import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.metadata.ovgdb.db.OvgdbDatabase
 import com.codebutler.retrograde.metadata.ovgdb.db.OvgdbManager
+import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRelease
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
