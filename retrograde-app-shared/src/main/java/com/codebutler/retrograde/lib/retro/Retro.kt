@@ -554,6 +554,9 @@ class Retro(coreLibraryName: String) {
                         callback.onSetSupportAchievements(supportsAchievements)
                         return true
                     }
+                    LibRetro.RETRO_ENVIRONMENT_GET_AUDIO_VIDEO_ENABLE -> {
+                        return false // FIXME
+                    }
                     else -> {
                         callback.onUnsupportedCommand(cmd.toInt())
                         return false

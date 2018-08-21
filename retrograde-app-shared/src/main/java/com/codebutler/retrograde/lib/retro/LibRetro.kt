@@ -32,7 +32,7 @@ import com.sun.jna.Structure
 interface LibRetro : Library {
 
     companion object {
-        const val RETRO_ENVIRONMENT_EXPERIMENTAL = 0x10000
+        private const val RETRO_ENVIRONMENT_EXPERIMENTAL = 0x10000
 
         const val RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL = 8
         const val RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY = 9
@@ -51,6 +51,7 @@ interface LibRetro : Library {
 
         const val RETRO_ENVIRONMENT_SET_MEMORY_MAPS = 36 or RETRO_ENVIRONMENT_EXPERIMENTAL
         const val RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS = 42 or RETRO_ENVIRONMENT_EXPERIMENTAL
+        const val RETRO_ENVIRONMENT_GET_AUDIO_VIDEO_ENABLE = 47 or RETRO_ENVIRONMENT_EXPERIMENTAL
     }
 
     object retro_pixel_format {
