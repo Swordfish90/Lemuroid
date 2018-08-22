@@ -45,21 +45,23 @@ class GDriveBrowser(private val driveFactory: DriveFactory) {
                 .use { stream -> stream.readBytes() }
     }
 
-    fun uploadByName(space: String = "drive", parentFolderId: String?, fileName: String, data: ByteArray) {
+    fun uploadByName(space: String = "drive", parentFolderId: String?, fileName: String, data: ByteArray): File? {
         val drive = driveFactory.create().toNullable() ?: throw IllegalStateException()
         val content = ByteArrayContent("application/octet-stream", data)
         val existingFile = getFileMetadata(drive, space, parentFolderId, fileName)
-        if (existingFile != null) {
+        return if (existingFile != null) {
             drive.files().update(existingFile.id, null, content)
                     .execute()
         } else {
-            val newFile = File()
-            newFile.name = fileName
+            val newFileMetadata = File()
+            newFileMetadata.name = fileName
             if (parentFolderId != null) {
-                newFile.parents = listOf(parentFolderId)
+                newFileMetadata.parents = listOf(space, parentFolderId)
+            } else {
+                newFileMetadata.parents = listOf(space)
             }
             drive.files()
-                    .create(newFile, content)
+                    .create(newFileMetadata, content)
                     .setFields("id, parents, name")
                     .execute()
         }
