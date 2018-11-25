@@ -20,13 +20,12 @@
 package com.codebutler.retrograde.storage.webdav.client
 
 import java.net.URI
-import kotlin.coroutines.experimental.buildSequence
 
 class WebDavScanner(private val webDavClient: WebDavClient) {
 
     fun scan(uri: URI): Sequence<WebDavClient.DavResponse> {
         val responses = webDavClient.propfind(uri.toString())
-        return buildSequence {
+        return sequence {
             for (davResponse in responses) {
                 val collectionUri = uri.resolve(davResponse.href)
                 if (collectionUri != uri) {

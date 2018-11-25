@@ -20,6 +20,7 @@ dependencies {
     implementation(deps.libs.jna)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
+    implementation(deps.libs.okio)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.retrofit)
     implementation(deps.libs.retrofitRxJava2)

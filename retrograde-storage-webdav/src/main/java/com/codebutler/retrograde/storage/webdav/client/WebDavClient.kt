@@ -38,7 +38,6 @@ import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.PUT
 import retrofit2.http.Url
-import kotlin.coroutines.experimental.buildIterator
 
 class WebDavClient(
     okHttpClient: OkHttpClient,
@@ -101,7 +100,7 @@ class WebDavClient(
     }
 
     private fun readMultiStatus(parser: XmlPullParser): Iterator<DavResponse> {
-        return buildIterator {
+        return iterator {
             parser.require(XmlPullParser.START_TAG, NS, "multistatus")
             while (parser.next() != XmlPullParser.END_TAG) {
                 if (parser.eventType != XmlPullParser.START_TAG) {

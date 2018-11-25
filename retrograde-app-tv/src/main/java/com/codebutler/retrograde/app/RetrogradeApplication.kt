@@ -38,11 +38,13 @@ import javax.inject.Inject
 
 class RetrogradeApplication : DaggerApplication(), HasWorkerInjector {
     companion object {
-
         init {
             if (BuildConfig.DEBUG) {
                 System.setProperty("jna.debug_load", "true")
+                System.setProperty("jna.debug_load.jna", "true")
                 System.setProperty("jna.dump_memory", "true")
+                System.setProperty("jna.nosys", "false")
+                System.setProperty("jna.noclasspath", "true")
             }
         }
         fun get(context: Context) = context.applicationContext as RetrogradeApplication

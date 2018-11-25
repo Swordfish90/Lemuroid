@@ -58,11 +58,7 @@ class SettingsFragment : LeanbackSettingsFragment(), HasFragmentInjector {
 
         @PerChildFragment
         @ContributesAndroidInjector
-        abstract fun prefFragment(): PrefScreenFragment
-
-        @PerChildFragment
-        @ContributesAndroidInjector
-        abstract fun logFragment(): DebugLogActivity
+        abstract fun prefScreenFragment(): PrefScreenFragment
     }
 
     class PrefScreenFragment : LeanbackPreferenceFragment() {

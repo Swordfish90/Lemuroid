@@ -43,7 +43,6 @@ dependencies {
     implementation(project(":retrograde-storage-webdav"))
     implementation(project(":retrograde-storage-archiveorg"))
 
-    implementation(deps.libs.ankoCoroutines)
     implementation(deps.libs.arch.paging)
     implementation(deps.libs.arch.room.runtime)
     implementation(deps.libs.arch.work.runtime)
@@ -54,6 +53,7 @@ dependencies {
     implementation(deps.libs.autodispose.android.kotlin)
     implementation(deps.libs.autodispose.core)
     implementation(deps.libs.autodispose.kotlin)
+    implementation(deps.libs.bugsnagAndroid)
     implementation(deps.libs.bugsnagAndroidNdk)
     implementation(deps.libs.dagger.android.core)
     implementation(deps.libs.dagger.android.support)
@@ -61,6 +61,7 @@ dependencies {
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
+    implementation(deps.libs.okio)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.picasso)
     implementation(deps.libs.retrofit)

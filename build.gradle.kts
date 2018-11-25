@@ -7,7 +7,6 @@ import org.gradle.api.plugins.quality.CheckstyleExtension
 
 import com.android.build.gradle.BaseExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 buildscript {
@@ -24,6 +23,7 @@ buildscript {
 plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
     id("com.github.ben-manes.versions") version "0.20.0"
+    id("org.jmailen.kotlinter") version "1.20.1"
     checkstyle
 }
 
@@ -34,6 +34,8 @@ allprojects {
         mavenLocal()
         mavenCentral()
     }
+
+    apply(plugin = "org.jmailen.kotlinter")
 
     configurations.all {
         resolutionStrategy.eachDependency {
@@ -102,10 +104,6 @@ subprojects {
                 setTargetCompatibility(JavaVersion.VERSION_1_8)
             }
         }
-
-        extensions.configure(KotlinProjectExtension::class.java) {
-            experimental.coroutines = Coroutines.ENABLE
-        }
     }
 
     configurations {
@@ -115,25 +113,10 @@ subprojects {
     }
 }
 
-configurations {
-    maybeCreate("ktlint")
-}
-
-dependencies {
-    "ktlint"(deps.libs.ktlint)
-}
-
 tasks {
     "clean"(Delete::class) {
         delete(buildDir)
     }
-    "lintKotlin"(JavaExec::class) {
-        main = "com.github.shyiko.ktlint.Main"
-        classpath = configurations["ktlint"]
-        args?.addAll(listOf("*/src/**/*.kt"))
-    }
-
-    findByName("check")?.dependsOn("lintKotlin")
 
     "dependencyUpdates"(DependencyUpdatesTask::class) {
         resolutionStrategy {

@@ -11,9 +11,7 @@ import com.codebutler.retrograde.app.feature.game.GameLauncherActivity
 import com.codebutler.retrograde.app.shared.ui.ItemViewLongClickListener
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.entity.Game
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.coroutines.experimental.bg
+import io.reactivex.Completable
 
 class GameInteractionHandler(private val activity: Activity, private val retrogradeDb: RetrogradeDatabase) :
         ItemViewLongClickListener,
@@ -60,12 +58,9 @@ class GameInteractionHandler(private val activity: Activity, private val retrogr
                 true
             }
             R.id.toggle_favorite -> {
-                async(UI) {
-                    bg {
-                        retrogradeDb.gameDao().update(game.copy(isFavorite = !game.isFavorite))
-                    }.await()
-                    onRefreshListener?.invoke()
-                }
+                Completable.fromCallable {
+                    retrogradeDb.gameDao().update(game.copy(isFavorite = !game.isFavorite))
+                }.subscribe()
                 true
             }
             else -> false

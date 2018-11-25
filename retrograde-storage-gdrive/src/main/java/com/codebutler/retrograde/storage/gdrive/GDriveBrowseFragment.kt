@@ -45,7 +45,7 @@ class GDriveBrowseFragment : BrowseSupportFragment() {
         private const val FOLDER_ID_ROOT = "root"
     }
 
-    private object UseFolderItem : SimpleItem(R.string.gdrive_use_this_folder, R.drawable.ic_check_white_64dp)
+    private object UseFolderItem : SimpleItem(R.string.gdrive_use_this_folder, R.drawable.gdrive_ic_check_white_64dp)
 
     @Inject lateinit var gdriveBrowser: GDriveBrowser
 

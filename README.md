@@ -25,7 +25,6 @@ Chat: https://discord.gg/UuDmP3v
 
 Retrograde uses the following open-source libraries:
 
-* [Anko](https://github.com/Kotlin/anko)
 * [AutoDispose](https://github.com/uber/AutoDispose)
 * [Dagger](https://google.github.io/dagger)
 * [Google API Client](https://github.com/google/google-api-java-client)

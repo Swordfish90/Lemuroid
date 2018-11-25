@@ -88,7 +88,6 @@ fun <T : Any> MaybeSubscribeProxy<T>.subscribeBy(
     }
 }
 
-
 /**
  * Overloaded subscribe function that allows passing named parameters
  */

@@ -52,6 +52,11 @@
 ## Guava
 -dontnote com.google.appengine.api.ThreadManager
 -dontnote com.google.apphosting.api.ApiProxy
+-dontwarn java.lang.ClassValue
+-dontwarn com.google.j2objc.annotations.Weak
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn org.apache.commons.codec.binary.Base64
+-dontwarn org.apache.commons.codec.binary.StringUtils
 
 ## Retrograde
 -keep class com.codebutler.retrograde.lib.retro.**

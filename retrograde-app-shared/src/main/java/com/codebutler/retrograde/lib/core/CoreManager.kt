@@ -25,7 +25,9 @@ import android.os.Build
 import android.os.Environment
 import com.codebutler.retrograde.lib.BuildConfig
 import io.reactivex.Single
-import okio.Okio
+import okio.buffer
+import okio.sink
+import okio.source
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
@@ -80,9 +82,9 @@ class CoreManager(context: Context, retrofit: Retrofit) {
                     while (true) {
                         val entry = zipStream.nextEntry ?: break
                         if (entry.name == libFileName) {
-                            Okio.source(zipStream).use { zipSource ->
-                                Okio.sink(destFile).use { fileSink ->
-                                    Okio.buffer(zipSource).readAll(fileSink)
+                            zipStream.source().use { zipSource ->
+                                destFile.sink().use { fileSink ->
+                                    zipSource.buffer().readAll(fileSink)
                                     return@map destFile
                                 }
                             }
