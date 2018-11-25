@@ -19,8 +19,8 @@
 
 package com.codebutler.retrograde.lib.library
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.codebutler.retrograde.lib.R
 import java.util.Locale
 

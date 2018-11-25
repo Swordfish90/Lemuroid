@@ -19,9 +19,9 @@
 
 package com.codebutler.retrograde.lib.library.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.codebutler.retrograde.common.db.Converters
 import com.codebutler.retrograde.lib.library.db.dao.GameDao
 import com.codebutler.retrograde.lib.library.db.dao.GameSearchDao

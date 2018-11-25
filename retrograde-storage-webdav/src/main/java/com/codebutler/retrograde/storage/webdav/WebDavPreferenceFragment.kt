@@ -1,7 +1,7 @@
 package com.codebutler.retrograde.storage.webdav
 
 import android.os.Bundle
-import android.support.v17.preference.LeanbackPreferenceFragment
+import androidx.leanback.preference.LeanbackPreferenceFragment
 
 class WebDavPreferenceFragment : LeanbackPreferenceFragment() {
 

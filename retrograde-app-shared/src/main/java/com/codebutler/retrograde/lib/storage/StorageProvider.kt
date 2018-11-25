@@ -19,7 +19,7 @@
 
 package com.codebutler.retrograde.lib.storage
 
-import android.support.v17.preference.LeanbackPreferenceFragment
+import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
 import com.gojuno.koptional.Optional

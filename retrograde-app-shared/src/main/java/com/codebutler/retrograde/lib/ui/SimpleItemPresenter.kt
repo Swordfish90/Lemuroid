@@ -21,13 +21,13 @@ package com.codebutler.retrograde.lib.ui
 
 import android.content.Context
 import android.content.res.Resources
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v17.leanback.widget.Presenter
 import android.view.ContextThemeWrapper
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.leanback.widget.ImageCardView
+import androidx.leanback.widget.Presenter
 import com.codebutler.retrograde.lib.R
 
 sealed class TextOrResource {

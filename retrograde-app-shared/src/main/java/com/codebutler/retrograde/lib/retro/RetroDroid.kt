@@ -20,10 +20,10 @@
 package com.codebutler.retrograde.lib.retro
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.DefaultLifecycleObserver
-import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.os.Handler
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.codebutler.retrograde.common.BitmapCache
 import com.codebutler.retrograde.common.BufferCache
 import com.codebutler.retrograde.common.BuildConfig

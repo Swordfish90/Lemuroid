@@ -22,7 +22,7 @@ package com.codebutler.retrograde.app.feature.main
 import android.Manifest
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.home.GamesGridFragment
 import com.codebutler.retrograde.app.feature.home.HomeFragment
@@ -33,7 +33,7 @@ import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.kotlin.autoDisposable
+import com.uber.autodispose.autoDisposable
 import dagger.Lazy
 import dagger.Provides
 import dagger.android.AndroidInjector

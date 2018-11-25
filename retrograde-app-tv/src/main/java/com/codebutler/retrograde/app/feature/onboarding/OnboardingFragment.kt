@@ -19,7 +19,7 @@
 
 package com.codebutler.retrograde.app.feature.onboarding
 
-import android.support.v17.leanback.app.OnboardingSupportFragment
+import androidx.leanback.app.OnboardingSupportFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

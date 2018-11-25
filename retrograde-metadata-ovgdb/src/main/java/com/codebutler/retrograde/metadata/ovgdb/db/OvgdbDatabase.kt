@@ -19,8 +19,8 @@
 
 package com.codebutler.retrograde.metadata.ovgdb.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRegion
 import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRelease
 import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRom

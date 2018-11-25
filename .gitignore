@@ -11,6 +11,7 @@ project.properties
 .idea
 *.iml
 *.iws
+*.swp
 .gradle
 .externalNativeBuild
 local.properties

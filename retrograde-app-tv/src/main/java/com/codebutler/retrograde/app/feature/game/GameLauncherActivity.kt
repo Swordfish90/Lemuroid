@@ -18,7 +18,7 @@ class GameLauncherActivity : RetrogradeActivity() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             val gameIntent = Intent(this, GameActivity::class.java)
-            gameIntent.putExtras(intent.extras)
+            gameIntent.putExtras(intent.extras!!)
             startActivityForResult(gameIntent, REQUEST_CODE_GAME)
         }
     }

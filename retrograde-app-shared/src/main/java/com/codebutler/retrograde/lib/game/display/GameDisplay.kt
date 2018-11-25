@@ -19,9 +19,9 @@
 
 package com.codebutler.retrograde.lib.game.display
 
-import android.arch.lifecycle.DefaultLifecycleObserver
 import android.graphics.Bitmap
 import android.view.View
+import androidx.lifecycle.DefaultLifecycleObserver
 
 interface GameDisplay : DefaultLifecycleObserver {
 

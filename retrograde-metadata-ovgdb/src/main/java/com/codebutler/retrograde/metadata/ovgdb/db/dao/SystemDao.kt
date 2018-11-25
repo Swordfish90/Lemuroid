@@ -19,8 +19,8 @@
 
 package com.codebutler.retrograde.metadata.ovgdb.db.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
+import androidx.room.Dao
+import androidx.room.Query
 import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbSystem
 import io.reactivex.Maybe
 
