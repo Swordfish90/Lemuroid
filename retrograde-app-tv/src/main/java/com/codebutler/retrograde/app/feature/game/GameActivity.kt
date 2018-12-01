@@ -40,6 +40,7 @@ import com.codebutler.retrograde.lib.game.audio.GameAudio
 import com.codebutler.retrograde.lib.game.display.GameDisplay
 import com.codebutler.retrograde.lib.game.display.gl.GlGameDisplay
 import com.codebutler.retrograde.lib.game.display.sw.SwGameDisplay
+import com.codebutler.retrograde.lib.game.input.GameInput
 import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.retro.RetroDroid
@@ -67,6 +68,7 @@ class GameActivity : RetrogradeActivity() {
     private val gameDisplayLayout by bindView<FrameLayout>(R.id.game_display_layout)
 
     private lateinit var gameDisplay: GameDisplay
+    private lateinit var gameInput: GameInput
 
     private var game: Game? = null
     private var retroDroid: RetroDroid? = null
@@ -83,6 +85,8 @@ class GameActivity : RetrogradeActivity() {
         } else {
             SwGameDisplay(this)
         }
+
+        gameInput = GameInput(this)
 
         gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)
         lifecycle.addObserver(gameDisplay)
@@ -120,13 +124,13 @@ class GameActivity : RetrogradeActivity() {
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
         super.dispatchGenericMotionEvent(event)
-        retroDroid?.onMotionEvent(event)
+        gameInput.onMotionEvent(event)
         return true
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         super.dispatchKeyEvent(event)
-        retroDroid?.onKeyEvent(event)
+        gameInput.onKeyEvent(event)
         return true
     }
 
@@ -154,7 +158,7 @@ class GameActivity : RetrogradeActivity() {
 
     private fun loadRetro(data: GameLoader.GameData) {
         try {
-            val retroDroid = RetroDroid(gameDisplay, GameAudio(), this, data.coreFile)
+            val retroDroid = RetroDroid(gameDisplay, GameAudio(), gameInput, this, data.coreFile)
             lifecycle.addObserver(retroDroid)
 
             retroDroid.gameUnloaded

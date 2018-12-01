@@ -24,16 +24,14 @@ import android.arch.lifecycle.DefaultLifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.os.Handler
-import android.view.KeyEvent
-import android.view.MotionEvent
 import com.codebutler.retrograde.common.BitmapCache
 import com.codebutler.retrograde.common.BufferCache
 import com.codebutler.retrograde.common.BuildConfig
-import com.codebutler.retrograde.common.kotlin.containsAny
 import com.codebutler.retrograde.lib.binding.LibRetrograde
 import com.codebutler.retrograde.lib.game.audio.GameAudio
 import com.codebutler.retrograde.lib.game.display.FpsCalculator
 import com.codebutler.retrograde.lib.game.display.GameDisplay
+import com.codebutler.retrograde.lib.game.input.GameInput
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
 import com.jakewharton.rxrelay2.PublishRelay
@@ -54,14 +52,13 @@ import kotlin.experimental.and
 class RetroDroid(
     private val gameDisplay: GameDisplay,
     private val gameAudio: GameAudio,
+    private val gameInput: GameInput,
     private val context: Context,
     coreFile: File
 ) : DefaultLifecycleObserver {
-
     private val audioSampleBufferCache = BufferCache()
     private val fpsCalculator = FpsCalculator()
     private val handler = Handler()
-    private val pressedKeys = mutableSetOf<Int>()
     private val retro: Retro
     private val variables: MutableMap<String, Retro.Variable> = mutableMapOf()
     private val videoBufferCache = BufferCache()
@@ -227,112 +224,18 @@ class RetroDroid(
         deinit()
     }
 
-    fun onKeyEvent(event: KeyEvent) {
-        when (event.action) {
-            KeyEvent.ACTION_DOWN -> pressedKeys.add(event.keyCode)
-            KeyEvent.ACTION_UP -> pressedKeys.remove(event.keyCode)
-        }
-    }
-
-    fun onMotionEvent(event: MotionEvent) {
-        var left = false
-        var right = false
-        var up = false
-        var down = false
-
-        val coords = MotionEvent.PointerCoords()
-        event.getPointerCoords(0, coords)
-
-        when (coords.getAxisValue(MotionEvent.AXIS_HAT_X)) {
-            1.0F -> right = true
-            -1.0F -> left = true
-        }
-
-        when (coords.getAxisValue(MotionEvent.AXIS_HAT_Y)) {
-            1.0F -> down = true
-            -1.0F -> up = true
-        }
-
-        when (event.rawX) {
-            1.0F -> right = true
-            -1.0F -> left = true
-        }
-
-        when (event.rawY) {
-            1.0F -> down = true
-            -1.0F -> up = true
-        }
-
-        updateKey(KeyEvent.KEYCODE_DPAD_LEFT, left)
-        updateKey(KeyEvent.KEYCODE_DPAD_RIGHT, right)
-        updateKey(KeyEvent.KEYCODE_DPAD_UP, up)
-        updateKey(KeyEvent.KEYCODE_DPAD_DOWN, down)
-    }
-
     private fun deinit() {
+        gameInput.deinit()
         retro.deinit()
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean {
-        if (port != 0) {
-            // Only P1 supported for now.
-            return false
-        }
-
-        when (Retro.Device.fromValue(device)) {
-            Retro.Device.NONE -> { }
-            Retro.Device.JOYPAD -> {
-                return when (Retro.DeviceId.fromValue(id)) {
-                    Retro.DeviceId.JOYPAD_A -> pressedKeys.containsAny(
-                            KeyEvent.KEYCODE_A,
-                            KeyEvent.KEYCODE_BUTTON_A)
-                    Retro.DeviceId.JOYPAD_B -> pressedKeys.containsAny(
-                            KeyEvent.KEYCODE_B,
-                            KeyEvent.KEYCODE_BUTTON_B)
-                    Retro.DeviceId.JOYPAD_DOWN -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_DOWN)
-                    Retro.DeviceId.JOYPAD_L -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_L1)
-                    Retro.DeviceId.JOYPAD_L2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_L2)
-                    Retro.DeviceId.JOYPAD_L3 -> false
-                    Retro.DeviceId.JOYPAD_LEFT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_LEFT)
-                    Retro.DeviceId.JOYPAD_R -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_R1)
-                    Retro.DeviceId.JOYPAD_R2 -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_R2)
-                    Retro.DeviceId.JOYPAD_R3 -> false
-                    Retro.DeviceId.JOYPAD_RIGHT -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_RIGHT)
-                    Retro.DeviceId.JOYPAD_SELECT -> pressedKeys.contains(KeyEvent.KEYCODE_BUTTON_SELECT)
-                    Retro.DeviceId.JOYPAD_START -> pressedKeys.containsAny(
-                            KeyEvent.KEYCODE_BUTTON_START,
-                            KeyEvent.KEYCODE_ENTER)
-                    Retro.DeviceId.JOYPAD_UP -> pressedKeys.contains(KeyEvent.KEYCODE_DPAD_UP)
-                    Retro.DeviceId.JOYPAD_X -> pressedKeys.containsAny(
-                            KeyEvent.KEYCODE_BUTTON_X,
-                            KeyEvent.KEYCODE_X)
-                    Retro.DeviceId.JOYPAD_Y -> pressedKeys.containsAny(
-                            KeyEvent.KEYCODE_BUTTON_Y,
-                            KeyEvent.KEYCODE_Y)
-                    else -> return false
-                }
-            }
-            Retro.Device.MOUSE -> TODO()
-            Retro.Device.KEYBOARD -> return false
-            Retro.Device.LIGHTGUN -> TODO()
-            Retro.Device.ANALOG -> return false
-            Retro.Device.POINTER -> TODO()
-        }
-        return false
-    }
+    private fun onInputState(port: Int, device: Int, index: Int, id: Int): Boolean =
+            gameInput.isButtonPressed(port, device, id)
 
     private fun updateSystemAVInfo(systemAVInfo: Retro.SystemAVInfo) {
         gameAudio.init(systemAVInfo.timing.sample_rate.toInt())
         this.systemAVInfo = systemAVInfo
-    }
-
-    private fun updateKey(keyCode: Int, isPressed: Boolean) {
-        if (isPressed) {
-            pressedKeys.add(keyCode)
-        } else {
-            pressedKeys.remove(keyCode)
-        }
     }
 
     inner class RetroDroidEnvironmentCallback : Retro.EnvironmentCallback {
@@ -397,7 +300,6 @@ class RetroDroid(
         }
 
         override fun onSetControllerInfo(info: List<Retro.ControllerInfo>) {
-            // FIXME: Implement
             Timber.d("onSetControllerInfo: $info")
         }
 
