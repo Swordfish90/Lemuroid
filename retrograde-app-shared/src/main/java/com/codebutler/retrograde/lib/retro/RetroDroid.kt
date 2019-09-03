@@ -42,8 +42,6 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
 import java.nio.ByteBuffer
-import java.util.Timer
-import kotlin.concurrent.fixedRateTimer
 import kotlin.experimental.and
 
 /**
@@ -69,7 +67,7 @@ class RetroDroid(
     private var region: Retro.Region? = null
     private var systemAVInfo: Retro.SystemAVInfo? = null
     private var systemInfo: Retro.SystemInfo? = null
-    private var timer: Timer? = null
+    private var thread: RetroThread? = null
     private var pixelFormat: Retro.PixelFormat? = null
 
     val fps: Long
@@ -185,18 +183,20 @@ class RetroDroid(
 
     fun start() {
         val avInfo = systemAVInfo
-        if (this.timer != null || avInfo == null) {
+        if (this.thread != null || avInfo == null) {
             return
         }
-        this.timer = fixedRateTimer(period = 1000L / avInfo.timing.fps.toLong()) {
+        this.thread = RetroThread.fromFPS(avInfo.timing.fps) {
             retro.run()
             fpsCalculator.update()
         }
+        this.thread?.setPriority(Thread.MAX_PRIORITY)
+        this.thread?.start()
     }
 
     fun stop() {
-        timer?.cancel()
-        timer = null
+        thread?.interrupt()
+        thread = null
     }
 
     @SuppressLint("CheckResult")
