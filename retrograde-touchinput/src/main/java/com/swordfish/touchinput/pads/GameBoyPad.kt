@@ -44,7 +44,7 @@ class GameBoyPad @JvmOverloads constructor(
     fun getActionEvents(): Observable<PadEvent> {
         return findViewById<ActionButtons>(R.id.gb_actions)
                 .getEvents()
-                .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_A, KeyEvent.KEYCODE_B))
+                .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_A))
 
     }
 
