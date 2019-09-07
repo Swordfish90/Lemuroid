@@ -5,5 +5,6 @@ include(
         ":retrograde-storage-webdav",
         ":retrograde-storage-archiveorg",
         ":retrograde-app-shared",
-        ":retrograde-app-tv"
+        ":retrograde-app-tv",
+        ":retrograde-touchinput"
 )

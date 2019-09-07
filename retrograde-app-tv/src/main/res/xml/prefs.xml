@@ -18,6 +18,9 @@
             <SwitchPreference
                 android:key="@string/pref_key_flags_opengl"
                 android:title="@string/opengl_rendering"/>
+            <SwitchPreference
+                android:key="@string/pref_key_flags_touchinput"
+                android:title="@string/display_touch_inputs"/>
         </PreferenceScreen>
         <Preference
             android:key="@string/pref_key_advanced_log"

@@ -24,9 +24,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.view.KeyEvent
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.ProgressBar
@@ -48,6 +46,7 @@ import com.codebutler.retrograde.lib.util.subscribeBy
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Some
 import com.gojuno.koptional.toOptional
+import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -73,12 +72,15 @@ class GameActivity : RetrogradeActivity() {
     private var game: Game? = null
     private var retroDroid: RetroDroid? = null
 
+    private var displayTouchInput: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val enableOpengl = prefs.getBoolean(getString(R.string.pref_key_flags_opengl), false)
+        displayTouchInput = prefs.getBoolean(getString(R.string.pref_key_flags_touchinput), false)
 
         gameDisplay = if (enableOpengl) {
             GlGameDisplay(this)
@@ -114,6 +116,33 @@ class GameActivity : RetrogradeActivity() {
         if (BuildConfig.DEBUG) {
             addFpsView()
         }
+    }
+
+    private fun setupTouchInput(game: Game) {
+        val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
+
+        val gameView = when (game.systemId) {
+            in listOf("snes", "gba") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
+            in listOf("nes", "gb", "gbc") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
+            else -> null
+        }
+
+        if (gameView != null) {
+            frameLayout.addView(gameView)
+
+            gameView.getEvents()
+                    .doOnNext {
+                        if (it.action == KeyEvent.ACTION_DOWN) {
+                            performHapticFeedback(gameView)
+                        }
+                    }.autoDisposable(scope())
+                    .subscribe { gameInput.onKeyEvent(KeyEvent(it.action, it.keycode)) }
+        }
+    }
+
+    private fun performHapticFeedback(view: View) {
+        val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+        view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
     override fun onDestroy() {
@@ -160,6 +189,10 @@ class GameActivity : RetrogradeActivity() {
         try {
             val retroDroid = RetroDroid(gameDisplay, GameAudio(), gameInput, this, data.coreFile)
             lifecycle.addObserver(retroDroid)
+
+            if (displayTouchInput) {
+                setupTouchInput(data.game)
+            }
 
             retroDroid.gameUnloaded
                 .map { optionalSaveData ->

@@ -57,11 +57,13 @@ object deps {
             }
         }
         object support {
+            const val supportCompat = "com.android.support:support-compat:${versions.support}"
             const val appCompatV7 = "com.android.support:appcompat-v7:${versions.support}"
             const val leanbackV17 = "com.android.support:leanback-v17:${versions.support}"
             const val paletteV7 = "com.android.support:palette-v7:${versions.support}"
             const val prefLeanbackV17 = "com.android.support:preference-leanback-v17:${versions.support}"
             const val recyclerViewV7 = "com.android.support:recyclerview-v7:${versions.support}"
+            const val constraintLayout = "com.android.support.constraint:constraint-layout:1.1.3"
         }
         const val bugsnagAndroid           = "com.bugsnag:bugsnag-android:4.9.2"
         const val bugsnagAndroidNdk        = "com.bugsnag:bugsnag-android-ndk:4.9.2"

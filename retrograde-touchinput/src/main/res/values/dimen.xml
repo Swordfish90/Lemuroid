@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_dial">160dp</dimen>
+    <dimen name="size_action_button_item">50dp</dimen>
+
+    <dimen name="size_direction_button_item">55dp</dimen>
+
+    <dimen name="size_small_button_height">25dp</dimen>
+    <dimen name="size_small_button_width">50dp</dimen>
+
+    <dimen name="size_large_button_height">40dp</dimen>
+    <dimen name="size_large_button_width">80dp</dimen>
+
+    <dimen name="shape_stroke_width">3dp</dimen>
+
+    <dimen name="common_spacing">8dp</dimen>
+    <dimen name="common_spacing_2">16dp</dimen>
+
+    <integer name="vector_stroke_width">2</integer>
+    <integer name="item_viewportsize">30</integer>
+</resources>

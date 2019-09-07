@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.swordfish.touchinput.views.LargeSingleButton
+        android:id="@+id/gba_r1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/gba_actions"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.swordfish.touchinput.views.SmallSingleButton
+        android:id="@+id/gba_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/gba_actions"
+        app:layout_constraintStart_toStartOf="@+id/gba_actions" />
+
+    <com.swordfish.touchinput.views.SmallSingleButton
+        android:id="@+id/gba_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/gba_direction"
+        app:layout_constraintEnd_toEndOf="@+id/gba_direction" />
+
+    <com.swordfish.touchinput.views.LargeSingleButton
+        android:id="@+id/gba_l1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/gba_direction"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.swordfish.touchinput.views.ActionButtons
+        android:id="@+id/gba_actions"
+        style="@style/default_action_2"
+        android:layout_width="@dimen/size_dial"
+        android:layout_height="@dimen/size_dial"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.swordfish.touchinput.views.DirectionPad
+        android:id="@+id/gba_direction"
+        android:layout_width="@dimen/size_dial"
+        android:layout_height="@dimen/size_dial"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

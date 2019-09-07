@@ -43,6 +43,9 @@ dependencies {
     implementation(project(":retrograde-storage-webdav"))
     implementation(project(":retrograde-storage-archiveorg"))
 
+    // TODO... This dependency will be gone when the separate mobile application is created.
+    implementation(project(":retrograde-touchinput"))
+
     implementation(deps.libs.arch.paging)
     implementation(deps.libs.arch.room.runtime)
     implementation(deps.libs.arch.work.runtime)

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="base_default_action">
+        <item name="multipleInputs">true</item>
+        <item name="rotateButtons">-45.0</item>
+        <item name="spacing">0.1</item>
+    </style>
+
+    <style name="default_action_3" parent="base_default_action">
+        <item name="rows">1</item>
+        <item name="cols">3</item>
+    </style>
+
+    <style name="default_action_4" parent="base_default_action">
+        <item name="rows">2</item>
+        <item name="cols">2</item>
+    </style>
+
+    <style name="default_action_2" parent="base_default_action">
+        <item name="rows">1</item>
+        <item name="cols">2</item>
+        <item name="spacing">0.2</item>
+    </style>
+
+    <style name="default_directionpad">
+        <item name="deadZone">0.3</item>
+        <item name="buttonCenterDistance">0.45</item>
+    </style>
+</resources>

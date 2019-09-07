@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DirectionPad">
+        <attr name="deadZone" format="float"/>
+        <attr name="buttonCenterDistance" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="ActionButtons">
+        <attr name="multipleInputs" format="boolean"/>
+        <attr name="rows" format="integer"/>
+        <attr name="cols" format="integer"/>
+        <attr name="spacing" format="float"/>
+        <attr name="rotateButtons" format="float"/>
+    </declare-styleable>
+
+</resources>
