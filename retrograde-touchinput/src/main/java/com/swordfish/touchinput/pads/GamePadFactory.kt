@@ -5,7 +5,8 @@ import android.content.Context
 class GamePadFactory {
     enum class Layout {
         NES,
-        SNES
+        SNES,
+        GENESIS
     }
 
     companion object {
@@ -13,6 +14,7 @@ class GamePadFactory {
             return when (layout) {
                 Layout.NES -> GameBoyPad(context)
                 Layout.SNES -> GameBoyAdvancePad(context)
+                Layout.GENESIS -> GenesisPad(context)
             }
         }
     }

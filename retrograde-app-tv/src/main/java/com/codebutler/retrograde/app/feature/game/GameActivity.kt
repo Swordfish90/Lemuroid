@@ -124,6 +124,7 @@ class GameActivity : RetrogradeActivity() {
         val gameView = when (game.systemId) {
             in listOf("snes", "gba") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
             in listOf("nes", "gb", "gbc") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
+            in listOf("md") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GENESIS)
             else -> null
         }
 

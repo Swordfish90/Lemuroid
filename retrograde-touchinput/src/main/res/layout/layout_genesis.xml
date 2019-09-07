@@ -1,0 +1,36 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.swordfish.touchinput.views.SmallSingleButton
+        android:id="@+id/genesis_start"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/genesis_actions"
+        app:layout_constraintStart_toStartOf="@+id/genesis_actions" />
+
+    <com.swordfish.touchinput.views.ActionButtons
+        android:id="@+id/genesis_actions"
+        style="@style/default_action_3"
+        android:layout_width="@dimen/size_dial"
+        android:layout_height="@dimen/size_dial"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.swordfish.touchinput.views.DirectionPad
+        android:id="@+id/genesis_direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
