@@ -15,7 +15,7 @@ import io.reactivex.Observable
 class GameBoyAdvancePad @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0) : GamePadView(context, attrs, defStyleAttr) {
+        defStyleAttr: Int = 0) : BaseGamePad(context, attrs, defStyleAttr) {
 
     init {
         inflate(context, R.layout.layout_gba, this)

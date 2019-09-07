@@ -10,7 +10,7 @@ class GamePadFactory {
     }
 
     companion object {
-        fun getGamePadView(context: Context, layout: Layout): GamePadView {
+        fun getGamePadView(context: Context, layout: Layout): BaseGamePad {
             return when (layout) {
                 Layout.NES -> GameBoyPad(context)
                 Layout.SNES -> GameBoyAdvancePad(context)

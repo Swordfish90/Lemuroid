@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 import com.swordfish.touchinput.data.PadEvent
 import io.reactivex.Observable
 
-abstract class GamePadView @JvmOverloads constructor(
+abstract class BaseGamePad @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
