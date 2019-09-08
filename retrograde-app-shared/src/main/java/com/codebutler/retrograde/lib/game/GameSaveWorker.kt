@@ -1,7 +1,9 @@
 package com.codebutler.retrograde.lib.game
 
+import android.content.Context
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.Worker
+import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.codebutler.retrograde.lib.injection.AndroidWorkerInjection
 import com.codebutler.retrograde.lib.injection.WorkerKey
@@ -13,7 +15,7 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
-class GameSaveWorker : Worker() {
+class GameSaveWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
     @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var gameLoader: GameLoader

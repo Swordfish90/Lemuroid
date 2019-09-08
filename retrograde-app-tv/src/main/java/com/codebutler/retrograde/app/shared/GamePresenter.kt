@@ -23,9 +23,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v17.leanback.widget.Presenter
-import android.support.v7.view.ContextThemeWrapper
+import androidx.leanback.widget.ImageCardView
+import androidx.leanback.widget.Presenter
+import androidx.appcompat.view.ContextThemeWrapper
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.codebutler.retrograde.R

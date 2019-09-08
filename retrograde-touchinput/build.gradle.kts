@@ -14,9 +14,9 @@ dependencies {
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.rxAndroid2)
     implementation(deps.libs.rxRelay2)
-    implementation(deps.libs.support.constraintLayout)
-    implementation(deps.libs.support.appCompatV7)
-    implementation(deps.libs.support.supportCompat)
+    implementation(deps.libs.androidx.appcompat.constraintLayout)
+    implementation(deps.libs.androidx.appcompat.appcompat)
+    //implementation(deps.libs.support.supportCompat)
 
     kapt(deps.libs.dagger.compiler)
 }

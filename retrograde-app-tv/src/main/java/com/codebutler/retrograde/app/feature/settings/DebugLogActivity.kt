@@ -2,19 +2,19 @@ package com.codebutler.retrograde.app.feature.settings
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.lib.logging.RxTimberTree
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.common.kotlin.inflate
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
+import com.codebutler.retrograde.lib.logging.RxTimberTree
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.kotlin.autoDisposable
+import com.uber.autodispose.autoDisposable
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
@@ -34,7 +34,7 @@ class DebugLogActivity : RetrogradeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_log)
 
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         layoutManager.stackFromEnd = true
 
         recycler.layoutManager = layoutManager

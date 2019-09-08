@@ -19,11 +19,11 @@
 
 package com.codebutler.retrograde.lib.library.db.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Index
-import android.arch.persistence.room.PrimaryKey
 import android.net.Uri
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(
         tableName = "games",

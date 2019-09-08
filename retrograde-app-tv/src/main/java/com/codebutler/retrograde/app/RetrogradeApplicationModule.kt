@@ -19,7 +19,7 @@
 
 package com.codebutler.retrograde.app
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import android.preference.PreferenceManager
 import com.codebutler.retrograde.app.feature.game.GameActivity

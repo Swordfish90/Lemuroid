@@ -1,8 +1,8 @@
 package com.codebutler.retrograde.app.shared
 
 import android.app.Activity
-import android.support.v17.leanback.widget.Presenter
-import android.support.v7.widget.PopupMenu
+import androidx.leanback.widget.Presenter
+import androidx.appcompat.widget.PopupMenu
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.MenuItem

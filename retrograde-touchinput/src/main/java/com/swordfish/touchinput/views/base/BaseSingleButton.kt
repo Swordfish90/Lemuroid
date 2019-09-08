@@ -1,10 +1,10 @@
 package com.swordfish.touchinput.views.base
 
 import android.content.Context
-import android.support.v7.widget.AppCompatButton
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.appcompat.widget.AppCompatButton
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.data.ButtonEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource

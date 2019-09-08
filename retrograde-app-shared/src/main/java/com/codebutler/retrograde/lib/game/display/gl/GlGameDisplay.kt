@@ -19,11 +19,11 @@
 
 package com.codebutler.retrograde.lib.game.display.gl
 
-import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
 import android.view.Choreographer
+import androidx.lifecycle.LifecycleOwner
 import com.codebutler.retrograde.lib.game.display.FpsCalculator
 import com.codebutler.retrograde.lib.game.display.GameDisplay
 

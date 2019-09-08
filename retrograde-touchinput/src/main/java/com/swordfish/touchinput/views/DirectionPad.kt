@@ -6,11 +6,11 @@ import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.data.ButtonEvent

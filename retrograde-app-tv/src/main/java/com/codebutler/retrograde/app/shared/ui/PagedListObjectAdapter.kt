@@ -19,13 +19,13 @@
 
 package com.codebutler.retrograde.app.shared.ui
 
-import android.arch.paging.AsyncPagedListDiffer
-import android.arch.paging.PagedList
-import android.support.v17.leanback.widget.ObjectAdapter
-import android.support.v17.leanback.widget.Presenter
-import android.support.v7.recyclerview.extensions.AsyncDifferConfig
-import android.support.v7.util.DiffUtil
-import android.support.v7.util.ListUpdateCallback
+import androidx.leanback.widget.ObjectAdapter
+import androidx.leanback.widget.Presenter
+import androidx.paging.AsyncPagedListDiffer
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
 
 class PagedListObjectAdapter<T>(presenter: Presenter, diffCallback: DiffUtil.ItemCallback<T>)
     : ObjectAdapter(presenter) {

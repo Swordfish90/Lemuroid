@@ -6,12 +6,12 @@ import android.app.Activity
 import android.app.Dialog
 import android.app.DialogFragment
 import android.app.Fragment
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-import android.support.v4.app.DialogFragment as SupportDialogFragment
-import android.support.v4.app.Fragment as SupportFragment
+import androidx.fragment.app.DialogFragment as SupportDialogFragment
+import androidx.fragment.app.Fragment as SupportFragment
 
 /* ktlint-disable colon-spacing */
 

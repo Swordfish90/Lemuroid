@@ -24,8 +24,8 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v17.preference.LeanbackPreferenceFragment
-import android.support.v7.preference.Preference
+import androidx.leanback.preference.LeanbackPreferenceFragment
+import androidx.preference.Preference
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

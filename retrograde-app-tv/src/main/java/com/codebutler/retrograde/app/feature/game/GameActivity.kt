@@ -19,6 +19,7 @@
 
 package com.codebutler.retrograde.app.feature.game
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -51,7 +52,7 @@ import com.gojuno.koptional.Some
 import com.gojuno.koptional.toOptional
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.kotlin.autoDisposable
+import com.uber.autodispose.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -161,6 +162,7 @@ class GameActivity : RetrogradeActivity() {
         return true
     }
 
+    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         super.dispatchKeyEvent(event)
         gameInput.onKeyEvent(event)

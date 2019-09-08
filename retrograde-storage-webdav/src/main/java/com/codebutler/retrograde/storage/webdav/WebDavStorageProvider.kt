@@ -22,7 +22,7 @@ package com.codebutler.retrograde.storage.webdav
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.net.Uri
-import android.support.v17.preference.LeanbackPreferenceFragment
+import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:ignore="MergeRootFrame">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.appcompat.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

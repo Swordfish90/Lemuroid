@@ -19,7 +19,7 @@
 
 package com.codebutler.retrograde.metadata.ovgdb.db.dao
 
-import android.arch.persistence.room.Dao
+import androidx.room.Dao
 
 @Dao
 interface RegionDao

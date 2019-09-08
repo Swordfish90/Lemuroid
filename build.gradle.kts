@@ -40,11 +40,6 @@ allprojects {
     configurations.all {
         resolutionStrategy.eachDependency {
             when (requested.group) {
-                "com.android.support" -> {
-                    if ("multidex" !in requested.name) {
-                        useVersion(deps.versions.support)
-                    }
-                }
                 "com.google.android.gms" -> useVersion(deps.versions.gms)
                 "org.jetbrains.kotlin" -> {
                     if (requested.name.startsWith("kotlin-stdlib-jre")) {
@@ -70,8 +65,7 @@ subprojects {
             classpath = files()
             source("src")
         }
-
-        tasks.findByName("check")?.dependsOn(checkstyle)
+        findByName("check")?.dependsOn(checkstyle)
     }
 
     extensions.configure(CheckstyleExtension::class.java) {

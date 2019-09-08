@@ -19,8 +19,8 @@
 
 package com.codebutler.retrograde.common.db
 
-import android.arch.persistence.room.TypeConverter
 import android.net.Uri
+import androidx.room.TypeConverter
 
 class Converters {
 
