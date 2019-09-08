@@ -17,7 +17,6 @@
         style="@style/default_action_3"
         android:layout_width="@dimen/size_dial"
         android:layout_height="@dimen/size_dial"
-        android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,10 +26,10 @@
         android:id="@+id/genesis_direction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RtlHardcoded" />
 
 </android.support.constraint.ConstraintLayout>

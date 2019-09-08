@@ -1,5 +1,6 @@
 package com.swordfish.touchinput.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Canvas
@@ -23,7 +24,8 @@ import kotlin.math.sin
 class ActionButtons @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr), ButtonEventsSource {
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr), ButtonEventsSource {
 
     private val events: PublishRelay<ButtonEvent> = PublishRelay.create()
 
@@ -126,6 +128,7 @@ class ActionButtons @JvmOverloads constructor(
         canvas.restore()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN, MotionEvent.ACTION_MOVE -> {

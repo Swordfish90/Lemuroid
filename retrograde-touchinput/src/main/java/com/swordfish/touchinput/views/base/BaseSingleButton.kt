@@ -1,20 +1,20 @@
 package com.swordfish.touchinput.views.base
 
 import android.content.Context
+import android.support.v7.widget.AppCompatButton
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
-import android.widget.Button
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.data.ButtonEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource
 import io.reactivex.Observable
 
-
 abstract class BaseSingleButton @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0) : Button(context, attrs, defStyleAttr), ButtonEventsSource {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : AppCompatButton(context, attrs, defStyleAttr), ButtonEventsSource {
 
     private val events: PublishRelay<ButtonEvent> = PublishRelay.create()
 

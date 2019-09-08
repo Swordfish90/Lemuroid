@@ -1,5 +1,6 @@
 package com.swordfish.touchinput.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Canvas
@@ -20,11 +21,11 @@ import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
 
-
 class DirectionPad @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr), ButtonEventsSource {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr), ButtonEventsSource {
 
     companion object {
 
@@ -113,6 +114,7 @@ class DirectionPad @JvmOverloads constructor(
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN, MotionEvent.ACTION_MOVE -> {

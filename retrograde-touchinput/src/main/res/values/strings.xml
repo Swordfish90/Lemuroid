@@ -4,3 +4,4 @@
     <string name="vectorpath_direction_right" translatable="false">M1,15 m2,-2 l8,-8 l14,0 a17,17 0 0,1 0,20 l-14,0 l-8,-8 a3,3 0 0,1 0,-4z</string>
     <string name="vectorpath_direction_left" translatable="false">M29,15 m-2,-2 l-8,-8 l-14,0 a17,17 0 0,0 0,20 l14,0 l8,-8 a3,3 0 0,0 0,-4z</string>
 </resources>
+

@@ -12,9 +12,10 @@ import com.swordfish.touchinput.views.base.BaseSingleButton
 import io.reactivex.Observable
 
 class GameBoyPad @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0) : BaseGamePad(context, attrs, defStyleAttr) {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : BaseGamePad(context, attrs, defStyleAttr) {
 
     init {
         inflate(context, R.layout.layout_gb, this)
@@ -29,27 +30,26 @@ class GameBoyPad @JvmOverloads constructor(
         )
     }
 
-    fun getStartEvent(): Observable<PadEvent> {
+    private fun getStartEvent(): Observable<PadEvent> {
         return findViewById<BaseSingleButton>(R.id.gb_start)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
-    fun getSelectEvent(): Observable<PadEvent> {
+    private fun getSelectEvent(): Observable<PadEvent> {
         return findViewById<BaseSingleButton>(R.id.gb_select)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
 
-    fun getActionEvents(): Observable<PadEvent> {
+    private fun getActionEvents(): Observable<PadEvent> {
         return findViewById<ActionButtons>(R.id.gb_actions)
-                .getEvents()
-                .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_A))
-
+            .getEvents()
+            .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_A))
     }
 
-    fun getDirectionEvents(): Observable<PadEvent> {
+    private fun getDirectionEvents(): Observable<PadEvent> {
         return findViewById<DirectionPad>(R.id.gb_direction).getEvents()
-                .compose(EventsTransformers.directionPadMap())
+            .compose(EventsTransformers.directionPadMap())
     }
 }

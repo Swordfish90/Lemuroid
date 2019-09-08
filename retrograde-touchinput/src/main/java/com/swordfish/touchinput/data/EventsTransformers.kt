@@ -20,7 +20,6 @@ internal object EventsTransformers {
         }
     }
 
-
     fun directionPadMap(): ObservableTransformer<ButtonEvent, PadEvent> {
         return ObservableTransformer { upstream ->
             upstream.flatMap { buttonEvent ->

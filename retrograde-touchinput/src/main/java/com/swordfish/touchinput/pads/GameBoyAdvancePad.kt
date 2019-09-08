@@ -13,9 +13,10 @@ import com.swordfish.touchinput.views.SmallSingleButton
 import io.reactivex.Observable
 
 class GameBoyAdvancePad @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0) : BaseGamePad(context, attrs, defStyleAttr) {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : BaseGamePad(context, attrs, defStyleAttr) {
 
     init {
         inflate(context, R.layout.layout_gba, this)
@@ -31,37 +32,36 @@ class GameBoyAdvancePad @JvmOverloads constructor(
             getL1Events()))
     }
 
-    fun getStartEvent(): Observable<PadEvent> {
+    private fun getStartEvent(): Observable<PadEvent> {
         return findViewById<SmallSingleButton>(R.id.gba_start)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
-    fun getSelectEvent(): Observable<PadEvent> {
+    private fun getSelectEvent(): Observable<PadEvent> {
         return findViewById<SmallSingleButton>(R.id.gba_select)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
 
-    fun getActionEvents(): Observable<PadEvent> {
+    private fun getActionEvents(): Observable<PadEvent> {
         return findViewById<ActionButtons>(R.id.gba_actions)
-                .getEvents()
-                .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_A))
-
+            .getEvents()
+            .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_A))
     }
 
-    fun getDirectionEvents(): Observable<PadEvent> {
+    private fun getDirectionEvents(): Observable<PadEvent> {
         return findViewById<DirectionPad>(R.id.gba_direction).getEvents()
-                .compose(EventsTransformers.directionPadMap())
+            .compose(EventsTransformers.directionPadMap())
     }
 
-    fun getL1Events(): Observable<PadEvent> {
+    private fun getL1Events(): Observable<PadEvent> {
         return findViewById<LargeSingleButton>(R.id.gba_l1).getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
     }
 
-    fun getR1Events(): Observable<PadEvent> {
+    private fun getR1Events(): Observable<PadEvent> {
         return findViewById<LargeSingleButton>(R.id.gba_r1).getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
     }
 }
