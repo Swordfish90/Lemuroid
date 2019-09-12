@@ -20,6 +20,7 @@
 package com.codebutler.retrograde.lib.android
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import dagger.android.AndroidInjection
@@ -29,7 +30,7 @@ import dagger.android.HasFragmentInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-abstract class RetrogradeActivity : FragmentActivity(), HasFragmentInjector, HasSupportFragmentInjector {
+abstract class RetrogradeActivity : AppCompatActivity(), HasFragmentInjector, HasSupportFragmentInjector {
 
     @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
     @Inject lateinit var frameworkFragmentInjector: DispatchingAndroidInjector<android.app.Fragment>

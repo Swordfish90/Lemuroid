@@ -52,7 +52,9 @@ class LocalStorageProvider(
     override val enabledByDefault = true
 
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
-        Environment.getExternalStorageDirectory()
+        // TODO FILIPPO... This really need to be restored to what it was before
+        val externalStorage = Environment.getExternalStorageDirectory().absolutePath + "/Roms Test"
+        File(externalStorage)
                 .walk()
                 .filter { file -> file.isFile && file.name.startsWith(".").not() }
                 .map { file ->

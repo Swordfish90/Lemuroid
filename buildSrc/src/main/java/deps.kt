@@ -18,6 +18,7 @@ object deps {
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
         const val work            = "1.0.0-alpha11"
+        const val navigation      = "2.1.0"
     }
 
     object libs {
@@ -41,6 +42,11 @@ object deps {
                 const val common = "androidx.paging:paging-common:2.0.0"
                 const val runtime = "androidx.paging:paging-runtime:2.0.0"
                 const val rxjava2 = "androidx.paging:paging-rxjava2:2.0.0"
+            }
+            object navigation {
+                const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+                const val navigationUi = "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+
             }
             object room {
                 const val common = "androidx.room:room-common:2.0.0"
@@ -107,6 +113,7 @@ object deps {
         const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.0"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
+        const val material                 = "com.google.android.material:material:1.1.0-alpha10"
     }
 
     object plugins {

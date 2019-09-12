@@ -6,5 +6,6 @@ include(
         ":retrograde-storage-archiveorg",
         ":retrograde-app-shared",
         ":retrograde-app-tv",
-        ":retrograde-touchinput"
+        ":retrograde-touchinput",
+        ":retrograde-app-mobile"
 )
