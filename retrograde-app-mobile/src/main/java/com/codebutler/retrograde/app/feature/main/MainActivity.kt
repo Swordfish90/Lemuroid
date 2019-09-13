@@ -8,10 +8,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.games.GamesFragment
+import com.codebutler.retrograde.app.feature.home.HomeFragment
 import com.codebutler.retrograde.app.feature.settings.SettingsFragment
+import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.lib.android.RetrogradeAppCompatActivity
 import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerFragment
+import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.tbruyelle.rxpermissions2.RxPermissions
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -43,11 +46,11 @@ class MainActivity : RetrogradeAppCompatActivity() {
         @ContributesAndroidInjector(modules = [GamesFragment.Module::class])
         abstract fun gamesFragment(): GamesFragment
 
-        /*@PerFragment
+        @PerFragment
         @ContributesAndroidInjector(modules = [HomeFragment.Module::class])
         abstract fun homeFragment(): HomeFragment
 
-        @PerFragment
+        /*@PerFragment
         @ContributesAndroidInjector(modules = [GamesGridFragment.Module::class])
         abstract fun gamesGridFragment(): GamesGridFragment
 
@@ -57,6 +60,12 @@ class MainActivity : RetrogradeAppCompatActivity() {
 
         @dagger.Module
         companion object {
+
+            @Provides
+            @PerActivity
+            @JvmStatic
+            fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase) =
+                    GameInteractor(activity, retrogradeDb)
 
             @Provides
             @PerActivity

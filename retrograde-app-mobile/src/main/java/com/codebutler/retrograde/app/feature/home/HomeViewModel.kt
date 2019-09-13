@@ -1,13 +1,19 @@
 package com.codebutler.retrograde.app.feature.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LivePagedListBuilder
+import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return HomeViewModel(retrogradeDb) as T
+        }
     }
-    val text: LiveData<String> = _text
+
+    val favoriteGames = LivePagedListBuilder(retrogradeDb.gameDao().selectFavorites(), 20).build()
+
+    val recentGames = LivePagedListBuilder(retrogradeDb.gameDao().selectRecentlyPlayed(), 20).build()
 }

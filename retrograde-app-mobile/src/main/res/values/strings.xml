@@ -2,4 +2,6 @@
     <string name="title_home">Home</string>
     <string name="title_games">Games</string>
     <string name="title_settings">Settings</string>
+    <string name="recent">Recent</string>
+    <string name="favorites">Favorites</string>
 </resources>

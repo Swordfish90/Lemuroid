@@ -39,6 +39,8 @@ class GameLauncherActivity : RetrogradeActivity() {
     companion object {
         private const val REQUEST_CODE_GAME = 1000
 
+        fun launchGame(context: Context, game: Game) = context.startActivity(newIntent(context, game))
+
         fun newIntent(context: Context, game: Game) =
                 Intent(context, GameLauncherActivity::class.java).apply {
                     putExtra(GameActivity.EXTRA_GAME_ID, game.id)
