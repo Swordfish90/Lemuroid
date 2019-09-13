@@ -22,6 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.retrograde_mobile_prefs, rootKey)
     }
 
+    // TODO FILIPPO Replace my_preference with something meaningful.
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             "my_preference" -> gameLibrary.indexGames().subscribe()

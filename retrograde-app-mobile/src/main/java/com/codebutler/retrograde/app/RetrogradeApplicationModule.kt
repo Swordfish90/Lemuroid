@@ -22,6 +22,8 @@ package com.codebutler.retrograde.app
 import androidx.room.Room
 import android.content.Context
 import android.preference.PreferenceManager
+import com.codebutler.retrograde.app.feature.game.GameActivity
+import com.codebutler.retrograde.app.feature.game.GameLauncherActivity
 import com.codebutler.retrograde.app.feature.main.MainActivity
 import com.codebutler.retrograde.lib.core.CoreManager
 import com.codebutler.retrograde.lib.game.GameLoader
@@ -63,6 +65,14 @@ abstract class RetrogradeApplicationModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [MainActivity.Module::class])
     abstract fun mainActivity(): MainActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun gameLauncherActivity(): GameLauncherActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun gameActivity(): GameActivity
 
 /*    @PerActivity
     @ContributesAndroidInjector

@@ -6,13 +6,9 @@
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
-    <uses-feature
-        android:name="android.hardware.microphone"
-        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".app.RetrogradeApplication"
@@ -29,6 +25,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".app.feature.game.GameLauncherActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/GameTheme"/>
+
+        <activity
+            android:name=".app.feature.game.GameActivity"
+            android:process=":game"
+            android:launchMode="singleTop"
+            android:theme="@style/GameTheme"/>
     </application>
 
 </manifest>

@@ -19,6 +19,7 @@
 
 package com.codebutler.retrograde.app
 
+import com.codebutler.retrograde.lib.game.GameSaveWorker
 import com.codebutler.retrograde.lib.injection.AndroidWorkerInjectionModule
 import com.codebutler.retrograde.lib.injection.PerApp
 import dagger.Component
@@ -28,10 +29,10 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Component(modules = [
     AndroidSupportInjectionModule::class,
     AndroidWorkerInjectionModule::class,
-    RetrogradeApplicationModule::class
+    RetrogradeApplicationModule::class,
+    GameSaveWorker.Module::class
     //GDriveApplicationModule::class,
     //WebDavApplicationModule::class,
-    //GameSaveWorker.Module::class
 ])
 @PerApp
 interface RetrogradeApplicationComponent : AndroidInjector<RetrogradeApplication> {

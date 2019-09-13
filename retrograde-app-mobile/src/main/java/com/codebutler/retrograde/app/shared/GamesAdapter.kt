@@ -9,6 +9,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
+import com.codebutler.retrograde.app.feature.game.GameLauncherActivity
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 
@@ -30,6 +31,10 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
                     .fit()
                     .error(R.color.design_default_color_error)
                     .into(coverView)
+        }
+        itemView.setOnClickListener {
+            val context = itemView.context
+            context.startActivity(GameLauncherActivity.newIntent(context, game))
         }
     }
 }

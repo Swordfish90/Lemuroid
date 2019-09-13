@@ -4,7 +4,7 @@
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>-->
     </style>
 
-    <style name="GameTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="GameTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 </resources>

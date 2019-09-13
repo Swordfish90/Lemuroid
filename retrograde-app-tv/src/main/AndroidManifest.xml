@@ -53,7 +53,7 @@
         android:banner="@mipmap/ic_banner"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.codebutler.retrograde.app.feature.main.MainActivity2">
+        <activity android:name="com.codebutler.retrograde.app.feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
