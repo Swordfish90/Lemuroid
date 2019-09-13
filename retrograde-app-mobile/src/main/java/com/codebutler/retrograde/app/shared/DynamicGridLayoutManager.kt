@@ -10,8 +10,7 @@ class DynamicGridLayoutManager(context: Context, private val scaling: Int) : Gri
 
     private val density: Float = context.resources.displayMetrics.density
 
-    override fun onLayoutChildren(recycler: RecyclerView.Recycler,
-                         state: RecyclerView.State) {
+    override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         updateSpanCount(width)
         super.onLayoutChildren(recycler, state)
     }
@@ -29,7 +28,6 @@ class DynamicGridLayoutManager(context: Context, private val scaling: Int) : Gri
     private fun dpFromPx(px: Float): Int {
         return (px / density).roundToInt()
     }
-
 
     private fun updateSpanCount(width: Int) {
         spanCount = columnsForWidth(width)

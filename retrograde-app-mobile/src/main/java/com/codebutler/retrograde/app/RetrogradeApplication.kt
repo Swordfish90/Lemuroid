@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.work.Worker
 import com.codebutler.retrograde.BuildConfig
-import com.codebutler.retrograde.app.DaggerRetrogradeApplicationComponent
 import com.codebutler.retrograde.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -45,8 +44,8 @@ class RetrogradeApplication : DaggerApplication(), HasWorkerInjector {
             Bugsnag.init(this)
         }*/
 
-        //var isPlanted = false
-        /*rxPrefs.getBoolean(getString(R.string.pref_key_flags_logging)).asObservable()
+        // var isPlanted = false
+        /* rxPrefs.getBoolean(getString(R.string.pref_key_flags_logging)).asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { value ->
                     gdriveStorageProvider.loggingEnabled = value

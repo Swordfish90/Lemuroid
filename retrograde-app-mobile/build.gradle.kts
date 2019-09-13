@@ -52,12 +52,11 @@ dependencies {
     implementation(deps.libs.material)
     implementation(deps.libs.picasso)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
+    implementation(deps.libs.androidx.appcompat.appcompat)
+    implementation(deps.libs.androidx.preferences.preferencesKtx)
 
     // TODO All next dependencies might not be correct.
 
-    implementation(deps.libs.androidx.appcompat.appcompat)
-    implementation(deps.libs.androidx.appcompat.leanback)
-    implementation(deps.libs.androidx.appcompat.leanbackPreference)
     implementation(deps.libs.androidx.appcompat.palette)
     implementation(deps.libs.androidx.appcompat.recyclerView)
     implementation(deps.libs.androidx.paging.common)

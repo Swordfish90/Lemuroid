@@ -24,7 +24,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -82,7 +81,7 @@ class GameActivity : RetrogradeActivity() {
 
         // TODO FILIPPO... There is a lot of duplication with tv GameActivity
         // TODO FILIPPO Use preferences
-        //val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        // val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val enableOpengl = true
         displayTouchInput = true
 
@@ -185,8 +184,9 @@ class GameActivity : RetrogradeActivity() {
         frameLayout.addView(fpsView)
 
         fun updateFps() {
-            //fpsView.text = getString(R.string.fps_format, gameDisplay.fps, retroDroid?.fps ?: 0L)
-            //fpsView.postDelayed({ updateFps() }, 1000)
+            // TODO FILIPPO... We should renable this when working on the layout.
+            // fpsView.text = getString(R.string.fps_format, gameDisplay.fps, retroDroid?.fps ?: 0L)
+            // fpsView.postDelayed({ updateFps() }, 1000)
         }
         updateFps()
     }

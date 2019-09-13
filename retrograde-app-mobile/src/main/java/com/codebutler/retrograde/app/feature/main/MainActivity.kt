@@ -1,7 +1,6 @@
 package com.codebutler.retrograde.app.feature.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,16 +9,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.games.GamesFragment
 import com.codebutler.retrograde.app.feature.settings.SettingsFragment
-import com.codebutler.retrograde.lib.android.RetrogradeActivity
 import com.codebutler.retrograde.lib.android.RetrogradeAppCompatActivity
 import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import javax.inject.Inject
 
 class MainActivity : RetrogradeAppCompatActivity() {
 

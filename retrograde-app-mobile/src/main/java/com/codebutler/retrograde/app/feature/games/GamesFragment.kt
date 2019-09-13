@@ -30,17 +30,12 @@ class GamesFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_games, container, false)
 
         gamesAdapter = GamesAdapter()
 
-        gamesViewModel =
-                ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb)).get(GamesViewModel::class.java)
+        gamesViewModel = ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb)).get(GamesViewModel::class.java)
         gamesViewModel.allGames.observe(this, Observer { pagedList ->
             gamesAdapter?.submitList(pagedList)
         })

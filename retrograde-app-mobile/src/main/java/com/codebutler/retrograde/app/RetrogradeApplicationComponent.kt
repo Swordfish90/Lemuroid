@@ -31,8 +31,8 @@ import dagger.android.support.AndroidSupportInjectionModule
     AndroidWorkerInjectionModule::class,
     RetrogradeApplicationModule::class,
     GameSaveWorker.Module::class
-    //GDriveApplicationModule::class,
-    //WebDavApplicationModule::class,
+    // GDriveApplicationModule::class,
+    // WebDavApplicationModule::class,
 ])
 @PerApp
 interface RetrogradeApplicationComponent : AndroidInjector<RetrogradeApplication> {

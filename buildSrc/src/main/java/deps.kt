@@ -38,6 +38,9 @@ object deps {
             object lifecycle {
                 const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:2.0.0"
             }
+            object preferences {
+                const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
+            }
             object paging {
                 const val common = "androidx.paging:paging-common:2.0.0"
                 const val runtime = "androidx.paging:paging-runtime:2.0.0"
@@ -46,7 +49,6 @@ object deps {
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
                 const val navigationUi = "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
-
             }
             object room {
                 const val common = "androidx.room:room-common:2.0.0"
