@@ -30,10 +30,12 @@ class RetroThread(private val cyclePeriod: Long, private val runnable: () -> Uni
     override fun run() {
         var startTime: Long
 
-        while (true) {
-            startTime = System.nanoTime()
-            runnable()
-            accurateSleep(startTime + cyclePeriod)
+        kotlin.runCatching {
+            while (true) {
+                startTime = System.nanoTime()
+                runnable()
+                accurateSleep(startTime + cyclePeriod)
+            }
         }
     }
 

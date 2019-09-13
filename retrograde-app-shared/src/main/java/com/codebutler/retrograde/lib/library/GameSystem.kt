@@ -78,7 +78,7 @@ data class GameSystem(
                         R.string.game_system_abbr_gb,
                         R.drawable.game_system_gb,
                         "nintendo2",
-                        "mgba_libretro_android.so.zip",
+                        "gambatte_libretro_android.so.zip",
                         listOf("gb")
 
                 ),
@@ -88,7 +88,7 @@ data class GameSystem(
                         R.string.game_system_abbr_gbc,
                         R.drawable.game_system_gbc,
                         "nintendo3",
-                        "mgba_libretro_android.so.zip",
+                        "gambatte_libretro_android.so.zip",
                         listOf("gbc")
                 ),
                 GameSystem(

@@ -34,6 +34,7 @@ interface LibRetro : Library {
     companion object {
         private const val RETRO_ENVIRONMENT_EXPERIMENTAL = 0x10000
 
+        const val RETRO_ENVIRONMENT_GET_CAN_DUPE = 3
         const val RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL = 8
         const val RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY = 9
         const val RETRO_ENVIRONMENT_SET_PIXEL_FORMAT = 10
@@ -278,7 +279,7 @@ interface LibRetro : Library {
     }
 
     interface retro_environment_t : Callback {
-        fun invoke(cmd: UnsignedInt, data: Pointer): Boolean
+        fun invoke(cmd: UnsignedInt, data: Pointer?): Boolean
     }
 
     interface retro_log_printf_t : Callback {
@@ -286,7 +287,7 @@ interface LibRetro : Library {
     }
 
     interface retro_video_refresh_t : Callback {
-        fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT)
+        fun invoke(data: Pointer?, width: UnsignedInt, height: UnsignedInt, pitch: SizeT)
     }
 
     interface retro_audio_sample_t : Callback {
@@ -333,7 +334,9 @@ interface LibRetro : Library {
 
     fun retro_get_region(): UnsignedInt
 
-    fun retro_get_memory_data(id: UnsignedInt): Pointer?
+    fun retro_serialize_size(): SizeT
 
-    fun retro_get_memory_size(id: UnsignedInt): SizeT
+    fun retro_serialize(data: Pointer, size: SizeT)
+
+    fun retro_unserialize(data: Pointer, size: SizeT)
 }

@@ -42,6 +42,7 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
 import java.nio.ByteBuffer
+import java.util.concurrent.TimeUnit
 import kotlin.experimental.and
 
 /**
@@ -177,7 +178,7 @@ class RetroDroid(
         this.systemInfo = systemInfo
 
         if (saveData != null) {
-            retro.setMemoryData(Retro.MemoryId.SAVE_RAM, saveData)
+            retro.unserialize(saveData)
         }
     }
 
@@ -201,15 +202,13 @@ class RetroDroid(
 
     @SuppressLint("CheckResult")
     fun unloadGame() {
-        Single
-            .fromCallable {
-                retro.getMemoryData(Retro.MemoryId.SAVE_RAM).toOptional()
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnSuccess {
-                retro.unloadGame()
-            }
-            .subscribe(gameUnloadedRelay)
+
+        // There is a native crash if serialize is called immidiately after stop.
+        Single.timer(160, TimeUnit.MILLISECONDS)
+                .map { retro.serialize().toOptional() }
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess { retro.unloadGame() }
+                .subscribe(gameUnloadedRelay)
     }
 
     override fun onResume(owner: LifecycleOwner) {
