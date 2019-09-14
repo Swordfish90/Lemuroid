@@ -8,11 +8,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/grid_unit_2x"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textAppearance="?attr/textAppearanceOverline"
             android:text="@string/recent" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -24,11 +24,11 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/grid_unit_2x" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/grid_unit_2x"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textAppearance="?attr/textAppearanceOverline"
             android:text="@string/favorites" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,6 +1,7 @@
 package com.codebutler.retrograde.app.feature.main
 
 import android.os.Bundle
+import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -8,6 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.games.GamesFragment
+import com.codebutler.retrograde.app.feature.games.SystemsFragment
 import com.codebutler.retrograde.app.feature.home.HomeFragment
 import com.codebutler.retrograde.app.feature.settings.SettingsFragment
 import com.codebutler.retrograde.app.shared.GameInteractor
@@ -28,7 +30,7 @@ class MainActivity : RetrogradeAppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 
-        val topLevelIds = setOf(R.id.navigation_home, R.id.navigation_games, R.id.navigation_settings)
+        val topLevelIds = setOf(R.id.navigation_home, R.id.navigation_systems, R.id.navigation_settings)
         val appBarConfiguration = AppBarConfiguration(topLevelIds)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -45,6 +47,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [GamesFragment.Module::class])
         abstract fun gamesFragment(): GamesFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [SystemsFragment.Module::class])
+        abstract fun systemsFragment(): SystemsFragment
 
         @PerFragment
         @ContributesAndroidInjector(modules = [HomeFragment.Module::class])

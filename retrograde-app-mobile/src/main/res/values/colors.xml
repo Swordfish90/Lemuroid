@@ -8,4 +8,5 @@
     <color name="colorSecondaryVariant">#af8eb5</color>
 
     <color name="ic_launcher_background">#673AB7</color>
+    <color name="system_background">#22000000</color>
 </resources>

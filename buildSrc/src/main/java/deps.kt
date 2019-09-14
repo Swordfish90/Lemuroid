@@ -121,5 +121,6 @@ object deps {
     object plugins {
         const val android = "com.android.tools.build:gradle:3.5.0"
         const val bugsnag = "com.bugsnag:bugsnag-android-gradle-plugin:3.5.0"
+        const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     }
 }

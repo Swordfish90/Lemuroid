@@ -9,17 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.feature.game.GameLauncherActivity
-import com.codebutler.retrograde.app.feature.main.MainActivity
 import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.app.shared.GamesAdapter
-import com.codebutler.retrograde.lib.injection.PerFragment
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
-import com.codebutler.retrograde.lib.library.db.dao.updateAsync
-import dagger.Provides
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -60,7 +54,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecentsView() {
-        recentsAdapter = GamesAdapter(R.layout.layout_linear_game, gameInteractor)
+        recentsAdapter = GamesAdapter(R.layout.layout_linear_fixed, gameInteractor)
 
         homeViewModel.recentGames.observe(this, Observer { pagedList ->
             recentsAdapter?.submitList(pagedList)
@@ -68,7 +62,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupFavoriteView() {
-        favoritesAdapter = GamesAdapter(R.layout.layout_linear_game, gameInteractor)
+        favoritesAdapter = GamesAdapter(R.layout.layout_linear_fixed, gameInteractor)
 
         homeViewModel.favoriteGames.observe(this, Observer { pagedList ->
             favoritesAdapter?.submitList(pagedList)

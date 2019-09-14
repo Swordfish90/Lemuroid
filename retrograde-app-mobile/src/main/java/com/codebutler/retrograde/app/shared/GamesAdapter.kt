@@ -30,7 +30,6 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         game.coverFrontUrl?.let {
             Picasso.get()
                     .load(it)
-                    .fit()
                     .error(R.color.design_default_color_error)
                     .into(coverView)
         }

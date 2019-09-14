@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-class DynamicGridLayoutManager(context: Context, private val scaling: Int) : GridLayoutManager(context, 1) {
+class DynamicGridLayoutManager(
+        context: Context,
+        private val scaling: Int = 2
+) : GridLayoutManager(context, 1, VERTICAL, false) {
 
     private val density: Float = context.resources.displayMetrics.density
 

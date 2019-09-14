@@ -7,9 +7,9 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_games"
+        android:id="@+id/navigation_systems"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_games" />
+        android:title="@string/title_library" />
 
     <item
         android:id="@+id/navigation_settings"
