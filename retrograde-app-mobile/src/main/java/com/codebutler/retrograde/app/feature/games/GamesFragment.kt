@@ -40,9 +40,13 @@ class GamesFragment : Fragment() {
         gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
 
         gamesViewModel = ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb)).get(GamesViewModel::class.java)
-        gamesViewModel.getGames(args.systemId!!).observe(this, Observer { pagedList ->
+        gamesViewModel.games.observe(this, Observer { pagedList ->
             gamesAdapter?.submitList(pagedList)
         })
+
+        args.systemId?.let {
+            gamesViewModel.systemId.value = it
+        }
 
         root.findViewById<RecyclerView>(R.id.games_recyclerview).apply {
             this.adapter = gamesAdapter
