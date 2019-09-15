@@ -27,12 +27,13 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     fun bind(game: Game, gameInteractor: GameInteractor) {
         titleView?.text = game.title
         favoriteToggle?.isChecked = game.isFavorite
-        game.coverFrontUrl?.let {
-            Picasso.get()
-                    .load(it)
-                    .error(R.color.design_default_color_error)
-                    .into(coverView)
-        }
+
+        Picasso.get()
+                .load(game.coverFrontUrl)
+                .placeholder(R.drawable.ic_image_paceholder)
+                .error(R.drawable.ic_image_paceholder)
+                .into(coverView)
+
         itemView.setOnClickListener { gameInteractor.onGameClick(game) }
         favoriteToggle?.setOnCheckedChangeListener { _, isChecked ->  gameInteractor.onFavoriteToggle(game, isChecked) }
     }
