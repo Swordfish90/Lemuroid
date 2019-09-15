@@ -37,6 +37,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
+
     @dagger.Module
     abstract class Module {
 
