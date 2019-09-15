@@ -19,6 +19,7 @@ object deps {
         const val retrofit        = "2.5.0"
         const val work            = "1.0.0-alpha11"
         const val navigation      = "2.1.0"
+        const val rxbindings      = "3.0.0"
     }
 
     object libs {
@@ -85,6 +86,10 @@ object deps {
                 const val processor = "com.google.dagger:dagger-android-processor:${versions.dagger}"
                 const val support = "com.google.dagger:dagger-android-support:${versions.dagger}"
             }
+        }
+        object rxbindings {
+            const val core = "com.jakewharton.rxbinding3:rxbinding-core:${versions.rxbindings}"
+            const val appcompat = "com.jakewharton.rxbinding3:rxbinding-appcompat:${versions.rxbindings}"
         }
 
         const val bugsnagAndroid           = "com.bugsnag:bugsnag-android:4.9.2"

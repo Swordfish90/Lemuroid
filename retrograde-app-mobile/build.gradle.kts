@@ -55,6 +55,8 @@ dependencies {
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.preferences.preferencesKtx)
+    implementation(deps.libs.rxbindings.core)
+    implementation(deps.libs.rxbindings.appcompat)
 
     // TODO All next dependencies might not be correct.
 

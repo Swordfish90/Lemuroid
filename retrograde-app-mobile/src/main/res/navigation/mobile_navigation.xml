@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.codebutler.retrograde.app.feature.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
         android:id="@+id/navigation_systems"
         android:name="com.codebutler.retrograde.app.feature.games.SystemsFragment"
         android:label="@string/title_library"
@@ -41,4 +47,5 @@
         android:name="com.codebutler.retrograde.app.feature.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
 </navigation>
