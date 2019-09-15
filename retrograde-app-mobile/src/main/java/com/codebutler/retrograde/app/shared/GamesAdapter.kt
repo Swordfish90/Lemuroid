@@ -43,6 +43,8 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
             Picasso.get().cancelRequest(this)
             this.setImageDrawable(null)
         }
+        itemView.setOnClickListener(null)
+        favoriteToggle?.setOnCheckedChangeListener(null)
     }
 }
 
