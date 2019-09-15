@@ -36,6 +36,13 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         itemView.setOnClickListener { gameInteractor.onGameClick(game) }
         favoriteToggle?.setOnCheckedChangeListener { _, isChecked ->  gameInteractor.onFavoriteToggle(game, isChecked) }
     }
+
+    fun unbind() {
+        coverView?.apply {
+            Picasso.get().cancelRequest(this)
+            this.setImageDrawable(null)
+        }
+    }
 }
 
 class GamesAdapter(
@@ -49,6 +56,10 @@ class GamesAdapter(
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it, gameInteractor) }
+    }
+
+    override fun onViewRecycled(holder: GameViewHolder) {
+        holder.unbind()
     }
 
     companion object {
