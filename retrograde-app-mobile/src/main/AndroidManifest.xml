@@ -34,6 +34,7 @@
         <activity
             android:name=".app.feature.game.GameActivity"
             android:process=":game"
+            android:configChanges="orientation"
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
     </application>
