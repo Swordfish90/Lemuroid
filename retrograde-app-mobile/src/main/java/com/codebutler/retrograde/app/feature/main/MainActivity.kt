@@ -1,5 +1,6 @@
 package com.codebutler.retrograde.app.feature.main
 
+import android.Manifest
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
@@ -18,6 +19,8 @@ import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.autoDisposable
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 
@@ -27,6 +30,22 @@ class MainActivity : RetrogradeAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val permissions = arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        RxPermissions(this).request(*permissions)
+                .autoDisposable(scope())
+                .subscribe { granted ->
+                    if (granted) {
+                        initializeActivity()
+                    } else {
+                        finish()
+                    }
+                }
+    }
+
+    private fun initializeActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 
