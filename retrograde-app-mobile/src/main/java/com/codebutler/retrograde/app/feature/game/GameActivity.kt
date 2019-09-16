@@ -79,9 +79,11 @@ class GameActivity : RetrogradeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
+        enableImmersiveMode()
+
         // TODO FILIPPO... There is a lot of duplication with tv GameActivity
         // TODO FILIPPO Use preferences
-        // val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
         val enableOpengl = true
         displayTouchInput = true
 
@@ -119,6 +121,15 @@ class GameActivity : RetrogradeActivity() {
         if (BuildConfig.DEBUG) {
             addFpsView()
         }
+    }
+
+    private fun enableImmersiveMode() {
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
     private fun setupTouchInput(game: Game) {
