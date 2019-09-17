@@ -37,8 +37,9 @@ import io.reactivex.Single
 import java.io.File
 
 class LocalStorageProvider(
-    context: Context,
-    override val metadataProvider: GameMetadataProvider
+    private val context: Context,
+    override val metadataProvider: GameMetadataProvider,
+    private val searchOnlyPrivateDirectories: Boolean = false
 ) : StorageProvider {
 
     override val id: String = "local"
@@ -52,11 +53,20 @@ class LocalStorageProvider(
     override val enabledByDefault = true
 
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
-        // TODO FILIPPO... This really need to be restored to what it was before
-        val externalStorage = Environment.getExternalStorageDirectory().absolutePath + "/Roms Test"
-        File(externalStorage)
-                .walk()
-                .filter { file -> file.isFile && file.name.startsWith(".").not() }
+        searchableDirectories()
+                .map { walkDirectory(it) }
+                .reduce { acc, iterable -> acc union iterable }
+    }
+
+    private fun searchableDirectories(): List<File> = if (searchOnlyPrivateDirectories) {
+        listOf(*context.getExternalFilesDirs(null))
+    } else {
+        listOf(Environment.getExternalStorageDirectory())
+    }
+
+    private fun walkDirectory(directory: File): Iterable<StorageFile> {
+        return directory.walk()
+            .filter { file -> file.isFile && file.name.startsWith(".").not() }
                 .map { file ->
                     StorageFile(
                             name = file.name,
@@ -64,7 +74,7 @@ class LocalStorageProvider(
                             crc = file.calculateCrc32().toUpperCase(),
                             uri = Uri.parse(file.toURI().toString()))
                 }
-                .asIterable()
+            .asIterable()
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
