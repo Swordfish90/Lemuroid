@@ -4,14 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.lib.library.GameLibrary
+import com.codebutler.retrograde.lib.library.LibraryIndexWork
 import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
-
-    @Inject lateinit var gameLibrary: GameLibrary
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -22,13 +21,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.retrograde_mobile_prefs, rootKey)
     }
 
-    // TODO FILIPPO Replace my_preference with something meaningful.
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            "my_preference" -> gameLibrary.indexGames().subscribe()
+            getString(R.string.pref_key_rescan) -> handleRescan()
         }
 
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun handleRescan() {
+        WorkManager.getInstance(context!!).enqueueUniqueWork(
+                LibraryIndexWork.UNIQUE_WORK_ID,
+                ExistingWorkPolicy.APPEND,
+                LibraryIndexWork.newRequest()
+        )
     }
 
     @dagger.Module

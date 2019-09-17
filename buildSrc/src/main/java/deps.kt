@@ -13,13 +13,14 @@ object deps {
         const val gms             = "15.0.0"
         const val googleApiClient = "1.27.0"
         const val koptional       = "1.6.0"
-        const val kotlin          = "1.3.10"
+        const val kotlin          = "1.3.50"
         const val moshi           = "1.8.0"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
-        const val work            = "1.0.0-alpha11"
+        const val work            = "2.2.0"
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
+        const val lifecycle       = "2.1.0"
     }
 
     object libs {
@@ -37,7 +38,8 @@ object deps {
                 const val collection = "androidx.collection:collection-ktx:1.0.0"
             }
             object lifecycle {
-                const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:2.0.0"
+                const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
+                const val extensions = "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
             }
             object preferences {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
@@ -60,8 +62,9 @@ object deps {
         }
         object arch {
             object work {
-                const val runtime = "android.arch.work:work-runtime:${versions.work}"
-                const val runtimeKtx = "android.arch.work:work-runtime-ktx:${versions.work}"
+                const val runtime = "androidx.work:work-runtime:${versions.work}"
+                const val runtimeKtx = "androidx.work:work-runtime-ktx:${versions.work}"
+                const val rxjava2 ="androidx.work:work-rxjava2:${versions.work}"
             }
         }
         object autodispose {
@@ -90,6 +93,9 @@ object deps {
         object rxbindings {
             const val core = "com.jakewharton.rxbinding3:rxbinding-core:${versions.rxbindings}"
             const val appcompat = "com.jakewharton.rxbinding3:rxbinding-appcompat:${versions.rxbindings}"
+        }
+        object kotlin {
+            const val stdlib = "stdlib"
         }
 
         const val bugsnagAndroid           = "com.bugsnag:bugsnag-android:4.9.2"

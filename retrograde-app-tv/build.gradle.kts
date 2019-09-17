@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+
 plugins {
     id("com.android.application")
     id("com.bugsnag.android.gradle")
@@ -33,6 +35,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+    kotlinOptions {
+        this as KotlinJvmOptions
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -59,6 +65,7 @@ dependencies {
     implementation(deps.libs.androidx.room.rxjava2)
     implementation(deps.libs.autodispose.android.archComponents)
     implementation(deps.libs.autodispose.android.archComponentsKtx)
+    implementation(deps.libs.arch.work.runtime)
 
     implementation(deps.libs.autodispose.android.core)
     implementation(deps.libs.autodispose.android.ktx)

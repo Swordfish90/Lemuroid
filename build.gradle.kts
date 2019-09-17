@@ -1,13 +1,10 @@
 import org.gradle.api.tasks.Delete
-import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.api.plugins.quality.CheckstyleExtension
 
 import com.android.build.gradle.BaseExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 buildscript {
     repositories {

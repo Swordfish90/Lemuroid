@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 plugins {
     id("com.android.application")
@@ -36,6 +36,11 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+
+    kotlinOptions {
+        this as KotlinJvmOptions
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -57,6 +62,11 @@ dependencies {
     implementation(deps.libs.androidx.preferences.preferencesKtx)
     implementation(deps.libs.rxbindings.core)
     implementation(deps.libs.rxbindings.appcompat)
+    implementation(deps.libs.arch.work.runtime)
+    implementation(deps.libs.arch.work.runtimeKtx)
+    implementation(deps.libs.arch.work.rxjava2)
+    implementation(deps.libs.androidx.lifecycle.commonJava8)
+    implementation(deps.libs.androidx.lifecycle.extensions)
 
     // TODO All next dependencies might not be correct.
 
@@ -96,12 +106,6 @@ dependencies {
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 //fun askPassword() = "security -q find-generic-password -w -g -l retrograde-release".execute().trim()

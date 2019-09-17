@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -8,9 +10,10 @@ dependencies {
     implementation(project(":retrograde-util"))
 
     api(deps.libs.androidx.lifecycle.commonJava8)
-    api(deps.libs.arch.work.runtime)
-    api(deps.libs.arch.work.runtimeKtx)
 
+    implementation(deps.libs.arch.work.runtime)
+    implementation(deps.libs.arch.work.runtimeKtx)
+    implementation(deps.libs.arch.work.rxjava2)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.appcompat.leanbackPreference)
     implementation(deps.libs.androidx.ktx.collection)
@@ -54,5 +57,9 @@ android {
         cmake {
             setPath(File("$projectDir/CMakeLists.txt"))
         }
+    }
+    kotlinOptions {
+        this as KotlinJvmOptions
+        jvmTarget = "1.8"
     }
 }

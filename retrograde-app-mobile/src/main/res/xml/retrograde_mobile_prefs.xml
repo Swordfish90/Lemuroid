@@ -2,8 +2,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:key="my_preference"
-        android:title="Rescan"
+        android:key="@string/pref_key_rescan"
+        android:title="@string/rescan"
         android:persistent="false"/>
 
 </PreferenceScreen>

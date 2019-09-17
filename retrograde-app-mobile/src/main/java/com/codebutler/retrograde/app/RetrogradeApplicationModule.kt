@@ -127,7 +127,7 @@ abstract class RetrogradeApplicationModule {
         @IntoSet
         @JvmStatic
         fun localGameStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider =
-                LocalStorageProvider(context, metadataProvider)
+                LocalStorageProvider(context, metadataProvider, true)
 
         @Provides
         @PerApp
