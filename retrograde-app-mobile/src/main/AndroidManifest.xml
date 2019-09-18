@@ -35,7 +35,7 @@
         <activity
             android:name=".app.feature.game.GameActivity"
             android:process=":game"
-            android:configChanges="orientation"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
