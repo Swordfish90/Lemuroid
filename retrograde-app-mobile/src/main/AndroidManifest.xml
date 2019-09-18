@@ -38,7 +38,7 @@
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
-        <activity android:name=".app.feature.import.StorageFrameworkPickerLauncher"/>
+        <activity android:name=".app.feature.settings.StorageFrameworkPickerLauncher"/>
     </application>
 
 </manifest>

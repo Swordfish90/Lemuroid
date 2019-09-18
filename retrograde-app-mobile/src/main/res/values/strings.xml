@@ -7,4 +7,6 @@
     <string name="recent">Recent</string>
     <string name="favorites">Favorites</string>
     <string name="rescan">Rescan</string>
+    <string name="none">None</string>
+    <string name="roms_folder">Roms folder</string>
 </resources>

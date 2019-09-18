@@ -36,6 +36,7 @@ import com.codebutler.retrograde.lib.logging.RxTimberTree
 import com.codebutler.retrograde.metadata.ovgdb.OvgdbMetadataProvider
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.codebutler.retrograde.lib.storage.StorageProviderRegistry
+import com.codebutler.retrograde.lib.storage.accessframework.StorageAccessFrameworkProvider
 import com.codebutler.retrograde.lib.storage.local.LocalStorageProvider
 import com.codebutler.retrograde.metadata.ovgdb.db.OvgdbManager
 import com.codebutler.retrograde.storage.archiveorg.ArchiveOrgStorageProvider
@@ -121,6 +122,13 @@ abstract class RetrogradeApplicationModule {
         @PerApp
         @JvmStatic
         fun ovgdbMetadataProvider(ovgdbManager: OvgdbManager) = OvgdbMetadataProvider(ovgdbManager)
+
+        @Provides
+        @PerApp
+        @IntoSet
+        @JvmStatic
+        fun localSAFStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider =
+                StorageAccessFrameworkProvider(context, metadataProvider)
 
         @Provides
         @PerApp
