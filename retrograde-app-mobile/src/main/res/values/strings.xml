@@ -9,4 +9,5 @@
     <string name="rescan">Rescan</string>
     <string name="none">None</string>
     <string name="roms_folder">Roms folder</string>
+    <string name="haptic_feedback_strength">Haptic feedback strength</string>
 </resources>

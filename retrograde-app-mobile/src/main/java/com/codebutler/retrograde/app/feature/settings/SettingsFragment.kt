@@ -27,7 +27,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        val countingPreference: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
+        val countingPreference: Preference? = findPreference(getString(R.string.pref_key_external_folder))
         countingPreference?.summaryProvider = Preference.SummaryProvider<Preference> {
             val uriString = PreferenceManager.getDefaultSharedPreferences(context!!).getString(it.key, null)
             uriString?.let { getDisplayNameForFolderUri(Uri.parse(uriString)) } ?: getString(R.string.none)
@@ -39,7 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> handleRescan()
-            getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
+            getString(R.string.pref_key_external_folder) -> handleChangeExternalFolder()
 
         }
 

@@ -3,14 +3,10 @@ package com.codebutler.retrograde.app.feature.settings
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.provider.OpenableColumns
 import androidx.fragment.app.FragmentActivity
 import com.codebutler.retrograde.R
-import java.io.File
-import java.io.InputStream
 
 class StorageFrameworkPickerLauncher : FragmentActivity() {
 
@@ -27,7 +23,7 @@ class StorageFrameworkPickerLauncher : FragmentActivity() {
         super.onActivityResult(requestCode, resultCode, resultData)
 
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {
-            val preferenceKey = getString(R.string.pref_key_extenral_folder)
+            val preferenceKey = getString(R.string.pref_key_external_folder)
             PreferenceManager.getDefaultSharedPreferences(this).edit().apply {
                 this.putString(preferenceKey, resultData?.data.toString())
                 this.apply()
