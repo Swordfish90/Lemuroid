@@ -2,29 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory>
+    <Preference
+        android:key="@string/pref_key_extenral_folder"
+        android:title="@string/roms_folder"
+        app:useSimpleSummaryProvider="true"/>
 
-        <Preference
-            android:key="@string/pref_key_external_folder"
-            android:title="@string/roms_folder"
-            app:useSimpleSummaryProvider="true"/>
-
-        <Preference
-            android:key="@string/pref_key_rescan"
-            android:title="@string/rescan"
-            android:persistent="false"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory>
-
-        <SeekBarPreference
-            android:title="@string/haptic_feedback_strength"
-            android:key="@string/pref_haptic_feedback_strength"
-            app:min="0"
-            android:defaultValue="15"
-            android:max="100"/>
-
-    </PreferenceCategory>
+    <Preference
+        android:key="@string/pref_key_rescan"
+        android:title="@string/rescan"
+        android:persistent="false"/>
 
 </PreferenceScreen>

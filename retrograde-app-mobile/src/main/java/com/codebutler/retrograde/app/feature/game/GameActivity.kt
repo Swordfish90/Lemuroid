@@ -21,10 +21,10 @@ package com.codebutler.retrograde.app.feature.game
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -32,8 +32,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.preference.PreferenceManager
 import com.codebutler.retrograde.BuildConfig
+import com.codebutler.retrograde.R
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
 import com.codebutler.retrograde.lib.game.GameLoader
@@ -55,9 +55,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
-import android.os.Vibrator
-import com.codebutler.retrograde.R
-
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -78,21 +75,14 @@ class GameActivity : RetrogradeActivity() {
 
     private var displayTouchInput: Boolean = false
 
-    private var hapticFeedbackStrength = 15L
-    private lateinit var vibrator: Vibrator
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
         enableImmersiveMode()
-        initVibrator()
 
         // TODO FILIPPO... There is a lot of duplication with tv GameActivity
-
-        PreferenceManager.getDefaultSharedPreferences(this).apply {
-            hapticFeedbackStrength = getInt(getString(R.string.pref_haptic_feedback_strength), 15).toLong()
-        }
+        // TODO FILIPPO Use preferences
 
         val enableOpengl = true
         displayTouchInput = true
@@ -142,11 +132,7 @@ class GameActivity : RetrogradeActivity() {
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
-    private fun initVibrator() {
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    }
-
-    private fun initTouchInputs(game: Game) {
+    private fun setupTouchInput(game: Game) {
         val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
 
         val gameView = when (game.systemId) {
@@ -162,15 +148,16 @@ class GameActivity : RetrogradeActivity() {
             gameView.getEvents()
                     .doOnNext {
                         if (it.action == KeyEvent.ACTION_DOWN) {
-                            performHapticFeedback()
+                            performHapticFeedback(gameView)
                         }
                     }.autoDisposable(scope())
                     .subscribe { gameInput.onKeyEvent(KeyEvent(it.action, it.keycode)) }
         }
     }
 
-    private fun performHapticFeedback() {
-        vibrator.vibrate(hapticFeedbackStrength)
+    private fun performHapticFeedback(view: View) {
+        val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+        view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
     override fun onDestroy() {
@@ -221,7 +208,7 @@ class GameActivity : RetrogradeActivity() {
             lifecycle.addObserver(retroDroid)
 
             if (displayTouchInput) {
-                initTouchInputs(data.game)
+                setupTouchInput(data.game)
             }
 
             retroDroid.gameUnloaded

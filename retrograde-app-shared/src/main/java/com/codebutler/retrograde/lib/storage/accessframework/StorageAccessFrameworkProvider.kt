@@ -42,7 +42,7 @@ class StorageAccessFrameworkProvider(
     }
 
     private fun getExternalFolder(): String? {
-        val prefString = context.getString(R.string.pref_key_external_folder)
+        val prefString = context.getString(R.string.pref_key_extenral_folder)
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
         return preferenceManager.getString(prefString, null)
     }

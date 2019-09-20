@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_key_external_folder" translatable="false">external_folder</string>
-    <string name="pref_haptic_feedback_strength">haptic_feedback_strength</string>
+    <string name="pref_key_extenral_folder" translatable="false">external_folder</string>
 </resources>
