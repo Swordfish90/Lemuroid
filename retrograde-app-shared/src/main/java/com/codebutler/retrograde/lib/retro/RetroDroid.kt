@@ -108,11 +108,11 @@ class RetroDroid(
             for (i in 0 until height) {
                 val widthAsBytes = width * videoBytesPerPixel
                 System.arraycopy(
-                        data,             // SRC
-                        i * pitch,        // SRC POS
-                        newBuffer,        // DST
-                        i * widthAsBytes, // DST POS
-                        widthAsBytes      // LENGTH
+                    data, // SRC
+                    i * pitch, // SRC POS
+                    newBuffer, // DST
+                    i * widthAsBytes, // DST POS
+                    widthAsBytes // LENGTH
                 )
             }
 
@@ -191,7 +191,7 @@ class RetroDroid(
             retro.run()
             fpsCalculator.update()
         }
-        this.thread?.setPriority(Thread.MAX_PRIORITY)
+        this.thread?.priority = Thread.MAX_PRIORITY
         this.thread?.start()
     }
 

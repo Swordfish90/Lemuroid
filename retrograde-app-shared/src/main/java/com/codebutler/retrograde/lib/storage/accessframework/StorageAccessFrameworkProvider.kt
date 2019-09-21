@@ -51,7 +51,9 @@ class StorageAccessFrameworkProvider(
         val result = mutableListOf<StorageFile>()
 
         val contentResolver = context.contentResolver
-        var currentNode = DocumentsContract.buildChildDocumentsUriUsingTree(rootUri, DocumentsContract.getTreeDocumentId(rootUri))
+        var currentNode = DocumentsContract
+            .buildChildDocumentsUriUsingTree(rootUri, DocumentsContract
+            .getTreeDocumentId(rootUri))
 
         // Keep track of our directory hierarchy
         val dirNodes = mutableListOf<Uri>()

@@ -1,10 +1,10 @@
 package com.codebutler.retrograde.lib.util
 
 import com.uber.autodispose.CompletableSubscribeProxy
-import com.uber.autodispose.FlowableSubscribeProxy
 import com.uber.autodispose.MaybeSubscribeProxy
 import com.uber.autodispose.ObservableSubscribeProxy
 import com.uber.autodispose.SingleSubscribeProxy
+import com.uber.autodispose.FlowableSubscribeProxy
 import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.plugins.RxJavaPlugins

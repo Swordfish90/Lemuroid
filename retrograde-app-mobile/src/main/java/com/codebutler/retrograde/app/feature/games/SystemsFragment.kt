@@ -37,7 +37,8 @@ class SystemsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_games, container, false)
 
-        systemsViewModel = ViewModelProviders.of(this, SystemsViewModel.Factory(retrogradeDb)).get(SystemsViewModel::class.java)
+        systemsViewModel = ViewModelProviders.of(this, SystemsViewModel.Factory(retrogradeDb))
+            .get(SystemsViewModel::class.java)
 
         systemsAdapter = SystemsAdapter { navigateToGames(it) }
         systemsViewModel?.availableSystems

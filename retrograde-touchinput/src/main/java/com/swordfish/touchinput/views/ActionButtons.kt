@@ -79,8 +79,17 @@ class ActionButtons @JvmOverloads constructor(
         val rotatedWidth = (abs(notRotatedWidth * sin(radians)) + abs(notRotatedHeight * cos(radians))).toFloat()
         val rotatedHeight = (abs(notRotatedWidth * cos(radians)) + abs(notRotatedHeight * sin(radians))).toFloat()
 
-        val width = getSize(MeasureSpec.getMode(widthMeasureSpec), MeasureSpec.getSize(widthMeasureSpec), rotatedWidth.toInt())
-        val height = getSize(MeasureSpec.getMode(heightMeasureSpec), MeasureSpec.getSize(heightMeasureSpec), rotatedHeight.toInt())
+        val width = getSize(
+            MeasureSpec.getMode(widthMeasureSpec),
+            MeasureSpec.getSize(widthMeasureSpec),
+            rotatedWidth.toInt()
+        )
+
+        val height = getSize(
+            MeasureSpec.getMode(heightMeasureSpec),
+            MeasureSpec.getSize(heightMeasureSpec),
+            rotatedHeight.toInt()
+        )
 
         xPadding = abs(width - notRotatedWidth) / 2f
         yPadding = abs(height - notRotatedHeight) / 2f

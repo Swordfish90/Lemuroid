@@ -38,7 +38,8 @@ class SearchFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val root = inflater.inflate(R.layout.fragment_search, container, false)
 
-        val searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb)).get(SearchViewModel::class.java)
+        val searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
+            .get(SearchViewModel::class.java)
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
         searchViewModel.searchResults.observe(this, Observer {

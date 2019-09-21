@@ -55,6 +55,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.system.exitProcess
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -156,14 +157,14 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun performHapticFeedback(view: View) {
-        val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+        val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         // This activity runs in its own process which should not live beyond the activity lifecycle.
-        System.exit(0)
+        exitProcess(0)
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {

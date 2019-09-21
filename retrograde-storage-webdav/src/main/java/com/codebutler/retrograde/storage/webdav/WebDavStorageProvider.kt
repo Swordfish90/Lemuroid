@@ -23,9 +23,9 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.net.Uri
 import androidx.leanback.preference.LeanbackPreferenceFragment
-import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
+import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.codebutler.retrograde.storage.webdav.client.WebDavClient
 import com.codebutler.retrograde.storage.webdav.client.WebDavScanner
@@ -34,15 +34,15 @@ import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
 import io.reactivex.Completable
 import io.reactivex.Single
-import okhttp3.Credentials
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import org.xmlpull.v1.XmlPullParserFactory
-import timber.log.Timber
 import java.io.File
 import java.net.URI
 import java.net.URLDecoder
 import java.util.concurrent.TimeUnit
+import okhttp3.Credentials
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.OkHttpClient
+import org.xmlpull.v1.XmlPullParserFactory
+import timber.log.Timber
 
 class WebDavStorageProvider(
     private val context: Context,

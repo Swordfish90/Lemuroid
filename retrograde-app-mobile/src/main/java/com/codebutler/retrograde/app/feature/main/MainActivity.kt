@@ -2,7 +2,6 @@ package com.codebutler.retrograde.app.feature.main
 
 import android.Manifest
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,6 +17,7 @@ import com.codebutler.retrograde.lib.android.RetrogradeAppCompatActivity
 import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -31,8 +31,9 @@ class MainActivity : RetrogradeAppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val permissions = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
 
         RxPermissions(this).request(*permissions)
                 .autoDisposable(scope())
@@ -49,7 +50,12 @@ class MainActivity : RetrogradeAppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 
-        val topLevelIds = setOf(R.id.navigation_home, R.id.navigation_search, R.id.navigation_systems, R.id.navigation_settings)
+        val topLevelIds = setOf(
+            R.id.navigation_home,
+            R.id.navigation_search,
+            R.id.navigation_systems,
+            R.id.navigation_settings
+        )
         val appBarConfiguration = AppBarConfiguration(topLevelIds)
 
         setupActionBarWithNavController(navController, appBarConfiguration)

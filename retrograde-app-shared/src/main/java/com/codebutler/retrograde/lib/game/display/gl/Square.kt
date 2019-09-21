@@ -51,6 +51,7 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
+@Suppress("no-wildcard-imports")
 class Square {
     @Language("glsl")
     private val vertexShaderCode = """

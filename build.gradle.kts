@@ -1,8 +1,3 @@
-import org.gradle.api.tasks.Delete
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.repositories
-import org.gradle.api.plugins.quality.CheckstyleExtension
-
 import com.android.build.gradle.BaseExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
@@ -21,7 +16,7 @@ buildscript {
 plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
     id("com.github.ben-manes.versions") version "0.20.0"
-    id("org.jmailen.kotlinter") version "1.20.1"
+    id("org.jmailen.kotlinter") version "2.1.1"
     checkstyle
 }
 
@@ -34,6 +29,11 @@ allprojects {
     }
 
     apply(plugin = "org.jmailen.kotlinter")
+
+    kotlinter {
+        // We are currently disabling tests for import ordering.
+        disabledRules = arrayOf("import-ordering")
+    }
 
     configurations.all {
         resolutionStrategy.eachDependency {
@@ -92,8 +92,8 @@ subprojects {
                 dexInProcess = true
             }
             compileOptions {
-                setSourceCompatibility(JavaVersion.VERSION_1_8)
-                setTargetCompatibility(JavaVersion.VERSION_1_8)
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
             }
         }
     }

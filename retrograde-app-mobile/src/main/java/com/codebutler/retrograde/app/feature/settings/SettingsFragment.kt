@@ -40,9 +40,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> handleRescan()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
-
         }
-
         return super.onPreferenceTreeClick(preference)
     }
 

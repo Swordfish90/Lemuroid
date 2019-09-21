@@ -33,11 +33,11 @@ import org.xmlpull.v1.XmlPullParserFactory
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.PUT
 import retrofit2.http.Url
+import retrofit2.http.Body
 
 class WebDavClient(
     okHttpClient: OkHttpClient,

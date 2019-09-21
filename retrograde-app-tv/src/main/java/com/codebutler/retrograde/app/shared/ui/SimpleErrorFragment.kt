@@ -20,8 +20,8 @@
 package com.codebutler.retrograde.app.shared.ui
 
 import android.os.Bundle
-import androidx.leanback.app.ErrorSupportFragment
 import android.view.View
+import androidx.leanback.app.ErrorSupportFragment
 import com.codebutler.retrograde.lib.R
 
 class SimpleErrorFragment : ErrorSupportFragment() {

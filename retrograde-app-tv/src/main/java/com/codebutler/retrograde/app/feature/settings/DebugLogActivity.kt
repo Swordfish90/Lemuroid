@@ -69,8 +69,7 @@ class DebugLogActivity : RetrogradeActivity() {
         }
     }
 
-    class LogEntryViewHolder(parent: ViewGroup)
-        : RecyclerView.ViewHolder(parent.inflate(R.layout.listitem_log_entry)) {
+    class LogEntryViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(parent.inflate(R.layout.listitem_log_entry)) {
 
         private val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.US)
 

@@ -57,7 +57,9 @@ class DirectionPad @JvmOverloads constructor(
     private val buttonsPressed = mutableSetOf<Int>()
 
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.DirectionPad, defStyleAttr, R.style.default_directionpad).let {
+        val padStyleable = R.styleable.DirectionPad
+        val defaultStyle = R.style.default_directionpad
+        context.theme.obtainStyledAttributes(attrs, padStyleable, defStyleAttr, defaultStyle).let {
             initializeFromAttributes(it)
         }
     }

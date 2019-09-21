@@ -19,9 +19,9 @@
 
 package com.codebutler.retrograde.app
 
-import androidx.room.Room
 import android.content.Context
 import android.preference.PreferenceManager
+import androidx.room.Room
 import com.codebutler.retrograde.app.feature.game.GameActivity
 import com.codebutler.retrograde.app.feature.game.GameLauncherActivity
 import com.codebutler.retrograde.app.feature.main.MainActivity
@@ -36,10 +36,10 @@ import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.dao.GameSearchDao
 import com.codebutler.retrograde.lib.logging.RxTimberTree
-import com.codebutler.retrograde.metadata.ovgdb.OvgdbMetadataProvider
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.codebutler.retrograde.lib.storage.StorageProviderRegistry
 import com.codebutler.retrograde.lib.storage.local.LocalStorageProvider
+import com.codebutler.retrograde.metadata.ovgdb.OvgdbMetadataProvider
 import com.codebutler.retrograde.metadata.ovgdb.db.OvgdbManager
 import com.codebutler.retrograde.storage.archiveorg.ArchiveOrgStorageProvider
 import com.f2prateek.rx.preferences2.RxSharedPreferences

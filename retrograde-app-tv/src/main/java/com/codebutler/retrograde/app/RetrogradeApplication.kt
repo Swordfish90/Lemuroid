@@ -22,7 +22,6 @@ package com.codebutler.retrograde.app
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.work.ListenableWorker
-import androidx.work.Worker
 import com.bugsnag.android.Bugsnag
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.R

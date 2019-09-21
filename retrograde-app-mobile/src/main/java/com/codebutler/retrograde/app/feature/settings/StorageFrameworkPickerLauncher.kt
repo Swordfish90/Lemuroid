@@ -3,14 +3,10 @@ package com.codebutler.retrograde.app.feature.settings
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.provider.OpenableColumns
 import androidx.fragment.app.FragmentActivity
 import com.codebutler.retrograde.R
-import java.io.File
-import java.io.InputStream
 
 class StorageFrameworkPickerLauncher : FragmentActivity() {
 
@@ -39,6 +35,8 @@ class StorageFrameworkPickerLauncher : FragmentActivity() {
     companion object {
         private const val REQUEST_CODE_PICK_FOLDER = 1
 
-        fun pickFolder(context: Context) = context.startActivity(Intent(context, StorageFrameworkPickerLauncher::class.java))
+        fun pickFolder(context: Context) {
+            context.startActivity(Intent(context, StorageFrameworkPickerLauncher::class.java))
+        }
     }
 }

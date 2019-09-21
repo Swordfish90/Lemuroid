@@ -1,12 +1,13 @@
 package com.codebutler.retrograde.app.feature.settings
 
+import android.annotation.SuppressLint
 import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.PreferenceFragment
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.leanback.preference.LeanbackSettingsFragment
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragment
 import androidx.preference.PreferenceScreen
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.R
@@ -19,6 +20,7 @@ class AboutFragment : LeanbackSettingsFragment() {
 
     override fun onPreferenceStartScreen(caller: PreferenceFragment, pref: PreferenceScreen): Boolean = false
 
+    @SuppressLint("deprecation")
     override fun onPreferenceStartFragment(caller: PreferenceFragment, pref: Preference): Boolean {
         val fragment = Class.forName(pref.fragment).newInstance() as Fragment
         startPreferenceFragment(fragment)

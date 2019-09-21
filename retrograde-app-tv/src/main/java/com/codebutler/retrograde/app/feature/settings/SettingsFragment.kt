@@ -5,14 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager.getDefaultSharedPreferences
-import androidx.preference.PreferenceFragment
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.leanback.preference.LeanbackSettingsFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceFragment
 import androidx.preference.PreferenceScreen
-import android.util.TypedValue
-import android.view.ContextThemeWrapper
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.lib.injection.PerChildFragment
 import com.codebutler.retrograde.lib.storage.StorageProviderRegistry

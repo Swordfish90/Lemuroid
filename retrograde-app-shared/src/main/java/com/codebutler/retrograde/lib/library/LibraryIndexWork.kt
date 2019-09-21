@@ -1,7 +1,10 @@
 package com.codebutler.retrograde.lib.library
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.ListenableWorker
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.RxWorker
+import androidx.work.WorkerParameters
 import com.codebutler.retrograde.lib.injection.AndroidWorkerInjection
 import com.codebutler.retrograde.lib.injection.WorkerKey
 import dagger.Binds
@@ -39,5 +42,3 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWor
         abstract class Builder : AndroidInjector.Builder<LibraryIndexWork>()
     }
 }
-
-

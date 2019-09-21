@@ -27,8 +27,10 @@ import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 
-class PagedListObjectAdapter<T>(presenter: Presenter, diffCallback: DiffUtil.ItemCallback<T>)
-    : ObjectAdapter(presenter) {
+class PagedListObjectAdapter<T>(
+    presenter: Presenter,
+    diffCallback: DiffUtil.ItemCallback<T>
+) : ObjectAdapter(presenter) {
 
     private val listUpdateCallback = object : ListUpdateCallback {
         override fun onChanged(position: Int, count: Int, payload: Any?) {

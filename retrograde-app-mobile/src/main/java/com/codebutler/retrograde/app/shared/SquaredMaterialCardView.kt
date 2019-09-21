@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.card.MaterialCardView
 
-
 class SquaredMaterialCardView : MaterialCardView {
 
     constructor(context: Context) : super(context)

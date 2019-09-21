@@ -35,7 +35,7 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
                 .into(coverView)
 
         itemView.setOnClickListener { gameInteractor.onGameClick(game) }
-        favoriteToggle?.setOnCheckedChangeListener { _, isChecked ->  gameInteractor.onFavoriteToggle(game, isChecked) }
+        favoriteToggle?.setOnCheckedChangeListener { _, isChecked -> gameInteractor.onFavoriteToggle(game, isChecked) }
     }
 
     fun unbind() {
@@ -49,8 +49,8 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 }
 
 class GamesAdapter(
-        private val baseLayout: Int,
-        private val gameInteractor: GameInteractor
+    private val baseLayout: Int,
+    private val gameInteractor: GameInteractor
 ) : PagedListAdapter<Game, GameViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {

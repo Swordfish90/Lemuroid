@@ -1,17 +1,15 @@
 package com.codebutler.retrograde.app.feature.games
 
-
-import androidx.recyclerview.widget.ListAdapter
-import com.codebutler.retrograde.lib.library.GameSystem
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
+import com.codebutler.retrograde.lib.library.GameSystem
 
 class SystemViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     private var coverView: ImageView? = null
@@ -29,7 +27,9 @@ class SystemViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     }
 }
 
-class SystemsAdapter(private val onSystemClick: (GameSystem) -> Unit) : ListAdapter<GameSystem, SystemViewHolder>(DIFF_CALLBACK) {
+class SystemsAdapter(
+    private val onSystemClick: (GameSystem) -> Unit
+) : ListAdapter<GameSystem, SystemViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SystemViewHolder {
         return SystemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_system, parent, false))

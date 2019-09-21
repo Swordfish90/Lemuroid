@@ -39,7 +39,9 @@ class GamesFragment : Fragment() {
 
         gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
 
-        gamesViewModel = ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb)).get(GamesViewModel::class.java)
+        gamesViewModel = ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb))
+            .get(GamesViewModel::class.java)
+
         gamesViewModel.games.observe(this, Observer { pagedList ->
             gamesAdapter?.submitList(pagedList)
         })

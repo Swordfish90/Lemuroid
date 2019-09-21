@@ -7,8 +7,8 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 class DynamicGridLayoutManager(
-        context: Context,
-        private val scaling: Int = 2
+    context: Context,
+    private val scaling: Int = 2
 ) : GridLayoutManager(context, 1, VERTICAL, false) {
 
     private val density: Float = context.resources.displayMetrics.density
