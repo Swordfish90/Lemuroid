@@ -23,6 +23,7 @@ import android.graphics.Bitmap
 import android.opengl.GLES20
 import android.opengl.GLES20.GL_FLOAT
 import android.opengl.GLES20.GL_FRAGMENT_SHADER
+import android.opengl.GLES20.GL_LINEAR
 import android.opengl.GLES20.GL_NEAREST
 import android.opengl.GLES20.GL_TEXTURE_2D
 import android.opengl.GLES20.GL_TEXTURE_MAG_FILTER
@@ -40,41 +41,21 @@ import android.opengl.GLES20.glGetAttribLocation
 import android.opengl.GLES20.glGetUniformLocation
 import android.opengl.GLES20.glTexParameteri
 import android.opengl.GLES20.glUniform1i
+import android.opengl.GLES20.glUniform2f
 import android.opengl.GLES20.glUniformMatrix4fv
 import android.opengl.GLES20.glUseProgram
 import android.opengl.GLES20.glVertexAttribPointer
 import android.opengl.GLUtils
 import android.opengl.Matrix
-import org.intellij.lang.annotations.Language
+import com.codebutler.retrograde.lib.game.display.shaders.RetroShader
+import timber.log.Timber
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
 @Suppress("no-wildcard-imports")
-class Square {
-    @Language("glsl")
-    private val vertexShaderCode = """
-      attribute vec4 vPosition;
-      uniform highp mat4 u_Transform;
-      attribute vec2 a_TexCoordinate;
-      varying vec2 v_TexCoordinate;
-      void main() {
-        v_TexCoordinate = a_TexCoordinate;
-        gl_Position = u_Transform * vPosition;
-      }
-      """.trimIndent()
-
-    @Language("glsl")
-    private val fragmentShaderCode = """
-      precision mediump float;
-      uniform sampler2D u_Texture;
-      varying vec2 v_TexCoordinate;
-      void main() {
-        gl_FragColor = texture2D(u_Texture, v_TexCoordinate);
-      }
-      """.trimIndent()
-
+class Square(val shader: RetroShader = RetroShader.CRT) {
     private val program: Int
     private val bytesPerFloat: Int = 4
     private val vertexBuffer: FloatBuffer
@@ -135,8 +116,8 @@ class Square {
                 .asFloatBuffer()
         uvBuffer.put(squareUvCoords).position(0)
 
-        val vertexShader = GlRenderer2d.loadShader(GL_VERTEX_SHADER, vertexShaderCode)
-        val fragmentShader = GlRenderer2d.loadShader(GL_FRAGMENT_SHADER, fragmentShaderCode)
+        val vertexShader = GlRenderer2d.loadShader(GL_VERTEX_SHADER, shader.vertexShader)
+        val fragmentShader = GlRenderer2d.loadShader(GL_FRAGMENT_SHADER, shader.fragmentShader)
 
         // create empty OpenGL ES Program
         program = GLES20.glCreateProgram()
@@ -149,6 +130,9 @@ class Square {
 
         // creates OpenGL ES program executables
         GLES20.glLinkProgram(program)
+
+        Timber.e(GLES20.glGetShaderInfoLog(fragmentShader))
+        Timber.e(GLES20.glGetShaderInfoLog(fragmentShader))
     }
 
     fun setGlBounds(width: Int, height: Int) {
@@ -200,6 +184,9 @@ class Square {
         glBindTexture(GL_TEXTURE_2D, textureLocation)
         glUniform1i(glGetUniformLocation(program, "u_Texture"), 0)
 
+        val bitmapSizeLocation = glGetUniformLocation(program, "u_BitmapSize")
+        glUniform2f(bitmapSizeLocation, bitmap?.width?.toFloat() ?: 0f, bitmap?.height?.toFloat() ?: 0f)
+
         // update the transform
         val transformLocation = glGetUniformLocation(program, "u_Transform")
         glUniformMatrix4fv(transformLocation, 1, false, transform, 0)
@@ -245,8 +232,13 @@ class Square {
             glBindTexture(GL_TEXTURE_2D, texturePool[textureOffset])
 
             // Set filtering
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            val filtering = when (shader.interpolation) {
+                RetroShader.Interpolation.LINEAR -> GL_LINEAR
+                RetroShader.Interpolation.NEAREST -> GL_NEAREST
+            }
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering)
 
             // Load the bitmap into the bound texture.
             GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0)

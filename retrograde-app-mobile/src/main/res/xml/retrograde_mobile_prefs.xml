@@ -12,4 +12,11 @@
         android:title="@string/rescan"
         android:persistent="false"/>
 
+    <PreferenceCategory>
+        <SwitchPreferenceCompat
+            android:key="@string/pref_key_shader"
+            android:title="@string/video_effect"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
 </PreferenceScreen>

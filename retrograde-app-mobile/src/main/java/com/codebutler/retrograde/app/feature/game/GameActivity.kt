@@ -22,8 +22,10 @@ package com.codebutler.retrograde.app.feature.game
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -40,8 +42,9 @@ import com.codebutler.retrograde.lib.game.GameLoader
 import com.codebutler.retrograde.lib.game.audio.GameAudio
 import com.codebutler.retrograde.lib.game.display.GameDisplay
 import com.codebutler.retrograde.lib.game.display.gl.GlGameDisplay
-import com.codebutler.retrograde.lib.game.display.sw.SwGameDisplay
+import com.codebutler.retrograde.lib.game.display.shaders.RetroShader
 import com.codebutler.retrograde.lib.game.input.GameInput
+import com.codebutler.retrograde.lib.library.GameSystem
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.retro.RetroDroid
 import com.codebutler.retrograde.lib.util.subscribeBy
@@ -71,6 +74,8 @@ class GameActivity : RetrogradeActivity() {
     private lateinit var gameDisplay: GameDisplay
     private lateinit var gameInput: GameInput
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     private var game: Game? = null
     private var retroDroid: RetroDroid? = null
 
@@ -82,22 +87,9 @@ class GameActivity : RetrogradeActivity() {
 
         enableImmersiveMode()
 
-        // TODO FILIPPO... There is a lot of duplication with tv GameActivity
-        // TODO FILIPPO Use preferences
-
-        val enableOpengl = true
-        displayTouchInput = true
-
-        gameDisplay = if (enableOpengl) {
-            GlGameDisplay(this)
-        } else {
-            SwGameDisplay(this)
-        }
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         gameInput = GameInput(this)
-
-        gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)
-        lifecycle.addObserver(gameDisplay)
 
         // FIXME: Full Activity lifecycle handling.
         if (savedInstanceState != null) {
@@ -137,9 +129,9 @@ class GameActivity : RetrogradeActivity() {
         val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
 
         val gameView = when (game.systemId) {
-            in listOf("snes", "gba") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
-            in listOf("nes", "gb", "gbc") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
-            in listOf("md") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GENESIS)
+            in listOf(GameSystem.GBA_ID, GameSystem.SNES_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
+            in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
+            in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GENESIS)
             else -> null
         }
 
@@ -205,12 +197,17 @@ class GameActivity : RetrogradeActivity() {
 
     private fun loadRetro(data: GameLoader.GameData) {
         try {
+            val shaderPreference =
+                    sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
+
+            gameDisplay = GlGameDisplay(this, RetroShader.build(shaderPreference, data.game.systemId))
+            gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)
+            lifecycle.addObserver(gameDisplay)
+
             val retroDroid = RetroDroid(gameDisplay, GameAudio(), gameInput, this, data.coreFile)
             lifecycle.addObserver(retroDroid)
 
-            if (displayTouchInput) {
-                setupTouchInput(data.game)
-            }
+            setupTouchInput(data.game)
 
             retroDroid.gameUnloaded
                 .map { optionalSaveData ->
