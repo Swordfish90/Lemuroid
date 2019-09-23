@@ -128,12 +128,16 @@ class GameActivity : RetrogradeActivity() {
     private fun setupTouchInput(game: Game) {
         val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
 
-        val gameView = when (game.systemId) {
-            in listOf(GameSystem.GBA_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GBA)
-            in listOf(GameSystem.SNES_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
-            in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
-            in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GENESIS)
+        val gamePadLayout = when (game.systemId) {
+            in listOf(GameSystem.GBA_ID) -> GamePadFactory.Layout.GBA
+            in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
+            in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.Layout.NES
+            in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.Layout.GENESIS
             else -> null
+        }
+
+        val gameView = gamePadLayout?.let {
+            GamePadFactory.getGamePadView(this, it)
         }
 
         if (gameView != null) {

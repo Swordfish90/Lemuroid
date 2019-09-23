@@ -8,7 +8,7 @@ sealed class RetroShader(
     @Language("glsl") val vertexShader: String,
     val interpolation: Interpolation
 ) {
-    enum class  Interpolation {
+    enum class Interpolation {
         LINEAR,
         NEAREST
     }
