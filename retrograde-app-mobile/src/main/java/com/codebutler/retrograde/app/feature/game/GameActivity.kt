@@ -129,7 +129,8 @@ class GameActivity : RetrogradeActivity() {
         val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
 
         val gameView = when (game.systemId) {
-            in listOf(GameSystem.GBA_ID, GameSystem.SNES_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
+            in listOf(GameSystem.GBA_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GBA)
+            in listOf(GameSystem.SNES_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
             in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
             in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GENESIS)
             else -> null

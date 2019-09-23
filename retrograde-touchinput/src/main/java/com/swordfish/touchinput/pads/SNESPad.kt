@@ -12,14 +12,14 @@ import com.swordfish.touchinput.views.LargeSingleButton
 import com.swordfish.touchinput.views.SmallSingleButton
 import io.reactivex.Observable
 
-class GameBoyAdvancePad @JvmOverloads constructor(
+class SNESPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : BaseGamePad(context, attrs, defStyleAttr) {
 
     init {
-        inflate(context, R.layout.layout_gba, this)
+        inflate(context, R.layout.layout_snes, this)
     }
 
     override fun getEvents(): Observable<PadEvent> {
@@ -47,7 +47,12 @@ class GameBoyAdvancePad @JvmOverloads constructor(
     private fun getActionEvents(): Observable<PadEvent> {
         return findViewById<ActionButtons>(R.id.snes_actions)
             .getEvents()
-            .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_A))
+            .compose(EventsTransformers.actionButtonsMap(
+                    KeyEvent.KEYCODE_Y,
+                    KeyEvent.KEYCODE_X,
+                    KeyEvent.KEYCODE_B,
+                    KeyEvent.KEYCODE_A)
+            )
     }
 
     private fun getDirectionEvents(): Observable<PadEvent> {

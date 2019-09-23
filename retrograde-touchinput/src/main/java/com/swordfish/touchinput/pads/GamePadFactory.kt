@@ -6,6 +6,7 @@ class GamePadFactory {
     enum class Layout {
         NES,
         SNES,
+        GBA,
         GENESIS
     }
 
@@ -13,8 +14,9 @@ class GamePadFactory {
         fun getGamePadView(context: Context, layout: Layout): BaseGamePad {
             return when (layout) {
                 Layout.NES -> GameBoyPad(context)
-                Layout.SNES -> GameBoyAdvancePad(context)
+                Layout.SNES -> SNESPad(context)
                 Layout.GENESIS -> GenesisPad(context)
+                Layout.GBA -> GameBoyAdvancePad(context)
             }
         }
     }
