@@ -3,6 +3,9 @@ package com.codebutler.retrograde.app.feature.search
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
@@ -24,34 +27,60 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+
+
 class SearchFragment : Fragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
 
+    private lateinit var searchViewModel: SearchViewModel
+
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.search_menu, menu)
+        setupSearchMenuItem(menu)
+    }
+
+    private fun setupSearchMenuItem(menu: Menu) {
+        val searchItem = menu.findItem(R.id.action_search)
+        searchItem.expandActionView()
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                activity?.onBackPressed()
+                return true
+            }
+
+            override fun onMenuItemActionExpand(item: MenuItem?) = true
+        })
+
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.queryTextChanges()
+                .debounce(1, TimeUnit.SECONDS)
+                .map { it.toString() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .autoDisposable(scope())
+                .subscribe { searchViewModel.queryString.value = it }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
         val root = inflater.inflate(R.layout.fragment_search, container, false)
 
-        val searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
+        searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
             .get(SearchViewModel::class.java)
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
         searchViewModel.searchResults.observe(this, Observer {
             gamesAdapter.submitList(it)
         })
-
-        root.findViewById<SearchView>(R.id.search_searchview).queryTextChanges()
-                .debounce(1, TimeUnit.SECONDS)
-                .map { it.toString() }
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope())
-                .subscribe { searchViewModel.queryString.value = it }
 
         root.findViewById<RecyclerView>(R.id.search_recyclerview).apply {
             this.adapter = gamesAdapter

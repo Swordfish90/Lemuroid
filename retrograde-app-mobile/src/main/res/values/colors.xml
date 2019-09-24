@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- TODO FILIPPO... We should think about merging colors. -->
-    <color name="colorPrimary">#673AB7</color>
-    <color name="colorPrimaryVariant">#320b86</color>
+    <color name="colorPrimary">#b39ddb</color>
+    <color name="colorPrimaryVariant">#683ab7</color>
 
-    <color name="colorSecondary">#e1bee7</color>
-    <color name="colorSecondaryVariant">#af8eb5</color>
+    <color name="colorSecondary">@color/colorPrimary</color>
+    <color name="colorSecondaryVariant">@color/colorPrimaryVariant</color>
 
     <color name="ic_launcher_background">#673AB7</color>
     <color name="system_background">#22000000</color>

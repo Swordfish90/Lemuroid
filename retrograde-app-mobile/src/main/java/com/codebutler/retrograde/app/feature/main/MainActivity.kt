@@ -2,6 +2,7 @@ package com.codebutler.retrograde.app.feature.main
 
 import android.Manifest
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -47,6 +48,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
     }
 
     private fun initializeActivity() {
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 
