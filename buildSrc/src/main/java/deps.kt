@@ -127,6 +127,9 @@ object deps {
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
         const val material                 = "com.google.android.material:material:1.1.0-alpha10"
+
+        // This will be replaced by native material components when they will be ready.
+        const val materialProgressBar      = "me.zhanghai.android.materialprogressbar:library:1.6.1"
     }
 
     object plugins {

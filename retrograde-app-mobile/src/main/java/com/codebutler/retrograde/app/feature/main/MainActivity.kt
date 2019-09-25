@@ -2,16 +2,21 @@ package com.codebutler.retrograde.app.feature.main
 
 import android.Manifest
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.WorkInfo
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.games.GamesFragment
 import com.codebutler.retrograde.app.feature.games.SystemsFragment
 import com.codebutler.retrograde.app.feature.home.HomeFragment
 import com.codebutler.retrograde.app.feature.search.SearchFragment
+import com.codebutler.retrograde.app.feature.search.SearchViewModel
 import com.codebutler.retrograde.app.feature.settings.SettingsFragment
 import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.lib.android.RetrogradeAppCompatActivity
@@ -24,6 +29,7 @@ import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 
 class MainActivity : RetrogradeAppCompatActivity() {
 
@@ -63,6 +69,18 @@ class MainActivity : RetrogradeAppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory()).get(MainViewModel::class.java)
+
+        mainViewModel.indexingInProgress.observe(this, Observer { workInfos ->
+            if (workInfos != null) {
+                val isRunning = workInfos
+                    .map { it.state }
+                    .any { it in listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED) }
+
+                findViewById<MaterialProgressBar>(R.id.progress).visibility = if (isRunning) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()

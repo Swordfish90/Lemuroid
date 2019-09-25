@@ -77,17 +77,21 @@ class SearchFragment : Fragment() {
         searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
             .get(SearchViewModel::class.java)
 
+        return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         val gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
         searchViewModel.searchResults.observe(this, Observer {
             gamesAdapter.submitList(it)
         })
 
-        root.findViewById<RecyclerView>(R.id.search_recyclerview).apply {
+        view?.findViewById<RecyclerView>(R.id.search_recyclerview)?.apply {
             this.adapter = gamesAdapter
             this.layoutManager = DynamicGridLayoutManager(context, 2)
         }
-
-        return root
     }
 
     @dagger.Module
