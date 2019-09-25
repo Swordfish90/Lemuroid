@@ -57,11 +57,9 @@ sealed class RetroShader(
           lowp vec3 pixelHigh = ((1.0 + BRIGHTBOOST) - (0.2 * texel)) * texel;
           lowp vec3 pixelLow  = ((1.0 - INTENSITY) + (0.1 * texel)) * texel;
       
-          HIGHP vec2 rasterizationCoords = fract(v_TexCoordinate * u_BitmapSize);
+          HIGHP vec2 coords = fract(v_TexCoordinate * u_BitmapSize) * 2.0 - vec2(1.0);
         
-          lowp float mask = 0.0;
-          mask += smoothstep(0.0, 0.5, rasterizationCoords.y);
-          mask -= smoothstep(0.5, 1.0, rasterizationCoords.y);
+          lowp float mask = 1.0 - abs(coords.y);
           
           gl_FragColor = vec4(mix(pixelLow, pixelHigh, mask), 1.0);
         }
@@ -84,15 +82,15 @@ sealed class RetroShader(
         uniform lowp sampler2D u_Texture;
         varying HIGHP vec2 v_TexCoordinate;
       
-        #define INTENSITY 0.80
-        #define BRIGHTBOOST 0.2
+        #define INTENSITY 0.30
+        #define BRIGHTBOOST 0.30
       
         void main() {
           lowp vec3 texel = texture2D(u_Texture, v_TexCoordinate).rgb;
           lowp vec3 pixelHigh = ((1.0 + BRIGHTBOOST) - (0.2 * texel)) * texel;
           lowp vec3 pixelLow  = ((1.0 - INTENSITY) + (0.1 * texel)) * texel;
       
-          HIGHP vec2 coords = fract(v_TexCoordinate * u_BitmapSize) - vec2(0.5);
+          HIGHP vec2 coords = fract(v_TexCoordinate * u_BitmapSize) * 2.0 - vec2(1.0);
           coords = coords * coords;
         
           lowp float mask = 1.0 - coords.x - coords.y;
@@ -101,7 +99,7 @@ sealed class RetroShader(
         }
         """.trimIndent(),
             Default.vertexShader,
-            Interpolation.LINEAR
+            Interpolation.NEAREST
     )
 
     companion object {
