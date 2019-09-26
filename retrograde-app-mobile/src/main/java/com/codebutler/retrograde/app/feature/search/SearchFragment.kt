@@ -21,13 +21,11 @@ import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
-
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
-
 
 class SearchFragment : Fragment() {
 
@@ -35,6 +33,8 @@ class SearchFragment : Fragment() {
     @Inject lateinit var gameInteractor: GameInteractor
 
     private lateinit var searchViewModel: SearchViewModel
+
+    private var searchSubject: PublishSubject<String> = PublishSubject.create()
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -61,13 +61,11 @@ class SearchFragment : Fragment() {
         })
 
         val searchView = searchItem.actionView as SearchView
-
         searchView.queryTextChanges()
                 .debounce(1, TimeUnit.SECONDS)
                 .map { it.toString() }
                 .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope())
-                .subscribe { searchViewModel.queryString.value = it }
+                .subscribe(searchSubject)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -87,6 +85,12 @@ class SearchFragment : Fragment() {
         searchViewModel.searchResults.observe(this, Observer {
             gamesAdapter.submitList(it)
         })
+
+        searchSubject
+            .distinctUntilChanged()
+            .autoDisposable(scope())
+            .subscribe { searchViewModel.queryString.postValue(it) }
+
 
         view?.findViewById<RecyclerView>(R.id.search_recyclerview)?.apply {
             this.adapter = gamesAdapter

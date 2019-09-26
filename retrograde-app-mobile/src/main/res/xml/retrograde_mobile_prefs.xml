@@ -2,21 +2,34 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        android:key="@string/pref_key_extenral_folder"
-        android:title="@string/roms_folder"
-        app:useSimpleSummaryProvider="true"/>
+    <PreferenceCategory
+        android:title="@string/roms"
+        app:iconSpaceReserved="false">
 
-    <Preference
-        android:key="@string/pref_key_rescan"
-        android:title="@string/rescan"
-        android:persistent="false"/>
+        <Preference
+            android:key="@string/pref_key_extenral_folder"
+            android:title="@string/folder"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true"/>
 
-    <PreferenceCategory>
+        <Preference
+            android:key="@string/pref_key_rescan"
+            android:title="@string/rescan"
+            app:iconSpaceReserved="false"
+            android:persistent="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/graphics"
+        app:iconSpaceReserved="false">
+
         <SwitchPreferenceCompat
             android:key="@string/pref_key_shader"
             android:title="@string/video_effect"
+            app:iconSpaceReserved="false"
             android:defaultValue="true"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

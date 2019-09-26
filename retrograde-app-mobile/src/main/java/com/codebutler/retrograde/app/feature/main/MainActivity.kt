@@ -70,7 +70,7 @@ class MainActivity : RetrogradeAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory()).get(MainViewModel::class.java)
+        val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext)).get(MainViewModel::class.java)
 
         mainViewModel.indexingInProgress.observe(this, Observer { workInfos ->
             if (workInfos != null) {

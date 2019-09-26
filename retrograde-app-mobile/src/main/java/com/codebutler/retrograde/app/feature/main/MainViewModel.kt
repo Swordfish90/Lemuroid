@@ -1,17 +1,18 @@
 package com.codebutler.retrograde.app.feature.main
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkManager
 import com.codebutler.retrograde.lib.library.LibraryIndexWork
 
-class MainViewModel : ViewModel() {
+class MainViewModel(appContext: Context) : ViewModel() {
 
-    class Factory : ViewModelProvider.Factory {
+    class Factory(private val appContext: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return MainViewModel() as T
+            return MainViewModel(appContext) as T
         }
     }
 
-    val indexingInProgress = WorkManager.getInstance().getWorkInfosForUniqueWorkLiveData(LibraryIndexWork.UNIQUE_WORK_ID)
+    val indexingInProgress = WorkManager.getInstance(appContext).getWorkInfosForUniqueWorkLiveData(LibraryIndexWork.UNIQUE_WORK_ID)
 }
