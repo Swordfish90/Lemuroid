@@ -68,6 +68,9 @@ dependencies {
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.extensions)
     implementation(deps.libs.materialProgressBar)
+    implementation(deps.libs.epoxy.expoxy)
+    implementation(deps.libs.epoxy.paging)
+    kapt(deps.libs.epoxy.processor)
 
     // TODO All next dependencies might not be correct.
 

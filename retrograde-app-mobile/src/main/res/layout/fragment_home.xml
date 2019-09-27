@@ -1,41 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.airbnb.epoxy.EpoxyRecyclerView
+        android:id="@+id/home_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/grid_unit_2x"
-            android:textAppearance="?attr/textAppearanceOverline"
-            android:text="@string/recent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recent_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/grid_unit_2x" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/grid_unit_2x"
-            android:textAppearance="?attr/textAppearanceOverline"
-            android:text="@string/favorites" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favorites_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-</androidx.core.widget.NestedScrollView>
+</FrameLayout>

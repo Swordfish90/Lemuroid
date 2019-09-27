@@ -97,6 +97,11 @@ object deps {
         object kotlin {
             const val stdlib = "stdlib"
         }
+        object epoxy {
+            const val expoxy = "com.airbnb.android:epoxy:3.8.0"
+            const val paging = "com.airbnb.android:epoxy-paging:3.8.0"
+            const val processor = "com.airbnb.android:epoxy-processor:3.8.0"
+        }
 
         const val bugsnagAndroid           = "com.bugsnag:bugsnag-android:4.9.2"
         const val bugsnagAndroidNdk        = "com.bugsnag:bugsnag-android-ndk:4.9.2"
