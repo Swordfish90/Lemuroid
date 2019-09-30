@@ -26,8 +26,8 @@ class EpoxyHomeController(private val gameInteractor: GameInteractor): PagedList
                     .id(item.id)
                     .title(item.title)
                     .coverUrl(item.coverFrontUrl)
-                    .toggled(item.isFavorite)
-                    .onToggle { gameInteractor.onFavoriteToggle(item, it) }
+                    .favorite(item.isFavorite)
+                    .onFavoriteChanged { gameInteractor.onFavoriteToggle(item, it) }
                     .onClick { gameInteractor.onGameClick(item) }
         }
     }
@@ -44,8 +44,8 @@ class EpoxyHomeController(private val gameInteractor: GameInteractor): PagedList
                         .id(item.id)
                         .title(item.title)
                         .coverUrl(item.coverFrontUrl)
-                        .toggled(item.isFavorite)
-                        .onToggle { gameInteractor.onFavoriteToggle(item, it) }
+                        .favorite(item.isFavorite)
+                        .onFavoriteChanged { gameInteractor.onFavoriteToggle(item, it) }
                         .onClick { gameInteractor.onGameClick(item) }
             }
         }

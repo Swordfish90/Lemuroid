@@ -10,22 +10,30 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
+import com.codebutler.retrograde.lib.library.GameSystem
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 
 class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     private var titleView: TextView? = null
+    private var subtitleView: TextView? = null
     private var coverView: ImageView? = null
     private var favoriteToggle: ToggleButton? = null
 
     init {
         titleView = itemView.findViewById(R.id.text)
+        subtitleView = itemView.findViewById(R.id.subtext)
         coverView = itemView.findViewById(R.id.image)
         favoriteToggle = itemView.findViewById(R.id.favorite_toggle)
     }
 
     fun bind(game: Game, gameInteractor: GameInteractor) {
+        val systemName = GameSystem.findById(game.systemId)?.shortTitleResId?.let {
+            itemView.context.getString(it)
+        } ?: ""
+
         titleView?.text = game.title
+        subtitleView?.text = "${systemName} - ${game.developer}"
         favoriteToggle?.isChecked = game.isFavorite
 
         Picasso.get()

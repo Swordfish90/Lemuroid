@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.shared.DynamicGridLayoutManager
@@ -81,7 +82,7 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
+        val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
         searchViewModel.searchResults.observe(this, Observer {
             gamesAdapter.submitList(it)
         })
@@ -94,7 +95,7 @@ class SearchFragment : Fragment() {
 
         view?.findViewById<RecyclerView>(R.id.search_recyclerview)?.apply {
             this.adapter = gamesAdapter
-            this.layoutManager = DynamicGridLayoutManager(context, 2)
+            this.layoutManager = LinearLayoutManager(context)
         }
     }
 

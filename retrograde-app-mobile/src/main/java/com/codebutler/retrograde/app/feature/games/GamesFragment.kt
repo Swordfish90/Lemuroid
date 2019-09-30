@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.shared.DynamicGridLayoutManager
@@ -37,7 +38,7 @@ class GamesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_games, container, false)
 
-        gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
+        gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
 
         gamesViewModel = ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb))
             .get(GamesViewModel::class.java)
@@ -52,7 +53,7 @@ class GamesFragment : Fragment() {
 
         root.findViewById<RecyclerView>(R.id.games_recyclerview).apply {
             this.adapter = gamesAdapter
-            this.layoutManager = DynamicGridLayoutManager(context, 2)
+            this.layoutManager = LinearLayoutManager(context)
         }
 
         return root
