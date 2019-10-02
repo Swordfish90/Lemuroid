@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="size_dial">162dp</dimen>
+    <dimen name="default_dial_size">162dp</dimen>
 
     <dimen name="size_button_small">27dp</dimen>
     <dimen name="size_button_medium">54dp</dimen>

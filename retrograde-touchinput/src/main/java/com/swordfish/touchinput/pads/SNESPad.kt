@@ -33,19 +33,19 @@ class SNESPad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.snes_start)
+        return findViewById<SmallSingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.snes_select)
+        return findViewById<SmallSingleButton>(R.id.select)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
 
     private fun getActionEvents(): Observable<PadEvent> {
-        return findViewById<ActionButtons>(R.id.snes_actions)
+        return findViewById<ActionButtons>(R.id.actions)
             .getEvents()
             .compose(EventsTransformers.actionButtonsMap(
                     KeyEvent.KEYCODE_Y,
@@ -56,17 +56,20 @@ class SNESPad @JvmOverloads constructor(
     }
 
     private fun getDirectionEvents(): Observable<PadEvent> {
-        return findViewById<DirectionPad>(R.id.snes_direction).getEvents()
+        return findViewById<DirectionPad>(R.id.direction)
+            .getEvents()
             .compose(EventsTransformers.directionPadMap())
     }
 
     private fun getL1Events(): Observable<PadEvent> {
-        return findViewById<LargeSingleButton>(R.id.snes_l1).getEvents()
+        return findViewById<LargeSingleButton>(R.id.l1)
+            .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
     }
 
     private fun getR1Events(): Observable<PadEvent> {
-        return findViewById<LargeSingleButton>(R.id.snes_r1).getEvents()
+        return findViewById<LargeSingleButton>(R.id.r1)
+            .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
     }
 }

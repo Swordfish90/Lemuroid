@@ -16,9 +16,11 @@ import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.data.ButtonEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource
 import io.reactivex.Observable
+import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.floor
+import kotlin.math.roundToInt
 import kotlin.math.sin
 
 class ActionButtons @JvmOverloads constructor(
@@ -35,12 +37,13 @@ class ActionButtons @JvmOverloads constructor(
     private var rotateButtons: Float = 0.0f
     private var supportsMultipleInputs: Boolean = false
 
-    private var notRotatedWidth: Float = 0f
-    private var notRotatedHeight: Float = 0f
+    private var rotatedSize: Float = 0f
+    private var notRotatedSize: Float = 0f
+
     private var xPadding: Float = 0f
     private var yPadding: Float = 0f
-    private var buttonSize: Float = 0f
-    private var totalButtonSize: Float = 0f
+    private var buttonDrawableSize: Int = 0
+    private var buttonSize: Int = 0
 
     private val buttonsPressed = mutableSetOf<Int>()
 
@@ -65,56 +68,55 @@ class ActionButtons @JvmOverloads constructor(
         rows = a.getInt(R.styleable.ActionButtons_rows, 2)
         cols = a.getInt(R.styleable.ActionButtons_cols, 2)
         spacing = a.getFloat(R.styleable.ActionButtons_spacing, 0.1f)
-        rotateButtons = a.getFloat(R.styleable.ActionButtons_rotateButtons, 45.0f)
+        rotateButtons = a.getFloat(R.styleable.ActionButtons_rotateButtons, 0.0f)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        buttonSize = resources.getDimension(R.dimen.size_action_button_item)
-        totalButtonSize = buttonSize + buttonSize * spacing
+        val notRotatedWidth = getSize(
+                MeasureSpec.getMode(widthMeasureSpec),
+                MeasureSpec.getSize(widthMeasureSpec)
+        ).toFloat()
 
-        notRotatedWidth = totalButtonSize * cols
-        notRotatedHeight = totalButtonSize * rows
+        val notRotatedHeight = getSize(
+                MeasureSpec.getMode(heightMeasureSpec),
+                MeasureSpec.getSize(heightMeasureSpec)
+        ).toFloat()
 
-        val radians = Math.toRadians(rotateButtons.toDouble())
-        val rotatedWidth = (abs(notRotatedWidth * sin(radians)) + abs(notRotatedHeight * cos(radians))).toFloat()
-        val rotatedHeight = (abs(notRotatedWidth * cos(radians)) + abs(notRotatedHeight * sin(radians))).toFloat()
+        notRotatedSize = minOf(notRotatedWidth, notRotatedHeight)
 
-        val width = getSize(
-            MeasureSpec.getMode(widthMeasureSpec),
-            MeasureSpec.getSize(widthMeasureSpec),
-            rotatedWidth.toInt()
-        )
+        val radians = Math.toRadians(rotateButtons.toDouble()).toFloat()
 
-        val height = getSize(
-            MeasureSpec.getMode(heightMeasureSpec),
-            MeasureSpec.getSize(heightMeasureSpec),
-            rotatedHeight.toInt()
-        )
+        rotatedSize = (notRotatedSize) / (cos(radians) + sin(radians))
 
-        xPadding = abs(width - notRotatedWidth) / 2f
-        yPadding = abs(height - notRotatedHeight) / 2f
+        buttonSize = minOf(rotatedSize / rows, rotatedSize / cols).roundToInt()
+        buttonDrawableSize = (buttonSize * 0.9).roundToInt()
 
-        setMeasuredDimension(width, height)
+        val buttonSizePadding = buttonSize - buttonDrawableSize
+        val rotationPadding = notRotatedSize - rotatedSize
+        xPadding = 0.5f * buttonSizePadding + 0.5f * rotationPadding + buttonSize * 0.5f * (abs(cols - maxOf(rows, cols)))
+        yPadding = 0.5f * buttonSizePadding + 0.5f * rotationPadding + buttonSize * 0.5f * (abs(rows - maxOf(rows, cols)))
+
+        setMeasuredDimension(notRotatedSize.roundToInt(), notRotatedSize.roundToInt())
     }
 
-    private fun getSize(widthMode: Int, widthSize: Int, expectedSize: Int): Int {
+    private fun getSize(widthMode: Int, widthSize: Int): Int {
         return when (widthMode) {
             MeasureSpec.EXACTLY -> widthSize
-            else -> minOf(expectedSize, widthSize)
+            else -> minOf(resources.getDimension(R.dimen.default_dial_size).toInt(), widthSize)
         }
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         touchRotationMatrix.reset()
-        touchRotationMatrix.setRotate(-rotateButtons, width / 2f, height / 2f)
+        touchRotationMatrix.setRotate(rotateButtons, width / 2f, height / 2f)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         canvas.save()
-        canvas.rotate(rotateButtons, width / 2f, height / 2f)
+        canvas.rotate(-rotateButtons, width / 2f, height / 2f)
 
         for (row in 0 until rows) {
             for (col in 0 until cols) {
@@ -123,10 +125,12 @@ class ActionButtons @JvmOverloads constructor(
                 val drawable = if (index in buttonsPressed) { pressedDrawable } else { normalDrawable }
 
                 drawable?.let {
-                    val height = drawable.intrinsicHeight
-                    val width = drawable.intrinsicWidth
-                    val left = (xPadding + col * totalButtonSize).toInt()
-                    val top = (yPadding + row * totalButtonSize).toInt()
+                    val height = buttonDrawableSize
+                    val width = buttonDrawableSize
+                    val left = (xPadding + col * buttonSize).toInt()
+                    val top = (yPadding + row * buttonSize).toInt()
+
+                    Timber.d("Drawing drawable: $width $height $left $top")
 
                     drawable.setBounds(left, top, left + width, top + height)
                     drawable.draw(canvas)
@@ -158,24 +162,28 @@ class ActionButtons @JvmOverloads constructor(
         val point = floatArrayOf(originalX, originalY)
 
         touchRotationMatrix.mapPoints(point)
+
         val x = (point[0] - xPadding)
         val y = (point[1] - yPadding)
 
-        val isXInRange = x in (0f..notRotatedWidth)
-        val isYInRange = y in (0f..notRotatedHeight)
+        val isXInRange = x in (0f..notRotatedSize)
+        val isYInRange = y in (0f..notRotatedSize)
 
         if (isXInRange && isYInRange) {
-            val col = floor(x / totalButtonSize).toInt()
-            val row = floor(y / totalButtonSize).toInt()
-            val index = toIndex(row, col)
+            val col = floor(x / buttonSize).toInt()
+            val row = floor(y / buttonSize).toInt()
 
-            if (buttonsPressed.contains(index).not()) {
-                if (supportsMultipleInputs.not()) {
-                    allKeysReleased()
+            if (col in (0 until cols) && row in (0 until rows)) {
+                val index = toIndex(row, col)
+
+                if (buttonsPressed.contains(index).not()) {
+                    if (supportsMultipleInputs.not()) {
+                        allKeysReleased()
+                    }
+                    onKeyPressed(index)
                 }
-                onKeyPressed(index)
+                postInvalidate()
             }
-            postInvalidate()
         }
     }
 

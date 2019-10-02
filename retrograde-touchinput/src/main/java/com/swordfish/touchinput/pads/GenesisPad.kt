@@ -30,19 +30,20 @@ class GenesisPad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.genesis_start)
+        return findViewById<BaseSingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getActionEvents(): Observable<PadEvent> {
-        return findViewById<ActionButtons>(R.id.genesis_actions)
+        return findViewById<ActionButtons>(R.id.actions)
             .getEvents()
             .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_A, KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_C))
     }
 
     private fun getDirectionEvents(): Observable<PadEvent> {
-        return findViewById<DirectionPad>(R.id.genesis_direction).getEvents()
+        return findViewById<DirectionPad>(R.id.direction)
+            .getEvents()
             .compose(EventsTransformers.directionPadMap())
     }
 }

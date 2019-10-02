@@ -19,6 +19,7 @@ import io.reactivex.Observable
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
+import kotlin.math.roundToInt
 import kotlin.math.sin
 
 class DirectionPad @JvmOverloads constructor(
@@ -29,6 +30,7 @@ class DirectionPad @JvmOverloads constructor(
 
     companion object {
 
+        private const val DRAWABLE_SIZE_SCALING = 0.75
         private const val BUTTON_COUNT = 8
         private const val ROTATE_BUTTONS = 22.5f
         private const val SINGLE_BUTTON_ANGLE = 360f / BUTTON_COUNT
@@ -56,6 +58,8 @@ class DirectionPad @JvmOverloads constructor(
 
     private val buttonsPressed = mutableSetOf<Int>()
 
+    private var drawableSize: Int = 0
+
     init {
         val padStyleable = R.styleable.DirectionPad
         val defaultStyle = R.style.default_directionpad
@@ -78,12 +82,14 @@ class DirectionPad @JvmOverloads constructor(
         val diameter = minOf(width, height)
         setMeasuredDimension(diameter, diameter)
         radius = diameter / 2
+
+        drawableSize = (radius * DRAWABLE_SIZE_SCALING).roundToInt()
     }
 
     private fun getSize(widthMode: Int, widthSize: Int): Int {
         return when (widthMode) {
             MeasureSpec.EXACTLY -> widthSize
-            else -> minOf(resources.getDimension(R.dimen.size_dial).toInt(), widthSize)
+            else -> minOf(resources.getDimension(R.dimen.default_dial_size).toInt(), widthSize)
         }
     }
 
@@ -104,8 +110,8 @@ class DirectionPad @JvmOverloads constructor(
             val isPressed = i in pressedButtons
 
             getStateDrawable(i, isPressed)?.let {
-                val height = it.intrinsicHeight
-                val width = it.intrinsicWidth
+                val height = drawableSize
+                val width = drawableSize
                 val angle = Math.toRadians((cAngle - ROTATE_BUTTONS + SINGLE_BUTTON_ANGLE / 2f).toDouble())
                 val left = (radius * buttonCenterDistance * cos(angle) + radius).toInt() - width / 2
                 val top = (radius * buttonCenterDistance * sin(angle) + radius).toInt() - height / 2

@@ -31,25 +31,25 @@ class GameBoyPad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.gb_start)
+        return findViewById<BaseSingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.gb_select)
+        return findViewById<BaseSingleButton>(R.id.select)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
 
     private fun getActionEvents(): Observable<PadEvent> {
-        return findViewById<ActionButtons>(R.id.gb_actions)
+        return findViewById<ActionButtons>(R.id.actions)
             .getEvents()
             .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_A))
     }
 
     private fun getDirectionEvents(): Observable<PadEvent> {
-        return findViewById<DirectionPad>(R.id.gb_direction).getEvents()
+        return findViewById<DirectionPad>(R.id.direction).getEvents()
             .compose(EventsTransformers.directionPadMap())
     }
 }
