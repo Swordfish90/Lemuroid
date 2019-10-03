@@ -35,10 +35,14 @@ class SystemsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_games, container, false)
+        return inflater.inflate(R.layout.fragment_games, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         systemsViewModel = ViewModelProviders.of(this, SystemsViewModel.Factory(retrogradeDb))
-            .get(SystemsViewModel::class.java)
+                .get(SystemsViewModel::class.java)
 
         systemsAdapter = SystemsAdapter { navigateToGames(it) }
         systemsViewModel?.availableSystems
@@ -49,12 +53,10 @@ class SystemsFragment : Fragment() {
                     systemsAdapter?.submitList(it)
                 }
 
-        root.findViewById<RecyclerView>(R.id.games_recyclerview).apply {
+        view?.findViewById<RecyclerView>(R.id.games_recyclerview)?.apply {
             this.adapter = systemsAdapter
             this.layoutManager = DynamicGridLayoutManager(context, 2)
         }
-
-        return root
     }
 
     private fun navigateToGames(system: GameSystem) {

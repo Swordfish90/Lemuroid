@@ -36,12 +36,16 @@ class GamesFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_games, container, false)
+        return inflater.inflate(R.layout.fragment_games, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
 
         gamesViewModel = ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb))
-            .get(GamesViewModel::class.java)
+                .get(GamesViewModel::class.java)
 
         gamesViewModel.games.observe(this, Observer { pagedList ->
             gamesAdapter?.submitList(pagedList)
@@ -51,12 +55,10 @@ class GamesFragment : Fragment() {
             gamesViewModel.systemId.value = it
         }
 
-        root.findViewById<RecyclerView>(R.id.games_recyclerview).apply {
+        view?.findViewById<RecyclerView>(R.id.games_recyclerview)?.apply {
             this.adapter = gamesAdapter
             this.layoutManager = LinearLayoutManager(context)
         }
-
-        return root
     }
 
     @dagger.Module
