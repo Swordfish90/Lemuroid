@@ -91,10 +91,10 @@ class ActionButtons @JvmOverloads constructor(
         buttonSize = minOf(rotatedSize / rows, rotatedSize / cols).roundToInt()
         buttonDrawableSize = (buttonSize * 0.9).roundToInt()
 
-        val buttonSizePadding = buttonSize - buttonDrawableSize
-        val rotationPadding = notRotatedSize - rotatedSize
-        xPadding = 0.5f * buttonSizePadding + 0.5f * rotationPadding + buttonSize * 0.5f * (abs(cols - maxOf(rows, cols)))
-        yPadding = 0.5f * buttonSizePadding + 0.5f * rotationPadding + buttonSize * 0.5f * (abs(rows - maxOf(rows, cols)))
+        val buttonSizePadding = (buttonSize - buttonDrawableSize) * 0.5f
+        val rotationPadding = (notRotatedSize - rotatedSize) * 0.5f
+        xPadding = buttonSizePadding + rotationPadding + buttonSize * 0.5f * (abs(cols - maxOf(rows, cols)))
+        yPadding = buttonSizePadding + rotationPadding + buttonSize * 0.5f * (abs(rows - maxOf(rows, cols)))
 
         setMeasuredDimension(notRotatedSize.roundToInt(), notRotatedSize.roundToInt())
     }

@@ -5,16 +5,17 @@ import android.view.View
 import com.codebutler.retrograde.R
 
 class GameContextMenuListener(
-        private val isFavorite: Boolean?,
-        private val onPlaySelected: (() -> Unit)?,
-        private val onFavoriteChanged: ((Boolean) -> Unit)?
-): View.OnCreateContextMenuListener {
+    private val isFavorite: Boolean?,
+    private val onPlaySelected: (() -> Unit)?,
+    private val onFavoriteChanged: ((Boolean) -> Unit)?
+) : View.OnCreateContextMenuListener {
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         menu.add(R.string.play).setOnMenuItemClickListener {
             onPlaySelected?.invoke()
             true
         }
+
         when (isFavorite) {
             true -> {
                 menu.add(R.string.remove_from_favorites).setOnMenuItemClickListener {

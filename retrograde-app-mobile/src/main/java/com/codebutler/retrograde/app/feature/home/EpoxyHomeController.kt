@@ -9,7 +9,7 @@ import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.app.shared.withModelsFrom
 import com.codebutler.retrograde.lib.library.db.entity.Game
 
-class EpoxyHomeController(private val gameInteractor: GameInteractor): PagedListEpoxyController<Game>() {
+class EpoxyHomeController(private val gameInteractor: GameInteractor) : PagedListEpoxyController<Game>() {
     private var recentGames = listOf<Game>()
 
     fun updateRecents(games: List<Game>) {

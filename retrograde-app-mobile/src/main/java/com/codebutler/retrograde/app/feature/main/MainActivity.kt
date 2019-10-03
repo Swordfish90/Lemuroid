@@ -3,7 +3,6 @@ package com.codebutler.retrograde.app.feature.main
 import android.Manifest
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -16,7 +15,6 @@ import com.codebutler.retrograde.app.feature.games.GamesFragment
 import com.codebutler.retrograde.app.feature.games.SystemsFragment
 import com.codebutler.retrograde.app.feature.home.HomeFragment
 import com.codebutler.retrograde.app.feature.search.SearchFragment
-import com.codebutler.retrograde.app.feature.search.SearchViewModel
 import com.codebutler.retrograde.app.feature.settings.SettingsFragment
 import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.lib.android.RetrogradeAppCompatActivity
@@ -70,7 +68,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext)).get(MainViewModel::class.java)
+        val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
+                .get(MainViewModel::class.java)
 
         mainViewModel.indexingInProgress.observe(this, Observer { workInfos ->
             if (workInfos != null) {

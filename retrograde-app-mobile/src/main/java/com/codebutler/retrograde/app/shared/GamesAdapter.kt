@@ -28,12 +28,10 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     }
 
     fun bind(game: Game, gameInteractor: GameInteractor) {
-        val systemName = GameSystem.findById(game.systemId)?.shortTitleResId?.let {
-            itemView.context.getString(it)
-        } ?: ""
+        val systemName = getSystemNameForGame(game)
 
         titleView?.text = game.title
-        subtitleView?.text = "${systemName} - ${game.developer}"
+        subtitleView?.text = "$systemName - ${game.developer}"
         favoriteToggle?.isChecked = game.isFavorite
 
         Picasso.get()
@@ -44,6 +42,12 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
         itemView.setOnClickListener { gameInteractor.onGameClick(game) }
         favoriteToggle?.setOnCheckedChangeListener { _, isChecked -> gameInteractor.onFavoriteToggle(game, isChecked) }
+    }
+
+    private fun getSystemNameForGame(game: Game): String {
+        return GameSystem.findById(game.systemId)?.shortTitleResId?.let {
+            itemView.context.getString(it)
+        } ?: ""
     }
 
     fun unbind() {

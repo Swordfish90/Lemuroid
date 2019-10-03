@@ -11,7 +11,6 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.codebutler.retrograde.app.shared.GameContextMenuListener
 import com.squareup.picasso.Picasso
 
-
 @EpoxyModelClass(layout = R.layout.layout_game)
 abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
 

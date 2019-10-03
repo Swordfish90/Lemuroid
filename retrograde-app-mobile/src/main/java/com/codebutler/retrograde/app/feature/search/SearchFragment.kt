@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.shared.DynamicGridLayoutManager
 import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.app.shared.GamesAdapter
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
@@ -91,7 +90,6 @@ class SearchFragment : Fragment() {
             .distinctUntilChanged()
             .autoDisposable(scope())
             .subscribe { searchViewModel.queryString.postValue(it) }
-
 
         view?.findViewById<RecyclerView>(R.id.search_recyclerview)?.apply {
             this.adapter = gamesAdapter

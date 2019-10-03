@@ -18,7 +18,6 @@ import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-
 class HomeFragment : Fragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase

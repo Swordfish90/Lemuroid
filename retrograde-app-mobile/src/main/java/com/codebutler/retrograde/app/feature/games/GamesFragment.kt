@@ -12,7 +12,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codebutler.retrograde.R
-import com.codebutler.retrograde.app.shared.DynamicGridLayoutManager
 import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.app.shared.GamesAdapter
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase

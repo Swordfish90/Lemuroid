@@ -14,5 +14,6 @@ class MainViewModel(appContext: Context) : ViewModel() {
         }
     }
 
-    val indexingInProgress = WorkManager.getInstance(appContext).getWorkInfosForUniqueWorkLiveData(LibraryIndexWork.UNIQUE_WORK_ID)
+    val indexingInProgress =
+            WorkManager.getInstance(appContext).getWorkInfosForUniqueWorkLiveData(LibraryIndexWork.UNIQUE_WORK_ID)
 }
