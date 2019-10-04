@@ -43,6 +43,7 @@ class GameLauncherActivity : RetrogradeActivity() {
 
         fun newIntent(context: Context, game: Game) =
                 Intent(context, GameLauncherActivity::class.java).apply {
+                    putExtra(GameActivity.EXTRA_SYSTEM_ID, game.systemId)
                     putExtra(GameActivity.EXTRA_GAME_ID, game.id)
                 }
     }

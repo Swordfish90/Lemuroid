@@ -57,6 +57,7 @@ import com.codebutler.retrograde.R
 class GameActivity : RetrogradeActivity() {
     companion object {
         const val EXTRA_GAME_ID = "game_id"
+        const val EXTRA_SYSTEM_ID = "system_id"
         const val EXTRA_SAVE_FILE = "save_file"
     }
 
@@ -86,6 +87,9 @@ class GameActivity : RetrogradeActivity() {
         gameInput = GameInput(this)
 
         dataFragment = retrieveOrInitializeDataFragment()
+
+        val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
+        setupTouchInput(systemId)
 
         val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
         gameLoader.load(gameId)
@@ -135,10 +139,10 @@ class GameActivity : RetrogradeActivity() {
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
-    private fun setupTouchInput(game: Game) {
+    private fun setupTouchInput(systemId: String) {
         val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
 
-        val gamePadLayout = when (game.systemId) {
+        val gamePadLayout = when (systemId) {
             in listOf(GameSystem.GBA_ID) -> GamePadFactory.Layout.GBA
             in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
             in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.Layout.NES
@@ -220,8 +224,6 @@ class GameActivity : RetrogradeActivity() {
 
             val retroDroid = RetroDroid(gameDisplay, GameAudio(), gameInput, this, data.coreFile)
             lifecycle.addObserver(retroDroid)
-
-            setupTouchInput(data.game)
 
             retroDroid.loadGame(data.gameFile.absolutePath, state)
             retroDroid.start()
