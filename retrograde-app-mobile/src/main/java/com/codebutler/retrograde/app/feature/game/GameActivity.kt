@@ -23,7 +23,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
@@ -33,9 +32,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import android.widget.TextView
-import com.codebutler.retrograde.BuildConfig
-import com.codebutler.retrograde.R
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
 import com.codebutler.retrograde.lib.game.GameLoader
@@ -47,10 +43,6 @@ import com.codebutler.retrograde.lib.game.input.GameInput
 import com.codebutler.retrograde.lib.library.GameSystem
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.retro.RetroDroid
-import com.codebutler.retrograde.lib.util.subscribeBy
-import com.gojuno.koptional.None
-import com.gojuno.koptional.Some
-import com.gojuno.koptional.toOptional
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -59,6 +51,8 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.system.exitProcess
+import androidx.fragment.app.Fragment
+import com.codebutler.retrograde.R
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -79,7 +73,7 @@ class GameActivity : RetrogradeActivity() {
     private var game: Game? = null
     private var retroDroid: RetroDroid? = null
 
-    private var displayTouchInput: Boolean = false
+    private var dataFragment: DataFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,10 +85,7 @@ class GameActivity : RetrogradeActivity() {
 
         gameInput = GameInput(this)
 
-        // FIXME: Full Activity lifecycle handling.
-        if (savedInstanceState != null) {
-            return
-        }
+        dataFragment = retrieveOrInitializeDataFragment()
 
         val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
         gameLoader.load(gameId)
@@ -104,16 +95,35 @@ class GameActivity : RetrogradeActivity() {
                 .subscribe(
                         { data ->
                             progressBar.visibility = View.GONE
-                            loadRetro(data)
+
+                            val currentStateSize = dataFragment?.emulatorState?.size ?: 0
+                            val saveGameSize = data.saveData?.size ?: 0
+
+                            Timber.d("Starting game with emulatorState ($currentStateSize) and save game ($saveGameSize)")
+                            loadRetro(data, dataFragment?.emulatorState ?: data.saveData)
+                            dataFragment?.emulatorState = null
                         },
                         { error ->
                             Timber.e(error, "Failed to load game")
                             finish()
                         })
+    }
 
-        if (BuildConfig.DEBUG) {
-            addFpsView()
+    override fun onStop() {
+        super.onStop()
+        val newState = retroDroid?.serialize()
+        Timber.d("Storing new fragment state ${newState?.size} into $dataFragment")
+        dataFragment?.emulatorState = newState
+    }
+
+    private fun retrieveOrInitializeDataFragment(): DataFragment {
+        var dataFragment = supportFragmentManager.findFragmentByTag("data") as DataFragment?
+        if (dataFragment == null) {
+            dataFragment = DataFragment().apply {
+                supportFragmentManager.beginTransaction().add(this, "data").commit()
+            }
         }
+        return dataFragment
     }
 
     private fun enableImmersiveMode() {
@@ -161,7 +171,9 @@ class GameActivity : RetrogradeActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // This activity runs in its own process which should not live beyond the activity lifecycle.
-        exitProcess(0)
+        if (!isChangingConfigurations) {
+            exitProcess(0)
+        }
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
@@ -178,29 +190,26 @@ class GameActivity : RetrogradeActivity() {
     }
 
     override fun onBackPressed() {
+        // We are temporarily doing everything in the UI thread. We will handle this properly using Rx.
         retroDroid?.stop()
+        val optionalSaveData = retroDroid?.serialize()
         retroDroid?.unloadGame()
-    }
+        if (optionalSaveData != null) {
+            val tmpFile = createTempFile()
+            tmpFile.writeBytes(optionalSaveData)
 
-    private fun addFpsView() {
-        val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
-
-        val fpsView = TextView(this)
-        fpsView.textSize = 18f
-        fpsView.setTextColor(Color.WHITE)
-        fpsView.setShadowLayer(2f, 0f, 0f, Color.BLACK)
-
-        frameLayout.addView(fpsView)
-
-        fun updateFps() {
-            // TODO FILIPPO... We should renable this when working on the layout.
-            // fpsView.text = getString(R.string.fps_format, gameDisplay.fps, retroDroid?.fps ?: 0L)
-            // fpsView.postDelayed({ updateFps() }, 1000)
+            val resultData = Intent()
+            resultData.putExtra(EXTRA_GAME_ID, game?.id)
+            resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
+            setResult(Activity.RESULT_OK, resultData)
+            finish()
+        } else {
+            setResult(Activity.RESULT_CANCELED, null)
+            finish()
         }
-        updateFps()
     }
 
-    private fun loadRetro(data: GameLoader.GameData) {
+    private fun loadRetro(data: GameLoader.GameData, state: ByteArray?) {
         try {
             val shaderPreference =
                     sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
@@ -214,37 +223,7 @@ class GameActivity : RetrogradeActivity() {
 
             setupTouchInput(data.game)
 
-            retroDroid.gameUnloaded
-                .map { optionalSaveData ->
-                    if (optionalSaveData is Some) {
-                        val tmpFile = createTempFile()
-                        tmpFile.writeBytes(optionalSaveData.value)
-                        tmpFile.toOptional()
-                    } else {
-                        None
-                    }
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope())
-                .subscribeBy(
-                    onNext = { optionalTmpFile ->
-                        val resultData = Intent()
-                        if (optionalTmpFile is Some) {
-                            resultData.putExtra(EXTRA_GAME_ID, data.game.id)
-                            resultData.putExtra(EXTRA_SAVE_FILE, optionalTmpFile.value.absolutePath)
-                        }
-                        setResult(Activity.RESULT_OK, resultData)
-                        finish()
-                    },
-                    onError = { error ->
-                        Timber.e(error, "Error unloading game")
-                        setResult(Activity.RESULT_CANCELED)
-                        finish()
-                    }
-                )
-
-            retroDroid.loadGame(data.gameFile.absolutePath, data.saveData)
+            retroDroid.loadGame(data.gameFile.absolutePath, state)
             retroDroid.start()
 
             this.game = data.game
@@ -252,6 +231,15 @@ class GameActivity : RetrogradeActivity() {
         } catch (ex: Exception) {
             Timber.e(ex, "Exception during retro initialization")
             finish()
+        }
+    }
+
+    class DataFragment : Fragment() {
+        var emulatorState: ByteArray? = null
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            retainInstance = true
         }
     }
 

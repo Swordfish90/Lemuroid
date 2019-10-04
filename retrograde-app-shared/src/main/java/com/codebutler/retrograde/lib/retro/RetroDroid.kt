@@ -63,8 +63,6 @@ class RetroDroid(
     private val videoBufferCache = BufferCache()
     private val videoBitmapCache = BitmapCache()
 
-    private val gameUnloadedRelay = PublishRelay.create<Optional<ByteArray>>()
-
     private var region: Retro.Region? = null
     private var systemAVInfo: Retro.SystemAVInfo? = null
     private var systemInfo: Retro.SystemInfo? = null
@@ -73,11 +71,6 @@ class RetroDroid(
 
     val fps: Long
         get() = fpsCalculator.fps
-
-    /**
-     * Callback when game is unloaded, to allow for persisting save ram.
-     */
-    val gameUnloaded: Observable<Optional<ByteArray>> = gameUnloadedRelay.hide()
 
     init {
         Native.setCallbackExceptionHandler { c, e ->
@@ -182,6 +175,7 @@ class RetroDroid(
         }
     }
 
+    @Synchronized
     fun start() {
         val avInfo = systemAVInfo
         if (this.thread != null || avInfo == null) {
@@ -195,20 +189,30 @@ class RetroDroid(
         this.thread?.start()
     }
 
+    @Synchronized
     fun stop() {
         thread?.interrupt()
+        thread?.join()
         thread = null
     }
 
-    @SuppressLint("CheckResult")
-    fun unloadGame() {
+    @Synchronized
+    fun serialize(): ByteArray? {
+        return retro.serialize()
+    }
 
-        // There is a native crash if serialize is called immidiately after stop.
-        Single.timer(160, TimeUnit.MILLISECONDS)
-                .map { retro.serialize().toOptional() }
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess { retro.unloadGame() }
-                .subscribe(gameUnloadedRelay)
+    @Synchronized
+    fun unloadGame() {
+        retro.unloadGame()
+    }
+
+    @Deprecated("Prefer the specific method serialize")
+    @SuppressLint("CheckResult")
+    @Synchronized
+    fun unloadAndSerialize(): Optional<ByteArray> {
+        val result = retro.serialize().toOptional()
+        retro.unloadGame()
+        return result
     }
 
     override fun onResume(owner: LifecycleOwner) {

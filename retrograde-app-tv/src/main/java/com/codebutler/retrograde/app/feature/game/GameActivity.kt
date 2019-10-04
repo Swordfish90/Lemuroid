@@ -46,10 +46,7 @@ import com.codebutler.retrograde.lib.game.input.GameInput
 import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.retro.RetroDroid
-import com.codebutler.retrograde.lib.util.subscribeBy
-import com.gojuno.koptional.None
 import com.gojuno.koptional.Some
-import com.gojuno.koptional.toOptional
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -171,8 +168,22 @@ class GameActivity : RetrogradeActivity() {
     }
 
     override fun onBackPressed() {
+        // We are temporarily doing everything in the UI thread. We will handle this properly using Rx.
         retroDroid?.stop()
-        retroDroid?.unloadGame()
+        val optionalSaveData = retroDroid?.unloadAndSerialize()
+        if (optionalSaveData is Some) {
+            val tmpFile = createTempFile()
+            tmpFile.writeBytes(optionalSaveData.value)
+
+            val resultData = Intent()
+            resultData.putExtra(EXTRA_GAME_ID, game?.id)
+            resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
+            setResult(Activity.RESULT_OK, resultData)
+            finish()
+        } else {
+            setResult(Activity.RESULT_CANCELED, null)
+            finish()
+        }
     }
 
     private fun addFpsView() {
@@ -200,36 +211,6 @@ class GameActivity : RetrogradeActivity() {
             if (displayTouchInput) {
                 setupTouchInput(data.game)
             }
-
-            retroDroid.gameUnloaded
-                .map { optionalSaveData ->
-                    if (optionalSaveData is Some) {
-                        val tmpFile = createTempFile()
-                        tmpFile.writeBytes(optionalSaveData.value)
-                        tmpFile.toOptional()
-                    } else {
-                        None
-                    }
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope())
-                .subscribeBy(
-                    onNext = { optionalTmpFile ->
-                        val resultData = Intent()
-                        if (optionalTmpFile is Some) {
-                            resultData.putExtra(EXTRA_GAME_ID, data.game.id)
-                            resultData.putExtra(EXTRA_SAVE_FILE, optionalTmpFile.value.absolutePath)
-                        }
-                        setResult(Activity.RESULT_OK, resultData)
-                        finish()
-                    },
-                    onError = { error ->
-                        Timber.e(error, "Error unloading game")
-                        setResult(Activity.RESULT_CANCELED)
-                        finish()
-                    }
-                )
 
             retroDroid.loadGame(data.gameFile.absolutePath, data.saveData)
             retroDroid.start()
