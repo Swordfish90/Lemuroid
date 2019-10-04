@@ -22,7 +22,10 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
 
     override fun bind(holder: Holder) {
         holder.titleView?.text = title
-        Picasso.get().load(coverUrl).into(holder.coverView)
+        Picasso.get()
+            .load(coverUrl)
+            .placeholder(R.drawable.ic_image_paceholder)
+            .into(holder.coverView)
         holder.itemView?.setOnClickListener { onClick?.invoke() }
         holder.itemView?.setOnCreateContextMenuListener(GameContextMenuListener(favorite, onClick, onFavoriteChanged))
     }
