@@ -8,7 +8,6 @@ import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
 import com.codebutler.retrograde.common.db.asSequence
 import com.codebutler.retrograde.common.kotlin.calculateCrc32
-import com.codebutler.retrograde.common.kotlin.writeInputStream
 import com.codebutler.retrograde.lib.R
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
@@ -100,12 +99,18 @@ class StorageAccessFrameworkProvider(
     private fun isDirectory(mimeType: String) = DocumentsContract.Document.MIME_TYPE_DIR == mimeType
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        context.contentResolver.openInputStream(game.fileUri)?.use { inputStream ->
-            val outputDir = context.cacheDir
-            File.createTempFile(ROM_CACHE_NAME, "tmp", outputDir)
-                .writeInputStream(inputStream)
-                .also { it.deleteOnExit() } // Clear cache file when vm terminates.
+        val gamesCacheDir = File(context.cacheDir, SAF_CACHE_SUBFOLDER)
+        gamesCacheDir.mkdirs()
+        val gameFile = File(gamesCacheDir, game.fileName)
+        if (gameFile.exists()) {
+            return@fromCallable gameFile
         }
+        context.contentResolver.openInputStream(game.fileUri)?.use { inputStream ->
+            gameFile.outputStream().use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        gameFile
     }
 
     override fun getGameSave(game: Game): Single<Optional<ByteArray>> {
@@ -130,6 +135,6 @@ class StorageAccessFrameworkProvider(
     }
 
     companion object {
-        const val ROM_CACHE_NAME = "current_game"
+        const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
     }
 }
