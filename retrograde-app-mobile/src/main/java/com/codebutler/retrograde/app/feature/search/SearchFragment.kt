@@ -61,6 +61,8 @@ class SearchFragment : Fragment() {
         })
 
         val searchView = searchItem.actionView as SearchView
+        searchView.maxWidth = Integer.MAX_VALUE
+        searchView.setQuery(searchViewModel.queryString.value, false)
         searchView.queryTextChanges()
                 .debounce(1, TimeUnit.SECONDS)
                 .map { it.toString() }
