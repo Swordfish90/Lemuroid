@@ -11,6 +11,7 @@ import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
 import io.reactivex.Single
+import timber.log.Timber
 import javax.inject.Inject
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
@@ -20,7 +21,8 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWor
         AndroidWorkerInjection.inject(this)
         return gameLibrary.indexGames()
                 .toSingleDefault(Result.success())
-                .onErrorReturn { Result.failure() }
+                .doOnError { Timber.e("Library indexing failed with exception: $it") }
+                .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
     }
 
     companion object {
