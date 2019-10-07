@@ -39,13 +39,13 @@ data class OvgdbRom(
     val regionId: Int,
 
     @ColumnInfo(name = "romHashCRC")
-    val hashCrc: String,
+    val hashCrc: String?,
 
     @ColumnInfo(name = "romHashMD5")
-    val hashMd5: String,
+    val hashMd5: String?,
 
     @ColumnInfo(name = "romHashSHA1")
-    val hashSha1: String,
+    val hashSha1: String?,
 
     @ColumnInfo(name = "romSize")
     val size: Int,

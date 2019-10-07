@@ -36,7 +36,7 @@ import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbSystem
             OvgdbRelease::class,
             OvgdbRom::class,
             OvgdbSystem::class],
-        version = 1,
+        version = 2,
         exportSchema = false)
 abstract class OvgdbDatabase : RoomDatabase() {
 
