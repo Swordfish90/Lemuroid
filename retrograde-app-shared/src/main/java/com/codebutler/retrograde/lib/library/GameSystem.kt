@@ -114,7 +114,7 @@ data class GameSystem(
                         R.string.game_system_abbr_arcade,
                         R.drawable.game_system_arcade,
                         "arcade",
-                        "fbalpha_libretro_android.so.zip",
+                        "fbneo_libretro_android.so.zip",
                         listOf("zip")
                 )
         )
