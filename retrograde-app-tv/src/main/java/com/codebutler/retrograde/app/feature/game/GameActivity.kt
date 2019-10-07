@@ -127,7 +127,7 @@ class GameActivity : RetrogradeActivity() {
             in listOf("snes", "gba") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
             in listOf("nes", "gb", "gbc") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
             in listOf("md") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GENESIS)
-            else -> null
+            else -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.PSX)
         }
 
         if (gameView != null) {
