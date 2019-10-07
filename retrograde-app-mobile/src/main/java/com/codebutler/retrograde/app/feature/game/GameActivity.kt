@@ -97,11 +97,6 @@ class GameActivity : RetrogradeActivity() {
                 .subscribe(
                         { data ->
                             progressBar.visibility = View.GONE
-
-                            val currentStateSize = dataFragment?.emulatorState?.size ?: 0
-                            val saveGameSize = data.saveData?.size ?: 0
-
-                            Timber.d("Starting game with emulatorState ($currentStateSize) and save game ($saveGameSize)")
                             loadRetro(data, dataFragment?.emulatorState ?: data.saveData)
                             dataFragment?.emulatorState = null
                         },

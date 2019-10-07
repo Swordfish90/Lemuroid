@@ -15,5 +15,5 @@ class HomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     val favoriteGames = LivePagedListBuilder(retrogradeDb.gameDao().selectFavorites(), 20).build()
 
-    val recentGames = retrogradeDb.gameDao().selectLastRecentlyPlayed()
+    val recentGames = retrogradeDb.gameDao().selectLastRecentlyPlayed(10)
 }

@@ -34,15 +34,10 @@ import com.codebutler.retrograde.lib.game.display.GameDisplay
 import com.codebutler.retrograde.lib.game.input.GameInput
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
-import com.jakewharton.rxrelay2.PublishRelay
 import com.sun.jna.Native
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
 import java.nio.ByteBuffer
-import java.util.concurrent.TimeUnit
 import kotlin.experimental.and
 
 /**
