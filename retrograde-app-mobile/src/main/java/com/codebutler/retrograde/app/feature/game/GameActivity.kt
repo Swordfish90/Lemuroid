@@ -19,41 +19,26 @@
 
 package com.codebutler.retrograde.app.feature.game
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
-import android.widget.ProgressBar
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
-import com.codebutler.retrograde.lib.game.GameLoader
-import com.codebutler.retrograde.lib.game.audio.GameAudio
-import com.codebutler.retrograde.lib.game.display.GameDisplay
-import com.codebutler.retrograde.lib.game.display.gl.GlGameDisplay
-import com.codebutler.retrograde.lib.game.display.shaders.RetroShader
-import com.codebutler.retrograde.lib.game.input.GameInput
 import com.codebutler.retrograde.lib.library.GameSystem
-import com.codebutler.retrograde.lib.library.db.entity.Game
-import com.codebutler.retrograde.lib.retro.RetroDroid
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import javax.inject.Inject
 import kotlin.system.exitProcess
 import androidx.fragment.app.Fragment
 import com.codebutler.retrograde.R
 import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.touchinput.events.PadEvent
+import io.reactivex.schedulers.Schedulers
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -83,7 +68,7 @@ class GameActivity : RetrogradeActivity() {
         retroGameView = GLRetroView(this)
         retroGameView.onCreate(intent.getStringExtra(EXTRA_CORE_PATH), intent.getStringExtra(EXTRA_GAME_PATH))
 
-        dataFragment?.emulatorState?.let {
+        (getCurrentState() ?: getSave())?.let {
             retroGameView.unserialize(it)
         }
 
@@ -92,6 +77,10 @@ class GameActivity : RetrogradeActivity() {
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
         setupTouchInput(systemId)
     }
+
+    private fun getCurrentState() = dataFragment?.emulatorState
+
+    private fun getSave() = intent.getByteArrayExtra(EXTRA_SAVE_FILE)
 
     override fun onResume() {
         super.onResume()
@@ -154,12 +143,19 @@ class GameActivity : RetrogradeActivity() {
         frameLayout.addView(gameView)
 
         gameView.getEvents()
+                .subscribeOn(Schedulers.computation())
                 .doOnNext {
-                    if (it.action == KeyEvent.ACTION_DOWN) {
+                    // TODO FILIPPO... DPAD Should perform haptic feedback...
+                    if (it is PadEvent.Button && it.action == KeyEvent.ACTION_DOWN) {
                         performHapticFeedback(gameView)
                     }
                 }.autoDisposable(scope())
-                .subscribe {  }
+                .subscribe {
+                    when (it) {
+                        is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
+                        is PadEvent.Stick -> retroGameView.sendMotionEvent(it.source, it.xAxis, it.yAxis)
+                    }
+                }
     }
 
     private fun performHapticFeedback(view: View) {

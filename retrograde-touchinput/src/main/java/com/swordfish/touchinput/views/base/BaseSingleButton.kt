@@ -6,7 +6,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatButton
 import com.jakewharton.rxrelay2.PublishRelay
-import com.swordfish.touchinput.data.ButtonEvent
+import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource
 import io.reactivex.Observable
 
@@ -16,7 +16,7 @@ abstract class BaseSingleButton @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AppCompatButton(context, attrs, defStyleAttr), ButtonEventsSource {
 
-    private val events: PublishRelay<ButtonEvent> = PublishRelay.create()
+    private val events: PublishRelay<ViewEvent.Button> = PublishRelay.create()
 
     init {
         setOnTouchListener { _, event -> handleTouchEvent(event); true }
@@ -26,14 +26,14 @@ abstract class BaseSingleButton @JvmOverloads constructor(
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 isPressed = true
-                events.accept(ButtonEvent(KeyEvent.ACTION_DOWN, 0))
+                events.accept(ViewEvent.Button(KeyEvent.ACTION_DOWN, 0))
             }
             MotionEvent.ACTION_UP -> {
                 isPressed = false
-                events.accept(ButtonEvent(KeyEvent.ACTION_UP, 0))
+                events.accept(ViewEvent.Button(KeyEvent.ACTION_UP, 0))
             }
         }
     }
 
-    override fun getEvents(): Observable<ButtonEvent> = events
+    override fun getEvents(): Observable<ViewEvent.Button> = events
 }

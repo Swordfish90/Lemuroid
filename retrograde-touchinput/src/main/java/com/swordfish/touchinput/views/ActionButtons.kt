@@ -13,7 +13,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
-import com.swordfish.touchinput.data.ButtonEvent
+import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource
 import io.reactivex.Observable
 import timber.log.Timber
@@ -29,7 +29,7 @@ class ActionButtons @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr), ButtonEventsSource {
 
-    private val events: PublishRelay<ButtonEvent> = PublishRelay.create()
+    private val events: PublishRelay<ViewEvent.Button> = PublishRelay.create()
 
     private var spacing: Float = 0.1f
     private var rows: Int = 2
@@ -61,7 +61,7 @@ class ActionButtons @JvmOverloads constructor(
         }
     }
 
-    override fun getEvents(): Observable<ButtonEvent> = events
+    override fun getEvents(): Observable<ViewEvent.Button> = events
 
     private fun initializeFromAttributes(a: TypedArray) {
         supportsMultipleInputs = a.getBoolean(R.styleable.ActionButtons_multipleInputs, false)
@@ -191,11 +191,11 @@ class ActionButtons @JvmOverloads constructor(
 
     private fun onKeyPressed(index: Int) {
         buttonsPressed.add(index)
-        events.accept(ButtonEvent(KeyEvent.ACTION_DOWN, index))
+        events.accept(ViewEvent.Button(KeyEvent.ACTION_DOWN, index))
     }
 
     private fun allKeysReleased() {
-        buttonsPressed.map { events.accept(ButtonEvent(KeyEvent.ACTION_UP, it)) }
+        buttonsPressed.map { events.accept(ViewEvent.Button(KeyEvent.ACTION_UP, it)) }
         buttonsPressed.clear()
     }
 

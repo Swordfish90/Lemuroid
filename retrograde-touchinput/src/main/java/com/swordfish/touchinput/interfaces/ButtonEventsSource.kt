@@ -1,8 +1,8 @@
 package com.swordfish.touchinput.interfaces
 
-import com.swordfish.touchinput.data.ButtonEvent
+import com.swordfish.touchinput.events.ViewEvent
 import io.reactivex.Observable
 
 interface ButtonEventsSource {
-    fun getEvents(): Observable<ButtonEvent>
+    fun getEvents(): Observable<ViewEvent.Button>
 }

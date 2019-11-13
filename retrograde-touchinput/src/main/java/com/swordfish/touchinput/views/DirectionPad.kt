@@ -7,15 +7,15 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
-import com.swordfish.touchinput.data.ButtonEvent
-import com.swordfish.touchinput.interfaces.ButtonEventsSource
+import com.swordfish.touchinput.events.ViewEvent
+import com.swordfish.touchinput.interfaces.StickEventsSource
 import io.reactivex.Observable
+import java.lang.Math.toRadians
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
@@ -26,7 +26,7 @@ class DirectionPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr), ButtonEventsSource {
+) : View(context, attrs, defStyleAttr), StickEventsSource {
 
     companion object {
 
@@ -54,9 +54,9 @@ class DirectionPad @JvmOverloads constructor(
     private val normalDrawables: Map<Int, Drawable?> = initNormalDrawables()
     private val pressedDrawables: Map<Int, Drawable?> = initPressedDrawables()
 
-    private val events: PublishRelay<ButtonEvent> = PublishRelay.create()
+    private val events: PublishRelay<ViewEvent.Stick> = PublishRelay.create()
 
-    private val buttonsPressed = mutableSetOf<Int>()
+    private var currentIndex: Int? = null
 
     private var drawableSize: Int = 0
 
@@ -68,7 +68,7 @@ class DirectionPad @JvmOverloads constructor(
         }
     }
 
-    override fun getEvents(): Observable<ButtonEvent> = events
+    override fun getEvents(): Observable<ViewEvent.Stick> = events
 
     private fun initializeFromAttributes(a: TypedArray) {
         deadZone = a.getFloat(R.styleable.DirectionPad_deadZone, 0f)
@@ -102,7 +102,7 @@ class DirectionPad @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val pressedButtons = convertDiagonals(buttonsPressed)
+        val pressedButtons = convertDiagonals(currentIndex)
 
         for (i in 0..BUTTON_COUNT) {
             val cAngle = SINGLE_BUTTON_ANGLE * i
@@ -130,7 +130,8 @@ class DirectionPad @JvmOverloads constructor(
                 return true
             }
             MotionEvent.ACTION_UP -> {
-                allKeysReleased()
+                currentIndex = null
+                events.accept(ViewEvent.Stick(0.0f, 0.0f))
                 invalidate()
                 return true
             }
@@ -150,23 +151,14 @@ class DirectionPad @JvmOverloads constructor(
             val angle = (atan2(y, x) * 180 / Math.PI + 360f) % 360f
             val index = floor(angle / SINGLE_BUTTON_ANGLE).toInt()
 
-            if (buttonsPressed.contains(index).not()) {
-                allKeysReleased()
-                onKeyPressed(index)
-            }
+            currentIndex = index
+            events.accept(ViewEvent.Stick(
+                    cos(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat(),
+                    sin(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat()
+            ))
 
             postInvalidate()
         }
-    }
-
-    private fun onKeyPressed(index: Int) {
-        buttonsPressed.add(index)
-        events.accept(ButtonEvent(KeyEvent.ACTION_DOWN, index))
-    }
-
-    private fun allKeysReleased() {
-        buttonsPressed.map { events.accept(ButtonEvent(KeyEvent.ACTION_UP, it)) }
-        buttonsPressed.clear()
     }
 
     private fun isOutsideDeadzone(x: Float, y: Float): Boolean {
@@ -196,13 +188,14 @@ class DirectionPad @JvmOverloads constructor(
         )
     }
 
-    private fun convertDiagonals(buttonPressed: Set<Int>): Set<Int> {
-        return when {
-            BUTTON_DOWN_RIGHT in buttonPressed -> buttonPressed union setOf(BUTTON_DOWN, BUTTON_RIGHT)
-            BUTTON_DOWN_LEFT in buttonPressed -> buttonPressed union setOf(BUTTON_DOWN, BUTTON_LEFT)
-            BUTTON_UP_LEFT in buttonPressed -> buttonPressed union setOf(BUTTON_UP, BUTTON_LEFT)
-            BUTTON_UP_RIGHT in buttonPressed -> buttonPressed union setOf(BUTTON_UP, BUTTON_RIGHT)
-            else -> buttonPressed
+    private fun convertDiagonals(currentIndex: Int?): Set<Int> {
+        return when (currentIndex) {
+            BUTTON_DOWN_RIGHT -> setOf(BUTTON_DOWN, BUTTON_RIGHT)
+            BUTTON_DOWN_LEFT -> setOf(BUTTON_DOWN, BUTTON_LEFT)
+            BUTTON_UP_LEFT -> setOf(BUTTON_UP, BUTTON_LEFT)
+            BUTTON_UP_RIGHT -> setOf(BUTTON_UP, BUTTON_RIGHT)
+            null -> setOf()
+            else -> setOf(currentIndex)
         }
     }
 }

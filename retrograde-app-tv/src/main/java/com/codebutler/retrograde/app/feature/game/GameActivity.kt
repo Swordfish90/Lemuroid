@@ -47,6 +47,7 @@ import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.retro.RetroDroid
 import com.gojuno.koptional.Some
+import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -134,6 +135,7 @@ class GameActivity : RetrogradeActivity() {
             frameLayout.addView(gameView)
 
             gameView.getEvents()
+                    .ofType(PadEvent.Button::class.java)
                     .doOnNext {
                         if (it.action == KeyEvent.ACTION_DOWN) {
                             performHapticFeedback(gameView)

@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent
 import com.swordfish.touchinput.controller.R
-import com.swordfish.touchinput.data.EventsTransformers
-import com.swordfish.touchinput.data.PadEvent
+import com.swordfish.touchinput.events.EventsTransformers
+import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.base.BaseSingleButton
@@ -38,7 +38,7 @@ class GenesisPad @JvmOverloads constructor(
     private fun getActionEvents(): Observable<PadEvent> {
         return findViewById<ActionButtons>(R.id.actions)
             .getEvents()
-            .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_A, KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_C))
+            .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_B, KeyEvent.KEYCODE_C))
     }
 
     private fun getDirectionEvents(): Observable<PadEvent> {
