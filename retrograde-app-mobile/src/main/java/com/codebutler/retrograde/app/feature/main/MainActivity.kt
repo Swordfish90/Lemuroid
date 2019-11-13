@@ -16,8 +16,10 @@ import com.codebutler.retrograde.app.feature.games.SystemsFragment
 import com.codebutler.retrograde.app.feature.home.HomeFragment
 import com.codebutler.retrograde.app.feature.search.SearchFragment
 import com.codebutler.retrograde.app.feature.settings.SettingsFragment
+import com.codebutler.retrograde.app.feature.settings.StorageFrameworkPickerLauncher
 import com.codebutler.retrograde.app.shared.GameInteractor
 import com.codebutler.retrograde.lib.android.RetrogradeAppCompatActivity
+import com.codebutler.retrograde.lib.game.GameLoader
 import com.codebutler.retrograde.lib.injection.PerActivity
 import com.codebutler.retrograde.lib.injection.PerFragment
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
@@ -121,8 +123,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
             @Provides
             @PerActivity
             @JvmStatic
-            fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase) =
-                    GameInteractor(activity, retrogradeDb)
+            fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase, gameLoader: GameLoader) =
+                    GameInteractor(activity, retrogradeDb, gameLoader)
 
             @Provides
             @PerActivity

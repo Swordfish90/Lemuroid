@@ -26,6 +26,7 @@ allprojects {
         jcenter()
         mavenLocal()
         mavenCentral()
+        maven { setUrl("https://jitpack.io") }
     }
 
     apply(plugin = "org.jmailen.kotlinter")

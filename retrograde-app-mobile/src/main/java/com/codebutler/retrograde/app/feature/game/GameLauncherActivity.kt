@@ -5,8 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.work.WorkManager
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
+import com.codebutler.retrograde.lib.game.GameLoader
 import com.codebutler.retrograde.lib.game.GameSaveWorker
 import com.codebutler.retrograde.lib.library.db.entity.Game
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 /**
  * Used as entry to point to [GameActivity], which runs in a separate process.
@@ -39,12 +43,22 @@ class GameLauncherActivity : RetrogradeActivity() {
     companion object {
         private const val REQUEST_CODE_GAME = 1000
 
-        fun launchGame(context: Context, game: Game) = context.startActivity(newIntent(context, game))
+        fun launchGame(context: Context, gameLoader: GameLoader, game: Game) {
+            // TODO FILIPPO... Provide graphical feedback that something is loading.
+            gameLoader.load(game.id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { context.startActivity(newIntent(context, it)) },
+                        { Timber.e(it, "Error while loading game ${it.message}") }
+                )
+        }
 
-        fun newIntent(context: Context, game: Game) =
+        fun newIntent(context: Context, gameData: GameLoader.GameData) =
                 Intent(context, GameLauncherActivity::class.java).apply {
-                    putExtra(GameActivity.EXTRA_SYSTEM_ID, game.systemId)
-                    putExtra(GameActivity.EXTRA_GAME_ID, game.id)
+                    putExtra(GameActivity.EXTRA_SYSTEM_ID, gameData.game.systemId)
+                    putExtra(GameActivity.EXTRA_GAME_ID, gameData.game.id)
+                    putExtra(GameActivity.EXTRA_CORE_PATH, gameData.coreFile.absolutePath)
+                    putExtra(GameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
                 }
     }
 }

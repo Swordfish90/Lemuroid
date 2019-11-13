@@ -53,26 +53,22 @@ import javax.inject.Inject
 import kotlin.system.exitProcess
 import androidx.fragment.app.Fragment
 import com.codebutler.retrograde.R
+import com.swordfish.libretrodroid.GLRetroView
 
 class GameActivity : RetrogradeActivity() {
     companion object {
         const val EXTRA_GAME_ID = "game_id"
         const val EXTRA_SYSTEM_ID = "system_id"
         const val EXTRA_SAVE_FILE = "save_file"
+        const val EXTRA_CORE_PATH = "core_path"
+        const val EXTRA_GAME_PATH = "game_path"
     }
 
-    @Inject lateinit var gameLoader: GameLoader
-
-    private val progressBar by bindView<ProgressBar>(R.id.progress)
-    private val gameDisplayLayout by bindView<FrameLayout>(R.id.game_display_layout)
-
-    private lateinit var gameDisplay: GameDisplay
-    private lateinit var gameInput: GameInput
+    private val gameLayout by bindView<FrameLayout> (R.id.game_layout)
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    private var game: Game? = null
-    private var retroDroid: RetroDroid? = null
+    private lateinit var retroGameView: GLRetroView
 
     private var dataFragment: DataFragment? = null
 
@@ -82,33 +78,34 @@ class GameActivity : RetrogradeActivity() {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        gameInput = GameInput(this)
-
         dataFragment = retrieveOrInitializeDataFragment()
+
+        retroGameView = GLRetroView(this)
+        retroGameView.onCreate(intent.getStringExtra(EXTRA_CORE_PATH), intent.getStringExtra(EXTRA_GAME_PATH))
+
+        dataFragment?.emulatorState?.let {
+            retroGameView.unserialize(it)
+        }
+
+        gameLayout.addView(retroGameView)
 
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
         setupTouchInput(systemId)
+    }
 
-        val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
-        gameLoader.load(gameId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope())
-                .subscribe(
-                        { data ->
-                            progressBar.visibility = View.GONE
-                            loadRetro(data, dataFragment?.emulatorState ?: data.saveData)
-                            dataFragment?.emulatorState = null
-                        },
-                        { error ->
-                            Timber.e(error, "Failed to load game")
-                            finish()
-                        })
+    override fun onResume() {
+        super.onResume()
+        retroGameView.onResume()
+    }
+
+    override fun onPause() {
+        retroGameView.onPause()
+        super.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        val newState = retroDroid?.serialize()
+        val newState = retroGameView.serialize()
         Timber.d("Storing new fragment state ${newState?.size} into $dataFragment")
         dataFragment?.emulatorState = newState
     }
@@ -150,21 +147,19 @@ class GameActivity : RetrogradeActivity() {
             else -> GamePadFactory.Layout.PSX
         }
 
-        val gameView = gamePadLayout?.let {
+        val gameView = gamePadLayout.let {
             GamePadFactory.getGamePadView(this, it)
         }
 
-        if (gameView != null) {
-            frameLayout.addView(gameView)
+        frameLayout.addView(gameView)
 
-            gameView.getEvents()
-                    .doOnNext {
-                        if (it.action == KeyEvent.ACTION_DOWN) {
-                            performHapticFeedback(gameView)
-                        }
-                    }.autoDisposable(scope())
-                    .subscribe { gameInput.onKeyEvent(KeyEvent(it.action, it.keycode)) }
-        }
+        gameView.getEvents()
+                .doOnNext {
+                    if (it.action == KeyEvent.ACTION_DOWN) {
+                        performHapticFeedback(gameView)
+                    }
+                }.autoDisposable(scope())
+                .subscribe {  }
     }
 
     private fun performHapticFeedback(view: View) {
@@ -173,6 +168,7 @@ class GameActivity : RetrogradeActivity() {
     }
 
     override fun onDestroy() {
+        retroGameView.onDestroy()
         super.onDestroy()
         // This activity runs in its own process which should not live beyond the activity lifecycle.
         if (!isChangingConfigurations) {
@@ -180,20 +176,20 @@ class GameActivity : RetrogradeActivity() {
         }
     }
 
-    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+/*    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
         super.dispatchGenericMotionEvent(event)
         gameInput.onMotionEvent(event)
         return true
-    }
+    }*/
 
-    @SuppressLint("RestrictedApi")
+/*    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         super.dispatchKeyEvent(event)
         gameInput.onKeyEvent(event)
         return true
-    }
+    }*/
 
-    override fun onBackPressed() {
+/*    override fun onBackPressed() {
         // We are temporarily doing everything in the UI thread. We will handle this properly using Rx.
         retroDroid?.stop()
         val optionalSaveData = retroDroid?.serialize()
@@ -211,30 +207,7 @@ class GameActivity : RetrogradeActivity() {
             setResult(Activity.RESULT_CANCELED, null)
             finish()
         }
-    }
-
-    private fun loadRetro(data: GameLoader.GameData, state: ByteArray?) {
-        try {
-            val shaderPreference =
-                    sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
-
-            gameDisplay = GlGameDisplay(this, RetroShader.build(shaderPreference, data.game.systemId))
-            gameDisplayLayout.addView(gameDisplay.view, MATCH_PARENT, MATCH_PARENT)
-            lifecycle.addObserver(gameDisplay)
-
-            val retroDroid = RetroDroid(gameDisplay, GameAudio(), gameInput, this, data.coreFile)
-            lifecycle.addObserver(retroDroid)
-
-            retroDroid.loadGame(data.gameFile.absolutePath, state)
-            retroDroid.start()
-
-            this.game = data.game
-            this.retroDroid = retroDroid
-        } catch (ex: Exception) {
-            Timber.e(ex, "Exception during retro initialization")
-            finish()
-        }
-    }
+    }*/
 
     class DataFragment : Fragment() {
         var emulatorState: ByteArray? = null

@@ -29,6 +29,7 @@ import com.gojuno.koptional.Optional
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.functions.Function3
+import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 class GameLoader(
@@ -41,6 +42,7 @@ class GameLoader(
 
     fun load(gameId: Int): Single<GameData> {
         return loadGame(gameId)
+                .subscribeOn(Schedulers.io())
                 .flatMapSingle { game -> prepareGame(game) }
                 .doOnSuccess { data -> updateTimestamp(data.game) }
     }
