@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -7,30 +9,35 @@ plugins {
 dependencies {
     implementation(project(":retrograde-util"))
 
-    api(deps.libs.arch.lifecycleCommonJava8)
+    api(deps.libs.androidx.lifecycle.commonJava8)
 
-    implementation(deps.libs.arch.paging)
-    implementation(deps.libs.arch.room.runtime)
-    implementation(deps.libs.arch.room.rxjava2)
     implementation(deps.libs.arch.work.runtime)
     implementation(deps.libs.arch.work.runtimeKtx)
+    implementation(deps.libs.arch.work.rxjava2)
+    implementation(deps.libs.androidx.appcompat.appcompat)
+    implementation(deps.libs.androidx.appcompat.leanbackPreference)
+    implementation(deps.libs.androidx.ktx.collection)
+    implementation(deps.libs.androidx.ktx.core)
+    implementation(deps.libs.androidx.paging.common)
+    implementation(deps.libs.androidx.paging.runtime)
+    implementation(deps.libs.androidx.paging.rxjava2)
+    implementation(deps.libs.androidx.room.runtime)
+    implementation(deps.libs.androidx.room.rxjava2)
     implementation(deps.libs.autodispose.core)
     implementation(deps.libs.dagger.android.core)
     implementation(deps.libs.dagger.android.support)
     implementation(deps.libs.jna)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
-    implementation(deps.libs.okio)
     implementation(deps.libs.okHttp3)
+    implementation(deps.libs.okio)
     implementation(deps.libs.retrofit)
     implementation(deps.libs.retrofitRxJava2)
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.rxRelay2)
-    implementation(deps.libs.support.appCompatV7)
-    implementation(deps.libs.support.prefLeanbackV17)
 
-    kapt(deps.libs.arch.room.compiler)
+    kapt(deps.libs.androidx.room.compiler)
 }
 
 android {
@@ -50,5 +57,9 @@ android {
         cmake {
             setPath(File("$projectDir/CMakeLists.txt"))
         }
+    }
+    kotlinOptions {
+        this as KotlinJvmOptions
+        jvmTarget = "1.8"
     }
 }

@@ -19,15 +19,15 @@
 
 package com.codebutler.retrograde.metadata.ovgdb.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRegion
-import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRelease
-import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRom
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.codebutler.retrograde.metadata.ovgdb.db.dao.RegionDao
 import com.codebutler.retrograde.metadata.ovgdb.db.dao.ReleaseDao
 import com.codebutler.retrograde.metadata.ovgdb.db.dao.RomDao
 import com.codebutler.retrograde.metadata.ovgdb.db.dao.SystemDao
+import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRegion
+import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRelease
+import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbRom
 import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbSystem
 
 @Database(
@@ -36,7 +36,7 @@ import com.codebutler.retrograde.metadata.ovgdb.db.entity.OvgdbSystem
             OvgdbRelease::class,
             OvgdbRom::class,
             OvgdbSystem::class],
-        version = 1,
+        version = 2,
         exportSchema = false)
 abstract class OvgdbDatabase : RoomDatabase() {
 

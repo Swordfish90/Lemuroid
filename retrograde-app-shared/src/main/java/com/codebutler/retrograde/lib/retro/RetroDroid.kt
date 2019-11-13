@@ -20,10 +20,10 @@
 package com.codebutler.retrograde.lib.retro
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.DefaultLifecycleObserver
-import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.os.Handler
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.codebutler.retrograde.common.BitmapCache
 import com.codebutler.retrograde.common.BufferCache
 import com.codebutler.retrograde.common.BuildConfig
@@ -34,16 +34,10 @@ import com.codebutler.retrograde.lib.game.display.GameDisplay
 import com.codebutler.retrograde.lib.game.input.GameInput
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
-import com.jakewharton.rxrelay2.PublishRelay
 import com.sun.jna.Native
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
 import java.nio.ByteBuffer
-import java.util.Timer
-import kotlin.concurrent.fixedRateTimer
 import kotlin.experimental.and
 
 /**
@@ -64,21 +58,14 @@ class RetroDroid(
     private val videoBufferCache = BufferCache()
     private val videoBitmapCache = BitmapCache()
 
-    private val gameUnloadedRelay = PublishRelay.create<Optional<ByteArray>>()
-
     private var region: Retro.Region? = null
     private var systemAVInfo: Retro.SystemAVInfo? = null
     private var systemInfo: Retro.SystemInfo? = null
-    private var timer: Timer? = null
+    private var thread: RetroThread? = null
     private var pixelFormat: Retro.PixelFormat? = null
 
     val fps: Long
         get() = fpsCalculator.fps
-
-    /**
-     * Callback when game is unloaded, to allow for persisting save ram.
-     */
-    val gameUnloaded: Observable<Optional<ByteArray>> = gameUnloadedRelay.hide()
 
     init {
         Native.setCallbackExceptionHandler { c, e ->
@@ -109,11 +96,11 @@ class RetroDroid(
             for (i in 0 until height) {
                 val widthAsBytes = width * videoBytesPerPixel
                 System.arraycopy(
-                        data,             // SRC
-                        i * pitch,        // SRC POS
-                        newBuffer,        // DST
-                        i * widthAsBytes, // DST POS
-                        widthAsBytes      // LENGTH
+                    data, // SRC
+                    i * pitch, // SRC POS
+                    newBuffer, // DST
+                    i * widthAsBytes, // DST POS
+                    widthAsBytes // LENGTH
                 )
             }
 
@@ -179,37 +166,48 @@ class RetroDroid(
         this.systemInfo = systemInfo
 
         if (saveData != null) {
-            retro.setMemoryData(Retro.MemoryId.SAVE_RAM, saveData)
+            retro.unserialize(saveData)
         }
     }
 
+    @Synchronized
     fun start() {
         val avInfo = systemAVInfo
-        if (this.timer != null || avInfo == null) {
+        if (this.thread != null || avInfo == null) {
             return
         }
-        this.timer = fixedRateTimer(period = 1000L / avInfo.timing.fps.toLong()) {
+        this.thread = RetroThread.fromFPS(avInfo.timing.fps) {
             retro.run()
             fpsCalculator.update()
         }
+        this.thread?.priority = Thread.MAX_PRIORITY
+        this.thread?.start()
     }
 
+    @Synchronized
     fun stop() {
-        timer?.cancel()
-        timer = null
+        thread?.interrupt()
+        thread?.join()
+        thread = null
     }
 
-    @SuppressLint("CheckResult")
+    @Synchronized
+    fun serialize(): ByteArray? {
+        return retro.serialize()
+    }
+
+    @Synchronized
     fun unloadGame() {
-        Single
-            .fromCallable {
-                retro.getMemoryData(Retro.MemoryId.SAVE_RAM).toOptional()
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnSuccess {
-                retro.unloadGame()
-            }
-            .subscribe(gameUnloadedRelay)
+        retro.unloadGame()
+    }
+
+    @Deprecated("Prefer the specific method serialize")
+    @SuppressLint("CheckResult")
+    @Synchronized
+    fun unloadAndSerialize(): Optional<ByteArray> {
+        val result = retro.serialize().toOptional()
+        retro.unloadGame()
+        return result
     }
 
     override fun onResume(owner: LifecycleOwner) {

@@ -19,8 +19,8 @@
 
 package com.codebutler.retrograde.lib.library
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.codebutler.retrograde.lib.R
 import java.util.Locale
 
@@ -44,9 +44,17 @@ data class GameSystem(
 ) {
 
     companion object {
+        const val NES_ID = "nes"
+        const val SNES_ID = "snes"
+        const val GENESIS_ID = "md"
+        const val GB_ID = "gb"
+        const val GBC_ID = "gbc"
+        const val GBA_ID = "gba"
+        const val ARCADE_ID = "arcade"
+
         private val SYSTEMS = listOf(
                 GameSystem(
-                        "nes",
+                        NES_ID,
                         R.string.game_system_title_nes,
                         R.string.game_system_abbr_nes,
                         R.drawable.game_system_nes,
@@ -55,7 +63,7 @@ data class GameSystem(
                         listOf("nes")
                 ),
                 GameSystem(
-                        "snes",
+                        SNES_ID,
                         R.string.game_system_title_snes,
                         R.string.game_system_abbr_snes,
                         R.drawable.game_system_snes,
@@ -64,7 +72,7 @@ data class GameSystem(
                         listOf("smc", "sfc", "swc", "fig")
                 ),
                 GameSystem(
-                        "md",
+                        GENESIS_ID,
                         R.string.game_system_title_genesis,
                         R.string.game_system_abbr_genesis,
                         R.drawable.game_system_genesis,
@@ -73,26 +81,26 @@ data class GameSystem(
                         listOf("gen", "smd", "md")
                 ),
                 GameSystem(
-                        "gb",
+                        GB_ID,
                         R.string.game_system_title_gb,
                         R.string.game_system_abbr_gb,
                         R.drawable.game_system_gb,
                         "nintendo2",
-                        "mgba_libretro_android.so.zip",
+                        "gambatte_libretro_android.so.zip",
                         listOf("gb")
 
                 ),
                 GameSystem(
-                        "gbc",
+                        GBC_ID,
                         R.string.game_system_title_gbc,
                         R.string.game_system_abbr_gbc,
                         R.drawable.game_system_gbc,
                         "nintendo3",
-                        "mgba_libretro_android.so.zip",
+                        "gambatte_libretro_android.so.zip",
                         listOf("gbc")
                 ),
                 GameSystem(
-                        "gba",
+                        GBA_ID,
                         R.string.game_system_title_gba,
                         R.string.game_system_abbr_gba,
                         R.drawable.game_system_gba,
@@ -101,12 +109,12 @@ data class GameSystem(
                         listOf("gba")
                 ),
                 GameSystem(
-                        "arcade",
+                        ARCADE_ID,
                         R.string.game_system_title_arcade,
                         R.string.game_system_abbr_arcade,
                         R.drawable.game_system_arcade,
                         "arcade",
-                        "fbalpha_libretro_android.so.zip",
+                        "fbneo_libretro_android.so.zip",
                         listOf("zip")
                 )
         )

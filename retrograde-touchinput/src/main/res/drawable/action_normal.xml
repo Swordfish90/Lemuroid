@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/size_direction_button_item"
+    android:height="@dimen/size_direction_button_item"
+    android:viewportWidth="@integer/item_viewportsize"
+    android:viewportHeight="@integer/item_viewportsize">
+
+    <path
+        android:strokeColor="@color/controller_default"
+        android:strokeWidth="@integer/vector_stroke_width"
+        android:pathData="M1 15a14 14 0 1 1 0 0.0001"/>
+
+</vector>

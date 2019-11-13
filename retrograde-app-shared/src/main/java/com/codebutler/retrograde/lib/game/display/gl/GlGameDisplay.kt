@@ -19,15 +19,16 @@
 
 package com.codebutler.retrograde.lib.game.display.gl
 
-import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
 import android.view.Choreographer
+import androidx.lifecycle.LifecycleOwner
 import com.codebutler.retrograde.lib.game.display.FpsCalculator
 import com.codebutler.retrograde.lib.game.display.GameDisplay
+import com.codebutler.retrograde.lib.game.display.shaders.RetroShader
 
-class GlGameDisplay(context: Context) :
+class GlGameDisplay(context: Context, retroShader: RetroShader = RetroShader.Default) :
         GameDisplay,
         Choreographer.FrameCallback {
 
@@ -40,7 +41,7 @@ class GlGameDisplay(context: Context) :
         glSurfaceView.setEGLContextClientVersion(2)
 
         // Set the Renderer for drawing on the GLSurfaceView
-        renderer = GlRenderer2d()
+        renderer = GlRenderer2d(retroShader)
         glSurfaceView.setRenderer(renderer)
 
         // Render the view only when there is a change in the drawing data

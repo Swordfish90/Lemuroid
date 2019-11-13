@@ -21,7 +21,7 @@ package com.codebutler.retrograde.app
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.work.Worker
+import androidx.work.ListenableWorker
 import com.bugsnag.android.Bugsnag
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.R
@@ -53,7 +53,7 @@ class RetrogradeApplication : DaggerApplication(), HasWorkerInjector {
     @Inject lateinit var rxTimberTree: RxTimberTree
     @Inject lateinit var rxPrefs: RxSharedPreferences
     @Inject lateinit var gdriveStorageProvider: GDriveStorageProvider
-    @Inject lateinit var workerInjector: DispatchingAndroidInjector<Worker>
+    @Inject lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
 
     @SuppressLint("CheckResult")
     override fun onCreate() {
@@ -87,5 +87,5 @@ class RetrogradeApplication : DaggerApplication(), HasWorkerInjector {
                 .create(this)
     }
 
-    override fun workerInjector(): AndroidInjector<Worker> = workerInjector
+    override fun workerInjector(): AndroidInjector<ListenableWorker> = workerInjector
 }

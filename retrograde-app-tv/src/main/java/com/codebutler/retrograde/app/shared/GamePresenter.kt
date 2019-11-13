@@ -23,11 +23,11 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v17.leanback.widget.Presenter
-import android.support.v7.view.ContextThemeWrapper
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.leanback.widget.ImageCardView
+import androidx.leanback.widget.Presenter
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.shared.ui.ItemViewLongClickListener
 import com.codebutler.retrograde.lib.library.db.entity.Game

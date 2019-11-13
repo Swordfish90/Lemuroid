@@ -21,10 +21,11 @@ package com.codebutler.retrograde.common.kotlin
 
 import java.io.File
 import java.io.FileInputStream
+import java.io.InputStream
 import java.util.zip.CRC32
 import java.util.zip.CheckedInputStream
 
-fun File.calculateCrc32(): String = FileInputStream(this).use { fileStream ->
+fun InputStream.calculateCrc32(): String = this.use { fileStream ->
     val buffer = ByteArray(1024)
     CheckedInputStream(fileStream, CRC32()).use { crcStream ->
         while (crcStream.read(buffer) != -1) {
@@ -33,3 +34,14 @@ fun File.calculateCrc32(): String = FileInputStream(this).use { fileStream ->
         return "%x".format(crcStream.checksum.value)
     }
 }
+
+fun File.writeInputStream(inputStream: InputStream): File {
+    inputStream.use { input ->
+        this.outputStream().use { fileOut ->
+            input.copyTo(fileOut)
+        }
+    }
+    return this
+}
+
+fun File.calculateCrc32(): String = FileInputStream(this).calculateCrc32()

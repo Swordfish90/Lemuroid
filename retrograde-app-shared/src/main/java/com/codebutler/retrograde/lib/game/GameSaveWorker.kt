@@ -1,8 +1,11 @@
 package com.codebutler.retrograde.lib.game
 
+import android.content.Context
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.Worker
+import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import androidx.work.ListenableWorker
 import com.codebutler.retrograde.lib.injection.AndroidWorkerInjection
 import com.codebutler.retrograde.lib.injection.WorkerKey
 import com.codebutler.retrograde.lib.library.GameLibrary
@@ -13,7 +16,7 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
-class GameSaveWorker : Worker() {
+class GameSaveWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
     @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var gameLoader: GameLoader
@@ -31,14 +34,14 @@ class GameSaveWorker : Worker() {
             gameLibrary.setGameSave(game, saveData)
                     .blockingAwait()
             saveFile.delete()
-            Result.SUCCESS
+            Result.success()
         } catch (ex: Exception) {
             if (this.runAttemptCount < MAX_RETRIES) {
                 Timber.tag(TAG).e(ex, "Failed to save game. Attempt: %s", (this.runAttemptCount + 1))
-                Result.RETRY
+                Result.retry()
             } else {
                 Timber.tag(TAG).e(ex, "Failed to save game, giving up")
-                Result.FAILURE
+                Result.failure()
             }
         }
     }
@@ -65,7 +68,7 @@ class GameSaveWorker : Worker() {
         @Binds
         @IntoMap
         @WorkerKey(GameSaveWorker::class)
-        abstract fun bindMyWorkerFactory(builder: Subcomponent.Builder): AndroidInjector.Factory<out Worker>
+        abstract fun bindMyWorkerFactory(builder: Subcomponent.Builder): AndroidInjector.Factory<out ListenableWorker>
     }
 
     @dagger.Subcomponent

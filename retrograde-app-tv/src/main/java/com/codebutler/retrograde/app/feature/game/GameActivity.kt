@@ -19,11 +19,13 @@
 
 package com.codebutler.retrograde.app.feature.game
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -44,16 +46,15 @@ import com.codebutler.retrograde.lib.game.input.GameInput
 import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.retro.RetroDroid
-import com.codebutler.retrograde.lib.util.subscribeBy
-import com.gojuno.koptional.None
 import com.gojuno.koptional.Some
-import com.gojuno.koptional.toOptional
+import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.kotlin.autoDisposable
+import com.uber.autodispose.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.system.exitProcess
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -73,12 +74,15 @@ class GameActivity : RetrogradeActivity() {
     private var game: Game? = null
     private var retroDroid: RetroDroid? = null
 
+    private var displayTouchInput: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val enableOpengl = prefs.getBoolean(getString(R.string.pref_key_flags_opengl), false)
+        displayTouchInput = prefs.getBoolean(getString(R.string.pref_key_flags_touchinput), false)
 
         gameDisplay = if (enableOpengl) {
             GlGameDisplay(this)
@@ -116,10 +120,38 @@ class GameActivity : RetrogradeActivity() {
         }
     }
 
+    private fun setupTouchInput(game: Game) {
+        val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
+
+        val gameView = when (game.systemId) {
+            in listOf("snes", "gba") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.SNES)
+            in listOf("nes", "gb", "gbc") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.NES)
+            in listOf("md") -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.GENESIS)
+            else -> GamePadFactory.getGamePadView(this, GamePadFactory.Layout.PSX)
+        }
+
+        if (gameView != null) {
+            frameLayout.addView(gameView)
+
+            gameView.getEvents()
+                    .doOnNext {
+                        if (it.action == KeyEvent.ACTION_DOWN) {
+                            performHapticFeedback(gameView)
+                        }
+                    }.autoDisposable(scope())
+                    .subscribe { gameInput.onKeyEvent(KeyEvent(it.action, it.keycode)) }
+        }
+    }
+
+    private fun performHapticFeedback(view: View) {
+        val flags = HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+        view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         // This activity runs in its own process which should not live beyond the activity lifecycle.
-        System.exit(0)
+        exitProcess(0)
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
@@ -128,6 +160,7 @@ class GameActivity : RetrogradeActivity() {
         return true
     }
 
+    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         super.dispatchKeyEvent(event)
         gameInput.onKeyEvent(event)
@@ -135,8 +168,22 @@ class GameActivity : RetrogradeActivity() {
     }
 
     override fun onBackPressed() {
+        // We are temporarily doing everything in the UI thread. We will handle this properly using Rx.
         retroDroid?.stop()
-        retroDroid?.unloadGame()
+        val optionalSaveData = retroDroid?.unloadAndSerialize()
+        if (optionalSaveData is Some) {
+            val tmpFile = createTempFile()
+            tmpFile.writeBytes(optionalSaveData.value)
+
+            val resultData = Intent()
+            resultData.putExtra(EXTRA_GAME_ID, game?.id)
+            resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
+            setResult(Activity.RESULT_OK, resultData)
+            finish()
+        } else {
+            setResult(Activity.RESULT_CANCELED, null)
+            finish()
+        }
     }
 
     private fun addFpsView() {
@@ -161,35 +208,9 @@ class GameActivity : RetrogradeActivity() {
             val retroDroid = RetroDroid(gameDisplay, GameAudio(), gameInput, this, data.coreFile)
             lifecycle.addObserver(retroDroid)
 
-            retroDroid.gameUnloaded
-                .map { optionalSaveData ->
-                    if (optionalSaveData is Some) {
-                        val tmpFile = createTempFile()
-                        tmpFile.writeBytes(optionalSaveData.value)
-                        tmpFile.toOptional()
-                    } else {
-                        None
-                    }
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope())
-                .subscribeBy(
-                    onNext = { optionalTmpFile ->
-                        val resultData = Intent()
-                        if (optionalTmpFile is Some) {
-                            resultData.putExtra(EXTRA_GAME_ID, data.game.id)
-                            resultData.putExtra(EXTRA_SAVE_FILE, optionalTmpFile.value.absolutePath)
-                        }
-                        setResult(Activity.RESULT_OK, resultData)
-                        finish()
-                    },
-                    onError = { error ->
-                        Timber.e(error, "Error unloading game")
-                        setResult(Activity.RESULT_CANCELED)
-                        finish()
-                    }
-                )
+            if (displayTouchInput) {
+                setupTouchInput(data.game)
+            }
 
             retroDroid.loadGame(data.gameFile.absolutePath, data.saveData)
             retroDroid.start()

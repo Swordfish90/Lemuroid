@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+
 plugins {
     id("com.android.application")
     id("com.bugsnag.android.gradle")
@@ -33,6 +35,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+    kotlinOptions {
+        this as KotlinJvmOptions
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -43,16 +49,28 @@ dependencies {
     implementation(project(":retrograde-storage-webdav"))
     implementation(project(":retrograde-storage-archiveorg"))
 
-    implementation(deps.libs.arch.paging)
-    implementation(deps.libs.arch.room.runtime)
+    // TODO... This dependency will be gone when the separate mobile application is created.
+    implementation(project(":retrograde-touchinput"))
+
+    implementation(deps.libs.androidx.appcompat.appcompat)
+    implementation(deps.libs.androidx.appcompat.leanback)
+    implementation(deps.libs.androidx.appcompat.leanbackPreference)
+    implementation(deps.libs.androidx.appcompat.palette)
+    implementation(deps.libs.androidx.appcompat.recyclerView)
+    implementation(deps.libs.androidx.paging.common)
+    implementation(deps.libs.androidx.paging.runtime)
+    implementation(deps.libs.androidx.paging.rxjava2)
+    implementation(deps.libs.androidx.room.common)
+    implementation(deps.libs.androidx.room.runtime)
+    implementation(deps.libs.androidx.room.rxjava2)
+    implementation(deps.libs.autodispose.android.archComponents)
+    implementation(deps.libs.autodispose.android.archComponentsKtx)
     implementation(deps.libs.arch.work.runtime)
-    implementation(deps.libs.arch.work.runtimeKtx)
-    implementation(deps.libs.autodispose.android.arch)
-    implementation(deps.libs.autodispose.android.archKotlin)
+
     implementation(deps.libs.autodispose.android.core)
-    implementation(deps.libs.autodispose.android.kotlin)
+    implementation(deps.libs.autodispose.android.ktx)
     implementation(deps.libs.autodispose.core)
-    implementation(deps.libs.autodispose.kotlin)
+    implementation(deps.libs.autodispose.ktx)
     implementation(deps.libs.bugsnagAndroid)
     implementation(deps.libs.bugsnagAndroidNdk)
     implementation(deps.libs.dagger.android.core)
@@ -61,8 +79,8 @@ dependencies {
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
-    implementation(deps.libs.okio)
     implementation(deps.libs.okHttp3)
+    implementation(deps.libs.okio)
     implementation(deps.libs.picasso)
     implementation(deps.libs.retrofit)
     implementation(deps.libs.retrofitRxJava2)
@@ -71,11 +89,7 @@ dependencies {
     implementation(deps.libs.rxPermissions2)
     implementation(deps.libs.rxPreferences)
     implementation(deps.libs.rxRelay2)
-    implementation(deps.libs.support.appCompatV7)
-    implementation(deps.libs.support.leanbackV17)
-    implementation(deps.libs.support.paletteV7)
-    implementation(deps.libs.support.prefLeanbackV17)
-    implementation(deps.libs.support.recyclerViewV7)
+    implementation(deps.libs.guava)
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)

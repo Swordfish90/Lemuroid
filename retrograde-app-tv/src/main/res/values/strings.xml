@@ -19,6 +19,7 @@
     <string name="onboarding_description">Retro gaming for Android TV</string>
     <string name="onboarding_title">Welcome to Retrograde</string>
     <string name="opengl_rendering">OpenGL Rendering</string>
+    <string name="display_touch_inputs">Display Touch Inputs</string>
     <string name="play">Play</string>
     <string name="recently_played">Recently Played</string>
     <string name="remove_from_favorites">Remove from Favorites</string>

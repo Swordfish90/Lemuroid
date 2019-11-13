@@ -1,9 +1,9 @@
 package com.codebutler.retrograde.lib.injection
 
-import androidx.work.Worker
+import androidx.work.ListenableWorker
 
 object AndroidWorkerInjection {
-    fun inject(worker: Worker) {
+    fun inject(worker: ListenableWorker) {
         checkNotNull(worker) { "worker" }
         val application = worker.applicationContext
         if (application !is HasWorkerInjector) {

@@ -19,10 +19,10 @@
 
 package com.codebutler.retrograde.metadata.ovgdb.db.entity
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Index
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(
         tableName = "roms",
@@ -39,13 +39,13 @@ data class OvgdbRom(
     val regionId: Int,
 
     @ColumnInfo(name = "romHashCRC")
-    val hashCrc: String,
+    val hashCrc: String?,
 
     @ColumnInfo(name = "romHashMD5")
-    val hashMd5: String,
+    val hashMd5: String?,
 
     @ColumnInfo(name = "romHashSHA1")
-    val hashSha1: String,
+    val hashSha1: String?,
 
     @ColumnInfo(name = "romSize")
     val size: Int,

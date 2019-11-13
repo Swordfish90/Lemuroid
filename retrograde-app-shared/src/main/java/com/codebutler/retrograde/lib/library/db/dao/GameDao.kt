@@ -19,12 +19,13 @@
 
 package com.codebutler.retrograde.lib.library.db.dao
 
-import android.arch.paging.DataSource
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
+import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Update
+import androidx.room.Query
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -59,6 +60,9 @@ interface GameDao {
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC")
     fun selectRecentlyPlayed(): DataSource.Factory<Int, Game>
+
+    @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
+    fun selectLastRecentlyPlayed(limit: Int): LiveData<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC")
     fun selectFavorites(): DataSource.Factory<Int, Game>

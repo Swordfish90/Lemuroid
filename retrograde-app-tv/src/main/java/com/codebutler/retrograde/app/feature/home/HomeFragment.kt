@@ -1,5 +1,5 @@
 /*
- * BrowseFragment.kt
+ * HomeFragment.kt
  *
  * Copyright (C) 2017 Retrograde Project
  *
@@ -22,18 +22,17 @@ package com.codebutler.retrograde.app.feature.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v17.leanback.app.BrowseFragment
-import android.support.v17.leanback.app.BrowseSupportFragment
-import android.support.v17.leanback.widget.ArrayObjectAdapter
-import android.support.v17.leanback.widget.HeaderItem
-import android.support.v17.leanback.widget.ListRow
-import android.support.v17.leanback.widget.ListRowPresenter
-import android.support.v17.leanback.widget.OnItemViewClickedListener
-import android.support.v17.leanback.widget.Presenter
-import android.support.v17.leanback.widget.Row
-import android.support.v17.leanback.widget.RowPresenter
-import android.support.v17.leanback.widget.SearchOrbView
-import android.support.v4.app.ActivityOptionsCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.leanback.app.BrowseSupportFragment
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.HeaderItem
+import androidx.leanback.widget.ListRow
+import androidx.leanback.widget.ListRowPresenter
+import androidx.leanback.widget.OnItemViewClickedListener
+import androidx.leanback.widget.Presenter
+import androidx.leanback.widget.Row
+import androidx.leanback.widget.RowPresenter
+import androidx.leanback.widget.SearchOrbView
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.feature.home.HomeAdapterFactory.AllGamesItem
 import com.codebutler.retrograde.app.feature.home.HomeAdapterFactory.GameSystemItem
@@ -49,7 +48,7 @@ import com.codebutler.retrograde.lib.library.GameLibrary
 import com.codebutler.retrograde.lib.library.db.RetrogradeDatabase
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.kotlin.autoDisposable
+import com.uber.autodispose.autoDisposable
 import dagger.Provides
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -82,7 +81,7 @@ class HomeFragment : BrowseSupportFragment(),
 
         val theme = activity?.theme
 
-        headersState = BrowseFragment.HEADERS_ENABLED
+        headersState = BrowseSupportFragment.HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
         title = getString(R.string.app_name)
         badgeDrawable = resources.getDrawable(R.drawable.logo, theme)

@@ -19,8 +19,8 @@
 
 package com.codebutler.retrograde.metadata.ovgdb.db
 
-import android.arch.persistence.room.Room
 import android.content.Context
+import androidx.room.Room
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
 import java.io.FileOutputStream

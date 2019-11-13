@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_dial_size">144dp</dimen>
+    <dimen name="dial_max_size">200dp</dimen>
+
+    <dimen name="size_button_small">24dp</dimen>
+    <dimen name="size_button_medium">48dp</dimen>
+    <dimen name="size_button_large">72dp</dimen>
+
+    <dimen name="size_direction_button_item">@dimen/size_button_medium</dimen>
+
+    <dimen name="size_small_button_height">@dimen/size_button_small</dimen>
+    <dimen name="size_small_button_width">@dimen/size_button_medium</dimen>
+
+    <dimen name="size_large_button_height">@dimen/size_button_medium</dimen>
+    <dimen name="size_large_button_width">@dimen/size_button_large</dimen>
+
+    <dimen name="shape_stroke_width">3dp</dimen>
+
+    <integer name="vector_stroke_width">2</integer>
+    <integer name="item_viewportsize">30</integer>
+</resources>

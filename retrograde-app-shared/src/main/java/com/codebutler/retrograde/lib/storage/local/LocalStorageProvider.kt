@@ -22,12 +22,12 @@ package com.codebutler.retrograde.lib.storage.local
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
-import android.support.v17.preference.LeanbackPreferenceFragment
+import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.codebutler.retrograde.common.kotlin.calculateCrc32
 import com.codebutler.retrograde.lib.R
-import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
+import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
@@ -37,8 +37,9 @@ import io.reactivex.Single
 import java.io.File
 
 class LocalStorageProvider(
-    context: Context,
-    override val metadataProvider: GameMetadataProvider
+    private val context: Context,
+    override val metadataProvider: GameMetadataProvider,
+    private val searchOnlyPrivateDirectories: Boolean = false
 ) : StorageProvider {
 
     override val id: String = "local"
@@ -52,9 +53,20 @@ class LocalStorageProvider(
     override val enabledByDefault = true
 
     override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
-        Environment.getExternalStorageDirectory()
-                .walk()
-                .filter { file -> file.isFile && file.name.startsWith(".").not() }
+        searchableDirectories()
+                .map { walkDirectory(it) }
+                .reduce { acc, iterable -> acc union iterable }
+    }
+
+    private fun searchableDirectories(): List<File> = if (searchOnlyPrivateDirectories) {
+        listOf(*context.getExternalFilesDirs(null))
+    } else {
+        listOf(Environment.getExternalStorageDirectory())
+    }
+
+    private fun walkDirectory(directory: File): Iterable<StorageFile> {
+        return directory.walk()
+            .filter { file -> file.isFile && file.name.startsWith(".").not() }
                 .map { file ->
                     StorageFile(
                             name = file.name,
@@ -62,7 +74,7 @@ class LocalStorageProvider(
                             crc = file.calculateCrc32().toUpperCase(),
                             uri = Uri.parse(file.toURI().toString()))
                 }
-                .asIterable()
+            .asIterable()
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {

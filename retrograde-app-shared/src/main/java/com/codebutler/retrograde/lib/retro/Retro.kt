@@ -67,10 +67,12 @@ class Retro(coreLibraryName: String) {
     private val environment = RetroEnvironmentT(this)
 
     private val videoRefresh = object : LibRetro.retro_video_refresh_t {
-        override fun invoke(data: Pointer, width: UnsignedInt, height: UnsignedInt, pitch: SizeT) {
-            val buffer = videoBufferCache.getBuffer(height.toInt() * pitch.toInt())
-            data.read(0, buffer, 0, buffer.size)
-            videoCallback?.invoke(buffer, width.toInt(), height.toInt(), pitch.toInt())
+        override fun invoke(data: Pointer?, width: UnsignedInt, height: UnsignedInt, pitch: SizeT) {
+            if (data != null) {
+                val buffer = videoBufferCache.getBuffer(height.toInt() * pitch.toInt())
+                data.read(0, buffer, 0, buffer.size)
+                videoCallback?.invoke(buffer, width.toInt(), height.toInt(), pitch.toInt())
+            }
         }
     }
 
@@ -379,28 +381,32 @@ class Retro(coreLibraryName: String) {
         libRetro.retro_run()
     }
 
-    fun getMemoryData(memory: MemoryId): ByteArray? {
-        val id = UnsignedInt(memory.value.toLong())
-        val size = libRetro.retro_get_memory_size(id).toInt()
-        val pointer = libRetro.retro_get_memory_data(id)
-        return pointer?.getByteArray(0, size)
+    fun serialize(): ByteArray? {
+        val size = libRetro.retro_serialize_size().toLong()
+        val data = Memory(size)
+        libRetro.retro_serialize(data, SizeT(size))
+        return data.getByteArray(0, size.toInt())
     }
 
-    fun setMemoryData(memory: MemoryId, data: ByteArray) {
-        val id = UnsignedInt(memory.value.toLong())
-        val pointer = libRetro.retro_get_memory_data(id)
-        pointer?.write(0, data, 0, data.size)
+    fun unserialize(data: ByteArray) {
+        val memory = Memory(data.size.toLong())
+        memory.write(0, data, 0, data.size)
+        libRetro.retro_unserialize(memory, SizeT(data.size.toLong()))
     }
 
     private class RetroEnvironmentT(private val retro: Retro) : LibRetro.retro_environment_t {
         private var logPrintfCb: LibRetro.retro_log_printf_t? = null
 
-        override fun invoke(cmd: UnsignedInt, data: Pointer): Boolean {
+        override fun invoke(cmd: UnsignedInt, data: Pointer?): Boolean {
             val callback = retro.environmentCallback ?: return false
             try {
                 when (cmd.toInt()) {
+                    LibRetro.RETRO_ENVIRONMENT_GET_CAN_DUPE -> {
+                        data!!.setByte(0, 1)
+                        return true
+                    }
                     LibRetro.RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL -> {
-                        callback.onSetPerformanceLevel(data.getInt(0))
+                        callback.onSetPerformanceLevel(data!!.getInt(0))
                         return true
                     }
                     LibRetro.RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY -> {
@@ -412,14 +418,14 @@ class Retro(coreLibraryName: String) {
                         return directory != null
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_PIXEL_FORMAT -> {
-                        val pixelFormat = data.getInt(0)
+                        val pixelFormat = data!!.getInt(0)
                         return callback.onSetPixelFormat(PixelFormat.fromValue(pixelFormat))
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS -> {
                         val descriptors = mutableListOf<InputDescriptor>()
                         var offset = 0L
                         while (true) {
-                            val descriptor = LibRetro.retro_input_descriptor(data.share(offset))
+                            val descriptor = LibRetro.retro_input_descriptor(data!!.share(offset))
                             descriptor.description ?: break
                             val device = Device.fromValue(descriptor.device!!.toInt()) ?: continue
                             descriptors.add(InputDescriptor(
@@ -444,7 +450,7 @@ class Retro(coreLibraryName: String) {
                         val variables = mutableMapOf<String, Variable>()
                         var offset = 0L
                         while (true) {
-                            val v = retro_variable(data.share(offset))
+                            val v = retro_variable(data!!.share(offset))
                             val name = v.key ?: break
                             val value = v.value ?: break
                             val (description, choicesString) = value.split("; ", limit = 2)
@@ -457,7 +463,7 @@ class Retro(coreLibraryName: String) {
                     }
                     LibRetro.RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE -> {
                         val updated = callback.onGetVariableUpdate()
-                        data.setByte(0, if (updated) 1 else 0)
+                        data!!.setByte(0, if (updated) 1 else 0)
                         return updated
                     }
                     LibRetro.RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE -> {
@@ -519,7 +525,7 @@ class Retro(coreLibraryName: String) {
                         val infos = mutableListOf<ControllerInfo>()
                         var offset = 0L
                         while (true) {
-                            val info = LibRetro.retro_controller_info(data.share(offset))
+                            val info = LibRetro.retro_controller_info(data!!.share(offset))
                             info.types ?: break
                             val descriptions = LibRetro.retro_controller_description(info.types)
                                     .toArray(info.num_types!!.toInt())
@@ -550,7 +556,7 @@ class Retro(coreLibraryName: String) {
                         return false
                     }
                     LibRetro.RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS -> {
-                        val supportsAchievements = data.getByte(0).toInt() == 1
+                        val supportsAchievements = data!!.getByte(0).toInt() == 1
                         callback.onSetSupportAchievements(supportsAchievements)
                         return true
                     }

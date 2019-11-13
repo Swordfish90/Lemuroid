@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_key_rescan" translatable="false">rescan</string>
+    <string name="pref_key_shader" translatable="false">shader</string>
+</resources>

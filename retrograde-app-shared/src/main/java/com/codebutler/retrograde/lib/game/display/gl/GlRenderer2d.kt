@@ -22,10 +22,11 @@ package com.codebutler.retrograde.lib.game.display.gl
 import android.graphics.Bitmap
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
+import com.codebutler.retrograde.lib.game.display.shaders.RetroShader
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class GlRenderer2d : GLSurfaceView.Renderer {
+class GlRenderer2d(val retroShader: RetroShader = RetroShader.Default) : GLSurfaceView.Renderer {
 
     private var square: Square? = null
 
@@ -47,7 +48,7 @@ class GlRenderer2d : GLSurfaceView.Renderer {
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        square = Square()
+        square = Square(retroShader)
         GLES20.glClearColor(0f, 0f, 0f, 1.0f)
     }
 

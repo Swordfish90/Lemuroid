@@ -9,6 +9,7 @@ dependencies {
     implementation(project(":retrograde-app-shared"))
     implementation(project(":retrograde-metadata-ovgdb"))
 
+    implementation(deps.libs.androidx.appcompat.leanbackPreference)
     implementation(deps.libs.dagger.core)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
@@ -20,7 +21,6 @@ dependencies {
     implementation(deps.libs.retrofitConverterMoshi)
     implementation(deps.libs.retrofitRxJava2)
     implementation(deps.libs.rxJava2)
-    implementation(deps.libs.support.prefLeanbackV17)
 
     kapt(deps.libs.dagger.compiler)
 }

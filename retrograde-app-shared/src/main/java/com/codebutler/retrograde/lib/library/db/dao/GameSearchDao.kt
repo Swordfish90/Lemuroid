@@ -1,13 +1,13 @@
 package com.codebutler.retrograde.lib.library.db.dao
 
-import android.arch.paging.DataSource
-import android.arch.persistence.db.SimpleSQLiteQuery
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.db.SupportSQLiteQuery
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.RawQuery
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.migration.Migration
+import androidx.paging.DataSource
+import androidx.room.Dao
+import androidx.room.RawQuery
+import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.codebutler.retrograde.lib.library.db.entity.Game
 
 class GameSearchDao(private val internalDao: Internal) {

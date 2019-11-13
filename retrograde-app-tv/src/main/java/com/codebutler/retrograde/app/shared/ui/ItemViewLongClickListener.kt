@@ -1,6 +1,6 @@
 package com.codebutler.retrograde.app.shared.ui
 
-import android.support.v17.leanback.widget.Presenter
+import androidx.leanback.widget.Presenter
 
 interface ItemViewLongClickListener {
 

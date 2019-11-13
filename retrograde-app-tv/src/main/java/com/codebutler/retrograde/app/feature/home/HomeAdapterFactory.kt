@@ -19,11 +19,11 @@
 
 package com.codebutler.retrograde.app.feature.home
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.paging.LivePagedListBuilder
 import android.content.Context
-import android.support.v17.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.paging.LivePagedListBuilder
 import com.codebutler.retrograde.R
 import com.codebutler.retrograde.app.shared.GamePresenter
 import com.codebutler.retrograde.app.shared.ui.ItemViewLongClickListener
@@ -35,7 +35,7 @@ import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.ui.SimpleItem
 import com.codebutler.retrograde.lib.ui.SimpleItemPresenter
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.kotlin.autoDisposable
+import com.uber.autodispose.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

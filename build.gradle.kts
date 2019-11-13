@@ -1,13 +1,5 @@
-import org.gradle.api.tasks.Delete
-import org.gradle.api.tasks.JavaExec
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.repositories
-import org.gradle.api.plugins.quality.CheckstyleExtension
-
 import com.android.build.gradle.BaseExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 buildscript {
     repositories {
@@ -17,13 +9,14 @@ buildscript {
     dependencies {
         classpath(deps.plugins.android)
         classpath(deps.plugins.bugsnag)
+        classpath(deps.plugins.navigationSafeArgs)
     }
 }
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
     id("com.github.ben-manes.versions") version "0.20.0"
-    id("org.jmailen.kotlinter") version "1.20.1"
+    id("org.jmailen.kotlinter") version "2.1.1"
     checkstyle
 }
 
@@ -37,14 +30,14 @@ allprojects {
 
     apply(plugin = "org.jmailen.kotlinter")
 
+    kotlinter {
+        // We are currently disabling tests for import ordering.
+        disabledRules = arrayOf("import-ordering")
+    }
+
     configurations.all {
         resolutionStrategy.eachDependency {
             when (requested.group) {
-                "com.android.support" -> {
-                    if ("multidex" !in requested.name) {
-                        useVersion(deps.versions.support)
-                    }
-                }
                 "com.google.android.gms" -> useVersion(deps.versions.gms)
                 "org.jetbrains.kotlin" -> {
                     if (requested.name.startsWith("kotlin-stdlib-jre")) {
@@ -70,8 +63,7 @@ subprojects {
             classpath = files()
             source("src")
         }
-
-        tasks.findByName("check")?.dependsOn(checkstyle)
+        findByName("check")?.dependsOn(checkstyle)
     }
 
     extensions.configure(CheckstyleExtension::class.java) {
@@ -100,8 +92,8 @@ subprojects {
                 dexInProcess = true
             }
             compileOptions {
-                setSourceCompatibility(JavaVersion.VERSION_1_8)
-                setTargetCompatibility(JavaVersion.VERSION_1_8)
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
             }
         }
     }

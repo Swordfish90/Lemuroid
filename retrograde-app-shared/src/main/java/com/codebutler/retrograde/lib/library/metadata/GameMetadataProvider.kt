@@ -19,8 +19,8 @@
 
 package com.codebutler.retrograde.lib.library.metadata
 
-import com.codebutler.retrograde.lib.storage.StorageFile
 import com.codebutler.retrograde.lib.library.db.entity.Game
+import com.codebutler.retrograde.lib.storage.StorageFile
 import com.gojuno.koptional.Optional
 import io.reactivex.ObservableTransformer
 

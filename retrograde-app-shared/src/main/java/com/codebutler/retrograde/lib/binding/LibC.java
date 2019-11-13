@@ -23,7 +23,6 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
-
 import java.nio.ByteBuffer;
 
 /**
@@ -34,7 +33,7 @@ public interface LibC extends Library {
     /**
      * Native library instance.
      */
-    LibC INSTANCE = (LibC)Native.loadLibrary((Platform.isWindows() ? "msvcrt" : "c"), LibC.class);
+    LibC INSTANCE = Native.loadLibrary((Platform.isWindows() ? "msvcrt" : "c"), LibC.class);
 
     /**
      * Format a string with a variable arguments list into a fixed size buffer.
