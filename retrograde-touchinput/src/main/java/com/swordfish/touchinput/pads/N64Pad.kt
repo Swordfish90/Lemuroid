@@ -10,27 +10,28 @@ import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.LargeSingleButton
 import com.swordfish.touchinput.views.SmallSingleButton
+import com.swordfish.touchinput.views.Stick
 import io.reactivex.Observable
 
-class SNESPad @JvmOverloads constructor(
+class N64Pad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : BaseGamePad(context, attrs, defStyleAttr) {
 
     init {
-        inflate(context, R.layout.layout_snes, this)
+        inflate(context, R.layout.layout_n64, this)
     }
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(
+            getLeftStickEvents(),
+            getRightStickEvents(),
             getStartEvent(),
-            getSelectEvent(),
             getDirectionEvents(),
             getActionEvents(),
             getR1Events(),
-            getL1Events()
-        ))
+            getL1Events()))
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
@@ -39,20 +40,12 @@ class SNESPad @JvmOverloads constructor(
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
-    private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.select)
-            .getEvents()
-            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
-    }
-
     private fun getActionEvents(): Observable<PadEvent> {
         return findViewById<ActionButtons>(R.id.actions)
             .getEvents()
             .compose(EventsTransformers.actionButtonsMap(
                     KeyEvent.KEYCODE_BUTTON_Y,
-                    KeyEvent.KEYCODE_BUTTON_X,
-                    KeyEvent.KEYCODE_BUTTON_B,
-                    KeyEvent.KEYCODE_BUTTON_A)
+                    KeyEvent.KEYCODE_BUTTON_B)
             )
     }
 
@@ -60,6 +53,18 @@ class SNESPad @JvmOverloads constructor(
         return findViewById<DirectionPad>(R.id.direction)
             .getEvents()
             .compose(EventsTransformers.directionPadMap())
+    }
+
+    private fun getLeftStickEvents(): Observable<PadEvent> {
+        return findViewById<Stick>(R.id.leftanalog)
+                .getEvents()
+                .compose(EventsTransformers.leftStickMap())
+    }
+
+    private fun getRightStickEvents(): Observable<PadEvent> {
+        return findViewById<Stick>(R.id.rightanalog)
+                .getEvents()
+                .compose(EventsTransformers.rightStickMap())
     }
 
     private fun getL1Events(): Observable<PadEvent> {

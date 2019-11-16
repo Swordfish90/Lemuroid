@@ -50,6 +50,7 @@ data class GameSystem(
         const val GB_ID = "gb"
         const val GBC_ID = "gbc"
         const val GBA_ID = "gba"
+        const val N64_ID = "n64"
         const val ARCADE_ID = "arcade"
 
         private val SYSTEMS = listOf(
@@ -109,6 +110,16 @@ data class GameSystem(
                         listOf("gba")
                 ),
                 GameSystem(
+                        N64_ID,
+                        R.string.game_system_title_n64,
+                        R.string.game_system_abbr_n64,
+                        R.drawable.game_system_n64,
+                        "nintendo5",
+                        "mupen64plus_next_libretro_android.so.zip",
+                        listOf("n64", "z64")
+                )
+                // We are currently disabling MAME emulation, since it's a bit of a mess to handle romsets versions.
+                /*GameSystem(
                         ARCADE_ID,
                         R.string.game_system_title_arcade,
                         R.string.game_system_abbr_arcade,
@@ -116,7 +127,7 @@ data class GameSystem(
                         "arcade",
                         "fbneo_libretro_android.so.zip",
                         listOf("zip")
-                )
+                )*/
         )
 
         private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id to it }.toTypedArray()) }

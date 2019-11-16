@@ -17,10 +17,16 @@ internal object EventsTransformers {
         }
     }
 
-    fun directionPadMap(): ObservableTransformer<ViewEvent.Stick, PadEvent> {
+    fun directionPadMap() = stickMap(StickEventsSource.SOURCE_DPAD)
+
+    fun leftStickMap() = stickMap(StickEventsSource.SOURCE_LEFT_STICK)
+
+    fun rightStickMap() = stickMap(StickEventsSource.SOURCE_RIGHT_STICK)
+
+    private fun stickMap(eventSource: Int): ObservableTransformer<ViewEvent.Stick, PadEvent> {
         return ObservableTransformer { upstream ->
             upstream.map {
-                PadEvent.Stick(StickEventsSource.SOURCE_DPAD, round(it.xAxis), round(it.yAxis))
+                PadEvent.Stick(eventSource, it.xAxis, it.yAxis)
             }
         }
     }

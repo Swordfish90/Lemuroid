@@ -8,6 +8,7 @@ class GamePadFactory {
         SNES,
         GBA,
         GENESIS,
+        N64,
         PSX
     }
 
@@ -19,6 +20,7 @@ class GamePadFactory {
                 Layout.GENESIS -> GenesisPad(context)
                 Layout.GBA -> GameBoyAdvancePad(context)
                 Layout.PSX -> PSXPad(context)
+                Layout.N64 -> N64Pad(context)
             }
         }
     }

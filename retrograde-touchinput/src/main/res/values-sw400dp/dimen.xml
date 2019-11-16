@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="default_dial_size">180dp</dimen>
-
-    <dimen name="size_button_small">30dp</dimen>
-    <dimen name="size_button_medium">60dp</dimen>
-    <dimen name="size_button_large">90dp</dimen>
-</resources>

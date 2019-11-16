@@ -133,6 +133,7 @@ class GameActivity : RetrogradeActivity() {
             in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
             in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.Layout.NES
             in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.Layout.GENESIS
+            in listOf(GameSystem.N64_ID) -> GamePadFactory.Layout.N64
             else -> GamePadFactory.Layout.PSX
         }
 

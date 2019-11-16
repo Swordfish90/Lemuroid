@@ -27,4 +27,13 @@
         <item name="deadZone">0.3</item>
         <item name="buttonCenterDistance">0.45</item>
     </style>
+
+    <style name="default_stick">
+        <item name="android:layout_width">@dimen/size_stick</item>
+        <item name="android:layout_height">@dimen/size_stick</item>
+        <item name="JV_buttonColor">@color/controller_default</item>
+        <item name="JV_backgroundColor">@color/controller_default</item>
+        <item name="JV_buttonSizeRatio">33%</item>
+        <item name="JV_backgroundSizeRatio">66%</item>
+    </style>
 </resources>
