@@ -131,7 +131,7 @@ class DirectionPad @JvmOverloads constructor(
             }
             MotionEvent.ACTION_UP -> {
                 currentIndex = null
-                events.accept(ViewEvent.Stick(0.0f, 0.0f))
+                events.accept(ViewEvent.Stick(0.0f, 0.0f, false))
                 invalidate()
                 return true
             }
@@ -154,7 +154,8 @@ class DirectionPad @JvmOverloads constructor(
             currentIndex = index
             events.accept(ViewEvent.Stick(
                     cos(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat(),
-                    sin(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat()
+                    sin(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat(),
+                    true
             ))
 
             postInvalidate()

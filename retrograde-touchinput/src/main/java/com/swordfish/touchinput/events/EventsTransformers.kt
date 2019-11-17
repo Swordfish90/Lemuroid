@@ -7,17 +7,23 @@ import kotlin.math.round
 internal object EventsTransformers {
     fun actionButtonsMap(vararg keycodes: Int): ObservableTransformer<ViewEvent.Button, PadEvent> {
         return ObservableTransformer { upstream ->
-            upstream.map { PadEvent.Button(it.action, keycodes[it.index]) }
+            upstream.map { PadEvent.Button(it.action, keycodes[it.index], it.haptic) }
         }
     }
 
     fun singleButtonMap(keycode: Int): ObservableTransformer<ViewEvent.Button, PadEvent> {
         return ObservableTransformer { upstream ->
-            upstream.map { PadEvent.Button(it.action, keycode) }
+            upstream.map { PadEvent.Button(it.action, keycode, it.haptic) }
         }
     }
 
-    fun directionPadMap() = stickMap(StickEventsSource.SOURCE_DPAD)
+    fun directionPadMap() = ObservableTransformer<ViewEvent.Stick, PadEvent> { upstream ->
+        upstream
+            .distinctUntilChanged()
+            .map {
+                PadEvent.Stick(StickEventsSource.SOURCE_DPAD, it.xAxis, it.yAxis, it.haptic)
+            }
+    }
 
     fun leftStickMap() = stickMap(StickEventsSource.SOURCE_LEFT_STICK)
 
@@ -26,7 +32,7 @@ internal object EventsTransformers {
     private fun stickMap(eventSource: Int): ObservableTransformer<ViewEvent.Stick, PadEvent> {
         return ObservableTransformer { upstream ->
             upstream.map {
-                PadEvent.Stick(eventSource, it.xAxis, it.yAxis)
+                PadEvent.Stick(eventSource, it.xAxis, it.yAxis, it.haptic)
             }
         }
     }

@@ -25,7 +25,8 @@ class Stick @JvmOverloads constructor(
     private fun handleMoveEvent(angle: Int, strength: Int) {
         events.accept(ViewEvent.Stick(
             strength / 100f * cos(Math.toRadians(-angle.toDouble())).toFloat(),
-            strength / 100f * sin(Math.toRadians(-angle.toDouble())).toFloat()
+            strength / 100f * sin(Math.toRadians(-angle.toDouble())).toFloat(),
+            false
         ))
     }
 

@@ -182,8 +182,7 @@ class GameActivity : RetrogradeActivity() {
         gameView.getEvents()
                 .subscribeOn(Schedulers.computation())
                 .doOnNext {
-                    // TODO FILIPPO... DPAD Should perform haptic feedback...
-                    if (it is PadEvent.Button && it.action == KeyEvent.ACTION_DOWN) {
+                    if (it.haptic) {
                         performHapticFeedback(gameView)
                     }
                 }

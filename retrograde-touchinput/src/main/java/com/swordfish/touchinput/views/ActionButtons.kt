@@ -191,11 +191,11 @@ class ActionButtons @JvmOverloads constructor(
 
     private fun onKeyPressed(index: Int) {
         buttonsPressed.add(index)
-        events.accept(ViewEvent.Button(KeyEvent.ACTION_DOWN, index))
+        events.accept(ViewEvent.Button(KeyEvent.ACTION_DOWN, index, true))
     }
 
     private fun allKeysReleased() {
-        buttonsPressed.map { events.accept(ViewEvent.Button(KeyEvent.ACTION_UP, it)) }
+        buttonsPressed.map { events.accept(ViewEvent.Button(KeyEvent.ACTION_UP, it, false)) }
         buttonsPressed.clear()
     }
 

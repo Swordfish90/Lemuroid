@@ -26,11 +26,11 @@ abstract class BaseSingleButton @JvmOverloads constructor(
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 isPressed = true
-                events.accept(ViewEvent.Button(KeyEvent.ACTION_DOWN, 0))
+                events.accept(ViewEvent.Button(KeyEvent.ACTION_DOWN, 0, true))
             }
             MotionEvent.ACTION_UP -> {
                 isPressed = false
-                events.accept(ViewEvent.Button(KeyEvent.ACTION_UP, 0))
+                events.accept(ViewEvent.Button(KeyEvent.ACTION_UP, 0, false))
             }
         }
     }
