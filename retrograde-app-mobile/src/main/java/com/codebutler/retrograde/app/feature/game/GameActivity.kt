@@ -19,13 +19,17 @@
 
 package com.codebutler.retrograde.app.feature.game
 
+import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
 import com.codebutler.retrograde.lib.library.GameSystem
@@ -33,12 +37,14 @@ import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
 import timber.log.Timber
-import kotlin.system.exitProcess
-import androidx.fragment.app.Fragment
 import com.codebutler.retrograde.R
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.PadEvent
+import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
+import java.lang.Thread.sleep
+import androidx.constraintlayout.widget.ConstraintSet
+
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -47,15 +53,28 @@ class GameActivity : RetrogradeActivity() {
         const val EXTRA_SAVE_FILE = "save_file"
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
+
+        private var transientSaveState: ByteArray? = null
+
+        /** A full savestate may not fit a bundle, so we need to ask for forgiveness and pass it statically. */
+        fun setTransientSaveState(state: ByteArray?) {
+            transientSaveState = state
+        }
+
+        fun getAndResetTransientSaveState(): ByteArray? {
+            val result = transientSaveState
+            transientSaveState = null
+            return result
+        }
     }
 
-    private val gameLayout by bindView<FrameLayout> (R.id.game_layout)
+    private val containerLayout by bindView<ConstraintLayout> (R.id.game_container)
+    private val gameViewLayout by bindView<FrameLayout> (R.id.gameview_layout)
+    private val padLayout by bindView<FrameLayout> (R.id.pad_layout)
 
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var retroGameView: GLRetroView
-
-    private var dataFragment: DataFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,24 +82,47 @@ class GameActivity : RetrogradeActivity() {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        dataFragment = retrieveOrInitializeDataFragment()
+        retroGameView = GLRetroView(this, intent.getStringExtra(EXTRA_CORE_PATH), intent.getStringExtra(EXTRA_GAME_PATH))
+        retroGameView.onCreate()
 
-        retroGameView = GLRetroView(this)
-        retroGameView.onCreate(intent.getStringExtra(EXTRA_CORE_PATH), intent.getStringExtra(EXTRA_GAME_PATH))
+        gameViewLayout.addView(retroGameView)
 
-        (getCurrentState() ?: getSave())?.let {
-            retroGameView.unserialize(it)
-        }
-
-        gameLayout.addView(retroGameView)
+        getAndResetTransientSaveState()?.let { restoreAsync(it) }
 
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
         setupTouchInput(systemId)
+
+        handleOrientationChange(resources.configuration.orientation)
     }
 
-    private fun getCurrentState() = dataFragment?.emulatorState
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        handleOrientationChange(newConfig.orientation)
+    }
 
-    private fun getSave() = intent.getByteArrayExtra(EXTRA_SAVE_FILE)
+    private fun handleOrientationChange(orientation: Int) {
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setGameViewAspectRatio("1:1")
+        } else {
+            setGameViewAspectRatio(null)
+        }
+    }
+
+    private fun setGameViewAspectRatio(aspectRatio: String?) {
+        val set = ConstraintSet()
+        set.clone(containerLayout)
+        set.setDimensionRatio(gameViewLayout.id, aspectRatio)
+        set.applyTo(containerLayout)
+    }
+
+    /* On some cores unserialize fails with no reason. So we need to try multiple times. */
+    private fun restoreAsync(saveGame: ByteArray) {
+        Timber.i("Loading saved state of ${saveGame.size} bytes")
+
+        getRestoreCompletable(saveGame)
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+    }
 
     override fun onResume() {
         super.onResume()
@@ -88,25 +130,21 @@ class GameActivity : RetrogradeActivity() {
     }
 
     override fun onPause() {
-        retroGameView.onPause()
         super.onPause()
+        retroGameView.onPause()
     }
 
-    override fun onStop() {
-        super.onStop()
-        val newState = retroGameView.serialize()
-        Timber.d("Storing new fragment state ${newState?.size} into $dataFragment")
-        dataFragment?.emulatorState = newState
+    override fun onDestroy() {
+        super.onDestroy()
+        retroGameView.onDestroy()
     }
 
-    private fun retrieveOrInitializeDataFragment(): DataFragment {
-        var dataFragment = supportFragmentManager.findFragmentByTag("data") as DataFragment?
-        if (dataFragment == null) {
-            dataFragment = DataFragment().apply {
-                supportFragmentManager.beginTransaction().add(this, "data").commit()
-            }
+    private fun getRestoreCompletable(saveGame: ByteArray) = Completable.fromCallable {
+        var times = 10
+        while (!retroGameView.unserialize(saveGame) && times > 0) {
+            sleep(200)
+            times--
         }
-        return dataFragment
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -126,8 +164,6 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun setupTouchInput(systemId: String) {
-        val frameLayout = findViewById<FrameLayout>(R.id.game_layout)
-
         val gamePadLayout = when (systemId) {
             in listOf(GameSystem.GBA_ID) -> GamePadFactory.Layout.GBA
             in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
@@ -141,7 +177,7 @@ class GameActivity : RetrogradeActivity() {
             GamePadFactory.getGamePadView(this, it)
         }
 
-        frameLayout.addView(gameView)
+        padLayout.addView(gameView)
 
         gameView.getEvents()
                 .subscribeOn(Schedulers.computation())
@@ -150,7 +186,8 @@ class GameActivity : RetrogradeActivity() {
                     if (it is PadEvent.Button && it.action == KeyEvent.ACTION_DOWN) {
                         performHapticFeedback(gameView)
                     }
-                }.autoDisposable(scope())
+                }
+                .autoDisposable(scope())
                 .subscribe {
                     when (it) {
                         is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
@@ -164,57 +201,19 @@ class GameActivity : RetrogradeActivity() {
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
-    override fun onDestroy() {
-        retroGameView.onDestroy()
-        super.onDestroy()
-        // This activity runs in its own process which should not live beyond the activity lifecycle.
-        if (!isChangingConfigurations) {
-            exitProcess(0)
-        }
+    override fun onBackPressed() {
+        // TODO We are temporarily doing everything in the UI thread. We will handle this properly using Rx.
+        val optionalSaveData = retroGameView.serialize()
+
+        Timber.i("Saving game with size: ${optionalSaveData.size}")
+
+        val tmpFile = createTempFile()
+        tmpFile.writeBytes(optionalSaveData)
+
+        val resultData = Intent()
+        resultData.putExtra(EXTRA_GAME_ID, intent.getIntExtra(EXTRA_GAME_ID, -1))
+        resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
+        setResult(Activity.RESULT_OK, resultData)
+        finish()
     }
-
-/*    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
-        super.dispatchGenericMotionEvent(event)
-        gameInput.onMotionEvent(event)
-        return true
-    }*/
-
-/*    @SuppressLint("RestrictedApi")
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        super.dispatchKeyEvent(event)
-        gameInput.onKeyEvent(event)
-        return true
-    }*/
-
-/*    override fun onBackPressed() {
-        // We are temporarily doing everything in the UI thread. We will handle this properly using Rx.
-        retroDroid?.stop()
-        val optionalSaveData = retroDroid?.serialize()
-        retroDroid?.unloadGame()
-        if (optionalSaveData != null) {
-            val tmpFile = createTempFile()
-            tmpFile.writeBytes(optionalSaveData)
-
-            val resultData = Intent()
-            resultData.putExtra(EXTRA_GAME_ID, game?.id)
-            resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
-            setResult(Activity.RESULT_OK, resultData)
-            finish()
-        } else {
-            setResult(Activity.RESULT_CANCELED, null)
-            finish()
-        }
-    }*/
-
-    class DataFragment : Fragment() {
-        var emulatorState: ByteArray? = null
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            retainInstance = true
-        }
-    }
-
-    @dagger.Module
-    class Module
 }

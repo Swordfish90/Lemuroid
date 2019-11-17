@@ -29,7 +29,7 @@ class GameLauncherActivity : RetrogradeActivity() {
             val gameId = data.getIntExtra(GameActivity.EXTRA_GAME_ID, -1)
             val saveFile = data.getStringExtra(GameActivity.EXTRA_SAVE_FILE)
             if (gameId != -1 && saveFile != null) {
-                WorkManager.getInstance().enqueue(GameSaveWorker.newRequest(gameId, saveFile))
+                WorkManager.getInstance(this).enqueue(GameSaveWorker.newRequest(gameId, saveFile))
             }
         }
         setResult(resultCode)

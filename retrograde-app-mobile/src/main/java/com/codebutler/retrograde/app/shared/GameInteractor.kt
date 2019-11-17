@@ -9,11 +9,10 @@ import com.codebutler.retrograde.lib.library.db.entity.Game
 
 class GameInteractor(
     private val context: Context,
-    private val retrogradeDb: RetrogradeDatabase,
-    private val gameLoader: GameLoader
+    private val retrogradeDb: RetrogradeDatabase
 ) {
     fun onGameClick(game: Game) {
-        GameLauncherActivity.launchGame(context, gameLoader, game)
+        GameLauncherActivity.launchGame(context, game)
     }
 
     fun onFavoriteToggle(game: Game, isFavorite: Boolean) {

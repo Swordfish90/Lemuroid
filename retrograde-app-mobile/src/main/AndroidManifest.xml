@@ -28,16 +28,27 @@
 
         <activity
             android:name=".app.feature.game.GameLauncherActivity"
+            android:process=":game"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
         <activity
             android:name=".app.feature.game.GameActivity"
             android:process=":game"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
         <activity android:name=".app.feature.settings.StorageFrameworkPickerLauncher"/>
+
+        <!-- It is not possible to invoke Work from another process with the default initializer.
+             We have to disable it and manually initialize it in our custom Application. -->
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            android:enabled="false"/>
+
     </application>
 
 </manifest>

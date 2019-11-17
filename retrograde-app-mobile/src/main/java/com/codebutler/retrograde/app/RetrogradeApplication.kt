@@ -2,7 +2,9 @@ package com.codebutler.retrograde.app
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.work.Configuration
 import androidx.work.ListenableWorker
+import androidx.work.WorkManager
 import com.codebutler.retrograde.BuildConfig
 import com.codebutler.retrograde.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
@@ -38,6 +40,8 @@ class RetrogradeApplication : DaggerApplication(), HasWorkerInjector {
     override fun onCreate() {
         super.onCreate()
 
+        initializeWorkManager()
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         } /*else {
@@ -59,6 +63,14 @@ class RetrogradeApplication : DaggerApplication(), HasWorkerInjector {
                         }
                     }
                 }*/
+    }
+
+    private fun initializeWorkManager() {
+        val config = Configuration.Builder()
+                .setMinimumLoggingLevel(android.util.Log.INFO)
+                .build()
+
+        WorkManager.initialize(this, config)
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

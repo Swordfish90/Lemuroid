@@ -123,8 +123,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
             @Provides
             @PerActivity
             @JvmStatic
-            fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase, gameLoader: GameLoader) =
-                    GameInteractor(activity, retrogradeDb, gameLoader)
+            fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase) =
+                    GameInteractor(activity, retrogradeDb)
 
             @Provides
             @PerActivity
