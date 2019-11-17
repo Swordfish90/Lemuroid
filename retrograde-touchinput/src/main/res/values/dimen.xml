@@ -3,11 +3,11 @@
     <dimen name="default_dial_size">144dp</dimen>
     <dimen name="dial_max_size">180dp</dimen>
 
-    <dimen name="size_button_small">32dp</dimen>
+    <dimen name="size_button_small">48dp</dimen>
     <dimen name="size_button_medium">48dp</dimen>
     <dimen name="size_button_large">72dp</dimen>
 
-    <dimen name="size_stick">96dp</dimen>
+    <dimen name="size_stick">144dp</dimen>
 
     <dimen name="size_direction_button_item">@dimen/size_button_medium</dimen>
 

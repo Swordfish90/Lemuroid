@@ -31,7 +31,8 @@ class N64Pad @JvmOverloads constructor(
             getDirectionEvents(),
             getActionEvents(),
             getR1Events(),
-            getL1Events()))
+            getL1Events(),
+            getL2Events()))
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
@@ -71,6 +72,12 @@ class N64Pad @JvmOverloads constructor(
         return findViewById<LargeSingleButton>(R.id.l1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
+    }
+
+    private fun getL2Events(): Observable<PadEvent> {
+        return findViewById<LargeSingleButton>(R.id.l2)
+                .getEvents()
+                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
     }
 
     private fun getR1Events(): Observable<PadEvent> {
