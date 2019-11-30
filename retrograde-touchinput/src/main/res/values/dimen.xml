@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_dial_size">144dp</dimen>
-    <dimen name="dial_max_size">180dp</dimen>
+    <dimen name="dial_max_size_small">152dp</dimen>
+    <dimen name="dial_max_size">192dp</dimen>
 
     <dimen name="size_button_small">48dp</dimen>
     <dimen name="size_button_medium">48dp</dimen>
     <dimen name="size_button_large">72dp</dimen>
 
-    <dimen name="size_stick">144dp</dimen>
+    <dimen name="size_stick">136dp</dimen>
 
     <dimen name="size_direction_button_item">@dimen/size_button_medium</dimen>
 

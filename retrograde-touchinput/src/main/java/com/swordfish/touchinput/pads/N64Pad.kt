@@ -58,14 +58,14 @@ class N64Pad @JvmOverloads constructor(
 
     private fun getLeftStickEvents(): Observable<PadEvent> {
         return findViewById<Stick>(R.id.leftanalog)
-                .getEvents()
-                .compose(EventsTransformers.leftStickMap())
+            .getEvents()
+            .compose(EventsTransformers.leftStickMap())
     }
 
     private fun getRightStickEvents(): Observable<PadEvent> {
-        return findViewById<Stick>(R.id.rightanalog)
-                .getEvents()
-                .compose(EventsTransformers.rightStickMap())
+        return findViewById<DirectionPad>(R.id.cbuttons)
+            .getEvents()
+            .compose(EventsTransformers.rightStickMap())
     }
 
     private fun getL1Events(): Observable<PadEvent> {
@@ -76,8 +76,8 @@ class N64Pad @JvmOverloads constructor(
 
     private fun getL2Events(): Observable<PadEvent> {
         return findViewById<LargeSingleButton>(R.id.l2)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
     }
 
     private fun getR1Events(): Observable<PadEvent> {

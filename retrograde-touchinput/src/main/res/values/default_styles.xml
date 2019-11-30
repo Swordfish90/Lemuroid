@@ -35,5 +35,6 @@
         <item name="JV_backgroundColor">@color/controller_default</item>
         <item name="JV_buttonSizeRatio">33%</item>
         <item name="JV_backgroundSizeRatio">66%</item>
+        <item name="JV_fixedCenter">false</item>
     </style>
 </resources>
