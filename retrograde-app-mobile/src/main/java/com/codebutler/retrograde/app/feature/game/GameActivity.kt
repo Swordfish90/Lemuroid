@@ -26,9 +26,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
-import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.codebutler.retrograde.common.kotlin.bindView
 import com.codebutler.retrograde.lib.android.RetrogradeActivity
@@ -44,7 +44,6 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
-
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -76,6 +75,8 @@ class GameActivity : RetrogradeActivity() {
 
     private lateinit var retroGameView: GLRetroView
 
+    private var quickSavedState: ByteArray? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -84,10 +85,17 @@ class GameActivity : RetrogradeActivity() {
 
         retroGameView = GLRetroView(this, intent.getStringExtra(EXTRA_CORE_PATH), intent.getStringExtra(EXTRA_GAME_PATH))
         retroGameView.onCreate()
+        retroGameView.setOnLongClickListener {
+            displayOptionsMenu()
+            true
+        }
 
         gameViewLayout.addView(retroGameView)
 
-        getAndResetTransientSaveState()?.let { restoreAsync(it) }
+        getAndResetTransientSaveState()?.let {
+            quickSavedState = it
+            restoreAsync(it)
+        }
 
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
         setupTouchInput(systemId)
@@ -195,24 +203,58 @@ class GameActivity : RetrogradeActivity() {
                 }
     }
 
+    private fun displayOptionsMenu() {
+        val items = arrayOf(
+                getString(R.string.quick_save),
+                getString(R.string.quick_load),
+                getString(R.string.close_without_saving)
+        )
+
+        val builder = AlertDialog.Builder(this)
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> quickSave()
+                    1 -> quickLoad()
+                    2 -> finish()
+                }
+            }
+
+        builder.create().show()
+    }
+
     private fun performHapticFeedback(view: View) {
         val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
     override fun onBackPressed() {
-        // TODO We are temporarily doing everything in the UI thread. We will handle this properly using Rx.
-        val optionalSaveData = retroGameView.serialize()
+        saveAndFinish()
+            .subscribeOn(Schedulers.io())
+            .autoDisposable(scope())
+            .subscribe()
+    }
 
-        Timber.i("Saving game with size: ${optionalSaveData.size}")
+    private fun saveAndFinish(): Completable {
+        return Completable.fromCallable {
+            val optionalSaveData = retroGameView.serialize()
+            Timber.i("Saving game with size: ${optionalSaveData.size}")
 
-        val tmpFile = createTempFile()
-        tmpFile.writeBytes(optionalSaveData)
+            val tmpFile = createTempFile()
+            tmpFile.writeBytes(optionalSaveData)
 
-        val resultData = Intent()
-        resultData.putExtra(EXTRA_GAME_ID, intent.getIntExtra(EXTRA_GAME_ID, -1))
-        resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
-        setResult(Activity.RESULT_OK, resultData)
-        finish()
+            val resultData = Intent()
+            resultData.putExtra(EXTRA_GAME_ID, intent.getIntExtra(EXTRA_GAME_ID, -1))
+            resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
+            setResult(Activity.RESULT_OK, resultData)
+            finish()
+        }
+    }
+
+    private fun quickSave() {
+        quickSavedState = retroGameView.serialize()
+    }
+
+    private fun quickLoad() {
+        quickSavedState?.let { retroGameView.unserialize(it) }
     }
 }
