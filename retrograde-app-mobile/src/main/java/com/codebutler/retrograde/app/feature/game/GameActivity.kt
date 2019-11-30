@@ -44,6 +44,7 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
+import java.io.File
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -90,6 +91,8 @@ class GameActivity : RetrogradeActivity() {
                 this,
                 intent.getStringExtra(EXTRA_CORE_PATH),
                 intent.getStringExtra(EXTRA_GAME_PATH),
+                getSystemDirectory().absolutePath,
+                getSavesDirectory().absolutePath,
                 getShaderForSystem(useShaders, systemId)
         )
 
@@ -109,6 +112,14 @@ class GameActivity : RetrogradeActivity() {
         setupTouchInput(systemId)
 
         handleOrientationChange(resources.configuration.orientation)
+    }
+
+    private fun getSystemDirectory(): File {
+        return File(filesDir, "system").apply { mkdirs() }
+    }
+
+    private fun getSavesDirectory(): File {
+        return File(filesDir, "saves").apply { mkdirs() }
     }
 
     private fun getShaderForSystem(useShader: Boolean, systemId: String): Int {
@@ -233,6 +244,7 @@ class GameActivity : RetrogradeActivity() {
         val items = arrayOf(
                 getString(R.string.quick_save),
                 getString(R.string.quick_load),
+                getString(R.string.reset),
                 getString(R.string.close_without_saving)
         )
 
@@ -241,7 +253,8 @@ class GameActivity : RetrogradeActivity() {
                 when (which) {
                     0 -> quickSave()
                     1 -> quickLoad()
-                    2 -> finish()
+                    2 -> reset()
+                    3 -> finish()
                 }
             }
 
@@ -282,5 +295,9 @@ class GameActivity : RetrogradeActivity() {
 
     private fun quickLoad() {
         quickSavedState?.let { retroGameView.unserialize(it) }
+    }
+
+    private fun reset() {
+        retroGameView.reset()
     }
 }

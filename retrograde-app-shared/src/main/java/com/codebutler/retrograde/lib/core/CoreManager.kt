@@ -46,7 +46,7 @@ class CoreManager(context: Context, retrofit: Retrofit) {
 
     private val api = retrofit.create(CoreManagerApi::class.java)
 
-    private val coresDir = File(context.dataDir, "cores")
+    private val coresDir = File(context.filesDir, "cores")
 
     init {
         coresDir.mkdirs()

@@ -20,6 +20,7 @@
     <string name="quick_save">Quick save</string>
     <string name="quick_load">Quick load</string>
     <string name="close_without_saving">Close without saving</string>
+    <string name="reset">Reset</string>
 
     <string-array name="shader_entries">
         <item>Auto</item>

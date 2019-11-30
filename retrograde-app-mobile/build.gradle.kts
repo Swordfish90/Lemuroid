@@ -108,7 +108,7 @@ dependencies {
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.guava)
 
-    implementation("com.github.Swordfish90:LibretroDroid:e08db1760b")
+    implementation("com.github.Swordfish90:LibretroDroid:6674b12336")
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)
