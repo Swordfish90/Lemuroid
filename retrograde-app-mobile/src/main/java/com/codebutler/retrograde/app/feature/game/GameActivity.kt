@@ -81,9 +81,18 @@ class GameActivity : RetrogradeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
 
-        retroGameView = GLRetroView(this, intent.getStringExtra(EXTRA_CORE_PATH), intent.getStringExtra(EXTRA_GAME_PATH))
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
+
+        retroGameView = GLRetroView(
+                this,
+                intent.getStringExtra(EXTRA_CORE_PATH),
+                intent.getStringExtra(EXTRA_GAME_PATH),
+                getShaderForSystem(useShaders, systemId)
+        )
+
         retroGameView.onCreate()
         retroGameView.setOnLongClickListener {
             displayOptionsMenu()
@@ -97,10 +106,27 @@ class GameActivity : RetrogradeActivity() {
             restoreAsync(it)
         }
 
-        val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
         setupTouchInput(systemId)
 
         handleOrientationChange(resources.configuration.orientation)
+    }
+
+    private fun getShaderForSystem(useShader: Boolean, systemId: String): Int {
+        if (!useShader) {
+            return GLRetroView.SHADER_DEFAULT
+        }
+
+        return when (systemId) {
+            GameSystem.GBA_ID -> GLRetroView.SHADER_LCD
+            GameSystem.GBC_ID -> GLRetroView.SHADER_LCD
+            GameSystem.GB_ID -> GLRetroView.SHADER_LCD
+            GameSystem.N64_ID -> GLRetroView.SHADER_CRT
+            GameSystem.GENESIS_ID -> GLRetroView.SHADER_CRT
+            GameSystem.NES_ID -> GLRetroView.SHADER_CRT
+            GameSystem.SNES_ID -> GLRetroView.SHADER_CRT
+            GameSystem.ARCADE_ID -> GLRetroView.SHADER_CRT
+            else -> GLRetroView.SHADER_DEFAULT
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
