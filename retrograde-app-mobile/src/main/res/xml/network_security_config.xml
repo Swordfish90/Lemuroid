@@ -2,6 +2,6 @@
 <network-security-config>
     <!-- Apparently a lot of covers in ovgdb are using cleartext http. This is something that we should fix -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">img.gamefaqs.net</domain>
+        <domain includeSubdomains="true">thumbnails.libretro.com</domain>
     </domain-config>
 </network-security-config>

@@ -37,8 +37,8 @@ import com.codebutler.retrograde.lib.storage.StorageProvider
 import com.codebutler.retrograde.lib.storage.StorageProviderRegistry
 import com.codebutler.retrograde.lib.storage.accessframework.StorageAccessFrameworkProvider
 import com.codebutler.retrograde.lib.storage.local.LocalStorageProvider
-import com.codebutler.retrograde.metadata.ovgdb.OvgdbMetadataProvider
-import com.codebutler.retrograde.metadata.ovgdb.db.OvgdbManager
+import com.codebutler.retrograde.metadata.libretrodb.LibretroDBMetadataProvider
+import com.codebutler.retrograde.metadata.libretrodb.db.LibretroDBManager
 import com.codebutler.retrograde.storage.archiveorg.ArchiveOrgStorageProvider
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.Binds
@@ -106,7 +106,7 @@ abstract class RetrogradeApplicationModule {
         @PerApp
         @JvmStatic
         fun ovgdbManager(app: RetrogradeApplication, executorService: ExecutorService) =
-                OvgdbManager(app, executorService)
+                LibretroDBManager(app, executorService)
 
         @Provides
         @PerApp
@@ -121,20 +121,20 @@ abstract class RetrogradeApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun ovgdbMetadataProvider(ovgdbManager: OvgdbManager) = OvgdbMetadataProvider(ovgdbManager)
+        fun ovgdbMetadataProvider(ovgdbManager: LibretroDBManager) = LibretroDBMetadataProvider(ovgdbManager)
 
         @Provides
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localSAFStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider =
+        fun localSAFStorageProvider(context: Context, metadataProvider: LibretroDBMetadataProvider): StorageProvider =
                 StorageAccessFrameworkProvider(context, metadataProvider)
 
         @Provides
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localGameStorageProvider(context: Context, metadataProvider: OvgdbMetadataProvider): StorageProvider =
+        fun localGameStorageProvider(context: Context, metadataProvider: LibretroDBMetadataProvider): StorageProvider =
                 LocalStorageProvider(context, metadataProvider, true)
 
         @Provides

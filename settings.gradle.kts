@@ -7,5 +7,6 @@ include(
         ":retrograde-app-shared",
         ":retrograde-app-tv",
         ":retrograde-touchinput",
-        ":retrograde-app-mobile"
+        ":retrograde-app-mobile",
+        ":retrograde-metadata-libretro-db"
 )

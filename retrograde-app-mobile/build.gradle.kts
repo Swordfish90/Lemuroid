@@ -46,7 +46,7 @@ android {
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
-    implementation(project(":retrograde-metadata-ovgdb"))
+    implementation(project(":retrograde-metadata-libretro-db"))
     implementation(project(":retrograde-storage-gdrive"))
     implementation(project(":retrograde-storage-webdav"))
     implementation(project(":retrograde-storage-archiveorg"))

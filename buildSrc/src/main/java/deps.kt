@@ -54,10 +54,10 @@ object deps {
                 const val navigationUi = "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
             }
             object room {
-                const val common = "androidx.room:room-common:2.0.0"
-                const val compiler = "androidx.room:room-compiler:2.0.0"
-                const val runtime = "androidx.room:room-runtime:2.0.0"
-                const val rxjava2 = "androidx.room:room-rxjava2:2.0.0"
+                const val common = "androidx.room:room-common:2.2.2"
+                const val compiler = "androidx.room:room-compiler:2.2.2"
+                const val runtime = "androidx.room:room-runtime:2.2.2"
+                const val rxjava2 = "androidx.room:room-rxjava2:2.2.2"
             }
         }
         object arch {
