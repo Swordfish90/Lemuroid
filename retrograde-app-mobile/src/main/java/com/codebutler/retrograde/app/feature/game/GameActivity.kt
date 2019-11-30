@@ -109,9 +109,13 @@ class GameActivity : RetrogradeActivity() {
             restoreAsync(it)
         }
 
-        setupTouchInput(systemId)
+        if (retroGameView.getConnectedGamepads() == 0) {
+            setupTouchInput(systemId)
+        }
 
         handleOrientationChange(resources.configuration.orientation)
+
+        retroGameView.requestFocus()
     }
 
     private fun getSystemDirectory(): File {
