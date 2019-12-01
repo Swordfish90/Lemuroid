@@ -31,7 +31,7 @@ fun InputStream.calculateCrc32(): String = this.use { fileStream ->
         while (crcStream.read(buffer) != -1) {
             // Read file in completely
         }
-        return "%x".format(crcStream.checksum.value)
+        return crcStream.checksum.value.toStringCRC32()
     }
 }
 

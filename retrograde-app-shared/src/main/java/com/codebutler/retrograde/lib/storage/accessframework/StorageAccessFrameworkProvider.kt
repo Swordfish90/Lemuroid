@@ -8,6 +8,7 @@ import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
 import com.codebutler.retrograde.common.db.asSequence
 import com.codebutler.retrograde.common.kotlin.calculateCrc32
+import com.codebutler.retrograde.common.kotlin.toStringCRC32
 import com.codebutler.retrograde.lib.R
 import com.codebutler.retrograde.lib.library.db.entity.Game
 import com.codebutler.retrograde.lib.library.metadata.GameMetadataProvider
@@ -20,6 +21,8 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
+import java.io.InputStream
+import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
     private val context: Context,
@@ -80,14 +83,15 @@ class StorageAccessFrameworkProvider(
                     if (isDirectory(mime)) {
                         val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
                         dirNodes.add(newNode)
-
                         Timber.d("Detected subfolder: $id, name: $name")
                     } else {
                         val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
-                        val crc32 = context.contentResolver.openInputStream(uri)?.calculateCrc32()?.toUpperCase()
-                        result.add(StorageFile(name, size, crc32, uri))
-
-                        Timber.d("Detected file: $id, name: $name, mime: $mime, crc: $crc32")
+                        if (isZipped(mime) && isSingleArchive(uri)) {
+                            Timber.d("Detected single file archive. $name")
+                            result.add(handleUriAsSingleArchive(uri))
+                        } else {
+                            result.add(handleUriAsStandardFile(uri, name, size))
+                        }
                     }
                 }.toList()
             }
@@ -96,7 +100,33 @@ class StorageAccessFrameworkProvider(
         return result
     }
 
+    private fun handleUriAsSingleArchive(uri: Uri): StorageFile {
+        ZipInputStream(context.contentResolver.openInputStream(uri)).use {
+            val entry = it.nextEntry
+
+            Timber.d("Processing zipped entry: ${entry.name}")
+
+            return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), uri)
+        }
+    }
+
+    private fun handleUriAsStandardFile(uri: Uri, name: String, size: Long): StorageFile {
+        val crc32 = context.contentResolver.openInputStream(uri)?.calculateCrc32()
+
+        Timber.d("Detected file: $id, name: $name, crc: $crc32")
+
+        return StorageFile(name, size, crc32, uri)
+    }
+
     private fun isDirectory(mimeType: String) = DocumentsContract.Document.MIME_TYPE_DIR == mimeType
+
+    private fun isZipped(mimeType: String) = mimeType == ZIP_MIME_TYPE
+
+    private fun isSingleArchive(uri: Uri): Boolean {
+        ZipInputStream(context.contentResolver.openInputStream(uri)).use {
+            return it.nextEntry != null && it.nextEntry == null
+        }
+    }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
         val gamesCacheDir = File(context.cacheDir, SAF_CACHE_SUBFOLDER)
@@ -105,12 +135,32 @@ class StorageAccessFrameworkProvider(
         if (gameFile.exists()) {
             return@fromCallable gameFile
         }
-        context.contentResolver.openInputStream(game.fileUri)?.use { inputStream ->
+
+        val mimeType = context.contentResolver.getType(game.fileUri)
+
+        if (mimeType == ZIP_MIME_TYPE) {
+            val stream = ZipInputStream(context.contentResolver.openInputStream(game.fileUri))
+            copyZipInputStreamToFile(gameFile, stream)
+        } else {
+            val stream = context.contentResolver.openInputStream(game.fileUri)!!
+            copyInputStreamToFile(gameFile, stream)
+        }
+        gameFile
+    }
+
+    private fun copyInputStreamToFile(gameFile: File, inputFileStream: InputStream) {
+        inputFileStream.use { inputStream ->
             gameFile.outputStream().use { outputStream ->
                 inputStream.copyTo(outputStream)
             }
         }
-        gameFile
+    }
+
+    private fun copyZipInputStreamToFile(gameFile: File, zipInputFileStream: ZipInputStream) {
+        zipInputFileStream.use { zipInputStream ->
+            zipInputStream.nextEntry
+            copyInputStreamToFile(gameFile, zipInputStream)
+        }
     }
 
     override fun getGameSave(game: Game): Single<Optional<ByteArray>> {
@@ -136,5 +186,6 @@ class StorageAccessFrameworkProvider(
 
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
+        const val ZIP_MIME_TYPE = "application/zip"
     }
 }
