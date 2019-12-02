@@ -21,6 +21,7 @@ object deps {
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
+        const val libretrodroid   = "9663bcc8e0"
     }
 
     object libs {
@@ -76,10 +77,6 @@ object deps {
                 const val archComponents = "com.uber.autodispose:autodispose-android-archcomponents:${versions.autoDispose}"
                 const val archComponentsKtx = "com.uber.autodispose:autodispose-android-archcomponents-ktx:${versions.autoDispose}"
             }
-            object lifecycle {
-                const val core = "com.uber.autodispose:autodispose-lifecycle:${versions.autoDispose}"
-                const val ktx = "com.uber.autodispose:autodispose-lifecycle-ktx:${versions.autoDispose}"
-            }
         }
         object dagger {
             const val core = "com.google.dagger:dagger:${versions.dagger}"
@@ -109,7 +106,6 @@ object deps {
         const val googleApiClient          = "com.google.api-client:google-api-client:${versions.googleApiClient}"
         const val googleApiClientAndroid   = "com.google.api-client:google-api-client-android:${versions.googleApiClient}"
         const val googleApiServicesDrive   = "com.google.apis:google-api-services-drive:v3-rev20181101-1.27.0"
-        const val guava                    = "com.google.guava:guava:27.0.1-android"
         const val jna                      = "net.java.dev.jna:jna:5.1.0@aar"
         const val koptional                = "com.gojuno.koptional:koptional:${versions.koptional}"
         const val koptionalRxJava2         = "com.gojuno.koptional:koptional-rxjava2-extensions:${versions.koptional}"
@@ -133,6 +129,7 @@ object deps {
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
         const val material                 = "com.google.android.material:material:1.1.0-alpha10"
         const val virtualJoystick          = "io.github.controlwear:virtualjoystick:1.10.1"
+        const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 
         // This will be replaced by native material components when they will be ready.
         const val materialProgressBar      = "me.zhanghai.android.materialprogressbar:library:1.6.1"

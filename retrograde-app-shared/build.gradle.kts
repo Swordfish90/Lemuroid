@@ -42,20 +42,10 @@ dependencies {
 
 android {
     defaultConfig {
-        externalNativeBuild {
-            cmake {
-                cppFlags += "-std=c++11"
-            }
-        }
         javaCompileOptions {
             annotationProcessorOptions {
                 argument("room.schemaLocation", "$projectDir/schemas")
             }
-        }
-    }
-    externalNativeBuild {
-        cmake {
-            setPath(File("$projectDir/CMakeLists.txt"))
         }
     }
     kotlinOptions {

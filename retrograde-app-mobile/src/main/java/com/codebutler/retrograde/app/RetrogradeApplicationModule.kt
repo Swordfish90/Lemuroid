@@ -39,7 +39,6 @@ import com.codebutler.retrograde.lib.storage.accessframework.StorageAccessFramew
 import com.codebutler.retrograde.lib.storage.local.LocalStorageProvider
 import com.codebutler.retrograde.metadata.libretrodb.LibretroDBMetadataProvider
 import com.codebutler.retrograde.metadata.libretrodb.db.LibretroDBManager
-import com.codebutler.retrograde.storage.archiveorg.ArchiveOrgStorageProvider
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.Binds
 import dagger.Module
@@ -74,26 +73,6 @@ abstract class RetrogradeApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun gameActivity(): GameActivity
-
-/*    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun gameLauncherActivity(): GameLauncherActivity
-
-    @PerActivity
-    @ContributesAndroidInjector(modules = [GameActivity.Module::class])
-    abstract fun gameActivity(): GameActivity
-
-    @PerActivity
-    @ContributesAndroidInjector(modules = [SettingsActivity.Module::class])
-    abstract fun settingsActivity(): SettingsActivity
-
-    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun licensesActivity(): LicensesActivity
-
-    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun debugLogActivity(): DebugLogActivity*/
 
     @Module
     companion object {
@@ -136,12 +115,6 @@ abstract class RetrogradeApplicationModule {
         @JvmStatic
         fun localGameStorageProvider(context: Context, metadataProvider: LibretroDBMetadataProvider): StorageProvider =
                 LocalStorageProvider(context, metadataProvider, true)
-
-        @Provides
-        @PerApp
-        @IntoSet
-        @JvmStatic
-        fun archiveorgStorageProvider(context: Context): StorageProvider = ArchiveOrgStorageProvider(context)
 
         @Provides
         @PerApp

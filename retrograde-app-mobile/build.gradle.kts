@@ -11,9 +11,9 @@ plugins {
 
 android {
     defaultConfig {
-        applicationId = "com.codebutler.retrograde"
-        versionCode = 5
-        versionName = "0.0.5"
+        applicationId = "com.swordfish.lemuroid"
+        versionCode = 1
+        versionName = "0.0.1"
     }
 
     signingConfigs {
@@ -23,7 +23,7 @@ android {
 
         maybeCreate("release").apply {
             storeFile = file("$rootDir/release.keystore")
-            keyAlias = "retrograde"
+            keyAlias = "lemuroid"
             storePassword = ""
             keyPassword = ""
         }
@@ -47,9 +47,6 @@ dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
     implementation(project(":retrograde-metadata-libretro-db"))
-    implementation(project(":retrograde-storage-gdrive"))
-    implementation(project(":retrograde-storage-webdav"))
-    implementation(project(":retrograde-storage-archiveorg"))
 
     implementation(project(":retrograde-touchinput"))
 
@@ -74,7 +71,6 @@ dependencies {
 
     // TODO All next dependencies might not be correct.
 
-    implementation(deps.libs.androidx.appcompat.palette)
     implementation(deps.libs.androidx.appcompat.recyclerView)
     implementation(deps.libs.androidx.paging.common)
     implementation(deps.libs.androidx.paging.runtime)
@@ -106,9 +102,8 @@ dependencies {
     implementation(deps.libs.rxPermissions2)
     implementation(deps.libs.rxPreferences)
     implementation(deps.libs.rxRelay2)
-    implementation(deps.libs.guava)
 
-    implementation("com.github.Swordfish90:LibretroDroid:9663bcc8e0")
+    implementation(deps.libs.libretrodroid)
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)

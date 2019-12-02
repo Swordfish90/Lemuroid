@@ -7,7 +7,6 @@ plugins {
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
-    implementation(project(":retrograde-metadata-ovgdb"))
 
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxKotlin2)
@@ -19,5 +18,4 @@ dependencies {
     implementation(deps.libs.virtualJoystick)
 
     implementation(kotlin(deps.libs.kotlin.stdlib))
-    //implementation(deps.libs.support.supportCompat)
 }
