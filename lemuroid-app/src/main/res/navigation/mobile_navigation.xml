@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.swordfish.lemuroid.app.feature.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.swordfish.lemuroid.app.feature.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_systems"
+        android:name="com.swordfish.lemuroid.app.feature.games.SystemsFragment"
+        android:label="@string/title_library"
+        tools:layout="@layout/fragment_games" >
+
+        <action
+            android:id="@+id/action_navigation_systems_to_navigation_games"
+            app:destination="@id/navigation_games" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_games"
+        android:name="com.swordfish.lemuroid.app.feature.games.GamesFragment"
+        android:label="@string/title_games"
+        tools:layout="@layout/fragment_games">
+
+        <argument
+            android:name="system_id"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.swordfish.lemuroid.app.feature.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Lemuroid</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_library">Library</string>
+    <string name="title_games">Games</string>
+    <string name="title_settings">Settings</string>
+    <string name="recent">Recents</string>
+    <string name="favorites">Favorites</string>
+    <string name="rescan">Rescan</string>
+    <string name="none">None</string>
+    <string name="folder">Folder</string>
+    <string name="video_effect">Video effect</string>
+    <string name="graphics">Graphics</string>
+    <string name="roms">Roms</string>
+
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="play">Play</string>
+    <string name="quick_save">Quick save</string>
+    <string name="quick_load">Quick load</string>
+    <string name="close_without_saving">Close without saving</string>
+    <string name="reset">Reset</string>
+
+    <string-array name="shader_entries">
+        <item>Auto</item>
+        <item>CRT</item>
+        <item>LCD</item>
+        <item>Pixel perfect</item>
+    </string-array>
+</resources>
