@@ -19,7 +19,6 @@ internal object EventsTransformers {
 
     fun directionPadMap() = ObservableTransformer<ViewEvent.Stick, PadEvent> { upstream ->
         upstream
-            .distinctUntilChanged()
             .map {
                 PadEvent.Stick(StickEventsSource.SOURCE_DPAD, it.xAxis, it.yAxis, it.haptic)
             }

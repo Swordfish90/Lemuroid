@@ -68,7 +68,7 @@ class DirectionPad @JvmOverloads constructor(
         }
     }
 
-    override fun getEvents(): Observable<ViewEvent.Stick> = events
+    override fun getEvents(): Observable<ViewEvent.Stick> = events.distinctUntilChanged()
 
     private fun initializeFromAttributes(a: TypedArray) {
         deadZone = a.getFloat(R.styleable.DirectionPad_deadZone, 0f)
