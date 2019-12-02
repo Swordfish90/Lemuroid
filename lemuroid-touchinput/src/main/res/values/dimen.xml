@@ -18,8 +18,7 @@
     <dimen name="size_large_button_height">@dimen/size_button_medium</dimen>
     <dimen name="size_large_button_width">@dimen/size_button_large</dimen>
 
-    <dimen name="shape_stroke_width">3dp</dimen>
+    <dimen name="button_radius">3dp</dimen>
 
-    <integer name="vector_stroke_width">2</integer>
     <integer name="item_viewportsize">30</integer>
 </resources>

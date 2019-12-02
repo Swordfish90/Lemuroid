@@ -7,8 +7,7 @@
     android:viewportHeight="@integer/item_viewportsize">
 
     <path
-        android:strokeColor="@color/controller_default"
-        android:strokeWidth="@integer/vector_stroke_width"
+        android:fillColor="@color/controller_default"
         android:pathData="M1 15a14 14 0 1 1 0 0.0001"/>
 
 </vector>

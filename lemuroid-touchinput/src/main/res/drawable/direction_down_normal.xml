@@ -7,6 +7,5 @@
 
     <path
         android:pathData="@string/vectorpath_direction_down"
-        android:strokeColor="@color/controller_default"
-        android:strokeWidth="@integer/vector_stroke_width"/>
+        android:fillColor="@color/controller_default" />
 </vector>
