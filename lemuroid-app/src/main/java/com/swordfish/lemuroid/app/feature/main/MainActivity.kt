@@ -22,6 +22,7 @@ import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -59,6 +60,7 @@ class MainActivity : RetrogradeAppCompatActivity() {
 
         val topLevelIds = setOf(
             R.id.navigation_home,
+            R.id.navigation_favorites,
             R.id.navigation_search,
             R.id.navigation_systems,
             R.id.navigation_settings
@@ -106,6 +108,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [SearchFragment.Module::class])
         abstract fun searchFragment(): SearchFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [FavoritesFragment.Module::class])
+        abstract fun favoritesFragment(): FavoritesFragment
 
         /*@PerFragment
         @ContributesAndroidInjector(modules = [GamesGridFragment.Module::class])

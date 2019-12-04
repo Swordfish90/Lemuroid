@@ -11,7 +11,7 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.squareup.picasso.Picasso
 
-@EpoxyModelClass(layout = R.layout.layout_game)
+@EpoxyModelClass(layout = R.layout.layout_game_recent)
 abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
 
     @EpoxyAttribute var title: String? = null

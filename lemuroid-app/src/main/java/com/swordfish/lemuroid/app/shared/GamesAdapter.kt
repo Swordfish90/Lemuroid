@@ -41,6 +41,15 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
                 .into(coverView)
 
         itemView.setOnClickListener { gameInteractor.onGameClick(game) }
+
+        itemView.setOnCreateContextMenuListener(
+            GameContextMenuListener(
+                game.isFavorite,
+                { gameInteractor.onGameClick(game) },
+                { gameInteractor.onFavoriteToggle(game, !game.isFavorite) }
+            )
+        )
+
         favoriteToggle?.setOnCheckedChangeListener { _, isChecked -> gameInteractor.onFavoriteToggle(game, isChecked) }
     }
 

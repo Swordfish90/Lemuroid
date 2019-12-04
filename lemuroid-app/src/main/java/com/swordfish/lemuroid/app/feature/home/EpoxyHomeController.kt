@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.feature.home
 
+import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.carousel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
@@ -9,38 +10,49 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.withModelsFrom
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-class EpoxyHomeController(private val gameInteractor: GameInteractor) : PagedListEpoxyController<Game>() {
+class EpoxyHomeController(private val gameInteractor: GameInteractor) : EpoxyController() {
     private var recentGames = listOf<Game>()
+    private var favoriteGames = listOf<Game>()
+    private var discoverGames = listOf<Game>()
 
     fun updateRecents(games: List<Game>) {
         recentGames = games
         requestDelayedModelBuild(UPDATE_DELAY_TIME)
     }
 
-    override fun buildItemModel(currentPosition: Int, item: Game?): EpoxyModel<*> {
-        return if (item == null) {
-            EpoxyGameView_()
-                    .id(-currentPosition)
-        } else {
-            EpoxyGameView_()
-                    .id(item.id)
-                    .title(item.title)
-                    .coverUrl(item.coverFrontUrl)
-                    .favorite(item.isFavorite)
-                    .onFavoriteChanged { gameInteractor.onFavoriteToggle(item, it) }
-                    .onClick { gameInteractor.onGameClick(item) }
+    fun updateFavorites(games: List<Game>) {
+        favoriteGames = games
+        requestDelayedModelBuild(UPDATE_DELAY_TIME)
+    }
+
+    fun updateDiscover(games: List<Game>) {
+        discoverGames = games
+        requestDelayedModelBuild(UPDATE_DELAY_TIME)
+    }
+
+    override fun buildModels() {
+        if (recentGames.isNotEmpty()) {
+            addCarousel("recent", R.string.recent, recentGames)
+        }
+
+        if (favoriteGames.isNotEmpty()) {
+            addCarousel("favorites", R.string.favorites, favoriteGames)
+        }
+
+        if (discoverGames.isNotEmpty()) {
+            addCarousel("discover", R.string.discover, discoverGames)
         }
     }
 
-    override fun addModels(models: List<EpoxyModel<*>>) {
+    private fun addCarousel(id: String, titleId: Int, games: List<Game>) {
         epoxyHomeSection {
-            id("section_recents")
-            title(R.string.recent)
+            id("section_$id")
+            title(titleId)
         }
         carousel {
-            id("carousel")
-            withModelsFrom(recentGames) { item ->
-                EpoxyGameRecentView_()
+            id("carousel_$id")
+            withModelsFrom(games) { item ->
+                EpoxyGameView_()
                         .id(item.id)
                         .title(item.title)
                         .coverUrl(item.coverFrontUrl)
@@ -49,11 +61,6 @@ class EpoxyHomeController(private val gameInteractor: GameInteractor) : PagedLis
                         .onClick { gameInteractor.onGameClick(item) }
             }
         }
-        epoxyHomeSection {
-            id("section_favorites")
-            title(R.string.favorites)
-        }
-        super.addModels(models)
     }
 
     init {
@@ -67,6 +74,6 @@ class EpoxyHomeController(private val gameInteractor: GameInteractor) : PagedLis
     }
 
     companion object {
-        const val UPDATE_DELAY_TIME = 1000
+        const val UPDATE_DELAY_TIME = 160
     }
 }

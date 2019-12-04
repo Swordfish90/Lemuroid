@@ -7,6 +7,7 @@
     <string name="title_settings">Settings</string>
     <string name="recent">Recents</string>
     <string name="favorites">Favorites</string>
+    <string name="discover">Discover</string>
     <string name="rescan">Rescan</string>
     <string name="none">None</string>
     <string name="folder">Folder</string>

@@ -2,10 +2,13 @@ package com.swordfish.lemuroid.app.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LivePagedListBuilder
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 
 class HomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
+
+    companion object {
+        val CAROUSEL_MAX_ITEMS = 10
+    }
 
     class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -13,7 +16,9 @@ class HomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
         }
     }
 
-    val favoriteGames = LivePagedListBuilder(retrogradeDb.gameDao().selectFavorites(), 20).build()
+    val favoriteGames = retrogradeDb.gameDao().selectFirstFavorites(CAROUSEL_MAX_ITEMS)
 
-    val recentGames = retrogradeDb.gameDao().selectLastRecentlyPlayed(10)
+    val discoverGames = retrogradeDb.gameDao().selectFirstNotPlayed(CAROUSEL_MAX_ITEMS)
+
+    val recentGames = retrogradeDb.gameDao().selectFirstRecents(CAROUSEL_MAX_ITEMS)
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.Carousel
 import com.swordfish.lemuroid.R
@@ -44,14 +45,7 @@ class HomeFragment : Fragment() {
         val pagingController = EpoxyHomeController(gameInteractor)
 
         val recyclerView = view!!.findViewById<RecyclerView>(R.id.home_recyclerview)
-        val layoutManager = DynamicGridLayoutManager(context!!, 2)
-
-        // Sets the first three rows to full width. Two headers and carousel view.
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return if (position < 3) layoutManager.spanCount else 1
-            }
-        }
+        val layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
 
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = pagingController.adapter
@@ -61,7 +55,11 @@ class HomeFragment : Fragment() {
         })
 
         homeViewModel.favoriteGames.observe(this, Observer {
-            pagingController.submitList(it)
+            pagingController.updateFavorites(it)
+        })
+
+        homeViewModel.discoverGames.observe(this, Observer {
+            pagingController.updateDiscover(it)
         })
     }
 

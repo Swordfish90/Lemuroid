@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment"
+        android:label="@string/favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
         android:id="@+id/navigation_search"
         android:name="com.swordfish.lemuroid.app.feature.search.SearchFragment"
         android:label="@string/title_search"
