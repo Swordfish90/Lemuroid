@@ -29,9 +29,14 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
     fun bind(game: Game, gameInteractor: GameInteractor) {
         val systemName = getSystemNameForGame(game)
+        val developerName = if (game.developer?.isNotBlank() == true) {
+            "- ${game.developer}"
+        } else {
+            ""
+        }
 
         titleView?.text = game.title
-        subtitleView?.text = "$systemName - ${game.developer}"
+        subtitleView?.text = "$systemName $developerName"
         favoriteToggle?.isChecked = game.isFavorite
 
         Picasso.get()
