@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/text"
     android:textAppearance="?attr/textAppearanceOverline"
-    android:padding="@dimen/grid_unit_2x"
+    android:paddingTop="@dimen/grid_unit_2x"
+    android:paddingStart="@dimen/grid_unit_2x"
+    android:paddingEnd="@dimen/grid_unit_2x"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
