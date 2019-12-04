@@ -1,16 +1,14 @@
 package com.swordfish.lemuroid.app.feature.home
 
-import com.airbnb.epoxy.EpoxyController
-import com.airbnb.epoxy.EpoxyModel
+import com.airbnb.epoxy.AsyncEpoxyController
 import com.airbnb.epoxy.carousel
-import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.withModelsFrom
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-class EpoxyHomeController(private val gameInteractor: GameInteractor) : EpoxyController() {
+class EpoxyHomeController(private val gameInteractor: GameInteractor) : AsyncEpoxyController() {
     private var recentGames = listOf<Game>()
     private var favoriteGames = listOf<Game>()
     private var discoverGames = listOf<Game>()

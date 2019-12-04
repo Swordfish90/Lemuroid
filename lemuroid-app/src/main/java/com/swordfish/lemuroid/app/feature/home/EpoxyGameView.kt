@@ -14,11 +14,20 @@ import com.squareup.picasso.Picasso
 @EpoxyModelClass(layout = R.layout.layout_game_recent)
 abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
 
-    @EpoxyAttribute var title: String? = null
-    @EpoxyAttribute var coverUrl: String? = null
-    @EpoxyAttribute var favorite: Boolean? = null
-    @EpoxyAttribute var onClick: (() -> Unit)? = null
-    @EpoxyAttribute var onFavoriteChanged: ((Boolean) -> Unit)? = null
+    @EpoxyAttribute
+    var title: String? = null
+
+    @EpoxyAttribute
+    var coverUrl: String? = null
+
+    @EpoxyAttribute
+    var favorite: Boolean? = null
+
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    var onClick: (() -> Unit)? = null
+
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    var onFavoriteChanged: ((Boolean) -> Unit)? = null
 
     override fun bind(holder: Holder) {
         holder.titleView?.text = title

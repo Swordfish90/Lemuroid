@@ -66,6 +66,7 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         }
         itemView.setOnClickListener(null)
         favoriteToggle?.setOnCheckedChangeListener(null)
+        itemView.setOnCreateContextMenuListener(null)
     }
 }
 
