@@ -14,6 +14,7 @@ import com.swordfish.lemuroid.app.shared.DynamicGridLayoutManager
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.GamesAdapter
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.ui.updateVisibility
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -23,6 +24,7 @@ class FavoritesFragment : Fragment() {
     @Inject lateinit var gameInteractor: GameInteractor
 
     private lateinit var favoritesViewModel: FavoritesViewModel
+    private lateinit var emptyView: View
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -36,6 +38,8 @@ class FavoritesFragment : Fragment() {
         favoritesViewModel = ViewModelProviders.of(this, FavoritesViewModel.Factory(retrogradeDb))
             .get(FavoritesViewModel::class.java)
 
+        emptyView = root.findViewById<View>(R.id.favorites_empty_view)
+
         return root
     }
 
@@ -45,6 +49,7 @@ class FavoritesFragment : Fragment() {
         val gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
         favoritesViewModel.favorites.observe(this, Observer {
             gamesAdapter.submitList(it)
+            emptyView.updateVisibility(it.isEmpty())
         })
 
         view?.findViewById<RecyclerView>(R.id.favorites_recyclerview)?.apply {

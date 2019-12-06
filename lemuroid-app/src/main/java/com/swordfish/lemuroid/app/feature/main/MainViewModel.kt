@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkManager
+import com.swordfish.lemuroid.app.feature.settings.LibraryIndexMonitor
 import com.swordfish.lemuroid.lib.library.LibraryIndexWork
 
 class MainViewModel(appContext: Context) : ViewModel() {
@@ -14,6 +15,5 @@ class MainViewModel(appContext: Context) : ViewModel() {
         }
     }
 
-    val indexingInProgress =
-            WorkManager.getInstance(appContext).getWorkInfosForUniqueWorkLiveData(LibraryIndexWork.UNIQUE_WORK_ID)
+    val indexingInProgress = LibraryIndexMonitor(appContext).getLiveData()
 }

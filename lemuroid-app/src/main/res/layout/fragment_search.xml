@@ -9,4 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <include
+        layout="@layout/layout_empty_simple"
+        android:id="@+id/search_empty_view"
+        android:visibility="gone" />
+
 </FrameLayout>

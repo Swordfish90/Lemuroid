@@ -49,11 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun handleRescan() {
-        WorkManager.getInstance(context!!).enqueueUniqueWork(
-                LibraryIndexWork.UNIQUE_WORK_ID,
-                ExistingWorkPolicy.APPEND,
-                LibraryIndexWork.newRequest()
-        )
+        context?.let { LibraryIndexWork.enqueueUniqueWork(it) }
     }
 
     @dagger.Module

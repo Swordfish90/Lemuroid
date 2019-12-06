@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,8 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.GamesAdapter
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
+import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
+import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
 import dagger.android.support.AndroidSupportInjection
@@ -33,6 +36,8 @@ class SearchFragment : Fragment() {
     @Inject lateinit var gameInteractor: GameInteractor
 
     private lateinit var searchViewModel: SearchViewModel
+
+    private lateinit var emptyView: View
 
     private var searchSubject: PublishSubject<String> = PublishSubject.create()
 
@@ -77,6 +82,8 @@ class SearchFragment : Fragment() {
         searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
             .get(SearchViewModel::class.java)
 
+        emptyView = root.findViewById(R.id.search_empty_view)
+
         return root
     }
 
@@ -86,6 +93,10 @@ class SearchFragment : Fragment() {
         val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
         searchViewModel.searchResults.observe(this, Observer {
             gamesAdapter.submitList(it)
+        })
+
+        searchViewModel.emptyViewVisible.observe(this, Observer {
+            emptyView.updateVisibility(it)
         })
 
         searchSubject

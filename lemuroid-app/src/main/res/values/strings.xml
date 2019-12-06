@@ -2,7 +2,7 @@
     <string name="app_name">Lemuroid</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
-    <string name="title_library">Library</string>
+    <string name="title_systems">Systems</string>
     <string name="title_games">Games</string>
     <string name="title_settings">Settings</string>
     <string name="recent">Recents</string>
@@ -10,8 +10,8 @@
     <string name="discover">Discover</string>
     <string name="rescan">Rescan</string>
     <string name="none">None</string>
-    <string name="folder">Folder</string>
-    <string name="simulate_screen">Simulate screen</string>
+    <string name="directory">Directory</string>
+    <string name="simulate_display">Simulate display</string>
     <string name="graphics">Graphics</string>
     <string name="roms">Roms</string>
 
@@ -23,10 +23,9 @@
     <string name="close_without_saving">Close without saving</string>
     <string name="reset">Reset</string>
 
-    <string-array name="shader_entries">
-        <item>Auto</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>Pixel perfect</item>
-    </string-array>
+    <string name="home_empty_title">Select Roms directory</string>
+    <string name="home_empty_message">Lemuroid needs to scan a directory containing Rom files.\nThis might take up to a few minutes.</string>
+    <string name="home_empty_action">Select Directory</string>
+
+    <string name="empty_view_default">No Items</string>
 </resources>

@@ -13,6 +13,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.DynamicGridLayoutManager
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -27,7 +28,7 @@ class SystemsFragment : Fragment() {
 
     private var systemsAdapter: SystemsAdapter? = null
 
-    private var systemsViewModel: SystemsViewModel? = null
+    private lateinit var systemsViewModel: SystemsViewModel
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -44,16 +45,20 @@ class SystemsFragment : Fragment() {
         systemsViewModel = ViewModelProviders.of(this, SystemsViewModel.Factory(retrogradeDb))
                 .get(SystemsViewModel::class.java)
 
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.games_recyclerview)
+        val emptyView = view?.findViewById<View>(R.id.games_empty_view)
+
         systemsAdapter = SystemsAdapter { navigateToGames(it) }
-        systemsViewModel?.availableSystems
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.autoDisposable(scope())
-                ?.subscribeBy {
+        systemsViewModel.availableSystems
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .autoDisposable(scope())
+                .subscribeBy {
                     systemsAdapter?.submitList(it)
+                    emptyView?.updateVisibility(it.isEmpty())
                 }
 
-        view?.findViewById<RecyclerView>(R.id.games_recyclerview)?.apply {
+        recyclerView?.apply {
             this.adapter = systemsAdapter
             this.layoutManager = DynamicGridLayoutManager(context, 2)
         }

@@ -8,7 +8,7 @@
 
         <Preference
             android:key="@string/pref_key_extenral_folder"
-            android:title="@string/folder"
+            android:title="@string/directory"
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true"/>
 
@@ -26,7 +26,7 @@
 
         <SwitchPreferenceCompat
             android:key="@string/pref_key_shader"
-            android:title="@string/simulate_screen"
+            android:title="@string/simulate_display"
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
 

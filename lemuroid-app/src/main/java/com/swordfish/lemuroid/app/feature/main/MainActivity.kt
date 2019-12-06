@@ -23,6 +23,8 @@ import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment
+import com.swordfish.lemuroid.app.feature.settings.SettingsInteractor
+import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -73,14 +75,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
         val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
                 .get(MainViewModel::class.java)
 
-        mainViewModel.indexingInProgress.observe(this, Observer { workInfos ->
-            if (workInfos != null) {
-                val isRunning = workInfos
-                    .map { it.state }
-                    .any { it in listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED) }
-
-                findViewById<MaterialProgressBar>(R.id.progress).visibility = if (isRunning) View.VISIBLE else View.GONE
-            }
+        mainViewModel.indexingInProgress.observe(this, Observer { isRunning ->
+            findViewById<MaterialProgressBar>(R.id.progress).updateVisibility(isRunning)
         })
     }
 
@@ -113,16 +109,14 @@ class MainActivity : RetrogradeAppCompatActivity() {
         @ContributesAndroidInjector(modules = [FavoritesFragment.Module::class])
         abstract fun favoritesFragment(): FavoritesFragment
 
-        /*@PerFragment
-        @ContributesAndroidInjector(modules = [GamesGridFragment.Module::class])
-        abstract fun gamesGridFragment(): GamesGridFragment
-
-        @PerFragment
-        @ContributesAndroidInjector(modules = [GamesSearchFragment.Module::class])
-        abstract fun gamesSearchFragment(): GamesSearchFragment*/
-
         @dagger.Module
         companion object {
+
+            @Provides
+            @PerActivity
+            @JvmStatic
+            fun settingsInteractor(activity: MainActivity) =
+                    SettingsInteractor(activity)
 
             @Provides
             @PerActivity

@@ -19,7 +19,7 @@
     <item
         android:id="@+id/navigation_systems"
         android:icon="@drawable/ic_videogame_asset_black_24dp"
-        android:title="@string/title_library" />
+        android:title="@string/title_systems" />
 
     <item
         android:id="@+id/navigation_settings"

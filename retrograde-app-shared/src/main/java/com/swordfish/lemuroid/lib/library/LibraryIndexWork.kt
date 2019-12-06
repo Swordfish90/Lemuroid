@@ -1,9 +1,11 @@
 package com.swordfish.lemuroid.lib.library
 
 import android.content.Context
+import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.RxWorker
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
@@ -28,6 +30,14 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWor
     companion object {
         val UNIQUE_WORK_ID = LibraryIndexWork::class.java.simpleName
         fun newRequest() = OneTimeWorkRequestBuilder<LibraryIndexWork>().build()
+
+        fun enqueueUniqueWork(applicationContext: Context) {
+            WorkManager.getInstance(applicationContext).enqueueUniqueWork(
+                UNIQUE_WORK_ID,
+                ExistingWorkPolicy.APPEND,
+                newRequest()
+            )
+        }
     }
 
     @dagger.Module(subcomponents = [Subcomponent::class])

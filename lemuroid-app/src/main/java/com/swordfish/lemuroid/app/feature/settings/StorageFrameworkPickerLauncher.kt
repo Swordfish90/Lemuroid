@@ -6,12 +6,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.fragment.app.FragmentActivity
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.lib.library.LibraryIndexWork
 
 class StorageFrameworkPickerLauncher : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (savedInstanceState == null) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
                 this.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -40,8 +44,14 @@ class StorageFrameworkPickerLauncher : FragmentActivity() {
                 this.putString(preferenceKey, newRootUri.toString())
                 this.apply()
             }
+
+            startLibraryIndexWork()
         }
         finish()
+    }
+
+    private fun startLibraryIndexWork() {
+        LibraryIndexWork.enqueueUniqueWork(applicationContext)
     }
 
     private fun clearPreviousPersistentUris() {

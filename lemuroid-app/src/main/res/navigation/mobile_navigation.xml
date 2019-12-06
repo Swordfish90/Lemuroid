@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/navigation_systems"
         android:name="com.swordfish.lemuroid.app.feature.games.SystemsFragment"
-        android:label="@string/title_library"
+        android:label="@string/title_systems"
         tools:layout="@layout/fragment_games" >
 
         <action

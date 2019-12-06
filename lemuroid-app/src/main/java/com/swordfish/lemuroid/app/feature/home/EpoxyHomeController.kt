@@ -5,13 +5,20 @@ import com.airbnb.epoxy.carousel
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.feature.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.shared.withModelsFrom
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-class EpoxyHomeController(private val gameInteractor: GameInteractor) : AsyncEpoxyController() {
+class EpoxyHomeController(
+    private val gameInteractor: GameInteractor,
+    private val settingsInteractor: SettingsInteractor
+) : AsyncEpoxyController() {
+
     private var recentGames = listOf<Game>()
     private var favoriteGames = listOf<Game>()
     private var discoverGames = listOf<Game>()
+
+    private var libraryIndexingInProgress = false
 
     fun updateRecents(games: List<Game>) {
         recentGames = games
@@ -28,6 +35,11 @@ class EpoxyHomeController(private val gameInteractor: GameInteractor) : AsyncEpo
         requestDelayedModelBuild(UPDATE_DELAY_TIME)
     }
 
+    fun updateLibraryIndexingInProgress(indexingInProgress: Boolean) {
+        libraryIndexingInProgress = indexingInProgress
+        requestDelayedModelBuild(UPDATE_DELAY_TIME)
+    }
+
     override fun buildModels() {
         if (recentGames.isNotEmpty()) {
             addCarousel("recent", R.string.recent, recentGames)
@@ -39,6 +51,10 @@ class EpoxyHomeController(private val gameInteractor: GameInteractor) : AsyncEpo
 
         if (discoverGames.isNotEmpty()) {
             addCarousel("discover", R.string.discover, discoverGames)
+        }
+
+        if (recentGames.isEmpty() && favoriteGames.isEmpty() && discoverGames.isEmpty()) {
+            addEmptyView()
         }
     }
 
@@ -58,6 +74,17 @@ class EpoxyHomeController(private val gameInteractor: GameInteractor) : AsyncEpo
                         .onFavoriteChanged { gameInteractor.onFavoriteToggle(item, it) }
                         .onClick { gameInteractor.onGameClick(item) }
             }
+        }
+    }
+
+    private fun addEmptyView() {
+        epoxyEmptyViewAction {
+            id("empty_home")
+                .title(R.string.home_empty_title)
+                .message(R.string.home_empty_message)
+                .action(R.string.home_empty_action)
+                .actionEnabled(!libraryIndexingInProgress)
+                .onClick { settingsInteractor.changeLocalStorageFolder() }
         }
     }
 
