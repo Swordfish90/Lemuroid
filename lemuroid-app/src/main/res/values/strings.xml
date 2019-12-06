@@ -13,7 +13,7 @@
     <string name="directory">Directory</string>
     <string name="simulate_display">Simulate display</string>
     <string name="graphics">Graphics</string>
-    <string name="roms">Roms</string>
+    <string name="roms">ROMs</string>
 
     <string name="add_to_favorites">Add to favorites</string>
     <string name="remove_from_favorites">Remove from favorites</string>
@@ -23,9 +23,14 @@
     <string name="close_without_saving">Close without saving</string>
     <string name="reset">Reset</string>
 
-    <string name="home_empty_title">Select Roms directory</string>
-    <string name="home_empty_message">Lemuroid needs to scan a directory containing Rom files.\nThis might take up to a few minutes.</string>
+    <string name="home_empty_title">Select ROMs directory</string>
+    <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
     <string name="home_empty_action">Select Directory</string>
 
     <string name="empty_view_default">No Items</string>
+
+    <string name="notification_channel_name">All notifications</string>
+    <string name="library_index_notification_title">ROMs scanning</string>
+    <string name="library_index_notification_message"></string>
+
 </resources>

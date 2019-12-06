@@ -12,6 +12,7 @@ class GameInteractor(
 ) {
     fun onGameClick(game: Game) {
         GameLauncherActivity.launchGame(context, game)
+        retrogradeDb.gameDao().updateAsync(game.copy(lastPlayedAt = System.currentTimeMillis())).subscribe()
     }
 
     fun onFavoriteToggle(game: Game, isFavorite: Boolean) {

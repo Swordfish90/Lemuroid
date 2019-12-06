@@ -7,10 +7,8 @@ import android.preference.PreferenceManager
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkManager
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.lib.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
 import dagger.android.support.AndroidSupportInjection
 
 class SettingsFragment : PreferenceFragmentCompat() {

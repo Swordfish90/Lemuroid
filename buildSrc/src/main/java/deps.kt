@@ -17,7 +17,7 @@ object deps {
         const val moshi           = "1.8.0"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
-        const val work            = "2.2.0"
+        const val work            = "2.3.0-beta01"
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"

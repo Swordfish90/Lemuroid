@@ -23,7 +23,6 @@ import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.library.GameLibrary
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.gojuno.koptional.Optional
 import io.reactivex.Maybe
@@ -44,7 +43,6 @@ class GameLoader(
         return loadGame(gameId)
                 .subscribeOn(Schedulers.io())
                 .flatMapSingle { game -> prepareGame(game) }
-                .doOnSuccess { data -> updateTimestamp(data.game) }
     }
 
     private fun prepareGame(game: Game): Single<GameData> {
@@ -61,12 +59,6 @@ class GameLoader(
                 Function3<File, File, Optional<ByteArray>, GameData> { coreFile, gameFile, saveData ->
                     GameData(game, coreFile, gameFile, saveData.toNullable())
                 })
-    }
-
-    private fun updateTimestamp(game: Game) {
-        retrogradeDatabase.gameDao()
-                .updateAsync(game.copy(lastPlayedAt = System.currentTimeMillis()))
-                .subscribe()
     }
 
     @Suppress("ArrayInDataClass")

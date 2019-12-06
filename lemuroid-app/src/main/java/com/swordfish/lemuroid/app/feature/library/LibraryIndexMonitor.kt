@@ -1,11 +1,10 @@
-package com.swordfish.lemuroid.app.feature.settings
+package com.swordfish.lemuroid.app.feature.library
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.swordfish.lemuroid.lib.library.LibraryIndexWork
 
 class LibraryIndexMonitor(private val appContext: Context) {
 

@@ -3,9 +3,7 @@ package com.swordfish.lemuroid.app.feature.main
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.WorkManager
-import com.swordfish.lemuroid.app.feature.settings.LibraryIndexMonitor
-import com.swordfish.lemuroid.lib.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.feature.library.LibraryIndexMonitor
 
 class MainViewModel(appContext: Context) : ViewModel() {
 

@@ -6,10 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.fragment.app.FragmentActivity
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkManager
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.lib.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
 
 class StorageFrameworkPickerLauncher : FragmentActivity() {
 
