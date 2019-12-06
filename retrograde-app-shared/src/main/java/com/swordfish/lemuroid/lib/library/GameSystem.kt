@@ -60,7 +60,7 @@ data class GameSystem(
                         R.string.game_system_abbr_nes,
                         R.drawable.game_system_nes,
                         "nintendo0",
-                        "quicknes_libretro_android.so.zip",
+                        "fceumm_libretro_android.so.zip",
                         listOf("nes")
                 ),
                 GameSystem(
