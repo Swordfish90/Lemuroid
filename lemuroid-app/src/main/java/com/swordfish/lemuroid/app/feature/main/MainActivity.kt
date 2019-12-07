@@ -1,15 +1,12 @@
 package com.swordfish.lemuroid.app.feature.main
 
-import android.Manifest
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.work.WorkInfo
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.feature.games.GamesFragment
 import com.swordfish.lemuroid.app.feature.games.SystemsFragment
@@ -26,8 +23,6 @@ import com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.feature.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDisposable
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -37,21 +32,7 @@ class MainActivity : RetrogradeAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val permissions = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-
-        RxPermissions(this).request(*permissions)
-                .autoDisposable(scope())
-                .subscribe { granted ->
-                    if (granted) {
-                        initializeActivity()
-                    } else {
-                        finish()
-                    }
-                }
+        initializeActivity()
     }
 
     private fun initializeActivity() {

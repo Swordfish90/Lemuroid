@@ -44,7 +44,9 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import java.io.File
+import javax.inject.Inject
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -84,6 +86,8 @@ class GameActivity : RetrogradeActivity() {
 
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
 
+        val directoriesManager = DirectoriesManager(applicationContext)
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
 
@@ -91,8 +95,8 @@ class GameActivity : RetrogradeActivity() {
                 this,
                 intent.getStringExtra(EXTRA_CORE_PATH),
                 intent.getStringExtra(EXTRA_GAME_PATH),
-                getSystemDirectory().absolutePath,
-                getSavesDirectory().absolutePath,
+                directoriesManager.getSystemDirectory().absolutePath,
+                directoriesManager.getSavesDirectory().absolutePath,
                 getShaderForSystem(useShaders, systemId)
         )
 
@@ -116,14 +120,6 @@ class GameActivity : RetrogradeActivity() {
         handleOrientationChange(resources.configuration.orientation)
 
         retroGameView.requestFocus()
-    }
-
-    private fun getSystemDirectory(): File {
-        return File(filesDir, "system").apply { mkdirs() }
-    }
-
-    private fun getSavesDirectory(): File {
-        return File(filesDir, "saves").apply { mkdirs() }
     }
 
     private fun getShaderForSystem(useShader: Boolean, systemId: String): Int {

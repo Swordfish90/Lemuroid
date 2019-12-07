@@ -40,6 +40,7 @@ import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -106,8 +107,12 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localSAFStorageProvider(context: Context, metadataProvider: LibretroDBMetadataProvider): StorageProvider =
-                StorageAccessFrameworkProvider(context, metadataProvider)
+        fun localSAFStorageProvider(
+                context: Context,
+                metadataProvider: LibretroDBMetadataProvider,
+                directoriesManager: DirectoriesManager
+        ): StorageProvider =
+                StorageAccessFrameworkProvider(context, metadataProvider, directoriesManager)
 
         @Provides
         @PerApp
@@ -164,7 +169,12 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coreManager(context: Context, retrofit: Retrofit) = CoreManager(context, retrofit)
+        fun directoriesManager(context: Context) = DirectoriesManager(context)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun coreManager(directoriesManager: DirectoriesManager, retrofit: Retrofit) = CoreManager(directoriesManager, retrofit)
 
         @Provides
         @PerApp

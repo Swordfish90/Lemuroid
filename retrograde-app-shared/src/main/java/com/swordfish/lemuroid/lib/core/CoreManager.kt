@@ -24,6 +24,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import com.swordfish.lemuroid.lib.BuildConfig
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Single
 import okio.buffer
 import okio.sink
@@ -36,7 +37,7 @@ import retrofit2.http.Url
 import java.io.File
 import java.util.zip.ZipInputStream
 
-class CoreManager(context: Context, retrofit: Retrofit) {
+class CoreManager(directoriesManager: DirectoriesManager, retrofit: Retrofit) {
 
     private val baseUri = Uri.parse("https://buildbot.libretro.com/")
     private val coresUri = baseUri.buildUpon()
@@ -46,7 +47,7 @@ class CoreManager(context: Context, retrofit: Retrofit) {
 
     private val api = retrofit.create(CoreManagerApi::class.java)
 
-    private val coresDir = File(context.filesDir, "cores")
+    private val coresDir = directoriesManager.getCoresDirectory()
 
     init {
         coresDir.mkdirs()

@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.lib.storage.accessframework
 
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.provider.DocumentsContract
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
@@ -17,16 +16,19 @@ import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
+import javax.inject.Inject
 
 class StorageAccessFrameworkProvider(
     private val context: Context,
-    override val metadataProvider: GameMetadataProvider
+    override val metadataProvider: GameMetadataProvider,
+    private val directoriesManager: DirectoriesManager
 ) : StorageProvider {
 
     override val id: String = "access_framework"
@@ -178,10 +180,8 @@ class StorageAccessFrameworkProvider(
     }
 
     private fun getSaveFile(game: Game): File {
-        val retrogradeDir = File(Environment.getExternalStorageDirectory(), "retrograde")
-        val savesDir = File(retrogradeDir, "saves")
-        savesDir.mkdirs()
-        return File(savesDir, "${game.fileName}.sram")
+        val statesDirectories = directoriesManager.getStatesDirectory()
+        return File(statesDirectories, "${game.fileName}.state")
     }
 
     companion object {

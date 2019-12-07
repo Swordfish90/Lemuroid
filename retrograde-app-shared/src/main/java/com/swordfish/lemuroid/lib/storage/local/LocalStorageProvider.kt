@@ -36,6 +36,9 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.File
 
+// I'm keeping this class here only because it might be needed in the future, but we should rely on SAF now.
+
+@Deprecated("This class is no longer needed use the LocalStorageAccessFrameworkProvider class.")
 class LocalStorageProvider(
     private val context: Context,
     override val metadataProvider: GameMetadataProvider,
