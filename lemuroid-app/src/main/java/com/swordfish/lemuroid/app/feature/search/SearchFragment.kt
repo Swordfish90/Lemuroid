@@ -2,12 +2,14 @@ package com.swordfish.lemuroid.app.feature.search
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,7 +22,9 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.GamesAdapter
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
+import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
+import com.swordfish.lemuroid.common.kotlin.bindView
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -30,19 +34,16 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SearchFragment : Fragment() {
+class SearchFragment : RecyclerViewFragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
 
     private lateinit var searchViewModel: SearchViewModel
 
-    private lateinit var emptyView: View
-
     private var searchSubject: PublishSubject<String> = PublishSubject.create()
 
     override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
         super.onAttach(context)
         setHasOptionsMenu(true)
     }
@@ -51,6 +52,13 @@ class SearchFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.search_menu, menu)
         setupSearchMenuItem(menu)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
+                .get(SearchViewModel::class.java)
     }
 
     private fun setupSearchMenuItem(menu: Menu) {
@@ -75,18 +83,6 @@ class SearchFragment : Fragment() {
                 .subscribe(searchSubject)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreate(savedInstanceState)
-        val root = inflater.inflate(R.layout.fragment_search, container, false)
-
-        searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
-            .get(SearchViewModel::class.java)
-
-        emptyView = root.findViewById(R.id.search_empty_view)
-
-        return root
-    }
-
     override fun onResume() {
         super.onResume()
 
@@ -96,7 +92,7 @@ class SearchFragment : Fragment() {
         })
 
         searchViewModel.emptyViewVisible.observe(this, Observer {
-            emptyView.updateVisibility(it)
+            emptyView?.updateVisibility(it)
         })
 
         searchSubject
@@ -104,10 +100,11 @@ class SearchFragment : Fragment() {
             .autoDisposable(scope())
             .subscribe { searchViewModel.queryString.postValue(it) }
 
-        view?.findViewById<RecyclerView>(R.id.search_recyclerview)?.apply {
-            this.adapter = gamesAdapter
-            this.layoutManager = LinearLayoutManager(context)
+        recyclerView?.apply {
+            adapter = gamesAdapter
+            layoutManager = LinearLayoutManager(context)
         }
+        restoreRecyclerViewState()
     }
 
     @dagger.Module

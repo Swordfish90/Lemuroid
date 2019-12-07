@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.swordfish.lemuroid.app.feature.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="@string/title_home" />
 
     <fragment
         android:id="@+id/navigation_favorites"
         android:name="com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment"
-        android:label="@string/favorites"
-        tools:layout="@layout/fragment_favorites" />
+        android:label="@string/favorites" />
 
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.swordfish.lemuroid.app.feature.search.SearchFragment"
-        android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        android:label="@string/title_search" />
 
     <fragment
         android:id="@+id/navigation_systems"
         android:name="com.swordfish.lemuroid.app.feature.games.SystemsFragment"
-        android:label="@string/title_systems"
-        tools:layout="@layout/fragment_games" >
+        android:label="@string/title_systems" >
 
         <action
             android:id="@+id/action_navigation_systems_to_navigation_games"
@@ -38,8 +33,7 @@
     <fragment
         android:id="@+id/navigation_games"
         android:name="com.swordfish.lemuroid.app.feature.games.GamesFragment"
-        android:label="@string/title_games"
-        tools:layout="@layout/fragment_games">
+        android:label="@string/title_games">
 
         <argument
             android:name="system_id"
@@ -51,7 +45,6 @@
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.swordfish.lemuroid.app.feature.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:label="@string/title_settings" />
 
 </navigation>
