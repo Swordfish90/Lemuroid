@@ -14,7 +14,7 @@ class NotificationsManager(private val applicationContext: Context) {
         createDefaultNotificationChannel()
 
         val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_folder_white_24dp) // TODO Here we should have a small lemuroid notification
+                .setSmallIcon(R.drawable.ic_lemuroid_tiny)
                 .setContentTitle(applicationContext.getString(R.string.library_index_notification_title))
                 .setContentText(applicationContext.getString(R.string.library_index_notification_message))
                 .setProgress(100, 0, true)
