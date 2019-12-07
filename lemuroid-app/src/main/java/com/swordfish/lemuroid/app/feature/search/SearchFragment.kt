@@ -25,6 +25,7 @@ import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
+import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -93,7 +94,7 @@ class SearchFragment : RecyclerViewFragment() {
 
         searchSubject
             .distinctUntilChanged()
-            .autoDisposable(scope())
+            .autoDispose(scope())
             .subscribe { searchViewModel.queryString.postValue(it) }
 
         recyclerView?.apply {

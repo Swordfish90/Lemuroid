@@ -44,6 +44,8 @@ import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.uber.autodispose.AutoDispose.autoDisposable
+import com.uber.autodispose.autoDispose
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -232,7 +234,7 @@ class GameActivity : RetrogradeActivity() {
                         performHapticFeedback(gameView)
                     }
                 }
-                .autoDisposable(scope())
+                .autoDispose(scope())
                 .subscribe {
                     when (it) {
                         is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
@@ -270,7 +272,7 @@ class GameActivity : RetrogradeActivity() {
     override fun onBackPressed() {
         saveAndFinish()
             .subscribeOn(Schedulers.io())
-            .autoDisposable(scope())
+            .autoDispose(scope())
             .subscribe()
     }
 

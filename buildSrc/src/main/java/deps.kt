@@ -1,14 +1,14 @@
 /* ktlint-disable no-multi-spaces max-line-length */
 object deps {
     object android {
-        const val compileSdkVersion = 28
-        const val targetSdkVersion  = 28
+        const val compileSdkVersion = 29
+        const val targetSdkVersion  = 29
         const val minSdkVersion     = 23
         const val buildToolsVersion = "28.0.3"
     }
 
     object versions {
-        const val autoDispose     = "1.0.0"
+        const val autoDispose     = "1.4.0"
         const val dagger          = "2.19"
         const val gms             = "15.0.0"
         const val googleApiClient = "1.27.0"
@@ -70,12 +70,9 @@ object deps {
         }
         object autodispose {
             const val core = "com.uber.autodispose:autodispose:${versions.autoDispose}"
-            const val ktx = "com.uber.autodispose:autodispose-ktx:${versions.autoDispose}"
             object android {
                 const val core = "com.uber.autodispose:autodispose-android:${versions.autoDispose}"
-                const val ktx = "com.uber.autodispose:autodispose-android-ktx:${versions.autoDispose}"
                 const val archComponents = "com.uber.autodispose:autodispose-android-archcomponents:${versions.autoDispose}"
-                const val archComponentsKtx = "com.uber.autodispose:autodispose-android-archcomponents-ktx:${versions.autoDispose}"
             }
         }
         object dagger {

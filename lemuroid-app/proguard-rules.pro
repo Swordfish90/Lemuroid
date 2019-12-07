@@ -18,6 +18,7 @@
 -dontwarn org.jetbrains.annotations.**
 -keep class kotlin.Metadata { *; }
 -keep class android.arch.lifecycle.**
+-dontwarn kotlinx.coroutines.flow.**
 
 ## Okio
 -dontwarn okio.**
@@ -67,3 +68,6 @@
 -dontwarn junit.**
 -dontwarn com.google.errorprone.**
 -dontnote android.net.http.*
+
+## AutoDispose
+-keepnames public interface com.uber.autodispose.lifecycle.CorrespondingEventsFunction { *; }

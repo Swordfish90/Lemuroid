@@ -9,7 +9,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDisposable
+import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -32,7 +32,7 @@ class SystemsFragment : RecyclerViewFragment() {
         systemsViewModel.availableSystems
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope())
+                .autoDispose(scope())
                 .subscribeBy {
                     systemsAdapter?.submitList(it)
                     emptyView?.updateVisibility(it.isEmpty())

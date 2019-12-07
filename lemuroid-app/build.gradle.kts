@@ -22,10 +22,10 @@ android {
         }
 
         maybeCreate("release").apply {
-            storeFile = file("$rootDir/release.keystore")
+            storeFile = file("$rootDir/release.jks")
             keyAlias = "lemuroid"
-            storePassword = ""
-            keyPassword = ""
+            storePassword = "lemuroid"
+            keyPassword = "lemuroid"
         }
     }
 
@@ -79,12 +79,8 @@ dependencies {
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.room.rxjava2)
     implementation(deps.libs.autodispose.android.archComponents)
-    implementation(deps.libs.autodispose.android.archComponentsKtx)
-
     implementation(deps.libs.autodispose.android.core)
-    implementation(deps.libs.autodispose.android.ktx)
     implementation(deps.libs.autodispose.core)
-    implementation(deps.libs.autodispose.ktx)
     implementation(deps.libs.bugsnagAndroid)
     implementation(deps.libs.bugsnagAndroidNdk)
     implementation(deps.libs.dagger.android.core)

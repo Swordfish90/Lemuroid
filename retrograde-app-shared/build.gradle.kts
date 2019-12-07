@@ -26,7 +26,6 @@ dependencies {
     implementation(deps.libs.autodispose.core)
     implementation(deps.libs.dagger.android.core)
     implementation(deps.libs.dagger.android.support)
-    implementation(deps.libs.jna)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.okHttp3)
