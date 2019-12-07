@@ -30,7 +30,6 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.swordfish.lemuroid.common.kotlin.bindView
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.touchinput.pads.GamePadFactory
@@ -45,8 +44,6 @@ import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import java.io.File
-import javax.inject.Inject
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -70,9 +67,9 @@ class GameActivity : RetrogradeActivity() {
         }
     }
 
-    private val containerLayout by bindView<ConstraintLayout> (R.id.game_container)
-    private val gameViewLayout by bindView<FrameLayout> (R.id.gameview_layout)
-    private val padLayout by bindView<FrameLayout> (R.id.pad_layout)
+    private lateinit var containerLayout: ConstraintLayout
+    private lateinit var gameViewLayout: FrameLayout
+    private lateinit var padLayout: FrameLayout
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -83,6 +80,10 @@ class GameActivity : RetrogradeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+        containerLayout = findViewById(R.id.game_container)
+        gameViewLayout = findViewById(R.id.gameview_layout)
+        padLayout = findViewById(R.id.pad_layout)
 
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
 
