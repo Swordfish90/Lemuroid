@@ -30,7 +30,7 @@ class FavoritesFragment : RecyclerViewFragment() {
     override fun onResume() {
         super.onResume()
 
-        val gamesAdapter = GamesAdapter(R.layout.layout_game, gameInteractor)
+        val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor)
         favoritesViewModel.favorites.observe(this, Observer {
             gamesAdapter.submitList(it)
             emptyView?.updateVisibility(it.isEmpty())
