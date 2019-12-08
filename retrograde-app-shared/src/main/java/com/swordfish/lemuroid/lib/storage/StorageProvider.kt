@@ -24,6 +24,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.gojuno.koptional.Optional
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
 
@@ -41,7 +42,7 @@ interface StorageProvider {
 
     val enabledByDefault: Boolean
 
-    fun listFiles(): Single<Iterable<StorageFile>>
+    fun listFiles(): Observable<StorageFile>
 
     fun getGameRom(game: Game): Single<File>
 

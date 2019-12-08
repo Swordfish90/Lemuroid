@@ -56,7 +56,7 @@ interface GameDao {
     fun selectByFileUri(fileUri: String): Maybe<Game>
 
     @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
-    fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): Single<List<Game>>
+    fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC")
     fun selectRecentlyPlayed(): DataSource.Factory<Int, Game>
@@ -82,11 +82,17 @@ interface GameDao {
     @Insert
     fun insert(game: Game)
 
+    @Insert
+    fun insert(games: List<Game>)
+
     @Delete
     fun delete(games: List<Game>)
 
     @Update
     fun update(game: Game)
+
+    @Update
+    fun update(games: List<Game>)
 }
 
 data class GameLibraryCounts(val totalCount: Long, val favoritesCount: Long, val recentsCount: Long)

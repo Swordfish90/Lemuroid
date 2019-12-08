@@ -27,6 +27,8 @@ import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
 import com.gojuno.koptional.rxjava2.filterSome
+import com.swordfish.lemuroid.lib.storage.StorageFile
+import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -39,46 +41,53 @@ class GameLibrary(
     private val providerProviderRegistry: StorageProviderRegistry
 ) {
 
-    fun indexGames(): Completable = Completable.create { emitter ->
+    fun indexGames(): Completable {
         val startedAtMs = System.currentTimeMillis()
-        Observable.fromIterable(providerProviderRegistry.enabledProviders)
-                .flatMap { provider ->
-                    provider.listFiles()
-                            .flattenAsObservable { it }
-                            .flatMapSingle { file ->
-                                Timber.d("Got file: $file ${file.uri}")
-                                retrogradedb.gameDao().selectByFileUri(file.uri.toString())
-                                        .toSingleAsOptional()
-                                        .map { game -> Pair(file, game) }
-                            }
-                            .doOnNext { (file, game) ->
-                                Timber.d("Game already indexed? ${file.name} ${game is Some}")
-                                if (game is Some) {
-                                    val updatedGame = game.value.copy(lastIndexedAt = startedAtMs)
-                                    Timber.d("Update: $updatedGame")
-                                    retrogradedb.gameDao().update(updatedGame)
-                                }
-                            }
-                            .filter { (_, game) -> game is None }
-                            .map { (file, _) -> file }
-                            .compose(provider.metadataProvider.transformer(startedAtMs))
-                            .filterSome()
+
+        return Observable.fromIterable(providerProviderRegistry.enabledProviders).concatMap { provider ->
+            provider.listFiles()
+                .flatMapSingle { file -> retrieveGameFromFile(file) }
+                .buffer(BUFFER_SIZE)
+                .doOnNext { pairs -> updateExisting(pairs, startedAtMs) }
+                .map { pairs -> pairs.map { (file, _) -> file } }
+                .flatMapSingle { retrieveMetadata(it, provider, startedAtMs) }
+                .doOnNext { games: List<Game> ->
+                    games.forEach { Timber.d("Insert: $it") }
+                    retrogradedb.gameDao().insert(games)
                 }
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                        { game ->
-                            Timber.d("Insert: $game")
-                            retrogradedb.gameDao().insert(game)
-                        },
-                        { error ->
-                            Timber.e(error, "Error while indexing")
-                            emitter.onError(error)
-                        },
-                        {
-                            Timber.d("Done inserting. Looking for games to remove...")
-                            removeDeletedGames(startedAtMs)
-                            emitter.onComplete()
-                        })
+                .doOnComplete { removeDeletedGames(startedAtMs) }
+        }
+        .subscribeOn(Schedulers.io())
+        .ignoreElements()
+    }
+
+    private fun retrieveMetadata(it: List<StorageFile>, provider: StorageProvider, startedAtMs: Long): Single<List<Game>> {
+        return Observable.fromIterable(it)
+                .compose(provider.metadataProvider.transformer(startedAtMs))
+                .filterSome()
+                .toList()
+    }
+
+    private fun updateExisting(pairs: MutableList<Pair<StorageFile, Optional<Game>>>, startedAtMs: Long) {
+        pairs.forEach { (file, game) -> Timber.d("Game already indexed? ${file.name} ${game is Some}") }
+        pairs.filter { (_, game) -> game is Some }
+                .map { (_, game) -> game.component1()!!.copy(lastIndexedAt = startedAtMs) }
+                .let { games ->
+                    games.forEach { Timber.d("Update: $it") }
+                    retrogradedb.gameDao().update(games)
+                }
+    }
+
+    private fun retrieveGameFromFile(file: StorageFile): Single<Pair<StorageFile, Optional<Game>>> {
+        Timber.d("Retrieving game for file: $file ${file.uri}")
+        return retrogradedb.gameDao().selectByFileUri(file.uri.toString())
+                .toSingleAsOptional()
+                .map { game -> Pair(file, game) }
+    }
+
+    private fun removeDeletedGames(startedAtMs: Long) {
+        val games = retrogradedb.gameDao().selectByLastIndexedAtLessThan(startedAtMs)
+        retrogradedb.gameDao().delete(games)
     }
 
     fun getGameRom(game: Game): Single<File> =
@@ -90,14 +99,8 @@ class GameLibrary(
     fun setGameSave(game: Game, data: ByteArray): Completable =
             providerProviderRegistry.getProvider(game).setGameSave(game, data)
 
-    private fun removeDeletedGames(startedAtMs: Long) {
-        retrogradedb.gameDao().selectByLastIndexedAtLessThan(startedAtMs)
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                        { games ->
-                            Timber.d("Removing games: $games")
-                            retrogradedb.gameDao().delete(games)
-                        },
-                        { error -> Timber.e(error, "Error while removing") })
+    companion object {
+        // We batch database updates to avoid unnecessary UI updates.
+        const val BUFFER_SIZE = 200
     }
 }

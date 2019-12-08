@@ -33,6 +33,7 @@ import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
 
@@ -55,11 +56,12 @@ class LocalStorageProvider(
 
     override val enabledByDefault = true
 
-    override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
+    override fun listFiles(): Observable<StorageFile> = Observable.empty()
+            /*Single.fromCallable {
         searchableDirectories()
                 .map { walkDirectory(it) }
                 .reduce { acc, iterable -> acc union iterable }
-    }
+    }*/
 
     private fun searchableDirectories(): List<File> = if (searchOnlyPrivateDirectories) {
         listOf(*context.getExternalFilesDirs(null))

@@ -18,12 +18,12 @@ import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
-import javax.inject.Inject
 
 class StorageAccessFrameworkProvider(
     private val context: Context,
@@ -41,8 +41,10 @@ class StorageAccessFrameworkProvider(
 
     override val enabledByDefault = true
 
-    override fun listFiles(): Single<Iterable<StorageFile>> = Single.fromCallable {
-        getExternalFolder()?.let { traverseDirectoryEntries(Uri.parse(it)) } ?: listOf()
+    override fun listFiles(): Observable<StorageFile> {
+        return getExternalFolder()?.let { folder ->
+            traverseDirectoryEntries(Uri.parse(folder)).map { handleFileUri(it) }
+        } ?: Observable.empty()
     }
 
     private fun getExternalFolder(): String? {
@@ -51,55 +53,62 @@ class StorageAccessFrameworkProvider(
         return preferenceManager.getString(prefString, null)
     }
 
-    fun traverseDirectoryEntries(rootUri: Uri): List<StorageFile> {
-        val result = mutableListOf<StorageFile>()
+    private fun handleFileUri(fileUri: FileUri): StorageFile {
+        return if (isZipped(fileUri.mime) && isSingleArchive(fileUri.uri)) {
+            Timber.d("Detected single file archive. $name")
+            handleUriAsSingleArchive(fileUri.uri)
+        } else {
+            Timber.d("Detected standard file. $name")
+            handleUriAsStandardFile(fileUri.uri, fileUri.name, fileUri.size)
+        }
+    }
 
+    private fun traverseDirectoryEntries(rootUri: Uri): Observable<FileUri> = Observable.create { emitter ->
         val contentResolver = context.contentResolver
         var currentNode = DocumentsContract
             .buildChildDocumentsUriUsingTree(rootUri, DocumentsContract
             .getTreeDocumentId(rootUri))
 
-        // Keep track of our directory hierarchy
-        val dirNodes = mutableListOf<Uri>()
-        dirNodes.add(currentNode)
+        try {
+            // Keep track of our directory hierarchy
+            val dirNodes = mutableListOf<Uri>()
+            dirNodes.add(currentNode)
 
-        while (dirNodes.isNotEmpty()) {
-            currentNode = dirNodes.removeAt(0)
+            while (dirNodes.isNotEmpty()) {
+                currentNode = dirNodes.removeAt(0)
 
-            val projection = arrayOf(
-                    DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                    DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                    DocumentsContract.Document.COLUMN_MIME_TYPE,
-                    DocumentsContract.Document.COLUMN_SIZE
-            )
+                val projection = arrayOf(
+                        DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                        DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                        DocumentsContract.Document.COLUMN_MIME_TYPE,
+                        DocumentsContract.Document.COLUMN_SIZE
+                )
 
-            Timber.d("Detected node uri: $currentNode")
+                Timber.d("Detected node uri: $currentNode")
 
-            contentResolver.query(currentNode, projection, null, null, null)?.use { cursor ->
-                cursor.asSequence().map {
-                    val docId = it.getString(0)
-                    val name = it.getString(1)
-                    val mime = it.getString(2)
-                    val size = it.getLong(3)
+                contentResolver.query(currentNode, projection, null, null, null)?.use { cursor ->
+                    cursor.asSequence().forEach {
+                        val docId = it.getString(0)
+                        val name = it.getString(1)
+                        val mime = it.getString(2)
+                        val size = it.getLong(3)
 
-                    if (isDirectory(mime)) {
-                        val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
-                        dirNodes.add(newNode)
-                        Timber.d("Detected subfolder: $id, name: $name")
-                    } else {
-                        val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
-                        if (isZipped(mime) && isSingleArchive(uri)) {
-                            Timber.d("Detected single file archive. $name")
-                            result.add(handleUriAsSingleArchive(uri))
+                        if (isDirectory(mime)) {
+                            val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
+                            dirNodes.add(newNode)
+                            Timber.d("Detected subfolder: $id, name: $name")
                         } else {
-                            result.add(handleUriAsStandardFile(uri, name, size))
+                            val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
+                            emitter.onNext(FileUri(uri, name, size, mime))
                         }
                     }
-                }.toList()
+                }
             }
+        } catch (e: Exception) {
+            emitter.onError(e)
         }
 
-        return result
+        emitter.onComplete()
     }
 
     private fun handleUriAsSingleArchive(uri: Uri): StorageFile {
@@ -183,6 +192,8 @@ class StorageAccessFrameworkProvider(
         val statesDirectories = directoriesManager.getStatesDirectory()
         return File(statesDirectories, "${game.fileName}.state")
     }
+
+    private data class FileUri(val uri: Uri, val name: String, val size: Long, val mime: String)
 
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
