@@ -2,7 +2,9 @@ package com.swordfish.lemuroid.app.feature.games
 
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.DynamicGridLayoutManager
+import com.swordfish.lemuroid.app.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -13,6 +15,7 @@ import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+
 
 class SystemsFragment : RecyclerViewFragment() {
 
@@ -41,6 +44,9 @@ class SystemsFragment : RecyclerViewFragment() {
         recyclerView?.apply {
             this.adapter = systemsAdapter
             this.layoutManager = DynamicGridLayoutManager(context, 2)
+
+            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
+            GridSpaceDecoration.addItemDecoration(this, spacingInPixels)
         }
         restoreRecyclerViewState()
     }

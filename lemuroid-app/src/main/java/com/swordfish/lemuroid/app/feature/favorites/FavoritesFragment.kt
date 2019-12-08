@@ -8,6 +8,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.DynamicGridLayoutManager
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.GamesAdapter
+import com.swordfish.lemuroid.app.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.updateVisibility
@@ -39,6 +40,9 @@ class FavoritesFragment : RecyclerViewFragment() {
         recyclerView?.apply {
             this.adapter = gamesAdapter
             this.layoutManager = DynamicGridLayoutManager(context)
+
+            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
+            GridSpaceDecoration.addItemDecoration(this, spacingInPixels)
         }
         restoreRecyclerViewState()
     }

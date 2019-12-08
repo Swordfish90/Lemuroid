@@ -10,7 +10,7 @@ import androidx.paging.PagedList
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-class FavoritesViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel() {
+class FavoritesViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

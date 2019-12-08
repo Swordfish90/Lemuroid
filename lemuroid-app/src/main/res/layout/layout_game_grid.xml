@@ -3,7 +3,6 @@
     android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/grid_unit_1x"
     android:clickable="true"
     android:focusable="true">
 
