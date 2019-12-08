@@ -1,6 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="game_entry_size">160dp</dimen>
+    <dimen name="game_entry_size">144dp</dimen>
     <dimen name="favorite_toggle_size">24dp</dimen>
     <dimen name="size_game_list">72dp</dimen>
     <dimen name="grid_spacing">@dimen/grid_unit_2x</dimen>
