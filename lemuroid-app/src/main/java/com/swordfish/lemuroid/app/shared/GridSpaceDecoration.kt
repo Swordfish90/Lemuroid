@@ -14,11 +14,13 @@ class GridSpaceDecoration private constructor(private val halfSpace: Int) : Recy
     }
 
     companion object {
-        fun addItemDecoration(recyclerView: RecyclerView, pixelSpacing: Int) {
-            val halfSpacing = pixelSpacing / 2
-            recyclerView.addItemDecoration(GridSpaceDecoration(halfSpacing))
-            recyclerView.setPadding(halfSpacing, halfSpacing, halfSpacing, halfSpacing)
-            recyclerView.clipToPadding = false
+        fun setSingleGridSpaceDecoration(recyclerView: RecyclerView, pixelSpacing: Int) {
+            if (recyclerView.itemDecorationCount == 0) {
+                val halfSpacing = pixelSpacing / 2
+                recyclerView.addItemDecoration(GridSpaceDecoration(halfSpacing))
+                recyclerView.setPadding(halfSpacing, halfSpacing, halfSpacing, halfSpacing)
+                recyclerView.clipToPadding = false
+            }
         }
     }
 }

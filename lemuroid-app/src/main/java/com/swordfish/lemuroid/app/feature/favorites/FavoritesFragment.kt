@@ -42,7 +42,7 @@ class FavoritesFragment : RecyclerViewFragment() {
             this.layoutManager = DynamicGridLayoutManager(context)
 
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
-            GridSpaceDecoration.addItemDecoration(this, spacingInPixels)
+            GridSpaceDecoration.setSingleGridSpaceDecoration(this, spacingInPixels)
         }
         restoreRecyclerViewState()
     }
