@@ -1,0 +1,145 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 8,
+    "identityHash": "9df1beadd73c7a9484e3ffdcfe198ce9",
+    "entities": [
+      {
+        "tableName": "games",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `fileName` TEXT NOT NULL, `fileUri` TEXT NOT NULL, `title` TEXT NOT NULL, `systemId` TEXT NOT NULL, `developer` TEXT, `coverFrontUrl` TEXT, `lastIndexedAt` INTEGER NOT NULL, `lastPlayedAt` INTEGER, `isFavorite` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileName",
+            "columnName": "fileName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileUri",
+            "columnName": "fileUri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "systemId",
+            "columnName": "systemId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "developer",
+            "columnName": "developer",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverFrontUrl",
+            "columnName": "coverFrontUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastIndexedAt",
+            "columnName": "lastIndexedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastPlayedAt",
+            "columnName": "lastPlayedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_games_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_games_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_games_fileUri",
+            "unique": true,
+            "columnNames": [
+              "fileUri"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_games_fileUri` ON `${TABLE_NAME}` (`fileUri`)"
+          },
+          {
+            "name": "index_games_title",
+            "unique": false,
+            "columnNames": [
+              "title"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_games_title` ON `${TABLE_NAME}` (`title`)"
+          },
+          {
+            "name": "index_games_systemId",
+            "unique": false,
+            "columnNames": [
+              "systemId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_games_systemId` ON `${TABLE_NAME}` (`systemId`)"
+          },
+          {
+            "name": "index_games_lastIndexedAt",
+            "unique": false,
+            "columnNames": [
+              "lastIndexedAt"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_games_lastIndexedAt` ON `${TABLE_NAME}` (`lastIndexedAt`)"
+          },
+          {
+            "name": "index_games_lastPlayedAt",
+            "unique": false,
+            "columnNames": [
+              "lastPlayedAt"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_games_lastPlayedAt` ON `${TABLE_NAME}` (`lastPlayedAt`)"
+          },
+          {
+            "name": "index_games_isFavorite",
+            "unique": false,
+            "columnNames": [
+              "isFavorite"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_games_isFavorite` ON `${TABLE_NAME}` (`isFavorite`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9df1beadd73c7a9484e3ffdcfe198ce9')"
+    ]
+  }
+}
