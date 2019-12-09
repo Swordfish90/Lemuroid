@@ -18,6 +18,7 @@
     <string name="add_to_favorites">Add to favorites</string>
     <string name="remove_from_favorites">Remove from favorites</string>
     <string name="play">Play</string>
+    <string name="restart">Restart</string>
     <string name="quick_save">Quick save</string>
     <string name="quick_load">Quick load</string>
     <string name="close_without_saving">Close without saving</string>

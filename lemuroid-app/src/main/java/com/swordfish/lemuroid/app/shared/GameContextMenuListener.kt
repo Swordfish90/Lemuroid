@@ -7,12 +7,18 @@ import com.swordfish.lemuroid.R
 class GameContextMenuListener(
     private val isFavorite: Boolean?,
     private val onPlaySelected: (() -> Unit)?,
+    private val onRestartSelected: (() -> Unit)?,
     private val onFavoriteChanged: ((Boolean) -> Unit)?
 ) : View.OnCreateContextMenuListener {
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         menu.add(R.string.play).setOnMenuItemClickListener {
             onPlaySelected?.invoke()
+            true
+        }
+
+        menu.add(R.string.restart).setOnMenuItemClickListener {
+            onRestartSelected?.invoke()
             true
         }
 

@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameSaveWorker
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDisposable
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -32,7 +31,8 @@ class GameLauncherActivity : RetrogradeActivity() {
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
             val gameId = intent.getIntExtra("game_id", -1)
-            gameLoader.load(gameId)
+            val loadSave = intent.getBooleanExtra("load_save", false)
+            gameLoader.load(gameId, loadSave)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .autoDispose(scope())
@@ -76,9 +76,12 @@ class GameLauncherActivity : RetrogradeActivity() {
     companion object {
         private const val REQUEST_CODE_GAME = 1000
 
-        fun launchGame(context: Context, game: Game) {
+        fun launchGame(context: Context, game: Game, loadSave: Boolean) {
             context.startActivity(
-                    Intent(context, GameLauncherActivity::class.java).putExtra("game_id", game.id)
+                    Intent(context, GameLauncherActivity::class.java).apply {
+                        putExtra("game_id", game.id)
+                        putExtra("load_save", loadSave)
+                    }
             )
         }
     }

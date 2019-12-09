@@ -19,6 +19,7 @@
 
 package com.swordfish.lemuroid.lib.game
 
+import com.gojuno.koptional.None
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.library.GameLibrary
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -39,18 +40,22 @@ class GameLoader(
 
     fun loadGame(gameId: Int): Maybe<Game> = retrogradeDatabase.gameDao().selectById(gameId)
 
-    fun load(gameId: Int): Single<GameData> {
+    fun load(gameId: Int, loadSave: Boolean): Single<GameData> {
         return loadGame(gameId)
                 .subscribeOn(Schedulers.io())
-                .flatMapSingle { game -> prepareGame(game) }
+                .flatMapSingle { game -> prepareGame(game, loadSave) }
     }
 
-    private fun prepareGame(game: Game): Single<GameData> {
+    private fun prepareGame(game: Game, loadSave: Boolean): Single<GameData> {
         val gameSystem = GameSystem.findById(game.systemId)!!
 
         val coreObservable = coreManager.downloadCore(gameSystem.coreFileName)
         val gameObservable = gameLibrary.getGameRom(game)
-        val saveObservable = gameLibrary.getGameSave(game)
+        val saveObservable = if (loadSave) {
+            gameLibrary.getGameSave(game)
+        } else {
+            Single.just(None)
+        }
 
         return Single.zip(
                 coreObservable,

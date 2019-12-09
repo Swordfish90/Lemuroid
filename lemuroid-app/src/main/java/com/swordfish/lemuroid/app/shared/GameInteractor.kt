@@ -10,8 +10,13 @@ class GameInteractor(
     private val context: Context,
     private val retrogradeDb: RetrogradeDatabase
 ) {
-    fun onGameClick(game: Game) {
-        GameLauncherActivity.launchGame(context, game)
+    fun onGamePlay(game: Game) {
+        GameLauncherActivity.launchGame(context, game, true)
+        retrogradeDb.gameDao().updateAsync(game.copy(lastPlayedAt = System.currentTimeMillis())).subscribe()
+    }
+
+    fun onGameRestart(game: Game) {
+        GameLauncherActivity.launchGame(context, game, false)
         retrogradeDb.gameDao().updateAsync(game.copy(lastPlayedAt = System.currentTimeMillis())).subscribe()
     }
 

@@ -45,12 +45,13 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
                 .error(R.drawable.ic_image_paceholder)
                 .into(coverView)
 
-        itemView.setOnClickListener { gameInteractor.onGameClick(game) }
+        itemView.setOnClickListener { gameInteractor.onGamePlay(game) }
 
         itemView.setOnCreateContextMenuListener(
             GameContextMenuListener(
                 game.isFavorite,
-                { gameInteractor.onGameClick(game) },
+                { gameInteractor.onGamePlay(game) },
+                { gameInteractor.onGameRestart(game) },
                 { gameInteractor.onFavoriteToggle(game, !game.isFavorite) }
             )
         )

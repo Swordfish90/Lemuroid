@@ -27,6 +27,9 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
     var onClick: (() -> Unit)? = null
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    var onRestart: (() -> Unit)? = null
+
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     var onFavoriteChanged: ((Boolean) -> Unit)? = null
 
     override fun bind(holder: Holder) {
@@ -36,7 +39,12 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
             .placeholder(R.drawable.ic_image_paceholder)
             .into(holder.coverView)
         holder.itemView?.setOnClickListener { onClick?.invoke() }
-        holder.itemView?.setOnCreateContextMenuListener(GameContextMenuListener(favorite, onClick, onFavoriteChanged))
+        holder.itemView?.setOnCreateContextMenuListener(GameContextMenuListener(
+                favorite,
+                onClick,
+                onRestart,
+                onFavoriteChanged)
+        )
     }
 
     override fun unbind(holder: Holder) {

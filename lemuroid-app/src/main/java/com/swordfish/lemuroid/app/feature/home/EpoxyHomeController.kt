@@ -73,7 +73,8 @@ class EpoxyHomeController(
                         .coverUrl(item.coverFrontUrl)
                         .favorite(item.isFavorite)
                         .onFavoriteChanged { gameInteractor.onFavoriteToggle(item, it) }
-                        .onClick { gameInteractor.onGameClick(item) }
+                        .onClick { gameInteractor.onGamePlay(item) }
+                        .onRestart { gameInteractor.onGameRestart(item) }
             }
         }
     }
