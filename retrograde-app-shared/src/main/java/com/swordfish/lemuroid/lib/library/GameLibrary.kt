@@ -49,6 +49,7 @@ class GameLibrary(
                 .flatMapSingle { file -> retrieveGameFromFile(file) }
                 .buffer(BUFFER_SIZE)
                 .doOnNext { pairs -> updateExisting(pairs, startedAtMs) }
+                .map { pairs -> filterNotExisting(pairs) }
                 .map { pairs -> pairs.map { (file, _) -> file } }
                 .flatMapSingle { retrieveMetadata(it, provider, startedAtMs) }
                 .doOnNext { games: List<Game> ->
@@ -77,6 +78,9 @@ class GameLibrary(
                     retrogradedb.gameDao().update(games)
                 }
     }
+
+    private fun filterNotExisting(pairs: List<Pair<StorageFile, Optional<Game>>>) =
+            pairs.filter { (_, game) -> game is None }
 
     private fun retrieveGameFromFile(file: StorageFile): Single<Pair<StorageFile, Optional<Game>>> {
         Timber.d("Retrieving game for file: $file ${file.uri}")
