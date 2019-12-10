@@ -31,16 +31,20 @@ class StorageFrameworkPickerLauncher : FragmentActivity() {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
             val preferenceKey = getString(R.string.pref_key_extenral_folder)
 
-            clearPreviousPersistentUris()
+            val currentValue: String? = sharedPreferences.getString(preferenceKey, null)
+            val newValue = resultData?.data
 
-            val newRootUri = resultData?.data
-            newRootUri?.let {
-                contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
+            if (newValue.toString() != currentValue) {
+                clearPreviousPersistentUris()
 
-            sharedPreferences.edit().apply {
-                this.putString(preferenceKey, newRootUri.toString())
-                this.apply()
+                newValue?.let {
+                    contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+
+                sharedPreferences.edit().apply {
+                    this.putString(preferenceKey, newValue.toString())
+                    this.apply()
+                }
             }
 
             startLibraryIndexWork()
