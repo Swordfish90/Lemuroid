@@ -34,4 +34,7 @@ data class StorageFile(
 
     val extension: String
         get() = name.substringAfterLast('.', "")
+
+    val extensionlessName: String
+        get() = name.substringBeforeLast('.', "")
 }

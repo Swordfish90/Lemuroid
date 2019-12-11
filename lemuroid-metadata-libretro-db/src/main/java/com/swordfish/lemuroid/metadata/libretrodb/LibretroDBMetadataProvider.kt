@@ -15,9 +15,6 @@ import io.reactivex.Maybe
 import io.reactivex.ObservableTransformer
 import timber.log.Timber
 
-// TODO We are not currently trying to guess the system using extensions. This is often not reliable, but sometimes it
-// might work (think about .n64/.z64)
-
 class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : GameMetadataProvider {
     override fun transformer(startedAtMs: Long) = ObservableTransformer<StorageFile, Optional<Game>> { upstream ->
         ovgdbManager.dbReady
@@ -27,6 +24,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                         .flatMapSingle { file ->
                             findByCRC(file, db)
                                 .switchIfEmpty(findByName(db, file))
+                                .switchIfEmpty(findByUniqueExtension(file))
                                 .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
                                 .map { convertToGame(it, file, startedAtMs) }
                                 .toSingle(None)
@@ -36,25 +34,66 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                 }
     }
 
-    private fun convertToGame(rom: LibretroRom, file: StorageFile, startedAtMs: Long): Optional<Game> {
+    private fun convertToGame(rom: GameMetadata, file: StorageFile, startedAtMs: Long): Optional<Game> {
         val system = GameSystem.findByShortName(rom.system!!)!!
+
+        val thumbnail = if (rom.includeThumbnail) {
+            computeCoverUrl(system, rom.name)
+        } else {
+            null
+        }
+
         val game = Game(
                 fileName = file.name,
                 fileUri = file.uri,
                 title = rom.name ?: file.name,
                 systemId = system.id,
                 developer = rom.developer,
-                coverFrontUrl = computeCoverUrl(system, rom.name),
+                coverFrontUrl = thumbnail,
                 lastIndexedAt = startedAtMs
         )
         return Some(game)
     }
 
-    private fun findByName(db: LibretroDatabase, file: StorageFile) =
-            db.gameDao().findByFileName(file.name)
+    private fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
+        return GameMetadata(
+                name = rom.name,
+                romName = rom.romName,
+                includeThumbnail = true,
+                system = rom.system,
+                crc32 = rom.crc32,
+                developer = rom.developer
+        )
+    }
 
-    private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<LibretroRom> {
-        return file.crc?.let { db.gameDao().findByCRC(it) } ?: Maybe.empty()
+    private fun findByName(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
+        return db.gameDao().findByFileName(file.name)
+                .map { convertToGameMetadata(it) }
+    }
+
+    private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
+        return file.crc?.let { crc32 ->
+            db.gameDao().findByCRC(crc32).map {
+                convertToGameMetadata(it)
+            }
+        } ?: Maybe.empty()
+    }
+
+    private fun findByUniqueExtension(file: StorageFile) = Maybe.fromCallable {
+        val system = GameSystem.findByFileExtension(file.extension)
+
+        val result = system?.let {
+            GameMetadata(
+                    name = file.extensionlessName,
+                    romName = file.name,
+                    includeThumbnail = false,
+                    system = it.id,
+                    crc32 = file.crc,
+                    developer = null
+            )
+        }
+
+        result
     }
 
     private fun computeCoverUrl(system: GameSystem, name: String?): String? {
@@ -75,4 +114,13 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
         return "http://thumbnails.libretro.com/$systemName/Named_Boxarts/$name.png"
     }
+
+    private data class GameMetadata(
+        val name: String?,
+        val system: String?,
+        val romName: String?,
+        val developer: String?,
+        val crc32: String?,
+        val includeThumbnail: Boolean
+    )
 }

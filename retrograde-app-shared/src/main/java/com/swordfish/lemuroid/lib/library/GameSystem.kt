@@ -40,7 +40,7 @@ data class GameSystem(
 
     val coreFileName: String,
 
-    val supportedExtensions: List<String>
+    val uniqueExtensions: List<String>
 ) {
 
     companion object {
@@ -70,7 +70,7 @@ data class GameSystem(
                         R.drawable.game_system_snes,
                         "nintendo1",
                         "snes9x_libretro_android.so.zip",
-                        listOf("smc", "sfc", "swc", "fig")
+                        listOf("smc", "sfc")
                 ),
                 GameSystem(
                         GENESIS_ID,
@@ -134,7 +134,7 @@ data class GameSystem(
         private val byExtensionCache by lazy {
             val mutableMap = mutableMapOf<String, GameSystem>()
             for (system in SYSTEMS) {
-                for (extension in system.supportedExtensions) {
+                for (extension in system.uniqueExtensions) {
                     mutableMap[extension.toLowerCase(Locale.US)] = system
                 }
             }
