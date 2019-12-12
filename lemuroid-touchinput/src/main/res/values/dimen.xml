@@ -3,6 +3,7 @@
     <dimen name="default_dial_size">144dp</dimen>
     <dimen name="dial_max_size_small">152dp</dimen>
     <dimen name="dial_max_size">192dp</dimen>
+    <dimen name="dial_max_size_large">232dp</dimen>
 
     <dimen name="size_button_small">48dp</dimen>
     <dimen name="size_button_medium">48dp</dimen>

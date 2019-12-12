@@ -15,19 +15,16 @@
 
     <com.swordfish.touchinput.views.ActionButtons
         android:id="@+id/actions"
+        style="@style/default_action_3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        style="@style/default_action_3"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="@dimen/dial_max_size_large"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintHeight_max="@dimen/dial_max_size"
-        app:layout_constraintWidth_max="@dimen/dial_max_size"
+        app:layout_constraintWidth_max="@dimen/dial_max_size_large"
         tools:ignore="RtlHardcoded" />
 
     <com.swordfish.touchinput.views.DirectionPad
@@ -35,14 +32,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintWidth_max="@dimen/dial_max_size" />
 
     <androidx.constraintlayout.widget.Guideline

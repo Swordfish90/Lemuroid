@@ -9,6 +9,7 @@
     <style name="default_action_3" parent="base_default_action">
         <item name="rows">1</item>
         <item name="cols">3</item>
+        <item name="rotateButtons">15.0</item>
     </style>
 
     <style name="default_action_4" parent="base_default_action">
