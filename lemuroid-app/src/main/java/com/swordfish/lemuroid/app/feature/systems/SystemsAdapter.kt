@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.feature.games
+package com.swordfish.lemuroid.app.feature.systems
 
 import android.view.LayoutInflater
 import android.view.View
@@ -20,16 +20,18 @@ class SystemViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         textView = itemView.findViewById(R.id.text)
     }
 
-    fun bind(system: GameSystem, onSystemClick: (GameSystem) -> Unit) {
-        textView?.setText(system.titleResId)
-        coverView?.setImageResource(system.imageResId)
-        itemView.setOnClickListener { onSystemClick(system) }
+    fun bind(systemInfo: SystemInfo, onSystemClick: (GameSystem) -> Unit) {
+        // TODO FILIPPO... Here we should split this into two separate textviews.
+        val systemName = itemView.context.resources.getString(systemInfo.system.titleResId)
+        textView?.text = "$systemName (${systemInfo.count})"
+        coverView?.setImageResource(systemInfo.system.imageResId)
+        itemView.setOnClickListener { onSystemClick(systemInfo.system) }
     }
 }
 
 class SystemsAdapter(
     private val onSystemClick: (GameSystem) -> Unit
-) : ListAdapter<GameSystem, SystemViewHolder>(DIFF_CALLBACK) {
+) : ListAdapter<SystemInfo, SystemViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SystemViewHolder {
         return SystemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_system, parent, false))
@@ -40,10 +42,11 @@ class SystemsAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<GameSystem>() {
-            override fun areItemsTheSame(oldSystem: GameSystem, newSystem: GameSystem) = oldSystem.id == newSystem.id
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<SystemInfo>() {
 
-            override fun areContentsTheSame(oldSystem: GameSystem, newSystem: GameSystem) = oldSystem == newSystem
+            override fun areItemsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) = oldInfo.system.id == newInfo.system.id
+
+            override fun areContentsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) = oldInfo == newInfo
         }
     }
 }

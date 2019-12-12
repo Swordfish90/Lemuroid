@@ -29,6 +29,7 @@ import androidx.room.Query
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.intellij.lang.annotations.Language
@@ -79,6 +80,9 @@ interface GameDao {
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
     fun selectSystems(): Single<List<String>>
 
+    @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
+    fun selectSystemsWithCount(): Observable<List<SystemCount>>
+
     @Insert
     fun insert(game: Game)
 
@@ -94,6 +98,8 @@ interface GameDao {
     @Update
     fun update(games: List<Game>)
 }
+
+data class SystemCount(val systemId: String, val count: Int)
 
 data class GameLibraryCounts(val totalCount: Long, val favoritesCount: Long, val recentsCount: Long)
 

@@ -1,8 +1,9 @@
-package com.swordfish.lemuroid.app.feature.games
+package com.swordfish.lemuroid.app.feature.systems
 
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.feature.games.SystemsFragmentDirections
 import com.swordfish.lemuroid.app.shared.DynamicGridLayoutManager
 import com.swordfish.lemuroid.app.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
