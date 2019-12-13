@@ -10,6 +10,7 @@
             android:key="@string/pref_key_extenral_folder"
             android:title="@string/directory"
             app:iconSpaceReserved="false"
+            app:summary="@string/none"
             app:useSimpleSummaryProvider="true"/>
 
         <Preference
@@ -29,6 +30,18 @@
             android:title="@string/simulate_display"
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/advanced"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="@string/pref_key_clear_cores_cache"
+            android:title="@string/clear_cores_cache"
+            app:iconSpaceReserved="false"
+            android:persistent="false"/>
 
     </PreferenceCategory>
 
