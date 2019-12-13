@@ -45,9 +45,11 @@ class SystemsAdapter(
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<SystemInfo>() {
 
-            override fun areItemsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) = oldInfo.system.id == newInfo.system.id
+            override fun areItemsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) =
+                    oldInfo.system.id == newInfo.system.id
 
-            override fun areContentsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) = oldInfo == newInfo
+            override fun areContentsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) =
+                    oldInfo == newInfo
         }
     }
 }

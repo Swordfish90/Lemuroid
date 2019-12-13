@@ -1,7 +1,13 @@
 package com.swordfish.lemuroid.app.feature.library
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.ExistingWorkPolicy
+import androidx.work.ForegroundInfo
+import androidx.work.ListenableWorker
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.RxWorker
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
 import com.swordfish.lemuroid.lib.library.GameLibrary
@@ -14,6 +20,7 @@ import javax.inject.Inject
 import com.swordfish.lemuroid.app.shared.NotificationsManager
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
+
     @Inject lateinit var gameLibrary: GameLibrary
 
     override fun createWork(): Single<Result> {
@@ -27,8 +34,6 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWor
                 .doOnError { Timber.e("Library indexing failed with exception: $it") }
                 .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
     }
-
-
 
     companion object {
         val UNIQUE_WORK_ID: String = LibraryIndexWork::class.java.simpleName

@@ -2,7 +2,6 @@ package com.swordfish.touchinput.events
 
 import com.swordfish.touchinput.interfaces.StickEventsSource
 import io.reactivex.ObservableTransformer
-import kotlin.math.round
 
 internal object EventsTransformers {
     fun actionButtonsMap(vararg keycodes: Int): ObservableTransformer<ViewEvent.Button, PadEvent> {

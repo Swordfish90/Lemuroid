@@ -2,18 +2,12 @@ package com.swordfish.lemuroid.app.feature.search
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.swordfish.lemuroid.R
@@ -24,7 +18,6 @@ import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDisposable
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
@@ -77,6 +70,7 @@ class SearchFragment : RecyclerViewFragment() {
                 .debounce(1, TimeUnit.SECONDS)
                 .map { it.toString() }
                 .observeOn(AndroidSchedulers.mainThread())
+                .autoDispose(scope())
                 .subscribe(searchSubject)
     }
 

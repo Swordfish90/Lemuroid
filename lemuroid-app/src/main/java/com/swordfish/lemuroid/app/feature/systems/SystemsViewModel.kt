@@ -16,6 +16,6 @@ class SystemsViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     val availableSystems: Observable<List<SystemInfo>> = retrogradeDb.gameDao()
             .selectSystemsWithCount()
-            .map{ it.filter { (_, count) -> count > 0 }
+            .map { it.filter { (_, count) -> count > 0 }
             .map { (systemId, count) -> SystemInfo(GameSystem.findById(systemId), count) } }
 }
