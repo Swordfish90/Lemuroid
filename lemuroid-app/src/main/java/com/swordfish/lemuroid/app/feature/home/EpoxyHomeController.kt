@@ -69,12 +69,8 @@ class EpoxyHomeController(
             withModelsFrom(games) { item ->
                 EpoxyGameView_()
                         .id(item.id)
-                        .title(item.title)
-                        .coverUrl(item.coverFrontUrl)
-                        .favorite(item.isFavorite)
-                        .onFavoriteChanged { gameInteractor.onFavoriteToggle(item, it) }
-                        .onClick { gameInteractor.onGamePlay(item) }
-                        .onRestart { gameInteractor.onGameRestart(item) }
+                        .game(item)
+                        .gameInteractor(gameInteractor)
             }
         }
     }

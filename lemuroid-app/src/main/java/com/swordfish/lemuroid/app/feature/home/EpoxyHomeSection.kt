@@ -16,12 +16,12 @@ abstract class EpoxyHomeSection : EpoxyModelWithHolder<EpoxyHomeSection.Holder>(
 
     override fun bind(holder: Holder) {
         title?.let {
-            holder.titleView?.setText(it)
+            holder.titleView.setText(it)
         }
     }
 
     class Holder : EpoxyHolder() {
-        var titleView: TextView? = null
+        lateinit var titleView: TextView
 
         override fun bindView(itemView: View) {
             titleView = itemView.findViewById(R.id.text)

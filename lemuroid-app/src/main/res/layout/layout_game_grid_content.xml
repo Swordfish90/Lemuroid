@@ -5,8 +5,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/grid_unit_1x">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image"
@@ -18,41 +17,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            android:background="@color/system_background"
+            android:background="@color/imageview_background"
             tools:ignore="ContentDescription" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textAppearance="?attr/textAppearanceSubtitle2"
-            app:layout_constraintBottom_toTopOf="@+id/subtext"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image"
-            tools:text="Game Name" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/subtext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="GBA"
-            android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text"
-            tools:text="Game Name" />
+        <include layout="@layout/layout_game_content_texts" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

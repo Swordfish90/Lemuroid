@@ -13,6 +13,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
+import com.swordfish.lemuroid.app.utils.games.GameUtils
 
 class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     private var titleView: TextView? = null
@@ -28,15 +29,8 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     }
 
     fun bind(game: Game, gameInteractor: GameInteractor) {
-        val systemName = getSystemNameForGame(game)
-        val developerName = if (game.developer?.isNotBlank() == true) {
-            "- ${game.developer}"
-        } else {
-            ""
-        }
-
         titleView?.text = game.title
-        subtitleView?.text = "$systemName $developerName"
+        subtitleView?.text = GameUtils.getGameSubtitle(itemView.context, game)
         favoriteToggle?.isChecked = game.isFavorite
 
         Picasso.get()
@@ -47,22 +41,9 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
         itemView.setOnClickListener { gameInteractor.onGamePlay(game) }
 
-        itemView.setOnCreateContextMenuListener(
-            GameContextMenuListener(
-                game.isFavorite,
-                { gameInteractor.onGamePlay(game) },
-                { gameInteractor.onGameRestart(game) },
-                { gameInteractor.onFavoriteToggle(game, !game.isFavorite) }
-            )
-        )
+        itemView.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
 
         favoriteToggle?.setOnCheckedChangeListener { _, isChecked -> gameInteractor.onFavoriteToggle(game, isChecked) }
-    }
-
-    private fun getSystemNameForGame(game: Game): String {
-        return GameSystem.findById(game.systemId)?.shortTitleResId?.let {
-            itemView.context.getString(it)
-        } ?: ""
     }
 
     fun unbind() {
@@ -79,7 +60,7 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 class GamesAdapter(
     private val baseLayout: Int,
     private val gameInteractor: GameInteractor
-) : PagedListAdapter<Game, GameViewHolder>(DIFF_CALLBACK) {
+) : PagedListAdapter<Game, GameViewHolder>(Game.DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         return GameViewHolder(LayoutInflater.from(parent.context).inflate(baseLayout, parent, false))
@@ -91,13 +72,5 @@ class GamesAdapter(
 
     override fun onViewRecycled(holder: GameViewHolder) {
         holder.unbind()
-    }
-
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Game>() {
-            override fun areItemsTheSame(oldConcert: Game, newConcert: Game) = oldConcert.id == newConcert.id
-
-            override fun areContentsTheSame(oldConcert: Game, newConcert: Game) = oldConcert == newConcert
-        }
     }
 }

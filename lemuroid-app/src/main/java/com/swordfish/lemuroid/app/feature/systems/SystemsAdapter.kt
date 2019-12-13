@@ -14,16 +14,17 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 class SystemViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     private var coverView: ImageView? = null
     private var textView: TextView? = null
+    private var subtextView: TextView? = null
 
     init {
         coverView = itemView.findViewById(R.id.image)
         textView = itemView.findViewById(R.id.text)
+        subtextView = itemView.findViewById(R.id.subtext)
     }
 
     fun bind(systemInfo: SystemInfo, onSystemClick: (GameSystem) -> Unit) {
-        // TODO FILIPPO... Here we should split this into two separate textviews.
-        val systemName = itemView.context.resources.getString(systemInfo.system.titleResId)
-        textView?.text = "$systemName (${systemInfo.count})"
+        textView?.text = itemView.context.resources.getString(systemInfo.system.titleResId)
+        subtextView?.text = itemView.context.getString(R.string.system_grid_details, systemInfo.count.toString())
         coverView?.setImageResource(systemInfo.system.imageResId)
         itemView.setOnClickListener { onSystemClick(systemInfo.system) }
     }

@@ -34,4 +34,6 @@
     <string name="library_index_notification_title">ROMs scanning</string>
     <string name="library_index_notification_message"></string>
 
+    <string name="system_grid_details">%1$s games</string>
+
 </resources>
