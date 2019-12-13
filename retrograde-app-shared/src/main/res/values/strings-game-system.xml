@@ -22,7 +22,7 @@
     <string name="game_system_abbr_nes">NES</string>
     <string name="game_system_abbr_snes">SNES</string>
     <string name="game_system_abbr_genesis">Genesis</string>
-    <string name="game_system_abbr_gb">Game Boy</string>
+    <string name="game_system_abbr_gb">GB</string>
     <string name="game_system_abbr_gbc">GBC</string>
     <string name="game_system_abbr_gba">GBA</string>
     <string name="game_system_abbr_n64">N64</string>

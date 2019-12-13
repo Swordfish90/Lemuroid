@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.feature.games
+package com.swordfish.lemuroid.app.feature.systems
 
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController

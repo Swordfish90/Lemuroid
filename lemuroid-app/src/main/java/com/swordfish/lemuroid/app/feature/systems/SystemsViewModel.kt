@@ -1,9 +1,10 @@
-package com.swordfish.lemuroid.app.feature.games
+package com.swordfish.lemuroid.app.feature.systems
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import io.reactivex.Observable
 
 class SystemsViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
@@ -13,8 +14,8 @@ class SystemsViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
         }
     }
 
-    val availableSystems = retrogradeDb.gameDao()
-            .selectSystems()
-            .map { ids -> ids.map { GameSystem.findById(it) } }
-            .map { it.filterNotNull() }
+    val availableSystems: Observable<List<SystemInfo>> = retrogradeDb.gameDao()
+            .selectSystemsWithCount()
+            .map{ it.filter { (_, count) -> count > 0 }
+            .map { (systemId, count) -> SystemInfo(GameSystem.findById(systemId), count) } }
 }

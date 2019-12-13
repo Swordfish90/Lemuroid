@@ -105,6 +105,6 @@ class GameLibrary(
 
     companion object {
         // We batch database updates to avoid unnecessary UI updates.
-        const val BUFFER_SIZE = 200
+        const val BUFFER_SIZE = 100
     }
 }

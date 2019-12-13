@@ -3,15 +3,25 @@ package com.swordfish.lemuroid.app.feature.settings
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
+import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
+
+    @Inject lateinit var settingsInteractor: SettingsInteractor
+    @Inject lateinit var rxSharedPreferences: RxSharedPreferences
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -25,11 +35,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        val countingPreference: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
-        countingPreference?.summaryProvider = Preference.SummaryProvider<Preference> {
-            val uriString = PreferenceManager.getDefaultSharedPreferences(context!!).getString(it.key, null)
-            uriString?.let { getDisplayNameForFolderUri(Uri.parse(uriString)) } ?: getString(R.string.none)
-        }
+        val settingsViewModel = ViewModelProviders.of(this, SettingsViewModel.Factory(context!!, rxSharedPreferences))
+                .get(SettingsViewModel::class.java)
+
+        val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
+        val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
+
+        settingsViewModel.currentFolder
+                .observeOn(AndroidSchedulers.mainThread())
+                .autoDispose(scope())
+                .subscribe {
+                    currentDirectory?.summary = getDisplayNameForFolderUri(Uri.parse(it)) ?: getString(R.string.none)
+                }
+
+        settingsViewModel.indexingInProgress.observe(this, Observer {
+            rescanPreference?.isEnabled = !it
+            currentDirectory?.isEnabled = !it
+        })
     }
 
     private fun getDisplayNameForFolderUri(uri: Uri) = DocumentFile.fromTreeUri(context!!, uri)?.name
@@ -38,16 +60,31 @@ class SettingsFragment : PreferenceFragmentCompat() {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> handleRescan()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
+            getString(R.string.pref_key_clear_cores_cache) -> handleClearCacheCores()
         }
         return super.onPreferenceTreeClick(preference)
     }
 
     private fun handleChangeExternalFolder() {
-        StorageFrameworkPickerLauncher.pickFolder(context!!)
+        settingsInteractor.changeLocalStorageFolder()
     }
 
     private fun handleRescan() {
         context?.let { LibraryIndexWork.enqueueUniqueWork(it) }
+    }
+
+    private fun handleClearCacheCores() {
+        activity?.let {
+            SettingsInteractor(it)
+                    .clearCoresCache()
+                    .doAfterTerminate { displayClearCoreCacheMessage() }
+                    .autoDispose(scope())
+                    .subscribe()
+        }
+    }
+
+    private fun displayClearCoreCacheMessage() {
+        Toast.makeText(activity, R.string.clear_cores_cache_success, Toast.LENGTH_SHORT).show()
     }
 
     @dagger.Module

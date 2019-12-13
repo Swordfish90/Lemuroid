@@ -141,7 +141,7 @@ data class GameSystem(
             mutableMap.toMap()
         }
 
-        fun findById(id: String): GameSystem? = byIdCache[id]
+        fun findById(id: String): GameSystem = byIdCache.getValue(id)
 
         fun findByShortName(shortName: String): GameSystem? =
                 findById(shortName.toLowerCase())

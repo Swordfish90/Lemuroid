@@ -9,7 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.feature.games.GamesFragment
-import com.swordfish.lemuroid.app.feature.games.SystemsFragment
+import com.swordfish.lemuroid.app.feature.systems.SystemsFragment
 import com.swordfish.lemuroid.app.feature.home.HomeFragment
 import com.swordfish.lemuroid.app.feature.search.SearchFragment
 import com.swordfish.lemuroid.app.feature.settings.SettingsFragment

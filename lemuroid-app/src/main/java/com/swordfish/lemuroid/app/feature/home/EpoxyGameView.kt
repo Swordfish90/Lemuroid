@@ -10,41 +10,30 @@ import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.squareup.picasso.Picasso
+import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.utils.games.GameUtils
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @EpoxyModelClass(layout = R.layout.layout_game_recent)
 abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
 
     @EpoxyAttribute
-    var title: String? = null
-
-    @EpoxyAttribute
-    var coverUrl: String? = null
-
-    @EpoxyAttribute
-    var favorite: Boolean? = null
+    lateinit var game: Game
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    var onClick: (() -> Unit)? = null
-
-    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    var onRestart: (() -> Unit)? = null
-
-    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    var onFavoriteChanged: ((Boolean) -> Unit)? = null
+    lateinit var gameInteractor: GameInteractor
 
     override fun bind(holder: Holder) {
-        holder.titleView?.text = title
+        holder.titleView?.text = game.title
+        holder.subtitleView?.let { it.text = GameUtils.getGameSubtitle(it.context, game) }
+
         Picasso.get()
-            .load(coverUrl)
+            .load(game.coverFrontUrl)
             .placeholder(R.drawable.ic_image_paceholder)
             .into(holder.coverView)
-        holder.itemView?.setOnClickListener { onClick?.invoke() }
-        holder.itemView?.setOnCreateContextMenuListener(GameContextMenuListener(
-                favorite,
-                onClick,
-                onRestart,
-                onFavoriteChanged)
-        )
+
+        holder.itemView?.setOnClickListener { gameInteractor.onGamePlay(game) }
+        holder.itemView?.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
     }
 
     override fun unbind(holder: Holder) {
@@ -58,11 +47,13 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
     class Holder : EpoxyHolder() {
         var itemView: View? = null
         var titleView: TextView? = null
+        var subtitleView: TextView? = null
         var coverView: ImageView? = null
 
         override fun bindView(itemView: View) {
             this.itemView = itemView
             this.titleView = itemView.findViewById(R.id.text)
+            this.subtitleView = itemView.findViewById(R.id.subtext)
             this.coverView = itemView.findViewById(R.id.image)
         }
     }

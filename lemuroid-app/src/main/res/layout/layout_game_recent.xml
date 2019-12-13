@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.swordfish.lemuroid.app.shared.SquaredMaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cardview"
     android:layout_width="@dimen/game_entry_size"
-    android:layout_height="@dimen/game_entry_size"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true">
 
     <include layout="@layout/layout_game_grid_content" />
 
-</com.swordfish.lemuroid.app.shared.SquaredMaterialCardView>
+</com.google.android.material.card.MaterialCardView >
