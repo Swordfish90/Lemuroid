@@ -108,11 +108,10 @@ abstract class LemuroidApplicationModule {
         @IntoSet
         @JvmStatic
         fun localSAFStorageProvider(
-                context: Context,
-                metadataProvider: LibretroDBMetadataProvider,
-                directoriesManager: DirectoriesManager
-        ): StorageProvider =
-                StorageAccessFrameworkProvider(context, metadataProvider, directoriesManager)
+            context: Context,
+            metadataProvider: LibretroDBMetadataProvider,
+            directoriesManager: DirectoriesManager
+        ): StorageProvider = StorageAccessFrameworkProvider(context, metadataProvider, directoriesManager)
 
         @Provides
         @PerApp
@@ -133,8 +132,7 @@ abstract class LemuroidApplicationModule {
         fun gameLibrary(
             db: RetrogradeDatabase,
             storageProviderRegistry: StorageProviderRegistry
-        ) =
-                GameLibrary(db, storageProviderRegistry)
+        ) = GameLibrary(db, storageProviderRegistry)
 
         @Provides
         @PerApp
@@ -174,7 +172,10 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coreManager(directoriesManager: DirectoriesManager, retrofit: Retrofit) = CoreManager(directoriesManager, retrofit)
+        fun coreManager(
+            directoriesManager: DirectoriesManager,
+            retrofit: Retrofit
+        ) = CoreManager(directoriesManager, retrofit)
 
         @Provides
         @PerApp

@@ -34,7 +34,6 @@ import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDisposable
 import timber.log.Timber
 import com.swordfish.lemuroid.R
 import com.swordfish.libretrodroid.GLRetroView
@@ -44,7 +43,6 @@ import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import com.uber.autodispose.AutoDispose.autoDisposable
 import com.uber.autodispose.autoDispose
 
 class GameActivity : RetrogradeActivity() {
