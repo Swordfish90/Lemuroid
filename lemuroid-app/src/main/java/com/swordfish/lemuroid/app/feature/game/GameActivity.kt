@@ -167,6 +167,7 @@ class GameActivity : RetrogradeActivity() {
 
         getRestoreCompletable(saveGame)
                 .subscribeOn(Schedulers.io())
+                .autoDispose(scope())
                 .subscribe()
     }
 
