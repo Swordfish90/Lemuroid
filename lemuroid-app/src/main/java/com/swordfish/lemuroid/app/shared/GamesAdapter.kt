@@ -7,10 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
 import com.swordfish.lemuroid.app.utils.games.GameUtils
@@ -43,7 +41,9 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
         itemView.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
 
-        favoriteToggle?.setOnCheckedChangeListener { _, isChecked -> gameInteractor.onFavoriteToggle(game, isChecked) }
+        favoriteToggle?.setOnCheckedChangeListener { _, isChecked ->
+            gameInteractor.onFavoriteToggle(game, isChecked)
+        }
     }
 
     fun unbind() {

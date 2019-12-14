@@ -65,7 +65,9 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC")
     fun selectFavorites(): DataSource.Factory<Int, Game>
 
-    @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit")
+    @Query("""
+        SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
+        """)
     fun selectFirstRecents(limit: Int): LiveData<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")

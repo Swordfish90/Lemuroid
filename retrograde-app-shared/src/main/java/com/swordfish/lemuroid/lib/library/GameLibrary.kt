@@ -62,7 +62,11 @@ class GameLibrary(
         .ignoreElements()
     }
 
-    private fun retrieveMetadata(it: List<StorageFile>, provider: StorageProvider, startedAtMs: Long): Single<List<Game>> {
+    private fun retrieveMetadata(
+        it: List<StorageFile>,
+        provider: StorageProvider,
+        startedAtMs: Long
+    ): Single<List<Game>> {
         return Observable.fromIterable(it)
                 .compose(provider.metadataProvider.transformer(startedAtMs))
                 .filterSome()

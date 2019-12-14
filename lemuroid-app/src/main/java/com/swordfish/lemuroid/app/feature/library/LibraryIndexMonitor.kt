@@ -9,7 +9,8 @@ import androidx.work.WorkManager
 class LibraryIndexMonitor(private val appContext: Context) {
 
     fun getLiveData(): LiveData<Boolean> {
-        val workInfosLiveData = WorkManager.getInstance(appContext).getWorkInfosForUniqueWorkLiveData(LibraryIndexWork.UNIQUE_WORK_ID)
+        val workInfosLiveData =
+                WorkManager.getInstance(appContext).getWorkInfosForUniqueWorkLiveData(LibraryIndexWork.UNIQUE_WORK_ID)
 
         return Transformations.map(workInfosLiveData) { workInfos ->
             val isRunning = workInfos

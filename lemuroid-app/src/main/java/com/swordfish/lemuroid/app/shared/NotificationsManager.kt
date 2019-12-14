@@ -28,7 +28,8 @@ class NotificationsManager(private val applicationContext: Context) {
             val name = applicationContext.getString(R.string.notification_channel_name)
             val importance = NotificationManager.IMPORTANCE_MIN
             val mChannel = NotificationChannel(DEFAULT_CHANNEL_ID, name, importance)
-            val notificationManager = ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+            val notificationManager =
+                    ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
             notificationManager?.createNotificationChannel(mChannel)
         }
     }
