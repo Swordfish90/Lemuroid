@@ -47,7 +47,7 @@ class GameLoader(
     }
 
     private fun prepareGame(game: Game, loadSave: Boolean): Single<GameData> {
-        val gameSystem = GameSystem.findById(game.systemId)!!
+        val gameSystem = GameSystem.findById(game.systemId)
 
         val coreObservable = coreManager.downloadCore(gameSystem.coreFileName)
         val gameObservable = gameLibrary.getGameRom(game)

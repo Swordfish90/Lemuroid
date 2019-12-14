@@ -17,6 +17,7 @@
     <string name="advanced">Advanced</string>
     <string name="clear_cores_cache">Clear cores cache</string>
     <string name="clear_cores_cache_success">Cores cache cleared</string>
+    <string name="ok">Ok</string>
 
     <string name="add_to_favorites">Add to favorites</string>
     <string name="remove_from_favorites">Remove from favorites</string>
@@ -36,6 +37,8 @@
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning</string>
     <string name="library_index_notification_message"></string>
+
+    <string name="game_play_generic_error_message">Cannot play game.\nMake sure your network is connected the first time you play with a new system and your ROMs directory has been rescanned.</string>
 
     <string name="system_grid_details">%1$s games</string>
 

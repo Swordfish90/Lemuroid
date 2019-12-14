@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.feature.game
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
@@ -42,9 +43,19 @@ class GameLauncherActivity : RetrogradeActivity() {
                                 startActivityForResult(newIntent(this, it), REQUEST_CODE_GAME)
                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                             },
-                            { Timber.e(it, "Error while loading game ${it.message}") }
+                            {
+                                Timber.e(it, "Error while loading game ${it.message}")
+                                displayGenericErrorMessage()
+                            }
                     )
         }
+    }
+
+    private fun displayGenericErrorMessage() {
+        AlertDialog.Builder(this)
+                .setMessage(R.string.game_play_generic_error_message)
+                .setPositiveButton(R.string.ok) { _, _ -> finish() }
+                .show()
     }
 
     fun newIntent(context: Context, gameData: GameLoader.GameData) =
@@ -64,7 +75,6 @@ class GameLauncherActivity : RetrogradeActivity() {
                 WorkManager.getInstance(applicationContext).enqueue(GameSaveWorker.newRequest(gameId, saveFile))
             }
         }
-        setResult(resultCode)
         finish()
     }
 
