@@ -35,11 +35,15 @@ android {
             signingConfig = signingConfigs["release"]
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             resValue("string", "lemuroid_name", "Lemuroid")
+            resValue("color", "main_color", "#00c64e")
+            resValue("color", "main_color_light", "#9de3aa")
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
             resValue("string", "lemuroid_name", "LemuroiDebug")
+            resValue("color", "main_color", "#f44336")
+            resValue("color", "main_color_light", "#ef9a9a")
         }
     }
 

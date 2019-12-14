@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#9de3aa</color>
-    <color name="colorPrimaryVariant">#00c64e</color>
+    <!-- Main colors are now defined in build.gradle -->
+
+    <color name="colorPrimary">@color/main_color_light</color>
+    <color name="colorPrimaryVariant">@color/main_color</color>
 
     <color name="colorSecondary">@color/colorPrimary</color>
     <color name="colorSecondaryVariant">@color/colorPrimaryVariant</color>
 
-    <color name="lemuroid_launcher_background">#00C64E</color>
     <color name="imageview_background">#09ffffff</color>
 </resources>
