@@ -34,6 +34,12 @@ android {
             isMinifyEnabled = true
             signingConfig = signingConfigs["release"]
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            resValue("string", "lemuroid_name", "Lemuroid")
+        }
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-DEBUG"
+            resValue("string", "lemuroid_name", "LemuroiDebug")
         }
     }
 
