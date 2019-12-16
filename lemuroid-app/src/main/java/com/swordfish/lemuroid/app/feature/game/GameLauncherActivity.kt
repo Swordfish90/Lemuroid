@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.work.WorkManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
-import com.swordfish.lemuroid.lib.game.GameSaveWorker
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -68,13 +66,6 @@ class GameLauncherActivity : RetrogradeActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_GAME && resultCode == RESULT_OK && data != null) {
-            val gameId = data.getIntExtra(GameActivity.EXTRA_GAME_ID, -1)
-            val saveFile = data.getStringExtra(GameActivity.EXTRA_SAVE_FILE)
-            if (gameId != -1 && saveFile != null) {
-                WorkManager.getInstance(applicationContext).enqueue(GameSaveWorker.newRequest(gameId, saveFile))
-            }
-        }
         finish()
     }
 

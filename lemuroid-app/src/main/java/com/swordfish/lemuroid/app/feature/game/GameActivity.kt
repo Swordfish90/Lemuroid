@@ -42,6 +42,8 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.work.WorkManager
+import com.swordfish.lemuroid.lib.game.GameSaveWorker
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.autoDispose
@@ -50,7 +52,6 @@ class GameActivity : RetrogradeActivity() {
     companion object {
         const val EXTRA_GAME_ID = "game_id"
         const val EXTRA_SYSTEM_ID = "system_id"
-        const val EXTRA_SAVE_FILE = "save_file"
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
 
@@ -285,10 +286,10 @@ class GameActivity : RetrogradeActivity() {
             val tmpFile = createTempFile()
             tmpFile.writeBytes(optionalSaveData)
 
-            val resultData = Intent()
-            resultData.putExtra(EXTRA_GAME_ID, intent.getIntExtra(EXTRA_GAME_ID, -1))
-            resultData.putExtra(EXTRA_SAVE_FILE, tmpFile.absolutePath)
-            setResult(Activity.RESULT_OK, resultData)
+            val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
+            WorkManager.getInstance(applicationContext).enqueue(GameSaveWorker.newRequest(gameId, tmpFile.absolutePath))
+
+            setResult(Activity.RESULT_OK, Intent())
             finish()
         }
     }
