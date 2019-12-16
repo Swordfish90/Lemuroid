@@ -43,6 +43,7 @@ import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.autoDispose
 
 class GameActivity : RetrogradeActivity() {
@@ -114,9 +115,10 @@ class GameActivity : RetrogradeActivity() {
             restoreAsync(it)
         }
 
-        if (retroGameView.getConnectedGamepads() == 0) {
-            setupTouchInput(systemId)
-        }
+        setupTouchInput(systemId)
+        retroGameView.getConnectedGamepads()
+                .autoDispose(scope())
+                .subscribe { padLayout.updateVisibility(it == 0) }
 
         handleOrientationChange(resources.configuration.orientation)
 
