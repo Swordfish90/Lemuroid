@@ -78,7 +78,7 @@ data class GameSystem(
                         R.string.game_system_abbr_genesis,
                         R.drawable.game_system_genesis,
                         "sega0",
-                        "picodrive_libretro_android.so.zip",
+                        "genesis_plus_gx_libretro_android.so.zip",
                         listOf("gen", "smd", "md")
                 ),
                 GameSystem(
@@ -108,6 +108,15 @@ data class GameSystem(
                         "nintendo4",
                         "mgba_libretro_android.so.zip",
                         listOf("gba")
+                ),
+                GameSystem(
+                        SMS_ID,
+                        R.string.game_system_title_sms,
+                        R.string.game_system_abbr_sms,
+                        R.drawable.game_system_sms,
+                        "sega1",
+                        "genesis_plus_gx_libretro_android.so.zip",
+                        listOf(".sg", ".sms")
                 ),
                 GameSystem(
                         N64_ID,
