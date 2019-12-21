@@ -136,6 +136,7 @@ class GameActivity : RetrogradeActivity() {
             GameSystem.GBC_ID -> GLRetroView.SHADER_LCD
             GameSystem.GB_ID -> GLRetroView.SHADER_LCD
             GameSystem.N64_ID -> GLRetroView.SHADER_CRT
+            GameSystem.SMS_ID -> GLRetroView.SHADER_CRT
             GameSystem.GENESIS_ID -> GLRetroView.SHADER_CRT
             GameSystem.NES_ID -> GLRetroView.SHADER_CRT
             GameSystem.SNES_ID -> GLRetroView.SHADER_CRT
@@ -217,7 +218,7 @@ class GameActivity : RetrogradeActivity() {
         val gamePadLayout = when (systemId) {
             in listOf(GameSystem.GBA_ID) -> GamePadFactory.Layout.GBA
             in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
-            in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.Layout.NES
+            in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID, GameSystem.SMS_ID) -> GamePadFactory.Layout.NES
             in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.Layout.GENESIS
             in listOf(GameSystem.N64_ID) -> GamePadFactory.Layout.N64
             else -> GamePadFactory.Layout.PSX
