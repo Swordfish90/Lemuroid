@@ -22,6 +22,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Game Boy (GB)
 - Game Boy Color (GBC)
 - Game Boy Advance (GBA)
+- Sega Master System (SMS)
 - Sega Genesis (aka Megadrive)
 - Nintendo 64 (N64)
 
