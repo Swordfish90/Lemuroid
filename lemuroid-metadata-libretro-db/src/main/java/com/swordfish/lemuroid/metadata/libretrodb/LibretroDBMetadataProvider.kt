@@ -102,6 +102,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             GameSystem.GBC_ID -> "Nintendo - Game Boy Color"
             GameSystem.GBA_ID -> "Nintendo - Game Boy Advance"
             GameSystem.N64_ID -> "Nintendo - Nintendo 64"
+            GameSystem.SMS.ID -> "Sega - Master System - Mark III"  
             GameSystem.GENESIS_ID -> "Sega - Mega Drive - Genesis"
             GameSystem.NES_ID -> "Nintendo - Nintendo Entertainment System"
             GameSystem.SNES_ID -> "Nintendo - Super Nintendo Entertainment System"
