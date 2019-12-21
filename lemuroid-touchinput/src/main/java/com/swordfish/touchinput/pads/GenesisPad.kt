@@ -40,9 +40,9 @@ class GenesisPad @JvmOverloads constructor(
             .getEvents()
             .compose(
                 EventsTransformers.actionButtonsMap(
-                    KeyEvent.KEYCODE_BUTTON_A,
+                    KeyEvent.KEYCODE_BUTTON_Y,
                     KeyEvent.KEYCODE_BUTTON_B,
-                    KeyEvent.KEYCODE_C
+                    KeyEvent.KEYCODE_BUTTON_A
                 )
             )
     }
