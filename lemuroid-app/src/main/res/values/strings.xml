@@ -13,6 +13,7 @@
     <string name="simulate_display">Simulate display</string>
     <string name="graphics">Graphics</string>
     <string name="roms">ROMs</string>
+    <string name="saves">Saves</string>
     <string name="advanced">Advanced</string>
     <string name="clear_cores_cache">Clear cores cache</string>
     <string name="clear_cores_cache_success">Cores cache cleared</string>
@@ -29,6 +30,10 @@
 
     <string name="home_empty_title">Select ROMs directory</string>
     <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
+    <string name="home_empty_action">Select Directory</string>
+    
+    <string name="home_empty_title">Select saves directory</string>
+    <string name="home_empty_message">Lemuroid needs to choose a directory to place your save files.</string>
     <string name="home_empty_action">Select Directory</string>
 
     <string name="empty_view_default">No Items</string>
