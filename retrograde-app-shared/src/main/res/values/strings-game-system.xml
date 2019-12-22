@@ -36,6 +36,6 @@
     <string name="game_system_title_gbc">Game Boy Color</string>
     <string name="game_system_title_gba">Game Boy Advance</string>
     <string name="game_system_title_n64">Nintendo 64</string>
-    <string name="game_system_title_psp">Playstation Portable</string>  
+    <string name="game_system_title_psp">Playstation Portable</string>
     <string name="game_system_title_arcade">Arcade</string>
 </resources>
