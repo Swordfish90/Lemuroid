@@ -51,6 +51,7 @@ data class GameSystem(
         const val GBC_ID = "gbc"
         const val GBA_ID = "gba"
         const val N64_ID = "n64"
+        const val PSP_ID = "psp"
         const val ARCADE_ID = "arcade"
 
         private val SYSTEMS = listOf(
@@ -118,6 +119,14 @@ data class GameSystem(
                         "mupen64plus_next_libretro_android.so.zip",
                         listOf("n64", "z64")
                 )
+                GameSystem{
+                        PSP_id,
+                        R.string.game_system_title_psp,
+                        R.string.game_system_abbr_psp,
+                        R.drawable.game_system_psp,
+                        "sony1",
+                        "ppsspp_libretro_android.so.zip",
+                        listOf("iso", "cso", "dax", "jso")
                 // We are currently disabling MAME emulation, since it's a bit of a mess to handle romsets versions.
                 /*GameSystem(
                         ARCADE_ID,
