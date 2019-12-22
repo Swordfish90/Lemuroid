@@ -119,7 +119,7 @@ data class GameSystem(
                         "mupen64plus_next_libretro_android.so.zip",
                         listOf("n64", "z64")
                 ),
-                GameSystem{
+                GameSystem(
                         PSP_id,
                         R.string.game_system_title_psp,
                         R.string.game_system_abbr_psp,
@@ -127,6 +127,7 @@ data class GameSystem(
                         "sony1",
                         "ppsspp_libretro_android.so.zip",
                         listOf("iso", "cso", "dax", "jso")
+                ),
                 // We are currently disabling MAME emulation, since it's a bit of a mess to handle romsets versions.
                 /*GameSystem(
                         ARCADE_ID,
