@@ -120,7 +120,7 @@ data class GameSystem(
                         listOf("n64", "z64")
                 ),
                 GameSystem(
-                        PSP_id,
+                        PSP_ID,
                         R.string.game_system_title_psp,
                         R.string.game_system_abbr_psp,
                         R.drawable.game_system_psp,
