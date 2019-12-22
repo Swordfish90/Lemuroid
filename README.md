@@ -24,6 +24,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Game Boy Advance (GBA)
 - Sega Genesis (aka Megadrive)
 - Nintendo 64 (N64)
+- Playstation Portable (PSP)
 
 ### Features:
 - Automatically save and restore game states.
