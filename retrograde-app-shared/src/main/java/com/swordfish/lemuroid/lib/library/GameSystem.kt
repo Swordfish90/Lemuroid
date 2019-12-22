@@ -127,7 +127,7 @@ data class GameSystem(
                         "sony1",
                         "ppsspp_libretro_android.so.zip",
                         listOf("iso", "cso", "dax", "jso")
-                ),
+                )
                 // We are currently disabling MAME emulation, since it's a bit of a mess to handle romsets versions.
                 /*GameSystem(
                         ARCADE_ID,
