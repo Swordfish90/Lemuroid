@@ -105,6 +105,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             GameSystem.GENESIS_ID -> "Sega - Mega Drive - Genesis"
             GameSystem.NES_ID -> "Nintendo - Nintendo Entertainment System"
             GameSystem.SNES_ID -> "Nintendo - Super Nintendo Entertainment System"
+            GameSystem.PSP_ID -> "Sony - Playstation Portable"
             else -> null
         }
 
