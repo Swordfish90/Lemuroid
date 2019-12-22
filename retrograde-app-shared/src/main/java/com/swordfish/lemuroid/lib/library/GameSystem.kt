@@ -118,7 +118,7 @@ data class GameSystem(
                         "nintendo5",
                         "mupen64plus_next_libretro_android.so.zip",
                         listOf("n64", "z64")
-                )
+                ),
                 GameSystem{
                         PSP_id,
                         R.string.game_system_title_psp,
