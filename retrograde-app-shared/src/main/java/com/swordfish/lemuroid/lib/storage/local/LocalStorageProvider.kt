@@ -29,9 +29,6 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
-import com.gojuno.koptional.None
-import com.gojuno.koptional.Optional
-import com.gojuno.koptional.toOptional
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
@@ -83,21 +80,5 @@ class LocalStorageProvider(
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
         File(game.fileUri.path)
-    }
-
-    override fun getGameSave(game: Game): Single<Optional<ByteArray>> {
-        val saveFile = getSaveFile(game)
-        return if (saveFile.exists()) {
-            Single.just(saveFile.readBytes().toOptional())
-        } else {
-            Single.just(None)
-        }
-    }
-
-    private fun getSaveFile(game: Game): File {
-        val retrogradeDir = File(Environment.getExternalStorageDirectory(), "retrograde")
-        val savesDir = File(retrogradeDir, "saves")
-        savesDir.mkdirs()
-        return File(savesDir, "${game.fileName}.sram")
     }
 }

@@ -30,7 +30,7 @@ import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import io.reactivex.Maybe
 import io.reactivex.Single
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
@@ -49,13 +49,14 @@ class GameLoader(
                 .flatMapSingle { game -> prepareGame(game, loadSave) }
     }
 
-    private fun prepareGame(game: Game, loadSave: Boolean): Single<GameData> {
+    private fun prepareGame(game: Game, loadQuickSave: Boolean): Single<GameData> {
         val gameSystem = GameSystem.findById(game.systemId)
 
         val coreObservable = coreManager.downloadCore(gameSystem.coreFileName)
         val gameObservable = gameLibrary.getGameRom(game)
-        val saveObservable = if (loadSave) {
-            savesManager.getStashedState(game).toSingleAsOptional()
+        val saveRAMObservable = savesManager.getSaveRAM(game).toSingleAsOptional()
+        val quickSaveObservable = if (loadQuickSave) {
+            savesManager.getQuickSave(game).toSingleAsOptional()
         } else {
             Single.just(None)
         }
@@ -63,9 +64,10 @@ class GameLoader(
         return Single.zip(
                 coreObservable,
                 gameObservable,
-                saveObservable,
-                Function3<File, File, Optional<ByteArray>, GameData> { coreFile, gameFile, saveData ->
-                    GameData(game, coreFile, gameFile, saveData.toNullable())
+                quickSaveObservable,
+                saveRAMObservable,
+                Function4<File, File, Optional<ByteArray>, Optional<ByteArray>, GameData> { coreFile, gameFile, saveData , sramData ->
+                    GameData(game, coreFile, gameFile, saveData.toNullable(), sramData.toNullable())
                 })
     }
 
@@ -74,6 +76,7 @@ class GameLoader(
         val game: Game,
         val coreFile: File,
         val gameFile: File,
-        val saveData: ByteArray?
+        val quickSaveData: ByteArray?,
+        val saveRAMData: ByteArray?
     )
 }

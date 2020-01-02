@@ -42,11 +42,14 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.work.WorkManager
-import com.swordfish.lemuroid.lib.game.GameSaveWorker
+import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.autoDispose
+import io.reactivex.Single
+import javax.inject.Inject
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -55,16 +58,27 @@ class GameActivity : RetrogradeActivity() {
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
 
-        private var transientSaveState: ByteArray? = null
+        private var transientStashedState: ByteArray? = null
+        private var transientSRAMState: ByteArray? = null
 
         /** A full savestate may not fit a bundle, so we need to ask for forgiveness and pass it statically. */
-        fun setTransientSaveState(state: ByteArray?) {
-            transientSaveState = state
+        fun setTransientQuickSave(state: ByteArray?) {
+            transientStashedState = state
         }
 
-        fun getAndResetTransientSaveState(): ByteArray? {
-            val result = transientSaveState
-            transientSaveState = null
+        fun setTransientSaveRAMState(data: ByteArray?) {
+            transientSRAMState = data
+        }
+
+        fun getAndResetTransientQuickSave(): ByteArray? {
+            val result = transientStashedState
+            transientStashedState = null
+            return result
+        }
+
+        fun getAndResetTransientSaveRAMState(): ByteArray? {
+            val result = transientSRAMState
+            transientSRAMState = null
             return result
         }
     }
@@ -77,7 +91,8 @@ class GameActivity : RetrogradeActivity() {
 
     private lateinit var retroGameView: GLRetroView
 
-    private var quickSavedState: ByteArray? = null
+    @Inject lateinit var savesManager: SavesManager
+    @Inject lateinit var retrogradeDb: RetrogradeDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,9 +126,12 @@ class GameActivity : RetrogradeActivity() {
 
         gameViewLayout.addView(retroGameView)
 
-        getAndResetTransientSaveState()?.let {
-            quickSavedState = it
-            restoreAsync(it)
+        getAndResetTransientSaveRAMState()?.let {
+            retroGameView.unserializeSRAM(it)
+        }
+
+        getAndResetTransientQuickSave()?.let {
+            restoreQuickSaveAsync(it)
         }
 
         setupTouchInput(systemId)
@@ -165,10 +183,10 @@ class GameActivity : RetrogradeActivity() {
     }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
-    private fun restoreAsync(saveGame: ByteArray) {
+    private fun restoreQuickSaveAsync(saveGame: ByteArray) {
         Timber.i("Loading saved state of ${saveGame.size} bytes")
 
-        getRestoreCompletable(saveGame)
+        getRetryRestoreQuickSave(saveGame)
                 .subscribeOn(Schedulers.io())
                 .autoDispose(scope())
                 .subscribe()
@@ -189,7 +207,7 @@ class GameActivity : RetrogradeActivity() {
         retroGameView.onDestroy()
     }
 
-    private fun getRestoreCompletable(saveGame: ByteArray) = Completable.fromCallable {
+    private fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
         var times = 10
         while (!retroGameView.unserialize(saveGame) && times > 0) {
             sleep(200)
@@ -256,8 +274,8 @@ class GameActivity : RetrogradeActivity() {
         val builder = AlertDialog.Builder(this)
             .setItems(items) { _, which ->
                 when (which) {
-                    0 -> quickSave()
-                    1 -> quickLoad()
+                    0 -> quickSave().subscribeOn(Schedulers.io()).autoDispose(scope()).subscribe()
+                    1 -> quickLoad().subscribeOn(Schedulers.io()).autoDispose(scope()).subscribe()
                     2 -> reset()
                     3 -> finish()
                 }
@@ -280,26 +298,46 @@ class GameActivity : RetrogradeActivity() {
 
     private fun saveAndFinish(): Completable {
         return Completable.fromCallable {
-            val optionalSaveData = retroGameView.serialize()
-            Timber.i("Saving game with size: ${optionalSaveData.size}")
-
-            val tmpFile = createTempFile()
-            tmpFile.writeBytes(optionalSaveData)
-
-            val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
-            WorkManager.getInstance(applicationContext).enqueue(GameSaveWorker.newRequest(gameId, tmpFile.absolutePath))
+            saveSRAM().blockingAwait()
+            quickSave().blockingAwait()
 
             setResult(Activity.RESULT_OK, Intent())
             finish()
         }
     }
 
-    private fun quickSave() {
-        quickSavedState = retroGameView.serialize()
+    private fun quickSave(): Completable {
+        return retrieveCurrentGame()
+                .doOnSuccess { game ->
+                    val data = retroGameView.serialize()
+                    Timber.i("Storing quicksave with size: ${data.size}")
+                    savesManager.setQuickSave(game, data).blockingAwait()
+                }
+                .ignoreElement()
     }
 
-    private fun quickLoad() {
-        quickSavedState?.let { retroGameView.unserialize(it) }
+    private fun quickLoad(): Completable {
+        return retrieveCurrentGame()
+                .flatMapMaybe { savesManager.getQuickSave(it) }
+                .doOnSuccess { retroGameView.unserialize(it) }
+                .ignoreElement()
+    }
+
+    private fun saveSRAM(): Completable {
+        return retrieveCurrentGame()
+                .doOnSuccess {
+                    val data = retroGameView.serializeSRAM()
+                    if (data.isNotEmpty()) {
+                        Timber.i("Storing sram with size: ${data.size}")
+                        savesManager.setSaveRAM(it, data).blockingAwait()
+                    }
+                }
+                .ignoreElement()
+    }
+
+    private fun retrieveCurrentGame(): Single<Game> {
+        val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
+        return retrogradeDb.gameDao().selectById(gameId).toSingle()
     }
 
     private fun reset() {

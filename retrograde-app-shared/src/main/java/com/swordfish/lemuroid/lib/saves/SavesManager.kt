@@ -8,22 +8,44 @@ import java.io.File
 
 class SavesManager(private val directoriesManager: DirectoriesManager) {
 
-    fun getStashedState(game: Game): Maybe<ByteArray> {
-        val saveFile = getStashedFile(game)
-        return if (saveFile.exists()) {
-            Maybe.just(saveFile.readBytes())
+    fun getSaveRAM(game: Game): Maybe<ByteArray> = Maybe.fromCallable {
+        val saveFile = getSaveRAMFile(game)
+        if (saveFile.exists()) {
+            saveFile.readBytes()
         } else {
-            Maybe.empty()
+            null
         }
     }
 
-    fun setSashedState(game: Game, data: ByteArray) = Completable.fromCallable {
-        val saveFile = getStashedFile(game)
+    fun setSaveRAM(game: Game, data: ByteArray): Completable = Completable.fromCallable {
+        val saveFile = getSaveRAMFile(game)
         saveFile.writeBytes(data)
     }
 
-    private fun getStashedFile(game: Game): File {
+    fun getQuickSave(game: Game): Maybe<ByteArray> = Maybe.fromCallable {
+        val saveFile = getQuickSaveFile(game)
+        if (saveFile.exists()) {
+            saveFile.readBytes()
+        } else {
+            null
+        }
+    }
+
+    fun setQuickSave(game: Game, data: ByteArray) = Completable.fromCallable {
+        val saveFile = getQuickSaveFile(game)
+        saveFile.writeBytes(data)
+    }
+
+    private fun getSaveRAMFile(game: Game): File {
+        val savesDirectory = directoriesManager.getSavesDirectory()
+        return File(savesDirectory, getSaveRAMFileName(game))
+    }
+
+    private fun getQuickSaveFile(game: Game): File {
         val statesDirectories = directoriesManager.getStatesDirectory()
         return File(statesDirectories, "${game.fileName}.state")
     }
+
+    /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
+    private fun getSaveRAMFileName(game: Game) = "${game.fileName.substringBeforeLast(".")}.srm"
 }

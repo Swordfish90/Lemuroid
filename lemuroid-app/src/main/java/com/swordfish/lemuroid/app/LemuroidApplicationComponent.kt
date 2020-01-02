@@ -19,7 +19,6 @@
 
 package com.swordfish.lemuroid.app
 
-import com.swordfish.lemuroid.lib.game.GameSaveWorker
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjectionModule
 import com.swordfish.lemuroid.lib.injection.PerApp
 import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
@@ -31,7 +30,6 @@ import dagger.android.support.AndroidSupportInjectionModule
     AndroidSupportInjectionModule::class,
     AndroidWorkerInjectionModule::class,
     LemuroidApplicationModule::class,
-    GameSaveWorker.Module::class,
     LibraryIndexWork.Module::class
     // GDriveApplicationModule::class,
     // WebDavApplicationModule::class,

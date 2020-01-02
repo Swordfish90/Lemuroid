@@ -45,7 +45,4 @@ interface StorageProvider {
     fun listFiles(): Observable<StorageFile>
 
     fun getGameRom(game: Game): Single<File>
-
-    fun getGameSave(game: Game): Single<Optional<ByteArray>>
-
 }
