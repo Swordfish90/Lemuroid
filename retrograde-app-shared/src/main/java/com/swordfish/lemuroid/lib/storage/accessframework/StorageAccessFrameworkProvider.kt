@@ -17,7 +17,6 @@ import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
@@ -181,11 +180,6 @@ class StorageAccessFrameworkProvider(
         } else {
             Single.just(None)
         }
-    }
-
-    override fun setGameSave(game: Game, data: ByteArray): Completable = Completable.fromCallable {
-        val saveFile = getSaveFile(game)
-        saveFile.writeBytes(data)
     }
 
     private fun getSaveFile(game: Game): File {

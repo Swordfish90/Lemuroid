@@ -101,12 +101,6 @@ class GameLibrary(
     fun getGameRom(game: Game): Single<File> =
             providerProviderRegistry.getProvider(game).getGameRom(game)
 
-    fun getGameSave(game: Game): Single<Optional<ByteArray>> =
-            providerProviderRegistry.getProvider(game).getGameSave(game)
-
-    fun setGameSave(game: Game, data: ByteArray): Completable =
-            providerProviderRegistry.getProvider(game).setGameSave(game, data)
-
     companion object {
         // We batch database updates to avoid unnecessary UI updates.
         const val BUFFER_SIZE = 100

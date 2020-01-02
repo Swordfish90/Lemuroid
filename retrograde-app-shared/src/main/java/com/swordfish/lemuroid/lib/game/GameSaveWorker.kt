@@ -8,7 +8,7 @@ import androidx.work.workDataOf
 import androidx.work.ListenableWorker
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
-import com.swordfish.lemuroid.lib.library.GameLibrary
+import com.swordfish.lemuroid.lib.saves.SavesManager
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
@@ -18,8 +18,8 @@ import javax.inject.Inject
 
 class GameSaveWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
-    @Inject lateinit var gameLibrary: GameLibrary
     @Inject lateinit var gameLoader: GameLoader
+    @Inject lateinit var savesManager: SavesManager
 
     override fun doWork(): Result {
         AndroidWorkerInjection.inject(this)
@@ -31,7 +31,7 @@ class GameSaveWorker(context: Context, workerParams: WorkerParameters) : Worker(
         val saveData = saveFile.readBytes()
 
         return try {
-            gameLibrary.setGameSave(game, saveData)
+            savesManager.setSashedState(game, saveData)
                     .blockingAwait()
             saveFile.delete()
             Result.success()

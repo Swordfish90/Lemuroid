@@ -32,7 +32,6 @@ import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
@@ -93,11 +92,6 @@ class LocalStorageProvider(
         } else {
             Single.just(None)
         }
-    }
-
-    override fun setGameSave(game: Game, data: ByteArray): Completable = Completable.fromCallable {
-        val saveFile = getSaveFile(game)
-        saveFile.writeBytes(data)
     }
 
     private fun getSaveFile(game: Game): File {

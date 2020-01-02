@@ -48,5 +48,4 @@ interface StorageProvider {
 
     fun getGameSave(game: Game): Single<Optional<ByteArray>>
 
-    fun setGameSave(game: Game, data: ByteArray): Completable
 }

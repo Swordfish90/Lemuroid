@@ -26,6 +26,8 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.gojuno.koptional.Optional
+import com.swordfish.lemuroid.common.rx.toSingleAsOptional
+import com.swordfish.lemuroid.lib.saves.SavesManager
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.functions.Function3
@@ -35,7 +37,8 @@ import java.io.File
 class GameLoader(
     private val coreManager: CoreManager,
     private val retrogradeDatabase: RetrogradeDatabase,
-    private val gameLibrary: GameLibrary
+    private val gameLibrary: GameLibrary,
+    private val savesManager: SavesManager
 ) {
 
     fun loadGame(gameId: Int): Maybe<Game> = retrogradeDatabase.gameDao().selectById(gameId)
@@ -52,7 +55,7 @@ class GameLoader(
         val coreObservable = coreManager.downloadCore(gameSystem.coreFileName)
         val gameObservable = gameLibrary.getGameRom(game)
         val saveObservable = if (loadSave) {
-            gameLibrary.getGameSave(game)
+            savesManager.getStashedState(game).toSingleAsOptional()
         } else {
             Single.just(None)
         }
