@@ -7,7 +7,7 @@
     android:viewportHeight="@integer/item_viewportsize">
 
     <path
-        android:fillColor="@color/controller_default_pressed"
+        android:fillColor="@color/touch_control_pressed"
         android:pathData="M1 15a14 14 0 1 1 0 0.0001"/>
 
 </vector>

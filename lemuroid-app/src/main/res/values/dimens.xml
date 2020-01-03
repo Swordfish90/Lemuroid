@@ -3,7 +3,9 @@
     <dimen name="favorite_toggle_size">40dp</dimen>
     <dimen name="size_game_list">72dp</dimen>
     <dimen name="grid_spacing">@dimen/grid_unit_2x</dimen>
+    <dimen name="game_menu_button_size">48dp</dimen>
 
     <string name="system_card_image_ratio">4:3</string>
     <string name="game_card_image_ratio">1:1</string>
+
 </resources>

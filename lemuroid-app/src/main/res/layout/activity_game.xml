@@ -47,4 +47,15 @@
         android:layout_height="match_parent"
         android:visibility="invisible"/>
 
+    <ImageButton
+        android:id="@+id/menu_button"
+        android:layout_width="@dimen/game_menu_button_size"
+        android:layout_height="@dimen/game_menu_button_size"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:layout_marginBottom="@dimen/grid_unit_1x"
+        android:src="@drawable/game_menu_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

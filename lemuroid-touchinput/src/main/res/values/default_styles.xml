@@ -32,8 +32,8 @@
     <style name="default_stick">
         <item name="android:layout_width">@dimen/size_stick</item>
         <item name="android:layout_height">@dimen/size_stick</item>
-        <item name="JV_buttonColor">@color/controller_default</item>
-        <item name="JV_backgroundColor">@color/controller_default</item>
+        <item name="JV_buttonColor">@color/touch_control_default</item>
+        <item name="JV_backgroundColor">@color/touch_control_default</item>
         <item name="JV_buttonSizeRatio">33%</item>
         <item name="JV_backgroundSizeRatio">66%</item>
         <item name="JV_fixedCenter">false</item>

@@ -28,6 +28,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
@@ -52,6 +53,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class GameActivity : RetrogradeActivity() {
     companion object {
@@ -88,6 +90,7 @@ class GameActivity : RetrogradeActivity() {
     private lateinit var containerLayout: ConstraintLayout
     private lateinit var gameViewLayout: FrameLayout
     private lateinit var padLayout: FrameLayout
+    private lateinit var menuButton: ImageButton
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -103,6 +106,7 @@ class GameActivity : RetrogradeActivity() {
         containerLayout = findViewById(R.id.game_container)
         gameViewLayout = findViewById(R.id.gameview_layout)
         padLayout = findViewById(R.id.pad_layout)
+        menuButton = findViewById(R.id.menu_button)
 
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
 
@@ -121,10 +125,6 @@ class GameActivity : RetrogradeActivity() {
         )
 
         retroGameView.onCreate()
-        retroGameView.setOnLongClickListener {
-            displayOptionsDialog()
-            true
-        }
 
         gameViewLayout.addView(retroGameView)
 
@@ -140,6 +140,11 @@ class GameActivity : RetrogradeActivity() {
         retroGameView.getConnectedGamepads()
                 .autoDispose(scope())
                 .subscribe { padLayout.updateVisibility(it == 0) }
+
+        menuButton.setOnClickListener {
+            performHapticFeedback(it)
+            displayOptionsDialog()
+        }
 
         handleOrientationChange(resources.configuration.orientation)
 
@@ -176,18 +181,7 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun handleOrientationChange(orientation: Int) {
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setGameViewAspectRatio("1:1")
-        } else {
-            setGameViewAspectRatio(null)
-        }
-    }
-
-    private fun setGameViewAspectRatio(aspectRatio: String?) {
-        val set = ConstraintSet()
-        set.clone(containerLayout)
-        set.setDimensionRatio(gameViewLayout.id, aspectRatio)
-        set.applyTo(containerLayout)
+        OrientationHandler().handleOrientationChange(orientation)
     }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
@@ -283,20 +277,20 @@ class GameActivity : RetrogradeActivity() {
             .subscribe()
     }
 
-    private fun autoSaveAndFinish() = Completable.fromCallable {
-        val game = retrieveCurrentGame().blockingGet()
+    private fun autoSaveAndFinish(): Completable {
+        return retrieveCurrentGame().flatMapCompletable { game ->
+            val saveRAMData = retroGameView.serializeSRAM()
+            val autoSaveData = retroGameView.serialize()
 
-        val saveRAMData = retroGameView.serializeSRAM()
-        if (saveRAMData.isNotEmpty()) {
-            Timber.i("Storing sram with size: ${saveRAMData.size}")
-            savesManager.setSaveRAM(game, saveRAMData).blockingAwait()
+            val autoSaveCompletable = savesManager.setAutoSave(game, autoSaveData)
+                    .doOnComplete { Timber.i("Stored autosave file with size: ${autoSaveData.size}") }
+
+            val saveRAMCompletable = savesManager.setSaveRAM(game, saveRAMData)
+                    .doOnComplete { Timber.i("Stored sram file with size: ${saveRAMData.size}") }
+
+            saveRAMCompletable.andThen(autoSaveCompletable)
+                    .doOnComplete { finish() }
         }
-
-        val autoSaveData = retroGameView.serialize()
-        Timber.i("Storing autosave with size: ${autoSaveData.size}")
-        savesManager.setAutoSave(game, autoSaveData).blockingAwait()
-
-        finish()
     }
 
     private fun saveSlot(index: Int): Completable {
@@ -322,6 +316,49 @@ class GameActivity : RetrogradeActivity() {
 
     private fun reset() {
         retroGameView.reset()
+    }
+
+    inner class OrientationHandler {
+
+        fun handleOrientationChange(orientation: Int) {
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                // When in portrait mode we don't want the GLSurfaceView to fill the entire screen. We want it on top.
+                setGameViewAspectRatio("1:1")
+
+                // We should also add some padding the virtual layout or it would clash with the menu button.
+                setVirtualPadBottomPadding(resources.getDimension(R.dimen.game_menu_button_size).roundToInt())
+
+                // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
+                // view might be cut due to rounded corners.
+                setContainerWindowsInsets(true, true)
+            } else {
+                setGameViewAspectRatio(null)
+                setVirtualPadBottomPadding(0)
+                setContainerWindowsInsets(top = false, bottom = true)
+            }
+        }
+
+        private fun setVirtualPadBottomPadding(bottomPadding: Int) {
+            padLayout.setPadding(0, 0, 0, bottomPadding)
+        }
+
+        private fun setGameViewAspectRatio(aspectRatio: String?) {
+            val set = ConstraintSet()
+            set.clone(containerLayout)
+            set.setDimensionRatio(gameViewLayout.id, aspectRatio)
+            set.applyTo(containerLayout)
+        }
+
+        private fun setContainerWindowsInsets(top: Boolean, bottom: Boolean) {
+            containerLayout.setOnApplyWindowInsetsListener { v, insets ->
+                val topInset = if (top) { insets.systemWindowInsetTop } else { 0 }
+                val bottomInset = if (bottom) { insets.systemWindowInsetBottom } else { 0 }
+                v.setPadding(0, topInset, 0, bottomInset)
+                insets.consumeSystemWindowInsets()
+            }
+            containerLayout.requestApplyInsets()
+        }
     }
 
     inner class ContextGameDialog {

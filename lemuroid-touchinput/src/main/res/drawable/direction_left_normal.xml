@@ -7,5 +7,5 @@
 
     <path
         android:pathData="@string/vectorpath_direction_left"
-        android:fillColor="@color/controller_default" />
+        android:fillColor="@color/touch_control_default" />
 </vector>
