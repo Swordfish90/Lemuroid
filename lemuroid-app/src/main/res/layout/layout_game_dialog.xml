@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/save_entry_slot1"
+        layout="@layout/layout_game_dialog_save_entry"/>
+
+    <include
+        android:id="@+id/save_entry_slot2"
+        layout="@layout/layout_game_dialog_save_entry"/>
+
+    <include
+        android:id="@+id/save_entry_slot3"
+        layout="@layout/layout_game_dialog_save_entry"/>
+
+    <include
+        android:id="@+id/save_entry_slot4"
+        layout="@layout/layout_game_dialog_save_entry"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save_entry_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/grid_unit_1x"
+        android:text="@string/game_dialog_restart"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"/>
+
+</LinearLayout>

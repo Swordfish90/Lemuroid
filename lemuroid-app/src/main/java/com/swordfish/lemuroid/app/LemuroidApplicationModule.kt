@@ -197,7 +197,11 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gameLoader(coreManager: CoreManager, retrogradeDatabase: RetrogradeDatabase, gameLibrary: GameLibrary, savesManager: SavesManager) =
-                GameLoader(coreManager, retrogradeDatabase, gameLibrary, savesManager)
+        fun gameLoader(
+            coreManager: CoreManager,
+            retrogradeDatabase: RetrogradeDatabase,
+            gameLibrary: GameLibrary,
+            savesManager: SavesManager
+        ) = GameLoader(coreManager, retrogradeDatabase, gameLibrary, savesManager)
     }
 }

@@ -25,7 +25,6 @@ import com.swordfish.lemuroid.lib.library.GameLibrary
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.gojuno.koptional.Optional
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import io.reactivex.Maybe
@@ -56,7 +55,7 @@ class GameLoader(
         val gameObservable = gameLibrary.getGameRom(game)
         val saveRAMObservable = savesManager.getSaveRAM(game).toSingleAsOptional()
         val quickSaveObservable = if (loadQuickSave) {
-            savesManager.getQuickSave(game).toSingleAsOptional()
+            savesManager.getAutoSave(game).toSingleAsOptional()
         } else {
             Single.just(None)
         }
@@ -66,7 +65,7 @@ class GameLoader(
                 gameObservable,
                 quickSaveObservable,
                 saveRAMObservable,
-                Function4<File, File, Optional<ByteArray>, Optional<ByteArray>, GameData> { coreFile, gameFile, saveData , sramData ->
+                Function4 { coreFile, gameFile, saveData, sramData ->
                     GameData(game, coreFile, gameFile, saveData.toNullable(), sramData.toNullable())
                 })
     }

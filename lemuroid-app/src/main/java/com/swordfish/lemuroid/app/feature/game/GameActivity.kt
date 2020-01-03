@@ -19,16 +19,16 @@
 
 package com.swordfish.lemuroid.app.feature.game
 
-import android.app.Activity
-import android.content.Intent
+import android.app.Dialog
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
 import android.view.View
+import android.widget.Button
 import android.widget.FrameLayout
-import androidx.appcompat.app.AlertDialog
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -49,6 +49,8 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.autoDispose
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class GameActivity : RetrogradeActivity() {
@@ -110,17 +112,17 @@ class GameActivity : RetrogradeActivity() {
         val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
 
         retroGameView = GLRetroView(
-                this,
-                intent.getStringExtra(EXTRA_CORE_PATH),
-                intent.getStringExtra(EXTRA_GAME_PATH),
-                directoriesManager.getSystemDirectory().absolutePath,
-                directoriesManager.getSavesDirectory().absolutePath,
-                getShaderForSystem(useShaders, systemId)
+            this,
+            intent.getStringExtra(EXTRA_CORE_PATH),
+            intent.getStringExtra(EXTRA_GAME_PATH),
+            directoriesManager.getSystemDirectory().absolutePath,
+            directoriesManager.getSavesDirectory().absolutePath,
+            getShaderForSystem(useShaders, systemId)
         )
 
         retroGameView.onCreate()
         retroGameView.setOnLongClickListener {
-            displayOptionsMenu()
+            displayOptionsDialog()
             true
         }
 
@@ -142,6 +144,12 @@ class GameActivity : RetrogradeActivity() {
         handleOrientationChange(resources.configuration.orientation)
 
         retroGameView.requestFocus()
+    }
+
+    private fun displayOptionsDialog() {
+        ContextGameDialog()
+            .displayOptionsDialog()
+            .autoDispose(scope()).subscribe()
     }
 
     private fun getShaderForSystem(useShader: Boolean, systemId: String): Int {
@@ -187,9 +195,9 @@ class GameActivity : RetrogradeActivity() {
         Timber.i("Loading saved state of ${saveGame.size} bytes")
 
         getRetryRestoreQuickSave(saveGame)
-                .subscribeOn(Schedulers.io())
-                .autoDispose(scope())
-                .subscribe()
+            .subscribeOn(Schedulers.io())
+            .autoDispose(scope())
+            .subscribe()
     }
 
     override fun onResume() {
@@ -263,84 +271,120 @@ class GameActivity : RetrogradeActivity() {
                 }
     }
 
-    private fun displayOptionsMenu() {
-        val items = arrayOf(
-                getString(R.string.quick_save),
-                getString(R.string.quick_load),
-                getString(R.string.reset),
-                getString(R.string.close_without_saving)
-        )
-
-        val builder = AlertDialog.Builder(this)
-            .setItems(items) { _, which ->
-                when (which) {
-                    0 -> quickSave().subscribeOn(Schedulers.io()).autoDispose(scope()).subscribe()
-                    1 -> quickLoad().subscribeOn(Schedulers.io()).autoDispose(scope()).subscribe()
-                    2 -> reset()
-                    3 -> finish()
-                }
-            }
-
-        builder.create().show()
-    }
-
     private fun performHapticFeedback(view: View) {
         val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
     override fun onBackPressed() {
-        saveAndFinish()
+        autoSaveAndFinish()
             .subscribeOn(Schedulers.io())
             .autoDispose(scope())
             .subscribe()
     }
 
-    private fun saveAndFinish(): Completable {
-        return Completable.fromCallable {
-            saveSRAM().blockingAwait()
-            quickSave().blockingAwait()
+    private fun autoSaveAndFinish() = Completable.fromCallable {
+        val game = retrieveCurrentGame().blockingGet()
 
-            setResult(Activity.RESULT_OK, Intent())
-            finish()
+        val saveRAMData = retroGameView.serializeSRAM()
+        if (saveRAMData.isNotEmpty()) {
+            Timber.i("Storing sram with size: ${saveRAMData.size}")
+            savesManager.setSaveRAM(game, saveRAMData).blockingAwait()
         }
+
+        val autoSaveData = retroGameView.serialize()
+        Timber.i("Storing autosave with size: ${autoSaveData.size}")
+        savesManager.setAutoSave(game, autoSaveData).blockingAwait()
+
+        finish()
     }
 
-    private fun quickSave(): Completable {
+    private fun saveSlot(index: Int): Completable {
         return retrieveCurrentGame()
-                .doOnSuccess { game ->
-                    val data = retroGameView.serialize()
-                    Timber.i("Storing quicksave with size: ${data.size}")
-                    savesManager.setQuickSave(game, data).blockingAwait()
-                }
-                .ignoreElement()
+            .map { it to retroGameView.serialize() }
+            .doOnSuccess { (_, data) -> Timber.i("Storing quicksave with size: ${data.size}") }
+            .flatMapCompletable { (game, data) -> savesManager.setSlotSave(game, data, index) }
     }
 
-    private fun quickLoad(): Completable {
+    private fun loadSlot(index: Int): Completable {
         return retrieveCurrentGame()
-                .flatMapMaybe { savesManager.getQuickSave(it) }
-                .doOnSuccess { retroGameView.unserialize(it) }
-                .ignoreElement()
-    }
-
-    private fun saveSRAM(): Completable {
-        return retrieveCurrentGame()
-                .doOnSuccess {
-                    val data = retroGameView.serializeSRAM()
-                    if (data.isNotEmpty()) {
-                        Timber.i("Storing sram with size: ${data.size}")
-                        savesManager.setSaveRAM(it, data).blockingAwait()
-                    }
-                }
-                .ignoreElement()
+            .flatMapMaybe { savesManager.getSlotSave(it, index) }
+            .doOnSuccess { retroGameView.unserialize(it) }
+            .ignoreElement()
     }
 
     private fun retrieveCurrentGame(): Single<Game> {
         val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
-        return retrogradeDb.gameDao().selectById(gameId).toSingle()
+        return retrogradeDb.gameDao()
+            .selectById(gameId).toSingle()
+            .subscribeOn(Schedulers.io())
     }
 
     private fun reset() {
         retroGameView.reset()
+    }
+
+    inner class ContextGameDialog {
+        fun displayOptionsDialog(): Completable {
+            return this@GameActivity.retrieveCurrentGame()
+                .flatMap { savesManager.getSavedSlotsInfo(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess { presentContextDialog(it) }
+                .ignoreElement()
+        }
+
+        private fun presentContextDialog(infos: List<SavesManager.SaveInfos>) {
+            val dialog = Dialog(this@GameActivity)
+            dialog.setContentView(R.layout.layout_game_dialog)
+
+            val slot1SaveView = dialog.findViewById<View>(R.id.save_entry_slot1)
+            val slot2SaveView = dialog.findViewById<View>(R.id.save_entry_slot2)
+            val slot3SaveView = dialog.findViewById<View>(R.id.save_entry_slot3)
+            val slot4SaveView = dialog.findViewById<View>(R.id.save_entry_slot4)
+
+            setupQuickSaveView(dialog, slot1SaveView, 0, infos[0])
+            setupQuickSaveView(dialog, slot2SaveView, 1, infos[1])
+            setupQuickSaveView(dialog, slot3SaveView, 2, infos[2])
+            setupQuickSaveView(dialog, slot4SaveView, 3, infos[3])
+
+            dialog.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
+                this@GameActivity.reset()
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+
+        private fun setupQuickSaveView(
+            dialog: Dialog,
+            quickSaveView: View,
+            index: Int,
+            saveInfo: SavesManager.SaveInfos
+        ) {
+            val title = this@GameActivity.getString(R.string.game_dialog_state, (index + 1).toString())
+
+            if (saveInfo.exists) {
+                val formatter = SimpleDateFormat.getDateTimeInstance()
+                val date = formatter.format(saveInfo.date)
+                quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).text = date
+            }
+
+            quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_text).text = title
+            quickSaveView.findViewById<Button>(R.id.game_dialog_entry_load).apply {
+                this.isEnabled = saveInfo.exists
+                this.setOnClickListener {
+                    loadSlot(index).autoDispose(scope()).subscribe()
+                    dialog.dismiss()
+                }
+            }
+
+            quickSaveView.findViewById<Button>(R.id.game_dialog_entry_save).apply {
+                this.setOnClickListener {
+                    saveSlot(index).autoDispose(scope()).subscribe()
+                    dialog.dismiss()
+                }
+            }
+        }
     }
 }
