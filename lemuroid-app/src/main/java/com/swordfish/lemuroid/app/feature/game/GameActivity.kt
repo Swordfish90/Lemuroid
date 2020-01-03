@@ -26,6 +26,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -390,7 +391,22 @@ class GameActivity : RetrogradeActivity() {
                 dialog.dismiss()
             }
 
+            showImmersive(dialog)
+        }
+
+        /** This is required to workaround an android bug marked as Wont Fix :(.
+         *  More details here: https://issuetracker.google.com/issues/36992828
+         *  Stackoverflow solution: https://stackoverflow.com/questions/22794049/how-do-i-maintain-the-immersive-mode-in-dialogs
+         */
+        private fun showImmersive(dialog: Dialog) {
+            val flag = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            dialog.window?.setFlags(flag, flag)
+
             dialog.show()
+
+            dialog.window?.decorView?.systemUiVisibility = window.decorView.systemUiVisibility
+
+            dialog.window?.clearFlags(flag)
         }
 
         private fun setupQuickSaveView(
