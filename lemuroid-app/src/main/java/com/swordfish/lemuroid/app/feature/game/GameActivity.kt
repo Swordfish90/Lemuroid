@@ -59,6 +59,7 @@ import kotlin.math.roundToInt
 
 class GameActivity : RetrogradeActivity() {
     companion object {
+        // TODO: We should handle gamepads without these buttons
         val GAMEPAD_MENU_SHORTCUT = setOf(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR)
 
         const val EXTRA_GAME_ID = "game_id"
@@ -396,6 +397,7 @@ class GameActivity : RetrogradeActivity() {
         }
     }
 
+    // TODO: We should consider promoting it to an activity.
     inner class ContextGameDialog {
         fun displayOptionsDialog(): Completable {
             return this@GameActivity.retrieveCurrentGame()
