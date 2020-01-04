@@ -33,6 +33,8 @@
     <string name="game_dialog_quit">Quit</string>
     <string name="game_dialog_state">State %1$s</string>
 
+    <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with L3 + R3.</string>
+
     <string name="empty_view_default">No Items</string>
 
     <string name="notification_channel_name">All notifications</string>

@@ -32,6 +32,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -295,6 +296,17 @@ class GameActivity : RetrogradeActivity() {
             .subscribeOn(Schedulers.single())
             .autoDispose(scope())
             .subscribe()
+
+        retroGameView.getConnectedGamepads()
+            .map { it > 0 }
+            .distinctUntilChanged()
+            .autoDispose(scope())
+            .subscribe { gamepadsConnected ->
+                if (gamepadsConnected) {
+                    val message = R.string.game_toast_settings_button_using_gamepad
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun performHapticFeedback(view: View) {
