@@ -303,12 +303,16 @@ class GameActivity : RetrogradeActivity() {
 
     override fun onBackPressed() {
         autoSaveAndFinish()
-            .subscribeOn(Schedulers.io())
-            .autoDispose(scope())
-            .subscribe()
     }
 
-    private fun autoSaveAndFinish(): Completable {
+    private fun autoSaveAndFinish() {
+        getAutoSaveAndFinishCompletable()
+                .subscribeOn(Schedulers.io())
+                .autoDispose(scope())
+                .subscribe()
+    }
+
+    private fun getAutoSaveAndFinishCompletable(): Completable {
         return retrieveCurrentGame().flatMapCompletable { game ->
             val saveRAMData = retroGameView.serializeSRAM()
             val autoSaveData = retroGameView.serializeState()
@@ -418,6 +422,11 @@ class GameActivity : RetrogradeActivity() {
 
             dialog.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
                 this@GameActivity.reset()
+                dialog.dismiss()
+            }
+
+            dialog.findViewById<Button>(R.id.save_entry_close).setOnClickListener {
+                this@GameActivity.autoSaveAndFinish()
                 dialog.dismiss()
             }
 

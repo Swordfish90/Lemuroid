@@ -30,6 +30,7 @@
     <string name="game_dialog_save">Save</string>
     <string name="game_dialog_load">Load</string>
     <string name="game_dialog_restart">Restart</string>
+    <string name="game_dialog_quit">Quit</string>
     <string name="game_dialog_state">State %1$s</string>
 
     <string name="empty_view_default">No Items</string>
