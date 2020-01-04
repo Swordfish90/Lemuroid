@@ -22,8 +22,6 @@ package com.swordfish.lemuroid.lib.storage
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
-import com.gojuno.koptional.Optional
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
@@ -45,8 +43,4 @@ interface StorageProvider {
     fun listFiles(): Observable<StorageFile>
 
     fun getGameRom(game: Game): Single<File>
-
-    fun getGameSave(game: Game): Single<Optional<ByteArray>>
-
-    fun setGameSave(game: Game, data: ByteArray): Completable
 }

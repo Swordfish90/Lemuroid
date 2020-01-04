@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="controller_default">#4fff</color>
-    <color name="controller_default_pressed">#afff</color>
+    <color name="touch_control_default">#4fff</color>
+    <color name="touch_control_pressed">#afff</color>
 </resources>

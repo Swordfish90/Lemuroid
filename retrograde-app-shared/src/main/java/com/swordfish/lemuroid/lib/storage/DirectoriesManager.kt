@@ -17,7 +17,7 @@ class DirectoriesManager(private val appContext: Context) {
         mkdirs()
     }
 
-    fun getSavesDirectory(): File = File(appContext.filesDir, "saves").apply {
+    fun getSavesDirectory(): File = File(appContext.getExternalFilesDir(null), "saves").apply {
         mkdirs()
     }
 }

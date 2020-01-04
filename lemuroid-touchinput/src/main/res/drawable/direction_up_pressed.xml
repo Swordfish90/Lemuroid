@@ -6,6 +6,6 @@
         android:viewportWidth="@integer/item_viewportsize">
 
     <path
-        android:fillColor="@color/controller_default_pressed"
+        android:fillColor="@color/touch_control_pressed"
         android:pathData="@string/vectorpath_direction_up"/>
 </vector>

@@ -37,7 +37,8 @@ class GameLauncherActivity : RetrogradeActivity() {
                     .autoDispose(scope())
                     .subscribe(
                             {
-                                GameActivity.setTransientSaveState(it.saveData)
+                                GameActivity.setTransientSaveRAMState(it.saveRAMData)
+                                GameActivity.setTransientQuickSave(it.quickSaveData)
                                 startActivityForResult(newIntent(this, it), REQUEST_CODE_GAME)
                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                             },

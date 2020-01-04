@@ -19,16 +19,19 @@
 
 package com.swordfish.lemuroid.app.feature.game
 
-import android.app.Activity
-import android.content.Intent
+import android.app.Dialog
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
+import android.widget.Button
 import android.widget.FrameLayout
-import androidx.appcompat.app.AlertDialog
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -42,29 +45,49 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.work.WorkManager
-import com.swordfish.lemuroid.lib.game.GameSaveWorker
+import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.uber.autodispose.autoDispose
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.text.SimpleDateFormat
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class GameActivity : RetrogradeActivity() {
     companion object {
+        // TODO: We should handle gamepads without these buttons
+        val GAMEPAD_MENU_SHORTCUT = setOf(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR)
+
         const val EXTRA_GAME_ID = "game_id"
         const val EXTRA_SYSTEM_ID = "system_id"
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
 
-        private var transientSaveState: ByteArray? = null
+        private var transientStashedState: ByteArray? = null
+        private var transientSRAMState: ByteArray? = null
 
         /** A full savestate may not fit a bundle, so we need to ask for forgiveness and pass it statically. */
-        fun setTransientSaveState(state: ByteArray?) {
-            transientSaveState = state
+        fun setTransientQuickSave(state: ByteArray?) {
+            transientStashedState = state
         }
 
-        fun getAndResetTransientSaveState(): ByteArray? {
-            val result = transientSaveState
-            transientSaveState = null
+        fun setTransientSaveRAMState(data: ByteArray?) {
+            transientSRAMState = data
+        }
+
+        fun getAndResetTransientQuickSave(): ByteArray? {
+            val result = transientStashedState
+            transientStashedState = null
+            return result
+        }
+
+        fun getAndResetTransientSaveRAMState(): ByteArray? {
+            val result = transientSRAMState
+            transientSRAMState = null
             return result
         }
     }
@@ -72,12 +95,14 @@ class GameActivity : RetrogradeActivity() {
     private lateinit var containerLayout: ConstraintLayout
     private lateinit var gameViewLayout: FrameLayout
     private lateinit var padLayout: FrameLayout
+    private lateinit var menuButton: ImageButton
 
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var retroGameView: GLRetroView
 
-    private var quickSavedState: ByteArray? = null
+    @Inject lateinit var savesManager: SavesManager
+    @Inject lateinit var retrogradeDb: RetrogradeDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +111,7 @@ class GameActivity : RetrogradeActivity() {
         containerLayout = findViewById(R.id.game_container)
         gameViewLayout = findViewById(R.id.gameview_layout)
         padLayout = findViewById(R.id.pad_layout)
+        menuButton = findViewById(R.id.menu_button)
 
         val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
 
@@ -95,35 +121,39 @@ class GameActivity : RetrogradeActivity() {
         val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
 
         retroGameView = GLRetroView(
-                this,
-                intent.getStringExtra(EXTRA_CORE_PATH),
-                intent.getStringExtra(EXTRA_GAME_PATH),
-                directoriesManager.getSystemDirectory().absolutePath,
-                directoriesManager.getSavesDirectory().absolutePath,
-                getShaderForSystem(useShaders, systemId)
+            this,
+            intent.getStringExtra(EXTRA_CORE_PATH),
+            intent.getStringExtra(EXTRA_GAME_PATH),
+            directoriesManager.getSystemDirectory().absolutePath,
+            directoriesManager.getSavesDirectory().absolutePath,
+            getShaderForSystem(useShaders, systemId)
         )
 
         retroGameView.onCreate()
-        retroGameView.setOnLongClickListener {
-            displayOptionsMenu()
-            true
-        }
 
         gameViewLayout.addView(retroGameView)
 
-        getAndResetTransientSaveState()?.let {
-            quickSavedState = it
-            restoreAsync(it)
+        getAndResetTransientSaveRAMState()?.let {
+            retroGameView.unserializeSRAM(it)
         }
 
-        setupTouchInput(systemId)
-        retroGameView.getConnectedGamepads()
-                .autoDispose(scope())
-                .subscribe { padLayout.updateVisibility(it == 0) }
+        getAndResetTransientQuickSave()?.let {
+            restoreQuickSaveAsync(it)
+        }
+
+        setupVirtualPad(systemId)
+
+        setupPhysicalPad()
 
         handleOrientationChange(resources.configuration.orientation)
 
         retroGameView.requestFocus()
+    }
+
+    private fun displayOptionsDialog() {
+        ContextGameDialog()
+            .displayOptionsDialog()
+            .autoDispose(scope()).subscribe()
     }
 
     private fun getShaderForSystem(useShader: Boolean, systemId: String): Int {
@@ -150,28 +180,17 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun handleOrientationChange(orientation: Int) {
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setGameViewAspectRatio("1:1")
-        } else {
-            setGameViewAspectRatio(null)
-        }
-    }
-
-    private fun setGameViewAspectRatio(aspectRatio: String?) {
-        val set = ConstraintSet()
-        set.clone(containerLayout)
-        set.setDimensionRatio(gameViewLayout.id, aspectRatio)
-        set.applyTo(containerLayout)
+        OrientationHandler().handleOrientationChange(orientation)
     }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
-    private fun restoreAsync(saveGame: ByteArray) {
+    private fun restoreQuickSaveAsync(saveGame: ByteArray) {
         Timber.i("Loading saved state of ${saveGame.size} bytes")
 
-        getRestoreCompletable(saveGame)
-                .subscribeOn(Schedulers.io())
-                .autoDispose(scope())
-                .subscribe()
+        getRetryRestoreQuickSave(saveGame)
+            .subscribeOn(Schedulers.io())
+            .autoDispose(scope())
+            .subscribe()
     }
 
     override fun onResume() {
@@ -189,9 +208,9 @@ class GameActivity : RetrogradeActivity() {
         retroGameView.onDestroy()
     }
 
-    private fun getRestoreCompletable(saveGame: ByteArray) = Completable.fromCallable {
+    private fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
         var times = 10
-        while (!retroGameView.unserialize(saveGame) && times > 0) {
+        while (!retroGameView.unserializeState(saveGame) && times > 0) {
             sleep(200)
             times--
         }
@@ -213,7 +232,7 @@ class GameActivity : RetrogradeActivity() {
         )
     }
 
-    private fun setupTouchInput(systemId: String) {
+    private fun setupVirtualPad(systemId: String) {
         val gamePadLayout = when (systemId) {
             in listOf(GameSystem.GBA_ID) -> GamePadFactory.Layout.GBA
             in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
@@ -230,40 +249,52 @@ class GameActivity : RetrogradeActivity() {
         padLayout.addView(gameView)
 
         gameView.getEvents()
-                .subscribeOn(Schedulers.computation())
-                .doOnNext {
-                    if (it.haptic) {
-                        performHapticFeedback(gameView)
-                    }
+            .subscribeOn(Schedulers.computation())
+            .doOnNext {
+                if (it.haptic) {
+                    performHapticFeedback(gameView)
                 }
-                .autoDispose(scope())
-                .subscribe {
-                    when (it) {
-                        is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
-                        is PadEvent.Stick -> retroGameView.sendMotionEvent(it.source, it.xAxis, it.yAxis)
-                    }
-                }
-    }
-
-    private fun displayOptionsMenu() {
-        val items = arrayOf(
-                getString(R.string.quick_save),
-                getString(R.string.quick_load),
-                getString(R.string.reset),
-                getString(R.string.close_without_saving)
-        )
-
-        val builder = AlertDialog.Builder(this)
-            .setItems(items) { _, which ->
-                when (which) {
-                    0 -> quickSave()
-                    1 -> quickLoad()
-                    2 -> reset()
-                    3 -> finish()
+            }
+            .autoDispose(scope())
+            .subscribe {
+                when (it) {
+                    is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
+                    is PadEvent.Stick -> retroGameView.sendMotionEvent(it.source, it.xAxis, it.yAxis)
                 }
             }
 
-        builder.create().show()
+        retroGameView.getConnectedGamepads()
+            .autoDispose(scope())
+            .subscribe {
+                padLayout.updateVisibility(it == 0)
+                menuButton.updateVisibility(it == 0)
+            }
+
+        menuButton.setOnClickListener {
+            performHapticFeedback(it)
+            displayOptionsDialog()
+        }
+    }
+
+    private fun setupPhysicalPad() {
+        retroGameView.getGameKeyEvents()
+            .filter { it.keyCode in GAMEPAD_MENU_SHORTCUT }
+            .scan(mutableSetOf<Int>()) { keys, event ->
+                if (event.action == KeyEvent.ACTION_DOWN) {
+                    keys.add(event.keyCode)
+                } else if (event.action == KeyEvent.ACTION_UP) {
+                    keys.remove(event.keyCode)
+                }
+                keys
+            }
+            .doOnNext {
+                if (it.containsAll(GAMEPAD_MENU_SHORTCUT)) {
+                    displayOptionsDialog()
+                }
+            }
+            .subscribeOn(Schedulers.single())
+            .autoDispose(scope())
+            .subscribe()
     }
 
     private fun performHapticFeedback(view: View) {
@@ -272,37 +303,182 @@ class GameActivity : RetrogradeActivity() {
     }
 
     override fun onBackPressed() {
-        saveAndFinish()
-            .subscribeOn(Schedulers.io())
-            .autoDispose(scope())
-            .subscribe()
+        autoSaveAndFinish()
     }
 
-    private fun saveAndFinish(): Completable {
-        return Completable.fromCallable {
-            val optionalSaveData = retroGameView.serialize()
-            Timber.i("Saving game with size: ${optionalSaveData.size}")
+    private fun autoSaveAndFinish() {
+        getAutoSaveAndFinishCompletable()
+                .subscribeOn(Schedulers.io())
+                .autoDispose(scope())
+                .subscribe()
+    }
 
-            val tmpFile = createTempFile()
-            tmpFile.writeBytes(optionalSaveData)
+    private fun getAutoSaveAndFinishCompletable(): Completable {
+        return retrieveCurrentGame().flatMapCompletable { game ->
+            val saveRAMData = retroGameView.serializeSRAM()
+            val autoSaveData = retroGameView.serializeState()
 
-            val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
-            WorkManager.getInstance(applicationContext).enqueue(GameSaveWorker.newRequest(gameId, tmpFile.absolutePath))
+            val autoSaveCompletable = savesManager.setAutoSave(game, autoSaveData)
+                    .doOnComplete { Timber.i("Stored autosave file with size: ${autoSaveData.size}") }
 
-            setResult(Activity.RESULT_OK, Intent())
-            finish()
+            val saveRAMCompletable = savesManager.setSaveRAM(game, saveRAMData)
+                    .doOnComplete { Timber.i("Stored sram file with size: ${saveRAMData.size}") }
+
+            saveRAMCompletable.andThen(autoSaveCompletable)
+                    .doOnComplete { finish() }
         }
     }
 
-    private fun quickSave() {
-        quickSavedState = retroGameView.serialize()
+    private fun saveSlot(index: Int): Completable {
+        return retrieveCurrentGame()
+            .map { it to retroGameView.serializeState() }
+            .doOnSuccess { (_, data) -> Timber.i("Storing quicksave with size: ${data.size}") }
+            .flatMapCompletable { (game, data) -> savesManager.setSlotSave(game, data, index) }
     }
 
-    private fun quickLoad() {
-        quickSavedState?.let { retroGameView.unserialize(it) }
+    private fun loadSlot(index: Int): Completable {
+        return retrieveCurrentGame()
+            .flatMapMaybe { savesManager.getSlotSave(it, index) }
+            .doOnSuccess { retroGameView.unserializeState(it) }
+            .ignoreElement()
+    }
+
+    private fun retrieveCurrentGame(): Single<Game> {
+        val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
+        return retrogradeDb.gameDao()
+            .selectById(gameId).toSingle()
+            .subscribeOn(Schedulers.io())
     }
 
     private fun reset() {
         retroGameView.reset()
+    }
+
+    inner class OrientationHandler {
+
+        fun handleOrientationChange(orientation: Int) {
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                // When in portrait mode we don't want the GLSurfaceView to fill the entire screen. We want it on top.
+                setGameViewAspectRatio("1:1")
+
+                // We should also add some padding the virtual layout or it would clash with the menu button.
+                setVirtualPadBottomPadding(resources.getDimension(R.dimen.game_menu_button_size).roundToInt())
+
+                // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
+                // view might be cut due to rounded corners.
+                setContainerWindowsInsets(true, true)
+            } else {
+                setGameViewAspectRatio(null)
+                setVirtualPadBottomPadding(0)
+                setContainerWindowsInsets(top = false, bottom = true)
+            }
+        }
+
+        private fun setVirtualPadBottomPadding(bottomPadding: Int) {
+            padLayout.setPadding(0, 0, 0, bottomPadding)
+        }
+
+        private fun setGameViewAspectRatio(aspectRatio: String?) {
+            val set = ConstraintSet()
+            set.clone(containerLayout)
+            set.setDimensionRatio(gameViewLayout.id, aspectRatio)
+            set.applyTo(containerLayout)
+        }
+
+        private fun setContainerWindowsInsets(top: Boolean, bottom: Boolean) {
+            containerLayout.setOnApplyWindowInsetsListener { v, insets ->
+                val topInset = if (top) { insets.systemWindowInsetTop } else { 0 }
+                val bottomInset = if (bottom) { insets.systemWindowInsetBottom } else { 0 }
+                v.setPadding(0, topInset, 0, bottomInset)
+                insets.consumeSystemWindowInsets()
+            }
+            containerLayout.requestApplyInsets()
+        }
+    }
+
+    // TODO: We should consider promoting it to an activity.
+    inner class ContextGameDialog {
+        fun displayOptionsDialog(): Completable {
+            return this@GameActivity.retrieveCurrentGame()
+                .flatMap { savesManager.getSavedSlotsInfo(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess { presentContextDialog(it) }
+                .ignoreElement()
+        }
+
+        private fun presentContextDialog(infos: List<SavesManager.SaveInfos>) {
+            val dialog = Dialog(this@GameActivity)
+            dialog.setContentView(R.layout.layout_game_dialog)
+
+            val slot1SaveView = dialog.findViewById<View>(R.id.save_entry_slot1)
+            val slot2SaveView = dialog.findViewById<View>(R.id.save_entry_slot2)
+            val slot3SaveView = dialog.findViewById<View>(R.id.save_entry_slot3)
+            val slot4SaveView = dialog.findViewById<View>(R.id.save_entry_slot4)
+
+            setupQuickSaveView(dialog, slot1SaveView, 0, infos[0])
+            setupQuickSaveView(dialog, slot2SaveView, 1, infos[1])
+            setupQuickSaveView(dialog, slot3SaveView, 2, infos[2])
+            setupQuickSaveView(dialog, slot4SaveView, 3, infos[3])
+
+            dialog.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
+                this@GameActivity.reset()
+                dialog.dismiss()
+            }
+
+            dialog.findViewById<Button>(R.id.save_entry_close).setOnClickListener {
+                this@GameActivity.autoSaveAndFinish()
+                dialog.dismiss()
+            }
+
+            showImmersive(dialog)
+        }
+
+        /** This is required to workaround an android bug marked as Wont Fix :(.
+         *  More details here: https://issuetracker.google.com/issues/36992828
+         *  Stackoverflow solution: https://stackoverflow.com/questions/22794049/how-do-i-maintain-the-immersive-mode-in-dialogs
+         */
+        private fun showImmersive(dialog: Dialog) {
+            val flag = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            dialog.window?.setFlags(flag, flag)
+
+            dialog.show()
+
+            dialog.window?.decorView?.systemUiVisibility = window.decorView.systemUiVisibility
+
+            dialog.window?.clearFlags(flag)
+        }
+
+        private fun setupQuickSaveView(
+            dialog: Dialog,
+            quickSaveView: View,
+            index: Int,
+            saveInfo: SavesManager.SaveInfos
+        ) {
+            val title = this@GameActivity.getString(R.string.game_dialog_state, (index + 1).toString())
+
+            if (saveInfo.exists) {
+                val formatter = SimpleDateFormat.getDateTimeInstance()
+                val date = formatter.format(saveInfo.date)
+                quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).text = date
+            }
+
+            quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_text).text = title
+            quickSaveView.findViewById<Button>(R.id.game_dialog_entry_load).apply {
+                this.isEnabled = saveInfo.exists
+                this.setOnClickListener {
+                    loadSlot(index).autoDispose(scope()).subscribe()
+                    dialog.dismiss()
+                }
+            }
+
+            quickSaveView.findViewById<Button>(R.id.game_dialog_entry_save).apply {
+                this.setOnClickListener {
+                    saveSlot(index).autoDispose(scope()).subscribe()
+                    dialog.dismiss()
+                }
+            }
+        }
     }
 }
