@@ -25,6 +25,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -58,6 +59,8 @@ import kotlin.math.roundToInt
 
 class GameActivity : RetrogradeActivity() {
     companion object {
+        val GAMEPAD_MENU_SHORTCUT = setOf(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR)
+
         const val EXTRA_GAME_ID = "game_id"
         const val EXTRA_SYSTEM_ID = "system_id"
         const val EXTRA_CORE_PATH = "core_path"
@@ -137,15 +140,9 @@ class GameActivity : RetrogradeActivity() {
             restoreQuickSaveAsync(it)
         }
 
-        setupTouchInput(systemId)
-        retroGameView.getConnectedGamepads()
-                .autoDispose(scope())
-                .subscribe { padLayout.updateVisibility(it == 0) }
+        setupVirtualPad(systemId)
 
-        menuButton.setOnClickListener {
-            performHapticFeedback(it)
-            displayOptionsDialog()
-        }
+        setupPhysicalPad()
 
         handleOrientationChange(resources.configuration.orientation)
 
@@ -212,7 +209,7 @@ class GameActivity : RetrogradeActivity() {
 
     private fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
         var times = 10
-        while (!retroGameView.unserialize(saveGame) && times > 0) {
+        while (!retroGameView.unserializeState(saveGame) && times > 0) {
             sleep(200)
             times--
         }
@@ -234,7 +231,7 @@ class GameActivity : RetrogradeActivity() {
         )
     }
 
-    private fun setupTouchInput(systemId: String) {
+    private fun setupVirtualPad(systemId: String) {
         val gamePadLayout = when (systemId) {
             in listOf(GameSystem.GBA_ID) -> GamePadFactory.Layout.GBA
             in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
@@ -251,19 +248,52 @@ class GameActivity : RetrogradeActivity() {
         padLayout.addView(gameView)
 
         gameView.getEvents()
-                .subscribeOn(Schedulers.computation())
-                .doOnNext {
-                    if (it.haptic) {
-                        performHapticFeedback(gameView)
-                    }
+            .subscribeOn(Schedulers.computation())
+            .doOnNext {
+                if (it.haptic) {
+                    performHapticFeedback(gameView)
                 }
-                .autoDispose(scope())
-                .subscribe {
-                    when (it) {
-                        is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
-                        is PadEvent.Stick -> retroGameView.sendMotionEvent(it.source, it.xAxis, it.yAxis)
-                    }
+            }
+            .autoDispose(scope())
+            .subscribe {
+                when (it) {
+                    is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
+                    is PadEvent.Stick -> retroGameView.sendMotionEvent(it.source, it.xAxis, it.yAxis)
                 }
+            }
+
+        retroGameView.getConnectedGamepads()
+            .autoDispose(scope())
+            .subscribe {
+                padLayout.updateVisibility(it == 0)
+                menuButton.updateVisibility(it == 0)
+            }
+
+        menuButton.setOnClickListener {
+            performHapticFeedback(it)
+            displayOptionsDialog()
+        }
+    }
+
+    private fun setupPhysicalPad() {
+        retroGameView.getGameKeyEvents()
+            .filter { it.keyCode in GAMEPAD_MENU_SHORTCUT }
+            .scan(mutableSetOf<Int>()) { keys, event ->
+                if (event.action == KeyEvent.ACTION_DOWN) {
+                    keys.add(event.keyCode)
+                } else if (event.action == KeyEvent.ACTION_UP) {
+                    keys.remove(event.keyCode)
+                }
+                keys
+            }
+            .doOnNext {
+                if (it.containsAll(GAMEPAD_MENU_SHORTCUT)) {
+                    displayOptionsDialog()
+                }
+            }
+            .subscribeOn(Schedulers.single())
+            .autoDispose(scope())
+            .subscribe()
     }
 
     private fun performHapticFeedback(view: View) {
@@ -281,7 +311,7 @@ class GameActivity : RetrogradeActivity() {
     private fun autoSaveAndFinish(): Completable {
         return retrieveCurrentGame().flatMapCompletable { game ->
             val saveRAMData = retroGameView.serializeSRAM()
-            val autoSaveData = retroGameView.serialize()
+            val autoSaveData = retroGameView.serializeState()
 
             val autoSaveCompletable = savesManager.setAutoSave(game, autoSaveData)
                     .doOnComplete { Timber.i("Stored autosave file with size: ${autoSaveData.size}") }
@@ -296,7 +326,7 @@ class GameActivity : RetrogradeActivity() {
 
     private fun saveSlot(index: Int): Completable {
         return retrieveCurrentGame()
-            .map { it to retroGameView.serialize() }
+            .map { it to retroGameView.serializeState() }
             .doOnSuccess { (_, data) -> Timber.i("Storing quicksave with size: ${data.size}") }
             .flatMapCompletable { (game, data) -> savesManager.setSlotSave(game, data, index) }
     }
@@ -304,7 +334,7 @@ class GameActivity : RetrogradeActivity() {
     private fun loadSlot(index: Int): Completable {
         return retrieveCurrentGame()
             .flatMapMaybe { savesManager.getSlotSave(it, index) }
-            .doOnSuccess { retroGameView.unserialize(it) }
+            .doOnSuccess { retroGameView.unserializeState(it) }
             .ignoreElement()
     }
 
