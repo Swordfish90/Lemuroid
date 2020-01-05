@@ -35,9 +35,7 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-        } /*else {
-            Bugsnag.init(this)
-        }*/
+        }
 
         // var isPlanted = false
         /* rxPrefs.getBoolean(getString(R.string.pref_key_flags_logging)).asObservable()

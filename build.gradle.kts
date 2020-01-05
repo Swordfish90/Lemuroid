@@ -8,7 +8,6 @@ buildscript {
     }
     dependencies {
         classpath(deps.plugins.android)
-        classpath(deps.plugins.bugsnag)
         classpath(deps.plugins.navigationSafeArgs)
     }
 }

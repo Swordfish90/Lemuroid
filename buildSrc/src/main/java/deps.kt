@@ -97,13 +97,6 @@ object deps {
             const val processor = "com.airbnb.android:epoxy-processor:3.8.0"
         }
 
-        const val bugsnagAndroid           = "com.bugsnag:bugsnag-android:4.9.2"
-        const val bugsnagAndroidNdk        = "com.bugsnag:bugsnag-android-ndk:4.9.2"
-        const val gmsAuth                  = "com.google.android.gms:play-services-auth:${versions.gms}"
-        const val googleApiClient          = "com.google.api-client:google-api-client:${versions.googleApiClient}"
-        const val googleApiClientAndroid   = "com.google.api-client:google-api-client-android:${versions.googleApiClient}"
-        const val googleApiServicesDrive   = "com.google.apis:google-api-services-drive:v3-rev20181101-1.27.0"
-        const val jna                      = "net.java.dev.jna:jna:5.1.0@aar"
         const val koptional                = "com.gojuno.koptional:koptional:${versions.koptional}"
         const val koptionalRxJava2         = "com.gojuno.koptional:koptional-rxjava2-extensions:${versions.koptional}"
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
@@ -115,7 +108,6 @@ object deps {
         const val okHttp3Logging           = "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"
         const val picasso                  = "com.squareup.picasso:picasso:2.71828"
         const val retrofit                 = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-        const val retrofitConverterMoshi   = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
         const val retrofitRxJava2          = "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
         const val rxAndroid2               = "io.reactivex.rxjava2:rxandroid:2.1.0"
         const val rxJava2                  = "io.reactivex.rxjava2:rxjava:2.2.4"
@@ -134,7 +126,6 @@ object deps {
 
     object plugins {
         const val android = "com.android.tools.build:gradle:3.5.0"
-        const val bugsnag = "com.bugsnag:bugsnag-android-gradle-plugin:3.5.0"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     }
 }

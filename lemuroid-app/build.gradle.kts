@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 plugins {
     id("com.android.application")
-    id("com.bugsnag.android.gradle")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
@@ -91,8 +90,6 @@ dependencies {
     implementation(deps.libs.autodispose.android.archComponents)
     implementation(deps.libs.autodispose.android.core)
     implementation(deps.libs.autodispose.core)
-    implementation(deps.libs.bugsnagAndroid)
-    implementation(deps.libs.bugsnagAndroidNdk)
     implementation(deps.libs.dagger.android.core)
     implementation(deps.libs.dagger.android.support)
     implementation(deps.libs.dagger.core)
