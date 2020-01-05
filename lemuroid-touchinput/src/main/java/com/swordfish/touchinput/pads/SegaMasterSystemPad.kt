@@ -11,9 +11,9 @@ import com.swordfish.touchinput.views.DirectionPad
 import io.reactivex.Observable
 
 class SegaMasterSystemPad @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : BaseGamePad(context, attrs, defStyleAttr) {
 
     init {
