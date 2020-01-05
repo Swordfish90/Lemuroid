@@ -171,6 +171,7 @@ class GameActivity : RetrogradeActivity() {
             GameSystem.NES_ID -> GLRetroView.SHADER_CRT
             GameSystem.SNES_ID -> GLRetroView.SHADER_CRT
             GameSystem.ARCADE_ID -> GLRetroView.SHADER_CRT
+            GameSystem.SMS_ID -> GLRetroView.SHADER_CRT
             else -> GLRetroView.SHADER_DEFAULT
         }
     }
@@ -240,6 +241,7 @@ class GameActivity : RetrogradeActivity() {
             in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.Layout.NES
             in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.Layout.GENESIS
             in listOf(GameSystem.N64_ID) -> GamePadFactory.Layout.N64
+            in listOf(GameSystem.SMS_ID) -> GamePadFactory.Layout.SMS
             else -> GamePadFactory.Layout.PSX
         }
 
