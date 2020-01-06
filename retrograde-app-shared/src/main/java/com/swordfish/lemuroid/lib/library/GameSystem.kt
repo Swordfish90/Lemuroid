@@ -51,6 +51,7 @@ data class GameSystem(
         const val GBC_ID = "gbc"
         const val GBA_ID = "gba"
         const val N64_ID = "n64"
+        const val SMS_ID = "sms"
         const val ARCADE_ID = "arcade"
 
         private val SYSTEMS = listOf(
@@ -73,11 +74,20 @@ data class GameSystem(
                         listOf("smc", "sfc")
                 ),
                 GameSystem(
+                        SMS_ID,
+                        R.string.game_system_title_sms,
+                        R.string.game_system_abbr_sms,
+                        R.drawable.game_system_sms,
+                        "sega0",
+                        "genesis_plus_gx_libretro_android.so.zip",
+                        listOf("sms")
+                ),
+                GameSystem(
                         GENESIS_ID,
                         R.string.game_system_title_genesis,
                         R.string.game_system_abbr_genesis,
                         R.drawable.game_system_genesis,
-                        "sega0",
+                        "sega1",
                         "picodrive_libretro_android.so.zip",
                         listOf("gen", "smd", "md")
                 ),

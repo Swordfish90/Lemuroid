@@ -9,7 +9,8 @@ class GamePadFactory {
         GBA,
         GENESIS,
         N64,
-        PSX
+        PSX,
+        SMS
     }
 
     companion object {
@@ -21,6 +22,7 @@ class GamePadFactory {
                 Layout.GBA -> GameBoyAdvancePad(context)
                 Layout.PSX -> PSXPad(context)
                 Layout.N64 -> N64Pad(context)
+                Layout.SMS -> SegaMasterSystemPad(context)
             }
         }
     }
