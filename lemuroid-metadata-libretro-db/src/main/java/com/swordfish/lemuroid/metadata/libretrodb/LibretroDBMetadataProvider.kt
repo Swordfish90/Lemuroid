@@ -68,6 +68,13 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
     private fun findByName(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
         return db.gameDao().findByFileName(file.name)
+                .filter {
+                    if (GameSystem.findById(it.system!!).requiresCRCMatch) {
+                        it.crc32 == file.crc
+                    } else {
+                        true
+                    }
+                }
                 .map { convertToGameMetadata(it) }
     }
 
@@ -106,6 +113,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             GameSystem.NES_ID -> "Nintendo - Nintendo Entertainment System"
             GameSystem.SNES_ID -> "Nintendo - Super Nintendo Entertainment System"
             GameSystem.SMS_ID -> "Sega - Master System - Mark III"
+            GameSystem.ARCADE_FB_NEO -> "FBNeo - Arcade Games"
             else -> null
         }
 
@@ -113,7 +121,12 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             return null
         }
 
-        return "http://thumbnails.libretro.com/$systemName/Named_Boxarts/$name.png"
+        val imageType = when (system.id) {
+            GameSystem.ARCADE_FB_NEO -> "Named_Snaps"
+            else -> "Named_Boxarts"
+        }
+
+        return "http://thumbnails.libretro.com/$systemName/$imageType/$name.png"
     }
 
     private data class GameMetadata(

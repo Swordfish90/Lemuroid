@@ -20,4 +20,8 @@ class DirectoriesManager(private val appContext: Context) {
     fun getSavesDirectory(): File = File(appContext.getExternalFilesDir(null), "saves").apply {
         mkdirs()
     }
+
+    fun getInternalRomsDirectory(): File = File(appContext.getExternalFilesDir(null), "roms").apply {
+        mkdirs()
+    }
 }

@@ -40,7 +40,9 @@ data class GameSystem(
 
     val coreFileName: String,
 
-    val uniqueExtensions: List<String>
+    val uniqueExtensions: List<String>,
+
+    val requiresCRCMatch: Boolean = false
 ) {
 
     companion object {
@@ -52,7 +54,7 @@ data class GameSystem(
         const val GBA_ID = "gba"
         const val N64_ID = "n64"
         const val SMS_ID = "sms"
-        const val ARCADE_ID = "arcade"
+        const val ARCADE_FB_NEO = "fbneo"
 
         private val SYSTEMS = listOf(
                 GameSystem(
@@ -62,7 +64,8 @@ data class GameSystem(
                         R.drawable.game_system_nes,
                         "nintendo0",
                         "fceumm_libretro_android.so.zip",
-                        listOf("nes")
+                        listOf("nes"),
+                        false
                 ),
                 GameSystem(
                         SNES_ID,
@@ -71,7 +74,8 @@ data class GameSystem(
                         R.drawable.game_system_snes,
                         "nintendo1",
                         "snes9x_libretro_android.so.zip",
-                        listOf("smc", "sfc")
+                        listOf("smc", "sfc"),
+                        false
                 ),
                 GameSystem(
                         SMS_ID,
@@ -80,7 +84,8 @@ data class GameSystem(
                         R.drawable.game_system_sms,
                         "sega0",
                         "genesis_plus_gx_libretro_android.so.zip",
-                        listOf("sms")
+                        listOf("sms"),
+                        false
                 ),
                 GameSystem(
                         GENESIS_ID,
@@ -89,7 +94,8 @@ data class GameSystem(
                         R.drawable.game_system_genesis,
                         "sega1",
                         "picodrive_libretro_android.so.zip",
-                        listOf("gen", "smd", "md")
+                        listOf("gen", "smd", "md"),
+                        false
                 ),
                 GameSystem(
                         GB_ID,
@@ -98,8 +104,8 @@ data class GameSystem(
                         R.drawable.game_system_gb,
                         "nintendo2",
                         "gambatte_libretro_android.so.zip",
-                        listOf("gb")
-
+                        listOf("gb"),
+                        false
                 ),
                 GameSystem(
                         GBC_ID,
@@ -108,7 +114,8 @@ data class GameSystem(
                         R.drawable.game_system_gbc,
                         "nintendo3",
                         "gambatte_libretro_android.so.zip",
-                        listOf("gbc")
+                        listOf("gbc"),
+                        false
                 ),
                 GameSystem(
                         GBA_ID,
@@ -117,7 +124,8 @@ data class GameSystem(
                         R.drawable.game_system_gba,
                         "nintendo4",
                         "mgba_libretro_android.so.zip",
-                        listOf("gba")
+                        listOf("gba"),
+                        false
                 ),
                 GameSystem(
                         N64_ID,
@@ -126,18 +134,19 @@ data class GameSystem(
                         R.drawable.game_system_n64,
                         "nintendo5",
                         "mupen64plus_next_libretro_android.so.zip",
-                        listOf("n64", "z64")
-                )
-                // We are currently disabling MAME emulation, since it's a bit of a mess to handle romsets versions.
-                /*GameSystem(
-                        ARCADE_ID,
-                        R.string.game_system_title_arcade,
-                        R.string.game_system_abbr_arcade,
+                        listOf("n64", "z64"),
+                        false
+                ),
+                GameSystem(
+                        ARCADE_FB_NEO,
+                        R.string.game_system_title_arcade_fbneo,
+                        R.string.game_system_abbr_arcade_fbneo,
                         R.drawable.game_system_arcade,
                         "arcade",
                         "fbneo_libretro_android.so.zip",
-                        listOf("zip")
-                )*/
+                        listOf(),
+                        false
+                )
         )
 
         private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id to it }.toTypedArray()) }

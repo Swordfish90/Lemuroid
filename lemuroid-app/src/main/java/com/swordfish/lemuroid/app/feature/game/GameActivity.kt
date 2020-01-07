@@ -170,7 +170,7 @@ class GameActivity : RetrogradeActivity() {
             GameSystem.GENESIS_ID -> GLRetroView.SHADER_CRT
             GameSystem.NES_ID -> GLRetroView.SHADER_CRT
             GameSystem.SNES_ID -> GLRetroView.SHADER_CRT
-            GameSystem.ARCADE_ID -> GLRetroView.SHADER_CRT
+            GameSystem.ARCADE_FB_NEO -> GLRetroView.SHADER_CRT
             GameSystem.SMS_ID -> GLRetroView.SHADER_CRT
             else -> GLRetroView.SHADER_DEFAULT
         }
