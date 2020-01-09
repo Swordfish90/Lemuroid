@@ -34,6 +34,7 @@
     <string name="game_dialog_state">State %1$s</string>
 
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with L3 + R3.</string>
+    <string name="game_toast_autosave_not_supported">Autosave is not supported for this system. Remember to use Slots.</string>
 
     <string name="empty_view_default">No Items</string>
 

@@ -22,6 +22,9 @@ package com.swordfish.lemuroid.lib.library
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.swordfish.lemuroid.lib.R
+import com.swordfish.lemuroid.lib.core.CoreManager
+import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
+import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import java.util.Locale
 
 data class GameSystem(
@@ -40,7 +43,11 @@ data class GameSystem(
 
     val coreFileName: String,
 
-    val uniqueExtensions: List<String>
+    val uniqueExtensions: List<String>,
+
+    val coreAssetsManager: CoreManager.AssetsManager = NoAssetsManager(),
+
+    val supportsAutosave: Boolean = true
 ) {
 
     companion object {
@@ -53,6 +60,7 @@ data class GameSystem(
         const val N64_ID = "n64"
         const val SMS_ID = "sms"
         const val ARCADE_ID = "arcade"
+        const val PSP_ID = "psp"
 
         private val SYSTEMS = listOf(
                 GameSystem(
@@ -127,6 +135,17 @@ data class GameSystem(
                         "nintendo5",
                         "mupen64plus_next_libretro_android.so.zip",
                         listOf("n64", "z64")
+                ),
+                GameSystem(
+                        PSP_ID,
+                        R.string.game_system_title_psp,
+                        R.string.game_system_abbr_psp,
+                        R.drawable.game_system_psp,
+                        "sony1",
+                        "ppsspp_libretro_android.so.zip",
+                        listOf("iso", "cso"),
+                        coreAssetsManager = PPSSPPAssetsManager(),
+                        supportsAutosave = false
                 )
                 // We are currently disabling MAME emulation, since it's a bit of a mess to handle romsets versions.
                 /*GameSystem(
@@ -152,9 +171,6 @@ data class GameSystem(
         }
 
         fun findById(id: String): GameSystem = byIdCache.getValue(id)
-
-        fun findByShortName(shortName: String): GameSystem? =
-                findById(shortName.toLowerCase())
 
         fun findByFileExtension(fileExtension: String): GameSystem? =
                 byExtensionCache[fileExtension.toLowerCase(Locale.US)]

@@ -51,10 +51,10 @@ class GameLoader(
     private fun prepareGame(game: Game, loadQuickSave: Boolean): Single<GameData> {
         val gameSystem = GameSystem.findById(game.systemId)
 
-        val coreObservable = coreManager.downloadCore(gameSystem.coreFileName)
+        val coreObservable = coreManager.downloadCore(gameSystem.coreFileName, gameSystem.coreAssetsManager)
         val gameObservable = gameLibrary.getGameRom(game)
         val saveRAMObservable = savesManager.getSaveRAM(game).toSingleAsOptional()
-        val quickSaveObservable = if (loadQuickSave) {
+        val quickSaveObservable = if (loadQuickSave && gameSystem.supportsAutosave) {
             savesManager.getAutoSave(game).toSingleAsOptional()
         } else {
             Single.just(None)

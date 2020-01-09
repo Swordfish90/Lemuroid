@@ -21,11 +21,16 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.feature.settings.SettingsInteractor
+import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.ui.updateVisibility
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.autoDispose
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.schedulers.Schedulers
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
+import javax.inject.Inject
 
 class MainActivity : RetrogradeAppCompatActivity() {
 

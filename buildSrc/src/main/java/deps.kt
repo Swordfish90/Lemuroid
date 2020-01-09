@@ -1,8 +1,9 @@
 /* ktlint-disable no-multi-spaces max-line-length */
 object deps {
     object android {
-        const val compileSdkVersion = 29
-        const val targetSdkVersion  = 29
+        // Sadly we can't have both target sdk 29 and PPSSPP since the core uses ashmem. We need to wait for an upstream fix.
+        const val targetSdkVersion  = 28
+        const val compileSdkVersion = 28
         const val minSdkVersion     = 23
         const val buildToolsVersion = "28.0.3"
     }
@@ -21,7 +22,7 @@ object deps {
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
-        const val libretrodroid   = "afafb4910e"
+        const val libretrodroid   = "6c8b628067"
     }
 
     object libs {

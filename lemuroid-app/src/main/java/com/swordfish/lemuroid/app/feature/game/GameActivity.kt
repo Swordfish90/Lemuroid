@@ -55,6 +55,7 @@ import com.uber.autodispose.autoDispose
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -93,6 +94,8 @@ class GameActivity : RetrogradeActivity() {
         }
     }
 
+    private lateinit var system: GameSystem
+
     private lateinit var containerLayout: ConstraintLayout
     private lateinit var gameViewLayout: FrameLayout
     private lateinit var padLayout: FrameLayout
@@ -114,7 +117,7 @@ class GameActivity : RetrogradeActivity() {
         padLayout = findViewById(R.id.pad_layout)
         menuButton = findViewById(R.id.menu_button)
 
-        val systemId = intent.getStringExtra(EXTRA_SYSTEM_ID)
+        system = GameSystem.findById(intent.getStringExtra(EXTRA_SYSTEM_ID))
 
         val directoriesManager = DirectoriesManager(applicationContext)
 
@@ -127,7 +130,7 @@ class GameActivity : RetrogradeActivity() {
             intent.getStringExtra(EXTRA_GAME_PATH),
             directoriesManager.getSystemDirectory().absolutePath,
             directoriesManager.getSavesDirectory().absolutePath,
-            getShaderForSystem(useShaders, systemId)
+            getShaderForSystem(useShaders, system.id)
         )
 
         retroGameView.onCreate()
@@ -142,13 +145,17 @@ class GameActivity : RetrogradeActivity() {
             restoreQuickSaveAsync(it)
         }
 
-        setupVirtualPad(systemId)
+        setupVirtualPad(system.id)
 
         setupPhysicalPad()
 
         handleOrientationChange(resources.configuration.orientation)
 
         retroGameView.requestFocus()
+
+        if (!system.supportsAutosave) {
+            Toast.makeText(this, R.string.game_toast_autosave_not_supported, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun displayOptionsDialog() {
@@ -172,6 +179,7 @@ class GameActivity : RetrogradeActivity() {
             GameSystem.SNES_ID -> GLRetroView.SHADER_CRT
             GameSystem.ARCADE_ID -> GLRetroView.SHADER_CRT
             GameSystem.SMS_ID -> GLRetroView.SHADER_CRT
+            GameSystem.PSP_ID -> GLRetroView.SHADER_LCD
             else -> GLRetroView.SHADER_DEFAULT
         }
     }
@@ -201,13 +209,13 @@ class GameActivity : RetrogradeActivity() {
     }
 
     override fun onPause() {
-        super.onPause()
         retroGameView.onPause()
+        super.onPause()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         retroGameView.onDestroy()
+        super.onDestroy()
     }
 
     private fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
@@ -235,19 +243,7 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun setupVirtualPad(systemId: String) {
-        val gamePadLayout = when (systemId) {
-            in listOf(GameSystem.GBA_ID) -> GamePadFactory.Layout.GBA
-            in listOf(GameSystem.SNES_ID) -> GamePadFactory.Layout.SNES
-            in listOf(GameSystem.NES_ID, GameSystem.GB_ID, GameSystem.GBC_ID) -> GamePadFactory.Layout.NES
-            in listOf(GameSystem.GENESIS_ID) -> GamePadFactory.Layout.GENESIS
-            in listOf(GameSystem.N64_ID) -> GamePadFactory.Layout.N64
-            in listOf(GameSystem.SMS_ID) -> GamePadFactory.Layout.SMS
-            else -> GamePadFactory.Layout.PSX
-        }
-
-        val gameView = gamePadLayout.let {
-            GamePadFactory.getGamePadView(this, it)
-        }
+        val gameView = GamePadFactory.getGamePadView(this, systemId)
 
         padLayout.addView(gameView)
 
@@ -329,18 +325,26 @@ class GameActivity : RetrogradeActivity() {
 
     private fun getAutoSaveAndFinishCompletable(): Completable {
         return retrieveCurrentGame().flatMapCompletable { game ->
-            val saveRAMData = retroGameView.serializeSRAM()
-            val autoSaveData = retroGameView.serializeState()
-
-            val autoSaveCompletable = savesManager.setAutoSave(game, autoSaveData)
-                    .doOnComplete { Timber.i("Stored autosave file with size: ${autoSaveData.size}") }
-
-            val saveRAMCompletable = savesManager.setSaveRAM(game, saveRAMData)
-                    .doOnComplete { Timber.i("Stored sram file with size: ${saveRAMData.size}") }
+            val saveRAMCompletable = getSaveRAMCompletable(game)
+            val autoSaveCompletable = getAutoSaveCompletable(game)
 
             saveRAMCompletable.andThen(autoSaveCompletable)
                     .doOnComplete { finish() }
         }
+    }
+
+    private fun getAutoSaveCompletable(game: Game): Completable {
+        return Single.fromCallable { system.supportsAutosave }
+            .filter { it == true }
+            .map { retroGameView.serializeState() }
+            .doOnSuccess { Timber.i("Stored autosave file with size: ${it.size}") }
+            .flatMapCompletable { savesManager.setAutoSave(game, it) }
+    }
+
+    private fun getSaveRAMCompletable(game: Game): Completable {
+        return Single.fromCallable { retroGameView.serializeSRAM() }
+            .doOnSuccess { Timber.i("Stored sram file with size: ${it.size}") }
+            .flatMapCompletable { savesManager.setSaveRAM(game, it) }
     }
 
     private fun saveSlot(index: Int): Completable {

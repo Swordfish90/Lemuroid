@@ -35,7 +35,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     }
 
     private fun convertToGame(rom: GameMetadata, file: StorageFile, startedAtMs: Long): Optional<Game> {
-        val system = GameSystem.findByShortName(rom.system!!)!!
+        val system = GameSystem.findById(rom.system!!)
 
         val thumbnail = if (rom.includeThumbnail) {
             computeCoverUrl(system, rom.name)
