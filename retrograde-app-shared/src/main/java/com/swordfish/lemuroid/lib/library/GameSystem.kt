@@ -47,7 +47,10 @@ data class GameSystem(
 
     val coreAssetsManager: CoreManager.AssetsManager = NoAssetsManager(),
 
-    val supportsAutosave: Boolean = true
+    val supportsAutosave: Boolean = true,
+
+    val requiresCRCMatch: Boolean = false
+
 ) {
 
     companion object {
@@ -59,8 +62,8 @@ data class GameSystem(
         const val GBA_ID = "gba"
         const val N64_ID = "n64"
         const val SMS_ID = "sms"
-        const val ARCADE_ID = "arcade"
         const val PSP_ID = "psp"
+        const val ARCADE_FB_NEO = "fbneo"
 
         private val SYSTEMS = listOf(
                 GameSystem(
@@ -107,7 +110,6 @@ data class GameSystem(
                         "nintendo2",
                         "gambatte_libretro_android.so.zip",
                         listOf("gb")
-
                 ),
                 GameSystem(
                         GBC_ID,
@@ -143,20 +145,20 @@ data class GameSystem(
                         R.drawable.game_system_psp,
                         "sony1",
                         "ppsspp_libretro_android.so.zip",
-                        listOf("iso", "cso"),
+                        listOf("iso", "cso"), // TODO FILIPPO... This is not true and it should be fixed...
                         coreAssetsManager = PPSSPPAssetsManager(),
                         supportsAutosave = false
-                )
-                // We are currently disabling MAME emulation, since it's a bit of a mess to handle romsets versions.
-                /*GameSystem(
-                        ARCADE_ID,
-                        R.string.game_system_title_arcade,
-                        R.string.game_system_abbr_arcade,
+                ),
+                GameSystem(
+                        ARCADE_FB_NEO,
+                        R.string.game_system_title_arcade_fbneo,
+                        R.string.game_system_abbr_arcade_fbneo,
                         R.drawable.game_system_arcade,
                         "arcade",
                         "fbneo_libretro_android.so.zip",
-                        listOf("zip")
-                )*/
+                        listOf(),
+                        requiresCRCMatch = true
+                )
         )
 
         private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id to it }.toTypedArray()) }

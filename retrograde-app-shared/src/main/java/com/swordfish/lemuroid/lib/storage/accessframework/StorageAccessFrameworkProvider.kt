@@ -23,8 +23,7 @@ import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
     private val context: Context,
-    override val metadataProvider: GameMetadataProvider,
-    private val directoriesManager: DirectoriesManager
+    override val metadataProvider: GameMetadataProvider
 ) : StorageProvider {
 
     override val id: String = "access_framework"
@@ -143,9 +142,9 @@ class StorageAccessFrameworkProvider(
             return@fromCallable gameFile
         }
 
-        val mimeType = context.contentResolver.getType(game.fileUri)
+        val mimeType = context.contentResolver.getType(game.fileUri)!!
 
-        if (mimeType == ZIP_MIME_TYPE) {
+        if (isZipped(mimeType) && isSingleArchive(game.fileUri)) {
             val stream = ZipInputStream(context.contentResolver.openInputStream(game.fileUri))
             copyZipInputStreamToFile(gameFile, stream)
         } else {
@@ -168,11 +167,6 @@ class StorageAccessFrameworkProvider(
             zipInputStream.nextEntry
             copyInputStreamToFile(gameFile, zipInputStream)
         }
-    }
-
-    private fun getSaveFile(game: Game): File {
-        val statesDirectories = directoriesManager.getStatesDirectory()
-        return File(statesDirectories, "${game.fileName}.state")
     }
 
     private data class FileUri(val uri: Uri, val name: String, val size: Long, val mime: String)

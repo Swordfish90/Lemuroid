@@ -27,8 +27,8 @@
     <string name="game_system_abbr_gba">GBA</string>
     <string name="game_system_abbr_n64">N64</string>
     <string name="game_system_abbr_sms">SMS</string>
-    <string name="game_system_abbr_arcade">Arcade</string>
     <string name="game_system_abbr_psp">PSP</string>
+    <string name="game_system_abbr_arcade_fbneo">Arcade</string>
 
     <string name="game_system_title_nes">Nintendo</string>
     <string name="game_system_title_snes">Super Nintendo</string>
@@ -38,6 +38,6 @@
     <string name="game_system_title_gba">Game Boy Advance</string>
     <string name="game_system_title_n64">Nintendo 64</string>
     <string name="game_system_title_sms">Sega Master System</string>
-    <string name="game_system_title_arcade">Arcade</string>
     <string name="game_system_title_psp">PlayStation Portable</string>
+    <string name="game_system_title_arcade_fbneo">Arcade (FBNeo)</string>
 </resources>
