@@ -46,6 +46,7 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import androidx.constraintlayout.widget.ConstraintSet
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
@@ -55,7 +56,6 @@ import com.uber.autodispose.autoDispose
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -130,7 +130,7 @@ class GameActivity : RetrogradeActivity() {
             intent.getStringExtra(EXTRA_GAME_PATH),
             directoriesManager.getSystemDirectory().absolutePath,
             directoriesManager.getSavesDirectory().absolutePath,
-            getShaderForSystem(useShaders, system.id)
+            getShaderForSystem(useShaders, system)
         )
 
         retroGameView.onCreate()
@@ -145,7 +145,7 @@ class GameActivity : RetrogradeActivity() {
             restoreQuickSaveAsync(it)
         }
 
-        setupVirtualPad(system.id)
+        setupVirtualPad(system)
 
         setupPhysicalPad()
 
@@ -164,22 +164,22 @@ class GameActivity : RetrogradeActivity() {
             .autoDispose(scope()).subscribe()
     }
 
-    private fun getShaderForSystem(useShader: Boolean, systemId: String): Int {
+    private fun getShaderForSystem(useShader: Boolean, system: GameSystem): Int {
         if (!useShader) {
             return GLRetroView.SHADER_DEFAULT
         }
 
-        return when (systemId) {
-            GameSystem.GBA_ID -> GLRetroView.SHADER_LCD
-            GameSystem.GBC_ID -> GLRetroView.SHADER_LCD
-            GameSystem.GB_ID -> GLRetroView.SHADER_LCD
-            GameSystem.N64_ID -> GLRetroView.SHADER_CRT
-            GameSystem.GENESIS_ID -> GLRetroView.SHADER_CRT
-            GameSystem.NES_ID -> GLRetroView.SHADER_CRT
-            GameSystem.SNES_ID -> GLRetroView.SHADER_CRT
-            GameSystem.ARCADE_FB_NEO -> GLRetroView.SHADER_CRT
-            GameSystem.SMS_ID -> GLRetroView.SHADER_CRT
-            GameSystem.PSP_ID -> GLRetroView.SHADER_LCD
+        return when (system.id) {
+            SystemID.GBA -> GLRetroView.SHADER_LCD
+            SystemID.GBC -> GLRetroView.SHADER_LCD
+            SystemID.GB -> GLRetroView.SHADER_LCD
+            SystemID.N64 -> GLRetroView.SHADER_CRT
+            SystemID.GENESIS -> GLRetroView.SHADER_CRT
+            SystemID.NES -> GLRetroView.SHADER_CRT
+            SystemID.SNES -> GLRetroView.SHADER_CRT
+            SystemID.FBNEO -> GLRetroView.SHADER_CRT
+            SystemID.SMS -> GLRetroView.SHADER_CRT
+            SystemID.PSP -> GLRetroView.SHADER_LCD
             else -> GLRetroView.SHADER_DEFAULT
         }
     }
@@ -242,8 +242,8 @@ class GameActivity : RetrogradeActivity() {
         )
     }
 
-    private fun setupVirtualPad(systemId: String) {
-        val gameView = GamePadFactory.getGamePadView(this, systemId)
+    private fun setupVirtualPad(system: GameSystem) {
+        val gameView = GamePadFactory.getGamePadView(this, system)
 
         padLayout.addView(gameView)
 

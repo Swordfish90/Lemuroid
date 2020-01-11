@@ -28,7 +28,9 @@ import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import java.util.Locale
 
 data class GameSystem(
-    val id: String,
+    val id: SystemID,
+
+    val libretroFullName: String,
 
     @StringRes
     val titleResId: Int,
@@ -56,20 +58,11 @@ data class GameSystem(
 ) {
 
     companion object {
-        const val NES_ID = "nes"
-        const val SNES_ID = "snes"
-        const val GENESIS_ID = "md"
-        const val GB_ID = "gb"
-        const val GBC_ID = "gbc"
-        const val GBA_ID = "gba"
-        const val N64_ID = "n64"
-        const val SMS_ID = "sms"
-        const val PSP_ID = "psp"
-        const val ARCADE_FB_NEO = "fbneo"
 
         private val SYSTEMS = listOf(
                 GameSystem(
-                        NES_ID,
+                        SystemID.NES,
+                        "Nintendo - Nintendo Entertainment System",
                         R.string.game_system_title_nes,
                         R.string.game_system_abbr_nes,
                         R.drawable.game_system_nes,
@@ -78,7 +71,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("nes")
                 ),
                 GameSystem(
-                        SNES_ID,
+                        SystemID.SNES,
+                        "Nintendo - Super Nintendo Entertainment System",
                         R.string.game_system_title_snes,
                         R.string.game_system_abbr_snes,
                         R.drawable.game_system_snes,
@@ -87,7 +81,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("smc", "sfc")
                 ),
                 GameSystem(
-                        SMS_ID,
+                        SystemID.SMS,
+                        "Sega - Master System - Mark III",
                         R.string.game_system_title_sms,
                         R.string.game_system_abbr_sms,
                         R.drawable.game_system_sms,
@@ -96,7 +91,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("sms")
                 ),
                 GameSystem(
-                        GENESIS_ID,
+                        SystemID.GENESIS,
+                        "Sega - Mega Drive - Genesis",
                         R.string.game_system_title_genesis,
                         R.string.game_system_abbr_genesis,
                         R.drawable.game_system_genesis,
@@ -105,7 +101,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("gen", "smd", "md")
                 ),
                 GameSystem(
-                        GB_ID,
+                        SystemID.GB,
+                        "Nintendo - Game Boy",
                         R.string.game_system_title_gb,
                         R.string.game_system_abbr_gb,
                         R.drawable.game_system_gb,
@@ -114,7 +111,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("gb")
                 ),
                 GameSystem(
-                        GBC_ID,
+                        SystemID.GBC,
+                        "Nintendo - Game Boy Color",
                         R.string.game_system_title_gbc,
                         R.string.game_system_abbr_gbc,
                         R.drawable.game_system_gbc,
@@ -123,7 +121,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("gbc")
                 ),
                 GameSystem(
-                        GBA_ID,
+                        SystemID.GBA,
+                        "Nintendo - Game Boy Advance",
                         R.string.game_system_title_gba,
                         R.string.game_system_abbr_gba,
                         R.drawable.game_system_gba,
@@ -132,7 +131,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("gba")
                 ),
                 GameSystem(
-                        N64_ID,
+                        SystemID.N64,
+                        "Nintendo - Nintendo 64",
                         R.string.game_system_title_n64,
                         R.string.game_system_abbr_n64,
                         R.drawable.game_system_n64,
@@ -141,7 +141,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("n64", "z64")
                 ),
                 GameSystem(
-                        PSP_ID,
+                        SystemID.PSP,
+                        "Sony - PlayStation Portable",
                         R.string.game_system_title_psp,
                         R.string.game_system_abbr_psp,
                         R.drawable.game_system_psp,
@@ -159,7 +160,8 @@ data class GameSystem(
                         )
                 ),
                 GameSystem(
-                        ARCADE_FB_NEO,
+                        SystemID.FBNEO,
+                        "FBNeo - Arcade Games",
                         R.string.game_system_title_arcade_fbneo,
                         R.string.game_system_abbr_arcade_fbneo,
                         R.drawable.game_system_arcade,
@@ -176,7 +178,7 @@ data class GameSystem(
                 )
         )
 
-        private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id to it }.toTypedArray()) }
+        private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id.dbname to it }.toTypedArray()) }
         private val byExtensionCache by lazy {
             val mutableMap = mutableMapOf<String, GameSystem>()
             for (system in SYSTEMS) {
@@ -189,7 +191,7 @@ data class GameSystem(
 
         fun findById(id: String): GameSystem = byIdCache.getValue(id)
 
-        fun findByFileExtension(fileExtension: String): GameSystem? =
+        fun findByUniqueFileExtension(fileExtension: String): GameSystem? =
                 byExtensionCache[fileExtension.toLowerCase(Locale.US)]
 
         data class ScanOptions(

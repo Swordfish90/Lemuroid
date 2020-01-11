@@ -49,7 +49,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                 fileName = file.name,
                 fileUri = file.uri,
                 title = rom.name ?: file.name,
-                systemId = system.id,
+                systemId = system.id.dbname,
                 developer = rom.developer,
                 coverFrontUrl = thumbnail,
                 lastIndexedAt = startedAtMs
@@ -103,7 +103,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     private fun findByPathAndFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
         return db.gameDao().findByFileName(file.name)
             .filter { extractGameSystem(it).scanOptions.scanByPathAndFilename }
-            .filter { file.path?.contains(extractGameSystem(it).id) == true }
+            .filter { file.path?.contains(extractGameSystem(it).id.dbname) == true }
             .map { convertToGameMetadata(it) }
     }
 
@@ -116,7 +116,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     }
 
     private fun findByUniqueExtension(file: StorageFile) = Maybe.fromCallable {
-        val system = GameSystem.findByFileExtension(file.extension)
+        val system = GameSystem.findByUniqueFileExtension(file.extension)
 
         if (system?.scanOptions?.scanByUniqueExtension == false) {
             return@fromCallable null
@@ -127,7 +127,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                     name = file.extensionlessName,
                     romName = file.name,
                     includeThumbnail = false,
-                    system = it.id,
+                    system = it.id.dbname,
                     crc32 = file.crc,
                     developer = null
             )
@@ -141,21 +141,9 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     }
 
     private fun computeCoverUrl(system: GameSystem, name: String?): String? {
-        val systemName = when (system.id) {
-            GameSystem.GB_ID -> "Nintendo - Game Boy"
-            GameSystem.GBC_ID -> "Nintendo - Game Boy Color"
-            GameSystem.GBA_ID -> "Nintendo - Game Boy Advance"
-            GameSystem.N64_ID -> "Nintendo - Nintendo 64"
-            GameSystem.GENESIS_ID -> "Sega - Mega Drive - Genesis"
-            GameSystem.NES_ID -> "Nintendo - Nintendo Entertainment System"
-            GameSystem.SNES_ID -> "Nintendo - Super Nintendo Entertainment System"
-            GameSystem.SMS_ID -> "Sega - Master System - Mark III"
-            GameSystem.ARCADE_FB_NEO -> "FBNeo - Arcade Games"
-            GameSystem.PSP_ID -> "Sony - PlayStation Portable"
-            else -> null
-        }
+        val systemName = system.libretroFullName
 
-        if (name == null || systemName == null) {
+        if (name == null) {
             return null
         }
 
