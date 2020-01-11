@@ -198,7 +198,8 @@ data class GameSystem(
             val scanByFilename: Boolean = true,
             val scanByUniqueExtension: Boolean = true,
             val scanByNameAndSupportedExtensions: Boolean = false,
-            val scanByPathAndFilename: Boolean = false
+            val scanByPathAndFilename: Boolean = false,
+            val scanByPathAndSupportedExtensions: Boolean = true
         )
     }
 }

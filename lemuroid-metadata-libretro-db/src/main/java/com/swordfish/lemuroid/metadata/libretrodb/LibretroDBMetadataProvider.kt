@@ -11,6 +11,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
+import com.swordfish.lemuroid.lib.library.SystemID
 import io.reactivex.Maybe
 import io.reactivex.ObservableTransformer
 import timber.log.Timber
@@ -27,6 +28,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                                 .switchIfEmpty(findByPathAndFilename(db, file))
                                 .switchIfEmpty(findByNameAndSupportedExtensions(db, file))
                                 .switchIfEmpty(findByUniqueExtension(file))
+                                .switchIfEmpty(findByPathAndSupportedExtension(file))
                                 .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
                                 .map { convertToGame(it, file, startedAtMs) }
                                 .toSingle(None)
@@ -105,6 +107,27 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             .filter { extractGameSystem(it).scanOptions.scanByPathAndFilename }
             .filter { file.path?.contains(extractGameSystem(it).id.dbname) == true }
             .map { convertToGameMetadata(it) }
+    }
+
+    private fun findByPathAndSupportedExtension(file: StorageFile) = Maybe.fromCallable {
+        val system = SystemID.values()
+            .map { it.dbname }
+            .filter { file.path?.contains(it) == true }
+            .map { GameSystem.findById(it) }
+            .filter { it.scanOptions.scanByPathAndSupportedExtensions }
+            .filter { it.supportedExtensions.contains(file.extension) }
+            .firstOrNull()
+
+        system?.let {
+            GameMetadata(
+                    name = file.extensionlessName,
+                    romName = file.name,
+                    includeThumbnail = false,
+                    system = it.id.dbname,
+                    crc32 = file.crc,
+                    developer = null
+            )
+        }
     }
 
     private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
