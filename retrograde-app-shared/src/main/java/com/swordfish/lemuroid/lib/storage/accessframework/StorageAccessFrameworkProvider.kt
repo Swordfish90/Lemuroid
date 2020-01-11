@@ -83,18 +83,22 @@ class StorageAccessFrameworkProvider(
 
                 contentResolver.query(currentNode, projection, null, null, null)?.use { cursor ->
                     cursor.asSequence().forEach {
-                        val docId = it.getString(0)
-                        val name = it.getString(1)
-                        val mime = it.getString(2)
-                        val size = it.getLong(3)
+                        try {
+                            val docId = it.getString(0)
+                            val name = it.getString(1)
+                            val mime = it.getString(2)
+                            val size = it.getLong(3)
 
-                        if (isDirectory(mime)) {
-                            val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
-                            dirNodes.add(newNode)
-                            Timber.d("Detected subfolder: $id, name: $name")
-                        } else {
-                            val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
-                            emitter.onNext(FileUri(uri, name, size, mime))
+                            if (isDirectory(mime)) {
+                                val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
+                                dirNodes.add(newNode)
+                                Timber.d("Detected subfolder: $id, name: $name")
+                            } else {
+                                val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
+                                emitter.onNext(FileUri(uri, name, size, mime))
+                            }
+                        } catch (e: Exception) {
+                            Timber.e(e, "Error while scanning file.")
                         }
                     }
                 }
