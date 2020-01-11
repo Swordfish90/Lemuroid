@@ -12,7 +12,6 @@ import com.swordfish.touchinput.views.LargeSingleButton
 import com.swordfish.touchinput.views.SmallSingleButton
 import com.swordfish.touchinput.views.Stick
 import io.reactivex.Observable
-import timber.log.Timber
 
 class PSPPad @JvmOverloads constructor(
     context: Context,
@@ -69,7 +68,6 @@ class PSPPad @JvmOverloads constructor(
             .getEvents()
             .compose(EventsTransformers.leftStickMap())
     }
-
 
     private fun getL1Events(): Observable<PadEvent> {
         return findViewById<LargeSingleButton>(R.id.l1)

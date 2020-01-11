@@ -6,7 +6,7 @@ import io.reactivex.Completable
 import timber.log.Timber
 import java.io.File
 
-class PPSSPPAssetsManager: CoreManager.AssetsManager {
+class PPSSPPAssetsManager : CoreManager.AssetsManager {
 
     override fun clearAssets(directoriesManager: DirectoriesManager) = Completable.fromAction {
         getAssetsDirectory(directoriesManager).deleteRecursively()

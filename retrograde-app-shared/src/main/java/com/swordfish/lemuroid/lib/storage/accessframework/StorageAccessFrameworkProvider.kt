@@ -13,7 +13,6 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
-import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber

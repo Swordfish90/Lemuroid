@@ -8,7 +8,6 @@ import com.swordfish.touchinput.events.EventsTransformers
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
-import com.swordfish.touchinput.views.LargeSingleButton
 import com.swordfish.touchinput.views.SmallSingleButton
 import io.reactivex.Observable
 

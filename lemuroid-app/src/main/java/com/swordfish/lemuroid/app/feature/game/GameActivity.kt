@@ -136,7 +136,6 @@ class GameActivity : RetrogradeActivity() {
             )
             retroGameView?.onCreate()
             gameViewLayout.addView(retroGameView)
-
         } catch (e: Exception) {
             Timber.e(e, "Failed running game load")
             retroGameView = null

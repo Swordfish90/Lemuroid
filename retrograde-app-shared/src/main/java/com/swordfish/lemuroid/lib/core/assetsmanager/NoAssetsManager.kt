@@ -4,7 +4,7 @@ import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 
-class NoAssetsManager: CoreManager.AssetsManager {
+class NoAssetsManager : CoreManager.AssetsManager {
 
     override fun clearAssets(directoriesManager: DirectoriesManager) = Completable.complete()
 

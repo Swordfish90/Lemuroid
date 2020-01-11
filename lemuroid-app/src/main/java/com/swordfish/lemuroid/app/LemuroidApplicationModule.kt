@@ -117,7 +117,11 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localGameStorageProvider(context: Context, directoriesManager: DirectoriesManager, metadataProvider: LibretroDBMetadataProvider): StorageProvider =
+        fun localGameStorageProvider(
+            context: Context,
+            directoriesManager: DirectoriesManager,
+            metadataProvider: LibretroDBMetadataProvider
+        ): StorageProvider =
                 LocalStorageProvider(context, directoriesManager, metadataProvider)
 
         @Provides

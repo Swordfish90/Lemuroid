@@ -21,8 +21,6 @@ package com.swordfish.lemuroid.lib.core
 
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import com.swordfish.lemuroid.lib.BuildConfig
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -34,7 +32,6 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
-import timber.log.Timber
 import java.io.File
 import java.util.zip.ZipInputStream
 
