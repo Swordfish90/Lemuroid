@@ -14,6 +14,7 @@ class GamePadFactory {
                 in listOf(GameSystem.N64_ID) -> N64Pad(context)
                 in listOf(GameSystem.SMS_ID) -> SegaMasterSystemPad(context)
                 in listOf(GameSystem.PSP_ID) -> PSPPad(context)
+                in listOf(GameSystem.ARCADE_FB_NEO) -> ArcadePad(context)
                 else -> PSXPad(context)
             }
         }

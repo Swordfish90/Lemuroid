@@ -49,7 +49,9 @@ data class GameSystem(
 
     val supportsAutosave: Boolean = true,
 
-    val requiresCRCMatch: Boolean = false
+    val scanOptions: ScanOptions = ScanOptions(),
+
+    val supportedExtensions: List<String> = uniqueExtensions
 
 ) {
 
@@ -73,7 +75,7 @@ data class GameSystem(
                         R.drawable.game_system_nes,
                         "nintendo0",
                         "fceumm_libretro_android.so.zip",
-                        listOf("nes")
+                        uniqueExtensions = listOf("nes")
                 ),
                 GameSystem(
                         SNES_ID,
@@ -82,7 +84,7 @@ data class GameSystem(
                         R.drawable.game_system_snes,
                         "nintendo1",
                         "snes9x_libretro_android.so.zip",
-                        listOf("smc", "sfc")
+                        uniqueExtensions = listOf("smc", "sfc")
                 ),
                 GameSystem(
                         SMS_ID,
@@ -91,7 +93,7 @@ data class GameSystem(
                         R.drawable.game_system_sms,
                         "sega0",
                         "genesis_plus_gx_libretro_android.so.zip",
-                        listOf("sms")
+                        uniqueExtensions = listOf("sms")
                 ),
                 GameSystem(
                         GENESIS_ID,
@@ -100,7 +102,7 @@ data class GameSystem(
                         R.drawable.game_system_genesis,
                         "sega1",
                         "picodrive_libretro_android.so.zip",
-                        listOf("gen", "smd", "md")
+                        uniqueExtensions = listOf("gen", "smd", "md")
                 ),
                 GameSystem(
                         GB_ID,
@@ -109,7 +111,7 @@ data class GameSystem(
                         R.drawable.game_system_gb,
                         "nintendo2",
                         "gambatte_libretro_android.so.zip",
-                        listOf("gb")
+                        uniqueExtensions = listOf("gb")
                 ),
                 GameSystem(
                         GBC_ID,
@@ -118,7 +120,7 @@ data class GameSystem(
                         R.drawable.game_system_gbc,
                         "nintendo3",
                         "gambatte_libretro_android.so.zip",
-                        listOf("gbc")
+                        uniqueExtensions = listOf("gbc")
                 ),
                 GameSystem(
                         GBA_ID,
@@ -127,7 +129,7 @@ data class GameSystem(
                         R.drawable.game_system_gba,
                         "nintendo4",
                         "mgba_libretro_android.so.zip",
-                        listOf("gba")
+                        uniqueExtensions = listOf("gba")
                 ),
                 GameSystem(
                         N64_ID,
@@ -136,7 +138,7 @@ data class GameSystem(
                         R.drawable.game_system_n64,
                         "nintendo5",
                         "mupen64plus_next_libretro_android.so.zip",
-                        listOf("n64", "z64")
+                        uniqueExtensions = listOf("n64", "z64")
                 ),
                 GameSystem(
                         PSP_ID,
@@ -145,9 +147,16 @@ data class GameSystem(
                         R.drawable.game_system_psp,
                         "sony1",
                         "ppsspp_libretro_android.so.zip",
-                        listOf("iso", "cso"), // TODO FILIPPO... This is not true and it should be fixed...
+                        uniqueExtensions = listOf(),
+                        supportedExtensions = listOf("iso", "cso", "pbp"),
                         coreAssetsManager = PPSSPPAssetsManager(),
-                        supportsAutosave = false
+                        supportsAutosave = false,
+                        scanOptions = ScanOptions(
+                            scanByFilename = false,
+                            scanByUniqueExtension = false,
+                            scanByPathAndFilename = false,
+                            scanByNameAndSupportedExtensions = true
+                        )
                 ),
                 GameSystem(
                         ARCADE_FB_NEO,
@@ -156,8 +165,14 @@ data class GameSystem(
                         R.drawable.game_system_arcade,
                         "arcade",
                         "fbneo_libretro_android.so.zip",
-                        listOf(),
-                        requiresCRCMatch = true
+                        uniqueExtensions = listOf(),
+                        supportedExtensions = listOf("zip"),
+                        scanOptions = ScanOptions(
+                            scanByFilename = false,
+                            scanByUniqueExtension = false,
+                            scanByPathAndFilename = true,
+                            scanByNameAndSupportedExtensions = false
+                        )
                 )
         )
 
@@ -176,5 +191,12 @@ data class GameSystem(
 
         fun findByFileExtension(fileExtension: String): GameSystem? =
                 byExtensionCache[fileExtension.toLowerCase(Locale.US)]
+
+        data class ScanOptions(
+            val scanByFilename: Boolean = true,
+            val scanByUniqueExtension: Boolean = true,
+            val scanByNameAndSupportedExtensions: Boolean = false,
+            val scanByPathAndFilename: Boolean = false
+        )
     }
 }

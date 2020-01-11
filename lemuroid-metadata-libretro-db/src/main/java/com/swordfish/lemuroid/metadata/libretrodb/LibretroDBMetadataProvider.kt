@@ -23,7 +23,9 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                         .doOnNext { Timber.d("Looking metadata for file: $it") }
                         .flatMapSingle { file ->
                             findByCRC(file, db)
-                                .switchIfEmpty(findByName(db, file))
+                                .switchIfEmpty(findByFilename(db, file))
+                                .switchIfEmpty(findByPathAndFilename(db, file))
+                                .switchIfEmpty(findByNameAndSupportedExtensions(db, file))
                                 .switchIfEmpty(findByUniqueExtension(file))
                                 .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
                                 .map { convertToGame(it, file, startedAtMs) }
@@ -66,16 +68,43 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
         )
     }
 
-    private fun findByName(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
+    private fun findByFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
         return db.gameDao().findByFileName(file.name)
-                .filter {
-                    if (GameSystem.findById(it.system!!).requiresCRCMatch) {
-                        it.crc32 == file.crc
-                    } else {
-                        true
+                .filter { extractGameSystem(it).scanOptions.scanByFilename }
+                .map { convertToGameMetadata(it) }
+    }
+
+    private fun findByNameAndSupportedExtensions(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
+        return db.gameDao().findByName("${file.extensionlessName}%")
+                .flatMapMaybe { roms ->
+                    Maybe.fromCallable {
+
+                        // We really don't have anything to work on at this point. So we rely on cutting edge heuristics.
+                        val compatibleRoms = roms
+                            .filter { rom -> file.extension in extractGameSystem(rom).supportedExtensions }
+                            .filter { rom -> areNamesCompatible(file.extensionlessName, rom.name!!) }
+                            .sortedBy { rom -> rom.name?.length }
+
+                        compatibleRoms.firstOrNull()
                     }
                 }
+                .filter { extractGameSystem(it).scanOptions.scanByNameAndSupportedExtensions }
                 .map { convertToGameMetadata(it) }
+    }
+
+    private fun areNamesCompatible(name1: String, name2: String): Boolean {
+        Timber.d("Checking name compatibility of $name1 and $name2")
+        val sanitizedName1 = name1.replace("\\(.+?\\)".toRegex(), "").trim()
+        val sanitizedName2 = name2.replace("\\(.+?\\)".toRegex(), "").trim()
+        Timber.d("Sanitized names: $sanitizedName1, $sanitizedName2")
+        return sanitizedName1 == sanitizedName2
+    }
+
+    private fun findByPathAndFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
+        return db.gameDao().findByFileName(file.name)
+            .filter { extractGameSystem(it).scanOptions.scanByPathAndFilename }
+            .filter { file.path?.contains(extractGameSystem(it).id) == true }
+            .map { convertToGameMetadata(it) }
     }
 
     private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
@@ -88,6 +117,10 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
     private fun findByUniqueExtension(file: StorageFile) = Maybe.fromCallable {
         val system = GameSystem.findByFileExtension(file.extension)
+
+        if (system?.scanOptions?.scanByUniqueExtension == false) {
+            return@fromCallable null
+        }
 
         val result = system?.let {
             GameMetadata(
@@ -103,6 +136,10 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
         result
     }
 
+    private fun extractGameSystem(rom: LibretroRom): GameSystem {
+        return GameSystem.findById(rom.system!!)
+    }
+
     private fun computeCoverUrl(system: GameSystem, name: String?): String? {
         val systemName = when (system.id) {
             GameSystem.GB_ID -> "Nintendo - Game Boy"
@@ -114,6 +151,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             GameSystem.SNES_ID -> "Nintendo - Super Nintendo Entertainment System"
             GameSystem.SMS_ID -> "Sega - Master System - Mark III"
             GameSystem.ARCADE_FB_NEO -> "FBNeo - Arcade Games"
+            GameSystem.PSP_ID -> "Sony - PlayStation Portable"
             else -> null
         }
 
@@ -121,10 +159,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             return null
         }
 
-        val imageType = when (system.id) {
-            GameSystem.ARCADE_FB_NEO -> "Named_Snaps"
-            else -> "Named_Boxarts"
-        }
+        val imageType = "Named_Boxarts"
 
         return "http://thumbnails.libretro.com/$systemName/$imageType/$name.png"
     }

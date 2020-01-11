@@ -117,7 +117,11 @@ class StorageAccessFrameworkProvider(
     }
 
     private fun handleUriAsStandardFile(uri: Uri, name: String, size: Long): StorageFile {
-        val crc32 = context.contentResolver.openInputStream(uri)?.calculateCrc32()
+        val crc32 = if (size < MAX_SIZE_CRC32) {
+            context.contentResolver.openInputStream(uri)?.calculateCrc32()
+        } else {
+            null
+        }
 
         Timber.d("Detected file: $id, name: $name, crc: $crc32")
 
@@ -174,5 +178,7 @@ class StorageAccessFrameworkProvider(
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
         const val ZIP_MIME_TYPE = "application/zip"
+
+        const val MAX_SIZE_CRC32 = 50_000_000
     }
 }
