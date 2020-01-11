@@ -97,7 +97,7 @@ data class GameSystem(
                         R.string.game_system_abbr_genesis,
                         R.drawable.game_system_genesis,
                         "sega1",
-                        "picodrive_libretro_android.so.zip",
+                        "genesis_plus_gx_libretro_android.so.zip",
                         uniqueExtensions = listOf("gen", "smd", "md")
                 ),
                 GameSystem(
