@@ -19,6 +19,7 @@ class StorageFrameworkPickerLauncher : FragmentActivity() {
                 this.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 this.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                 this.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
+                this.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
             }
             startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
         }
