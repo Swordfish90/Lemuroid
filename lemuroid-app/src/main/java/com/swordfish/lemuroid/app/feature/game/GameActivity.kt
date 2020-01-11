@@ -33,6 +33,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -103,10 +104,10 @@ class GameActivity : RetrogradeActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    private lateinit var retroGameView: GLRetroView
-
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
+
+    private var retroGameView: GLRetroView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,21 +125,26 @@ class GameActivity : RetrogradeActivity() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
 
-        retroGameView = GLRetroView(
-            this,
-            intent.getStringExtra(EXTRA_CORE_PATH),
-            intent.getStringExtra(EXTRA_GAME_PATH),
-            directoriesManager.getSystemDirectory().absolutePath,
-            directoriesManager.getSavesDirectory().absolutePath,
-            getShaderForSystem(useShaders, system)
-        )
+        try {
+            retroGameView = GLRetroView(
+                    this,
+                    intent.getStringExtra(EXTRA_CORE_PATH),
+                    intent.getStringExtra(EXTRA_GAME_PATH),
+                    directoriesManager.getSystemDirectory().absolutePath,
+                    directoriesManager.getSavesDirectory().absolutePath,
+                    getShaderForSystem(useShaders, system)
+            )
+            retroGameView?.onCreate()
+            gameViewLayout.addView(retroGameView)
 
-        retroGameView.onCreate()
-
-        gameViewLayout.addView(retroGameView)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed running game load")
+            retroGameView = null
+            displayCannotLoadGameMessage()
+        }
 
         getAndResetTransientSaveRAMState()?.let {
-            retroGameView.unserializeSRAM(it)
+            retroGameView?.unserializeSRAM(it)
         }
 
         getAndResetTransientQuickSave()?.let {
@@ -151,11 +157,19 @@ class GameActivity : RetrogradeActivity() {
 
         handleOrientationChange(resources.configuration.orientation)
 
-        retroGameView.requestFocus()
+        retroGameView?.requestFocus()
 
-        if (!system.supportsAutosave) {
+        if (retroGameView != null && !system.supportsAutosave) {
             Toast.makeText(this, R.string.game_toast_autosave_not_supported, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun displayCannotLoadGameMessage() {
+        AlertDialog.Builder(this)
+            .setMessage(R.string.game_dialog_cannot_load_game)
+            .setPositiveButton(R.string.ok) { _, _ -> finish() }
+            .setCancelable(false)
+            .show()
     }
 
     private fun displayOptionsDialog() {
@@ -205,20 +219,21 @@ class GameActivity : RetrogradeActivity() {
 
     override fun onResume() {
         super.onResume()
-        retroGameView.onResume()
+        retroGameView?.onResume()
     }
 
     override fun onPause() {
-        retroGameView.onPause()
+        retroGameView?.onPause()
         super.onPause()
     }
 
     override fun onDestroy() {
-        retroGameView.onDestroy()
+        retroGameView?.onDestroy()
         super.onDestroy()
     }
 
     private fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
+        val retroGameView = retroGameView ?: return@fromCallable null
         var times = 10
         while (!retroGameView.unserializeState(saveGame) && times > 0) {
             sleep(200)
@@ -257,14 +272,14 @@ class GameActivity : RetrogradeActivity() {
             .autoDispose(scope())
             .subscribe {
                 when (it) {
-                    is PadEvent.Button -> retroGameView.sendKeyEvent(it.action, it.keycode)
-                    is PadEvent.Stick -> retroGameView.sendMotionEvent(it.source, it.xAxis, it.yAxis)
+                    is PadEvent.Button -> retroGameView?.sendKeyEvent(it.action, it.keycode)
+                    is PadEvent.Stick -> retroGameView?.sendMotionEvent(it.source, it.xAxis, it.yAxis)
                 }
             }
 
-        retroGameView.getConnectedGamepads()
-            .autoDispose(scope())
-            .subscribe {
+        retroGameView?.getConnectedGamepads()
+            ?.autoDispose(scope())
+            ?.subscribe {
                 padLayout.updateVisibility(it == 0)
                 menuButton.updateVisibility(it == 0)
             }
@@ -276,9 +291,9 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun setupPhysicalPad() {
-        retroGameView.getGameKeyEvents()
-            .filter { it.keyCode in GAMEPAD_MENU_SHORTCUT }
-            .scan(mutableSetOf<Int>()) { keys, event ->
+        retroGameView?.getGameKeyEvents()
+            ?.filter { it.keyCode in GAMEPAD_MENU_SHORTCUT }
+            ?.scan(mutableSetOf<Int>()) { keys, event ->
                 if (event.action == KeyEvent.ACTION_DOWN) {
                     keys.add(event.keyCode)
                 } else if (event.action == KeyEvent.ACTION_UP) {
@@ -286,20 +301,20 @@ class GameActivity : RetrogradeActivity() {
                 }
                 keys
             }
-            .doOnNext {
+            ?.doOnNext {
                 if (it.containsAll(GAMEPAD_MENU_SHORTCUT)) {
                     displayOptionsDialog()
                 }
             }
-            .subscribeOn(Schedulers.single())
-            .autoDispose(scope())
-            .subscribe()
+            ?.subscribeOn(Schedulers.single())
+            ?.autoDispose(scope())
+            ?.subscribe()
 
-        retroGameView.getConnectedGamepads()
-            .map { it > 0 }
-            .distinctUntilChanged()
-            .autoDispose(scope())
-            .subscribe { gamepadsConnected ->
+        retroGameView?.getConnectedGamepads()
+            ?.map { it > 0 }
+            ?.distinctUntilChanged()
+            ?.autoDispose(scope())
+            ?.subscribe { gamepadsConnected ->
                 if (gamepadsConnected) {
                     val message = R.string.game_toast_settings_button_using_gamepad
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -334,20 +349,26 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
+        val retroGameView = retroGameView ?: return Completable.complete()
+
         return Single.fromCallable { system.supportsAutosave }
-            .filter { it == true }
+            .filter { it }
             .map { retroGameView.serializeState() }
             .doOnSuccess { Timber.i("Stored autosave file with size: ${it.size}") }
             .flatMapCompletable { savesManager.setAutoSave(game, it) }
     }
 
     private fun getSaveRAMCompletable(game: Game): Completable {
+        val retroGameView = retroGameView ?: return Completable.complete()
+
         return Single.fromCallable { retroGameView.serializeSRAM() }
             .doOnSuccess { Timber.i("Stored sram file with size: ${it.size}") }
             .flatMapCompletable { savesManager.setSaveRAM(game, it) }
     }
 
     private fun saveSlot(index: Int): Completable {
+        val retroGameView = retroGameView ?: return Completable.complete()
+
         return retrieveCurrentGame()
             .map { it to retroGameView.serializeState() }
             .doOnSuccess { (_, data) -> Timber.i("Storing quicksave with size: ${data.size}") }
@@ -355,6 +376,8 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun loadSlot(index: Int): Completable {
+        val retroGameView = retroGameView ?: return Completable.complete()
+
         return retrieveCurrentGame()
             .flatMapMaybe { savesManager.getSlotSave(it, index) }
             .doOnSuccess { retroGameView.unserializeState(it) }
@@ -369,7 +392,7 @@ class GameActivity : RetrogradeActivity() {
     }
 
     private fun reset() {
-        retroGameView.reset()
+        retroGameView?.reset()
     }
 
     inner class OrientationHandler {

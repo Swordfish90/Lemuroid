@@ -34,7 +34,7 @@
     <string name="game_dialog_state">State %1$s</string>
 
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with L3 + R3.</string>
-    <string name="game_toast_autosave_not_supported">Autosave is not supported for this system. Remember to use Slots.</string>
+    <string name="game_toast_autosave_not_supported">Autosave is not supported for this system. Use slots or game saves.</string>
 
     <string name="empty_view_default">No Items</string>
 
@@ -43,6 +43,8 @@
     <string name="library_index_notification_message"></string>
 
     <string name="game_play_generic_error_message">Cannot play game.\nMake sure your network is connected the first time you play with a new system and your ROMs directory has been rescanned.</string>
+
+    <string name="game_dialog_cannot_load_game">Cannot load game.\nMake sure this ROM is compatible with Lemuroid.</string>
 
     <string name="system_grid_details">%1$s games</string>
 
