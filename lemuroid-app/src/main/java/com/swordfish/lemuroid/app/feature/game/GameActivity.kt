@@ -160,7 +160,7 @@ class GameActivity : RetrogradeActivity() {
         retroGameView?.requestFocus()
 
         if (retroGameView != null && !system.supportsAutosave) {
-            Toast.makeText(this, R.string.game_toast_autosave_not_supported, Toast.LENGTH_SHORT).show()
+            displayToast(R.string.game_toast_autosave_not_supported)
         }
     }
 
@@ -170,6 +170,10 @@ class GameActivity : RetrogradeActivity() {
             .setPositiveButton(R.string.ok) { _, _ -> finish() }
             .setCancelable(false)
             .show()
+    }
+
+    private fun displayToast(id: Int) {
+        Toast.makeText(this, id, Toast.LENGTH_SHORT).show()
     }
 
     private fun displayOptionsDialog() {
@@ -316,8 +320,7 @@ class GameActivity : RetrogradeActivity() {
             ?.autoDispose(scope())
             ?.subscribe { gamepadsConnected ->
                 if (gamepadsConnected) {
-                    val message = R.string.game_toast_settings_button_using_gamepad
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    displayToast(R.string.game_toast_settings_button_using_gamepad)
                 }
             }
     }
@@ -380,7 +383,9 @@ class GameActivity : RetrogradeActivity() {
 
         return retrieveCurrentGame()
             .flatMapMaybe { savesManager.getSlotSave(it, index) }
-            .doOnSuccess { retroGameView.unserializeState(it) }
+            .map { retroGameView.unserializeState(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
             .ignoreElement()
     }
 
