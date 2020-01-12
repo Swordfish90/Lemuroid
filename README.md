@@ -23,7 +23,10 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Game Boy Color (GBC)
 - Game Boy Advance (GBA)
 - Sega Genesis (aka Megadrive)
+- Sega Master System (SMS)
 - Nintendo 64 (N64)
+- PlayStation Portable (PSP)
+- FinalBurn Neo (Arcade)
 
 ### Features:
 - Automatically save and restore game states.
