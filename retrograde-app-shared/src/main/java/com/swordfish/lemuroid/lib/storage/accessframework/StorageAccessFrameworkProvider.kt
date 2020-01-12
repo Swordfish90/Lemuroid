@@ -18,6 +18,7 @@ import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
 import java.io.InputStream
+import java.nio.file.FileSystem
 import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
@@ -142,7 +143,8 @@ class StorageAccessFrameworkProvider(
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        val gamesCacheDir = File(context.cacheDir, SAF_CACHE_SUBFOLDER)
+        val gamesCachePath = buildPath(SAF_CACHE_SUBFOLDER, game.systemId)
+        val gamesCacheDir = File(context.cacheDir, gamesCachePath)
         gamesCacheDir.mkdirs()
         val gameFile = File(gamesCacheDir, game.fileName)
         if (gameFile.exists()) {
@@ -159,6 +161,10 @@ class StorageAccessFrameworkProvider(
             copyInputStreamToFile(gameFile, stream)
         }
         gameFile
+    }
+
+    private fun buildPath(vararg chunks: String): String {
+        return chunks.joinToString(separator = File.separator)
     }
 
     private fun copyInputStreamToFile(gameFile: File, inputFileStream: InputStream) {
