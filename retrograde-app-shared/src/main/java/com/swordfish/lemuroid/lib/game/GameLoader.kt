@@ -19,7 +19,6 @@
 
 package com.swordfish.lemuroid.lib.game
 
-import com.gojuno.koptional.None
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.library.GameLibrary
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -28,9 +27,9 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import io.reactivex.Maybe
-import io.reactivex.Single
-import io.reactivex.functions.Function4
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.io.File
 
 class GameLoader(
@@ -40,34 +39,47 @@ class GameLoader(
     private val savesManager: SavesManager
 ) {
 
-    fun loadGame(gameId: Int): Maybe<Game> = retrogradeDatabase.gameDao().selectById(gameId)
+    private fun loadGame(gameId: Int): Maybe<Game> = retrogradeDatabase.gameDao().selectById(gameId)
 
-    fun load(gameId: Int, loadSave: Boolean): Single<GameData> {
+    fun load(gameId: Int, loadSave: Boolean): Observable<LoadingState> {
         return loadGame(gameId)
-                .subscribeOn(Schedulers.io())
-                .flatMapSingle { game -> prepareGame(game, loadSave) }
+            .subscribeOn(Schedulers.io())
+            .flatMapObservable { game -> prepareGame(game, loadSave) }
     }
 
-    private fun prepareGame(game: Game, loadQuickSave: Boolean): Single<GameData> {
-        val gameSystem = GameSystem.findById(game.systemId)
+    sealed class LoadingState {
+        object LoadingCore : LoadingState()
+        object LoadingGame : LoadingState()
+        class Ready(val gameData: GameData) : LoadingState()
+    }
 
-        val coreObservable = coreManager.downloadCore(gameSystem.coreFileName, gameSystem.coreAssetsManager)
-        val gameObservable = gameLibrary.getGameRom(game)
-        val saveRAMObservable = savesManager.getSaveRAM(game).toSingleAsOptional()
-        val quickSaveObservable = if (loadQuickSave && gameSystem.supportsAutosave) {
-            savesManager.getAutoSave(game).toSingleAsOptional()
-        } else {
-            Single.just(None)
+    private fun prepareGame(game: Game, loadQuickSave: Boolean) = Observable.create<LoadingState> { emitter ->
+        try {
+            emitter.onNext(LoadingState.LoadingCore)
+
+            val gameSystem = GameSystem.findById(game.systemId)
+
+            val coreFile = coreManager.downloadCore(gameSystem.coreFileName, gameSystem.coreAssetsManager).blockingGet()
+
+            emitter.onNext(LoadingState.LoadingGame)
+
+            val gameFile = gameLibrary.getGameRom(game).blockingGet()
+
+            val saveRAMData = savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
+
+            val quickSaveData = if (loadQuickSave && gameSystem.supportsAutosave) {
+                savesManager.getAutoSave(game).toSingleAsOptional().blockingGet().toNullable()
+            } else {
+                null
+            }
+
+            emitter.onNext(LoadingState.Ready(GameData(game, coreFile, gameFile, quickSaveData, saveRAMData)))
+        } catch (e: Exception) {
+            Timber.e(e, "Error while preparing game")
+            emitter.onError(e)
+        } finally {
+            emitter.onComplete()
         }
-
-        return Single.zip(
-                coreObservable,
-                gameObservable,
-                quickSaveObservable,
-                saveRAMObservable,
-                Function4 { coreFile, gameFile, saveData, sramData ->
-                    GameData(game, coreFile, gameFile, saveData.toNullable(), sramData.toNullable())
-                })
     }
 
     @Suppress("ArrayInDataClass")

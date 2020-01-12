@@ -33,6 +33,9 @@
     <string name="game_dialog_quit">Quit</string>
     <string name="game_dialog_state">State %1$s</string>
 
+    <string name="game_loading_download_core">Downloading core…</string>
+    <string name="game_loading_preparing_game">Preparing game…</string>
+
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with L3 + R3.</string>
     <string name="game_toast_autosave_not_supported">Autosave is not supported for this system. Use slots or game saves.</string>
     <string name="game_toast_load_state_failed">Cannot load this state</string>
