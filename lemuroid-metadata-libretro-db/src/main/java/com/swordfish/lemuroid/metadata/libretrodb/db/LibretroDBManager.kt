@@ -21,6 +21,7 @@ class LibretroDBManager(context: Context, executorService: ExecutorService) {
         executorService.execute {
             val db = Room.databaseBuilder(context, LibretroDatabase::class.java, DB_NAME)
                     .createFromAsset("libretro-db.sqlite")
+                    .fallbackToDestructiveMigration()
                     .build()
             dbRelay.accept(db)
         }
