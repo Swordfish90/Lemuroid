@@ -1,28 +1,23 @@
 package com.swordfish.touchinput.pads
 
 import android.content.Context
+import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemID
 
 class GamePadFactory {
-    enum class Layout {
-        NES,
-        SNES,
-        GBA,
-        GENESIS,
-        N64,
-        PSX,
-        SMS
-    }
-
     companion object {
-        fun getGamePadView(context: Context, layout: Layout): BaseGamePad {
-            return when (layout) {
-                Layout.NES -> GameBoyPad(context)
-                Layout.SNES -> SNESPad(context)
-                Layout.GENESIS -> GenesisPad(context)
-                Layout.GBA -> GameBoyAdvancePad(context)
-                Layout.PSX -> PSXPad(context)
-                Layout.N64 -> N64Pad(context)
-                Layout.SMS -> SegaMasterSystemPad(context)
+        fun getGamePadView(context: Context, system: GameSystem): BaseGamePad {
+            return when (system.id) {
+                SystemID.GBA -> GameBoyAdvancePad(context)
+                SystemID.NES -> GameBoyPad(context)
+                SystemID.GB -> GameBoyPad(context)
+                SystemID.GBC -> GameBoyPad(context)
+                SystemID.SNES -> SNESPad(context)
+                SystemID.GENESIS -> GenesisPad(context)
+                SystemID.N64 -> N64Pad(context)
+                SystemID.SMS -> SegaMasterSystemPad(context)
+                SystemID.PSP -> PSPPad(context)
+                SystemID.FBNEO -> ArcadePad(context)
             }
         }
     }

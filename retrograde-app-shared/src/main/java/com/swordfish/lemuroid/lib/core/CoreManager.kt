@@ -21,9 +21,8 @@ package com.swordfish.lemuroid.lib.core
 
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import com.swordfish.lemuroid.lib.BuildConfig
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import io.reactivex.Completable
 import io.reactivex.Single
 import okio.buffer
 import okio.sink
@@ -36,7 +35,7 @@ import retrofit2.http.Url
 import java.io.File
 import java.util.zip.ZipInputStream
 
-class CoreManager(directoriesManager: DirectoriesManager, retrofit: Retrofit) {
+class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: Retrofit) {
 
     private val baseUri = Uri.parse("https://buildbot.libretro.com/")
     private val coresUri = baseUri.buildUpon()
@@ -52,16 +51,7 @@ class CoreManager(directoriesManager: DirectoriesManager, retrofit: Retrofit) {
         coresDir.mkdirs()
     }
 
-    fun downloadCore(zipFileName: String): Single<File> {
-        if (BuildConfig.DEBUG) {
-            val overrideFile = File(Environment.getExternalStorageDirectory(), "libretro.so")
-            if (overrideFile.exists()) {
-                val overrideDestFile = File(coresDir, overrideFile.name)
-                overrideFile.copyTo(overrideDestFile, true)
-                return Single.just(overrideDestFile)
-            }
-        }
-
+    fun downloadCore(zipFileName: String, assetsManager: AssetsManager): Single<File> {
         val libFileName = zipFileName.substringBeforeLast(".zip")
         val destFile = File(coresDir, "lib$libFileName")
 
@@ -69,11 +59,14 @@ class CoreManager(directoriesManager: DirectoriesManager, retrofit: Retrofit) {
             return Single.just(destFile)
         }
 
+        assetsManager.clearAssets(directoriesManager).blockingAwait()
+
         val uri = coresUri.buildUpon()
                 .appendPath(zipFileName)
                 .build()
 
         return api.downloadZip(uri.toString())
+                .doOnSuccess { assetsManager.retrieveAssets(api, directoriesManager).blockingAwait() }
                 .map { response ->
                     if (!response.isSuccessful) {
                         throw Exception(response.errorBody()!!.string())
@@ -94,10 +87,15 @@ class CoreManager(directoriesManager: DirectoriesManager, retrofit: Retrofit) {
                 }
     }
 
-    private interface CoreManagerApi {
+    interface CoreManagerApi {
 
         @GET
         @Streaming
         fun downloadZip(@Url url: String): Single<Response<ZipInputStream>>
+    }
+
+    interface AssetsManager {
+        fun retrieveAssets(coreManagerApi: CoreManagerApi, directoriesManager: DirectoriesManager): Completable
+        fun clearAssets(directoriesManager: DirectoriesManager): Completable
     }
 }

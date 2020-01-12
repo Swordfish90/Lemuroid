@@ -51,7 +51,7 @@ class SystemsFragment : RecyclerViewFragment() {
     }
 
     private fun navigateToGames(system: GameSystem) {
-        val action = SystemsFragmentDirections.actionNavigationSystemsToNavigationGames(system.id)
+        val action = SystemsFragmentDirections.actionNavigationSystemsToNavigationGames(system.id.dbname)
         findNavController().navigate(action)
     }
 

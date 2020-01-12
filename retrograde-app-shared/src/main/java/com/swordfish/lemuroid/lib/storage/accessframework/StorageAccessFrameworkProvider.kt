@@ -13,7 +13,6 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
-import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
@@ -23,8 +22,7 @@ import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
     private val context: Context,
-    override val metadataProvider: GameMetadataProvider,
-    private val directoriesManager: DirectoriesManager
+    override val metadataProvider: GameMetadataProvider
 ) : StorageProvider {
 
     override val id: String = "access_framework"
@@ -84,18 +82,22 @@ class StorageAccessFrameworkProvider(
 
                 contentResolver.query(currentNode, projection, null, null, null)?.use { cursor ->
                     cursor.asSequence().forEach {
-                        val docId = it.getString(0)
-                        val name = it.getString(1)
-                        val mime = it.getString(2)
-                        val size = it.getLong(3)
+                        try {
+                            val docId = it.getString(0)
+                            val name = it.getString(1)
+                            val mime = it.getString(2)
+                            val size = it.getLong(3)
 
-                        if (isDirectory(mime)) {
-                            val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
-                            dirNodes.add(newNode)
-                            Timber.d("Detected subfolder: $id, name: $name")
-                        } else {
-                            val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
-                            emitter.onNext(FileUri(uri, name, size, mime))
+                            if (isDirectory(mime)) {
+                                val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
+                                dirNodes.add(newNode)
+                                Timber.d("Detected subfolder: $id, name: $name")
+                            } else {
+                                val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
+                                emitter.onNext(FileUri(uri, name, size, mime))
+                            }
+                        } catch (e: Exception) {
+                            Timber.e(e, "Error while scanning file.")
                         }
                     }
                 }
@@ -118,7 +120,11 @@ class StorageAccessFrameworkProvider(
     }
 
     private fun handleUriAsStandardFile(uri: Uri, name: String, size: Long): StorageFile {
-        val crc32 = context.contentResolver.openInputStream(uri)?.calculateCrc32()
+        val crc32 = if (size < MAX_SIZE_CRC32) {
+            context.contentResolver.openInputStream(uri)?.calculateCrc32()
+        } else {
+            null
+        }
 
         Timber.d("Detected file: $id, name: $name, crc: $crc32")
 
@@ -136,16 +142,17 @@ class StorageAccessFrameworkProvider(
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        val gamesCacheDir = File(context.cacheDir, SAF_CACHE_SUBFOLDER)
+        val gamesCachePath = buildPath(SAF_CACHE_SUBFOLDER, game.systemId)
+        val gamesCacheDir = File(context.cacheDir, gamesCachePath)
         gamesCacheDir.mkdirs()
         val gameFile = File(gamesCacheDir, game.fileName)
         if (gameFile.exists()) {
             return@fromCallable gameFile
         }
 
-        val mimeType = context.contentResolver.getType(game.fileUri)
+        val mimeType = context.contentResolver.getType(game.fileUri)!!
 
-        if (mimeType == ZIP_MIME_TYPE) {
+        if (isZipped(mimeType) && isSingleArchive(game.fileUri)) {
             val stream = ZipInputStream(context.contentResolver.openInputStream(game.fileUri))
             copyZipInputStreamToFile(gameFile, stream)
         } else {
@@ -153,6 +160,10 @@ class StorageAccessFrameworkProvider(
             copyInputStreamToFile(gameFile, stream)
         }
         gameFile
+    }
+
+    private fun buildPath(vararg chunks: String): String {
+        return chunks.joinToString(separator = File.separator)
     }
 
     private fun copyInputStreamToFile(gameFile: File, inputFileStream: InputStream) {
@@ -170,15 +181,12 @@ class StorageAccessFrameworkProvider(
         }
     }
 
-    private fun getSaveFile(game: Game): File {
-        val statesDirectories = directoriesManager.getStatesDirectory()
-        return File(statesDirectories, "${game.fileName}.state")
-    }
-
     private data class FileUri(val uri: Uri, val name: String, val size: Long, val mime: String)
 
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
         const val ZIP_MIME_TYPE = "application/zip"
+
+        const val MAX_SIZE_CRC32 = 50_000_000
     }
 }

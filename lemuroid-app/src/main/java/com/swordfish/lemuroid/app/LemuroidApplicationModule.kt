@@ -110,16 +110,19 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun localSAFStorageProvider(
             context: Context,
-            metadataProvider: LibretroDBMetadataProvider,
-            directoriesManager: DirectoriesManager
-        ): StorageProvider = StorageAccessFrameworkProvider(context, metadataProvider, directoriesManager)
+            metadataProvider: LibretroDBMetadataProvider
+        ): StorageProvider = StorageAccessFrameworkProvider(context, metadataProvider)
 
         @Provides
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localGameStorageProvider(context: Context, metadataProvider: LibretroDBMetadataProvider): StorageProvider =
-                LocalStorageProvider(context, metadataProvider, true)
+        fun localGameStorageProvider(
+            context: Context,
+            directoriesManager: DirectoriesManager,
+            metadataProvider: LibretroDBMetadataProvider
+        ): StorageProvider =
+                LocalStorageProvider(context, directoriesManager, metadataProvider)
 
         @Provides
         @PerApp

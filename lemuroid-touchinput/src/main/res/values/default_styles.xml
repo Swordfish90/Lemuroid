@@ -24,6 +24,12 @@
         <item name="spacing">0.2</item>
     </style>
 
+    <style name="default_action_6" parent="base_default_action">
+        <item name="rotateButtons">10.0</item>
+        <item name="rows">2</item>
+        <item name="cols">3</item>
+    </style>
+
     <style name="default_directionpad">
         <item name="deadZone">0.3</item>
         <item name="buttonCenterDistance">0.45</item>
