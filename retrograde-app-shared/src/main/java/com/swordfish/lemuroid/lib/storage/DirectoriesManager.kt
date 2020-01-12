@@ -5,7 +5,8 @@ import java.io.File
 
 class DirectoriesManager(private val appContext: Context) {
 
-    fun getStatesDirectory(): File = File(appContext.filesDir, "states").apply {
+    @Deprecated("Use the external states directory")
+    fun getInternalStatesDirectory(): File = File(appContext.filesDir, "states").apply {
         mkdirs()
     }
 
@@ -14,6 +15,10 @@ class DirectoriesManager(private val appContext: Context) {
     }
 
     fun getSystemDirectory(): File = File(appContext.filesDir, "system").apply {
+        mkdirs()
+    }
+
+    fun getStatesDirectory(): File = File(appContext.getExternalFilesDir(null), "states").apply {
         mkdirs()
     }
 

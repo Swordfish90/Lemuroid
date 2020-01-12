@@ -32,6 +32,8 @@ data class GameSystem(
 
     val libretroFullName: String,
 
+    val coreName: String,
+
     @StringRes
     val titleResId: Int,
 
@@ -63,6 +65,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.NES,
                         "Nintendo - Nintendo Entertainment System",
+                        "fceumm",
                         R.string.game_system_title_nes,
                         R.string.game_system_abbr_nes,
                         R.drawable.game_system_nes,
@@ -73,6 +76,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.SNES,
                         "Nintendo - Super Nintendo Entertainment System",
+                        "snes9x",
                         R.string.game_system_title_snes,
                         R.string.game_system_abbr_snes,
                         R.drawable.game_system_snes,
@@ -83,6 +87,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.SMS,
                         "Sega - Master System - Mark III",
+                        "genesis_plus_gx",
                         R.string.game_system_title_sms,
                         R.string.game_system_abbr_sms,
                         R.drawable.game_system_sms,
@@ -93,6 +98,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.GENESIS,
                         "Sega - Mega Drive - Genesis",
+                        "genesis_plus_gx",
                         R.string.game_system_title_genesis,
                         R.string.game_system_abbr_genesis,
                         R.drawable.game_system_genesis,
@@ -103,6 +109,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.GB,
                         "Nintendo - Game Boy",
+                        "gambatte",
                         R.string.game_system_title_gb,
                         R.string.game_system_abbr_gb,
                         R.drawable.game_system_gb,
@@ -113,6 +120,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.GBC,
                         "Nintendo - Game Boy Color",
+                        "gambatte",
                         R.string.game_system_title_gbc,
                         R.string.game_system_abbr_gbc,
                         R.drawable.game_system_gbc,
@@ -123,6 +131,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.GBA,
                         "Nintendo - Game Boy Advance",
+                        "mgba",
                         R.string.game_system_title_gba,
                         R.string.game_system_abbr_gba,
                         R.drawable.game_system_gba,
@@ -133,6 +142,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.N64,
                         "Nintendo - Nintendo 64",
+                        "mupen64plus_next",
                         R.string.game_system_title_n64,
                         R.string.game_system_abbr_n64,
                         R.drawable.game_system_n64,
@@ -143,6 +153,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.PSP,
                         "Sony - PlayStation Portable",
+                        "ppsspp",
                         R.string.game_system_title_psp,
                         R.string.game_system_abbr_psp,
                         R.drawable.game_system_psp,
@@ -162,6 +173,7 @@ data class GameSystem(
                 GameSystem(
                         SystemID.FBNEO,
                         "FBNeo - Arcade Games",
+                        "fbneo",
                         R.string.game_system_title_arcade_fbneo,
                         R.string.game_system_abbr_arcade_fbneo,
                         R.drawable.game_system_arcade,

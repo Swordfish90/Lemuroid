@@ -1,11 +1,15 @@
 package com.swordfish.lemuroid.lib.saves
 
+import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import java.io.File
+
+// TODO Since states are core related we should not put them in the same folder. This break previous versions states
+// so I decided to manage a transition phase reading also the old directory. We should safely remove it in a few weeks.
 
 class SavesManager(private val directoriesManager: DirectoriesManager) {
 
@@ -23,27 +27,31 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         saveFile.writeBytes(data)
     }
 
-    fun getSlotSave(game: Game, index: Int): Maybe<ByteArray> {
+    fun getSlotSave(game: Game, system: GameSystem, index: Int): Maybe<ByteArray> {
         assert(index in 0 until MAX_STATES)
-        return getSaveState(getSlotSaveFileName(game, index))
+        return getSaveState(getSlotSaveFileName(game, index), system.coreName)
     }
 
-    fun setSlotSave(game: Game, data: ByteArray, index: Int): Completable {
+    fun setSlotSave(game: Game, data: ByteArray, system: GameSystem, index: Int): Completable {
         assert(index in 0 until MAX_STATES)
-        return setSaveState(getSlotSaveFileName(game, index), data)
+        return setSaveState(getSlotSaveFileName(game, index), system.coreName, data)
     }
 
-    fun getAutoSave(game: Game) = getSaveState(getAutoSaveFileName(game))
-    fun setAutoSave(game: Game, data: ByteArray) = setSaveState(getAutoSaveFileName(game), data)
+    fun getAutoSave(game: Game, system: GameSystem) =
+            getSaveState(getAutoSaveFileName(game), system.coreName)
 
-    fun getSavedSlotsInfo(game: Game): Single<List<SaveInfos>> = Single.fromCallable {
-        (0 until MAX_STATES).map { getStateFile(getSlotSaveFileName(game, it)) }
+    fun setAutoSave(game: Game, system: GameSystem, data: ByteArray) =
+            setSaveState(getAutoSaveFileName(game), system.coreName, data)
+
+    fun getSavedSlotsInfo(game: Game, coreName: String): Single<List<SaveInfos>> = Single.fromCallable {
+        (0 until MAX_STATES)
+                .map { getStateFileOrDeprecated(getSlotSaveFileName(game, it), coreName) }
                 .map { SaveInfos(it.exists(), it.lastModified()) }
                 .toList()
     }
 
-    private fun getSaveState(fileName: String): Maybe<ByteArray> = Maybe.fromCallable {
-        val saveFile = getStateFile(fileName)
+    private fun getSaveState(fileName: String, coreName: String): Maybe<ByteArray> = Maybe.fromCallable {
+        val saveFile = getStateFileOrDeprecated(fileName, coreName)
         if (saveFile.exists()) {
             saveFile.readBytes()
         } else {
@@ -51,8 +59,8 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         }
     }
 
-    private fun setSaveState(fileName: String, data: ByteArray) = Completable.fromCallable {
-        val saveFile = getStateFile(fileName)
+    private fun setSaveState(fileName: String, coreName: String, data: ByteArray) = Completable.fromCallable {
+        val saveFile = getStateFile(fileName, coreName)
         saveFile.writeBytes(data)
     }
 
@@ -61,8 +69,26 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         return File(savesDirectory, fileName)
     }
 
-    private fun getStateFile(fileName: String): File {
-        val statesDirectories = directoriesManager.getStatesDirectory()
+    @Deprecated("Using this folder collisions might happen across different systems.")
+    private fun getStateFileOrDeprecated(fileName: String, coreName: String): File {
+        val stateFile = getStateFile(fileName, coreName)
+        val deprecatedStateFile = getDeprecatedStateFile(fileName)
+        return if (stateFile.exists() || !deprecatedStateFile.exists()) {
+            stateFile
+        } else {
+            deprecatedStateFile
+        }
+    }
+
+    private fun getStateFile(fileName: String, coreName: String): File {
+        val statesDirectories = File(directoriesManager.getStatesDirectory(), coreName)
+        statesDirectories.mkdirs()
+        return File(statesDirectories, fileName)
+    }
+
+    @Deprecated("Using this folder collisions might happen across different systems.")
+    private fun getDeprecatedStateFile(fileName: String): File {
+        val statesDirectories = directoriesManager.getInternalStatesDirectory()
         return File(statesDirectories, fileName)
     }
 

@@ -341,7 +341,7 @@ class GameActivity : ImmersiveActivity() {
             .filter { it }
             .map { retroGameView.serializeState() }
             .doOnSuccess { Timber.i("Stored autosave file with size: ${it.size}") }
-            .flatMapCompletable { savesManager.setAutoSave(game, it) }
+            .flatMapCompletable { savesManager.setAutoSave(game, system, it) }
     }
 
     private fun getSaveRAMCompletable(game: Game): Completable {
@@ -358,14 +358,14 @@ class GameActivity : ImmersiveActivity() {
         return retrieveCurrentGame()
             .map { it to retroGameView.serializeState() }
             .doOnSuccess { (_, data) -> Timber.i("Storing quicksave with size: ${data.size}") }
-            .flatMapCompletable { (game, data) -> savesManager.setSlotSave(game, data, index) }
+            .flatMapCompletable { (game, data) -> savesManager.setSlotSave(game, data, system, index) }
     }
 
     private fun loadSlot(index: Int): Completable {
         val retroGameView = retroGameView ?: return Completable.complete()
 
         return retrieveCurrentGame()
-            .flatMapMaybe { savesManager.getSlotSave(it, index) }
+            .flatMapMaybe { savesManager.getSlotSave(it, system, index) }
             .map { retroGameView.unserializeState(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
@@ -430,7 +430,7 @@ class GameActivity : ImmersiveActivity() {
     inner class ContextGameDialog {
         fun displayOptionsDialog(): Completable {
             return this@GameActivity.retrieveCurrentGame()
-                .flatMap { savesManager.getSavedSlotsInfo(it) }
+                .flatMap { savesManager.getSavedSlotsInfo(it, system.coreName) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { presentContextDialog(it) }
