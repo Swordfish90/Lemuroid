@@ -24,6 +24,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.view.Gravity
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.View
@@ -45,7 +46,6 @@ import com.swordfish.touchinput.events.PadEvent
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
-import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -126,16 +126,7 @@ class GameActivity : ImmersiveActivity() {
         val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
 
         try {
-            retroGameView = GLRetroView(
-                    this,
-                    intent.getStringExtra(EXTRA_CORE_PATH),
-                    intent.getStringExtra(EXTRA_GAME_PATH),
-                    directoriesManager.getSystemDirectory().absolutePath,
-                    directoriesManager.getSavesDirectory().absolutePath,
-                    getShaderForSystem(useShaders, system)
-            )
-            retroGameView?.onCreate()
-            gameViewLayout.addView(retroGameView)
+            initializeRetroGameView(directoriesManager, useShaders)
         } catch (e: Exception) {
             Timber.e(e, "Failed running game load")
             retroGameView = null
@@ -161,6 +152,28 @@ class GameActivity : ImmersiveActivity() {
         if (retroGameView != null && !system.supportsAutosave) {
             displayToast(R.string.game_toast_autosave_not_supported)
         }
+    }
+
+    private fun initializeRetroGameView(directoriesManager: DirectoriesManager, useShaders: Boolean) {
+        retroGameView = GLRetroView(
+                this,
+                intent.getStringExtra(EXTRA_CORE_PATH)!!,
+                intent.getStringExtra(EXTRA_GAME_PATH)!!,
+                directoriesManager.getSystemDirectory().absolutePath,
+                directoriesManager.getSavesDirectory().absolutePath,
+                getShaderForSystem(useShaders, system)
+        )
+        retroGameView?.onCreate()
+
+        gameViewLayout.addView(retroGameView)
+
+        val layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL
+
+        retroGameView?.layoutParams = layoutParams
     }
 
     private fun displayCannotLoadGameMessage() {
@@ -197,7 +210,7 @@ class GameActivity : ImmersiveActivity() {
             SystemID.FBNEO -> GLRetroView.SHADER_CRT
             SystemID.SMS -> GLRetroView.SHADER_CRT
             SystemID.PSP -> GLRetroView.SHADER_LCD
-            else -> GLRetroView.SHADER_DEFAULT
+            SystemID.NDS -> GLRetroView.SHADER_LCD
         }
     }
 
@@ -388,9 +401,6 @@ class GameActivity : ImmersiveActivity() {
         fun handleOrientationChange(orientation: Int) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                // When in portrait mode we don't want the GLSurfaceView to fill the entire screen. We want it on top.
-                setGameViewAspectRatio("1:1")
-
                 // We should also add some padding the virtual layout or it would clash with the menu button.
                 setVirtualPadBottomPadding(resources.getDimension(R.dimen.game_menu_button_size).roundToInt())
 
@@ -398,7 +408,6 @@ class GameActivity : ImmersiveActivity() {
                 // view might be cut due to rounded corners.
                 setContainerWindowsInsets(true, true)
             } else {
-                setGameViewAspectRatio(null)
                 setVirtualPadBottomPadding(0)
                 setContainerWindowsInsets(top = false, bottom = true)
             }
@@ -406,13 +415,6 @@ class GameActivity : ImmersiveActivity() {
 
         private fun setVirtualPadBottomPadding(bottomPadding: Int) {
             padLayout.setPadding(0, 0, 0, bottomPadding)
-        }
-
-        private fun setGameViewAspectRatio(aspectRatio: String?) {
-            val set = ConstraintSet()
-            set.clone(containerLayout)
-            set.setDimensionRatio(gameViewLayout.id, aspectRatio)
-            set.applyTo(containerLayout)
         }
 
         private fun setContainerWindowsInsets(top: Boolean, bottom: Boolean) {

@@ -18,6 +18,7 @@ class GamePadFactory {
                 SystemID.SMS -> SegaMasterSystemPad(context)
                 SystemID.PSP -> PSPPad(context)
                 SystemID.FBNEO -> ArcadePad(context)
+                SystemID.NDS -> NDSPad(context)
             }
         }
     }
