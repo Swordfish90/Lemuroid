@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.app.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.ui.updateVisibility
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -37,7 +37,7 @@ class SystemsFragment : RecyclerViewFragment() {
                 .autoDispose(scope())
                 .subscribeBy {
                     systemsAdapter?.submitList(it)
-                    emptyView?.updateVisibility(it.isEmpty())
+                    emptyView?.setVisibleOrGone(it.isEmpty())
                 }
 
         recyclerView?.apply {

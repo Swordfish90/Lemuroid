@@ -51,7 +51,8 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import com.swordfish.lemuroid.lib.ui.updateVisibility
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.uber.autodispose.autoDispose
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -287,8 +288,8 @@ class GameActivity : ImmersiveActivity() {
         retroGameView?.getConnectedGamepads()
             ?.autoDispose(scope())
             ?.subscribe {
-                padLayout.updateVisibility(it == 0)
-                menuButton.updateVisibility(it == 0)
+                padLayout.setVisibleOrGone(it == 0)
+                menuButton.setVisibleOrGone(it == 0)
             }
 
         menuButton.setOnClickListener {
@@ -497,12 +498,10 @@ class GameActivity : ImmersiveActivity() {
         ) {
             val title = this@GameActivity.getString(R.string.game_dialog_state, (index + 1).toString())
 
-            if (saveInfo.exists) {
-                val formatter = SimpleDateFormat.getDateTimeInstance()
-                val date = formatter.format(saveInfo.date)
-                quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).text = date
+            quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).apply {
+                this.text = getDateString(saveInfo)
+                this.setVisibleOrInvisible(saveInfo.exists)
             }
-
             quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_text).text = title
             quickSaveView.findViewById<Button>(R.id.game_dialog_entry_load).apply {
                 this.isEnabled = saveInfo.exists
@@ -518,6 +517,17 @@ class GameActivity : ImmersiveActivity() {
                     dialog.dismiss()
                 }
             }
+        }
+
+        /** We still return a string even if we don't show it to ensure dialog doesn't change size.*/
+        private fun getDateString(saveInfo: SavesManager.SaveInfos): String {
+            val formatter = SimpleDateFormat.getDateTimeInstance()
+            val date = if (saveInfo.exists) {
+                saveInfo.date
+            } else {
+                System.currentTimeMillis()
+            }
+            return formatter.format(date)
         }
     }
 }

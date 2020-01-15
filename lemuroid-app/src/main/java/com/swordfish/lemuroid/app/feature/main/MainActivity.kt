@@ -21,7 +21,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.feature.settings.SettingsInteractor
-import com.swordfish.lemuroid.lib.ui.updateVisibility
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.tbruyelle.rxpermissions2.RxPermissions
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -57,7 +57,7 @@ class MainActivity : RetrogradeAppCompatActivity() {
                 .get(MainViewModel::class.java)
 
         mainViewModel.indexingInProgress.observe(this, Observer { isRunning ->
-            findViewById<MaterialProgressBar>(R.id.progress).updateVisibility(isRunning)
+            findViewById<MaterialProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
         })
     }
 

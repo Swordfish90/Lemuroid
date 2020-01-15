@@ -16,7 +16,7 @@ import com.swordfish.lemuroid.app.shared.GamesAdapter
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
-import com.swordfish.lemuroid.lib.ui.updateVisibility
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -84,7 +84,7 @@ class SearchFragment : RecyclerViewFragment() {
         })
 
         searchViewModel.emptyViewVisible.observe(this, Observer {
-            emptyView?.updateVisibility(it)
+            emptyView?.setVisibleOrGone(it)
         })
 
         searchSubject
