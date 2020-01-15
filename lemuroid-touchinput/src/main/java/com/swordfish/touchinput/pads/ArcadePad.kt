@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.EventsTransformers
 import com.swordfish.touchinput.events.PadEvent
+import com.swordfish.touchinput.interfaces.StickEventsSource
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.SmallSingleButton
@@ -58,6 +59,9 @@ class ArcadePad @JvmOverloads constructor(
     private fun getDirectionEvents(): Observable<PadEvent> {
         return findViewById<DirectionPad>(R.id.direction)
             .getEvents()
-            .compose(EventsTransformers.directionPadMap())
+            .concatMap { Observable.fromIterable(listOf(
+                PadEvent.Stick(StickEventsSource.SOURCE_DPAD, it.xAxis, it.yAxis, it.haptic),
+                PadEvent.Stick(StickEventsSource.SOURCE_LEFT_STICK, it.xAxis, it.yAxis, it.haptic)
+            ))}
     }
 }

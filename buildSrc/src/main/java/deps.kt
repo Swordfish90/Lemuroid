@@ -22,7 +22,7 @@ object deps {
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
-        const val libretrodroid   = "1f9fdb7f53"
+        const val libretrodroid   = "1a8dfc645a"
     }
 
     object libs {
