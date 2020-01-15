@@ -20,10 +20,8 @@
 package com.swordfish.lemuroid.app.feature.game
 
 import android.app.Dialog
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.Gravity
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
@@ -41,6 +39,7 @@ import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import timber.log.Timber
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.PadEvent
 import io.reactivex.Completable
@@ -102,12 +101,13 @@ class GameActivity : ImmersiveActivity() {
     private lateinit var padLayout: FrameLayout
     private lateinit var menuButton: ImageButton
 
-    private lateinit var sharedPreferences: SharedPreferences
-
+    @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
 
     private var retroGameView: GLRetroView? = null
+
+    private var preferenceVibrateOnTouch = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,11 +122,10 @@ class GameActivity : ImmersiveActivity() {
 
         val directoriesManager = DirectoriesManager(applicationContext)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
+        preferenceVibrateOnTouch = settingsManager.vibrateOnTouch
 
         try {
-            initializeRetroGameView(directoriesManager, useShaders)
+            initializeRetroGameView(directoriesManager, settingsManager.simulateScreen)
         } catch (e: Exception) {
             Timber.e(e, "Failed running game load")
             retroGameView = null
@@ -149,7 +148,7 @@ class GameActivity : ImmersiveActivity() {
 
         retroGameView?.requestFocus()
 
-        if (retroGameView != null && !system.supportsAutosave) {
+        if (retroGameView != null && settingsManager.autoSave && !system.supportsAutosave) {
             displayToast(R.string.game_toast_autosave_not_supported)
         }
     }
@@ -225,12 +224,20 @@ class GameActivity : ImmersiveActivity() {
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
     private fun restoreQuickSaveAsync(saveGame: ByteArray) {
+        if (!isAutoSaveEnabled()) {
+            return
+        }
+
         Timber.i("Loading saved state of ${saveGame.size} bytes")
 
         getRetryRestoreQuickSave(saveGame)
             .subscribeOn(Schedulers.io())
             .autoDispose(scope())
             .subscribe()
+    }
+
+    private fun isAutoSaveEnabled(): Boolean {
+        return system.supportsAutosave && settingsManager.autoSave
     }
 
     override fun onResume() {
@@ -265,7 +272,7 @@ class GameActivity : ImmersiveActivity() {
         gameView.getEvents()
             .subscribeOn(Schedulers.computation())
             .doOnNext {
-                if (it.haptic) {
+                if (it.haptic && preferenceVibrateOnTouch) {
                     performHapticFeedback(gameView)
                 }
             }
@@ -322,7 +329,8 @@ class GameActivity : ImmersiveActivity() {
     }
 
     private fun performHapticFeedback(view: View) {
-        val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
+        val flags =
+                HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
@@ -350,7 +358,7 @@ class GameActivity : ImmersiveActivity() {
     private fun getAutoSaveCompletable(game: Game): Completable {
         val retroGameView = retroGameView ?: return Completable.complete()
 
-        return Single.fromCallable { system.supportsAutosave }
+        return Single.fromCallable { isAutoSaveEnabled() }
             .filter { it }
             .map { retroGameView.serializeState() }
             .doOnSuccess { Timber.i("Stored autosave file with size: ${it.size}") }
