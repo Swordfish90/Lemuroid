@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.feature.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.lib.game.GameLoader

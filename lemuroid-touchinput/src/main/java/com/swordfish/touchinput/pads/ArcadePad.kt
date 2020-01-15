@@ -59,9 +59,9 @@ class ArcadePad @JvmOverloads constructor(
     private fun getDirectionEvents(): Observable<PadEvent> {
         return findViewById<DirectionPad>(R.id.direction)
             .getEvents()
-            .concatMap { Observable.fromIterable(listOf(
+            .concatMap { Observable.just(
                 PadEvent.Stick(StickEventsSource.SOURCE_DPAD, it.xAxis, it.yAxis, it.haptic),
                 PadEvent.Stick(StickEventsSource.SOURCE_LEFT_STICK, it.xAxis, it.yAxis, it.haptic)
-            ))}
+            ) }
     }
 }
