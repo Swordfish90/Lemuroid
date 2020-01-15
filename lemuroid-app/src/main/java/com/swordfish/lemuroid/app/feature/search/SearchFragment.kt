@@ -76,6 +76,7 @@ class SearchFragment : RecyclerViewFragment() {
 
     override fun onResume() {
         super.onResume()
+        activity?.invalidateOptionsMenu()
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
         searchViewModel.searchResults.observe(this, Observer {
