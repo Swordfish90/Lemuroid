@@ -14,4 +14,12 @@ class SmallSingleButton @JvmOverloads constructor(
     init {
         setBackgroundResource(R.drawable.small_button_selector)
     }
+
+    override fun getSuggestedButtonWidth(): Int {
+        return R.dimen.size_small_button_width
+    }
+
+    override fun getSuggestedButtonHeight(): Int {
+        return R.dimen.size_small_button_height
+    }
 }
