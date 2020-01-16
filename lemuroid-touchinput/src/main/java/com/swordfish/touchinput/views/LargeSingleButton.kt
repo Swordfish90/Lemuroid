@@ -14,4 +14,12 @@ class LargeSingleButton @JvmOverloads constructor(
     init {
         setBackgroundResource(R.drawable.large_button_selector)
     }
+
+    override fun getSuggestedButtonWidth(): Int {
+        return R.dimen.size_large_button_width
+    }
+
+    override fun getSuggestedButtonHeight(): Int {
+        return R.dimen.size_large_button_height
+    }
 }

@@ -187,6 +187,6 @@ class StorageAccessFrameworkProvider(
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
         const val ZIP_MIME_TYPE = "application/zip"
 
-        const val MAX_SIZE_CRC32 = 50_000_000
+        const val MAX_SIZE_CRC32 = 500_000_000
     }
 }

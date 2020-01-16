@@ -11,7 +11,7 @@ import com.swordfish.lemuroid.app.shared.GamesAdapter
 import com.swordfish.lemuroid.app.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.ui.updateVisibility
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import javax.inject.Inject
 
 class FavoritesFragment : RecyclerViewFragment() {
@@ -34,7 +34,7 @@ class FavoritesFragment : RecyclerViewFragment() {
         val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor)
         favoritesViewModel.favorites.observe(this, Observer {
             gamesAdapter.submitList(it)
-            emptyView?.updateVisibility(it.isEmpty())
+            emptyView?.setVisibleOrGone(it.isEmpty())
         })
 
         recyclerView?.apply {

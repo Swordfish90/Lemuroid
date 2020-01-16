@@ -20,10 +20,9 @@
 package com.swordfish.lemuroid.app.feature.game
 
 import android.app.Dialog
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
-import android.preference.PreferenceManager
+import android.view.Gravity
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.View
@@ -40,19 +39,20 @@ import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import timber.log.Timber
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.PadEvent
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
-import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import com.swordfish.lemuroid.lib.ui.updateVisibility
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.uber.autodispose.autoDispose
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -102,12 +102,13 @@ class GameActivity : ImmersiveActivity() {
     private lateinit var padLayout: FrameLayout
     private lateinit var menuButton: ImageButton
 
-    private lateinit var sharedPreferences: SharedPreferences
-
+    @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
 
     private var retroGameView: GLRetroView? = null
+
+    private var preferenceVibrateOnTouch = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,20 +123,10 @@ class GameActivity : ImmersiveActivity() {
 
         val directoriesManager = DirectoriesManager(applicationContext)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val useShaders = sharedPreferences.getBoolean(getString(R.string.pref_key_shader), true)
+        preferenceVibrateOnTouch = settingsManager.vibrateOnTouch
 
         try {
-            retroGameView = GLRetroView(
-                    this,
-                    intent.getStringExtra(EXTRA_CORE_PATH),
-                    intent.getStringExtra(EXTRA_GAME_PATH),
-                    directoriesManager.getSystemDirectory().absolutePath,
-                    directoriesManager.getSavesDirectory().absolutePath,
-                    getShaderForSystem(useShaders, system)
-            )
-            retroGameView?.onCreate()
-            gameViewLayout.addView(retroGameView)
+            initializeRetroGameView(directoriesManager, settingsManager.simulateScreen)
         } catch (e: Exception) {
             Timber.e(e, "Failed running game load")
             retroGameView = null
@@ -158,9 +149,31 @@ class GameActivity : ImmersiveActivity() {
 
         retroGameView?.requestFocus()
 
-        if (retroGameView != null && !system.supportsAutosave) {
+        if (retroGameView != null && settingsManager.autoSave && !system.supportsAutosave) {
             displayToast(R.string.game_toast_autosave_not_supported)
         }
+    }
+
+    private fun initializeRetroGameView(directoriesManager: DirectoriesManager, useShaders: Boolean) {
+        retroGameView = GLRetroView(
+                this,
+                intent.getStringExtra(EXTRA_CORE_PATH)!!,
+                intent.getStringExtra(EXTRA_GAME_PATH)!!,
+                directoriesManager.getSystemDirectory().absolutePath,
+                directoriesManager.getSavesDirectory().absolutePath,
+                getShaderForSystem(useShaders, system)
+        )
+        retroGameView?.onCreate()
+
+        gameViewLayout.addView(retroGameView)
+
+        val layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL
+
+        retroGameView?.layoutParams = layoutParams
     }
 
     private fun displayCannotLoadGameMessage() {
@@ -197,7 +210,7 @@ class GameActivity : ImmersiveActivity() {
             SystemID.FBNEO -> GLRetroView.SHADER_CRT
             SystemID.SMS -> GLRetroView.SHADER_CRT
             SystemID.PSP -> GLRetroView.SHADER_LCD
-            else -> GLRetroView.SHADER_DEFAULT
+            SystemID.NDS -> GLRetroView.SHADER_LCD
         }
     }
 
@@ -212,12 +225,20 @@ class GameActivity : ImmersiveActivity() {
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
     private fun restoreQuickSaveAsync(saveGame: ByteArray) {
+        if (!isAutoSaveEnabled()) {
+            return
+        }
+
         Timber.i("Loading saved state of ${saveGame.size} bytes")
 
         getRetryRestoreQuickSave(saveGame)
             .subscribeOn(Schedulers.io())
             .autoDispose(scope())
             .subscribe()
+    }
+
+    private fun isAutoSaveEnabled(): Boolean {
+        return system.supportsAutosave && settingsManager.autoSave
     }
 
     override fun onResume() {
@@ -252,7 +273,7 @@ class GameActivity : ImmersiveActivity() {
         gameView.getEvents()
             .subscribeOn(Schedulers.computation())
             .doOnNext {
-                if (it.haptic) {
+                if (it.haptic && preferenceVibrateOnTouch) {
                     performHapticFeedback(gameView)
                 }
             }
@@ -267,8 +288,8 @@ class GameActivity : ImmersiveActivity() {
         retroGameView?.getConnectedGamepads()
             ?.autoDispose(scope())
             ?.subscribe {
-                padLayout.updateVisibility(it == 0)
-                menuButton.updateVisibility(it == 0)
+                padLayout.setVisibleOrGone(it == 0)
+                menuButton.setVisibleOrGone(it == 0)
             }
 
         menuButton.setOnClickListener {
@@ -309,7 +330,8 @@ class GameActivity : ImmersiveActivity() {
     }
 
     private fun performHapticFeedback(view: View) {
-        val flags = HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
+        val flags =
+                HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
     }
 
@@ -337,7 +359,7 @@ class GameActivity : ImmersiveActivity() {
     private fun getAutoSaveCompletable(game: Game): Completable {
         val retroGameView = retroGameView ?: return Completable.complete()
 
-        return Single.fromCallable { system.supportsAutosave }
+        return Single.fromCallable { isAutoSaveEnabled() }
             .filter { it }
             .map { retroGameView.serializeState() }
             .doOnSuccess { Timber.i("Stored autosave file with size: ${it.size}") }
@@ -388,9 +410,6 @@ class GameActivity : ImmersiveActivity() {
         fun handleOrientationChange(orientation: Int) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                // When in portrait mode we don't want the GLSurfaceView to fill the entire screen. We want it on top.
-                setGameViewAspectRatio("1:1")
-
                 // We should also add some padding the virtual layout or it would clash with the menu button.
                 setVirtualPadBottomPadding(resources.getDimension(R.dimen.game_menu_button_size).roundToInt())
 
@@ -398,7 +417,6 @@ class GameActivity : ImmersiveActivity() {
                 // view might be cut due to rounded corners.
                 setContainerWindowsInsets(true, true)
             } else {
-                setGameViewAspectRatio(null)
                 setVirtualPadBottomPadding(0)
                 setContainerWindowsInsets(top = false, bottom = true)
             }
@@ -406,13 +424,6 @@ class GameActivity : ImmersiveActivity() {
 
         private fun setVirtualPadBottomPadding(bottomPadding: Int) {
             padLayout.setPadding(0, 0, 0, bottomPadding)
-        }
-
-        private fun setGameViewAspectRatio(aspectRatio: String?) {
-            val set = ConstraintSet()
-            set.clone(containerLayout)
-            set.setDimensionRatio(gameViewLayout.id, aspectRatio)
-            set.applyTo(containerLayout)
         }
 
         private fun setContainerWindowsInsets(top: Boolean, bottom: Boolean) {
@@ -487,12 +498,10 @@ class GameActivity : ImmersiveActivity() {
         ) {
             val title = this@GameActivity.getString(R.string.game_dialog_state, (index + 1).toString())
 
-            if (saveInfo.exists) {
-                val formatter = SimpleDateFormat.getDateTimeInstance()
-                val date = formatter.format(saveInfo.date)
-                quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).text = date
+            quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).apply {
+                this.text = getDateString(saveInfo)
+                this.setVisibleOrInvisible(saveInfo.exists)
             }
-
             quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_text).text = title
             quickSaveView.findViewById<Button>(R.id.game_dialog_entry_load).apply {
                 this.isEnabled = saveInfo.exists
@@ -508,6 +517,17 @@ class GameActivity : ImmersiveActivity() {
                     dialog.dismiss()
                 }
             }
+        }
+
+        /** We still return a string even if we don't show it to ensure dialog doesn't change size.*/
+        private fun getDateString(saveInfo: SavesManager.SaveInfos): String {
+            val formatter = SimpleDateFormat.getDateTimeInstance()
+            val date = if (saveInfo.exists) {
+                saveInfo.date
+            } else {
+                System.currentTimeMillis()
+            }
+            return formatter.format(date)
         }
     }
 }

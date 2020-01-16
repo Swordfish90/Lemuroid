@@ -187,6 +187,17 @@ data class GameSystem(
                             scanByPathAndFilename = true,
                             scanByNameAndSupportedExtensions = false
                         )
+                ),
+                GameSystem(
+                        SystemID.NDS,
+                        "Nintendo - Nintendo DS",
+                        "desmume",
+                        R.string.game_system_title_nds,
+                        R.string.game_system_abbr_nds,
+                        R.drawable.game_system_ds,
+                        "nintendo6",
+                        "desmume_libretro_android.so.zip",
+                        uniqueExtensions = listOf("nds")
                 )
         )
 

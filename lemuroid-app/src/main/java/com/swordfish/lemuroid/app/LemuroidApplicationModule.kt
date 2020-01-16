@@ -40,6 +40,7 @@ import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.Binds
@@ -206,5 +207,10 @@ abstract class LemuroidApplicationModule {
             gameLibrary: GameLibrary,
             savesManager: SavesManager
         ) = GameLoader(coreManager, retrogradeDatabase, gameLibrary, savesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun settingsManager(context: Context) = SettingsManager(context)
     }
 }

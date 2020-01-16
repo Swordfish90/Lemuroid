@@ -7,36 +7,33 @@
 
     <com.swordfish.touchinput.views.LargeSingleButton
         android:id="@+id/r1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/actions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/start" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.swordfish.touchinput.views.LargeSingleButton
         android:id="@+id/l2"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/direction"
-        app:layout_constraintEnd_toStartOf="@+id/l1"
         app:layout_constraintStart_toStartOf="@+id/direction"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
     <com.swordfish.touchinput.views.LargeSingleButton
         android:id="@+id/l1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/direction"
-        app:layout_constraintEnd_toEndOf="@+id/direction"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/l2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -45,8 +42,9 @@
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/r1"
-        app:layout_constraintStart_toStartOf="@+id/actions" />
+        app:layout_constraintEnd_toStartOf="@+id/r1" />
 
     <com.swordfish.touchinput.views.ActionButtons
         android:id="@+id/actions"
@@ -54,6 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/cbuttons"
@@ -62,6 +61,8 @@
         app:layout_constraintHeight_max="@dimen/dial_max_size_small"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:layout_constraintWidth_max="@dimen/dial_max_size_small"
         tools:ignore="RtlHardcoded" />
 
@@ -70,6 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/leftanalog"
@@ -78,6 +80,8 @@
         app:layout_constraintHeight_max="@dimen/dial_max_size_small"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:layout_constraintWidth_max="@dimen/dial_max_size_small" />
 
     <androidx.constraintlayout.widget.Guideline

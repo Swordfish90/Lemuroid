@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -27,6 +28,7 @@ import kotlin.system.exitProcess
 class GameLauncherActivity : ImmersiveActivity() {
 
     @Inject lateinit var gameLoader: GameLoader
+    @Inject lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,7 @@ class GameLauncherActivity : ImmersiveActivity() {
                     .autoDispose(scope())
                     .subscribe { displayLoadingState(it) }
 
-            gameLoader.load(gameId, loadSave)
+            gameLoader.load(gameId, loadSave && settingsManager.autoSave)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .autoDispose(scope())

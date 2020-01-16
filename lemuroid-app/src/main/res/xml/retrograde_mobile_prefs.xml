@@ -22,7 +22,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/graphics"
+        android:title="@string/settings_category_general"
         app:iconSpaceReserved="false">
 
         <SwitchPreferenceCompat
@@ -31,15 +31,28 @@
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
 
+        <SwitchPreferenceCompat
+            android:key="@string/pref_key_autosave"
+            android:title="@string/settings_title_enable_autosave"
+            app:iconSpaceReserved="false"
+            android:defaultValue="true"/>
+
+        <SwitchPreferenceCompat
+            android:key="@string/pref_key_vibrate_on_touch"
+            android:title="@string/settings_title_enable_touch_feedback"
+            app:iconSpaceReserved="false"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/advanced"
+        android:title="@string/settings_category_advanced"
         app:iconSpaceReserved="false">
 
         <Preference
             android:key="@string/pref_key_clear_cores_cache"
-            android:title="@string/clear_cores_cache"
+            android:title="@string/settings_title_clear_cores_cache"
+            android:summary="@string/settings_description_clear_cores_cache"
             app:iconSpaceReserved="false"
             android:persistent="false"/>
 

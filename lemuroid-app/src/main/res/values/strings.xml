@@ -11,12 +11,16 @@
     <string name="none">None</string>
     <string name="directory">Directory</string>
     <string name="simulate_display">Simulate display</string>
-    <string name="graphics">Graphics</string>
     <string name="roms">ROMs</string>
-    <string name="advanced">Advanced</string>
-    <string name="clear_cores_cache">Clear cores cache</string>
-    <string name="clear_cores_cache_success">Cores cache cleared</string>
+    <string name="clear_cores_cache_success">Cores cleared</string>
     <string name="ok">Ok</string>
+
+    <string name="settings_category_general">General</string>
+    <string name="settings_category_advanced">Advanced</string>
+    <string name="settings_title_enable_autosave">Autosave state</string>
+    <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
+    <string name="settings_title_clear_cores_cache">Clear cores</string>
+    <string name="settings_description_clear_cores_cache">An updated version will be downloaded when launching a ROM</string>
 
     <string name="game_context_menu_add_to_favorites">Add to favorites</string>
     <string name="game_context_menu_remove_from_favorites">Remove from favorites</string>
