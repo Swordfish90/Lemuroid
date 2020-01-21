@@ -14,7 +14,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 
 |Screen 1|Screen 2|Screen 3|
 |---|---|---|
-|![Screen1](https://github.com/Swordfish90/Lemuroid/blob/master/screenshots/screen1.jpg)|![Screen2](https://github.com/Swordfish90/Lemuroid/blob/master/screenshots/screen2.jpg)|![Screen3](https://github.com/Swordfish90/Lemuroid/blob/master/screenshots/screen4.jpg)|
+|![Screen1](https://github.com/Swordfish90/Lemuroid/blob/master/screenshots/screen1.jpg)|![Screen2](https://github.com/Swordfish90/Lemuroid/blob/master/screenshots/screen2.jpg)|![Screen3](https://github.com/Swordfish90/Lemuroid/blob/master/screenshots/screen3.jpg)|
 
 ### Supported Systems:
 - Nintendo (NES)
@@ -27,6 +27,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Nintendo 64 (N64)
 - PlayStation Portable (PSP)
 - FinalBurn Neo (Arcade)
+- Nintendo DS (NDS)
 
 ### Features:
 - Automatically save and restore game states.
