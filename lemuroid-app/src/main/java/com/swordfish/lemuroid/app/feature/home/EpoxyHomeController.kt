@@ -41,12 +41,12 @@ class EpoxyHomeController(
     }
 
     override fun buildModels() {
-        if (recentGames.isNotEmpty()) {
-            addCarousel("recent", R.string.recent, recentGames)
-        }
-
         if (favoriteGames.isNotEmpty()) {
             addCarousel("favorites", R.string.favorites, favoriteGames)
+        }
+
+        if (recentGames.isNotEmpty()) {
+            addCarousel("recent", R.string.recent, recentGames)
         }
 
         if (discoverGames.isNotEmpty()) {
