@@ -62,7 +62,7 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC")
     fun selectRecentlyPlayed(): DataSource.Factory<Int, Game>
 
-    @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC")
+    @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY title ASC")
     fun selectFavorites(): DataSource.Factory<Int, Game>
 
     @Query("""
