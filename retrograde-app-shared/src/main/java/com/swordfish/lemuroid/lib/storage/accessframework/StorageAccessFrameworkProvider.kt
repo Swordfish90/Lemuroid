@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.lib.storage.accessframework
 import android.content.Context
 import android.net.Uri
 import android.provider.DocumentsContract
+import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.db.asSequence
@@ -59,46 +60,35 @@ class StorageAccessFrameworkProvider(
     }
 
     private fun traverseDirectoryEntries(rootUri: Uri): Observable<FileUri> = Observable.create { emitter ->
-        val contentResolver = context.contentResolver
-        var currentNode = DocumentsContract
-            .buildChildDocumentsUriUsingTree(rootUri, DocumentsContract
-            .getTreeDocumentId(rootUri))
-
         try {
+            var currentNode = DocumentFile.fromTreeUri(context.applicationContext, rootUri)
+
             // Keep track of our directory hierarchy
-            val dirNodes = mutableListOf<Uri>()
-            dirNodes.add(currentNode)
+            val dirNodes = mutableListOf<DocumentFile>()
+            currentNode?.let { dirNodes.add(it) }
 
             while (dirNodes.isNotEmpty()) {
                 currentNode = dirNodes.removeAt(0)
 
-                val projection = arrayOf(
-                        DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                        DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                        DocumentsContract.Document.COLUMN_MIME_TYPE,
-                        DocumentsContract.Document.COLUMN_SIZE
-                )
-
                 Timber.d("Detected node uri: $currentNode")
 
-                contentResolver.query(currentNode, projection, null, null, null)?.use { cursor ->
-                    cursor.asSequence().forEach {
-                        try {
-                            val docId = it.getString(0)
-                            val name = it.getString(1)
-                            val mime = it.getString(2)
-                            val size = it.getLong(3)
+                // We see on the Google Play consoles some security exceptions thrown randomly in this method.
+                // Let's try to make it as robust as possible.
+                val result = runCatching { currentNode.listFiles() }
+                val files = result.getOrElse { arrayOf() }
 
-                            if (isDirectory(mime)) {
-                                val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(currentNode, docId)
-                                dirNodes.add(newNode)
-                                Timber.d("Detected subfolder: $id, name: $name")
-                            } else {
-                                val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
-                                emitter.onNext(FileUri(uri, name, size, mime))
+                for (file in files) {
+                    runCatching {
+                        if (file.isDirectory) {
+                            dirNodes.add(file)
+                        } else {
+                            val fileName = file.name
+                            val mimeType = file.type
+
+                            if (fileName != null && mimeType != null) {
+                                emitter.onNext(FileUri(file.uri, fileName, file.length(), mimeType))
                             }
-                        } catch (e: Exception) {
-                            Timber.e(e, "Error while scanning file.")
+                            null
                         }
                     }
                 }
