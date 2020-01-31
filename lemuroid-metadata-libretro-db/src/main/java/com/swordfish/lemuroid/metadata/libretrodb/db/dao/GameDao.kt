@@ -18,4 +18,7 @@ interface GameDao {
 
     @Query("SELECT * FROM games WHERE crc32 = :crc LIMIT 1")
     fun findByCRC(crc: String): Maybe<LibretroRom>
+
+    @Query("SELECT * FROM games WHERE serial = :serial LIMIT 1")
+    fun findBySerial(serial: String): Maybe<LibretroRom>
 }

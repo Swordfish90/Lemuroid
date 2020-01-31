@@ -166,8 +166,7 @@ data class GameSystem(
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
-                            scanByPathAndFilename = false,
-                            scanByNameAndSupportedExtensions = true
+                            scanByPathAndFilename = false
                         )
                 ),
                 GameSystem(

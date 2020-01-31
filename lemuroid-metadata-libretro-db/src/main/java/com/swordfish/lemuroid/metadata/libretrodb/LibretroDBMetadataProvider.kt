@@ -24,9 +24,9 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                         .doOnNext { Timber.d("Looking metadata for file: $it") }
                         .flatMapSingle { file ->
                             findByCRC(file, db)
+                                .switchIfEmpty(findBySerial(file, db))
                                 .switchIfEmpty(findByFilename(db, file))
                                 .switchIfEmpty(findByPathAndFilename(db, file))
-                                .switchIfEmpty(findByNameAndSupportedExtensions(db, file))
                                 .switchIfEmpty(findByUniqueExtension(file))
                                 .switchIfEmpty(findByPathAndSupportedExtension(file))
                                 .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
@@ -76,32 +76,6 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                 .map { convertToGameMetadata(it) }
     }
 
-    private fun findByNameAndSupportedExtensions(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
-        return db.gameDao().findByName("${file.extensionlessName}%")
-                .flatMapMaybe { roms ->
-                    Maybe.fromCallable {
-
-                        // We really don't have anything to work on at this point. So we rely on cutting edge heuristics.
-                        val compatibleRoms = roms
-                            .filter { rom -> file.extension in extractGameSystem(rom).supportedExtensions }
-                            .filter { rom -> areNamesCompatible(file.extensionlessName, rom.name!!) }
-                            .sortedBy { rom -> rom.name?.length }
-
-                        compatibleRoms.firstOrNull()
-                    }
-                }
-                .filter { extractGameSystem(it).scanOptions.scanByNameAndSupportedExtensions }
-                .map { convertToGameMetadata(it) }
-    }
-
-    private fun areNamesCompatible(name1: String, name2: String): Boolean {
-        Timber.d("Checking name compatibility of $name1 and $name2")
-        val sanitizedName1 = name1.replace("\\(.+?\\)".toRegex(), "").trim()
-        val sanitizedName2 = name2.replace("\\(.+?\\)".toRegex(), "").trim()
-        Timber.d("Sanitized names: $sanitizedName1, $sanitizedName2")
-        return sanitizedName1 == sanitizedName2
-    }
-
     private fun findByPathAndFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
         return db.gameDao().findByFileName(file.name)
             .filter { extractGameSystem(it).scanOptions.scanByPathAndFilename }
@@ -133,6 +107,14 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
         return file.crc?.let { crc32 ->
             db.gameDao().findByCRC(crc32).map {
+                convertToGameMetadata(it)
+            }
+        } ?: Maybe.empty()
+    }
+
+    private fun findBySerial(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
+        return file.serial?.let { serial ->
+            db.gameDao().findBySerial(serial).map {
                 convertToGameMetadata(it)
             }
         } ?: Maybe.empty()

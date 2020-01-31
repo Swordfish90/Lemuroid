@@ -29,6 +29,8 @@ data class StorageFile(
 
     val crc: String? = null,
 
+    val serial: String? = null,
+
     val uri: Uri,
 
     val path: String? = null

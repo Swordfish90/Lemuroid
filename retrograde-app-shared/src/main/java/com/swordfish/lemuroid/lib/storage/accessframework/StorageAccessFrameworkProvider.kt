@@ -11,6 +11,7 @@ import com.swordfish.lemuroid.common.kotlin.toStringCRC32
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
+import com.swordfish.lemuroid.lib.storage.ISOScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
@@ -115,7 +116,9 @@ class StorageAccessFrameworkProvider(
 
             Timber.d("Processing zipped entry: ${entry.name}")
 
-            return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), uri)
+            val serial = ISOScanner.extractSerial(entry.name, it)
+
+            return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, uri)
         }
     }
 
@@ -126,9 +129,11 @@ class StorageAccessFrameworkProvider(
             null
         }
 
+        val serial = ISOScanner.extractSerial(name, context.contentResolver.openInputStream(uri)!!)
+
         Timber.d("Detected file: $id, name: $name, crc: $crc32")
 
-        return StorageFile(name, size, crc32, uri)
+        return StorageFile(name, size, crc32, serial, uri)
     }
 
     private fun isDirectory(mimeType: String) = DocumentsContract.Document.MIME_TYPE_DIR == mimeType
