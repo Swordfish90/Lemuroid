@@ -32,15 +32,15 @@ class ISOScanner {
         )
 
         fun extractSerial(fileName: String, inputStream: InputStream): String? {
-            return extractPSPSerial(fileName, inputStream)
+            return extractPSPSerial(fileName, inputStream.buffered())
         }
 
-        private fun extractPSPSerial(fileName: String, inputStream: InputStream): String? = inputStream.buffered().use { bufferedInputStream ->
+        private fun extractPSPSerial(fileName: String, inputStream: InputStream) = inputStream.use { inputStream ->
             if (FileUtils.extractExtension(fileName) != "iso") {
                 return null
             }
 
-            movingWidnowSequence(bufferedInputStream, PSP_SERIAL_SIZE)
+            movingWidnowSequence(inputStream, PSP_SERIAL_SIZE)
                 .take(PSP_HEADER_MAX_SIZE)
                 .map { String(it, Charsets.US_ASCII) }
                 .filter { serial -> PSP_BASE_SERIALS.any { serial.startsWith(it) } }
