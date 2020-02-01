@@ -166,7 +166,7 @@ data class GameSystem(
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
-                            scanByPathAndFilename = false
+                            scanByParentAndSupportedExtensions = true
                         )
                 ),
                 GameSystem(
@@ -183,8 +183,8 @@ data class GameSystem(
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
-                            scanByPathAndFilename = true,
-                            scanByNameAndSupportedExtensions = false
+                            scanByParentAndFilename = true,
+                            scanByParentAndSupportedExtensions = false
                         )
                 ),
                 GameSystem(
@@ -219,9 +219,8 @@ data class GameSystem(
         data class ScanOptions(
             val scanByFilename: Boolean = true,
             val scanByUniqueExtension: Boolean = true,
-            val scanByNameAndSupportedExtensions: Boolean = false,
-            val scanByPathAndFilename: Boolean = false,
-            val scanByPathAndSupportedExtensions: Boolean = true
+            val scanByParentAndFilename: Boolean = false,
+            val scanByParentAndSupportedExtensions: Boolean = true
         )
     }
 }

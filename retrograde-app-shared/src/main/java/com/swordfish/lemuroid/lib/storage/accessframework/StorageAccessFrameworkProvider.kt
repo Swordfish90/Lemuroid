@@ -2,11 +2,9 @@ package com.swordfish.lemuroid.lib.storage.accessframework
 
 import android.content.Context
 import android.net.Uri
-import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
-import com.swordfish.lemuroid.common.db.asSequence
 import com.swordfish.lemuroid.common.kotlin.calculateCrc32
 import com.swordfish.lemuroid.common.kotlin.toStringCRC32
 import com.swordfish.lemuroid.lib.R
@@ -51,11 +49,11 @@ class StorageAccessFrameworkProvider(
 
     private fun handleFileUri(fileUri: FileUri): StorageFile {
         return if (isZipped(fileUri.mime) && isSingleArchive(fileUri.uri)) {
-            Timber.d("Detected single file archive. $name")
-            handleUriAsSingleArchive(fileUri.uri)
+            Timber.d("Detected single file archive. ${fileUri.name}")
+            handleFileUriAsSingleArchive(fileUri)
         } else {
-            Timber.d("Detected standard file. $name")
-            handleUriAsStandardFile(fileUri.uri, fileUri.name, fileUri.size)
+            Timber.d("Detected standard file. ${fileUri.name}")
+            handleFileUriAsStandardFile(fileUri)
         }
     }
 
@@ -82,11 +80,14 @@ class StorageAccessFrameworkProvider(
                         if (file.isDirectory) {
                             dirNodes.add(file)
                         } else {
+                            val uri = file.uri
                             val fileName = file.name
+                            val size = file.length()
                             val mimeType = file.type
+                            val parentName = file.parentFile?.name
 
                             if (fileName != null && mimeType != null) {
-                                emitter.onNext(FileUri(file.uri, fileName, file.length(), mimeType))
+                                emitter.onNext(FileUri(uri, fileName, size, mimeType, parentName))
                             }
                             null
                         }
@@ -100,33 +101,33 @@ class StorageAccessFrameworkProvider(
         emitter.onComplete()
     }
 
-    private fun handleUriAsSingleArchive(uri: Uri): StorageFile {
-        ZipInputStream(context.contentResolver.openInputStream(uri)).use {
+    private fun handleFileUriAsSingleArchive(file: FileUri): StorageFile {
+        ZipInputStream(context.contentResolver.openInputStream(file.uri)).use {
             val entry = it.nextEntry
 
             Timber.d("Processing zipped entry: ${entry.name}")
 
             val serial = ISOScanner.extractSerial(entry.name, it)
 
-            return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, uri)
+            return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, file.uri, file.parent)
         }
     }
 
-    private fun handleUriAsStandardFile(uri: Uri, name: String, size: Long): StorageFile {
-        val crc32 = if (size < MAX_SIZE_CRC32) {
-            context.contentResolver.openInputStream(uri)?.calculateCrc32()
+    private fun handleFileUriAsStandardFile(file: FileUri): StorageFile {
+        val crc32 = if (file.size < MAX_SIZE_CRC32) {
+            context.contentResolver.openInputStream(file.uri)?.calculateCrc32()
         } else {
             null
         }
 
-        val serial = ISOScanner.extractSerial(name, context.contentResolver.openInputStream(uri)!!)
+        val serial = context.contentResolver.openInputStream(file.uri)?.let { inputStream ->
+            ISOScanner.extractSerial(file.name, inputStream)
+        }
 
-        Timber.d("Detected file: $id, name: $name, crc: $crc32")
+        Timber.d("Detected file: $id, name: ${file.name}, crc: $crc32")
 
-        return StorageFile(name, size, crc32, serial, uri)
+        return StorageFile(file.name, file.size, crc32, serial, file.uri, file.parent)
     }
-
-    private fun isDirectory(mimeType: String) = DocumentsContract.Document.MIME_TYPE_DIR == mimeType
 
     private fun isZipped(mimeType: String) = mimeType == ZIP_MIME_TYPE
 
@@ -176,7 +177,7 @@ class StorageAccessFrameworkProvider(
         }
     }
 
-    private data class FileUri(val uri: Uri, val name: String, val size: Long, val mime: String)
+    private data class FileUri(val uri: Uri, val name: String, val size: Long, val mime: String, val parent: String?)
 
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"

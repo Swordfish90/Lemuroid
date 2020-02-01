@@ -15,6 +15,7 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import io.reactivex.Maybe
 import io.reactivex.ObservableTransformer
 import timber.log.Timber
+import java.util.Locale
 
 class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : GameMetadataProvider {
     override fun transformer(startedAtMs: Long) = ObservableTransformer<StorageFile, Optional<Game>> { upstream ->
@@ -26,9 +27,9 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                             findByCRC(file, db)
                                 .switchIfEmpty(findBySerial(file, db))
                                 .switchIfEmpty(findByFilename(db, file))
-                                .switchIfEmpty(findByPathAndFilename(db, file))
+                                .switchIfEmpty(findByParentAndFilename(db, file))
                                 .switchIfEmpty(findByUniqueExtension(file))
-                                .switchIfEmpty(findByPathAndSupportedExtension(file))
+                                .switchIfEmpty(findByParentAndSupportedExtension(file))
                                 .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
                                 .map { convertToGame(it, file, startedAtMs) }
                                 .toSingle(None)
@@ -76,21 +77,20 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                 .map { convertToGameMetadata(it) }
     }
 
-    private fun findByPathAndFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
+    private fun findByParentAndFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
         return db.gameDao().findByFileName(file.name)
-            .filter { extractGameSystem(it).scanOptions.scanByPathAndFilename }
-            .filter { file.path?.contains(extractGameSystem(it).id.dbname) == true }
+            .filter { extractGameSystem(it).scanOptions.scanByParentAndFilename }
+            .filter { parentContainsSystem(file.parentFolder, extractGameSystem(it).id.dbname) }
             .map { convertToGameMetadata(it) }
     }
 
-    private fun findByPathAndSupportedExtension(file: StorageFile) = Maybe.fromCallable {
+    private fun findByParentAndSupportedExtension(file: StorageFile) = Maybe.fromCallable {
         val system = SystemID.values()
             .map { it.dbname }
-            .filter { file.path?.contains(it) == true }
+            .filter { parentContainsSystem(file.parentFolder, it) }
             .map { GameSystem.findById(it) }
-            .filter { it.scanOptions.scanByPathAndSupportedExtensions }
-            .filter { it.supportedExtensions.contains(file.extension) }
-            .firstOrNull()
+            .filter { it.scanOptions.scanByParentAndSupportedExtensions }
+            .firstOrNull { it.supportedExtensions.contains(file.extension) }
 
         system?.let {
             GameMetadata(
@@ -102,6 +102,10 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
                     developer = null
             )
         }
+    }
+
+    private fun parentContainsSystem(parent: String?, dbname: String): Boolean {
+        return parent?.toLowerCase(Locale.getDefault())?.contains(dbname) == true
     }
 
     private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {

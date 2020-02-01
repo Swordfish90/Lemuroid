@@ -63,7 +63,7 @@ class LocalStorageProvider(
                     size = file.length(),
                     crc = file.calculateCrc32().toUpperCase(),
                     uri = Uri.parse(file.toURI().toString()),
-                    path = file.parent,
+                    parentFolder = file.parent,
                     serial = ISOScanner.extractSerial(file.name, FileInputStream(file))
                 )
             }
