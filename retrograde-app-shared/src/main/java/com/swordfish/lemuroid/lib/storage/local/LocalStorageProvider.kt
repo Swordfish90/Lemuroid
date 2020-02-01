@@ -27,11 +27,13 @@ import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.lib.storage.ISOScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
+import java.io.FileInputStream
 
 class LocalStorageProvider(
     context: Context,
@@ -61,7 +63,8 @@ class LocalStorageProvider(
                     size = file.length(),
                     crc = file.calculateCrc32().toUpperCase(),
                     uri = Uri.parse(file.toURI().toString()),
-                    path = file.parent
+                    parentFolder = file.parent,
+                    serial = ISOScanner.extractSerial(file.name, FileInputStream(file))
                 )
             }
             .asIterable()
