@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -97,7 +98,12 @@ class GameLauncherActivity : ImmersiveActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        triggerCacheCleanup()
         finish()
+    }
+
+    private fun triggerCacheCleanup() {
+        CacheCleanerWork.enqueueUniqueWork(applicationContext)
     }
 
     override fun onBackPressed() {
