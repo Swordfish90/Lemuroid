@@ -54,6 +54,7 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.uber.autodispose.autoDispose
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
@@ -387,17 +388,17 @@ class GameActivity : ImmersiveActivity() {
         val retroGameView = retroGameView ?: return Completable.complete()
 
         return retrieveCurrentGame()
-            .flatMapMaybe { savesManager.getSlotSave(it, system, index) }
+            .flatMap { savesManager.getSlotSave(it, system, index) }
             .map { retroGameView.unserializeState(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
             .ignoreElement()
     }
 
-    private fun retrieveCurrentGame(): Single<Game> {
+    private fun retrieveCurrentGame(): Maybe<Game> {
         val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
         return retrogradeDb.gameDao()
-            .selectById(gameId).toSingle()
+            .selectById(gameId)
             .subscribeOn(Schedulers.io())
     }
 
@@ -441,7 +442,7 @@ class GameActivity : ImmersiveActivity() {
     inner class ContextGameDialog {
         fun displayOptionsDialog(): Completable {
             return this@GameActivity.retrieveCurrentGame()
-                .flatMap { savesManager.getSavedSlotsInfo(it, system.coreName) }
+                .flatMapSingle { savesManager.getSavedSlotsInfo(it, system.coreName) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { presentContextDialog(it) }
