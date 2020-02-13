@@ -3,8 +3,7 @@ package com.swordfish.touchinput.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Canvas
-import android.graphics.Matrix
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.KeyEvent
@@ -15,6 +14,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource
+import com.swordfish.touchinput.utils.TextPainter
 import io.reactivex.Observable
 import timber.log.Timber
 import kotlin.math.abs
@@ -127,12 +127,19 @@ class ActionButtons @JvmOverloads constructor(
                 drawable?.let {
                     val height = buttonDrawableSize
                     val width = buttonDrawableSize
-                    val left = (xPadding + col * buttonSize).toInt()
-                    val top = (yPadding + row * buttonSize).toInt()
+                    val left = (xPadding + col * buttonSize)
+                    val top = (yPadding + row * buttonSize)
 
-                    Timber.d("Drawing drawable: $width $height $left $top")
+                    val xPivot = left + width / 2f
+                    val yPivot = top + height / 2f
 
-                    drawable.setBounds(left, top, left + width, top + height)
+                    canvas.rotate(rotateButtons, xPivot, yPivot)
+
+                    TextPainter.paintText(left, top, width.toFloat(), height.toFloat(), "X", canvas)
+
+                    canvas.rotate(-rotateButtons, xPivot, yPivot)
+
+                    drawable.setBounds(left.toInt(), top.toInt(), (left + width).toInt(), (top + height).toInt())
                     drawable.draw(canvas)
                 }
             }

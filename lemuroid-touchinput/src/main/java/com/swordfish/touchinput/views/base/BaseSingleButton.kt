@@ -1,6 +1,7 @@
 package com.swordfish.touchinput.views.base
 
 import android.content.Context
+import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -9,8 +10,10 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource
+import com.swordfish.touchinput.utils.TextPainter
 import io.reactivex.Observable
 import kotlin.math.min
+
 
 abstract class BaseSingleButton @JvmOverloads constructor(
     context: Context,
@@ -38,6 +41,11 @@ abstract class BaseSingleButton @JvmOverloads constructor(
     }
 
     override fun getEvents(): Observable<ViewEvent.Button> = events
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        TextPainter.paintText(0f, 0f, width.toFloat(), height.toFloat(), "A", canvas)
+    }
 
     open fun getSuggestedButtonWidth(): Int {
         return R.dimen.size_button_small
