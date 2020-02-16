@@ -1,6 +1,7 @@
 package com.swordfish.touchinput.views.base
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.KeyEvent
@@ -22,9 +23,20 @@ abstract class BaseSingleButton @JvmOverloads constructor(
 ) : AppCompatButton(context, attrs, defStyleAttr), ButtonEventsSource {
 
     private val events: PublishRelay<ViewEvent.Button> = PublishRelay.create()
+    private val textPainter = TextPainter(context.resources)
+
+    private var label: String = ""
 
     init {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.BaseSingleButton, defStyleAttr, 0).let {
+            initializeFromAttributes(it)
+        }
         setOnTouchListener { _, event -> handleTouchEvent(event); true }
+    }
+
+    private fun initializeFromAttributes(a: TypedArray) {
+        label = a.getString(R.styleable.BaseSingleButton_label) ?: ""
+        a.recycle()
     }
 
     private fun handleTouchEvent(event: MotionEvent) {
@@ -44,7 +56,9 @@ abstract class BaseSingleButton @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        TextPainter.paintText(0f, 0f, width.toFloat(), height.toFloat(), "A", canvas)
+        if (label.isNotBlank()) {
+            textPainter.paintText(0f, 0f, width.toFloat(), height.toFloat(), label, canvas)
+        }
     }
 
     open fun getSuggestedButtonWidth(): Int {

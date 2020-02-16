@@ -112,7 +112,7 @@ class DirectionPad @JvmOverloads constructor(
             getStateDrawable(i, isPressed)?.let {
                 val height = drawableSize
                 val width = drawableSize
-                val angle = Math.toRadians((cAngle - ROTATE_BUTTONS + SINGLE_BUTTON_ANGLE / 2f).toDouble())
+                val angle = toRadians((cAngle - ROTATE_BUTTONS + SINGLE_BUTTON_ANGLE / 2f).toDouble())
                 val left = (radius * buttonCenterDistance * cos(angle) + radius).toInt() - width / 2
                 val top = (radius * buttonCenterDistance * sin(angle) + radius).toInt() - height / 2
 

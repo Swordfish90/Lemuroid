@@ -10,18 +10,21 @@
         <item name="rows">1</item>
         <item name="cols">3</item>
         <item name="rotateButtons">15.0</item>
+        <item name="labels">@array/defaut_action_labels_3</item>
     </style>
 
     <style name="default_action_4" parent="base_default_action">
         <item name="rotateButtons">45.0</item>
         <item name="rows">2</item>
         <item name="cols">2</item>
+        <item name="labels">@array/defaut_action_labels_4</item>
     </style>
 
     <style name="default_action_2" parent="base_default_action">
         <item name="rows">1</item>
         <item name="cols">2</item>
         <item name="spacing">0.2</item>
+        <item name="labels">@array/defaut_action_labels_2</item>
     </style>
 
     <style name="default_action_6" parent="base_default_action">
@@ -35,10 +38,17 @@
         <item name="buttonCenterDistance">0.45</item>
     </style>
 
+    <style name="psp_action_buttons" parent="base_default_action">
+        <item name="rotateButtons">45.0</item>
+        <item name="rows">2</item>
+        <item name="cols">2</item>
+        <item name="labelDrawables">@array/psx_action_drawable_labels</item>
+    </style>
+
     <style name="default_stick">
         <item name="android:layout_width">@dimen/size_stick</item>
         <item name="android:layout_height">@dimen/size_stick</item>
-        <item name="JV_buttonColor">@color/touch_control_default</item>
+        <item name="JV_buttonColor">@color/touch_control_text_color</item>
         <item name="JV_backgroundColor">@color/touch_control_default</item>
         <item name="JV_buttonSizeRatio">33%</item>
         <item name="JV_backgroundSizeRatio">66%</item>

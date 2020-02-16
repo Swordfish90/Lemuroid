@@ -11,6 +11,12 @@
         <attr name="cols" format="integer"/>
         <attr name="spacing" format="float"/>
         <attr name="rotateButtons" format="float"/>
+        <attr name="labels" format="reference"/>
+        <attr name="labelDrawables" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="BaseSingleButton">
+        <attr name="label" format="string"/>
     </declare-styleable>
 
 </resources>

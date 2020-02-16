@@ -1,7 +1,38 @@
 <resources>
+
     <string name="vectorpath_direction_up" translatable="false">M15,29 m-2,-2 l-8,-8 l0,-14 a17,17 0 0,1 20,0 l0,14 l-8,8 a3,3 0 0,1 -4,0z</string>
     <string name="vectorpath_direction_down" translatable="false">M15,1 m2,2 l8,8 l0,14 a17,17 0 0,1 -20,0 l0,-14 l8,-8 a3,3 0 0,1 4,0z</string>
     <string name="vectorpath_direction_right" translatable="false">M1,15 m2,-2 l8,-8 l14,0 a17,17 0 0,1 0,20 l-14,0 l-8,-8 a3,3 0 0,1 0,-4z</string>
     <string name="vectorpath_direction_left" translatable="false">M29,15 m-2,-2 l-8,-8 l-14,0 a17,17 0 0,0 0,20 l14,0 l8,-8 a3,3 0 0,0 0,-4z</string>
+
+    <string name="start" translatable="false">▶</string>
+    <string name="select" translatable="false">◼</string>
+    <string name="coin" translatable="false">¢️</string>
+
+    <string-array name="defaut_action_labels_2">
+        <item>B</item>
+        <item>A</item>
+    </string-array>
+
+    <string-array name="defaut_action_labels_3">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
+
+    <string-array name="defaut_action_labels_4">
+        <item>Y</item>
+        <item>X</item>
+        <item>B</item>
+        <item>A</item>
+    </string-array>
+
+    <array name="psx_action_drawable_labels">
+        <item>@drawable/psx_square</item>
+        <item>@drawable/psx_triangle</item>
+        <item>@drawable/psx_cross</item>
+        <item>@drawable/psx_circle</item>
+    </array>
+
 </resources>
 
