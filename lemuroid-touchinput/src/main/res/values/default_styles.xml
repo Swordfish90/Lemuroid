@@ -51,7 +51,7 @@
         <item name="rotateButtons">45.0</item>
         <item name="rows">2</item>
         <item name="cols">2</item>
-        <item name="labelDrawables">@array/psx_action_drawable_labels</item>
+        <item name="icons">@array/psx_action_drawable_labels</item>
     </style>
 
     <style name="default_stick">
@@ -59,9 +59,9 @@
         <item name="android:layout_height">@dimen/size_stick</item>
         <item name="JV_buttonColor">@color/touch_control_text_color</item>
         <item name="JV_backgroundColor">@color/touch_control_default</item>
-        <item name="JV_borderColor">@color/touch_control_secondary</item>
-        <item name="JV_borderWidth">@dimen/button_stroke_width</item>
-        <item name="JV_borderAlpha">@integer/button_stroke_opacity</item>
+        <item name="JV_borderColor">@color/touch_control_stroke</item>
+        <item name="JV_borderWidth">@dimen/touch_drawable_stroke_width</item>
+        <item name="JV_borderAlpha">@integer/touch_drawable_stroke_opacity</item>
         <item name="JV_buttonSizeRatio">33%</item>
         <item name="JV_backgroundSizeRatio">66%</item>
         <item name="JV_fixedCenter">false</item>

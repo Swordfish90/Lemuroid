@@ -15,7 +15,6 @@ import com.swordfish.touchinput.utils.TextPainter
 import io.reactivex.Observable
 import kotlin.math.min
 
-
 abstract class BaseSingleButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

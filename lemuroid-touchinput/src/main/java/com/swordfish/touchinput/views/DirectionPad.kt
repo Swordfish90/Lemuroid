@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.ViewEvent

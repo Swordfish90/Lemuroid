@@ -2,12 +2,12 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
         android:width="@dimen/size_direction_button_item"
         android:height="@dimen/size_direction_button_item"
-        android:viewportHeight="@integer/item_viewportsize"
-        android:viewportWidth="@integer/item_viewportsize">
+        android:viewportHeight="@integer/vector_viewportsize"
+        android:viewportWidth="@integer/vector_viewportsize">
 
     <path
         android:fillColor="@color/touch_control_pressed"
         android:pathData="@string/vectorpath_direction_right"
-        android:strokeColor="@color/touch_control_secondary"
-        android:strokeWidth="@integer/item_stroke_size"/>
+        android:strokeColor="@color/touch_control_stroke"
+        android:strokeWidth="@integer/vector_stroke_size"/>
 </vector>

@@ -2,7 +2,6 @@ package com.swordfish.touchinput.utils
 
 import android.content.res.Resources
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import com.swordfish.touchinput.controller.R

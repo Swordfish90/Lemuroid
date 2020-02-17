@@ -14,7 +14,7 @@
         <attr name="spacing" format="float"/>
         <attr name="rotateButtons" format="float"/>
         <attr name="labels" format="reference"/>
-        <attr name="labelDrawables" format="reference"/>
+        <attr name="icons" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="BaseSingleButton">

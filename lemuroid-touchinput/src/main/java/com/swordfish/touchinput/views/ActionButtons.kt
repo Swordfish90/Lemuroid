@@ -3,7 +3,8 @@ package com.swordfish.touchinput.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.KeyEvent
@@ -36,7 +37,7 @@ class ActionButtons @JvmOverloads constructor(
     private var rotateButtons: Float = 0.0f
     private var supportsMultipleInputs: Boolean = false
     private var labels: List<String> = listOf()
-    private var labelDrawables: List<Drawable> = listOf()
+    private var icons: List<Drawable> = listOf()
 
     private var rotatedSize: Float = 0f
     private var notRotatedSize: Float = 0f
@@ -78,11 +79,15 @@ class ActionButtons @JvmOverloads constructor(
             labels = resources.getStringArray(labelsId).toList()
         }
 
-        val labelDrawablesId = a.getResourceId(R.styleable.ActionButtons_labelDrawables, 0)
-        if (labelDrawablesId != 0) {
-            val tmp = resources.obtainTypedArray(labelDrawablesId)
-            labelDrawables = (0 until tmp.length()).map { tmp.getResourceId(it, 0) }.map { retrieveDrawable(it)!! }
-            tmp.recycle()
+        val iconsId = a.getResourceId(R.styleable.ActionButtons_icons, 0)
+        if (iconsId != 0) {
+            val iconsArray = resources.obtainTypedArray(iconsId)
+
+            icons = (0 until iconsArray.length())
+                .map { iconsArray.getResourceId(it, 0) }
+                .map { retrieveDrawable(it) }
+
+            iconsArray.recycle()
         }
         a.recycle()
     }
@@ -153,8 +158,8 @@ class ActionButtons @JvmOverloads constructor(
                         drawLabel(canvas, left, top, width, height, it)
                     }
 
-                    labelDrawables.getOrNull(index)?.let {
-                        drawDrawableLabel(canvas, left, top, width, height, it)
+                    icons.getOrNull(index)?.let {
+                        drawIcon(canvas, left, top, width, height, it)
                     }
                 }
             }
@@ -174,13 +179,18 @@ class ActionButtons @JvmOverloads constructor(
         canvas.rotate(-rotateButtons, xPivot, yPivot)
     }
 
-    private fun drawDrawableLabel(canvas: Canvas, left: Float, top: Float, width: Int, height: Int, drawable: Drawable) {
+    private fun drawIcon(canvas: Canvas, left: Float, top: Float, width: Int, height: Int, drawable: Drawable) {
         val xPivot = left + width / 2f
         val yPivot = top + height / 2f
 
         canvas.rotate(rotateButtons, xPivot, yPivot)
 
-        drawable.setBounds((left + 0.25 * width).toInt(), (top + 0.25 * height).toInt(), (left + width -0.25 * width).toInt(), (top + height - 0.25 * height).toInt())
+        val leftBound = (left + 0.25 * width).toInt()
+        val topBound = (top + 0.25 * height).toInt()
+        val rightBound = (left + width - 0.25 * width).toInt()
+        val bottomBound = (top + height - 0.25 * height).toInt()
+
+        drawable.setBounds(leftBound, topBound, rightBound, bottomBound)
         drawable.draw(canvas)
 
         canvas.rotate(-rotateButtons, xPivot, yPivot)
@@ -244,7 +254,7 @@ class ActionButtons @JvmOverloads constructor(
         buttonsPressed.clear()
     }
 
-    private fun retrieveDrawable(drawableId: Int): Drawable? {
-        return AppCompatResources.getDrawable(context, drawableId)
+    private fun retrieveDrawable(drawableId: Int): Drawable {
+        return AppCompatResources.getDrawable(context, drawableId)!!
     }
 }
