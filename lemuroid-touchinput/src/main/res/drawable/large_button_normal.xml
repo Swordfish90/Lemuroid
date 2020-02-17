@@ -5,7 +5,7 @@
 
     <shape android:shape="rectangle">
         <corners android:radius="@dimen/button_radius"/>
-        <size android:width="@dimen/size_large_button_width" android:height="@dimen/size_large_button_height"/>
         <solid android:color="@color/touch_control_default"/>
+        <stroke android:width="@dimen/button_stroke_width" android:color="@color/touch_control_secondary"/>
     </shape>
 </inset>

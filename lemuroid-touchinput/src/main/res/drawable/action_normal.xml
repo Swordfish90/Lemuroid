@@ -8,6 +8,8 @@
 
     <path
         android:fillColor="@color/touch_control_default"
-        android:pathData="M1 15a14 14 0 1 1 0 0.0001"/>
+        android:pathData="M1 15a14 14 0 1 1 0 0.0001"
+        android:strokeColor="@color/touch_control_secondary"
+        android:strokeWidth="@integer/item_stroke_size" />
 
 </vector>

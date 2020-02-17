@@ -7,5 +7,7 @@
 
     <path
         android:pathData="@string/vectorpath_direction_down"
-        android:fillColor="@color/touch_control_default" />
+        android:fillColor="@color/touch_control_default"
+        android:strokeColor="@color/touch_control_secondary"
+        android:strokeWidth="@integer/item_stroke_size"/>
 </vector>

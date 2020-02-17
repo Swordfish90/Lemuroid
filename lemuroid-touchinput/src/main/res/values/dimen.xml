@@ -22,6 +22,8 @@
     <dimen name="size_large_button_width">@dimen/size_button_large</dimen>
 
     <dimen name="button_radius">3dp</dimen>
+    <dimen name="button_stroke_width">2dp</dimen>
 
     <integer name="item_viewportsize">30</integer>
+    <integer name="item_stroke_size">1</integer>
 </resources>
