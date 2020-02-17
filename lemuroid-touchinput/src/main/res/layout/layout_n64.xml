@@ -110,7 +110,7 @@
 
     <com.swordfish.touchinput.views.DirectionPad
         android:id="@+id/cbuttons"
-        style="@style/default_directionpad"
+        style="@style/n64_cbuttons"
         android:layout_width="@dimen/size_stick"
         android:layout_height="@dimen/size_stick"
         android:layout_marginEnd="8dp"

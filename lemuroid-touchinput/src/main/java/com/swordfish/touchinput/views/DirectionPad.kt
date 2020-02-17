@@ -43,6 +43,8 @@ class DirectionPad @JvmOverloads constructor(
         const val BUTTON_UP_LEFT = 5
         const val BUTTON_UP = 6
         const val BUTTON_UP_RIGHT = 7
+
+        private val DRAWABLE_BUTTONS = setOf(BUTTON_RIGHT, BUTTON_DOWN, BUTTON_LEFT, BUTTON_UP)
     }
 
     private var deadZone: Float = 0f
@@ -51,8 +53,8 @@ class DirectionPad @JvmOverloads constructor(
     private val touchRotationMatrix = Matrix()
     private var radius: Int = 0
 
-    private val normalDrawables: Map<Int, Drawable?> = initNormalDrawables()
-    private val pressedDrawables: Map<Int, Drawable?> = initPressedDrawables()
+    private var normalDrawable: Drawable? = null
+    private var pressedDrawable: Drawable? = null
 
     private val events: PublishRelay<ViewEvent.Stick> = PublishRelay.create()
 
@@ -73,6 +75,8 @@ class DirectionPad @JvmOverloads constructor(
     private fun initializeFromAttributes(a: TypedArray) {
         deadZone = a.getFloat(R.styleable.DirectionPad_deadZone, 0f)
         buttonCenterDistance = a.getFloat(R.styleable.DirectionPad_buttonCenterDistance, 0f)
+        normalDrawable = a.getDrawable(R.styleable.DirectionPad_rightArrowDrawable)
+        pressedDrawable = a.getDrawable(R.styleable.DirectionPad_rightArrowPressedDrawable)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -115,9 +119,15 @@ class DirectionPad @JvmOverloads constructor(
                 val angle = toRadians((cAngle - ROTATE_BUTTONS + SINGLE_BUTTON_ANGLE / 2f).toDouble())
                 val left = (radius * buttonCenterDistance * cos(angle) + radius).toInt() - width / 2
                 val top = (radius * buttonCenterDistance * sin(angle) + radius).toInt() - height / 2
+                val xPivot = left + width / 2f
+                val yPivot = top + height / 2f
+
+                canvas.rotate(i * SINGLE_BUTTON_ANGLE, xPivot, yPivot)
 
                 it.setBounds(left, top, left + width, top + height)
                 it.draw(canvas)
+
+                canvas.rotate(-i * SINGLE_BUTTON_ANGLE, xPivot, yPivot)
             }
         }
     }
@@ -166,27 +176,12 @@ class DirectionPad @JvmOverloads constructor(
         return x * x + y * y > radius * deadZone * radius * deadZone
     }
 
-    private fun getStateDrawable(buttonIndex: Int, isPressed: Boolean): Drawable? {
-        val drawables = if (isPressed) { pressedDrawables } else { normalDrawables }
-        return drawables[buttonIndex]
-    }
-
-    private fun initNormalDrawables(): Map<Int, Drawable?> {
-        return mapOf(
-            BUTTON_RIGHT to ContextCompat.getDrawable(context, R.drawable.direction_right_normal),
-            BUTTON_UP to ContextCompat.getDrawable(context, R.drawable.direction_up_normal),
-            BUTTON_LEFT to ContextCompat.getDrawable(context, R.drawable.direction_left_normal),
-            BUTTON_DOWN to ContextCompat.getDrawable(context, R.drawable.direction_down_normal)
-        )
-    }
-
-    private fun initPressedDrawables(): Map<Int, Drawable?> {
-        return mapOf(
-            BUTTON_RIGHT to ContextCompat.getDrawable(context, R.drawable.direction_right_pressed),
-            BUTTON_UP to ContextCompat.getDrawable(context, R.drawable.direction_up_pressed),
-            BUTTON_LEFT to ContextCompat.getDrawable(context, R.drawable.direction_left_pressed),
-            BUTTON_DOWN to ContextCompat.getDrawable(context, R.drawable.direction_down_pressed)
-        )
+    private fun getStateDrawable(index: Int, isPressed: Boolean): Drawable? {
+        return if (index in DRAWABLE_BUTTONS) {
+            if (isPressed) { pressedDrawable } else { normalDrawable }
+        } else {
+            null
+        }
     }
 
     private fun convertDiagonals(currentIndex: Int?): Set<Int> {

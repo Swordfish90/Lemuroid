@@ -3,6 +3,8 @@
     <declare-styleable name="DirectionPad">
         <attr name="deadZone" format="float"/>
         <attr name="buttonCenterDistance" format="float"/>
+        <attr name="rightArrowDrawable" format="integer"/>
+        <attr name="rightArrowPressedDrawable" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="ActionButtons">

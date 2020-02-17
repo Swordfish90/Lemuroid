@@ -36,6 +36,15 @@
     <style name="default_directionpad">
         <item name="deadZone">0.3</item>
         <item name="buttonCenterDistance">0.45</item>
+        <item name="rightArrowDrawable">@drawable/direction_right_normal</item>
+        <item name="rightArrowPressedDrawable">@drawable/direction_right_pressed</item>
+    </style>
+
+    <style name="n64_cbuttons">
+        <item name="deadZone">0.3</item>
+        <item name="buttonCenterDistance">0.50</item>
+        <item name="rightArrowDrawable">@drawable/direction_alt_right_normal</item>
+        <item name="rightArrowPressedDrawable">@drawable/direction_alt_right_pressed</item>
     </style>
 
     <style name="psp_action_buttons" parent="base_default_action">
