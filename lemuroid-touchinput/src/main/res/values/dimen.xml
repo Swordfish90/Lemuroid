@@ -26,4 +26,6 @@
 
     <integer name="item_viewportsize">30</integer>
     <integer name="item_stroke_size">1</integer>
+
+    <integer name="button_stroke_opacity">6</integer>
 </resources>
