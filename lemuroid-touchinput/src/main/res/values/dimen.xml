@@ -21,7 +21,10 @@
     <dimen name="size_large_button_height">@dimen/size_button_medium</dimen>
     <dimen name="size_large_button_width">@dimen/size_button_large</dimen>
 
-    <dimen name="button_radius">3dp</dimen>
+    <dimen name="touch_drawable_radius">3dp</dimen>
+    <dimen name="touch_drawable_stroke_width">2dp</dimen>
+    <integer name="touch_drawable_stroke_opacity">6</integer>
 
-    <integer name="item_viewportsize">30</integer>
+    <integer name="vector_viewportsize">30</integer>
+    <integer name="vector_stroke_size">1</integer>
 </resources>

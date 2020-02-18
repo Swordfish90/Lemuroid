@@ -15,8 +15,8 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.ButtonEventsSource
+import com.swordfish.touchinput.utils.TextPainter
 import io.reactivex.Observable
-import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.floor
@@ -36,6 +36,8 @@ class ActionButtons @JvmOverloads constructor(
     private var cols: Int = 2
     private var rotateButtons: Float = 0.0f
     private var supportsMultipleInputs: Boolean = false
+    private var labels: List<String> = listOf()
+    private var icons: List<Drawable> = listOf()
 
     private var rotatedSize: Float = 0f
     private var notRotatedSize: Float = 0f
@@ -52,11 +54,13 @@ class ActionButtons @JvmOverloads constructor(
 
     private val touchRotationMatrix = Matrix()
 
+    private val textPainter = TextPainter(resources)
+
     init {
         pressedDrawable = retrieveDrawable(R.drawable.action_pressed)
         normalDrawable = retrieveDrawable(R.drawable.action_normal)
 
-        context.theme.obtainStyledAttributes(attrs, R.styleable.ActionButtons, defStyleAttr, 0)?.let {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.ActionButtons, defStyleAttr, 0).let {
             initializeFromAttributes(it)
         }
     }
@@ -69,6 +73,23 @@ class ActionButtons @JvmOverloads constructor(
         cols = a.getInt(R.styleable.ActionButtons_cols, 2)
         spacing = a.getFloat(R.styleable.ActionButtons_spacing, 0.1f)
         rotateButtons = a.getFloat(R.styleable.ActionButtons_rotateButtons, 0.0f)
+
+        val labelsId = a.getResourceId(R.styleable.ActionButtons_labels, 0)
+        if (labelsId != 0) {
+            labels = resources.getStringArray(labelsId).toList()
+        }
+
+        val iconsId = a.getResourceId(R.styleable.ActionButtons_icons, 0)
+        if (iconsId != 0) {
+            val iconsArray = resources.obtainTypedArray(iconsId)
+
+            icons = (0 until iconsArray.length())
+                .map { iconsArray.getResourceId(it, 0) }
+                .map { retrieveDrawable(it) }
+
+            iconsArray.recycle()
+        }
+        a.recycle()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -127,18 +148,52 @@ class ActionButtons @JvmOverloads constructor(
                 drawable?.let {
                     val height = buttonDrawableSize
                     val width = buttonDrawableSize
-                    val left = (xPadding + col * buttonSize).toInt()
-                    val top = (yPadding + row * buttonSize).toInt()
+                    val left = (xPadding + col * buttonSize)
+                    val top = (yPadding + row * buttonSize)
 
-                    Timber.d("Drawing drawable: $width $height $left $top")
-
-                    drawable.setBounds(left, top, left + width, top + height)
+                    drawable.setBounds(left.toInt(), top.toInt(), (left + width).toInt(), (top + height).toInt())
                     drawable.draw(canvas)
+
+                    labels.getOrNull(index)?.let {
+                        drawLabel(canvas, left, top, width, height, it)
+                    }
+
+                    icons.getOrNull(index)?.let {
+                        drawIcon(canvas, left, top, width, height, it)
+                    }
                 }
             }
         }
 
         canvas.restore()
+    }
+
+    private fun drawLabel(canvas: Canvas, left: Float, top: Float, width: Int, height: Int, label: String) {
+        val xPivot = left + width / 2f
+        val yPivot = top + height / 2f
+
+        canvas.rotate(rotateButtons, xPivot, yPivot)
+
+        textPainter.paintText(left, top, width.toFloat(), height.toFloat(), label, canvas)
+
+        canvas.rotate(-rotateButtons, xPivot, yPivot)
+    }
+
+    private fun drawIcon(canvas: Canvas, left: Float, top: Float, width: Int, height: Int, drawable: Drawable) {
+        val xPivot = left + width / 2f
+        val yPivot = top + height / 2f
+
+        canvas.rotate(rotateButtons, xPivot, yPivot)
+
+        val leftBound = (left + 0.25 * width).toInt()
+        val topBound = (top + 0.25 * height).toInt()
+        val rightBound = (left + width - 0.25 * width).toInt()
+        val bottomBound = (top + height - 0.25 * height).toInt()
+
+        drawable.setBounds(leftBound, topBound, rightBound, bottomBound)
+        drawable.draw(canvas)
+
+        canvas.rotate(-rotateButtons, xPivot, yPivot)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -199,7 +254,7 @@ class ActionButtons @JvmOverloads constructor(
         buttonsPressed.clear()
     }
 
-    private fun retrieveDrawable(drawableId: Int): Drawable? {
-        return AppCompatResources.getDrawable(context, drawableId)
+    private fun retrieveDrawable(drawableId: Int): Drawable {
+        return AppCompatResources.getDrawable(context, drawableId)!!
     }
 }

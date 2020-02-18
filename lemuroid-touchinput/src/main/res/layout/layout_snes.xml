@@ -7,6 +7,7 @@
 
     <com.swordfish.touchinput.views.LargeSingleButton
         android:id="@+id/r1"
+        app:label="R"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -16,6 +17,7 @@
 
     <com.swordfish.touchinput.views.LargeSingleButton
         android:id="@+id/l1"
+        app:label="L"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -25,6 +27,7 @@
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/select"
+        app:label="@string/select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,6 +38,7 @@
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/start"
+        app:label="@string/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
