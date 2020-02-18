@@ -10,6 +10,7 @@
         android:layout_height="0dp"
         style="@style/default_action_2"
         app:rotateButtons="0"
+        app:labels="@array/sega_action_labels_2"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
@@ -43,5 +44,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
+    <com.swordfish.touchinput.views.SmallSingleButton
+        android:id="@+id/start"
+        app:label="@string/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/actions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/actions" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

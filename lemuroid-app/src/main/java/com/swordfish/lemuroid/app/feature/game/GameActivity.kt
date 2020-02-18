@@ -212,6 +212,7 @@ class GameActivity : ImmersiveActivity() {
             SystemID.SMS -> GLRetroView.SHADER_CRT
             SystemID.PSP -> GLRetroView.SHADER_LCD
             SystemID.NDS -> GLRetroView.SHADER_LCD
+            SystemID.GG -> GLRetroView.SHADER_LCD
         }
     }
 

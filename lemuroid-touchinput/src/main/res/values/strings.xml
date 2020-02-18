@@ -9,6 +9,11 @@
     <string name="select" translatable="false">◼</string>
     <string name="coin" translatable="false">¢️</string>
 
+    <string-array name="sega_action_labels_2">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="defaut_action_labels_2">
         <item>B</item>
         <item>A</item>

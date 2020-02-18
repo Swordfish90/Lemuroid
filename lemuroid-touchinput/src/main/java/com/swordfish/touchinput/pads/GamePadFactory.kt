@@ -15,10 +15,11 @@ class GamePadFactory {
                 SystemID.SNES -> SNESPad(context)
                 SystemID.GENESIS -> GenesisPad(context)
                 SystemID.N64 -> N64Pad(context)
-                SystemID.SMS -> SegaMasterSystemPad(context)
+                SystemID.SMS -> MasterSystemPad(context)
                 SystemID.PSP -> PSPPad(context)
                 SystemID.FBNEO -> ArcadePad(context)
                 SystemID.NDS -> NDSPad(context)
+                SystemID.GG -> GameGearPad(context)
             }
         }
     }

@@ -107,6 +107,17 @@ data class GameSystem(
                         uniqueExtensions = listOf("gen", "smd", "md")
                 ),
                 GameSystem(
+                        SystemID.GG,
+                        "Sega - Game Gear",
+                        "genesis_plus_gx",
+                        R.string.game_system_title_gg,
+                        R.string.game_system_abbr_gg,
+                        R.drawable.game_system_gg,
+                        "sega2",
+                        "genesis_plus_gx_libretro_android.so.zip",
+                        uniqueExtensions = listOf("gg")
+                ),
+                GameSystem(
                         SystemID.GB,
                         "Nintendo - Game Boy",
                         "gambatte",
