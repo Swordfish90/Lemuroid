@@ -20,6 +20,7 @@
 
 <resources>
     <string name="game_system_abbr_nes">NES</string>
+    <string name="game_system_abbr_atari2600">A26</string>
     <string name="game_system_abbr_snes">SNES</string>
     <string name="game_system_abbr_genesis">Genesis</string>
     <string name="game_system_abbr_gg">GG</string>
@@ -33,6 +34,7 @@
     <string name="game_system_abbr_arcade_fbneo">Arcade</string>
 
     <string name="game_system_title_nes">Nintendo</string>
+    <string name="game_system_title_atari2600">Atari 2600</string>
     <string name="game_system_title_snes">Super Nintendo</string>
     <string name="game_system_title_genesis">Sega Genesis</string>
     <string name="game_system_title_gg">Game Gear</string>

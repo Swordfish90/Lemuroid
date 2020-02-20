@@ -20,6 +20,7 @@ class GamePadFactory {
                 SystemID.FBNEO -> ArcadePad(context)
                 SystemID.NDS -> NDSPad(context)
                 SystemID.GG -> GameGearPad(context)
+                SystemID.ATARI2600 -> Atari2600Pad(context)
             }
         }
     }

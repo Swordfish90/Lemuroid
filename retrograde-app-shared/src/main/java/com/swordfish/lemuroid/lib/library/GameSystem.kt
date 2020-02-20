@@ -63,6 +63,17 @@ data class GameSystem(
 
         private val SYSTEMS = listOf(
                 GameSystem(
+                        SystemID.ATARI2600,
+                        "Atari - 2600",
+                        "stella",
+                        R.string.game_system_title_atari2600,
+                        R.string.game_system_abbr_atari2600,
+                        R.drawable.game_system_atari2600,
+                        "atari0",
+                        "stella_libretro_android.so.zip",
+                        uniqueExtensions = listOf("a26")
+                ),
+                GameSystem(
                         SystemID.NES,
                         "Nintendo - Nintendo Entertainment System",
                         "fceumm",
