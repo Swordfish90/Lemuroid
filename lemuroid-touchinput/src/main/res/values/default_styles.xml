@@ -20,6 +20,12 @@
         <item name="labels">@array/defaut_action_labels_4</item>
     </style>
 
+    <style name="default_action_1" parent="base_default_action">
+        <item name="rows">1</item>
+        <item name="cols">1</item>
+        <item name="spacing">0.0</item>
+    </style>
+
     <style name="default_action_2" parent="base_default_action">
         <item name="rows">1</item>
         <item name="cols">2</item>
