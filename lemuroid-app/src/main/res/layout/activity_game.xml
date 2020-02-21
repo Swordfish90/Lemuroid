@@ -33,7 +33,8 @@
     <FrameLayout
         android:id="@+id/gameview_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/pad_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,18 +42,10 @@
     <FrameLayout
         android:id="@+id/pad_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"/>
-
-    <ImageButton
-        android:id="@+id/menu_button"
-        android:layout_width="@dimen/game_menu_button_size"
-        android:layout_height="@dimen/game_menu_button_size"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:layout_marginBottom="@dimen/grid_unit_1x"
-        android:src="@drawable/game_menu_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

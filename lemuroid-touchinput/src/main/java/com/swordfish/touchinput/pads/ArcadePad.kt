@@ -5,10 +5,12 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.EventsTransformers
+import com.swordfish.touchinput.events.Option
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.interfaces.StickEventsSource
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
+import com.swordfish.touchinput.views.IconButton
 import com.swordfish.touchinput.views.SmallSingleButton
 import io.reactivex.Observable
 
@@ -27,7 +29,8 @@ class ArcadePad @JvmOverloads constructor(
             getStartEvent(),
             getSelectEvent(),
             getDirectionEvents(),
-            getActionEvents()
+            getActionEvents(),
+            getMenuEvents()
         ))
     }
 
@@ -63,5 +66,11 @@ class ArcadePad @JvmOverloads constructor(
                 PadEvent.Stick(StickEventsSource.SOURCE_DPAD, it.xAxis, it.yAxis, it.haptic),
                 PadEvent.Stick(StickEventsSource.SOURCE_LEFT_STICK, it.xAxis, it.yAxis, it.haptic)
             ) }
+    }
+
+    private fun getMenuEvents(): Observable<PadEvent> {
+        return findViewById<IconButton>(R.id.menu)
+            .getEvents()
+            .compose(EventsTransformers.clickMap(Option.SETTINGS))
     }
 }

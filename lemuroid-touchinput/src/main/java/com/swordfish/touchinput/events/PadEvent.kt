@@ -1,5 +1,9 @@
 package com.swordfish.touchinput.events
 
+enum class Option {
+    SETTINGS
+}
+
 interface HapticEvent {
     val haptic: Boolean
 }
@@ -17,4 +21,6 @@ sealed class PadEvent : HapticEvent {
         val yAxis: Float,
         override val haptic: Boolean
     ) : PadEvent(), HapticEvent
+
+    data class Control(val function: Option, override val haptic: Boolean) : PadEvent(), HapticEvent
 }

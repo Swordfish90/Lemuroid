@@ -101,10 +101,11 @@
         android:layout_width="@dimen/size_stick"
         android:layout_height="@dimen/size_stick"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio=""
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/menu"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -113,11 +114,20 @@
         style="@style/n64_cbuttons"
         android:layout_width="@dimen/size_stick"
         android:layout_height="@dimen/size_stick"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/actions" />
+        app:layout_constraintStart_toEndOf="@+id/menu" />
+
+    <com.swordfish.touchinput.views.IconButton
+        android:id="@+id/menu"
+        style="@style/default_menu"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
