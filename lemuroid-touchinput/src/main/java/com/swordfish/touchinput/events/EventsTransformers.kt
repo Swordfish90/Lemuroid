@@ -5,9 +5,9 @@ import io.reactivex.ObservableTransformer
 
 internal object EventsTransformers {
 
-    fun clickMap(option: Option): ObservableTransformer<ViewEvent.Click, PadEvent> {
+    fun clickMap(optionType: OptionType): ObservableTransformer<ViewEvent.Click, PadEvent> {
         return ObservableTransformer { upstream ->
-            upstream.map { PadEvent.Control(option, true) }
+            upstream.map { PadEvent.Option(optionType, true) }
         }
     }
 

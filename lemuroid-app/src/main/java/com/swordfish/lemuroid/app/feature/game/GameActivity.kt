@@ -53,6 +53,7 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
+import com.swordfish.touchinput.events.OptionType
 import com.uber.autodispose.autoDispose
 import io.reactivex.Maybe
 import io.reactivex.Single
@@ -280,7 +281,7 @@ class GameActivity : ImmersiveActivity() {
             .autoDispose(scope())
             .subscribe {
                 when (it) {
-                    is PadEvent.Control -> displayOptionsDialog()
+                    is PadEvent.Option -> handlePadOption(it.optionType)
                     is PadEvent.Button -> retroGameView?.sendKeyEvent(it.action, it.keycode)
                     is PadEvent.Stick -> retroGameView?.sendMotionEvent(it.source, it.xAxis, it.yAxis)
                 }
@@ -289,6 +290,12 @@ class GameActivity : ImmersiveActivity() {
         retroGameView?.getConnectedGamepads()
             ?.autoDispose(scope())
             ?.subscribe { padLayout.setVisibleOrGone(it == 0) }
+    }
+
+    private fun handlePadOption(option: OptionType) {
+        when (option) {
+            OptionType.SETTINGS -> displayOptionsDialog()
+        }
     }
 
     private fun setupPhysicalPad() {

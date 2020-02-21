@@ -1,6 +1,6 @@
 package com.swordfish.touchinput.events
 
-enum class Option {
+enum class OptionType {
     SETTINGS
 }
 
@@ -22,5 +22,5 @@ sealed class PadEvent : HapticEvent {
         override val haptic: Boolean
     ) : PadEvent(), HapticEvent
 
-    data class Control(val function: Option, override val haptic: Boolean) : PadEvent(), HapticEvent
+    data class Option(val optionType: OptionType, override val haptic: Boolean) : PadEvent(), HapticEvent
 }

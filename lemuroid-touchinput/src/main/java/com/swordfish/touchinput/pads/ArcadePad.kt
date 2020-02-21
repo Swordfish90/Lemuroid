@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.EventsTransformers
-import com.swordfish.touchinput.events.Option
+import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.interfaces.StickEventsSource
 import com.swordfish.touchinput.views.ActionButtons
@@ -71,6 +71,6 @@ class ArcadePad @JvmOverloads constructor(
     private fun getMenuEvents(): Observable<PadEvent> {
         return findViewById<IconButton>(R.id.menu)
             .getEvents()
-            .compose(EventsTransformers.clickMap(Option.SETTINGS))
+            .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
     }
 }
