@@ -29,11 +29,11 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
@@ -53,13 +53,13 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
+import com.swordfish.touchinput.events.OptionType
 import com.uber.autodispose.autoDispose
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 class GameActivity : ImmersiveActivity() {
     companion object {
@@ -101,7 +101,6 @@ class GameActivity : ImmersiveActivity() {
     private lateinit var containerLayout: ConstraintLayout
     private lateinit var gameViewLayout: FrameLayout
     private lateinit var padLayout: FrameLayout
-    private lateinit var menuButton: ImageButton
 
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var savesManager: SavesManager
@@ -118,7 +117,6 @@ class GameActivity : ImmersiveActivity() {
         containerLayout = findViewById(R.id.game_container)
         gameViewLayout = findViewById(R.id.gameview_layout)
         padLayout = findViewById(R.id.pad_layout)
-        menuButton = findViewById(R.id.menu_button)
 
         system = GameSystem.findById(intent.getStringExtra(EXTRA_SYSTEM_ID))
 
@@ -283,6 +281,7 @@ class GameActivity : ImmersiveActivity() {
             .autoDispose(scope())
             .subscribe {
                 when (it) {
+                    is PadEvent.Option -> handlePadOption(it.optionType)
                     is PadEvent.Button -> retroGameView?.sendKeyEvent(it.action, it.keycode)
                     is PadEvent.Stick -> retroGameView?.sendMotionEvent(it.source, it.xAxis, it.yAxis)
                 }
@@ -290,14 +289,12 @@ class GameActivity : ImmersiveActivity() {
 
         retroGameView?.getConnectedGamepads()
             ?.autoDispose(scope())
-            ?.subscribe {
-                padLayout.setVisibleOrGone(it == 0)
-                menuButton.setVisibleOrGone(it == 0)
-            }
+            ?.subscribe { padLayout.setVisibleOrGone(it == 0) }
+    }
 
-        menuButton.setOnClickListener {
-            performHapticFeedback(it)
-            displayOptionsDialog()
+    private fun handlePadOption(option: OptionType) {
+        when (option) {
+            OptionType.SETTINGS -> displayOptionsDialog()
         }
     }
 
@@ -413,20 +410,21 @@ class GameActivity : ImmersiveActivity() {
         fun handleOrientationChange(orientation: Int) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                // We should also add some padding the virtual layout or it would clash with the menu button.
-                setVirtualPadBottomPadding(resources.getDimension(R.dimen.game_menu_button_size).roundToInt())
-
                 // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
                 // view might be cut due to rounded corners.
                 setContainerWindowsInsets(true, true)
+                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.TOP)
             } else {
-                setVirtualPadBottomPadding(0)
+                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.BOTTOM)
                 setContainerWindowsInsets(top = false, bottom = true)
             }
         }
 
-        private fun setVirtualPadBottomPadding(bottomPadding: Int) {
-            padLayout.setPadding(0, 0, 0, bottomPadding)
+        private fun changeGameViewConstraints(gameViewConstraint: Int, padConstraint: Int) {
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(containerLayout)
+            constraintSet.connect(R.id.gameview_layout, gameViewConstraint, R.id.pad_layout, padConstraint, 0)
+            constraintSet.applyTo(containerLayout)
         }
 
         private fun setContainerWindowsInsets(top: Boolean, bottom: Boolean) {

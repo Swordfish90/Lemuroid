@@ -5,9 +5,11 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.EventsTransformers
+import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
+import com.swordfish.touchinput.views.IconButton
 import com.swordfish.touchinput.views.base.BaseSingleButton
 import io.reactivex.Observable
 
@@ -28,7 +30,8 @@ class Atari2600Pad @JvmOverloads constructor(
                 getSelectEvents(),
                 getStartEvents(),
                 getL1Events(),
-                getL2Events()
+                getL2Events(),
+                getMenuEvents()
         ))
     }
 
@@ -65,5 +68,11 @@ class Atari2600Pad @JvmOverloads constructor(
     private fun getDirectionEvents(): Observable<PadEvent> {
         return findViewById<DirectionPad>(R.id.direction).getEvents()
                 .compose(EventsTransformers.directionPadMap())
+    }
+
+    private fun getMenuEvents(): Observable<PadEvent> {
+        return findViewById<IconButton>(R.id.menu)
+                .getEvents()
+                .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
     }
 }

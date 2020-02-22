@@ -5,9 +5,11 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.EventsTransformers
+import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
+import com.swordfish.touchinput.views.IconButton
 import com.swordfish.touchinput.views.LargeSingleButton
 import com.swordfish.touchinput.views.SmallSingleButton
 import io.reactivex.Observable
@@ -29,7 +31,8 @@ class SNESPad @JvmOverloads constructor(
             getDirectionEvents(),
             getActionEvents(),
             getR1Events(),
-            getL1Events()
+            getL1Events(),
+            getMenuEvents()
         ))
     }
 
@@ -72,5 +75,11 @@ class SNESPad @JvmOverloads constructor(
         return findViewById<LargeSingleButton>(R.id.r1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
+    }
+
+    private fun getMenuEvents(): Observable<PadEvent> {
+        return findViewById<IconButton>(R.id.menu)
+                .getEvents()
+                .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
     }
 }

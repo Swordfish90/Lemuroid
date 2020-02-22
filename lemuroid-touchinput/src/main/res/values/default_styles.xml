@@ -60,6 +60,14 @@
         <item name="icons">@array/psx_action_drawable_labels</item>
     </style>
 
+    <style name="default_menu">
+        <item name="android:layout_width">@dimen/icon_button_size</item>
+        <item name="android:layout_height">@dimen/icon_button_size</item>
+        <item name="android:padding">@dimen/icon_button_padding</item>
+        <item name="android:background">?android:selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/menu_button</item>
+    </style>
+
     <style name="default_stick">
         <item name="android:layout_width">@dimen/size_stick</item>
         <item name="android:layout_height">@dimen/size_stick</item>

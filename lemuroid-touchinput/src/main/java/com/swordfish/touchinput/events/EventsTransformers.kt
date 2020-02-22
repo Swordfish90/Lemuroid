@@ -4,6 +4,13 @@ import com.swordfish.touchinput.interfaces.StickEventsSource
 import io.reactivex.ObservableTransformer
 
 internal object EventsTransformers {
+
+    fun clickMap(optionType: OptionType): ObservableTransformer<ViewEvent.Click, PadEvent> {
+        return ObservableTransformer { upstream ->
+            upstream.map { PadEvent.Option(optionType, true) }
+        }
+    }
+
     fun actionButtonsMap(vararg keycodes: Int): ObservableTransformer<ViewEvent.Button, PadEvent> {
         return ObservableTransformer { upstream ->
             upstream.map { PadEvent.Button(it.action, keycodes[it.index], it.haptic) }

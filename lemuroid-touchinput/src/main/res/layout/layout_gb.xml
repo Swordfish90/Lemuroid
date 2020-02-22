@@ -30,18 +30,18 @@
 
     <com.swordfish.touchinput.views.ActionButtons
         android:id="@+id/actions"
+        style="@style/default_action_2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        style="@style/default_action_2"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/menu"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintWidth_max="@dimen/dial_max_size"
         tools:ignore="RtlHardcoded" />
 
@@ -51,13 +51,13 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/menu"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintWidth_max="@dimen/dial_max_size" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -66,5 +66,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
+    <com.swordfish.touchinput.views.IconButton
+        android:id="@+id/menu"
+        style="@style/default_menu"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
