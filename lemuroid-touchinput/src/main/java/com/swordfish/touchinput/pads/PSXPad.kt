@@ -10,9 +10,6 @@ import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.LargeSingleButton
-import com.swordfish.touchinput.views.SmallSingleButton
-import com.swordfish.touchinput.views.Stick
 import com.swordfish.touchinput.views.base.BaseSingleButton
 import io.reactivex.Observable
 

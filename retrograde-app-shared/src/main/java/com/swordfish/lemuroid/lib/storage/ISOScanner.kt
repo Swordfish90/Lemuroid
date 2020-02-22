@@ -8,7 +8,9 @@ class ISOScanner {
         private const val PS_HEADER_MAX_SIZE = 1024 * 1024
         private const val PS_SERIAL_MAX_SIZE = 10
 
-        private val psSerialRegex = Regex("^([A-Z]+)-?([0-9]+)")
+        private val PS_SERIAL_REGEX = Regex("^([A-Z]+)-?([0-9]+)")
+
+        private val PS_SUPPORTED_FORMATS = setOf("iso", "pbp")
 
         private val PSX_BASE_SERIALS = listOf(
             "CPCS",
@@ -58,17 +60,17 @@ class ISOScanner {
         }
 
         /** Extract a PS1 or PSP serial from ISO file or PBP. */
-        private fun extractPlayStationSerial(fileName: String, inputStream: InputStream) = inputStream.use { inputStream ->
-            if (FileUtils.extractExtension(fileName) !in setOf("iso" , "pbp")) {
+        private fun extractPlayStationSerial(fileName: String, inputStream: InputStream) = inputStream.use { stream ->
+            if (FileUtils.extractExtension(fileName) !in PS_SUPPORTED_FORMATS) {
                 return null
             }
 
-            movingWidnowSequence(inputStream, PS_SERIAL_MAX_SIZE)
+            movingWidnowSequence(stream, PS_SERIAL_MAX_SIZE)
                 .take(PS_HEADER_MAX_SIZE)
                 .map { String(it, Charsets.US_ASCII) }
                 .filter { serial -> (PSP_BASE_SERIALS + PSX_BASE_SERIALS).any { serial.startsWith(it) } }
                 .map { serial ->
-                    psSerialRegex.find(serial)?.groupValues?.let { "${it[1]}-${it[2]}" }
+                    PS_SERIAL_REGEX.find(serial)?.groupValues?.let { "${it[1]}-${it[2]}" }
                 }
                 .filterNotNull()
                 .firstOrNull()
