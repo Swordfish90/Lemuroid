@@ -5,8 +5,30 @@ import java.io.InputStream
 
 class ISOScanner {
     companion object {
-        private const val PSP_HEADER_MAX_SIZE = 1024 * 1024
-        private const val PSP_SERIAL_SIZE = 10
+        private const val PS_HEADER_MAX_SIZE = 1024 * 1024
+        private const val PS_SERIAL_MAX_SIZE = 10
+
+        private val psSerialRegex = Regex("^([A-Z]+)-?([0-9]+)")
+
+        private val PSX_BASE_SERIALS = listOf(
+            "CPCS",
+            "SCES",
+            "SIPS",
+            "SLKA",
+            "SLPS",
+            "SLUS",
+            "ESPM",
+            "SLED",
+            "SCPS",
+            "SCAJ",
+            "PAPX",
+            "SLES",
+            "HPS",
+            "LSP",
+            "SLPM",
+            "SCUS",
+            "SCED"
+        )
 
         private val PSP_BASE_SERIALS = listOf(
             "ULES",
@@ -32,18 +54,23 @@ class ISOScanner {
         )
 
         fun extractSerial(fileName: String, inputStream: InputStream): String? {
-            return extractPSPSerial(fileName, inputStream.buffered())
+            return extractPlayStationSerial(fileName, inputStream.buffered())
         }
 
-        private fun extractPSPSerial(fileName: String, inputStream: InputStream) = inputStream.use { inputStream ->
-            if (FileUtils.extractExtension(fileName) != "iso") {
+        /** Extract a PS1 or PSP serial from ISO file or PBP. */
+        private fun extractPlayStationSerial(fileName: String, inputStream: InputStream) = inputStream.use { inputStream ->
+            if (FileUtils.extractExtension(fileName) !in setOf("iso" , "pbp")) {
                 return null
             }
 
-            movingWidnowSequence(inputStream, PSP_SERIAL_SIZE)
-                .take(PSP_HEADER_MAX_SIZE)
+            movingWidnowSequence(inputStream, PS_SERIAL_MAX_SIZE)
+                .take(PS_HEADER_MAX_SIZE)
                 .map { String(it, Charsets.US_ASCII) }
-                .filter { serial -> PSP_BASE_SERIALS.any { serial.startsWith(it) } }
+                .filter { serial -> (PSP_BASE_SERIALS + PSX_BASE_SERIALS).any { serial.startsWith(it) } }
+                .map { serial ->
+                    psSerialRegex.find(serial)?.groupValues?.let { "${it[1]}-${it[2]}" }
+                }
+                .filterNotNull()
                 .firstOrNull()
         }
 

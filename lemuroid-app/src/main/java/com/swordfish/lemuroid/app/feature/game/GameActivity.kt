@@ -212,6 +212,7 @@ class GameActivity : ImmersiveActivity() {
             SystemID.NDS -> GLRetroView.SHADER_LCD
             SystemID.GG -> GLRetroView.SHADER_LCD
             SystemID.ATARI2600 -> GLRetroView.SHADER_CRT
+            SystemID.PSX -> GLRetroView.SHADER_CRT
         }
     }
 

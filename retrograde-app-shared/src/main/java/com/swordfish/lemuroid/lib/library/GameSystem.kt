@@ -55,6 +55,8 @@ data class GameSystem(
 
     val scanOptions: ScanOptions = ScanOptions(),
 
+    val coreInAsset: String? = null,
+
     val supportedExtensions: List<String> = uniqueExtensions
 
 ) {
@@ -171,6 +173,23 @@ data class GameSystem(
                         "nintendo5",
                         "mupen64plus_next_libretro_android.so.zip",
                         uniqueExtensions = listOf("n64", "z64")
+                ),
+                GameSystem(
+                        SystemID.PSX,
+                        "Sony - PlayStation",
+                        "pcsx_rearmed",
+                        R.string.game_system_title_psx,
+                        R.string.game_system_abbr_psx,
+                        R.drawable.game_system_psx,
+                        "sony0",
+                        "pcsx_rearmed_libretro_android.so.zip",
+                        uniqueExtensions = listOf(),
+                        supportedExtensions = listOf("iso", "pbp"),
+                        scanOptions = ScanOptions(
+                            scanByFilename = false,
+                            scanByUniqueExtension = false,
+                            scanByParentAndSupportedExtensions = true
+                        )
                 ),
                 GameSystem(
                         SystemID.PSP,
