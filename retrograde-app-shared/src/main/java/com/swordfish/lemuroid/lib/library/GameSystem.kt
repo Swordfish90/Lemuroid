@@ -55,8 +55,6 @@ data class GameSystem(
 
     val scanOptions: ScanOptions = ScanOptions(),
 
-    val coreInAsset: String? = null,
-
     val supportedExtensions: List<String> = uniqueExtensions
 
 ) {

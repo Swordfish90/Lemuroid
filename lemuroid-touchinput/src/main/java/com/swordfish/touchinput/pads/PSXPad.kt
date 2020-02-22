@@ -33,7 +33,8 @@ class PSXPad @JvmOverloads constructor(
             getL1Events(),
             getR2Events(),
             getL2Events(),
-            getMenuEvents()))
+            getMenuEvents()
+        ))
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
@@ -44,18 +45,18 @@ class PSXPad @JvmOverloads constructor(
 
     private fun getSelectEvent(): Observable<PadEvent> {
         return findViewById<BaseSingleButton>(R.id.select)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
 
     private fun getActionEvents(): Observable<PadEvent> {
         return findViewById<ActionButtons>(R.id.actions)
             .getEvents()
             .compose(EventsTransformers.actionButtonsMap(
-                    KeyEvent.KEYCODE_BUTTON_Y,
-                    KeyEvent.KEYCODE_BUTTON_X,
-                    KeyEvent.KEYCODE_BUTTON_B,
-                    KeyEvent.KEYCODE_BUTTON_A)
+                KeyEvent.KEYCODE_BUTTON_Y,
+                KeyEvent.KEYCODE_BUTTON_X,
+                KeyEvent.KEYCODE_BUTTON_B,
+                KeyEvent.KEYCODE_BUTTON_A)
             )
     }
 
@@ -73,8 +74,8 @@ class PSXPad @JvmOverloads constructor(
 
     private fun getL2Events(): Observable<PadEvent> {
         return findViewById<BaseSingleButton>(R.id.l2)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
     }
 
     private fun getR1Events(): Observable<PadEvent> {
@@ -85,13 +86,13 @@ class PSXPad @JvmOverloads constructor(
 
     private fun getR2Events(): Observable<PadEvent> {
         return findViewById<BaseSingleButton>(R.id.r2)
-                .getEvents()
-                .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R2))
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R2))
     }
 
     private fun getMenuEvents(): Observable<PadEvent> {
         return findViewById<IconButton>(R.id.menu)
-                .getEvents()
-                .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
+            .getEvents()
+            .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
     }
 }
