@@ -77,7 +77,7 @@ abstract class LemuroidApplicationModule {
 
     @PerActivity
     @ContributesAndroidInjector
-    abstract fun retroOptionsActivity(): CoreOptionsActivity
+    abstract fun coreOptionsActivity(): CoreOptionsActivity
 
     @PerActivity
     @ContributesAndroidInjector

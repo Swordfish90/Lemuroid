@@ -17,13 +17,13 @@ class CoreOptionsFragment : PreferenceFragmentCompat() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val retroOptions = arguments?.getSerializable(EXTRA_RETRO_OPTIONS) as Array<CoreOption>?
-                ?: throw InvalidParameterException("EXTRA_RETRO_OPTIONS")
+        val coreOptions = arguments?.getSerializable(EXTRA_CORE_OPTIONS) as Array<CoreOption>?
+                ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
         val systemID = arguments?.getString(EXTRA_SYSTEM_ID)
                 ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
 
-        retroOptions
+        coreOptions
             .map { convertToPreference(it, systemID) }
             .forEach { preferenceScreen.addPreference(it) }
     }
@@ -58,14 +58,14 @@ class CoreOptionsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
-        private const val EXTRA_RETRO_OPTIONS = "retro_options"
+        private const val EXTRA_CORE_OPTIONS = "core_options"
         private const val EXTRA_SYSTEM_ID = "system_id"
         private val BOOLEAN_SET = setOf("enabled", "disabled")
 
         fun newInstance(options: Array<CoreOption>, systemID: String): CoreOptionsFragment {
             val result = CoreOptionsFragment()
             result.arguments = Bundle().apply {
-                putSerializable(EXTRA_RETRO_OPTIONS, options)
+                putSerializable(EXTRA_CORE_OPTIONS, options)
                 putString(EXTRA_SYSTEM_ID, systemID)
             }
             return result
