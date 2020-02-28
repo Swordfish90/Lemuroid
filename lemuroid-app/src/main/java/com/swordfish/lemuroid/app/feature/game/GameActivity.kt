@@ -20,6 +20,7 @@
 package com.swordfish.lemuroid.app.feature.game
 
 import android.app.Dialog
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Gravity
@@ -39,6 +40,9 @@ import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import timber.log.Timber
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.feature.coreoptions.CoreOption
+import com.swordfish.lemuroid.lib.core.CoreVariable
+import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.PadEvent
@@ -46,6 +50,7 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -53,6 +58,8 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
+import com.swordfish.lemuroid.lib.util.subscribeBy
+import com.swordfish.libretrodroid.Variable
 import com.swordfish.touchinput.events.OptionType
 import com.uber.autodispose.autoDispose
 import io.reactivex.Maybe
@@ -70,6 +77,7 @@ class GameActivity : ImmersiveActivity() {
         const val EXTRA_SYSTEM_ID = "system_id"
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
+        const val EXTRA_CORE_VARIABLES = "core_variables"
 
         private var transientStashedState: ByteArray? = null
         private var transientSRAMState: ByteArray? = null
@@ -105,6 +113,7 @@ class GameActivity : ImmersiveActivity() {
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
+    @Inject lateinit var coreVariablesManager: CoreVariablesManager
 
     private var retroGameView: GLRetroView? = null
 
@@ -163,6 +172,9 @@ class GameActivity : ImmersiveActivity() {
                 getShaderForSystem(useShaders, system)
         )
         retroGameView?.onCreate()
+
+        val coreVariables = intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>? ?: arrayOf()
+        updateCoreVariables(coreVariables.toList())
 
         gameViewLayout.addView(retroGameView)
 
@@ -246,6 +258,32 @@ class GameActivity : ImmersiveActivity() {
     override fun onResume() {
         super.onResume()
         retroGameView?.onResume()
+    }
+
+    private fun getCoreOptions(): List<CoreOption> {
+        return retroGameView?.getVariables()
+            ?.map { CoreOption.fromLibretroDroidVariable(it) } ?: listOf()
+    }
+
+    private fun updateCoreVariables(options: List<CoreVariable>) {
+        val updatedVariables = options.map { Variable(it.key, it.value) }
+            .toTypedArray()
+
+        updatedVariables.forEach {
+            Timber.i("Updating core variable: ${it.key} ${it.value}")
+        }
+
+        retroGameView?.updateVariables(*updatedVariables)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        coreVariablesManager.getCoreOptionsForSystem(system)
+            .subscribeOn(Schedulers.io())
+            .autoDispose(scope())
+            .subscribeBy({}) {
+                updateCoreVariables(it)
+            }
     }
 
     override fun onPause() {
@@ -406,6 +444,18 @@ class GameActivity : ImmersiveActivity() {
         retroGameView?.reset()
     }
 
+    private fun displayAdvancedSettings() {
+        val options = getCoreOptions()
+            .filter { it.variable.key in system.exposedSettings }
+
+        startActivity(
+                Intent(this, CoreOptionsActivity::class.java).apply {
+                    putExtra(CoreOptionsActivity.EXTRA_RETRO_OPTIONS, options.toTypedArray())
+                    putExtra(CoreOptionsActivity.EXTRA_SYSTEM_ID, system.id.dbname)
+                }
+        )
+    }
+
     inner class OrientationHandler {
 
         fun handleOrientationChange(orientation: Int) {
@@ -466,6 +516,12 @@ class GameActivity : ImmersiveActivity() {
 
             dialog.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
                 this@GameActivity.reset()
+                dialog.dismiss()
+            }
+
+            dialog.findViewById<Button>(R.id.save_entry_settings).isEnabled = system.exposedSettings.isNotEmpty()
+            dialog.findViewById<Button>(R.id.save_entry_settings).setOnClickListener {
+                this@GameActivity.displayAdvancedSettings()
                 dialog.dismiss()
             }
 

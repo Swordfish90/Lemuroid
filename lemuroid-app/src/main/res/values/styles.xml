@@ -19,4 +19,6 @@
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
     </style>
 
+    <style name="DialogButton" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush" />
+
 </resources>

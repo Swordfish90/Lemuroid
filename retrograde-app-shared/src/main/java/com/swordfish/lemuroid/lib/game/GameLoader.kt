@@ -25,6 +25,8 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
+import com.swordfish.lemuroid.lib.core.CoreVariable
+import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -36,7 +38,8 @@ class GameLoader(
     private val coreManager: CoreManager,
     private val retrogradeDatabase: RetrogradeDatabase,
     private val gameLibrary: GameLibrary,
-    private val savesManager: SavesManager
+    private val savesManager: SavesManager,
+    private val coreVariablesManager: CoreVariablesManager
 ) {
 
     private fun loadGame(gameId: Int): Maybe<Game> = retrogradeDatabase.gameDao().selectById(gameId)
@@ -73,7 +76,11 @@ class GameLoader(
                 null
             }
 
-            emitter.onNext(LoadingState.Ready(GameData(game, coreFile, gameFile, quickSaveData, saveRAMData)))
+            val coreVariables = coreVariablesManager.getCoreOptionsForSystem(gameSystem).blockingGet().toTypedArray()
+
+            emitter.onNext(
+                LoadingState.Ready(GameData(game, coreFile, gameFile, quickSaveData, saveRAMData, coreVariables))
+            )
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")
             emitter.onError(e)
@@ -88,6 +95,7 @@ class GameLoader(
         val coreFile: File,
         val gameFile: File,
         val quickSaveData: ByteArray?,
-        val saveRAMData: ByteArray?
+        val saveRAMData: ByteArray?,
+        val coreVariables: Array<CoreVariable>
     )
 }

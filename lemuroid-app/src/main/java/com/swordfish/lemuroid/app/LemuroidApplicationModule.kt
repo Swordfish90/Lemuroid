@@ -40,7 +40,9 @@ import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
+import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.Binds
@@ -72,6 +74,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun gameLauncherActivity(): GameLauncherActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun retroOptionsActivity(): CoreOptionsActivity
 
     @PerActivity
     @ContributesAndroidInjector
@@ -201,12 +207,18 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
+        fun coreVariablesManager(context: Context) = CoreVariablesManager(context)
+
+        @Provides
+        @PerApp
+        @JvmStatic
         fun gameLoader(
             coreManager: CoreManager,
             retrogradeDatabase: RetrogradeDatabase,
             gameLibrary: GameLibrary,
-            savesManager: SavesManager
-        ) = GameLoader(coreManager, retrogradeDatabase, gameLibrary, savesManager)
+            savesManager: SavesManager,
+            coreVariablesManager: CoreVariablesManager
+        ) = GameLoader(coreManager, retrogradeDatabase, gameLibrary, savesManager, coreVariablesManager)
 
         @Provides
         @PerApp

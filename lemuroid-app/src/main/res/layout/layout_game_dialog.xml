@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:orientation="vertical"
@@ -24,7 +25,7 @@
             android:id="@+id/save_entry_slot4"
             layout="@layout/layout_game_dialog_save_entry"/>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -36,21 +37,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/game_dialog_quit"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"/>
+                android:layout_gravity="center_vertical|start"
+                style="@style/DialogButton"/>
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_entry_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/game_dialog_settings"
+                android:layout_gravity="center"
+                app:iconSize="0dp"
+                style="@style/DialogButton"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save_entry_reset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/game_dialog_restart"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"/>
+                android:layout_gravity="center_vertical|end"
+                style="@style/DialogButton"/>
 
-        </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

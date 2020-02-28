@@ -23,6 +23,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.core.CoreManager
+import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import java.util.Locale
@@ -55,7 +56,11 @@ data class GameSystem(
 
     val scanOptions: ScanOptions = ScanOptions(),
 
-    val supportedExtensions: List<String> = uniqueExtensions
+    val supportedExtensions: List<String> = uniqueExtensions,
+
+    val exposedSettings: List<String> = listOf(),
+
+    val defaultSettings: List<CoreVariable> = listOf()
 
 ) {
 
@@ -71,7 +76,8 @@ data class GameSystem(
                         R.drawable.game_system_atari2600,
                         "atari0",
                         "stella_libretro_android.so.zip",
-                        uniqueExtensions = listOf("a26")
+                        uniqueExtensions = listOf("a26"),
+                        exposedSettings = listOf("stella_filter")
                 ),
                 GameSystem(
                         SystemID.NES,
@@ -93,7 +99,8 @@ data class GameSystem(
                         R.drawable.game_system_snes,
                         "nintendo1",
                         "snes9x_libretro_android.so.zip",
-                        uniqueExtensions = listOf("smc", "sfc")
+                        uniqueExtensions = listOf("smc", "sfc"),
+                        exposedSettings = listOf("snes9x_blargg")
                 ),
                 GameSystem(
                         SystemID.SMS,
@@ -104,7 +111,10 @@ data class GameSystem(
                         R.drawable.game_system_sms,
                         "sega0",
                         "genesis_plus_gx_libretro_android.so.zip",
-                        uniqueExtensions = listOf("sms")
+                        uniqueExtensions = listOf("sms"),
+                        exposedSettings = listOf(
+                            "genesis_plus_gx_blargg_ntsc_filter"
+                        )
                 ),
                 GameSystem(
                         SystemID.GENESIS,
@@ -115,7 +125,10 @@ data class GameSystem(
                         R.drawable.game_system_genesis,
                         "sega1",
                         "genesis_plus_gx_libretro_android.so.zip",
-                        uniqueExtensions = listOf("gen", "smd", "md")
+                        uniqueExtensions = listOf("gen", "smd", "md"),
+                        exposedSettings = listOf(
+                            "genesis_plus_gx_blargg_ntsc_filter"
+                        )
                 ),
                 GameSystem(
                         SystemID.GG,
@@ -126,7 +139,10 @@ data class GameSystem(
                         R.drawable.game_system_gg,
                         "sega2",
                         "genesis_plus_gx_libretro_android.so.zip",
-                        uniqueExtensions = listOf("gg")
+                        uniqueExtensions = listOf("gg"),
+                        exposedSettings = listOf(
+                            "genesis_plus_gx_lcd_filter"
+                        )
                 ),
                 GameSystem(
                         SystemID.GB,
@@ -137,7 +153,12 @@ data class GameSystem(
                         R.drawable.game_system_gb,
                         "nintendo2",
                         "gambatte_libretro_android.so.zip",
-                        uniqueExtensions = listOf("gb")
+                        uniqueExtensions = listOf("gb"),
+                        exposedSettings = listOf(
+                            "gambatte_gb_colorization",
+                            "gambatte_gb_internal_palette",
+                            "gambatte_mix_frames"
+                        )
                 ),
                 GameSystem(
                         SystemID.GBC,
@@ -148,7 +169,12 @@ data class GameSystem(
                         R.drawable.game_system_gbc,
                         "nintendo3",
                         "gambatte_libretro_android.so.zip",
-                        uniqueExtensions = listOf("gbc")
+                        uniqueExtensions = listOf("gbc"),
+                        exposedSettings = listOf(
+                            "gambatte_gb_colorization",
+                            "gambatte_gb_internal_palette",
+                            "gambatte_mix_frames"
+                        )
                 ),
                 GameSystem(
                         SystemID.GBA,
@@ -159,7 +185,13 @@ data class GameSystem(
                         R.drawable.game_system_gba,
                         "nintendo4",
                         "mgba_libretro_android.so.zip",
-                        uniqueExtensions = listOf("gba")
+                        uniqueExtensions = listOf("gba"),
+                        exposedSettings = listOf(
+                            "mgba_solar_sensor_level",
+                            "mgba_interframe_blending",
+                            "mgba_frameskip",
+                            "mgba_color_correction"
+                        )
                 ),
                 GameSystem(
                         SystemID.N64,
@@ -187,7 +219,9 @@ data class GameSystem(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
                             scanByParentAndSupportedExtensions = true
-                        )
+                        ),
+                        exposedSettings = listOf("pcsx_rearmed_frameskip"),
+                        defaultSettings = listOf(CoreVariable("pcsx_rearmed_drc", "disabled"))
                 ),
                 GameSystem(
                         SystemID.PSP,
@@ -206,6 +240,10 @@ data class GameSystem(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
                             scanByParentAndSupportedExtensions = true
+                        ),
+                        exposedSettings = listOf(
+                            "ppsspp_auto_frameskip",
+                            "ppsspp_frameskip"
                         )
                 ),
                 GameSystem(
@@ -224,6 +262,10 @@ data class GameSystem(
                             scanByUniqueExtension = false,
                             scanByParentAndFilename = true,
                             scanByParentAndSupportedExtensions = false
+                        ),
+                        exposedSettings = listOf(
+                            "fbneo-frameskip",
+                            "fbneo-cpu-speed-adjust"
                         )
                 ),
                 GameSystem(
@@ -235,7 +277,9 @@ data class GameSystem(
                         R.drawable.game_system_ds,
                         "nintendo6",
                         "desmume_libretro_android.so.zip",
-                        uniqueExtensions = listOf("nds")
+                        uniqueExtensions = listOf("nds"),
+                        exposedSettings = listOf("desmume_frameskip"),
+                        defaultSettings = listOf(CoreVariable("desmume_pointer_type", "touch"))
                 )
         )
 
