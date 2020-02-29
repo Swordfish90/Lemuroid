@@ -25,10 +25,16 @@
             android:id="@+id/save_entry_slot4"
             layout="@layout/layout_game_dialog_save_entry"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/menu_change_disk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DialogButton"
+            android:text="@string/game_dialog_change_disk_button" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:paddingTop="@dimen/grid_unit_2x"
             android:padding="@dimen/grid_unit_1x">
 
