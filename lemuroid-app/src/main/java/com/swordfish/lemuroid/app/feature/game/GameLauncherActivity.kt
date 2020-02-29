@@ -94,6 +94,7 @@ class GameLauncherActivity : ImmersiveActivity() {
                 putExtra(GameActivity.EXTRA_GAME_ID, gameData.game.id)
                 putExtra(GameActivity.EXTRA_CORE_PATH, gameData.coreFile.absolutePath)
                 putExtra(GameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
+                putExtra(GameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)
             }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

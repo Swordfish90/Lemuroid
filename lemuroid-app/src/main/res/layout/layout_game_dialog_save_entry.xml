@@ -8,7 +8,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/game_dialog_entry_load"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/DialogButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/game_dialog_load"
@@ -42,7 +42,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/game_dialog_entry_save"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/DialogButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/game_dialog_save"

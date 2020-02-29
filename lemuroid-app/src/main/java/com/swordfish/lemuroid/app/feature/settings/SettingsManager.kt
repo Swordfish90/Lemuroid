@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
 
 class SettingsManager(private val context: Context) {
 
-    private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private fun getString(resId: Int) = context.getString(resId)
 

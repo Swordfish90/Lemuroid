@@ -26,6 +26,11 @@
         </activity>
 
         <activity
+            android:label="@string/core_settings_title"
+            android:name="com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity"
+            android:process=":game"/>
+
+        <activity
             android:name="com.swordfish.lemuroid.app.feature.game.GameLauncherActivity"
             android:process=":game"
             android:configChanges="orientation|keyboardHidden|screenSize"
