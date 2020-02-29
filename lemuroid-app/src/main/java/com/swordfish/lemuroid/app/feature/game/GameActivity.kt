@@ -514,6 +514,15 @@ class GameActivity : ImmersiveActivity() {
             setupQuickSaveView(dialog, slot3SaveView, 2, infos[2])
             setupQuickSaveView(dialog, slot4SaveView, 3, infos[3])
 
+            dialog.findViewById<Button>(R.id.menu_change_disk).apply {
+                val numDisks = retroGameView?.getAvailableDisks() ?: 0
+                this.setVisibleOrGone(numDisks > 1)
+                this.setOnClickListener {
+                    dialog.dismiss()
+                    displayChangeDiskDialog(numDisks)
+                }
+            }
+
             dialog.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
                 this@GameActivity.reset()
                 dialog.dismiss()
@@ -531,6 +540,21 @@ class GameActivity : ImmersiveActivity() {
             }
 
             showImmersive(dialog)
+        }
+
+        private fun displayChangeDiskDialog(numDisks: Int) {
+            val context = this@GameActivity
+            val builder = AlertDialog.Builder(context)
+
+            val values = (0 until numDisks)
+                .map { context.resources.getString(R.string.game_dialog_change_disk_disk, (it + 1).toString()) }
+                .toTypedArray()
+
+            builder.setItems(values) { _, index ->
+                retroGameView?.changeDisk(index)
+            }
+
+            builder.create().show()
         }
 
         /** This is required to workaround an android bug marked as Wont Fix :(.
