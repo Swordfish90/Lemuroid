@@ -15,6 +15,7 @@ import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.StickEventsSource
 import io.reactivex.Observable
 import java.lang.Math.toRadians
+import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
@@ -141,7 +142,7 @@ class DirectionPad @JvmOverloads constructor(
             MotionEvent.ACTION_UP -> {
                 currentIndex = null
                 events.accept(ViewEvent.Stick(0.0f, 0.0f, false))
-                invalidate()
+                postInvalidate()
                 return true
             }
         }
@@ -160,14 +161,17 @@ class DirectionPad @JvmOverloads constructor(
             val angle = (atan2(y, x) * 180 / Math.PI + 360f) % 360f
             val index = floor(angle / SINGLE_BUTTON_ANGLE).toInt()
 
-            currentIndex = index
-            events.accept(ViewEvent.Stick(
-                    cos(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat(),
-                    sin(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat(),
-                    true
-            ))
+            if (index != currentIndex) {
+                val haptic = currentIndex?.let { prevIndex -> (prevIndex % 2) == 0 } ?: true
 
-            postInvalidate()
+                currentIndex = index
+                events.accept(ViewEvent.Stick(
+                        cos(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat(),
+                        sin(index * toRadians(SINGLE_BUTTON_ANGLE.toDouble())).toFloat(),
+                        haptic
+                ))
+                postInvalidate()
+            }
         }
     }
 
