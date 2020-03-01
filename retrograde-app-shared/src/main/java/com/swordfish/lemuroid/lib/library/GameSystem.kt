@@ -99,8 +99,7 @@ data class GameSystem(
                         R.drawable.game_system_snes,
                         "nintendo1",
                         "snes9x_libretro_android.so.zip",
-                        uniqueExtensions = listOf("smc", "sfc"),
-                        exposedSettings = listOf("snes9x_blargg")
+                        uniqueExtensions = listOf("smc", "sfc")
                 ),
                 GameSystem(
                         SystemID.SMS,
