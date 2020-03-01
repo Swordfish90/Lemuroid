@@ -32,7 +32,8 @@ class NDSPad @JvmOverloads constructor(
             getActionEvents(),
             getR1Events(),
             getL1Events(),
-            getMenuEvents()
+            getMenuEvents(),
+            getL3Events()
         ))
     }
 
@@ -81,5 +82,11 @@ class NDSPad @JvmOverloads constructor(
         return findViewById<IconButton>(R.id.menu)
             .getEvents()
             .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
+    }
+
+    private fun getL3Events(): Observable<PadEvent> {
+        return findViewById<IconButton>(R.id.l3)
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_THUMBL))
     }
 }

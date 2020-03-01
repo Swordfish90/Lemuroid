@@ -1,13 +1,16 @@
 package com.swordfish.touchinput.events
 
+import android.view.KeyEvent
 import com.swordfish.touchinput.interfaces.StickEventsSource
 import io.reactivex.ObservableTransformer
 
 internal object EventsTransformers {
 
-    fun clickMap(optionType: OptionType): ObservableTransformer<ViewEvent.Click, PadEvent> {
+    fun clickMap(optionType: OptionType): ObservableTransformer<ViewEvent.Button, PadEvent> {
         return ObservableTransformer { upstream ->
-            upstream.map { PadEvent.Option(optionType, true) }
+            upstream
+                .filter { it.action == KeyEvent.ACTION_DOWN }
+                .map { PadEvent.Option(optionType, true) }
         }
     }
 
