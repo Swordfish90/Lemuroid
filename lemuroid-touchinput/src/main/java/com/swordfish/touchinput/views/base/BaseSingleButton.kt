@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R

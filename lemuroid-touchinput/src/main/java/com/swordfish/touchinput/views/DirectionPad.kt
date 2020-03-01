@@ -15,7 +15,6 @@ import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.StickEventsSource
 import io.reactivex.Observable
 import java.lang.Math.toRadians
-import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
