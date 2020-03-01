@@ -71,3 +71,6 @@
 
 ## AutoDispose
 -keepnames public interface com.uber.autodispose.lifecycle.CorrespondingEventsFunction { *; }
+
+## LibretroDroid
+-keep class com.swordfish.libretrodroid.** { *; }
