@@ -6,7 +6,7 @@
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/start"
-        app:label="@string/start"
+        android:src="@drawable/button_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

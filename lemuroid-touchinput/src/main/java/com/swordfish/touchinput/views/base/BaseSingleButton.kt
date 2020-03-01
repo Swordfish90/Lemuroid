@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.ViewEvent
@@ -19,7 +20,7 @@ abstract class BaseSingleButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppCompatButton(context, attrs, defStyleAttr), ButtonEventsSource {
+) : AppCompatImageButton(context, attrs, defStyleAttr), ButtonEventsSource {
 
     private val events: PublishRelay<ViewEvent.Button> = PublishRelay.create()
     private val textPainter = TextPainter(context.resources)

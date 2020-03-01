@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:label="@string/select"
+        android:src="@drawable/button_select"
         app:layout_constraintBottom_toBottomOf="@+id/l1"
         app:layout_constraintStart_toEndOf="@+id/l1" />
 
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        app:label="@string/start"
+        android:src="@drawable/button_start"
         app:layout_constraintBottom_toBottomOf="@+id/r1"
         app:layout_constraintEnd_toStartOf="@+id/r1" />
 
