@@ -22,7 +22,7 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
 
     val discoverGames = retrogradeDb.gameDao().selectFirstNotPlayed(CAROUSEL_MAX_ITEMS)
 
-    val recentGames = retrogradeDb.gameDao().selectFirstRecents(CAROUSEL_MAX_ITEMS)
+    val recentGames = retrogradeDb.gameDao().selectFirstUnfavoriteRecents(CAROUSEL_MAX_ITEMS)
 
     val indexingInProgress = LibraryIndexMonitor(appContext).getLiveData()
 }

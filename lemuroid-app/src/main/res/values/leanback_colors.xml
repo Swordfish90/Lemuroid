@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Here we override the defualt Leanback colors to make them look Lemuroidish -->
+    <color name="lb_basic_card_bg_color">#242424</color>
+    <color name="lb_basic_card_info_bg_color">#181818</color>
+    <color name="lb_default_brand_color">#242424</color>
+    <color name="lb_default_brand_color_dark">#212121</color>
+    <color name="lb_default_search_color">@color/main_color</color>
+</resources>

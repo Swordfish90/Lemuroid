@@ -27,6 +27,6 @@
     <dimen name="grid_unit_6x">48dp</dimen>
     <dimen name="grid_unit_9x">72dp</dimen>
 
-    <dimen name="card_width">156dp</dimen>
+    <dimen name="card_width">176dp</dimen>
     <dimen name="card_height">88dp</dimen>
 </resources>

@@ -78,6 +78,8 @@ dependencies {
     implementation(deps.libs.epoxy.paging)
     kapt(deps.libs.epoxy.processor)
 
+    implementation(deps.libs.androidx.appcompat.leanback)
+
     // TODO All next dependencies might not be correct.
 
     implementation(deps.libs.androidx.appcompat.recyclerView)

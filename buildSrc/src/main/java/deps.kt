@@ -22,6 +22,7 @@ object deps {
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
+        const val leanback        = "1.0.0"
         const val libretrodroid   = "0.2.1"
     }
 
@@ -29,8 +30,8 @@ object deps {
         object androidx {
             object appcompat {
                 const val appcompat = "androidx.appcompat:appcompat:1.0.2"
-                const val leanback = "androidx.leanback:leanback:1.0.0"
-                const val leanbackPreference = "androidx.leanback:leanback-preference:1.0.0"
+                const val leanback = "androidx.leanback:leanback:${versions.leanback}"
+                const val leanbackPreference = "androidx.leanback:leanback-preference:${versions.leanback}"
                 const val palette = "androidx.palette:palette:1.0.0"
                 const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
                 const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
