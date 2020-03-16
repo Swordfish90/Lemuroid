@@ -1,8 +1,6 @@
 package com.swordfish.lemuroid.app.tv
 
 import android.content.Context
-import android.os.Bundle
-import android.util.DisplayMetrics
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
@@ -13,7 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.common.livedata.debounce
 import com.swordfish.lemuroid.common.livedata.zipLiveDataWithNull
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -39,11 +39,13 @@ class TVHomeFragment : BrowseSupportFragment() {
                 ViewModelProviders.of(this,
                         TVHomeViewModel.Factory(retrogradeDb)).get(TVHomeViewModel::class.java)
 
-        zipLiveDataWithNull(
-            homeViewModel.recentGames,
-            homeViewModel.discoverGames,
-            homeViewModel.systems
-        ).observe(this, Observer {
+        val zippedLiveData = zipLiveDataWithNull(
+                homeViewModel.recentGames,
+                homeViewModel.discoverGames,
+                homeViewModel.systems
+        )
+
+        zippedLiveData.debounce().observe(this, Observer {
             adapter = ArrayObjectAdapter(ListRowPresenter()).apply {
                 it[0]?.let {
                     val games = it as List<Game>
@@ -71,6 +73,10 @@ class TVHomeFragment : BrowseSupportFragment() {
                         this.add(ListRow(HeaderItem("Systems"), items))
                     }
                 }
+
+                val items = ArrayObjectAdapter(SettingPresenter(resources.getDimensionPixelSize(R.dimen.card_width)))
+                items.add(0, SettingPresenter.Setting.RESCAN)
+                this.add(ListRow(HeaderItem("Settings"), items))
             }
         })
 
@@ -80,6 +86,11 @@ class TVHomeFragment : BrowseSupportFragment() {
                 is GameSystem -> {
                     val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(item.id.dbname)
                     findNavController().navigate(action)
+                }
+                is SettingPresenter.Setting -> {
+                    when (item) {
+                        SettingPresenter.Setting.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
+                    }
                 }
             }
         }

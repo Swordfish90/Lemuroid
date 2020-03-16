@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.tv
 import android.content.Context
 import android.os.Bundle
 import androidx.leanback.app.VerticalGridSupportFragment
+import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -25,7 +26,7 @@ class TVGamesFragment : VerticalGridSupportFragment() {
         super.onCreate(savedInstanceState)
 
         val gridPresenter = VerticalGridPresenter()
-        gridPresenter.numberOfColumns = 5
+        gridPresenter.numberOfColumns = 4
         setGridPresenter(gridPresenter)
     }
 
@@ -48,6 +49,12 @@ class TVGamesFragment : VerticalGridSupportFragment() {
 
         args.systemId?.let {
             gamesViewModel.systemId.value = it
+        }
+
+        onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
+            when(item) {
+                is Game -> gameInteractor.onGamePlay(item)
+            }
         }
     }
 

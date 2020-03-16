@@ -43,7 +43,7 @@ class GamePresenter(private val cardSize: Int) : Presenter() {
         fun updateCardViewImage(url: String?) {
             Picasso.get()
                 .load(url)
-                .resize(cardSize * 2, cardSize * 2)
+                .resize(cardSize, cardSize)
                 .centerCrop()
                 .placeholder(R.drawable.ic_image_paceholder)
                 .into(mCardView.mainImageView)
