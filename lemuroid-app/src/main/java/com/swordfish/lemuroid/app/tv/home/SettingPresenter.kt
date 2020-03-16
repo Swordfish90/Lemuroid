@@ -1,25 +1,19 @@
-package com.swordfish.lemuroid.app.tv
+package com.swordfish.lemuroid.app.tv.home
 
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import com.swordfish.lemuroid.R
 
-class SettingPresenter(private val cardSize: Int) : Presenter() {
-
-    enum class Setting(val icon: Int, val text: Int) {
-        RESCAN(R.drawable.ic_refresh_white_64dp, R.string.rescan)
-    }
+class SettingPresenter(private val cardSize: Int, private val cardPadding: Int) : Presenter() {
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any) {
-        val setting = item as Setting
+        val setting = item as TVSetting
         (viewHolder as ViewHolder).mCardView.titleText = viewHolder.view.context.resources.getString(setting.text)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.mCardView.mainImageView.setImageResource(setting.icon)
 
-        val padding = (cardSize * 0.15).toInt()
-        viewHolder.mCardView.mainImageView.setPadding(padding, padding, padding, padding)
+        viewHolder.mCardView.mainImageView.setPadding(cardPadding, cardPadding, cardPadding, cardPadding)
         viewHolder.mCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
     }
 

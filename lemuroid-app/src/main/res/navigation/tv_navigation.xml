@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.swordfish.lemuroid.app.tv.TVHomeFragment"
+        android:name="com.swordfish.lemuroid.app.tv.home.TVHomeFragment"
         android:label="@string/title_home">
 
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_games"
-        android:name="com.swordfish.lemuroid.app.tv.TVGamesFragment"
+        android:name="com.swordfish.lemuroid.app.tv.games.TVGamesFragment"
         android:label="@string/title_games">
 
         <argument

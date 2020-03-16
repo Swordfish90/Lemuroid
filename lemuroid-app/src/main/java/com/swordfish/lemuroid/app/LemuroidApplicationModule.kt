@@ -42,7 +42,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
-import com.swordfish.lemuroid.app.tv.MainTVActivity
+import com.swordfish.lemuroid.app.tv.main.MainTVActivity
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager

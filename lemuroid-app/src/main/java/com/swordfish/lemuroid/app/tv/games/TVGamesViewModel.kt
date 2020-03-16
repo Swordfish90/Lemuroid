@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.tv
+package com.swordfish.lemuroid.app.tv.games
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -8,8 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.swordfish.lemuroid.app.feature.library.LibraryIndexMonitor
-import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 

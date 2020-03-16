@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.tv
+package com.swordfish.lemuroid.app.tv.home
 
 import android.graphics.Color
 import android.view.View
@@ -10,16 +10,14 @@ import androidx.leanback.widget.Presenter
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.library.GameSystem
 
-class SystemPresenter(private val cardSize: Int) : Presenter() {
+class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) : Presenter() {
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any) {
         val system = item as GameSystem
         (viewHolder as ViewHolder).mCardView.titleText = viewHolder.view.context.resources.getString(system.titleResId)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.mCardView.mainImageView.setImageResource(system.imageResId)
-
-        val padding = (cardSize * 0.15).toInt()
-        viewHolder.mCardView.mainImageView.setPadding(padding, padding, padding, padding)
+        viewHolder.mCardView.mainImageView.setPadding(cardPadding, cardPadding, cardPadding, cardPadding)
         viewHolder.mCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
     }
 

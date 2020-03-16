@@ -22,6 +22,7 @@ package com.swordfish.lemuroid.lib.storage.local
 import android.content.Context
 import android.net.Uri
 import androidx.leanback.preference.LeanbackPreferenceFragment
+import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.kotlin.calculateCrc32
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -36,7 +37,7 @@ import java.io.File
 import java.io.FileInputStream
 
 class LocalStorageProvider(
-    context: Context,
+    private val context: Context,
     private val directoriesManager: DirectoriesManager,
     override val metadataProvider: GameMetadataProvider
 ) : StorageProvider {
@@ -52,7 +53,13 @@ class LocalStorageProvider(
     override val enabledByDefault = true
 
     override fun listFiles(): Observable<StorageFile> =
-        Observable.fromIterable(walkDirectory(directoriesManager.getInternalRomsDirectory()))
+        Observable.fromIterable(walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory()))
+
+    private fun getExternalFolder(): File? {
+        val prefString = context.getString(R.string.pref_key_legacy_external_folder)
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferenceManager.getString(prefString, null)?.let { File(it) }
+    }
 
     private fun walkDirectory(directory: File): Iterable<StorageFile> {
         return directory.walk()

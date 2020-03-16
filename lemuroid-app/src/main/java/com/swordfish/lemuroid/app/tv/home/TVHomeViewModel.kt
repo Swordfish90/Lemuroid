@@ -1,10 +1,8 @@
-package com.swordfish.lemuroid.app.tv
+package com.swordfish.lemuroid.app.tv.home
 
-import android.content.Context
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.swordfish.lemuroid.app.feature.library.LibraryIndexMonitor
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 
@@ -20,11 +18,11 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
         }
     }
 
-    val discoverGames = retrogradeDb.gameDao().selectFirstNotPlayed(CAROUSEL_MAX_ITEMS)
+    private val systemIds = retrogradeDb.gameDao().selectSystems()
 
     val recentGames = retrogradeDb.gameDao().selectFirstRecents(CAROUSEL_MAX_ITEMS)
 
-    val systems = Transformations.map(retrogradeDb.gameDao().selectSystems()) { ids ->
+    val systems = Transformations.map(systemIds) { ids ->
         ids.map { GameSystem.findById(it) }
     }
 }

@@ -17,7 +17,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.swordfish.lemuroid.app.tv
+package com.swordfish.lemuroid.app.tv.shared
 
 import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.Presenter

@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.tv
+package com.swordfish.lemuroid.app.tv.shared
 
 import android.graphics.Color
 import android.view.View

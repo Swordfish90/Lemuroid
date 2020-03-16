@@ -1,23 +1,30 @@
-package com.swordfish.lemuroid.app.tv
+package com.swordfish.lemuroid.app.tv.main
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
-import com.swordfish.lemuroid.app.feature.main.MainViewModel
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.tv.games.TVGamesFragment
+import com.swordfish.lemuroid.app.tv.home.TVHomeFragment
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
-import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
+import com.tbruyelle.rxpermissions2.RxPermissions
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.autoDispose
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
 
 class MainTVActivity : RetrogradeActivity() {
+
+    @Inject lateinit var rxPermissions: RxPermissions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +39,14 @@ class MainTVActivity : RetrogradeActivity() {
                 this.isEnabled = !it
             }
         })
+
+        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        rxPermissions.request(*permissions)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { if (!it) finish() }
+                .autoDispose(scope())
+                .subscribe()
 
 /*        val metrics = resources.displayMetrics
         metrics.density = 0.75f * metrics.density
@@ -57,6 +72,11 @@ class MainTVActivity : RetrogradeActivity() {
             @JvmStatic
             fun gameInteractor(activity: MainTVActivity, retrogradeDb: RetrogradeDatabase) =
                     GameInteractor(activity, retrogradeDb)
+
+            @Provides
+            @PerActivity
+            @JvmStatic
+            fun rxPermissions(activity: MainTVActivity): RxPermissions = RxPermissions(activity)
         }
     }
 
