@@ -19,7 +19,6 @@
 
 package com.swordfish.lemuroid.app.feature.game
 
-import android.app.Dialog
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -27,10 +26,7 @@ import android.view.Gravity
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.View
-import android.view.WindowManager
-import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -41,8 +37,9 @@ import com.uber.autodispose.android.lifecycle.scope
 import timber.log.Timber
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.feature.coreoptions.CoreOption
+import com.swordfish.lemuroid.app.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.feature.gamemenu.GameMenuContract
 import com.swordfish.lemuroid.lib.core.CoreVariable
-import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.PadEvent
@@ -50,6 +47,8 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.tv.game.TVGameMenuActivity
+import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -57,7 +56,6 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
-import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.touchinput.events.OptionType
@@ -65,7 +63,6 @@ import com.uber.autodispose.autoDispose
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class GameActivity : ImmersiveActivity() {
@@ -78,6 +75,8 @@ class GameActivity : ImmersiveActivity() {
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
         const val EXTRA_CORE_VARIABLES = "core_variables"
+
+        private const val DIALOG_REQUEST = 100
 
         private var transientStashedState: ByteArray? = null
         private var transientSRAMState: ByteArray? = null
@@ -200,9 +199,20 @@ class GameActivity : ImmersiveActivity() {
     }
 
     private fun displayOptionsDialog() {
-        ContextGameDialog()
-            .displayOptionsDialog()
-            .autoDispose(scope()).subscribe()
+        retrieveCurrentGame()
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribeBy { game ->
+                val intent = Intent(this, TVGameMenuActivity::class.java).apply {
+
+                    val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
+                    this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
+                    this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
+                    this.putExtra(GameMenuContract.EXTRA_GAME_ID, game.id)
+                    this.putExtra(GameMenuContract.EXTRA_SYSTEM_ID, game.systemId)
+                }
+                startActivityForResult(intent, DIALOG_REQUEST)
+            }
     }
 
     private fun getShaderForSystem(useShader: Boolean, system: GameSystem): Int {
@@ -257,6 +267,13 @@ class GameActivity : ImmersiveActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        coreVariablesManager.getCoreOptionsForSystem(system)
+                .autoDispose(scope())
+                .subscribeBy({}) {
+                    updateCoreVariables(it)
+                }
+
         retroGameView?.onResume()
     }
 
@@ -274,16 +291,6 @@ class GameActivity : ImmersiveActivity() {
         }
 
         retroGameView?.updateVariables(*updatedVariables)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        coreVariablesManager.getCoreOptionsForSystem(system)
-            .subscribeOn(Schedulers.io())
-            .autoDispose(scope())
-            .subscribeBy({}) {
-                updateCoreVariables(it)
-            }
     }
 
     override fun onPause() {
@@ -444,16 +451,31 @@ class GameActivity : ImmersiveActivity() {
         retroGameView?.reset()
     }
 
-    private fun displayAdvancedSettings() {
-        val options = getCoreOptions()
-            .filter { it.variable.key in system.exposedSettings }
-
-        startActivity(
-                Intent(this, CoreOptionsActivity::class.java).apply {
-                    putExtra(CoreOptionsActivity.EXTRA_RETRO_OPTIONS, options.toTypedArray())
-                    putExtra(CoreOptionsActivity.EXTRA_SYSTEM_ID, system.id.dbname)
-                }
-        )
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == DIALOG_REQUEST) {
+            Timber.i("Game menu dialog response: ${data?.extras.dump()}")
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_RESET, false) == true) {
+                reset()
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_SAVE) == true) {
+                saveSlot(data.getIntExtra(GameMenuContract.RESULT_SAVE, 0))
+                    .autoDispose(scope())
+                    .subscribe()
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_LOAD) == true) {
+                loadSlot(data.getIntExtra(GameMenuContract.RESULT_LOAD, 0))
+                    .autoDispose(scope())
+                    .subscribe()
+            }
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_QUIT, false) == true) {
+                autoSaveAndFinish()
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_DISK) == true) {
+                val index = data.getIntExtra(GameMenuContract.RESULT_CHANGE_DISK, 0)
+                retroGameView?.changeDisk(index)
+            }
+        }
     }
 
     inner class OrientationHandler {
@@ -486,130 +508,6 @@ class GameActivity : ImmersiveActivity() {
                 insets.consumeSystemWindowInsets()
             }
             containerLayout.requestApplyInsets()
-        }
-    }
-
-    // TODO: We should consider promoting it to an activity.
-    inner class ContextGameDialog {
-        fun displayOptionsDialog(): Completable {
-            return this@GameActivity.retrieveCurrentGame()
-                .flatMapSingle { savesManager.getSavedSlotsInfo(it, system.coreName) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess { presentContextDialog(it) }
-                .ignoreElement()
-        }
-
-        private fun presentContextDialog(infos: List<SavesManager.SaveInfos>) {
-            val dialog = Dialog(this@GameActivity)
-            dialog.setContentView(R.layout.layout_game_dialog)
-
-            val slot1SaveView = dialog.findViewById<View>(R.id.save_entry_slot1)
-            val slot2SaveView = dialog.findViewById<View>(R.id.save_entry_slot2)
-            val slot3SaveView = dialog.findViewById<View>(R.id.save_entry_slot3)
-            val slot4SaveView = dialog.findViewById<View>(R.id.save_entry_slot4)
-
-            setupQuickSaveView(dialog, slot1SaveView, 0, infos[0])
-            setupQuickSaveView(dialog, slot2SaveView, 1, infos[1])
-            setupQuickSaveView(dialog, slot3SaveView, 2, infos[2])
-            setupQuickSaveView(dialog, slot4SaveView, 3, infos[3])
-
-            dialog.findViewById<Button>(R.id.menu_change_disk).apply {
-                val numDisks = retroGameView?.getAvailableDisks() ?: 0
-                this.setVisibleOrGone(numDisks > 1)
-                this.setOnClickListener {
-                    dialog.dismiss()
-                    displayChangeDiskDialog(numDisks)
-                }
-            }
-
-            dialog.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
-                this@GameActivity.reset()
-                dialog.dismiss()
-            }
-
-            dialog.findViewById<Button>(R.id.save_entry_settings).isEnabled = system.exposedSettings.isNotEmpty()
-            dialog.findViewById<Button>(R.id.save_entry_settings).setOnClickListener {
-                this@GameActivity.displayAdvancedSettings()
-                dialog.dismiss()
-            }
-
-            dialog.findViewById<Button>(R.id.save_entry_close).setOnClickListener {
-                this@GameActivity.autoSaveAndFinish()
-                dialog.dismiss()
-            }
-
-            showImmersive(dialog)
-        }
-
-        private fun displayChangeDiskDialog(numDisks: Int) {
-            val context = this@GameActivity
-            val builder = AlertDialog.Builder(context)
-
-            val values = (0 until numDisks)
-                .map { context.resources.getString(R.string.game_dialog_change_disk_disk, (it + 1).toString()) }
-                .toTypedArray()
-
-            builder.setItems(values) { _, index ->
-                retroGameView?.changeDisk(index)
-            }
-
-            builder.create().show()
-        }
-
-        /** This is required to workaround an android bug marked as Wont Fix :(.
-         *  More details here: https://issuetracker.google.com/issues/36992828
-         *  Stackoverflow solution: https://stackoverflow.com/questions/22794049/how-do-i-maintain-the-immersive-mode-in-dialogs
-         */
-        private fun showImmersive(dialog: Dialog) {
-            val flag = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-            dialog.window?.setFlags(flag, flag)
-
-            dialog.show()
-
-            dialog.window?.decorView?.systemUiVisibility = window.decorView.systemUiVisibility
-
-            dialog.window?.clearFlags(flag)
-        }
-
-        private fun setupQuickSaveView(
-            dialog: Dialog,
-            quickSaveView: View,
-            index: Int,
-            saveInfo: SavesManager.SaveInfos
-        ) {
-            val title = this@GameActivity.getString(R.string.game_dialog_state, (index + 1).toString())
-
-            quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).apply {
-                this.text = getDateString(saveInfo)
-                this.setVisibleOrInvisible(saveInfo.exists)
-            }
-            quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_text).text = title
-            quickSaveView.findViewById<Button>(R.id.game_dialog_entry_load).apply {
-                this.isEnabled = saveInfo.exists
-                this.setOnClickListener {
-                    loadSlot(index).autoDispose(scope()).subscribe()
-                    dialog.dismiss()
-                }
-            }
-
-            quickSaveView.findViewById<Button>(R.id.game_dialog_entry_save).apply {
-                this.setOnClickListener {
-                    saveSlot(index).autoDispose(scope()).subscribe()
-                    dialog.dismiss()
-                }
-            }
-        }
-
-        /** We still return a string even if we don't show it to ensure dialog doesn't change size.*/
-        private fun getDateString(saveInfo: SavesManager.SaveInfos): String {
-            val formatter = SimpleDateFormat.getDateTimeInstance()
-            val date = if (saveInfo.exists) {
-                saveInfo.date
-            } else {
-                System.currentTimeMillis()
-            }
-            return formatter.format(date)
         }
     }
 }

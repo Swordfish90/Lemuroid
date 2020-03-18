@@ -79,6 +79,7 @@ dependencies {
     kapt(deps.libs.epoxy.processor)
 
     implementation(deps.libs.androidx.appcompat.leanback)
+    implementation(deps.libs.androidx.appcompat.leanbackPreference)
 
     // TODO All next dependencies might not be correct.
 

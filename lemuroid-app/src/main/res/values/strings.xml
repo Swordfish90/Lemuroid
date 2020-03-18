@@ -31,14 +31,14 @@
     <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
     <string name="home_empty_action">Select Directory</string>
 
-    <string name="game_dialog_save">Save</string>
-    <string name="game_dialog_load">Load</string>
-    <string name="game_dialog_restart">Restart</string>
-    <string name="game_dialog_quit">Quit</string>
-    <string name="game_dialog_settings">Settings</string>
-    <string name="game_dialog_state">State %1$s</string>
-    <string name="game_dialog_change_disk_button">Change Disk</string>
-    <string name="game_dialog_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_save">Save</string>
+    <string name="game_menu_load">Load</string>
+    <string name="game_menu_restart">Restart</string>
+    <string name="game_menu_quit">Quit</string>
+    <string name="game_menu_settings">Settings</string>
+    <string name="game_menu_state">State %1$s</string>
+    <string name="game_menu_change_disk_button">Change Disk</string>
+    <string name="game_menu_change_disk_disk">Disk %1$s</string>
 
     <string name="game_loading_download_core">Downloading core…</string>
     <string name="game_loading_preparing_game">Preparing game…</string>
@@ -51,6 +51,8 @@
 
     <string name="core_settings_title">Core Settings</string>
 
+    <string name="game_menu_title">Game menu</string>
+
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning</string>
     <string name="library_index_notification_message"></string>
@@ -60,5 +62,9 @@
     <string name="game_dialog_cannot_load_game">Cannot load game.\nMake sure this ROM is compatible with Lemuroid.</string>
 
     <string name="system_grid_details">%1$s games</string>
+
+    <string name="tv_folder_picker_title">Select ROMs Directory</string>
+    <string name="tv_folder_picker_action_choose">Select</string>
+    <string name="tv_folder_picker_action_cancel">Cancel</string>
 
 </resources>

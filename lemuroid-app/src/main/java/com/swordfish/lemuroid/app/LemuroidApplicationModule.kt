@@ -40,8 +40,9 @@ import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity
+import com.swordfish.lemuroid.app.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.tv.game.TVGameMenuActivity
 import com.swordfish.lemuroid.app.tv.main.MainTVActivity
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
@@ -82,11 +83,15 @@ abstract class LemuroidApplicationModule {
 
     @PerActivity
     @ContributesAndroidInjector
-    abstract fun coreOptionsActivity(): CoreOptionsActivity
+    abstract fun gameActivity(): GameActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [GameMenuActivity.Module::class])
+    abstract fun gameMenuActivity(): GameMenuActivity
 
     @PerActivity
     @ContributesAndroidInjector
-    abstract fun gameActivity(): GameActivity
+    abstract fun tvGameMenuActivity(): TVGameMenuActivity
 
     @Module
     companion object {

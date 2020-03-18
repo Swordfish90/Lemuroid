@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.leanback.app.GuidedStepSupportFragment
 import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
+import com.swordfish.lemuroid.R
 import java.io.File
 
 class TVFolderPickerActivity : FragmentActivity() {
@@ -45,15 +46,15 @@ class TVFolderPickerActivity : FragmentActivity() {
 
         @NonNull
         override fun onCreateGuidance(savedInstanceState: Bundle?): Guidance {
-            val title = "Select ROMs Directory" // TODO FILIPPO... Remove hardcoded string
+            val title = resources.getString(R.string.tv_folder_picker_title)
             val breadcrumb = directory.name
             return Guidance(title, "", breadcrumb, null)
         }
 
         override fun onCreateButtonActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
             super.onCreateButtonActions(actions, savedInstanceState)
-            addAction(actions, ACTION_CHOOSE, "Select", "") // TODO FILIPPO... Remove hardcoded string
-            addAction(actions, ACTION_CANCEL, "Cancel", "") // TODO FILIPPO... Remove hardcoded string
+            addAction(actions, ACTION_CHOOSE, resources.getString(R.string.tv_folder_picker_action_choose), "")
+            addAction(actions, ACTION_CANCEL, resources.getString(R.string.tv_folder_picker_action_cancel), "")
         }
 
         override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
@@ -77,7 +78,6 @@ class TVFolderPickerActivity : FragmentActivity() {
                     activity?.finish()
                 }
                 ACTION_CANCEL -> activity?.finish()
-                // TODO FILIPPO... Using description to store the path is not clean
                 else -> (activity as TVFolderPickerActivity).navigateTo(action.description.toString())
             }
         }
