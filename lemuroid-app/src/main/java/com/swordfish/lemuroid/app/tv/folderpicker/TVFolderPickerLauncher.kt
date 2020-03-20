@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import androidx.fragment.app.FragmentActivity
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 
-class TVFolderPickerLauncher : FragmentActivity() {
+class TVFolderPickerLauncher : ImmersiveActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

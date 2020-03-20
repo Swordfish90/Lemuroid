@@ -30,9 +30,7 @@ class GamePresenter(private val cardSize: Int) : Presenter() {
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder?) {
-        (viewHolder as ViewHolder).let {
-
-        }
+        val viewHolder = viewHolder as ViewHolder
         viewHolder.mCardView.mainImage = null
         Picasso.get().cancelRequest(viewHolder.mCardView.mainImageView)
     }

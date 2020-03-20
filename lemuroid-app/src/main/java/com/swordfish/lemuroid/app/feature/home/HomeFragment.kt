@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.Carousel
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.feature.settings.SettingsInteractor
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject

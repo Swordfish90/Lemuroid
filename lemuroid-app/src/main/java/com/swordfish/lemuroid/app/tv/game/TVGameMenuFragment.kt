@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
@@ -39,13 +38,9 @@ class TVGameMenuFragment(
         setupChangeDiskOption()
     }
 
-    private val SECTION_CORE_OPTIONS = "pref_game_section_core_options"
-    private val SECTION_CHANGE_DISK = "pref_game_section_change_disk"
-    private val SECTION_SAVE_GAME = "pref_game_section_save"
-    private val SECTION_LOAD_GAME = "pref_game_section_load"
-
     private fun setupCoreOptions() {
         val coreOptionsScreen = findPreference<PreferenceScreen>(SECTION_CORE_OPTIONS)
+        coreOptionsScreen?.isVisible = coreOptions.isNotEmpty()
         coreOptions
                 .map { CoreOptionsPreferenceHelper.convertToPreference(preferenceScreen.context, it, systemId) }
                 .forEach { coreOptionsScreen?.addPreference(it) }
@@ -53,7 +48,7 @@ class TVGameMenuFragment(
 
     private fun setupChangeDiskOption() {
         val changeDiskPreference = findPreference<PreferenceScreen>(SECTION_CHANGE_DISK)
-        changeDiskPreference?.isVisible = numDisks >= 1
+        changeDiskPreference?.isVisible = numDisks > 1
         (0 until numDisks)
                 .map {
                     val preference = Preference(requireContext())
@@ -79,7 +74,12 @@ class TVGameMenuFragment(
                 }
     }
 
-    private fun addSaveAndLoadPreferences(saveScreen: PreferenceScreen?, loadScreen: PreferenceScreen?, index: Int, saveInfos: SavesManager.SaveInfos) {
+    private fun addSaveAndLoadPreferences(
+        saveScreen: PreferenceScreen?,
+        loadScreen: PreferenceScreen?,
+        index: Int,
+        saveInfos: SavesManager.SaveInfos
+    ) {
         saveScreen?.addPreference(
             Preference(requireContext()).apply {
                 this.key = "pref_game_save_$index"
@@ -117,7 +117,7 @@ class TVGameMenuFragment(
             handleChangeDisk(preference.key.replace("pref_game_disk_", "").toInt())
             return true
         }
-        when(preference?.key) {
+        when (preference?.key) {
             "pref_game_reset" -> {
                 val resultIntent = Intent().apply {
                     putExtra(GameMenuContract.RESULT_RESET, true)
@@ -167,6 +167,13 @@ class TVGameMenuFragment(
         }
         activity?.setResult(Activity.RESULT_OK, resultIntent)
         activity?.finish()
+    }
+
+    companion object {
+        private const val SECTION_CORE_OPTIONS = "pref_game_section_core_options"
+        private const val SECTION_CHANGE_DISK = "pref_game_section_change_disk"
+        private const val SECTION_SAVE_GAME = "pref_game_section_save"
+        private const val SECTION_LOAD_GAME = "pref_game_section_load"
     }
 
     @dagger.Module

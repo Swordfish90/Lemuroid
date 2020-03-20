@@ -8,7 +8,6 @@ import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import dagger.android.ContributesAndroidInjector
 
-
 class GameMenuActivity : RetrogradeAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

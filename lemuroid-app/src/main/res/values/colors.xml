@@ -8,5 +8,7 @@
     <color name="colorSecondary">@color/colorPrimary</color>
     <color name="colorSecondaryVariant">@color/colorPrimaryVariant</color>
 
+    <color name="colorBackground">#121212</color>
+
     <color name="imageview_background">#09ffffff</color>
 </resources>

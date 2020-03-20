@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.app.tv.game
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.leanback.preference.LeanbackSettingsFragmentCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceDialogFragmentCompat
@@ -10,7 +9,6 @@ import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.app.feature.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.feature.gamemenu.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
-import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import java.security.InvalidParameterException

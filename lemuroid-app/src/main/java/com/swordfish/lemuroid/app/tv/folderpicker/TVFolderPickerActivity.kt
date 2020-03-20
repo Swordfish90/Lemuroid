@@ -5,14 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import androidx.annotation.NonNull
-import androidx.fragment.app.FragmentActivity
 import androidx.leanback.app.GuidedStepSupportFragment
 import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.tv.shared.BaseTVActivity
 import java.io.File
 
-class TVFolderPickerActivity : FragmentActivity() {
+class TVFolderPickerActivity : BaseTVActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (null == savedInstanceState) {

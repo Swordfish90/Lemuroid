@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.feature.game
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
@@ -22,8 +24,8 @@ import javax.inject.Inject
 import kotlin.system.exitProcess
 
 /**
- * Used as entry to point to [GameActivity], and both run in a separate process.
- * Takes care of loading everything (the game has to be ready in onCreate of GameActivity).
+ * Used as entry to point to [BaseGameActivity], and both run in a separate process.
+ * Takes care of loading everything (the game has to be ready in onCreate of BaseGameActivity).
  * GameSaverWork is launched in this seperate process.
  */
 class GameLauncherActivity : ImmersiveActivity() {
@@ -37,6 +39,7 @@ class GameLauncherActivity : ImmersiveActivity() {
         if (savedInstanceState == null) {
             val gameId = intent.getIntExtra("game_id", -1)
             val loadSave = intent.getBooleanExtra("load_save", false)
+            val useLeanback = intent.getBooleanExtra("leanback", false)
 
             val loadingStatesSubject = PublishSubject.create<GameLoader.LoadingState>()
             loadingStatesSubject.subscribeOn(Schedulers.io())
@@ -53,7 +56,7 @@ class GameLauncherActivity : ImmersiveActivity() {
                             {
                                 loadingStatesSubject.onNext(it)
                                 if (it is GameLoader.LoadingState.Ready) {
-                                    onGameDataReady(it.gameData)
+                                    onGameDataReady(it.gameData, useLeanback)
                                     loadingStatesSubject.onComplete()
                                 }
                             },
@@ -65,10 +68,10 @@ class GameLauncherActivity : ImmersiveActivity() {
         }
     }
 
-    private fun onGameDataReady(gameData: GameLoader.GameData) {
-        GameActivity.setTransientSaveRAMState(gameData.saveRAMData)
-        GameActivity.setTransientQuickSave(gameData.quickSaveData)
-        startActivityForResult(newIntent(this, gameData), REQUEST_CODE_GAME)
+    private fun onGameDataReady(gameData: GameLoader.GameData, useLeanback: Boolean) {
+        BaseGameActivity.setTransientSaveRAMState(gameData.saveRAMData)
+        BaseGameActivity.setTransientQuickSave(gameData.quickSaveData)
+        startActivityForResult(newIntent(this, gameData, useLeanback), REQUEST_CODE_GAME)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
@@ -88,14 +91,20 @@ class GameLauncherActivity : ImmersiveActivity() {
                 .show()
     }
 
-    fun newIntent(context: Context, gameData: GameLoader.GameData) =
-            Intent(context, GameActivity::class.java).apply {
-                putExtra(GameActivity.EXTRA_SYSTEM_ID, gameData.game.systemId)
-                putExtra(GameActivity.EXTRA_GAME_ID, gameData.game.id)
-                putExtra(GameActivity.EXTRA_CORE_PATH, gameData.coreFile.absolutePath)
-                putExtra(GameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
-                putExtra(GameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)
+    fun newIntent(context: Context, gameData: GameLoader.GameData, useLeanback: Boolean) =
+            Intent(context, getGameActivityClass(useLeanback)).apply {
+                putExtra(BaseGameActivity.EXTRA_SYSTEM_ID, gameData.game.systemId)
+                putExtra(BaseGameActivity.EXTRA_GAME_ID, gameData.game.id)
+                putExtra(BaseGameActivity.EXTRA_CORE_PATH, gameData.coreFile.absolutePath)
+                putExtra(BaseGameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
+                putExtra(BaseGameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)
             }
+
+    private fun getGameActivityClass(useLeanback: Boolean) = if (useLeanback) {
+        TVGameActivity::class.java
+    } else {
+        GameActivity::class.java
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -121,11 +130,12 @@ class GameLauncherActivity : ImmersiveActivity() {
     companion object {
         private const val REQUEST_CODE_GAME = 1000
 
-        fun launchGame(context: Context, game: Game, loadSave: Boolean) {
+        fun launchGame(context: Context, game: Game, loadSave: Boolean, useLeanback: Boolean) {
             context.startActivity(
                     Intent(context, GameLauncherActivity::class.java).apply {
                         putExtra("game_id", game.id)
                         putExtra("load_save", loadSave)
+                        putExtra("leanback", useLeanback)
                     }
             )
         }

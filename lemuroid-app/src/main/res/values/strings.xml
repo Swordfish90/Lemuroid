@@ -67,4 +67,10 @@
     <string name="tv_folder_picker_action_choose">Select</string>
     <string name="tv_folder_picker_action_cancel">Cancel</string>
 
+    <string name="tv_home_section_recents">Recent</string>
+    <string name="tv_home_section_systems">Systems</string>
+    <string name="tv_home_section_settings">Settings</string>
+
+    <string name="kiosk_shortcut_short_description">Kiosk</string>
+
 </resources>

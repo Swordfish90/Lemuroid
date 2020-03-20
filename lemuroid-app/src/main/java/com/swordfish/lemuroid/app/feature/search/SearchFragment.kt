@@ -10,12 +10,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.GamesAdapter
-import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.swordfish.lemuroid.app.shared.RecyclerViewFragment
+import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose

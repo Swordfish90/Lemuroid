@@ -9,7 +9,8 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.tv.games.TVGamesFragment
 import com.swordfish.lemuroid.app.tv.home.TVHomeFragment
-import com.swordfish.lemuroid.lib.android.RetrogradeActivity
+import com.swordfish.lemuroid.app.tv.shared.BaseTVActivity
+import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -22,7 +23,7 @@ import dagger.android.ContributesAndroidInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class MainTVActivity : RetrogradeActivity() {
+class MainTVActivity : BaseTVActivity() {
 
     @Inject lateinit var rxPermissions: RxPermissions
 
@@ -35,23 +36,25 @@ class MainTVActivity : RetrogradeActivity() {
 
         mainViewModel.indexingInProgress.observe(this, Observer {
             findViewById<View>(R.id.tv_loading).setVisibleOrGone(it)
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.view?.apply {
-                this.isEnabled = !it
-            }
         })
 
+        ensureLegacyStoragePermissionsIfNeeded()
+    }
+
+    private fun ensureLegacyStoragePermissionsIfNeeded() {
         val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
+        if (!TVHelper.isSAFSupported(this)) {
+            requestLegacyStoragePermissions(permissions)
+        }
+    }
+
+    private fun requestLegacyStoragePermissions(permissions: Array<String>) {
         rxPermissions.request(*permissions)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { if (!it) finish() }
                 .autoDispose(scope())
                 .subscribe()
-
-/*        val metrics = resources.displayMetrics
-        metrics.density = 0.75f * metrics.density
-        metrics.scaledDensity = 0.75f * metrics.scaledDensity
-        resources.displayMetrics.setTo(metrics)*/
     }
 
     @dagger.Module
@@ -71,32 +74,12 @@ class MainTVActivity : RetrogradeActivity() {
             @PerActivity
             @JvmStatic
             fun gameInteractor(activity: MainTVActivity, retrogradeDb: RetrogradeDatabase) =
-                    GameInteractor(activity, retrogradeDb)
+                    GameInteractor(activity, retrogradeDb, true)
 
             @Provides
             @PerActivity
             @JvmStatic
             fun rxPermissions(activity: MainTVActivity): RxPermissions = RxPermissions(activity)
         }
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) hideSystemUI()
-    }
-
-    private fun hideSystemUI() {
-        // Enables regular immersive mode.
-        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
-        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                // Set the content to appear under the system bars so that the
-                // content doesn't resize when the system bars hide and show.
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                // Hide the nav bar and status bar
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 }

@@ -40,11 +40,12 @@ class TVGamesFragment : VerticalGridSupportFragment() {
     override fun onResume() {
         super.onResume()
 
-        val factory = TVGamesViewModel.Factory(context!!.applicationContext, retrogradeDb)
+        val factory = TVGamesViewModel.Factory(retrogradeDb)
         val gamesViewModel = ViewModelProviders.of(this, factory).get(TVGamesViewModel::class.java)
 
         gamesViewModel.games.observe(this, Observer { pagedList ->
-            val adapter = PagedListObjectAdapter(GamePresenter(resources.getDimensionPixelSize(R.dimen.card_width)), Game.DIFF_CALLBACK)
+            val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
+            val adapter = PagedListObjectAdapter(GamePresenter(cardSize), Game.DIFF_CALLBACK)
             adapter.pagedList = pagedList
             this.adapter = adapter
         })
@@ -54,7 +55,7 @@ class TVGamesFragment : VerticalGridSupportFragment() {
         }
 
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
-            when(item) {
+            when (item) {
                 is Game -> gameInteractor.onGamePlay(item)
             }
         }

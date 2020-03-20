@@ -10,17 +10,18 @@ import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
+import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.feature.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
-import com.swordfish.lemuroid.common.livedata.debounce
-import com.swordfish.lemuroid.common.livedata.zipLiveDataWithNull
+import com.swordfish.lemuroid.app.tv.shared.GamePresenter
+import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -39,7 +40,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
-            when(item) {
+            when (item) {
                 is Game -> gameInteractor.onGamePlay(item)
                 is GameSystem -> {
                     val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(item.id.dbname)
@@ -57,56 +58,91 @@ class TVHomeFragment : BrowseSupportFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adapter = createAdapter()
+    }
+
     override fun onResume() {
         super.onResume()
 
         val factory = TVHomeViewModel.Factory(retrogradeDb)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
 
-        val zippedLiveData = zipLiveDataWithNull(
-            homeViewModel.recentGames,
-            homeViewModel.systems
-        )
+        homeViewModel.recentGames.observe(this, Observer {
+            updateRecentGames(it)
+        })
 
-        zippedLiveData.debounce().observe(this, Observer {
-            adapter = buildAdapter(
-                it[0] as List<Game>? ?: listOf(),
-                it[1] as List<GameSystem>? ?: listOf()
-            )
+        homeViewModel.systems.observe(this, Observer {
+            updateSystems(it)
         })
     }
 
-    private fun buildAdapter(recentGames: List<Game>, systems: List<GameSystem>) = ArrayObjectAdapter(ListRowPresenter()).apply {
-        if (recentGames.isNotEmpty()) {
-            val items = ArrayObjectAdapter(GamePresenter(resources.getDimensionPixelSize(R.dimen.card_width)))
-            items.addAll(0, recentGames)
-            this.add(ListRow(HeaderItem("Recents"), items))
-        }
+    private fun updateRecentGames(recentGames: List<Game>) {
+        val recentsItems = (adapter.get(0) as ListRow).adapter as ArrayObjectAdapter
+        recentsItems.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
+    }
 
-        if (systems.isNotEmpty()) {
-            val items = ArrayObjectAdapter(
-                    SystemPresenter(
-                            resources.getDimensionPixelSize(R.dimen.card_width),
-                            resources.getDimensionPixelSize(R.dimen.card_padding)
-                    )
+    private fun updateSystems(systems: List<GameSystem>) {
+        val systemsItems = (adapter.get(1) as ListRow).adapter as ArrayObjectAdapter
+        systemsItems.setItems(systems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+    }
+
+    private fun createAdapter(): ArrayObjectAdapter {
+        val result = ArrayObjectAdapter(ListRowPresenter())
+
+        val recentItems = ArrayObjectAdapter(GamePresenter(resources.getDimensionPixelSize(R.dimen.card_size)))
+        result.add(ListRow(HeaderItem(resources.getString(R.string.tv_home_section_recents)), recentItems))
+
+        val systemItems = ArrayObjectAdapter(
+            SystemPresenter(
+                resources.getDimensionPixelSize(R.dimen.card_size),
+                resources.getDimensionPixelSize(R.dimen.card_padding)
             )
-            items.addAll(0, systems)
-            this.add(ListRow(HeaderItem("Systems"), items))
-        }
-
-        val items = ArrayObjectAdapter(
-                SettingPresenter(
-                        resources.getDimensionPixelSize(R.dimen.card_width),
-                        resources.getDimensionPixelSize(R.dimen.card_padding)
-                )
         )
-        items.add(0, TVSetting.RESCAN)
-        items.add(1, TVSetting.CHOOSE_DIRECTORY)
-        this.add(ListRow(HeaderItem("Settings"), items))
+        result.add(ListRow(HeaderItem(resources.getString(R.string.tv_home_section_systems)), systemItems))
+
+        val settingsItems = ArrayObjectAdapter(
+            SettingPresenter(
+                resources.getDimensionPixelSize(R.dimen.card_size),
+                resources.getDimensionPixelSize(R.dimen.card_padding)
+            )
+        )
+        settingsItems.add(0, TVSetting.RESCAN)
+        settingsItems.add(1, TVSetting.CHOOSE_DIRECTORY)
+        result.add(ListRow(HeaderItem(resources.getString(R.string.tv_home_section_settings)), settingsItems))
+
+        return result
     }
 
     private fun launchFolderPicker() {
-        activity?.let { TVFolderPickerLauncher.pickFolder(it) }
+        if (TVHelper.isSAFSupported(requireContext())) {
+            StorageFrameworkPickerLauncher.pickFolder(requireContext())
+        } else {
+            TVFolderPickerLauncher.pickFolder(requireContext())
+        }
+    }
+
+    companion object {
+        val LEANBACK_GAME_DIFF_CALLBACK = object : DiffCallback<Game>() {
+            override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+
+        val LEANBACK_SYSTEM_DIFF_CALLBACK = object : DiffCallback<GameSystem>() {
+            override fun areContentsTheSame(oldItem: GameSystem, newItem: GameSystem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areItemsTheSame(oldItem: GameSystem, newItem: GameSystem): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
     }
 
     @dagger.Module

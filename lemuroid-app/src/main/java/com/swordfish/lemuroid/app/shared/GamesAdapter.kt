@@ -8,10 +8,10 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.squareup.picasso.Picasso
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.utils.games.GameUtils
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
     private var titleView: TextView? = null

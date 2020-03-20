@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.swordfish.lemuroid">
 
+    <uses-feature android:name="android.hardware.gamepad" android:required="false"/>
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-feature android:glEsVersion="0x00030000" android:required="true" />
 
@@ -15,7 +16,7 @@
         android:isGame="true"
         android:icon="@mipmap/lemuroid_launcher"
         android:roundIcon="@mipmap/lemuroid_launcher_round"
-        android:banner="@mipmap/lemuroid_launcher"
+        android:banner="@mipmap/ic_banner"
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
@@ -50,8 +51,7 @@
         <!-- Leanback activities -->
         <activity
             android:name=".app.tv.main.MainTVActivity"
-            android:theme="@style/Theme.Leanback"
-            android:screenOrientation="landscape">
+            android:theme="@style/LeanbackTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
@@ -62,6 +62,10 @@
             android:theme="@style/Theme.Leanback.GuidedStep" />
 
         <activity android:name=".app.tv.folderpicker.TVFolderPickerLauncher" />
+
+        <activity android:name=".app.tv.game.TVGameActivity"
+            android:theme="@style/GameTheme"
+            android:process=":game"/>
 
         <activity android:name=".app.tv.game.TVGameMenuActivity"
             android:theme="@style/LeanbackPreferences"

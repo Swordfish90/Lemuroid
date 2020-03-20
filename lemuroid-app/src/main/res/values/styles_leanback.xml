@@ -4,8 +4,14 @@
     <color name="lb_basic_card_bg_color">#242424</color>
     <color name="lb_basic_card_info_bg_color">#181818</color>
     <color name="lb_default_brand_color">#242424</color>
-    <color name="lb_default_brand_color_dark">#212121</color>
+    <color name="lb_default_brand_color_dark">#242424</color>
     <color name="lb_default_search_color">@color/main_color</color>
+
+    <style name="LeanbackTheme" parent="Theme.Leanback">
+        <item name="colorAccent">@color/main_color</item>
+        <item name="android:colorPrimary">#242424</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+    </style>
 
     <!-- TODO FILIPPO... We should fix colors here...-->
     <style name="LeanbackPreferences" parent="Theme.Leanback">

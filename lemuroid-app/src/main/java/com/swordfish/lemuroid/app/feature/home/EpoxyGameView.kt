@@ -1,15 +1,15 @@
 package com.swordfish.lemuroid.app.feature.home
 
-import com.airbnb.epoxy.EpoxyModelClass
-import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.swordfish.lemuroid.R
-import com.airbnb.epoxy.EpoxyHolder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
-import com.swordfish.lemuroid.app.shared.GameContextMenuListener
+import com.airbnb.epoxy.EpoxyHolder
+import com.airbnb.epoxy.EpoxyModelClass
+import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.squareup.picasso.Picasso
+import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
