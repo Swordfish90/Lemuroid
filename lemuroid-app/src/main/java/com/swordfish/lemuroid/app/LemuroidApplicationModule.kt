@@ -23,11 +23,11 @@ import android.content.Context
 import android.preference.PreferenceManager
 import androidx.room.Room
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import com.swordfish.lemuroid.app.feature.game.GameActivity
-import com.swordfish.lemuroid.app.feature.game.GameLauncherActivity
-import com.swordfish.lemuroid.app.feature.gamemenu.GameMenuActivity
-import com.swordfish.lemuroid.app.feature.main.MainActivity
-import com.swordfish.lemuroid.app.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
+import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerActivity
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity

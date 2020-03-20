@@ -7,9 +7,9 @@ import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.feature.coreoptions.CoreOption
-import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsPreferenceHelper
-import com.swordfish.lemuroid.app.feature.gamemenu.GameMenuContract
+import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
+import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
+import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game

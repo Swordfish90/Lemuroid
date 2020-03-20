@@ -1,7 +1,7 @@
 package com.swordfish.lemuroid.app.tv.game
 
 import android.widget.Toast
-import com.swordfish.lemuroid.app.feature.game.BaseGameActivity
+import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.libretrodroid.GLRetroView
 

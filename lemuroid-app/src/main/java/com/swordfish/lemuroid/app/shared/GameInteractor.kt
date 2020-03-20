@@ -1,7 +1,7 @@
 package com.swordfish.lemuroid.app.shared
 
 import android.content.Context
-import com.swordfish.lemuroid.app.feature.game.GameLauncherActivity
+import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
 import com.swordfish.lemuroid.lib.library.db.entity.Game

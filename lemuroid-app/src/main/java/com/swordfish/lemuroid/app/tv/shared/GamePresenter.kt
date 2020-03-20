@@ -8,6 +8,7 @@ import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import com.squareup.picasso.Picasso
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class GamePresenter(private val cardSize: Int) : Presenter() {
@@ -16,7 +17,7 @@ class GamePresenter(private val cardSize: Int) : Presenter() {
         if (item == null || viewHolder !is ViewHolder) return
         val game = item as Game
         viewHolder.mCardView.titleText = game.title
-        viewHolder.mCardView.contentText = game.developer // TODO FILIPPO Fix description
+        viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.updateCardViewImage(game.coverFrontUrl)
     }

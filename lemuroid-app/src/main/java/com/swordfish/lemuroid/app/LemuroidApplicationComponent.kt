@@ -19,7 +19,7 @@
 
 package com.swordfish.lemuroid.app
 
-import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjectionModule
 import com.swordfish.lemuroid.lib.injection.PerApp
 import dagger.Component

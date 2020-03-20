@@ -21,7 +21,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.swordfish.lemuroid.app.feature.main.MainActivity">
+            android:name="com.swordfish.lemuroid.app.mobile.feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,24 +29,24 @@
         </activity>
 
         <activity
-            android:name="com.swordfish.lemuroid.app.feature.game.GameLauncherActivity"
+            android:name="com.swordfish.lemuroid.app.shared.game.GameLauncherActivity"
             android:process=":game"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
         <activity
-            android:name="com.swordfish.lemuroid.app.feature.game.GameActivity"
+            android:name="com.swordfish.lemuroid.app.mobile.feature.game.GameActivity"
             android:process=":game"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
         <activity
-            android:name="com.swordfish.lemuroid.app.feature.gamemenu.GameMenuActivity"
+            android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity"
             android:process=":game"/>
 
-        <activity android:name="com.swordfish.lemuroid.app.feature.settings.StorageFrameworkPickerLauncher"/>
+        <activity android:name="com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher"/>
 
         <!-- Leanback activities -->
         <activity

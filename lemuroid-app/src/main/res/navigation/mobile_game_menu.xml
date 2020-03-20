@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/game_menu"
-        android:name="com.swordfish.lemuroid.app.feature.gamemenu.GameMenuFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuFragment"
         android:label="@string/game_menu_title" >
 
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/core_options"
-        android:name="com.swordfish.lemuroid.app.feature.gamemenu.GameMenuCoreOptionsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuCoreOptionsFragment"
         android:label="@string/core_settings_title">
 
     </fragment>

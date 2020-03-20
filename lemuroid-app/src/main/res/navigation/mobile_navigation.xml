@@ -6,22 +6,22 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.swordfish.lemuroid.app.feature.home.HomeFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.home.HomeFragment"
         android:label="@string/title_home" />
 
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="com.swordfish.lemuroid.app.feature.favorites.FavoritesFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment"
         android:label="@string/favorites" />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.swordfish.lemuroid.app.feature.search.SearchFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.search.SearchFragment"
         android:label="@string/title_search" />
 
     <fragment
         android:id="@+id/navigation_systems"
-        android:name="com.swordfish.lemuroid.app.feature.systems.SystemsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.systems.SystemsFragment"
         android:label="@string/title_systems" >
 
         <action
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/navigation_games"
-        android:name="com.swordfish.lemuroid.app.feature.games.GamesFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.games.GamesFragment"
         android:label="@string/title_games">
 
         <argument
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.swordfish.lemuroid.app.feature.settings.SettingsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.SettingsFragment"
         android:label="@string/title_settings" />
 
 </navigation>
