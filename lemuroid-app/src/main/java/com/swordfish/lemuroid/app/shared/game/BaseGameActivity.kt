@@ -352,7 +352,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
                 // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
                 // view might be cut due to rounded corners.
-                setContainerWindowsInsets(true, true)
+                setContainerWindowsInsets(top = true, bottom = true)
                 changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.TOP)
             } else {
                 changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.BOTTOM)
