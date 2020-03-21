@@ -68,7 +68,7 @@
             android:theme="@style/GameTheme"
             android:process=":game"/>
 
-        <activity android:name=".app.tv.game.TVGameMenuActivity"
+        <activity android:name=".app.tv.gamemenu.TVGameMenuActivity"
             android:theme="@style/LeanbackPreferences"
             android:process=":game" />
 

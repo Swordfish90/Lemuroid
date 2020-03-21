@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.tv.game
+package com.swordfish.lemuroid.app.tv.gamemenu
 
 import android.app.Activity
 import android.content.Intent
@@ -122,15 +122,13 @@ class TVGameMenuFragment(
                 val resultIntent = Intent().apply {
                     putExtra(GameMenuContract.RESULT_RESET, true)
                 }
-                activity?.setResult(Activity.RESULT_OK, resultIntent)
-                activity?.finish()
+                setResultAndFinish(resultIntent)
             }
             "pref_game_quit" -> {
                 val resultIntent = Intent().apply {
                     putExtra(GameMenuContract.RESULT_QUIT, true)
                 }
-                activity?.setResult(Activity.RESULT_OK, resultIntent)
-                activity?.finish()
+                setResultAndFinish(resultIntent)
             }
             "pref_game_save_0" -> handleSaveAction(0)
             "pref_game_save_1" -> handleSaveAction(1)
@@ -149,22 +147,24 @@ class TVGameMenuFragment(
         val resultIntent = Intent().apply {
             putExtra(GameMenuContract.RESULT_CHANGE_DISK, index)
         }
-        activity?.setResult(Activity.RESULT_OK, resultIntent)
-        activity?.finish()
+        setResultAndFinish(resultIntent)
     }
 
     private fun handleSaveAction(index: Int) {
         val resultIntent = Intent().apply {
             putExtra(GameMenuContract.RESULT_SAVE, index)
         }
-        activity?.setResult(Activity.RESULT_OK, resultIntent)
-        activity?.finish()
+        setResultAndFinish(resultIntent)
     }
 
     private fun handleLoadAction(index: Int) {
         val resultIntent = Intent().apply {
             putExtra(GameMenuContract.RESULT_LOAD, index)
         }
+        setResultAndFinish(resultIntent)
+    }
+
+    private fun setResultAndFinish(resultIntent: Intent) {
         activity?.setResult(Activity.RESULT_OK, resultIntent)
         activity?.finish()
     }

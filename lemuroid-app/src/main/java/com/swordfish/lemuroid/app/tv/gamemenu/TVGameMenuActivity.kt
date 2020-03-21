@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.tv.game
+package com.swordfish.lemuroid.app.tv.gamemenu
 
 import android.os.Bundle
 import androidx.leanback.preference.LeanbackSettingsFragmentCompat
@@ -39,6 +39,11 @@ class TVGameMenuActivity : ImmersiveActivity() {
         }
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
     class SettingsFragment(
         private val retrogradeDb: RetrogradeDatabase,
         private val savesManager: SavesManager,
@@ -50,7 +55,7 @@ class TVGameMenuActivity : ImmersiveActivity() {
 
         override fun onPreferenceStartInitialScreen() {
             startPreferenceFragment(
-                TVGameMenuFragment(retrogradeDb, savesManager, gameId, systemId, coreOptions, numDisks)
+                    TVGameMenuFragment(retrogradeDb, savesManager, gameId, systemId, coreOptions, numDisks)
             )
         }
 

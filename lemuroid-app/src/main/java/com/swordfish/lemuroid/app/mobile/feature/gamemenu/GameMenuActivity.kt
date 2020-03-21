@@ -25,6 +25,11 @@ class GameMenuActivity : RetrogradeAppCompatActivity() {
         return findNavController(R.id.nav_host_fragment).navigateUp() || super.onSupportNavigateUp()
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
     @dagger.Module
     abstract class Module {
 

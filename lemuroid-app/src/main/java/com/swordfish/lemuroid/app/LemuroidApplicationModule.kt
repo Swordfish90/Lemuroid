@@ -31,7 +31,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerActivity
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
-import com.swordfish.lemuroid.app.tv.game.TVGameMenuActivity
+import com.swordfish.lemuroid.app.tv.gamemenu.TVGameMenuActivity
 import com.swordfish.lemuroid.app.tv.main.MainTVActivity
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager

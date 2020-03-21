@@ -152,7 +152,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
                 startActivityForResult(intent, DIALOG_REQUEST)
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                // TODO FILIPPO... Understand what to do with animations...
             }
     }
 
