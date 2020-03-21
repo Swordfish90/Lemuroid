@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Here we override the defualt Leanback colors to make them look Lemuroidish -->
-    <color name="lb_basic_card_bg_color">#242424</color>
-    <color name="lb_basic_card_info_bg_color">#181818</color>
-    <color name="lb_default_brand_color">#242424</color>
-    <color name="lb_default_brand_color_dark">#242424</color>
-    <color name="lb_default_search_color">@color/main_color</color>
+    <color name="lb_basic_card_bg_color">@color/leanbackForeground</color>
+    <color name="lb_basic_card_info_bg_color">@color/leanbackInfo</color>
 
     <style name="LeanbackTheme" parent="Theme.Leanback">
+        <item name="defaultBrandColor">@color/leanbackForeground</item>
+        <item name="defaultBrandColorDark">@color/leanbackForeground</item>
+        <item name="defaultSearchColor">@color/main_color</item>
         <item name="colorAccent">@color/main_color</item>
-        <item name="android:colorPrimary">#242424</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:colorPrimary">@color/leanbackForeground</item>
+        <item name="android:windowBackground">@color/leanbackBackground</item>
+        <item name="imageCardViewStyle">@style/LemuroidCard</item>
     </style>
 
-    <!-- TODO FILIPPO... We should fix colors here...-->
+    <style name="LemuroidCard" parent="Widget.Leanback.ImageCardViewStyle">
+        <item name="infoVisibility">always</item>
+    </style>
+
     <style name="LeanbackPreferences" parent="Theme.Leanback">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:colorPrimary">@color/colorPrimaryVariant</item>
+        <item name="android:colorPrimary">@color/main_color</item>
     </style>
+
 </resources>
