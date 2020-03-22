@@ -42,6 +42,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity
 import com.swordfish.lemuroid.app.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.feature.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
@@ -74,6 +75,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun gameLauncherActivity(): GameLauncherActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
 
     @PerActivity
     @ContributesAndroidInjector

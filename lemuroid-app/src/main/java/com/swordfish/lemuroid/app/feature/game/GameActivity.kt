@@ -50,6 +50,7 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Thread.sleep
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -188,11 +189,9 @@ class GameActivity : ImmersiveActivity() {
     }
 
     private fun displayCannotLoadGameMessage() {
-        AlertDialog.Builder(this)
-            .setMessage(R.string.game_dialog_cannot_load_game)
-            .setPositiveButton(R.string.ok) { _, _ -> finish() }
-            .setCancelable(false)
-            .show()
+        displayErrorDialog(R.string.game_dialog_cannot_load_game, R.string.ok) {
+            finish()
+        }
     }
 
     private fun displayToast(id: Int) {

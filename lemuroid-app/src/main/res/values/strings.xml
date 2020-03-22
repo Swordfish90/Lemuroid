@@ -59,6 +59,8 @@
 
     <string name="game_dialog_cannot_load_game">Cannot load game.\nMake sure this ROM is compatible with Lemuroid.</string>
 
+    <string name="dialog_saf_not_found">This device does not support the StorageAccessFramework file picker. Please manually copy uncompressed ROM files into %1$s and hit Rescan.</string>
+
     <string name="system_grid_details">%1$s games</string>
 
 </resources>
