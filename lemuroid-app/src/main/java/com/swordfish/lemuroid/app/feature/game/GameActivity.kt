@@ -279,7 +279,6 @@ class GameActivity : ImmersiveActivity() {
     override fun onStart() {
         super.onStart()
         coreVariablesManager.getCoreOptionsForSystem(system)
-            .subscribeOn(Schedulers.io())
             .autoDispose(scope())
             .subscribeBy({}) {
                 updateCoreVariables(it)
