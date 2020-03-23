@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.tv.main
 
 import android.Manifest
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,19 +28,34 @@ import javax.inject.Inject
 class MainTVActivity : BaseTVActivity() {
 
     @Inject lateinit var rxPermissions: RxPermissions
+    var mainViewModel: MainTVViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tv_main)
 
-        val mainViewModel = ViewModelProviders.of(this, MainTVViewModel.Factory(applicationContext))
+        mainViewModel = ViewModelProviders.of(this, MainTVViewModel.Factory(applicationContext))
                 .get(MainTVViewModel::class.java)
 
-        mainViewModel.indexingInProgress.observe(this, Observer {
+        mainViewModel?.indexingInProgress?.observe(this, Observer {
             findViewById<View>(R.id.tv_loading).setVisibleOrGone(it)
         })
 
         ensureLegacyStoragePermissionsIfNeeded()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (mainViewModel?.indexingInProgress?.value == true) {
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (mainViewModel?.indexingInProgress?.value == true) {
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
     }
 
     private fun ensureLegacyStoragePermissionsIfNeeded() {
