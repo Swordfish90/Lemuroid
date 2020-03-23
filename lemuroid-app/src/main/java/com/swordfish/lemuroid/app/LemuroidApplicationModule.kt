@@ -78,7 +78,7 @@ abstract class LemuroidApplicationModule {
 
     @PerActivity
     @ContributesAndroidInjector(modules = [MainTVActivity.Module::class])
-    abstract fun mainTVActivity(): MainTVActivity
+    abstract fun tvMainActivity(): MainTVActivity
 
     @PerActivity
     @ContributesAndroidInjector

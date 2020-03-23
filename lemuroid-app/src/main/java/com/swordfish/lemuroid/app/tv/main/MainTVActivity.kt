@@ -9,6 +9,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.tv.games.TVGamesFragment
 import com.swordfish.lemuroid.app.tv.home.TVHomeFragment
+import com.swordfish.lemuroid.app.tv.search.TVSearchFragment
 import com.swordfish.lemuroid.app.tv.shared.BaseTVActivity
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.injection.PerActivity
@@ -67,6 +68,10 @@ class MainTVActivity : BaseTVActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [TVGamesFragment.Module::class])
         abstract fun tvGamesFragment(): TVGamesFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [TVSearchFragment.Module::class])
+        abstract fun tvSearchFragment(): TVSearchFragment
 
         @dagger.Module
         companion object {

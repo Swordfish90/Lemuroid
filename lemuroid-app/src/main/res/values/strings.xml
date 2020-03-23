@@ -71,6 +71,8 @@
     <string name="tv_home_section_systems">Systems</string>
     <string name="tv_home_section_settings">Settings</string>
 
+    <string name="tv_search_results">Games</string>
+
     <string name="kiosk_shortcut_short_description">Kiosk</string>
 
 </resources>

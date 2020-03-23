@@ -61,6 +61,9 @@ class TVHomeFragment : BrowseSupportFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = createAdapter()
+        setOnSearchClickedListener {
+            findNavController().navigate(R.id.navigation_search)
+        }
     }
 
     override fun onResume() {
