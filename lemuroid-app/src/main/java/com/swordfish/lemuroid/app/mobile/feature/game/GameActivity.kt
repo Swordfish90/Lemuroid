@@ -23,7 +23,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.View
-import android.widget.Toast
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -48,10 +47,6 @@ class GameActivity : BaseGameActivity() {
         setupVirtualPad(system)
 
         handleOrientationChange(resources.configuration.orientation)
-    }
-
-    override fun displayToast(id: Int) {
-        Toast.makeText(this, id, Toast.LENGTH_SHORT).show()
     }
 
     override fun getDialogClass() = GameMenuActivity::class.java
@@ -109,7 +104,8 @@ class GameActivity : BaseGameActivity() {
                 }
             }
 
-        retroGameView?.getConnectedGamepads()
+        retroGameView?.getGamepadInfos()
+            ?.map { it.size }
             ?.autoDispose(scope())
             ?.subscribe { overlayLayout.setVisibleOrGone(it == 0) }
     }

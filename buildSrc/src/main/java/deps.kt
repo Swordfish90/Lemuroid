@@ -23,7 +23,7 @@ object deps {
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
-        const val libretrodroid   = "b9583bb970"
+        const val libretrodroid   = "b8aa56a7"
     }
 
     object libs {

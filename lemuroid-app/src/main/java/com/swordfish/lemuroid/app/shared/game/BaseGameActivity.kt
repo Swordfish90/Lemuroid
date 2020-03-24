@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -26,6 +27,7 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.Variable
+import com.swordfish.libretrodroid.gamepad.GamepadInfo
 import com.swordfish.touchinput.events.OptionType
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -48,6 +50,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
+
+    private var menuShortcut: GameMenuShortcut? = null
 
     protected var retroGameView: GLRetroView? = null
 
@@ -135,7 +139,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .show()
     }
 
-    protected abstract fun displayToast(id: Int)
+    fun displayToast(id: Int) {
+        Toast.makeText(this, id, Toast.LENGTH_SHORT).show()
+    }
+
+    fun displayToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
 
     protected fun displayOptionsDialog() {
         retrieveCurrentGame()
@@ -218,7 +228,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun setupPhysicalPad() {
         retroGameView?.getGameKeyEvents()
-            ?.filter { it.keyCode in GAMEPAD_MENU_SHORTCUT }
+            ?.filter { isMenuShortcutKey(it) }
             ?.scan(mutableSetOf<Int>()) { keys, event ->
                 if (event.action == KeyEvent.ACTION_DOWN) {
                     keys.add(event.keyCode)
@@ -228,7 +238,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 keys
             }
             ?.doOnNext {
-                if (it.containsAll(GAMEPAD_MENU_SHORTCUT)) {
+                if (areAllMenuKeysPressed(it)) {
                     displayOptionsDialog()
                 }
             }
@@ -236,15 +246,29 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             ?.autoDispose(scope())
             ?.subscribe()
 
-        retroGameView?.getConnectedGamepads()
-            ?.map { it > 0 }
+        retroGameView?.getGamepadInfos()
             ?.distinctUntilChanged()
             ?.autoDispose(scope())
-            ?.subscribe { gamepadsConnected ->
-                if (gamepadsConnected) {
-                    displayToast(R.string.game_toast_settings_button_using_gamepad)
+            ?.subscribe { connectedGamepads ->
+                connectedGamepads.firstOrNull()?.let {
+                    chooseMenuShortcutForGamepad(it)
                 }
             }
+    }
+
+    private fun isMenuShortcutKey(it: GLRetroView.GameKeyEvent) =
+        it.keyCode in menuShortcut?.keys ?: setOf()
+
+    private fun areAllMenuKeysPressed(pressedKeys: Set<Int>): Boolean {
+        val shortcutKeys: Set<Int>? = menuShortcut?.keys
+        return shortcutKeys != null && pressedKeys.containsAll(shortcutKeys)
+    }
+
+    private fun chooseMenuShortcutForGamepad(gamepadInfo: GamepadInfo) {
+        menuShortcut = GameMenuShortcut.getBestShortcutForGamepad(gamepadInfo)
+        menuShortcut?.let {
+            displayToast(resources.getString(R.string.game_toast_settings_button_using_gamepad, it.label))
+        }
     }
 
     override fun onBackPressed() {
@@ -378,8 +402,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     companion object {
-        // TODO: We should handle gamepads without these buttons
-        val GAMEPAD_MENU_SHORTCUT = setOf(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR)
         const val EXTRA_GAME_ID = "game_id"
         const val EXTRA_SYSTEM_ID = "system_id"
         const val EXTRA_CORE_PATH = "core_path"
