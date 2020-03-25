@@ -24,6 +24,7 @@ import android.net.Uri
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.kotlin.calculateCrc32
+import com.swordfish.lemuroid.common.kotlin.toStringCRC32
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
@@ -33,8 +34,10 @@ import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
 import io.reactivex.Single
+import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
+import java.util.zip.ZipInputStream
 
 class LocalStorageProvider(
     private val context: Context,
@@ -64,20 +67,75 @@ class LocalStorageProvider(
     private fun walkDirectory(directory: File): Iterable<StorageFile> {
         return directory.walk()
             .filter { file -> file.isFile && !file.name.startsWith(".") }
-            .map { file ->
-                StorageFile(
-                    name = file.name,
-                    size = file.length(),
-                    crc = file.calculateCrc32().toUpperCase(),
-                    uri = Uri.parse(file.toURI().toString()),
-                    parentFolder = file.parent,
-                    serial = ISOScanner.extractSerial(file.name, FileInputStream(file))
-                )
-            }
+            .map { handleFile(it) }
+            .filterNotNull()
             .asIterable()
     }
 
+    private fun handleFile(file: File): StorageFile? {
+        return if (isSingleArchiveZipFile(file)) {
+            handleSingleArchiveFile(file)
+        } else {
+            handleStandardFile(file)
+        }
+    }
+
+    private fun isSingleArchiveZipFile(file: File) = file.extension == "zip" && isSingleArchive(file)
+
+    private fun handleSingleArchiveFile(file: File): StorageFile? {
+        ZipInputStream(file.inputStream()).use {
+            val entry = LocalStorageUtils.findFirstGameEntry(it)
+            if (entry != null) {
+                Timber.d("Processing zipped entry: ${entry.name}")
+
+                val serial = ISOScanner.extractSerial(entry.name, it)
+
+                return StorageFile(
+                    entry.name,
+                    entry.size,
+                    entry.crc.toStringCRC32(),
+                    serial,
+                    Uri.fromFile(file),
+                    file.parent
+                )
+            }
+
+            return null
+        }
+    }
+
+    private fun isSingleArchive(file: File): Boolean {
+        return LocalStorageUtils.isSingleArchive(ZipInputStream(file.inputStream()))
+    }
+
+    private fun handleStandardFile(file: File): StorageFile {
+        return StorageFile(
+            name = file.name,
+            size = file.length(),
+            crc = file.calculateCrc32().toUpperCase(),
+            uri = Uri.parse(file.toURI().toString()),
+            parentFolder = file.parent,
+            serial = ISOScanner.extractSerial(file.name, FileInputStream(file))
+        )
+    }
+
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        File(game.fileUri.path)
+        val gameFile = File(game.fileUri.path)
+
+        if (!isSingleArchiveZipFile(gameFile)) {
+            return@fromCallable gameFile
+        }
+
+        val cacheFile = LocalStorageUtils.getCacheFileForGame(LOCAL_STORAGE_CACHE_SUBFOLDER, context, game)
+        if (cacheFile.exists()) {
+            return@fromCallable cacheFile
+        }
+
+        LocalStorageUtils.extractFirstGameFromZipInputStream(ZipInputStream(gameFile.inputStream()), cacheFile)
+        return@fromCallable cacheFile
+    }
+
+    companion object {
+        const val LOCAL_STORAGE_CACHE_SUBFOLDER = "local-storage-games"
     }
 }

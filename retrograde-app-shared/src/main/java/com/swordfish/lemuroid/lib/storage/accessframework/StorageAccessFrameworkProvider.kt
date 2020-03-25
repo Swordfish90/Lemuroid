@@ -13,11 +13,11 @@ import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.ISOScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
+import com.swordfish.lemuroid.lib.storage.local.LocalStorageUtils
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
-import java.io.InputStream
 import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
@@ -132,16 +132,12 @@ class StorageAccessFrameworkProvider(
     private fun isZipped(mimeType: String) = mimeType == ZIP_MIME_TYPE
 
     private fun isSingleArchive(uri: Uri): Boolean {
-        ZipInputStream(context.contentResolver.openInputStream(uri)).use {
-            return it.nextEntry != null && it.nextEntry == null
-        }
+        val zipInputStream = ZipInputStream(context.contentResolver.openInputStream(uri))
+        return LocalStorageUtils.isSingleArchive(zipInputStream)
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        val gamesCachePath = buildPath(SAF_CACHE_SUBFOLDER, game.systemId)
-        val gamesCacheDir = File(context.cacheDir, gamesCachePath)
-        gamesCacheDir.mkdirs()
-        val gameFile = File(gamesCacheDir, game.fileName)
+        val gameFile = LocalStorageUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
         if (gameFile.exists()) {
             return@fromCallable gameFile
         }
@@ -150,31 +146,12 @@ class StorageAccessFrameworkProvider(
 
         if (isZipped(mimeType) && isSingleArchive(game.fileUri)) {
             val stream = ZipInputStream(context.contentResolver.openInputStream(game.fileUri))
-            copyZipInputStreamToFile(gameFile, stream)
+            LocalStorageUtils.extractFirstGameFromZipInputStream(stream, gameFile)
         } else {
             val stream = context.contentResolver.openInputStream(game.fileUri)!!
-            copyInputStreamToFile(gameFile, stream)
+            LocalStorageUtils.copyInputStreamToFile(stream, gameFile)
         }
         gameFile
-    }
-
-    private fun buildPath(vararg chunks: String): String {
-        return chunks.joinToString(separator = File.separator)
-    }
-
-    private fun copyInputStreamToFile(gameFile: File, inputFileStream: InputStream) {
-        inputFileStream.use { inputStream ->
-            gameFile.outputStream().use { outputStream ->
-                inputStream.copyTo(outputStream)
-            }
-        }
-    }
-
-    private fun copyZipInputStreamToFile(gameFile: File, zipInputFileStream: ZipInputStream) {
-        zipInputFileStream.use { zipInputStream ->
-            zipInputStream.nextEntry
-            copyInputStreamToFile(gameFile, zipInputStream)
-        }
     }
 
     private data class FileUri(val uri: Uri, val name: String, val size: Long, val mime: String, val parent: String?)
