@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.lib.storage.accessframework
+package com.swordfish.lemuroid.lib.storage.local
 
 import android.content.Context
 import android.net.Uri
@@ -13,7 +13,6 @@ import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.ISOScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
-import com.swordfish.lemuroid.lib.storage.local.LocalStorageUtils
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
