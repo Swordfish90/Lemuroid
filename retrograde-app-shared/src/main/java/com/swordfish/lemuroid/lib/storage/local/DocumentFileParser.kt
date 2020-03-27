@@ -69,7 +69,7 @@ object DocumentFileParser {
        an entry which occupies a large percentage of the archive space. This is very fast heuristic to compute and
        avoids reading the whole stream in most scenarios.*/
     fun findGameEntry(openedInputStream: ZipInputStream, fileSize: Long = -1): ZipEntry? {
-        for(i in 0..MAX_CHECKED_ENTRIES) {
+        for (i in 0..MAX_CHECKED_ENTRIES) {
             val entry = openedInputStream.nextEntry ?: break
             if (!isGameEntry(entry, fileSize)) continue
             return entry

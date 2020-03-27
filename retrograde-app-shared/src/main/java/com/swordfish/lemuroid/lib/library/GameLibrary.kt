@@ -32,7 +32,6 @@ import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
 

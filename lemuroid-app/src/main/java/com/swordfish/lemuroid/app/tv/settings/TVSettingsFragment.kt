@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.app.tv.settings
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.preference.Preference
 import com.swordfish.lemuroid.R
@@ -25,6 +24,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     private fun handleClearCacheCores() {
         SettingsInteractor(requireContext())
             .clearCoresCache()
+            .doAfterTerminate { activity?.finish() }
             .autoDispose(scope())
             .subscribe()
     }

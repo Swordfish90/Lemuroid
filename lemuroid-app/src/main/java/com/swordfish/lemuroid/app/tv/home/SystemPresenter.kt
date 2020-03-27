@@ -14,8 +14,10 @@ class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) :
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any) {
         val systemInfo = item as SystemInfo
-        (viewHolder as ViewHolder).mCardView.titleText = viewHolder.view.context.resources.getString(systemInfo.system.titleResId)
-        viewHolder.mCardView.contentText = viewHolder.view.context.getString(R.string.system_grid_details, systemInfo.count.toString())
+        val context = (viewHolder as ViewHolder).view.context
+
+        viewHolder.mCardView.titleText = context.resources.getString(systemInfo.system.titleResId)
+        viewHolder.mCardView.contentText = context.getString(R.string.system_grid_details, systemInfo.count.toString())
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.mCardView.mainImageView.setImageResource(systemInfo.system.imageResId)
         viewHolder.mCardView.mainImageView.setPadding(cardPadding, cardPadding, cardPadding, cardPadding)
