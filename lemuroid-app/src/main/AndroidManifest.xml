@@ -59,6 +59,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".app.tv.settings.TVSettingsActivity"
+            android:theme="@style/LeanbackPreferences" />
+
         <activity android:name=".app.tv.folderpicker.TVFolderPickerActivity"
             android:theme="@style/Theme.Leanback.GuidedStep" />
 

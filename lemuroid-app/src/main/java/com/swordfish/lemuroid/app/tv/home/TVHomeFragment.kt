@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.tv.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,16 +17,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.feature.systems.SystemInfo
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
+import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.util.subscribeBy
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
@@ -42,14 +49,16 @@ class TVHomeFragment : BrowseSupportFragment() {
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             when (item) {
                 is Game -> gameInteractor.onGamePlay(item)
-                is GameSystem -> {
-                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(item.id.dbname)
+                is SystemInfo -> {
+                    val systemId = item.system.id.dbname
+                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(systemId)
                     findNavController().navigate(action)
                 }
                 is TVSetting -> {
                     when (item) {
                         TVSetting.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
                         TVSetting.CHOOSE_DIRECTORY -> launchFolderPicker()
+                        TVSetting.SETTINGS -> launchTVSettings()
                     }
                 }
             }
@@ -76,9 +85,13 @@ class TVHomeFragment : BrowseSupportFragment() {
             updateRecentGames(it)
         })
 
-        homeViewModel.systems.observe(this, Observer {
-            updateSystems(it)
-        })
+        homeViewModel
+            .availableSystems
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribeBy {
+                updateSystems(it)
+            }
     }
 
     private fun updateRecentGames(recentGames: List<Game>) {
@@ -86,7 +99,7 @@ class TVHomeFragment : BrowseSupportFragment() {
         recentsItems.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
     }
 
-    private fun updateSystems(systems: List<GameSystem>) {
+    private fun updateSystems(systems: List<SystemInfo>) {
         val systemsItems = (adapter.get(1) as ListRow).adapter as ArrayObjectAdapter
         systemsItems.setItems(systems, LEANBACK_SYSTEM_DIFF_CALLBACK)
     }
@@ -113,6 +126,7 @@ class TVHomeFragment : BrowseSupportFragment() {
         )
         settingsItems.add(0, TVSetting.RESCAN)
         settingsItems.add(1, TVSetting.CHOOSE_DIRECTORY)
+        settingsItems.add(2, TVSetting.SETTINGS)
         result.add(ListRow(HeaderItem(resources.getString(R.string.tv_home_section_settings)), settingsItems))
 
         return result
@@ -126,6 +140,10 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
     }
 
+    private fun launchTVSettings() {
+        startActivity(Intent(requireContext(), TVSettingsActivity::class.java))
+    }
+
     companion object {
         val LEANBACK_GAME_DIFF_CALLBACK = object : DiffCallback<Game>() {
             override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
@@ -137,13 +155,13 @@ class TVHomeFragment : BrowseSupportFragment() {
             }
         }
 
-        val LEANBACK_SYSTEM_DIFF_CALLBACK = object : DiffCallback<GameSystem>() {
-            override fun areContentsTheSame(oldItem: GameSystem, newItem: GameSystem): Boolean {
-                return oldItem == newItem
+        val LEANBACK_SYSTEM_DIFF_CALLBACK = object : DiffCallback<SystemInfo>() {
+            override fun areContentsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo): Boolean {
+                return oldInfo == newInfo
             }
 
-            override fun areItemsTheSame(oldItem: GameSystem, newItem: GameSystem): Boolean {
-                return oldItem.id == newItem.id
+            override fun areItemsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo): Boolean {
+                return oldInfo.system.id == newInfo.system.id
             }
         }
     }

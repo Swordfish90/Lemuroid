@@ -1,20 +1,16 @@
 package com.swordfish.lemuroid.app.tv.gamemenu
 
 import android.os.Bundle
-import androidx.leanback.preference.LeanbackSettingsFragmentCompat
-import androidx.preference.Preference
-import androidx.preference.PreferenceDialogFragmentCompat
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceScreen
+import androidx.fragment.app.Fragment
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.GameMenuContract
-import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
-class TVGameMenuActivity : ImmersiveActivity() {
+class TVGameMenuActivity : TVBaseSettingsActivity() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var savesManager: SavesManager
@@ -34,7 +30,7 @@ class TVGameMenuActivity : ImmersiveActivity() {
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
                     ?: throw InvalidParameterException("Missing EXTRA_DISKS")
 
-            val fragment = SettingsFragment(retrogradeDb, savesManager, gameId, systemID, options, numDisks)
+            val fragment = TVGameMenuFragmentWrapper(retrogradeDb, savesManager, gameId, systemID, options, numDisks)
             supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit()
         }
     }
@@ -44,42 +40,17 @@ class TVGameMenuActivity : ImmersiveActivity() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
-    class SettingsFragment(
+    class TVGameMenuFragmentWrapper(
         private val retrogradeDb: RetrogradeDatabase,
         private val savesManager: SavesManager,
         private val gameId: Int,
         private val systemId: String,
         private val coreOptions: Array<CoreOption>,
         private val numDisks: Int
-    ) : LeanbackSettingsFragmentCompat() {
+    ) : BaseSettingsFragmentWrapper() {
 
-        override fun onPreferenceStartInitialScreen() {
-            startPreferenceFragment(
-                    TVGameMenuFragment(retrogradeDb, savesManager, gameId, systemId, coreOptions, numDisks)
-            )
-        }
-
-        override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {
-            val args = pref.extras
-            val f = childFragmentManager.fragmentFactory.instantiate(
-                    requireActivity().classLoader, pref.fragment)
-            f.arguments = args
-            f.setTargetFragment(caller, 0)
-            if (f is PreferenceFragmentCompat || f is PreferenceDialogFragmentCompat) {
-                startPreferenceFragment(f)
-            } else {
-                startImmersiveFragment(f)
-            }
-            return true
-        }
-
-        override fun onPreferenceStartScreen(caller: PreferenceFragmentCompat, pref: PreferenceScreen): Boolean {
-            val fragment = TVGameMenuFragment(retrogradeDb, savesManager, gameId, systemId, coreOptions, numDisks)
-            val args = Bundle(1)
-            args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, pref.key)
-            fragment.arguments = args
-            startPreferenceFragment(fragment)
-            return true
+        override fun createFragment(): Fragment {
+            return TVGameMenuFragment(retrogradeDb, savesManager, gameId, systemId, coreOptions, numDisks)
         }
     }
 }

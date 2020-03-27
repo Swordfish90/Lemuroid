@@ -33,6 +33,7 @@ import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.app.tv.gamemenu.TVGameMenuActivity
 import com.swordfish.lemuroid.app.tv.main.MainTVActivity
+import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -107,6 +108,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun tvFolderPickerActivity(): TVFolderPickerActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun tvSettingsActivity(): TVSettingsActivity
 
     @Module
     companion object {

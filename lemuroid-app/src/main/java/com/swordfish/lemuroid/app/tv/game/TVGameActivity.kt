@@ -10,6 +10,6 @@ class TVGameActivity : BaseGameActivity() {
     override fun getDialogClass() = TVGameMenuActivity::class.java
 
     override fun getShaderForSystem(useShader: Boolean, system: GameSystem): Int {
-        return GLRetroView.SHADER_CRT
+        return if (useShader) GLRetroView.SHADER_CRT else GLRetroView.SHADER_DEFAULT
     }
 }

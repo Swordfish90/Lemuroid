@@ -8,15 +8,16 @@ import android.widget.TextView
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.app.mobile.feature.systems.SystemInfo
 
 class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) : Presenter() {
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any) {
-        val system = item as GameSystem
-        (viewHolder as ViewHolder).mCardView.titleText = viewHolder.view.context.resources.getString(system.titleResId)
+        val systemInfo = item as SystemInfo
+        (viewHolder as ViewHolder).mCardView.titleText = viewHolder.view.context.resources.getString(systemInfo.system.titleResId)
+        viewHolder.mCardView.contentText = viewHolder.view.context.getString(R.string.system_grid_details, systemInfo.count.toString())
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
-        viewHolder.mCardView.mainImageView.setImageResource(system.imageResId)
+        viewHolder.mCardView.mainImageView.setImageResource(systemInfo.system.imageResId)
         viewHolder.mCardView.mainImageView.setPadding(cardPadding, cardPadding, cardPadding, cardPadding)
         viewHolder.mCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
     }

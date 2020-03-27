@@ -28,5 +28,5 @@
     <dimen name="grid_unit_9x">72dp</dimen>
 
     <dimen name="card_size">176dp</dimen>
-    <dimen name="card_padding">32dp</dimen>
+    <dimen name="card_padding">44dp</dimen>
 </resources>
