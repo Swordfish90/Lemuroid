@@ -51,6 +51,8 @@ import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
+import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
+
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -96,6 +98,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun tvGameActivity(): TVGameActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
 
     @PerActivity
     @ContributesAndroidInjector

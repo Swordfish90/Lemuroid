@@ -8,7 +8,6 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
@@ -18,6 +17,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.lib.core.CoreVariable
+import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -132,11 +132,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun displayCannotLoadGameMessage() {
-        AlertDialog.Builder(this)
-            .setMessage(R.string.game_dialog_cannot_load_game)
-            .setPositiveButton(R.string.ok) { _, _ -> finish() }
-            .setCancelable(false)
-            .show()
+        displayErrorDialog(R.string.game_dialog_cannot_load_game, R.string.ok) {
+            finish()
+        }
     }
 
     fun displayToast(id: Int) {
@@ -199,6 +197,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
 
         retroGameView?.updateVariables(*updatedVariables)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        coreVariablesManager.getCoreOptionsForSystem(system)
+            .autoDispose(scope())
+            .subscribeBy({}) {
+                updateCoreVariables(it)
+            }
     }
 
     override fun onPause() {

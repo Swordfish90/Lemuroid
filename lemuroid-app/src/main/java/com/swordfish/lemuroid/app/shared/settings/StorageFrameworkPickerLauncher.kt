@@ -5,11 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import androidx.fragment.app.FragmentActivity
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
+import com.swordfish.lemuroid.lib.android.RetrogradeActivity
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import javax.inject.Inject
 
-class StorageFrameworkPickerLauncher : FragmentActivity() {
+class StorageFrameworkPickerLauncher : RetrogradeActivity() {
+
+    @Inject lateinit var directoriesManager: DirectoriesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +26,18 @@ class StorageFrameworkPickerLauncher : FragmentActivity() {
                 this.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
                 this.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
             }
-            startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
+            try {
+                startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
+            } catch (e: Exception) {
+                showStorageAccessFrameworkNotSupportedDialog()
+            }
         }
+    }
+
+    private fun showStorageAccessFrameworkNotSupportedDialog() {
+        val message = getString(R.string.dialog_saf_not_found, directoriesManager.getInternalRomsDirectory())
+        val actionLabel = getString(R.string.ok)
+        displayErrorDialog(message, actionLabel) { finish() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {

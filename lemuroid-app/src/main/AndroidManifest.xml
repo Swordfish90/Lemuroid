@@ -47,7 +47,8 @@
             android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity"
             android:process=":game"/>
 
-        <activity android:name="com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher"/>
+        <activity android:name="com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher"
+            android:theme="@style/InvisibleTheme"/>
 
         <!-- Leanback activities -->
         <activity
