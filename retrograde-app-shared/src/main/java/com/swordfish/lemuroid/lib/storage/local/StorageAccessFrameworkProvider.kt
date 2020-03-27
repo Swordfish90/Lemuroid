@@ -17,6 +17,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
+import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
@@ -36,7 +37,7 @@ class StorageAccessFrameworkProvider(
 
     override fun listFiles(): Observable<StorageFile> {
         return getExternalFolder()?.let { folder ->
-            traverseDirectoryEntries(Uri.parse(folder)).map { handleFileUri(it) }
+            traverseDirectoryEntries(Uri.parse(folder)).map { handleFile(it) }
         } ?: Observable.empty()
     }
 
@@ -46,17 +47,7 @@ class StorageAccessFrameworkProvider(
         return preferenceManager.getString(prefString, null)
     }
 
-    private fun handleFileUri(fileUri: FileUri): StorageFile {
-        return if (isZipped(fileUri.mime) && isSingleArchive(fileUri.uri)) {
-            Timber.d("Detected single file archive. ${fileUri.name}")
-            handleFileUriAsSingleArchive(fileUri)
-        } else {
-            Timber.d("Detected standard file. ${fileUri.name}")
-            handleFileUriAsStandardFile(fileUri)
-        }
-    }
-
-    private fun traverseDirectoryEntries(rootUri: Uri): Observable<FileUri> = Observable.create { emitter ->
+    private fun traverseDirectoryEntries(rootUri: Uri): Observable<DocumentFile> = Observable.create { emitter ->
         try {
             var currentNode = DocumentFile.fromTreeUri(context.applicationContext, rootUri)
 
@@ -79,16 +70,7 @@ class StorageAccessFrameworkProvider(
                         if (file.isDirectory) {
                             dirNodes.add(file)
                         } else {
-                            val uri = file.uri
-                            val fileName = file.name
-                            val size = file.length()
-                            val mimeType = file.type
-                            val parentName = file.parentFile?.name
-
-                            if (fileName != null && mimeType != null) {
-                                emitter.onNext(FileUri(uri, fileName, size, mimeType, parentName))
-                            }
-                            null
+                            emitter.onNext(file)
                         }
                     }
                 }
@@ -100,60 +82,73 @@ class StorageAccessFrameworkProvider(
         emitter.onComplete()
     }
 
-    private fun handleFileUriAsSingleArchive(file: FileUri): StorageFile {
-        ZipInputStream(context.contentResolver.openInputStream(file.uri)).use {
-            val entry = it.nextEntry
-
-            Timber.d("Processing zipped entry: ${entry.name}")
-
-            val serial = ISOScanner.extractSerial(entry.name, it)
-
-            return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, file.uri, file.parent)
+    private fun handleFile(file: DocumentFile): StorageFile {
+        return if (isZipped(file)) {
+            Timber.d("Detected zip file. ${file.name}")
+            handleFileAsZipFile(file)
+        } else {
+            Timber.d("Detected standard file. ${file.name}")
+            handleFileAsStandardFile(file)
         }
     }
 
-    private fun handleFileUriAsStandardFile(file: FileUri): StorageFile {
-        val crc32 = if (file.size < MAX_SIZE_CRC32) {
+    private fun handleFileAsZipFile(file: DocumentFile): StorageFile {
+        val inputStream = context.contentResolver.openInputStream(file.uri)
+        return ZipInputStream(inputStream).use {
+            val gameEntry = LocalStorageUtils.findGameEntry(it, file.length())
+            if (gameEntry != null) {
+                Timber.d("Handing zip file as compressed game: ${file.name}")
+                handleFileAsCompressedGame(file, gameEntry, it)
+            } else {
+                Timber.d("Handing zip file as standard: ${file.name}")
+                handleFileAsStandardFile(file)
+            }
+        }
+    }
+
+    private fun handleFileAsCompressedGame(file: DocumentFile, entry: ZipEntry, zipInputStream: ZipInputStream): StorageFile {
+        Timber.d("Processing zipped entry: ${entry.name}")
+
+        val serial = ISOScanner.extractSerial(entry.name, zipInputStream)
+
+        return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, file.uri, file.parentFile?.name)
+    }
+
+    private fun handleFileAsStandardFile(file: DocumentFile): StorageFile {
+        val crc32 = if (file.length() < MAX_SIZE_CRC32) {
             context.contentResolver.openInputStream(file.uri)?.calculateCrc32()
         } else {
             null
         }
 
         val serial = context.contentResolver.openInputStream(file.uri)?.let { inputStream ->
-            ISOScanner.extractSerial(file.name, inputStream)
+            ISOScanner.extractSerial(file.name!!, inputStream)
         }
 
         Timber.d("Detected file: $id, name: ${file.name}, crc: $crc32")
 
-        return StorageFile(file.name, file.size, crc32, serial, file.uri, file.parent)
+        return StorageFile(file.name!!, file.length(), crc32, serial, file.uri, file.parentFile?.name)
     }
 
-    private fun isZipped(mimeType: String) = mimeType == ZIP_MIME_TYPE
-
-    private fun isSingleArchive(uri: Uri): Boolean {
-        val zipInputStream = ZipInputStream(context.contentResolver.openInputStream(uri))
-        return LocalStorageUtils.isSingleArchive(zipInputStream)
-    }
+    private fun isZipped(file: DocumentFile) = file.type == ZIP_MIME_TYPE
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        val gameFile = LocalStorageUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
-        if (gameFile.exists()) {
-            return@fromCallable gameFile
+        val cacheFile = LocalStorageUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
+        if (cacheFile.exists()) {
+            return@fromCallable cacheFile
         }
 
-        val mimeType = context.contentResolver.getType(game.fileUri)!!
+        val originalDocument = DocumentFile.fromSingleUri(context, game.fileUri)!!
 
-        if (isZipped(mimeType) && isSingleArchive(game.fileUri)) {
-            val stream = ZipInputStream(context.contentResolver.openInputStream(game.fileUri))
-            LocalStorageUtils.extractFirstGameFromZipInputStream(stream, gameFile)
+        if (isZipped(originalDocument) && originalDocument.name != game.fileName) {
+            val stream = ZipInputStream(context.contentResolver.openInputStream(originalDocument.uri))
+            LocalStorageUtils.extractZipEntryToFile(stream, game.fileName, cacheFile)
         } else {
             val stream = context.contentResolver.openInputStream(game.fileUri)!!
-            LocalStorageUtils.copyInputStreamToFile(stream, gameFile)
+            LocalStorageUtils.copyInputStreamToFile(stream, cacheFile)
         }
-        gameFile
+        cacheFile
     }
-
-    private data class FileUri(val uri: Uri, val name: String, val size: Long, val mime: String, val parent: String?)
 
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"

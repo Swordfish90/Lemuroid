@@ -58,7 +58,6 @@ class GameLibrary(
                 }
                 .doOnComplete { removeDeletedGames(startedAtMs) }
         }
-        .subscribeOn(Schedulers.io())
         .ignoreElements()
     }
 
