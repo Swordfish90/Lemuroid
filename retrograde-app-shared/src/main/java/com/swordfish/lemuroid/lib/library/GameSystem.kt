@@ -295,6 +295,10 @@ data class GameSystem(
 
         fun findById(id: String): GameSystem = byIdCache.getValue(id)
 
+        fun getSupportedExtensions(): List<String> {
+            return SYSTEMS.flatMap { it.supportedExtensions }
+        }
+
         fun findByUniqueFileExtension(fileExtension: String): GameSystem? =
                 byExtensionCache[fileExtension.toLowerCase(Locale.US)]
 

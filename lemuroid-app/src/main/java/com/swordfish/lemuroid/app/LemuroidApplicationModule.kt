@@ -22,10 +22,20 @@ package com.swordfish.lemuroid.app
 import android.content.Context
 import android.preference.PreferenceManager
 import androidx.room.Room
-import com.swordfish.lemuroid.app.feature.game.GameActivity
-import com.swordfish.lemuroid.app.feature.game.GameLauncherActivity
-import com.swordfish.lemuroid.app.feature.main.MainActivity
+import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
+import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerActivity
+import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
+import com.swordfish.lemuroid.app.tv.game.TVGameActivity
+import com.swordfish.lemuroid.app.tv.gamemenu.TVGameMenuActivity
+import com.swordfish.lemuroid.app.tv.main.MainTVActivity
+import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.lib.core.CoreManager
+import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerApp
@@ -33,19 +43,16 @@ import com.swordfish.lemuroid.lib.library.GameLibrary
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.logging.RxTimberTree
+import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
-import com.swordfish.lemuroid.lib.storage.accessframework.StorageAccessFrameworkProvider
+import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
-import com.f2prateek.rx.preferences2.RxSharedPreferences
-import com.swordfish.lemuroid.app.feature.coreoptions.CoreOptionsActivity
-import com.swordfish.lemuroid.app.feature.settings.SettingsManager
-import com.swordfish.lemuroid.app.feature.settings.StorageFrameworkPickerLauncher
-import com.swordfish.lemuroid.lib.core.CoreVariablesManager
-import com.swordfish.lemuroid.lib.saves.SavesManager
-import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
+
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -73,8 +80,24 @@ abstract class LemuroidApplicationModule {
     abstract fun mainActivity(): MainActivity
 
     @PerActivity
+    @ContributesAndroidInjector(modules = [MainTVActivity.Module::class])
+    abstract fun tvMainActivity(): MainTVActivity
+
+    @PerActivity
     @ContributesAndroidInjector
     abstract fun gameLauncherActivity(): GameLauncherActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun gameActivity(): GameActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [GameMenuActivity.Module::class])
+    abstract fun gameMenuActivity(): GameMenuActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun tvGameActivity(): TVGameActivity
 
     @PerActivity
     @ContributesAndroidInjector
@@ -82,11 +105,19 @@ abstract class LemuroidApplicationModule {
 
     @PerActivity
     @ContributesAndroidInjector
-    abstract fun coreOptionsActivity(): CoreOptionsActivity
+    abstract fun tvGameMenuActivity(): TVGameMenuActivity
 
     @PerActivity
     @ContributesAndroidInjector
-    abstract fun gameActivity(): GameActivity
+    abstract fun tvFolderPickerLauncher(): TVFolderPickerLauncher
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun tvFolderPickerActivity(): TVFolderPickerActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun tvSettingsActivity(): TVSettingsActivity
 
     @Module
     companion object {

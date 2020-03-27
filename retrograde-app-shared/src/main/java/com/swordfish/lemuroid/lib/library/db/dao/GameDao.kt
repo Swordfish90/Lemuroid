@@ -68,6 +68,9 @@ interface GameDao {
     @Query("""
         SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
         """)
+    fun selectFirstUnfavoriteRecents(limit: Int): LiveData<List<Game>>
+
+    @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
     fun selectFirstRecents(limit: Int): LiveData<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
@@ -80,7 +83,7 @@ interface GameDao {
     fun selectBySystem(systemId: String): DataSource.Factory<Int, Game>
 
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
-    fun selectSystems(): Single<List<String>>
+    fun selectSystems(): LiveData<List<String>>
 
     @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
     fun selectSystemsWithCount(): Observable<List<SystemCount>>

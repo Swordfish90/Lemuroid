@@ -19,11 +19,12 @@
 
 package com.swordfish.lemuroid.common.kotlin
 
+import androidx.documentfile.provider.DocumentFile
 import java.io.File
-import java.io.FileInputStream
 import java.io.InputStream
 import java.util.zip.CRC32
 import java.util.zip.CheckedInputStream
+import java.util.zip.ZipInputStream
 
 fun InputStream.calculateCrc32(): String = this.use { fileStream ->
     val buffer = ByteArray(1024)
@@ -35,13 +36,24 @@ fun InputStream.calculateCrc32(): String = this.use { fileStream ->
     }
 }
 
-fun File.writeInputStream(inputStream: InputStream): File {
-    inputStream.use { input ->
-        this.outputStream().use { fileOut ->
-            input.copyTo(fileOut)
+fun InputStream.writeToFile(file: File) {
+    this.use { inputStream ->
+        file.outputStream().use { outputStream ->
+            inputStream.copyTo(outputStream)
         }
     }
-    return this
 }
 
-fun File.calculateCrc32(): String = FileInputStream(this).calculateCrc32()
+fun ZipInputStream.extractEntryToFile(entryName: String, gameFile: File) {
+    this.use { inputStream ->
+        while (true) {
+            val entry = inputStream.nextEntry
+            if (entry.name == entryName) break
+        }
+        inputStream.writeToFile(gameFile)
+    }
+}
+
+fun File.isZipped() = extension == "zip"
+
+fun DocumentFile.isZipped() = type == "application/zip"

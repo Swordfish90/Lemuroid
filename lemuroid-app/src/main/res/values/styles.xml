@@ -17,6 +17,7 @@
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorControlHighlight">@android:color/transparent</item>
     </style>
 
     <style name="InvisibleTheme" parent="AppTheme">

@@ -14,6 +14,7 @@
     <string name="roms">ROMs</string>
     <string name="clear_cores_cache_success">Cores cleared</string>
     <string name="ok">Ok</string>
+    <string name="settings">Settings</string>
 
     <string name="settings_category_general">General</string>
     <string name="settings_category_advanced">Advanced</string>
@@ -31,25 +32,27 @@
     <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
     <string name="home_empty_action">Select Directory</string>
 
-    <string name="game_dialog_save">Save</string>
-    <string name="game_dialog_load">Load</string>
-    <string name="game_dialog_restart">Restart</string>
-    <string name="game_dialog_quit">Quit</string>
-    <string name="game_dialog_settings">Settings</string>
-    <string name="game_dialog_state">State %1$s</string>
-    <string name="game_dialog_change_disk_button">Change Disk</string>
-    <string name="game_dialog_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_save">Save</string>
+    <string name="game_menu_load">Load</string>
+    <string name="game_menu_restart">Restart</string>
+    <string name="game_menu_quit">Quit</string>
+    <string name="game_menu_settings">Settings</string>
+    <string name="game_menu_state">State %1$s</string>
+    <string name="game_menu_change_disk_button">Change Disk</string>
+    <string name="game_menu_change_disk_disk">Disk %1$s</string>
 
     <string name="game_loading_download_core">Downloading core…</string>
     <string name="game_loading_preparing_game">Preparing game…</string>
 
-    <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with L3 + R3.</string>
+    <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
     <string name="game_toast_autosave_not_supported">Autosave is not supported for this system. Use slots or game saves.</string>
     <string name="game_toast_load_state_failed">Cannot load this state</string>
 
     <string name="empty_view_default">No Items</string>
 
     <string name="core_settings_title">Core Settings</string>
+
+    <string name="game_menu_title">Game menu</string>
 
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning</string>
@@ -62,5 +65,17 @@
     <string name="dialog_saf_not_found">This device does not support the StorageAccessFramework file picker. Please manually copy uncompressed ROM files into %1$s and hit Rescan.</string>
 
     <string name="system_grid_details">%1$s games</string>
+
+    <string name="tv_folder_picker_title">Select ROMs Directory</string>
+    <string name="tv_folder_picker_action_choose">Select</string>
+    <string name="tv_folder_picker_action_cancel">Cancel</string>
+
+    <string name="tv_home_section_recents">Recent</string>
+    <string name="tv_home_section_systems">Systems</string>
+    <string name="tv_home_section_settings">Settings</string>
+
+    <string name="tv_search_results">Games</string>
+
+    <string name="kiosk_shortcut_short_description">Kiosk</string>
 
 </resources>

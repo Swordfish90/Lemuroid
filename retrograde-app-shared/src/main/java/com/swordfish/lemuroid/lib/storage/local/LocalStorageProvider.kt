@@ -20,23 +20,24 @@
 package com.swordfish.lemuroid.lib.storage.local
 
 import android.content.Context
-import android.net.Uri
+import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
-import com.swordfish.lemuroid.common.kotlin.calculateCrc32
+import androidx.preference.PreferenceManager
+import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
+import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import com.swordfish.lemuroid.lib.storage.ISOScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
-import java.io.FileInputStream
+import java.util.zip.ZipInputStream
 
 class LocalStorageProvider(
-    context: Context,
+    private val context: Context,
     private val directoriesManager: DirectoriesManager,
     override val metadataProvider: GameMetadataProvider
 ) : StorageProvider {
@@ -52,25 +53,43 @@ class LocalStorageProvider(
     override val enabledByDefault = true
 
     override fun listFiles(): Observable<StorageFile> =
-        Observable.fromIterable(walkDirectory(directoriesManager.getInternalRomsDirectory()))
+        Observable.fromIterable(walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory()))
+
+    private fun getExternalFolder(): File? {
+        val prefString = context.getString(R.string.pref_key_legacy_external_folder)
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferenceManager.getString(prefString, null)?.let { File(it) }
+    }
 
     private fun walkDirectory(directory: File): Iterable<StorageFile> {
         return directory.walk()
             .filter { file -> file.isFile && !file.name.startsWith(".") }
-            .map { file ->
-                StorageFile(
-                    name = file.name,
-                    size = file.length(),
-                    crc = file.calculateCrc32().toUpperCase(),
-                    uri = Uri.parse(file.toURI().toString()),
-                    parentFolder = file.parent,
-                    serial = ISOScanner.extractSerial(file.name, FileInputStream(file))
-                )
-            }
+            .map { DocumentFile.fromFile(it) }
+            .map { DocumentFileParser.parseDocumentFile(context, it) }
+            .filterNotNull()
             .asIterable()
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        File(game.fileUri.path)
+        val originalFile = File(game.fileUri.path)
+        if (!originalFile.isZipped() || originalFile.name == game.fileName) {
+            return@fromCallable originalFile
+        }
+
+        val cacheFile = GameCacheUtils.getCacheFileForGame(LOCAL_STORAGE_CACHE_SUBFOLDER, context, game)
+        if (cacheFile.exists()) {
+            return@fromCallable cacheFile
+        }
+
+        if (originalFile.isZipped()) {
+            val stream = ZipInputStream(originalFile.inputStream())
+            stream.extractEntryToFile(game.fileName, cacheFile)
+        }
+
+        cacheFile
+    }
+
+    companion object {
+        const val LOCAL_STORAGE_CACHE_SUBFOLDER = "local-storage-games"
     }
 }

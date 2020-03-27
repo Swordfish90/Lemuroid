@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        android:key="@string/pref_key_shader"
+        android:title="@string/simulate_display"
+        app:iconSpaceReserved="false"
+        android:defaultValue="true"/>
+
+    <Preference
+        android:key="@string/pref_key_clear_cores_cache"
+        android:title="@string/settings_title_clear_cores_cache"
+        android:summary="@string/settings_description_clear_cores_cache"
+        app:iconSpaceReserved="false"
+        android:persistent="false"/>
+
+</PreferenceScreen>

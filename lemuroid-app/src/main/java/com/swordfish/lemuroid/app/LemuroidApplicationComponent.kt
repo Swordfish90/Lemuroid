@@ -19,9 +19,9 @@
 
 package com.swordfish.lemuroid.app
 
+import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjectionModule
 import com.swordfish.lemuroid.lib.injection.PerApp
-import com.swordfish.lemuroid.app.feature.library.LibraryIndexWork
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule

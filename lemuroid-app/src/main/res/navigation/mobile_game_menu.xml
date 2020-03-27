@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mobile_game_menu"
+    app:startDestination="@id/game_menu">
+
+    <fragment
+        android:id="@+id/game_menu"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuFragment"
+        android:label="@string/game_menu_title" >
+
+        <action
+            android:id="@+id/action_navigation_systems_to_navigation_games"
+            app:destination="@id/core_options" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/core_options"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuCoreOptionsFragment"
+        android:label="@string/core_settings_title">
+
+    </fragment>
+</navigation>

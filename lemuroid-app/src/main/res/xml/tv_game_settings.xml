@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/game_menu_title">
+
+    <PreferenceScreen
+        android:key="pref_game_section_save"
+        android:title="@string/game_menu_save"/>
+
+    <PreferenceScreen
+        android:key="pref_game_section_load"
+        android:title="@string/game_menu_load"/>
+
+    <Preference
+        android:key="pref_game_reset"
+        android:title="@string/game_menu_restart"/>
+
+    <Preference
+        android:key="pref_game_quit"
+        android:title="@string/game_menu_quit"/>
+
+    <PreferenceScreen
+        android:key="pref_game_section_change_disk"
+        android:title="@string/game_menu_change_disk_button"/>
+
+    <PreferenceScreen
+        android:key="pref_game_section_core_options"
+        android:title="@string/game_menu_settings"/>
+
+</PreferenceScreen>

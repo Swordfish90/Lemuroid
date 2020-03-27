@@ -5,7 +5,8 @@ import android.os.Environment
 import android.os.StatFs
 import android.system.Os
 import android.text.format.Formatter
-import com.swordfish.lemuroid.lib.storage.accessframework.StorageAccessFrameworkProvider
+import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
+import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import io.reactivex.Completable
 import timber.log.Timber
 import java.io.File
@@ -26,8 +27,12 @@ class CacheCleaner {
     fun clean(appContext: Context, maxByteSize: Long) = Completable.fromAction {
         Timber.i("Running cache cleanup task")
 
-        val cacheFiles = File(appContext.cacheDir, StorageAccessFrameworkProvider.SAF_CACHE_SUBFOLDER)
-            .walkBottomUp()
+        val cacheFoldersSequence = sequenceOf(
+            File(appContext.cacheDir, StorageAccessFrameworkProvider.SAF_CACHE_SUBFOLDER).walkBottomUp(),
+            File(appContext.cacheDir, LocalStorageProvider.LOCAL_STORAGE_CACHE_SUBFOLDER).walkBottomUp()
+        )
+
+        val cacheFiles = cacheFoldersSequence.flatten()
             .filter { it.isFile }
             .sortedBy { retrieveLastAccess(it) }
             .toMutableList()
