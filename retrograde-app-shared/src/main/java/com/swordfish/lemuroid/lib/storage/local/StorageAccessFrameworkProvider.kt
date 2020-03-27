@@ -5,19 +5,18 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
-import com.swordfish.lemuroid.common.kotlin.calculateCrc32
-import com.swordfish.lemuroid.common.kotlin.toStringCRC32
+import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
+import com.swordfish.lemuroid.common.kotlin.isZipped
+import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
-import com.swordfish.lemuroid.lib.storage.ISOScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
-import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
@@ -37,7 +36,7 @@ class StorageAccessFrameworkProvider(
 
     override fun listFiles(): Observable<StorageFile> {
         return getExternalFolder()?.let { folder ->
-            traverseDirectoryEntries(Uri.parse(folder)).map { handleFile(it) }
+            traverseDirectoryEntries(Uri.parse(folder)).map { DocumentFileParser.parseDocumentFile(context, it) }
         } ?: Observable.empty()
     }
 
@@ -82,78 +81,25 @@ class StorageAccessFrameworkProvider(
         emitter.onComplete()
     }
 
-    private fun handleFile(file: DocumentFile): StorageFile {
-        return if (isZipped(file)) {
-            Timber.d("Detected zip file. ${file.name}")
-            handleFileAsZipFile(file)
-        } else {
-            Timber.d("Detected standard file. ${file.name}")
-            handleFileAsStandardFile(file)
-        }
-    }
-
-    private fun handleFileAsZipFile(file: DocumentFile): StorageFile {
-        val inputStream = context.contentResolver.openInputStream(file.uri)
-        return ZipInputStream(inputStream).use {
-            val gameEntry = LocalStorageUtils.findGameEntry(it, file.length())
-            if (gameEntry != null) {
-                Timber.d("Handing zip file as compressed game: ${file.name}")
-                handleFileAsCompressedGame(file, gameEntry, it)
-            } else {
-                Timber.d("Handing zip file as standard: ${file.name}")
-                handleFileAsStandardFile(file)
-            }
-        }
-    }
-
-    private fun handleFileAsCompressedGame(file: DocumentFile, entry: ZipEntry, zipInputStream: ZipInputStream): StorageFile {
-        Timber.d("Processing zipped entry: ${entry.name}")
-
-        val serial = ISOScanner.extractSerial(entry.name, zipInputStream)
-
-        return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, file.uri, file.parentFile?.name)
-    }
-
-    private fun handleFileAsStandardFile(file: DocumentFile): StorageFile {
-        val crc32 = if (file.length() < MAX_SIZE_CRC32) {
-            context.contentResolver.openInputStream(file.uri)?.calculateCrc32()
-        } else {
-            null
-        }
-
-        val serial = context.contentResolver.openInputStream(file.uri)?.let { inputStream ->
-            ISOScanner.extractSerial(file.name!!, inputStream)
-        }
-
-        Timber.d("Detected file: $id, name: ${file.name}, crc: $crc32")
-
-        return StorageFile(file.name!!, file.length(), crc32, serial, file.uri, file.parentFile?.name)
-    }
-
-    private fun isZipped(file: DocumentFile) = file.type == ZIP_MIME_TYPE
-
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        val cacheFile = LocalStorageUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
+        val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
         if (cacheFile.exists()) {
             return@fromCallable cacheFile
         }
 
         val originalDocument = DocumentFile.fromSingleUri(context, game.fileUri)!!
 
-        if (isZipped(originalDocument) && originalDocument.name != game.fileName) {
+        if (originalDocument.isZipped() && originalDocument.name != game.fileName) {
             val stream = ZipInputStream(context.contentResolver.openInputStream(originalDocument.uri))
-            LocalStorageUtils.extractZipEntryToFile(stream, game.fileName, cacheFile)
+            stream.extractEntryToFile(game.fileName, cacheFile)
         } else {
             val stream = context.contentResolver.openInputStream(game.fileUri)!!
-            LocalStorageUtils.copyInputStreamToFile(stream, cacheFile)
+            stream.writeToFile(cacheFile)
         }
         cacheFile
     }
 
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
-        const val ZIP_MIME_TYPE = "application/zip"
-
-        const val MAX_SIZE_CRC32 = 500_000_000
     }
 }
