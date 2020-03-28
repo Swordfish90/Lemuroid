@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.mobile.feature.systems
+package com.swordfish.lemuroid.app.shared.systems
 
 import com.swordfish.lemuroid.lib.library.GameSystem
 

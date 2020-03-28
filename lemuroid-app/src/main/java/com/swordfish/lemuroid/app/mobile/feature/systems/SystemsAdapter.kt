@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.systems.SystemInfo
 import com.swordfish.lemuroid.lib.library.GameSystem
 
 class SystemViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {

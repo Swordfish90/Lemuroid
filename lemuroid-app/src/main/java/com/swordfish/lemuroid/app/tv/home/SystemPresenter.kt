@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.feature.systems.SystemInfo
+import com.swordfish.lemuroid.app.shared.systems.SystemInfo
 
 class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) : Presenter() {
 

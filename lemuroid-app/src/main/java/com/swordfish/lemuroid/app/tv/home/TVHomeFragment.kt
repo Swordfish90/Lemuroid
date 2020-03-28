@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.feature.systems.SystemInfo
+import com.swordfish.lemuroid.app.shared.systems.SystemInfo
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.shared.GameInteractor

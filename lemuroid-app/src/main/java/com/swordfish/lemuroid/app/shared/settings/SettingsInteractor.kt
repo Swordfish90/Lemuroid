@@ -1,7 +1,6 @@
-package com.swordfish.lemuroid.app.mobile.feature.settings
+package com.swordfish.lemuroid.app.shared.settings
 
 import android.content.Context
-import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 

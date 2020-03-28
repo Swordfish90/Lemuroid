@@ -20,7 +20,7 @@ import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsInteractor
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.tbruyelle.rxpermissions2.RxPermissions
 import dagger.Provides

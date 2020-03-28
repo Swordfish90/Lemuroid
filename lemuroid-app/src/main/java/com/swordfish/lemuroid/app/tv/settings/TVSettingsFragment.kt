@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.preference.Preference
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsInteractor
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 

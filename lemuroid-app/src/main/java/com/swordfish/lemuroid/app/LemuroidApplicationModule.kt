@@ -28,12 +28,6 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
-import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerActivity
-import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
-import com.swordfish.lemuroid.app.tv.game.TVGameActivity
-import com.swordfish.lemuroid.app.tv.gamemenu.TVGameMenuActivity
-import com.swordfish.lemuroid.app.tv.main.MainTVActivity
-import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -80,10 +74,6 @@ abstract class LemuroidApplicationModule {
     abstract fun mainActivity(): MainActivity
 
     @PerActivity
-    @ContributesAndroidInjector(modules = [MainTVActivity.Module::class])
-    abstract fun tvMainActivity(): MainTVActivity
-
-    @PerActivity
     @ContributesAndroidInjector
     abstract fun gameLauncherActivity(): GameLauncherActivity
 
@@ -97,27 +87,7 @@ abstract class LemuroidApplicationModule {
 
     @PerActivity
     @ContributesAndroidInjector
-    abstract fun tvGameActivity(): TVGameActivity
-
-    @PerActivity
-    @ContributesAndroidInjector
     abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
-
-    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun tvGameMenuActivity(): TVGameMenuActivity
-
-    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun tvFolderPickerLauncher(): TVFolderPickerLauncher
-
-    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun tvFolderPickerActivity(): TVFolderPickerActivity
-
-    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun tvSettingsActivity(): TVSettingsActivity
 
     @Module
     companion object {
@@ -129,7 +99,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun ovgdbManager(app: LemuroidApplication, executorService: ExecutorService) =
+        fun libretroDBManager(app: LemuroidApplication, executorService: ExecutorService) =
                 LibretroDBManager(app, executorService)
 
         @Provides
