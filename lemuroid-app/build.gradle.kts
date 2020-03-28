@@ -11,8 +11,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 17
-        versionName = "1.1.2"
+        versionCode = 18
+        versionName = "1.2.0-rc1"
     }
 
     signingConfigs {
