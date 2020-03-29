@@ -84,8 +84,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         setupPhysicalPad()
 
-        retroGameView?.requestFocus()
-
         if (retroGameView != null && settingsManager.autoSave && !system.supportsAutosave) {
             displayToast(R.string.game_toast_autosave_not_supported)
         }
@@ -251,6 +249,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             ?.subscribe { connectedGamepads ->
                 connectedGamepads.firstOrNull()?.let {
                     chooseMenuShortcutForGamepad(it)
+                    retroGameView?.requestFocus()
                 }
             }
     }
