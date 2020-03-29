@@ -93,13 +93,14 @@ class StorageAccessFrameworkProvider(
             return@fromCallable cacheFile
         }
 
-        val originalDocument = DocumentFile.fromSingleUri(context, game.fileUri)!!
+        val originalDocumentUri = Uri.parse(game.fileUri)
+        val originalDocument = DocumentFile.fromSingleUri(context, originalDocumentUri)!!
 
         if (originalDocument.isZipped() && originalDocument.name != game.fileName) {
             val stream = ZipInputStream(context.contentResolver.openInputStream(originalDocument.uri))
             stream.extractEntryToFile(game.fileName, cacheFile)
         } else {
-            val stream = context.contentResolver.openInputStream(game.fileUri)!!
+            val stream = context.contentResolver.openInputStream(originalDocument.uri)!!
             stream.writeToFile(cacheFile)
         }
         cacheFile

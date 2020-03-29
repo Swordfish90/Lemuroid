@@ -20,7 +20,6 @@ import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.GameSystem
-import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
@@ -32,7 +31,6 @@ import com.swordfish.touchinput.events.OptionType
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -41,6 +39,7 @@ import javax.inject.Inject
 
 abstract class BaseGameActivity : ImmersiveActivity() {
 
+    protected lateinit var game: Game
     protected lateinit var system: GameSystem
     protected lateinit var containerLayout: ConstraintLayout
     protected lateinit var gameViewLayout: FrameLayout
@@ -48,7 +47,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var savesManager: SavesManager
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
 
     private var menuShortcut: GameMenuShortcut? = null
@@ -63,7 +61,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         gameViewLayout = findViewById(R.id.gameview_layout)
         overlayLayout = findViewById(R.id.overlay_layout)
 
-        system = GameSystem.findById(intent.getStringExtra(EXTRA_SYSTEM_ID))
+        game = intent.getSerializableExtra(EXTRA_GAME) as Game
+        system = GameSystem.findById(game.systemId)
 
         val directoriesManager = DirectoriesManager(applicationContext)
 
@@ -145,22 +144,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    protected fun displayOptionsDialog() {
-        retrieveCurrentGame()
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribeBy { game ->
-                val intent = Intent(this, getDialogClass()).apply {
-
-                    val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
-                    this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
-                    this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
-                    this.putExtra(GameMenuContract.EXTRA_GAME_ID, game.id)
-                    this.putExtra(GameMenuContract.EXTRA_SYSTEM_ID, game.systemId)
-                }
-                startActivityForResult(intent, DIALOG_REQUEST)
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            }
+    private fun displayOptionsDialog() {
+        val intent = Intent(this, getDialogClass()).apply {
+            val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
+            this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
+            this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
+            this.putExtra(GameMenuContract.EXTRA_GAME, game)
+        }
+        startActivityForResult(intent, DIALOG_REQUEST)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     protected abstract fun getDialogClass(): Class<out Activity>
@@ -284,19 +276,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun autoSaveAndFinish() {
         getAutoSaveAndFinishCompletable()
-                .subscribeOn(Schedulers.io())
-                .autoDispose(scope())
-                .subscribe()
+            .subscribeOn(Schedulers.io())
+            .autoDispose(scope())
+            .subscribe()
     }
 
     private fun getAutoSaveAndFinishCompletable(): Completable {
-        return retrieveCurrentGame().flatMapCompletable { game ->
-            val saveRAMCompletable = getSaveRAMCompletable(game)
-            val autoSaveCompletable = getAutoSaveCompletable(game)
+        val saveRAMCompletable = getSaveRAMCompletable(game)
+        val autoSaveCompletable = getAutoSaveCompletable(game)
 
-            saveRAMCompletable.andThen(autoSaveCompletable)
-                    .doOnComplete { finish() }
-        }
+        return saveRAMCompletable.andThen(autoSaveCompletable)
+            .doOnComplete { finish() }
     }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
@@ -320,28 +310,23 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun saveSlot(index: Int): Completable {
         val retroGameView = retroGameView ?: return Completable.complete()
 
-        return retrieveCurrentGame()
+        return Single.just(game)
             .map { it to retroGameView.serializeState() }
             .doOnSuccess { (_, data) -> Timber.i("Storing quicksave with size: ${data.size}") }
+            .subscribeOn(Schedulers.io())
             .flatMapCompletable { (game, data) -> savesManager.setSlotSave(game, data, system, index) }
     }
 
     private fun loadSlot(index: Int): Completable {
         val retroGameView = retroGameView ?: return Completable.complete()
 
-        return retrieveCurrentGame()
-            .flatMap { savesManager.getSlotSave(it, system, index) }
+        return Single.just(game)
+            .flatMapMaybe { savesManager.getSlotSave(it, system, index) }
             .map { retroGameView.unserializeState(it) }
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
             .ignoreElement()
-    }
-
-    private fun retrieveCurrentGame(): Maybe<Game> {
-        val gameId = intent.getIntExtra(EXTRA_GAME_ID, -1)
-        return retrogradeDb.gameDao()
-            .selectById(gameId)
-            .subscribeOn(Schedulers.io())
     }
 
     private fun reset() {
@@ -409,8 +394,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     companion object {
-        const val EXTRA_GAME_ID = "game_id"
-        const val EXTRA_SYSTEM_ID = "system_id"
+        const val EXTRA_GAME = "game"
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
         const val EXTRA_CORE_VARIABLES = "core_variables"

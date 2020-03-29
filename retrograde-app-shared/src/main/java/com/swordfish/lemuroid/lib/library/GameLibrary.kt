@@ -51,7 +51,7 @@ class GameLibrary(
                 .doOnNext { pairs -> updateExisting(pairs, startedAtMs) }
                 .map { pairs -> filterNotExisting(pairs) }
                 .map { pairs -> pairs.map {
-                    (uri, _) -> provider.getStorageFile(uri) } .filterNotNull()
+                    (uri, _) -> provider.getStorageFile(uri) }.filterNotNull()
                 }
                 .flatMapSingle { retrieveMetadata(it, provider, startedAtMs) }
                 .doOnNext { games: List<Game> ->
@@ -60,7 +60,9 @@ class GameLibrary(
                 }
         }
         .doOnComplete { removeDeletedGames(startedAtMs) }
-        .doOnComplete { Timber.i("Library indexing completed in: ${System.currentTimeMillis() - startedAtMs} ms") }
+        .doOnComplete {
+            Timber.i("Library indexing completed in: ${System.currentTimeMillis() - startedAtMs} ms")
+        }
         .ignoreElements()
     }
 

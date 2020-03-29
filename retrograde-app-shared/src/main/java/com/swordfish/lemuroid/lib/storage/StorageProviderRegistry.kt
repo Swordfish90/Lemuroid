@@ -21,6 +21,7 @@ package com.swordfish.lemuroid.lib.storage
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class StorageProviderRegistry(context: Context, val providers: Set<StorageProvider>) {
@@ -40,5 +41,8 @@ class StorageProviderRegistry(context: Context, val providers: Set<StorageProvid
     val enabledProviders: Iterable<StorageProvider>
         get() = providers.filter { prefs.getBoolean(it.id, it.enabledByDefault) }
 
-    fun getProvider(game: Game) = providersByScheme[game.fileUri.scheme]!!
+    fun getProvider(game: Game): StorageProvider {
+        val uri = Uri.parse(game.fileUri)
+        return providersByScheme[uri.scheme]!!
+    }
 }

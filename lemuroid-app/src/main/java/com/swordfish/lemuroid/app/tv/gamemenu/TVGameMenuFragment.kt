@@ -11,22 +11,19 @@ import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.GameSystem
-import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
-import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 
 class TVGameMenuFragment(
-    private val retrogradeDb: RetrogradeDatabase,
     private val savesManager: SavesManager,
-    private val gameId: Int,
-    private val systemId: String,
+    private val game: Game,
     private val coreOptions: Array<CoreOption>,
     private val numDisks: Int
 ) : LeanbackPreferenceFragmentCompat() {
@@ -42,7 +39,7 @@ class TVGameMenuFragment(
         val coreOptionsScreen = findPreference<PreferenceScreen>(SECTION_CORE_OPTIONS)
         coreOptionsScreen?.isVisible = coreOptions.isNotEmpty()
         coreOptions
-                .map { CoreOptionsPreferenceHelper.convertToPreference(preferenceScreen.context, it, systemId) }
+                .map { CoreOptionsPreferenceHelper.convertToPreference(preferenceScreen.context, it, game.systemId) }
                 .forEach { coreOptionsScreen?.addPreference(it) }
     }
 
@@ -63,8 +60,9 @@ class TVGameMenuFragment(
         val saveScreen = findPreference<PreferenceScreen>(SECTION_SAVE_GAME)
         val loadScreen = findPreference<PreferenceScreen>(SECTION_LOAD_GAME)
 
-        retrieveCurrentGame()
-                .flatMapSingle { savesManager.getSavedSlotsInfo(it, GameSystem.findById(it.systemId).coreName) }
+        Single.just(game)
+                .flatMap { savesManager.getSavedSlotsInfo(it, GameSystem.findById(it.systemId).coreName) }
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())
                 .subscribeBy {
@@ -104,12 +102,6 @@ class TVGameMenuFragment(
         } else {
             ""
         }
-    }
-
-    private fun retrieveCurrentGame(): Maybe<Game> {
-        return retrogradeDb.gameDao()
-            .selectById(gameId)
-            .subscribeOn(Schedulers.io())
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

@@ -31,7 +31,7 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWor
         setForegroundAsync(ForegroundInfo(notificationsManager.getIndexingNotification()))
         return gameLibrary.indexGames()
                 .toSingleDefault(Result.success())
-                .doOnError { Timber.e("Library indexing failed with exception: $it") }
+                .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
                 .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
     }
 

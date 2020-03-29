@@ -93,8 +93,7 @@ class GameLauncherActivity : ImmersiveActivity() {
 
     fun newIntent(context: Context, gameData: GameLoader.GameData, useLeanback: Boolean) =
             Intent(context, getGameActivityClass(useLeanback)).apply {
-                putExtra(BaseGameActivity.EXTRA_SYSTEM_ID, gameData.game.systemId)
-                putExtra(BaseGameActivity.EXTRA_GAME_ID, gameData.game.id)
+                putExtra(BaseGameActivity.EXTRA_GAME, gameData.game)
                 putExtra(BaseGameActivity.EXTRA_CORE_PATH, gameData.coreFile.absolutePath)
                 putExtra(BaseGameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
                 putExtra(BaseGameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)

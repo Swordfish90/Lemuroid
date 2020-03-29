@@ -50,7 +50,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
         val game = Game(
                 fileName = file.name,
-                fileUri = file.uri,
+                fileUri = file.uri.toString(),
                 title = rom.name ?: file.name,
                 systemId = system.id.dbname,
                 developer = rom.developer,

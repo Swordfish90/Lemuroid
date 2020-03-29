@@ -76,7 +76,8 @@ class LocalStorageProvider(
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
-        val originalFile = File(game.fileUri.path)
+        val gamePath = Uri.parse(game.fileUri).path
+        val originalFile = File(gamePath)
         if (!originalFile.isZipped() || originalFile.name == game.fileName) {
             return@fromCallable originalFile
         }

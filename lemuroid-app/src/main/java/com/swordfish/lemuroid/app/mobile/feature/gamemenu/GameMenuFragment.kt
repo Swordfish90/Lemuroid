@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.GameSystem
-import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
@@ -24,7 +23,7 @@ import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Completable
-import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.security.InvalidParameterException
@@ -33,9 +32,9 @@ import javax.inject.Inject
 
 class GameMenuFragment : Fragment() {
 
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var savesManager: SavesManager
 
+    private lateinit var game: Game
     private lateinit var system: GameSystem
 
     override fun onAttach(context: Context) {
@@ -44,9 +43,9 @@ class GameMenuFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val systemId = arguments?.getString(GameMenuContract.EXTRA_SYSTEM_ID)
+        game = arguments?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
                 ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
-        system = GameSystem.findById(systemId)
+        system = GameSystem.findById(game.systemId)
         return inflater.inflate(R.layout.layout_game_menu, container, false)
     }
 
@@ -58,19 +57,12 @@ class GameMenuFragment : Fragment() {
     }
 
     private fun setupViews(): Completable {
-        return retrieveCurrentGame()
-                .flatMapSingle { savesManager.getSavedSlotsInfo(it, system.coreName) }
+        return Single.just(game)
+                .flatMap { savesManager.getSavedSlotsInfo(it, system.coreName) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { presentViews(it) }
                 .ignoreElement()
-    }
-
-    private fun retrieveCurrentGame(): Maybe<Game> {
-        val gameId = arguments?.getInt(GameMenuContract.EXTRA_GAME_ID) ?: -1
-        return retrogradeDb.gameDao()
-                .selectById(gameId)
-                .subscribeOn(Schedulers.io())
     }
 
     private fun presentViews(infos: List<SavesManager.SaveInfos>) {

@@ -21,8 +21,6 @@ package com.swordfish.lemuroid.lib.library.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.swordfish.lemuroid.common.db.Converters
 import com.swordfish.lemuroid.lib.library.db.dao.GameDao
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -31,7 +29,6 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
         entities = [Game::class],
         version = 8,
         exportSchema = true)
-@TypeConverters(Converters::class)
 abstract class RetrogradeDatabase : RoomDatabase() {
 
     companion object {
