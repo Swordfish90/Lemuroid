@@ -58,9 +58,8 @@ class LocalStorageProvider(
         Observable.fromIterable(walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory()))
 
     override fun getStorageFile(uri: Uri): StorageFile? {
-        return DocumentFile.fromSingleUri(context, uri)?.let {
-            DocumentFileParser.parseDocumentFile(context, it)
-        }
+        val documentFile = DocumentFile.fromFile(File(uri.path))
+        return DocumentFileParser.parseDocumentFile(context, documentFile)
     }
 
     private fun getExternalFolder(): File? {
