@@ -19,6 +19,7 @@
 
 package com.swordfish.lemuroid.lib.library
 
+import android.net.Uri
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -44,19 +45,22 @@ class GameLibrary(
         val startedAtMs = System.currentTimeMillis()
 
         return Observable.fromIterable(providerProviderRegistry.enabledProviders).concatMap { provider ->
-            provider.listFiles()
-                .flatMapSingle { file -> retrieveGameFromFile(file) }
+            provider.listUris()
+                .flatMapSingle { uri -> retrieveGameForUri(uri) }
                 .buffer(BUFFER_SIZE)
                 .doOnNext { pairs -> updateExisting(pairs, startedAtMs) }
                 .map { pairs -> filterNotExisting(pairs) }
-                .map { pairs -> pairs.map { (file, _) -> file } }
+                .map { pairs -> pairs.map {
+                    (uri, _) -> provider.getStorageFile(uri) } .filterNotNull()
+                }
                 .flatMapSingle { retrieveMetadata(it, provider, startedAtMs) }
                 .doOnNext { games: List<Game> ->
                     games.forEach { Timber.d("Insert: $it") }
                     retrogradedb.gameDao().insert(games)
                 }
-                .doOnComplete { removeDeletedGames(startedAtMs) }
         }
+        .doOnComplete { removeDeletedGames(startedAtMs) }
+        .doOnComplete { Timber.i("Library indexing completed in: ${System.currentTimeMillis() - startedAtMs} ms") }
         .ignoreElements()
     }
 
@@ -71,8 +75,8 @@ class GameLibrary(
                 .toList()
     }
 
-    private fun updateExisting(pairs: MutableList<Pair<StorageFile, Optional<Game>>>, startedAtMs: Long) {
-        pairs.forEach { (file, game) -> Timber.d("Game already indexed? ${file.name} ${game is Some}") }
+    private fun updateExisting(pairs: MutableList<Pair<Uri, Optional<Game>>>, startedAtMs: Long) {
+        pairs.forEach { (uri, game) -> Timber.d("Game already indexed? $uri ${game is Some}") }
         pairs.filter { (_, game) -> game is Some }
                 .map { (_, game) -> game.component1()!!.copy(lastIndexedAt = startedAtMs) }
                 .let { games ->
@@ -81,14 +85,14 @@ class GameLibrary(
                 }
     }
 
-    private fun filterNotExisting(pairs: List<Pair<StorageFile, Optional<Game>>>) =
+    private fun filterNotExisting(pairs: List<Pair<Uri, Optional<Game>>>) =
             pairs.filter { (_, game) -> game is None }
 
-    private fun retrieveGameFromFile(file: StorageFile): Single<Pair<StorageFile, Optional<Game>>> {
-        Timber.d("Retrieving game for file: $file ${file.uri}")
-        return retrogradedb.gameDao().selectByFileUri(file.uri.toString())
+    private fun retrieveGameForUri(uri: Uri): Single<Pair<Uri, Optional<Game>>> {
+        Timber.d("Retrieving game for uri: $uri")
+        return retrogradedb.gameDao().selectByFileUri(uri.toString())
                 .toSingleAsOptional()
-                .map { game -> Pair(file, game) }
+                .map { game -> Pair(uri, game) }
     }
 
     private fun removeDeletedGames(startedAtMs: Long) {

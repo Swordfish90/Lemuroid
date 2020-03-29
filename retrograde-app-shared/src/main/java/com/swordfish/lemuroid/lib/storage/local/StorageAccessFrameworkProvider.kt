@@ -34,10 +34,16 @@ class StorageAccessFrameworkProvider(
 
     override val enabledByDefault = true
 
-    override fun listFiles(): Observable<StorageFile> {
+    override fun listUris(): Observable<Uri> {
         return getExternalFolder()?.let { folder ->
-            traverseDirectoryEntries(Uri.parse(folder)).map { DocumentFileParser.parseDocumentFile(context, it) }
+            traverseDirectoryEntries(Uri.parse(folder))
         } ?: Observable.empty()
+    }
+
+    override fun getStorageFile(uri: Uri): StorageFile? {
+        return DocumentFile.fromSingleUri(context, uri)?.let {
+            DocumentFileParser.parseDocumentFile(context, it)
+        }
     }
 
     private fun getExternalFolder(): String? {
@@ -46,7 +52,7 @@ class StorageAccessFrameworkProvider(
         return preferenceManager.getString(prefString, null)
     }
 
-    private fun traverseDirectoryEntries(rootUri: Uri): Observable<DocumentFile> = Observable.create { emitter ->
+    private fun traverseDirectoryEntries(rootUri: Uri): Observable<Uri> = Observable.create { emitter ->
         try {
             var currentNode = DocumentFile.fromTreeUri(context.applicationContext, rootUri)
 
@@ -69,7 +75,7 @@ class StorageAccessFrameworkProvider(
                         if (file.isDirectory) {
                             dirNodes.add(file)
                         } else {
-                            emitter.onNext(file)
+                            emitter.onNext(file.uri)
                         }
                     }
                 }

@@ -20,6 +20,8 @@
 package com.swordfish.lemuroid.lib.storage.local
 
 import android.content.Context
+import android.net.Uri
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
@@ -52,8 +54,14 @@ class LocalStorageProvider(
 
     override val enabledByDefault = true
 
-    override fun listFiles(): Observable<StorageFile> =
+    override fun listUris(): Observable<Uri> =
         Observable.fromIterable(walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory()))
+
+    override fun getStorageFile(uri: Uri): StorageFile? {
+        return DocumentFile.fromSingleUri(context, uri)?.let {
+            DocumentFileParser.parseDocumentFile(context, it)
+        }
+    }
 
     private fun getExternalFolder(): File? {
         val prefString = context.getString(R.string.pref_key_legacy_external_folder)
@@ -61,12 +69,10 @@ class LocalStorageProvider(
         return preferenceManager.getString(prefString, null)?.let { File(it) }
     }
 
-    private fun walkDirectory(directory: File): Iterable<StorageFile> {
+    private fun walkDirectory(directory: File): Iterable<Uri> {
         return directory.walk()
             .filter { file -> file.isFile && !file.name.startsWith(".") }
-            .map { DocumentFile.fromFile(it) }
-            .map { DocumentFileParser.parseDocumentFile(context, it) }
-            .filterNotNull()
+            .map { it.toUri() }
             .asIterable()
     }
 
