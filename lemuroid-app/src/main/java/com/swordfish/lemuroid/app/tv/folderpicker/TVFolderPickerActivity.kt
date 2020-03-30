@@ -46,9 +46,9 @@ class TVFolderPickerActivity : BaseTVActivity() {
 
         @NonNull
         override fun onCreateGuidance(savedInstanceState: Bundle?): Guidance {
-            val title = resources.getString(R.string.tv_folder_picker_title)
-            val breadcrumb = directory.name
-            return Guidance(title, "", breadcrumb, null)
+            val title = directory.name
+            val description = resources.getString(R.string.tv_folder_picker_title)
+            return Guidance(title, "", description, null)
         }
 
         override fun onCreateButtonActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
