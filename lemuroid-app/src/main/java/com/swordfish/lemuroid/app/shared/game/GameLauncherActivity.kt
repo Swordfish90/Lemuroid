@@ -35,11 +35,12 @@ class GameLauncherActivity : ImmersiveActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
-            val gameId = intent.getIntExtra("game_id", -1)
-            val loadSave = intent.getBooleanExtra("load_save", false)
-            val useLeanback = intent.getBooleanExtra("leanback", false)
+            val game = intent.getSerializableExtra(EXTRA_GAME) as Game
+            val loadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
+            val useLeanback = intent.getBooleanExtra(EXTRA_LEANBACK, false)
 
             val loadingStatesSubject = PublishSubject.create<GameLoader.LoadingState>()
             loadingStatesSubject.subscribeOn(Schedulers.io())
@@ -48,7 +49,7 @@ class GameLauncherActivity : ImmersiveActivity() {
                     .autoDispose(scope())
                     .subscribe { displayLoadingState(it) }
 
-            gameLoader.load(gameId, loadSave && settingsManager.autoSave)
+            gameLoader.load(game, loadSave && settingsManager.autoSave)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .autoDispose(scope())
@@ -129,13 +130,17 @@ class GameLauncherActivity : ImmersiveActivity() {
     companion object {
         private const val REQUEST_CODE_GAME = 1000
 
+        private const val EXTRA_GAME = "GAME"
+        private const val EXTRA_LOAD_SAVE = "LOAD_SAVE"
+        private const val EXTRA_LEANBACK = "LEANBACK"
+
         fun launchGame(context: Context, game: Game, loadSave: Boolean, useLeanback: Boolean) {
             context.startActivity(
-                    Intent(context, GameLauncherActivity::class.java).apply {
-                        putExtra("game_id", game.id)
-                        putExtra("load_save", loadSave)
-                        putExtra("leanback", useLeanback)
-                    }
+                Intent(context, GameLauncherActivity::class.java).apply {
+                    putExtra(EXTRA_GAME, game)
+                    putExtra(EXTRA_LOAD_SAVE, loadSave)
+                    putExtra(EXTRA_LEANBACK, useLeanback)
+                }
             )
         }
     }

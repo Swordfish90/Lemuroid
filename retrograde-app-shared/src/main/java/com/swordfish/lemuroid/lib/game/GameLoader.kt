@@ -30,24 +30,20 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
 
 class GameLoader(
     private val coreManager: CoreManager,
-    private val retrogradeDatabase: RetrogradeDatabase,
     private val gameLibrary: GameLibrary,
     private val savesManager: SavesManager,
     private val coreVariablesManager: CoreVariablesManager
 ) {
 
-    private fun loadGame(gameId: Int): Maybe<Game> = retrogradeDatabase.gameDao().selectById(gameId)
-
-    fun load(gameId: Int, loadSave: Boolean): Observable<LoadingState> {
-        return loadGame(gameId)
-            .subscribeOn(Schedulers.io())
-            .flatMapObservable { game -> prepareGame(game, loadSave) }
+    fun load(game: Game, loadSave: Boolean): Observable<LoadingState> {
+        return prepareGame(game, loadSave)
     }
 
     sealed class LoadingState {
