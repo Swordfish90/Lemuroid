@@ -217,7 +217,7 @@ data class GameSystem(
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
-                            scanByParentAndSupportedExtensions = true
+                            scanByPathAndSupportedExtensions = true
                         ),
                         exposedSettings = listOf("pcsx_rearmed_frameskip"),
                         defaultSettings = listOf(CoreVariable("pcsx_rearmed_drc", "disabled"))
@@ -238,7 +238,7 @@ data class GameSystem(
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
-                            scanByParentAndSupportedExtensions = true
+                            scanByPathAndSupportedExtensions = true
                         ),
                         exposedSettings = listOf(
                             "ppsspp_auto_frameskip",
@@ -259,8 +259,8 @@ data class GameSystem(
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
-                            scanByParentAndFilename = true,
-                            scanByParentAndSupportedExtensions = false
+                            scanByPathAndFilename = true,
+                            scanByPathAndSupportedExtensions = false
                         ),
                         exposedSettings = listOf(
                             "fbneo-frameskip",
@@ -305,8 +305,8 @@ data class GameSystem(
         data class ScanOptions(
             val scanByFilename: Boolean = true,
             val scanByUniqueExtension: Boolean = true,
-            val scanByParentAndFilename: Boolean = false,
-            val scanByParentAndSupportedExtensions: Boolean = true
+            val scanByPathAndFilename: Boolean = false,
+            val scanByPathAndSupportedExtensions: Boolean = true
         )
     }
 }

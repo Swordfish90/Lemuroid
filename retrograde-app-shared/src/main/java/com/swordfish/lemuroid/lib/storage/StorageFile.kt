@@ -33,7 +33,7 @@ data class StorageFile(
 
     val uri: Uri,
 
-    val parentFolder: String? = null
+    val path: String? = null
 ) {
 
     val extension: String

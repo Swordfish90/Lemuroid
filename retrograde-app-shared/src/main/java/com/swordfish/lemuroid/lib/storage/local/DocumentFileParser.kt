@@ -46,7 +46,7 @@ object DocumentFileParser {
 
         val serial = ISOScanner.extractSerial(entry.name, zipInputStream)
 
-        return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, file.uri, file.parentFile?.name)
+        return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, file.uri, file.uri.path)
     }
 
     private fun parseStandardFile(context: Context, file: DocumentFile): StorageFile {
@@ -62,7 +62,7 @@ object DocumentFileParser {
 
         Timber.d("Detected file name: ${file.name}, crc: $crc32")
 
-        return StorageFile(file.name!!, file.length(), crc32, serial, file.uri, file.parentFile?.name)
+        return StorageFile(file.name!!, file.length(), crc32, serial, file.uri, file.uri.path)
     }
 
     /* Finds a zip entry which we assume is a game. Lemuroids only supports single archive games, so we are looking for
