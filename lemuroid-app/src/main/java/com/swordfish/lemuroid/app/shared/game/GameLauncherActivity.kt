@@ -98,6 +98,8 @@ class GameLauncherActivity : ImmersiveActivity() {
                 putExtra(BaseGameActivity.EXTRA_CORE_PATH, gameData.coreFile.absolutePath)
                 putExtra(BaseGameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
                 putExtra(BaseGameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)
+                putExtra(BaseGameActivity.EXTRA_LOAD_SRAM, gameData.saveRAMData != null)
+                putExtra(BaseGameActivity.EXTRA_LOAD_AUTOSAVE, gameData.quickSaveData != null)
             }
 
     private fun getGameActivityClass(useLeanback: Boolean) = if (useLeanback) {

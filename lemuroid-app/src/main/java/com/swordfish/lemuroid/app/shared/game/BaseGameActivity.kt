@@ -74,12 +74,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             displayCannotLoadGameMessage()
         }
 
-        getAndResetTransientSaveRAMState()?.let {
+        retrieveSRAMData()?.let {
             retroGameView?.unserializeSRAM(it)
         }
 
-        getAndResetTransientQuickSave()?.let {
-            restoreQuickSaveAsync(it)
+        retrieveAutoSaveData()?.let {
+            restoreAutoSaveAsync(it)
         }
 
         setupPhysicalPad()
@@ -89,8 +89,24 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
+    // If the activity is garbage collected we are losing its state. To avoid overwriting the previous autosave we just
+    // reload the previous one. This is far from perfect but definitely improves the current behaviour.
+    private fun retrieveAutoSaveData(): ByteArray? {
+        if (intent.getBooleanExtra(EXTRA_LOAD_AUTOSAVE, false)) {
+            return getAndResetTransientQuickSave() ?: savesManager.getAutoSave(game, system).blockingGet()
+        }
+        return null
+    }
+
+    private fun retrieveSRAMData(): ByteArray? {
+        if (intent.getBooleanExtra(EXTRA_LOAD_SRAM, false)) {
+            return getAndResetTransientSaveRAMState() ?: savesManager.getSaveRAM(game).blockingGet()
+        }
+        return null
+    }
+
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
-    private fun restoreQuickSaveAsync(saveGame: ByteArray) {
+    private fun restoreAutoSaveAsync(saveGame: ByteArray) {
         if (!isAutoSaveEnabled()) {
             return
         }
@@ -397,6 +413,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
         const val EXTRA_CORE_VARIABLES = "core_variables"
+        const val EXTRA_LOAD_SRAM = "load_sram"
+        const val EXTRA_LOAD_AUTOSAVE = "load_autosave"
 
         private const val DIALOG_REQUEST = 100
 
