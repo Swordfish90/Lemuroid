@@ -11,7 +11,7 @@ import java.security.InvalidParameterException
 
 class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.core_preferences)
+        addPreferencesFromResource(R.xml.empty_preference_screen)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

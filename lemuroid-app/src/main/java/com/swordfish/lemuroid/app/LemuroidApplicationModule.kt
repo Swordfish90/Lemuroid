@@ -28,6 +28,7 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.settings.GamepadBindingsPreferences
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -229,5 +230,11 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun settingsManager(context: Context) = SettingsManager(context)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun gamepadBindingsManager(rxSharedPreferences: RxSharedPreferences) =
+                GamepadBindingsPreferences(rxSharedPreferences)
     }
 }
