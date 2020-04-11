@@ -92,7 +92,7 @@ class DirectionPad @JvmOverloads constructor(
     private fun getSize(widthMode: Int, widthSize: Int): Int {
         return when (widthMode) {
             MeasureSpec.EXACTLY -> widthSize
-            else -> minOf(resources.getDimension(R.dimen.default_dial_size).toInt(), widthSize)
+            else -> minOf(resources.getDimension(R.dimen.dial_max_size_small).toInt(), widthSize)
         }
     }
 

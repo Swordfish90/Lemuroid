@@ -34,7 +34,7 @@ object deps {
                 const val leanbackPreference = "androidx.leanback:leanback-preference:${versions.leanback}"
                 const val palette = "androidx.palette:palette:1.0.0"
                 const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
-                const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
+                const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
             }
             object ktx {
                 const val core = "androidx.core:core-ktx:1.0.1"

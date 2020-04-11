@@ -7,59 +7,71 @@
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/r1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         app:label="R1"
-        app:layout_constraintBottom_toTopOf="@+id/actions"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintWidth_max="@dimen/size_button_small"
+        app:layout_constraintBottom_toBottomOf="@+id/r2"
         app:layout_constraintEnd_toStartOf="@+id/r2" />
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/r2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
         app:label="R2"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintWidth_max="@dimen/size_button_small"
         app:layout_constraintBottom_toTopOf="@+id/actions"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/l1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
         app:label="L1"
-        app:layout_constraintBottom_toTopOf="@+id/direction"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintWidth_max="@dimen/size_button_small"
+        app:layout_constraintBottom_toBottomOf="@+id/l2"
         app:layout_constraintStart_toEndOf="@+id/l2" />
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/l2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
         app:label="L2"
-        app:layout_constraintBottom_toTopOf="@+id/direction"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintWidth_max="@dimen/size_button_small"
+        app:layout_constraintBottom_toBottomOf="@+id/r2"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/select"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:src="@drawable/button_select"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintWidth_max="@dimen/size_button_small"
         app:layout_constraintBottom_toBottomOf="@+id/l1"
         app:layout_constraintStart_toEndOf="@+id/l1" />
 
     <com.swordfish.touchinput.views.SmallSingleButton
         android:id="@+id/start"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:src="@drawable/button_start"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintWidth_max="@dimen/size_button_small"
         app:layout_constraintBottom_toBottomOf="@+id/r1"
         app:layout_constraintEnd_toStartOf="@+id/r1" />
 
@@ -70,13 +82,13 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/menu"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/r2"
         app:layout_constraintWidth_max="@dimen/dial_max_size"
         tools:ignore="RtlHardcoded" />
 
@@ -86,13 +98,13 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/menu"
+        app:layout_constraintBottom_toBottomOf="@+id/actions"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHeight_max="@dimen/dial_max_size"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/actions"
         app:layout_constraintWidth_max="@dimen/dial_max_size" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -106,8 +118,9 @@
         android:id="@+id/menu"
         style="@style/default_menu"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actions" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
