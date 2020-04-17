@@ -3,6 +3,9 @@ package com.swordfish.touchinput.pads
 import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.EventsTransformers
 import com.swordfish.touchinput.events.OptionType
@@ -21,8 +24,21 @@ class N64Pad @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : BaseGamePad(context, attrs, defStyleAttr) {
 
+    private var leftAnalog: Stick
+
     init {
         inflate(context, R.layout.layout_n64, this)
+        leftAnalog = findViewById(R.id.leftanalog)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResume(owner: LifecycleOwner) {
+        owner.lifecycle.addObserver(leftAnalog)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPause(owner: LifecycleOwner) {
+        owner.lifecycle.removeObserver(leftAnalog)
     }
 
     override fun getEvents(): Observable<PadEvent> {

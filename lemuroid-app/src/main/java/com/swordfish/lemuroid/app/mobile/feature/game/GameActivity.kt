@@ -87,6 +87,7 @@ class GameActivity : BaseGameActivity() {
         val gameView = GamePadFactory.getGamePadView(this, system)
 
         overlayLayout.addView(gameView)
+        lifecycle.addObserver(gameView)
 
         gameView.getEvents()
             .subscribeOn(Schedulers.computation())
