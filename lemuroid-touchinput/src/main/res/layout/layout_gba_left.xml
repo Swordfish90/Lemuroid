@@ -11,7 +11,7 @@
         app:label="L"
         app:layout_constraintHorizontal_weight="1.5"
         app:layout_constraintEnd_toStartOf="@+id/select"
-        app:layout_constraintHeight_percent="0.1666"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -11,7 +11,7 @@
         android:src="@drawable/button_start"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintEnd_toStartOf="@+id/r1"
-        app:layout_constraintHeight_percent="0.1666"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,10 +21,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         app:label="R"
+        app:layout_constraintBottom_toBottomOf="@+id/start"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.1666"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintHorizontal_weight="1.5"
         app:layout_constraintStart_toEndOf="@id/start"
@@ -48,6 +47,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.33" />
+        app:layout_constraintHeight_percent="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
