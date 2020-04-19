@@ -23,6 +23,8 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintSet
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -114,5 +116,38 @@ class GameActivity : BaseGameActivity() {
         val flags =
                 HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
+    }
+
+    inner class OrientationHandler {
+
+        fun handleOrientationChange(orientation: Int) {
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
+                // view might be cut due to rounded corners.
+                setContainerWindowsInsets(top = true, bottom = true)
+                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.TOP)
+            } else {
+                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.BOTTOM)
+                setContainerWindowsInsets(top = false, bottom = true)
+            }
+        }
+
+        private fun changeGameViewConstraints(gameViewConstraint: Int, padConstraint: Int) {
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(containerLayout)
+            constraintSet.connect(R.id.gameview_layout, gameViewConstraint, R.id.overlay_layout, padConstraint, 0)
+            constraintSet.applyTo(containerLayout)
+        }
+
+        private fun setContainerWindowsInsets(top: Boolean, bottom: Boolean) {
+            containerLayout.setOnApplyWindowInsetsListener { v, insets ->
+                val topInset = if (top) { insets.systemWindowInsetTop } else { 0 }
+                val bottomInset = if (bottom) { insets.systemWindowInsetBottom } else { 0 }
+                v.setPadding(0, topInset, 0, bottomInset)
+                insets.consumeSystemWindowInsets()
+            }
+            containerLayout.requestApplyInsets()
+        }
     }
 }

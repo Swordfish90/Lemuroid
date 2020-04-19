@@ -375,39 +375,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    inner class OrientationHandler {
-
-        fun handleOrientationChange(orientation: Int) {
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-                // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
-                // view might be cut due to rounded corners.
-                setContainerWindowsInsets(top = true, bottom = true)
-                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.TOP)
-            } else {
-                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.BOTTOM)
-                setContainerWindowsInsets(top = false, bottom = true)
-            }
-        }
-
-        private fun changeGameViewConstraints(gameViewConstraint: Int, padConstraint: Int) {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(containerLayout)
-            constraintSet.connect(R.id.gameview_layout, gameViewConstraint, R.id.overlay_layout, padConstraint, 0)
-            constraintSet.applyTo(containerLayout)
-        }
-
-        private fun setContainerWindowsInsets(top: Boolean, bottom: Boolean) {
-            containerLayout.setOnApplyWindowInsetsListener { v, insets ->
-                val topInset = if (top) { insets.systemWindowInsetTop } else { 0 }
-                val bottomInset = if (bottom) { insets.systemWindowInsetBottom } else { 0 }
-                v.setPadding(0, topInset, 0, bottomInset)
-                insets.consumeSystemWindowInsets()
-            }
-            containerLayout.requestApplyInsets()
-        }
-    }
-
     companion object {
         const val EXTRA_GAME = "game"
         const val EXTRA_CORE_PATH = "core_path"

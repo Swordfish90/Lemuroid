@@ -11,7 +11,7 @@ import com.swordfish.touchinput.interfaces.StickEventsSource
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.SmallSingleButton
+import com.swordfish.touchinput.views.base.BaseSingleButton
 import io.reactivex.Observable
 
 class ArcadePad @JvmOverloads constructor(
@@ -35,13 +35,13 @@ class ArcadePad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.start)
+        return findViewById<BaseSingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.select)
+        return findViewById<BaseSingleButton>(R.id.select)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
