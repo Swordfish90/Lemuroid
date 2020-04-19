@@ -10,7 +10,7 @@ import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.base.BaseSingleButton
+import com.swordfish.touchinput.views.SingleButton
 import io.reactivex.Observable
 
 class Atari2600Pad @JvmOverloads constructor(
@@ -42,25 +42,25 @@ class Atari2600Pad @JvmOverloads constructor(
     }
 
     private fun getL1Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.l1)
+        return findViewById<SingleButton>(R.id.l1)
                 .getEvents()
                 .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
     }
 
     private fun getL2Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.l2)
+        return findViewById<SingleButton>(R.id.l2)
                 .getEvents()
                 .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
     }
 
     private fun getSelectEvents(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.select)
+        return findViewById<SingleButton>(R.id.select)
                 .getEvents()
                 .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
 
     private fun getStartEvents(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
                 .getEvents()
                 .compose(EventsTransformers.actionButtonsMap(KeyEvent.KEYCODE_BUTTON_START))
     }

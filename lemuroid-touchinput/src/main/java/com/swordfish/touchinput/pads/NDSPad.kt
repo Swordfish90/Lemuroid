@@ -10,7 +10,7 @@ import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.base.BaseSingleButton
+import com.swordfish.touchinput.views.SingleButton
 import io.reactivex.Observable
 
 class NDSPad @JvmOverloads constructor(
@@ -37,13 +37,13 @@ class NDSPad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.select)
+        return findViewById<SingleButton>(R.id.select)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
@@ -66,13 +66,13 @@ class NDSPad @JvmOverloads constructor(
     }
 
     private fun getL1Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.l1)
+        return findViewById<SingleButton>(R.id.l1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
     }
 
     private fun getR1Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.r1)
+        return findViewById<SingleButton>(R.id.r1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
     }

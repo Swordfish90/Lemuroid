@@ -8,11 +8,10 @@ import com.swordfish.touchinput.events.EventsTransformers
 import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.LargeSingleButton
+import com.swordfish.touchinput.views.SingleButton
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.Stick
 import com.swordfish.touchinput.views.ActionButtons
-import com.swordfish.touchinput.views.base.BaseSingleButton
 import io.reactivex.Observable
 
 class N64Pad @JvmOverloads constructor(
@@ -40,7 +39,7 @@ class N64Pad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
@@ -73,19 +72,19 @@ class N64Pad @JvmOverloads constructor(
     }
 
     private fun getL1Events(): Observable<PadEvent> {
-        return findViewById<LargeSingleButton>(R.id.l1)
+        return findViewById<SingleButton>(R.id.l1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
     }
 
     private fun getL2Events(): Observable<PadEvent> {
-        return findViewById<LargeSingleButton>(R.id.l2)
+        return findViewById<SingleButton>(R.id.l2)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
     }
 
     private fun getR1Events(): Observable<PadEvent> {
-        return findViewById<LargeSingleButton>(R.id.r1)
+        return findViewById<SingleButton>(R.id.r1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
     }

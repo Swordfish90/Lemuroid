@@ -10,7 +10,7 @@ import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.base.BaseSingleButton
+import com.swordfish.touchinput.views.SingleButton
 import io.reactivex.Observable
 
 class GameBoyPad @JvmOverloads constructor(
@@ -34,13 +34,13 @@ class GameBoyPad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.select)
+        return findViewById<SingleButton>(R.id.select)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.swordfish.touchinput.views.LargeSingleButton
+    <com.swordfish.touchinput.views.SingleButton
         android:id="@+id/start"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.swordfish.touchinput.views.LargeSingleButton
+    <com.swordfish.touchinput.views.SingleButton
         android:id="@+id/r1"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toEndOf="@id/start"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.swordfish.touchinput.views.LargeSingleButton
+    <com.swordfish.touchinput.views.SingleButton
         android:id="@+id/r2"
         android:layout_width="0dp"
         android:layout_height="0dp"
