@@ -10,6 +10,7 @@ import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
+import com.swordfish.touchinput.views.Stick
 import com.swordfish.touchinput.views.base.BaseSingleButton
 import io.reactivex.Observable
 
@@ -33,7 +34,9 @@ class PSXPad @JvmOverloads constructor(
             getL1Events(),
             getR2Events(),
             getL2Events(),
-            getMenuEvents()
+            getMenuEvents(),
+            getLeftStickEvents(),
+            getRightStickEvents()
         ))
     }
 
@@ -94,5 +97,17 @@ class PSXPad @JvmOverloads constructor(
         return findViewById<IconButton>(R.id.menu)
             .getEvents()
             .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
+    }
+
+    private fun getLeftStickEvents(): Observable<PadEvent> {
+        return findViewById<Stick>(R.id.leftanalog)
+            .getEvents()
+            .compose(EventsTransformers.leftStickMap())
+    }
+
+    private fun getRightStickEvents(): Observable<PadEvent> {
+        return findViewById<Stick>(R.id.rightanalog)
+            .getEvents()
+            .compose(EventsTransformers.rightStickMap())
     }
 }

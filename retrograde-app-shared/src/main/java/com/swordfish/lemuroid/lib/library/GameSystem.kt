@@ -220,7 +220,11 @@ data class GameSystem(
                             scanByPathAndSupportedExtensions = true
                         ),
                         exposedSettings = listOf("pcsx_rearmed_frameskip"),
-                        defaultSettings = listOf(CoreVariable("pcsx_rearmed_drc", "disabled"))
+                        defaultSettings = listOf(
+                            CoreVariable("pcsx_rearmed_drc", "disabled"),
+                            CoreVariable("pcsx_rearmed_pad1type", "dualshock"),
+                            CoreVariable("pcsx_rearmed_pad2type", "dualshock")
+                        )
                 ),
                 GameSystem(
                         SystemID.PSP,
