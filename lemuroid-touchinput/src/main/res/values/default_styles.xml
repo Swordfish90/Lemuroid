@@ -29,6 +29,7 @@
     <style name="default_action_2" parent="base_default_action">
         <item name="rows">1</item>
         <item name="cols">2</item>
+        <item name="spacing">0.05</item>
         <item name="labels">@array/defaut_action_labels_2</item>
     </style>
 
