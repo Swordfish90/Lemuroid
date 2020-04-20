@@ -10,18 +10,19 @@ import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.base.BaseSingleButton
+import com.swordfish.touchinput.views.Stick
+import com.swordfish.touchinput.views.SingleButton
 import io.reactivex.Observable
 
 class PSXPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_psx, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemiPadConfig(R.layout.layout_psx_left, 3, 6),
+    SemiPadConfig(R.layout.layout_psx_right, 3, 6)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(
@@ -33,18 +34,20 @@ class PSXPad @JvmOverloads constructor(
             getL1Events(),
             getR2Events(),
             getL2Events(),
-            getMenuEvents()
+            getMenuEvents(),
+            getLeftStickEvents(),
+            getRightStickEvents()
         ))
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.select)
+        return findViewById<SingleButton>(R.id.select)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
@@ -67,25 +70,25 @@ class PSXPad @JvmOverloads constructor(
     }
 
     private fun getL1Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.l1)
+        return findViewById<SingleButton>(R.id.l1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
     }
 
     private fun getL2Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.l2)
+        return findViewById<SingleButton>(R.id.l2)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
     }
 
     private fun getR1Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.r1)
+        return findViewById<SingleButton>(R.id.r1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
     }
 
     private fun getR2Events(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.r2)
+        return findViewById<SingleButton>(R.id.r2)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R2))
     }
@@ -94,5 +97,17 @@ class PSXPad @JvmOverloads constructor(
         return findViewById<IconButton>(R.id.menu)
             .getEvents()
             .compose(EventsTransformers.clickMap(OptionType.SETTINGS))
+    }
+
+    private fun getLeftStickEvents(): Observable<PadEvent> {
+        return findViewById<Stick>(R.id.leftanalog)
+            .getEvents()
+            .compose(EventsTransformers.leftStickMap())
+    }
+
+    private fun getRightStickEvents(): Observable<PadEvent> {
+        return findViewById<Stick>(R.id.rightanalog)
+            .getEvents()
+            .compose(EventsTransformers.rightStickMap())
     }
 }

@@ -29,7 +29,7 @@
     <style name="default_action_2" parent="base_default_action">
         <item name="rows">1</item>
         <item name="cols">2</item>
-        <item name="spacing">0.2</item>
+        <item name="spacing">0.05</item>
         <item name="labels">@array/defaut_action_labels_2</item>
     </style>
 
@@ -72,8 +72,6 @@
     </style>
 
     <style name="default_stick">
-        <item name="android:layout_width">@dimen/size_stick</item>
-        <item name="android:layout_height">@dimen/size_stick</item>
         <item name="JV_buttonColor">@color/touch_control_text_color</item>
         <item name="JV_backgroundColor">@color/touch_control_default</item>
         <item name="JV_borderColor">@color/touch_control_stroke</item>
