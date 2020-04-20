@@ -22,7 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
-import com.tbruyelle.rxpermissions2.RxPermissions
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -104,11 +103,6 @@ class MainActivity : RetrogradeAppCompatActivity() {
             @JvmStatic
             fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase) =
                     GameInteractor(activity, retrogradeDb, false)
-
-            @Provides
-            @PerActivity
-            @JvmStatic
-            fun rxPermissions(activity: MainActivity): RxPermissions = RxPermissions(activity)
         }
     }
 }

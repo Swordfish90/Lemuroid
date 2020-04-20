@@ -23,11 +23,9 @@ import com.uber.autodispose.autoDispose
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
-import javax.inject.Inject
 
 class MainTVActivity : BaseTVActivity() {
 
-    @Inject lateinit var rxPermissions: RxPermissions
     var mainViewModel: MainTVViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +65,7 @@ class MainTVActivity : BaseTVActivity() {
     }
 
     private fun requestLegacyStoragePermissions(permissions: Array<String>) {
-        rxPermissions.request(*permissions)
+        RxPermissions(this).request(*permissions)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { if (!it) finish() }
                 .autoDispose(scope())
@@ -96,11 +94,6 @@ class MainTVActivity : BaseTVActivity() {
             @JvmStatic
             fun gameInteractor(activity: MainTVActivity, retrogradeDb: RetrogradeDatabase) =
                     GameInteractor(activity, retrogradeDb, true)
-
-            @Provides
-            @PerActivity
-            @JvmStatic
-            fun rxPermissions(activity: MainTVActivity): RxPermissions = RxPermissions(activity)
         }
     }
 }

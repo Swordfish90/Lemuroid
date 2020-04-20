@@ -114,7 +114,7 @@ object deps {
         const val rxAndroid2               = "io.reactivex.rxjava2:rxandroid:2.1.0"
         const val rxJava2                  = "io.reactivex.rxjava2:rxjava:2.2.4"
         const val rxKotlin2                = "io.reactivex.rxjava2:rxkotlin:2.3.0"
-        const val rxPermissions2           = "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar"
+        const val rxPermissions2           = "com.github.tbruyelle:rxpermissions:0.10.2"
         const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.0"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
