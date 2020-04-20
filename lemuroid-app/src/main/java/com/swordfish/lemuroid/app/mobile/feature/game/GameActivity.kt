@@ -27,9 +27,11 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
+import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.pads.GamePadFactory
@@ -49,6 +51,20 @@ class GameActivity : BaseGameActivity() {
         setupVirtualPad(system)
 
         handleOrientationChange(resources.configuration.orientation)
+    }
+
+    override fun onVariablesRead(coreVariables: List<CoreVariable>) {
+        super.onVariablesRead(coreVariables)
+
+        if (system.id == SystemID.PSX) {
+            val isPad1Dualshock = coreVariables
+                .filter { it.key == "pcsx_rearmed_pad1type" }
+                .map { it.value == "dualshock" }
+                .firstOrNull() ?: false
+
+            overlayLayout.findViewById<View>(R.id.leftanalog)?.setVisibleOrInvisible(isPad1Dualshock)
+            overlayLayout.findViewById<View>(R.id.rightanalog)?.setVisibleOrInvisible(isPad1Dualshock)
+        }
     }
 
     override fun getDialogClass() = GameMenuActivity::class.java

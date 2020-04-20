@@ -219,11 +219,13 @@ data class GameSystem(
                             scanByUniqueExtension = false,
                             scanByPathAndSupportedExtensions = true
                         ),
-                        exposedSettings = listOf("pcsx_rearmed_frameskip"),
+                        exposedSettings = listOf(
+                            "pcsx_rearmed_frameskip",
+                            "pcsx_rearmed_pad1type",
+                            "pcsx_rearmed_pad2type"
+                        ),
                         defaultSettings = listOf(
-                            CoreVariable("pcsx_rearmed_drc", "disabled"),
-                            CoreVariable("pcsx_rearmed_pad1type", "dualshock"),
-                            CoreVariable("pcsx_rearmed_pad2type", "dualshock")
+                            CoreVariable("pcsx_rearmed_drc", "disabled")
                         )
                 ),
                 GameSystem(

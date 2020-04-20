@@ -181,10 +181,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         coreVariablesManager.getCoreOptionsForSystem(system)
                 .autoDispose(scope())
                 .subscribeBy({}) {
-                    updateCoreVariables(it)
+                    onVariablesRead(it)
                 }
 
         retroGameView?.onResume()
+    }
+
+    open fun onVariablesRead(coreVariables: List<CoreVariable>) {
+        updateCoreVariables(coreVariables)
     }
 
     private fun getCoreOptions(): List<CoreOption> {
