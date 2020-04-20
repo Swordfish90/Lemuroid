@@ -20,8 +20,8 @@ class N64Pad @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : BaseGamePad(
     context, attrs, defStyleAttr,
-    SemipadConfig(R.layout.layout_n64_left, 3, 6),
-    SemipadConfig(R.layout.layout_n64_right, 3, 6)
+    SemiPadConfig(R.layout.layout_n64_left, 3, 6),
+    SemiPadConfig(R.layout.layout_n64_right, 3, 6)
 ) {
 
     override fun getEvents(): Observable<PadEvent> {
@@ -34,6 +34,7 @@ class N64Pad @JvmOverloads constructor(
             getR1Events(),
             getL1Events(),
             getL2Events(),
+            getZEvents(),
             getMenuEvents()
         ))
     }
@@ -79,6 +80,12 @@ class N64Pad @JvmOverloads constructor(
 
     private fun getL2Events(): Observable<PadEvent> {
         return findViewById<SingleButton>(R.id.l2)
+            .getEvents()
+            .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
+    }
+
+    private fun getZEvents(): Observable<PadEvent> {
+        return findViewById<SingleButton>(R.id.z)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L2))
     }

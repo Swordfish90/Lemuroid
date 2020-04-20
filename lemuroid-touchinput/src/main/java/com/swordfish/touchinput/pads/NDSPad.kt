@@ -19,8 +19,8 @@ class NDSPad @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : BaseGamePad(
     context, attrs, defStyleAttr,
-    SemipadConfig(R.layout.layout_nds_left, 3, 4),
-    SemipadConfig(R.layout.layout_nds_right, 3, 4)
+    SemiPadConfig(R.layout.layout_nds_left, 3, 4),
+    SemiPadConfig(R.layout.layout_nds_right, 3, 4)
 ) {
 
     override fun getEvents(): Observable<PadEvent> {

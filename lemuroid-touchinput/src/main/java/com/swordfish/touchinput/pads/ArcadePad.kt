@@ -20,8 +20,8 @@ class ArcadePad @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : BaseGamePad(
     context, attrs, defStyleAttr,
-    SemipadConfig(R.layout.layout_arcade_left, 3, 6),
-    SemipadConfig(R.layout.layout_arcade_right, 4, 6)
+    SemiPadConfig(R.layout.layout_arcade_left, 3, 6),
+    SemiPadConfig(R.layout.layout_arcade_right, 4, 6)
 ) {
 
     override fun getEvents(): Observable<PadEvent> {

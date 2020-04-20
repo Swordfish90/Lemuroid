@@ -36,6 +36,6 @@
         app:layout_constraintStart_toEndOf="@id/leftcontainer"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_weight="1.2"
-        app:layout_constraintWidth_max="@dimen/dial_max_size_large" />
+        app:layout_constraintWidth_max="@dimen/dial_max_size"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,8 @@ abstract class BaseGamePad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-    leftPadConfig: SemipadConfig,
-    rightPadConfig: SemipadConfig
+    leftPadConfig: SemiPadConfig,
+    rightPadConfig: SemiPadConfig
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     init {
@@ -45,7 +45,7 @@ abstract class BaseGamePad @JvmOverloads constructor(
         inflate(context, rightPadConfig.layoutId, rightContainer)
     }
 
-    data class SemipadConfig(val layoutId: Int, val cols: Int, val rows: Int)
+    data class SemiPadConfig(val layoutId: Int, val cols: Int, val rows: Int)
 
     abstract fun getEvents(): Observable<PadEvent>
 }

@@ -20,8 +20,8 @@ class PSXPad @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : BaseGamePad(
     context, attrs, defStyleAttr,
-    SemipadConfig(R.layout.layout_psx_left, 3, 6),
-    SemipadConfig(R.layout.layout_psx_right, 3, 6)
+    SemiPadConfig(R.layout.layout_psx_left, 3, 6),
+    SemiPadConfig(R.layout.layout_psx_right, 3, 6)
 ) {
 
     override fun getEvents(): Observable<PadEvent> {

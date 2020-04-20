@@ -19,8 +19,8 @@ class SNESPad @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : BaseGamePad(
     context, attrs, defStyleAttr,
-    SemipadConfig(R.layout.layout_snes_left, 3, 5),
-    SemipadConfig(R.layout.layout_snes_right, 3, 5)
+    SemiPadConfig(R.layout.layout_snes_left, 3, 5),
+    SemiPadConfig(R.layout.layout_snes_right, 3, 5)
 ) {
 
     override fun getEvents(): Observable<PadEvent> {
