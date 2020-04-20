@@ -17,11 +17,11 @@ class Atari2600Pad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_atari2600, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemipadConfig(R.layout.layout_atari2600_left, 3, 5),
+    SemipadConfig(R.layout.layout_atari2600_right, 3, 5)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(

@@ -18,11 +18,11 @@ class N64Pad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_n64, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemipadConfig(R.layout.layout_n64_left, 3, 6),
+    SemipadConfig(R.layout.layout_n64_right, 3, 6)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(

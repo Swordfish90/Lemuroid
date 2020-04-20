@@ -18,11 +18,11 @@ class ArcadePad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_arcade, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemipadConfig(R.layout.layout_arcade_left, 3, 6),
+    SemipadConfig(R.layout.layout_arcade_right, 4, 6)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(

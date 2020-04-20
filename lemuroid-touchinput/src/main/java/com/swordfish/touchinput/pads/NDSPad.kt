@@ -17,11 +17,11 @@ class NDSPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_nds, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemipadConfig(R.layout.layout_nds_left, 3, 4),
+    SemipadConfig(R.layout.layout_nds_right, 3, 4)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(

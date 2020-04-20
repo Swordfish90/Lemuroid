@@ -17,11 +17,10 @@ class GenesisPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_genesis, this)
-    }
+) : BaseGamePad(context, attrs, defStyleAttr,
+    SemipadConfig(R.layout.layout_genesis_left, 3, 6),
+    SemipadConfig(R.layout.layout_genesis_right, 4, 6)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gamepadcontainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include
-        layout="@layout/layout_snes_left"
+    <FrameLayout
+        android:id="@+id/leftcontainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -14,35 +14,28 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/rightcontainer"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_max="@dimen/dial_max_size"
-        app:layout_constraintDimensionRatio="3:5"/>
+        app:layout_constraintWidth_max="@dimen/dial_max_size" />
 
-    <include
-        layout="@layout/layout_snes_right"
+    <FrameLayout
+        android:id="@+id/rightcontainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintWidth_max="@dimen/dial_max_size"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="4:5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@id/leftcontainer"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintDimensionRatio="3:5"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"/>
+        app:layout_constraintHorizontal_weight="1.2"
+        app:layout_constraintWidth_max="@dimen/dial_max_size_large" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

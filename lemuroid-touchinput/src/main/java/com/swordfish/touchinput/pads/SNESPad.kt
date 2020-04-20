@@ -17,11 +17,11 @@ class SNESPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_snes, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemipadConfig(R.layout.layout_snes_left, 3, 5),
+    SemipadConfig(R.layout.layout_snes_right, 3, 5)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(
