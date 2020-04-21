@@ -29,6 +29,7 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
@@ -115,5 +116,11 @@ class GameActivity : BaseGameActivity() {
         val flags =
                 HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
+    }
+
+    private fun handlePadOption(option: OptionType) {
+        when (option) {
+            OptionType.SETTINGS -> displayOptionsDialog()
+        }
     }
 }

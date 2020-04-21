@@ -27,7 +27,6 @@ import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.libretrodroid.gamepad.GamepadInfo
-import com.swordfish.touchinput.events.OptionType
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
@@ -158,7 +157,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    private fun displayOptionsDialog() {
+    protected fun displayOptionsDialog() {
         val intent = Intent(this, getDialogClass()).apply {
             val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
             this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
@@ -230,12 +229,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         while (!retroGameView.unserializeState(saveGame) && times > 0) {
             Thread.sleep(200)
             times--
-        }
-    }
-
-    protected fun handlePadOption(option: OptionType) {
-        when (option) {
-            OptionType.SETTINGS -> displayOptionsDialog()
         }
     }
 
