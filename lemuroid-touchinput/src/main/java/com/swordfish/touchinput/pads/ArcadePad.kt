@@ -11,18 +11,18 @@ import com.swordfish.touchinput.interfaces.StickEventsSource
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.SmallSingleButton
+import com.swordfish.touchinput.views.SingleButton
 import io.reactivex.Observable
 
 class ArcadePad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_arcade, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemiPadConfig(R.layout.layout_arcade_left, 3, 6),
+    SemiPadConfig(R.layout.layout_arcade_right, 4, 6)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(
@@ -35,13 +35,13 @@ class ArcadePad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.select)
+        return findViewById<SingleButton>(R.id.select)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }

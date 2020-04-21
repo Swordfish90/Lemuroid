@@ -1,4 +1,4 @@
-package com.swordfish.touchinput.views.base
+package com.swordfish.touchinput.views
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -15,7 +15,7 @@ import com.swordfish.touchinput.utils.TextPainter
 import io.reactivex.Observable
 import kotlin.math.min
 
-abstract class BaseSingleButton @JvmOverloads constructor(
+class SingleButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -27,14 +27,15 @@ abstract class BaseSingleButton @JvmOverloads constructor(
     private var label: String = ""
 
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.BaseSingleButton, defStyleAttr, 0).let {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.SingleButton, defStyleAttr, 0).let {
             initializeFromAttributes(it)
         }
         setOnTouchListener { _, event -> handleTouchEvent(event); true }
+        setBackgroundResource(R.drawable.single_button_selector)
     }
 
     private fun initializeFromAttributes(a: TypedArray) {
-        label = a.getString(R.styleable.BaseSingleButton_label) ?: ""
+        label = a.getString(R.styleable.SingleButton_label) ?: ""
         a.recycle()
     }
 
@@ -60,11 +61,11 @@ abstract class BaseSingleButton @JvmOverloads constructor(
         }
     }
 
-    open fun getSuggestedButtonWidth(): Int {
+    fun getSuggestedButtonWidth(): Int {
         return R.dimen.size_button_small
     }
 
-    open fun getSuggestedButtonHeight(): Int {
+    fun getSuggestedButtonHeight(): Int {
         return R.dimen.size_button_small
     }
 

@@ -10,20 +10,19 @@ import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
 import com.swordfish.touchinput.views.IconButton
-import com.swordfish.touchinput.views.LargeSingleButton
-import com.swordfish.touchinput.views.SmallSingleButton
 import com.swordfish.touchinput.views.Stick
+import com.swordfish.touchinput.views.SingleButton
 import io.reactivex.Observable
 
 class PSPPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_psp, this)
-    }
+) : BaseGamePad(
+    context, attrs, defStyleAttr,
+    SemiPadConfig(R.layout.layout_psp_left, 3, 6),
+    SemiPadConfig(R.layout.layout_psp_right, 3, 6)
+) {
 
     override fun getBusSourceIds(): List<Int> = listOf(R.id.leftanalog)
 
@@ -41,13 +40,13 @@ class PSPPad @JvmOverloads constructor(
     }
 
     private fun getStartEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
 
     private fun getSelectEvent(): Observable<PadEvent> {
-        return findViewById<SmallSingleButton>(R.id.select)
+        return findViewById<SingleButton>(R.id.select)
                 .getEvents()
                 .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_SELECT))
     }
@@ -76,13 +75,13 @@ class PSPPad @JvmOverloads constructor(
     }
 
     private fun getL1Events(): Observable<PadEvent> {
-        return findViewById<LargeSingleButton>(R.id.l1)
+        return findViewById<SingleButton>(R.id.l1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_L1))
     }
 
     private fun getR1Events(): Observable<PadEvent> {
-        return findViewById<LargeSingleButton>(R.id.r1)
+        return findViewById<SingleButton>(R.id.r1)
             .getEvents()
             .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_R1))
     }

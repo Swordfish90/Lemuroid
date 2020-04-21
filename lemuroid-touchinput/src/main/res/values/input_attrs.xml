@@ -17,7 +17,7 @@
         <attr name="icons" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="BaseSingleButton">
+    <declare-styleable name="SingleButton">
         <attr name="label" format="string"/>
     </declare-styleable>
 

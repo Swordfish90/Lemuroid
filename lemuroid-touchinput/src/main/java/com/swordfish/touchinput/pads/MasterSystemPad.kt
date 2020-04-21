@@ -9,7 +9,7 @@ import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
 import com.swordfish.touchinput.views.ActionButtons
 import com.swordfish.touchinput.views.DirectionPad
-import com.swordfish.touchinput.views.base.BaseSingleButton
+import com.swordfish.touchinput.views.SingleButton
 import com.swordfish.touchinput.views.IconButton
 import io.reactivex.Observable
 
@@ -17,11 +17,10 @@ class MasterSystemPad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseGamePad(context, attrs, defStyleAttr) {
-
-    init {
-        inflate(context, R.layout.layout_sms, this)
-    }
+) : BaseGamePad(context, attrs, defStyleAttr,
+    SemiPadConfig(R.layout.layout_sms_left, 3, 5),
+    SemiPadConfig(R.layout.layout_sms_right, 3, 5)
+) {
 
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(
@@ -44,7 +43,7 @@ class MasterSystemPad @JvmOverloads constructor(
     }
 
     private fun getStartEvents(): Observable<PadEvent> {
-        return findViewById<BaseSingleButton>(R.id.start)
+        return findViewById<SingleButton>(R.id.start)
                 .getEvents()
                 .compose(EventsTransformers.singleButtonMap(KeyEvent.KEYCODE_BUTTON_START))
     }
