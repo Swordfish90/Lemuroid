@@ -2,20 +2,17 @@ package com.swordfish.touchinput.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.GestureDetector
 import android.view.MotionEvent
-import android.widget.Toast
 import androidx.core.view.GestureDetectorCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import com.jakewharton.rxrelay2.PublishRelay
+import com.swordfish.touchinput.events.PadBusEvent
 import com.swordfish.touchinput.events.ViewEvent
+import com.swordfish.touchinput.interfaces.PadBusSource
 import com.swordfish.touchinput.interfaces.StickEventsSource
 import com.swordfish.touchinput.sensors.TiltSensor
+import com.swordfish.touchinput.utils.DoubleTapListener
 import io.github.controlwear.virtual.joystick.android.JoystickView
 import io.reactivex.Observable
-import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -24,39 +21,32 @@ class Stick @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : JoystickView(context, attrs, defStyleAttr), StickEventsSource, LifecycleObserver {
+) : JoystickView(context, attrs, defStyleAttr), StickEventsSource, PadBusSource {
 
     private val events: PublishRelay<ViewEvent.Stick> = PublishRelay.create()
+    private val padBusEvents: PublishRelay<PadBusEvent> = PublishRelay.create()
+
     private val tiltSensor = TiltSensor(context)
 
-    private var allowTilt: Boolean = false
     private var useTilt: Boolean = false
 
-    private val gestureDetector: GestureDetectorCompat = GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
-        override fun onDoubleTap(e: MotionEvent?): Boolean {
-            toggleSensors()
-            return true
-        }
+    private val gestureDetector: GestureDetectorCompat = GestureDetectorCompat(context, DoubleTapListener {
+        toggleSensors()
     })
 
     init {
         setOnMoveListener(this::handleMoveEvent, 16)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
-        allowTilt = true
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause() {
-        allowTilt = false
-        disableTiltMode()
+    override fun onBusEvent(event: PadBusEvent) {
+        when (event) {
+            is PadBusEvent.OnPause -> disableTiltMode()
+            is PadBusEvent.TiltEnabled -> disableTiltMode()
+        }
     }
 
     private fun toggleSensors() {
-        Toast.makeText(context, "Toggled tilt mode", Toast.LENGTH_SHORT).show()
-        if (!useTilt && allowTilt) {
+        if (!useTilt) {
             enableTiltMode()
         } else {
             disableTiltMode()
@@ -67,12 +57,14 @@ class Stick @JvmOverloads constructor(
         useTilt = false
         setOnMoveListener(this::handleMoveEvent, 16)
         tiltSensor.disable()
+        padBusEvents.accept(PadBusEvent.TiltDisabled(id))
     }
 
     private fun enableTiltMode() {
         useTilt = true
         setOnMoveListener(null, 16)
         tiltSensor.enable()
+        padBusEvents.accept(PadBusEvent.TiltEnabled(id))
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -112,10 +104,12 @@ class Stick @JvmOverloads constructor(
         return x to y
     }
 
-    override fun getEvents(): Observable<ViewEvent.Stick> {
-        val tiltEvents = tiltSensor.getTiltEvents()
-                .map { ViewEvent.Stick(it[0], it[1], false) }
-                .doOnNext { Timber.i("Filippo $it") }
-        return events.mergeWith(tiltEvents)
-    }
+    override fun getBusEvents(): Observable<PadBusEvent> = padBusEvents
+
+    override fun getView() = this
+
+    override fun getEvents(): Observable<ViewEvent.Stick> = events.mergeWith(getTiltEvents())
+
+    private fun getTiltEvents() = tiltSensor.getTiltEvents()
+        .map { ViewEvent.Stick(it[0], it[1], false) }
 }
