@@ -33,6 +33,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Nintendo DS (NDS) ([desmume](https://docs.libretro.com/library/desmume/))
 
 ### Features:
+- Android TV support
 - Automatically save and restore game states.
 - ROMs scanning and indexing
 - Optimized touch controls
@@ -41,3 +42,4 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Display simulation (LCD/CRT)
 - Gamepad support
 - Local multiplayer
+- Tilt to analog stick
