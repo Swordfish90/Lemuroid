@@ -24,6 +24,8 @@ class PSXPad @JvmOverloads constructor(
     SemiPadConfig(R.layout.layout_psx_right, 3, 6)
 ) {
 
+    override fun getBusSourceIds(): List<Int> = listOf(R.id.leftanalog, R.id.rightanalog)
+
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(
             getStartEvent(),

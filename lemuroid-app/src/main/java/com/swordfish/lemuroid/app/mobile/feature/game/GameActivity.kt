@@ -35,6 +35,7 @@ import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
+import com.swordfish.touchinput.pads.BaseGamePad
 import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -43,15 +44,24 @@ import io.reactivex.schedulers.Schedulers
 class GameActivity : BaseGameActivity() {
 
     private var preferenceVibrateOnTouch = true
+    private var tiltSensitivity = 0.5f
+
+    private lateinit var virtualGamePad: BaseGamePad
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         preferenceVibrateOnTouch = settingsManager.vibrateOnTouch
+        tiltSensitivity = settingsManager.tiltSensitivity
 
         setupVirtualPad(system)
 
         handleOrientationChange(resources.configuration.orientation)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        virtualGamePad.setTiltSensitivity(tiltSensitivity)
     }
 
     override fun onVariablesRead(coreVariables: List<CoreVariable>) {
@@ -103,16 +113,16 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupVirtualPad(system: GameSystem) {
-        val gameView = GamePadFactory.getGamePadView(this, system)
+        virtualGamePad = GamePadFactory.getGamePadView(this, system)
 
-        overlayLayout.addView(gameView)
-        lifecycle.addObserver(gameView)
+        overlayLayout.addView(virtualGamePad)
+        lifecycle.addObserver(virtualGamePad)
 
-        gameView.getEvents()
+        virtualGamePad.getEvents()
             .subscribeOn(Schedulers.computation())
             .doOnNext {
                 if (it.haptic && preferenceVibrateOnTouch) {
-                    performHapticFeedback(gameView)
+                    performHapticFeedback(virtualGamePad)
                 }
             }
             .autoDispose(scope())

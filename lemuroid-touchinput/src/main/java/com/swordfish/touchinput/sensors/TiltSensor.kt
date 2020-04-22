@@ -8,7 +8,9 @@ import android.hardware.SensorManager
 import android.view.Surface
 import android.view.WindowManager
 import com.jakewharton.rxrelay2.PublishRelay
+import com.swordfish.lemuroid.common.math.linearInterpolation
 import io.reactivex.Observable
+import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.sign
 
@@ -26,6 +28,13 @@ class TiltSensor(context: Context): SensorEventListener {
     private val remappedRotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
 
+    private var maxRotation: Float = MAX_MAX_ROTATION
+    private var deadZone: Float = 0.1f * maxRotation
+
+    init {
+        setSensitivity(0.5f)
+    }
+
     fun getTiltEvents(): Observable<FloatArray> = tiltEvents
 
     fun enable() {
@@ -40,6 +49,13 @@ class TiltSensor(context: Context): SensorEventListener {
         restOrientationsBuffer.clear()
     }
 
+    fun setSensitivity(sensitivity: Float) {
+        maxRotation = linearInterpolation(sensitivity, MAX_MAX_ROTATION, MIN_MAX_ROTATION)
+        deadZone = maxRotation * 0.1f
+        Timber.d("Setting tilt sensitivity max angle: ${Math.toDegrees(maxRotation.toDouble())}")
+    }
+
+    // TODO FILIPPO... We should handle this case
     fun isAvailable(): Boolean {
         return sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR) != null
     }
@@ -73,8 +89,8 @@ class TiltSensor(context: Context): SensorEventListener {
                 restOrientationsBuffer.map { it[1] }.sum() / restOrientationsBuffer.size
             )
         } else {
-            val x = clamp(applyDeadZone(yRotation - restOrientation!![0], DEAD_ZONE) / (MAX_ROTATION))
-            val y = clamp(-applyDeadZone(xRotation - restOrientation!![1], DEAD_ZONE) / (MAX_ROTATION))
+            val x = clamp(applyDeadZone(yRotation - restOrientation!![0], deadZone) / (maxRotation))
+            val y = clamp(-applyDeadZone(xRotation - restOrientation!![1], deadZone) / (maxRotation))
             tiltEvents.accept(floatArrayOf(x, y))
         }
     }
@@ -103,7 +119,7 @@ class TiltSensor(context: Context): SensorEventListener {
 
     companion object {
         const val MEASUREMENTS_BUFFER_SIZE = 5
-        val MAX_ROTATION = Math.toRadians(10.0).toFloat()
-        val DEAD_ZONE = MAX_ROTATION * 0.1f
+        val MAX_MAX_ROTATION = Math.toRadians(20.0).toFloat()
+        val MIN_MAX_ROTATION = Math.toRadians(2.5).toFloat()
     }
 }

@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import com.jakewharton.rxrelay2.PublishRelay
+import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.events.PadBusEvent
 import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.PadBusSource
@@ -13,6 +14,7 @@ import com.swordfish.touchinput.sensors.TiltSensor
 import com.swordfish.touchinput.utils.DoubleTapListener
 import io.github.controlwear.virtual.joystick.android.JoystickView
 import io.reactivex.Observable
+import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -31,7 +33,7 @@ class Stick @JvmOverloads constructor(
     private var useTilt: Boolean = false
 
     private val gestureDetector: GestureDetectorCompat = GestureDetectorCompat(context, DoubleTapListener {
-        toggleSensors()
+        toggleTiltMode()
     })
 
     init {
@@ -39,13 +41,15 @@ class Stick @JvmOverloads constructor(
     }
 
     override fun onBusEvent(event: PadBusEvent) {
+        Timber.d("Received bus event: $event")
         when (event) {
             is PadBusEvent.OnPause -> disableTiltMode()
             is PadBusEvent.TiltEnabled -> disableTiltMode()
+            is PadBusEvent.SetTiltSensitivity -> tiltSensor.setSensitivity(event.tiltSensitivity)
         }
     }
 
-    private fun toggleSensors() {
+    private fun toggleTiltMode() {
         if (!useTilt) {
             enableTiltMode()
         } else {
@@ -57,6 +61,7 @@ class Stick @JvmOverloads constructor(
         useTilt = false
         setOnMoveListener(this::handleMoveEvent, 16)
         tiltSensor.disable()
+        setColors(R.color.touch_control_text_color, R.color.touch_control_default)
         padBusEvents.accept(PadBusEvent.TiltDisabled(id))
     }
 
@@ -64,7 +69,13 @@ class Stick @JvmOverloads constructor(
         useTilt = true
         setOnMoveListener(null, 16)
         tiltSensor.enable()
+        setColors(android.R.color.transparent, R.color.touch_control_pressed)
         padBusEvents.accept(PadBusEvent.TiltEnabled(id))
+    }
+
+    private fun setColors(foregroundId: Int, backgroundId: Int) {
+        setButtonColor(context.resources.getColor(foregroundId, context. theme))
+        setBackgroundColor(context.resources.getColor(backgroundId, context. theme))
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -73,10 +84,9 @@ class Stick @JvmOverloads constructor(
             events.accept(ViewEvent.Stick(0.0f, 0.0f, true))
         }
 
-        return if (gestureDetector.onTouchEvent(event)) {
-            true
-        } else {
-            super.onTouchEvent(event)
+        return when {
+            gestureDetector.onTouchEvent(event) -> true
+            else -> super.onTouchEvent(event)
         }
     }
 

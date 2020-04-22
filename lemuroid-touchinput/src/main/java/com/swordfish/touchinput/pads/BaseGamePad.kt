@@ -57,20 +57,28 @@ abstract class BaseGamePad @JvmOverloads constructor(
 
     abstract fun getEvents(): Observable<PadEvent>
 
+    fun setTiltSensitivity(tiltSensitivity: Float) {
+        sendBusEvent(PadBusEvent.SetTiltSensitivity(tiltSensitivity))
+    }
+
     private val busDisposable = CompositeDisposable()
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate() {
         busDisposable += getBusSourceViews()
             .map { it.getBusEvents() }
             .merge()
             .subscribe { sendBusEvent(it) }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() {
+        busDisposable.safeDispose()
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {
         sendBusEvent(PadBusEvent.OnPause)
-        busDisposable.safeDispose()
     }
 
     private fun sendBusEvent(event: PadBusEvent) {

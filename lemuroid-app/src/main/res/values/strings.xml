@@ -17,10 +17,14 @@
     <string name="settings">Settings</string>
 
     <string name="settings_category_general">General</string>
+    <string name="settings_category_input">Input</string>
     <string name="settings_category_advanced">Advanced</string>
     <string name="settings_title_enable_autosave">Autosave state</string>
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
+    <string name="settings_title_tilt_sensitivity">Tilt to stick sensitivity</string>
     <string name="settings_title_clear_cores_cache">Clear cores</string>
+
+    <string name="settings_description_tilt_sensitivity">Enable by double tapping on any analog stick control</string>
     <string name="settings_description_clear_cores_cache">An updated version will be downloaded when launching a ROM</string>
 
     <string name="game_context_menu_add_to_favorites">Add to favorites</string>
@@ -47,6 +51,7 @@
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
     <string name="game_toast_autosave_not_supported">Autosave is not supported for this system. Use slots or game saves.</string>
     <string name="game_toast_load_state_failed">Cannot load this state</string>
+    <string name="game_toast_tilt_to_stick_not_supported">Tilt to stick is not supported on this device</string>
 
     <string name="empty_view_default">No Items</string>
 
