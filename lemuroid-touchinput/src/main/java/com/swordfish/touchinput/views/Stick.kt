@@ -66,6 +66,7 @@ class Stick @JvmOverloads constructor(
     }
 
     private fun enableTiltMode() {
+        if (!tiltSensor.isAvailable()) { return }
         useTilt = true
         setOnMoveListener(null, 16)
         tiltSensor.enable()

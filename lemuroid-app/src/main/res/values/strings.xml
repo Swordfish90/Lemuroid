@@ -51,7 +51,6 @@
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
     <string name="game_toast_autosave_not_supported">Autosave is not supported for this system. Use slots or game saves.</string>
     <string name="game_toast_load_state_failed">Cannot load this state</string>
-    <string name="game_toast_tilt_to_stick_not_supported">Tilt to stick is not supported on this device</string>
 
     <string name="empty_view_default">No Items</string>
 

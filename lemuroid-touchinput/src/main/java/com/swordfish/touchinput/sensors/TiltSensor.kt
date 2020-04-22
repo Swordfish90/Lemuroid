@@ -55,7 +55,6 @@ class TiltSensor(context: Context): SensorEventListener {
         Timber.d("Setting tilt sensitivity max angle: ${Math.toDegrees(maxRotation.toDouble())}")
     }
 
-    // TODO FILIPPO... We should handle this case
     fun isAvailable(): Boolean {
         return sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR) != null
     }
