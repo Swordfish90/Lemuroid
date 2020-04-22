@@ -14,6 +14,7 @@
     <dimen name="size_button_large">72dp</dimen>
 
     <dimen name="size_button_vertical_padding">8dp</dimen>
+    <dimen name="size_button_horizontal_padding">4dp</dimen>
 
     <dimen name="size_direction_button_item">@dimen/size_button_medium</dimen>
 

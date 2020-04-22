@@ -19,7 +19,6 @@
         android:id="@+id/l2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         app:label="DIFF.B"
         app:layout_constraintBottom_toBottomOf="@+id/l1"
         app:layout_constraintEnd_toEndOf="parent"

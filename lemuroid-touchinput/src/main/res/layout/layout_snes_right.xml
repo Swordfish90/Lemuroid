@@ -20,7 +20,6 @@
         android:id="@+id/r1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         app:label="R"
         app:layout_constraintBottom_toBottomOf="@+id/start"
         app:layout_constraintEnd_toEndOf="parent"

@@ -20,7 +20,6 @@
         android:id="@+id/select"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         android:src="@drawable/button_select"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toBottomOf="@+id/l1"
