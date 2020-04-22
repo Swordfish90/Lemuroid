@@ -39,6 +39,16 @@
         app:layout_constraintStart_toEndOf="@+id/r1"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.swordfish.touchinput.views.Stick
+        android:id="@+id/rightanalog"
+        style="@style/default_stick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.80" />
+
     <com.swordfish.touchinput.views.ActionButtons
         android:id="@+id/actions"
         style="@style/psp_action_buttons"
@@ -49,16 +59,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/r1" />
-
-    <com.swordfish.touchinput.views.Stick
-        android:id="@+id/rightanalog"
-        style="@style/default_stick"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.80" />
 
     <com.swordfish.touchinput.views.IconButton
         android:id="@+id/menu"

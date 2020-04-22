@@ -27,16 +27,6 @@
         app:layout_constraintStart_toEndOf="@+id/l1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.swordfish.touchinput.views.DirectionPad
-        android:id="@+id/direction"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.95"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/l1" />
-
     <com.swordfish.touchinput.views.Stick
         android:id="@+id/leftanalog"
         style="@style/default_stick"
@@ -46,5 +36,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintWidth_percent="0.80" />
+
+    <com.swordfish.touchinput.views.DirectionPad
+        android:id="@+id/direction"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.95"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/l1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
