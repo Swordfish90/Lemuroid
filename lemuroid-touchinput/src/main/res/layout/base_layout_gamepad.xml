@@ -11,7 +11,6 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="3:5"
@@ -26,16 +25,15 @@
         android:id="@+id/rightcontainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="4:5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1.2"
         app:layout_constraintStart_toEndOf="@id/leftcontainer"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_weight="1.2"
-        app:layout_constraintWidth_max="@dimen/dial_max_size"/>
+        app:layout_constraintWidth_max="@dimen/dial_max_size" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
