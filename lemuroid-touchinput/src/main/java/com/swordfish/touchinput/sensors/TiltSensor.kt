@@ -14,7 +14,7 @@ import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.sign
 
-class TiltSensor(context: Context): SensorEventListener {
+class TiltSensor(context: Context) : SensorEventListener {
 
     private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val primaryDisplay = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay

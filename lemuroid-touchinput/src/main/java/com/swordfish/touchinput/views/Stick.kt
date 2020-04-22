@@ -61,7 +61,7 @@ class Stick @JvmOverloads constructor(
         useTilt = false
         setOnMoveListener(this::handleMoveEvent, 16)
         tiltSensor.disable()
-        setColors(R.color.touch_control_text_color, R.color.touch_control_default)
+        setColors(R.color.stick_foreground_normal_color, R.color.stick_background_normal_color)
         padBusEvents.accept(PadBusEvent.TiltDisabled(id))
     }
 
@@ -70,13 +70,13 @@ class Stick @JvmOverloads constructor(
         useTilt = true
         setOnMoveListener(null, 16)
         tiltSensor.enable()
-        setColors(android.R.color.transparent, R.color.touch_control_pressed)
+        setColors(R.color.stick_foreground_tilt_enabled_color, R.color.stick_background_tilt_enabled_color)
         padBusEvents.accept(PadBusEvent.TiltEnabled(id))
     }
 
     private fun setColors(foregroundId: Int, backgroundId: Int) {
-        setButtonColor(context.resources.getColor(foregroundId, context. theme))
-        setBackgroundColor(context.resources.getColor(backgroundId, context. theme))
+        setButtonColor(context.resources.getColor(foregroundId, context.theme))
+        setBackgroundColor(context.resources.getColor(backgroundId, context.theme))
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
