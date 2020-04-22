@@ -16,6 +16,10 @@ dependencies {
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.virtualJoystick)
+    implementation(deps.libs.androidx.lifecycle.commonJava8)
+    implementation(deps.libs.androidx.lifecycle.extensions)
 
     implementation(kotlin(deps.libs.kotlin.stdlib))
+
+    kapt(deps.libs.androidx.lifecycle.processor)
 }

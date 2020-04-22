@@ -29,4 +29,10 @@ class SettingsManager(private val context: Context) {
         getString(R.string.pref_key_shader),
         true
     )
+
+    var tiltSensitivity: Float by SharedPreferencesDelegates.PercentageDelegate(
+        sharedPreferences,
+        getString(R.string.pref_key_tilt_sensitivity_index),
+        defaultIndex = 6
+    )
 }

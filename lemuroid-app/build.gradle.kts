@@ -77,6 +77,7 @@ dependencies {
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)
     kapt(deps.libs.epoxy.processor)
+    kapt(deps.libs.androidx.lifecycle.processor)
 
     implementation(deps.libs.androidx.appcompat.leanback)
     implementation(deps.libs.androidx.appcompat.leanbackPreference)

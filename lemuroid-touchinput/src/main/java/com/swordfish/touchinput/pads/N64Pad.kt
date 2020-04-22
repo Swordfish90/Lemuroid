@@ -39,6 +39,8 @@ class N64Pad @JvmOverloads constructor(
         ))
     }
 
+    override fun getBusSourceIds(): List<Int> = listOf(R.id.leftanalog)
+
     private fun getStartEvent(): Observable<PadEvent> {
         return findViewById<SingleButton>(R.id.start)
             .getEvents()

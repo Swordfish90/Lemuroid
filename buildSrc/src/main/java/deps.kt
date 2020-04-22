@@ -43,6 +43,7 @@ object deps {
             object lifecycle {
                 const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
                 const val extensions = "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+                const val processor = "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
             }
             object preferences {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"

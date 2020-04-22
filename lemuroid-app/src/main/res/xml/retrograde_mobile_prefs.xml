@@ -37,11 +37,28 @@
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_category_input"
+        app:iconSpaceReserved="false">
+
         <SwitchPreferenceCompat
             android:key="@string/pref_key_vibrate_on_touch"
             android:title="@string/settings_title_enable_touch_feedback"
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
+
+        <SeekBarPreference
+            android:key="@string/pref_key_tilt_sensitivity_index"
+            android:title="@string/settings_title_tilt_sensitivity"
+            app:iconSpaceReserved="false"
+            android:defaultValue="6"
+            android:max="10"/>
+
+        <Preference
+            app:summary="@string/settings_description_tilt_sensitivity"
+            app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 

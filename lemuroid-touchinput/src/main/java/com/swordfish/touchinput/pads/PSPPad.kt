@@ -24,6 +24,8 @@ class PSPPad @JvmOverloads constructor(
     SemiPadConfig(R.layout.layout_psp_right, 3, 6)
 ) {
 
+    override fun getBusSourceIds(): List<Int> = listOf(R.id.leftanalog)
+
     override fun getEvents(): Observable<PadEvent> {
         return Observable.merge(listOf(
             getLeftStickEvents(),
