@@ -2,7 +2,10 @@ package com.swordfish.touchinput.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
+import android.widget.FrameLayout
 import androidx.core.view.GestureDetectorCompat
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.touchinput.controller.R
@@ -23,34 +26,41 @@ class Stick @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : JoystickView(context, attrs, defStyleAttr), StickEventsSource, PadBusSource {
+) : FrameLayout(context, attrs, defStyleAttr), StickEventsSource, PadBusSource {
 
     private val events: PublishRelay<ViewEvent.Stick> = PublishRelay.create()
     private val padBusEvents: PublishRelay<PadBusEvent> = PublishRelay.create()
 
     private val tiltSensor = TiltSensor(context)
 
-    private var useTilt: Boolean = false
+    private val stickView: JoystickView
+    private val tiltView: TiltSensorView
 
     private val gestureDetector: GestureDetectorCompat = GestureDetectorCompat(context, DoubleTapListener {
         toggleTiltMode()
     })
 
     init {
-        setOnMoveListener(this::handleMoveEvent, 16)
+        LayoutInflater.from(context).inflate(R.layout.base_layout_stick, this)
+
+        stickView = findViewById(R.id.joystick)
+        tiltView = findViewById(R.id.tilt_view)
+
+        stickView.setOnMoveListener(this::handleMoveEvent, 16)
     }
 
     override fun onBusEvent(event: PadBusEvent) {
         Timber.d("Received bus event: $event")
         when (event) {
-            is PadBusEvent.OnPause -> disableTiltMode()
+            is PadBusEvent.OnResume -> tiltSensor.isAllowedToRun = true
+            is PadBusEvent.OnPause -> tiltSensor.isAllowedToRun = false
             is PadBusEvent.TiltEnabled -> disableTiltMode()
             is PadBusEvent.SetTiltSensitivity -> tiltSensor.setSensitivity(event.tiltSensitivity)
         }
     }
 
     private fun toggleTiltMode() {
-        if (!useTilt) {
+        if (!tiltSensor.shouldRun) {
             enableTiltMode()
         } else {
             disableTiltMode()
@@ -58,36 +68,36 @@ class Stick @JvmOverloads constructor(
     }
 
     private fun disableTiltMode() {
-        useTilt = false
-        setOnMoveListener(this::handleMoveEvent, 16)
-        tiltSensor.disable()
-        setColors(R.color.stick_foreground_normal_color, R.color.stick_background_normal_color)
+        stickView.visibility = View.VISIBLE
+        tiltView.visibility = View.INVISIBLE
+        stickView.setOnMoveListener(this::handleMoveEvent, 16)
+        tiltSensor.shouldRun = false
         padBusEvents.accept(PadBusEvent.TiltDisabled(id))
     }
 
     private fun enableTiltMode() {
         if (!tiltSensor.isAvailable()) { return }
-        useTilt = true
-        setOnMoveListener(null, 16)
-        tiltSensor.enable()
-        setColors(R.color.stick_foreground_tilt_enabled_color, R.color.stick_background_tilt_enabled_color)
+        stickView.visibility = View.INVISIBLE
+        tiltView.visibility = View.VISIBLE
+        stickView.setOnMoveListener(null, 16)
+        tiltSensor.shouldRun = true
         padBusEvents.accept(PadBusEvent.TiltEnabled(id))
     }
 
-    private fun setColors(foregroundId: Int, backgroundId: Int) {
-        setButtonColor(context.resources.getColor(foregroundId, context.theme))
-        setBackgroundColor(context.resources.getColor(backgroundId, context.theme))
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         // We send a dummy haptic event. This should performs vibration when the stick is pressed the first time.
         if (event.action == MotionEvent.ACTION_DOWN) {
             events.accept(ViewEvent.Stick(0.0f, 0.0f, true))
         }
 
+        if (event.actionMasked == MotionEvent.ACTION_DOWN && tiltSensor.shouldRun) {
+            disableTiltMode()
+            return true
+        }
+
         return when {
             gestureDetector.onTouchEvent(event) -> true
-            else -> super.onTouchEvent(event)
+            else -> super.onInterceptTouchEvent(event)
         }
     }
 
@@ -122,5 +132,6 @@ class Stick @JvmOverloads constructor(
     override fun getEvents(): Observable<ViewEvent.Stick> = events.mergeWith(getTiltEvents())
 
     private fun getTiltEvents() = tiltSensor.getTiltEvents()
+        .doOnNext { tiltView.updatePosition(it[0], it[1]) }
         .map { ViewEvent.Stick(it[0], it[1], false) }
 }

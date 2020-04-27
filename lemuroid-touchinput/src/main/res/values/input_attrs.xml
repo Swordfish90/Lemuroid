@@ -17,6 +17,13 @@
         <attr name="icons" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="TiltSensorView">
+        <attr name="foregroundColor" format="color"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="backgroundSizeRatio" format="fraction"/>
+        <attr name="foregroundSizeRatio" format="fraction"/>
+    </declare-styleable>
+
     <declare-styleable name="SingleButton">
         <attr name="label" format="string"/>
     </declare-styleable>

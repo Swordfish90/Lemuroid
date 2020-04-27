@@ -8,6 +8,7 @@ import android.hardware.SensorManager
 import android.view.Surface
 import android.view.WindowManager
 import com.jakewharton.rxrelay2.PublishRelay
+import com.swordfish.lemuroid.common.kotlin.CustomDelegates
 import com.swordfish.lemuroid.common.math.linearInterpolation
 import io.reactivex.Observable
 import timber.log.Timber
@@ -31,20 +32,38 @@ class TiltSensor(context: Context) : SensorEventListener {
     private var maxRotation: Float = MAX_MAX_ROTATION
     private var deadZone: Float = 0.1f * maxRotation
 
+    var shouldRun: Boolean by CustomDelegates.onChangeObservable(false) { onRunStateChanged() }
+
+    var isAllowedToRun: Boolean by CustomDelegates.onChangeObservable(false) { onRunStateChanged() }
+
     init {
         setSensitivity(0.5f)
     }
 
     fun getTiltEvents(): Observable<FloatArray> = tiltEvents
 
-    fun enable() {
+    private fun onRunStateChanged() {
+        if (shouldRun && isAllowedToRun) {
+            start()
+        } else if (shouldRun && !isAllowedToRun) {
+            pause()
+        } else {
+            stop()
+        }
+    }
+
+    private fun start() {
         sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR)?.also { magneticField ->
             sensorManager.registerListener(this, magneticField, SensorManager.SENSOR_DELAY_GAME)
         }
     }
 
-    fun disable() {
+    private fun pause() {
         sensorManager.unregisterListener(this)
+    }
+
+    private fun stop() {
+        pause()
         restOrientation = null
         restOrientationsBuffer.clear()
     }

@@ -4,9 +4,4 @@
     <color name="touch_control_default">#8888</color>
     <color name="touch_control_pressed">#8fff</color>
     <color name="touch_control_stroke">#1333</color>
-
-    <color name="stick_foreground_normal_color">@color/touch_control_text_color</color>
-    <color name="stick_background_normal_color">@color/touch_control_default</color>
-    <color name="stick_foreground_tilt_enabled_color">@android:color/transparent</color>
-    <color name="stick_background_tilt_enabled_color">@color/touch_control_pressed</color>
 </resources>
