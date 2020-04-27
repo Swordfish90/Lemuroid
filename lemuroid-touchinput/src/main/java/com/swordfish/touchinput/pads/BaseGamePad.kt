@@ -81,6 +81,11 @@ abstract class BaseGamePad @JvmOverloads constructor(
         sendBusEvent(PadBusEvent.OnPause)
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResume() {
+        sendBusEvent(PadBusEvent.OnResume)
+    }
+
     private fun sendBusEvent(event: PadBusEvent) {
         getBusSourceViews()
             .filter { event.sourceId != it.getView().id }

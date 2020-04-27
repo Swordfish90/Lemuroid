@@ -81,4 +81,11 @@
         <item name="JV_backgroundSizeRatio">66%</item>
         <item name="JV_fixedCenter">false</item>
     </style>
+
+    <style name="default_sensor_overlay">
+        <item name="foregroundColor">?attr/colorPrimary</item>
+        <item name="backgroundColor">@color/touch_control_pressed</item>
+        <item name="backgroundSizeRatio">66%</item>
+        <item name="foregroundSizeRatio">33%</item>
+    </style>
 </resources>
