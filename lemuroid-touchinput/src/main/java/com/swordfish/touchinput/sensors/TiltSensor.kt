@@ -102,9 +102,10 @@ class TiltSensor(context: Context) : SensorEventListener {
         if (restOrientation == null && restOrientationsBuffer.size < MEASUREMENTS_BUFFER_SIZE) {
             restOrientationsBuffer.add(floatArrayOf(yRotation, xRotation))
         } else if (restOrientation == null && restOrientationsBuffer.size >= MEASUREMENTS_BUFFER_SIZE) {
+            val restMeasurements = restOrientationsBuffer.drop(1)
             restOrientation = floatArrayOf(
-                restOrientationsBuffer.map { it[0] }.sum() / restOrientationsBuffer.size,
-                restOrientationsBuffer.map { it[1] }.sum() / restOrientationsBuffer.size
+                restMeasurements.map { it[0] }.sum() / restMeasurements.size,
+                restMeasurements.map { it[1] }.sum() / restMeasurements.size
             )
         } else {
             val x = clamp(applyDeadZone(yRotation - restOrientation!![0], deadZone) / (maxRotation))
@@ -136,6 +137,7 @@ class TiltSensor(context: Context) : SensorEventListener {
     }
 
     companion object {
+        const val SKIPPED_MEASUREMENTS = 1
         const val MEASUREMENTS_BUFFER_SIZE = 5
         val MAX_MAX_ROTATION = Math.toRadians(20.0).toFloat()
         val MIN_MAX_ROTATION = Math.toRadians(2.5).toFloat()
