@@ -52,8 +52,6 @@ data class GameSystem(
 
     val coreAssetsManager: CoreManager.AssetsManager = NoAssetsManager(),
 
-    val supportsAutosave: Boolean = true,
-
     val sendLeftStickEventAsDPAD: Boolean = false,
 
     val scanOptions: ScanOptions = ScanOptions(),
@@ -251,7 +249,6 @@ data class GameSystem(
                         uniqueExtensions = listOf(),
                         supportedExtensions = listOf("iso", "cso", "pbp"),
                         coreAssetsManager = PPSSPPAssetsManager(),
-                        supportsAutosave = false,
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
