@@ -3,7 +3,11 @@ package com.swordfish.lemuroid.app.shared.game
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.InputDevice
+import android.view.InputEvent
+import android.view.KeyEvent
+import android.view.MotionEvent
+import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +28,9 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
+import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
+import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
 import com.swordfish.libretrodroid.Variable
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -306,9 +313,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
-                sendMotionEvent(event, GLRetroView.MOTION_SOURCE_DPAD, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y, port)
-                sendMotionEvent(event, GLRetroView.MOTION_SOURCE_ANALOG_LEFT, MotionEvent.AXIS_X, MotionEvent.AXIS_Y, port)
-                sendMotionEvent(event, GLRetroView.MOTION_SOURCE_ANALOG_RIGHT, MotionEvent.AXIS_Z, MotionEvent.AXIS_RZ, port)
+                sendMotionEvent(event, MOTION_SOURCE_DPAD, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y, port)
+                sendMotionEvent(event, MOTION_SOURCE_ANALOG_LEFT, MotionEvent.AXIS_X, MotionEvent.AXIS_Y, port)
+                sendMotionEvent(event, MOTION_SOURCE_ANALOG_RIGHT, MotionEvent.AXIS_Z, MotionEvent.AXIS_RZ, port)
             }
         }
     }

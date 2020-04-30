@@ -3,7 +3,10 @@ package com.swordfish.lemuroid.app.shared.settings
 import android.content.Context
 import android.view.InputDevice
 import android.view.KeyEvent
-import androidx.preference.*
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
 
 class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
@@ -28,7 +31,11 @@ class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
         category.addPreference(preference)
     }
 
-    private fun createCategory(context: Context, preferenceScreen: PreferenceScreen, title: String): PreferenceCategory {
+    private fun createCategory(
+        context: Context,
+        preferenceScreen: PreferenceScreen,
+        title: String
+    ): PreferenceCategory {
         val category = PreferenceCategory(context)
         preferenceScreen.addPreference(category)
         category.title = title
@@ -36,7 +43,11 @@ class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
         return category
     }
 
-    private fun addPreferenceCategoryForInputDevice(context: Context, preferenceScreen: PreferenceScreen, inputDevice: InputDevice) {
+    private fun addPreferenceCategoryForInputDevice(
+        context: Context,
+        preferenceScreen: PreferenceScreen,
+        inputDevice: InputDevice
+    ) {
         val category = createCategory(context, preferenceScreen, inputDevice.name)
         preferenceScreen.addPreference(category)
 
@@ -54,7 +65,7 @@ class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
         preference.key = GamePadManager.computeKeyBindingPreference(inputDevice, key)
         preference.title = getButtonKeyName(context, key)
         preference.entries = retroPadButtonNames.toTypedArray()
-        preference.entryValues = retroKeys.map { it.toString() } .toTypedArray()
+        preference.entryValues = retroKeys.map { it.toString() }.toTypedArray()
         preference.setValueIndex(retroKeys.indexOf(key))
         preference.setDefaultValue(gamePadManager.getDefaultBinding(key).toString())
         preference.summaryProvider = Preference.SummaryProvider<ListPreference> {

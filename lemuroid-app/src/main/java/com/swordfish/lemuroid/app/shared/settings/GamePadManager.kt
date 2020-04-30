@@ -45,7 +45,7 @@ class GamePadManager(context: Context) {
     fun getGamePadsObservable(): Observable<List<InputDevice>> {
         val subject = BehaviorSubject.createDefault(getAllGamePads())
 
-        val listener = object: InputManager.InputDeviceListener {
+        val listener = object : InputManager.InputDeviceListener {
             override fun onInputDeviceAdded(deviceId: Int) { subject.onNext(getAllGamePads()) }
 
             override fun onInputDeviceChanged(deviceId: Int) { subject.onNext(getAllGamePads()) }
@@ -90,7 +90,7 @@ class GamePadManager(context: Context) {
         private const val GAME_PAD_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding"
 
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
-            "${GAME_PAD_PREFERENCE_BASE_KEY}_${inputDevice.sharedPreferencesId()}_${keyCode}"
+            "${GAME_PAD_PREFERENCE_BASE_KEY}_${inputDevice.sharedPreferencesId()}_$keyCode"
 
         val GAME_PAD_KEYS = listOf(
             KeyEvent.KEYCODE_BUTTON_A,
