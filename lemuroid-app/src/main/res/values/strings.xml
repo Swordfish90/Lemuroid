@@ -13,7 +13,7 @@
     <string name="simulate_display">Simulate display</string>
     <string name="roms">ROMs</string>
     <string name="clear_cores_cache_success">Cores cleared</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="settings">Settings</string>
 
     <string name="settings_category_general">General</string>
@@ -28,6 +28,10 @@
     <string name="settings_description_clear_cores_cache">An updated version will be downloaded when launching a ROM</string>
     <string name="settings_gamepad_settings">Gamepad settings</string>
     <string name="settings_gamepad_button_name">Button %1$s</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+
+    <string name="settings_gamepad_category_general">General</string>
+    <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
 
     <string name="game_context_menu_add_to_favorites">Add to favorites</string>
     <string name="game_context_menu_remove_from_favorites">Remove from favorites</string>

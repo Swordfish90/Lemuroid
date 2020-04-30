@@ -3,16 +3,17 @@ package com.swordfish.lemuroid.app.shared.game
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.KeyEvent
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
@@ -24,12 +25,14 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.Variable
-import com.swordfish.libretrodroid.gamepad.GamepadInfo
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
+import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -45,8 +48,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
+    @Inject lateinit var gamePadManager: GamePadManager
 
-    private var menuShortcut: GameMenuShortcut? = null
+    private val keyEventsSubjects: PublishRelay<KeyEvent> = PublishRelay.create()
+    private val motionEventsSubjects: PublishRelay<MotionEvent> = PublishRelay.create()
 
     protected var retroGameView: GLRetroView? = null
 
@@ -125,6 +130,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 directoriesManager.getSavesDirectory().absolutePath,
                 getShaderForSystem(useShaders, system)
         )
+        retroGameView?.isFocusable = false
+        retroGameView?.isFocusableInTouchMode = false
         retroGameView?.onCreate()
 
         val coreVariables = intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>? ?: arrayOf()
@@ -235,9 +242,21 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupPhysicalPad() {
-        retroGameView?.getGameKeyEvents()
-            ?.filter { isMenuShortcutKey(it) }
-            ?.scan(mutableSetOf<Int>()) { keys, event ->
+        setupGamePadKeys()
+        setupGamePadMotions()
+        setupGamePadShortcuts()
+    }
+
+    private fun setupGamePadShortcuts() {
+        val gamePadShortcut = getGamePadMenuShortCutObservable()
+            .distinctUntilChanged()
+            .doOnNext {
+                displayToast(resources.getString(R.string.game_toast_settings_button_using_gamepad, it.label))
+            }
+
+        val firstPlayerPressedKeys = keyEventsSubjects
+            .filter { getDevicePort(it) == 0 }
+            .scan(mutableSetOf<Int>()) { keys, event ->
                 if (event.action == KeyEvent.ACTION_DOWN) {
                     keys.add(event.keyCode)
                 } else if (event.action == KeyEvent.ACTION_UP) {
@@ -245,40 +264,93 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
                 keys
             }
-            ?.doOnNext {
-                if (areAllMenuKeysPressed(it)) {
+
+        Observables.combineLatest(gamePadShortcut, firstPlayerPressedKeys)
+            .autoDispose(scope())
+            .subscribeBy { (shortcut, pressedKeys) ->
+                if (pressedKeys.containsAll(shortcut.keys)) {
                     displayOptionsDialog()
                 }
             }
-            ?.subscribeOn(Schedulers.single())
-            ?.autoDispose(scope())
-            ?.subscribe()
+    }
 
-        retroGameView?.getGamepadInfos()
-            ?.distinctUntilChanged()
-            ?.autoDispose(scope())
-            ?.subscribe { connectedGamepads ->
-                connectedGamepads.firstOrNull()?.let {
-                    chooseMenuShortcutForGamepad(it)
-                    retroGameView?.requestFocus()
+    private fun setupGamePadMotions() {
+        motionEventsSubjects
+            .autoDispose(scope())
+            .subscribeBy { sendMotionEvent(it) }
+    }
+
+    private fun setupGamePadKeys() {
+        Observables.combineLatest(getGamePadBindingsObservable(), keyEventsSubjects)
+            .autoDispose(scope())
+            .subscribeBy { (bindings, event) ->
+                val port = getDevicePort(event)
+                if (port < 0) return@subscribeBy
+                val bindKeyCode = bindings[event.device]?.get(event.keyCode) ?: event.keyCode
+                retroGameView?.sendKeyEvent(event.action, bindKeyCode, port)
+            }
+    }
+
+    private fun getGamePadBindingsObservable(): Observable<Map<InputDevice, Map<Int, Int>>> {
+        return gamePadManager.getGamePadsObservable()
+            .flatMapSingle { inputDevices ->
+                Observable.fromIterable(inputDevices).flatMapSingle { inputDevice ->
+                    gamePadManager.getBindings(inputDevice).map { inputDevice to it }
+                }.toList()
+            }
+            .map { it.toMap() }
+    }
+
+    private fun sendMotionEvent(event: MotionEvent) {
+        val port = getDevicePort(event)
+        if (port < 0) return
+        when (event.source) {
+            InputDevice.SOURCE_JOYSTICK -> {
+                sendMotionEvent(event, GLRetroView.MOTION_SOURCE_DPAD, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y, port)
+                sendMotionEvent(event, GLRetroView.MOTION_SOURCE_ANALOG_LEFT, MotionEvent.AXIS_X, MotionEvent.AXIS_Y, port)
+                sendMotionEvent(event, GLRetroView.MOTION_SOURCE_ANALOG_RIGHT, MotionEvent.AXIS_Z, MotionEvent.AXIS_RZ, port)
+            }
+        }
+    }
+
+    private fun sendMotionEvent(event: MotionEvent, source: Int, xAxis: Int, yAxis: Int, port: Int) {
+        retroGameView?.sendMotionEvent(source, event.getAxisValue(xAxis), event.getAxisValue(yAxis), port)
+    }
+
+    override fun onGenericMotionEvent(event: MotionEvent?): Boolean {
+        if (event != null) {
+            motionEventsSubjects.accept(event)
+        }
+        return super.onGenericMotionEvent(event)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event != null && keyCode in GamePadManager.GAME_PAD_KEYS) {
+            keyEventsSubjects.accept(event)
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event != null && keyCode in GamePadManager.GAME_PAD_KEYS) {
+            keyEventsSubjects.accept(event)
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
+    private fun getGamePadMenuShortCutObservable(): Observable<GameMenuShortcut> {
+        return gamePadManager
+            .getGamePadsObservable()
+            .flatMapMaybe {
+                Maybe.fromCallable {
+                    it.getOrNull(0)?.let { GameMenuShortcut.getBestShortcutForInputDevice(it) }
                 }
             }
     }
 
-    private fun isMenuShortcutKey(it: GLRetroView.GameKeyEvent) =
-        it.keyCode in menuShortcut?.keys ?: setOf()
-
-    private fun areAllMenuKeysPressed(pressedKeys: Set<Int>): Boolean {
-        val shortcutKeys: Set<Int>? = menuShortcut?.keys
-        return shortcutKeys != null && pressedKeys.containsAll(shortcutKeys)
-    }
-
-    private fun chooseMenuShortcutForGamepad(gamepadInfo: GamepadInfo) {
-        menuShortcut = GameMenuShortcut.getBestShortcutForGamepad(gamepadInfo)
-        menuShortcut?.let {
-            displayToast(resources.getString(R.string.game_toast_settings_button_using_gamepad, it.label))
-        }
-    }
+    private fun getDevicePort(inputEvent: InputEvent) = (inputEvent.device?.controllerNumber ?: 0) - 1
 
     override fun onBackPressed() {
         autoSaveAndFinish()

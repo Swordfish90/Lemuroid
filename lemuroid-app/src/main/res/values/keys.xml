@@ -4,6 +4,7 @@
     <string name="pref_key_shader" translatable="false">shader</string>
     <string name="pref_key_clear_cores_cache" translatable="false">clear_cores_cache</string>
     <string name="pref_key_open_gamepad_bindings" translatable="false">open_gamepad_bindings</string>
+    <string name="pref_key_reset_gamepad_bindings" translatable="false">reset_gamepad_bindings</string>
     <string name="pref_key_vibrate_on_touch" translatable="false">vibrate_on_touch</string>
     <string name="pref_key_tilt_sensitivity_index" translatable="false">tilt_sensitivity_index</string>
     <string name="pref_key_autosave" translatable="false">autosave</string>
