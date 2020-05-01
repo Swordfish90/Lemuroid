@@ -12,8 +12,6 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
-private fun InputDevice.sharedPreferencesId() = "$vendorId$productId"
-
 class GamePadManager(context: Context) {
 
     private val inputManager = context.getSystemService(Context.INPUT_SERVICE) as InputManager
@@ -39,7 +37,7 @@ class GamePadManager(context: Context) {
     }
 
     fun getDistinctGamePads(): List<InputDevice> {
-        return getAllGamePads().distinctBy { it.sharedPreferencesId() }
+        return getAllGamePads().distinctBy { getSharedPreferencesId(it) }
     }
 
     fun getGamePadsObservable(): Observable<List<InputDevice>> {
@@ -89,8 +87,10 @@ class GamePadManager(context: Context) {
     companion object {
         private const val GAME_PAD_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding"
 
+        private fun getSharedPreferencesId(inputDevice: InputDevice) = inputDevice.descriptor
+
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
-            "${GAME_PAD_PREFERENCE_BASE_KEY}_${inputDevice.sharedPreferencesId()}_$keyCode"
+            "${GAME_PAD_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"
 
         val INPUT_KEYS = listOf(
             KeyEvent.KEYCODE_BUTTON_A,
