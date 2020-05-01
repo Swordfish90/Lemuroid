@@ -51,23 +51,24 @@ class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
         val category = createCategory(context, preferenceScreen, inputDevice.name)
         preferenceScreen.addPreference(category)
 
-        GamePadManager.RETRO_PAD_KEYS
+        GamePadManager.INPUT_KEYS
             .filter { inputDevice.hasKeys(it)[0] }
             .map { getPreferenceForKey(context, inputDevice, it) }
             .forEach { category.addPreference(it) }
     }
 
     private fun getPreferenceForKey(context: Context, inputDevice: InputDevice, key: Int): Preference {
-        val retroKeys = GamePadManager.RETRO_PAD_KEYS
-        val retroPadButtonNames = retroKeys.map { getRetroPadKeyName(context, it) }
+        val outputKeys = GamePadManager.OUTPUT_KEYS
+        val outputKeysName = outputKeys.map { getRetroPadKeyName(context, it) }
+        val defaultBinding = gamePadManager.getDefaultBinding(key)
 
         val preference = ListPreference(context)
         preference.key = GamePadManager.computeKeyBindingPreference(inputDevice, key)
         preference.title = getButtonKeyName(context, key)
-        preference.entries = retroPadButtonNames.toTypedArray()
-        preference.entryValues = retroKeys.map { it.toString() }.toTypedArray()
-        preference.setValueIndex(retroKeys.indexOf(key))
-        preference.setDefaultValue(gamePadManager.getDefaultBinding(key).toString())
+        preference.entries = outputKeysName.toTypedArray()
+        preference.entryValues = outputKeys.map { it.toString() }.toTypedArray()
+        preference.setValueIndex(outputKeys.indexOf(defaultBinding))
+        preference.setDefaultValue(defaultBinding.toString())
         preference.summaryProvider = Preference.SummaryProvider<ListPreference> {
             getRetroPadKeyName(context, it.value.toInt())
         }
@@ -78,8 +79,13 @@ class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
     private fun getButtonKeyName(context: Context, key: Int) =
         context.resources.getString(R.string.settings_gamepad_button_name, keyCodeToTextMap[key])
 
-    private fun getRetroPadKeyName(context: Context, key: Int) =
-        context.resources.getString(R.string.settings_retropad_button_name, keyCodeToTextMap[key])
+    private fun getRetroPadKeyName(context: Context, key: Int): String {
+        return if (key == KeyEvent.KEYCODE_UNKNOWN) {
+            context.resources.getString(R.string.settings_retropad_button_unassigned)
+        } else {
+            context.resources.getString(R.string.settings_retropad_button_name, keyCodeToTextMap[key])
+        }
+    }
 
     companion object {
         private val keyCodeToTextMap by lazy {
@@ -105,7 +111,17 @@ class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
                 KeyEvent.KEYCODE_BUTTON_7 to "7",
                 KeyEvent.KEYCODE_BUTTON_8 to "8",
                 KeyEvent.KEYCODE_BUTTON_9 to "9",
-                KeyEvent.KEYCODE_BUTTON_10 to "10"
+                KeyEvent.KEYCODE_BUTTON_10 to "10",
+                KeyEvent.KEYCODE_BUTTON_11 to "11",
+                KeyEvent.KEYCODE_BUTTON_12 to "12",
+                KeyEvent.KEYCODE_BUTTON_13 to "13",
+                KeyEvent.KEYCODE_BUTTON_14 to "14",
+                KeyEvent.KEYCODE_BUTTON_15 to "15",
+                KeyEvent.KEYCODE_BUTTON_16 to "16",
+                KeyEvent.KEYCODE_BUTTON_MODE to "Option",
+                KeyEvent.KEYCODE_BUTTON_Z to "Z",
+                KeyEvent.KEYCODE_BUTTON_C to "C",
+                KeyEvent.KEYCODE_UNKNOWN to ""
             )
         }
     }

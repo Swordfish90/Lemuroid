@@ -20,7 +20,7 @@ class GamePadManager(context: Context) {
     private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun getBindings(inputDevice: InputDevice): Single<Map<Int, Int>> {
-        return Observable.fromIterable(GAME_PAD_KEYS)
+        return Observable.fromIterable(INPUT_KEYS)
             .flatMapSingle { keyCode -> retrieveMappingFromPreferences(inputDevice, keyCode).map { keyCode to it } }
             .toList()
             .map { it.toMap() }
@@ -68,7 +68,7 @@ class GamePadManager(context: Context) {
         return valueSingle.map { it.toInt() }.subscribeOn(Schedulers.io())
     }
 
-    fun getDefaultBinding(keyCode: Int) = DEFAULT_BINDINGS.getOrElse(keyCode) { keyCode }
+    fun getDefaultBinding(keyCode: Int) = DEFAULT_BINDINGS.getValue(keyCode)
 
     private fun getAllGamePads(): List<InputDevice> {
         return InputDevice.getDeviceIds()
@@ -92,7 +92,7 @@ class GamePadManager(context: Context) {
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
             "${GAME_PAD_PREFERENCE_BASE_KEY}_${inputDevice.sharedPreferencesId()}_$keyCode"
 
-        val GAME_PAD_KEYS = listOf(
+        val INPUT_KEYS = listOf(
             KeyEvent.KEYCODE_BUTTON_A,
             KeyEvent.KEYCODE_BUTTON_B,
             KeyEvent.KEYCODE_BUTTON_X,
@@ -105,6 +105,8 @@ class GamePadManager(context: Context) {
             KeyEvent.KEYCODE_BUTTON_R2,
             KeyEvent.KEYCODE_BUTTON_THUMBL,
             KeyEvent.KEYCODE_BUTTON_THUMBR,
+            KeyEvent.KEYCODE_BUTTON_C,
+            KeyEvent.KEYCODE_BUTTON_Z,
             KeyEvent.KEYCODE_BUTTON_1,
             KeyEvent.KEYCODE_BUTTON_2,
             KeyEvent.KEYCODE_BUTTON_3,
@@ -114,10 +116,17 @@ class GamePadManager(context: Context) {
             KeyEvent.KEYCODE_BUTTON_7,
             KeyEvent.KEYCODE_BUTTON_8,
             KeyEvent.KEYCODE_BUTTON_9,
-            KeyEvent.KEYCODE_BUTTON_10
+            KeyEvent.KEYCODE_BUTTON_10,
+            KeyEvent.KEYCODE_BUTTON_11,
+            KeyEvent.KEYCODE_BUTTON_12,
+            KeyEvent.KEYCODE_BUTTON_13,
+            KeyEvent.KEYCODE_BUTTON_14,
+            KeyEvent.KEYCODE_BUTTON_15,
+            KeyEvent.KEYCODE_BUTTON_16,
+            KeyEvent.KEYCODE_BUTTON_MODE
         )
 
-        val RETRO_PAD_KEYS = listOf(
+        val OUTPUT_KEYS = listOf(
             KeyEvent.KEYCODE_BUTTON_A,
             KeyEvent.KEYCODE_BUTTON_B,
             KeyEvent.KEYCODE_BUTTON_X,
@@ -129,7 +138,9 @@ class GamePadManager(context: Context) {
             KeyEvent.KEYCODE_BUTTON_R1,
             KeyEvent.KEYCODE_BUTTON_R2,
             KeyEvent.KEYCODE_BUTTON_THUMBL,
-            KeyEvent.KEYCODE_BUTTON_THUMBR
+            KeyEvent.KEYCODE_BUTTON_THUMBR,
+            KeyEvent.KEYCODE_BUTTON_MODE,
+            KeyEvent.KEYCODE_UNKNOWN
         )
 
         private val DEFAULT_BINDINGS = mapOf(
@@ -137,6 +148,6 @@ class GamePadManager(context: Context) {
             KeyEvent.KEYCODE_BUTTON_B to KeyEvent.KEYCODE_BUTTON_A,
             KeyEvent.KEYCODE_BUTTON_X to KeyEvent.KEYCODE_BUTTON_Y,
             KeyEvent.KEYCODE_BUTTON_Y to KeyEvent.KEYCODE_BUTTON_X
-        )
+        ).withDefault { if (it in OUTPUT_KEYS) it else KeyEvent.KEYCODE_UNKNOWN }
     }
 }

@@ -288,14 +288,27 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadKeys() {
-        Observables.combineLatest(getGamePadBindingsObservable(), keyEventsSubjects)
-            .autoDispose(scope())
-            .subscribeBy { (bindings, event) ->
+        val bindKeys = Observables.combineLatest(getGamePadBindingsObservable(), keyEventsSubjects)
+            .map { (bindings, event) ->
                 val port = getDevicePort(event)
-                if (port < 0) return@subscribeBy
                 val bindKeyCode = bindings[event.device]?.get(event.keyCode) ?: event.keyCode
-                retroGameView?.sendKeyEvent(event.action, bindKeyCode, port)
+                Triple(event.action, port, bindKeyCode)
             }
+            .filter { (_, port, _) -> port >= 0 }
+            .share()
+
+        bindKeys
+            .autoDispose(scope())
+            .subscribeBy { (action, port, keyCode) ->
+                retroGameView?.sendKeyEvent(action, keyCode, port)
+            }
+
+        bindKeys
+            .filter { (action, port, keyCode) ->
+                port == 0 && keyCode == KeyEvent.KEYCODE_BUTTON_MODE && action == KeyEvent.ACTION_DOWN
+            }
+            .autoDispose(scope())
+            .subscribeBy { displayOptionsDialog() }
     }
 
     private fun getGamePadBindingsObservable(): Observable<Map<InputDevice, Map<Int, Int>>> {
@@ -332,7 +345,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in GamePadManager.GAME_PAD_KEYS) {
+        if (event != null && keyCode in GamePadManager.INPUT_KEYS) {
             keyEventsSubjects.accept(event)
             return true
         }
@@ -340,7 +353,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in GamePadManager.GAME_PAD_KEYS) {
+        if (event != null && keyCode in GamePadManager.INPUT_KEYS) {
             keyEventsSubjects.accept(event)
             return true
         }
