@@ -49,6 +49,12 @@
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
 
+        <Preference
+            android:key="@string/pref_key_open_gamepad_bindings"
+            android:title="@string/settings_gamepad_settings"
+            app:iconSpaceReserved="false"
+            android:persistent="false"/>
+
         <SeekBarPreference
             android:key="@string/pref_key_tilt_sensitivity_index"
             android:title="@string/settings_title_tilt_sensitivity"
@@ -56,21 +62,11 @@
             android:defaultValue="6"
             android:max="10"/>
 
-        <Preference
-            app:summary="@string/settings_description_tilt_sensitivity"
-            app:iconSpaceReserved="false"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/settings_category_advanced"
         app:iconSpaceReserved="false">
-
-        <Preference
-            android:key="@string/pref_key_open_gamepad_bindings"
-            android:title="@string/settings_gamepad_settings"
-            app:iconSpaceReserved="false"
-            android:persistent="false"/>
 
         <Preference
             android:key="@string/pref_key_clear_cores_cache"

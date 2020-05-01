@@ -24,7 +24,6 @@
     <string name="settings_title_tilt_sensitivity">Tilt to stick sensitivity</string>
     <string name="settings_title_clear_cores_cache">Clear cores</string>
 
-    <string name="settings_description_tilt_sensitivity">Enable by double tapping on any analog stick control</string>
     <string name="settings_description_clear_cores_cache">An updated version will be downloaded when launching a ROM</string>
     <string name="settings_gamepad_settings">Gamepad settings</string>
     <string name="settings_gamepad_button_name">Button %1$s</string>
