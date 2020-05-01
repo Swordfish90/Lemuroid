@@ -92,10 +92,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
 
         setupPhysicalPad()
-
-        if (retroGameView != null && settingsManager.autoSave && !system.supportsAutosave) {
-            displayToast(R.string.game_toast_autosave_not_supported)
-        }
     }
 
     // If the activity is garbage collected we are losing its state. To avoid overwriting the previous autosave we just
@@ -120,12 +116,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             return
         }
 
-        Timber.i("Loading saved state of ${saveGame.size} bytes")
-
-        getRetryRestoreQuickSave(saveGame)
-                .subscribeOn(Schedulers.io())
-                .autoDispose(scope())
-                .subscribe()
+        // PPSSPP and Mupen64 initialize some state while rendering the first frame, so we have to wait before restoring
+        // the autosave.
+        retroGameView?.getGLRetroEvents()
+            ?.filter { it is GLRetroView.GLRetroEvents.FrameRendered }
+            ?.firstElement()
+            ?.flatMapCompletable { getRetryRestoreQuickSave(saveGame) }
+            ?.subscribeOn(Schedulers.io())
+            ?.autoDispose(scope())
+            ?.subscribe()
     }
 
     private fun initializeRetroGameView(directoriesManager: DirectoriesManager, useShaders: Boolean) {
@@ -184,8 +183,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected abstract fun getShaderForSystem(useShader: Boolean, system: GameSystem): Int
 
-    protected fun isAutoSaveEnabled(): Boolean {
-        return system.supportsAutosave && settingsManager.autoSave
+    private fun isAutoSaveEnabled(): Boolean {
+        return settingsManager.autoSave
     }
 
     override fun onResume() {
@@ -239,7 +238,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         super.onDestroy()
     }
 
-    protected fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
+    // Now that we wait for the first rendered frame this is probably no longer needed, but we'll keep it just to be sure
+    private fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
         val retroGameView = retroGameView ?: return@fromCallable null
         var times = 10
         while (!retroGameView.unserializeState(saveGame) && times > 0) {

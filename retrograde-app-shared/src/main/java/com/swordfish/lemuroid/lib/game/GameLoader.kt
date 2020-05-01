@@ -62,7 +62,7 @@ class GameLoader(
 
             val saveRAMData = savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
 
-            val quickSaveData = if (loadQuickSave && gameSystem.supportsAutosave) {
+            val quickSaveData = if (loadQuickSave) {
                 savesManager.getAutoSave(game, gameSystem).toSingleAsOptional().blockingGet().toNullable()
             } else {
                 null
