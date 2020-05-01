@@ -109,6 +109,7 @@ dependencies {
     implementation(deps.libs.rxPermissions2)
     implementation(deps.libs.rxPreferences)
     implementation(deps.libs.rxRelay2)
+    implementation(deps.libs.rxKotlin2)
 
     implementation(deps.libs.libretrodroid)
 

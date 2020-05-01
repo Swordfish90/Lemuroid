@@ -34,6 +34,6 @@ abstract class LemuroidTVApplicationModule {
     abstract fun tvFolderPickerActivity(): TVFolderPickerActivity
 
     @PerActivity
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [TVSettingsActivity.Module::class])
     abstract fun tvSettingsActivity(): TVSettingsActivity
 }

@@ -20,6 +20,7 @@ import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
@@ -88,6 +89,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [FavoritesFragment.Module::class])
         abstract fun favoritesFragment(): FavoritesFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [GamepadSettingsFragment.Module::class])
+        abstract fun gamepadSettings(): GamepadSettingsFragment
 
         @dagger.Module
         companion object {

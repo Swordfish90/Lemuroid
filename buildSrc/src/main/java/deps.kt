@@ -15,7 +15,6 @@ object deps {
         const val googleApiClient = "1.27.0"
         const val koptional       = "1.6.0"
         const val kotlin          = "1.3.50"
-        const val moshi           = "1.8.0"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
         const val work            = "2.3.0-beta01"
@@ -23,7 +22,7 @@ object deps {
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
-        const val libretrodroid   = "0.3.0"
+        const val libretrodroid   = "0.3.1"
     }
 
     object libs {
@@ -104,8 +103,6 @@ object deps {
         const val koptionalRxJava2         = "com.gojuno.koptional:koptional-rxjava2-extensions:${versions.koptional}"
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
         const val ktlint                   = "com.github.shyiko:ktlint:0.29.0"
-        const val moshi                    = "com.squareup.moshi:moshi:${versions.moshi}"
-        const val moshiKotlin              = "com.squareup.moshi:moshi-kotlin:${versions.moshi}"
         const val okio                     = "com.squareup.okio:okio:2.1.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"
         const val okHttp3Logging           = "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"

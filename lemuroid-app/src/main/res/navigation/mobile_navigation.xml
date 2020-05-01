@@ -47,4 +47,9 @@
         android:name="com.swordfish.lemuroid.app.mobile.feature.settings.SettingsFragment"
         android:label="@string/title_settings" />
 
+    <fragment
+        android:id="@+id/navigation_settings_gamepad"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment"
+        android:label="@string/settings_gamepad_settings" />
+
 </navigation>

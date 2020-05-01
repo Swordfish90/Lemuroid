@@ -32,6 +32,7 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
+import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.events.OptionType
 import com.swordfish.touchinput.events.PadEvent
@@ -40,6 +41,7 @@ import com.swordfish.touchinput.pads.GamePadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 class GameActivity : BaseGameActivity() {
 
@@ -134,10 +136,11 @@ class GameActivity : BaseGameActivity() {
                 }
             }
 
-        retroGameView?.getGamepadInfos()
-            ?.map { it.size }
-            ?.autoDispose(scope())
-            ?.subscribe { overlayLayout.setVisibleOrGone(it == 0) }
+        gamePadManager
+            .getGamePadsObservable()
+            .map { it.size }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) { overlayLayout.setVisibleOrGone(it == 0) }
     }
 
     private fun performHapticFeedback(view: View) {

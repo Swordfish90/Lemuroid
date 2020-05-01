@@ -1,16 +1,15 @@
 package com.swordfish.lemuroid.app.shared.game
 
+import android.view.InputDevice
 import android.view.KeyEvent
-import com.swordfish.libretrodroid.gamepad.GamepadInfo
 
 data class GameMenuShortcut(val keys: Set<Int>, val label: String) {
 
     companion object {
 
-        fun getBestShortcutForGamepad(gamepadInfo: GamepadInfo): GameMenuShortcut? {
+        fun getBestShortcutForInputDevice(inputDevice: InputDevice): GameMenuShortcut? {
             return DEFAULT_SHORTCUTS
-                .filter { shortcut -> gamepadInfo.keys.containsAll(shortcut.keys) }
-                .firstOrNull()
+                .firstOrNull { shortcut -> inputDevice.hasKeys(*(shortcut.keys.toIntArray())).all { it } }
         }
 
         private val DEFAULT_SHORTCUTS = listOf(

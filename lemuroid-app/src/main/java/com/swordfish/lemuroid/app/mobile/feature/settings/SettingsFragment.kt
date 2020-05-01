@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.f2prateek.rx.preferences2.RxSharedPreferences
@@ -30,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.retrograde_mobile_prefs, rootKey)
+        setPreferencesFromResource(R.xml.mobile_settings, rootKey)
     }
 
     override fun onResume() {
@@ -62,8 +63,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_key_rescan) -> handleRescan()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_clear_cores_cache) -> handleClearCacheCores()
+            getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
         }
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun handleOpenGamepadBindings() {
+        findNavController().navigate(R.id.navigation_settings_gamepad)
     }
 
     private fun handleChangeExternalFolder() {
