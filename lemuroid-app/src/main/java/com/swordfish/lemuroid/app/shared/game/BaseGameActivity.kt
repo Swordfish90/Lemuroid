@@ -326,11 +326,27 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
-                sendMotionEvent(event, MOTION_SOURCE_DPAD, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y, port)
-                sendMotionEvent(event, MOTION_SOURCE_ANALOG_LEFT, MotionEvent.AXIS_X, MotionEvent.AXIS_Y, port)
-                sendMotionEvent(event, MOTION_SOURCE_ANALOG_RIGHT, MotionEvent.AXIS_Z, MotionEvent.AXIS_RZ, port)
+                if (system.sendLeftStickEventAsDPAD) {
+                    sendMergedAsDPADEvents(event, port)
+                } else {
+                    sendSeparateMotionEvents(event, port)
+                }
             }
         }
+    }
+
+    private fun sendMergedAsDPADEvents(event: MotionEvent, port: Int) {
+        val xAxises = setOf(MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_X)
+        val yAxises = setOf(MotionEvent.AXIS_HAT_Y, MotionEvent.AXIS_Y)
+        val xVal = xAxises.map { event.getAxisValue(it) }.maxBy { kotlin.math.abs(it) }!!
+        val yVal = yAxises.map { event.getAxisValue(it) }.maxBy { kotlin.math.abs(it) }!!
+        retroGameView?.sendMotionEvent(MOTION_SOURCE_DPAD, xVal, yVal, port)
+    }
+
+    private fun sendSeparateMotionEvents(event: MotionEvent, port: Int) {
+        sendMotionEvent(event, MOTION_SOURCE_DPAD, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y, port)
+        sendMotionEvent(event, MOTION_SOURCE_ANALOG_LEFT, MotionEvent.AXIS_X, MotionEvent.AXIS_Y, port)
+        sendMotionEvent(event, MOTION_SOURCE_ANALOG_RIGHT, MotionEvent.AXIS_Z, MotionEvent.AXIS_RZ, port)
     }
 
     private fun sendMotionEvent(event: MotionEvent, source: Int, xAxis: Int, yAxis: Int, port: Int) {

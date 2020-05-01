@@ -54,6 +54,8 @@ data class GameSystem(
 
     val supportsAutosave: Boolean = true,
 
+    val sendLeftStickEventAsDPAD: Boolean = false,
+
     val scanOptions: ScanOptions = ScanOptions(),
 
     val supportedExtensions: List<String> = uniqueExtensions,
@@ -77,7 +79,8 @@ data class GameSystem(
                         "atari0",
                         "stella_libretro_android.so.zip",
                         uniqueExtensions = listOf("a26"),
-                        exposedSettings = listOf("stella_filter")
+                        exposedSettings = listOf("stella_filter"),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.NES,
@@ -88,7 +91,8 @@ data class GameSystem(
                         R.drawable.game_system_nes,
                         "nintendo0",
                         "fceumm_libretro_android.so.zip",
-                        uniqueExtensions = listOf("nes")
+                        uniqueExtensions = listOf("nes"),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.SNES,
@@ -99,7 +103,8 @@ data class GameSystem(
                         R.drawable.game_system_snes,
                         "nintendo1",
                         "snes9x_libretro_android.so.zip",
-                        uniqueExtensions = listOf("smc", "sfc")
+                        uniqueExtensions = listOf("smc", "sfc"),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.SMS,
@@ -113,7 +118,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("sms"),
                         exposedSettings = listOf(
                             "genesis_plus_gx_blargg_ntsc_filter"
-                        )
+                        ),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.GENESIS,
@@ -127,7 +133,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("gen", "smd", "md"),
                         exposedSettings = listOf(
                             "genesis_plus_gx_blargg_ntsc_filter"
-                        )
+                        ),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.GG,
@@ -141,7 +148,8 @@ data class GameSystem(
                         uniqueExtensions = listOf("gg"),
                         exposedSettings = listOf(
                             "genesis_plus_gx_lcd_filter"
-                        )
+                        ),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.GB,
@@ -157,7 +165,8 @@ data class GameSystem(
                             "gambatte_gb_colorization",
                             "gambatte_gb_internal_palette",
                             "gambatte_mix_frames"
-                        )
+                        ),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.GBC,
@@ -173,7 +182,8 @@ data class GameSystem(
                             "gambatte_gb_colorization",
                             "gambatte_gb_internal_palette",
                             "gambatte_mix_frames"
-                        )
+                        ),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.GBA,
@@ -190,7 +200,8 @@ data class GameSystem(
                             "mgba_interframe_blending",
                             "mgba_frameskip",
                             "mgba_color_correction"
-                        )
+                        ),
+                        sendLeftStickEventAsDPAD = true
                 ),
                 GameSystem(
                         SystemID.N64,
@@ -283,6 +294,7 @@ data class GameSystem(
                         "nintendo6",
                         "desmume_libretro_android.so.zip",
                         uniqueExtensions = listOf("nds"),
+                        sendLeftStickEventAsDPAD = true,
                         exposedSettings = listOf("desmume_frameskip"),
                         defaultSettings = listOf(CoreVariable("desmume_pointer_type", "touch"))
                 )
