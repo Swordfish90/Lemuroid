@@ -84,7 +84,6 @@
     <string name="tv_home_section_settings">Settings</string>
 
     <string name="tv_search_results">Games</string>
-
-    <string name="kiosk_shortcut_short_description">Kiosk</string>
+    <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>
 
 </resources>
