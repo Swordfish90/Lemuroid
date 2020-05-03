@@ -64,8 +64,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_clear_cores_cache) -> handleClearCacheCores()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
+            getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
         }
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun handleDisplayBiosInfo() {
+        findNavController().navigate(R.id.navigation_settings_bios_info)
     }
 
     private fun handleOpenGamepadBindings() {

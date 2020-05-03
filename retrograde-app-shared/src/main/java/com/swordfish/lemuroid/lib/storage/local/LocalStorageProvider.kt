@@ -36,6 +36,7 @@ import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
+import java.io.InputStream
 import java.util.zip.ZipInputStream
 
 class LocalStorageProvider(
@@ -93,6 +94,10 @@ class LocalStorageProvider(
         }
 
         cacheFile
+    }
+
+    override fun getInputStream(uri: Uri): InputStream {
+        return File(uri.path).inputStream()
     }
 
     companion object {

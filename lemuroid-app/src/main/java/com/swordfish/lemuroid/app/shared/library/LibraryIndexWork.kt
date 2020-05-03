@@ -21,6 +21,7 @@ import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
 
+    // TODO FILIPPO... This should be renamed...
     @Inject lateinit var gameLibrary: GameLibrary
 
     override fun createWork(): Single<Result> {

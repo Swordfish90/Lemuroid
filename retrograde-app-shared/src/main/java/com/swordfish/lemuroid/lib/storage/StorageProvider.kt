@@ -26,6 +26,7 @@ import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
+import java.io.InputStream
 
 interface StorageProvider {
 
@@ -42,6 +43,8 @@ interface StorageProvider {
     val enabledByDefault: Boolean
 
     fun listUris(): Observable<Uri>
+
+    fun getInputStream(uri: Uri): InputStream
 
     fun getStorageFile(uri: Uri): StorageFile?
 

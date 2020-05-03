@@ -6,6 +6,7 @@ import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadBindingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -17,10 +18,9 @@ import javax.inject.Inject
 
 class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
+    @Inject lateinit var biosPreferences: BiosPreferences
     @Inject lateinit var gamePadBindingsPreferences: GamePadBindingsPreferences
     @Inject lateinit var gamePadManager: GamePadManager
-
-    private lateinit var gamePadBindingsPreferenceScreen: PreferenceScreen
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -30,18 +30,33 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.tv_settings, rootKey)
 
-        gamePadBindingsPreferenceScreen = findPreference(resources.getString(R.string.pref_key_open_gamepad_bindings))!!
+        getBiosInfoPreferenceScreen()?.let {
+            biosPreferences.addBiosPreferences(it)
+        }
+    }
 
+    override fun onResume() {
+        super.onResume()
         gamePadManager.getGamePadsObservable()
-                .distinctUntilChanged()
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDispose(scope())
-                .subscribe { refreshGamePadBindingsScreen() }
+            .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribe { refreshGamePadBindingsScreen() }
+    }
+
+    private fun getGamePadPreferenceScreen(): PreferenceScreen? {
+        return findPreference(resources.getString(R.string.pref_key_open_gamepad_bindings))
+    }
+
+    private fun getBiosInfoPreferenceScreen(): PreferenceScreen? {
+        return findPreference(resources.getString(R.string.pref_key_display_bios_info))
     }
 
     private fun refreshGamePadBindingsScreen() {
-        gamePadBindingsPreferenceScreen.removeAll()
-        gamePadBindingsPreferences.addGamePadsPreferencesToScreen(requireContext(), gamePadBindingsPreferenceScreen)
+        getGamePadPreferenceScreen()?.let {
+            it.removeAll()
+            gamePadBindingsPreferences.addGamePadsPreferencesToScreen(requireContext(), it)
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

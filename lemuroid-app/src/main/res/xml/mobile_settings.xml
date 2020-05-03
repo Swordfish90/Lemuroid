@@ -75,6 +75,12 @@
             app:iconSpaceReserved="false"
             android:persistent="false"/>
 
+        <Preference
+            android:key="@string/pref_key_display_bios_info"
+            android:title="@string/settings_title_display_bios_info"
+            app:iconSpaceReserved="false"
+            android:persistent="false"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

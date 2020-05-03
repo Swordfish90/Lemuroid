@@ -28,6 +28,7 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadBindingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.lib.core.CoreManager
@@ -48,6 +49,7 @@ import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
+import com.swordfish.lemuroid.lib.bios.BiosManager
 
 import dagger.Binds
 import dagger.Module
@@ -150,8 +152,9 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun gameLibrary(
             db: RetrogradeDatabase,
-            storageProviderRegistry: StorageProviderRegistry
-        ) = GameLibrary(db, storageProviderRegistry)
+            storageProviderRegistry: StorageProviderRegistry,
+            biosManager: BiosManager
+        ) = GameLibrary(db, storageProviderRegistry, biosManager)
 
         @Provides
         @PerApp
@@ -241,5 +244,15 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun gamepadBindingsManager(gamePadManager: GamePadManager) = GamePadBindingsPreferences(gamePadManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun biosManager(directoriesManager: DirectoriesManager) = BiosManager(directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun biosPreferences(biosManager: BiosManager) = BiosPreferences(biosManager)
     }
 }
