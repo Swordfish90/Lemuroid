@@ -17,6 +17,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
+import java.io.InputStream
 import java.util.zip.ZipInputStream
 
 class StorageAccessFrameworkProvider(
@@ -104,6 +105,10 @@ class StorageAccessFrameworkProvider(
             stream.writeToFile(cacheFile)
         }
         cacheFile
+    }
+
+    override fun getInputStream(uri: Uri): InputStream? {
+        return context.contentResolver.openInputStream(uri)
     }
 
     companion object {

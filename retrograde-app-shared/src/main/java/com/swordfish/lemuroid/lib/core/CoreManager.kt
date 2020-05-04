@@ -32,7 +32,10 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
+import timber.log.Timber
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.zip.ZipInputStream
 
 class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: Retrofit) {
@@ -55,9 +58,11 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
         val libFileName = zipFileName.substringBeforeLast(".zip")
         val destFile = File(coresDir, "lib$libFileName")
 
-        if (destFile.exists()) {
+        if (destFile.exists() && isUpdated(destFile)) {
             return Single.just(destFile)
         }
+
+        Timber.d("Downloading core for system")
 
         assetsManager.clearAssets(directoriesManager).blockingAwait()
 
@@ -87,6 +92,11 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
                 }
     }
 
+    private fun isUpdated(file: File): Boolean {
+        val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
+        return file.lastModified() >= oldestAllowedDate?.time ?: 0
+    }
+
     interface CoreManagerApi {
 
         @GET
@@ -97,5 +107,10 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
     interface AssetsManager {
         fun retrieveAssets(coreManagerApi: CoreManagerApi, directoriesManager: DirectoriesManager): Completable
         fun clearAssets(directoriesManager: DirectoriesManager): Completable
+    }
+
+    companion object {
+        // Here we can force the core update. (YYYY-MM-DD)
+        private const val OLDEST_CORE_DATE = "2020-05-04"
     }
 }

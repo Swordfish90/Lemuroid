@@ -21,4 +21,10 @@
         app:iconSpaceReserved="false"
         android:persistent="false"/>
 
+    <PreferenceScreen
+        android:key="@string/pref_key_display_bios_info"
+        android:title="@string/settings_title_display_bios_info"
+        app:summary="@string/settings_description_display_bios_info"
+        app:iconSpaceReserved="false"/>
+
 </PreferenceScreen>

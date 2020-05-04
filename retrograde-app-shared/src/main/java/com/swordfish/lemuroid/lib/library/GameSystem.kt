@@ -232,9 +232,6 @@ data class GameSystem(
                             "pcsx_rearmed_frameskip",
                             "pcsx_rearmed_pad1type",
                             "pcsx_rearmed_pad2type"
-                        ),
-                        defaultSettings = listOf(
-                            CoreVariable("pcsx_rearmed_drc", "disabled")
                         )
                 ),
                 GameSystem(
