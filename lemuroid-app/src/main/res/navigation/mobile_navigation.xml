@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/navigation_settings_bios_info"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.BiosInfoSettingsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment"
         android:label="@string/settings_title_display_bios_info" />
 
 </navigation>

@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class BiosInfoSettingsFragment : PreferenceFragmentCompat() {
+class BiosSettingsFragment : PreferenceFragmentCompat() {
 
     @Inject lateinit var biosPreferences: BiosPreferences
 

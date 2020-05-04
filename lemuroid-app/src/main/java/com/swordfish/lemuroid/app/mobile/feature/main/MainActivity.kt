@@ -20,7 +20,7 @@ import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.BiosInfoSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
@@ -96,8 +96,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
         abstract fun gamepadSettings(): GamepadSettingsFragment
 
         @PerFragment
-        @ContributesAndroidInjector(modules = [BiosInfoSettingsFragment.Module::class])
-        abstract fun biosInfoSettingsFragment(): BiosInfoSettingsFragment
+        @ContributesAndroidInjector(modules = [BiosSettingsFragment.Module::class])
+        abstract fun biosInfoSettingsFragment(): BiosSettingsFragment
 
         @dagger.Module
         companion object {
