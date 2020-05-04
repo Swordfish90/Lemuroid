@@ -20,7 +20,7 @@
 package com.swordfish.lemuroid.lib.game
 
 import com.swordfish.lemuroid.lib.core.CoreManager
-import com.swordfish.lemuroid.lib.library.GameLibrary
+import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
@@ -33,7 +33,7 @@ import java.io.File
 
 class GameLoader(
     private val coreManager: CoreManager,
-    private val gameLibrary: GameLibrary,
+    private val lemuroidLibrary: LemuroidLibrary,
     private val savesManager: SavesManager,
     private val coreVariablesManager: CoreVariablesManager
 ) {
@@ -58,7 +58,7 @@ class GameLoader(
 
             emitter.onNext(LoadingState.LoadingGame)
 
-            val gameFile = gameLibrary.getGameRom(game).blockingGet()
+            val gameFile = lemuroidLibrary.getGameRom(game).blockingGet()
 
             val saveRAMData = savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
 

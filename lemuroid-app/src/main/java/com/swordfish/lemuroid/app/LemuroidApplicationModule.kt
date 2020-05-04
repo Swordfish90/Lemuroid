@@ -36,7 +36,7 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerApp
-import com.swordfish.lemuroid.lib.library.GameLibrary
+import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.logging.RxTimberTree
@@ -150,11 +150,11 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gameLibrary(
+        fun lemuroidLibrary(
             db: RetrogradeDatabase,
             storageProviderRegistry: StorageProviderRegistry,
             biosManager: BiosManager
-        ) = GameLibrary(db, storageProviderRegistry, biosManager)
+        ) = LemuroidLibrary(db, storageProviderRegistry, biosManager)
 
         @Provides
         @PerApp
@@ -225,10 +225,10 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun gameLoader(
             coreManager: CoreManager,
-            gameLibrary: GameLibrary,
+            lemuroidLibrary: LemuroidLibrary,
             savesManager: SavesManager,
             coreVariablesManager: CoreVariablesManager
-        ) = GameLoader(coreManager, gameLibrary, savesManager, coreVariablesManager)
+        ) = GameLoader(coreManager, lemuroidLibrary, savesManager, coreVariablesManager)
 
         @Provides
         @PerApp

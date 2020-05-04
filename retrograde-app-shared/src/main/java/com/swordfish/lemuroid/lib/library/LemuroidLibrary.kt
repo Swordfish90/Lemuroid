@@ -36,12 +36,12 @@ import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
 
-class GameLibrary(
+class LemuroidLibrary(
     private val retrogradedb: RetrogradeDatabase,
     private val providerProviderRegistry: StorageProviderRegistry,
     private val biosManager: BiosManager
 ) {
-    fun indexGames(): Completable {
+    fun indexLibrary(): Completable {
         val startedAtMs = System.currentTimeMillis()
 
         return Observable.fromIterable(providerProviderRegistry.enabledProviders).concatMap { provider ->

@@ -10,7 +10,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
-import com.swordfish.lemuroid.lib.library.GameLibrary
+import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
@@ -21,8 +21,7 @@ import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
 
-    // TODO FILIPPO... This should be renamed...
-    @Inject lateinit var gameLibrary: GameLibrary
+    @Inject lateinit var lemuroidLibrary: LemuroidLibrary
 
     override fun createWork(): Single<Result> {
         AndroidWorkerInjection.inject(this)
@@ -30,7 +29,7 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWor
         val notificationsManager = NotificationsManager(applicationContext)
 
         setForegroundAsync(ForegroundInfo(notificationsManager.getIndexingNotification()))
-        return gameLibrary.indexGames()
+        return lemuroidLibrary.indexLibrary()
                 .toSingleDefault(Result.success())
                 .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
                 .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
