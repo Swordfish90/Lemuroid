@@ -107,8 +107,8 @@ class StorageAccessFrameworkProvider(
         cacheFile
     }
 
-    override fun getInputStream(uri: Uri): InputStream {
-        return context.contentResolver.openInputStream(uri)!!
+    override fun getInputStream(uri: Uri): InputStream? {
+        return context.contentResolver.openInputStream(uri)
     }
 
     companion object {

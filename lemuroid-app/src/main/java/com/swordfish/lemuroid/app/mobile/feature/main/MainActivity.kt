@@ -97,7 +97,7 @@ class MainActivity : RetrogradeAppCompatActivity() {
 
         @PerFragment
         @ContributesAndroidInjector(modules = [BiosSettingsFragment.Module::class])
-        abstract fun biosInfoSettingsFragment(): BiosSettingsFragment
+        abstract fun biosInfoFragment(): BiosSettingsFragment
 
         @dagger.Module
         companion object {

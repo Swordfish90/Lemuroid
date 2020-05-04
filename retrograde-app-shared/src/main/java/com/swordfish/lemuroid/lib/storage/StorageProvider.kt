@@ -44,7 +44,7 @@ interface StorageProvider {
 
     fun listUris(): Observable<Uri>
 
-    fun getInputStream(uri: Uri): InputStream
+    fun getInputStream(uri: Uri): InputStream?
 
     fun getStorageFile(uri: Uri): StorageFile?
 

@@ -78,8 +78,10 @@ class LemuroidLibrary(
     }
 
     private fun handleUnknownFiles(provider: StorageProvider, files: List<StorageFile>, startedAtMs: Long) {
-        files.forEach {
-            biosManager.tryAddBiosAfter(it, provider.getInputStream(it.uri), startedAtMs)
+        files.forEach { storageFile ->
+            provider.getInputStream(storageFile.uri)?.let { inputStream ->
+                biosManager.tryAddBiosAfter(storageFile, inputStream, startedAtMs)
+            }
         }
     }
 

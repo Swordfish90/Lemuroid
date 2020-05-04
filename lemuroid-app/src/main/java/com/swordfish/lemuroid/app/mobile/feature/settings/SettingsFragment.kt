@@ -42,6 +42,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
+        val displayBiosPreference: Preference? = findPreference(getString(R.string.pref_key_display_bios_info))
 
         settingsViewModel.currentFolder
                 .observeOn(AndroidSchedulers.mainThread())
@@ -53,6 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         settingsViewModel.indexingInProgress.observe(this, Observer {
             rescanPreference?.isEnabled = !it
             currentDirectory?.isEnabled = !it
+            displayBiosPreference?.isEnabled = !it
         })
     }
 
