@@ -93,8 +93,9 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
     }
 
     private fun isUpdated(file: File): Boolean {
-        val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
-        return file.lastModified() >= oldestAllowedDate?.time ?: 0
+        //val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
+        //return file.lastModified() >= oldestAllowedDate?.time ?: 0
+        return true
     }
 
     interface CoreManagerApi {
