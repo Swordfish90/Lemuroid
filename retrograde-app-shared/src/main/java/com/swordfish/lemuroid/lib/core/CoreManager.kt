@@ -34,8 +34,6 @@ import retrofit2.http.Streaming
 import retrofit2.http.Url
 import timber.log.Timber
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Locale
 import java.util.zip.ZipInputStream
 
 class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: Retrofit) {
@@ -93,8 +91,8 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
     }
 
     private fun isUpdated(file: File): Boolean {
-        //val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
-        //return file.lastModified() >= oldestAllowedDate?.time ?: 0
+        // val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
+        // return file.lastModified() >= oldestAllowedDate?.time ?: 0
         return true
     }
 
