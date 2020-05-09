@@ -71,7 +71,7 @@ interface GameDao {
     fun selectFirstUnfavoriteRecents(limit: Int): LiveData<List<Game>>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
-    fun selectFirstRecents(limit: Int): LiveData<List<Game>>
+    fun selectFirstRecents(limit: Int): Observable<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
     fun selectFirstFavorites(limit: Int): LiveData<List<Game>>

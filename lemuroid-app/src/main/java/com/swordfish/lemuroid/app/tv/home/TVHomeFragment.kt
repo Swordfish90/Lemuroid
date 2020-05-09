@@ -13,7 +13,6 @@ import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.OnItemViewClickedListener
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
@@ -32,6 +31,7 @@ import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Observables
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
@@ -68,7 +68,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = createAdapter()
+        recreateAdapter(false, false)
         setOnSearchClickedListener {
             findNavController().navigate(R.id.navigation_search)
         }
@@ -80,42 +80,57 @@ class TVHomeFragment : BrowseSupportFragment() {
         val factory = TVHomeViewModel.Factory(retrogradeDb)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
 
-        homeViewModel.recentGames.observe(this, Observer {
-            updateRecentGames(it)
-        })
-
-        homeViewModel
-            .availableSystems
+        Observables.combineLatest(homeViewModel.recentGames, homeViewModel.availableSystems)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy {
-                updateSystems(it)
+            .subscribeBy { (recentGames, systems) -> update(recentGames, systems) }
+    }
+
+    private fun update(recentGames: List<Game>, systems: List<SystemInfo>) {
+        val adapterHasGames = findAdapterById(GAMES_ADAPTER) != null
+        val adapterHasSystems = findAdapterById(SYSTEM_ADAPTER) != null
+
+        if (adapterHasGames != recentGames.isNotEmpty() || adapterHasSystems != systems.isNotEmpty()) {
+            recreateAdapter(recentGames.isNotEmpty(), systems.isNotEmpty())
+        }
+
+        findAdapterById(GAMES_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
+        findAdapterById(SYSTEM_ADAPTER)?.setItems(systems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+    }
+
+    private fun findAdapterById(id: Long): ArrayObjectAdapter? {
+        for (i: Int in 0 until adapter.size()) {
+            val listRow = adapter.get(i) as ListRow
+            if (listRow.headerItem.id == id) {
+                return listRow.adapter as ArrayObjectAdapter
             }
+        }
+        return null
     }
 
-    private fun updateRecentGames(recentGames: List<Game>) {
-        val recentsItems = (adapter.get(0) as ListRow).adapter as ArrayObjectAdapter
-        recentsItems.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
-    }
-
-    private fun updateSystems(systems: List<SystemInfo>) {
-        val systemsItems = (adapter.get(1) as ListRow).adapter as ArrayObjectAdapter
-        systemsItems.setItems(systems, LEANBACK_SYSTEM_DIFF_CALLBACK)
-    }
-
-    private fun createAdapter(): ArrayObjectAdapter {
+    private fun recreateAdapter(includeRecentGames: Boolean, includeSystems: Boolean) {
         val result = ArrayObjectAdapter(ListRowPresenter())
 
-        val recentItems = ArrayObjectAdapter(GamePresenter(resources.getDimensionPixelSize(R.dimen.card_size)))
-        result.add(ListRow(HeaderItem(resources.getString(R.string.tv_home_section_recents)), recentItems))
-
-        val systemItems = ArrayObjectAdapter(
-            SystemPresenter(
-                resources.getDimensionPixelSize(R.dimen.card_size),
-                resources.getDimensionPixelSize(R.dimen.card_padding)
+        if (includeRecentGames) {
+            val recentItems = ArrayObjectAdapter(GamePresenter(resources.getDimensionPixelSize(R.dimen.card_size)))
+            result.add(
+                ListRow(HeaderItem(GAMES_ADAPTER, resources.getString(R.string.tv_home_section_recents)), recentItems)
             )
-        )
-        result.add(ListRow(HeaderItem(resources.getString(R.string.tv_home_section_systems)), systemItems))
+        }
+
+        if (includeSystems) {
+            val systemItems = ArrayObjectAdapter(
+                SystemPresenter(
+                    resources.getDimensionPixelSize(R.dimen.card_size),
+                    resources.getDimensionPixelSize(R.dimen.card_padding)
+                )
+            )
+            result.add(
+                ListRow(
+                    HeaderItem(SYSTEM_ADAPTER, resources.getString(R.string.tv_home_section_systems)), systemItems
+                )
+            )
+        }
 
         val settingsItems = ArrayObjectAdapter(
             SettingPresenter(
@@ -126,9 +141,13 @@ class TVHomeFragment : BrowseSupportFragment() {
         settingsItems.add(0, TVSetting.RESCAN)
         settingsItems.add(1, TVSetting.CHOOSE_DIRECTORY)
         settingsItems.add(2, TVSetting.SETTINGS)
-        result.add(ListRow(HeaderItem(resources.getString(R.string.tv_home_section_settings)), settingsItems))
+        result.add(
+            ListRow(
+                HeaderItem(SETTINGS_ADAPTER, resources.getString(R.string.tv_home_section_settings)), settingsItems
+            )
+        )
 
-        return result
+        adapter = result
     }
 
     private fun launchFolderPicker() {
@@ -144,6 +163,10 @@ class TVHomeFragment : BrowseSupportFragment() {
     }
 
     companion object {
+        const val GAMES_ADAPTER = 1L
+        const val SYSTEM_ADAPTER = 2L
+        const val SETTINGS_ADAPTER = 3L
+
         val LEANBACK_GAME_DIFF_CALLBACK = object : DiffCallback<Game>() {
             override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
                 return oldItem == newItem
