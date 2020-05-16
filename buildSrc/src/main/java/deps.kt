@@ -14,7 +14,7 @@ object deps {
         const val gms             = "15.0.0"
         const val googleApiClient = "1.27.0"
         const val koptional       = "1.6.0"
-        const val kotlin          = "1.3.50"
+        const val kotlin          = "1.3.61"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
         const val work            = "2.3.0-beta01"
