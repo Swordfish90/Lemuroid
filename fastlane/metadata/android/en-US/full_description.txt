@@ -1,0 +1,36 @@
+Lemuroid is an open-source emulation project based on Libretro. It's completely free, without ads and focused on ease of use and good user experience.
+
+Supported Systems:
+
+- Atari 2600 (A26)
+- NES
+- SNES
+- Game Boy (GB)
+- Game Boy Color (GBC)
+- Game Boy Advance (GBA)
+- Sega Master System (SMS)
+- Sega Genesis (aka Megadrive)
+- Sega Game Gear (GG)
+- Nintendo 64 (N64)
+- Nintendo DS (DS)
+- PlayStation (PSX)
+- PlayStation Portable (PSP)
+
+Features:
+
+- Automatically save and restore game states
+- ROMs scanning and indexing
+- Optimized touch controls
+- Quick save/load with slots
+- Support for zipped ROMs
+- Display simulation (LCD/CRT)
+- Gamepad support
+- Local multiplayer
+- Tilt to stick support
+- No ads
+
+Keep in mind not every device can emulate every console. A very powerful one is required for more recent systems such as PSP and DS.
+
+Do you have any questions? Maybe we've got you covered: https://github.com/Swordfish90/Lemuroid/wiki/Frequently-Asked-Questions
+
+This application does not contain any games. You need to provide your own legally owned ROM files.
