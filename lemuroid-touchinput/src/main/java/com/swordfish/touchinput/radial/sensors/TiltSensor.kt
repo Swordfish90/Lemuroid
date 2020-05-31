@@ -1,4 +1,4 @@
-package com.swordfish.touchinput.sensors
+package com.swordfish.touchinput.radial.sensors
 
 import android.content.Context
 import android.hardware.Sensor

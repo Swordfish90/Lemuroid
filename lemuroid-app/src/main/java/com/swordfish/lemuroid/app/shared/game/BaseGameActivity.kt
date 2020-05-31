@@ -149,7 +149,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
         )
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL
+        layoutParams.gravity = Gravity.CENTER
 
         retroGameView?.layoutParams = layoutParams
     }

@@ -13,7 +13,7 @@ import com.swordfish.touchinput.events.PadBusEvent
 import com.swordfish.touchinput.events.ViewEvent
 import com.swordfish.touchinput.interfaces.PadBusSource
 import com.swordfish.touchinput.interfaces.StickEventsSource
-import com.swordfish.touchinput.sensors.TiltSensor
+import com.swordfish.touchinput.radial.sensors.TiltSensor
 import com.swordfish.touchinput.utils.DoubleTapListener
 import io.github.controlwear.virtual.joystick.android.JoystickView
 import io.reactivex.Observable

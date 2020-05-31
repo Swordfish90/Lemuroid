@@ -31,7 +31,7 @@
         style="@style/default_icon_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/blow_button"
+        android:src="@drawable/button_blow"
         app:layout_constraintBottom_toBottomOf="@+id/select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/select"

@@ -42,8 +42,8 @@
     <style name="default_directionpad">
         <item name="deadZone">0.3</item>
         <item name="buttonCenterDistance">0.45</item>
-        <item name="rightArrowDrawable">@drawable/direction_right_normal</item>
-        <item name="rightArrowPressedDrawable">@drawable/direction_right_pressed</item>
+        <item name="rightArrowDrawable">@drawable/old_direction_right_normal</item>
+        <item name="rightArrowPressedDrawable">@drawable/old_direction_right_pressed</item>
     </style>
 
     <style name="n64_cbuttons">
@@ -68,7 +68,7 @@
     </style>
 
     <style name="default_menu" parent="default_icon_button">
-        <item name="android:src">@drawable/menu_button</item>
+        <item name="android:src">@drawable/button_menu</item>
     </style>
 
     <style name="default_stick">

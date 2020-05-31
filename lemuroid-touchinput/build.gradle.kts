@@ -19,6 +19,9 @@ dependencies {
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.extensions)
 
+    implementation(deps.libs.libretrodroid)
+    api(deps.libs.radialgamepad)
+
     implementation(kotlin(deps.libs.kotlin.stdlib))
 
     kapt(deps.libs.androidx.lifecycle.processor)

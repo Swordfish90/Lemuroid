@@ -22,6 +22,7 @@ package com.swordfish.lemuroid.app.mobile.feature.game
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
@@ -34,13 +35,12 @@ import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.radialgamepad.library.event.Event
 import com.swordfish.touchinput.events.OptionType
-import com.swordfish.touchinput.events.PadEvent
-import com.swordfish.touchinput.pads.BaseGamePad
-import com.swordfish.touchinput.pads.GamePadFactory
+import com.swordfish.touchinput.radial.BaseRadialPad
+import com.swordfish.touchinput.radial.RadialPadFactory
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class GameActivity : BaseGameActivity() {
@@ -48,7 +48,7 @@ class GameActivity : BaseGameActivity() {
     private var preferenceVibrateOnTouch = true
     private var tiltSensitivity = 0.5f
 
-    private lateinit var virtualGamePad: BaseGamePad
+    //private lateinit var virtualGamePad: BaseGamePad
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,7 @@ class GameActivity : BaseGameActivity() {
 
     override fun onResume() {
         super.onResume()
-        virtualGamePad.setTiltSensitivity(tiltSensitivity)
+        //virtualGamePad.setTiltSensitivity(tiltSensitivity)
     }
 
     override fun onVariablesRead(coreVariables: List<CoreVariable>) {
@@ -114,13 +114,29 @@ class GameActivity : BaseGameActivity() {
         OrientationHandler().handleOrientationChange(orientation)
     }
 
+    // TODO FILIPPO... Remember haptics...
     private fun setupVirtualPad(system: GameSystem) {
-        virtualGamePad = GamePadFactory.getGamePadView(this, system)
+        //virtualGamePad = GamePadFactory.getGamePadView(this, system)
+        val radialPad = RadialPadFactory.createRadialGamePad(this, system.id)
 
-        overlayLayout.addView(virtualGamePad)
-        lifecycle.addObserver(virtualGamePad)
+        overlayLayout.addView(radialPad)
 
-        virtualGamePad.getEvents()
+        radialPad.getEvents()
+            .autoDispose(scope())
+            .subscribe {
+                when (it) {
+                    is Event.Button -> {
+                        if (it.keyCode == KeyEvent.KEYCODE_BUTTON_MODE && it.action == KeyEvent.ACTION_DOWN) {
+                            displayOptionsDialog()
+                        } else {
+                            retroGameView?.sendKeyEvent(it.action, it.keyCode)
+                        }
+                    }
+                    is Event.Direction -> retroGameView?.sendMotionEvent(it.motionId, it.xAxis, it.yAxis)
+                }
+            }
+
+        /*virtualGamePad.getEvents()
             .subscribeOn(Schedulers.computation())
             .doOnNext {
                 if (it.haptic && preferenceVibrateOnTouch) {
@@ -134,7 +150,7 @@ class GameActivity : BaseGameActivity() {
                     is PadEvent.Button -> retroGameView?.sendKeyEvent(it.action, it.keycode)
                     is PadEvent.Stick -> retroGameView?.sendMotionEvent(it.source, it.xAxis, it.yAxis)
                 }
-            }
+            }*/
 
         gamePadManager
             .getGamePadsObservable()
