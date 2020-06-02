@@ -1,33 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="pad_grid_size">64dp</dimen>
-
-    <dimen name="dial_max_size_small">144dp</dimen>
     <dimen name="dial_max_size">192dp</dimen>
-    <dimen name="dial_max_size_large">240dp</dimen>
-
-    <dimen name="icon_button_size">@dimen/size_button_small</dimen>
-    <dimen name="icon_button_padding">8dp</dimen>
-
-    <dimen name="size_button_small">48dp</dimen>
-    <dimen name="size_button_medium">48dp</dimen>
-    <dimen name="size_button_large">72dp</dimen>
-
-    <dimen name="size_button_vertical_padding">8dp</dimen>
-    <dimen name="size_button_horizontal_padding">4dp</dimen>
-
-    <dimen name="size_direction_button_item">@dimen/size_button_medium</dimen>
-
-    <dimen name="size_small_button_height">@dimen/size_button_small</dimen>
-    <dimen name="size_small_button_width">@dimen/size_button_medium</dimen>
-
-    <dimen name="size_large_button_height">@dimen/size_button_medium</dimen>
-    <dimen name="size_large_button_width">@dimen/size_button_large</dimen>
-
-    <dimen name="touch_drawable_radius">3dp</dimen>
-    <dimen name="touch_drawable_stroke_width">2dp</dimen>
-    <integer name="touch_drawable_stroke_opacity">6</integer>
-
-    <integer name="vector_viewportsize">30</integer>
-    <integer name="vector_stroke_size">1</integer>
 </resources>

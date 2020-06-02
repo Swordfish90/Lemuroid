@@ -23,7 +23,7 @@ object deps {
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
         const val libretrodroid   = "0.3.1"
-        const val radialgamepad   = "3bf41d29c8"
+        const val radialgamepad   = "f0e5370e3f"
     }
 
     object libs {
@@ -118,7 +118,6 @@ object deps {
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
         const val material                 = "com.google.android.material:material:1.1.0-alpha10"
-        const val virtualJoystick          = "io.github.controlwear:virtualjoystick:1.10.1"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 

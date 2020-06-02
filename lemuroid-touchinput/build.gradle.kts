@@ -10,12 +10,10 @@ dependencies {
 
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxKotlin2)
-    implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.rxAndroid2)
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.appcompat.appcompat)
-    implementation(deps.libs.virtualJoystick)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.extensions)
 
