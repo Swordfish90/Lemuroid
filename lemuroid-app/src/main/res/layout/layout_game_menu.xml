@@ -41,6 +41,13 @@
             style="@style/DialogButton"
             android:text="@string/game_menu_change_disk_button" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/menu_edit_touch_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DialogButton"
+            android:text="@string/game_menu_edit_touch_controls" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

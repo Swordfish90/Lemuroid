@@ -19,12 +19,17 @@
 
 package com.swordfish.lemuroid.app.mobile.feature.game
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
+import android.widget.PopupWindow
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.touchinput.radial.VirtualGamePadCustomizer
+import com.swordfish.touchinput.radial.VirtualGamePadSettingsManager
+import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
@@ -34,7 +39,7 @@ import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.radialgamepad.library.event.Event
 import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.touchinput.radial.GamePadFactory
-import com.swordfish.touchinput.radial.TiltRadialGamePad
+import com.swordfish.touchinput.radial.LemuroidVirtualGamePad
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import timber.log.Timber
@@ -44,13 +49,19 @@ class GameActivity : BaseGameActivity() {
     private var preferenceVibrateOnTouch = true
     private var tiltSensitivity = 0.5f
 
-    private lateinit var virtualGamePad: TiltRadialGamePad
+    private lateinit var virtualGamePad: LemuroidVirtualGamePad
+    private lateinit var virtualGamePadSettingsManager: VirtualGamePadSettingsManager
+    private lateinit var virtualGamePadCustomizer: VirtualGamePadCustomizer
+    private var virtualGamePadCustomizationWindow: PopupWindow? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         preferenceVibrateOnTouch = settingsManager.vibrateOnTouch
         tiltSensitivity = settingsManager.tiltSensitivity
+
+        virtualGamePadSettingsManager = VirtualGamePadSettingsManager(applicationContext, system.id)
+        virtualGamePadCustomizer = VirtualGamePadCustomizer(virtualGamePadSettingsManager)
 
         setupVirtualPad(system)
 
@@ -59,7 +70,7 @@ class GameActivity : BaseGameActivity() {
 
     override fun onResume() {
         super.onResume()
-        virtualGamePad.setTiltSensitivity(tiltSensitivity)
+        virtualGamePad.tiltSensitivity = tiltSensitivity
     }
 
     override fun getDialogClass() = GameMenuActivity::class.java
@@ -101,6 +112,8 @@ class GameActivity : BaseGameActivity() {
 
         overlayLayout.addView(virtualGamePad)
 
+        applyVirtualGamePadSettings()
+
         virtualGamePad.getEvents()
             .autoDispose(scope())
             .subscribe {
@@ -124,25 +137,79 @@ class GameActivity : BaseGameActivity() {
             .subscribeBy(Timber::e) { overlayLayout.setVisibleOrGone(it == 0) }
     }
 
+    private fun applyVirtualGamePadSettings() {
+        virtualGamePad.padScale = virtualGamePadSettingsManager.scale
+        virtualGamePad.padRotation = virtualGamePadSettingsManager.rotation
+        virtualGamePad.padOffsetY = virtualGamePadSettingsManager.offsetY
+        virtualGamePad.padOffsetX = virtualGamePadSettingsManager.offsetX
+    }
+
+    override fun onBackPressed() {
+        if (virtualGamePadCustomizationWindow?.isShowing == true) {
+            virtualGamePadCustomizationWindow?.dismiss()
+            virtualGamePadCustomizationWindow = null
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == DIALOG_REQUEST) {
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
+                virtualGamePadCustomizationWindow = virtualGamePadCustomizer.displayGamePadCustomizationPopup(
+                    gameViewLayout,
+                    virtualGamePad
+                )
+            }
+        }
+    }
+
     inner class OrientationHandler {
 
         fun handleOrientationChange(orientation: Int) {
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(containerLayout)
+
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
                 // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
                 // view might be cut due to rounded corners.
                 setContainerWindowsInsets(top = true, bottom = true)
-                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.TOP)
-            } else {
-                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.BOTTOM)
-                setContainerWindowsInsets(top = false, bottom = true)
-            }
-        }
 
-        private fun changeGameViewConstraints(gameViewConstraint: Int, padConstraint: Int) {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(containerLayout)
-            constraintSet.connect(R.id.gameview_layout, gameViewConstraint, R.id.overlay_layout, padConstraint, 0)
+                constraintSet.connect(
+                    R.id.gameview_layout,
+                    ConstraintSet.BOTTOM,
+                    R.id.overlay_layout,
+                    ConstraintSet.TOP
+                )
+
+                constraintSet.clear(R.id.overlay_layout, ConstraintSet.TOP)
+
+                constraintSet.constrainHeight(R.id.overlay_layout, ConstraintSet.WRAP_CONTENT)
+            } else {
+                setContainerWindowsInsets(top = false, bottom = true)
+
+                constraintSet.connect(
+                    R.id.gameview_layout,
+                    ConstraintSet.BOTTOM,
+                    R.id.overlay_layout,
+                    ConstraintSet.BOTTOM
+                )
+
+                constraintSet.connect(
+                    R.id.overlay_layout,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP
+                )
+
+                constraintSet.constrainHeight(R.id.overlay_layout, ConstraintSet.MATCH_CONSTRAINT)
+            }
+
+            virtualGamePad.orientation = orientation
+
             constraintSet.applyTo(containerLayout)
         }
 

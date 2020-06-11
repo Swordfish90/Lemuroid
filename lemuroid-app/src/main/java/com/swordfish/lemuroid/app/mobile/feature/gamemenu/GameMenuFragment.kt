@@ -84,6 +84,16 @@ class GameMenuFragment : Fragment() {
             }
         }
 
+        view!!.findViewById<Button>(R.id.menu_edit_touch_controls).apply {
+            this.setOnClickListener {
+                val resultIntent = Intent().apply {
+                    putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true)
+                }
+                activity?.setResult(Activity.RESULT_OK, resultIntent)
+                activity?.finish()
+            }
+        }
+
         view!!.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
             val resultIntent = Intent().apply {
                 putExtra(GameMenuContract.RESULT_RESET, true)

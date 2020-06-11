@@ -76,6 +76,7 @@ dependencies {
     implementation(deps.libs.materialProgressBar)
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)
+
     kapt(deps.libs.epoxy.processor)
     kapt(deps.libs.androidx.lifecycle.processor)
 

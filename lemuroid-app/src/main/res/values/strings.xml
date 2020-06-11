@@ -54,6 +54,7 @@
     <string name="game_menu_settings">Settings</string>
     <string name="game_menu_state">State %1$s</string>
     <string name="game_menu_change_disk_button">Change Disk</string>
+    <string name="game_menu_edit_touch_controls">Edit Controls</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
 
     <string name="game_loading_download_core">Downloading core…</string>

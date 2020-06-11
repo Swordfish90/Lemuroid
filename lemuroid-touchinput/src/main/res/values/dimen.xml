@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="dial_max_size">192dp</dimen>
+    <dimen name="gamepad_max_width">192dp</dimen>
+    <dimen name="touch_customize_slider_width">250dp</dimen>
 </resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_size">Width</string>
+    <string name="touch_customize_rotation">Rotation</string>
+    <string name="touch_customize_offset_x">Position X</string>
+    <string name="touch_customize_offset_y">Position Y</string>
+    <string name="touch_customize_button_close">Close</string>
+    <string name="touch_customize_button_reset">Reset</string>
+</resources>

@@ -486,7 +486,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         const val EXTRA_LOAD_SRAM = "load_sram"
         const val EXTRA_LOAD_AUTOSAVE = "load_autosave"
 
-        private const val DIALOG_REQUEST = 100
+        const val DIALOG_REQUEST = 100
 
         private var transientStashedState: ByteArray? = null
         private var transientSRAMState: ByteArray? = null
