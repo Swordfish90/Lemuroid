@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.swordfish.lemuroid.common.getAccentColor
+import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.math.linearInterpolation
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.radialgamepad.library.RadialGamePad
@@ -64,9 +65,17 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
         rightContainer.addView(rightPad)
     }
 
-    private fun getGamePadTheme(context: Context) = RadialGamePadTheme(
-        pressedColor = context.getAccentColor()
-    )
+    private fun getGamePadTheme(context: Context): RadialGamePadTheme {
+        val accentColor = GraphicsUtils.colorToRgb(context.getAccentColor())
+        val alpha = (255 * PRESSED_COLOR_ALPHA).roundToInt()
+        val pressedColor = GraphicsUtils.rgbaToColor(accentColor + listOf(alpha))
+        return RadialGamePadTheme(
+            normalColor = context.getColor(R.color.touch_control_normal),
+            pressedColor = pressedColor,
+            primaryDialBackground = context.getColor(R.color.touch_control_background),
+            textColor = context.getColor(R.color.touch_control_text)
+        )
+    }
 
     companion object {
         const val DEFAULT_SCALE = 0.5f
@@ -77,6 +86,8 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
 
         const val MIN_SCALE = 0.75f
         const val MAX_SCALE = 1.5f
+
+        const val PRESSED_COLOR_ALPHA = 0.5f
 
         val HIGHLIGHT_COLOR = Color.argb(68, 125, 125, 125)
     }
