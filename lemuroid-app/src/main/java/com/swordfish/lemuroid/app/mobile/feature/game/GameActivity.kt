@@ -19,28 +19,30 @@
 
 package com.swordfish.lemuroid.app.mobile.feature.game
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
 import android.view.View
+import android.widget.PopupWindow
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.touchinput.radial.VirtualGamePadCustomizer
+import com.swordfish.touchinput.radial.VirtualGamePadSettingsManager
+import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
-import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
-import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
-import com.swordfish.touchinput.events.OptionType
-import com.swordfish.touchinput.events.PadEvent
-import com.swordfish.touchinput.pads.BaseGamePad
-import com.swordfish.touchinput.pads.GamePadFactory
+import com.swordfish.radialgamepad.library.event.Event
+import com.swordfish.radialgamepad.library.event.GestureType
+import com.swordfish.touchinput.radial.GamePadFactory
+import com.swordfish.touchinput.radial.LemuroidVirtualGamePad
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class GameActivity : BaseGameActivity() {
@@ -48,13 +50,19 @@ class GameActivity : BaseGameActivity() {
     private var preferenceVibrateOnTouch = true
     private var tiltSensitivity = 0.5f
 
-    private lateinit var virtualGamePad: BaseGamePad
+    private lateinit var virtualGamePad: LemuroidVirtualGamePad
+    private lateinit var virtualGamePadSettingsManager: VirtualGamePadSettingsManager
+    private lateinit var virtualGamePadCustomizer: VirtualGamePadCustomizer
+    private var virtualGamePadCustomizationWindow: PopupWindow? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         preferenceVibrateOnTouch = settingsManager.vibrateOnTouch
         tiltSensitivity = settingsManager.tiltSensitivity
+
+        virtualGamePadSettingsManager = VirtualGamePadSettingsManager(applicationContext, system.id)
+        virtualGamePadCustomizer = VirtualGamePadCustomizer(virtualGamePadSettingsManager)
 
         setupVirtualPad(system)
 
@@ -63,21 +71,7 @@ class GameActivity : BaseGameActivity() {
 
     override fun onResume() {
         super.onResume()
-        virtualGamePad.setTiltSensitivity(tiltSensitivity)
-    }
-
-    override fun onVariablesRead(coreVariables: List<CoreVariable>) {
-        super.onVariablesRead(coreVariables)
-
-        if (system.id == SystemID.PSX) {
-            val isPad1Dualshock = coreVariables
-                .filter { it.key == "pcsx_rearmed_pad1type" }
-                .map { it.value == "dualshock" }
-                .firstOrNull() ?: false
-
-            overlayLayout.findViewById<View>(R.id.leftanalog)?.setVisibleOrInvisible(isPad1Dualshock)
-            overlayLayout.findViewById<View>(R.id.rightanalog)?.setVisibleOrInvisible(isPad1Dualshock)
-        }
+        virtualGamePad.tiltSensitivity = tiltSensitivity
     }
 
     override fun getDialogClass() = GameMenuActivity::class.java
@@ -115,26 +109,27 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupVirtualPad(system: GameSystem) {
-        virtualGamePad = GamePadFactory.getGamePadView(this, system)
+        virtualGamePad = GamePadFactory.createRadialGamePad(this, system.id)
 
         overlayLayout.addView(virtualGamePad)
-        lifecycle.addObserver(virtualGamePad)
+
+        applyVirtualGamePadSettings()
 
         virtualGamePad.getEvents()
-            .subscribeOn(Schedulers.computation())
-            .doOnNext {
-                if (it.haptic && preferenceVibrateOnTouch) {
-                    performHapticFeedback(virtualGamePad)
-                }
-            }
             .autoDispose(scope())
             .subscribe {
                 when (it) {
-                    is PadEvent.Option -> handlePadOption(it.optionType)
-                    is PadEvent.Button -> retroGameView?.sendKeyEvent(it.action, it.keycode)
-                    is PadEvent.Stick -> retroGameView?.sendMotionEvent(it.source, it.xAxis, it.yAxis)
+                    is Event.Gesture -> {
+                        if (it.type == GestureType.SINGLE_TAP && it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
+                            displayOptionsDialog()
+                        }
+                    }
+                    is Event.Button -> { retroGameView?.sendKeyEvent(it.action, it.id) }
+                    is Event.Direction -> retroGameView?.sendMotionEvent(it.id, it.xAxis, it.yAxis)
                 }
             }
+
+        lifecycle.addObserver(virtualGamePad)
 
         gamePadManager
             .getGamePadsObservable()
@@ -143,37 +138,84 @@ class GameActivity : BaseGameActivity() {
             .subscribeBy(Timber::e) { overlayLayout.setVisibleOrGone(it == 0) }
     }
 
-    private fun performHapticFeedback(view: View) {
-        val flags =
-                HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-        view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, flags)
+    private fun applyVirtualGamePadSettings() {
+        virtualGamePad.padScale = virtualGamePadSettingsManager.scale
+        virtualGamePad.padRotation = virtualGamePadSettingsManager.rotation
+        virtualGamePad.padOffsetY = virtualGamePadSettingsManager.offsetY
+        virtualGamePad.padOffsetX = virtualGamePadSettingsManager.offsetX
     }
 
-    private fun handlePadOption(option: OptionType) {
-        when (option) {
-            OptionType.SETTINGS -> displayOptionsDialog()
+    override fun onBackPressed() {
+        if (virtualGamePadCustomizationWindow?.isShowing == true) {
+            virtualGamePadCustomizationWindow?.dismiss()
+            virtualGamePadCustomizationWindow = null
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == DIALOG_REQUEST) {
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
+                if (overlayLayout.visibility != View.VISIBLE) {
+                    displayToast(R.string.game_edit_touch_controls_error_not_visible)
+                    return
+                }
+
+                virtualGamePadCustomizationWindow = virtualGamePadCustomizer.displayGamePadCustomizationPopup(
+                    gameViewLayout,
+                    virtualGamePad
+                )
+            }
         }
     }
 
     inner class OrientationHandler {
 
         fun handleOrientationChange(orientation: Int) {
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(containerLayout)
+
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
                 // Finally we should also avoid system bars. Touch element might appear under system bars, or the game
                 // view might be cut due to rounded corners.
                 setContainerWindowsInsets(top = true, bottom = true)
-                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.TOP)
-            } else {
-                changeGameViewConstraints(ConstraintSet.BOTTOM, ConstraintSet.BOTTOM)
-                setContainerWindowsInsets(top = false, bottom = true)
-            }
-        }
 
-        private fun changeGameViewConstraints(gameViewConstraint: Int, padConstraint: Int) {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(containerLayout)
-            constraintSet.connect(R.id.gameview_layout, gameViewConstraint, R.id.overlay_layout, padConstraint, 0)
+                constraintSet.connect(
+                    R.id.gameview_layout,
+                    ConstraintSet.BOTTOM,
+                    R.id.overlay_layout,
+                    ConstraintSet.TOP
+                )
+
+                constraintSet.clear(R.id.overlay_layout, ConstraintSet.TOP)
+
+                constraintSet.constrainHeight(R.id.overlay_layout, ConstraintSet.WRAP_CONTENT)
+            } else {
+                setContainerWindowsInsets(top = false, bottom = true)
+
+                constraintSet.connect(
+                    R.id.gameview_layout,
+                    ConstraintSet.BOTTOM,
+                    R.id.overlay_layout,
+                    ConstraintSet.BOTTOM
+                )
+
+                constraintSet.connect(
+                    R.id.overlay_layout,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP
+                )
+
+                constraintSet.constrainHeight(R.id.overlay_layout, ConstraintSet.MATCH_CONSTRAINT)
+            }
+
+            virtualGamePad.orientation = orientation
+
             constraintSet.applyTo(containerLayout)
         }
 

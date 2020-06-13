@@ -9,6 +9,12 @@
         app:iconSpaceReserved="false"
         android:defaultValue="true"/>
 
+    <SwitchPreference
+        android:key="@string/pref_key_autosave"
+        android:title="@string/settings_title_enable_autosave"
+        app:iconSpaceReserved="false"
+        android:defaultValue="true"/>
+
     <PreferenceScreen
         android:key="@string/pref_key_open_gamepad_bindings"
         app:iconSpaceReserved="false"

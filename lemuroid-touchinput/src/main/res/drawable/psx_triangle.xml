@@ -4,7 +4,7 @@
     android:viewportWidth="100"
     android:viewportHeight="100">
   <path
-      android:fillColor="@color/touch_control_text_color"
+      android:fillColor="#fff"
       android:pathData="m83.889,78.487h-67.77c-2.46,0 -4.73,-1.334 -5.93,-3.49 -1.193,-2.154 -1.125,-4.791 0.182,-6.879l33.885,-54.216c2.474,-3.965 9.013,-3.965 11.487,0l33.885,54.216c1.308,2.088 1.376,4.724 0.182,6.879 -1.193,2.154 -3.463,3.49 -5.923,3.49zM28.352,64.933h43.312L50.004,30.283Z"
       android:strokeWidth="6.77697039"/>
 </vector>

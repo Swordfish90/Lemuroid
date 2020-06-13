@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_key_virtual_pad_offset_x" translatable="false">virtual_pad_offset_x</string>
+    <string name="pref_key_virtual_pad_offset_y" translatable="false">virtual_pad_offset_y</string>
+    <string name="pref_key_virtual_pad_scale" translatable="false">virtual_pad_scale</string>
+    <string name="pref_key_virtual_pad_rotation" translatable="false">virtual_pad_rotation</string>
+</resources>

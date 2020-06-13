@@ -11,8 +11,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 25
-        versionName = "1.4.0"
+        versionCode = 26
+        versionName = "1.5.0-beta1"
     }
 
     signingConfigs {
@@ -76,6 +76,7 @@ dependencies {
     implementation(deps.libs.materialProgressBar)
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)
+
     kapt(deps.libs.epoxy.processor)
     kapt(deps.libs.androidx.lifecycle.processor)
 
