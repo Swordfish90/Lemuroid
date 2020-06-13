@@ -89,7 +89,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
 
         const val PRESSED_COLOR_ALPHA = 0.5f
 
-        val HIGHLIGHT_COLOR = Color.argb(68, 125, 125, 125)
+        val HIGHLIGHT_COLOR = Color.argb(40, 125, 125, 125)
     }
 
     var orientation: Int by Delegates.observable(Configuration.ORIENTATION_PORTRAIT) { _, _, _ -> updateLayout() }
