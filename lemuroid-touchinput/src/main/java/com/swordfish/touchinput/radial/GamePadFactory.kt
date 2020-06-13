@@ -31,13 +31,13 @@ object GamePadFactory {
                 LemuroidVirtualGamePad(RadialPadConfigs.GB_LEFT, RadialPadConfigs.GB_RIGHT, context)
 
             SystemID.PSP ->
-                LemuroidVirtualGamePad(RadialPadConfigs.PSP_LEFT, RadialPadConfigs.PSP_RIGHT, context)
+                LemuroidVirtualGamePad(RadialPadConfigs.PSP_LEFT, RadialPadConfigs.PSP_RIGHT, context, 1.1f)
 
             SystemID.N64 ->
                 LemuroidVirtualGamePad(RadialPadConfigs.N64_LEFT, RadialPadConfigs.N64_RIGHT, context)
 
             SystemID.PSX ->
-                LemuroidVirtualGamePad(RadialPadConfigs.PSX_LEFT, RadialPadConfigs.PSX_RIGHT, context)
+                LemuroidVirtualGamePad(RadialPadConfigs.PSX_LEFT, RadialPadConfigs.PSX_RIGHT, context, 1.1f)
 
             SystemID.NDS ->
                 LemuroidVirtualGamePad(RadialPadConfigs.NDS_LEFT, RadialPadConfigs.NDS_RIGHT, context)

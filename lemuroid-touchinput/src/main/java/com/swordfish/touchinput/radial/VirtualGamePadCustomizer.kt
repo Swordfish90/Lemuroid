@@ -13,6 +13,7 @@ import com.swordfish.touchinput.controller.R
 class VirtualGamePadCustomizer(
     private val virtualGamePadSettingsManager: VirtualGamePadSettingsManager
 ) {
+
     fun displayGamePadCustomizationPopup(parentView: ViewGroup, virtualGamePad: LemuroidVirtualGamePad): PopupWindow {
         val inflater = parentView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val customView = inflater.inflate(R.layout.layout_customize_touch, parentView, false) as FrameLayout
