@@ -23,6 +23,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
 import android.widget.PopupWindow
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
@@ -158,6 +159,11 @@ class GameActivity : BaseGameActivity() {
 
         if (requestCode == DIALOG_REQUEST) {
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
+                if (overlayLayout.visibility != View.VISIBLE) {
+                    displayToast(R.string.game_edit_touch_controls_error_not_visible)
+                    return
+                }
+
                 virtualGamePadCustomizationWindow = virtualGamePadCustomizer.displayGamePadCustomizationPopup(
                     gameViewLayout,
                     virtualGamePad
