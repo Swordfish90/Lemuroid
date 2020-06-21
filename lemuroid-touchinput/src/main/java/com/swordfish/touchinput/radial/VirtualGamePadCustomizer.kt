@@ -1,8 +1,11 @@
 package com.swordfish.touchinput.radial
 
+import android.app.Activity
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
@@ -14,9 +17,51 @@ class VirtualGamePadCustomizer(
     private val virtualGamePadSettingsManager: VirtualGamePadSettingsManager
 ) {
 
-    fun displayGamePadCustomizationPopup(parentView: ViewGroup, virtualGamePad: LemuroidVirtualGamePad): PopupWindow {
+    fun displayPortraitDialog(activity: Activity, parentView: ViewGroup, virtualGamePad: LemuroidVirtualGamePad): PopupWindow {
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+
         val inflater = parentView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val customView = inflater.inflate(R.layout.layout_customize_touch, parentView, false) as FrameLayout
+        val customView = inflater.inflate(R.layout.layout_customize_touch_portrait, parentView, false) as FrameLayout
+
+        val popupWindow = PopupWindow(
+                customView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        popupWindow.setOnDismissListener { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR }
+
+        customView.findViewById<Slider>(R.id.touch_slider_size)?.addOnChangeListener { _, value, _ ->
+            virtualGamePadSettingsManager.portraitScale = value
+            virtualGamePad.padScale = value
+        }
+
+        customView.findViewById<Slider>(R.id.touch_slider_rotation)?.addOnChangeListener { _, value, _ ->
+            virtualGamePadSettingsManager.portraitRotation = value
+            virtualGamePad.padRotation = value
+        }
+
+        customView.findViewById<Button>(R.id.touch_button_close)?.setOnClickListener {
+            popupWindow.dismiss()
+        }
+
+        customView.findViewById<Button>(R.id.touch_button_reset)?.setOnClickListener {
+            virtualGamePadSettingsManager.resetPortrait()
+            loadPortraitSettingsIntoGamePad(virtualGamePad)
+            loadPortraitSettingsPopupWindow(customView)
+        }
+
+        loadPortraitSettingsPopupWindow(customView)
+
+        popupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0)
+        return popupWindow
+    }
+
+    fun displayLandscapeDialog(activity: Activity, parentView: ViewGroup, virtualGamePad: LemuroidVirtualGamePad): PopupWindow {
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+
+        val inflater = parentView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView = inflater.inflate(R.layout.layout_customize_touch_landscape, parentView, false) as FrameLayout
 
         val popupWindow = PopupWindow(
             customView,
@@ -24,59 +69,59 @@ class VirtualGamePadCustomizer(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        val sizeSlider = customView.findViewById<Slider>(R.id.touch_slider_size)
-        val rotationSlider = customView.findViewById<Slider>(R.id.touch_slider_rotation)
-        val xOffsetSlider = customView.findViewById<Slider>(R.id.touch_slider_xpos)
-        val yOffsetSlider = customView.findViewById<Slider>(R.id.touch_slider_ypos)
+        popupWindow.setOnDismissListener { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR }
 
-        rotationSlider.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.rotation = value
+        customView.findViewById<Slider>(R.id.touch_slider_rotation)?.addOnChangeListener { _, value, _ ->
+            virtualGamePadSettingsManager.landscapeRotation = value
             virtualGamePad.padRotation = value
         }
 
-        sizeSlider.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.scale = value
+        customView.findViewById<Slider>(R.id.touch_slider_size)?.addOnChangeListener { _, value, _ ->
+            virtualGamePadSettingsManager.landscapeScale = value
             virtualGamePad.padScale = value
         }
 
-        xOffsetSlider.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.offsetX = value
-            virtualGamePad.padOffsetX = value
-        }
-
-        yOffsetSlider.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.offsetY = value
+        customView.findViewById<Slider>(R.id.touch_slider_ypos)?.addOnChangeListener { _, value, _ ->
+            virtualGamePadSettingsManager.landscapeOffsetY = value
             virtualGamePad.padOffsetY = value
         }
 
-        fun initializeAllSettings() {
-            sizeSlider.value = virtualGamePad.padScale
-            rotationSlider.value = virtualGamePad.padRotation
-            xOffsetSlider.value = virtualGamePad.padOffsetX
-            yOffsetSlider.value = virtualGamePad.padOffsetY
-        }
-
-        initializeAllSettings()
-
-        val closeButton = customView.findViewById<Button>(R.id.touch_button_close)
-        closeButton.setOnClickListener {
-            virtualGamePad.isHighlighted = false
+        customView.findViewById<Button>(R.id.touch_button_close)?.setOnClickListener {
             popupWindow.dismiss()
         }
 
-        val resetButton = customView.findViewById<Button>(R.id.touch_button_reset)
-        resetButton.setOnClickListener {
-            virtualGamePad.resetSettings()
-            initializeAllSettings()
+        customView.findViewById<Button>(R.id.touch_button_reset)?.setOnClickListener {
+            virtualGamePadSettingsManager.resetLandscape()
+            loadLandscapeSettingsIntoGamePad(virtualGamePad)
+            loadLandscapeSettingsIntoPopupWindow(customView)
         }
 
-        virtualGamePad.isHighlighted = true
-
-        popupWindow.setOnDismissListener {
-            virtualGamePad.isHighlighted = false
-        }
+        loadLandscapeSettingsIntoPopupWindow(customView)
 
         popupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0)
         return popupWindow
+    }
+
+    fun loadPortraitSettingsIntoGamePad(virtualGamePad: LemuroidVirtualGamePad) {
+        virtualGamePad.padScale = virtualGamePadSettingsManager.portraitScale
+        virtualGamePad.padRotation = virtualGamePadSettingsManager.portraitRotation
+        virtualGamePad.padOffsetY = 0f
+    }
+
+    fun loadLandscapeSettingsIntoGamePad(virtualGamePad: LemuroidVirtualGamePad) {
+        virtualGamePad.padScale = virtualGamePadSettingsManager.landscapeScale
+        virtualGamePad.padRotation = virtualGamePadSettingsManager.landscapeRotation
+        virtualGamePad.padOffsetY = virtualGamePadSettingsManager.landscapeOffsetY
+    }
+
+    private fun loadPortraitSettingsPopupWindow(view: View) {
+        view.findViewById<Slider>(R.id.touch_slider_size)?.value = virtualGamePadSettingsManager.portraitScale
+        view.findViewById<Slider>(R.id.touch_slider_rotation)?.value = virtualGamePadSettingsManager.portraitRotation
+    }
+
+    private fun loadLandscapeSettingsIntoPopupWindow(view: View) {
+        view.findViewById<Slider>(R.id.touch_slider_size)?.value = virtualGamePadSettingsManager.landscapeScale
+        view.findViewById<Slider>(R.id.touch_slider_rotation)?.value = virtualGamePadSettingsManager.landscapeRotation
+        view.findViewById<Slider>(R.id.touch_slider_ypos)?.value = virtualGamePadSettingsManager.landscapeOffsetY
     }
 }

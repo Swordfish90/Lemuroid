@@ -66,8 +66,10 @@ class GameActivity : BaseGameActivity() {
 
         setupVirtualPad(system)
 
-        handleOrientationChange(resources.configuration.orientation)
+        handleOrientationChange(getCurrentOrientation())
     }
+
+    private fun getCurrentOrientation() = resources.configuration.orientation
 
     override fun onResume() {
         super.onResume()
@@ -113,8 +115,6 @@ class GameActivity : BaseGameActivity() {
 
         overlayLayout.addView(virtualGamePad)
 
-        applyVirtualGamePadSettings()
-
         virtualGamePad.getEvents()
             .autoDispose(scope())
             .subscribe {
@@ -138,13 +138,6 @@ class GameActivity : BaseGameActivity() {
             .subscribeBy(Timber::e) { overlayLayout.setVisibleOrGone(it == 0) }
     }
 
-    private fun applyVirtualGamePadSettings() {
-        virtualGamePad.padScale = virtualGamePadSettingsManager.scale
-        virtualGamePad.padRotation = virtualGamePadSettingsManager.rotation
-        virtualGamePad.padOffsetY = virtualGamePadSettingsManager.offsetY
-        virtualGamePad.padOffsetX = virtualGamePadSettingsManager.offsetX
-    }
-
     override fun onBackPressed() {
         if (virtualGamePadCustomizationWindow?.isShowing == true) {
             virtualGamePadCustomizationWindow?.dismiss()
@@ -159,15 +152,20 @@ class GameActivity : BaseGameActivity() {
 
         if (requestCode == DIALOG_REQUEST) {
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
+                if (virtualGamePadCustomizationWindow?.isShowing == true) {
+                    return
+                }
+
                 if (overlayLayout.visibility != View.VISIBLE) {
                     displayToast(R.string.game_edit_touch_controls_error_not_visible)
                     return
                 }
 
-                virtualGamePadCustomizationWindow = virtualGamePadCustomizer.displayGamePadCustomizationPopup(
-                    gameViewLayout,
-                    virtualGamePad
-                )
+                if (getCurrentOrientation() == Configuration.ORIENTATION_PORTRAIT) {
+                    virtualGamePadCustomizer.displayPortraitDialog(this, gameViewLayout, virtualGamePad)
+                } else {
+                    virtualGamePadCustomizer.displayLandscapeDialog(this, gameViewLayout, virtualGamePad)
+                }
             }
         }
     }
@@ -194,6 +192,8 @@ class GameActivity : BaseGameActivity() {
                 constraintSet.clear(R.id.overlay_layout, ConstraintSet.TOP)
 
                 constraintSet.constrainHeight(R.id.overlay_layout, ConstraintSet.WRAP_CONTENT)
+
+                virtualGamePadCustomizer.loadPortraitSettingsIntoGamePad(virtualGamePad)
             } else {
                 setContainerWindowsInsets(top = false, bottom = true)
 
@@ -212,6 +212,8 @@ class GameActivity : BaseGameActivity() {
                 )
 
                 constraintSet.constrainHeight(R.id.overlay_layout, ConstraintSet.MATCH_CONSTRAINT)
+
+                virtualGamePadCustomizer.loadLandscapeSettingsIntoGamePad(virtualGamePad)
             }
 
             virtualGamePad.orientation = orientation
