@@ -23,7 +23,7 @@ object deps {
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
         const val libretrodroid   = "0.3.1"
-        const val radialgamepad   = "fa08247f"
+        const val radialgamepad   = "58ff03cc"
     }
 
     object libs {

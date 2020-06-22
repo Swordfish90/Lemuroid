@@ -198,7 +198,7 @@ object RadialPadConfigs {
                                     label = "L2"
                             )
                             ),
-                            SecondaryDialConfig.Stick(9, 2, 2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT),
+                            SecondaryDialConfig.Stick(9, 2, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
             )
@@ -245,7 +245,7 @@ object RadialPadConfigs {
                                     iconId = R.drawable.button_start
                             )
                             ),
-                            SecondaryDialConfig.Stick(8, 2, 2f, GLRetroView.MOTION_SOURCE_ANALOG_RIGHT),
+                            SecondaryDialConfig.Stick(8, 2, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_RIGHT),
                             SecondaryDialConfig.SingleButton(10, 1, 1f,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_MODE,
@@ -273,7 +273,7 @@ object RadialPadConfigs {
                                     label = "L"
                             )
                             ),
-                            SecondaryDialConfig.Stick(8, 3, 2.5f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT)
+                            SecondaryDialConfig.Stick(8, 3, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT)
                     )
             )
 
@@ -319,10 +319,10 @@ object RadialPadConfigs {
                             SecondaryDialConfig.Cross(
                                     8,
                                     3,
-                                    2.5f,
+                                    2.2f,
                                     GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
-                                    R.drawable.direction_alt,
-                                    RadialGamePadTheme(primaryDialBackground = Color.TRANSPARENT)
+                                    R.drawable.direction_alt_background,
+                                    R.drawable.direction_alt_foreground
                             )
                     )
             )
@@ -344,7 +344,7 @@ object RadialPadConfigs {
                                             label = "L"
                                     )
                             ),
-                            SecondaryDialConfig.Stick(9, 2, 2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT),
+                            SecondaryDialConfig.Stick(9, 2, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
             )
@@ -385,7 +385,7 @@ object RadialPadConfigs {
                                             iconId = R.drawable.button_start
                                     )
                             ),
-                            SecondaryDialConfig.Empty(8, 2, 1.75f),
+                            SecondaryDialConfig.Empty(8, 2, 2.2f),
                             SecondaryDialConfig.SingleButton(10, 1, 1f,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_MODE,
