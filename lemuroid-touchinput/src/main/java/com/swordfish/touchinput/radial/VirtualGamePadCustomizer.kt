@@ -10,14 +10,24 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.PopupWindow
+import android.widget.TextView
 import com.google.android.material.slider.Slider
+import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.touchinput.controller.R
 
 class VirtualGamePadCustomizer(
-    private val virtualGamePadSettingsManager: VirtualGamePadSettingsManager
+    private val virtualGamePadSettingsManager: VirtualGamePadSettingsManager,
+    system: GameSystem
 ) {
 
-    fun displayPortraitDialog(activity: Activity, parentView: ViewGroup, virtualGamePad: LemuroidVirtualGamePad): PopupWindow {
+    private val displayRotation = system.virtualGamePadOptions.hasRotation
+
+    fun displayPortraitDialog(
+        activity: Activity,
+        parentView: ViewGroup,
+        virtualGamePad: LemuroidVirtualGamePad
+    ): PopupWindow {
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val inflater = parentView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -36,9 +46,13 @@ class VirtualGamePadCustomizer(
             virtualGamePad.padScale = value
         }
 
-        customView.findViewById<Slider>(R.id.touch_slider_rotation)?.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.portraitRotation = value
-            virtualGamePad.padRotation = value
+        customView.findViewById<TextView>(R.id.touch_textview_rotation)?.setVisibleOrGone(displayRotation)
+        customView.findViewById<Slider>(R.id.touch_slider_rotation)?.apply {
+            setVisibleOrGone(displayRotation)
+            addOnChangeListener { _, value, _ ->
+                virtualGamePadSettingsManager.portraitRotation = value
+                virtualGamePad.padRotation = value
+            }
         }
 
         customView.findViewById<Button>(R.id.touch_button_close)?.setOnClickListener {
@@ -57,11 +71,17 @@ class VirtualGamePadCustomizer(
         return popupWindow
     }
 
-    fun displayLandscapeDialog(activity: Activity, parentView: ViewGroup, virtualGamePad: LemuroidVirtualGamePad): PopupWindow {
+    fun displayLandscapeDialog(
+        activity: Activity,
+        parent: ViewGroup,
+        virtualGamePad: LemuroidVirtualGamePad
+    ): PopupWindow {
+
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 
-        val inflater = parentView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val customView = inflater.inflate(R.layout.layout_customize_touch_landscape, parentView, false) as FrameLayout
+        val inflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView =
+            inflater.inflate(R.layout.layout_customize_touch_landscape, parent, false) as FrameLayout
 
         val popupWindow = PopupWindow(
             customView,
@@ -71,9 +91,13 @@ class VirtualGamePadCustomizer(
 
         popupWindow.setOnDismissListener { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR }
 
-        customView.findViewById<Slider>(R.id.touch_slider_rotation)?.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.landscapeRotation = value
-            virtualGamePad.padRotation = value
+        customView.findViewById<TextView>(R.id.touch_textview_rotation)?.setVisibleOrGone(displayRotation)
+        customView.findViewById<Slider>(R.id.touch_slider_rotation)?.apply {
+            setVisibleOrGone(displayRotation)
+            addOnChangeListener { _, value, _ ->
+                virtualGamePadSettingsManager.landscapeRotation = value
+                virtualGamePad.padRotation = value
+            }
         }
 
         customView.findViewById<Slider>(R.id.touch_slider_size)?.addOnChangeListener { _, value, _ ->
@@ -98,7 +122,7 @@ class VirtualGamePadCustomizer(
 
         loadLandscapeSettingsIntoPopupWindow(customView)
 
-        popupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0)
+        popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0)
         return popupWindow
     }
 

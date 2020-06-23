@@ -1,13 +1,11 @@
 package com.swordfish.touchinput.radial
 
-import android.graphics.Color
 import android.view.KeyEvent
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.radialgamepad.library.config.ButtonConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
 import com.swordfish.radialgamepad.library.config.PrimaryDialConfig
 import com.swordfish.radialgamepad.library.config.SecondaryDialConfig
-import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
 import com.swordfish.touchinput.controller.R
 
 object RadialPadConfigs {
@@ -198,7 +196,13 @@ object RadialPadConfigs {
                                     label = "L2"
                             )
                             ),
-                            SecondaryDialConfig.Stick(9, 2, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT),
+                            SecondaryDialConfig.Stick(
+                                    9,
+                                    2,
+                                    2.2f,
+                                    GLRetroView.MOTION_SOURCE_ANALOG_LEFT,
+                                    KeyEvent.KEYCODE_BUTTON_THUMBL
+                            ),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
             )
@@ -245,7 +249,13 @@ object RadialPadConfigs {
                                     iconId = R.drawable.button_start
                             )
                             ),
-                            SecondaryDialConfig.Stick(8, 2, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_RIGHT),
+                            SecondaryDialConfig.Stick(
+                                    8,
+                                    2,
+                                    2.2f,
+                                    GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
+                                    KeyEvent.KEYCODE_BUTTON_THUMBR
+                            ),
                             SecondaryDialConfig.SingleButton(10, 1, 1f,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_MODE,
@@ -344,6 +354,8 @@ object RadialPadConfigs {
                                             label = "L"
                                     )
                             ),
+                            // This is a workaround for a RadialGamePad issue. Spread dials and rotation do not play well.
+                            SecondaryDialConfig.Empty(4, 1, 1f),
                             SecondaryDialConfig.Stick(9, 2, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
@@ -379,6 +391,8 @@ object RadialPadConfigs {
                                     label = "R"
                             )
                             ),
+                            // This is a workaround for a RadialGamePad issue. Spread dials and rotation do not play well.
+                            SecondaryDialConfig.Empty(2, 1, 1f),
                             SecondaryDialConfig.SingleButton(4, 1, 1f,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_START,

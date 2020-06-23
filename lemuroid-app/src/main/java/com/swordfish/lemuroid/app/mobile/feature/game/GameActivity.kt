@@ -62,7 +62,7 @@ class GameActivity : BaseGameActivity() {
         tiltSensitivity = settingsManager.tiltSensitivity
 
         virtualGamePadSettingsManager = VirtualGamePadSettingsManager(applicationContext, system.id)
-        virtualGamePadCustomizer = VirtualGamePadCustomizer(virtualGamePadSettingsManager)
+        virtualGamePadCustomizer = VirtualGamePadCustomizer(virtualGamePadSettingsManager, system)
 
         setupVirtualPad(system)
 

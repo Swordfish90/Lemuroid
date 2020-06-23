@@ -60,7 +60,9 @@ data class GameSystem(
 
     val exposedSettings: List<String> = listOf(),
 
-    val defaultSettings: List<CoreVariable> = listOf()
+    val defaultSettings: List<CoreVariable> = listOf(),
+
+    val virtualGamePadOptions: VirtualGamePadOptions = VirtualGamePadOptions()
 
 ) {
 
@@ -210,7 +212,8 @@ data class GameSystem(
                         R.drawable.game_system_n64,
                         "nintendo5",
                         "mupen64plus_next_libretro_android.so.zip",
-                        uniqueExtensions = listOf("n64", "z64")
+                        uniqueExtensions = listOf("n64", "z64"),
+                        virtualGamePadOptions = VirtualGamePadOptions(true)
                 ),
                 GameSystem(
                         SystemID.PSX,
@@ -235,7 +238,8 @@ data class GameSystem(
                         ),
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled")
-                        )
+                        ),
+                        virtualGamePadOptions = VirtualGamePadOptions(true)
                 ),
                 GameSystem(
                         SystemID.PSP,
@@ -257,7 +261,8 @@ data class GameSystem(
                         exposedSettings = listOf(
                             "ppsspp_auto_frameskip",
                             "ppsspp_frameskip"
-                        )
+                        ),
+                        virtualGamePadOptions = VirtualGamePadOptions(true)
                 ),
                 GameSystem(
                         SystemID.FBNEO,
@@ -322,6 +327,10 @@ data class GameSystem(
             val scanByUniqueExtension: Boolean = true,
             val scanByPathAndFilename: Boolean = false,
             val scanByPathAndSupportedExtensions: Boolean = true
+        )
+
+        data class VirtualGamePadOptions(
+            val hasRotation: Boolean = false
         )
     }
 }

@@ -124,7 +124,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
         constraintSet.applyTo(layout)
 
         leftPad.offsetX = linearInterpolation(DEFAULT_OFFSET_X, -1f, 1f)
-        rightPad.offsetX = -linearInterpolation(DEFAULT_OFFSET_X, -1f,  1f)
+        rightPad.offsetX = -linearInterpolation(DEFAULT_OFFSET_X, -1f, 1f)
 
         leftPad.offsetY = linearInterpolation(padOffsetY, 1f, -1f)
         rightPad.offsetY = linearInterpolation(padOffsetY, 1f, -1f)
@@ -165,7 +165,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
         return Observable.merge(leftPad.events(), rightPad.events()).doOnNext {
             when (it) {
                 is Event.Gesture -> {
-                    if (it.type == GestureType.DOUBLE_TAP && it.id in tiltTrackedIds) {
+                    if (it.type == GestureType.TRIPLE_TAP && it.id in tiltTrackedIds) {
                         startTrackingId(it.id)
                     } else if (it.id == currentTiltId) {
                         stopTrackingId(it.id)
