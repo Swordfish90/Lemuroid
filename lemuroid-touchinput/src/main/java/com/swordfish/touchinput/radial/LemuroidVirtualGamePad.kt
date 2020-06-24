@@ -2,7 +2,6 @@ package com.swordfish.touchinput.radial
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -58,10 +57,10 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
 
         val padTheme = getGamePadTheme(context)
 
-        leftPad = RadialGamePad(leftConfig.copy(theme = padTheme), context)
+        leftPad = RadialGamePad(leftConfig.copy(theme = padTheme), DEFAULT_MARGINS_DP, context)
         leftContainer.addView(leftPad)
 
-        rightPad = RadialGamePad(rightConfig.copy(theme = padTheme), context)
+        rightPad = RadialGamePad(rightConfig.copy(theme = padTheme), DEFAULT_MARGINS_DP, context)
         rightContainer.addView(rightPad)
     }
 
@@ -78,18 +77,18 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
     }
 
     companion object {
+        const val DEFAULT_MARGINS_DP = 8f
+
         const val DEFAULT_SCALE = 0.5f
         const val DEFAULT_PAD_ROTATION = 0.0f
-        const val DEFAULT_OFFSET_Y = 0.1f
-        const val DEFAULT_OFFSET_X = 0.1f
-        const val MAX_ROTATION = 45f
+        const val DEFAULT_OFFSET_Y = 0.0f
+        const val DEFAULT_OFFSET_X = 0.0f
 
+        const val MAX_ROTATION = 45f
         const val MIN_SCALE = 0.75f
         const val MAX_SCALE = 1.5f
 
         const val PRESSED_COLOR_ALPHA = 0.5f
-
-        val HIGHLIGHT_COLOR = Color.argb(40, 125, 125, 125)
     }
 
     var orientation: Int by Delegates.observable(Configuration.ORIENTATION_PORTRAIT) { _, _, _ -> updateLayout() }
@@ -97,23 +96,9 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
     var padScale: Float by Delegates.observable(DEFAULT_SCALE) { _, _, _ -> updateLayout() }
     var padRotation: Float by Delegates.observable(DEFAULT_PAD_ROTATION) { _, _, _ -> updateLayout() }
     var padOffsetY: Float by Delegates.observable(DEFAULT_OFFSET_Y) { _, _, _ -> updateLayout() }
-    var padOffsetX: Float by Delegates.observable(DEFAULT_OFFSET_X) { _, _, _ -> updateLayout() }
-
-    var isHighlighted: Boolean by Delegates.observable(false) { _, _, value ->
-        val backgroundColor = if (value) HIGHLIGHT_COLOR else Color.TRANSPARENT
-        leftPad.setBackgroundColor(backgroundColor)
-        rightPad.setBackgroundColor(backgroundColor)
-    }
 
     var tiltSensitivity: Float by Delegates.observable(0.6f) { _, _, value ->
         tiltSensor.setSensitivity(value)
-    }
-
-    fun resetSettings() {
-        padScale = DEFAULT_SCALE
-        padRotation = DEFAULT_PAD_ROTATION
-        padOffsetX = DEFAULT_OFFSET_X
-        padOffsetY = DEFAULT_OFFSET_Y
     }
 
     private fun updateLayout() {
@@ -138,8 +123,8 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
 
         constraintSet.applyTo(layout)
 
-        leftPad.offsetX = linearInterpolation(padOffsetX, -1f, 1f)
-        rightPad.offsetX = -linearInterpolation(padOffsetX, -1f, 1f)
+        leftPad.offsetX = linearInterpolation(DEFAULT_OFFSET_X, -1f, 1f)
+        rightPad.offsetX = -linearInterpolation(DEFAULT_OFFSET_X, -1f, 1f)
 
         leftPad.offsetY = linearInterpolation(padOffsetY, 1f, -1f)
         rightPad.offsetY = linearInterpolation(padOffsetY, 1f, -1f)
@@ -180,7 +165,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
         return Observable.merge(leftPad.events(), rightPad.events()).doOnNext {
             when (it) {
                 is Event.Gesture -> {
-                    if (it.type == GestureType.DOUBLE_TAP && it.id in tiltTrackedIds) {
+                    if (it.type == GestureType.TRIPLE_TAP && it.id in tiltTrackedIds) {
                         startTrackingId(it.id)
                     } else if (it.id == currentTiltId) {
                         stopTrackingId(it.id)

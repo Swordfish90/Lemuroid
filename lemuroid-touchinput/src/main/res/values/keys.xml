@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_key_virtual_pad_offset_x" translatable="false">virtual_pad_offset_x</string>
-    <string name="pref_key_virtual_pad_offset_y" translatable="false">virtual_pad_offset_y</string>
-    <string name="pref_key_virtual_pad_scale" translatable="false">virtual_pad_scale</string>
-    <string name="pref_key_virtual_pad_rotation" translatable="false">virtual_pad_rotation</string>
+    <string name="pref_key_virtual_pad_offset_x_landscape" translatable="false">virtual_pad_offset_x_landscape</string>
+    <string name="pref_key_virtual_pad_offset_y_landscape" translatable="false">virtual_pad_offset_y_landscape</string>
+    <string name="pref_key_virtual_pad_scale_landscape" translatable="false">virtual_pad_scale_landscape</string>
+    <string name="pref_key_virtual_pad_rotation_landscape" translatable="false">virtual_pad_rotation_landscape</string>
+    <string name="pref_key_virtual_pad_scale_portrait" translatable="false">virtual_pad_scale_portrait</string>
+    <string name="pref_key_virtual_pad_rotation_portrait" translatable="false">virtual_pad_rotation_portrait</string>
 </resources>
