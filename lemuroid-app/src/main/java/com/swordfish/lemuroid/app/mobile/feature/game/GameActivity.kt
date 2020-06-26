@@ -198,7 +198,7 @@ class GameActivity : BaseGameActivity() {
                 constraintSet.connect(
                     R.id.gameview_layout,
                     ConstraintSet.BOTTOM,
-                    R.id.overlay_layout,
+                    ConstraintSet.PARENT_ID,
                     ConstraintSet.BOTTOM
                 )
 
