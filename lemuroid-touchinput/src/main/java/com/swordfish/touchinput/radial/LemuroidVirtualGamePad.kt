@@ -31,6 +31,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
     leftConfig: RadialGamePadConfig,
     rightConfig: RadialGamePadConfig,
     context: Context,
+    vibrateOnTouch: Boolean,
     private val baseScaling: Float = 1.0f,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -55,13 +56,20 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
         val leftContainer = findViewById<FrameLayout>(R.id.leftcontainer)
         val rightContainer = findViewById<FrameLayout>(R.id.rightcontainer)
 
-        val padTheme = getGamePadTheme(context)
-
-        leftPad = RadialGamePad(leftConfig.copy(theme = padTheme), DEFAULT_MARGINS_DP, context)
+        leftPad = RadialGamePad(wrapGamePadConfig(context, leftConfig, vibrateOnTouch), DEFAULT_MARGINS_DP, context)
         leftContainer.addView(leftPad)
 
-        rightPad = RadialGamePad(rightConfig.copy(theme = padTheme), DEFAULT_MARGINS_DP, context)
+        rightPad = RadialGamePad(wrapGamePadConfig(context, rightConfig, vibrateOnTouch), DEFAULT_MARGINS_DP, context)
         rightContainer.addView(rightPad)
+    }
+
+    private fun wrapGamePadConfig(
+        context: Context,
+        config: RadialGamePadConfig,
+        vibrateOnTouch: Boolean
+    ): RadialGamePadConfig {
+        val padTheme = getGamePadTheme(context)
+        return config.copy(theme = padTheme, haptic = vibrateOnTouch)
     }
 
     private fun getGamePadTheme(context: Context): RadialGamePadTheme {

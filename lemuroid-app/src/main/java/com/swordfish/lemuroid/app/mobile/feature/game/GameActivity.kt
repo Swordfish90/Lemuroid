@@ -47,7 +47,6 @@ import timber.log.Timber
 
 class GameActivity : BaseGameActivity() {
 
-    private var preferenceVibrateOnTouch = true
     private var tiltSensitivity = 0.5f
 
     private lateinit var virtualGamePad: LemuroidVirtualGamePad
@@ -58,7 +57,6 @@ class GameActivity : BaseGameActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        preferenceVibrateOnTouch = settingsManager.vibrateOnTouch
         tiltSensitivity = settingsManager.tiltSensitivity
 
         virtualGamePadSettingsManager = VirtualGamePadSettingsManager(applicationContext, system.id)
@@ -111,7 +109,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupVirtualPad(system: GameSystem) {
-        virtualGamePad = GamePadFactory.createRadialGamePad(this, system.id)
+        virtualGamePad = GamePadFactory.createRadialGamePad(this, system.id, settingsManager.vibrateOnTouch)
 
         overlayLayout.addView(virtualGamePad)
 
