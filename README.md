@@ -43,3 +43,4 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Gamepad support
 - Local multiplayer
 - Tilt to analog stick
+- Customizable touch controls (size and position)
