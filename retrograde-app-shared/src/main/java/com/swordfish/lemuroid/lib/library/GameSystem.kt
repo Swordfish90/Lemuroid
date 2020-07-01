@@ -211,7 +211,7 @@ data class GameSystem(
                         R.string.game_system_abbr_n64,
                         R.drawable.game_system_n64,
                         "nintendo5",
-                        "mupen64plus_next_libretro_android.so.zip",
+                        "mupen64plus_next_gles3_libretro_android.so.zip",
                         uniqueExtensions = listOf("n64", "z64"),
                         virtualGamePadOptions = VirtualGamePadOptions(true)
                 ),
