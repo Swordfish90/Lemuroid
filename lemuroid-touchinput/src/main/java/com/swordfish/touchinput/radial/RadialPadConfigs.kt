@@ -10,17 +10,54 @@ import com.swordfish.touchinput.controller.R
 
 object RadialPadConfigs {
 
+    private val BUTTON_CONFIG_START = ButtonConfig(
+            id = KeyEvent.KEYCODE_BUTTON_START,
+            iconId = R.drawable.button_start,
+            contentDescription = "Start"
+    )
+
+    private val BUTTON_CONFIG_SELECT = ButtonConfig(
+            id = KeyEvent.KEYCODE_BUTTON_SELECT,
+            iconId = R.drawable.button_select,
+            contentDescription = "Select"
+    )
+
+    private val BUTTON_CONFIG_MENU = ButtonConfig(
+            id = KeyEvent.KEYCODE_BUTTON_MODE,
+            iconId = R.drawable.button_menu,
+            contentDescription = "Menu"
+    )
+
+    private val BUTTON_CONFIG_CROSS = ButtonConfig(
+            id = KeyEvent.KEYCODE_BUTTON_B,
+            iconId = R.drawable.psx_cross,
+            contentDescription = "Cross"
+    )
+
+    private val BUTTON_CONFIG_SQUARE = ButtonConfig(
+            id = KeyEvent.KEYCODE_BUTTON_Y,
+            iconId = R.drawable.psx_square,
+            contentDescription = "Square"
+    )
+
+    private val BUTTON_CONFIG_TRIANGLE = ButtonConfig(
+            id = KeyEvent.KEYCODE_BUTTON_X,
+            iconId = R.drawable.psx_triangle,
+            contentDescription = "Triangle"
+    )
+
+    private val BUTTON_CONFIG_CIRCLE = ButtonConfig(
+            id = KeyEvent.KEYCODE_BUTTON_A,
+            iconId = R.drawable.psx_circle,
+            contentDescription = "Circle"
+    )
+
     val GB_LEFT =
             RadialGamePadConfig(
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.Cross(0),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(
-                                    4, 1, ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                            iconId = R.drawable.button_select
-                                    )
-                            ),
+                            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
             )
@@ -42,18 +79,8 @@ object RadialPadConfigs {
                             rotationInDegrees = 30f
                     ),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                        id = KeyEvent.KEYCODE_BUTTON_START,
-                                        iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -62,12 +89,7 @@ object RadialPadConfigs {
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.Cross(0),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(
-                                    4, 1, ButtonConfig(
-                                    id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                    iconId = R.drawable.button_select
-                            )
-                            ),
+                            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
                             SecondaryDialConfig.Empty(10, 1, 1f)
                     )
             )
@@ -88,18 +110,8 @@ object RadialPadConfigs {
                             )
                     ),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -111,15 +123,11 @@ object RadialPadConfigs {
                             SecondaryDialConfig.SingleButton(2, 1,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_THUMBL,
-                                            iconId = R.drawable.button_blow
+                                            iconId = R.drawable.button_blow,
+                                            contentDescription = "Microphone"
                                     )
                             ),
-                            SecondaryDialConfig.SingleButton(3, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                            iconId = R.drawable.button_select
-                                    )
-                            ),
+                            SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_SELECT),
                             SecondaryDialConfig.SingleButton(4, 1,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_L1,
@@ -158,18 +166,8 @@ object RadialPadConfigs {
                                     label = "R"
                             )
                     ),
-                    SecondaryDialConfig.SingleButton(3, 1,
-                            ButtonConfig(
-                                    id = KeyEvent.KEYCODE_BUTTON_START,
-                                    iconId = R.drawable.button_start
-                            )
-                    ),
-                    SecondaryDialConfig.SingleButton(4, 1,
-                            ButtonConfig(
-                                    id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                    iconId = R.drawable.button_menu
-                            )
-                    )
+                    SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
+                    SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_MENU)
             )
     )
 
@@ -179,10 +177,7 @@ object RadialPadConfigs {
                     primaryDial = PrimaryDialConfig.Cross(GLRetroView.MOTION_SOURCE_DPAD),
                     secondaryDials = listOf(
                             SecondaryDialConfig.SingleButton(
-                                    2, 1, ButtonConfig(
-                                    id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                    iconId = R.drawable.button_select
-                            )
+                                    2, 1, BUTTON_CONFIG_SELECT
                             ),
                             SecondaryDialConfig.SingleButton(
                                     3, 1, ButtonConfig(
@@ -200,7 +195,8 @@ object RadialPadConfigs {
                                     9,
                                     2.2f,
                                     GLRetroView.MOTION_SOURCE_ANALOG_LEFT,
-                                    KeyEvent.KEYCODE_BUTTON_THUMBL
+                                    KeyEvent.KEYCODE_BUTTON_THUMBL,
+                                    contentDescription = "Left Stick"
                             ),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
@@ -211,22 +207,10 @@ object RadialPadConfigs {
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.PrimaryButtons(
                             listOf(
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_A,
-                                            iconId = R.drawable.psx_circle
-                                    ),
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_X,
-                                            iconId = R.drawable.psx_triangle
-                                    ),
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_Y,
-                                            iconId = R.drawable.psx_square
-                                    ),
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_B,
-                                            iconId = R.drawable.psx_cross
-                                    )
+                                    BUTTON_CONFIG_CIRCLE,
+                                    BUTTON_CONFIG_TRIANGLE,
+                                    BUTTON_CONFIG_SQUARE,
+                                    BUTTON_CONFIG_CROSS
                             )
                     ),
                     secondaryDials = listOf(
@@ -243,23 +227,16 @@ object RadialPadConfigs {
                             )
                             ),
                             SecondaryDialConfig.SingleButton(
-                                    4, 1, ButtonConfig(
-                                    id = KeyEvent.KEYCODE_BUTTON_START,
-                                    iconId = R.drawable.button_start
-                            )
+                                    4, 1, BUTTON_CONFIG_START
                             ),
                             SecondaryDialConfig.Stick(
                                     8,
                                     2.2f,
                                     GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
-                                    KeyEvent.KEYCODE_BUTTON_THUMBR
+                                    KeyEvent.KEYCODE_BUTTON_THUMBR,
+                                    contentDescription = "Right Stick"
                             ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -316,24 +293,17 @@ object RadialPadConfigs {
                             )
                             ),
                             SecondaryDialConfig.SingleButton(
-                                    4, 1, ButtonConfig(
-                                    id = KeyEvent.KEYCODE_BUTTON_START,
-                                    iconId = R.drawable.button_start
-                            )
+                                    4, 1, BUTTON_CONFIG_START
                             ),
                             SecondaryDialConfig.Cross(
                                     8,
                                     2.2f,
                                     GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
                                     R.drawable.direction_alt_background,
-                                    R.drawable.direction_alt_foreground
+                                    R.drawable.direction_alt_foreground,
+                                    contentDescription = "C-Buttons"
                             ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -342,12 +312,7 @@ object RadialPadConfigs {
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.Cross(GLRetroView.MOTION_SOURCE_DPAD),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                            iconId = R.drawable.button_select
-                                    )
-                            ),
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
                             SecondaryDialConfig.SingleButton(3, 2,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_L1,
@@ -366,22 +331,10 @@ object RadialPadConfigs {
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.PrimaryButtons(
                             listOf(
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_A,
-                                            iconId = R.drawable.psx_circle
-                                    ),
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_X,
-                                            iconId = R.drawable.psx_triangle
-                                    ),
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_Y,
-                                            iconId = R.drawable.psx_square
-                                    ),
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_B,
-                                            iconId = R.drawable.psx_cross
-                                    )
+                                    BUTTON_CONFIG_CIRCLE,
+                                    BUTTON_CONFIG_TRIANGLE,
+                                    BUTTON_CONFIG_SQUARE,
+                                    BUTTON_CONFIG_CROSS
                             )
                     ),
                     secondaryDials = listOf(
@@ -393,19 +346,9 @@ object RadialPadConfigs {
                             ),
                             // This is a workaround for a RadialGamePad issue. Spread dials and rotation do not play well.
                             SecondaryDialConfig.Empty(2, 1, 1f),
-                            SecondaryDialConfig.SingleButton(4, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
+                            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
                             SecondaryDialConfig.Empty(8, 2, 2.2f),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -414,12 +357,7 @@ object RadialPadConfigs {
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.Cross(0),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                            iconId = R.drawable.button_select
-                                    )
-                            ),
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
                             SecondaryDialConfig.SingleButton(3, 2,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_L1,
@@ -460,18 +398,8 @@ object RadialPadConfigs {
                                             label = "R"
                                     )
                             ),
-                            SecondaryDialConfig.SingleButton(4, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -480,12 +408,7 @@ object RadialPadConfigs {
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.Cross(0),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                            iconId = R.drawable.button_select
-                                    )
-                            ),
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
                             SecondaryDialConfig.SingleButton(3, 2,
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_BUTTON_L1,
@@ -519,18 +442,8 @@ object RadialPadConfigs {
                                             label = "R"
                                     )
                             ),
-                            SecondaryDialConfig.SingleButton(4, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -539,12 +452,7 @@ object RadialPadConfigs {
                     sockets = 12,
                     primaryDial = PrimaryDialConfig.Cross(0),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(
-                                    4, 1, ButtonConfig(
-                                    id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                    iconId = R.drawable.button_select
-                            )
-                            ),
+                            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
             )
@@ -585,18 +493,8 @@ object RadialPadConfigs {
                             )
                     ),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -627,7 +525,8 @@ object RadialPadConfigs {
                     primaryDial = PrimaryDialConfig.PrimaryButtons(
                             dials = listOf(),
                             center = ButtonConfig(
-                                id = KeyEvent.KEYCODE_BUTTON_B
+                                id = KeyEvent.KEYCODE_BUTTON_B,
+                                contentDescription = "Action"
                             )
                     ),
                     secondaryDials = listOf(
@@ -643,12 +542,7 @@ object RadialPadConfigs {
                                             label = "SELECT"
                                     )
                             ),
-                            SecondaryDialConfig.SingleButton(8, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -678,18 +572,8 @@ object RadialPadConfigs {
                             )
                     ),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -720,18 +604,8 @@ object RadialPadConfigs {
                             rotationInDegrees = 30f
                     ),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 
@@ -743,7 +617,8 @@ object RadialPadConfigs {
                             SecondaryDialConfig.SingleButton(
                                     4, 1, ButtonConfig(
                                     id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                                    iconId = R.drawable.button_coin
+                                    iconId = R.drawable.button_coin,
+                                    contentDescription = "Coin"
                             )
                             ),
                             SecondaryDialConfig.Empty(8, 1, 1f)
@@ -756,19 +631,24 @@ object RadialPadConfigs {
                     primaryDial = PrimaryDialConfig.PrimaryButtons(
                             dials = listOf(
                                     ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_R1
+                                            id = KeyEvent.KEYCODE_BUTTON_R1,
+                                            contentDescription = "R1"
                                     ),
                                     ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_L1
+                                            id = KeyEvent.KEYCODE_BUTTON_L1,
+                                            contentDescription = "L1"
                                     ),
                                     ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_X
+                                            id = KeyEvent.KEYCODE_BUTTON_X,
+                                            contentDescription = "X"
                                     ),
                                     ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_Y
+                                            id = KeyEvent.KEYCODE_BUTTON_Y,
+                                            contentDescription = "Y"
                                     ),
                                     ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_B
+                                            id = KeyEvent.KEYCODE_BUTTON_B,
+                                            contentDescription = "B"
                                     ),
                                     ButtonConfig(
                                             id = KeyEvent.KEYCODE_UNKNOWN,
@@ -780,18 +660,8 @@ object RadialPadConfigs {
                             )
                     ),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.SingleButton(2, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_START,
-                                            iconId = R.drawable.button_start
-                                    )
-                            ),
-                            SecondaryDialConfig.SingleButton(10, 1,
-                                    ButtonConfig(
-                                            id = KeyEvent.KEYCODE_BUTTON_MODE,
-                                            iconId = R.drawable.button_menu
-                                    )
-                            )
+                            SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
             )
 }
