@@ -6,6 +6,7 @@ import com.swordfish.radialgamepad.library.config.ButtonConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
 import com.swordfish.radialgamepad.library.config.PrimaryDialConfig
 import com.swordfish.radialgamepad.library.config.SecondaryDialConfig
+import com.swordfish.radialgamepad.library.config.CrossContentDescription
 import com.swordfish.touchinput.controller.R
 
 object RadialPadConfigs {
@@ -258,7 +259,6 @@ object RadialPadConfigs {
                                     label = "L"
                             )
                             ),
-                            SecondaryDialConfig.Empty(4, 1, 1f),
                             SecondaryDialConfig.Empty(8, 1, 1f),
                             SecondaryDialConfig.Stick(9, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT)
                     )
@@ -285,7 +285,6 @@ object RadialPadConfigs {
                             rotationInDegrees = 60f
                     ),
                     secondaryDials = listOf(
-                            SecondaryDialConfig.Empty(2, 1, 1f),
                             SecondaryDialConfig.SingleButton(
                                     2, 2, ButtonConfig(
                                     id = KeyEvent.KEYCODE_BUTTON_R1,
@@ -301,7 +300,9 @@ object RadialPadConfigs {
                                     GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
                                     R.drawable.direction_alt_background,
                                     R.drawable.direction_alt_foreground,
-                                    contentDescription = "C-Buttons"
+                                    contentDescription = CrossContentDescription(
+                                        baseName = "c"
+                                    )
                             ),
                             SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
                     )
@@ -319,8 +320,6 @@ object RadialPadConfigs {
                                             label = "L"
                                     )
                             ),
-                            // This is a workaround for a RadialGamePad issue. Spread dials and rotation do not play well.
-                            SecondaryDialConfig.Empty(4, 1, 1f),
                             SecondaryDialConfig.Stick(9, 2.2f, GLRetroView.MOTION_SOURCE_ANALOG_LEFT),
                             SecondaryDialConfig.Empty(8, 1, 1f)
                     )
@@ -344,8 +343,6 @@ object RadialPadConfigs {
                                     label = "R"
                             )
                             ),
-                            // This is a workaround for a RadialGamePad issue. Spread dials and rotation do not play well.
-                            SecondaryDialConfig.Empty(2, 1, 1f),
                             SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
                             SecondaryDialConfig.Empty(8, 2, 2.2f),
                             SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
