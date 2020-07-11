@@ -12,7 +12,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.swordfish.lemuroid.common.getAccentColor
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.math.linearInterpolation
-import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.radialgamepad.library.RadialGamePad
 import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
@@ -46,8 +45,8 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
     private val rightPad: RadialGamePad
 
     private val tiltTrackedIds = setOf(
-        GLRetroView.MOTION_SOURCE_ANALOG_LEFT,
-        GLRetroView.MOTION_SOURCE_ANALOG_RIGHT
+        RadialPadConfigs.MOTION_SOURCE_LEFT_STICK,
+        RadialPadConfigs.MOTION_SOURCE_LEFT_STICK
     )
 
     init {

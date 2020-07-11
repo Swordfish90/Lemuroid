@@ -115,6 +115,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     }
 
     private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
+        if (file.crc == null || file.crc == "0") return Maybe.empty()
         return file.crc?.let { crc32 ->
             db.gameDao().findByCRC(crc32).map {
                 convertToGameMetadata(it)

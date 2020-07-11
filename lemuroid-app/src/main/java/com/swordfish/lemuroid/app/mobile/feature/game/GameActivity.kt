@@ -41,6 +41,7 @@ import com.swordfish.radialgamepad.library.event.Event
 import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.touchinput.radial.GamePadFactory
 import com.swordfish.touchinput.radial.LemuroidVirtualGamePad
+import com.swordfish.touchinput.radial.RadialPadConfigs
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import timber.log.Timber
@@ -117,13 +118,9 @@ class GameActivity : BaseGameActivity() {
             .autoDispose(scope())
             .subscribe {
                 when (it) {
-                    is Event.Gesture -> {
-                        if (it.type == GestureType.SINGLE_TAP && it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
-                            displayOptionsDialog()
-                        }
-                    }
-                    is Event.Button -> { retroGameView?.sendKeyEvent(it.action, it.id) }
-                    is Event.Direction -> retroGameView?.sendMotionEvent(it.id, it.xAxis, it.yAxis)
+                    is Event.Gesture -> { handleGamePadGesture(it) }
+                    is Event.Button -> { handleGamePadButton(it) }
+                    is Event.Direction -> { handleGamePadDirection(it) }
                 }
             }
 
@@ -134,6 +131,34 @@ class GameActivity : BaseGameActivity() {
             .map { it.size }
             .autoDispose(scope())
             .subscribeBy(Timber::e) { overlayLayout.setVisibleOrGone(it == 0) }
+    }
+
+    private fun handleGamePadGesture(it: Event.Gesture) {
+        if (it.type == GestureType.SINGLE_TAP && it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
+            displayOptionsDialog()
+        }
+    }
+
+    private fun handleGamePadButton(it: Event.Button) {
+        retroGameView?.sendKeyEvent(it.action, it.id)
+    }
+
+    private fun handleGamePadDirection(it: Event.Direction) {
+        when (it.id) {
+            RadialPadConfigs.MOTION_SOURCE_DPAD -> {
+                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, it.xAxis, it.yAxis)
+            }
+            RadialPadConfigs.MOTION_SOURCE_LEFT_STICK -> {
+                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_ANALOG_LEFT, it.xAxis, it.yAxis)
+            }
+            RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK -> {
+                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_ANALOG_RIGHT, it.xAxis, it.yAxis)
+            }
+            RadialPadConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK -> {
+                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_ANALOG_LEFT, it.xAxis, it.yAxis)
+                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, it.xAxis, it.yAxis)
+            }
+        }
     }
 
     override fun onBackPressed() {
