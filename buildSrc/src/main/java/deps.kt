@@ -63,6 +63,7 @@ object deps {
                 const val runtime = "androidx.room:room-runtime:2.2.2"
                 const val rxjava2 = "androidx.room:room-rxjava2:2.2.2"
             }
+            const val documentfile = "androidx.documentfile:documentfile:1.0.1"
         }
         object arch {
             object work {
