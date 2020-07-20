@@ -70,7 +70,9 @@ class LemuroidLibrary(
     }
 
     private fun retrieveStorageFiles(provider: StorageProvider, pairs: List<Pair<Uri, Optional<Game>>>) =
-            pairs.map { (uri, _) -> provider.getStorageFile(uri) }.filterNotNull()
+            pairs.mapNotNull { (uri, _) ->
+                runCatching { provider.getStorageFile(uri) }.getOrNull()
+            }
 
     private fun handleNewGames(games: List<Game>) {
         games.forEach { Timber.d("Insert: $it") }
