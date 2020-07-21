@@ -124,11 +124,9 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     }
 
     private fun findBySerial(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
-        return file.serial?.let { serial ->
-            db.gameDao().findBySerial(serial).map {
-                convertToGameMetadata(it)
-            }
-        } ?: Maybe.empty()
+        if (file.serial == null) return Maybe.empty()
+        return db.gameDao().findBySerial(file.serial!!)
+                .map { convertToGameMetadata(it) }
     }
 
     private fun findByUniqueExtension(file: StorageFile) = Maybe.fromCallable {

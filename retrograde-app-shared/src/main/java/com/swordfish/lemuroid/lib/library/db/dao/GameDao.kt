@@ -92,7 +92,7 @@ interface GameDao {
     fun insert(game: Game)
 
     @Insert
-    fun insert(games: List<Game>)
+    fun insert(games: List<Game>): List<Long>
 
     @Delete
     fun delete(games: List<Game>)

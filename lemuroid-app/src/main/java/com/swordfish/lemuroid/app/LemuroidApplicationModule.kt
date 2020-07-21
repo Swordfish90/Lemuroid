@@ -151,10 +151,11 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun lemuroidLibrary(
+            context: Context,
             db: RetrogradeDatabase,
             storageProviderRegistry: StorageProviderRegistry,
             biosManager: BiosManager
-        ) = LemuroidLibrary(db, storageProviderRegistry, biosManager)
+        ) = LemuroidLibrary(context, db, storageProviderRegistry, biosManager)
 
         @Provides
         @PerApp
@@ -227,8 +228,9 @@ abstract class LemuroidApplicationModule {
             coreManager: CoreManager,
             lemuroidLibrary: LemuroidLibrary,
             savesManager: SavesManager,
-            coreVariablesManager: CoreVariablesManager
-        ) = GameLoader(coreManager, lemuroidLibrary, savesManager, coreVariablesManager)
+            coreVariablesManager: CoreVariablesManager,
+            retrogradeDatabase: RetrogradeDatabase
+        ) = GameLoader(coreManager, lemuroidLibrary, savesManager, coreVariablesManager, retrogradeDatabase)
 
         @Provides
         @PerApp
