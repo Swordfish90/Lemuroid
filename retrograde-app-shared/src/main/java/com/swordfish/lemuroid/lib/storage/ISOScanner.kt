@@ -71,6 +71,10 @@ object ISOScanner {
             return null
         }
 
+        if (inputStream.available() < PS_HEADER_MAX_SIZE) {
+            return null
+        }
+
         val baseSerials = (PSP_BASE_SERIALS + PSX_BASE_SERIALS).map { it.toByteArray(Charsets.US_ASCII) }
 
         movingWidnowSequence(stream, PS_SERIAL_MAX_SIZE)

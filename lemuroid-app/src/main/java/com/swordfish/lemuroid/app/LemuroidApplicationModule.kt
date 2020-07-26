@@ -151,11 +151,10 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun lemuroidLibrary(
-            context: Context,
             db: RetrogradeDatabase,
             storageProviderRegistry: StorageProviderRegistry,
             biosManager: BiosManager
-        ) = LemuroidLibrary(context, db, storageProviderRegistry, biosManager)
+        ) = LemuroidLibrary(db, storageProviderRegistry, biosManager)
 
         @Provides
         @PerApp

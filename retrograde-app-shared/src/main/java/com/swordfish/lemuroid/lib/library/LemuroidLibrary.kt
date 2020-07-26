@@ -38,7 +38,6 @@ import timber.log.Timber
 import java.io.File
 
 class LemuroidLibrary(
-    private val applicationContext: Context,
     private val retrogradedb: RetrogradeDatabase,
     private val providerProviderRegistry: StorageProviderRegistry,
     private val biosManager: BiosManager
