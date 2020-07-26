@@ -49,14 +49,14 @@ object DocumentFileParser {
     }
 
     private fun parseStandardFile(context: Context, baseStorageFile: BaseStorageFile): StorageFile {
-        val crc32 = if (baseStorageFile.size < MAX_SIZE_CRC32) {
+        val serial = context.contentResolver.openInputStream(baseStorageFile.uri)?.let { inputStream ->
+            ISOScanner.extractSerial(baseStorageFile.name, inputStream)
+        }
+
+        val crc32 = if (baseStorageFile.size < MAX_SIZE_CRC32 && serial == null) {
             context.contentResolver.openInputStream(baseStorageFile.uri)?.calculateCrc32()
         } else {
             null
-        }
-
-        val serial = context.contentResolver.openInputStream(baseStorageFile.uri)?.let { inputStream ->
-            ISOScanner.extractSerial(baseStorageFile.name, inputStream)
         }
 
         Timber.d("Detected file name: ${baseStorageFile.name}, crc: $crc32")

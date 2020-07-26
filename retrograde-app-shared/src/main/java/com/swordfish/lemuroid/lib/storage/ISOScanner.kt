@@ -58,18 +58,26 @@ object ISOScanner {
         return extractPlayStationSerial(fileName, inputStream.buffered())
     }
 
+    private fun ByteArray.startsWith(byteArray: ByteArray): Boolean {
+        for (i in byteArray.indices) {
+            if (this[i] != byteArray[i]) return false
+        }
+        return true
+    }
+
     /** Extract a PS1 or PSP serial from ISO file or PBP. */
     private fun extractPlayStationSerial(fileName: String, inputStream: InputStream) = inputStream.use { stream ->
         if (FileUtils.extractExtension(fileName) !in PS_SUPPORTED_FORMATS) {
             return null
         }
 
+        val baseSerials = (PSP_BASE_SERIALS + PSX_BASE_SERIALS).map { it.toByteArray(Charsets.US_ASCII) }
+
         movingWidnowSequence(stream, PS_SERIAL_MAX_SIZE)
             .take(PS_HEADER_MAX_SIZE)
-            .map { String(it, Charsets.US_ASCII) }
-            .filter { serial -> (PSP_BASE_SERIALS + PSX_BASE_SERIALS).any { serial.startsWith(it) } }
-            .map { serial ->
-                PS_SERIAL_REGEX.find(serial)?.groupValues?.let { "${it[1]}-${it[2]}" }
+            .filter { serial -> (baseSerials).any { serial.startsWith(it) } }
+            .map { bytes ->
+                PS_SERIAL_REGEX.find(String(bytes, Charsets.US_ASCII))?.groupValues?.let { "${it[1]}-${it[2]}" }
             }
             .filterNotNull()
             .firstOrNull()
