@@ -89,7 +89,8 @@ class LocalStorageProvider(
         emitter.onComplete()
     }
 
-    // TODO FILIPPO... We should double check this. Maybe it's needed...
+    // There is no need to handle anything. Data file have to be in the same directory for detection we expect them
+    // to still be there.
     override fun prepareDataFile(game: Game, dataFile: DataFile) = Completable.complete()
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
