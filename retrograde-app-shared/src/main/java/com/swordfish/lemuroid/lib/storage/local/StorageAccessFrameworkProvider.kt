@@ -1,11 +1,8 @@
 package com.swordfish.lemuroid.lib.storage.local
 
-import android.content.ContentResolver
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
 import android.provider.DocumentsContract
-import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
@@ -60,20 +57,21 @@ class StorageAccessFrameworkProvider(
 
     private fun traverseDirectoryEntries(rootUri: Uri): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
         try {
-            val something = DocumentFile.fromTreeUri(context, rootUri)
+            val directoryDocumentIds = mutableListOf<String>()
+            DocumentsContract.getTreeDocumentId(rootUri)?.let { directoryDocumentIds.add(it) }
 
-            val dirNodes = mutableListOf<Uri>()
-            dirNodes.add(something!!.uri)
+            while (directoryDocumentIds.isNotEmpty()) {
+                val currentDirectoryDocumentId = directoryDocumentIds.removeAt(0)
 
-            while (dirNodes.isNotEmpty()) {
-                val currentUri = dirNodes.removeAt(0)
+                val result = runCatching { listBaseStorageFiles(rootUri, currentDirectoryDocumentId) }
+                if (result.isFailure) {
+                    Timber.e(result.exceptionOrNull(), "Error while listing files")
+                }
 
-                Timber.d("Detected node uri: $currentUri")
-
-                val (files, folders) = listBaseStorageFiles(currentUri)
+                val (files, directories) = result.getOrDefault(listOf<BaseStorageFile>() to listOf<String>())
 
                 emitter.onNext(files)
-                dirNodes.addAll(folders)
+                directoryDocumentIds.addAll(directories)
             }
         } catch (e: Exception) {
             emitter.onError(e)
@@ -82,34 +80,31 @@ class StorageAccessFrameworkProvider(
         emitter.onComplete()
     }
 
-    // TODO FILIPPO... Make sure this works exactly like DocumentFile.listFiles() to avoid regressions
-    private fun listBaseStorageFiles(treeUri: Uri): Pair<List<BaseStorageFile>, List<Uri>> {
-        val resolver: ContentResolver = context.contentResolver
-        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, DocumentsContract.getDocumentId(treeUri))
-
+    private fun listBaseStorageFiles(treeUri: Uri, rootDocumentId: String): Pair<List<BaseStorageFile>, List<String>> {
         val resultFiles = mutableListOf<BaseStorageFile>()
-        val resultFolders = mutableListOf<Uri>()
+        val resultDirectories = mutableListOf<String>()
 
-        var c: Cursor? = null
-        try {
-            val projection = arrayOf(
-                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                DocumentsContract.Document.COLUMN_SIZE,
-                DocumentsContract.Document.COLUMN_MIME_TYPE
-            )
-            c = resolver.query(childrenUri, projection, null, null, null)
-            while (c!!.moveToNext()) {
-                val documentId = c.getString(0)
-                val documentName = c.getString(1)
-                val documentSize = c.getLong(2)
-                val mimeType = c.getString(3)
+        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, rootDocumentId)
 
-                val documentUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId)
+        Timber.d("Querying files in directory: $childrenUri")
+
+        val projection = arrayOf(
+            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            DocumentsContract.Document.COLUMN_SIZE,
+            DocumentsContract.Document.COLUMN_MIME_TYPE
+        )
+        context.contentResolver.query(childrenUri, projection, null, null, null)?.use {
+            while (it.moveToNext()) {
+                val documentId = it.getString(0)
+                val documentName = it.getString(1)
+                val documentSize = it.getLong(2)
+                val mimeType = it.getString(3)
 
                 if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
-                    resultFolders.add(documentUri)
+                    resultDirectories.add(documentId)
                 } else {
+                    val documentUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId)
                     resultFiles.add(BaseStorageFile(
                             name = documentName,
                             size = documentSize,
@@ -118,13 +113,9 @@ class StorageAccessFrameworkProvider(
                     ))
                 }
             }
-        } catch (e: java.lang.Exception) {
-            Timber.e("Failed content resolver query")
-        } finally {
-            c?.close()
         }
 
-        return resultFiles to resultFolders
+        return resultFiles to resultDirectories
     }
 
     override fun prepareDataFile(game: Game, dataFile: DataFile) = Completable.fromAction {
