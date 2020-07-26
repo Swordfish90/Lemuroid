@@ -55,7 +55,9 @@ class StorageAccessFrameworkProvider(
         return preferenceManager.getString(prefString, null)
     }
 
-    private fun traverseDirectoryEntries(rootUri: Uri): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
+    private fun traverseDirectoryEntries(
+        rootUri: Uri
+    ): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
         try {
             val directoryDocumentIds = mutableListOf<String>()
             DocumentsContract.getTreeDocumentId(rootUri)?.let { directoryDocumentIds.add(it) }
@@ -63,12 +65,16 @@ class StorageAccessFrameworkProvider(
             while (directoryDocumentIds.isNotEmpty()) {
                 val currentDirectoryDocumentId = directoryDocumentIds.removeAt(0)
 
-                val result = runCatching { listBaseStorageFiles(rootUri, currentDirectoryDocumentId) }
+                val result = runCatching {
+                    listBaseStorageFiles(rootUri, currentDirectoryDocumentId)
+                }
                 if (result.isFailure) {
                     Timber.e(result.exceptionOrNull(), "Error while listing files")
                 }
 
-                val (files, directories) = result.getOrDefault(listOf<BaseStorageFile>() to listOf<String>())
+                val (files, directories) = result.getOrDefault(
+                    listOf<BaseStorageFile>() to listOf<String>()
+                )
 
                 emitter.onNext(files)
                 directoryDocumentIds.addAll(directories)
@@ -80,7 +86,10 @@ class StorageAccessFrameworkProvider(
         emitter.onComplete()
     }
 
-    private fun listBaseStorageFiles(treeUri: Uri, rootDocumentId: String): Pair<List<BaseStorageFile>, List<String>> {
+    private fun listBaseStorageFiles(
+        treeUri: Uri,
+        rootDocumentId: String
+    ): Pair<List<BaseStorageFile>, List<String>> {
         val resultFiles = mutableListOf<BaseStorageFile>()
         val resultDirectories = mutableListOf<String>()
 
@@ -104,13 +113,18 @@ class StorageAccessFrameworkProvider(
                 if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
                     resultDirectories.add(documentId)
                 } else {
-                    val documentUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId)
-                    resultFiles.add(BaseStorageFile(
+                    val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+                        treeUri,
+                        documentId
+                    )
+                    resultFiles.add(
+                        BaseStorageFile(
                             name = documentName,
                             size = documentSize,
                             uri = documentUri,
                             path = documentUri.path
-                    ))
+                        )
+                    )
                 }
             }
         }
@@ -119,7 +133,12 @@ class StorageAccessFrameworkProvider(
     }
 
     override fun prepareDataFile(game: Game, dataFile: DataFile) = Completable.fromAction {
-        val cacheFile = GameCacheUtils.getDataFileForGame(SAF_CACHE_SUBFOLDER, context, game, dataFile)
+        val cacheFile = GameCacheUtils.getDataFileForGame(
+            SAF_CACHE_SUBFOLDER,
+            context,
+            game,
+            dataFile
+        )
         if (cacheFile.exists()) {
             return@fromAction
         }
@@ -138,7 +157,9 @@ class StorageAccessFrameworkProvider(
         val originalDocument = DocumentFile.fromSingleUri(context, originalDocumentUri)!!
 
         if (originalDocument.isZipped() && originalDocument.name != game.fileName) {
-            val stream = ZipInputStream(context.contentResolver.openInputStream(originalDocument.uri))
+            val stream = ZipInputStream(
+                context.contentResolver.openInputStream(originalDocument.uri)
+            )
             stream.extractEntryToFile(game.fileName, cacheFile)
         } else {
             val stream = context.contentResolver.openInputStream(originalDocument.uri)!!

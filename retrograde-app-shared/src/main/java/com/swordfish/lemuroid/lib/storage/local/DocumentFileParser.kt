@@ -40,18 +40,24 @@ object DocumentFileParser {
         }
     }
 
-    private fun parseCompressedGame(baseStorageFile: BaseStorageFile, entry: ZipEntry, zipInputStream: ZipInputStream): StorageFile {
+    private fun parseCompressedGame(
+        baseStorageFile: BaseStorageFile,
+        entry: ZipEntry,
+        zipInputStream: ZipInputStream
+    ): StorageFile {
         Timber.d("Processing zipped entry: ${entry.name}")
 
         val serial = ISOScanner.extractSerial(entry.name, zipInputStream)
 
-        return StorageFile(entry.name, entry.size, entry.crc.toStringCRC32(), serial, baseStorageFile.uri, baseStorageFile.uri.path)
+        return StorageFile(
+            entry.name, entry.size, entry.crc.toStringCRC32(), serial, baseStorageFile.uri,
+            baseStorageFile.uri.path
+        )
     }
 
     private fun parseStandardFile(context: Context, baseStorageFile: BaseStorageFile): StorageFile {
-        val serial = context.contentResolver.openInputStream(baseStorageFile.uri)?.let { inputStream ->
-            ISOScanner.extractSerial(baseStorageFile.name, inputStream)
-        }
+        val serial = context.contentResolver.openInputStream(baseStorageFile.uri)
+            ?.let { inputStream -> ISOScanner.extractSerial(baseStorageFile.name, inputStream) }
 
         val crc32 = if (baseStorageFile.size < MAX_SIZE_CRC32 && serial == null) {
             context.contentResolver.openInputStream(baseStorageFile.uri)?.calculateCrc32()
@@ -61,12 +67,16 @@ object DocumentFileParser {
 
         Timber.d("Detected file name: ${baseStorageFile.name}, crc: $crc32")
 
-        return StorageFile(baseStorageFile.name, baseStorageFile.size, crc32, serial, baseStorageFile.uri, baseStorageFile.uri.path)
+        return StorageFile(
+            baseStorageFile.name, baseStorageFile.size, crc32, serial, baseStorageFile.uri,
+            baseStorageFile.uri.path
+        )
     }
 
-    /* Finds a zip entry which we assume is a game. Lemuroids only supports single archive games, so we are looking for
-       an entry which occupies a large percentage of the archive space. This is very fast heuristic to compute and
-       avoids reading the whole stream in most scenarios.*/
+    /* Finds a zip entry which we assume is a game. Lemuroids only supports single archive games,
+       so we are looking for an entry which occupies a large percentage of the archive space.
+       This is very fast heuristic to compute and avoids reading the whole stream in most
+       scenarios.*/
     fun findGameEntry(openedInputStream: ZipInputStream, fileSize: Long = -1): ZipEntry? {
         for (i in 0..MAX_CHECKED_ENTRIES) {
             val entry = openedInputStream.nextEntry ?: break

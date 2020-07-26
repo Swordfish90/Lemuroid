@@ -8,34 +8,48 @@ import com.swordfish.lemuroid.lib.storage.StorageProvider
 object StorageFilesMerger {
 
     /** Merge files which belong to the same game. This includes bin/cue files and m3u playlists.*/
-    fun mergeDataFiles(storageProvider: StorageProvider, files: List<BaseStorageFile>): List<GroupedStorageFiles> {
+    fun mergeDataFiles(
+        storageProvider: StorageProvider,
+        files: List<BaseStorageFile>
+    ): List<GroupedStorageFiles> {
         val allFiles = files
-                .map { it to listOf<BaseStorageFile>() }
-                .toMap().toMutableMap()
+            .map { it to listOf<BaseStorageFile>() }
+            .toMap().toMutableMap()
 
         val toBeRemoved = mutableListOf<BaseStorageFile>()
 
         allFiles.keys
-                .filter { it.extension == "cue" }
-                .forEach { cueFile ->
-                    val binFiles = allFiles
-                            .filter { it.key.extension == "bin" && it.key.extensionlessName == cueFile.extensionlessName }
+            .filter { it.extension == "cue" }
+            .forEach { cueFile ->
+                val binFiles = allFiles
+                    .filter {
+                        val isBinFile = it.key.extension == "bin"
+                        val filenamesMatch = it.key.extensionlessName == cueFile.extensionlessName
+                        isBinFile && filenamesMatch
+                    }
 
-                    allFiles[cueFile] = (allFiles[cueFile] ?: listOf()) + binFiles.flatMap { listOf(it.key) + it.value }
-                    toBeRemoved.addAll(binFiles.keys)
+                allFiles[cueFile] = (allFiles[cueFile] ?: listOf()) + binFiles.flatMap {
+                    listOf(it.key) + it.value
                 }
+                toBeRemoved.addAll(binFiles.keys)
+            }
         toBeRemoved.forEach { allFiles.remove(it) }
         toBeRemoved.clear()
 
         allFiles.keys
-                .filter { it.extension == "m3u" }
-                .forEach { m3uFile ->
-                    val m3uFiles = runCatching { storageProvider.getInputStream(m3uFile.uri)?.readLines() }.getOrNull() ?: listOf()
-                    val dataFiles = allFiles.filter { it.key.name in m3uFiles }
+            .filter { it.extension == "m3u" }
+            .forEach { m3uFile ->
+                val m3uFiles = runCatching {
+                    storageProvider.getInputStream(m3uFile.uri)?.readLines()
+                }.getOrNull() ?: listOf()
 
-                    allFiles[m3uFile] = allFiles[m3uFile]!! + dataFiles.flatMap { listOf(it.key) + it.value }
-                    toBeRemoved.addAll(dataFiles.keys)
+                val dataFiles = allFiles.filter { it.key.name in m3uFiles }
+
+                allFiles[m3uFile] = allFiles[m3uFile]!! + dataFiles.flatMap {
+                    listOf(it.key) + it.value
                 }
+                toBeRemoved.addAll(dataFiles.keys)
+            }
         toBeRemoved.forEach { allFiles.remove(it) }
         toBeRemoved.clear()
 
