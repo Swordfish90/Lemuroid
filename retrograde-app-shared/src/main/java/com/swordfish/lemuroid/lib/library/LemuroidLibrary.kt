@@ -48,7 +48,7 @@ class LemuroidLibrary(
 
         return Observable.fromIterable(providerProviderRegistry.enabledProviders).concatMap { provider ->
             provider.listBaseStorageFiles()
-                .map { StorageFilesMerger.mergeDataFiles(applicationContext, it) }
+                .map { StorageFilesMerger.mergeDataFiles(provider, it) }
                 .flatMap { Observable.fromIterable(it) }
                 .flatMapSingle { retrieveGameForUri(it) }
                 .buffer(BUFFER_SIZE)

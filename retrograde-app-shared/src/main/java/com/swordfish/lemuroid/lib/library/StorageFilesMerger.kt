@@ -1,15 +1,14 @@
 package com.swordfish.lemuroid.lib.library
 
-import android.content.Context
-import androidx.documentfile.provider.DocumentFile
 import com.swordfish.lemuroid.common.files.readLines
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.GroupedStorageFiles
+import com.swordfish.lemuroid.lib.storage.StorageProvider
 
 object StorageFilesMerger {
 
     /** Merge files which belong to the same game. This includes bin/cue files and m3u playlists.*/
-    fun mergeDataFiles(context: Context, files: List<BaseStorageFile>): List<GroupedStorageFiles> {
+    fun mergeDataFiles(storageProvider: StorageProvider, files: List<BaseStorageFile>): List<GroupedStorageFiles> {
         val allFiles = files
                 .map { it to listOf<BaseStorageFile>() }
                 .toMap().toMutableMap()
@@ -31,8 +30,7 @@ object StorageFilesMerger {
         allFiles.keys
                 .filter { it.extension == "m3u" }
                 .forEach { m3uFile ->
-                    val documentFile = DocumentFile.fromSingleUri(context, m3uFile.uri)
-                    val m3uFiles = documentFile?.readLines(context) ?: listOf()
+                    val m3uFiles = runCatching { storageProvider.getInputStream(m3uFile.uri)?.readLines() }.getOrNull() ?: listOf()
                     val dataFiles = allFiles.filter { it.key.name in m3uFiles }
 
                     allFiles[m3uFile] = allFiles[m3uFile]!! + dataFiles.flatMap { listOf(it.key) + it.value }
