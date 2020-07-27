@@ -3,7 +3,6 @@ package com.swordfish.lemuroid.app.tv.games
 import android.content.Context
 import android.os.Bundle
 import androidx.leanback.app.VerticalGridSupportFragment
-import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -45,19 +44,13 @@ class TVGamesFragment : VerticalGridSupportFragment() {
 
         gamesViewModel.games.observe(this, Observer { pagedList ->
             val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
-            val adapter = PagedListObjectAdapter(GamePresenter(cardSize), Game.DIFF_CALLBACK)
+            val adapter = PagedListObjectAdapter(GamePresenter(cardSize, gameInteractor), Game.DIFF_CALLBACK)
             adapter.pagedList = pagedList
             this.adapter = adapter
         })
 
         args.systemId?.let {
             gamesViewModel.systemId.value = it
-        }
-
-        onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
-            when (item) {
-                is Game -> gameInteractor.onGamePlay(item)
-            }
         }
     }
 

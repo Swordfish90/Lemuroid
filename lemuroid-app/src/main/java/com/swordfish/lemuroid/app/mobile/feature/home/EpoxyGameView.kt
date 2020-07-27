@@ -9,7 +9,7 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.squareup.picasso.Picasso
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.GameContextMenuListener
+import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -33,7 +33,11 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
             .into(holder.coverView)
 
         holder.itemView?.setOnClickListener { gameInteractor.onGamePlay(game) }
-        holder.itemView?.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
+        holder.itemView?.setOnCreateContextMenuListener(
+            GameContextMenuListener(
+                gameInteractor, game
+            )
+        )
     }
 
     override fun unbind(holder: Holder) {

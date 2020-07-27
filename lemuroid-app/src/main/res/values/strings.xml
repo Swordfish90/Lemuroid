@@ -85,6 +85,7 @@
     <string name="tv_folder_picker_action_choose">Select</string>
     <string name="tv_folder_picker_action_cancel">Cancel</string>
 
+    <string name="tv_home_section_favorites">Favorites</string>
     <string name="tv_home_section_recents">Recent</string>
     <string name="tv_home_section_systems">Systems</string>
     <string name="tv_home_section_settings">Settings</string>

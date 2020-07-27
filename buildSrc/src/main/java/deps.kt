@@ -49,9 +49,9 @@ object deps {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
             }
             object paging {
-                const val common = "androidx.paging:paging-common:2.0.0"
-                const val runtime = "androidx.paging:paging-runtime:2.0.0"
-                const val rxjava2 = "androidx.paging:paging-rxjava2:2.0.0"
+                const val common = "androidx.paging:paging-common:2.1.2"
+                const val runtime = "androidx.paging:paging-runtime:2.1.2"
+                const val rxjava2 = "androidx.paging:paging-rxjava2-ktx:2.1.2"
             }
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"

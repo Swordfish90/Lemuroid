@@ -12,9 +12,11 @@ import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.DiffCallback
+import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagedList
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.systems.SystemInfo
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
@@ -23,6 +25,7 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
+import com.swordfish.lemuroid.app.tv.shared.PagedListObjectAdapter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -47,7 +50,6 @@ class TVHomeFragment : BrowseSupportFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             when (item) {
-                is Game -> gameInteractor.onGamePlay(item)
                 is SystemInfo -> {
                     val systemId = item.system.id.dbname
                     val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(systemId)
@@ -68,7 +70,11 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recreateAdapter(false, false)
+        recreateAdapter(
+            includeFavorites = false,
+            includeRecentGames = false,
+            includeSystems = false
+        )
         setOnSearchClickedListener {
             findNavController().navigate(R.id.navigation_search)
         }
@@ -80,72 +86,82 @@ class TVHomeFragment : BrowseSupportFragment() {
         val factory = TVHomeViewModel.Factory(retrogradeDb)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
 
-        Observables.combineLatest(homeViewModel.recentGames, homeViewModel.availableSystems)
+        val entriesObservable = Observables.combineLatest(
+            homeViewModel.favoritesGames,
+            homeViewModel.recentGames,
+            homeViewModel.availableSystems
+        )
+
+        entriesObservable
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy { (recentGames, systems) -> update(recentGames, systems) }
+            .subscribeBy { (favoriteGames, recentGames, systems) ->
+                update(favoriteGames, recentGames, systems)
+            }
     }
 
-    private fun update(recentGames: List<Game>, systems: List<SystemInfo>) {
-        val adapterHasGames = findAdapterById(GAMES_ADAPTER) != null
-        val adapterHasSystems = findAdapterById(SYSTEM_ADAPTER) != null
+    private fun update(favoritesGames: PagedList<Game>, recentGames: List<Game>, systems: List<SystemInfo>) {
+        val adapterHasFavorites = findAdapterById<ObjectAdapter>(FAVORITES_ADAPTER) != null
+        val adapterHasGames = findAdapterById<ObjectAdapter>(RECENTS_ADAPTER) != null
+        val adapterHasSystems = findAdapterById<ObjectAdapter>(SYSTEM_ADAPTER) != null
 
-        if (adapterHasGames != recentGames.isNotEmpty() || adapterHasSystems != systems.isNotEmpty()) {
-            recreateAdapter(recentGames.isNotEmpty(), systems.isNotEmpty())
+        val favoritesChanged = adapterHasFavorites != favoritesGames.isNotEmpty()
+        val recentsChanged = adapterHasGames != recentGames.isNotEmpty()
+        val systemsChanged = adapterHasSystems != systems.isNotEmpty()
+
+        if (favoritesChanged || recentsChanged || systemsChanged) {
+            recreateAdapter(favoritesGames.isNotEmpty(), recentGames.isNotEmpty(), systems.isNotEmpty())
         }
 
-        findAdapterById(GAMES_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
-        findAdapterById(SYSTEM_ADAPTER)?.setItems(systems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+        findAdapterById<PagedListObjectAdapter<Game>>(FAVORITES_ADAPTER)?.pagedList = favoritesGames
+        findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
+        findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(systems, LEANBACK_SYSTEM_DIFF_CALLBACK)
     }
 
-    private fun findAdapterById(id: Long): ArrayObjectAdapter? {
+    private fun <T> findAdapterById(id: Long): T? {
         for (i: Int in 0 until adapter.size()) {
             val listRow = adapter.get(i) as ListRow
             if (listRow.headerItem.id == id) {
-                return listRow.adapter as ArrayObjectAdapter
+                return listRow.adapter as T
             }
         }
         return null
     }
 
-    private fun recreateAdapter(includeRecentGames: Boolean, includeSystems: Boolean) {
+    private fun recreateAdapter(
+        includeFavorites: Boolean,
+        includeRecentGames: Boolean,
+        includeSystems: Boolean
+    ) {
         val result = ArrayObjectAdapter(ListRowPresenter())
+        val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
+        val cardPadding = resources.getDimensionPixelSize(R.dimen.card_padding)
+
+        if (includeFavorites) {
+            val presenter = GamePresenter(cardSize, gameInteractor)
+            val favouritesItems = PagedListObjectAdapter(presenter, Game.DIFF_CALLBACK)
+            val title = resources.getString(R.string.tv_home_section_favorites)
+            result.add(ListRow(HeaderItem(FAVORITES_ADAPTER, title), favouritesItems))
+        }
 
         if (includeRecentGames) {
-            val recentItems = ArrayObjectAdapter(GamePresenter(resources.getDimensionPixelSize(R.dimen.card_size)))
-            result.add(
-                ListRow(HeaderItem(GAMES_ADAPTER, resources.getString(R.string.tv_home_section_recents)), recentItems)
-            )
+            val recentItems = ArrayObjectAdapter(GamePresenter(cardSize, gameInteractor))
+            val title = resources.getString(R.string.tv_home_section_recents)
+            result.add(ListRow(HeaderItem(RECENTS_ADAPTER, title), recentItems))
         }
 
         if (includeSystems) {
-            val systemItems = ArrayObjectAdapter(
-                SystemPresenter(
-                    resources.getDimensionPixelSize(R.dimen.card_size),
-                    resources.getDimensionPixelSize(R.dimen.card_padding)
-                )
-            )
-            result.add(
-                ListRow(
-                    HeaderItem(SYSTEM_ADAPTER, resources.getString(R.string.tv_home_section_systems)), systemItems
-                )
-            )
+            val systemItems = ArrayObjectAdapter(SystemPresenter(cardSize, cardPadding))
+            val title = resources.getString(R.string.tv_home_section_systems)
+            result.add(ListRow(HeaderItem(SYSTEM_ADAPTER, title), systemItems))
         }
 
-        val settingsItems = ArrayObjectAdapter(
-            SettingPresenter(
-                resources.getDimensionPixelSize(R.dimen.card_size),
-                resources.getDimensionPixelSize(R.dimen.card_padding)
-            )
-        )
+        val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, cardPadding))
         settingsItems.add(0, TVSetting.RESCAN)
         settingsItems.add(1, TVSetting.CHOOSE_DIRECTORY)
         settingsItems.add(2, TVSetting.SETTINGS)
-        result.add(
-            ListRow(
-                HeaderItem(SETTINGS_ADAPTER, resources.getString(R.string.tv_home_section_settings)), settingsItems
-            )
-        )
+        val settingsTitle = resources.getString(R.string.tv_home_section_settings)
+        result.add(ListRow(HeaderItem(SETTINGS_ADAPTER, settingsTitle), settingsItems))
 
         adapter = result
     }
@@ -163,9 +179,10 @@ class TVHomeFragment : BrowseSupportFragment() {
     }
 
     companion object {
-        const val GAMES_ADAPTER = 1L
+        const val RECENTS_ADAPTER = 1L
         const val SYSTEM_ADAPTER = 2L
         const val SETTINGS_ADAPTER = 3L
+        const val FAVORITES_ADAPTER = 4L
 
         val LEANBACK_GAME_DIFF_CALLBACK = object : DiffCallback<Game>() {
             override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
