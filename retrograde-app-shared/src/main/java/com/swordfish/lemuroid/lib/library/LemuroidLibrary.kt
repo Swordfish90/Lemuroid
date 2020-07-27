@@ -146,28 +146,32 @@ class LemuroidLibrary(
     }
 
     private fun retrieveGame(
-        storageFile: GroupedStorageFiles,
+        groupedStorageFile: GroupedStorageFiles,
         provider: StorageProvider,
         startedAtMs: Long
     ): Single<Pair<GroupedStorageFiles, Optional<Game>>> {
-        return Observable.fromIterable(storageFile.allFiles())
+        return Observable.fromIterable(groupedStorageFile.allFiles())
             .flatMapMaybe {
                 Maybe.fromCallable<StorageFile> { provider.getStorageFile(it) }.onErrorComplete()
             }
             .compose(provider.metadataProvider.transformer(startedAtMs))
-            .map { forcePrimaryStorageFile(it.component1(), storageFile).toOptional() }
+            .map { forcePrimaryStorageFile(it.component1(), groupedStorageFile).toOptional() }
             .filter { it is Some }
             .first(None)
-            .map { storageFile to it }
+            .map { groupedStorageFile to it }
     }
 
     /** Some games have serial matching on secondary data files (the bin file with cue as primary). Here we make sure to
      *  link to the primary file. */
     private fun forcePrimaryStorageFile(game: Game?, storageFile: GroupedStorageFiles): Game? {
-        return game?.copy(
-            fileUri = storageFile.primaryFile.uri.toString(),
-            fileName = storageFile.primaryFile.name
-        )
+        return if (storageFile.dataFiles.any { it.uri.toString() == game?.fileUri }) {
+            game?.copy(
+                fileUri = storageFile.primaryFile.uri.toString(),
+                fileName = storageFile.primaryFile.name
+            )
+        } else {
+            return game
+        }
     }
 
     private fun updateExistingGames(
