@@ -39,3 +39,20 @@ fun ByteArray.toHexString(): String {
 }
 
 fun ByteArray.isAllZeros(): Boolean = this.firstOrNull { it != 0x0.toByte() } == null
+
+/** Return the index at which the array was found or -1. */
+fun ByteArray.indexOf(byteArray: ByteArray): Int {
+    if (byteArray.isEmpty()) {
+        return 0
+    }
+
+    outer@ for (i in 0 until this.size - byteArray.size + 1) {
+        for (j in byteArray.indices) {
+            if (this[i + j] != byteArray[j]) {
+                continue@outer
+            }
+        }
+        return i
+    }
+    return -1
+}
