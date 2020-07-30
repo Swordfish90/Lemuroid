@@ -95,4 +95,12 @@
 
     <string name="game_edit_touch_controls_error_not_visible">Disconnect your pad to edit your touch controls</string>
 
+    <string-array name="pref_key_shader_filter_names">
+        <item>Auto</item>
+        <item>Sharp</item>
+        <item>Smooth</item>
+        <item>LCD</item>
+        <item>CRT</item>
+    </string-array>
+
 </resources>

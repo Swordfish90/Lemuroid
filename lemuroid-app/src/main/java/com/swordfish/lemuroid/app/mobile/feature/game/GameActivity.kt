@@ -77,29 +77,6 @@ class GameActivity : BaseGameActivity() {
 
     override fun getDialogClass() = GameMenuActivity::class.java
 
-    override fun getShaderForSystem(useShader: Boolean, system: GameSystem): Int {
-        if (!useShader) {
-            return GLRetroView.SHADER_DEFAULT
-        }
-
-        return when (system.id) {
-            SystemID.GBA -> GLRetroView.SHADER_LCD
-            SystemID.GBC -> GLRetroView.SHADER_LCD
-            SystemID.GB -> GLRetroView.SHADER_LCD
-            SystemID.N64 -> GLRetroView.SHADER_CRT
-            SystemID.GENESIS -> GLRetroView.SHADER_CRT
-            SystemID.NES -> GLRetroView.SHADER_CRT
-            SystemID.SNES -> GLRetroView.SHADER_CRT
-            SystemID.FBNEO -> GLRetroView.SHADER_CRT
-            SystemID.SMS -> GLRetroView.SHADER_CRT
-            SystemID.PSP -> GLRetroView.SHADER_LCD
-            SystemID.NDS -> GLRetroView.SHADER_LCD
-            SystemID.GG -> GLRetroView.SHADER_LCD
-            SystemID.ATARI2600 -> GLRetroView.SHADER_CRT
-            SystemID.PSX -> GLRetroView.SHADER_CRT
-        }
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         handleOrientationChange(newConfig.orientation)

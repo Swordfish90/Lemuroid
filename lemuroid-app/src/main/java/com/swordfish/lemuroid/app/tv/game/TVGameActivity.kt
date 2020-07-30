@@ -15,10 +15,6 @@ class TVGameActivity : BaseGameActivity() {
 
     override fun getDialogClass() = TVGameMenuActivity::class.java
 
-    override fun getShaderForSystem(useShader: Boolean, system: GameSystem): Int {
-        return if (useShader) GLRetroView.SHADER_CRT else GLRetroView.SHADER_DEFAULT
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

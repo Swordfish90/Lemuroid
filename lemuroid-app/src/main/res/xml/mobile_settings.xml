@@ -25,11 +25,13 @@
         android:title="@string/settings_category_general"
         app:iconSpaceReserved="false">
 
-        <SwitchPreferenceCompat
-            android:key="@string/pref_key_shader"
+        <ListPreference
+            android:key="@string/pref_key_shader_filter"
             android:title="@string/simulate_display"
+            android:entries="@array/pref_key_shader_filter_names"
+            android:entryValues="@array/pref_key_shader_filter_values"
             app:iconSpaceReserved="false"
-            android:defaultValue="true"/>
+            android:defaultValue="auto"/>
 
         <SwitchPreferenceCompat
             android:key="@string/pref_key_autosave"
