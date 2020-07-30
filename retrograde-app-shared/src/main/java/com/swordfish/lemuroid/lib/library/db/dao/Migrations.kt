@@ -14,7 +14,24 @@ object Migrations {
                     `fileUri` TEXT NOT NULL,
                     `lastIndexedAt` INTEGER NOT NULL,
                     `path` TEXT, FOREIGN KEY(`gameId`
-                ) REFERENCES `games`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )""".trimIndent())
+                ) REFERENCES `games`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )""".trimIndent()
+            )
+
+            database.execSQL("""
+                CREATE UNIQUE INDEX IF NOT EXISTS `index_datafiles_id` ON `datafiles` (`id`)
+            """.trimIndent())
+
+            database.execSQL("""
+                CREATE INDEX IF NOT EXISTS `index_datafiles_fileUri` ON `datafiles` (`fileUri`)
+            """.trimIndent())
+
+            database.execSQL("""
+                CREATE INDEX IF NOT EXISTS `index_datafiles_gameId` ON `datafiles` (`gameId`)
+            """.trimIndent())
+
+            database.execSQL("""
+                CREATE INDEX IF NOT EXISTS `index_datafiles_lastIndexedAt` ON `datafiles` (`lastIndexedAt`)
+            """.trimIndent())
         }
     }
 }
