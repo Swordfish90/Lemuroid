@@ -27,10 +27,11 @@
 
         <ListPreference
             android:key="@string/pref_key_shader_filter"
-            android:title="@string/simulate_display"
+            android:title="@string/display_filter"
             android:entries="@array/pref_key_shader_filter_names"
             android:entryValues="@array/pref_key_shader_filter_values"
             app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true"
             android:defaultValue="auto"/>
 
         <SwitchPreferenceCompat

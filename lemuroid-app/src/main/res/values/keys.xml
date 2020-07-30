@@ -15,7 +15,7 @@
         <item>auto</item>
         <item>sharp</item>
         <item>smooth</item>
-        <item>lcd</item>
         <item>crt</item>
+        <item>lcd</item>
     </string-array>
 </resources>

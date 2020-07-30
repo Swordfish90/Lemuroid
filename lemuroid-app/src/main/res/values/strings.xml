@@ -10,7 +10,7 @@
     <string name="rescan">Rescan</string>
     <string name="none">None</string>
     <string name="directory">Directory</string>
-    <string name="simulate_display">Simulate display</string>
+    <string name="display_filter">Display filter</string>
     <string name="roms">ROMs</string>
     <string name="clear_cores_cache_success">Cores cleared</string>
     <string name="ok">OK</string>
@@ -99,8 +99,8 @@
         <item>Auto</item>
         <item>Sharp</item>
         <item>Smooth</item>
-        <item>LCD</item>
         <item>CRT</item>
+        <item>LCD</item>
     </string-array>
 
 </resources>

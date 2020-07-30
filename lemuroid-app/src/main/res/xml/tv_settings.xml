@@ -5,8 +5,9 @@
 
     <ListPreference
         android:key="@string/pref_key_shader_filter"
-        android:title="@string/simulate_display"
+        android:title="@string/display_filter"
         app:iconSpaceReserved="false"
+        app:useSimpleSummaryProvider="true"
         android:entries="@array/pref_key_shader_filter_names"
         app:entryValues="@array/pref_key_shader_filter_values"
         android:defaultValue="auto"/>
