@@ -50,6 +50,7 @@ class TVHomeFragment : BrowseSupportFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             when (item) {
+                is Game -> gameInteractor.onGamePlay(item)
                 is SystemInfo -> {
                     val systemId = item.system.id.dbname
                     val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(systemId)

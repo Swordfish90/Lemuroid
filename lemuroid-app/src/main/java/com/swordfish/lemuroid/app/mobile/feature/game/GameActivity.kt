@@ -33,7 +33,6 @@ import com.swordfish.touchinput.radial.VirtualGamePadSettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
-import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView

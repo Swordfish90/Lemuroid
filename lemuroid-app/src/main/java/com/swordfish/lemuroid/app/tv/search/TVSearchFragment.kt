@@ -42,6 +42,12 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setOnItemViewClickedListener { _, item, _, _ ->
+            when (item) {
+                is Game -> gameInteractor.onGamePlay(item)
+            }
+        }
+
         rowsAdapter = createAdapter()
 
         val factory = TVSearchViewModel.Factory(retrogradeDb)

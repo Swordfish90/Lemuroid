@@ -27,7 +27,6 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
                 gameInteractor, game
             )
         )
-        viewHolder.view.setOnClickListener { gameInteractor.onGamePlay(game) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
@@ -42,7 +41,6 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
         val viewHolder = viewHolder as ViewHolder
         viewHolder.mCardView.mainImage = null
         Picasso.get().cancelRequest(viewHolder.mCardView.mainImageView)
-        viewHolder.view.setOnClickListener(null)
         viewHolder.view.setOnCreateContextMenuListener(null)
     }
 
