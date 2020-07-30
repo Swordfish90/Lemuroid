@@ -225,7 +225,7 @@ data class GameSystem(
                         "sony0",
                         "pcsx_rearmed_libretro_android.so.zip",
                         uniqueExtensions = listOf(),
-                        supportedExtensions = listOf("iso", "pbp"),
+                        supportedExtensions = listOf("iso", "pbp", "chd"),
                         scanOptions = ScanOptions(
                             scanByFilename = false,
                             scanByUniqueExtension = false,
