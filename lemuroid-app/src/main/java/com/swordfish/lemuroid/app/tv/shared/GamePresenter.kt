@@ -8,10 +8,12 @@ import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import com.squareup.picasso.Picasso
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.GameContextMenuListener
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-class GamePresenter(private val cardSize: Int) : Presenter() {
+class GamePresenter(private val cardSize: Int, private val gameInteractor: GameInteractor) : Presenter() {
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any?) {
         if (item == null || viewHolder !is ViewHolder) return
@@ -20,6 +22,7 @@ class GamePresenter(private val cardSize: Int) : Presenter() {
         viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.updateCardViewImage(game.coverFrontUrl)
+        viewHolder.view.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
@@ -34,6 +37,7 @@ class GamePresenter(private val cardSize: Int) : Presenter() {
         val viewHolder = viewHolder as ViewHolder
         viewHolder.mCardView.mainImage = null
         Picasso.get().cancelRequest(viewHolder.mCardView.mainImageView)
+        viewHolder.view.setOnCreateContextMenuListener(null)
     }
 
     class ViewHolder(view: ImageCardView, private val cardSize: Int) : Presenter.ViewHolder(view) {

@@ -19,12 +19,11 @@
 
 package com.swordfish.lemuroid.lib.library.metadata
 
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.gojuno.koptional.Optional
-import io.reactivex.ObservableTransformer
+import io.reactivex.Single
 
 interface GameMetadataProvider {
 
-    fun transformer(startedAtMs: Long): ObservableTransformer<StorageFile, Optional<Game>>
+    fun retrieveMetadata(storageFile: StorageFile): Single<Optional<GameMetadata>>
 }

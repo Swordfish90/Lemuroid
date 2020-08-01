@@ -40,4 +40,19 @@ class SharedPreferencesDelegates {
 
         private fun percentageToIndex(percentage: Float) = (percentage * max).roundToInt()
     }
+
+    class StringDelegate(
+        private val sharedPreferences: SharedPreferences,
+        private val key: String,
+        private val defaultValue: String
+    ) : ReadWriteProperty<Any, String> {
+
+        override fun getValue(thisRef: Any, property: KProperty<*>): String {
+            return sharedPreferences.getString(key, defaultValue) ?: defaultValue
+        }
+
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
+            sharedPreferences.edit().putString(key, value).apply()
+        }
+    }
 }

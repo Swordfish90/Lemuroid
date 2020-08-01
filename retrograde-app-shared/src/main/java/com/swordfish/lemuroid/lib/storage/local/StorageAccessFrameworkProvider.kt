@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.lib.storage.local
 
 import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
@@ -9,10 +10,13 @@ import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
 import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.R
+import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
+import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
@@ -35,16 +39,14 @@ class StorageAccessFrameworkProvider(
 
     override val enabledByDefault = true
 
-    override fun listUris(): Observable<Uri> {
+    override fun listBaseStorageFiles(): Observable<List<BaseStorageFile>> {
         return getExternalFolder()?.let { folder ->
             traverseDirectoryEntries(Uri.parse(folder))
         } ?: Observable.empty()
     }
 
-    override fun getStorageFile(uri: Uri): StorageFile? {
-        return DocumentFile.fromSingleUri(context, uri)?.let {
-            DocumentFileParser.parseDocumentFile(context, it)
-        }
+    override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? {
+        return DocumentFileParser.parseDocumentFile(context, baseStorageFile)
     }
 
     private fun getExternalFolder(): String? {
@@ -53,39 +55,96 @@ class StorageAccessFrameworkProvider(
         return preferenceManager.getString(prefString, null)
     }
 
-    private fun traverseDirectoryEntries(rootUri: Uri): Observable<Uri> = Observable.create { emitter ->
+    private fun traverseDirectoryEntries(
+        rootUri: Uri
+    ): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
         try {
-            var currentNode = DocumentFile.fromTreeUri(context.applicationContext, rootUri)
+            val directoryDocumentIds = mutableListOf<String>()
+            DocumentsContract.getTreeDocumentId(rootUri)?.let { directoryDocumentIds.add(it) }
 
-            // Keep track of our directory hierarchy
-            val dirNodes = mutableListOf<DocumentFile>()
-            currentNode?.let { dirNodes.add(it) }
+            while (directoryDocumentIds.isNotEmpty()) {
+                val currentDirectoryDocumentId = directoryDocumentIds.removeAt(0)
 
-            while (dirNodes.isNotEmpty()) {
-                currentNode = dirNodes.removeAt(0)
-
-                Timber.d("Detected node uri: $currentNode")
-
-                // We see on the Google Play consoles some security exceptions thrown randomly in this method.
-                // Let's try to make it as robust as possible.
-                val result = runCatching { currentNode.listFiles() }
-                val files = result.getOrElse { arrayOf() }
-
-                for (file in files) {
-                    runCatching {
-                        if (file.isDirectory) {
-                            dirNodes.add(file)
-                        } else {
-                            emitter.onNext(file.uri)
-                        }
-                    }
+                val result = runCatching {
+                    listBaseStorageFiles(rootUri, currentDirectoryDocumentId)
                 }
+                if (result.isFailure) {
+                    Timber.e(result.exceptionOrNull(), "Error while listing files")
+                }
+
+                val (files, directories) = result.getOrDefault(
+                    listOf<BaseStorageFile>() to listOf<String>()
+                )
+
+                emitter.onNext(files)
+                directoryDocumentIds.addAll(directories)
             }
         } catch (e: Exception) {
             emitter.onError(e)
         }
 
         emitter.onComplete()
+    }
+
+    private fun listBaseStorageFiles(
+        treeUri: Uri,
+        rootDocumentId: String
+    ): Pair<List<BaseStorageFile>, List<String>> {
+        val resultFiles = mutableListOf<BaseStorageFile>()
+        val resultDirectories = mutableListOf<String>()
+
+        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, rootDocumentId)
+
+        Timber.d("Querying files in directory: $childrenUri")
+
+        val projection = arrayOf(
+            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            DocumentsContract.Document.COLUMN_SIZE,
+            DocumentsContract.Document.COLUMN_MIME_TYPE
+        )
+        context.contentResolver.query(childrenUri, projection, null, null, null)?.use {
+            while (it.moveToNext()) {
+                val documentId = it.getString(0)
+                val documentName = it.getString(1)
+                val documentSize = it.getLong(2)
+                val mimeType = it.getString(3)
+
+                if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
+                    resultDirectories.add(documentId)
+                } else {
+                    val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+                        treeUri,
+                        documentId
+                    )
+                    resultFiles.add(
+                        BaseStorageFile(
+                            name = documentName,
+                            size = documentSize,
+                            uri = documentUri,
+                            path = documentUri.path
+                        )
+                    )
+                }
+            }
+        }
+
+        return resultFiles to resultDirectories
+    }
+
+    override fun prepareDataFile(game: Game, dataFile: DataFile) = Completable.fromAction {
+        val cacheFile = GameCacheUtils.getDataFileForGame(
+            SAF_CACHE_SUBFOLDER,
+            context,
+            game,
+            dataFile
+        )
+        if (cacheFile.exists()) {
+            return@fromAction
+        }
+
+        val stream = context.contentResolver.openInputStream(Uri.parse(dataFile.fileUri))!!
+        stream.writeToFile(cacheFile)
     }
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
@@ -98,7 +157,9 @@ class StorageAccessFrameworkProvider(
         val originalDocument = DocumentFile.fromSingleUri(context, originalDocumentUri)!!
 
         if (originalDocument.isZipped() && originalDocument.name != game.fileName) {
-            val stream = ZipInputStream(context.contentResolver.openInputStream(originalDocument.uri))
+            val stream = ZipInputStream(
+                context.contentResolver.openInputStream(originalDocument.uri)
+            )
             stream.extractEntryToFile(game.fileName, cacheFile)
         } else {
             val stream = context.contentResolver.openInputStream(originalDocument.uri)!!

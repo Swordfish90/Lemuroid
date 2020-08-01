@@ -70,8 +70,10 @@ interface GameDao {
         """)
     fun selectFirstUnfavoriteRecents(limit: Int): LiveData<List<Game>>
 
-    @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
-    fun selectFirstRecents(limit: Int): Observable<List<Game>>
+    @Query("""
+        SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
+        """)
+    fun rxSelectFirstUnfavoriteRecents(limit: Int): Observable<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
     fun selectFirstFavorites(limit: Int): LiveData<List<Game>>
@@ -92,7 +94,7 @@ interface GameDao {
     fun insert(game: Game)
 
     @Insert
-    fun insert(games: List<Game>)
+    fun insert(games: List<Game>): List<Long>
 
     @Delete
     fun delete(games: List<Game>)

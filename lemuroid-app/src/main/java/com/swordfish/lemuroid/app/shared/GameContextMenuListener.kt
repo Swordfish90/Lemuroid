@@ -1,9 +1,8 @@
-package com.swordfish.lemuroid.app.mobile.shared
+package com.swordfish.lemuroid.app.shared
 
 import android.view.ContextMenu
 import android.view.View
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class GameContextMenuListener(

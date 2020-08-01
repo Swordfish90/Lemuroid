@@ -23,6 +23,7 @@ import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
@@ -76,7 +77,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val directoriesManager = DirectoriesManager(applicationContext)
 
         try {
-            initializeRetroGameView(directoriesManager, settingsManager.simulateScreen)
+            initializeRetroGameView(directoriesManager, settingsManager.screenFilter)
         } catch (e: Exception) {
             Timber.e(e, "Failed running game load")
             retroGameView = null
@@ -127,14 +128,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             ?.subscribe()
     }
 
-    private fun initializeRetroGameView(directoriesManager: DirectoriesManager, useShaders: Boolean) {
+    private fun initializeRetroGameView(directoriesManager: DirectoriesManager, screenFilter: String) {
         retroGameView = GLRetroView(
                 this,
                 intent.getStringExtra(EXTRA_CORE_PATH)!!,
                 intent.getStringExtra(EXTRA_GAME_PATH)!!,
                 directoriesManager.getSystemDirectory().absolutePath,
                 directoriesManager.getSavesDirectory().absolutePath,
-                getShaderForSystem(useShaders, system)
+                getShaderForSystem(screenFilter, system)
         )
         retroGameView?.isFocusable = false
         retroGameView?.isFocusableInTouchMode = false
@@ -181,7 +182,30 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected abstract fun getDialogClass(): Class<out Activity>
 
-    protected abstract fun getShaderForSystem(useShader: Boolean, system: GameSystem): Int
+    private fun getShaderForSystem(screenFiter: String, system: GameSystem): Int {
+        return when (screenFiter) {
+            "crt" -> GLRetroView.SHADER_CRT
+            "lcd" -> GLRetroView.SHADER_LCD
+            "smooth" -> GLRetroView.SHADER_DEFAULT
+            "sharp" -> GLRetroView.SHADER_SHARP
+            else -> when (system.id) {
+                SystemID.GBA -> GLRetroView.SHADER_LCD
+                SystemID.GBC -> GLRetroView.SHADER_LCD
+                SystemID.GB -> GLRetroView.SHADER_LCD
+                SystemID.N64 -> GLRetroView.SHADER_CRT
+                SystemID.GENESIS -> GLRetroView.SHADER_CRT
+                SystemID.NES -> GLRetroView.SHADER_CRT
+                SystemID.SNES -> GLRetroView.SHADER_CRT
+                SystemID.FBNEO -> GLRetroView.SHADER_CRT
+                SystemID.SMS -> GLRetroView.SHADER_CRT
+                SystemID.PSP -> GLRetroView.SHADER_LCD
+                SystemID.NDS -> GLRetroView.SHADER_LCD
+                SystemID.GG -> GLRetroView.SHADER_LCD
+                SystemID.ATARI2600 -> GLRetroView.SHADER_CRT
+                SystemID.PSX -> GLRetroView.SHADER_CRT
+            }
+        }
+    }
 
     private fun isAutoSaveEnabled(): Boolean {
         return settingsManager.autoSave

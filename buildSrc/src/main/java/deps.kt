@@ -22,7 +22,7 @@ object deps {
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
-        const val libretrodroid   = "0.3.1"
+        const val libretrodroid   = "0.3.2"
         const val radialgamepad   = "0.1.0"
     }
 
@@ -34,7 +34,7 @@ object deps {
                 const val leanbackPreference = "androidx.leanback:leanback-preference:${versions.leanback}"
                 const val palette = "androidx.palette:palette:1.0.0"
                 const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
-                const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
+                const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
             }
             object ktx {
                 const val core = "androidx.core:core-ktx:1.0.1"
@@ -49,9 +49,9 @@ object deps {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
             }
             object paging {
-                const val common = "androidx.paging:paging-common:2.0.0"
-                const val runtime = "androidx.paging:paging-runtime:2.0.0"
-                const val rxjava2 = "androidx.paging:paging-rxjava2:2.0.0"
+                const val common = "androidx.paging:paging-common:2.1.2"
+                const val runtime = "androidx.paging:paging-runtime:2.1.2"
+                const val rxjava2 = "androidx.paging:paging-rxjava2-ktx:2.1.2"
             }
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"

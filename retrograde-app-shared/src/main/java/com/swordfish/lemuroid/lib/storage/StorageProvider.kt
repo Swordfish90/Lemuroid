@@ -21,8 +21,10 @@ package com.swordfish.lemuroid.lib.storage
 
 import android.net.Uri
 import androidx.leanback.preference.LeanbackPreferenceFragment
+import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
@@ -42,11 +44,13 @@ interface StorageProvider {
 
     val enabledByDefault: Boolean
 
-    fun listUris(): Observable<Uri>
+    fun listBaseStorageFiles(): Observable<List<BaseStorageFile>>
 
     fun getInputStream(uri: Uri): InputStream?
 
-    fun getStorageFile(uri: Uri): StorageFile?
+    fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile?
+
+    fun prepareDataFile(game: Game, dataFile: DataFile): Completable
 
     fun getGameRom(game: Game): Single<File>
 }

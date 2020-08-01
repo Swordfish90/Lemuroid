@@ -18,7 +18,6 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
-import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
@@ -115,7 +114,7 @@ class GameMenuFragment : Fragment() {
             activity?.finish()
         }
 
-        view!!.setVisibleOrInvisible(true)
+        view!!.setVisibleOrGone(true)
     }
 
     private fun setupQuickSaveView(quickSaveView: View, index: Int, saveInfo: SavesManager.SaveInfos) {
@@ -123,7 +122,7 @@ class GameMenuFragment : Fragment() {
 
         quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).apply {
             this.text = getDateString(saveInfo)
-            this.setVisibleOrInvisible(saveInfo.exists)
+            this.setVisibleOrGone(saveInfo.exists)
         }
         quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_text).text = title
         quickSaveView.findViewById<Button>(R.id.game_dialog_entry_load).apply {

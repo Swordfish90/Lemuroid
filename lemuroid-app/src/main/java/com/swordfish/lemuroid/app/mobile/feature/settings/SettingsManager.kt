@@ -24,10 +24,10 @@ class SettingsManager(private val context: Context) {
         true
     )
 
-    var simulateScreen: Boolean by SharedPreferencesDelegates.BooleanDelegate(
+    var screenFilter: String by SharedPreferencesDelegates.StringDelegate(
         sharedPreferences,
-        getString(R.string.pref_key_shader),
-        true
+        getString(R.string.pref_key_shader_filter),
+        context.resources.getStringArray(R.array.pref_key_shader_filter_values).first()
     )
 
     var tiltSensitivity: Float by SharedPreferencesDelegates.PercentageDelegate(

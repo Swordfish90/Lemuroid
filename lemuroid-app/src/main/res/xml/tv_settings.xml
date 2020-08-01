@@ -3,11 +3,14 @@
     android:title="@string/settings"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreference
-        android:key="@string/pref_key_shader"
-        android:title="@string/simulate_display"
+    <ListPreference
+        android:key="@string/pref_key_shader_filter"
+        android:title="@string/display_filter"
         app:iconSpaceReserved="false"
-        android:defaultValue="true"/>
+        app:useSimpleSummaryProvider="true"
+        android:entries="@array/pref_key_shader_filter_names"
+        app:entryValues="@array/pref_key_shader_filter_values"
+        android:defaultValue="auto"/>
 
     <SwitchPreference
         android:key="@string/pref_key_autosave"

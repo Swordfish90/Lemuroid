@@ -70,7 +70,7 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
     private fun createAdapter(): ArrayObjectAdapter {
         val searchAdapter = ArrayObjectAdapter(ListRowPresenter())
 
-        val gamePresenter = GamePresenter(resources.getDimensionPixelSize(R.dimen.card_size))
+        val gamePresenter = GamePresenter(resources.getDimensionPixelSize(R.dimen.card_size), gameInteractor)
         val gamesAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
         searchAdapter.add(ListRow(HeaderItem(resources.getString(R.string.tv_search_results)), gamesAdapter))
 

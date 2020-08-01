@@ -45,7 +45,7 @@ class TVGamesFragment : VerticalGridSupportFragment() {
 
         gamesViewModel.games.observe(this, Observer { pagedList ->
             val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
-            val adapter = PagedListObjectAdapter(GamePresenter(cardSize), Game.DIFF_CALLBACK)
+            val adapter = PagedListObjectAdapter(GamePresenter(cardSize, gameInteractor), Game.DIFF_CALLBACK)
             adapter.pagedList = pagedList
             this.adapter = adapter
         })

@@ -50,6 +50,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.lib.bios.BiosManager
+import com.swordfish.lemuroid.lib.library.db.dao.Migrations
 
 import dagger.Binds
 import dagger.Module
@@ -112,7 +113,7 @@ abstract class LemuroidApplicationModule {
         fun retrogradeDb(app: LemuroidApplication) =
                 Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
                         .addCallback(GameSearchDao.CALLBACK)
-                        .addMigrations(GameSearchDao.MIGRATION)
+                        .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9)
                         .fallbackToDestructiveMigration()
                         .build()
 
@@ -227,8 +228,9 @@ abstract class LemuroidApplicationModule {
             coreManager: CoreManager,
             lemuroidLibrary: LemuroidLibrary,
             savesManager: SavesManager,
-            coreVariablesManager: CoreVariablesManager
-        ) = GameLoader(coreManager, lemuroidLibrary, savesManager, coreVariablesManager)
+            coreVariablesManager: CoreVariablesManager,
+            retrogradeDatabase: RetrogradeDatabase
+        ) = GameLoader(coreManager, lemuroidLibrary, savesManager, coreVariablesManager, retrogradeDatabase)
 
         @Provides
         @PerApp

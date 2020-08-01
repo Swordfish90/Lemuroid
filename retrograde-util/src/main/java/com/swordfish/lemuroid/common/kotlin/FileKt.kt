@@ -26,8 +26,10 @@ import java.util.zip.CRC32
 import java.util.zip.CheckedInputStream
 import java.util.zip.ZipInputStream
 
+private const val CRC32_BYTE_ARRAY_SIZE = 16 * 1024
+
 fun InputStream.calculateCrc32(): String = this.use { fileStream ->
-    val buffer = ByteArray(1024)
+    val buffer = ByteArray(CRC32_BYTE_ARRAY_SIZE)
     CheckedInputStream(fileStream, CRC32()).use { crcStream ->
         while (crcStream.read(buffer) != -1) {
             // Read file in completely

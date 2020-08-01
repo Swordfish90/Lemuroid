@@ -19,18 +19,22 @@
 
 package com.swordfish.lemuroid.lib.library
 
-import android.net.Uri
-import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
+import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.bios.BiosManager
+import com.swordfish.lemuroid.lib.library.db.entity.DataFile
+import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
+import com.swordfish.lemuroid.lib.storage.BaseStorageFile
+import com.swordfish.lemuroid.lib.storage.GroupedStorageFiles
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
+import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
@@ -44,87 +48,203 @@ class LemuroidLibrary(
     fun indexLibrary(): Completable {
         val startedAtMs = System.currentTimeMillis()
 
-        return Observable.fromIterable(providerProviderRegistry.enabledProviders).concatMap { provider ->
-            provider.listUris()
-                .flatMapSingle { uri -> retrieveGameForUri(uri) }
-                .buffer(BUFFER_SIZE)
-                .doOnNext { pairs -> updateExisting(pairs, startedAtMs) }
-                .map { pairs -> filterNotExisting(pairs) }
-                .map { pairs -> retrieveStorageFiles(provider, pairs) }
-                .flatMapSingle { retrieveGames(it, provider, startedAtMs) }
-                .doOnNext { (files, games) ->
-                    handleNewGames(games)
-                    handleUnknownFiles(provider, files, startedAtMs)
-                }
-        }
-        .doOnComplete { removeDeletedBios(startedAtMs) }
-        .doOnComplete { removeDeletedGames(startedAtMs) }
-        .doOnComplete {
-            Timber.i("Library indexing completed in: ${System.currentTimeMillis() - startedAtMs} ms")
-        }
-        .ignoreElements()
+        return Observable.fromIterable(providerProviderRegistry.enabledProviders)
+            .concatMap { provider ->
+                provider.listBaseStorageFiles()
+                    .map { StorageFilesMerger.mergeDataFiles(provider, it) }
+                    .flatMap { Observable.fromIterable(it) }
+                    .flatMapSingle { retrieveGameForUri(it) }
+                    .buffer(BUFFER_SIZE)
+                    .doOnNext { pairs -> updateExistingGames(pairs, startedAtMs) }
+                    .doOnNext { pairs -> refreshGamesDataFiles(pairs, startedAtMs) }
+                    .map { pairs -> filterNotExisting(pairs) }
+                    .flatMap { retrieveGames(it, provider, startedAtMs) }
+                    .buffer(BUFFER_SIZE)
+                    .doOnNext { pairs ->
+
+                        val games = pairs
+                            .filter { (_, game) -> game is Some }
+                            .map { (files, game) -> files to game.toNullable()!! }
+
+                        val unknownFiles = pairs
+                            .filter { (_, game) -> game is None }
+                            .flatMap { (files, _) -> files.allFiles() }
+
+                        handleNewGames(games, startedAtMs)
+                        handleUnknownFiles(provider, unknownFiles, startedAtMs)
+                    }
+            }
+            .doOnComplete { removeDeletedBios(startedAtMs) }
+            .doOnComplete { removeDeletedGames(startedAtMs) }
+            .doOnComplete { removeDeletedDataFiles(startedAtMs) }
+            .doOnComplete {
+                Timber.i(
+                    "Library indexing completed in: ${System.currentTimeMillis() - startedAtMs} ms"
+                )
+            }
+            .ignoreElements()
     }
 
     private fun removeDeletedBios(startedAtMs: Long) {
         biosManager.deleteBiosBefore(startedAtMs)
     }
 
-    private fun retrieveStorageFiles(provider: StorageProvider, pairs: List<Pair<Uri, Optional<Game>>>) =
-            pairs.mapNotNull { (uri, _) ->
-                runCatching { provider.getStorageFile(uri) }.getOrNull()
+    private fun handleNewGames(pairs: List<Pair<GroupedStorageFiles, Game>>, startedAtMs: Long) {
+        val games = pairs.map { (_, game) -> game }
+        games.forEach { Timber.d("Insert: $it") }
+
+        val gameIds = retrogradedb.gameDao().insert(games)
+        val dataFiles = pairs
+            .map { it.first.dataFiles }
+            .zip(gameIds)
+            .flatMap { (files, gameId) ->
+                files.map {
+                    convertIntoDataFile(gameId.toInt(), it, startedAtMs)
+                }
             }
 
-    private fun handleNewGames(games: List<Game>) {
-        games.forEach { Timber.d("Insert: $it") }
-        retrogradedb.gameDao().insert(games)
+        retrogradedb.dataFileDao().insert(dataFiles)
     }
 
-    private fun handleUnknownFiles(provider: StorageProvider, files: List<StorageFile>, startedAtMs: Long) {
-        files.forEach { storageFile ->
-            provider.getInputStream(storageFile.uri)?.let { inputStream ->
+    private fun convertIntoDataFile(
+        gameId: Int,
+        baseStorageFile: BaseStorageFile,
+        startedAtMs: Long
+    ): DataFile {
+        return DataFile(
+            gameId = gameId,
+            fileUri = baseStorageFile.uri.toString(),
+            fileName = baseStorageFile.name,
+            lastIndexedAt = startedAtMs,
+            path = baseStorageFile.path
+        )
+    }
+
+    private fun handleUnknownFiles(
+        provider: StorageProvider,
+        files: List<BaseStorageFile>,
+        startedAtMs: Long
+    ) {
+        files.forEach { baseStorageFile ->
+            val storageFile = runCatching { provider.getStorageFile(baseStorageFile) }.getOrNull()
+            val inputStream = storageFile?.uri?.let { provider.getInputStream(it) }
+
+            if (storageFile != null && inputStream != null) {
                 biosManager.tryAddBiosAfter(storageFile, inputStream, startedAtMs)
             }
         }
     }
 
     private fun retrieveGames(
-        it: List<StorageFile>,
+        it: List<GroupedStorageFiles>,
         provider: StorageProvider,
         startedAtMs: Long
-    ): Single<Pair<List<StorageFile>, List<Game>>> {
-        return Observable.fromIterable(it)
-            .flatMap { retrieveGame(it, provider, startedAtMs) }
-            .reduce(Pair(listOf(), listOf())) { (files, games), (file, game) ->
-                if (game is Some) {
-                    files to (games + game.toNullable()!!)
-                } else {
-                    (files + file) to games
-                }
+    ): Observable<Pair<GroupedStorageFiles, Optional<Game>>> {
+        return Observable.fromIterable(it).flatMapSingle { storageFile ->
+            retrieveGame(storageFile, provider, startedAtMs)
+        }
+    }
+
+    private fun retrieveGame(
+        groupedStorageFile: GroupedStorageFiles,
+        provider: StorageProvider,
+        startedAtMs: Long
+    ): Single<Pair<GroupedStorageFiles, Optional<Game>>> {
+        return Observable.fromIterable(groupedStorageFile.allFiles())
+            .flatMapMaybe {
+                Maybe.fromCallable<StorageFile> { provider.getStorageFile(it) }.onErrorComplete()
             }
+            .flatMapSingle { storageFile ->
+                provider.metadataProvider.retrieveMetadata(storageFile).map { storageFile to it }
+            }
+            .map { (storageFile, metadata) ->
+                convertGameMetadataToGame(groupedStorageFile, storageFile, metadata, startedAtMs)
+            }
+            .filter { it is Some }
+            .first(None)
+            .map { groupedStorageFile to it }
     }
 
-    private fun retrieveGame(storageFile: StorageFile, provider: StorageProvider, startedAtMs: Long) =
-        Observable.just(storageFile).compose(provider.metadataProvider.transformer(startedAtMs))
-            .map { storageFile to it }
+    private fun convertGameMetadataToGame(
+        groupedStorageFile: GroupedStorageFiles,
+        storageFile: StorageFile,
+        gameMetadataOptional: Optional<GameMetadata>,
+        lastIndexedAt: Long
+    ): Optional<Game> {
 
-    private fun updateExisting(pairs: MutableList<Pair<Uri, Optional<Game>>>, startedAtMs: Long) {
-        pairs.forEach { (uri, game) -> Timber.d("Game already indexed? $uri ${game is Some}") }
-        pairs.filter { (_, game) -> game is Some }
-                .map { (_, game) -> game.component1()!!.copy(lastIndexedAt = startedAtMs) }
-                .let { games ->
-                    games.forEach { Timber.d("Update: $it") }
-                    retrogradedb.gameDao().update(games)
-                }
+        if (gameMetadataOptional is None) return None
+        val gameMetadata = gameMetadataOptional.component1()!!
+
+        val gameSystem = GameSystem.findById(gameMetadata.system!!)
+
+        // If the databased matched a data file (as with bin/cue) we force link the primary filename
+        val fileName = if (groupedStorageFile.dataFiles.isNotEmpty()) {
+            groupedStorageFile.primaryFile.name
+        } else {
+            storageFile.name
+        }
+
+        val game = Game(
+            fileName = fileName,
+            fileUri = groupedStorageFile.primaryFile.uri.toString(),
+            title = gameMetadata.name ?: groupedStorageFile.primaryFile.name,
+            systemId = gameSystem.id.dbname,
+            developer = gameMetadata.developer,
+            coverFrontUrl = gameMetadata.thumbnail,
+            lastIndexedAt = lastIndexedAt
+        )
+        return Some(game)
     }
 
-    private fun filterNotExisting(pairs: List<Pair<Uri, Optional<Game>>>) =
-            pairs.filter { (_, game) -> game is None }
+    private fun updateExistingGames(
+        pairs: MutableList<Pair<GroupedStorageFiles, Optional<Game>>>,
+        startedAtMs: Long
+    ) {
+        pairs.forEach { (storageFiles, game) ->
+            val fileName = storageFiles.primaryFile.name
+            Timber.d("Game already indexed? $fileName ${game is Some}")
+        }
 
-    private fun retrieveGameForUri(uri: Uri): Single<Pair<Uri, Optional<Game>>> {
-        Timber.d("Retrieving game for uri: $uri")
-        return retrogradedb.gameDao().selectByFileUri(uri.toString())
-                .toSingleAsOptional()
-                .map { game -> Pair(uri, game) }
+        val updatedGames = pairs.filter { (_, game) -> game is Some }
+            .map { (_, game) -> game.component1()!!.copy(lastIndexedAt = startedAtMs) }
+
+        updatedGames.forEach { Timber.d("Updating game: $it") }
+        retrogradedb.gameDao().update(updatedGames)
+    }
+
+    private fun refreshGamesDataFiles(
+        pairs: MutableList<Pair<GroupedStorageFiles, Optional<Game>>>,
+        startedAtMs: Long
+    ) {
+        val dataFiles = pairs.filter { (_, game) -> game is Some }
+            .flatMap { (storageFile, game) ->
+                val gameId = game.component1()!!.id
+                storageFile.dataFiles.map { convertIntoDataFile(gameId, it, startedAtMs) }
+            }
+
+        dataFiles.forEach { Timber.d("Adding new data file: $it") }
+        retrogradedb.dataFileDao().insert(dataFiles)
+    }
+
+    private fun filterNotExisting(
+        pairs: List<Pair<GroupedStorageFiles, Optional<Game>>>
+    ): List<GroupedStorageFiles> {
+        return pairs.filter { (_, game) -> game is None }
+            .map { (storageFile, _) -> storageFile }
+    }
+
+    private fun retrieveGameForUri(
+        storageFile: GroupedStorageFiles
+    ): Single<Pair<GroupedStorageFiles, Optional<Game>>> {
+        Timber.d("Retrieving game for uri: ${storageFile.primaryFile}")
+        return retrogradedb.gameDao().selectByFileUri(storageFile.primaryFile.uri.toString())
+            .toSingleAsOptional()
+            .map { game -> storageFile to game }
+    }
+
+    private fun removeDeletedDataFiles(startedAtMs: Long) {
+        val dataFiles = retrogradedb.dataFileDao().selectByLastIndexedAtLessThan(startedAtMs)
+        retrogradedb.dataFileDao().delete(dataFiles)
     }
 
     private fun removeDeletedGames(startedAtMs: Long) {
@@ -132,8 +252,11 @@ class LemuroidLibrary(
         retrogradedb.gameDao().delete(games)
     }
 
+    fun prepareDataFile(game: Game, dataFile: DataFile): Completable =
+        providerProviderRegistry.getProvider(game).prepareDataFile(game, dataFile)
+
     fun getGameRom(game: Game): Single<File> =
-            providerProviderRegistry.getProvider(game).getGameRom(game)
+        providerProviderRegistry.getProvider(game).getGameRom(game)
 
     companion object {
         // We batch database updates to avoid unnecessary UI updates.

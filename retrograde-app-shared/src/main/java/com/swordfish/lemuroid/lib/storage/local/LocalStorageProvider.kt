@@ -22,17 +22,19 @@ package com.swordfish.lemuroid.lib.storage.local
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
-import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
 import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.lib.R
+import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
+import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
@@ -55,12 +57,11 @@ class LocalStorageProvider(
 
     override val enabledByDefault = true
 
-    override fun listUris(): Observable<Uri> =
-        Observable.fromIterable(walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory()))
+    override fun listBaseStorageFiles(): Observable<List<BaseStorageFile>> =
+        walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory())
 
-    override fun getStorageFile(uri: Uri): StorageFile? {
-        val documentFile = DocumentFile.fromFile(File(uri.path))
-        return DocumentFileParser.parseDocumentFile(context, documentFile)
+    override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? {
+        return DocumentFileParser.parseDocumentFile(context, baseStorageFile)
     }
 
     private fun getExternalFolder(): File? {
@@ -69,12 +70,28 @@ class LocalStorageProvider(
         return preferenceManager.getString(prefString, null)?.let { File(it) }
     }
 
-    private fun walkDirectory(directory: File): Iterable<Uri> {
-        return directory.walk()
-            .filter { file -> file.isFile && !file.name.startsWith(".") }
-            .map { it.toUri() }
-            .asIterable()
+    private fun walkDirectory(rootDirectory: File): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
+        val directories = mutableListOf(rootDirectory)
+
+        while (directories.isNotEmpty()) {
+            val directory = directories.removeAt(0)
+            val groups = directory.listFiles()
+                ?.filterNot { it.name.startsWith(".") }
+                ?.groupBy { it.isDirectory } ?: mapOf()
+
+            val newDirectories = groups[true] ?: listOf()
+            val newFiles = groups[false] ?: listOf()
+
+            directories.addAll(newDirectories)
+            emitter.onNext(newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) })
+        }
+
+        emitter.onComplete()
     }
+
+    // There is no need to handle anything. Data file have to be in the same directory for detection we expect them
+    // to still be there.
+    override fun prepareDataFile(game: Game, dataFile: DataFile) = Completable.complete()
 
     override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
         val gamePath = Uri.parse(game.fileUri).path
