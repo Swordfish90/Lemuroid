@@ -22,11 +22,7 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
         viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.updateCardViewImage(game.coverFrontUrl)
-        viewHolder.view.setOnCreateContextMenuListener(
-            GameContextMenuListener(
-                gameInteractor, game
-            )
-        )
+        viewHolder.view.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
