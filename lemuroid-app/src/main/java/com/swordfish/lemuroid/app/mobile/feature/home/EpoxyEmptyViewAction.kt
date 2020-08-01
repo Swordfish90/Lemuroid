@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.home
 
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -39,6 +40,7 @@ abstract class EpoxyEmptyViewAction : EpoxyModelWithHolder<EpoxyEmptyViewAction.
     override fun unbind(holder: Holder) {
         super.unbind(holder)
         holder.buttonView?.setOnClickListener(null)
+        holder.messageView?.movementMethod = null
     }
 
     class Holder : EpoxyHolder() {
@@ -49,9 +51,11 @@ abstract class EpoxyEmptyViewAction : EpoxyModelWithHolder<EpoxyEmptyViewAction.
 
         override fun bindView(itemView: View) {
             this.itemView = itemView
-            this.messageView = itemView.findViewById(R.id.message)
             this.titleView = itemView.findViewById(R.id.title)
             this.buttonView = itemView.findViewById(R.id.action)
+            this.messageView = itemView.findViewById<TextView>(R.id.message)?.apply {
+                movementMethod = LinkMovementMethod.getInstance()
+            }
         }
     }
 }

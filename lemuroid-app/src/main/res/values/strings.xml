@@ -44,7 +44,7 @@
     <string name="game_context_menu_restart">Restart</string>
 
     <string name="home_empty_title">Select ROMs directory</string>
-    <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
+    <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.\n\nIf you are having scanning issues check out the <a href="https://github.com/Swordfish90/Lemuroid/wiki/Scanning">Wiki</a>.</string>
     <string name="home_empty_action">Select Directory</string>
 
     <string name="game_menu_save">Save</string>
@@ -94,6 +94,8 @@
     <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>
 
     <string name="game_edit_touch_controls_error_not_visible">Disconnect your pad to edit your touch controls</string>
+
+    <string name="mobile_settings_help">Help</string>
 
     <string-array name="pref_key_shader_filter_names">
         <item>Auto</item>
