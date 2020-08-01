@@ -2,7 +2,6 @@
 package com.swordfish.lemuroid.metadata.libretrodb
 
 import com.swordfish.lemuroid.lib.library.GameSystem
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
@@ -10,10 +9,13 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDatabase
 import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
-import com.gojuno.koptional.Some
+import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import io.reactivex.Single
 import timber.log.Timber
 import java.util.Locale
 
@@ -25,56 +27,34 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
             .sortedByDescending { it.length }
     }
 
-    override fun transformer(startedAtMs: Long) = ObservableTransformer<StorageFile, Optional<Game>> { upstream ->
-        ovgdbManager.dbReady
-                .flatMapObservable { db: LibretroDatabase ->
-                    upstream
-                        .doOnNext { Timber.d("Looking metadata for file: $it") }
-                        .flatMapSingle { file ->
-                            findByCRC(file, db)
-                                .switchIfEmpty(findBySerial(file, db))
-                                .switchIfEmpty(findByFilename(db, file))
-                                .switchIfEmpty(findByPathAndFilename(db, file))
-                                .switchIfEmpty(findByUniqueExtension(file))
-                                .switchIfEmpty(findByPathAndSupportedExtension(file))
-                                .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
-                                .map { convertToGame(it, file, startedAtMs) }
-                                .toSingle(None)
-                                .doOnError { Timber.e("Error in retrieving $file metadata: $it... Skipping.") }
-                                .onErrorReturn { None }
-                        }
-                }
-    }
-
-    private fun convertToGame(rom: GameMetadata, file: StorageFile, startedAtMs: Long): Optional<Game> {
-        val system = GameSystem.findById(rom.system!!)
-
-        val thumbnail = if (rom.includeThumbnail) {
-            computeCoverUrl(system, rom.name)
-        } else {
-            null
-        }
-
-        val game = Game(
-                fileName = file.name,
-                fileUri = file.uri.toString(),
-                title = rom.name ?: file.name,
-                systemId = system.id.dbname,
-                developer = rom.developer,
-                coverFrontUrl = thumbnail,
-                lastIndexedAt = startedAtMs
-        )
-        return Some(game)
+    override fun retrieveMetadata(storageFile: StorageFile): Single<Optional<GameMetadata>> {
+        return ovgdbManager.dbReady
+            .flatMap { db: LibretroDatabase ->
+                Single.just(storageFile)
+                    .doOnSuccess { Timber.d("Looking metadata for file: $it") }
+                    .flatMap { file ->
+                        findByCRC(file, db)
+                            .switchIfEmpty(findBySerial(file, db))
+                            .switchIfEmpty(findByFilename(db, file))
+                            .switchIfEmpty(findByPathAndFilename(db, file))
+                            .switchIfEmpty(findByUniqueExtension(file))
+                            .switchIfEmpty(findByPathAndSupportedExtension(file))
+                            .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
+                            .toSingleAsOptional()
+                            .doOnError { Timber.e("Error in retrieving $file metadata: $it... Skipping.") }
+                            .onErrorReturn { None }
+                    }
+            }
     }
 
     private fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
+        val system = GameSystem.findById(rom.system!!)
         return GameMetadata(
-                name = rom.name,
-                romName = rom.romName,
-                includeThumbnail = true,
-                system = rom.system,
-                crc32 = rom.crc32,
-                developer = rom.developer
+            name = rom.name,
+            romName = rom.romName,
+            thumbnail = computeCoverUrl(system, rom.name),
+            system = rom.system,
+            developer = rom.developer
         )
     }
 
@@ -100,12 +80,11 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
         system?.let {
             GameMetadata(
-                    name = file.extensionlessName,
-                    romName = file.name,
-                    includeThumbnail = false,
-                    system = it.id.dbname,
-                    crc32 = file.crc,
-                    developer = null
+                name = file.extensionlessName,
+                romName = file.name,
+                thumbnail = null,
+                system = it.id.dbname,
+                developer = null
             )
         }
     }
@@ -138,12 +117,11 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
         val result = system?.let {
             GameMetadata(
-                    name = file.extensionlessName,
-                    romName = file.name,
-                    includeThumbnail = false,
-                    system = it.id.dbname,
-                    crc32 = file.crc,
-                    developer = null
+                name = file.extensionlessName,
+                romName = file.name,
+                thumbnail = null,
+                system = it.id.dbname,
+                developer = null
             )
         }
 
@@ -165,13 +143,4 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
         return "http://thumbnails.libretro.com/$systemName/$imageType/$name.png"
     }
-
-    private data class GameMetadata(
-        val name: String?,
-        val system: String?,
-        val romName: String?,
-        val developer: String?,
-        val crc32: String?,
-        val includeThumbnail: Boolean
-    )
 }

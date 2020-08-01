@@ -24,10 +24,11 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
-import com.gojuno.koptional.toOptional
+import com.swordfish.lemuroid.common.files.FileUtils
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
+import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.GroupedStorageFiles
 import com.swordfish.lemuroid.lib.storage.StorageFile
@@ -154,24 +155,40 @@ class LemuroidLibrary(
             .flatMapMaybe {
                 Maybe.fromCallable<StorageFile> { provider.getStorageFile(it) }.onErrorComplete()
             }
-            .compose(provider.metadataProvider.transformer(startedAtMs))
-            .map { forcePrimaryStorageFile(it.component1(), groupedStorageFile).toOptional() }
+            .flatMapSingle { storageFile ->
+                provider.metadataProvider.retrieveMetadata(storageFile).map { storageFile to it }
+            }
+            .map { (storageFile, metadata) ->
+                convertGameMetadataToGame(groupedStorageFile, storageFile, metadata, startedAtMs)
+            }
             .filter { it is Some }
             .first(None)
             .map { groupedStorageFile to it }
     }
 
-    /** Some games have serial matching on secondary data files (the bin file with cue as primary). Here we make sure to
-     *  link to the primary file. */
-    private fun forcePrimaryStorageFile(game: Game?, storageFile: GroupedStorageFiles): Game? {
-        return if (storageFile.dataFiles.any { it.uri.toString() == game?.fileUri }) {
-            game?.copy(
-                fileUri = storageFile.primaryFile.uri.toString(),
-                fileName = storageFile.primaryFile.name
-            )
+    private fun convertGameMetadataToGame(groupedStorageFile: GroupedStorageFiles, storageFile: StorageFile, gameMetadataOptional: Optional<GameMetadata>, lastIndexedAt: Long): Optional<Game> {
+        if (gameMetadataOptional is None) return None
+        val gameMetadata = gameMetadataOptional.component1()!!
+
+        val gameSystem = GameSystem.findById(gameMetadata.system!!)
+
+        // If the databased matched a data file (as with bin/cue) we force link the primary filename
+        val fileName = if (groupedStorageFile.dataFiles.isNotEmpty()) {
+            groupedStorageFile.primaryFile.name
         } else {
-            return game
+            storageFile.name
         }
+
+        val game = Game(
+            fileName = fileName,
+            fileUri = groupedStorageFile.primaryFile.uri.toString(),
+            title = gameMetadata.name ?: groupedStorageFile.primaryFile.name,
+            systemId = gameSystem.id.dbname,
+            developer = gameMetadata.developer,
+            coverFrontUrl = gameMetadata.thumbnail,
+            lastIndexedAt = lastIndexedAt
+        )
+        return Some(game)
     }
 
     private fun updateExistingGames(
