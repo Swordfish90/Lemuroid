@@ -24,7 +24,6 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.Some
-import com.swordfish.lemuroid.common.files.FileUtils
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
@@ -166,7 +165,13 @@ class LemuroidLibrary(
             .map { groupedStorageFile to it }
     }
 
-    private fun convertGameMetadataToGame(groupedStorageFile: GroupedStorageFiles, storageFile: StorageFile, gameMetadataOptional: Optional<GameMetadata>, lastIndexedAt: Long): Optional<Game> {
+    private fun convertGameMetadataToGame(
+        groupedStorageFile: GroupedStorageFiles,
+        storageFile: StorageFile,
+        gameMetadataOptional: Optional<GameMetadata>,
+        lastIndexedAt: Long
+    ): Optional<Game> {
+
         if (gameMetadataOptional is None) return None
         val gameMetadata = gameMetadataOptional.component1()!!
 
@@ -196,7 +201,8 @@ class LemuroidLibrary(
         startedAtMs: Long
     ) {
         pairs.forEach { (storageFiles, game) ->
-            Timber.d("Game already indexed? ${storageFiles.primaryFile.name} ${game is Some}")
+            val fileName = storageFiles.primaryFile.name
+            Timber.d("Game already indexed? $fileName ${game is Some}")
         }
 
         val updatedGames = pairs.filter { (_, game) -> game is Some }

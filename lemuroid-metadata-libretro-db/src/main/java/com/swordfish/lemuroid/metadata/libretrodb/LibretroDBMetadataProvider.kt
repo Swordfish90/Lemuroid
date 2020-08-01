@@ -13,8 +13,6 @@ import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
 import io.reactivex.Single
 import timber.log.Timber
 import java.util.Locale
