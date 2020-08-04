@@ -34,12 +34,19 @@ import retrofit2.http.Streaming
 import retrofit2.http.Url
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.zip.ZipInputStream
+import java.util.Locale
 
 class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: Retrofit) {
 
-    private val baseUri = Uri.parse("https://buildbot.libretro.com/")
-    private val coresUri = baseUri.buildUpon()
+    private val lemuroidCoresUri = Uri.parse("https://github.com/").buildUpon()
+            .appendEncodedPath("Swordfish90/LemuroidCores/raw/master/")
+            .appendPath(Build.SUPPORTED_ABIS.first())
+            .build()
+
+    private val libretroCoresUri = Uri.parse("https://buildbot.libretro.com/").buildUpon()
             .appendEncodedPath("nightly/android/latest/")
             .appendPath(Build.SUPPORTED_ABIS.first())
             .build()
@@ -50,6 +57,12 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
 
     init {
         coresDir.mkdirs()
+    }
+
+    private fun <T> Response<T>.throwIfUnsuccessful() {
+        if (!this.isSuccessful) {
+            throw IOException()
+        }
     }
 
     fun downloadCore(zipFileName: String, assetsManager: AssetsManager): Single<File> {
@@ -64,11 +77,17 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
 
         assetsManager.clearAssets(directoriesManager).blockingAwait()
 
-        val uri = coresUri.buildUpon()
-                .appendPath(zipFileName)
-                .build()
+        val firstUri = lemuroidCoresUri.buildUpon()
+            .appendPath(zipFileName)
+            .build()
 
-        return api.downloadZip(uri.toString())
+        val secondUri = libretroCoresUri.buildUpon()
+            .appendPath(zipFileName)
+            .build()
+
+        return api.downloadZip(firstUri.toString())
+                .map { it.throwIfUnsuccessful(); it }
+                .onErrorResumeNext { api.downloadZip(secondUri.toString()) }
                 .doOnSuccess { assetsManager.retrieveAssets(api, directoriesManager).blockingAwait() }
                 .map { response ->
                     if (!response.isSuccessful) {
@@ -91,9 +110,8 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
     }
 
     private fun isUpdated(file: File): Boolean {
-        // val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
-        // return file.lastModified() >= oldestAllowedDate?.time ?: 0
-        return true
+        val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
+        return file.lastModified() >= oldestAllowedDate?.time ?: 0
     }
 
     interface CoreManagerApi {
@@ -110,6 +128,6 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
 
     companion object {
         // Here we can force the core update. (YYYY-MM-DD)
-        private const val OLDEST_CORE_DATE = "2020-05-04"
+        private const val OLDEST_CORE_DATE = "2020-08-04"
     }
 }
