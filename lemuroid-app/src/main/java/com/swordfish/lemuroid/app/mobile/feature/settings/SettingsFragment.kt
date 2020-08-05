@@ -1,12 +1,8 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.Observer
@@ -32,26 +28,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_mobile_settings, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_options_help -> {
-                displayLemuroidWiki()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -95,11 +71,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         return super.onPreferenceTreeClick(preference)
     }
 
-    private fun displayLemuroidWiki() {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(WIKI_URL))
-        startActivity(browserIntent)
-    }
-
     private fun handleDisplayBiosInfo() {
         findNavController().navigate(R.id.navigation_settings_bios_info)
     }
@@ -128,10 +99,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun displayClearCoreCacheMessage() {
         Toast.makeText(activity, R.string.clear_cores_cache_success, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        private const val WIKI_URL = "https://github.com/Swordfish90/Lemuroid/wiki"
     }
 
     @dagger.Module
