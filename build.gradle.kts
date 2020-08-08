@@ -79,7 +79,6 @@ subprojects {
             defaultConfig {
                 minSdkVersion(deps.android.minSdkVersion)
                 targetSdkVersion(deps.android.targetSdkVersion)
-                multiDexEnabled = true
             }
             lintOptions {
                 isAbortOnError = true

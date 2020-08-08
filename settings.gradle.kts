@@ -4,5 +4,15 @@ include(
         ":lemuroid-touchinput",
         ":lemuroid-app",
         ":lemuroid-metadata-libretro-db",
-        ":lemuroid-core-gambatte"
+        ":lemuroid-core-gambatte",
+        ":lemuroid-core-desmume",
+        ":lemuroid-core-fbneo",
+        ":lemuroid-core-fceumm",
+        ":lemuroid-core-genesis_plus_gx",
+        ":lemuroid-core-mgba",
+        ":lemuroid-core-mupen64plus_next_gles3",
+        ":lemuroid-core-pcsx_rearmed",
+        ":lemuroid-core-ppsspp",
+        ":lemuroid-core-snes9x",
+        ":lemuroid-core-stella"
 )
