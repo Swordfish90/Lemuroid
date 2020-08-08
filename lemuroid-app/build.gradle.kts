@@ -50,6 +50,7 @@ android {
         this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
+    dynamicFeatures = mutableSetOf(":lemuroid-core-gambatte")
 }
 
 dependencies {
