@@ -19,13 +19,14 @@
 
 package com.swordfish.lemuroid.lib.core
 
-import android.net.Uri
-import android.os.Build
+import android.content.Context
+import com.google.android.play.core.ktx.requestInstall
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Single
 import okio.buffer
-import okio.sink
 import okio.source
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -41,23 +42,7 @@ import java.util.Locale
 
 class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: Retrofit) {
 
-    private val lemuroidCoresUri = Uri.parse("https://github.com/").buildUpon()
-            .appendEncodedPath("Swordfish90/LemuroidCores/raw/master/")
-            .appendPath(Build.SUPPORTED_ABIS.first())
-            .build()
-
-    private val libretroCoresUri = Uri.parse("https://buildbot.libretro.com/").buildUpon()
-            .appendEncodedPath("nightly/android/latest/")
-            .appendPath(Build.SUPPORTED_ABIS.first())
-            .build()
-
     private val api = retrofit.create(CoreManagerApi::class.java)
-
-    private val coresDir = directoriesManager.getCoresDirectory()
-
-    init {
-        coresDir.mkdirs()
-    }
 
     private fun <T> Response<T>.throwIfUnsuccessful() {
         if (!this.isSuccessful) {
@@ -65,54 +50,62 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
         }
     }
 
-    fun downloadCore(zipFileName: String, assetsManager: AssetsManager): Single<File> {
-        val libFileName = zipFileName.substringBeforeLast(".zip")
-        val destFile = File(coresDir, "lib$libFileName")
-
-        if (destFile.exists() && isUpdated(destFile)) {
-            return Single.just(destFile)
+    fun prepareCore(context: Context, coreName: String, assetsManager: AssetsManager): Single<String> = Single.create { emitter ->
+        val installManager = SplitInstallManagerFactory.create(context)
+        if (installManager.installedModules.contains(coreName)) {
+            emitter.onSuccess("${coreName}_libretro_android.so")
+            return@create
         }
 
-        Timber.d("Downloading core for system")
+        assetsManager.clearAssets(directoriesManager)
 
-        assetsManager.clearAssets(directoriesManager).blockingAwait()
-
-        val firstUri = lemuroidCoresUri.buildUpon()
-            .appendPath(zipFileName)
+        val request = SplitInstallRequest.newBuilder()
+            .addModule(coreName)
             .build()
 
-        val secondUri = libretroCoresUri.buildUpon()
-            .appendPath(zipFileName)
-            .build()
-
-        return api.downloadZip(firstUri.toString())
-                .map { it.throwIfUnsuccessful(); it }
-                .onErrorResumeNext { api.downloadZip(secondUri.toString()) }
-                .doOnSuccess { assetsManager.retrieveAssets(api, directoriesManager).blockingAwait() }
-                .map { response ->
-                    if (!response.isSuccessful) {
-                        throw Exception(response.errorBody()!!.string())
-                    }
-                    val zipStream = response.body()!!
-                    while (true) {
-                        val entry = zipStream.nextEntry ?: break
-                        if (entry.name == libFileName) {
-                            zipStream.source().use { zipSource ->
-                                destFile.sink().use { fileSink ->
-                                    zipSource.buffer().readAll(fileSink)
-                                    return@map destFile
-                                }
-                            }
-                        }
-                    }
-                    throw Exception("Library not found in zip")
-                }
+        installManager.startInstall(request)
+            .addOnSuccessListener { emitter.onSuccess("${coreName}_libretro_android.so") }
+            .addOnFailureListener { emitter.onError(it) }
     }
 
-    private fun isUpdated(file: File): Boolean {
-        val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
-        return file.lastModified() >= oldestAllowedDate?.time ?: 0
-    }
+//    fun downloadCore(zipFileName: String, assetsManager: AssetsManager): Single<File> {
+//
+//
+//
+//        val libFileName = zipFileName.substringBeforeLast(".zip")
+//
+//        Timber.d("Downloading core for system")
+//
+//        assetsManager.clearAssets(directoriesManager).blockingAwait()
+//
+//        return api.downloadZip(firstUri.toString())
+//                .map { it.throwIfUnsuccessful(); it }
+//                .onErrorResumeNext { api.downloadZip(secondUri.toString()) }
+//                .doOnSuccess { assetsManager.retrieveAssets(api, directoriesManager).blockingAwait() }
+//                .map { response ->
+//                    if (!response.isSuccessful) {
+//                        throw Exception(response.errorBody()!!.string())
+//                    }
+//                    val zipStream = response.body()!!
+//                    while (true) {
+//                        val entry = zipStream.nextEntry ?: break
+//                        if (entry.name == libFileName) {
+//                            zipStream.source().use { zipSource ->
+//                                destFile.sink().use { fileSink ->
+//                                    zipSource.buffer().readAll(fileSink)
+//                                    return@map destFile
+//                                }
+//                            }
+//                        }
+//                    }
+//                    throw Exception("Library not found in zip")
+//                }
+//    }
+
+//    private fun isUpdated(file: File): Boolean {
+//        val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
+//        return file.lastModified() >= oldestAllowedDate?.time ?: 0
+//    }
 
     interface CoreManagerApi {
 

@@ -36,6 +36,8 @@ dependencies {
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.rxRelay2)
+    implementation(deps.libs.play.core)
+    implementation(deps.libs.play.coreKtx)
 
     kapt(deps.libs.androidx.room.compiler)
 }

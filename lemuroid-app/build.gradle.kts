@@ -11,7 +11,7 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 33
+        versionCode = 37
         versionName = "1.6.0-beta1"
     }
 
@@ -51,17 +51,17 @@ android {
         jvmTarget = "1.8"
     }
     dynamicFeatures = mutableSetOf(
-        ":lemuroid-core-desmume",
-        ":lemuroid-core-fbneo",
-        ":lemuroid-core-fceumm",
-        ":lemuroid-core-gambatte",
-        ":lemuroid-core-genesis_plus_gx",
-        ":lemuroid-core-mgba",
-        ":lemuroid-core-mupen64plus_next_gles3",
-        ":lemuroid-core-pcsx_rearmed",
-        ":lemuroid-core-ppsspp",
-        ":lemuroid-core-snes9x",
-        ":lemuroid-core-stella"
+        ":lemuroid_core_desmume",
+        ":lemuroid_core_fbneo",
+        ":lemuroid_core_fceumm",
+        ":lemuroid_core_gambatte",
+        ":lemuroid_core_genesis_plus_gx",
+        ":lemuroid_core_mgba",
+        ":lemuroid_core_mupen64plus_next_gles3",
+        ":lemuroid_core_pcsx_rearmed",
+        ":lemuroid_core_ppsspp",
+        ":lemuroid_core_snes9x",
+        ":lemuroid_core_stella"
     )
 }
 

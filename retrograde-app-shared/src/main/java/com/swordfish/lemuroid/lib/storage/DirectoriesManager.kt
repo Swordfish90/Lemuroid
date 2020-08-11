@@ -10,10 +10,6 @@ class DirectoriesManager(private val appContext: Context) {
         mkdirs()
     }
 
-    fun getCoresDirectory(): File = File(appContext.filesDir, "cores").apply {
-        mkdirs()
-    }
-
     fun getSystemDirectory(): File = File(appContext.filesDir, "system").apply {
         mkdirs()
     }

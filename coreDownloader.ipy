@@ -1,0 +1,23 @@
+cores = [
+#	"stella_libretro_android.so.zip",
+	"fceumm_libretro_android.so.zip",
+        "snes9x_libretro_android.so.zip",
+        "genesis_plus_gx_libretro_android.so.zip",
+#        "gambatte_libretro_android.so.zip",
+        "mgba_libretro_android.so.zip",
+        "mupen64plus_next_gles3_libretro_android.so.zip",
+        "pcsx_rearmed_libretro_android.so.zip",
+        "ppsspp_libretro_android.so.zip",
+        "fbneo_libretro_android.so.zip",
+        "desmume_libretro_android.so.zip"
+]
+
+archs = ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"]
+
+for core in cores: 
+	for arch in archs: 
+		core_name = core.replace("_libretro_android.so.zip", "")
+		! wget https://buildbot.libretro.com/nightly/android/latest/$arch/$core -P lemuroid-core-$core_name/src/main/jniLibs/$arch 
+		! unzip lemuroid-core-$core_name/src/main/jniLibs/$arch/$core -d lemuroid-core-$core_name/src/main/jniLibs/$arch 
+		! rm lemuroid-core-$core_name/src/main/jniLibs/$arch/$core 
+

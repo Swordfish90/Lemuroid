@@ -19,6 +19,7 @@
 
 package com.swordfish.lemuroid.lib.game
 
+import android.content.Context
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -40,8 +41,8 @@ class GameLoader(
     private val retrogradeDatabase: RetrogradeDatabase
 ) {
 
-    fun load(game: Game, loadSave: Boolean): Observable<LoadingState> {
-        return prepareGame(game, loadSave)
+    fun load(context: Context, game: Game, loadSave: Boolean): Observable<LoadingState> {
+        return prepareGame(context, game, loadSave)
     }
 
     sealed class LoadingState {
@@ -50,13 +51,13 @@ class GameLoader(
         class Ready(val gameData: GameData) : LoadingState()
     }
 
-    private fun prepareGame(game: Game, loadQuickSave: Boolean) = Observable.create<LoadingState> { emitter ->
+    private fun prepareGame(context: Context, game: Game, loadQuickSave: Boolean) = Observable.create<LoadingState> { emitter ->
         try {
             emitter.onNext(LoadingState.LoadingCore)
 
             val gameSystem = GameSystem.findById(game.systemId)
 
-            val coreFile = coreManager.downloadCore(gameSystem.coreFileName, gameSystem.coreAssetsManager).blockingGet()
+            val libraryName = coreManager.prepareCore(context, gameSystem.coreName, gameSystem.coreAssetsManager).blockingGet()
 
             emitter.onNext(LoadingState.LoadingGame)
 
@@ -77,7 +78,7 @@ class GameLoader(
             val coreVariables = coreVariablesManager.getCoreOptionsForSystem(gameSystem).blockingGet().toTypedArray()
 
             emitter.onNext(
-                LoadingState.Ready(GameData(game, coreFile, gameFile, quickSaveData, saveRAMData, coreVariables))
+                LoadingState.Ready(GameData(game, libraryName, gameFile, quickSaveData, saveRAMData, coreVariables))
             )
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")
@@ -90,7 +91,7 @@ class GameLoader(
     @Suppress("ArrayInDataClass")
     data class GameData(
         val game: Game,
-        val coreFile: File,
+        val coreFile: String,
         val gameFile: File,
         val quickSaveData: ByteArray?,
         val saveRAMData: ByteArray?,

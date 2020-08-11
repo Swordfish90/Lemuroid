@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_name_desmume">desmume</string>
+    <string name="core_name_fbneo">fbneo</string>
+    <string name="core_name_gambatte">gambatte</string>
+    <string name="core_name_fceumm">fceumm</string>
+    <string name="core_name_genesis_plus_gx">genesis_plus_gx</string>
+    <string name="core_name_mgba">mgba</string>
+    <string name="core_name_mupen64plus_next_gles3">mupen64plus_next_gles3</string>
+    <string name="core_name_pcsx_rearmed">pcsx_rearmed</string>
+    <string name="core_name_ppsspp">ppsspp</string>
+    <string name="core_name_snes9x">snes9x</string>
+    <string name="core_name_stella">stella</string>
+</resources>

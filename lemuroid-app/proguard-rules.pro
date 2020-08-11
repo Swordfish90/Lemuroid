@@ -74,3 +74,8 @@
 
 ## LibretroDroid
 -keep class com.swordfish.libretrodroid.** { *; }
+
+-dontwarn java.lang.instrument.ClassFileTransformer
+-dontwarn sun.misc.SignalHandler
+-dontwarn java.lang.instrument.Instrumentation
+-dontwarn sun.misc.Signal

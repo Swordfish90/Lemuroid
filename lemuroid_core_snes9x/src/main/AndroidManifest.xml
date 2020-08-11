@@ -1,0 +1,15 @@
+<manifest xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.swordfish.core.snes9x">
+
+    <application android:hasCode="false" />
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/core_name_snes9x">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+</manifest>

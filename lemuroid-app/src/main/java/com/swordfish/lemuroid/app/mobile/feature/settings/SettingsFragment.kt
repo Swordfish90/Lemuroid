@@ -64,7 +64,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> handleRescan()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
-            getString(R.string.pref_key_clear_cores_cache) -> handleClearCacheCores()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
         }
@@ -85,20 +84,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun handleRescan() {
         context?.let { LibraryIndexWork.enqueueUniqueWork(it) }
-    }
-
-    private fun handleClearCacheCores() {
-        activity?.let {
-            SettingsInteractor(it)
-                    .clearCoresCache()
-                    .doAfterTerminate { displayClearCoreCacheMessage() }
-                    .autoDispose(scope())
-                    .subscribe()
-        }
-    }
-
-    private fun displayClearCoreCacheMessage() {
-        Toast.makeText(activity, R.string.clear_cores_cache_success, Toast.LENGTH_SHORT).show()
     }
 
     @dagger.Module

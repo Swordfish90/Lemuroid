@@ -72,13 +72,6 @@
         app:iconSpaceReserved="false">
 
         <Preference
-            android:key="@string/pref_key_clear_cores_cache"
-            android:title="@string/settings_title_clear_cores_cache"
-            android:summary="@string/settings_description_clear_cores_cache"
-            app:iconSpaceReserved="false"
-            android:persistent="false"/>
-
-        <Preference
             android:key="@string/pref_key_display_bios_info"
             android:title="@string/settings_title_display_bios_info"
             app:summary="@string/settings_description_display_bios_info"

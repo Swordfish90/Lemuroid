@@ -1,0 +1,15 @@
+<manifest xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.swordfish.core.desmume">
+
+    <application android:hasCode="false" />
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/core_name_desmume">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+</manifest>

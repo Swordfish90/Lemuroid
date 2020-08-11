@@ -61,7 +61,6 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            getString(R.string.pref_key_clear_cores_cache) -> handleClearCacheCores()
             getString(R.string.pref_key_reset_gamepad_bindings) -> handleResetGamePadBindings()
         }
         return super.onPreferenceTreeClick(preference)
@@ -72,14 +71,6 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe { refreshGamePadBindingsScreen() }
-    }
-
-    private fun handleClearCacheCores() {
-        SettingsInteractor(requireContext())
-            .clearCoresCache()
-            .doAfterTerminate { activity?.finish() }
-            .autoDispose(scope())
-            .subscribe()
     }
 
     @dagger.Module

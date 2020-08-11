@@ -100,6 +100,10 @@ object deps {
             const val paging = "com.airbnb.android:epoxy-paging:3.8.0"
             const val processor = "com.airbnb.android:epoxy-processor:3.8.0"
         }
+        object play {
+            const val core = "com.google.android.play:core:1.8.0"
+            const val coreKtx = "com.google.android.play:core-ktx:1.8.1"
+        }
 
         const val koptional                = "com.gojuno.koptional:koptional:${versions.koptional}"
         const val koptionalRxJava2         = "com.gojuno.koptional:koptional-rxjava2-extensions:${versions.koptional}"
