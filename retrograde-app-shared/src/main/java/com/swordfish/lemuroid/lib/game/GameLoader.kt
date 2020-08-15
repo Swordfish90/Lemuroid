@@ -57,7 +57,9 @@ class GameLoader(
 
             val gameSystem = GameSystem.findById(game.systemId)
 
-            val libraryName = coreManager.prepareCore(context, gameSystem.coreName, gameSystem.coreAssetsManager).blockingGet()
+            val libraryName = coreManager.prepareCore(context, gameSystem.coreName).blockingGet()
+
+            coreManager.prepareAssets(gameSystem.coreAssetsManager).blockingAwait()
 
             emitter.onNext(LoadingState.LoadingGame)
 

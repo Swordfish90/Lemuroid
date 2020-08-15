@@ -20,44 +20,29 @@
 package com.swordfish.lemuroid.lib.core
 
 import android.content.Context
-import com.google.android.play.core.ktx.requestInstall
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.swordfish.lemuroid.lib.BuildConfig
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Single
-import okio.buffer
-import okio.source
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
-import timber.log.Timber
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.zip.ZipInputStream
-import java.util.Locale
 
 class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: Retrofit) {
 
     private val api = retrofit.create(CoreManagerApi::class.java)
 
-    private fun <T> Response<T>.throwIfUnsuccessful() {
-        if (!this.isSuccessful) {
-            throw IOException()
-        }
-    }
-
-    fun prepareCore(context: Context, coreName: String, assetsManager: AssetsManager): Single<String> = Single.create { emitter ->
+    fun prepareCore(context: Context, coreName: String): Single<String> = Single.create { emitter ->
         val installManager = SplitInstallManagerFactory.create(context)
-        if (installManager.installedModules.contains(coreName)) {
+        if (installManager.installedModules.contains(coreName) || BuildConfig.DEBUG) {
             emitter.onSuccess("${coreName}_libretro_android.so")
             return@create
         }
-
-        assetsManager.clearAssets(directoriesManager)
 
         val request = SplitInstallRequest.newBuilder()
             .addModule(coreName)
@@ -68,44 +53,7 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
             .addOnFailureListener { emitter.onError(it) }
     }
 
-//    fun downloadCore(zipFileName: String, assetsManager: AssetsManager): Single<File> {
-//
-//
-//
-//        val libFileName = zipFileName.substringBeforeLast(".zip")
-//
-//        Timber.d("Downloading core for system")
-//
-//        assetsManager.clearAssets(directoriesManager).blockingAwait()
-//
-//        return api.downloadZip(firstUri.toString())
-//                .map { it.throwIfUnsuccessful(); it }
-//                .onErrorResumeNext { api.downloadZip(secondUri.toString()) }
-//                .doOnSuccess { assetsManager.retrieveAssets(api, directoriesManager).blockingAwait() }
-//                .map { response ->
-//                    if (!response.isSuccessful) {
-//                        throw Exception(response.errorBody()!!.string())
-//                    }
-//                    val zipStream = response.body()!!
-//                    while (true) {
-//                        val entry = zipStream.nextEntry ?: break
-//                        if (entry.name == libFileName) {
-//                            zipStream.source().use { zipSource ->
-//                                destFile.sink().use { fileSink ->
-//                                    zipSource.buffer().readAll(fileSink)
-//                                    return@map destFile
-//                                }
-//                            }
-//                        }
-//                    }
-//                    throw Exception("Library not found in zip")
-//                }
-//    }
-
-//    private fun isUpdated(file: File): Boolean {
-//        val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
-//        return file.lastModified() >= oldestAllowedDate?.time ?: 0
-//    }
+    fun prepareAssets(assetsManager: AssetsManager) = assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
 
     interface CoreManagerApi {
 
@@ -115,12 +63,7 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
     }
 
     interface AssetsManager {
-        fun retrieveAssets(coreManagerApi: CoreManagerApi, directoriesManager: DirectoriesManager): Completable
+        fun retrieveAssetsIfNeeded(coreManagerApi: CoreManagerApi, directoriesManager: DirectoriesManager): Completable
         fun clearAssets(directoriesManager: DirectoriesManager): Completable
-    }
-
-    companion object {
-        // Here we can force the core update. (YYYY-MM-DD)
-        private const val OLDEST_CORE_DATE = "2020-08-04"
     }
 }

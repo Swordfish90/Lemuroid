@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.lib.core.assetsmanager
 
+import com.swordfish.lemuroid.lib.BuildConfig
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
@@ -12,10 +13,28 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
         getAssetsDirectory(directoriesManager).deleteRecursively()
     }
 
-    override fun retrieveAssets(
+    private fun getVersionFile(directoriesManager: DirectoriesManager): File {
+        return File(getAssetsDirectory(directoriesManager), PPSSPP_VERSION_FILE_NAME)
+    }
+
+    private fun isVersionFileUpdated(directoriesManager: DirectoriesManager): Boolean {
+        val currentVersion = runCatching { getVersionFile(directoriesManager).readText().toInt() }.getOrNull()
+        return  currentVersion == BuildConfig.VERSION_CODE
+    }
+
+    private fun updateVersionFile(directoriesManager: DirectoriesManager) {
+        getVersionFile(directoriesManager).writeText(BuildConfig.VERSION_CODE.toString())
+    }
+
+    override fun retrieveAssetsIfNeeded(
         coreManagerApi: CoreManager.CoreManagerApi,
         directoriesManager: DirectoriesManager
     ): Completable {
+        if (isVersionFileUpdated(directoriesManager))
+            return Completable.complete()
+
+        clearAssets(directoriesManager)
+
         return coreManagerApi.downloadZip(PPSSPP_ASSETS_URL).doOnSuccess { response ->
             val coreAssetsDirectory = getAssetsDirectory(directoriesManager)
             coreAssetsDirectory.mkdirs()
@@ -36,6 +55,7 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
                 }
             }
         }
+        .doAfterSuccess { updateVersionFile(directoriesManager) }
         .ignoreElement()
     }
 
@@ -43,6 +63,7 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
             File(directoriesManager.getSystemDirectory(), PPSSPP_ASSETS_FOLDER_NAME)
 
     companion object {
+        const val PPSSPP_VERSION_FILE_NAME = "lemuroid-version.txt"
         const val PPSSPP_ASSETS_URL = "https://github.com/hrydgard/ppsspp/archive/master.zip"
         const val PPSSPP_ASSETS_FOLDER_NAME = "PPSSPP"
         const val BASE_ARCHIVE_DIRECTORY = "ppsspp-master/assets"
