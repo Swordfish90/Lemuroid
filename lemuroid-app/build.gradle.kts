@@ -11,8 +11,13 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 60
+        versionCode = 64
         versionName = "1.6.0-beta1"
+    }
+
+    // Stripping created some issues with some libretro cores such as ppsspp
+    packagingOptions {
+        doNotStrip("*/*/*_libretro_android.so")
     }
 
     signingConfigs {
