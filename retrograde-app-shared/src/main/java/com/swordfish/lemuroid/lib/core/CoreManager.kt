@@ -19,99 +19,29 @@
 
 package com.swordfish.lemuroid.lib.core
 
-import android.net.Uri
-import android.os.Build
+import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Single
-import okio.buffer
-import okio.sink
-import okio.source
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
-import timber.log.Timber
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.zip.ZipInputStream
-import java.util.Locale
 
 class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: Retrofit) {
 
-    private val lemuroidCoresUri = Uri.parse("https://github.com/").buildUpon()
-            .appendEncodedPath("Swordfish90/LemuroidCores/raw/master/")
-            .appendPath(Build.SUPPORTED_ABIS.first())
-            .build()
-
-    private val libretroCoresUri = Uri.parse("https://buildbot.libretro.com/").buildUpon()
-            .appendEncodedPath("nightly/android/latest/")
-            .appendPath(Build.SUPPORTED_ABIS.first())
-            .build()
-
     private val api = retrofit.create(CoreManagerApi::class.java)
 
-    private val coresDir = directoriesManager.getCoresDirectory()
-
     init {
-        coresDir.mkdirs()
+        // Force deletion of already downloaded cores.
+        directoriesManager.getCoresDirectory()
     }
 
-    private fun <T> Response<T>.throwIfUnsuccessful() {
-        if (!this.isSuccessful) {
-            throw IOException()
-        }
-    }
-
-    fun downloadCore(zipFileName: String, assetsManager: AssetsManager): Single<File> {
-        val libFileName = zipFileName.substringBeforeLast(".zip")
-        val destFile = File(coresDir, "lib$libFileName")
-
-        if (destFile.exists() && isUpdated(destFile)) {
-            return Single.just(destFile)
-        }
-
-        Timber.d("Downloading core for system")
-
-        assetsManager.clearAssets(directoriesManager).blockingAwait()
-
-        val firstUri = lemuroidCoresUri.buildUpon()
-            .appendPath(zipFileName)
-            .build()
-
-        val secondUri = libretroCoresUri.buildUpon()
-            .appendPath(zipFileName)
-            .build()
-
-        return api.downloadZip(firstUri.toString())
-                .map { it.throwIfUnsuccessful(); it }
-                .onErrorResumeNext { api.downloadZip(secondUri.toString()) }
-                .doOnSuccess { assetsManager.retrieveAssets(api, directoriesManager).blockingAwait() }
-                .map { response ->
-                    if (!response.isSuccessful) {
-                        throw Exception(response.errorBody()!!.string())
-                    }
-                    val zipStream = response.body()!!
-                    while (true) {
-                        val entry = zipStream.nextEntry ?: break
-                        if (entry.name == libFileName) {
-                            zipStream.source().use { zipSource ->
-                                destFile.sink().use { fileSink ->
-                                    zipSource.buffer().readAll(fileSink)
-                                    return@map destFile
-                                }
-                            }
-                        }
-                    }
-                    throw Exception("Library not found in zip")
-                }
-    }
-
-    private fun isUpdated(file: File): Boolean {
-        val oldestAllowedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(OLDEST_CORE_DATE)
-        return file.lastModified() >= oldestAllowedDate?.time ?: 0
+    fun downloadCore(gameSystem: GameSystem, assetsManager: AssetsManager): Single<String> {
+        return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
+            .andThen(Single.just(gameSystem.coreFileName))
     }
 
     interface CoreManagerApi {
@@ -122,12 +52,7 @@ class CoreManager(private val directoriesManager: DirectoriesManager, retrofit: 
     }
 
     interface AssetsManager {
-        fun retrieveAssets(coreManagerApi: CoreManagerApi, directoriesManager: DirectoriesManager): Completable
+        fun retrieveAssetsIfNeeded(coreManagerApi: CoreManagerApi, directoriesManager: DirectoriesManager): Completable
         fun clearAssets(directoriesManager: DirectoriesManager): Completable
-    }
-
-    companion object {
-        // Here we can force the core update. (YYYY-MM-DD)
-        private const val OLDEST_CORE_DATE = "2020-08-04"
     }
 }

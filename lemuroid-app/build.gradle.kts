@@ -11,7 +11,7 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 33
+        versionCode = 60
         versionName = "1.6.0-beta1"
     }
 
@@ -50,14 +50,21 @@ android {
         this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
+
+    splits {
+        abi {
+            isEnable = true
+            isUniversalApk = true
+        }
+    }
 }
 
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
     implementation(project(":lemuroid-metadata-libretro-db"))
-
     implementation(project(":lemuroid-touchinput"))
+    implementation(project(":lemuroid-cores"))
 
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)

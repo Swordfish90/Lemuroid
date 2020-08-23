@@ -12,7 +12,6 @@
     <string name="directory">Directory</string>
     <string name="display_filter">Display filter</string>
     <string name="roms">ROMs</string>
-    <string name="clear_cores_cache_success">Cores cleared</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
 
@@ -22,9 +21,7 @@
     <string name="settings_title_enable_autosave">Autosave state</string>
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
     <string name="settings_title_tilt_sensitivity">Tilt to stick sensitivity</string>
-    <string name="settings_title_clear_cores_cache">Clear cores</string>
 
-    <string name="settings_description_clear_cores_cache">An updated version will be downloaded when launching a ROM</string>
     <string name="settings_gamepad_settings">Gamepad settings</string>
     <string name="settings_gamepad_button_name">Button %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -57,7 +54,7 @@
     <string name="game_menu_edit_touch_controls">Edit Controls</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
 
-    <string name="game_loading_download_core">Downloading core…</string>
+    <string name="game_loading_download_core">Downloading assets…</string>
     <string name="game_loading_preparing_game">Preparing game…</string>
 
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>

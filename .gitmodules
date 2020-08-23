@@ -1,0 +1,4 @@
+[submodule "lemuroid-cores"]
+	path = lemuroid-cores
+	url = https://github.com/Swordfish90/LemuroidCores
+	branch = master
