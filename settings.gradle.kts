@@ -3,5 +3,6 @@ include(
         ":retrograde-app-shared",
         ":lemuroid-touchinput",
         ":lemuroid-app",
-        ":lemuroid-metadata-libretro-db"
+        ":lemuroid-metadata-libretro-db",
+        ":lemuroid-cores"
 )

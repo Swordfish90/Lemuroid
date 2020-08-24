@@ -56,7 +56,7 @@ class GameLoader(
 
             val gameSystem = GameSystem.findById(game.systemId)
 
-            val coreFile = coreManager.downloadCore(gameSystem.coreFileName, gameSystem.coreAssetsManager).blockingGet()
+            val coreLibrary = coreManager.downloadCore(gameSystem, gameSystem.coreAssetsManager).blockingGet()
 
             emitter.onNext(LoadingState.LoadingGame)
 
@@ -77,7 +77,7 @@ class GameLoader(
             val coreVariables = coreVariablesManager.getCoreOptionsForSystem(gameSystem).blockingGet().toTypedArray()
 
             emitter.onNext(
-                LoadingState.Ready(GameData(game, coreFile, gameFile, quickSaveData, saveRAMData, coreVariables))
+                LoadingState.Ready(GameData(game, coreLibrary, gameFile, quickSaveData, saveRAMData, coreVariables))
             )
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")
@@ -90,7 +90,7 @@ class GameLoader(
     @Suppress("ArrayInDataClass")
     data class GameData(
         val game: Game,
-        val coreFile: File,
+        val coreLibrary: String,
         val gameFile: File,
         val quickSaveData: ByteArray?,
         val saveRAMData: ByteArray?,

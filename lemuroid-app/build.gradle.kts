@@ -11,8 +11,13 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 31
-        versionName = "1.5.1"
+        versionCode = 64
+        versionName = "1.6.0-beta1"
+    }
+
+    // Stripping created some issues with some libretro cores such as ppsspp
+    packagingOptions {
+        doNotStrip("*/*/*_libretro_android.so")
     }
 
     signingConfigs {
@@ -50,14 +55,21 @@ android {
         this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
+
+    splits {
+        abi {
+            isEnable = true
+            isUniversalApk = true
+        }
+    }
 }
 
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
     implementation(project(":lemuroid-metadata-libretro-db"))
-
     implementation(project(":lemuroid-touchinput"))
+    implementation(project(":lemuroid-cores"))
 
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)

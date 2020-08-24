@@ -69,19 +69,13 @@ class GamePadManager(context: Context) {
     fun getDefaultBinding(keyCode: Int) = DEFAULT_BINDINGS.getValue(keyCode)
 
     private fun getAllGamePads(): List<InputDevice> {
-        return InputDevice.getDeviceIds()
-            .map { InputDevice.getDevice(it) }
-            .filter { isGamePad(it) }
-            .distinctBy { "${it.vendorId}_${it.productId}" }
-            .sortedBy { it.controllerNumber }
-    }
-
-    private fun isGamePad(it: InputDevice): Boolean {
-        val conditions = sequenceOf(
-            it.sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD,
-            it.sources and InputDevice.SOURCE_JOYSTICK == InputDevice.SOURCE_JOYSTICK
-        )
-        return conditions.any { it }
+        return runCatching {
+            InputDevice.getDeviceIds()
+                .map { InputDevice.getDevice(it) }
+                .filter { it.controllerNumber > 0 }
+                .distinctBy { it.controllerNumber }
+                .sortedBy { it.controllerNumber }
+        }.getOrNull() ?: listOf()
     }
 
     companion object {

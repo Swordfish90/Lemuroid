@@ -1,13 +1,8 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -32,26 +27,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_mobile_settings, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_options_help -> {
-                displayLemuroidWiki()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -88,16 +63,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> handleRescan()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
-            getString(R.string.pref_key_clear_cores_cache) -> handleClearCacheCores()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
         }
         return super.onPreferenceTreeClick(preference)
-    }
-
-    private fun displayLemuroidWiki() {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(WIKI_URL))
-        startActivity(browserIntent)
     }
 
     private fun handleDisplayBiosInfo() {
@@ -114,24 +83,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun handleRescan() {
         context?.let { LibraryIndexWork.enqueueUniqueWork(it) }
-    }
-
-    private fun handleClearCacheCores() {
-        activity?.let {
-            SettingsInteractor(it)
-                    .clearCoresCache()
-                    .doAfterTerminate { displayClearCoreCacheMessage() }
-                    .autoDispose(scope())
-                    .subscribe()
-        }
-    }
-
-    private fun displayClearCoreCacheMessage() {
-        Toast.makeText(activity, R.string.clear_cores_cache_success, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        private const val WIKI_URL = "https://github.com/Swordfish90/Lemuroid/wiki"
     }
 
     @dagger.Module

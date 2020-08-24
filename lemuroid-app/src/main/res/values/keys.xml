@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_key_rescan" translatable="false">rescan</string>
-    <string name="pref_key_clear_cores_cache" translatable="false">clear_cores_cache</string>
     <string name="pref_key_display_bios_info" translatable="false">display_bios_info</string>
     <string name="pref_key_open_gamepad_bindings" translatable="false">open_gamepad_bindings</string>
     <string name="pref_key_reset_gamepad_bindings" translatable="false">reset_gamepad_bindings</string>

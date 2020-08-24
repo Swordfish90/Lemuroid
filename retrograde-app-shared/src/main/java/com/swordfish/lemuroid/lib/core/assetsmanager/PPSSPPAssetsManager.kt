@@ -12,10 +12,14 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
         getAssetsDirectory(directoriesManager).deleteRecursively()
     }
 
-    override fun retrieveAssets(
+    // TODO Here we should handle versioning.
+    override fun retrieveAssetsIfNeeded(
         coreManagerApi: CoreManager.CoreManagerApi,
         directoriesManager: DirectoriesManager
     ): Completable {
+        if (getAssetsDirectory(directoriesManager).exists())
+            return Completable.complete()
+
         return coreManagerApi.downloadZip(PPSSPP_ASSETS_URL).doOnSuccess { response ->
             val coreAssetsDirectory = getAssetsDirectory(directoriesManager)
             coreAssetsDirectory.mkdirs()
@@ -36,6 +40,7 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
                 }
             }
         }
+        .doOnError { getAssetsDirectory(directoriesManager).deleteRecursively() }
         .ignoreElement()
     }
 

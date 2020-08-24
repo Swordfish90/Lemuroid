@@ -2,10 +2,10 @@
 object deps {
     object android {
         // Sadly we can't have both target sdk 29 and PPSSPP since the core uses ashmem. We need to wait for an upstream fix.
-        const val targetSdkVersion  = 28
+        const val targetSdkVersion  = 29
         const val compileSdkVersion = 29
         const val minSdkVersion     = 23
-        const val buildToolsVersion = "28.0.3"
+        const val buildToolsVersion = "29.0.3"
     }
 
     object versions {
