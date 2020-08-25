@@ -28,6 +28,7 @@ class VirtualGamePadCustomizer(
         parentView: ViewGroup,
         virtualGamePad: LemuroidVirtualGamePad
     ): PopupWindow {
+        val originalRequestedOrientation = activity.requestedOrientation
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val inflater = parentView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -39,7 +40,9 @@ class VirtualGamePadCustomizer(
                 ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        popupWindow.setOnDismissListener { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR }
+        popupWindow.setOnDismissListener {
+            activity.requestedOrientation = originalRequestedOrientation
+        }
 
         customView.findViewById<Slider>(R.id.touch_slider_size)?.addOnChangeListener { _, value, _ ->
             virtualGamePadSettingsManager.portraitScale = value
@@ -76,7 +79,7 @@ class VirtualGamePadCustomizer(
         parent: ViewGroup,
         virtualGamePad: LemuroidVirtualGamePad
     ): PopupWindow {
-
+        val originalRequestedOrientation = activity.requestedOrientation
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 
         val inflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -89,7 +92,9 @@ class VirtualGamePadCustomizer(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        popupWindow.setOnDismissListener { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR }
+        popupWindow.setOnDismissListener {
+            activity.requestedOrientation = originalRequestedOrientation
+        }
 
         customView.findViewById<TextView>(R.id.touch_textview_rotation)?.setVisibleOrGone(displayRotation)
         customView.findViewById<Slider>(R.id.touch_slider_rotation)?.apply {
