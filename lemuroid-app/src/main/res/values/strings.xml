@@ -70,9 +70,9 @@
     <string name="library_index_notification_title">ROMs scanning</string>
     <string name="library_index_notification_message"></string>
 
-    <string name="game_play_generic_error_message">Cannot play game.\nMake sure your network is connected the first time you play with a new system and your ROMs directory has been rescanned.</string>
+    <string name="game_play_generic_error_message">Cannot retrieve core assets.\nMake sure your network is connected the first time you play with this system.</string>
 
-    <string name="game_dialog_cannot_load_game">Cannot load game.\nMake sure this ROM is compatible with Lemuroid.</string>
+    <string name="game_dialog_cannot_load_game">Cannot load game.\nMake sure this system is supported by your device and your ROM is supported by Lemuroid.</string>
 
     <string name="dialog_saf_not_found">This device does not support the StorageAccessFramework file picker. Please manually copy uncompressed ROM files into %1$s and hit Rescan.</string>
 
