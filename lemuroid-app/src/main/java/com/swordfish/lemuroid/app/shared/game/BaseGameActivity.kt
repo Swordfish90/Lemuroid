@@ -9,8 +9,10 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.Gravity
 import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
@@ -29,6 +31,7 @@ import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
@@ -45,7 +48,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 abstract class BaseGameActivity : ImmersiveActivity() {
 
@@ -54,6 +59,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var containerLayout: ConstraintLayout
     protected lateinit var gameViewLayout: FrameLayout
     protected lateinit var overlayLayout: FrameLayout
+    private lateinit var loadingView: ProgressBar
 
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var statesManager: StatesManager
@@ -61,10 +67,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
     @Inject lateinit var gamePadManager: GamePadManager
 
+    private val loadingSubject: BehaviorRelay<Boolean> = BehaviorRelay.create()
+
     private val keyEventsSubjects: PublishRelay<KeyEvent> = PublishRelay.create()
     private val motionEventsSubjects: PublishRelay<MotionEvent> = PublishRelay.create()
 
     protected var retroGameView: GLRetroView? = null
+
+    var loading: Boolean by Delegates.observable(false) { _, _, value ->
+        loadingSubject.accept(value)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +85,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         containerLayout = findViewById(R.id.game_container)
         gameViewLayout = findViewById(R.id.gameview_layout)
         overlayLayout = findViewById(R.id.overlay_layout)
+        loadingView = findViewById(R.id.progress)
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         system = GameSystem.findById(game.systemId)
@@ -217,6 +230,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        loadingSubject
+            .throttleLast(200, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribe { loadingView.setVisibleOrGone(it) }
 
         coreVariablesManager.getCoreOptionsForSystem(system)
                 .autoDispose(scope())
@@ -417,12 +436,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun getDevicePort(inputEvent: InputEvent) = (inputEvent.device?.controllerNumber ?: 0) - 1
 
     override fun onBackPressed() {
+        if (loading) return
         autoSaveAndFinish()
     }
 
     private fun autoSaveAndFinish() {
         getAutoSaveAndFinishCompletable()
             .subscribeOn(Schedulers.io())
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
             .autoDispose(scope())
             .subscribe()
     }
@@ -452,18 +474,24 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun saveSlot(index: Int): Completable {
+        if (loading) return Completable.complete()
         return Maybe.fromCallable { getCurrentSaveState() }
             .doAfterSuccess { Timber.i("Storing quicksave with size: ${it!!.state.size}") }
             .subscribeOn(Schedulers.io())
             .flatMapCompletable { statesManager.setSlotSave(game, it, system, index) }
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
     }
 
     private fun loadSlot(index: Int): Completable {
+        if (loading) return Completable.complete()
         return statesManager.getSlotSave(game, system, index)
             .map { loadSaveState(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
             .ignoreElement()
     }
 
