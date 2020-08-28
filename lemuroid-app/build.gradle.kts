@@ -11,8 +11,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 70
-        versionName = "1.6.0"
+        versionCode = 80
+        versionName = "1.6.1-beta1"
     }
 
     // Stripping created some issues with some libretro cores such as ppsspp
