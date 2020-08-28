@@ -40,7 +40,7 @@ import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.logging.RxTimberTree
-import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
@@ -51,6 +51,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
+import com.swordfish.lemuroid.lib.saves.SavesManager
 
 import dagger.Binds
 import dagger.Module
@@ -195,6 +196,11 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
+        fun statesManager(directoriesManager: DirectoriesManager) = StatesManager(directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
         fun savesManager(directoriesManager: DirectoriesManager) = SavesManager(directoriesManager)
 
         @Provides
@@ -227,10 +233,18 @@ abstract class LemuroidApplicationModule {
         fun gameLoader(
             coreManager: CoreManager,
             lemuroidLibrary: LemuroidLibrary,
+            statesManager: StatesManager,
             savesManager: SavesManager,
             coreVariablesManager: CoreVariablesManager,
             retrogradeDatabase: RetrogradeDatabase
-        ) = GameLoader(coreManager, lemuroidLibrary, savesManager, coreVariablesManager, retrogradeDatabase)
+        ) = GameLoader(
+            coreManager,
+            lemuroidLibrary,
+            statesManager,
+            savesManager,
+            coreVariablesManager,
+            retrogradeDatabase
+        )
 
         @Provides
         @PerApp

@@ -72,5 +72,16 @@
 ## AutoDispose
 -keepnames public interface com.uber.autodispose.lifecycle.CorrespondingEventsFunction { *; }
 
+## Kotlin serialization
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.SerializationKt
+-keep,includedescriptorclasses class com.swordfish.lemuroid.**$$serializer { *; }
+-keepclassmembers class com.swordfish.lemuroid.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.swordfish.lemuroid.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
 ## LibretroDroid
 -keep class com.swordfish.libretrodroid.** { *; }

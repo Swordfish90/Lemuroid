@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 
 dependencies {
@@ -36,6 +37,7 @@ dependencies {
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.rxRelay2)
+    implementation(deps.libs.kotlin.serialization)
 
     kapt(deps.libs.androidx.room.compiler)
 }

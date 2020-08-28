@@ -6,13 +6,13 @@ import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
 class TVGameMenuActivity : TVBaseSettingsActivity() {
 
-    @Inject lateinit var savesManager: SavesManager
+    @Inject lateinit var statesManager: StatesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
                     ?: throw InvalidParameterException("Missing EXTRA_DISKS")
 
-            val fragment = TVGameMenuFragmentWrapper(savesManager, game, options, numDisks)
+            val fragment = TVGameMenuFragmentWrapper(statesManager, game, options, numDisks)
             supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit()
         }
     }
@@ -37,14 +37,14 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
     }
 
     class TVGameMenuFragmentWrapper(
-        private val savesManager: SavesManager,
+        private val statesManager: StatesManager,
         private val game: Game,
         private val coreOptions: Array<CoreOption>,
         private val numDisks: Int
     ) : BaseSettingsFragmentWrapper() {
 
         override fun createFragment(): Fragment {
-            return TVGameMenuFragment(savesManager, game, coreOptions, numDisks)
+            return TVGameMenuFragment(statesManager, game, coreOptions, numDisks)
         }
     }
 }

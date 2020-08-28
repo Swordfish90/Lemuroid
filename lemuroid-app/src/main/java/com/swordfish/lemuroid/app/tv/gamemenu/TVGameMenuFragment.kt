@@ -12,7 +12,8 @@ import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.SaveStateInfo
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -22,7 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 
 class TVGameMenuFragment(
-    private val savesManager: SavesManager,
+    private val statesManager: StatesManager,
     private val game: Game,
     private val coreOptions: Array<CoreOption>,
     private val numDisks: Int
@@ -61,7 +62,7 @@ class TVGameMenuFragment(
         val loadScreen = findPreference<PreferenceScreen>(SECTION_LOAD_GAME)
 
         Single.just(game)
-                .flatMap { savesManager.getSavedSlotsInfo(it, GameSystem.findById(it.systemId).coreName) }
+                .flatMap { statesManager.getSavedSlotsInfo(it, GameSystem.findById(it.systemId).coreName) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())
@@ -76,26 +77,26 @@ class TVGameMenuFragment(
         saveScreen: PreferenceScreen?,
         loadScreen: PreferenceScreen?,
         index: Int,
-        saveInfos: SavesManager.SaveInfos
+        saveStateInfo: SaveStateInfo
     ) {
         saveScreen?.addPreference(
             Preference(requireContext()).apply {
                 this.key = "pref_game_save_$index"
-                this.summary = getDateString(saveInfos)
+                this.summary = getDateString(saveStateInfo)
                 this.title = getString(R.string.game_menu_state, (index + 1).toString())
             }
         )
         loadScreen?.addPreference(
             Preference(requireContext()).apply {
                 this.key = "pref_game_load_$index"
-                this.summary = getDateString(saveInfos)
-                this.isEnabled = saveInfos.exists
+                this.summary = getDateString(saveStateInfo)
+                this.isEnabled = saveStateInfo.exists
                 this.title = getString(R.string.game_menu_state, (index + 1).toString())
             }
         )
     }
 
-    private fun getDateString(saveInfo: SavesManager.SaveInfos): String {
+    private fun getDateString(saveInfo: SaveStateInfo): String {
         val formatter = SimpleDateFormat.getDateTimeInstance()
         return if (saveInfo.exists) {
             formatter.format(saveInfo.date)
