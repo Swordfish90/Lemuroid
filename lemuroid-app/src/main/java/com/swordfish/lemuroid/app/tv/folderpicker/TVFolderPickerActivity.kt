@@ -60,6 +60,9 @@ class TVFolderPickerActivity : BaseTVActivity() {
         override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
             super.onCreateActions(actions, savedInstanceState)
 
+            if(directory.parent != null)
+                addAction(actions, ACTION_NAVIGATE, "Parent Directory", directory.parent)
+
             directory.listFiles()
                 ?.filter { it.isDirectory }
                 ?.forEach {
