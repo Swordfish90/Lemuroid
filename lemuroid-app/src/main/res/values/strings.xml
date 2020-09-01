@@ -81,6 +81,9 @@
     <string name="tv_folder_picker_title">Select ROMs Directory</string>
     <string name="tv_folder_picker_action_choose">Select</string>
     <string name="tv_folder_picker_action_cancel">Cancel</string>
+    <string name="tv_folder_storage_primary">Primary storage</string>
+    <string name="tv_folder_storage_secondary">Secondary storage %1$s</string>
+    <string name="tv_folder_storage_title">Choose storage</string>
 
     <string name="tv_home_section_favorites">Favorites</string>
     <string name="tv_home_section_recents">Recent</string>
