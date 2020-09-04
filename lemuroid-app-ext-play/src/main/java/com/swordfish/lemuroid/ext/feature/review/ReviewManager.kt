@@ -26,6 +26,7 @@ class ReviewManager {
     }
 
     fun startReviewFlow(activity: Activity, sessionTimeMillis: Long): Completable {
+        // Only sessions which lasted more than 10 minutes considered good sessions
         if (sessionTimeMillis < MIN_GAME_SESSION_LENGTH) {
             return Completable.complete()
         }
