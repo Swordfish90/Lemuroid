@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.shared.game
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -19,6 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import java.io.Serializable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.system.exitProcess
@@ -33,8 +36,12 @@ class GameLauncherActivity : ImmersiveActivity() {
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var settingsManager: SettingsManager
 
+    var startGameTime: Long = System.currentTimeMillis()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startGameTime = System.currentTimeMillis()
 
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
@@ -110,6 +117,12 @@ class GameLauncherActivity : ImmersiveActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        val resultIntent = Intent().apply {
+            putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
+        }
+
+        setResult(Activity.RESULT_OK, resultIntent)
         triggerCacheCleanup()
         finish()
     }
@@ -136,13 +149,17 @@ class GameLauncherActivity : ImmersiveActivity() {
         private const val EXTRA_LOAD_SAVE = "LOAD_SAVE"
         private const val EXTRA_LEANBACK = "LEANBACK"
 
-        fun launchGame(context: Context, game: Game, loadSave: Boolean, useLeanback: Boolean) {
-            context.startActivity(
-                Intent(context, GameLauncherActivity::class.java).apply {
+        const val REQUEST_PLAY_GAME = 1001
+        const val PLAY_GAME_RESULT_SESSION_DURATION = "PLAY_GAME_RESULT_SESSION_DURATION"
+
+        fun launchGame(activity: Activity, game: Game, loadSave: Boolean, useLeanback: Boolean) {
+            activity.startActivityForResult(
+                Intent(activity, GameLauncherActivity::class.java).apply {
                     putExtra(EXTRA_GAME, game)
                     putExtra(EXTRA_LOAD_SAVE, loadSave)
                     putExtra(EXTRA_LEANBACK, useLeanback)
-                }
+                },
+                REQUEST_PLAY_GAME
             )
         }
     }
