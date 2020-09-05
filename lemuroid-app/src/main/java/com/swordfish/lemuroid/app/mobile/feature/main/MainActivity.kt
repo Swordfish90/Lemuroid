@@ -1,5 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.main
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,13 +24,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
+import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.rxkotlin.subscribeBy
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 
 class MainActivity : RetrogradeAppCompatActivity() {
+
+    private val reviewManager = ReviewManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
 
     private fun initializeActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        reviewManager.initialize(applicationContext)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -60,6 +69,20 @@ class MainActivity : RetrogradeAppCompatActivity() {
         mainViewModel.indexingInProgress.observe(this, Observer { isRunning ->
             findViewById<MaterialProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != Activity.RESULT_OK) return
+
+        when (requestCode) {
+            GameLauncherActivity.REQUEST_PLAY_GAME -> {
+                val duration = data?.extras?.getLong(GameLauncherActivity.PLAY_GAME_RESULT_SESSION_DURATION)
+                reviewManager.startReviewFlow(this, duration!!)
+                    .subscribeBy {  }
+            }
+        }
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()

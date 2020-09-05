@@ -1,8 +1,10 @@
 include(
-        ":retrograde-util",
-        ":retrograde-app-shared",
-        ":lemuroid-touchinput",
-        ":lemuroid-app",
-        ":lemuroid-metadata-libretro-db",
-        ":lemuroid-cores"
+    ":retrograde-util",
+    ":retrograde-app-shared",
+    ":lemuroid-touchinput",
+    ":lemuroid-app",
+    ":lemuroid-metadata-libretro-db",
+    ":lemuroid-cores",
+    ":lemuroid-app-ext-free",
+    ":lemuroid-app-ext-play"
 )

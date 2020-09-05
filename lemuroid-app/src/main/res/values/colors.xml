@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Main colors are now defined in build.gradle -->
+    <!-- Main colors are now defined in build.gradle.kts -->
 
     <color name="colorPrimary">@color/main_color_light</color>
     <color name="colorPrimaryVariant">@color/main_color</color>

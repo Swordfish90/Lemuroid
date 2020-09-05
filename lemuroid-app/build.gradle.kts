@@ -15,6 +15,20 @@ android {
         versionName = "1.6.1-beta1"
     }
 
+    // Since some dependencies are closed source we make a completely free as in free speech variant.
+    flavorDimensions("opensource")
+
+    productFlavors {
+        create("free") {
+            setDimension("opensource")
+            applicationIdSuffix = ".free"
+        }
+
+        create("play") {
+            setDimension("opensource")
+        }
+    }
+
     // Stripping created some issues with some libretro cores such as ppsspp
     packagingOptions {
         doNotStrip("*/*/*_libretro_android.so")
@@ -70,6 +84,8 @@ dependencies {
     implementation(project(":lemuroid-metadata-libretro-db"))
     implementation(project(":lemuroid-touchinput"))
     implementation(project(":lemuroid-cores"))
+    "freeImplementation"(project(":lemuroid-app-ext-free"))
+    "playImplementation"(project(":lemuroid-app-ext-play"))
 
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)

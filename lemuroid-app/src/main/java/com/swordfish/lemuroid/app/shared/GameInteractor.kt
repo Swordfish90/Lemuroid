@@ -1,6 +1,6 @@
 package com.swordfish.lemuroid.app.shared
 
-import android.content.Context
+import android.app.Activity
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
@@ -9,17 +9,17 @@ import io.reactivex.Completable
 import java.util.concurrent.TimeUnit
 
 class GameInteractor(
-    private val context: Context,
+    private val activity: Activity,
     private val retrogradeDb: RetrogradeDatabase,
     private val useLeanback: Boolean
 ) {
     fun onGamePlay(game: Game) {
-        GameLauncherActivity.launchGame(context, game, true, useLeanback)
+        GameLauncherActivity.launchGame(activity, game, true, useLeanback)
         updateGamePlayedTimestamp(game)
     }
 
     fun onGameRestart(game: Game) {
-        GameLauncherActivity.launchGame(context, game, false, useLeanback)
+        GameLauncherActivity.launchGame(activity, game, false, useLeanback)
         updateGamePlayedTimestamp(game)
     }
 
