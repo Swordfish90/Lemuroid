@@ -60,10 +60,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         saveState: SaveState
     ) = Completable.fromCallable {
         writeStateToDisk(fileName, coreName, saveState.state)
-
-        if (metadataRequireStoring(saveState.metadata)) {
-            writeMetadataToDisk(fileName, coreName, saveState.metadata)
-        }
+        writeMetadataToDisk(fileName, coreName, saveState.metadata)
     }
 
     private fun writeMetadataToDisk(
@@ -115,11 +112,6 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
 
     private fun getAutoSaveFileName(game: Game) = "${game.fileName}.state"
     private fun getSlotSaveFileName(game: Game, index: Int) = "${game.fileName}.slot${index + 1}"
-
-    /** To avoid polluting the filesystem we only write when needed. In this case when disk index > 0. */
-    private fun metadataRequireStoring(metadata: SaveState.Metadata): Boolean {
-        return metadata.diskIndex != 0
-    }
 
     companion object {
         const val MAX_STATES = 4

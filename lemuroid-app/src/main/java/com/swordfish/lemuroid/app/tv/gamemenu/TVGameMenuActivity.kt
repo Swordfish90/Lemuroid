@@ -26,7 +26,16 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
                     ?: throw InvalidParameterException("Missing EXTRA_DISKS")
 
-            val fragment = TVGameMenuFragmentWrapper(statesManager, game, options, numDisks)
+            val currentDisk = intent.extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK)
+                    ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
+
+            val fragment = TVGameMenuFragmentWrapper(
+                statesManager,
+                game,
+                options,
+                numDisks,
+                currentDisk
+            )
             supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit()
         }
     }
@@ -40,11 +49,12 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         private val statesManager: StatesManager,
         private val game: Game,
         private val coreOptions: Array<CoreOption>,
-        private val numDisks: Int
+        private val numDisks: Int,
+        private val currentDisk: Int
     ) : BaseSettingsFragmentWrapper() {
 
         override fun createFragment(): Fragment {
-            return TVGameMenuFragment(statesManager, game, coreOptions, numDisks)
+            return TVGameMenuFragment(statesManager, game, coreOptions, numDisks, currentDisk)
         }
     }
 }

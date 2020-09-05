@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/game_menu_title">
 
     <PreferenceScreen
@@ -18,9 +19,10 @@
         android:key="pref_game_quit"
         android:title="@string/game_menu_quit"/>
 
-    <PreferenceScreen
+    <ListPreference
         android:key="pref_game_section_change_disk"
-        android:title="@string/game_menu_change_disk_button"/>
+        android:title="@string/game_menu_change_disk_button"
+        app:isPreferenceVisible="false"/>
 
     <PreferenceScreen
         android:key="pref_game_section_core_options"

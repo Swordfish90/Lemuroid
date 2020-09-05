@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
@@ -26,14 +27,18 @@ class TVGameMenuFragment(
     private val statesManager: StatesManager,
     private val game: Game,
     private val coreOptions: Array<CoreOption>,
-    private val numDisks: Int
+    private val numDisks: Int,
+    private val currentDisk: Int
 ) : LeanbackPreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.tv_game_settings, rootKey)
         setupCoreOptions()
         setupLoadAndSave()
-        setupChangeDiskOption()
+
+        if (numDisks > 1) {
+            setupChangeDiskOption()
+        }
     }
 
     private fun setupCoreOptions() {
@@ -45,16 +50,19 @@ class TVGameMenuFragment(
     }
 
     private fun setupChangeDiskOption() {
-        val changeDiskPreference = findPreference<PreferenceScreen>(SECTION_CHANGE_DISK)
+        val changeDiskPreference = findPreference<ListPreference>(SECTION_CHANGE_DISK)
         changeDiskPreference?.isVisible = numDisks > 1
-        (0 until numDisks)
-                .map {
-                    val preference = Preference(requireContext())
-                    preference.key = "pref_game_disk_$it"
-                    preference.title = resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString())
-                    preference
-                }
-                .forEach { changeDiskPreference?.addPreference(it) }
+        changeDiskPreference?.entries = (0 until numDisks)
+            .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
+            .toTypedArray()
+        changeDiskPreference?.entryValues = (0 until numDisks)
+            .map { it.toString() }
+            .toTypedArray()
+        changeDiskPreference?.setValueIndex(currentDisk)
+        changeDiskPreference?.setOnPreferenceChangeListener { _, newValue ->
+            handleChangeDisk((newValue as String).toInt())
+            true
+        }
     }
 
     private fun setupLoadAndSave() {
@@ -106,10 +114,6 @@ class TVGameMenuFragment(
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        if (preference?.key?.startsWith("pref_game_disk_") == true) {
-            handleChangeDisk(preference.key.replace("pref_game_disk_", "").toInt())
-            return true
-        }
         when (preference?.key) {
             "pref_game_reset" -> {
                 val resultIntent = Intent().apply {
