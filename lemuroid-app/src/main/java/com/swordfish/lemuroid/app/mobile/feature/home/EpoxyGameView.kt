@@ -7,10 +7,10 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.squareup.picasso.Picasso
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.PicassoWrapper
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -27,10 +27,7 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
         holder.titleView?.text = game.title
         holder.subtitleView?.let { it.text = GameUtils.getGameSubtitle(it.context, game) }
 
-        Picasso.get()
-            .load(game.coverFrontUrl)
-            .placeholder(R.drawable.ic_image_paceholder)
-            .into(holder.coverView)
+        PicassoWrapper.loadCover(game, holder.coverView)
 
         holder.itemView?.setOnClickListener { gameInteractor.onGamePlay(game) }
         holder.itemView?.setOnCreateContextMenuListener(
@@ -43,7 +40,7 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
     override fun unbind(holder: Holder) {
         holder.itemView?.setOnClickListener(null)
         holder.coverView?.apply {
-            Picasso.get().cancelRequest(this)
+            PicassoWrapper.cancelRequest(this)
         }
         holder.itemView?.setOnCreateContextMenuListener(null)
     }

@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import com.squareup.picasso.Picasso
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.PicassoWrapper
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -21,7 +21,7 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
         viewHolder.mCardView.titleText = game.title
         viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
-        viewHolder.updateCardViewImage(game.coverFrontUrl)
+        viewHolder.updateCardViewImage(game)
         viewHolder.view.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
     }
 
@@ -36,20 +36,15 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder?) {
         val viewHolder = viewHolder as ViewHolder
         viewHolder.mCardView.mainImage = null
-        Picasso.get().cancelRequest(viewHolder.mCardView.mainImageView)
+        PicassoWrapper.cancelRequest(viewHolder.mCardView.mainImageView)
         viewHolder.view.setOnCreateContextMenuListener(null)
     }
 
     class ViewHolder(view: ImageCardView, private val cardSize: Int) : Presenter.ViewHolder(view) {
         val mCardView: ImageCardView = view
 
-        fun updateCardViewImage(url: String?) {
-            Picasso.get()
-                .load(url)
-                .resize(cardSize, cardSize)
-                .centerCrop()
-                .placeholder(R.drawable.ic_image_paceholder)
-                .into(mCardView.mainImageView)
+        fun updateCardViewImage(game: Game) {
+            PicassoWrapper.loadResizeCover(game, mCardView.mainImageView, cardSize)
         }
     }
 }

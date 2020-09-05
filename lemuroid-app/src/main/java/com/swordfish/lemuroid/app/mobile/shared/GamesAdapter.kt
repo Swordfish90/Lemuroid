@@ -8,10 +8,10 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.PicassoWrapper
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -33,11 +33,7 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         subtitleView?.text = GameUtils.getGameSubtitle(itemView.context, game)
         favoriteToggle?.isChecked = game.isFavorite
 
-        Picasso.get()
-                .load(game.coverFrontUrl)
-                .placeholder(R.drawable.ic_image_paceholder)
-                .error(R.drawable.ic_image_paceholder)
-                .into(coverView)
+        PicassoWrapper.loadCover(game, coverView)
 
         itemView.setOnClickListener { gameInteractor.onGamePlay(game) }
         itemView.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
@@ -49,7 +45,7 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
     fun unbind() {
         coverView?.apply {
-            Picasso.get().cancelRequest(this)
+            PicassoWrapper.cancelRequest(this)
             this.setImageDrawable(null)
         }
         itemView.setOnClickListener(null)

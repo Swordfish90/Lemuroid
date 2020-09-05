@@ -139,6 +139,8 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
         val imageType = "Named_Boxarts"
 
-        return "http://thumbnails.libretro.com/$systemName/$imageType/$name.png"
+        val thumbGameName = name.replace("&", "_")
+
+        return "http://thumbnails.libretro.com/$systemName/$imageType/$thumbGameName.png"
     }
 }
