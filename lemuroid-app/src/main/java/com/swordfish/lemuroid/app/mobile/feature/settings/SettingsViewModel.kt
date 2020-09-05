@@ -25,8 +25,8 @@ class SettingsViewModel(
     }
 
     val currentFolder = rxSharedPreferences.getString(directoryPreference)
-            .asObservable()
-            .filter { it.isNotBlank() }
+        .asObservable()
+        .filter { it.isNotBlank() }
 
     val indexingInProgress = LibraryIndexMonitor(context).getLiveData()
 }

@@ -45,8 +45,14 @@ class TVGameMenuFragment(
         val coreOptionsScreen = findPreference<PreferenceScreen>(SECTION_CORE_OPTIONS)
         coreOptionsScreen?.isVisible = coreOptions.isNotEmpty()
         coreOptions
-                .map { CoreOptionsPreferenceHelper.convertToPreference(preferenceScreen.context, it, game.systemId) }
-                .forEach { coreOptionsScreen?.addPreference(it) }
+            .map {
+                CoreOptionsPreferenceHelper.convertToPreference(
+                    preferenceScreen.context,
+                    it,
+                    game.systemId
+                )
+            }
+            .forEach { coreOptionsScreen?.addPreference(it) }
     }
 
     private fun setupChangeDiskOption() {
@@ -73,15 +79,20 @@ class TVGameMenuFragment(
         val loadScreen = findPreference<PreferenceScreen>(SECTION_LOAD_GAME)
 
         Single.just(game)
-                .flatMap { statesManager.getSavedSlotsInfo(it, GameSystem.findById(it.systemId).coreName) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDispose(scope())
-                .subscribeBy {
-                    it.forEachIndexed { index, saveInfos ->
-                        addSaveAndLoadPreferences(saveScreen, loadScreen, index, saveInfos)
-                    }
+            .flatMap {
+                statesManager.getSavedSlotsInfo(
+                    it,
+                    GameSystem.findById(it.systemId).coreName
+                )
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribeBy {
+                it.forEachIndexed { index, saveInfos ->
+                    addSaveAndLoadPreferences(saveScreen, loadScreen, index, saveInfos)
                 }
+            }
     }
 
     private fun addSaveAndLoadPreferences(

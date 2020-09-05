@@ -25,7 +25,10 @@ class SystemViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
     fun bind(systemInfo: SystemInfo, onSystemClick: (GameSystem) -> Unit) {
         textView?.text = itemView.context.resources.getString(systemInfo.system.titleResId)
-        subtextView?.text = itemView.context.getString(R.string.system_grid_details, systemInfo.count.toString())
+        subtextView?.text = itemView.context.getString(
+            R.string.system_grid_details,
+            systemInfo.count.toString()
+        )
         coverView?.setImageResource(systemInfo.system.imageResId)
         itemView.setOnClickListener { onSystemClick(systemInfo.system) }
     }
@@ -36,7 +39,9 @@ class SystemsAdapter(
 ) : ListAdapter<SystemInfo, SystemViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SystemViewHolder {
-        return SystemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_system, parent, false))
+        return SystemViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.layout_system, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: SystemViewHolder, position: Int) {
@@ -47,10 +52,10 @@ class SystemsAdapter(
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<SystemInfo>() {
 
             override fun areItemsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) =
-                    oldInfo.system.id == newInfo.system.id
+                oldInfo.system.id == newInfo.system.id
 
             override fun areContentsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo) =
-                    oldInfo == newInfo
+                oldInfo == newInfo
         }
     }
 }

@@ -30,7 +30,10 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
                     Timber.d("Reading file: ${entry.name}")
                     if (entry.name.startsWith(BASE_ARCHIVE_DIRECTORY)) {
                         Timber.d("Writing file: ${entry.name}")
-                        val destFile = File(coreAssetsDirectory, entry.name.replace(BASE_ARCHIVE_DIRECTORY, ""))
+                        val destFile = File(
+                            coreAssetsDirectory,
+                            entry.name.replace(BASE_ARCHIVE_DIRECTORY, "")
+                        )
                         if (entry.isDirectory) {
                             destFile.mkdirs()
                         } else {
@@ -40,12 +43,12 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
                 }
             }
         }
-        .doOnError { getAssetsDirectory(directoriesManager).deleteRecursively() }
-        .ignoreElement()
+            .doOnError { getAssetsDirectory(directoriesManager).deleteRecursively() }
+            .ignoreElement()
     }
 
     private fun getAssetsDirectory(directoriesManager: DirectoriesManager) =
-            File(directoriesManager.getSystemDirectory(), PPSSPP_ASSETS_FOLDER_NAME)
+        File(directoriesManager.getSystemDirectory(), PPSSPP_ASSETS_FOLDER_NAME)
 
     companion object {
         const val PPSSPP_ASSETS_URL = "https://github.com/hrydgard/ppsspp/archive/master.zip"

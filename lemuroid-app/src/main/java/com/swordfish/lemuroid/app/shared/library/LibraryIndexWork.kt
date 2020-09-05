@@ -19,7 +19,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 
-class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
+class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
+    RxWorker(context, workerParams) {
 
     @Inject lateinit var lemuroidLibrary: LemuroidLibrary
 
@@ -30,9 +31,9 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) : RxWor
 
         setForegroundAsync(ForegroundInfo(notificationsManager.getIndexingNotification()))
         return lemuroidLibrary.indexLibrary()
-                .toSingleDefault(Result.success())
-                .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
-                .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
+            .toSingleDefault(Result.success())
+            .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
+            .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
     }
 
     companion object {

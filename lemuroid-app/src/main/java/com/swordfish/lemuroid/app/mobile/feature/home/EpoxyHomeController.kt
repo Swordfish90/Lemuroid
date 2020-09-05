@@ -68,9 +68,9 @@ class EpoxyHomeController(
             paddingRes(R.dimen.grid_spacing)
             withModelsFrom(games) { item ->
                 EpoxyGameView_()
-                        .id(item.id)
-                        .game(item)
-                        .gameInteractor(gameInteractor)
+                    .id(item.id)
+                    .game(item)
+                    .gameInteractor(gameInteractor)
             }
         }
     }

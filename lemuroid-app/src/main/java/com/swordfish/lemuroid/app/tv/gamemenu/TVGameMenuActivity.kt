@@ -18,16 +18,16 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             val game = intent.extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
-                    ?: throw InvalidParameterException("Missing EXTRA_GAME")
+                ?: throw InvalidParameterException("Missing EXTRA_GAME")
 
             val options = intent.extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
-                    ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
+                ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
-                    ?: throw InvalidParameterException("Missing EXTRA_DISKS")
+                ?: throw InvalidParameterException("Missing EXTRA_DISKS")
 
             val currentDisk = intent.extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK)
-                    ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
+                ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
 
             val fragment = TVGameMenuFragmentWrapper(
                 statesManager,
@@ -36,7 +36,8 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 numDisks,
                 currentDisk
             )
-            supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit()
+            supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment)
+                .commit()
         }
     }
 

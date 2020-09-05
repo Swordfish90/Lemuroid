@@ -16,10 +16,15 @@ abstract class TVBaseSettingsActivity : ImmersiveActivity() {
             startPreferenceFragment(createFragment())
         }
 
-        override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {
+        override fun onPreferenceStartFragment(
+            caller: PreferenceFragmentCompat,
+            pref: Preference
+        ): Boolean {
             val args = pref.extras
             val f = childFragmentManager.fragmentFactory.instantiate(
-                    requireActivity().classLoader, pref.fragment)
+                requireActivity().classLoader,
+                pref.fragment
+            )
             f.arguments = args
             f.setTargetFragment(caller, 0)
             if (f is PreferenceFragmentCompat || f is PreferenceDialogFragmentCompat) {
@@ -30,7 +35,10 @@ abstract class TVBaseSettingsActivity : ImmersiveActivity() {
             return true
         }
 
-        override fun onPreferenceStartScreen(caller: PreferenceFragmentCompat, pref: PreferenceScreen): Boolean {
+        override fun onPreferenceStartScreen(
+            caller: PreferenceFragmentCompat,
+            pref: PreferenceScreen
+        ): Boolean {
             val fragment = createFragment()
             val args = Bundle(1)
             args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, pref.key)

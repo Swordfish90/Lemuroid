@@ -27,26 +27,33 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
     }
 
     fun getAutoSave(game: Game, system: GameSystem) =
-            getSaveState(getAutoSaveFileName(game), system.coreName)
+        getSaveState(getAutoSaveFileName(game), system.coreName)
 
     fun setAutoSave(game: Game, system: GameSystem, saveState: SaveState) =
-            setSaveState(getAutoSaveFileName(game), system.coreName, saveState)
+        setSaveState(getAutoSaveFileName(game), system.coreName, saveState)
 
-    fun getSavedSlotsInfo(game: Game, coreName: String): Single<List<SaveStateInfo>> = Single.fromCallable {
+    fun getSavedSlotsInfo(
+        game: Game,
+        coreName: String
+    ): Single<List<SaveStateInfo>> = Single.fromCallable {
         (0 until MAX_STATES)
             .map { getStateFileOrDeprecated(getSlotSaveFileName(game, it), coreName) }
             .map { SaveStateInfo(it.exists(), it.lastModified()) }
             .toList()
     }
 
-    private fun getSaveState(fileName: String, coreName: String): Maybe<SaveState> = Maybe.fromCallable {
+    private fun getSaveState(
+        fileName: String,
+        coreName: String
+    ): Maybe<SaveState> = Maybe.fromCallable {
         val saveFile = getStateFileOrDeprecated(fileName, coreName)
         val metadataFile = getMetadataStateFile(fileName, coreName)
         if (saveFile.exists()) {
             val byteArray = saveFile.readBytesUncompressed()
             val stateMetadata = runCatching {
-                Json.Default.decodeFromString<SaveState.Metadata>(
-                    SaveState.Metadata.serializer(), metadataFile.readText()
+                Json.Default.decodeFromString(
+                    SaveState.Metadata.serializer(),
+                    metadataFile.readText()
                 )
             }
             SaveState(byteArray, stateMetadata.getOrNull() ?: SaveState.Metadata())
@@ -55,7 +62,8 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         }
     }
 
-    private fun setSaveState(fileName: String,
+    private fun setSaveState(
+        fileName: String,
         coreName: String,
         saveState: SaveState
     ) = Completable.fromCallable {

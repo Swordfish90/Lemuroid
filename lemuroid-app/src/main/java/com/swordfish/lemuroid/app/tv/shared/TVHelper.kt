@@ -8,8 +8,8 @@ object TVHelper {
         val pm: PackageManager = context.packageManager
         return !(
             pm.hasSystemFeature("android.hardware.type.television") or
-            pm.hasSystemFeature("android.hardware.type.watch") or
-            pm.hasSystemFeature("android.hardware.type.automotive")
-        )
+                pm.hasSystemFeature("android.hardware.type.watch") or
+                pm.hasSystemFeature("android.hardware.type.automotive")
+            )
     }
 }

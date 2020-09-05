@@ -31,9 +31,7 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
 
         holder.itemView?.setOnClickListener { gameInteractor.onGamePlay(game) }
         holder.itemView?.setOnCreateContextMenuListener(
-            GameContextMenuListener(
-                gameInteractor, game
-            )
+            GameContextMenuListener(gameInteractor, game)
         )
     }
 

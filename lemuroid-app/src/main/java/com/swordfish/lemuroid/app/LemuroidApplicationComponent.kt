@@ -27,15 +27,17 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 
-@Component(modules = [
-    AndroidSupportInjectionModule::class,
-    AndroidWorkerInjectionModule::class,
-    LemuroidApplicationModule::class,
-    LibraryIndexWork.Module::class,
-    LemuroidTVApplicationModule::class
-    // GDriveApplicationModule::class,
-    // WebDavApplicationModule::class,
-])
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        AndroidWorkerInjectionModule::class,
+        LemuroidApplicationModule::class,
+        LibraryIndexWork.Module::class,
+        LemuroidTVApplicationModule::class
+        // GDriveApplicationModule::class,
+        // WebDavApplicationModule::class,
+    ]
+)
 @PerApp
 interface LemuroidApplicationComponent : AndroidInjector<LemuroidApplication> {
 

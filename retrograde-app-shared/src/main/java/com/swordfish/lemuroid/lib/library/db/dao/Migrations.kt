@@ -6,7 +6,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 object Migrations {
     val VERSION_8_9: Migration = object : Migration(8, 9) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS `datafiles`(
                     `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     `gameId` INTEGER NOT NULL,
@@ -14,24 +15,33 @@ object Migrations {
                     `fileUri` TEXT NOT NULL,
                     `lastIndexedAt` INTEGER NOT NULL,
                     `path` TEXT, FOREIGN KEY(`gameId`
-                ) REFERENCES `games`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )""".trimIndent()
+                ) REFERENCES `games`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )
+                """.trimIndent()
             )
 
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE UNIQUE INDEX IF NOT EXISTS `index_datafiles_id` ON `datafiles` (`id`)
-            """.trimIndent())
+                """.trimIndent()
+            )
 
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE INDEX IF NOT EXISTS `index_datafiles_fileUri` ON `datafiles` (`fileUri`)
-            """.trimIndent())
+                """.trimIndent()
+            )
 
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE INDEX IF NOT EXISTS `index_datafiles_gameId` ON `datafiles` (`gameId`)
-            """.trimIndent())
+                """.trimIndent()
+            )
 
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE INDEX IF NOT EXISTS `index_datafiles_lastIndexedAt` ON `datafiles` (`lastIndexedAt`)
-            """.trimIndent())
+                """.trimIndent()
+            )
         }
     }
 }

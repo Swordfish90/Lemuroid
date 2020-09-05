@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +28,11 @@ class HomeFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -37,8 +40,10 @@ class HomeFragment : Fragment() {
         super.onResume()
 
         val homeViewModel =
-            ViewModelProviders.of(this,
-                HomeViewModel.Factory(context!!.applicationContext, retrogradeDb)).get(HomeViewModel::class.java)
+            ViewModelProviders.of(
+                this,
+                HomeViewModel.Factory(context!!.applicationContext, retrogradeDb)
+            ).get(HomeViewModel::class.java)
 
         // Disable snapping in carousel view
         Carousel.setDefaultGlobalSnapHelperFactory(null)
@@ -51,21 +56,21 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = pagingController.adapter
 
-        homeViewModel.recentGames.observe(this, Observer {
+        homeViewModel.recentGames.observe(this) {
             pagingController.updateRecents(it)
-        })
+        }
 
-        homeViewModel.favoriteGames.observe(this, Observer {
+        homeViewModel.favoriteGames.observe(this) {
             pagingController.updateFavorites(it)
-        })
+        }
 
-        homeViewModel.discoverGames.observe(this, Observer {
+        homeViewModel.discoverGames.observe(this) {
             pagingController.updateDiscover(it)
-        })
+        }
 
-        homeViewModel.indexingInProgress.observe(this, Observer {
+        homeViewModel.indexingInProgress.observe(this) {
             pagingController.updateLibraryIndexingInProgress(it)
-        })
+        }
     }
 
     @dagger.Module

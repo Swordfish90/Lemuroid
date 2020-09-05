@@ -15,11 +15,20 @@ import io.reactivex.subjects.BehaviorSubject
 class GamePadManager(context: Context) {
 
     private val inputManager = context.getSystemService(Context.INPUT_SERVICE) as InputManager
-    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(context)
+
+    private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+    }
 
     fun getBindings(inputDevice: InputDevice): Single<Map<Int, Int>> {
         return Observable.fromIterable(INPUT_KEYS)
-            .flatMapSingle { keyCode -> retrieveMappingFromPreferences(inputDevice, keyCode).map { keyCode to it } }
+            .flatMapSingle { keyCode ->
+                retrieveMappingFromPreferences(
+                    inputDevice,
+                    keyCode
+                ).map { keyCode to it }
+            }
             .toList()
             .map { it.toMap() }
             .subscribeOn(Schedulers.io())
@@ -29,8 +38,8 @@ class GamePadManager(context: Context) {
         val actionCompletable = Completable.fromAction {
             val editor = sharedPreferences.edit()
             sharedPreferences.all.keys
-                    .filter { it.startsWith(GAME_PAD_PREFERENCE_BASE_KEY) }
-                    .forEach { editor.remove(it) }
+                .filter { it.startsWith(GAME_PAD_PREFERENCE_BASE_KEY) }
+                .forEach { editor.remove(it) }
             editor.commit()
         }
         return actionCompletable.subscribeOn(Schedulers.io())
@@ -44,11 +53,17 @@ class GamePadManager(context: Context) {
         val subject = BehaviorSubject.createDefault(getAllGamePads())
 
         val listener = object : InputManager.InputDeviceListener {
-            override fun onInputDeviceAdded(deviceId: Int) { subject.onNext(getAllGamePads()) }
+            override fun onInputDeviceAdded(deviceId: Int) {
+                subject.onNext(getAllGamePads())
+            }
 
-            override fun onInputDeviceChanged(deviceId: Int) { subject.onNext(getAllGamePads()) }
+            override fun onInputDeviceChanged(deviceId: Int) {
+                subject.onNext(getAllGamePads())
+            }
 
-            override fun onInputDeviceRemoved(deviceId: Int) { subject.onNext(getAllGamePads()) }
+            override fun onInputDeviceRemoved(deviceId: Int) {
+                subject.onNext(getAllGamePads())
+            }
         }
 
         return subject
@@ -56,7 +71,10 @@ class GamePadManager(context: Context) {
             .doFinally { inputManager.unregisterInputDeviceListener(listener) }
     }
 
-    private fun retrieveMappingFromPreferences(inputDevice: InputDevice, keyCode: Int): Single<Int> {
+    private fun retrieveMappingFromPreferences(
+        inputDevice: InputDevice,
+        keyCode: Int
+    ): Single<Int> {
         val valueSingle = Single.fromCallable {
             val sharedPreferencesKey = computeKeyBindingPreference(inputDevice, keyCode)
             val sharedPreferencesDefault = getDefaultBinding(keyCode).toString()
