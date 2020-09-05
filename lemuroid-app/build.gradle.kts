@@ -11,8 +11,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 80
-        versionName = "1.6.1-beta1"
+        versionCode = 81
+        versionName = "1.6.1"
     }
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
