@@ -157,8 +157,6 @@ class GameMenuFragment : Fragment() {
     private fun displayChangeDiskDialog(currentDisk: Int, numDisks: Int) {
         val builder = AlertDialog.Builder(requireContext())
 
-        Log.e("FILIPPO", "Building dialog $currentDisk $numDisks")
-
         val values = (0 until numDisks)
                 .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
                 .toTypedArray()

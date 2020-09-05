@@ -52,12 +52,15 @@ class TVGameMenuFragment(
     private fun setupChangeDiskOption() {
         val changeDiskPreference = findPreference<ListPreference>(SECTION_CHANGE_DISK)
         changeDiskPreference?.isVisible = numDisks > 1
+
         changeDiskPreference?.entries = (0 until numDisks)
             .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
             .toTypedArray()
+
         changeDiskPreference?.entryValues = (0 until numDisks)
             .map { it.toString() }
             .toTypedArray()
+
         changeDiskPreference?.setValueIndex(currentDisk)
         changeDiskPreference?.setOnPreferenceChangeListener { _, newValue ->
             handleChangeDisk((newValue as String).toInt())
