@@ -3,6 +3,11 @@ package com.swordfish.lemuroid.app.mobile.feature.settings
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.text.Html
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -29,6 +34,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onAttach(context)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_mobile_settings, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_options_help -> {
+                displayLemuroidHelp()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun displayLemuroidHelp() {
+        val message = requireContext().getString(R.string.lemuroid_help_content)
+        AlertDialog.Builder(requireContext())
+            .setMessage(Html.fromHtml(message))
+            .show()
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.mobile_settings, rootKey)
     }
@@ -37,18 +69,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onResume()
 
         val settingsViewModel = ViewModelProviders.of(this, SettingsViewModel.Factory(context!!, rxSharedPreferences))
-                .get(SettingsViewModel::class.java)
+            .get(SettingsViewModel::class.java)
 
         val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
         val displayBiosPreference: Preference? = findPreference(getString(R.string.pref_key_display_bios_info))
 
         settingsViewModel.currentFolder
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDispose(scope())
-                .subscribe {
-                    currentDirectory?.summary = getDisplayNameForFolderUri(Uri.parse(it)) ?: getString(R.string.none)
-                }
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribe {
+                currentDirectory?.summary = getDisplayNameForFolderUri(Uri.parse(it)) ?: getString(R.string.none)
+            }
 
         settingsViewModel.indexingInProgress.observe(this, Observer {
             rescanPreference?.isEnabled = !it
