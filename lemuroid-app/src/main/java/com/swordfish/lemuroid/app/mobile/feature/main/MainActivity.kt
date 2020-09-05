@@ -30,8 +30,10 @@ import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.Completable
 import io.reactivex.rxkotlin.subscribeBy
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
+import java.util.concurrent.TimeUnit
 
 class MainActivity : RetrogradeAppCompatActivity() {
 
@@ -79,10 +81,16 @@ class MainActivity : RetrogradeAppCompatActivity() {
         when (requestCode) {
             GameLauncherActivity.REQUEST_PLAY_GAME -> {
                 val duration = data?.extras?.getLong(GameLauncherActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                reviewManager.startReviewFlow(this, duration!!)
-                    .subscribeBy {  }
+                displayReviewRequest(duration)
             }
         }
+    }
+
+    private fun displayReviewRequest(durationMillis: Long?) {
+        if (durationMillis == null) return
+        Completable.timer(500, TimeUnit.MILLISECONDS)
+            .andThen { reviewManager.startReviewFlow(this, durationMillis) }
+            .subscribeBy { }
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
