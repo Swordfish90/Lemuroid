@@ -27,7 +27,9 @@ import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import io.reactivex.Observable
 import timber.log.Timber
 import java.io.File
@@ -35,6 +37,7 @@ import java.io.File
 class GameLoader(
     private val coreManager: CoreManager,
     private val lemuroidLibrary: LemuroidLibrary,
+    private val statesManager: StatesManager,
     private val savesManager: SavesManager,
     private val coreVariablesManager: CoreVariablesManager,
     private val retrogradeDatabase: RetrogradeDatabase
@@ -69,7 +72,7 @@ class GameLoader(
             val saveRAMData = savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
 
             val quickSaveData = if (loadQuickSave) {
-                savesManager.getAutoSave(game, gameSystem).toSingleAsOptional().blockingGet().toNullable()
+                statesManager.getAutoSave(game, gameSystem).toSingleAsOptional().blockingGet().toNullable()
             } else {
                 null
             }
@@ -92,7 +95,7 @@ class GameLoader(
         val game: Game,
         val coreLibrary: String,
         val gameFile: File,
-        val quickSaveData: ByteArray?,
+        val quickSaveData: SaveState?,
         val saveRAMData: ByteArray?,
         val coreVariables: Array<CoreVariable>
     )

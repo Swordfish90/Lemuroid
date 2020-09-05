@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
@@ -12,7 +13,8 @@ import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.SaveStateInfo
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -22,17 +24,21 @@ import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 
 class TVGameMenuFragment(
-    private val savesManager: SavesManager,
+    private val statesManager: StatesManager,
     private val game: Game,
     private val coreOptions: Array<CoreOption>,
-    private val numDisks: Int
+    private val numDisks: Int,
+    private val currentDisk: Int
 ) : LeanbackPreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.tv_game_settings, rootKey)
         setupCoreOptions()
         setupLoadAndSave()
-        setupChangeDiskOption()
+
+        if (numDisks > 1) {
+            setupChangeDiskOption()
+        }
     }
 
     private fun setupCoreOptions() {
@@ -44,16 +50,22 @@ class TVGameMenuFragment(
     }
 
     private fun setupChangeDiskOption() {
-        val changeDiskPreference = findPreference<PreferenceScreen>(SECTION_CHANGE_DISK)
+        val changeDiskPreference = findPreference<ListPreference>(SECTION_CHANGE_DISK)
         changeDiskPreference?.isVisible = numDisks > 1
-        (0 until numDisks)
-                .map {
-                    val preference = Preference(requireContext())
-                    preference.key = "pref_game_disk_$it"
-                    preference.title = resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString())
-                    preference
-                }
-                .forEach { changeDiskPreference?.addPreference(it) }
+
+        changeDiskPreference?.entries = (0 until numDisks)
+            .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
+            .toTypedArray()
+
+        changeDiskPreference?.entryValues = (0 until numDisks)
+            .map { it.toString() }
+            .toTypedArray()
+
+        changeDiskPreference?.setValueIndex(currentDisk)
+        changeDiskPreference?.setOnPreferenceChangeListener { _, newValue ->
+            handleChangeDisk((newValue as String).toInt())
+            true
+        }
     }
 
     private fun setupLoadAndSave() {
@@ -61,7 +73,7 @@ class TVGameMenuFragment(
         val loadScreen = findPreference<PreferenceScreen>(SECTION_LOAD_GAME)
 
         Single.just(game)
-                .flatMap { savesManager.getSavedSlotsInfo(it, GameSystem.findById(it.systemId).coreName) }
+                .flatMap { statesManager.getSavedSlotsInfo(it, GameSystem.findById(it.systemId).coreName) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())
@@ -76,26 +88,26 @@ class TVGameMenuFragment(
         saveScreen: PreferenceScreen?,
         loadScreen: PreferenceScreen?,
         index: Int,
-        saveInfos: SavesManager.SaveInfos
+        saveStateInfo: SaveStateInfo
     ) {
         saveScreen?.addPreference(
             Preference(requireContext()).apply {
                 this.key = "pref_game_save_$index"
-                this.summary = getDateString(saveInfos)
+                this.summary = getDateString(saveStateInfo)
                 this.title = getString(R.string.game_menu_state, (index + 1).toString())
             }
         )
         loadScreen?.addPreference(
             Preference(requireContext()).apply {
                 this.key = "pref_game_load_$index"
-                this.summary = getDateString(saveInfos)
-                this.isEnabled = saveInfos.exists
+                this.summary = getDateString(saveStateInfo)
+                this.isEnabled = saveStateInfo.exists
                 this.title = getString(R.string.game_menu_state, (index + 1).toString())
             }
         )
     }
 
-    private fun getDateString(saveInfo: SavesManager.SaveInfos): String {
+    private fun getDateString(saveInfo: SaveStateInfo): String {
         val formatter = SimpleDateFormat.getDateTimeInstance()
         return if (saveInfo.exists) {
             formatter.format(saveInfo.date)
@@ -105,10 +117,6 @@ class TVGameMenuFragment(
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        if (preference?.key?.startsWith("pref_game_disk_") == true) {
-            handleChangeDisk(preference.key.replace("pref_game_disk_", "").toInt())
-            return true
-        }
         when (preference?.key) {
             "pref_game_reset" -> {
                 val resultIntent = Intent().apply {

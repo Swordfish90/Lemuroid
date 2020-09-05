@@ -9,8 +9,10 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.Gravity
 import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
@@ -25,8 +27,11 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
@@ -43,7 +48,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 abstract class BaseGameActivity : ImmersiveActivity() {
 
@@ -52,16 +59,24 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var containerLayout: ConstraintLayout
     protected lateinit var gameViewLayout: FrameLayout
     protected lateinit var overlayLayout: FrameLayout
+    private lateinit var loadingView: ProgressBar
 
     @Inject lateinit var settingsManager: SettingsManager
+    @Inject lateinit var statesManager: StatesManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
     @Inject lateinit var gamePadManager: GamePadManager
+
+    private val loadingSubject: BehaviorRelay<Boolean> = BehaviorRelay.create()
 
     private val keyEventsSubjects: PublishRelay<KeyEvent> = PublishRelay.create()
     private val motionEventsSubjects: PublishRelay<MotionEvent> = PublishRelay.create()
 
     protected var retroGameView: GLRetroView? = null
+
+    var loading: Boolean by Delegates.observable(false) { _, _, value ->
+        loadingSubject.accept(value)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +85,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         containerLayout = findViewById(R.id.game_container)
         gameViewLayout = findViewById(R.id.gameview_layout)
         overlayLayout = findViewById(R.id.overlay_layout)
+        loadingView = findViewById(R.id.progress)
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         system = GameSystem.findById(game.systemId)
@@ -97,9 +113,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     // If the activity is garbage collected we are losing its state. To avoid overwriting the previous autosave we just
     // reload the previous one. This is far from perfect but definitely improves the current behaviour.
-    private fun retrieveAutoSaveData(): ByteArray? {
+    private fun retrieveAutoSaveData(): SaveState? {
         if (intent.getBooleanExtra(EXTRA_LOAD_AUTOSAVE, false)) {
-            return getAndResetTransientQuickSave() ?: savesManager.getAutoSave(game, system).blockingGet()
+            return getAndResetTransientQuickSave() ?: statesManager.getAutoSave(game, system).blockingGet()
         }
         return null
     }
@@ -112,7 +128,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
-    private fun restoreAutoSaveAsync(saveGame: ByteArray) {
+    private fun restoreAutoSaveAsync(saveState: SaveState) {
         if (!isAutoSaveEnabled()) {
             return
         }
@@ -122,7 +138,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         retroGameView?.getGLRetroEvents()
             ?.filter { it is GLRetroView.GLRetroEvents.FrameRendered }
             ?.firstElement()
-            ?.flatMapCompletable { getRetryRestoreQuickSave(saveGame) }
+            ?.flatMapCompletable { getRetryRestoreQuickSave(saveState) }
             ?.subscribeOn(Schedulers.io())
             ?.autoDispose(scope())
             ?.subscribe()
@@ -173,6 +189,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val intent = Intent(this, getDialogClass()).apply {
             val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
             this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
+            this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_GAME, game)
         }
@@ -213,6 +230,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        loadingSubject
+            .throttleLast(200, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribe { loadingView.setVisibleOrGone(it) }
 
         coreVariablesManager.getCoreOptionsForSystem(system)
                 .autoDispose(scope())
@@ -263,10 +286,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     // Now that we wait for the first rendered frame this is probably no longer needed, but we'll keep it just to be sure
-    private fun getRetryRestoreQuickSave(saveGame: ByteArray) = Completable.fromCallable {
-        val retroGameView = retroGameView ?: return@fromCallable null
+    private fun getRetryRestoreQuickSave(saveState: SaveState) = Completable.fromCallable {
         var times = 10
-        while (!retroGameView.unserializeState(saveGame) && times > 0) {
+
+        while (!loadSaveState(saveState) && times > 0) {
             Thread.sleep(200)
             times--
         }
@@ -413,12 +436,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun getDevicePort(inputEvent: InputEvent) = (inputEvent.device?.controllerNumber ?: 0) - 1
 
     override fun onBackPressed() {
+        if (loading) return
         autoSaveAndFinish()
     }
 
     private fun autoSaveAndFinish() {
         getAutoSaveAndFinishCompletable()
             .subscribeOn(Schedulers.io())
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
             .autoDispose(scope())
             .subscribe()
     }
@@ -432,13 +458,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
-        val retroGameView = retroGameView ?: return Completable.complete()
-
         return Single.fromCallable { isAutoSaveEnabled() }
             .filter { it }
-            .map { retroGameView.serializeState() }
-            .doOnSuccess { Timber.i("Stored autosave file with size: ${it.size}") }
-            .flatMapCompletable { savesManager.setAutoSave(game, system, it) }
+            .map { getCurrentSaveState() }
+            .doOnSuccess { Timber.i("Stored autosave file with size: ${it?.state?.size}") }
+            .flatMapCompletable { statesManager.setAutoSave(game, system, it) }
     }
 
     private fun getSaveRAMCompletable(game: Game): Completable {
@@ -450,25 +474,49 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun saveSlot(index: Int): Completable {
-        val retroGameView = retroGameView ?: return Completable.complete()
-
-        return Single.just(game)
-            .map { it to retroGameView.serializeState() }
-            .doOnSuccess { (_, data) -> Timber.i("Storing quicksave with size: ${data.size}") }
+        if (loading) return Completable.complete()
+        return Maybe.fromCallable { getCurrentSaveState() }
+            .doAfterSuccess { Timber.i("Storing quicksave with size: ${it!!.state.size}") }
             .subscribeOn(Schedulers.io())
-            .flatMapCompletable { (game, data) -> savesManager.setSlotSave(game, data, system, index) }
+            .flatMapCompletable { statesManager.setSlotSave(game, it, system, index) }
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
     }
 
     private fun loadSlot(index: Int): Completable {
-        val retroGameView = retroGameView ?: return Completable.complete()
-
-        return Single.just(game)
-            .flatMapMaybe { savesManager.getSlotSave(it, system, index) }
-            .map { retroGameView.unserializeState(it) }
+        if (loading) return Completable.complete()
+        return statesManager.getSlotSave(game, system, index)
+            .map { loadSaveState(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
             .ignoreElement()
+    }
+
+    private fun getCurrentSaveState(): SaveState? {
+        val retroGameView = retroGameView ?: return null
+        val currentDisk = if (system.hasMultiDiskSupport) {
+            retroGameView.getCurrentDisk()
+        } else {
+            0
+        }
+        return SaveState(
+            retroGameView.serializeState(),
+            SaveState.Metadata(currentDisk)
+        )
+    }
+
+    private fun loadSaveState(saveState: SaveState): Boolean {
+        val retroGameView = retroGameView ?: return false
+        if (system.hasMultiDiskSupport
+            && retroGameView.getAvailableDisks() > 1
+            && retroGameView.getCurrentDisk() != saveState.metadata.diskIndex
+        ) {
+            retroGameView.changeDisk(saveState.metadata.diskIndex)
+        }
+        return retroGameView.unserializeState(saveState.state)
     }
 
     private fun reset() {
@@ -512,10 +560,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         const val DIALOG_REQUEST = 100
 
-        private var transientStashedState: ByteArray? = null
+        private var transientStashedState: SaveState? = null
         private var transientSRAMState: ByteArray? = null
         /** A full savestate may not fit a bundle, so we need to ask for forgiveness and pass it statically. */
-        fun setTransientQuickSave(state: ByteArray?) {
+        fun setTransientQuickSave(state: SaveState?) {
             transientStashedState = state
         }
 
@@ -523,7 +571,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             transientSRAMState = data
         }
 
-        fun getAndResetTransientQuickSave(): ByteArray? {
+        fun getAndResetTransientQuickSave(): SaveState? {
             val result = transientStashedState
             transientStashedState = null
             return result

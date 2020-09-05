@@ -62,7 +62,9 @@ data class GameSystem(
 
     val defaultSettings: List<CoreVariable> = listOf(),
 
-    val virtualGamePadOptions: VirtualGamePadOptions = VirtualGamePadOptions()
+    val virtualGamePadOptions: VirtualGamePadOptions = VirtualGamePadOptions(),
+
+    val hasMultiDiskSupport: Boolean = false
 
 ) {
 
@@ -239,7 +241,8 @@ data class GameSystem(
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled")
                         ),
-                        virtualGamePadOptions = VirtualGamePadOptions(true)
+                        virtualGamePadOptions = VirtualGamePadOptions(true),
+                        hasMultiDiskSupport = true
                 ),
                 GameSystem(
                         SystemID.PSP,

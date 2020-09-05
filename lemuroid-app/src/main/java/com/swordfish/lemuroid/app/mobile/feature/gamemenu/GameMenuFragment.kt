@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,8 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.SaveStateInfo
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -31,7 +33,7 @@ import javax.inject.Inject
 
 class GameMenuFragment : Fragment() {
 
-    @Inject lateinit var savesManager: SavesManager
+    @Inject lateinit var statesManager: StatesManager
 
     private lateinit var game: Game
     private lateinit var system: GameSystem
@@ -57,14 +59,14 @@ class GameMenuFragment : Fragment() {
 
     private fun setupViews(): Completable {
         return Single.just(game)
-                .flatMap { savesManager.getSavedSlotsInfo(it, system.coreName) }
+                .flatMap { statesManager.getSavedSlotsInfo(it, system.coreName) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { presentViews(it) }
                 .ignoreElement()
     }
 
-    private fun presentViews(infos: List<SavesManager.SaveInfos>) {
+    private fun presentViews(infos: List<SaveStateInfo>) {
         val slot1SaveView = view!!.findViewById<View>(R.id.save_entry_slot1)
         val slot2SaveView = view!!.findViewById<View>(R.id.save_entry_slot2)
         val slot3SaveView = view!!.findViewById<View>(R.id.save_entry_slot3)
@@ -77,9 +79,10 @@ class GameMenuFragment : Fragment() {
 
         view!!.findViewById<Button>(R.id.menu_change_disk).apply {
             val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
+            val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0
             this.setVisibleOrGone(numDisks > 1)
             this.setOnClickListener {
-                displayChangeDiskDialog(numDisks)
+                displayChangeDiskDialog(currentDisk, numDisks)
             }
         }
 
@@ -117,7 +120,7 @@ class GameMenuFragment : Fragment() {
         view!!.setVisibleOrGone(true)
     }
 
-    private fun setupQuickSaveView(quickSaveView: View, index: Int, saveInfo: SavesManager.SaveInfos) {
+    private fun setupQuickSaveView(quickSaveView: View, index: Int, saveInfo: SaveStateInfo) {
         val title = getString(R.string.game_menu_state, (index + 1).toString())
 
         quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).apply {
@@ -151,14 +154,14 @@ class GameMenuFragment : Fragment() {
         findNavController().navigate(R.id.core_options, arguments)
     }
 
-    private fun displayChangeDiskDialog(numDisks: Int) {
+    private fun displayChangeDiskDialog(currentDisk: Int, numDisks: Int) {
         val builder = AlertDialog.Builder(requireContext())
 
         val values = (0 until numDisks)
                 .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
                 .toTypedArray()
 
-        builder.setItems(values) { _, index ->
+        builder.setSingleChoiceItems(values, currentDisk) { _, index ->
             handleDiskChange(index)
         }
 
@@ -174,7 +177,7 @@ class GameMenuFragment : Fragment() {
     }
 
     /** We still return a string even if we don't show it to ensure dialog doesn't change size.*/
-    private fun getDateString(saveInfo: SavesManager.SaveInfos): String {
+    private fun getDateString(saveInfo: SaveStateInfo): String {
         val formatter = SimpleDateFormat.getDateTimeInstance()
         val date = if (saveInfo.exists) {
             saveInfo.date
