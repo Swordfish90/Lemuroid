@@ -18,13 +18,19 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
         super.onCreate(savedInstanceState)
 
         val coreOptions = arguments?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
-                ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
+            ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
         val game = arguments?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
-                ?: throw InvalidParameterException("Missing EXTRA_GAME")
+            ?: throw InvalidParameterException("Missing EXTRA_GAME")
 
         coreOptions
-            .map { CoreOptionsPreferenceHelper.convertToPreference(preferenceScreen.context, it, game.systemId) }
+            .map {
+                CoreOptionsPreferenceHelper.convertToPreference(
+                    preferenceScreen.context,
+                    it,
+                    game.systemId
+                )
+            }
             .forEach { preferenceScreen.addPreference(it) }
     }
 

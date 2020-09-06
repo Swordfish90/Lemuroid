@@ -20,46 +20,46 @@ object ISOScanner {
     private val PS_SUPPORTED_FORMATS = setOf("iso", "pbp", "bin")
 
     private val PSX_BASE_SERIALS = listOf(
-            "CPCS",
-            "SCES",
-            "SIPS",
-            "SLKA",
-            "SLPS",
-            "SLUS",
-            "ESPM",
-            "SLED",
-            "SCPS",
-            "SCAJ",
-            "PAPX",
-            "SLES",
-            "HPS",
-            "LSP",
-            "SLPM",
-            "SCUS",
-            "SCED"
+        "CPCS",
+        "SCES",
+        "SIPS",
+        "SLKA",
+        "SLPS",
+        "SLUS",
+        "ESPM",
+        "SLED",
+        "SCPS",
+        "SCAJ",
+        "PAPX",
+        "SLES",
+        "HPS",
+        "LSP",
+        "SLPM",
+        "SCUS",
+        "SCED"
     )
 
     private val PSP_BASE_SERIALS = listOf(
-            "ULES",
-            "ULUS",
-            "ULJS",
-            "ULEM",
-            "ULUM",
-            "ULJM",
-            "UCES",
-            "UCUS",
-            "UCJS",
-            "UCAS",
-            "NPEH",
-            "NPUH",
-            "NPJH",
-            "NPEG",
-            "NPUG",
-            "NPJG",
-            "NPHG",
-            "NPEZ",
-            "NPUZ",
-            "NPJZ"
+        "ULES",
+        "ULUS",
+        "ULJS",
+        "ULEM",
+        "ULUM",
+        "ULJM",
+        "UCES",
+        "UCUS",
+        "UCJS",
+        "UCAS",
+        "NPEH",
+        "NPUH",
+        "NPJH",
+        "NPEG",
+        "NPUG",
+        "NPJG",
+        "NPHG",
+        "NPEZ",
+        "NPUZ",
+        "NPJZ"
     )
 
     fun extractSerial(fileName: String, inputStream: InputStream): String? {
@@ -67,7 +67,10 @@ object ISOScanner {
     }
 
     /** Extract a PS1 or PSP serial from ISO file or PBP. */
-    private fun extractPlayStationSerial(fileName: String, inputStream: InputStream) = inputStream.use { stream ->
+    private fun extractPlayStationSerial(
+        fileName: String,
+        inputStream: InputStream
+    ) = inputStream.use { stream ->
         if (FileUtils.extractExtension(fileName) !in PS_SUPPORTED_FORMATS) {
             return null
         }
@@ -76,7 +79,11 @@ object ISOScanner {
             return null
         }
 
-        val baseSerials = (PSP_BASE_SERIALS + PSX_BASE_SERIALS).map { it.toByteArray(Charsets.US_ASCII) }
+        val baseSerials = (PSP_BASE_SERIALS + PSX_BASE_SERIALS).map {
+            it.toByteArray(
+                Charsets.US_ASCII
+            )
+        }
         val skipSize = WINDOW_SIZE - PS_SERIAL_MAX_SIZE
 
         movingWidnowSequence(stream, WINDOW_SIZE, (skipSize).toLong())
@@ -96,7 +103,11 @@ object ISOScanner {
             .firstOrNull()
     }
 
-    private fun movingWidnowSequence(inputStream: InputStream, windowSize: Int, windowSkip: Long) = sequence {
+    private fun movingWidnowSequence(
+        inputStream: InputStream,
+        windowSize: Int,
+        windowSkip: Long
+    ) = sequence {
         val buffer = ByteArray(windowSize)
         do {
             inputStream.mark(windowSize)

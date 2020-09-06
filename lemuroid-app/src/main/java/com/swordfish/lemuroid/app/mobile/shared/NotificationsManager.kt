@@ -14,11 +14,11 @@ class NotificationsManager(private val applicationContext: Context) {
         createDefaultNotificationChannel()
 
         val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_lemuroid_tiny)
-                .setContentTitle(applicationContext.getString(R.string.library_index_notification_title))
-                .setContentText(applicationContext.getString(R.string.library_index_notification_message))
-                .setProgress(100, 0, true)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setSmallIcon(R.drawable.ic_lemuroid_tiny)
+            .setContentTitle(applicationContext.getString(R.string.library_index_notification_title))
+            .setContentText(applicationContext.getString(R.string.library_index_notification_message))
+            .setProgress(100, 0, true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
 
         return builder.build()
     }
@@ -29,7 +29,8 @@ class NotificationsManager(private val applicationContext: Context) {
             val importance = NotificationManager.IMPORTANCE_MIN
             val mChannel = NotificationChannel(DEFAULT_CHANNEL_ID, name, importance)
             val notificationManager =
-                    ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+                ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+
             notificationManager?.createNotificationChannel(mChannel)
         }
     }

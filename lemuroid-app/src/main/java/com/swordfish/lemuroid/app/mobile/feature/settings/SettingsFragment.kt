@@ -9,7 +9,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.documentfile.provider.DocumentFile
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -82,11 +81,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 currentDirectory?.summary = getDisplayNameForFolderUri(Uri.parse(it)) ?: getString(R.string.none)
             }
 
-        settingsViewModel.indexingInProgress.observe(this, Observer {
+        settingsViewModel.indexingInProgress.observe(this) {
             rescanPreference?.isEnabled = !it
             currentDirectory?.isEnabled = !it
             displayBiosPreference?.isEnabled = !it
-        })
+        }
     }
 
     private fun getDisplayNameForFolderUri(uri: Uri) = DocumentFile.fromTreeUri(context!!, uri)?.name

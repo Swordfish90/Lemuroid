@@ -28,17 +28,17 @@ class SystemsFragment : RecyclerViewFragment() {
         super.onResume()
 
         systemsViewModel = ViewModelProviders.of(this, SystemsViewModel.Factory(retrogradeDb))
-                .get(SystemsViewModel::class.java)
+            .get(SystemsViewModel::class.java)
 
         systemsAdapter = SystemsAdapter { navigateToGames(it) }
         systemsViewModel.availableSystems
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDispose(scope())
-                .subscribeBy {
-                    systemsAdapter?.submitList(it)
-                    emptyView?.setVisibleOrGone(it.isEmpty())
-                }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribeBy {
+                systemsAdapter?.submitList(it)
+                emptyView?.setVisibleOrGone(it.isEmpty())
+            }
 
         recyclerView?.apply {
             this.adapter = systemsAdapter

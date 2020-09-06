@@ -26,16 +26,16 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(
-        tableName = "games",
-        indices = [
-            Index("id", unique = true),
-            Index("fileUri", unique = true),
-            Index("title"),
-            Index("systemId"),
-            Index("lastIndexedAt"),
-            Index("lastPlayedAt"),
-            Index("isFavorite")
-        ]
+    tableName = "games",
+    indices = [
+        Index("id", unique = true),
+        Index("fileUri", unique = true),
+        Index("title"),
+        Index("systemId"),
+        Index("lastIndexedAt"),
+        Index("lastPlayedAt"),
+        Index("isFavorite")
+    ]
 )
 data class Game(
     @PrimaryKey(autoGenerate = true)
@@ -50,15 +50,15 @@ data class Game(
     val lastPlayedAt: Long? = null,
     val isFavorite: Boolean = false
 ) : Serializable {
-        companion object {
-                val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Game>() {
-                        override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
-                                return oldItem.id == newItem.id
-                        }
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Game>() {
+            override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-                        override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
-                                return oldItem == newItem
-                        }
-                }
+            override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
+                return oldItem == newItem
+            }
         }
+    }
 }

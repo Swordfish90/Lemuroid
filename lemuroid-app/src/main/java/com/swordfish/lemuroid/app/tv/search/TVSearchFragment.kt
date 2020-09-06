@@ -8,7 +8,6 @@ import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
@@ -53,10 +52,10 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         val factory = TVSearchViewModel.Factory(retrogradeDb)
         searchViewModel = ViewModelProviders.of(this, factory).get(TVSearchViewModel::class.java)
 
-        searchViewModel.searchResults.observe(this, Observer {
+        searchViewModel.searchResults.observe(this) {
             val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagedListObjectAdapter<Game>
             gamesAdapter.pagedList = it
-        })
+        }
 
         searchRelay
             .debounce(1, TimeUnit.SECONDS)
@@ -70,9 +69,18 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
     private fun createAdapter(): ArrayObjectAdapter {
         val searchAdapter = ArrayObjectAdapter(ListRowPresenter())
 
-        val gamePresenter = GamePresenter(resources.getDimensionPixelSize(R.dimen.card_size), gameInteractor)
+        val gamePresenter = GamePresenter(
+            resources.getDimensionPixelSize(R.dimen.card_size),
+            gameInteractor
+        )
+
         val gamesAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
-        searchAdapter.add(ListRow(HeaderItem(resources.getString(R.string.tv_search_results)), gamesAdapter))
+        searchAdapter.add(
+            ListRow(
+                HeaderItem(resources.getString(R.string.tv_search_results)),
+                gamesAdapter
+            )
+        )
 
         return searchAdapter
     }

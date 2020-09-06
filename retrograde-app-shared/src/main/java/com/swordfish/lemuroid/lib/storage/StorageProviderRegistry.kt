@@ -30,11 +30,11 @@ class StorageProviderRegistry(context: Context, val providers: Set<StorageProvid
         const val PREF_NAME = "storage_providers"
     }
 
-    private val providersByScheme = mapOf(*providers.map { provider ->
-        provider.uriSchemes.map { scheme ->
-            scheme to provider
-        }
-    }.flatten().toTypedArray())
+    private val providersByScheme = mapOf(
+        *providers.map { provider ->
+            provider.uriSchemes.map { scheme -> scheme to provider }
+        }.flatten().toTypedArray()
+    )
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 

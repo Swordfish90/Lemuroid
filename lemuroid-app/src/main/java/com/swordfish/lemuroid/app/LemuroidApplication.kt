@@ -56,8 +56,8 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
 
     private fun initializeWorkManager() {
         val config = Configuration.Builder()
-                .setMinimumLoggingLevel(android.util.Log.INFO)
-                .build()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .build()
 
         WorkManager.initialize(this, config)
     }

@@ -1,4 +1,3 @@
-
 package com.swordfish.lemuroid.metadata.libretrodb.db
 
 import android.content.Context
@@ -20,9 +19,9 @@ class LibretroDBManager(context: Context, executorService: ExecutorService) {
     init {
         executorService.execute {
             val db = Room.databaseBuilder(context, LibretroDatabase::class.java, DB_NAME)
-                    .createFromAsset("libretro-db.sqlite")
-                    .fallbackToDestructiveMigration()
-                    .build()
+                .createFromAsset("libretro-db.sqlite")
+                .fallbackToDestructiveMigration()
+                .build()
             dbRelay.accept(db)
         }
     }

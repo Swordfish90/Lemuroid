@@ -31,25 +31,35 @@ class VirtualGamePadCustomizer(
         val originalRequestedOrientation = activity.requestedOrientation
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
-        val inflater = parentView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val customView = inflater.inflate(R.layout.layout_customize_touch_portrait, parentView, false) as FrameLayout
+        val inflater = parentView.context.getSystemService(
+            Context.LAYOUT_INFLATER_SERVICE
+        ) as LayoutInflater
+
+        val customView = inflater.inflate(
+            R.layout.layout_customize_touch_portrait,
+            parentView,
+            false
+        ) as FrameLayout
 
         val popupWindow = PopupWindow(
-                customView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+            customView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
         popupWindow.setOnDismissListener {
             activity.requestedOrientation = originalRequestedOrientation
         }
 
-        customView.findViewById<Slider>(R.id.touch_slider_size)?.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.portraitScale = value
-            virtualGamePad.padScale = value
-        }
+        customView.findViewById<Slider>(R.id.touch_slider_size)
+            ?.addOnChangeListener { _, value, _ ->
+                virtualGamePadSettingsManager.portraitScale = value
+                virtualGamePad.padScale = value
+            }
 
-        customView.findViewById<TextView>(R.id.touch_textview_rotation)?.setVisibleOrGone(displayRotation)
+        customView.findViewById<TextView>(R.id.touch_textview_rotation)
+            ?.setVisibleOrGone(displayRotation)
+
         customView.findViewById<Slider>(R.id.touch_slider_rotation)?.apply {
             setVisibleOrGone(displayRotation)
             addOnChangeListener { _, value, _ ->
@@ -82,9 +92,16 @@ class VirtualGamePadCustomizer(
         val originalRequestedOrientation = activity.requestedOrientation
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 
-        val inflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = parent.context.getSystemService(
+            Context.LAYOUT_INFLATER_SERVICE
+        ) as LayoutInflater
+
         val customView =
-            inflater.inflate(R.layout.layout_customize_touch_landscape, parent, false) as FrameLayout
+            inflater.inflate(
+                R.layout.layout_customize_touch_landscape,
+                parent,
+                false
+            ) as FrameLayout
 
         val popupWindow = PopupWindow(
             customView,
@@ -96,7 +113,9 @@ class VirtualGamePadCustomizer(
             activity.requestedOrientation = originalRequestedOrientation
         }
 
-        customView.findViewById<TextView>(R.id.touch_textview_rotation)?.setVisibleOrGone(displayRotation)
+        customView.findViewById<TextView>(R.id.touch_textview_rotation)
+            ?.setVisibleOrGone(displayRotation)
+
         customView.findViewById<Slider>(R.id.touch_slider_rotation)?.apply {
             setVisibleOrGone(displayRotation)
             addOnChangeListener { _, value, _ ->
@@ -105,15 +124,17 @@ class VirtualGamePadCustomizer(
             }
         }
 
-        customView.findViewById<Slider>(R.id.touch_slider_size)?.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.landscapeScale = value
-            virtualGamePad.padScale = value
-        }
+        customView.findViewById<Slider>(R.id.touch_slider_size)
+            ?.addOnChangeListener { _, value, _ ->
+                virtualGamePadSettingsManager.landscapeScale = value
+                virtualGamePad.padScale = value
+            }
 
-        customView.findViewById<Slider>(R.id.touch_slider_ypos)?.addOnChangeListener { _, value, _ ->
-            virtualGamePadSettingsManager.landscapeOffsetY = value
-            virtualGamePad.padOffsetY = value
-        }
+        customView.findViewById<Slider>(R.id.touch_slider_ypos)
+            ?.addOnChangeListener { _, value, _ ->
+                virtualGamePadSettingsManager.landscapeOffsetY = value
+                virtualGamePad.padOffsetY = value
+            }
 
         customView.findViewById<Button>(R.id.touch_button_close)?.setOnClickListener {
             popupWindow.dismiss()
@@ -144,13 +165,26 @@ class VirtualGamePadCustomizer(
     }
 
     private fun loadPortraitSettingsPopupWindow(view: View) {
-        view.findViewById<Slider>(R.id.touch_slider_size)?.value = virtualGamePadSettingsManager.portraitScale
-        view.findViewById<Slider>(R.id.touch_slider_rotation)?.value = virtualGamePadSettingsManager.portraitRotation
+        view.findViewById<Slider>(
+            R.id.touch_slider_size
+        )?.value = virtualGamePadSettingsManager.portraitScale
+
+        view.findViewById<Slider>(
+            R.id.touch_slider_rotation
+        )?.value = virtualGamePadSettingsManager.portraitRotation
     }
 
     private fun loadLandscapeSettingsIntoPopupWindow(view: View) {
-        view.findViewById<Slider>(R.id.touch_slider_size)?.value = virtualGamePadSettingsManager.landscapeScale
-        view.findViewById<Slider>(R.id.touch_slider_rotation)?.value = virtualGamePadSettingsManager.landscapeRotation
-        view.findViewById<Slider>(R.id.touch_slider_ypos)?.value = virtualGamePadSettingsManager.landscapeOffsetY
+        view.findViewById<Slider>(
+            R.id.touch_slider_size
+        )?.value = virtualGamePadSettingsManager.landscapeScale
+
+        view.findViewById<Slider>(
+            R.id.touch_slider_rotation
+        )?.value = virtualGamePadSettingsManager.landscapeRotation
+
+        view.findViewById<Slider>(
+            R.id.touch_slider_ypos
+        )?.value = virtualGamePadSettingsManager.landscapeOffsetY
     }
 }

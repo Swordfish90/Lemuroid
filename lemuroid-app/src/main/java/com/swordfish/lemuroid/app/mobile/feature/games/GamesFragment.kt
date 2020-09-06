@@ -1,6 +1,5 @@
 package com.swordfish.lemuroid.app.mobile.feature.games
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,11 +27,11 @@ class GamesFragment : RecyclerViewFragment() {
         gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
 
         gamesViewModel = ViewModelProviders.of(this, GamesViewModel.Factory(retrogradeDb))
-                .get(GamesViewModel::class.java)
+            .get(GamesViewModel::class.java)
 
-        gamesViewModel.games.observe(this, Observer { pagedList ->
+        gamesViewModel.games.observe(this) { pagedList ->
             gamesAdapter?.submitList(pagedList)
-        })
+        }
 
         args.systemId?.let {
             gamesViewModel.systemId.value = it

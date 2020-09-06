@@ -21,7 +21,6 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         saveFile.writeBytes(data)
     }
 
-
     private fun getSaveFile(fileName: String): File {
         val savesDirectory = directoriesManager.getSavesDirectory()
         return File(savesDirectory, fileName)

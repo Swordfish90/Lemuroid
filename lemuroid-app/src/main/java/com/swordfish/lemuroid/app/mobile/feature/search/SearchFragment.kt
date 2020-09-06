@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
@@ -48,30 +47,32 @@ class SearchFragment : RecyclerViewFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
-                .get(SearchViewModel::class.java)
+            .get(SearchViewModel::class.java)
     }
 
     private fun setupSearchMenuItem(menu: Menu) {
         val searchItem = menu.findItem(R.id.action_search)
         searchItem.expandActionView()
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                activity?.onBackPressed()
-                return true
-            }
+        searchItem.setOnActionExpandListener(
+            object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                    activity?.onBackPressed()
+                    return true
+                }
 
-            override fun onMenuItemActionExpand(item: MenuItem?) = true
-        })
+                override fun onMenuItemActionExpand(item: MenuItem?) = true
+            }
+        )
 
         val searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Integer.MAX_VALUE
         searchView.setQuery(searchViewModel.queryString.value, false)
         searchView.queryTextChanges()
-                .debounce(1, TimeUnit.SECONDS)
-                .map { it.toString() }
-                .observeOn(AndroidSchedulers.mainThread())
-                .autoDispose(scope())
-                .subscribe(searchSubject)
+            .debounce(1, TimeUnit.SECONDS)
+            .map { it.toString() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribe(searchSubject)
     }
 
     override fun onResume() {
@@ -79,13 +80,13 @@ class SearchFragment : RecyclerViewFragment() {
         activity?.invalidateOptionsMenu()
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
-        searchViewModel.searchResults.observe(this, Observer {
+        searchViewModel.searchResults.observe(this) {
             gamesAdapter.submitList(it)
-        })
+        }
 
-        searchViewModel.emptyViewVisible.observe(this, Observer {
+        searchViewModel.emptyViewVisible.observe(this) {
             emptyView?.setVisibleOrGone(it)
-        })
+        }
 
         searchSubject
             .distinctUntilChanged()

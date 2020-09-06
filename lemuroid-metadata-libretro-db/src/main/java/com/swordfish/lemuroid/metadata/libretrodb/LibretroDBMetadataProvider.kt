@@ -1,4 +1,3 @@
-
 package com.swordfish.lemuroid.metadata.libretrodb
 
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -17,7 +16,8 @@ import io.reactivex.Single
 import timber.log.Timber
 import java.util.Locale
 
-class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : GameMetadataProvider {
+class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
+    GameMetadataProvider {
 
     private val sortedSystemIds: List<String> by lazy {
         SystemID.values()
@@ -58,11 +58,14 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
 
     private fun findByFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
         return db.gameDao().findByFileName(file.name)
-                .filter { extractGameSystem(it).scanOptions.scanByFilename }
-                .map { convertToGameMetadata(it) }
+            .filter { extractGameSystem(it).scanOptions.scanByFilename }
+            .map { convertToGameMetadata(it) }
     }
 
-    private fun findByPathAndFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
+    private fun findByPathAndFilename(
+        db: LibretroDatabase,
+        file: StorageFile
+    ): Maybe<GameMetadata> {
         return db.gameDao().findByFileName(file.name)
             .filter { extractGameSystem(it).scanOptions.scanByPathAndFilename }
             .filter { parentContainsSystem(file.path, extractGameSystem(it).id.dbname) }
@@ -103,7 +106,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) : 
     private fun findBySerial(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
         if (file.serial == null) return Maybe.empty()
         return db.gameDao().findBySerial(file.serial!!)
-                .map { convertToGameMetadata(it) }
+            .map { convertToGameMetadata(it) }
     }
 
     private fun findByUniqueExtension(file: StorageFile) = Maybe.fromCallable {

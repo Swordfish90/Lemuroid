@@ -3,7 +3,6 @@ package com.swordfish.lemuroid.app.mobile.feature.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -66,11 +65,11 @@ class MainActivity : RetrogradeAppCompatActivity() {
         navView.setupWithNavController(navController)
 
         val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
-                .get(MainViewModel::class.java)
+            .get(MainViewModel::class.java)
 
-        mainViewModel.indexingInProgress.observe(this, Observer { isRunning ->
+        mainViewModel.indexingInProgress.observe(this) { isRunning ->
             findViewById<MaterialProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -137,13 +136,13 @@ class MainActivity : RetrogradeAppCompatActivity() {
             @PerActivity
             @JvmStatic
             fun settingsInteractor(activity: MainActivity) =
-                    SettingsInteractor(activity)
+                SettingsInteractor(activity)
 
             @Provides
             @PerActivity
             @JvmStatic
             fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase) =
-                    GameInteractor(activity, retrogradeDb, false)
+                GameInteractor(activity, retrogradeDb, false)
         }
     }
 }

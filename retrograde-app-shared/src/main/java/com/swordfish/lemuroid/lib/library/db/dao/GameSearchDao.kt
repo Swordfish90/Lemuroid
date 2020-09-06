@@ -20,45 +20,62 @@ class GameSearchDao(private val internalDao: Internal) {
 
     object MIGRATION : Migration(7, 8) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE VIRTUAL TABLE fts_games USING FTS4(
                   tokenize=unicode61 "remove_diacritics=1",
                   content="games",
                   title);
-                """)
-            database.execSQL("""
+                """
+            )
+            database.execSQL(
+                """
                 CREATE TRIGGER games_bu BEFORE UPDATE ON games BEGIN
                   DELETE FROM fts_games WHERE docid=old.id;
                 END;
-                """)
-            database.execSQL("""
+                """
+            )
+            database.execSQL(
+                """
                 CREATE TRIGGER games_bd BEFORE DELETE ON games BEGIN
                   DELETE FROM fts_games WHERE docid=old.id;
                 END;
-                """)
-            database.execSQL("""
+                """
+            )
+            database.execSQL(
+                """
                 CREATE TRIGGER games_au AFTER UPDATE ON games BEGIN
                   INSERT INTO fts_games(docid, title) VALUES(new.id, new.title);
                 END;
-                """)
-            database.execSQL("""
+                """
+            )
+            database.execSQL(
+                """
                 CREATE TRIGGER games_ai AFTER INSERT ON games BEGIN
                   INSERT INTO fts_games(docid, title) VALUES(new.id, new.title);
                 END;
-                """)
-            database.execSQL("""
+                """
+            )
+            database.execSQL(
+                """
                 INSERT INTO fts_games(docid, title) SELECT id, title FROM games;
-                """)
+                """
+            )
         }
     }
 
     fun search(query: String): DataSource.Factory<Int, Game> =
-            internalDao.rawSearch(SimpleSQLiteQuery("""
+        internalDao.rawSearch(
+            SimpleSQLiteQuery(
+                """
                 SELECT games.*
                     FROM fts_games
                     JOIN games ON games.id = fts_games.docid
                     WHERE fts_games MATCH ?
-            """, arrayOf(query)))
+                """,
+                arrayOf(query)
+            )
+        )
 
     @Dao
     interface Internal {

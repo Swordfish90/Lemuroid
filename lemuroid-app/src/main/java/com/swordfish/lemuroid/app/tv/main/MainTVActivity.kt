@@ -4,7 +4,6 @@ import android.Manifest
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -32,12 +31,13 @@ class MainTVActivity : BaseTVActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tv_main)
 
-        mainViewModel = ViewModelProviders.of(this, MainTVViewModel.Factory(applicationContext))
-                .get(MainTVViewModel::class.java)
+        val factory = MainTVViewModel.Factory(applicationContext)
+        mainViewModel = ViewModelProviders.of(this, factory)
+            .get(MainTVViewModel::class.java)
 
-        mainViewModel?.indexingInProgress?.observe(this, Observer {
+        mainViewModel?.indexingInProgress?.observe(this) {
             findViewById<View>(R.id.tv_loading).setVisibleOrGone(it)
-        })
+        }
 
         ensureLegacyStoragePermissionsIfNeeded()
     }
@@ -66,10 +66,10 @@ class MainTVActivity : BaseTVActivity() {
 
     private fun requestLegacyStoragePermissions(permissions: Array<String>) {
         RxPermissions(this).request(*permissions)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { if (!it) finish() }
-                .autoDispose(scope())
-                .subscribe()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { if (!it) finish() }
+            .autoDispose(scope())
+            .subscribe()
     }
 
     @dagger.Module
@@ -93,7 +93,7 @@ class MainTVActivity : BaseTVActivity() {
             @PerActivity
             @JvmStatic
             fun gameInteractor(activity: MainTVActivity, retrogradeDb: RetrogradeDatabase) =
-                    GameInteractor(activity, retrogradeDb, true)
+                GameInteractor(activity, retrogradeDb, true)
         }
     }
 }

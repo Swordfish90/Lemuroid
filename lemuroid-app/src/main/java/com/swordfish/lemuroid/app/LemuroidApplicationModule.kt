@@ -106,22 +106,24 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun libretroDBManager(app: LemuroidApplication, executorService: ExecutorService) =
-                LibretroDBManager(app, executorService)
+            LibretroDBManager(app, executorService)
 
         @Provides
         @PerApp
         @JvmStatic
         fun retrogradeDb(app: LemuroidApplication) =
-                Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
-                        .addCallback(GameSearchDao.CALLBACK)
-                        .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9)
-                        .fallbackToDestructiveMigration()
-                        .build()
+            Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
+                .addCallback(GameSearchDao.CALLBACK)
+                .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9)
+                .fallbackToDestructiveMigration()
+                .build()
 
         @Provides
         @PerApp
         @JvmStatic
-        fun ovgdbMetadataProvider(ovgdbManager: LibretroDBManager) = LibretroDBMetadataProvider(ovgdbManager)
+        fun ovgdbMetadataProvider(ovgdbManager: LibretroDBManager) = LibretroDBMetadataProvider(
+            ovgdbManager
+        )
 
         @Provides
         @PerApp
@@ -141,13 +143,16 @@ abstract class LemuroidApplicationModule {
             directoriesManager: DirectoriesManager,
             metadataProvider: LibretroDBMetadataProvider
         ): StorageProvider =
-                LocalStorageProvider(context, directoriesManager, metadataProvider)
+            LocalStorageProvider(context, directoriesManager, metadataProvider)
 
         @Provides
         @PerApp
         @JvmStatic
-        fun gameStorageProviderRegistry(context: Context, providers: Set<@JvmSuppressWildcards StorageProvider>) =
-                StorageProviderRegistry(context, providers)
+        fun gameStorageProviderRegistry(
+            context: Context,
+            providers: Set<@JvmSuppressWildcards StorageProvider>
+        ) =
+            StorageProviderRegistry(context, providers)
 
         @Provides
         @PerApp
@@ -162,17 +167,18 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(1, TimeUnit.MINUTES)
-                .build()
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(1, TimeUnit.MINUTES)
+            .build()
 
         @Provides
         @PerApp
         @JvmStatic
         fun retrofit(): Retrofit = Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-                .baseUrl("https://example.com")
-                .addConverterFactory(object : Converter.Factory() {
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+            .baseUrl("https://example.com")
+            .addConverterFactory(
+                object : Converter.Factory() {
                     override fun responseBodyConverter(
                         type: Type?,
                         annotations: Array<out Annotation>?,
@@ -185,8 +191,9 @@ abstract class LemuroidApplicationModule {
                         }
                         return null
                     }
-                })
-                .build()
+                }
+            )
+            .build()
 
         @Provides
         @PerApp
@@ -220,7 +227,7 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun rxPrefs(context: Context) =
-                RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
+            RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
 
         @Provides
         @PerApp
@@ -259,7 +266,9 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gamepadBindingsManager(gamePadManager: GamePadManager) = GamePadBindingsPreferences(gamePadManager)
+        fun gamepadBindingsManager(gamePadManager: GamePadManager) = GamePadBindingsPreferences(
+            gamePadManager
+        )
 
         @Provides
         @PerApp

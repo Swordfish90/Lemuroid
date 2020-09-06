@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -21,7 +20,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
-import java.io.Serializable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.system.exitProcess
@@ -51,28 +49,28 @@ class GameLauncherActivity : ImmersiveActivity() {
 
             val loadingStatesSubject = PublishSubject.create<GameLoader.LoadingState>()
             loadingStatesSubject.subscribeOn(Schedulers.io())
-                    .throttleLast(500, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .autoDispose(scope())
-                    .subscribe { displayLoadingState(it) }
+                .throttleLast(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .autoDispose(scope())
+                .subscribe { displayLoadingState(it) }
 
             gameLoader.load(game, loadSave && settingsManager.autoSave)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .autoDispose(scope())
-                    .subscribe(
-                            {
-                                loadingStatesSubject.onNext(it)
-                                if (it is GameLoader.LoadingState.Ready) {
-                                    onGameDataReady(it.gameData, useLeanback)
-                                    loadingStatesSubject.onComplete()
-                                }
-                            },
-                            {
-                                Timber.e(it, "Error while loading game ${it.message}")
-                                displayGenericErrorMessage()
-                            }
-                    )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .autoDispose(scope())
+                .subscribe(
+                    {
+                        loadingStatesSubject.onNext(it)
+                        if (it is GameLoader.LoadingState.Ready) {
+                            onGameDataReady(it.gameData, useLeanback)
+                            loadingStatesSubject.onComplete()
+                        }
+                    },
+                    {
+                        Timber.e(it, "Error while loading game ${it.message}")
+                        displayGenericErrorMessage()
+                    }
+                )
         }
     }
 
@@ -94,20 +92,20 @@ class GameLauncherActivity : ImmersiveActivity() {
 
     private fun displayGenericErrorMessage() {
         AlertDialog.Builder(this)
-                .setMessage(R.string.game_play_generic_error_message)
-                .setPositiveButton(R.string.ok) { _, _ -> finish() }
-                .show()
+            .setMessage(R.string.game_play_generic_error_message)
+            .setPositiveButton(R.string.ok) { _, _ -> finish() }
+            .show()
     }
 
     fun newIntent(context: Context, gameData: GameLoader.GameData, useLeanback: Boolean) =
-            Intent(context, getGameActivityClass(useLeanback)).apply {
-                putExtra(BaseGameActivity.EXTRA_GAME, gameData.game)
-                putExtra(BaseGameActivity.EXTRA_CORE_PATH, gameData.coreLibrary)
-                putExtra(BaseGameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
-                putExtra(BaseGameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)
-                putExtra(BaseGameActivity.EXTRA_LOAD_SRAM, gameData.saveRAMData != null)
-                putExtra(BaseGameActivity.EXTRA_LOAD_AUTOSAVE, gameData.quickSaveData != null)
-            }
+        Intent(context, getGameActivityClass(useLeanback)).apply {
+            putExtra(BaseGameActivity.EXTRA_GAME, gameData.game)
+            putExtra(BaseGameActivity.EXTRA_CORE_PATH, gameData.coreLibrary)
+            putExtra(BaseGameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
+            putExtra(BaseGameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)
+            putExtra(BaseGameActivity.EXTRA_LOAD_SRAM, gameData.saveRAMData != null)
+            putExtra(BaseGameActivity.EXTRA_LOAD_AUTOSAVE, gameData.quickSaveData != null)
+        }
 
     private fun getGameActivityClass(useLeanback: Boolean) = if (useLeanback) {
         TVGameActivity::class.java

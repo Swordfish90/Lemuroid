@@ -38,13 +38,15 @@ import org.intellij.lang.annotations.Language
 interface GameDao {
 
     @Language("RoomSql")
-    @Query("""
+    @Query(
+        """
         SELECT
             count(*) totalCount,
             sum(CASE WHEN isFavorite = 1 THEN 1 ELSE 0 END) favoritesCount,
             sum(CASE WHEN lastPlayedAt IS NOT NULL THEN 1 ELSE 0 END) recentsCount
         FROM games
-        """)
+        """
+    )
     fun selectCounts(): Single<GameLibraryCounts>
 
     @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
@@ -65,14 +67,18 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY title ASC")
     fun selectFavorites(): DataSource.Factory<Int, Game>
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
-        """)
+        """
+    )
     fun selectFirstUnfavoriteRecents(limit: Int): LiveData<List<Game>>
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
-        """)
+        """
+    )
     fun rxSelectFirstUnfavoriteRecents(limit: Int): Observable<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")

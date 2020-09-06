@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,9 +42,13 @@ class GameMenuFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         game = arguments?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
-                ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
+            ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
         system = GameSystem.findById(game.systemId)
         return inflater.inflate(R.layout.layout_game_menu, container, false)
     }
@@ -53,17 +56,17 @@ class GameMenuFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         setupViews()
-                .autoDispose(scope())
-                .subscribe()
+            .autoDispose(scope())
+            .subscribe()
     }
 
     private fun setupViews(): Completable {
         return Single.just(game)
-                .flatMap { statesManager.getSavedSlotsInfo(it, system.coreName) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess { presentViews(it) }
-                .ignoreElement()
+            .flatMap { statesManager.getSavedSlotsInfo(it, system.coreName) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { presentViews(it) }
+            .ignoreElement()
     }
 
     private fun presentViews(infos: List<SaveStateInfo>) {
@@ -79,7 +82,8 @@ class GameMenuFragment : Fragment() {
 
         view!!.findViewById<Button>(R.id.menu_change_disk).apply {
             val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
-            val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0
+            val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0)
+                ?: 0
             this.setVisibleOrGone(numDisks > 1)
             this.setOnClickListener {
                 displayChangeDiskDialog(currentDisk, numDisks)
@@ -158,8 +162,8 @@ class GameMenuFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
 
         val values = (0 until numDisks)
-                .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
-                .toTypedArray()
+            .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
+            .toTypedArray()
 
         builder.setSingleChoiceItems(values, currentDisk) { _, index ->
             handleDiskChange(index)

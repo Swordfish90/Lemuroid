@@ -50,7 +50,11 @@ object DocumentFileParser {
         val serial = ISOScanner.extractSerial(entry.name, zipInputStream)
 
         return StorageFile(
-            entry.name, entry.size, entry.crc.toStringCRC32(), serial, baseStorageFile.uri,
+            entry.name,
+            entry.size,
+            entry.crc.toStringCRC32(),
+            serial,
+            baseStorageFile.uri,
             baseStorageFile.uri.path
         )
     }
@@ -68,7 +72,11 @@ object DocumentFileParser {
         Timber.d("Detected file name: ${baseStorageFile.name}, crc: $crc32")
 
         return StorageFile(
-            baseStorageFile.name, baseStorageFile.size, crc32, serial, baseStorageFile.uri,
+            baseStorageFile.name,
+            baseStorageFile.size,
+            crc32,
+            serial,
+            baseStorageFile.uri,
             baseStorageFile.uri.path
         )
     }

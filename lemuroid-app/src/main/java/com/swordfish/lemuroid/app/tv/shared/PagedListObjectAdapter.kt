@@ -51,14 +51,15 @@ class PagedListObjectAdapter<T>(
     }
 
     private val differ = AsyncPagedListDiffer<T>(
-            listUpdateCallback,
-            AsyncDifferConfig.Builder<T>(diffCallback)
-                    .build()
+        listUpdateCallback,
+        AsyncDifferConfig.Builder<T>(diffCallback).build()
     )
 
     var pagedList: PagedList<T>?
         get() = differ.currentList
-        set(list) { differ.submitList(list) }
+        set(list) {
+            differ.submitList(list)
+        }
 
     override fun size(): Int = differ.itemCount
 

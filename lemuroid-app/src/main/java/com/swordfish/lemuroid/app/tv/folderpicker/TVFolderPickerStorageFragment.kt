@@ -17,11 +17,17 @@ class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
         return GuidanceStylist.Guidance(title, "", description, null)
     }
 
-    override fun onCreateButtonActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
+    override fun onCreateButtonActions(
+        actions: MutableList<GuidedAction>,
+        savedInstanceState: Bundle?
+    ) {
         super.onCreateButtonActions(actions, savedInstanceState)
-        addAction(actions, ACTION_CANCEL, resources.getString(
-            R.string.tv_folder_picker_action_cancel
-        ), "")
+        addAction(
+            actions,
+            ACTION_CANCEL,
+            resources.getString(R.string.tv_folder_picker_action_cancel),
+            ""
+        )
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
@@ -51,13 +57,18 @@ class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
         }
     }
 
-    private fun addAction(actions: MutableList<GuidedAction>, id: Long, title: String, desc: String) {
+    private fun addAction(
+        actions: MutableList<GuidedAction>,
+        id: Long,
+        title: String,
+        desc: String
+    ) {
         actions.add(
             GuidedAction.Builder(activity)
-            .id(id)
-            .title(title)
-            .description(desc)
-            .build()
+                .id(id)
+                .title(title)
+                .description(desc)
+                .build()
         )
     }
 
