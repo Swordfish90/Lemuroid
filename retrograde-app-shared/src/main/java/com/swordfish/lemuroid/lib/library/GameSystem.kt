@@ -234,6 +234,7 @@ data class GameSystem(
                     scanByPathAndSupportedExtensions = true
                 ),
                 exposedSettings = listOf(
+                    "pcsx_rearmed_drc",
                     "pcsx_rearmed_frameskip",
                     "pcsx_rearmed_pad1type",
                     "pcsx_rearmed_pad2type"

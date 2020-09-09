@@ -48,7 +48,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.concurrent.FutureTask
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -100,10 +102,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             displayCannotLoadGameMessage()
         }
 
-        retrieveSRAMData()?.let {
-            retroGameView?.unserializeSRAM(it)
-        }
-
         retrieveAutoSaveData()?.let {
             restoreAutoSaveAsync(it)
         }
@@ -135,12 +133,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
 
         // PPSSPP and Mupen64 initialize some state while rendering the first frame, so we have to wait before restoring
-        // the autosave.
+        // the autosave. Do not change thread here. Stick to the GL one to avoid issues with PPSSPP.
         retroGameView?.getGLRetroEvents()
             ?.filter { it is GLRetroView.GLRetroEvents.FrameRendered }
             ?.firstElement()
             ?.flatMapCompletable { getRetryRestoreQuickSave(saveState) }
-            ?.subscribeOn(Schedulers.io())
             ?.autoDispose(scope())
             ?.subscribe()
     }
@@ -155,11 +152,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             intent.getStringExtra(EXTRA_GAME_PATH)!!,
             directoriesManager.getSystemDirectory().absolutePath,
             directoriesManager.getSavesDirectory().absolutePath,
+            retrieveSRAMData(),
             getShaderForSystem(screenFilter, system)
         )
         retroGameView?.isFocusable = false
         retroGameView?.isFocusableInTouchMode = false
-        retroGameView?.onCreate()
+
+        retroGameView?.let { lifecycle.addObserver(it) }
 
         val coreVariables = intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>?
             ?: arrayOf()
@@ -247,8 +246,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy({}) {
                 onVariablesRead(it)
             }
-
-        retroGameView?.onResume()
     }
 
     open fun onVariablesRead(coreVariables: List<CoreVariable>) {
@@ -278,16 +275,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy({}) {
                 updateCoreVariables(it)
             }
-    }
-
-    override fun onPause() {
-        retroGameView?.onPause()
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        retroGameView?.onDestroy()
-        super.onDestroy()
     }
 
     // Now that we wait for the first rendered frame this is probably no longer needed, but we'll keep it just to be sure
