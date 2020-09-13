@@ -146,12 +146,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         directoriesManager: DirectoriesManager,
         screenFilter: String
     ) {
+        val coreVariables =
+            (intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>? ?: arrayOf())
+            .map { Variable(it.key, it.value) }
+            .toTypedArray()
+
         retroGameView = GLRetroView(
             this,
             intent.getStringExtra(EXTRA_CORE_PATH)!!,
             intent.getStringExtra(EXTRA_GAME_PATH)!!,
             directoriesManager.getSystemDirectory().absolutePath,
             directoriesManager.getSavesDirectory().absolutePath,
+            coreVariables,
             retrieveSRAMData(),
             getShaderForSystem(screenFilter, system)
         )
@@ -159,10 +165,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         retroGameView?.isFocusableInTouchMode = false
 
         retroGameView?.let { lifecycle.addObserver(it) }
-
-        val coreVariables = intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>?
-            ?: arrayOf()
-        updateCoreVariables(coreVariables.toList())
 
         gameViewLayout.addView(retroGameView)
 
@@ -248,7 +250,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
     }
 
-    open fun onVariablesRead(coreVariables: List<CoreVariable>) {
+    private fun onVariablesRead(coreVariables: List<CoreVariable>) {
         updateCoreVariables(coreVariables)
     }
 

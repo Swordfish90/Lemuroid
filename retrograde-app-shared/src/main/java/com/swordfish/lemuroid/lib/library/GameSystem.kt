@@ -215,7 +215,11 @@ data class GameSystem(
                 "nintendo5",
                 "libmupen64plus_next_gles3_libretro_android.so",
                 uniqueExtensions = listOf("n64", "z64"),
-                virtualGamePadOptions = VirtualGamePadOptions(true)
+                virtualGamePadOptions = VirtualGamePadOptions(true),
+                defaultSettings = listOf(
+                    CoreVariable("mupen64plus-43screensize", "320x240")
+                ),
+                exposedSettings = listOf("mupen64plus-43screensize")
             ),
             GameSystem(
                 SystemID.PSX,
