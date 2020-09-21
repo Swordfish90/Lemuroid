@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -90,22 +91,12 @@ class GameMenuFragment : Fragment() {
             }
         }
 
-        view!!.findViewById<Button>(R.id.menu_edit_touch_controls).apply {
-            this.setOnClickListener {
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true)
-                }
-                activity?.setResult(Activity.RESULT_OK, resultIntent)
-                activity?.finish()
-            }
+        view!!.findViewById<Button>(R.id.menu_edit_touch_controls).setOnClickListener {
+            setResultAndFinish(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS)
         }
 
         view!!.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
-            val resultIntent = Intent().apply {
-                putExtra(GameMenuContract.RESULT_RESET, true)
-            }
-            activity?.setResult(Activity.RESULT_OK, resultIntent)
-            activity?.finish()
+            setResultAndFinish(GameMenuContract.RESULT_RESET)
         }
 
         view!!.findViewById<Button>(R.id.save_entry_settings).isEnabled = system.exposedSettings.isNotEmpty()
@@ -114,14 +105,60 @@ class GameMenuFragment : Fragment() {
         }
 
         view!!.findViewById<Button>(R.id.save_entry_close).setOnClickListener {
-            val resultIntent = Intent().apply {
-                putExtra(GameMenuContract.RESULT_QUIT, true)
-            }
-            activity?.setResult(Activity.RESULT_OK, resultIntent)
-            activity?.finish()
+            setResultAndFinish(GameMenuContract.RESULT_QUIT)
         }
 
+        val audioEnabled = activity?.intent
+            ?.getBooleanExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, true) ?: true
+
+        val audioToggle = (view!!.findViewById(R.id.menu_audio_toggle) as MaterialButtonToggleGroup)
+        setupBinaryToggleButton(
+            audioToggle,
+            audioEnabled,
+            R.id.menu_audio_toggle_enabled,
+            R.id.menu_audio_toggle_disabled,
+            GameMenuContract.RESULT_ENABLE_AUDIO
+        )
+
+        val fastForwardEnabled = activity?.intent
+            ?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false
+
+        val fastForwardToggle = (view!!.findViewById(R.id.menu_fast_forward_toggle) as MaterialButtonToggleGroup)
+        setupBinaryToggleButton(
+            fastForwardToggle,
+            fastForwardEnabled,
+            R.id.menu_fast_forward_enabled,
+            R.id.menu_fast_forward_disabled,
+            GameMenuContract.RESULT_ENABLE_FAST_FORWARD
+        )
+
         view!!.setVisibleOrGone(true)
+    }
+
+    private fun setupBinaryToggleButton(
+        toggleButton: MaterialButtonToggleGroup,
+        isToggled: Boolean,
+        enabledButtonResId: Int,
+        disabledButtonResId: Int,
+        resultValue: String
+    ) {
+        toggleButton.check(if (isToggled) enabledButtonResId else disabledButtonResId)
+        toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            val newValue = when (checkedId) {
+                enabledButtonResId -> true
+                else -> false
+            }
+            setResultAndFinish(resultValue, newValue)
+        }
+    }
+
+    private fun setResultAndFinish(resultName: String, resultValue: Boolean = true) {
+        val resultIntent = Intent().apply {
+            putExtra(resultName, resultValue)
+        }
+        activity?.setResult(Activity.RESULT_OK, resultIntent)
+        activity?.finish()
     }
 
     private fun setupQuickSaveView(quickSaveView: View, index: Int, saveInfo: SaveStateInfo) {

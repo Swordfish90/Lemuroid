@@ -29,12 +29,20 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val currentDisk = intent.extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK)
                 ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
 
+            val audioEnabled = intent.extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED)
+                ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
+
+            val fastForwardEnabled = intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD)
+                ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
+
             val fragment = TVGameMenuFragmentWrapper(
                 statesManager,
                 game,
                 options,
                 numDisks,
-                currentDisk
+                currentDisk,
+                audioEnabled,
+                fastForwardEnabled
             )
             supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment)
                 .commit()
@@ -51,11 +59,21 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         private val game: Game,
         private val coreOptions: Array<CoreOption>,
         private val numDisks: Int,
-        private val currentDisk: Int
+        private val currentDisk: Int,
+        private val audioEnabled: Boolean,
+        private val fastForwardEnabled: Boolean
     ) : BaseSettingsFragmentWrapper() {
 
         override fun createFragment(): Fragment {
-            return TVGameMenuFragment(statesManager, game, coreOptions, numDisks, currentDisk)
+            return TVGameMenuFragment(
+                statesManager,
+                game,
+                coreOptions,
+                numDisks,
+                currentDisk,
+                audioEnabled,
+                fastForwardEnabled
+            )
         }
     }
 }

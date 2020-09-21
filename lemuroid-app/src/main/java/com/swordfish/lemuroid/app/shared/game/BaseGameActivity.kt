@@ -48,9 +48,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.util.concurrent.FutureTask
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -148,8 +146,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     ) {
         val coreVariables =
             (intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>? ?: arrayOf())
-            .map { Variable(it.key, it.value) }
-            .toTypedArray()
+                .map { Variable(it.key, it.value) }
+                .toTypedArray()
 
         retroGameView = GLRetroView(
             this,
@@ -198,6 +196,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_GAME, game)
+            this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
+            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, retroGameView?.fastForwardEnabled)
         }
         startActivityForResult(intent, DIALOG_REQUEST)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -575,6 +575,22 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_DISK) == true) {
                 val index = data.getIntExtra(GameMenuContract.RESULT_CHANGE_DISK, 0)
                 retroGameView?.changeDisk(index)
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_AUDIO) == true) {
+                retroGameView?.apply {
+                    this.audioEnabled = data.getBooleanExtra(
+                        GameMenuContract.RESULT_ENABLE_AUDIO,
+                        true
+                    )
+                }
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
+                retroGameView?.apply {
+                    this.fastForwardEnabled = data.getBooleanExtra(
+                        GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
+                        false
+                    )
+                }
             }
         }
     }
