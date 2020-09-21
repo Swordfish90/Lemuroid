@@ -306,7 +306,10 @@ data class GameSystem(
                 uniqueExtensions = listOf("nds"),
                 sendLeftStickEventAsDPAD = true,
                 exposedSettings = listOf("desmume_frameskip"),
-                defaultSettings = listOf(CoreVariable("desmume_pointer_type", "touch"))
+                defaultSettings = listOf(
+                    CoreVariable("desmume_pointer_type", "touch"),
+                    CoreVariable("desmume_frameskip", "1")
+                )
             )
         )
 
