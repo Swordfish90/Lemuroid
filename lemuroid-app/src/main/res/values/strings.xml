@@ -13,6 +13,7 @@
     <string name="display_filter">Display filter</string>
     <string name="roms">ROMs</string>
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="settings">Settings</string>
 
     <string name="settings_category_general">General</string>
@@ -34,6 +35,12 @@
     <string name="settings_description_display_bios_info">Display detected and supported BIOS files</string>
     <string name="settings_bios_category_detected">Detected</string>
     <string name="settings_bios_category_not_detected">Supported</string>
+
+    <string name="settings_title_reset_settings">Factory reset</string>
+    <string name="settings_description_reset_settings">Reset Lemuroid to its factory settings</string>
+
+    <string name="reset_settings_warning_message_title">Are you sure?</string>
+    <string name="reset_settings_warning_message_description">This will reset Lemuroid to its factory settings. Saves and States will be preserved.</string>
 
     <string name="game_context_menu_add_to_favorites">Add to favorites</string>
     <string name="game_context_menu_remove_from_favorites">Remove from favorites</string>

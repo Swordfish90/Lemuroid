@@ -126,7 +126,7 @@ class GameLauncherActivity : ImmersiveActivity() {
     }
 
     private fun triggerCacheCleanup() {
-        CacheCleanerWork.enqueueUniqueWork(applicationContext)
+        CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
     }
 
     override fun onBackPressed() {

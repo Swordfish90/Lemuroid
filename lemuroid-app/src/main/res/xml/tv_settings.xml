@@ -29,4 +29,10 @@
         app:summary="@string/settings_description_display_bios_info"
         app:iconSpaceReserved="false"/>
 
+    <PreferenceScreen
+        android:key="@string/pref_key_reset_settings"
+        android:title="@string/settings_title_reset_settings"
+        app:summary="@string/settings_description_reset_settings"
+        app:iconSpaceReserved="false"/>
+
 </PreferenceScreen>

@@ -2,8 +2,11 @@ package com.swordfish.lemuroid.app.tv.settings
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
+import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
+import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 
 class TVSettingsActivity : TVBaseSettingsActivity() {
@@ -28,5 +31,14 @@ class TVSettingsActivity : TVBaseSettingsActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [TVSettingsFragment.Module::class])
         abstract fun tvSettingsFragment(): TVSettingsFragment
+
+        @dagger.Module
+        companion object {
+
+            @Provides
+            @PerActivity
+            @JvmStatic
+            fun settingsInteractor(activity: TVSettingsActivity) = SettingsInteractor(activity)
+        }
     }
 }

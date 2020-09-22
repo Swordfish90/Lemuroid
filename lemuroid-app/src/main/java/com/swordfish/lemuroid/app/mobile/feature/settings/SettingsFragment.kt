@@ -73,6 +73,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
         val displayBiosPreference: Preference? = findPreference(getString(R.string.pref_key_display_bios_info))
+        val resetSettings: Preference? = findPreference(getString(R.string.pref_key_reset_settings))
 
         settingsViewModel.currentFolder
             .observeOn(AndroidSchedulers.mainThread())
@@ -85,6 +86,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             rescanPreference?.isEnabled = !it
             currentDirectory?.isEnabled = !it
             displayBiosPreference?.isEnabled = !it
+            resetSettings?.isEnabled = !it
         }
     }
 
@@ -92,10 +94,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            getString(R.string.pref_key_rescan) -> handleRescan()
+            getString(R.string.pref_key_rescan) -> rescanLibrary()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
+            getString(R.string.pref_key_reset_settings) -> handleResetSettingsSettings()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -112,7 +115,24 @@ class SettingsFragment : PreferenceFragmentCompat() {
         settingsInteractor.changeLocalStorageFolder()
     }
 
-    private fun handleRescan() {
+    private fun handleResetSettingsSettings() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.reset_settings_warning_message_title)
+            .setMessage(R.string.reset_settings_warning_message_description)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                settingsInteractor.resetAllSettings()
+                forceRefresh()
+            }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .show()
+    }
+
+    private fun forceRefresh() {
+        setPreferenceScreen(null)
+        setPreferencesFromResource(R.xml.mobile_settings, null)
+    }
+
+    private fun rescanLibrary() {
         context?.let { LibraryIndexWork.enqueueUniqueWork(it) }
     }
 
