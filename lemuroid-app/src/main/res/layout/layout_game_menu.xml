@@ -30,16 +30,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:flow_verticalGap="16dp"
-            app:flow_horizontalGap="16dp"
             app:constraint_referenced_ids="menu_change_disk,menu_edit_touch_controls,save_entry_reset,save_entry_settings,save_entry_close"
-            app:flow_wrapMode="chain"
+            app:flow_horizontalGap="16dp"
             app:flow_horizontalStyle="spread_inside"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:flow_verticalGap="16dp"
+            app:flow_wrapMode="chain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/flow"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/menu_fast_forward_toggle" />
 
         <include
             android:id="@+id/save_entry_slot1"
@@ -64,6 +62,57 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             layout="@layout/layout_game_menu_save_entry"/>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/menu_audio_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/menu_fast_forward_toggle"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/menu_audio_toggle_enabled"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_unmute" />
+
+            <Button
+                android:id="@+id/menu_audio_toggle_disabled"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_mute" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/menu_fast_forward_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/flow"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/menu_fast_forward_disabled"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_play" />
+
+            <Button
+                android:id="@+id/menu_fast_forward_enabled"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_fast_forward" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/menu_change_disk"

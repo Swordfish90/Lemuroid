@@ -28,13 +28,17 @@ class TVGameMenuFragment(
     private val game: Game,
     private val coreOptions: Array<CoreOption>,
     private val numDisks: Int,
-    private val currentDisk: Int
+    private val currentDisk: Int,
+    private val audioEnabled: Boolean,
+    private val fastForwardEnabled: Boolean
 ) : LeanbackPreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.tv_game_settings, rootKey)
         setupCoreOptions()
         setupLoadAndSave()
+        setupAudioOption()
+        setupFastForwardOption()
 
         if (numDisks > 1) {
             setupChangeDiskOption()
@@ -53,6 +57,16 @@ class TVGameMenuFragment(
                 )
             }
             .forEach { coreOptionsScreen?.addPreference(it) }
+    }
+
+    private fun setupAudioOption() {
+        findPreference<Preference>(AUDIO_ENABLE)?.isVisible = !audioEnabled
+        findPreference<Preference>(AUDIO_DISABLE)?.isVisible = audioEnabled
+    }
+
+    private fun setupFastForwardOption() {
+        findPreference<Preference>(FAST_FORWARD_ENABLE)?.isVisible = !fastForwardEnabled
+        findPreference<Preference>(FAST_FORWARD_DISABLE)?.isVisible = fastForwardEnabled
     }
 
     private fun setupChangeDiskOption() {
@@ -141,6 +155,30 @@ class TVGameMenuFragment(
                 }
                 setResultAndFinish(resultIntent)
             }
+            "pref_game_enable_audio" -> {
+                val resultIntent = Intent().apply {
+                    putExtra(GameMenuContract.RESULT_ENABLE_AUDIO, true)
+                }
+                setResultAndFinish(resultIntent)
+            }
+            "pref_game_disable_audio" -> {
+                val resultIntent = Intent().apply {
+                    putExtra(GameMenuContract.RESULT_ENABLE_AUDIO, false)
+                }
+                setResultAndFinish(resultIntent)
+            }
+            "pref_game_enable_fast_forward" -> {
+                val resultIntent = Intent().apply {
+                    putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, true)
+                }
+                setResultAndFinish(resultIntent)
+            }
+            "pref_game_disable_fast_forward" -> {
+                val resultIntent = Intent().apply {
+                    putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, false)
+                }
+                setResultAndFinish(resultIntent)
+            }
             "pref_game_save_0" -> handleSaveAction(0)
             "pref_game_save_1" -> handleSaveAction(1)
             "pref_game_save_2" -> handleSaveAction(2)
@@ -181,6 +219,10 @@ class TVGameMenuFragment(
     }
 
     companion object {
+        private const val FAST_FORWARD_ENABLE = "pref_game_enable_fast_forward"
+        private const val FAST_FORWARD_DISABLE = "pref_game_disable_fast_forward"
+        private const val AUDIO_ENABLE = "pref_game_enable_audio"
+        private const val AUDIO_DISABLE = "pref_game_disable_audio"
         private const val SECTION_CORE_OPTIONS = "pref_game_section_core_options"
         private const val SECTION_CHANGE_DISK = "pref_game_section_change_disk"
         private const val SECTION_SAVE_GAME = "pref_game_section_save"

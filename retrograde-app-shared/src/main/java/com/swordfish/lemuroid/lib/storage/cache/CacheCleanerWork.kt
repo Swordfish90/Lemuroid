@@ -1,36 +1,58 @@
 package com.swordfish.lemuroid.lib.storage.cache
 
 import android.content.Context
+import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import io.reactivex.Completable
 import io.reactivex.Single
 
 class CacheCleanerWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
 
     override fun createWork(): Single<Result> {
-        return createCleanCacheCompletable(applicationContext)
-            .onErrorComplete()
-            .toSingleDefault(Result.success())
+        val cleanCompletable = if (inputData.getBoolean(CLEAN_EVERYTHING, false)) {
+            createCleanAllCompletable(applicationContext)
+        } else {
+            createCleanLRUCompletable(applicationContext)
+        }
+        return cleanCompletable.onErrorComplete().toSingleDefault(Result.success())
     }
 
-    private fun createCleanCacheCompletable(context: Context): Completable {
-        val cacheCleaner = CacheCleaner()
-        val optimalCacheSize = cacheCleaner.getOptimalCacheSize()
-        return cacheCleaner.clean(context, optimalCacheSize)
+    private fun createCleanLRUCompletable(context: Context): Completable {
+        val optimalCacheSize = CacheCleaner.getOptimalCacheSize()
+        return CacheCleaner.clean(context, optimalCacheSize)
+    }
+
+    private fun createCleanAllCompletable(context: Context): Completable {
+        return CacheCleaner.cleanAll(context)
     }
 
     companion object {
         private val UNIQUE_WORK_ID: String = CacheCleanerWork::class.java.simpleName
 
-        fun enqueueUniqueWork(applicationContext: Context) {
+        private val CLEAN_EVERYTHING: String = "CLEAN_EVERYTHING"
+
+        fun enqueueCleanCacheLRU(applicationContext: Context) {
             WorkManager.getInstance(applicationContext).enqueueUniqueWork(
                 UNIQUE_WORK_ID,
                 ExistingWorkPolicy.APPEND,
                 OneTimeWorkRequestBuilder<CacheCleanerWork>().build()
+            )
+        }
+
+        fun enqueueCleanCacheAll(applicationContext: Context) {
+            val inputData: Data = workDataOf(CLEAN_EVERYTHING to true)
+
+            WorkManager.getInstance(applicationContext).enqueueUniqueWork(
+                UNIQUE_WORK_ID,
+                ExistingWorkPolicy.APPEND,
+                OneTimeWorkRequestBuilder<CacheCleanerWork>()
+                    .setInputData(inputData)
+                    .build()
             )
         }
     }

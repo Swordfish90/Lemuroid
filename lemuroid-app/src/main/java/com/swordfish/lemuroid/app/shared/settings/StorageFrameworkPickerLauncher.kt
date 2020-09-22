@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.shared.settings
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import com.swordfish.lemuroid.R
@@ -50,12 +51,8 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
             val currentValue: String? = sharedPreferences.getString(preferenceKey, null)
             val newValue = resultData?.data
 
-            if (newValue.toString() != currentValue) {
-                clearPreviousPersistentUris()
-
-                newValue?.let {
-                    contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
+            if (newValue != null && newValue.toString() != currentValue) {
+                updatePersistableUris(newValue)
 
                 sharedPreferences.edit().apply {
                     this.putString(preferenceKey, newValue.toString())
@@ -68,16 +65,22 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
         finish()
     }
 
-    private fun startLibraryIndexWork() {
-        LibraryIndexWork.enqueueUniqueWork(applicationContext)
-    }
-
-    private fun clearPreviousPersistentUris() {
+    private fun updatePersistableUris(uri: Uri) {
         contentResolver.persistedUriPermissions
             .filter { it.isReadPermission }
+            .filter { it.uri != uri }
             .forEach {
-                contentResolver.releasePersistableUriPermission(it.uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                contentResolver.releasePersistableUriPermission(
+                    it.uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
             }
+
+        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+
+    private fun startLibraryIndexWork() {
+        LibraryIndexWork.enqueueUniqueWork(applicationContext)
     }
 
     companion object {

@@ -9,6 +9,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadBindingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
@@ -17,6 +18,7 @@ import javax.inject.Inject
 
 class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
+    @Inject lateinit var settingsInteractor: SettingsInteractor
     @Inject lateinit var biosPreferences: BiosPreferences
     @Inject lateinit var gamePadBindingsPreferences: GamePadBindingsPreferences
     @Inject lateinit var gamePadManager: GamePadManager
@@ -61,6 +63,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             getString(R.string.pref_key_reset_gamepad_bindings) -> handleResetGamePadBindings()
+            getString(R.string.pref_key_reset_settings) -> handleResetSettings()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -70,6 +73,11 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe { refreshGamePadBindingsScreen() }
+    }
+
+    private fun handleResetSettings() {
+        settingsInteractor.resetAllSettings()
+        activity?.finish()
     }
 
     @dagger.Module

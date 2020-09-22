@@ -215,7 +215,10 @@ data class GameSystem(
                 "nintendo5",
                 "libmupen64plus_next_gles3_libretro_android.so",
                 uniqueExtensions = listOf("n64", "z64"),
-                virtualGamePadOptions = VirtualGamePadOptions(true)
+                virtualGamePadOptions = VirtualGamePadOptions(true),
+                defaultSettings = listOf(
+                    CoreVariable("mupen64plus-43screensize", "320x240")
+                ),
             ),
             GameSystem(
                 SystemID.PSX,
@@ -234,6 +237,7 @@ data class GameSystem(
                     scanByPathAndSupportedExtensions = true
                 ),
                 exposedSettings = listOf(
+                    "pcsx_rearmed_drc",
                     "pcsx_rearmed_frameskip",
                     "pcsx_rearmed_pad1type",
                     "pcsx_rearmed_pad2type"
@@ -301,7 +305,10 @@ data class GameSystem(
                 uniqueExtensions = listOf("nds"),
                 sendLeftStickEventAsDPAD = true,
                 exposedSettings = listOf("desmume_frameskip"),
-                defaultSettings = listOf(CoreVariable("desmume_pointer_type", "touch"))
+                defaultSettings = listOf(
+                    CoreVariable("desmume_pointer_type", "touch"),
+                    CoreVariable("desmume_frameskip", "1")
+                )
             )
         )
 

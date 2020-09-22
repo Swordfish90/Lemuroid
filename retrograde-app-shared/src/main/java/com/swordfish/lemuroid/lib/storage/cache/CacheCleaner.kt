@@ -11,7 +11,7 @@ import io.reactivex.Completable
 import timber.log.Timber
 import java.io.File
 
-class CacheCleaner {
+object CacheCleaner {
 
     fun getOptimalCacheSize(): Long {
         // We are capping cache size to be 1/20th of total internal memory...
@@ -24,8 +24,13 @@ class CacheCleaner {
         return stat.blockSizeLong * stat.blockCountLong
     }
 
+    fun cleanAll(appContext: Context) = Completable.fromAction {
+        Timber.i("Running cache cleanup everything task")
+        appContext.cacheDir.listFiles()?.forEach { it.deleteRecursively() }
+    }
+
     fun clean(appContext: Context, maxByteSize: Long) = Completable.fromAction {
-        Timber.i("Running cache cleanup task")
+        Timber.i("Running cache cleanup lru task")
 
         val cacheFoldersSequence = sequenceOf(
             File(appContext.cacheDir, StorageAccessFrameworkProvider.SAF_CACHE_SUBFOLDER).walkBottomUp(),

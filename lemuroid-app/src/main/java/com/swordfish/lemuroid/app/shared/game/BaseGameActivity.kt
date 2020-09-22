@@ -100,10 +100,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             displayCannotLoadGameMessage()
         }
 
-        retrieveSRAMData()?.let {
-            retroGameView?.unserializeSRAM(it)
-        }
-
         retrieveAutoSaveData()?.let {
             restoreAutoSaveAsync(it)
         }
@@ -135,12 +131,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
 
         // PPSSPP and Mupen64 initialize some state while rendering the first frame, so we have to wait before restoring
-        // the autosave.
+        // the autosave. Do not change thread here. Stick to the GL one to avoid issues with PPSSPP.
         retroGameView?.getGLRetroEvents()
             ?.filter { it is GLRetroView.GLRetroEvents.FrameRendered }
             ?.firstElement()
             ?.flatMapCompletable { getRetryRestoreQuickSave(saveState) }
-            ?.subscribeOn(Schedulers.io())
             ?.autoDispose(scope())
             ?.subscribe()
     }
@@ -149,21 +144,25 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         directoriesManager: DirectoriesManager,
         screenFilter: String
     ) {
+        val coreVariables =
+            (intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>? ?: arrayOf())
+                .map { Variable(it.key, it.value) }
+                .toTypedArray()
+
         retroGameView = GLRetroView(
             this,
             intent.getStringExtra(EXTRA_CORE_PATH)!!,
             intent.getStringExtra(EXTRA_GAME_PATH)!!,
             directoriesManager.getSystemDirectory().absolutePath,
             directoriesManager.getSavesDirectory().absolutePath,
+            coreVariables,
+            retrieveSRAMData(),
             getShaderForSystem(screenFilter, system)
         )
         retroGameView?.isFocusable = false
         retroGameView?.isFocusableInTouchMode = false
-        retroGameView?.onCreate()
 
-        val coreVariables = intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>?
-            ?: arrayOf()
-        updateCoreVariables(coreVariables.toList())
+        retroGameView?.let { lifecycle.addObserver(it) }
 
         gameViewLayout.addView(retroGameView)
 
@@ -197,6 +196,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_GAME, game)
+            this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
+            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, retroGameView?.fastForwardEnabled)
         }
         startActivityForResult(intent, DIALOG_REQUEST)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -247,11 +248,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy({}) {
                 onVariablesRead(it)
             }
-
-        retroGameView?.onResume()
     }
 
-    open fun onVariablesRead(coreVariables: List<CoreVariable>) {
+    private fun onVariablesRead(coreVariables: List<CoreVariable>) {
         updateCoreVariables(coreVariables)
     }
 
@@ -278,16 +277,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy({}) {
                 updateCoreVariables(it)
             }
-    }
-
-    override fun onPause() {
-        retroGameView?.onPause()
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        retroGameView?.onDestroy()
-        super.onDestroy()
     }
 
     // Now that we wait for the first rendered frame this is probably no longer needed, but we'll keep it just to be sure
@@ -586,6 +575,22 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_DISK) == true) {
                 val index = data.getIntExtra(GameMenuContract.RESULT_CHANGE_DISK, 0)
                 retroGameView?.changeDisk(index)
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_AUDIO) == true) {
+                retroGameView?.apply {
+                    this.audioEnabled = data.getBooleanExtra(
+                        GameMenuContract.RESULT_ENABLE_AUDIO,
+                        true
+                    )
+                }
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
+                retroGameView?.apply {
+                    this.fastForwardEnabled = data.getBooleanExtra(
+                        GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
+                        false
+                    )
+                }
             }
         }
     }
