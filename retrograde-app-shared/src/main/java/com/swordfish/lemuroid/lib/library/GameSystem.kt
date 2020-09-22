@@ -219,7 +219,6 @@ data class GameSystem(
                 defaultSettings = listOf(
                     CoreVariable("mupen64plus-43screensize", "320x240")
                 ),
-                exposedSettings = listOf("mupen64plus-43screensize")
             ),
             GameSystem(
                 SystemID.PSX,

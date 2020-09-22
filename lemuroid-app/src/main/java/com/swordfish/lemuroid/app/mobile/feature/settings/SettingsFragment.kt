@@ -98,7 +98,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
-            getString(R.string.pref_key_reset_settings) -> handleResetSettingsSettings()
+            getString(R.string.pref_key_reset_settings) -> handleResetSettings()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -115,20 +115,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         settingsInteractor.changeLocalStorageFolder()
     }
 
-    private fun handleResetSettingsSettings() {
+    private fun handleResetSettings() {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.reset_settings_warning_message_title)
             .setMessage(R.string.reset_settings_warning_message_description)
             .setPositiveButton(R.string.ok) { _, _ ->
                 settingsInteractor.resetAllSettings()
-                forceRefresh()
+                reloadPreferences()
             }
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .show()
     }
 
-    private fun forceRefresh() {
-        setPreferenceScreen(null)
+    private fun reloadPreferences() {
+        preferenceScreen = null
         setPreferencesFromResource(R.xml.mobile_settings, null)
     }
 
