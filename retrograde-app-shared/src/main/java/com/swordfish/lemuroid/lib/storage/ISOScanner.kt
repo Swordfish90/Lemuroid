@@ -46,6 +46,8 @@ object ISOScanner {
         "ULEM",
         "ULUM",
         "ULJM",
+        "ULKS",
+        "ULAS",
         "UCES",
         "UCUS",
         "UCJS",
@@ -54,12 +56,18 @@ object ISOScanner {
         "NPUH",
         "NPJH",
         "NPEG",
+        "NPEX",
         "NPUG",
         "NPJG",
+        "NPJJ",
         "NPHG",
         "NPEZ",
         "NPUZ",
-        "NPJZ"
+        "NPJZ",
+        "NPUF",
+        "NPUZ",
+        "NPUG",
+        "NPUX"
     )
 
     fun extractSerial(fileName: String, inputStream: InputStream): String? {
