@@ -14,7 +14,7 @@ object DocumentFileParser {
 
     private const val MAX_CHECKED_ENTRIES = 3
     private const val SINGLE_ARCHIVE_THRESHOLD = 0.9
-    private const val MAX_SIZE_CRC32 = 500_000_000
+    private const val MAX_SIZE_CRC32 = 1_000_000_000
 
     fun parseDocumentFile(context: Context, baseStorageFile: BaseStorageFile): StorageFile {
         return if (baseStorageFile.extension == "zip") {
