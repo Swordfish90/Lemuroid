@@ -70,7 +70,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val settingsViewModel = ViewModelProviders.of(this, SettingsViewModel.Factory(context!!, rxSharedPreferences))
             .get(SettingsViewModel::class.java)
 
-        val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
+        val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_external_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
         val displayBiosPreference: Preference? = findPreference(getString(R.string.pref_key_display_bios_info))
         val resetSettings: Preference? = findPreference(getString(R.string.pref_key_reset_settings))
@@ -95,7 +95,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> rescanLibrary()
-            getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
+            getString(R.string.pref_key_external_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
             getString(R.string.pref_key_reset_settings) -> handleResetSettings()

@@ -7,7 +7,7 @@
         app:iconSpaceReserved="false">
 
         <Preference
-            android:key="@string/pref_key_extenral_folder"
+            android:key="@string/pref_key_external_folder"
             android:title="@string/directory"
             app:iconSpaceReserved="false"
             app:summary="@string/none"

@@ -46,7 +46,7 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
 
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-            val preferenceKey = getString(R.string.pref_key_extenral_folder)
+            val preferenceKey = getString(R.string.pref_key_external_folder)
 
             val currentValue: String? = sharedPreferences.getString(preferenceKey, null)
             val newValue = resultData?.data
