@@ -58,43 +58,45 @@ subprojects {
         plugin("checkstyle")
     }
 
-    tasks {
-        val checkstyle by creating(Checkstyle::class) {
-            configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
-            classpath = files()
-            source("src")
-        }
-        findByName("check")?.dependsOn(checkstyle)
-    }
-
-    extensions.configure(CheckstyleExtension::class.java) {
-        isIgnoreFailures = false
-        toolVersion = "8.8"
-    }
-
     afterEvaluate {
-        // BaseExtension is common parent for application, library and test modules
-        extensions.configure(BaseExtension::class.java) {
-            compileSdkVersion(deps.android.compileSdkVersion)
-            buildToolsVersion(deps.android.buildToolsVersion)
-            defaultConfig {
-                minSdkVersion(deps.android.minSdkVersion)
-                targetSdkVersion(deps.android.targetSdkVersion)
-                multiDexEnabled = true
+        tasks {
+            val checkstyle by creating(Checkstyle::class) {
+                configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
+                classpath = files()
+                source("src")
             }
-            lintOptions {
-                isAbortOnError = true
-                disable("UnusedResources") // https://issuetracker.google.com/issues/63150366
-                disable("InvalidPackage")
-                disable("VectorPath")
-                disable("TrustAllX509TrustManager")
-            }
-            dexOptions {
-                dexInProcess = true
-            }
-            compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_1_8
-                targetCompatibility = JavaVersion.VERSION_1_8
+            findByName("check")?.dependsOn(checkstyle)
+        }
+
+        extensions.configure(CheckstyleExtension::class.java) {
+            isIgnoreFailures = false
+            toolVersion = "8.8"
+        }
+
+        if (hasProperty("android")) {
+            // BaseExtension is common parent for application, library and test modules
+            extensions.configure(BaseExtension::class.java) {
+                compileSdkVersion(deps.android.compileSdkVersion)
+                buildToolsVersion(deps.android.buildToolsVersion)
+                defaultConfig {
+                    minSdkVersion(deps.android.minSdkVersion)
+                    targetSdkVersion(deps.android.targetSdkVersion)
+                    multiDexEnabled = true
+                }
+                lintOptions {
+                    isAbortOnError = true
+                    disable("UnusedResources") // https://issuetracker.google.com/issues/63150366
+                    disable("InvalidPackage")
+                    disable("VectorPath")
+                    disable("TrustAllX509TrustManager")
+                }
+                dexOptions {
+                    dexInProcess = true
+                }
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_1_8
+                    targetCompatibility = JavaVersion.VERSION_1_8
+                }
             }
         }
     }
