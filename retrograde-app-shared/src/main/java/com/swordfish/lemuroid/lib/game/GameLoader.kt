@@ -42,7 +42,6 @@ class GameLoader(
     private val coreVariablesManager: CoreVariablesManager,
     private val retrogradeDatabase: RetrogradeDatabase
 ) {
-
     fun load(game: Game, loadSave: Boolean): Observable<LoadingState> {
         return prepareGame(game, loadSave)
     }
@@ -59,23 +58,36 @@ class GameLoader(
 
             val gameSystem = GameSystem.findById(game.systemId)
 
-            val coreLibrary = coreManager.downloadCore(gameSystem, gameSystem.coreAssetsManager).blockingGet()
+            val coreLibrary = runCatching {
+                coreManager.downloadCore(gameSystem, gameSystem.coreAssetsManager).blockingGet()
+            }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
 
             emitter.onNext(LoadingState.LoadingGame)
 
-            val gameFile = lemuroidLibrary.getGameRom(game).blockingGet()
+            val gameFile = runCatching {
+                lemuroidLibrary.getGameRom(game).blockingGet()
+            }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_GAME) }
 
-            retrogradeDatabase.dataFileDao().selectDataFilesForGame(game.id).forEach {
-                lemuroidLibrary.prepareDataFile(game, it).blockingAwait()
-            }
+            runCatching {
+                retrogradeDatabase.dataFileDao().selectDataFilesForGame(game.id).forEach {
+                    lemuroidLibrary.prepareDataFile(game, it).blockingAwait()
+                }
+            }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
 
-            val saveRAMData = savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
+            val saveRAMData = runCatching {
+                savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
+            }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
 
-            val quickSaveData = if (loadQuickSave) {
-                statesManager.getAutoSave(game, gameSystem).toSingleAsOptional().blockingGet().toNullable()
-            } else {
-                null
-            }
+            val quickSaveData = runCatching {
+                if (loadQuickSave) {
+                    statesManager.getAutoSave(game, gameSystem)
+                        .toSingleAsOptional()
+                        .blockingGet()
+                        .toNullable()
+                } else {
+                    null
+                }
+            }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
 
             val coreVariables = coreVariablesManager.getCoreOptionsForSystem(gameSystem).blockingGet().toTypedArray()
 
@@ -84,7 +96,7 @@ class GameLoader(
             )
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")
-            emitter.onError(e)
+            emitter.onError(GameLoaderException(GameLoaderError.GENERIC))
         } finally {
             emitter.onComplete()
         }
