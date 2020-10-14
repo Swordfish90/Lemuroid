@@ -30,7 +30,8 @@ class TVGameMenuFragment(
     private val numDisks: Int,
     private val currentDisk: Int,
     private val audioEnabled: Boolean,
-    private val fastForwardEnabled: Boolean
+    private val fastForwardEnabled: Boolean,
+    private val fastForwardSupported: Boolean
 ) : LeanbackPreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -65,8 +66,11 @@ class TVGameMenuFragment(
     }
 
     private fun setupFastForwardOption() {
-        findPreference<Preference>(FAST_FORWARD_ENABLE)?.isVisible = !fastForwardEnabled
-        findPreference<Preference>(FAST_FORWARD_DISABLE)?.isVisible = fastForwardEnabled
+        findPreference<Preference>(FAST_FORWARD_ENABLE)?.isVisible =
+            !fastForwardEnabled && fastForwardSupported
+
+        findPreference<Preference>(FAST_FORWARD_DISABLE)?.isVisible =
+            fastForwardEnabled && fastForwardSupported
     }
 
     private fun setupChangeDiskOption() {

@@ -64,7 +64,9 @@ data class GameSystem(
 
     val virtualGamePadOptions: VirtualGamePadOptions = VirtualGamePadOptions(),
 
-    val hasMultiDiskSupport: Boolean = false
+    val hasMultiDiskSupport: Boolean = false,
+
+    val fastForwardSupport: Boolean = true
 
 ) {
 
@@ -269,7 +271,8 @@ data class GameSystem(
                     "ppsspp_auto_frameskip",
                     "ppsspp_frameskip"
                 ),
-                virtualGamePadOptions = VirtualGamePadOptions(true)
+                virtualGamePadOptions = VirtualGamePadOptions(true),
+                fastForwardSupport = false
             ),
             GameSystem(
                 SystemID.FBNEO,
