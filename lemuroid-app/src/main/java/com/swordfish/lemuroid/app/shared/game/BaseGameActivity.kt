@@ -22,8 +22,8 @@ import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.lib.core.CoreVariable
-import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.game.GameLoaderError
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -92,13 +92,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         val directoriesManager = DirectoriesManager(applicationContext)
 
-        try {
-            initializeRetroGameView(directoriesManager, settingsManager.screenFilter)
-        } catch (e: Exception) {
-            Timber.e(e, "Failed running game load")
-            retroGameView = null
-            displayCannotLoadGameMessage()
-        }
+        initializeRetroGameView(directoriesManager, settingsManager.screenFilter)
 
         retrieveAutoSaveData()?.let {
             restoreAutoSaveAsync(it)
@@ -162,6 +156,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         retroGameView?.isFocusable = false
         retroGameView?.isFocusableInTouchMode = false
 
+        retroGameView
+            ?.getGLRetroErrors()
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.autoDispose(scope())
+            ?.subscribeBy({ Timber.e(it, "Exception in GLRetroErrors. Ironic.") }) {
+                handleRetroViewError(it)
+            }
+
         retroGameView?.let { lifecycle.addObserver(it) }
 
         gameViewLayout.addView(retroGameView)
@@ -175,10 +177,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         retroGameView?.layoutParams = layoutParams
     }
 
-    private fun displayCannotLoadGameMessage() {
-        displayErrorDialog(R.string.game_dialog_cannot_load_game, R.string.ok) {
-            finish()
+    private fun handleRetroViewError(errorCode: Int) {
+        val gameLoaderError = when (errorCode) {
+            GLRetroView.ERROR_GL_NOT_COMPATIBLE -> GameLoaderError.GL_INCOMPATIBLE
+            GLRetroView.ERROR_LOAD_GAME -> GameLoaderError.LOAD_GAME
+            GLRetroView.ERROR_LOAD_LIBRARY -> GameLoaderError.LOAD_CORE
+            GLRetroView.ERROR_SERIALIZATION -> GameLoaderError.SAVES
+            else -> GameLoaderError.GENERIC
         }
+        retroGameView = null
+        displayGameLoaderError(gameLoaderError)
     }
 
     fun displayToast(id: Int) {

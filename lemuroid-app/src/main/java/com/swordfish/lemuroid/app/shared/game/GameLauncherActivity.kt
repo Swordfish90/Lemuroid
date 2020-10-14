@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
+import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.uber.autodispose.android.lifecycle.scope
@@ -19,7 +19,6 @@ import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.system.exitProcess
@@ -67,8 +66,7 @@ class GameLauncherActivity : ImmersiveActivity() {
                         }
                     },
                     {
-                        Timber.e(it, "Error while loading game ${it.message}")
-                        displayGenericErrorMessage()
+                        displayGameLoaderError((it as GameLoaderException).error)
                     }
                 )
         }
@@ -88,13 +86,6 @@ class GameLauncherActivity : ImmersiveActivity() {
             else -> ""
         }
         findViewById<TextView>(R.id.loading_text).text = message
-    }
-
-    private fun displayGenericErrorMessage() {
-        AlertDialog.Builder(this)
-            .setMessage(R.string.game_play_generic_error_message)
-            .setPositiveButton(R.string.ok) { _, _ -> finish() }
-            .show()
     }
 
     fun newIntent(context: Context, gameData: GameLoader.GameData, useLeanback: Boolean) =
