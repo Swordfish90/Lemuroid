@@ -35,4 +35,10 @@ class SettingsManager(private val context: Context) {
         getString(R.string.pref_key_tilt_sensitivity_index),
         defaultIndex = 6
     )
+
+    var hideTouchControlsWhileGamePad: Boolean by SharedPreferencesDelegates.BooleanDelegate(
+        sharedPreferences,
+        getString(R.string.pref_key_allow_hide_touch_controls),
+        true
+    )
 }

@@ -336,19 +336,22 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadMotions() {
-        motionEventsSubjects
+        Observables.combineLatest(getGamePadPortMappingsObservable(), motionEventsSubjects)
             .autoDispose(scope())
-            .subscribeBy { sendMotionEvent(it) }
+            .subscribeBy { (ports, event) -> sendMotionEvent(event, ports[event.deviceId] ?: 0) }
     }
 
     private fun setupGamePadKeys() {
-        val bindKeys = Observables.combineLatest(getGamePadBindingsObservable(), keyEventsSubjects)
-            .map { (bindings, event) ->
-                val port = getDevicePort(event)
+        val bindKeys = Observables.combineLatest(
+            getGamePadPortMappingsObservable(),
+            getGamePadBindingsObservable(),
+            keyEventsSubjects
+        )
+            .map { (ports, bindings, event) ->
+                val port = ports[event.deviceId] ?: 0
                 val bindKeyCode = bindings[event.device]?.get(event.keyCode) ?: event.keyCode
                 Triple(event.action, port, bindKeyCode)
             }
-            .filter { (_, port, _) -> port >= 0 }
             .share()
 
         bindKeys
@@ -375,8 +378,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .map { it.toMap() }
     }
 
-    private fun sendMotionEvent(event: MotionEvent) {
-        val port = getDevicePort(event)
+    private fun getGamePadPortMappingsObservable(): Observable<Map<Int, Int>> {
+        return gamePadManager.getGamePadsObservable().map {
+            it.mapIndexed { index, inputDevice -> inputDevice.id to index }
+                .toMap()
+        }
+    }
+
+    private fun sendMotionEvent(event: MotionEvent, port: Int) {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {

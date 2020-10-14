@@ -7,9 +7,13 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
+import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 
-class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
+class GamePadSettingsPreferences(
+    private val gamePadManager: GamePadManager,
+    private val isLeanback: Boolean
+) {
 
     fun resetAllBindings() = gamePadManager.resetAllBindings()
 
@@ -24,11 +28,23 @@ class GamePadBindingsPreferences(private val gamePadManager: GamePadManager) {
         val categoryTitle = context.resources.getString(R.string.settings_gamepad_category_general)
         val category = createCategory(context, preferenceScreen, categoryTitle)
 
-        val preference = Preference(context)
-        preference.key = context.resources.getString(R.string.pref_key_reset_gamepad_bindings)
-        preference.title = context.resources.getString(R.string.settings_gamepad_title_reset_bindings)
-        preference.isIconSpaceReserved = false
-        category.addPreference(preference)
+        Preference(context).apply {
+            key = context.resources.getString(R.string.pref_key_reset_gamepad_bindings)
+            title = context.resources.getString(R.string.settings_gamepad_title_reset_bindings)
+            isIconSpaceReserved = false
+            category.addPreference(this)
+        }
+
+        if (!isLeanback) {
+            SwitchPreference(context).apply {
+                key = context.resources.getString(R.string.pref_key_allow_hide_touch_controls)
+                title = context.resources.getString(R.string.settings_gamepad_title_allow_hide_touch_controls)
+                summary = context.resources.getString(R.string.settings_gamepad_description_allow_hide_touch_controls)
+                setDefaultValue(true)
+                isIconSpaceReserved = false
+                category.addPreference(this)
+            }
+        }
     }
 
     private fun createCategory(

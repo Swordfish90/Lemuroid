@@ -30,6 +30,8 @@
 
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
+    <string name="settings_gamepad_title_allow_hide_touch_controls">Auto hide touch controls</string>
+    <string name="settings_gamepad_description_allow_hide_touch_controls">Automatically hide touch controls when a GamePad is connected</string>
 
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Display detected and supported BIOS files</string>

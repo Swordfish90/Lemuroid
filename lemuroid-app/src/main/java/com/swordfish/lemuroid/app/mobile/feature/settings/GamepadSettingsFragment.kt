@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.settings.GamePadBindingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class GamepadSettingsFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var gamePadBindingsPreferences: GamePadBindingsPreferences
+    @Inject lateinit var gamePadSettingsPreferences: GamePadSettingsPreferences
     @Inject lateinit var gamePadManager: GamePadManager
 
     override fun onAttach(context: Context) {
@@ -34,7 +34,7 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
 
     private fun refreshBindings() {
         preferenceScreen.removeAll()
-        gamePadBindingsPreferences.addGamePadsPreferencesToScreen(requireContext(), preferenceScreen)
+        gamePadSettingsPreferences.addGamePadsPreferencesToScreen(requireContext(), preferenceScreen)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -45,7 +45,7 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun handleResetBindings() {
-        gamePadBindingsPreferences.resetAllBindings()
+        gamePadSettingsPreferences.resetAllBindings()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe { refreshBindings() }
