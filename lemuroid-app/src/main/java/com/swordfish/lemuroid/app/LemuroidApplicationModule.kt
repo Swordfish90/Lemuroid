@@ -29,7 +29,6 @@ import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadBindingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
@@ -262,13 +261,6 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun gamepadsManager(context: Context) = GamePadManager(context)
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun gamepadBindingsManager(gamePadManager: GamePadManager) = GamePadBindingsPreferences(
-            gamePadManager
-        )
 
         @Provides
         @PerApp

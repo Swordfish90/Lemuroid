@@ -106,7 +106,10 @@ class GameActivity : BaseGameActivity() {
             .getGamePadsObservable()
             .map { it.size }
             .autoDispose(scope())
-            .subscribeBy(Timber::e) { overlayLayout.setVisibleOrGone(it == 0) }
+            .subscribeBy(Timber::e) {
+                val displayVirtualKeys = !settingsManager.hideTouchControlsWhileGamePad || it == 0
+                overlayLayout.setVisibleOrGone(displayVirtualKeys)
+            }
     }
 
     private fun handleGamePadGesture(it: Event.Gesture) {

@@ -24,6 +24,8 @@ import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
+import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
@@ -143,6 +145,12 @@ class MainActivity : RetrogradeAppCompatActivity() {
             @JvmStatic
             fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase) =
                 GameInteractor(activity, retrogradeDb, false)
+
+            @Provides
+            @PerActivity
+            @JvmStatic
+            fun gamepadSettingsPreferences(gamePadManager: GamePadManager) =
+                GamePadSettingsPreferences(gamePadManager, false)
         }
     }
 }

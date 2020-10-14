@@ -38,7 +38,7 @@ class GamePadManager(context: Context) {
         val actionCompletable = Completable.fromAction {
             val editor = sharedPreferences.edit()
             sharedPreferences.all.keys
-                .filter { it.startsWith(GAME_PAD_PREFERENCE_BASE_KEY) }
+                .filter { it.startsWith(GAME_PAD_BINDING_PREFERENCE_BASE_KEY) }
                 .forEach { editor.remove(it) }
             editor.commit()
         }
@@ -90,19 +90,22 @@ class GamePadManager(context: Context) {
         return runCatching {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
-                .filter { it.controllerNumber > 0 }
-                .distinctBy { it.controllerNumber }
+                .filter { isGamePad(it) }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()
     }
 
+    private fun isGamePad(device: InputDevice): Boolean {
+        return device.sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD
+    }
+
     companion object {
-        private const val GAME_PAD_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding"
+        private const val GAME_PAD_BINDING_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding"
 
         private fun getSharedPreferencesId(inputDevice: InputDevice) = inputDevice.descriptor
 
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
-            "${GAME_PAD_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"
+            "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"
 
         val INPUT_KEYS = listOf(
             KeyEvent.KEYCODE_BUTTON_A,

@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadBindingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.uber.autodispose.android.lifecycle.scope
@@ -20,7 +20,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     @Inject lateinit var settingsInteractor: SettingsInteractor
     @Inject lateinit var biosPreferences: BiosPreferences
-    @Inject lateinit var gamePadBindingsPreferences: GamePadBindingsPreferences
+    @Inject lateinit var gamePadSettingsPreferences: GamePadSettingsPreferences
     @Inject lateinit var gamePadManager: GamePadManager
 
     override fun onAttach(context: Context) {
@@ -56,7 +56,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     private fun refreshGamePadBindingsScreen() {
         getGamePadPreferenceScreen()?.let {
             it.removeAll()
-            gamePadBindingsPreferences.addGamePadsPreferencesToScreen(requireContext(), it)
+            gamePadSettingsPreferences.addGamePadsPreferencesToScreen(requireContext(), it)
         }
     }
 
@@ -69,7 +69,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     }
 
     private fun handleResetGamePadBindings() {
-        gamePadBindingsPreferences.resetAllBindings()
+        gamePadSettingsPreferences.resetAllBindings()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe { refreshGamePadBindingsScreen() }
