@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/navigation_settings_gamepad"
         android:name="com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment"
-        android:label="@string/settings_gamepad_settings" />
+        android:label="@string/settings_gamepad_bindings" />
 
     <fragment
         android:id="@+id/navigation_settings_bios_info"

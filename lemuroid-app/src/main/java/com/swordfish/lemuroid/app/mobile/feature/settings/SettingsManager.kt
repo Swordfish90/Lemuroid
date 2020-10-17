@@ -36,9 +36,9 @@ class SettingsManager(private val context: Context) {
         defaultIndex = 6
     )
 
-    var hideTouchControlsWhileGamePad: Boolean by SharedPreferencesDelegates.BooleanDelegate(
+    var gamepadsEnabled: Boolean by SharedPreferencesDelegates.BooleanDelegate(
         sharedPreferences,
-        getString(R.string.pref_key_allow_hide_touch_controls),
+        getString(R.string.pref_key_enable_gamepads),
         true
     )
 }

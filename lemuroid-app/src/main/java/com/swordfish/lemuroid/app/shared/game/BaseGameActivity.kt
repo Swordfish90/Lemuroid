@@ -99,8 +99,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             restoreAutoSaveAsync(it)
         }
 
-        setupPhysicalPad()
+        if (areGamePadsEnabled()) {
+            setupPhysicalPad()
+        }
     }
+
+    abstract fun areGamePadsEnabled(): Boolean
 
     // If the activity is garbage collected we are losing its state. To avoid overwriting the previous autosave we just
     // reload the previous one. This is far from perfect but definitely improves the current behaviour.

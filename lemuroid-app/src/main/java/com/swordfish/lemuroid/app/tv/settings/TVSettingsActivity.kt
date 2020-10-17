@@ -2,8 +2,6 @@ package com.swordfish.lemuroid.app.tv.settings
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
@@ -41,12 +39,6 @@ class TVSettingsActivity : TVBaseSettingsActivity() {
             @PerActivity
             @JvmStatic
             fun settingsInteractor(activity: TVSettingsActivity) = SettingsInteractor(activity)
-
-            @Provides
-            @PerActivity
-            @JvmStatic
-            fun gamepadSettingsPreferences(gamePadManager: GamePadManager) =
-                GamePadSettingsPreferences(gamePadManager, true)
         }
     }
 }

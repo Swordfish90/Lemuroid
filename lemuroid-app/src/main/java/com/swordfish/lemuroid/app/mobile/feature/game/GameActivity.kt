@@ -67,6 +67,10 @@ class GameActivity : BaseGameActivity() {
         handleOrientationChange(getCurrentOrientation())
     }
 
+    override fun areGamePadsEnabled(): Boolean {
+        return settingsManager.gamepadsEnabled
+    }
+
     private fun getCurrentOrientation() = resources.configuration.orientation
 
     override fun onResume() {
@@ -107,8 +111,8 @@ class GameActivity : BaseGameActivity() {
             .map { it.size }
             .autoDispose(scope())
             .subscribeBy(Timber::e) {
-                val displayVirtualKeys = !settingsManager.hideTouchControlsWhileGamePad || it == 0
-                overlayLayout.setVisibleOrGone(displayVirtualKeys)
+                val isVisible = !areGamePadsEnabled() || it == 0
+                overlayLayout.setVisibleOrGone(isVisible)
             }
     }
 
