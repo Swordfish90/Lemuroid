@@ -205,6 +205,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_GAME, game)
             this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
+            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
             this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, retroGameView?.fastForwardEnabled)
         }
         startActivityForResult(intent, DIALOG_REQUEST)

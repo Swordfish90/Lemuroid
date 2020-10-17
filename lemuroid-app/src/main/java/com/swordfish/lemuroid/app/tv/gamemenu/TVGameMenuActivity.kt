@@ -30,10 +30,13 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
 
             val audioEnabled = intent.extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED)
-                ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
+                ?: throw InvalidParameterException("Missing EXTRA_AUDIO_ENABLED")
 
             val fastForwardEnabled = intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD)
-                ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
+                ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD")
+
+            val fastForwardSupported = intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED)
+                ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD_SUPPORTED")
 
             val fragment = TVGameMenuFragmentWrapper(
                 statesManager,
@@ -42,7 +45,8 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 numDisks,
                 currentDisk,
                 audioEnabled,
-                fastForwardEnabled
+                fastForwardEnabled,
+                fastForwardSupported
             )
             supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment)
                 .commit()
@@ -61,7 +65,8 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         private val numDisks: Int,
         private val currentDisk: Int,
         private val audioEnabled: Boolean,
-        private val fastForwardEnabled: Boolean
+        private val fastForwardEnabled: Boolean,
+        private val fastForwardSupported: Boolean
     ) : BaseSettingsFragmentWrapper() {
 
         override fun createFragment(): Fragment {
@@ -72,7 +77,8 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 numDisks,
                 currentDisk,
                 audioEnabled,
-                fastForwardEnabled
+                fastForwardEnabled,
+                fastForwardSupported
             )
         }
     }

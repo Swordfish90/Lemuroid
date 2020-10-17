@@ -20,6 +20,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveStateInfo
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
@@ -117,11 +118,15 @@ class GameMenuFragment : Fragment() {
             audioEnabled,
             R.id.menu_audio_toggle_enabled,
             R.id.menu_audio_toggle_disabled,
-            GameMenuContract.RESULT_ENABLE_AUDIO
+            GameMenuContract.RESULT_ENABLE_AUDIO,
+            true
         )
 
         val fastForwardEnabled = activity?.intent
             ?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false
+
+        val fastForwardSupported = activity?.intent
+            ?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, false) ?: false
 
         val fastForwardToggle = (view!!.findViewById(R.id.menu_fast_forward_toggle) as MaterialButtonToggleGroup)
         setupBinaryToggleButton(
@@ -129,7 +134,8 @@ class GameMenuFragment : Fragment() {
             fastForwardEnabled,
             R.id.menu_fast_forward_enabled,
             R.id.menu_fast_forward_disabled,
-            GameMenuContract.RESULT_ENABLE_FAST_FORWARD
+            GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
+            fastForwardSupported
         )
 
         view!!.setVisibleOrGone(true)
@@ -140,7 +146,8 @@ class GameMenuFragment : Fragment() {
         isToggled: Boolean,
         enabledButtonResId: Int,
         disabledButtonResId: Int,
-        resultValue: String
+        resultValue: String,
+        enabled: Boolean
     ) {
         toggleButton.check(if (isToggled) enabledButtonResId else disabledButtonResId)
         toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -151,6 +158,7 @@ class GameMenuFragment : Fragment() {
             }
             setResultAndFinish(resultValue, newValue)
         }
+        toggleButton.setVisibleOrInvisible(enabled)
     }
 
     private fun setResultAndFinish(resultName: String, resultValue: Boolean = true) {
