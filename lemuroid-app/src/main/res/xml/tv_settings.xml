@@ -3,36 +3,54 @@
     android:title="@string/settings"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
-        android:key="@string/pref_key_shader_filter"
-        android:title="@string/display_filter"
-        app:iconSpaceReserved="false"
-        app:useSimpleSummaryProvider="true"
-        android:entries="@array/pref_key_shader_filter_names"
-        app:entryValues="@array/pref_key_shader_filter_values"
-        android:defaultValue="auto"/>
+    <PreferenceCategory
+        android:title="@string/settings_category_general"
+        app:iconSpaceReserved="false">
 
-    <SwitchPreference
-        android:key="@string/pref_key_autosave"
-        android:title="@string/settings_title_enable_autosave"
-        app:iconSpaceReserved="false"
-        android:defaultValue="true"/>
+        <ListPreference
+            android:key="@string/pref_key_shader_filter"
+            android:title="@string/display_filter"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/pref_key_shader_filter_names"
+            app:entryValues="@array/pref_key_shader_filter_values"
+            android:defaultValue="auto"/>
 
-    <PreferenceScreen
-        android:key="@string/pref_key_open_gamepad_bindings"
-        app:iconSpaceReserved="false"
-        android:title="@string/settings_gamepad_bindings"/>
+        <SwitchPreference
+            android:key="@string/pref_key_autosave"
+            android:title="@string/settings_title_enable_autosave"
+            app:iconSpaceReserved="false"
+            android:defaultValue="true"/>
 
-    <PreferenceScreen
-        android:key="@string/pref_key_display_bios_info"
-        android:title="@string/settings_title_display_bios_info"
-        app:summary="@string/settings_description_display_bios_info"
-        app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
 
-    <PreferenceScreen
-        android:key="@string/pref_key_reset_settings"
-        android:title="@string/settings_title_reset_settings"
-        app:summary="@string/settings_description_reset_settings"
-        app:iconSpaceReserved="false"/>
+    <PreferenceCategory
+        android:title="@string/settings_category_gamepads"
+        app:iconSpaceReserved="false">
+
+        <PreferenceScreen
+            android:key="@string/pref_key_open_gamepad_bindings"
+            app:iconSpaceReserved="false"
+            android:title="@string/settings_gamepad_bindings"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_category_advanced"
+        app:iconSpaceReserved="false">
+
+        <PreferenceScreen
+            android:key="@string/pref_key_display_bios_info"
+            android:title="@string/settings_title_display_bios_info"
+            app:summary="@string/settings_description_display_bios_info"
+            app:iconSpaceReserved="false"/>
+
+        <PreferenceScreen
+            android:key="@string/pref_key_reset_settings"
+            android:title="@string/settings_title_reset_settings"
+            app:summary="@string/settings_description_reset_settings"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
