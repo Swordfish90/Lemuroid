@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
+import android.view.MotionEvent
 import androidx.preference.PreferenceManager
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -106,6 +107,13 @@ class GamePadManager(context: Context) {
 
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"
+
+        val TRIGGER_MOTIONS_TO_KEYS = mapOf(
+            MotionEvent.AXIS_BRAKE to KeyEvent.KEYCODE_BUTTON_L2,
+            MotionEvent.AXIS_THROTTLE to KeyEvent.KEYCODE_BUTTON_R2,
+            MotionEvent.AXIS_LTRIGGER to KeyEvent.KEYCODE_BUTTON_L2,
+            MotionEvent.AXIS_RTRIGGER to KeyEvent.KEYCODE_BUTTON_R2
+        )
 
         val INPUT_KEYS = listOf(
             KeyEvent.KEYCODE_BUTTON_A,
