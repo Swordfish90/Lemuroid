@@ -13,6 +13,8 @@ class TVGameActivity : BaseGameActivity() {
 
     override fun getDialogClass() = TVGameMenuActivity::class.java
 
+    override fun areGamePadsEnabled(): Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

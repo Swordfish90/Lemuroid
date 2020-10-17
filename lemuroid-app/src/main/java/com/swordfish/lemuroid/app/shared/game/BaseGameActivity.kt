@@ -21,6 +21,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.common.dump
+import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoaderError
@@ -98,8 +99,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             restoreAutoSaveAsync(it)
         }
 
-        setupPhysicalPad()
+        if (areGamePadsEnabled()) {
+            setupPhysicalPad()
+        }
     }
+
+    abstract fun areGamePadsEnabled(): Boolean
 
     // If the activity is garbage collected we are losing its state. To avoid overwriting the previous autosave we just
     // reload the previous one. This is far from perfect but definitely improves the current behaviour.
@@ -337,9 +342,33 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadMotions() {
-        Observables.combineLatest(getGamePadPortMappingsObservable(), motionEventsSubjects)
+        val events = Observables.combineLatest(getGamePadPortMappingsObservable(), motionEventsSubjects)
+            .share()
+
+        events
             .autoDispose(scope())
-            .subscribeBy { (ports, event) -> sendMotionEvent(event, ports[event.deviceId] ?: 0) }
+            .subscribeBy { (ports, event) -> sendStickMotions(event, ports[event.deviceId] ?: 0) }
+
+        events
+            .flatMap { (ports, event) ->
+                val port = ports[event.deviceId] ?: 0
+                val axes = GamePadManager.TRIGGER_MOTIONS_TO_KEYS.entries
+                Observable.fromIterable(axes).map { (axis, button) ->
+                    val action = if (event.getAxisValue(axis) > 0.5) {
+                        KeyEvent.ACTION_DOWN
+                    } else {
+                        KeyEvent.ACTION_UP
+                    }
+                    NTuple4(axis, button, action, port)
+                }
+            }
+            .groupBy { (axis, _, _, _) -> axis }
+            .flatMap { groups ->
+                groups.distinctUntilChanged()
+                    .doOnNext { (_, button, action, port) -> retroGameView?.sendKeyEvent(action, button, port) }
+            }
+            .autoDispose(scope())
+            .subscribeBy { }
     }
 
     private fun setupGamePadKeys() {
@@ -386,7 +415,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun sendMotionEvent(event: MotionEvent, port: Int) {
+    private fun sendStickMotions(event: MotionEvent, port: Int) {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
@@ -408,21 +437,21 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun sendSeparateMotionEvents(event: MotionEvent, port: Int) {
-        sendMotionEvent(
+        sendStickMotion(
             event,
             MOTION_SOURCE_DPAD,
             MotionEvent.AXIS_HAT_X,
             MotionEvent.AXIS_HAT_Y,
             port
         )
-        sendMotionEvent(
+        sendStickMotion(
             event,
             MOTION_SOURCE_ANALOG_LEFT,
             MotionEvent.AXIS_X,
             MotionEvent.AXIS_Y,
             port
         )
-        sendMotionEvent(
+        sendStickMotion(
             event,
             MOTION_SOURCE_ANALOG_RIGHT,
             MotionEvent.AXIS_Z,
@@ -431,7 +460,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         )
     }
 
-    private fun sendMotionEvent(
+    private fun sendStickMotion(
         event: MotionEvent,
         source: Int,
         xAxis: Int,

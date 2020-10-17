@@ -7,13 +7,9 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
-import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 
-class GamePadSettingsPreferences(
-    private val gamePadManager: GamePadManager,
-    private val isLeanback: Boolean
-) {
+class GamePadSettingsPreferences(private val gamePadManager: GamePadManager) {
 
     fun resetAllBindings() = gamePadManager.resetAllBindings()
 
@@ -33,17 +29,6 @@ class GamePadSettingsPreferences(
             title = context.resources.getString(R.string.settings_gamepad_title_reset_bindings)
             isIconSpaceReserved = false
             category.addPreference(this)
-        }
-
-        if (!isLeanback) {
-            SwitchPreference(context).apply {
-                key = context.resources.getString(R.string.pref_key_allow_hide_touch_controls)
-                title = context.resources.getString(R.string.settings_gamepad_title_allow_hide_touch_controls)
-                summary = context.resources.getString(R.string.settings_gamepad_description_allow_hide_touch_controls)
-                setDefaultValue(true)
-                isIconSpaceReserved = false
-                category.addPreference(this)
-            }
         }
     }
 
