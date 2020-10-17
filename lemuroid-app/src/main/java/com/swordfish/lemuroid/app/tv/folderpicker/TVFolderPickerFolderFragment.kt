@@ -53,6 +53,10 @@ class TVFolderPickerFolderFragment : GuidedStepSupportFragment() {
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
         super.onCreateActions(actions, savedInstanceState)
 
+        directory.parentFile?.let {
+            addAction(actions, ACTION_NAVIGATE, "..", it.absolutePath)
+        }
+
         directory.listFiles()
             ?.filter { it.isDirectory }
             ?.forEach {

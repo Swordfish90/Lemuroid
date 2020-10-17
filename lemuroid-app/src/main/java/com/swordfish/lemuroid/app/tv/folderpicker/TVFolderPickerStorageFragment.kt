@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.tv.folderpicker
 
 import android.os.Bundle
+import android.os.Environment
 import androidx.annotation.NonNull
 import androidx.leanback.app.GuidedStepSupportFragment
 import androidx.leanback.widget.GuidanceStylist
@@ -32,7 +33,10 @@ class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
         super.onCreateActions(actions, savedInstanceState)
-        retrieveStorageRoots()
+        val storageRoots = runCatching { retrieveStorageRoots() }.getOrNull()
+            ?: listOf(Environment.getExternalStorageDirectory())
+
+        storageRoots
             .forEachIndexed { index, file ->
                 val storageName = if (index == 0) {
                     resources.getString(R.string.tv_folder_storage_primary)
@@ -45,6 +49,7 @@ class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
 
     private fun retrieveStorageRoots(): List<File> {
         return requireContext().getExternalFilesDirs(null)
+            .filterNotNull()
             .map { it.absolutePath }
             .map { File(it.substring(0, it.indexOf("/Android/data/"))) }
             .filter { it.exists() }
