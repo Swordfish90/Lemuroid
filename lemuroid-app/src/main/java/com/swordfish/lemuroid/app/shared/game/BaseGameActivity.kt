@@ -365,7 +365,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .flatMap { groups ->
                 groups.distinctUntilChanged()
                     .doOnNext { (_, button, action, port) -> retroGameView?.sendKeyEvent(action, button, port) }
-                    .map { Unit }
             }
             .autoDispose(scope())
             .subscribeBy { }
