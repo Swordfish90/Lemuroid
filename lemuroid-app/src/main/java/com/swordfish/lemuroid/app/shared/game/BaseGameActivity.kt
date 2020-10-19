@@ -385,7 +385,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         )
             .map { (ports, bindings, event) ->
                 val port = ports(event.device)
-                val bindKeyCode = bindings[event.device]?.get(event.keyCode) ?: event.keyCode
+                val bindKeyCode = bindings(event.device)[event.keyCode] ?: event.keyCode
                 Triple(event.action, port, bindKeyCode)
             }
             .share()
