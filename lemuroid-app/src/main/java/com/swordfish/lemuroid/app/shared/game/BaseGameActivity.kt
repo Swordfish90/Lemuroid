@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.InputDevice
-import android.view.InputEvent
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.Gravity
@@ -321,8 +320,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 )
             }
 
-        val firstPlayerPressedKeys = keyEventsSubjects
-            .filter { getDevicePort(it) == 0 }
+        val firstPlayerPressedKeys = Observables.combineLatest(
+            gamePadManager.getGamePadsPortMapperObservable(),
+            keyEventsSubjects
+        )
+            .filter { (ports, key) -> ports(key.device) == 0 }
+            .map { (_, key) -> key }
             .scan(mutableSetOf<Int>()) { keys, event ->
                 if (event.action == KeyEvent.ACTION_DOWN) {
                     keys.add(event.keyCode)
@@ -342,16 +345,19 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadMotions() {
-        val events = Observables.combineLatest(getGamePadPortMappingsObservable(), motionEventsSubjects)
+        val events = Observables.combineLatest(
+            gamePadManager.getGamePadsPortMapperObservable(),
+            motionEventsSubjects
+        )
             .share()
 
         events
             .autoDispose(scope())
-            .subscribeBy { (ports, event) -> sendStickMotions(event, ports[event.deviceId] ?: 0) }
+            .subscribeBy { (ports, event) -> sendStickMotions(event, ports(event.device)) }
 
         events
             .flatMap { (ports, event) ->
-                val port = ports[event.deviceId] ?: 0
+                val port = ports(event.device)
                 val axes = GamePadManager.TRIGGER_MOTIONS_TO_KEYS.entries
                 Observable.fromIterable(axes).map { (axis, button) ->
                     val action = if (event.getAxisValue(axis) > 0.5) {
@@ -373,12 +379,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun setupGamePadKeys() {
         val bindKeys = Observables.combineLatest(
-            getGamePadPortMappingsObservable(),
-            getGamePadBindingsObservable(),
+            gamePadManager.getGamePadsPortMapperObservable(),
+            gamePadManager.getGamePadsBindingsObservable(),
             keyEventsSubjects
         )
             .map { (ports, bindings, event) ->
-                val port = ports[event.deviceId] ?: 0
+                val port = ports(event.device)
                 val bindKeyCode = bindings[event.device]?.get(event.keyCode) ?: event.keyCode
                 Triple(event.action, port, bindKeyCode)
             }
@@ -396,23 +402,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
             .autoDispose(scope())
             .subscribeBy { displayOptionsDialog() }
-    }
-
-    private fun getGamePadBindingsObservable(): Observable<Map<InputDevice, Map<Int, Int>>> {
-        return gamePadManager.getGamePadsObservable()
-            .flatMapSingle { inputDevices ->
-                Observable.fromIterable(inputDevices).flatMapSingle { inputDevice ->
-                    gamePadManager.getBindings(inputDevice).map { inputDevice to it }
-                }.toList()
-            }
-            .map { it.toMap() }
-    }
-
-    private fun getGamePadPortMappingsObservable(): Observable<Map<Int, Int>> {
-        return gamePadManager.getGamePadsObservable().map {
-            it.mapIndexed { index, inputDevice -> inputDevice.id to index }
-                .toMap()
-        }
     }
 
     private fun sendStickMotions(event: MotionEvent, port: Int) {
@@ -507,9 +496,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
             }
     }
-
-    private fun getDevicePort(inputEvent: InputEvent) =
-        (inputEvent.device?.controllerNumber ?: 0) - 1
 
     override fun onBackPressed() {
         if (loading) return

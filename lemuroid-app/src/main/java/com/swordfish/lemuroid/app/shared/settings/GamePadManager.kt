@@ -22,7 +22,26 @@ class GamePadManager(context: Context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
 
-    fun getBindings(inputDevice: InputDevice): Single<Map<Int, Int>> {
+    fun getGamePadsBindingsObservable(): Observable<Map<InputDevice, Map<Int, Int>>> {
+        return getGamePadsObservable()
+            .flatMapSingle { inputDevices ->
+                Observable.fromIterable(inputDevices).flatMapSingle { inputDevice ->
+                    getBindings(inputDevice).map { inputDevice to it }
+                }.toList()
+            }
+            .map { it.toMap() }
+    }
+
+    fun getGamePadsPortMapperObservable(): Observable<(InputDevice)->Int> {
+        return getGamePadsObservable().map { gamePads ->
+            val portMappings = gamePads
+                .mapIndexed { index, inputDevice -> inputDevice.controllerNumber to index }
+                .toMap()
+            return@map { inputDevice: InputDevice -> portMappings[inputDevice.controllerNumber] ?: 0 }
+        }
+    }
+
+    private fun getBindings(inputDevice: InputDevice): Single<Map<Int, Int>> {
         return Observable.fromIterable(INPUT_KEYS)
             .flatMapSingle { keyCode ->
                 retrieveMappingFromPreferences(
@@ -92,6 +111,7 @@ class GamePadManager(context: Context) {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
                 .filter { isGamePad(it) }
+                .filter { it.controllerNumber > 0 }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()
     }
