@@ -19,6 +19,7 @@
         android:banner="@mipmap/ic_banner"
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:extractNativeLibs="true"
         android:theme="@style/AppTheme">
         <activity
             android:name="com.swordfish.lemuroid.app.mobile.feature.main.MainActivity">

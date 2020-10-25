@@ -7,6 +7,9 @@ plugins {
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
+
+    implementation(deps.libs.retrofit)
+    implementation(deps.libs.retrofitRxJava2)
     implementation(deps.libs.play.core)
     implementation(deps.libs.play.coreKtx)
     implementation(deps.libs.rxJava2)

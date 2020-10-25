@@ -11,21 +11,35 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 90
-        versionName = "1.7.1"
+        versionCode = 93
+        versionName = "1.8.0-alpha"
     }
+
+    dynamicFeatures = mutableSetOf(
+        ":lemuroid_core_gambatte",
+        ":lemuroid_core_desmume",
+        ":lemuroid_core_fbneo",
+        ":lemuroid_core_fceumm",
+        ":lemuroid_core_genesis_plus_gx",
+        ":lemuroid_core_mgba",
+        ":lemuroid_core_mupen64plus_next",
+        ":lemuroid_core_pcsx_rearmed",
+        ":lemuroid_core_ppsspp",
+        ":lemuroid_core_snes9x",
+        ":lemuroid_core_stella"
+    )
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
     flavorDimensions("opensource")
 
     productFlavors {
         create("free") {
-            setDimension("opensource")
+            dimension = "opensource"
             applicationIdSuffix = ".free"
         }
 
         create("play") {
-            setDimension("opensource")
+            dimension = "opensource"
         }
     }
 
@@ -69,13 +83,6 @@ android {
         this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
-
-    splits {
-        abi {
-            isEnable = true
-            isUniversalApk = true
-        }
-    }
 }
 
 dependencies {
@@ -83,7 +90,6 @@ dependencies {
     implementation(project(":retrograde-app-shared"))
     implementation(project(":lemuroid-metadata-libretro-db"))
     implementation(project(":lemuroid-touchinput"))
-    implementation(project(":lemuroid-cores"))
     "freeImplementation"(project(":lemuroid-app-ext-free"))
     "playImplementation"(project(":lemuroid-app-ext-play"))
 
@@ -110,8 +116,6 @@ dependencies {
 
     implementation(deps.libs.androidx.appcompat.leanback)
     implementation(deps.libs.androidx.appcompat.leanbackPreference)
-
-    // TODO All next dependencies might not be correct.
 
     implementation(deps.libs.androidx.appcompat.recyclerView)
     implementation(deps.libs.androidx.paging.common)

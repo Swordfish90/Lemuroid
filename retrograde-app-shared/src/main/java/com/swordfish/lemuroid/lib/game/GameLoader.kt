@@ -19,11 +19,12 @@
 
 package com.swordfish.lemuroid.lib.game
 
-import com.swordfish.lemuroid.lib.core.CoreManager
+import android.content.Context
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
+import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -42,8 +43,8 @@ class GameLoader(
     private val coreVariablesManager: CoreVariablesManager,
     private val retrogradeDatabase: RetrogradeDatabase
 ) {
-    fun load(game: Game, loadSave: Boolean): Observable<LoadingState> {
-        return prepareGame(game, loadSave)
+    fun load(applicationContext: Context, game: Game, loadSave: Boolean): Observable<LoadingState> {
+        return prepareGame(applicationContext, game, loadSave)
     }
 
     sealed class LoadingState {
@@ -52,14 +53,22 @@ class GameLoader(
         class Ready(val gameData: GameData) : LoadingState()
     }
 
-    private fun prepareGame(game: Game, loadQuickSave: Boolean) = Observable.create<LoadingState> { emitter ->
+    private fun prepareGame(
+        appContext: Context,
+        game: Game,
+        loadQuickSave: Boolean
+    ) = Observable.create<LoadingState> { emitter ->
         try {
             emitter.onNext(LoadingState.LoadingCore)
 
             val gameSystem = GameSystem.findById(game.systemId)
 
             val coreLibrary = runCatching {
-                coreManager.downloadCore(gameSystem, gameSystem.coreAssetsManager).blockingGet()
+                coreManager.downloadCore(
+                    appContext,
+                    gameSystem,
+                    gameSystem.coreAssetsManager
+                ).blockingGet()
             }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
 
             emitter.onNext(LoadingState.LoadingGame)
@@ -89,10 +98,14 @@ class GameLoader(
                 }
             }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
 
-            val coreVariables = coreVariablesManager.getCoreOptionsForSystem(gameSystem).blockingGet().toTypedArray()
+            val coreVariables = coreVariablesManager.getCoreOptionsForSystem(gameSystem)
+                .blockingGet()
+                .toTypedArray()
 
             emitter.onNext(
-                LoadingState.Ready(GameData(game, coreLibrary, gameFile, quickSaveData, saveRAMData, coreVariables))
+                LoadingState.Ready(
+                    GameData(game, coreLibrary, gameFile, quickSaveData, saveRAMData, coreVariables)
+                )
             )
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")

@@ -53,7 +53,7 @@ class GameLauncherActivity : ImmersiveActivity() {
                 .autoDispose(scope())
                 .subscribe { displayLoadingState(it) }
 
-            gameLoader.load(game, loadSave && settingsManager.autoSave)
+            gameLoader.load(applicationContext, game, loadSave && settingsManager.autoSave)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())

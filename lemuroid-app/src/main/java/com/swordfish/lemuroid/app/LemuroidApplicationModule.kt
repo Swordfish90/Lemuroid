@@ -31,7 +31,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
-import com.swordfish.lemuroid.lib.core.CoreManager
+import com.swordfish.lemuroid.ext.feature.core.CoreManagerImpl
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.injection.PerActivity
@@ -216,7 +216,7 @@ abstract class LemuroidApplicationModule {
         fun coreManager(
             directoriesManager: DirectoriesManager,
             retrofit: Retrofit
-        ) = CoreManager(directoriesManager, retrofit)
+        ) = CoreManagerImpl(directoriesManager, retrofit)
 
         @Provides
         @PerApp
@@ -238,7 +238,7 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun gameLoader(
-            coreManager: CoreManager,
+            coreManager: CoreManagerImpl,
             lemuroidLibrary: LemuroidLibrary,
             statesManager: StatesManager,
             savesManager: SavesManager,
