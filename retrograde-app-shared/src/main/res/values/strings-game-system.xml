@@ -49,7 +49,5 @@
     <string name="game_system_title_nds">Nintendo DS</string>
     <string name="game_system_title_sms">Sega Master System</string>
     <string name="game_system_title_psp">PlayStation Portable</string>
-    <string name="game_system_title_arcade_fbneo">Arcade (FBNeo)</string>
-    <string name="game_system_title_arcade_mame2003_plus">Arcade (MAME2003)</string>
-    <string name="game_system_title_arcade_mame2000">Arcade (MAME2000)</string>
+    <string name="game_system_title_arcade">Arcade</string>
 </resources>

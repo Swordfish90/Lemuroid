@@ -90,6 +90,9 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY title ASC, id DESC")
     fun selectBySystem(systemId: String): DataSource.Factory<Int, Game>
 
+    @Query("SELECT * FROM games WHERE systemId IN (:systemIds) ORDER BY title ASC, id DESC")
+    fun selectBySystems(systemIds: List<String>): DataSource.Factory<Int, Game>
+
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
     fun selectSystems(): LiveData<List<String>>
 

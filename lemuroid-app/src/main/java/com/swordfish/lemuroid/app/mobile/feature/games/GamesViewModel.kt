@@ -18,9 +18,13 @@ class GamesViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel()
         }
     }
 
-    val systemId = MutableLiveData<String>()
+    val systemIds = MutableLiveData<List<String>>()
 
-    val games: LiveData<PagedList<Game>> = Transformations.switchMap(systemId) {
-        LivePagedListBuilder(retrogradeDb.gameDao().selectBySystem(it), 20).build()
+    val games: LiveData<PagedList<Game>> = Transformations.switchMap(systemIds) {
+        if (it.size == 1) {
+            LivePagedListBuilder(retrogradeDb.gameDao().selectBySystem(it[0]), 20).build()
+        } else {
+            LivePagedListBuilder(retrogradeDb.gameDao().selectBySystems(it), 20).build()
+        }
     }
 }

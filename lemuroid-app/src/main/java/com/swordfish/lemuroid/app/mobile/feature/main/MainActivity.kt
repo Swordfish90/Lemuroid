@@ -10,7 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesFragment
-import com.swordfish.lemuroid.app.mobile.feature.systems.SystemsFragment
+import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeFragment
 import com.swordfish.lemuroid.app.mobile.feature.search.SearchFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsFragment
@@ -106,8 +106,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
         abstract fun gamesFragment(): GamesFragment
 
         @PerFragment
-        @ContributesAndroidInjector(modules = [SystemsFragment.Module::class])
-        abstract fun systemsFragment(): SystemsFragment
+        @ContributesAndroidInjector(modules = [MetaSystemsFragment.Module::class])
+        abstract fun systemsFragment(): MetaSystemsFragment
 
         @PerFragment
         @ContributesAndroidInjector(modules = [HomeFragment.Module::class])

@@ -203,7 +203,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected fun displayOptionsDialog() {
         val intent = Intent(this, getDialogClass()).apply {
-            val options = getCoreOptions()//.filter { it.variable.key in system.exposedSettings }
+            val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
             this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
             this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)

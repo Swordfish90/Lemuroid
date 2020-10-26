@@ -6,7 +6,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.DynamicGridLayoutManager
 import com.swordfish.lemuroid.app.mobile.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -16,32 +16,32 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SystemsFragment : RecyclerViewFragment() {
+class MetaSystemsFragment : RecyclerViewFragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
 
-    private var systemsAdapter: SystemsAdapter? = null
+    private var metaSystemsAdapter: MetaSystemsAdapter? = null
 
-    private lateinit var systemsViewModel: SystemsViewModel
+    private lateinit var metaSystemsViewModel: MetaSystemsViewModel
 
     override fun onResume() {
         super.onResume()
 
-        systemsViewModel = ViewModelProviders.of(this, SystemsViewModel.Factory(retrogradeDb))
-            .get(SystemsViewModel::class.java)
+        metaSystemsViewModel = ViewModelProviders.of(this, MetaSystemsViewModel.Factory(retrogradeDb))
+            .get(MetaSystemsViewModel::class.java)
 
-        systemsAdapter = SystemsAdapter { navigateToGames(it) }
-        systemsViewModel.availableSystems
+        metaSystemsAdapter = MetaSystemsAdapter { navigateToGames(it) }
+        metaSystemsViewModel.availableMetaSystems
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribeBy {
-                systemsAdapter?.submitList(it)
+                metaSystemsAdapter?.submitList(it)
                 emptyView?.setVisibleOrGone(it.isEmpty())
             }
 
         recyclerView?.apply {
-            this.adapter = systemsAdapter
+            this.adapter = metaSystemsAdapter
             this.layoutManager = DynamicGridLayoutManager(context, 2)
 
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
@@ -50,8 +50,12 @@ class SystemsFragment : RecyclerViewFragment() {
         restoreRecyclerViewState()
     }
 
-    private fun navigateToGames(system: GameSystem) {
-        val action = SystemsFragmentDirections.actionNavigationSystemsToNavigationGames(system.id.dbname)
+    private fun navigateToGames(system: MetaSystemID) {
+        val dbNames = system.systemIDs
+            .map { it.dbname }
+            .toTypedArray()
+
+        val action = MetaSystemsFragmentDirections.actionNavigationSystemsToNavigationGames(dbNames)
         findNavController().navigate(action)
     }
 
