@@ -134,7 +134,12 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     }
 
     private fun computeCoverUrl(system: GameSystem, name: String?): String? {
-        val systemName = system.libretroFullName
+        var systemName = system.libretroFullName
+
+        // Specific mame version don't have any thumbnails in Libretro database
+        if (system.id in setOf(SystemID.MAME2003PLUS, SystemID.MAME2000)) {
+            systemName = "MAME"
+        }
 
         if (name == null) {
             return null

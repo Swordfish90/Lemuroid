@@ -25,6 +25,7 @@ object GamePadFactory {
                 RadialPadConfigs.GENESIS_RIGHT,
                 context,
                 vibrateOnTouch,
+                0.9f,
                 1.1f
             )
 
@@ -54,6 +55,27 @@ object GamePadFactory {
                 RadialPadConfigs.FBNEO_RIGHT,
                 context,
                 vibrateOnTouch,
+                0.9f,
+                1.1f
+            )
+
+            // TODO FILIPPO... This has to be fixed.
+            SystemID.MAME2003PLUS -> LemuroidVirtualGamePad(
+                RadialPadConfigs.FBNEO_LEFT,
+                RadialPadConfigs.FBNEO_RIGHT,
+                context,
+                vibrateOnTouch,
+                0.9f,
+                1.1f
+            )
+
+            // TODO FILIPPO... This has to be fixed.
+            SystemID.MAME2000 -> LemuroidVirtualGamePad(
+                RadialPadConfigs.FBNEO_LEFT,
+                RadialPadConfigs.FBNEO_RIGHT,
+                context,
+                vibrateOnTouch,
+                0.9f,
                 1.1f
             )
 

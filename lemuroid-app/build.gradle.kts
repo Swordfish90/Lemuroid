@@ -21,6 +21,8 @@ android {
         ":lemuroid_core_fbneo",
         ":lemuroid_core_fceumm",
         ":lemuroid_core_genesis_plus_gx",
+        ":lemuroid_core_mame2003_plus",
+        ":lemuroid_core_mame2000",
         ":lemuroid_core_mgba",
         ":lemuroid_core_mupen64plus_next",
         ":lemuroid_core_pcsx_rearmed",

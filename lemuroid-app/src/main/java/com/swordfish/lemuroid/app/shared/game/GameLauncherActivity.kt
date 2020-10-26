@@ -12,6 +12,7 @@ import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderException
+import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.uber.autodispose.android.lifecycle.scope
@@ -43,7 +44,7 @@ class GameLauncherActivity : ImmersiveActivity() {
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
             val game = intent.getSerializableExtra(EXTRA_GAME) as Game
-            val loadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
+            val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
             val useLeanback = intent.getBooleanExtra(EXTRA_LEANBACK, false)
 
             val loadingStatesSubject = PublishSubject.create<GameLoader.LoadingState>()
@@ -53,7 +54,10 @@ class GameLauncherActivity : ImmersiveActivity() {
                 .autoDispose(scope())
                 .subscribe { displayLoadingState(it) }
 
-            gameLoader.load(applicationContext, game, loadSave && settingsManager.autoSave)
+            val system = GameSystem.findById(game.systemId)
+            val isAutoSaveAllowed = settingsManager.autoSave && system.statesSupported
+
+            gameLoader.load(applicationContext, game, requestLoadSave && isAutoSaveAllowed)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())

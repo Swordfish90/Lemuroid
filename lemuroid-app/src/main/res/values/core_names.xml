@@ -11,4 +11,6 @@
     <string name="core_name_ppsspp">ppsspp</string>
     <string name="core_name_snes9x">snes9x</string>
     <string name="core_name_stella">stella</string>
+    <string name="core_name_mame2003_plus">mame2003_plus</string>
+    <string name="core_name_mame2000">mame2000</string>
 </resources>

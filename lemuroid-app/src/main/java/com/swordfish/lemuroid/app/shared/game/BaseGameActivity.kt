@@ -203,7 +203,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected fun displayOptionsDialog() {
         val intent = Intent(this, getDialogClass()).apply {
-            val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
+            val options = getCoreOptions()//.filter { it.variable.key in system.exposedSettings }
             this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
             this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
@@ -239,12 +239,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.GG -> GLRetroView.SHADER_LCD
                 SystemID.ATARI2600 -> GLRetroView.SHADER_CRT
                 SystemID.PSX -> GLRetroView.SHADER_CRT
+                SystemID.MAME2003PLUS -> GLRetroView.SHADER_CRT
+                SystemID.MAME2000 -> GLRetroView.SHADER_CRT
             }
         }
     }
 
     private fun isAutoSaveEnabled(): Boolean {
-        return settingsManager.autoSave
+        return settingsManager.autoSave && system.statesSupported
     }
 
     override fun onResume() {

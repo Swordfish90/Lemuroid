@@ -66,7 +66,9 @@ data class GameSystem(
 
     val hasMultiDiskSupport: Boolean = false,
 
-    val fastForwardSupport: Boolean = true
+    val fastForwardSupport: Boolean = true,
+
+    val statesSupported: Boolean = true
 
 ) {
 
@@ -295,6 +297,44 @@ data class GameSystem(
                     "fbneo-frameskip",
                     "fbneo-cpu-speed-adjust"
                 )
+            ),
+            GameSystem(
+                SystemID.MAME2003PLUS,
+                "MAME 2003-Plus",
+                "mame2003_plus",
+                R.string.game_system_title_arcade_mame2003_plus,
+                R.string.game_system_abbr_arcade_mame2003_plus,
+                R.drawable.game_system_arcade,
+                "arcade",
+                "libmame2003_plus_libretro_android.so",
+                uniqueExtensions = listOf(),
+                supportedExtensions = listOf("zip"),
+                scanOptions = ScanOptions(
+                    scanByFilename = false,
+                    scanByUniqueExtension = false,
+                    scanByPathAndFilename = true,
+                    scanByPathAndSupportedExtensions = false
+                ),
+                statesSupported = false
+            ),
+            GameSystem(
+                SystemID.MAME2000,
+                "MAME 2000",
+                "mame2000",
+                R.string.game_system_title_arcade_mame2000,
+                R.string.game_system_abbr_arcade_mame2000,
+                R.drawable.game_system_arcade,
+                "arcade",
+                "libmame2000_libretro_android.so",
+                uniqueExtensions = listOf(),
+                supportedExtensions = listOf("zip"),
+                scanOptions = ScanOptions(
+                    scanByFilename = false,
+                    scanByUniqueExtension = false,
+                    scanByPathAndFilename = true,
+                    scanByPathAndSupportedExtensions = false
+                ),
+                statesSupported = false
             ),
             GameSystem(
                 SystemID.NDS,

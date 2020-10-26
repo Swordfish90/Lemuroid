@@ -11,6 +11,8 @@ include(
     ":lemuroid_core_fbneo",
     ":lemuroid_core_fceumm",
     ":lemuroid_core_genesis_plus_gx",
+    ":lemuroid_core_mame2000",
+    ":lemuroid_core_mame2003_plus",
     ":lemuroid_core_mgba",
     ":lemuroid_core_mupen64plus_next",
     ":lemuroid_core_pcsx_rearmed",
@@ -24,6 +26,8 @@ project(":lemuroid_core_desmume").projectDir = File("lemuroid-cores/lemuroid_cor
 project(":lemuroid_core_fbneo").projectDir = File("lemuroid-cores/lemuroid_core_fbneo")
 project(":lemuroid_core_fceumm").projectDir = File("lemuroid-cores/lemuroid_core_fceumm")
 project(":lemuroid_core_genesis_plus_gx").projectDir = File("lemuroid-cores/lemuroid_core_genesis_plus_gx")
+project(":lemuroid_core_mame2000").projectDir = File("lemuroid-cores/lemuroid_core_mame2000")
+project(":lemuroid_core_mame2003_plus").projectDir = File("lemuroid-cores/lemuroid_core_mame2003_plus")
 project(":lemuroid_core_mgba").projectDir = File("lemuroid-cores/lemuroid_core_mgba")
 project(":lemuroid_core_mupen64plus_next").projectDir = File("lemuroid-cores/lemuroid_core_mupen64plus_next")
 project(":lemuroid_core_pcsx_rearmed").projectDir = File("lemuroid-cores/lemuroid_core_pcsx_rearmed")
