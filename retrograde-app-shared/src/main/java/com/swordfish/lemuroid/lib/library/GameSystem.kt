@@ -43,7 +43,7 @@ data class GameSystem(
 
     val coreAssetsManager: CoreManager.AssetsManager = NoAssetsManager(),
 
-    val sendLeftStickEventAsDPAD: Boolean = false,
+    val mergeDPADAndLeftStickEvents: Boolean = false,
 
     val scanOptions: ScanOptions = ScanOptions(),
 
@@ -74,7 +74,7 @@ data class GameSystem(
                 "libstella_libretro_android.so",
                 uniqueExtensions = listOf("a26"),
                 exposedSettings = listOf("stella_filter"),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.NES,
@@ -83,7 +83,7 @@ data class GameSystem(
                 R.string.game_system_abbr_nes,
                 "libfceumm_libretro_android.so",
                 uniqueExtensions = listOf("nes"),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.SNES,
@@ -92,7 +92,7 @@ data class GameSystem(
                 R.string.game_system_abbr_snes,
                 "libsnes9x_libretro_android.so",
                 uniqueExtensions = listOf("smc", "sfc"),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.SMS,
@@ -104,7 +104,7 @@ data class GameSystem(
                 exposedSettings = listOf(
                     "genesis_plus_gx_blargg_ntsc_filter"
                 ),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GENESIS,
@@ -116,7 +116,7 @@ data class GameSystem(
                 exposedSettings = listOf(
                     "genesis_plus_gx_blargg_ntsc_filter"
                 ),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GG,
@@ -128,7 +128,7 @@ data class GameSystem(
                 exposedSettings = listOf(
                     "genesis_plus_gx_lcd_filter"
                 ),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GB,
@@ -142,7 +142,7 @@ data class GameSystem(
                     "gambatte_gb_internal_palette",
                     "gambatte_mix_frames"
                 ),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GBC,
@@ -156,7 +156,7 @@ data class GameSystem(
                     "gambatte_gb_internal_palette",
                     "gambatte_mix_frames"
                 ),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GBA,
@@ -171,7 +171,7 @@ data class GameSystem(
                     "mgba_frameskip",
                     "mgba_color_correction"
                 ),
-                sendLeftStickEventAsDPAD = true
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.N64,
@@ -245,6 +245,8 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
+                mergeDPADAndLeftStickEvents = true,
+                virtualGamePadOptions = VirtualGamePadOptions(true),
                 exposedSettings = listOf(
                     "fbneo-frameskip",
                     "fbneo-cpu-speed-adjust"
@@ -264,6 +266,8 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
+                mergeDPADAndLeftStickEvents = true,
+                virtualGamePadOptions = VirtualGamePadOptions(true),
                 statesSupported = false
             ),
             GameSystem(
@@ -280,6 +284,8 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
+                mergeDPADAndLeftStickEvents = true,
+                virtualGamePadOptions = VirtualGamePadOptions(true),
                 statesSupported = false
             ),
             GameSystem(
@@ -289,7 +295,7 @@ data class GameSystem(
                 R.string.game_system_abbr_nds,
                 "libdesmume_libretro_android.so",
                 uniqueExtensions = listOf("nds"),
-                sendLeftStickEventAsDPAD = true,
+                mergeDPADAndLeftStickEvents = true,
                 exposedSettings = listOf("desmume_frameskip"),
                 defaultSettings = listOf(
                     CoreVariable("desmume_pointer_type", "touch"),

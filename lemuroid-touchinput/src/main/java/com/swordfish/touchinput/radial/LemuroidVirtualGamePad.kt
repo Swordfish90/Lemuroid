@@ -124,7 +124,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
 
         val rightMaxWidth = resources.getDimensionPixelSize(R.dimen.gamepad_max_width) * rightScale
         constraintSet.constrainMaxWidth(R.id.rightcontainer, (rightMaxWidth).roundToInt())
-        constraintSet.setHorizontalWeight(R.id.leftcontainer, rightScaling)
+        constraintSet.setHorizontalWeight(R.id.rightcontainer, rightScaling)
 
         val constrainHeight = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             ConstraintSet.WRAP_CONTENT
