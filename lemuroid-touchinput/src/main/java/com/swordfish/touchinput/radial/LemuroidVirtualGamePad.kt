@@ -31,8 +31,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
     rightConfig: RadialGamePadConfig,
     context: Context,
     vibrateOnTouch: Boolean,
-    private val leftScaling: Float = 1.0f,
-    private val rightScaling: Float = 1.0f,
+    private val baseScaling: Float = 1.0f,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), LifecycleObserver {
@@ -115,16 +114,10 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
         val constraintSet = ConstraintSet()
         constraintSet.clone(layout)
 
-        val leftScale = linearInterpolation(padScale, MIN_SCALE, MAX_SCALE) * leftScaling
-        val rightScale = linearInterpolation(padScale, MIN_SCALE, MAX_SCALE) * rightScaling
-
-        val leftMaxWidth = resources.getDimensionPixelSize(R.dimen.gamepad_max_width) * leftScale
-        constraintSet.constrainMaxWidth(R.id.leftcontainer, (leftMaxWidth).roundToInt())
-        constraintSet.setHorizontalWeight(R.id.leftcontainer, leftScaling)
-
-        val rightMaxWidth = resources.getDimensionPixelSize(R.dimen.gamepad_max_width) * rightScale
-        constraintSet.constrainMaxWidth(R.id.rightcontainer, (rightMaxWidth).roundToInt())
-        constraintSet.setHorizontalWeight(R.id.rightcontainer, rightScaling)
+        val currentScale = linearInterpolation(padScale, MIN_SCALE, MAX_SCALE) * baseScaling
+        val maxWidth = resources.getDimensionPixelSize(R.dimen.gamepad_max_width)
+        constraintSet.constrainMaxWidth(R.id.leftcontainer, (maxWidth * currentScale).roundToInt())
+        constraintSet.constrainMaxWidth(R.id.rightcontainer, (maxWidth * currentScale).roundToInt())
 
         val constrainHeight = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             ConstraintSet.WRAP_CONTENT

@@ -25,8 +25,7 @@ object GamePadFactory {
                 RadialPadConfigs.GENESIS_RIGHT,
                 context,
                 vibrateOnTouch,
-                0.93f,
-                1.07f
+                1.1f
             )
 
             SystemID.ATARI2600 -> LemuroidVirtualGamePad(
