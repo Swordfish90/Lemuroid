@@ -37,6 +37,7 @@ import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
+import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -147,16 +148,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 .map { Variable(it.key, it.value) }
                 .toTypedArray()
 
-        retroGameView = GLRetroView(
-            this,
-            intent.getStringExtra(EXTRA_CORE_PATH)!!,
-            intent.getStringExtra(EXTRA_GAME_PATH)!!,
-            directoriesManager.getSystemDirectory().absolutePath,
-            directoriesManager.getSavesDirectory().absolutePath,
-            coreVariables,
-            retrieveSRAMData(),
-            getShaderForSystem(screenFilter, system)
-        )
+        val data = GLRetroViewData(this).apply {
+            coreFilePath = intent.getStringExtra(EXTRA_CORE_PATH)!!
+            gameFilePath = intent.getStringExtra(EXTRA_GAME_PATH)!!
+            systemDirectory = directoriesManager.getSystemDirectory().absolutePath
+            savesDirectory = directoriesManager.getSavesDirectory().absolutePath
+            variables = coreVariables
+            saveRAMState = retrieveSRAMData()
+            shader = getShaderForSystem(screenFilter, system)
+        }
+
+        retroGameView = GLRetroView(this, data)
         retroGameView?.isFocusable = false
         retroGameView?.isFocusableInTouchMode = false
 
