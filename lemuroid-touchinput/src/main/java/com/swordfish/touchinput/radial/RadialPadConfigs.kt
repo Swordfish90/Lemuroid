@@ -57,6 +57,12 @@ object RadialPadConfigs {
         contentDescription = "Circle"
     )
 
+    private val BUTTON_CONFIG_COIN = ButtonConfig(
+        id = KeyEvent.KEYCODE_BUTTON_SELECT,
+        iconId = R.drawable.button_coin,
+        contentDescription = "Coin"
+    )
+
     val GB_LEFT =
         RadialGamePadConfig(
             sockets = 12,
@@ -480,7 +486,9 @@ object RadialPadConfigs {
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
-                SecondaryDialConfig.Empty(8, 1, 1f)
+                SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
+                SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
 
@@ -520,8 +528,8 @@ object RadialPadConfigs {
                 )
             ),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                SecondaryDialConfig.Empty(9, 1, 0.5f),
+                SecondaryDialConfig.Empty(3, 1, 0.5f)
             )
         )
 
@@ -646,71 +654,53 @@ object RadialPadConfigs {
 
     val ARCADE_LEFT =
         RadialGamePadConfig(
-            sockets = 10,
+            sockets = 12,
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD_AND_LEFT_STICK),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(
-                    3,
-                    1,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                        iconId = R.drawable.button_coin,
-                        contentDescription = "Coin"
-                    )
-                ),
-                SecondaryDialConfig.Empty(7, 1, 1f),
-                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_COIN),
+                SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
+                SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
 
     val ARCADE_RIGHT =
         RadialGamePadConfig(
-            sockets = 10,
+            sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
-                rotationInDegrees = 45f,
-                rotateWithSecondaryDials = true,
                 dials = listOf(
                     ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_A,
-                        contentDescription = "A",
-                        label = "A"
+                        id = KeyEvent.KEYCODE_BUTTON_R1,
+                        contentDescription = "R1"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L1,
+                        contentDescription = "L1"
                     ),
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_X,
-                        contentDescription = "X",
-                        label = "X"
+                        contentDescription = "X"
                     ),
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_Y,
-                        contentDescription = "Y",
-                        label = "Y",
+                        contentDescription = "Y"
                     ),
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_B,
-                        label = "B",
+                        contentDescription = "B"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_UNKNOWN,
+                        visible = false
                     )
                 ),
+                center = ButtonConfig(
+                    id = KeyEvent.KEYCODE_BUTTON_A
+                )
             ),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(
-                    2,
-                    1,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_R1,
-                        contentDescription = "R1",
-                        label = "R"
-                    )
-                ),
-                SecondaryDialConfig.SingleButton(
-                    3,
-                    1,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_L1,
-                        contentDescription = "L1",
-                        label = "L"
-                    )
-                ),
-                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
+                SecondaryDialConfig.Empty(9, 1, 0.5f),
+                SecondaryDialConfig.Empty(3, 1, 0.5f)
             )
         )
 }
