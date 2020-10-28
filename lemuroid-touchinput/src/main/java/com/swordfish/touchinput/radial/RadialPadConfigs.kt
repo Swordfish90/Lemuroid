@@ -658,7 +658,7 @@ object RadialPadConfigs {
                         contentDescription = "Coin"
                     )
                 ),
-                SecondaryDialConfig.Empty(7,1, 1f),
+                SecondaryDialConfig.Empty(7, 1, 1f),
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
             )
         )
@@ -692,16 +692,24 @@ object RadialPadConfigs {
                 ),
             ),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(2, 1, ButtonConfig(
-                    id = KeyEvent.KEYCODE_BUTTON_R1,
-                    contentDescription = "R1",
-                    label = "R",
-                )),
-                SecondaryDialConfig.SingleButton(3, 1, ButtonConfig(
-                    id = KeyEvent.KEYCODE_BUTTON_L1,
-                    contentDescription = "L1",
-                    label = "L",
-                )),
+                SecondaryDialConfig.SingleButton(
+                    2,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_R1,
+                        contentDescription = "R1",
+                        label = "R"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(
+                    3,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L1,
+                        contentDescription = "L1",
+                        label = "L"
+                    )
+                ),
                 SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
             )
         )
