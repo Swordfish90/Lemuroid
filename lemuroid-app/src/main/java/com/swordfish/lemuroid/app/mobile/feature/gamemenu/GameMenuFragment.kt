@@ -82,6 +82,9 @@ class GameMenuFragment : Fragment() {
         setupQuickSaveView(slot3SaveView, 2, infos[2])
         setupQuickSaveView(slot4SaveView, 3, infos[3])
 
+        view!!.findViewById<View>(R.id.menu_saves_not_supported)
+            .setVisibleOrGone(!system.statesSupported)
+
         view!!.findViewById<Button>(R.id.menu_change_disk).apply {
             val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
             val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0)
@@ -197,6 +200,8 @@ class GameMenuFragment : Fragment() {
                 activity?.finish()
             }
         }
+
+        quickSaveView.setVisibleOrGone(system.statesSupported)
     }
 
     private fun displayAdvancedSettings() {

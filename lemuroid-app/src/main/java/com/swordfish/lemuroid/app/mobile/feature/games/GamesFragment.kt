@@ -33,8 +33,8 @@ class GamesFragment : RecyclerViewFragment() {
             gamesAdapter?.submitList(pagedList)
         }
 
-        args.systemId?.let {
-            gamesViewModel.systemId.value = it
+        args.systemIds.let {
+            gamesViewModel.systemIds.value = listOf(*it)
         }
 
         recyclerView?.apply {

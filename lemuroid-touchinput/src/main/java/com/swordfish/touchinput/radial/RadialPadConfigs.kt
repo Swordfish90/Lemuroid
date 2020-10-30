@@ -57,6 +57,12 @@ object RadialPadConfigs {
         contentDescription = "Circle"
     )
 
+    private val BUTTON_CONFIG_COIN = ButtonConfig(
+        id = KeyEvent.KEYCODE_BUTTON_SELECT,
+        iconId = R.drawable.button_coin,
+        contentDescription = "Coin"
+    )
+
     val GB_LEFT =
         RadialGamePadConfig(
             sockets = 12,
@@ -480,7 +486,9 @@ object RadialPadConfigs {
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
-                SecondaryDialConfig.Empty(8, 1, 1f)
+                SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
+                SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
 
@@ -520,8 +528,8 @@ object RadialPadConfigs {
                 )
             ),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                SecondaryDialConfig.Empty(9, 1, 0.5f),
+                SecondaryDialConfig.Empty(3, 1, 0.5f)
             )
         )
 
@@ -644,25 +652,19 @@ object RadialPadConfigs {
             )
         )
 
-    val FBNEO_LEFT =
+    val ARCADE_LEFT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD_AND_LEFT_STICK),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(
-                    4,
-                    1,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                        iconId = R.drawable.button_coin,
-                        contentDescription = "Coin"
-                    )
-                ),
-                SecondaryDialConfig.Empty(8, 1, 1f)
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_COIN),
+                SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
+                SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
 
-    val FBNEO_RIGHT =
+    val ARCADE_RIGHT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
@@ -697,8 +699,8 @@ object RadialPadConfigs {
                 )
             ),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                SecondaryDialConfig.Empty(9, 1, 0.5f),
+                SecondaryDialConfig.Empty(3, 1, 0.5f)
             )
         )
 }

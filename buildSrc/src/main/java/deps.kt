@@ -22,8 +22,8 @@ object deps {
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
-        const val libretrodroid   = "0.4.2"
-        const val radialgamepad   = "0.1.0"
+        const val libretrodroid   = "0.5.0"
+        const val radialgamepad   = "0.1.1"
     }
 
     object libs {
@@ -102,7 +102,7 @@ object deps {
             const val processor = "com.airbnb.android:epoxy-processor:3.8.0"
         }
         object play {
-            const val core = "com.google.android.play:core:1.8.0"
+            const val core = "com.google.android.play:core:1.8.2"
             const val coreKtx = "com.google.android.play:core-ktx:1.8.1"
         }
 
@@ -132,7 +132,7 @@ object deps {
     }
 
     object plugins {
-        const val android = "com.android.tools.build:gradle:4.0.0"
+        const val android = "com.android.tools.build:gradle:4.1.0"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     }
 }

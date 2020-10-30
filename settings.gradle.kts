@@ -4,7 +4,7 @@ include(
     ":lemuroid-touchinput",
     ":lemuroid-app",
     ":lemuroid-metadata-libretro-db",
-    ":lemuroid-cores",
     ":lemuroid-app-ext-free",
-    ":lemuroid-app-ext-play"
+    ":lemuroid-app-ext-play",
+    ":lemuroid-cores"
 )

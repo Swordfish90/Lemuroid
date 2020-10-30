@@ -49,8 +49,8 @@ class TVGamesFragment : VerticalGridSupportFragment() {
             this.adapter = adapter
         }
 
-        args.systemId?.let {
-            gamesViewModel.systemId.value = it
+        args.systemIds.let {
+            gamesViewModel.systemIds.value = listOf(*it)
         }
 
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->

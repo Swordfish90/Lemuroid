@@ -25,7 +25,8 @@ object GamePadFactory {
                 RadialPadConfigs.GENESIS_RIGHT,
                 context,
                 vibrateOnTouch,
-                1.1f
+                1f,
+                1.2f
             )
 
             SystemID.ATARI2600 -> LemuroidVirtualGamePad(
@@ -49,13 +50,16 @@ object GamePadFactory {
                 vibrateOnTouch
             )
 
-            SystemID.FBNEO -> LemuroidVirtualGamePad(
-                RadialPadConfigs.FBNEO_LEFT,
-                RadialPadConfigs.FBNEO_RIGHT,
-                context,
-                vibrateOnTouch,
-                1.1f
-            )
+            SystemID.FBNEO, SystemID.MAME2003PLUS -> {
+                LemuroidVirtualGamePad(
+                    RadialPadConfigs.ARCADE_LEFT,
+                    RadialPadConfigs.ARCADE_RIGHT,
+                    context,
+                    vibrateOnTouch,
+                    1.0f,
+                    1.2f
+                )
+            }
 
             SystemID.GBC -> LemuroidVirtualGamePad(
                 RadialPadConfigs.GB_LEFT,
@@ -69,6 +73,7 @@ object GamePadFactory {
                 RadialPadConfigs.PSP_RIGHT,
                 context,
                 vibrateOnTouch,
+                1.1f,
                 1.1f
             )
 
@@ -84,6 +89,7 @@ object GamePadFactory {
                 RadialPadConfigs.PSX_RIGHT,
                 context,
                 vibrateOnTouch,
+                1.1f,
                 1.1f
             )
 

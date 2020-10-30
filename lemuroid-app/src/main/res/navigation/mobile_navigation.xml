@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/navigation_systems"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.systems.SystemsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment"
         android:label="@string/title_systems" >
 
         <action
@@ -36,9 +36,9 @@
         android:label="@string/title_games">
 
         <argument
-            android:name="system_id"
-            app:argType="string"
-            app:nullable="true" />
+            android:name="system_ids"
+            app:argType="string[]"
+            app:nullable="false" />
 
     </fragment>
 

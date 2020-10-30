@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.systems.SystemInfo
+import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -51,9 +51,12 @@ class TVHomeFragment : BrowseSupportFragment() {
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             when (item) {
                 is Game -> gameInteractor.onGamePlay(item)
-                is SystemInfo -> {
-                    val systemId = item.system.id.dbname
-                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(systemId)
+                is MetaSystemInfo -> {
+                    val systemIds = item.metaSystem.systemIDs
+                        .map { it.dbname }
+                        .toTypedArray()
+
+                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(systemIds)
                     findNavController().navigate(action)
                 }
                 is TVSetting -> {
@@ -101,22 +104,22 @@ class TVHomeFragment : BrowseSupportFragment() {
             }
     }
 
-    private fun update(favoritesGames: PagedList<Game>, recentGames: List<Game>, systems: List<SystemInfo>) {
+    private fun update(favoritesGames: PagedList<Game>, recentGames: List<Game>, metaSystems: List<MetaSystemInfo>) {
         val adapterHasFavorites = findAdapterById<ObjectAdapter>(FAVORITES_ADAPTER) != null
         val adapterHasGames = findAdapterById<ObjectAdapter>(RECENTS_ADAPTER) != null
         val adapterHasSystems = findAdapterById<ObjectAdapter>(SYSTEM_ADAPTER) != null
 
         val favoritesChanged = adapterHasFavorites != favoritesGames.isNotEmpty()
         val recentsChanged = adapterHasGames != recentGames.isNotEmpty()
-        val systemsChanged = adapterHasSystems != systems.isNotEmpty()
+        val systemsChanged = adapterHasSystems != metaSystems.isNotEmpty()
 
         if (favoritesChanged || recentsChanged || systemsChanged) {
-            recreateAdapter(favoritesGames.isNotEmpty(), recentGames.isNotEmpty(), systems.isNotEmpty())
+            recreateAdapter(favoritesGames.isNotEmpty(), recentGames.isNotEmpty(), metaSystems.isNotEmpty())
         }
 
         findAdapterById<PagedListObjectAdapter<Game>>(FAVORITES_ADAPTER)?.pagedList = favoritesGames
         findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
-        findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(systems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+        findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(metaSystems, LEANBACK_SYSTEM_DIFF_CALLBACK)
     }
 
     private fun <T> findAdapterById(id: Long): T? {
@@ -195,13 +198,13 @@ class TVHomeFragment : BrowseSupportFragment() {
             }
         }
 
-        val LEANBACK_SYSTEM_DIFF_CALLBACK = object : DiffCallback<SystemInfo>() {
-            override fun areContentsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo): Boolean {
+        val LEANBACK_SYSTEM_DIFF_CALLBACK = object : DiffCallback<MetaSystemInfo>() {
+            override fun areContentsTheSame(oldInfo: MetaSystemInfo, newInfo: MetaSystemInfo): Boolean {
                 return oldInfo == newInfo
             }
 
-            override fun areItemsTheSame(oldInfo: SystemInfo, newInfo: SystemInfo): Boolean {
-                return oldInfo.system.id == newInfo.system.id
+            override fun areItemsTheSame(oldInfo: MetaSystemInfo, newInfo: MetaSystemInfo): Boolean {
+                return oldInfo.metaSystem.name == newInfo.metaSystem.name
             }
         }
     }

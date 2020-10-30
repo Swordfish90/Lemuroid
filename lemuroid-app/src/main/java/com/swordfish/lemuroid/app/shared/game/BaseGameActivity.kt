@@ -37,6 +37,7 @@ import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
+import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -147,16 +148,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 .map { Variable(it.key, it.value) }
                 .toTypedArray()
 
-        retroGameView = GLRetroView(
-            this,
-            intent.getStringExtra(EXTRA_CORE_PATH)!!,
-            intent.getStringExtra(EXTRA_GAME_PATH)!!,
-            directoriesManager.getSystemDirectory().absolutePath,
-            directoriesManager.getSavesDirectory().absolutePath,
-            coreVariables,
-            retrieveSRAMData(),
-            getShaderForSystem(screenFilter, system)
-        )
+        val data = GLRetroViewData(this).apply {
+            coreFilePath = intent.getStringExtra(EXTRA_CORE_PATH)!!
+            gameFilePath = intent.getStringExtra(EXTRA_GAME_PATH)!!
+            systemDirectory = directoriesManager.getSystemDirectory().absolutePath
+            savesDirectory = directoriesManager.getSavesDirectory().absolutePath
+            variables = coreVariables
+            saveRAMState = retrieveSRAMData()
+            shader = getShaderForSystem(screenFilter, system)
+        }
+
+        retroGameView = GLRetroView(this, data)
         retroGameView?.isFocusable = false
         retroGameView?.isFocusableInTouchMode = false
 
@@ -239,12 +241,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.GG -> GLRetroView.SHADER_LCD
                 SystemID.ATARI2600 -> GLRetroView.SHADER_CRT
                 SystemID.PSX -> GLRetroView.SHADER_CRT
+                SystemID.MAME2003PLUS -> GLRetroView.SHADER_CRT
             }
         }
     }
 
     private fun isAutoSaveEnabled(): Boolean {
-        return settingsManager.autoSave
+        return settingsManager.autoSave && system.statesSupported
     }
 
     override fun onResume() {
@@ -408,8 +411,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
-                if (system.sendLeftStickEventAsDPAD) {
-                    sendMergedAsDPADEvents(event, port)
+                if (system.mergeDPADAndLeftStickEvents) {
+                    sendMergedMotionEvents(event, port)
                 } else {
                     sendSeparateMotionEvents(event, port)
                 }
@@ -417,12 +420,21 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun sendMergedAsDPADEvents(event: MotionEvent, port: Int) {
+    private fun sendMergedMotionEvents(event: MotionEvent, port: Int) {
         val xAxises = setOf(MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_X)
         val yAxises = setOf(MotionEvent.AXIS_HAT_Y, MotionEvent.AXIS_Y)
         val xVal = xAxises.map { event.getAxisValue(it) }.maxBy { kotlin.math.abs(it) }!!
         val yVal = yAxises.map { event.getAxisValue(it) }.maxBy { kotlin.math.abs(it) }!!
         retroGameView?.sendMotionEvent(MOTION_SOURCE_DPAD, xVal, yVal, port)
+        retroGameView?.sendMotionEvent(MOTION_SOURCE_ANALOG_LEFT, xVal, yVal, port)
+
+        sendStickMotion(
+            event,
+            MOTION_SOURCE_ANALOG_RIGHT,
+            MotionEvent.AXIS_Z,
+            MotionEvent.AXIS_RZ,
+            port
+        )
     }
 
     private fun sendSeparateMotionEvents(event: MotionEvent, port: Int) {

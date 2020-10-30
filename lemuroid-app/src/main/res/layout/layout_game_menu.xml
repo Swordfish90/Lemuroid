@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/grid_unit_2x">
 
+        <include
+            android:id="@+id/menu_saves_not_supported"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/layout_game_menu_save_not_supported"/>
+
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow"
             android:layout_width="match_parent"
@@ -23,7 +29,7 @@
             app:flow_maxElementsWrap="@integer/game_menu_mobile_columns"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/menu_saves_not_supported" />
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow2"

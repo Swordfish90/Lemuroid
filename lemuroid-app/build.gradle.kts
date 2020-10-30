@@ -11,8 +11,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 90
-        versionName = "1.7.1"
+        versionCode = 99
+        versionName = "1.8.0-alpha"
     }
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
@@ -20,12 +20,12 @@ android {
 
     productFlavors {
         create("free") {
-            setDimension("opensource")
+            dimension = "opensource"
             applicationIdSuffix = ".free"
         }
 
         create("play") {
-            setDimension("opensource")
+            dimension = "opensource"
         }
     }
 
@@ -110,8 +110,6 @@ dependencies {
 
     implementation(deps.libs.androidx.appcompat.leanback)
     implementation(deps.libs.androidx.appcompat.leanbackPreference)
-
-    // TODO All next dependencies might not be correct.
 
     implementation(deps.libs.androidx.appcompat.recyclerView)
     implementation(deps.libs.androidx.paging.common)

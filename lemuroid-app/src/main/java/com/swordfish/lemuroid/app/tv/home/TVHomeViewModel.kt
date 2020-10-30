@@ -3,9 +3,10 @@ package com.swordfish.lemuroid.app.tv.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.toObservable
-import com.swordfish.lemuroid.app.shared.systems.SystemInfo
+import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.metaSystemID
 import io.reactivex.Observable
 
 class TVHomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
@@ -25,10 +26,12 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     val favoritesGames = retrogradeDb.gameDao().selectFavorites().toObservable(PAGE_SIZE)
 
-    val availableSystems: Observable<List<SystemInfo>> = retrogradeDb.gameDao()
+    val availableSystems: Observable<List<MetaSystemInfo>> = retrogradeDb.gameDao()
         .selectSystemsWithCount()
         .map { systemCounts ->
             systemCounts.filter { (_, count) -> count > 0 }
-                .map { (systemId, count) -> SystemInfo(GameSystem.findById(systemId), count) }
+                .map { (systemId, count) -> GameSystem.findById(systemId).metaSystemID() to count }
+                .groupBy { (metaSystemId, _) -> metaSystemId }
+                .map { (metaSystemId, counts) -> MetaSystemInfo(metaSystemId, counts.sumBy { it.second }) }
         }
 }

@@ -96,6 +96,10 @@ class TVGameMenuFragment(
         val saveScreen = findPreference<PreferenceScreen>(SECTION_SAVE_GAME)
         val loadScreen = findPreference<PreferenceScreen>(SECTION_LOAD_GAME)
 
+        val system = GameSystem.findById(game.systemId)
+        saveScreen?.isEnabled = system.statesSupported
+        loadScreen?.isEnabled = system.statesSupported
+
         Single.just(game)
             .flatMap {
                 statesManager.getSavedSlotsInfo(
