@@ -13,7 +13,6 @@ android {
         applicationId = "com.swordfish.lemuroid"
         versionCode = 99
         versionName = "1.8.0-alpha"
-        multiDexEnabled = true
     }
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
@@ -69,6 +68,13 @@ android {
     kotlinOptions {
         this as KotlinJvmOptions
         jvmTarget = "1.8"
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            isUniversalApk = true
+        }
     }
 }
 
