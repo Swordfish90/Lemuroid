@@ -34,7 +34,6 @@
     <string name="game_system_abbr_psp">PSP</string>
     <string name="game_system_abbr_arcade_fbneo">FBNeo</string>
     <string name="game_system_abbr_arcade_mame2003_plus">MAME2003</string>
-    <string name="game_system_abbr_arcade_mame2000">MAME2000</string>
 
     <string name="game_system_title_nes">Nintendo</string>
     <string name="game_system_title_atari2600">Atari 2600</string>

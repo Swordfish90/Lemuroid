@@ -271,24 +271,6 @@ data class GameSystem(
                 statesSupported = false
             ),
             GameSystem(
-                SystemID.MAME2000,
-                "MAME 2000",
-                "mame2000",
-                R.string.game_system_abbr_arcade_mame2000,
-                "libmame2000_libretro_android.so",
-                uniqueExtensions = listOf(),
-                supportedExtensions = listOf("zip"),
-                scanOptions = ScanOptions(
-                    scanByFilename = false,
-                    scanByUniqueExtension = false,
-                    scanByPathAndFilename = true,
-                    scanByPathAndSupportedExtensions = false
-                ),
-                mergeDPADAndLeftStickEvents = true,
-                virtualGamePadOptions = VirtualGamePadOptions(true),
-                statesSupported = false
-            ),
-            GameSystem(
                 SystemID.NDS,
                 "Nintendo - Nintendo DS",
                 "desmume",

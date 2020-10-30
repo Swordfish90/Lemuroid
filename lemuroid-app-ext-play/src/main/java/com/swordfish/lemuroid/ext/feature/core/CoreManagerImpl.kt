@@ -20,10 +20,6 @@
 package com.swordfish.lemuroid.ext.feature.core
 
 import android.content.Context
-import android.util.Log
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.swordfish.lemuroid.lib.BuildConfig
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
@@ -42,33 +38,12 @@ class CoreManagerImpl(
         directoriesManager.getCoresDirectory()
     }
 
-    fun prepareCore(context: Context, gameSystem: GameSystem) = Single.create<String> { emitter ->
-        val installManager = SplitInstallManagerFactory.create(context)
-        val moduleSplitName = "lemuroid_core_${gameSystem.coreName}"
-        val coreResult = context.applicationInfo.nativeLibraryDir + "/" + gameSystem.coreFileName
-        if (installManager.installedModules.contains(moduleSplitName) || BuildConfig.DEBUG) {
-            emitter.onSuccess(coreResult)
-            return@create
-        }
-
-        val request = SplitInstallRequest.newBuilder()
-            .addModule(moduleSplitName)
-            .build()
-
-        installManager.startInstall(request)
-            .addOnSuccessListener { emitter.onSuccess(coreResult) }
-            .addOnFailureListener {
-                Log.e("FILIPPO", "Error installing core: ${it.message}", it)
-                emitter.onError(it)
-            }
-    }
-
     override fun downloadCore(
         context: Context,
         gameSystem: GameSystem,
         assetsManager: CoreManager.AssetsManager
     ): Single<String> {
         return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
-            .andThen(prepareCore(context, gameSystem))
+            .andThen(Single.just(gameSystem.coreFileName))
     }
 }

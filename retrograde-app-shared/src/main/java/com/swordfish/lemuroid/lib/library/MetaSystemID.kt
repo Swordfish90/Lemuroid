@@ -75,13 +75,12 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
     ARCADE(
         R.string.game_system_title_arcade,
         R.drawable.game_system_arcade,
-        listOf(SystemID.FBNEO, SystemID.MAME2003PLUS, SystemID.MAME2000)
+        listOf(SystemID.FBNEO, SystemID.MAME2003PLUS)
     );
 
     companion object {
         fun fromSystemID(systemID: SystemID): MetaSystemID {
             return when (systemID) {
-                SystemID.MAME2000 -> ARCADE
                 SystemID.FBNEO -> ARCADE
                 SystemID.MAME2003PLUS -> ARCADE
                 SystemID.ATARI2600 -> ATARI2600

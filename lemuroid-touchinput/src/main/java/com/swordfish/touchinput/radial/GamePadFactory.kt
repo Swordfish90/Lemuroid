@@ -50,7 +50,7 @@ object GamePadFactory {
                 vibrateOnTouch
             )
 
-            SystemID.FBNEO, SystemID.MAME2003PLUS, SystemID.MAME2000 -> {
+            SystemID.FBNEO, SystemID.MAME2003PLUS -> {
                 LemuroidVirtualGamePad(
                     RadialPadConfigs.ARCADE_LEFT,
                     RadialPadConfigs.ARCADE_RIGHT,

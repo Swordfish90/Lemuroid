@@ -25,8 +25,6 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Single
 import retrofit2.Retrofit
-import java.io.File
-import java.io.FileNotFoundException
 
 class CoreManagerImpl(
     private val directoriesManager: DirectoriesManager,
@@ -40,21 +38,12 @@ class CoreManagerImpl(
         directoriesManager.getCoresDirectory()
     }
 
-    fun prepareCore(context: Context, gameSystem: GameSystem) = Single.create<String> { emitter ->
-        val coreResult = context.applicationInfo.nativeLibraryDir + "/" + gameSystem.coreFileName
-        if (File(coreResult).exists()) {
-            emitter.onSuccess(coreResult)
-        } else {
-            emitter.onError(FileNotFoundException("Core is missing: ${gameSystem.coreFileName}"))
-        }
-    }
-
     override fun downloadCore(
         context: Context,
         gameSystem: GameSystem,
         assetsManager: CoreManager.AssetsManager
     ): Single<String> {
         return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
-            .andThen(prepareCore(context, gameSystem))
+            .andThen(Single.just(gameSystem.coreFileName))
     }
 }

@@ -242,7 +242,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.ATARI2600 -> GLRetroView.SHADER_CRT
                 SystemID.PSX -> GLRetroView.SHADER_CRT
                 SystemID.MAME2003PLUS -> GLRetroView.SHADER_CRT
-                SystemID.MAME2000 -> GLRetroView.SHADER_CRT
             }
         }
     }

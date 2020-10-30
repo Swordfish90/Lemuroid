@@ -11,25 +11,10 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.swordfish.lemuroid"
-        versionCode = 93
+        versionCode = 99
         versionName = "1.8.0-alpha"
+        multiDexEnabled = true
     }
-
-    dynamicFeatures = mutableSetOf(
-        ":lemuroid_core_gambatte",
-        ":lemuroid_core_desmume",
-        ":lemuroid_core_fbneo",
-        ":lemuroid_core_fceumm",
-        ":lemuroid_core_genesis_plus_gx",
-        ":lemuroid_core_mame2003_plus",
-        ":lemuroid_core_mame2000",
-        ":lemuroid_core_mgba",
-        ":lemuroid_core_mupen64plus_next",
-        ":lemuroid_core_pcsx_rearmed",
-        ":lemuroid_core_ppsspp",
-        ":lemuroid_core_snes9x",
-        ":lemuroid_core_stella"
-    )
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
     flavorDimensions("opensource")
@@ -92,6 +77,7 @@ dependencies {
     implementation(project(":retrograde-app-shared"))
     implementation(project(":lemuroid-metadata-libretro-db"))
     implementation(project(":lemuroid-touchinput"))
+    implementation(project(":lemuroid-cores"))
     "freeImplementation"(project(":lemuroid-app-ext-free"))
     "playImplementation"(project(":lemuroid-app-ext-play"))
 
