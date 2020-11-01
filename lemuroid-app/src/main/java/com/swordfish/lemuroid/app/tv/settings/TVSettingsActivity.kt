@@ -6,6 +6,7 @@ import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 
@@ -38,7 +39,10 @@ class TVSettingsActivity : TVBaseSettingsActivity() {
             @Provides
             @PerActivity
             @JvmStatic
-            fun settingsInteractor(activity: TVSettingsActivity) = SettingsInteractor(activity)
+            fun settingsInteractor(
+                activity: TVSettingsActivity,
+                directoriesManager: DirectoriesManager
+            ) = SettingsInteractor(activity, directoriesManager)
         }
     }
 }

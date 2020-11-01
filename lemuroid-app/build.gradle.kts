@@ -10,9 +10,9 @@ plugins {
 
 android {
     defaultConfig {
-        applicationId = "com.swordfish.lemuroid"
         versionCode = 99
-        versionName = "1.8.0-alpha"
+        versionName = "1.8.1"
+        applicationId = "com.swordfish.lemuroid"
     }
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
@@ -21,7 +21,6 @@ android {
     productFlavors {
         create("free") {
             dimension = "opensource"
-            applicationIdSuffix = ".free"
         }
 
         create("play") {
@@ -69,13 +68,6 @@ android {
         this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
-
-    splits {
-        abi {
-            isEnable = true
-            isUniversalApk = true
-        }
-    }
 }
 
 dependencies {
@@ -83,7 +75,10 @@ dependencies {
     implementation(project(":retrograde-app-shared"))
     implementation(project(":lemuroid-metadata-libretro-db"))
     implementation(project(":lemuroid-touchinput"))
-    implementation(project(":lemuroid-cores"))
+
+    // Only the play version bundles cores. The free version downloads them on demand.
+    "playImplementation"(project(":lemuroid-cores"))
+
     "freeImplementation"(project(":lemuroid-app-ext-free"))
     "playImplementation"(project(":lemuroid-app-ext-play"))
 

@@ -20,23 +20,35 @@
 package com.swordfish.lemuroid.ext.feature.core
 
 import android.content.Context
+import android.net.Uri
+import android.os.Build
+import com.swordfish.lemuroid.common.files.safeDelete
+import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Single
 import retrofit2.Retrofit
+import timber.log.Timber
+import java.io.File
 
 class CoreManagerImpl(
     private val directoriesManager: DirectoriesManager,
     retrofit: Retrofit
 ) : CoreManager {
 
-    private val api = retrofit.create(CoreManager.CoreManagerApi::class.java)
-
-    init {
-        // Force deletion of already downloaded cores.
-        directoriesManager.getCoresDirectory()
+    // This is the last tagged versions of cores.
+    companion object {
+        private val CORES_VERSION = "1.8.0-beta1"
     }
+
+    private val baseUri = Uri.parse("https://github.com/")
+    private val coresUri = baseUri.buildUpon()
+        .appendEncodedPath("Swordfish90/LemuroidCores/raw/$CORES_VERSION/src/main/jniLibs/")
+        .appendPath(Build.SUPPORTED_ABIS.first())
+        .build()
+
+    private val api = retrofit.create(CoreManager.CoreManagerApi::class.java)
 
     override fun downloadCore(
         context: Context,
@@ -44,6 +56,46 @@ class CoreManagerImpl(
         assetsManager: CoreManager.AssetsManager
     ): Single<String> {
         return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
-            .andThen(Single.just(gameSystem.coreFileName))
+            .andThen(downloadCoreFromGithub(gameSystem).map { it.absolutePath })
+    }
+
+    private fun downloadCoreFromGithub(gameSystem: GameSystem): Single<File> {
+        val mainCoresDirectory = directoriesManager.getCoresDirectory()
+        val coresDirectory = File(mainCoresDirectory, CORES_VERSION).apply {
+            mkdirs()
+        }
+
+        val libFileName = gameSystem.coreFileName
+        val destFile = File(coresDirectory, libFileName)
+
+        if (destFile.exists()) {
+            return Single.just(destFile)
+        }
+
+        runCatching {
+            deleteOutdatedCores(mainCoresDirectory, CORES_VERSION)
+        }
+
+        val uri = coresUri.buildUpon()
+            .appendPath(libFileName)
+            .build()
+
+        return api.downloadFile(uri.toString())
+            .map { response ->
+                if (!response.isSuccessful) {
+                    Timber.e("Download core response was unsuccessful")
+                    throw Exception(response.errorBody()!!.string())
+                }
+                val fileStream = response.body()!!
+                fileStream.writeToFile(destFile)
+                destFile
+            }
+            .doOnError { destFile.safeDelete() }
+    }
+
+    private fun deleteOutdatedCores(mainCoresDirectory: File, applicationVersion: String) {
+        mainCoresDirectory.listFiles()
+            ?.filter { it.name != applicationVersion }
+            ?.forEach { it.deleteRecursively() }
     }
 }

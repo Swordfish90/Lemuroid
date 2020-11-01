@@ -33,11 +33,6 @@ class CoreManagerImpl(
 
     private val api = retrofit.create(CoreManager.CoreManagerApi::class.java)
 
-    init {
-        // Force deletion of already downloaded cores.
-        directoriesManager.getCoresDirectory()
-    }
-
     override fun downloadCore(
         context: Context,
         gameSystem: GameSystem,
