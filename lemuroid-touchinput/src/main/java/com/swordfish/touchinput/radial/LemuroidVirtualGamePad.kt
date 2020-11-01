@@ -47,7 +47,7 @@ class LemuroidVirtualGamePad @JvmOverloads constructor(
 
     private val tiltTrackedIds = setOf(
         RadialPadConfigs.MOTION_SOURCE_LEFT_STICK,
-        RadialPadConfigs.MOTION_SOURCE_LEFT_STICK
+        RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK
     )
 
     init {

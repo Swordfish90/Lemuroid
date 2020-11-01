@@ -63,6 +63,7 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import java.io.InputStream
 import java.lang.reflect.Type
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -187,6 +188,11 @@ abstract class LemuroidApplicationModule {
                         if (type == ZipInputStream::class.java) {
                             return Converter<ResponseBody, ZipInputStream> { responseBody ->
                                 ZipInputStream(responseBody.byteStream())
+                            }
+                        }
+                        if (type == InputStream::class.java) {
+                            return Converter<ResponseBody, InputStream> { responseBody ->
+                                responseBody.byteStream()
                             }
                         }
                         return null

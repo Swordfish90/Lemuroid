@@ -10,9 +10,8 @@ class DirectoriesManager(private val appContext: Context) {
         mkdirs()
     }
 
-    @Deprecated("Running so files from outside the apk is no longer allowed.")
     fun getCoresDirectory(): File = File(appContext.filesDir, "cores").apply {
-        runCatching { deleteRecursively() }
+        mkdirs()
     }
 
     fun getSystemDirectory(): File = File(appContext.filesDir, "system").apply {

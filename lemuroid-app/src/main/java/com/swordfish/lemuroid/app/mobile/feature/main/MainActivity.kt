@@ -26,6 +26,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragmen
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -135,8 +136,8 @@ class MainActivity : RetrogradeAppCompatActivity() {
             @Provides
             @PerActivity
             @JvmStatic
-            fun settingsInteractor(activity: MainActivity) =
-                SettingsInteractor(activity)
+            fun settingsInteractor(activity: MainActivity, directoriesManager: DirectoriesManager) =
+                SettingsInteractor(activity, directoriesManager)
 
             @Provides
             @PerActivity
