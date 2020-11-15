@@ -212,7 +212,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             this.putExtra(GameMenuContract.EXTRA_GAME, game)
             this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
             this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
-            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, retroGameView?.fastForwardEnabled)
+            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, retroGameView?.frameSpeed ?: 1 > 1)
         }
         startActivityForResult(intent, DIALOG_REQUEST)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -631,10 +631,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
                 retroGameView?.apply {
-                    this.fastForwardEnabled = data.getBooleanExtra(
+                    val fastForwardEnabled = data.getBooleanExtra(
                         GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
                         false
                     )
+                    this.frameSpeed = if (fastForwardEnabled) 2 else 1
                 }
             }
         }
