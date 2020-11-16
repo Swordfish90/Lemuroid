@@ -29,6 +29,7 @@ import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
+import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.ext.feature.core.CoreManagerImpl
@@ -50,6 +51,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.lib.bios.BiosManager
+import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
 import com.swordfish.lemuroid.lib.saves.SavesManager
 
@@ -278,6 +280,16 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun biosPreferences(biosManager: BiosManager) = BiosPreferences(biosManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun coresSelection(appContext: Context) = CoresSelection(appContext)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun coreSelectionPreferences() = CoresSelectionPreferences()
 
         @Provides
         @PerApp

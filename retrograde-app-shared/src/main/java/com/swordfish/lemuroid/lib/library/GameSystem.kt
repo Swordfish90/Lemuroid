@@ -21,10 +21,7 @@ package com.swordfish.lemuroid.lib.library
 
 import androidx.annotation.StringRes
 import com.swordfish.lemuroid.lib.R
-import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
-import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
-import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import java.util.Locale
 
 data class GameSystem(
@@ -32,16 +29,15 @@ data class GameSystem(
 
     val libretroFullName: String,
 
-    val coreName: String,
+    @StringRes
+    val titleResId: Int,
 
     @StringRes
     val shortTitleResId: Int,
 
-    val coreFileName: String,
+    val systemCoreConfigs: List<SystemCoreConfig>,
 
     val uniqueExtensions: List<String>,
-
-    val coreAssetsManager: CoreManager.AssetsManager = NoAssetsManager(),
 
     val mergeDPADAndLeftStickEvents: Boolean = false,
 
@@ -49,18 +45,11 @@ data class GameSystem(
 
     val supportedExtensions: List<String> = uniqueExtensions,
 
-    val exposedSettings: List<String> = listOf(),
-
-    val defaultSettings: List<CoreVariable> = listOf(),
-
     val virtualGamePadOptions: VirtualGamePadOptions = VirtualGamePadOptions(),
 
     val hasMultiDiskSupport: Boolean = false,
 
     val fastForwardSupport: Boolean = true,
-
-    val statesSupported: Boolean = true
-
 ) {
 
     companion object {
@@ -69,128 +58,167 @@ data class GameSystem(
             GameSystem(
                 SystemID.ATARI2600,
                 "Atari - 2600",
-                "stella",
+                R.string.game_system_title_atari2600,
                 R.string.game_system_abbr_atari2600,
-                "libstella_libretro_android.so",
+                listOf(
+                    SystemCoreConfig(
+                        coreID = CoreID.STELLA,
+                        exposedSettings = listOf("stella_filter")
+                    )
+                ),
                 uniqueExtensions = listOf("a26"),
-                exposedSettings = listOf("stella_filter"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.NES,
                 "Nintendo - Nintendo Entertainment System",
-                "fceumm",
+                R.string.game_system_title_nes,
                 R.string.game_system_abbr_nes,
-                "libfceumm_libretro_android.so",
+                listOf(SystemCoreConfig(CoreID.FCEUMM)),
                 uniqueExtensions = listOf("nes"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.SNES,
                 "Nintendo - Super Nintendo Entertainment System",
-                "snes9x",
+                R.string.game_system_title_snes,
                 R.string.game_system_abbr_snes,
-                "libsnes9x_libretro_android.so",
+                listOf(SystemCoreConfig(CoreID.SNES9X)),
                 uniqueExtensions = listOf("smc", "sfc"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.SMS,
                 "Sega - Master System - Mark III",
-                "genesis_plus_gx",
+                R.string.game_system_title_sms,
                 R.string.game_system_abbr_sms,
-                "libgenesis_plus_gx_libretro_android.so",
-                uniqueExtensions = listOf("sms"),
-                exposedSettings = listOf(
-                    "genesis_plus_gx_blargg_ntsc_filter"
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.GENESIS_PLUS_GX,
+                        exposedSettings = listOf("genesis_plus_gx_blargg_ntsc_filter"),
+                    )
                 ),
+                uniqueExtensions = listOf("sms"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GENESIS,
                 "Sega - Mega Drive - Genesis",
-                "genesis_plus_gx",
+                R.string.game_system_title_genesis,
                 R.string.game_system_abbr_genesis,
-                "libgenesis_plus_gx_libretro_android.so",
-                uniqueExtensions = listOf("gen", "smd", "md"),
-                exposedSettings = listOf(
-                    "genesis_plus_gx_blargg_ntsc_filter"
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.GENESIS_PLUS_GX,
+                        exposedSettings = listOf("genesis_plus_gx_blargg_ntsc_filter"),
+                    )
                 ),
+                uniqueExtensions = listOf("gen", "smd", "md"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GG,
                 "Sega - Game Gear",
-                "genesis_plus_gx",
+                R.string.game_system_title_gg,
                 R.string.game_system_abbr_gg,
-                "libgenesis_plus_gx_libretro_android.so",
-                uniqueExtensions = listOf("gg"),
-                exposedSettings = listOf(
-                    "genesis_plus_gx_lcd_filter"
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.GENESIS_PLUS_GX,
+                        exposedSettings = listOf("genesis_plus_gx_lcd_filter"),
+                    )
                 ),
+                uniqueExtensions = listOf("gg"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GB,
                 "Nintendo - Game Boy",
-                "gambatte",
+                R.string.game_system_title_gb,
                 R.string.game_system_abbr_gb,
-                "libgambatte_libretro_android.so",
-                uniqueExtensions = listOf("gb"),
-                exposedSettings = listOf(
-                    "gambatte_gb_colorization",
-                    "gambatte_gb_internal_palette",
-                    "gambatte_mix_frames"
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.GAMBATTE,
+                        exposedSettings = listOf(
+                            "gambatte_gb_colorization",
+                            "gambatte_gb_internal_palette",
+                            "gambatte_mix_frames"
+                        )
+                    ),
                 ),
+                uniqueExtensions = listOf("gb"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GBC,
                 "Nintendo - Game Boy Color",
-                "gambatte",
+                R.string.game_system_title_gbc,
                 R.string.game_system_abbr_gbc,
-                "libgambatte_libretro_android.so",
-                uniqueExtensions = listOf("gbc"),
-                exposedSettings = listOf(
-                    "gambatte_gb_colorization",
-                    "gambatte_gb_internal_palette",
-                    "gambatte_mix_frames"
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.GAMBATTE,
+                        exposedSettings = listOf(
+                            "gambatte_gb_colorization",
+                            "gambatte_gb_internal_palette",
+                            "gambatte_mix_frames"
+                        )
+                    ),
                 ),
+                uniqueExtensions = listOf("gbc"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GBA,
                 "Nintendo - Game Boy Advance",
-                "mgba",
+                R.string.game_system_title_gba,
                 R.string.game_system_abbr_gba,
-                "libmgba_libretro_android.so",
-                uniqueExtensions = listOf("gba"),
-                exposedSettings = listOf(
-                    "mgba_solar_sensor_level",
-                    "mgba_interframe_blending",
-                    "mgba_frameskip",
-                    "mgba_color_correction"
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MGBA,
+                        exposedSettings = listOf(
+                            "mgba_solar_sensor_level",
+                            "mgba_interframe_blending",
+                            "mgba_frameskip",
+                            "mgba_color_correction"
+                        )
+                    ),
                 ),
+                uniqueExtensions = listOf("gba"),
                 mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.N64,
                 "Nintendo - Nintendo 64",
-                "mupen64plus_next",
+                R.string.game_system_title_n64,
                 R.string.game_system_abbr_n64,
-                "libmupen64plus_next_gles3_libretro_android.so",
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MUPEN64_PLUS_NEXT,
+                        defaultSettings = listOf(
+                            CoreVariable("mupen64plus-43screensize", "320x240")
+                        )
+                    )
+                ),
                 uniqueExtensions = listOf("n64", "z64"),
                 virtualGamePadOptions = VirtualGamePadOptions(true),
-                defaultSettings = listOf(
-                    CoreVariable("mupen64plus-43screensize", "320x240")
-                ),
             ),
             GameSystem(
                 SystemID.PSX,
                 "Sony - PlayStation",
-                "pcsx_rearmed",
+                R.string.game_system_title_psx,
                 R.string.game_system_abbr_psx,
-                "libpcsx_rearmed_libretro_android.so",
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.PCSX_REARMED,
+                        exposedSettings = listOf(
+                            "pcsx_rearmed_drc",
+                            "pcsx_rearmed_frameskip",
+                            "pcsx_rearmed_pad1type",
+                            "pcsx_rearmed_pad2type"
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("pcsx_rearmed_drc", "disabled")
+                        )
+                    )
+                ),
                 uniqueExtensions = listOf(),
                 supportedExtensions = listOf("iso", "pbp", "chd", "cue", "m3u"),
                 scanOptions = ScanOptions(
@@ -198,35 +226,29 @@ data class GameSystem(
                     scanByUniqueExtension = false,
                     scanByPathAndSupportedExtensions = true
                 ),
-                exposedSettings = listOf(
-                    "pcsx_rearmed_drc",
-                    "pcsx_rearmed_frameskip",
-                    "pcsx_rearmed_pad1type",
-                    "pcsx_rearmed_pad2type"
-                ),
-                defaultSettings = listOf(
-                    CoreVariable("pcsx_rearmed_drc", "disabled")
-                ),
                 virtualGamePadOptions = VirtualGamePadOptions(true),
                 hasMultiDiskSupport = true
             ),
             GameSystem(
                 SystemID.PSP,
                 "Sony - PlayStation Portable",
-                "ppsspp",
+                R.string.game_system_title_psp,
                 R.string.game_system_abbr_psp,
-                "libppsspp_libretro_android.so",
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.PPSSPP,
+                        exposedSettings = listOf(
+                            "ppsspp_auto_frameskip",
+                            "ppsspp_frameskip"
+                        ),
+                    )
+                ),
                 uniqueExtensions = listOf(),
                 supportedExtensions = listOf("iso", "cso", "pbp"),
-                coreAssetsManager = PPSSPPAssetsManager(),
                 scanOptions = ScanOptions(
                     scanByFilename = false,
                     scanByUniqueExtension = false,
                     scanByPathAndSupportedExtensions = true
-                ),
-                exposedSettings = listOf(
-                    "ppsspp_auto_frameskip",
-                    "ppsspp_frameskip"
                 ),
                 virtualGamePadOptions = VirtualGamePadOptions(true),
                 fastForwardSupport = false
@@ -234,9 +256,17 @@ data class GameSystem(
             GameSystem(
                 SystemID.FBNEO,
                 "FBNeo - Arcade Games",
-                "fbneo",
+                R.string.game_system_title_arcade_fbneo,
                 R.string.game_system_abbr_arcade_fbneo,
-                "libfbneo_libretro_android.so",
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.FBNEO,
+                        exposedSettings = listOf(
+                            "fbneo-frameskip",
+                            "fbneo-cpu-speed-adjust"
+                        )
+                    )
+                ),
                 uniqueExtensions = listOf(),
                 supportedExtensions = listOf("zip"),
                 scanOptions = ScanOptions(
@@ -247,17 +277,18 @@ data class GameSystem(
                 ),
                 mergeDPADAndLeftStickEvents = true,
                 virtualGamePadOptions = VirtualGamePadOptions(true),
-                exposedSettings = listOf(
-                    "fbneo-frameskip",
-                    "fbneo-cpu-speed-adjust"
-                )
             ),
             GameSystem(
                 SystemID.MAME2003PLUS,
                 "MAME 2003-Plus",
-                "mame2003_plus",
+                R.string.game_system_title_arcade_mame2003_plus,
                 R.string.game_system_abbr_arcade_mame2003_plus,
-                "libmame2003_plus_libretro_android.so",
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MAME2003PLUS,
+                        statesSupported = false
+                    )
+                ),
                 uniqueExtensions = listOf(),
                 supportedExtensions = listOf("zip"),
                 scanOptions = ScanOptions(
@@ -268,21 +299,32 @@ data class GameSystem(
                 ),
                 mergeDPADAndLeftStickEvents = true,
                 virtualGamePadOptions = VirtualGamePadOptions(true),
-                statesSupported = false
             ),
             GameSystem(
                 SystemID.NDS,
                 "Nintendo - Nintendo DS",
-                "desmume",
+                R.string.game_system_title_nds,
                 R.string.game_system_abbr_nds,
-                "libdesmume_libretro_android.so",
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.DESMUME,
+                        exposedSettings = listOf("desmume_frameskip"),
+                        defaultSettings = listOf(
+                            CoreVariable("desmume_pointer_type", "touch"),
+                            CoreVariable("desmume_frameskip", "1")
+                        )
+                    ),
+                    SystemCoreConfig(
+                        CoreID.MELONDS,
+                        exposedSettings = listOf("melonds_threaded_renderer"),
+                        defaultSettings = listOf(
+                            CoreVariable("melonds_touch_mode", "Touch"),
+                            CoreVariable("melonds_threaded_renderer", "enabled")
+                        )
+                    )
+                ),
                 uniqueExtensions = listOf("nds"),
                 mergeDPADAndLeftStickEvents = true,
-                exposedSettings = listOf("desmume_frameskip"),
-                defaultSettings = listOf(
-                    CoreVariable("desmume_pointer_type", "touch"),
-                    CoreVariable("desmume_frameskip", "1")
-                )
             )
         )
 
@@ -298,6 +340,8 @@ data class GameSystem(
         }
 
         fun findById(id: String): GameSystem = byIdCache.getValue(id)
+
+        fun all() = SYSTEMS
 
         fun getSupportedExtensions(): List<String> {
             return SYSTEMS.flatMap { it.supportedExtensions }

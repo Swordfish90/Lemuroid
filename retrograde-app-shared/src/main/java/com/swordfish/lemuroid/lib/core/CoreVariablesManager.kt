@@ -3,7 +3,8 @@ package com.swordfish.lemuroid.lib.core
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.SystemID
 import io.reactivex.Single
 import java.security.InvalidParameterException
 
@@ -14,9 +15,13 @@ class CoreVariablesManager(context: Context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
 
-    fun getCoreOptionsForSystem(system: GameSystem): Single<List<CoreVariable>> {
-        val defaultMap = convertCoreVariablesToMap(system.defaultSettings)
-        return retrieveCustomCoreVariables(system)
+    fun getOptionsForCore(
+        systemID: SystemID,
+        systemCoreConfig: SystemCoreConfig
+    ): Single<List<CoreVariable>> {
+
+        val defaultMap = convertCoreVariablesToMap(systemCoreConfig.defaultSettings)
+        return retrieveCustomCoreVariables(systemID, systemCoreConfig)
             .map { convertCoreVariablesToMap(it) }
             .map { defaultMap + it }
             .map { convertMapToCoreVariables(it) }
@@ -32,9 +37,13 @@ class CoreVariablesManager(context: Context) {
             .toMap()
     }
 
-    private fun retrieveCustomCoreVariables(system: GameSystem) = Single.fromCallable {
-        val requestedKeys = system.exposedSettings
-            .map { computeSharedPreferenceKey(it, system.id.dbname) }
+    private fun retrieveCustomCoreVariables(
+        systemID: SystemID,
+        systemCoreConfig: SystemCoreConfig
+    ) = Single.fromCallable {
+
+        val requestedKeys = systemCoreConfig.exposedSettings
+            .map { computeSharedPreferenceKey(it, systemID.dbname) }
 
         sharedPreferences.all.filter { it.key in requestedKeys }
             .map { (key, value) ->
@@ -43,7 +52,7 @@ class CoreVariablesManager(context: Context) {
                     is String -> value as String
                     else -> throw InvalidParameterException("Invalid setting in SharedPreferences")
                 }
-                CoreVariable(computeOriginalKey(key, system.id.dbname), result)
+                CoreVariable(computeOriginalKey(key, systemID.dbname), result)
             }
     }
 

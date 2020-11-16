@@ -11,7 +11,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.GameMenuContract
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveStateInfo
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 class TVGameMenuFragment(
     private val statesManager: StatesManager,
     private val game: Game,
+    private val systemCoreConfig: SystemCoreConfig,
     private val coreOptions: Array<CoreOption>,
     private val numDisks: Int,
     private val currentDisk: Int,
@@ -96,16 +97,12 @@ class TVGameMenuFragment(
         val saveScreen = findPreference<PreferenceScreen>(SECTION_SAVE_GAME)
         val loadScreen = findPreference<PreferenceScreen>(SECTION_LOAD_GAME)
 
-        val system = GameSystem.findById(game.systemId)
-        saveScreen?.isEnabled = system.statesSupported
-        loadScreen?.isEnabled = system.statesSupported
+        saveScreen?.isEnabled = systemCoreConfig.statesSupported
+        loadScreen?.isEnabled = systemCoreConfig.statesSupported
 
         Single.just(game)
             .flatMap {
-                statesManager.getSavedSlotsInfo(
-                    it,
-                    GameSystem.findById(it.systemId).coreName
-                )
+                statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

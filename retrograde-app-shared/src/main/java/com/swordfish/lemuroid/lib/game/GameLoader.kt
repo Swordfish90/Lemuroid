@@ -21,12 +21,16 @@ package com.swordfish.lemuroid.lib.game
 
 import android.content.Context
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
-import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
+import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.CoreID
+import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
@@ -43,8 +47,13 @@ class GameLoader(
     private val coreVariablesManager: CoreVariablesManager,
     private val retrogradeDatabase: RetrogradeDatabase
 ) {
-    fun load(applicationContext: Context, game: Game, loadSave: Boolean): Observable<LoadingState> {
-        return prepareGame(applicationContext, game, loadSave)
+    fun load(
+        applicationContext: Context,
+        game: Game,
+        systemCoreConfig: SystemCoreConfig,
+        loadSave: Boolean
+    ): Observable<LoadingState> {
+        return prepareGame(applicationContext, game, systemCoreConfig, loadSave)
     }
 
     sealed class LoadingState {
@@ -53,21 +62,29 @@ class GameLoader(
         class Ready(val gameData: GameData) : LoadingState()
     }
 
+    private fun getAssetManagerForCore(coreID: CoreID): CoreManager.AssetsManager {
+        return when (coreID) {
+            CoreID.PPSSPP -> PPSSPPAssetsManager()
+            else -> NoAssetsManager()
+        }
+    }
+
     private fun prepareGame(
         appContext: Context,
         game: Game,
+        systemCoreConfig: SystemCoreConfig,
         loadQuickSave: Boolean
     ) = Observable.create<LoadingState> { emitter ->
         try {
             emitter.onNext(LoadingState.LoadingCore)
 
-            val gameSystem = GameSystem.findById(game.systemId)
+            val system = GameSystem.findById(game.systemId)
 
             val coreLibrary = runCatching {
                 coreManager.downloadCore(
                     appContext,
-                    gameSystem,
-                    gameSystem.coreAssetsManager
+                    systemCoreConfig.coreID,
+                    getAssetManagerForCore(systemCoreConfig.coreID)
                 ).blockingGet()
             }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
 
@@ -89,7 +106,7 @@ class GameLoader(
 
             val quickSaveData = runCatching {
                 if (loadQuickSave) {
-                    statesManager.getAutoSave(game, gameSystem)
+                    statesManager.getAutoSave(game, systemCoreConfig.coreID)
                         .toSingleAsOptional()
                         .blockingGet()
                         .toNullable()
@@ -98,13 +115,21 @@ class GameLoader(
                 }
             }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
 
-            val coreVariables = coreVariablesManager.getCoreOptionsForSystem(gameSystem)
+            val coreVariables = coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
                 .blockingGet()
                 .toTypedArray()
 
             emitter.onNext(
                 LoadingState.Ready(
-                    GameData(game, coreLibrary, gameFile, quickSaveData, saveRAMData, coreVariables)
+                    GameData(
+                        game,
+                        coreLibrary,
+                        gameFile,
+                        quickSaveData,
+                        saveRAMData,
+                        coreVariables,
+                        systemCoreConfig
+                    )
                 )
             )
         } catch (e: Exception) {
@@ -122,6 +147,7 @@ class GameLoader(
         val gameFile: File,
         val quickSaveData: SaveState?,
         val saveRAMData: ByteArray?,
-        val coreVariables: Array<CoreVariable>
+        val coreVariables: Array<CoreVariable>,
+        val systemCoreConfig: SystemCoreConfig
     )
 }

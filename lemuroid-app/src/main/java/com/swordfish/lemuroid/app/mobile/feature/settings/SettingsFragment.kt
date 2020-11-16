@@ -97,6 +97,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_key_rescan) -> rescanLibrary()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
+            getString(R.string.pref_key_open_cores_page) -> handleDisplayCorePage()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
             getString(R.string.pref_key_reset_settings) -> handleResetSettings()
         }
@@ -105,6 +106,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun handleDisplayBiosInfo() {
         findNavController().navigate(R.id.navigation_settings_bios_info)
+    }
+
+    private fun handleDisplayCorePage() {
+        findNavController().navigate(R.id.navigation_settings_cores_selection)
     }
 
     private fun handleOpenGamepadBindings() {

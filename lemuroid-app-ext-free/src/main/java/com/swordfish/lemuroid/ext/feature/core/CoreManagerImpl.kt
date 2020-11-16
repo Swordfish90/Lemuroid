@@ -25,7 +25,7 @@ import android.os.Build
 import com.swordfish.lemuroid.common.files.safeDelete
 import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.core.CoreManager
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -52,20 +52,20 @@ class CoreManagerImpl(
 
     override fun downloadCore(
         context: Context,
-        gameSystem: GameSystem,
+        coreID: CoreID,
         assetsManager: CoreManager.AssetsManager
     ): Single<String> {
         return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
-            .andThen(downloadCoreFromGithub(gameSystem).map { it.absolutePath })
+            .andThen(downloadCoreFromGithub(coreID).map { it.absolutePath })
     }
 
-    private fun downloadCoreFromGithub(gameSystem: GameSystem): Single<File> {
+    private fun downloadCoreFromGithub(coreID: CoreID): Single<File> {
         val mainCoresDirectory = directoriesManager.getCoresDirectory()
         val coresDirectory = File(mainCoresDirectory, CORES_VERSION).apply {
             mkdirs()
         }
 
-        val libFileName = gameSystem.coreFileName
+        val libFileName = coreID.libretroFileName
         val destFile = File(coresDirectory, libFileName)
 
         if (destFile.exists()) {

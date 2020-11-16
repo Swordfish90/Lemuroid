@@ -1,7 +1,7 @@
 package com.swordfish.lemuroid.lib.core
 
 import android.content.Context
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -14,7 +14,7 @@ import java.util.zip.ZipInputStream
 
 interface CoreManager {
 
-    fun downloadCore(context: Context, gameSystem: GameSystem, assetsManager: AssetsManager): Single<String>
+    fun downloadCore(context: Context, coreID: CoreID, assetsManager: AssetsManager): Single<String>
 
     interface CoreManagerApi {
         @GET

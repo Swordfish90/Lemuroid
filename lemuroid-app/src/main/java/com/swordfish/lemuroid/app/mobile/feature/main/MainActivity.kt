@@ -22,6 +22,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -129,6 +130,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [BiosSettingsFragment.Module::class])
         abstract fun biosInfoFragment(): BiosSettingsFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [CoresSelectionFragment.Module::class])
+        abstract fun coresSelectionFragment(): CoresSelectionFragment
 
         @dagger.Module
         companion object {

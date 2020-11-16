@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import java.security.InvalidParameterException
@@ -19,6 +20,9 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         if (savedInstanceState == null) {
             val game = intent.extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
                 ?: throw InvalidParameterException("Missing EXTRA_GAME")
+
+            val core = intent.extras?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
+                ?: throw InvalidParameterException("Missing EXTRA_CORE")
 
             val options = intent.extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
                 ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
@@ -41,6 +45,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val fragment = TVGameMenuFragmentWrapper(
                 statesManager,
                 game,
+                core,
                 options,
                 numDisks,
                 currentDisk,
@@ -61,6 +66,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
     class TVGameMenuFragmentWrapper(
         private val statesManager: StatesManager,
         private val game: Game,
+        private val systemCoreConfig: SystemCoreConfig,
         private val coreOptions: Array<CoreOption>,
         private val numDisks: Int,
         private val currentDisk: Int,
@@ -73,6 +79,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             return TVGameMenuFragment(
                 statesManager,
                 game,
+                systemCoreConfig,
                 coreOptions,
                 numDisks,
                 currentDisk,

@@ -2,7 +2,7 @@ package com.swordfish.lemuroid.lib.saves
 
 import com.swordfish.lemuroid.common.kotlin.readBytesUncompressed
 import com.swordfish.lemuroid.common.kotlin.writeBytesCompressed
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
@@ -16,28 +16,28 @@ import java.io.File
 
 class StatesManager(private val directoriesManager: DirectoriesManager) {
 
-    fun getSlotSave(game: Game, system: GameSystem, index: Int): Maybe<SaveState> {
+    fun getSlotSave(game: Game, coreID: CoreID, index: Int): Maybe<SaveState> {
         assert(index in 0 until MAX_STATES)
-        return getSaveState(getSlotSaveFileName(game, index), system.coreName)
+        return getSaveState(getSlotSaveFileName(game, index), coreID.coreName)
     }
 
-    fun setSlotSave(game: Game, saveState: SaveState, system: GameSystem, index: Int): Completable {
+    fun setSlotSave(game: Game, saveState: SaveState, coreID: CoreID, index: Int): Completable {
         assert(index in 0 until MAX_STATES)
-        return setSaveState(getSlotSaveFileName(game, index), system.coreName, saveState)
+        return setSaveState(getSlotSaveFileName(game, index), coreID.coreName, saveState)
     }
 
-    fun getAutoSave(game: Game, system: GameSystem) =
-        getSaveState(getAutoSaveFileName(game), system.coreName)
+    fun getAutoSave(game: Game, coreID: CoreID) =
+        getSaveState(getAutoSaveFileName(game), coreID.coreName)
 
-    fun setAutoSave(game: Game, system: GameSystem, saveState: SaveState) =
-        setSaveState(getAutoSaveFileName(game), system.coreName, saveState)
+    fun setAutoSave(game: Game, coreID: CoreID, saveState: SaveState) =
+        setSaveState(getAutoSaveFileName(game), coreID.coreName, saveState)
 
     fun getSavedSlotsInfo(
         game: Game,
-        coreName: String
+        coreID: CoreID
     ): Single<List<SaveStateInfo>> = Single.fromCallable {
         (0 until MAX_STATES)
-            .map { getStateFileOrDeprecated(getSlotSaveFileName(game, it), coreName) }
+            .map { getStateFileOrDeprecated(getSlotSaveFileName(game, it), coreID.coreName) }
             .map { SaveStateInfo(it.exists(), it.lastModified()) }
             .toList()
     }

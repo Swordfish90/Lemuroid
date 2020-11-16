@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveStateInfo
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -37,7 +37,7 @@ class GameMenuFragment : Fragment() {
     @Inject lateinit var statesManager: StatesManager
 
     private lateinit var game: Game
-    private lateinit var system: GameSystem
+    private lateinit var systemCoreConfig: SystemCoreConfig
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -51,7 +51,10 @@ class GameMenuFragment : Fragment() {
     ): View? {
         game = arguments?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
             ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
-        system = GameSystem.findById(game.systemId)
+
+        systemCoreConfig = arguments?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
+            ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
+
         return inflater.inflate(R.layout.layout_game_menu, container, false)
     }
 
@@ -64,7 +67,7 @@ class GameMenuFragment : Fragment() {
 
     private fun setupViews(): Completable {
         return Single.just(game)
-            .flatMap { statesManager.getSavedSlotsInfo(it, system.coreName) }
+            .flatMap { statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { presentViews(it) }
@@ -83,7 +86,7 @@ class GameMenuFragment : Fragment() {
         setupQuickSaveView(slot4SaveView, 3, infos[3])
 
         view!!.findViewById<View>(R.id.menu_saves_not_supported)
-            .setVisibleOrGone(!system.statesSupported)
+            .setVisibleOrGone(!systemCoreConfig.statesSupported)
 
         view!!.findViewById<Button>(R.id.menu_change_disk).apply {
             val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
@@ -103,7 +106,7 @@ class GameMenuFragment : Fragment() {
             setResultAndFinish(GameMenuContract.RESULT_RESET)
         }
 
-        view!!.findViewById<Button>(R.id.save_entry_settings).isEnabled = system.exposedSettings.isNotEmpty()
+        view!!.findViewById<Button>(R.id.save_entry_settings).isEnabled = systemCoreConfig.exposedSettings.isNotEmpty()
         view!!.findViewById<Button>(R.id.save_entry_settings).setOnClickListener {
             displayAdvancedSettings()
         }
@@ -201,7 +204,7 @@ class GameMenuFragment : Fragment() {
             }
         }
 
-        quickSaveView.setVisibleOrGone(system.statesSupported)
+        quickSaveView.setVisibleOrGone(systemCoreConfig.statesSupported)
     }
 
     private fun displayAdvancedSettings() {
