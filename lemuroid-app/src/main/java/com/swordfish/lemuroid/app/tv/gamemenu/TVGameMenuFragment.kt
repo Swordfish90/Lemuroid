@@ -13,7 +13,7 @@ import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SaveStateInfo
+import com.swordfish.lemuroid.lib.saves.SaveInfo
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
@@ -118,7 +118,7 @@ class TVGameMenuFragment(
         saveScreen: PreferenceScreen?,
         loadScreen: PreferenceScreen?,
         index: Int,
-        saveStateInfo: SaveStateInfo
+        saveStateInfo: SaveInfo
     ) {
         saveScreen?.addPreference(
             Preference(requireContext()).apply {
@@ -137,7 +137,7 @@ class TVGameMenuFragment(
         )
     }
 
-    private fun getDateString(saveInfo: SaveStateInfo): String {
+    private fun getDateString(saveInfo: SaveInfo): String {
         val formatter = SimpleDateFormat.getDateTimeInstance()
         return if (saveInfo.exists) {
             formatter.format(saveInfo.date)

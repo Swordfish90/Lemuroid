@@ -17,7 +17,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SaveStateInfo
+import com.swordfish.lemuroid.lib.saves.SaveInfo
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
@@ -74,7 +74,7 @@ class GameMenuFragment : Fragment() {
             .ignoreElement()
     }
 
-    private fun presentViews(infos: List<SaveStateInfo>) {
+    private fun presentViews(infos: List<SaveInfo>) {
         val slot1SaveView = view!!.findViewById<View>(R.id.save_entry_slot1)
         val slot2SaveView = view!!.findViewById<View>(R.id.save_entry_slot2)
         val slot3SaveView = view!!.findViewById<View>(R.id.save_entry_slot3)
@@ -175,7 +175,7 @@ class GameMenuFragment : Fragment() {
         activity?.finish()
     }
 
-    private fun setupQuickSaveView(quickSaveView: View, index: Int, saveInfo: SaveStateInfo) {
+    private fun setupQuickSaveView(quickSaveView: View, index: Int, saveInfo: SaveInfo) {
         val title = getString(R.string.game_menu_state, (index + 1).toString())
 
         quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).apply {
@@ -234,7 +234,7 @@ class GameMenuFragment : Fragment() {
     }
 
     /** We still return a string even if we don't show it to ensure dialog doesn't change size.*/
-    private fun getDateString(saveInfo: SaveStateInfo): String {
+    private fun getDateString(saveInfo: SaveInfo): String {
         val formatter = SimpleDateFormat.getDateTimeInstance()
         val date = if (saveInfo.exists) {
             saveInfo.date

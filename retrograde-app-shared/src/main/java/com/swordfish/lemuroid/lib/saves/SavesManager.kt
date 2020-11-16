@@ -21,6 +21,11 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         saveFile.writeBytes(data)
     }
 
+    fun getSaveRAMInfo(game: Game): SaveInfo {
+        val saveFile = getSaveFile(getSaveRAMFileName(game))
+        return SaveInfo(saveFile.exists(), saveFile.lastModified())
+    }
+
     private fun getSaveFile(fileName: String): File {
         val savesDirectory = directoriesManager.getSavesDirectory()
         return File(savesDirectory, fileName)

@@ -14,3 +14,18 @@ fun Activity.displayErrorDialog(message: String, actionLabel: String, action: ()
         .setCancelable(false)
         .show()
 }
+
+fun Activity.displayConfirmationDialog(
+    message: Int,
+    positiveActionLabel: Int,
+    negativeActionLabel: Int,
+    positiveAction: () -> Unit,
+    negativeAction: () -> Unit
+) {
+    AlertDialog.Builder(this)
+        .setMessage(message)
+        .setPositiveButton(positiveActionLabel) { _, _ -> positiveAction() }
+        .setNegativeButton(negativeActionLabel) { _, _ -> negativeAction() }
+        .setCancelable(false)
+        .show()
+}

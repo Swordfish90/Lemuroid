@@ -53,6 +53,7 @@ import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
+import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
 
 import dagger.Binds
@@ -296,5 +297,11 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun gamepadSettingsPreferences(gamePadManager: GamePadManager) =
             GamePadSettingsPreferences(gamePadManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun savesCoherenceEngine(savesManager: SavesManager, statesManager: StatesManager) =
+            SavesCoherencyEngine(savesManager, statesManager)
     }
 }

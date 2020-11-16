@@ -16,6 +16,7 @@ import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -36,6 +37,7 @@ class GameLauncherActivity : ImmersiveActivity() {
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var coresSelection: CoresSelection
+    @Inject lateinit var savesCoherencyEngine: SavesCoherencyEngine
 
     var startGameTime: Long = System.currentTimeMillis()
 
@@ -58,9 +60,12 @@ class GameLauncherActivity : ImmersiveActivity() {
                 .subscribe { displayLoadingState(it) }
 
             val core = getCoreForGame(game)
-            val isAutoSaveAllowed = settingsManager.autoSave && core.statesSupported
+            val loadState = requestLoadSave &&
+                settingsManager.autoSave &&
+                core.statesSupported &&
+                !savesCoherencyEngine.hasMoreRecentInGameFile(game, core.coreID)
 
-            gameLoader.load(applicationContext, game, core, requestLoadSave && isAutoSaveAllowed)
+            gameLoader.load(applicationContext, game, core, loadState)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())

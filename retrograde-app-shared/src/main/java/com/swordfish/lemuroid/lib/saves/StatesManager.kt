@@ -26,6 +26,11 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         return setSaveState(getSlotSaveFileName(game, index), coreID.coreName, saveState)
     }
 
+    fun getAutoSaveInfo(game: Game, coreID: CoreID): SaveInfo {
+        val autoSaveFile = getStateFile(getAutoSaveFileName(game), coreID.coreName)
+        return SaveInfo(autoSaveFile.exists(), autoSaveFile.lastModified())
+    }
+
     fun getAutoSave(game: Game, coreID: CoreID) =
         getSaveState(getAutoSaveFileName(game), coreID.coreName)
 
@@ -35,10 +40,10 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
     fun getSavedSlotsInfo(
         game: Game,
         coreID: CoreID
-    ): Single<List<SaveStateInfo>> = Single.fromCallable {
+    ): Single<List<SaveInfo>> = Single.fromCallable {
         (0 until MAX_STATES)
             .map { getStateFileOrDeprecated(getSlotSaveFileName(game, it), coreID.coreName) }
-            .map { SaveStateInfo(it.exists(), it.lastModified()) }
+            .map { SaveInfo(it.exists(), it.lastModified()) }
             .toList()
     }
 
