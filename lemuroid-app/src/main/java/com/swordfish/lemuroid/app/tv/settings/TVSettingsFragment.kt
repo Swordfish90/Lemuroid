@@ -7,6 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
+import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -22,6 +23,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     @Inject lateinit var biosPreferences: BiosPreferences
     @Inject lateinit var gamePadSettingsPreferences: GamePadSettingsPreferences
     @Inject lateinit var gamePadManager: GamePadManager
+    @Inject lateinit var coresSelectionPreferences: CoresSelectionPreferences
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -30,6 +32,10 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.tv_settings, rootKey)
+
+        getCoresSelectionScreen()?.let {
+            coresSelectionPreferences.addCoresSelectionPreferences(it)
+        }
 
         getBiosInfoPreferenceScreen()?.let {
             biosPreferences.addBiosPreferences(it)
@@ -47,6 +53,10 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     private fun getGamePadPreferenceScreen(): PreferenceScreen? {
         return findPreference(resources.getString(R.string.pref_key_open_gamepad_bindings))
+    }
+
+    private fun getCoresSelectionScreen(): PreferenceScreen? {
+        return findPreference(resources.getString(R.string.pref_key_open_cores_selection))
     }
 
     private fun getBiosInfoPreferenceScreen(): PreferenceScreen? {
