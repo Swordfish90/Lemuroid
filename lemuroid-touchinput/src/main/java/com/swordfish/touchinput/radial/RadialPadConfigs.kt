@@ -132,7 +132,7 @@ object RadialPadConfigs {
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(
-                    2,
+                    8,
                     1,
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_L2,
@@ -140,7 +140,7 @@ object RadialPadConfigs {
                         contentDescription = "Microphone"
                     )
                 ),
-                SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
                 SecondaryDialConfig.SingleButton(
                     4,
                     1,
@@ -183,8 +183,8 @@ object RadialPadConfigs {
                     label = "R"
                 )
             ),
-            SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
-            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_MENU)
+            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
+            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
         )
     )
 
