@@ -136,7 +136,7 @@ object RadialPadConfigs {
                     1,
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_THUMBL,
-                        iconId = R.drawable.button_blow,
+                        iconId = R.drawable.button_mic,
                         contentDescription = "Microphone"
                     )
                 ),
@@ -198,7 +198,7 @@ object RadialPadConfigs {
                     1,
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_L2,
-                        iconId = R.drawable.button_blow,
+                        iconId = R.drawable.button_mic,
                         contentDescription = "Microphone"
                     )
                 ),
