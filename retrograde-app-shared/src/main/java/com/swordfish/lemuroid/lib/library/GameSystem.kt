@@ -316,7 +316,10 @@ data class GameSystem(
                     ),
                     SystemCoreConfig(
                         CoreID.MELONDS,
-                        exposedSettings = listOf("melonds_threaded_renderer"),
+                        exposedSettings = listOf(
+                            "melonds_threaded_renderer",
+                            "melonds_jit_enable"
+                        ),
                         defaultSettings = listOf(
                             CoreVariable("melonds_touch_mode", "Touch"),
                             CoreVariable("melonds_threaded_renderer", "enabled")
