@@ -104,8 +104,8 @@ object GamePadFactory {
 
             SystemID.NDS -> when (coreID) {
                 CoreID.DESMUME -> LemuroidVirtualGamePad(
-                    RadialPadConfigs.NDS_LEFT,
-                    RadialPadConfigs.NDS_RIGHT,
+                    RadialPadConfigs.DESMUME_LEFT,
+                    RadialPadConfigs.DESMUME_RIGHT,
                     context,
                     vibrateOnTouch
                 )

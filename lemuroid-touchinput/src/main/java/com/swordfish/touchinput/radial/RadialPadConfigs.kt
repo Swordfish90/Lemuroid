@@ -126,7 +126,7 @@ object RadialPadConfigs {
             )
         )
 
-    val NDS_LEFT =
+    val DESMUME_LEFT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
@@ -135,7 +135,7 @@ object RadialPadConfigs {
                     8,
                     1,
                     ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_L2,
+                        id = KeyEvent.KEYCODE_BUTTON_THUMBL,
                         iconId = R.drawable.button_blow,
                         contentDescription = "Microphone"
                     )
@@ -152,7 +152,7 @@ object RadialPadConfigs {
             )
         )
 
-    val NDS_RIGHT = RadialGamePadConfig(
+    val DESMUME_RIGHT = RadialGamePadConfig(
         sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
