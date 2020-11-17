@@ -28,7 +28,8 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
 
     fun getAutoSaveInfo(game: Game, coreID: CoreID): SaveInfo {
         val autoSaveFile = getStateFile(getAutoSaveFileName(game), coreID.coreName)
-        return SaveInfo(autoSaveFile.exists(), autoSaveFile.lastModified())
+        val autoSaveHasData = autoSaveFile.length() > 0
+        return SaveInfo(autoSaveFile.exists() && autoSaveHasData, autoSaveFile.lastModified())
     }
 
     fun getAutoSave(game: Game, coreID: CoreID) =

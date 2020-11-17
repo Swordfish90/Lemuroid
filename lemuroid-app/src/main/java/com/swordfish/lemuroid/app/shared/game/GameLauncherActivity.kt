@@ -63,7 +63,7 @@ class GameLauncherActivity : ImmersiveActivity() {
             val loadState = requestLoadSave &&
                 settingsManager.autoSave &&
                 core.statesSupported &&
-                !savesCoherencyEngine.hasMoreRecentInGameFile(game, core.coreID)
+                !savesCoherencyEngine.shouldDiscardAutoSaveState(game, core.coreID)
 
             gameLoader.load(applicationContext, game, core, loadState)
                 .subscribeOn(Schedulers.io())
