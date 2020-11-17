@@ -22,7 +22,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 ?: throw InvalidParameterException("Missing EXTRA_GAME")
 
             val core = intent.extras?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
-                ?: throw InvalidParameterException("Missing EXTRA_CORE")
+                ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
 
             val options = intent.extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
                 ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")

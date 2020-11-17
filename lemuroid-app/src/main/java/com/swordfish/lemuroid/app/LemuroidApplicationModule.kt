@@ -301,7 +301,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun savesCoherenceEngine(savesManager: SavesManager, statesManager: StatesManager) =
+        fun savesCoherencyEngine(savesManager: SavesManager, statesManager: StatesManager) =
             SavesCoherencyEngine(savesManager, statesManager)
     }
 }

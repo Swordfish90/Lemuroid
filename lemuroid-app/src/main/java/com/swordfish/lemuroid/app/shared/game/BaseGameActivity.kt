@@ -92,7 +92,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         system = GameSystem.findById(game.systemId)
-        systemCoreConfig = intent.getSerializableExtra(EXTRA_CORE_CONFIG) as SystemCoreConfig
+        systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
 
         val directoriesManager = DirectoriesManager(applicationContext)
 
@@ -647,7 +647,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     companion object {
         const val EXTRA_GAME = "game"
-        const val EXTRA_CORE_CONFIG = "core_config"
+        const val EXTRA_SYSTEM_CORE_CONFIG = "system_core_config"
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
         const val EXTRA_CORE_VARIABLES = "core_variables"

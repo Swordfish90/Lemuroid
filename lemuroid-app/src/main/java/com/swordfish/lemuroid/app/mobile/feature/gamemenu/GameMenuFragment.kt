@@ -53,7 +53,7 @@ class GameMenuFragment : Fragment() {
             ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
 
         systemCoreConfig = arguments?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
-            ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
+            ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
 
         return inflater.inflate(R.layout.layout_game_menu, container, false)
     }
