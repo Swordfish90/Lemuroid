@@ -85,6 +85,13 @@
         app:iconSpaceReserved="false">
 
         <Preference
+            android:key="@string/pref_key_open_cores_selection"
+            android:title="@string/settings_title_open_cores_selection"
+            app:summary="@string/settings_description_open_cores_selection"
+            app:iconSpaceReserved="false"
+            android:persistent="false"/>
+
+        <Preference
             android:key="@string/pref_key_display_bios_info"
             android:title="@string/settings_title_display_bios_info"
             app:summary="@string/settings_description_display_bios_info"

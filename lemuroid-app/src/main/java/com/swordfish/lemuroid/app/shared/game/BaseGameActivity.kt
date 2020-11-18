@@ -25,6 +25,7 @@ import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoaderError
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveState
@@ -57,6 +58,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected lateinit var game: Game
     protected lateinit var system: GameSystem
+    protected lateinit var systemCoreConfig: SystemCoreConfig
     protected lateinit var containerLayout: ConstraintLayout
     protected lateinit var gameViewLayout: FrameLayout
     protected lateinit var overlayLayout: FrameLayout
@@ -90,6 +92,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         system = GameSystem.findById(game.systemId)
+        systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
 
         val directoriesManager = DirectoriesManager(applicationContext)
 
@@ -110,7 +113,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     // reload the previous one. This is far from perfect but definitely improves the current behaviour.
     private fun retrieveAutoSaveData(): SaveState? {
         if (intent.getBooleanExtra(EXTRA_LOAD_AUTOSAVE, false)) {
-            return getAndResetTransientQuickSave() ?: statesManager.getAutoSave(game, system)
+            return getAndResetTransientQuickSave() ?: statesManager.getAutoSave(game, systemCoreConfig.coreID)
                 .blockingGet()
         }
         return null
@@ -205,14 +208,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected fun displayOptionsDialog() {
         val intent = Intent(this, getDialogClass()).apply {
-            val options = getCoreOptions().filter { it.variable.key in system.exposedSettings }
+            val options = getCoreOptions().filter { it.variable.key in systemCoreConfig.exposedSettings }
             this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
             this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
             this.putExtra(GameMenuContract.EXTRA_GAME, game)
+            this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
             this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
             this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
-            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, retroGameView?.fastForwardEnabled)
+            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, retroGameView?.frameSpeed ?: 1 > 1)
         }
         startActivityForResult(intent, DIALOG_REQUEST)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -247,7 +251,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun isAutoSaveEnabled(): Boolean {
-        return settingsManager.autoSave && system.statesSupported
+        return settingsManager.autoSave && systemCoreConfig.statesSupported
     }
 
     override fun onResume() {
@@ -259,7 +263,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .autoDispose(scope())
             .subscribe { loadingView.setVisibleOrGone(it) }
 
-        coreVariablesManager.getCoreOptionsForSystem(system)
+        coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
             .autoDispose(scope())
             .subscribeBy({}) {
                 onVariablesRead(it)
@@ -288,7 +292,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     override fun onStart() {
         super.onStart()
-        coreVariablesManager.getCoreOptionsForSystem(system)
+        coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
             .autoDispose(scope())
             .subscribeBy({}) {
                 updateCoreVariables(it)
@@ -536,7 +540,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .filter { it }
             .map { getCurrentSaveState() }
             .doOnSuccess { Timber.i("Stored autosave file with size: ${it?.state?.size}") }
-            .flatMapCompletable { statesManager.setAutoSave(game, system, it) }
+            .flatMapCompletable { statesManager.setAutoSave(game, systemCoreConfig.coreID, it) }
     }
 
     private fun getSaveRAMCompletable(game: Game): Completable {
@@ -552,14 +556,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return Maybe.fromCallable { getCurrentSaveState() }
             .doAfterSuccess { Timber.i("Storing quicksave with size: ${it!!.state.size}") }
             .subscribeOn(Schedulers.io())
-            .flatMapCompletable { statesManager.setSlotSave(game, it, system, index) }
+            .flatMapCompletable { statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index) }
             .doOnSubscribe { loading = true }
             .doAfterTerminate { loading = false }
     }
 
     private fun loadSlot(index: Int): Completable {
         if (loading) return Completable.complete()
-        return statesManager.getSlotSave(game, system, index)
+        return statesManager.getSlotSave(game, systemCoreConfig.coreID, index)
             .map { loadSaveState(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -631,10 +635,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
                 retroGameView?.apply {
-                    this.fastForwardEnabled = data.getBooleanExtra(
+                    val fastForwardEnabled = data.getBooleanExtra(
                         GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
                         false
                     )
+                    this.frameSpeed = if (fastForwardEnabled) 2 else 1
                 }
             }
         }
@@ -642,6 +647,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     companion object {
         const val EXTRA_GAME = "game"
+        const val EXTRA_SYSTEM_CORE_CONFIG = "system_core_config"
         const val EXTRA_CORE_PATH = "core_path"
         const val EXTRA_GAME_PATH = "game_path"
         const val EXTRA_CORE_VARIABLES = "core_variables"

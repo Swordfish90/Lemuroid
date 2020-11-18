@@ -126,21 +126,21 @@ object RadialPadConfigs {
             )
         )
 
-    val NDS_LEFT =
+    val DESMUME_LEFT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(
-                    2,
+                    8,
                     1,
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_THUMBL,
-                        iconId = R.drawable.button_blow,
+                        iconId = R.drawable.button_mic,
                         contentDescription = "Microphone"
                     )
                 ),
-                SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
                 SecondaryDialConfig.SingleButton(
                     4,
                     1,
@@ -152,7 +152,7 @@ object RadialPadConfigs {
             )
         )
 
-    val NDS_RIGHT = RadialGamePadConfig(
+    val DESMUME_RIGHT = RadialGamePadConfig(
         sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
@@ -183,8 +183,70 @@ object RadialPadConfigs {
                     label = "R"
                 )
             ),
-            SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
-            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_MENU)
+            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
+            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+        )
+    )
+
+    val MELONDS_NDS_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(
+                    8,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L2,
+                        iconId = R.drawable.button_mic,
+                        contentDescription = "Microphone"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.SingleButton(
+                    4,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L1,
+                        label = "L"
+                    )
+                )
+            )
+        )
+
+    val MELONDS_NDS_RIGHT = RadialGamePadConfig(
+        sockets = 12,
+        primaryDial = PrimaryDialConfig.PrimaryButtons(
+            dials = listOf(
+                ButtonConfig(
+                    id = KeyEvent.KEYCODE_BUTTON_A,
+                    label = "A"
+                ),
+                ButtonConfig(
+                    id = KeyEvent.KEYCODE_BUTTON_X,
+                    label = "X"
+                ),
+                ButtonConfig(
+                    id = KeyEvent.KEYCODE_BUTTON_Y,
+                    label = "Y"
+                ),
+                ButtonConfig(
+                    id = KeyEvent.KEYCODE_BUTTON_B,
+                    label = "B"
+                )
+            )
+        ),
+        secondaryDials = listOf(
+            SecondaryDialConfig.SingleButton(
+                2,
+                1,
+                ButtonConfig(
+                    id = KeyEvent.KEYCODE_BUTTON_R1,
+                    label = "R"
+                )
+            ),
+            SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
+            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
         )
     )
 

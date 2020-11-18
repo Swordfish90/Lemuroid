@@ -57,4 +57,9 @@
         android:name="com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment"
         android:label="@string/settings_title_display_bios_info" />
 
+    <fragment
+        android:id="@+id/navigation_settings_cores_selection"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment"
+        android:label="@string/settings_title_open_cores_selection" />
+
 </navigation>

@@ -10,10 +10,13 @@ import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
+import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -33,6 +36,8 @@ class GameLauncherActivity : ImmersiveActivity() {
 
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var settingsManager: SettingsManager
+    @Inject lateinit var coresSelection: CoresSelection
+    @Inject lateinit var savesCoherencyEngine: SavesCoherencyEngine
 
     var startGameTime: Long = System.currentTimeMillis()
 
@@ -54,10 +59,13 @@ class GameLauncherActivity : ImmersiveActivity() {
                 .autoDispose(scope())
                 .subscribe { displayLoadingState(it) }
 
-            val system = GameSystem.findById(game.systemId)
-            val isAutoSaveAllowed = settingsManager.autoSave && system.statesSupported
+            val core = getCoreForGame(game)
+            val loadState = requestLoadSave &&
+                settingsManager.autoSave &&
+                core.statesSupported &&
+                !savesCoherencyEngine.shouldDiscardAutoSaveState(game, core.coreID)
 
-            gameLoader.load(applicationContext, game, requestLoadSave && isAutoSaveAllowed)
+            gameLoader.load(applicationContext, game, core, loadState)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())
@@ -74,6 +82,11 @@ class GameLauncherActivity : ImmersiveActivity() {
                     }
                 )
         }
+    }
+
+    private fun getCoreForGame(game: Game): SystemCoreConfig {
+        val system = GameSystem.findById(game.systemId)
+        return coresSelection.getCoreConfigForSystem(system)
     }
 
     private fun onGameDataReady(gameData: GameLoader.GameData, useLeanback: Boolean) {
@@ -95,6 +108,7 @@ class GameLauncherActivity : ImmersiveActivity() {
     fun newIntent(context: Context, gameData: GameLoader.GameData, useLeanback: Boolean) =
         Intent(context, getGameActivityClass(useLeanback)).apply {
             putExtra(BaseGameActivity.EXTRA_GAME, gameData.game)
+            putExtra(BaseGameActivity.EXTRA_SYSTEM_CORE_CONFIG, gameData.systemCoreConfig)
             putExtra(BaseGameActivity.EXTRA_CORE_PATH, gameData.coreLibrary)
             putExtra(BaseGameActivity.EXTRA_GAME_PATH, gameData.gameFile.absolutePath)
             putExtra(BaseGameActivity.EXTRA_CORE_VARIABLES, gameData.coreVariables)

@@ -1,10 +1,19 @@
 package com.swordfish.touchinput.radial
 
 import android.content.Context
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.SystemID
+import java.lang.UnsupportedOperationException
 
 object GamePadFactory {
-    fun createRadialGamePad(context: Context, systemId: SystemID, vibrateOnTouch: Boolean): LemuroidVirtualGamePad {
+
+    fun createRadialGamePad(
+        context: Context,
+        systemId: SystemID,
+        coreID: CoreID,
+        vibrateOnTouch: Boolean
+    ): LemuroidVirtualGamePad {
+
         return when (systemId) {
             SystemID.SNES -> LemuroidVirtualGamePad(
                 RadialPadConfigs.SNES_LEFT,
@@ -61,7 +70,7 @@ object GamePadFactory {
                 )
             }
 
-            SystemID.GBC -> LemuroidVirtualGamePad(
+            SystemID.GB, SystemID.GBC -> LemuroidVirtualGamePad(
                 RadialPadConfigs.GB_LEFT,
                 RadialPadConfigs.GB_RIGHT,
                 context,
@@ -93,23 +102,25 @@ object GamePadFactory {
                 1.1f
             )
 
-            SystemID.NDS -> LemuroidVirtualGamePad(
-                RadialPadConfigs.NDS_LEFT,
-                RadialPadConfigs.NDS_RIGHT,
-                context,
-                vibrateOnTouch
-            )
+            SystemID.NDS -> when (coreID) {
+                CoreID.DESMUME -> LemuroidVirtualGamePad(
+                    RadialPadConfigs.DESMUME_LEFT,
+                    RadialPadConfigs.DESMUME_RIGHT,
+                    context,
+                    vibrateOnTouch
+                )
+                CoreID.MELONDS -> LemuroidVirtualGamePad(
+                    RadialPadConfigs.MELONDS_NDS_LEFT,
+                    RadialPadConfigs.MELONDS_NDS_RIGHT,
+                    context,
+                    vibrateOnTouch
+                )
+                else -> throw UnsupportedOperationException("This core is not supported on the system.")
+            }
 
             SystemID.NES -> LemuroidVirtualGamePad(
                 RadialPadConfigs.NES_LEFT,
                 RadialPadConfigs.NES_RIGHT,
-                context,
-                vibrateOnTouch
-            )
-
-            SystemID.GB -> LemuroidVirtualGamePad(
-                RadialPadConfigs.GB_LEFT,
-                RadialPadConfigs.GB_RIGHT,
                 context,
                 vibrateOnTouch
             )

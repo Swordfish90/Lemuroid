@@ -21,7 +21,7 @@ package com.swordfish.lemuroid.ext.feature.core
 
 import android.content.Context
 import com.swordfish.lemuroid.lib.core.CoreManager
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -35,10 +35,10 @@ class CoreManagerImpl(
 
     override fun downloadCore(
         context: Context,
-        gameSystem: GameSystem,
+        coreID: CoreID,
         assetsManager: CoreManager.AssetsManager
     ): Single<String> {
         return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
-            .andThen(Single.just(gameSystem.coreFileName))
+            .andThen(Single.just(coreID.libretroFileName))
     }
 }

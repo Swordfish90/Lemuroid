@@ -90,7 +90,12 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupVirtualPad(system: GameSystem) {
-        virtualGamePad = GamePadFactory.createRadialGamePad(this, system.id, settingsManager.vibrateOnTouch)
+        virtualGamePad = GamePadFactory.createRadialGamePad(
+            this,
+            system.id,
+            systemCoreConfig.coreID,
+            settingsManager.vibrateOnTouch
+        )
 
         overlayLayout.addView(virtualGamePad)
 
