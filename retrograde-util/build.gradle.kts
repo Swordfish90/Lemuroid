@@ -14,4 +14,6 @@ dependencies {
     implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.rxJava2)
+    implementation(deps.libs.xz)
+    implementation(deps.libs.compress)
 }

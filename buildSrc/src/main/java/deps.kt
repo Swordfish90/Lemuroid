@@ -126,6 +126,8 @@ object deps {
         const val material                 = "com.google.android.material:material:1.2.1"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
+        const val xz                       = "org.tukaani:xz:1.8"
+        const val compress                 = "org.apache.commons:commons-compress:1.20"
 
         // This will be replaced by native material components when they will be ready.
         const val materialProgressBar      = "me.zhanghai.android.materialprogressbar:library:1.6.1"

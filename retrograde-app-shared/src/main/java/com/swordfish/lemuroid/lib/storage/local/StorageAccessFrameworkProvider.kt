@@ -8,7 +8,9 @@ import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
 import com.swordfish.lemuroid.common.kotlin.isZipped
+import com.swordfish.lemuroid.common.kotlin.isSevenZipped
 import com.swordfish.lemuroid.common.kotlin.writeToFile
+import com.swordfish.lemuroid.common.kotlin.copyInputStreamToFile
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -19,6 +21,7 @@ import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import org.apache.commons.compress.archivers.sevenz.SevenZFile
 import timber.log.Timber
 import java.io.File
 import java.io.InputStream
@@ -161,6 +164,12 @@ class StorageAccessFrameworkProvider(
                 context.contentResolver.openInputStream(originalDocument.uri)
             )
             stream.extractEntryToFile(game.fileName, cacheFile)
+        } else if (originalDocument.isSevenZipped() && originalDocument.name != game.fileName) {
+            val file = File.createTempFile("temp_seven_z_file_from_uri", ".7z", context.cacheDir)
+            val inputStream = context.contentResolver.openInputStream(originalDocument.uri)
+            inputStream?.let { file.copyInputStreamToFile(it) }
+            val sevenZFile = SevenZFile(file)
+            sevenZFile.extractEntryToFile(game.fileName, cacheFile)
         } else {
             val stream = context.contentResolver.openInputStream(originalDocument.uri)!!
             stream.writeToFile(cacheFile)
