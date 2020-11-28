@@ -328,6 +328,10 @@ data class GameSystem(
                 ),
                 uniqueExtensions = listOf("nds"),
                 mergeDPADAndLeftStickEvents = true,
+                virtualGamePadOptions = VirtualGamePadOptions(
+                    hasRotation = false,
+                    allowOverlay = false
+                )
             )
         )
 
@@ -361,7 +365,8 @@ data class GameSystem(
         )
 
         data class VirtualGamePadOptions(
-            val hasRotation: Boolean = false
+            val hasRotation: Boolean = false,
+            val allowOverlay: Boolean = true,
         )
     }
 }

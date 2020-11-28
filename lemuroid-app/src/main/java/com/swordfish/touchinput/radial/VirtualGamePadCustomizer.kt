@@ -1,6 +1,5 @@
 package com.swordfish.touchinput.radial
 
-import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.view.Gravity
@@ -12,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.google.android.material.slider.Slider
+import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.touchinput.controller.R
@@ -24,9 +24,8 @@ class VirtualGamePadCustomizer(
     private val displayRotation = system.virtualGamePadOptions.hasRotation
 
     fun displayPortraitDialog(
-        activity: Activity,
-        parentView: ViewGroup,
-        virtualGamePad: LemuroidVirtualGamePad
+        activity: GameActivity,
+        parentView: ViewGroup
     ): PopupWindow {
         val originalRequestedOrientation = activity.requestedOrientation
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
@@ -54,7 +53,7 @@ class VirtualGamePadCustomizer(
         customView.findViewById<Slider>(R.id.touch_slider_size)
             ?.addOnChangeListener { _, value, _ ->
                 virtualGamePadSettingsManager.portraitScale = value
-                virtualGamePad.padScale = value
+                activity.padScale = value
             }
 
         customView.findViewById<TextView>(R.id.touch_textview_rotation)
@@ -64,7 +63,7 @@ class VirtualGamePadCustomizer(
             setVisibleOrGone(displayRotation)
             addOnChangeListener { _, value, _ ->
                 virtualGamePadSettingsManager.portraitRotation = value
-                virtualGamePad.padRotation = value
+                activity.padRotation = value
             }
         }
 
@@ -74,7 +73,7 @@ class VirtualGamePadCustomizer(
 
         customView.findViewById<Button>(R.id.touch_button_reset)?.setOnClickListener {
             virtualGamePadSettingsManager.resetPortrait()
-            loadPortraitSettingsIntoGamePad(virtualGamePad)
+            loadPortraitSettingsIntoGamePad(activity)
             loadPortraitSettingsPopupWindow(customView)
         }
 
@@ -85,9 +84,8 @@ class VirtualGamePadCustomizer(
     }
 
     fun displayLandscapeDialog(
-        activity: Activity,
-        parent: ViewGroup,
-        virtualGamePad: LemuroidVirtualGamePad
+        activity: GameActivity,
+        parent: ViewGroup
     ): PopupWindow {
         val originalRequestedOrientation = activity.requestedOrientation
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
@@ -120,20 +118,20 @@ class VirtualGamePadCustomizer(
             setVisibleOrGone(displayRotation)
             addOnChangeListener { _, value, _ ->
                 virtualGamePadSettingsManager.landscapeRotation = value
-                virtualGamePad.padRotation = value
+                activity.padRotation = value
             }
         }
 
         customView.findViewById<Slider>(R.id.touch_slider_size)
             ?.addOnChangeListener { _, value, _ ->
                 virtualGamePadSettingsManager.landscapeScale = value
-                virtualGamePad.padScale = value
+                activity.padScale = value
             }
 
         customView.findViewById<Slider>(R.id.touch_slider_ypos)
             ?.addOnChangeListener { _, value, _ ->
                 virtualGamePadSettingsManager.landscapeOffsetY = value
-                virtualGamePad.padOffsetY = value
+                activity.padOffsetY = value
             }
 
         customView.findViewById<Button>(R.id.touch_button_close)?.setOnClickListener {
@@ -142,7 +140,7 @@ class VirtualGamePadCustomizer(
 
         customView.findViewById<Button>(R.id.touch_button_reset)?.setOnClickListener {
             virtualGamePadSettingsManager.resetLandscape()
-            loadLandscapeSettingsIntoGamePad(virtualGamePad)
+            loadLandscapeSettingsIntoGamePad(activity)
             loadLandscapeSettingsIntoPopupWindow(customView)
         }
 
@@ -152,16 +150,16 @@ class VirtualGamePadCustomizer(
         return popupWindow
     }
 
-    fun loadPortraitSettingsIntoGamePad(virtualGamePad: LemuroidVirtualGamePad) {
-        virtualGamePad.padScale = virtualGamePadSettingsManager.portraitScale
-        virtualGamePad.padRotation = virtualGamePadSettingsManager.portraitRotation
-        virtualGamePad.padOffsetY = 0f
+    fun loadPortraitSettingsIntoGamePad(activity: GameActivity) {
+        activity.padScale = virtualGamePadSettingsManager.portraitScale
+        activity.padRotation = virtualGamePadSettingsManager.portraitRotation
+        activity.padOffsetY = 0f
     }
 
-    fun loadLandscapeSettingsIntoGamePad(virtualGamePad: LemuroidVirtualGamePad) {
-        virtualGamePad.padScale = virtualGamePadSettingsManager.landscapeScale
-        virtualGamePad.padRotation = virtualGamePadSettingsManager.landscapeRotation
-        virtualGamePad.padOffsetY = virtualGamePadSettingsManager.landscapeOffsetY
+    fun loadLandscapeSettingsIntoGamePad(activity: GameActivity) {
+        activity.padScale = virtualGamePadSettingsManager.landscapeScale
+        activity.padRotation = virtualGamePadSettingsManager.landscapeRotation
+        activity.padOffsetY = virtualGamePadSettingsManager.landscapeOffsetY
     }
 
     private fun loadPortraitSettingsPopupWindow(view: View) {
