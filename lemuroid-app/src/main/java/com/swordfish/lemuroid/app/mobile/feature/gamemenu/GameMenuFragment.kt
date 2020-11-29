@@ -1,247 +1,57 @@
 package com.swordfish.lemuroid.app.mobile.feature.gamemenu
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.button.MaterialButtonToggleGroup
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
-import com.swordfish.lemuroid.lib.library.SystemCoreConfig
-import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SaveInfo
-import com.swordfish.lemuroid.lib.saves.StatesManager
-import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
-import com.swordfish.lemuroid.lib.ui.setVisibleOrInvisible
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDispose
+import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
+import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import java.security.InvalidParameterException
-import java.text.SimpleDateFormat
-import javax.inject.Inject
 
-class GameMenuFragment : Fragment() {
-
-    @Inject lateinit var statesManager: StatesManager
-
-    private lateinit var game: Game
-    private lateinit var systemCoreConfig: SystemCoreConfig
+class GameMenuFragment : PreferenceFragmentCompat() {
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        game = arguments?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
-            ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_ID")
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore = DummyDataStore
+        setPreferencesFromResource(R.xml.mobile_game_settings, rootKey)
 
-        systemCoreConfig = arguments?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
-            ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
+        val audioEnabled = activity?.intent?.getBooleanExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, false) ?: false
+        GameMenuHelper.setupAudioOption(preferenceScreen, audioEnabled)
 
-        return inflater.inflate(R.layout.layout_game_menu, container, false)
+        val fastForwardSupported = activity?.intent?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, false) ?: false
+        val fastForwardEnabled = activity?.intent?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false
+        GameMenuHelper.setupFastForwardOption(preferenceScreen, fastForwardEnabled, fastForwardSupported)
+
+        val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
+        val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0
+        if (numDisks > 1) {
+            GameMenuHelper.setupChangeDiskOption(activity, preferenceScreen, currentDisk, numDisks)
+        }
     }
 
-    override fun onStart() {
-        super.onStart()
-        setupViews()
-            .autoDispose(scope())
-            .subscribe()
-    }
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        if (GameMenuHelper.onPreferenceTreeClicked(activity, preference))
+            return true
 
-    private fun setupViews(): Completable {
-        return Single.just(game)
-            .flatMap { statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess { presentViews(it) }
-            .ignoreElement()
-    }
-
-    private fun presentViews(infos: List<SaveInfo>) {
-        val slot1SaveView = view!!.findViewById<View>(R.id.save_entry_slot1)
-        val slot2SaveView = view!!.findViewById<View>(R.id.save_entry_slot2)
-        val slot3SaveView = view!!.findViewById<View>(R.id.save_entry_slot3)
-        val slot4SaveView = view!!.findViewById<View>(R.id.save_entry_slot4)
-
-        setupQuickSaveView(slot1SaveView, 0, infos[0])
-        setupQuickSaveView(slot2SaveView, 1, infos[1])
-        setupQuickSaveView(slot3SaveView, 2, infos[2])
-        setupQuickSaveView(slot4SaveView, 3, infos[3])
-
-        view!!.findViewById<View>(R.id.menu_saves_not_supported)
-            .setVisibleOrGone(!systemCoreConfig.statesSupported)
-
-        view!!.findViewById<Button>(R.id.menu_change_disk).apply {
-            val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
-            val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0)
-                ?: 0
-            this.setVisibleOrGone(numDisks > 1)
-            this.setOnClickListener {
-                displayChangeDiskDialog(currentDisk, numDisks)
+        when (preference?.key) {
+            "pref_game_section_save" -> {
+                findNavController().navigate(R.id.game_menu_save)
+            }
+            "pref_game_section_load" -> {
+                findNavController().navigate(R.id.game_menu_load)
+            }
+            "pref_game_section_core_options" -> {
+                findNavController().navigate(R.id.game_menu_core_options)
             }
         }
-
-        view!!.findViewById<Button>(R.id.menu_edit_touch_controls).setOnClickListener {
-            setResultAndFinish(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS)
-        }
-
-        view!!.findViewById<Button>(R.id.save_entry_reset).setOnClickListener {
-            setResultAndFinish(GameMenuContract.RESULT_RESET)
-        }
-
-        view!!.findViewById<Button>(R.id.save_entry_settings).isEnabled = systemCoreConfig.exposedSettings.isNotEmpty()
-        view!!.findViewById<Button>(R.id.save_entry_settings).setOnClickListener {
-            displayAdvancedSettings()
-        }
-
-        view!!.findViewById<Button>(R.id.save_entry_close).setOnClickListener {
-            setResultAndFinish(GameMenuContract.RESULT_QUIT)
-        }
-
-        val audioEnabled = activity?.intent
-            ?.getBooleanExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, true) ?: true
-
-        val audioToggle = (view!!.findViewById(R.id.menu_audio_toggle) as MaterialButtonToggleGroup)
-        setupBinaryToggleButton(
-            audioToggle,
-            audioEnabled,
-            R.id.menu_audio_toggle_enabled,
-            R.id.menu_audio_toggle_disabled,
-            GameMenuContract.RESULT_ENABLE_AUDIO,
-            true
-        )
-
-        val fastForwardEnabled = activity?.intent
-            ?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false
-
-        val fastForwardSupported = activity?.intent
-            ?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, false) ?: false
-
-        val fastForwardToggle = (view!!.findViewById(R.id.menu_fast_forward_toggle) as MaterialButtonToggleGroup)
-        setupBinaryToggleButton(
-            fastForwardToggle,
-            fastForwardEnabled,
-            R.id.menu_fast_forward_enabled,
-            R.id.menu_fast_forward_disabled,
-            GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
-            fastForwardSupported
-        )
-
-        view!!.setVisibleOrGone(true)
-    }
-
-    private fun setupBinaryToggleButton(
-        toggleButton: MaterialButtonToggleGroup,
-        isToggled: Boolean,
-        enabledButtonResId: Int,
-        disabledButtonResId: Int,
-        resultValue: String,
-        enabled: Boolean
-    ) {
-        toggleButton.check(if (isToggled) enabledButtonResId else disabledButtonResId)
-        toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            val newValue = when (checkedId) {
-                enabledButtonResId -> true
-                else -> false
-            }
-            setResultAndFinish(resultValue, newValue)
-        }
-        toggleButton.setVisibleOrInvisible(enabled)
-    }
-
-    private fun setResultAndFinish(resultName: String, resultValue: Boolean = true) {
-        val resultIntent = Intent().apply {
-            putExtra(resultName, resultValue)
-        }
-        activity?.setResult(Activity.RESULT_OK, resultIntent)
-        activity?.finish()
-    }
-
-    private fun setupQuickSaveView(quickSaveView: View, index: Int, saveInfo: SaveInfo) {
-        val title = getString(R.string.game_menu_state, (index + 1).toString())
-
-        quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_subtext).apply {
-            this.text = getDateString(saveInfo)
-            this.setVisibleOrGone(saveInfo.exists)
-        }
-        quickSaveView.findViewById<TextView>(R.id.game_dialog_entry_text).text = title
-        quickSaveView.findViewById<Button>(R.id.game_dialog_entry_load).apply {
-            this.isEnabled = saveInfo.exists
-            this.setOnClickListener {
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_LOAD, index)
-                }
-                activity?.setResult(Activity.RESULT_OK, resultIntent)
-                activity?.finish()
-            }
-        }
-
-        quickSaveView.findViewById<Button>(R.id.game_dialog_entry_save).apply {
-            this.setOnClickListener {
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_SAVE, index)
-                }
-                activity?.setResult(Activity.RESULT_OK, resultIntent)
-                activity?.finish()
-            }
-        }
-
-        quickSaveView.setVisibleOrGone(systemCoreConfig.statesSupported)
-    }
-
-    private fun displayAdvancedSettings() {
-        findNavController().navigate(R.id.core_options, arguments)
-    }
-
-    private fun displayChangeDiskDialog(currentDisk: Int, numDisks: Int) {
-        val builder = AlertDialog.Builder(requireContext())
-
-        val values = (0 until numDisks)
-            .map { resources.getString(R.string.game_menu_change_disk_disk, (it + 1).toString()) }
-            .toTypedArray()
-
-        builder.setSingleChoiceItems(values, currentDisk) { _, index ->
-            handleDiskChange(index)
-        }
-
-        builder.create().show()
-    }
-
-    private fun handleDiskChange(index: Int) {
-        val resultIntent = Intent().apply {
-            putExtra(GameMenuContract.RESULT_CHANGE_DISK, index)
-        }
-        activity?.setResult(Activity.RESULT_OK, resultIntent)
-        activity?.finish()
-    }
-
-    /** We still return a string even if we don't show it to ensure dialog doesn't change size.*/
-    private fun getDateString(saveInfo: SaveInfo): String {
-        val formatter = SimpleDateFormat.getDateTimeInstance()
-        val date = if (saveInfo.exists) {
-            saveInfo.date
-        } else {
-            System.currentTimeMillis()
-        }
-        return formatter.format(date)
+        return super.onPreferenceTreeClick(preference)
     }
 
     @dagger.Module

@@ -31,6 +31,15 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="PreferenceOverlay" parent="GameTheme">
+        <item name="android:windowBackground">#dd000000</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="colorSurface">@android:color/black</item>
+    </style>
+
     <style name="DialogButton" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush" />
 
     <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">

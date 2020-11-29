@@ -15,21 +15,13 @@
         android:key="pref_game_reset"
         android:title="@string/game_menu_restart"/>
 
-    <Preference
-        android:key="pref_game_enable_audio"
-        android:title="@string/game_menu_unmute_audio"/>
-
-    <Preference
-        android:key="pref_game_disable_audio"
+    <SwitchPreference
+        android:key="pref_game_mute"
         android:title="@string/game_menu_mute_audio"/>
 
-    <Preference
-        android:key="pref_game_enable_fast_forward"
-        android:title="@string/game_menu_enable_fast_forward"/>
-
-    <Preference
-        android:key="pref_game_disable_fast_forward"
-        android:title="@string/game_menu_disable_fast_forward"/>
+    <SwitchPreference
+        android:key="pref_game_fast_forward"
+        android:title="@string/game_menu_fast_forward"/>
 
     <Preference
         android:key="pref_game_quit"

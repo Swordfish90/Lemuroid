@@ -12,7 +12,7 @@ class GameMenuActivity : RetrogradeAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_empty_navigation)
+        setContentView(R.layout.activity_empty_navigation_overlay)
         setSupportActionBar(findViewById(R.id.toolbar))
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -40,5 +40,13 @@ class GameMenuActivity : RetrogradeAppCompatActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [GameMenuFragment.Module::class])
         abstract fun gameMenuFragment(): GameMenuFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [GameMenuLoadFragment.Module::class])
+        abstract fun gameMenuLoadFragment(): GameMenuLoadFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [GameMenuSaveFragment.Module::class])
+        abstract fun gameMenuSaveFragment(): GameMenuSaveFragment
     }
 }

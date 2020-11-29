@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/game_menu_title">
+
+    <Preference
+        android:key="pref_game_section_save"
+        android:title="@string/game_menu_save"
+        app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="pref_game_section_load"
+        android:title="@string/game_menu_load"
+        app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="pref_game_reset"
+        android:title="@string/game_menu_restart"
+        app:iconSpaceReserved="false"/>
+
+    <SwitchPreference
+        android:key="pref_game_mute"
+        android:title="@string/game_menu_mute_audio"
+        app:iconSpaceReserved="false"/>
+
+    <SwitchPreference
+        android:key="pref_game_fast_forward"
+        android:title="@string/game_menu_fast_forward"
+        app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="pref_game_quit"
+        android:title="@string/game_menu_quit"
+        app:iconSpaceReserved="false"/>
+
+    <ListPreference
+        android:key="pref_game_section_change_disk"
+        android:title="@string/game_menu_change_disk_button"
+        app:isPreferenceVisible="false"
+        app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="pref_game_edit_touch_controls"
+        android:title="@string/game_menu_edit_touch_controls"
+        app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="pref_game_section_core_options"
+        android:title="@string/game_menu_settings"
+        app:iconSpaceReserved="false"/>
+
+</PreferenceScreen>

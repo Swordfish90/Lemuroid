@@ -44,7 +44,8 @@
 
         <activity
             android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity"
-            android:process=":game"/>
+            android:process=":game"
+            android:theme="@style/PreferenceOverlay"/>
 
         <activity android:name="com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher"
             android:theme="@style/InvisibleTheme"/>
