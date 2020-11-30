@@ -55,6 +55,7 @@ import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
+import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 
 import dagger.Binds
 import dagger.Module
@@ -218,6 +219,12 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun savesManager(directoriesManager: DirectoriesManager) = SavesManager(directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun statesPreviewManager(directoriesManager: DirectoriesManager) =
+            StatesPreviewManager(directoriesManager)
 
         @Provides
         @PerApp

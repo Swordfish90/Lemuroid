@@ -74,10 +74,10 @@ class TVGameMenuFragment(
             .subscribeBy {
                 it.forEachIndexed { index, saveInfos ->
                     if (saveScreen != null)
-                        GameMenuHelper.addSavePreference(saveScreen, index, saveInfos)
+                        GameMenuHelper.addSavePreference(saveScreen, index, saveInfos, null)
 
                     if (loadScreen != null)
-                        GameMenuHelper.addLoadPreference(loadScreen, index, saveInfos)
+                        GameMenuHelper.addLoadPreference(loadScreen, index, saveInfos, null)
                 }
             }
     }

@@ -143,7 +143,6 @@ class GameActivity : BaseGameActivity() {
             .autoDispose(scope())
             .subscribe {
                 when (it) {
-                    is Event.Gesture -> { handleGamePadGesture(it) }
                     is Event.Button -> { handleGamePadButton(it) }
                     is Event.Direction -> { handleGamePadDirection(it) }
                 }
@@ -195,14 +194,12 @@ class GameActivity : BaseGameActivity() {
         return config.copy(theme = padTheme, haptic = vibrateOnTouch)
     }
 
-    private fun handleGamePadGesture(it: Event.Gesture) {
-        if (it.type == GestureType.SINGLE_TAP && it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
-            displayOptionsDialog()
-        }
-    }
-
     private fun handleGamePadButton(it: Event.Button) {
-        retroGameView?.sendKeyEvent(it.action, it.id)
+        if (it.action == KeyEvent.ACTION_DOWN && it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
+            displayOptionsDialog()
+        } else {
+            retroGameView?.sendKeyEvent(it.action, it.id)
+        }
     }
 
     private fun handleGamePadDirection(it: Event.Direction) {

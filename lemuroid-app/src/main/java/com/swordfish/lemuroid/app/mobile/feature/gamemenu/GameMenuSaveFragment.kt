@@ -10,12 +10,14 @@ import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 import java.security.InvalidParameterException
 import javax.inject.Inject
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class GameMenuSaveFragment : PreferenceFragmentCompat() {
 
     @Inject lateinit var statesManager: StatesManager
+    @Inject lateinit var statesPreviewManager: StatesPreviewManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -50,14 +53,18 @@ class GameMenuSaveFragment : PreferenceFragmentCompat() {
     private fun setupSavePreference(game: Game, systemCoreConfig: SystemCoreConfig) {
         Single.just(game)
             .flatMap {
-                statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID)
+                Singles.zip(
+                    statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID),
+                    statesPreviewManager.getPreviewsForSlots(it, systemCoreConfig.coreID)
+                )
             }
+            .map { (states, previews) -> states.zip(previews) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribeBy {
-                it.forEachIndexed { index, saveInfos ->
-                    GameMenuHelper.addSavePreference(preferenceScreen, index, saveInfos)
+                it.forEachIndexed { index, (saveInfos, previewFile) ->
+                    GameMenuHelper.addSavePreference(preferenceScreen, index, saveInfos, previewFile)
                 }
             }
     }

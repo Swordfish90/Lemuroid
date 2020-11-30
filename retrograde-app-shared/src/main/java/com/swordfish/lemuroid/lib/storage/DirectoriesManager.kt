@@ -22,6 +22,10 @@ class DirectoriesManager(private val appContext: Context) {
         mkdirs()
     }
 
+    fun getStatesPreviewDirectory(): File = File(appContext.getExternalFilesDir(null), "state-previews").apply {
+        mkdirs()
+    }
+
     fun getSavesDirectory(): File = File(appContext.getExternalFilesDir(null), "saves").apply {
         mkdirs()
     }

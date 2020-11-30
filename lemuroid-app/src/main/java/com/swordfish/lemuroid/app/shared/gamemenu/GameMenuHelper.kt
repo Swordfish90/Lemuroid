@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.shared.gamemenu
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
@@ -9,6 +10,7 @@ import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.lib.saves.SaveInfo
+import java.io.File
 import java.text.SimpleDateFormat
 
 object GameMenuHelper {
@@ -53,14 +55,15 @@ object GameMenuHelper {
     fun addSavePreference(
         screen: PreferenceScreen,
         index: Int,
-        saveStateInfo: SaveInfo
+        saveStateInfo: SaveInfo,
+        previewFile: File?
     ) {
         screen.addPreference(
             Preference(screen.context).apply {
                 this.key = "pref_game_save_$index"
                 this.summary = getDateString(saveStateInfo)
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
-                this.isIconSpaceReserved = false
+                this.icon = getDrawableForFile(previewFile)
             }
         )
     }
@@ -68,17 +71,22 @@ object GameMenuHelper {
     fun addLoadPreference(
         screen: PreferenceScreen,
         index: Int,
-        saveStateInfo: SaveInfo
+        saveStateInfo: SaveInfo,
+        previewFile: File?
     ) {
         screen.addPreference(
-            Preference(screen.context).apply {
+            Preference(screen.context, null).apply {
                 this.key = "pref_game_load_$index"
                 this.summary = getDateString(saveStateInfo)
                 this.isEnabled = saveStateInfo.exists
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
-                this.isIconSpaceReserved = false
+                this.icon = getDrawableForFile(previewFile)
             }
         )
+    }
+
+    private fun getDrawableForFile(file: File?): Drawable? {
+        return Drawable.createFromPath(file?.absolutePath)
     }
 
     fun onPreferenceTreeClicked(activity: Activity?, preference: Preference?): Boolean {
