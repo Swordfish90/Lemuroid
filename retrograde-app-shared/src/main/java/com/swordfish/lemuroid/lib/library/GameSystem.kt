@@ -275,8 +275,7 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
-                mergeDPADAndLeftStickEvents = true,
-                virtualGamePadOptions = VirtualGamePadOptions(true),
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.MAME2003PLUS,
@@ -297,8 +296,7 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
-                mergeDPADAndLeftStickEvents = true,
-                virtualGamePadOptions = VirtualGamePadOptions(true),
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.NDS,
