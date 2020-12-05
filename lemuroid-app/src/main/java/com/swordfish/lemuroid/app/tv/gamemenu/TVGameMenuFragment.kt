@@ -8,6 +8,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
+import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -15,9 +16,8 @@ import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
-import io.reactivex.Single
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 
 class TVGameMenuFragment(
@@ -67,25 +67,31 @@ class TVGameMenuFragment(
         saveScreen?.isEnabled = systemCoreConfig.statesSupported
         loadScreen?.isEnabled = systemCoreConfig.statesSupported
 
-        Single.just(game)
+        statesManager.getSavedSlotsInfo(game, systemCoreConfig.coreID)
+            .toObservable()
             .flatMap {
-                Singles.zip(
-                    statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID),
-                    statesPreviewManager.getPreviewsForSlots(it, systemCoreConfig.coreID)
-                )
+                Observable.fromIterable(it.mapIndexed { index, saveInfo -> index to saveInfo })
             }
-            .map { (states, previews) -> states.zip(previews) }
+            .flatMapSingle { (index, saveInfo) ->
+                GameMenuHelper.getSaveStateBitmap(
+                    requireContext(),
+                    statesPreviewManager,
+                    game,
+                    systemCoreConfig.coreID,
+                    index
+                )
+                    .toSingleAsOptional()
+                    .map { Triple(index, saveInfo, it) }
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy {
-                it.forEachIndexed { index, (saveInfos, previewFile) ->
-                    if (saveScreen != null)
-                        GameMenuHelper.addSavePreference(saveScreen, index, saveInfos, previewFile)
+            .subscribeBy { (index, saveInfo, bitmap) ->
+                if (saveScreen != null)
+                    GameMenuHelper.addSavePreference(saveScreen, index, saveInfo, bitmap.toNullable())
 
-                    if (loadScreen != null)
-                        GameMenuHelper.addLoadPreference(loadScreen, index, saveInfos, previewFile)
-                }
+                if (loadScreen != null)
+                    GameMenuHelper.addLoadPreference(loadScreen, index, saveInfo, bitmap.toNullable())
             }
     }
 
