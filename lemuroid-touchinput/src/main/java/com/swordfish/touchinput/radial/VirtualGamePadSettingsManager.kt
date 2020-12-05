@@ -8,68 +8,63 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.touchinput.controller.R
 import kotlin.math.roundToInt
 
-class VirtualGamePadSettingsManager(private val context: Context, private val systemID: SystemID) {
-
-    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-    var landscapeOffsetY: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_offset_y_landscape),
-        floatToIndex(DEFAULT_LANDSCAPE_OFFSET_Y),
-        100
-    )
-
-    var landscapeScale: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_scale_landscape),
-        floatToIndex(DEFAULT_LANDSCAPE_SCALE),
-        100
-    )
-
-    var landscapeRotation: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_rotation_landscape),
-        floatToIndex(DEFAULT_LANDSCAPE_ROTATION),
-        100
-    )
-
-    var portraitScale: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_scale_portrait),
-        floatToIndex(DEFAULT_PORTRAIT_SCALE),
-        100
-    )
-
-    var portraitRotation: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_rotation_portrait),
-        floatToIndex(DEFAULT_PORTRAIT_ROTATION),
-        100
-    )
-
-    fun resetLandscape() {
-        landscapeScale = DEFAULT_LANDSCAPE_SCALE
-        landscapeRotation = DEFAULT_LANDSCAPE_ROTATION
-        landscapeOffsetY = DEFAULT_LANDSCAPE_OFFSET_Y
+class VirtualGamePadSettingsManager(
+    private val context: Context,
+    private val systemID: SystemID,
+    orientation: Orientation
+) {
+    enum class Orientation {
+        PORTRAIT,
+        LANDSCAPE
     }
 
-    fun resetPortrait() {
-        portraitScale = DEFAULT_PORTRAIT_SCALE
-        portraitRotation = DEFAULT_PORTRAIT_ROTATION
-    }
+    private val sharedPreferences: SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
+
+    var scale: Float by SharedPreferencesDelegates.PercentageDelegate(
+        sharedPreferences,
+        getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
+        floatToIndex(DEFAULT_SCALE),
+        100
+    )
+
+    var rotation: Float by SharedPreferencesDelegates.PercentageDelegate(
+        sharedPreferences,
+        getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
+        floatToIndex(DEFAULT_ROTATION),
+        100
+    )
+
+    var marginX: Float by SharedPreferencesDelegates.PercentageDelegate(
+        sharedPreferences,
+        getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
+        floatToIndex(DEFAULT_MARGIN_X),
+        100
+    )
+
+    var marginY: Float by SharedPreferencesDelegates.PercentageDelegate(
+        sharedPreferences,
+        getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
+        floatToIndex(DEFAULT_MARGIN_Y),
+        100
+    )
 
     private fun floatToIndex(value: Float): Int = (value * 100).roundToInt()
 
     companion object {
-        const val DEFAULT_LANDSCAPE_SCALE = 0.5f
-        const val DEFAULT_LANDSCAPE_ROTATION = 0.0f
-        const val DEFAULT_LANDSCAPE_OFFSET_Y = 0.0f
+        const val DEFAULT_SCALE = 0.5f
+        const val DEFAULT_ROTATION = 0.0f
+        const val DEFAULT_MARGIN_X = 0.0f
+        const val DEFAULT_MARGIN_Y = 0.0f
 
-        const val DEFAULT_PORTRAIT_SCALE = 0.5f
-        const val DEFAULT_PORTRAIT_ROTATION = 0.0f
+        const val MAX_ROTATION = 45f
+        const val MIN_SCALE = 0.75f
+        const val MAX_SCALE = 1.5f
+
+        const val MAX_MARGINS = 96f
     }
 
-    private fun getPreferenceString(preferenceStringId: Int): String {
-        return "${context.getString(preferenceStringId)}_$systemID"
+    private fun getPreferenceString(preferenceStringId: Int, orientation: Orientation): String {
+        return "${context.getString(preferenceStringId)}_${systemID}_${orientation.ordinal}"
     }
 }

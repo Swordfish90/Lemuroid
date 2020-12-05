@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/game_menu_title">
 
-    <PreferenceScreen
+    <Preference
         android:key="pref_game_section_save"
         android:title="@string/game_menu_save"
         app:icon="@drawable/ic_menu_save"/>
 
-    <PreferenceScreen
+    <Preference
         android:key="pref_game_section_load"
         android:title="@string/game_menu_load"
         app:icon="@drawable/ic_menu_load"/>
@@ -39,7 +39,12 @@
         app:isPreferenceVisible="false"
         app:icon="@drawable/ic_menu_disk"/>
 
-    <PreferenceScreen
+    <Preference
+        android:key="pref_game_edit_touch_controls"
+        android:title="@string/game_menu_edit_touch_controls"
+        app:icon="@drawable/ic_menu_touch"/>
+
+    <Preference
         android:key="pref_game_section_core_options"
         android:title="@string/game_menu_settings"
         app:icon="@drawable/ic_menu_settings"/>

@@ -13,4 +13,6 @@
     <color name="leanbackInfo">#181818</color>
 
     <color name="imageview_background">#09ffffff</color>
+
+    <color name="editControlOverlay">#99000000</color>
 </resources>

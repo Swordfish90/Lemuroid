@@ -275,8 +275,7 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
-                mergeDPADAndLeftStickEvents = true,
-                virtualGamePadOptions = VirtualGamePadOptions(true),
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.MAME2003PLUS,
@@ -297,8 +296,7 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
-                mergeDPADAndLeftStickEvents = true,
-                virtualGamePadOptions = VirtualGamePadOptions(true),
+                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.NDS,
@@ -318,7 +316,8 @@ data class GameSystem(
                         CoreID.MELONDS,
                         exposedSettings = listOf(
                             "melonds_threaded_renderer",
-                            "melonds_jit_enable"
+                            "melonds_jit_enable",
+                            "melonds_screen_layout"
                         ),
                         defaultSettings = listOf(
                             CoreVariable("melonds_touch_mode", "Touch"),
@@ -328,6 +327,10 @@ data class GameSystem(
                 ),
                 uniqueExtensions = listOf("nds"),
                 mergeDPADAndLeftStickEvents = true,
+                virtualGamePadOptions = VirtualGamePadOptions(
+                    hasRotation = false,
+                    allowOverlay = false
+                )
             )
         )
 
@@ -361,7 +364,8 @@ data class GameSystem(
         )
 
         data class VirtualGamePadOptions(
-            val hasRotation: Boolean = false
+            val hasRotation: Boolean = false,
+            val allowOverlay: Boolean = true,
         )
     }
 }

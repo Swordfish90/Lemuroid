@@ -2,11 +2,12 @@ package com.swordfish.lemuroid.app.shared.game
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.Gravity
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
-import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -14,12 +15,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
-import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.common.dump
+import com.swordfish.lemuroid.common.graphics.GraphicsUtils
+import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
@@ -31,6 +34,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -52,6 +56,7 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 abstract class BaseGameActivity : ImmersiveActivity() {
@@ -59,13 +64,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var game: Game
     protected lateinit var system: GameSystem
     protected lateinit var systemCoreConfig: SystemCoreConfig
-    protected lateinit var containerLayout: ConstraintLayout
-    protected lateinit var gameViewLayout: FrameLayout
-    protected lateinit var overlayLayout: FrameLayout
+    protected lateinit var mainContainerLayout: ConstraintLayout
+    private lateinit var gameContainerLayout: FrameLayout
+    protected lateinit var leftGamePadContainer: FrameLayout
+    protected lateinit var rightGamePadContainer: FrameLayout
     private lateinit var loadingView: ProgressBar
 
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var statesManager: StatesManager
+    @Inject lateinit var statesPreviewManager: StatesPreviewManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
     @Inject lateinit var gamePadManager: GamePadManager
@@ -85,10 +92,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        containerLayout = findViewById(R.id.game_container)
-        gameViewLayout = findViewById(R.id.gameview_layout)
-        overlayLayout = findViewById(R.id.overlay_layout)
+        mainContainerLayout = findViewById(R.id.maincontainer)
+        gameContainerLayout = findViewById(R.id.gamecontainer)
         loadingView = findViewById(R.id.progress)
+        leftGamePadContainer = findViewById(R.id.leftgamepad)
+        rightGamePadContainer = findViewById(R.id.rightgamepad)
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         system = GameSystem.findById(game.systemId)
@@ -142,6 +150,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             ?.subscribe()
     }
 
+    private fun takeScreenshotPreview(): Maybe<Bitmap> {
+        val sizeInDp = StatesPreviewManager.PREVIEW_SIZE_DP
+        val previewSize = GraphicsUtils.convertDpToPixel(sizeInDp, applicationContext).roundToInt()
+        return retroGameView?.takeScreenshot(previewSize)
+            ?.retry(3) // Sometimes this fails. Let's just retry a couple of times.
+            ?.onErrorComplete()
+            ?: Maybe.empty()
+    }
+
     private fun initializeRetroGameView(
         directoriesManager: DirectoriesManager,
         screenFilter: String
@@ -174,15 +191,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
 
         retroGameView?.let { lifecycle.addObserver(it) }
-
-        gameViewLayout.addView(retroGameView)
+        gameContainerLayout.addView(retroGameView)
 
         val layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
         layoutParams.gravity = Gravity.CENTER
-
         retroGameView?.layoutParams = layoutParams
     }
 
@@ -556,7 +571,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return Maybe.fromCallable { getCurrentSaveState() }
             .doAfterSuccess { Timber.i("Storing quicksave with size: ${it!!.state.size}") }
             .subscribeOn(Schedulers.io())
-            .flatMapCompletable { statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index) }
+            .flatMapCompletable {
+                statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index)
+            }
+            .andThen(takeScreenshotPreview())
+            .flatMapCompletable {
+                statesPreviewManager.setPreviewForSlot(game, it, systemCoreConfig.coreID, index)
+            }
+            .doOnError { Timber.e(it, "Error while saving slot $index") }
+            .onErrorComplete()
             .doOnSubscribe { loading = true }
             .doAfterTerminate { loading = false }
     }
