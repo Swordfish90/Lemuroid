@@ -1,17 +1,23 @@
 package com.swordfish.lemuroid.app.shared.gamemenu
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.media.ThumbnailUtils
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
+import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.lib.saves.SaveInfo
 import java.io.File
 import java.text.SimpleDateFormat
+import kotlin.math.roundToInt
 
 object GameMenuHelper {
 
@@ -63,7 +69,7 @@ object GameMenuHelper {
                 this.key = "pref_game_save_$index"
                 this.summary = getDateString(saveStateInfo)
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
-                this.icon = getDrawableForFile(previewFile)
+                this.icon = getDrawableForFile(screen.context, previewFile)
             }
         )
     }
@@ -80,13 +86,18 @@ object GameMenuHelper {
                 this.summary = getDateString(saveStateInfo)
                 this.isEnabled = saveStateInfo.exists
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
-                this.icon = getDrawableForFile(previewFile)
+                this.icon = getDrawableForFile(screen.context, previewFile)
             }
         )
     }
 
-    private fun getDrawableForFile(file: File?): Drawable? {
-        return Drawable.createFromPath(file?.absolutePath)
+    private fun getDrawableForFile(context: Context, file: File?): Drawable? {
+        val bitmap = BitmapFactory.decodeFile(file?.absolutePath)
+        val thumbSize = GraphicsUtils.convertDpToPixel(96f, context).roundToInt()
+        return BitmapDrawable(
+            context.resources,
+            ThumbnailUtils.extractThumbnail(bitmap, thumbSize, thumbSize)
+        )
     }
 
     fun onPreferenceTreeClicked(activity: Activity?, preference: Preference?): Boolean {
