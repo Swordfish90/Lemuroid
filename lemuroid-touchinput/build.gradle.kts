@@ -18,6 +18,7 @@ dependencies {
     implementation(deps.libs.androidx.lifecycle.extensions)
     implementation(deps.libs.material)
     implementation(deps.libs.androidx.preferences.preferencesKtx)
+    implementation(deps.libs.multitouchGestures)
 
     api(deps.libs.radialgamepad)
 

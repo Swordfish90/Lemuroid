@@ -65,9 +65,7 @@ object GamePadFactory {
 
             SystemID.PSP -> Config(
                 RadialPadConfigs.PSP_LEFT,
-                RadialPadConfigs.PSP_RIGHT,
-                1.1f,
-                1.1f
+                RadialPadConfigs.PSP_RIGHT
             )
 
             SystemID.N64 -> Config(
@@ -77,9 +75,7 @@ object GamePadFactory {
 
             SystemID.PSX -> Config(
                 RadialPadConfigs.PSX_LEFT,
-                RadialPadConfigs.PSX_RIGHT,
-                1.1f,
-                1.1f
+                RadialPadConfigs.PSX_RIGHT
             )
 
             SystemID.NDS -> when (coreID) {

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_control_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                app:icon="@drawable/edit_reset"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                android:text="@string/touch_customize_button_reset"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_control_done"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                app:icon="@drawable/edit_done"
+                android:text="@string/touch_customize_button_done"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/touch_customize_info"
+        android:layout_gravity="center" />
+
+</FrameLayout>

@@ -22,8 +22,8 @@ object deps {
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
-        const val libretrodroid   = "0.5.1"
-        const val radialgamepad   = "0.1.1"
+        const val libretrodroid   = "03a3c4d885"
+        const val radialgamepad   = "0.2.0"
     }
 
     object libs {
@@ -124,6 +124,7 @@ object deps {
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
         const val material                 = "com.google.android.material:material:1.2.1"
+        const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 
