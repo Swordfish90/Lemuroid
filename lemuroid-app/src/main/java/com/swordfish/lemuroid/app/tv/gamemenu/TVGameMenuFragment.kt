@@ -11,15 +11,18 @@ import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 
 class TVGameMenuFragment(
     private val statesManager: StatesManager,
+    private val statesPreviewManager: StatesPreviewManager,
     private val game: Game,
     private val systemCoreConfig: SystemCoreConfig,
     private val coreOptions: Array<CoreOption>,
@@ -66,18 +69,22 @@ class TVGameMenuFragment(
 
         Single.just(game)
             .flatMap {
-                statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID)
+                Singles.zip(
+                    statesManager.getSavedSlotsInfo(it, systemCoreConfig.coreID),
+                    statesPreviewManager.getPreviewsForSlots(it, systemCoreConfig.coreID)
+                )
             }
+            .map { (states, previews) -> states.zip(previews) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribeBy {
-                it.forEachIndexed { index, saveInfos ->
+                it.forEachIndexed { index, (saveInfos, previewFile) ->
                     if (saveScreen != null)
-                        GameMenuHelper.addSavePreference(saveScreen, index, saveInfos, null)
+                        GameMenuHelper.addSavePreference(saveScreen, index, saveInfos, previewFile)
 
                     if (loadScreen != null)
-                        GameMenuHelper.addLoadPreference(loadScreen, index, saveInfos, null)
+                        GameMenuHelper.addLoadPreference(loadScreen, index, saveInfos, previewFile)
                 }
             }
     }

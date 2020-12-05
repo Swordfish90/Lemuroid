@@ -8,12 +8,14 @@ import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
 class TVGameMenuActivity : TVBaseSettingsActivity() {
 
     @Inject lateinit var statesManager: StatesManager
+    @Inject lateinit var statesPreviewManager: StatesPreviewManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
             val fragment = TVGameMenuFragmentWrapper(
                 statesManager,
+                statesPreviewManager,
                 game,
                 core,
                 options,
@@ -65,6 +68,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
     class TVGameMenuFragmentWrapper(
         private val statesManager: StatesManager,
+        private val statesPreviewManager: StatesPreviewManager,
         private val game: Game,
         private val systemCoreConfig: SystemCoreConfig,
         private val coreOptions: Array<CoreOption>,
@@ -78,6 +82,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         override fun createFragment(): Fragment {
             return TVGameMenuFragment(
                 statesManager,
+                statesPreviewManager,
                 game,
                 systemCoreConfig,
                 coreOptions,
