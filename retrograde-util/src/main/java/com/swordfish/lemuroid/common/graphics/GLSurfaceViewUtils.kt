@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.common.graphics
 
 import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
-import android.util.Log
 import android.view.PixelCopy
 import io.reactivex.Maybe
 import java.lang.RuntimeException

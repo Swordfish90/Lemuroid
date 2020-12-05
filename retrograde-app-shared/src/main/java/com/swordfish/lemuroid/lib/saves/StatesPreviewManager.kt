@@ -21,7 +21,12 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
             .toList()
     }
 
-    fun setPreviewForSlot(game: Game, bitmap: Bitmap, coreID: CoreID, index: Int) = Completable.fromAction {
+    fun setPreviewForSlot(
+        game: Game,
+        bitmap: Bitmap,
+        coreID: CoreID,
+        index: Int
+    ) = Completable.fromAction {
         val screenshotName = getSlotScreenshotName(game, index)
         val file = getPreviewFile(screenshotName, coreID.coreName)
         FileOutputStream(file).use {
@@ -35,7 +40,10 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
         return File(statesDirectories, fileName)
     }
 
-    private fun getSlotScreenshotName(game: Game, index: Int) = "${game.fileName}.slot${index + 1}.jpg"
+    private fun getSlotScreenshotName(
+        game: Game,
+        index: Int
+    ) = "${game.fileName}.slot${index + 1}.jpg"
 
     companion object {
         val PREVIEW_SIZE_DP = 96f

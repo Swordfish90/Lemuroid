@@ -25,7 +25,12 @@ class VirtualGamePadCustomizer {
         class Margins(val x: Float, val y: Float) : Event()
     }
 
-    data class Settings(val scale: Float, val rotation: Float, val marginX: Float, val margin: Float)
+    data class Settings(
+        val scale: Float,
+        val rotation: Float,
+        val marginX: Float,
+        val margin: Float
+    )
 
     private fun getObservable(
         activity: Activity,
@@ -91,11 +96,17 @@ class VirtualGamePadCustomizer {
                 }
 
                 override fun onRotate(detector: MultiTouchGestureDetector) {
-                    val nextRotation = (rotation * VirtualGamePadSettingsManager.MAX_ROTATION - invertXAxis * (detector.rotation))
-                    rotation = MathUtils.clamp( nextRotation / VirtualGamePadSettingsManager.MAX_ROTATION, 0f, 1f)
+                    val currentRotation = rotation * VirtualGamePadSettingsManager.MAX_ROTATION
+                    val nextRotation = currentRotation - invertXAxis * detector.rotation
+                    rotation = MathUtils.clamp(
+                        nextRotation / VirtualGamePadSettingsManager.MAX_ROTATION,
+                        0f,
+                        1f
+                    )
                     emitter.onNext(Event.Rotation(rotation))
                 }
-            })
+            }
+        )
 
         editControlsWindow?.setOnDismissListener { emitter.onComplete() }
 

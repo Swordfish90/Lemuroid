@@ -22,12 +22,28 @@ class GameMenuFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = DummyDataStore
         setPreferencesFromResource(R.xml.mobile_game_settings, rootKey)
 
-        val audioEnabled = activity?.intent?.getBooleanExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, false) ?: false
+        val audioEnabled = activity?.intent?.getBooleanExtra(
+            GameMenuContract.EXTRA_AUDIO_ENABLED,
+            false
+        ) ?: false
+
         GameMenuHelper.setupAudioOption(preferenceScreen, audioEnabled)
 
-        val fastForwardSupported = activity?.intent?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, false) ?: false
-        val fastForwardEnabled = activity?.intent?.getBooleanExtra(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false
-        GameMenuHelper.setupFastForwardOption(preferenceScreen, fastForwardEnabled, fastForwardSupported)
+        val fastForwardSupported = activity?.intent?.getBooleanExtra(
+            GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED,
+            false
+        ) ?: false
+
+        val fastForwardEnabled = activity?.intent?.getBooleanExtra(
+            GameMenuContract.EXTRA_FAST_FORWARD,
+            false
+        ) ?: false
+
+        GameMenuHelper.setupFastForwardOption(
+            preferenceScreen,
+            fastForwardEnabled,
+            fastForwardSupported
+        )
 
         val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
         val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0

@@ -25,8 +25,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.InputConnection
-import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
@@ -110,14 +108,22 @@ class GameActivity : BaseGameActivity() {
     private fun setupVirtualPad(system: GameSystem) {
         gamePadConfig = GamePadFactory.getRadialPadConfig(system.id, systemCoreConfig.coreID)
         leftPad = RadialGamePad(
-            wrapGamePadConfig(applicationContext, gamePadConfig.leftConfig, settingsManager.vibrateOnTouch),
+            wrapGamePadConfig(
+                applicationContext,
+                gamePadConfig.leftConfig,
+                settingsManager.vibrateOnTouch
+            ),
             DEFAULT_MARGINS_DP,
             this
         )
         leftGamePadContainer.addView(leftPad)
 
         rightPad = RadialGamePad(
-            wrapGamePadConfig(applicationContext, gamePadConfig.rightConfig, settingsManager.vibrateOnTouch),
+            wrapGamePadConfig(
+                applicationContext,
+                gamePadConfig.rightConfig,
+                settingsManager.vibrateOnTouch
+            ),
             DEFAULT_MARGINS_DP,
             this
         )
@@ -133,8 +139,12 @@ class GameActivity : BaseGameActivity() {
             .autoDispose(scope())
             .subscribe {
                 when (it) {
-                    is Event.Button -> { handleGamePadButton(it) }
-                    is Event.Direction -> { handleGamePadDirection(it) }
+                    is Event.Button -> {
+                        handleGamePadButton(it)
+                    }
+                    is Event.Direction -> {
+                        handleGamePadDirection(it)
+                    }
                 }
             }
 
@@ -198,13 +208,25 @@ class GameActivity : BaseGameActivity() {
                 retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, it.xAxis, it.yAxis)
             }
             RadialPadConfigs.MOTION_SOURCE_LEFT_STICK -> {
-                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_ANALOG_LEFT, it.xAxis, it.yAxis)
+                retroGameView?.sendMotionEvent(
+                    GLRetroView.MOTION_SOURCE_ANALOG_LEFT,
+                    it.xAxis,
+                    it.yAxis
+                )
             }
             RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK -> {
-                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_ANALOG_RIGHT, it.xAxis, it.yAxis)
+                retroGameView?.sendMotionEvent(
+                    GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
+                    it.xAxis,
+                    it.yAxis
+                )
             }
             RadialPadConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK -> {
-                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_ANALOG_LEFT, it.xAxis, it.yAxis)
+                retroGameView?.sendMotionEvent(
+                    GLRetroView.MOTION_SOURCE_ANALOG_LEFT,
+                    it.xAxis,
+                    it.yAxis
+                )
                 retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, it.xAxis, it.yAxis)
             }
         }
@@ -262,7 +284,6 @@ class GameActivity : BaseGameActivity() {
             tiltSensor.shouldRun = true
         }
     }
-
 
     private fun loadVirtualGamePadSettings() {
         val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager()
@@ -420,17 +441,39 @@ class GameActivity : BaseGameActivity() {
                 constraintSet.clear(R.id.leftgamepad, ConstraintSet.TOP)
                 constraintSet.clear(R.id.rightgamepad, ConstraintSet.TOP)
             } else {
-                constraintSet.connect(R.id.leftgamepad, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-                constraintSet.connect(R.id.rightgamepad, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+                constraintSet.connect(
+                    R.id.leftgamepad,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP
+                )
+                constraintSet.connect(
+                    R.id.rightgamepad,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP
+                )
             }
 
             val minScale = VirtualGamePadSettingsManager.MIN_SCALE
             val maxScale = VirtualGamePadSettingsManager.MAX_SCALE
 
-            val leftScale = linearInterpolation(padScale, minScale, maxScale) * gamePadConfig.leftScaling
-            val rightScale = linearInterpolation(padScale, minScale, maxScale) * gamePadConfig.rightScaling
+            val leftScale = linearInterpolation(
+                padScale,
+                minScale,
+                maxScale
+            ) * gamePadConfig.leftScaling
 
-            val maxMargins = GraphicsUtils.convertDpToPixel(VirtualGamePadSettingsManager.MAX_MARGINS, applicationContext)
+            val rightScale = linearInterpolation(
+                padScale,
+                minScale,
+                maxScale
+            ) * gamePadConfig.rightScaling
+
+            val maxMargins = GraphicsUtils.convertDpToPixel(
+                VirtualGamePadSettingsManager.MAX_MARGINS,
+                applicationContext
+            )
 
             constraintSet.setHorizontalWeight(R.id.leftgamepad, gamePadConfig.leftScaling)
             constraintSet.setHorizontalWeight(R.id.rightgamepad, gamePadConfig.rightScaling)
@@ -439,9 +482,17 @@ class GameActivity : BaseGameActivity() {
             rightPad.primaryDialMaxSizeDp = DEFAULT_PRIMARY_DIAL_SIZE * rightScale
 
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                leftPad.spacingBottom = linearInterpolation(padMarginsY, 0f, maxMargins).roundToInt()
+                leftPad.spacingBottom = linearInterpolation(
+                    padMarginsY,
+                    0f,
+                    maxMargins
+                ).roundToInt()
                 leftPad.spacingLeft = 0
-                rightPad.spacingBottom = linearInterpolation(padMarginsY, 0f, maxMargins).roundToInt()
+                rightPad.spacingBottom = linearInterpolation(
+                    padMarginsY,
+                    0f,
+                    maxMargins
+                ).roundToInt()
                 rightPad.spacingRight = 0
 
                 leftPad.offsetX = linearInterpolation(padMarginsX, 0f, maxMargins)
@@ -453,7 +504,11 @@ class GameActivity : BaseGameActivity() {
                 leftPad.spacingBottom = 0
                 leftPad.spacingLeft = linearInterpolation(padMarginsX, 0f, maxMargins).roundToInt()
                 rightPad.spacingBottom = 0
-                rightPad.spacingRight = linearInterpolation(padMarginsX, 0f, maxMargins).roundToInt()
+                rightPad.spacingRight = linearInterpolation(
+                    padMarginsX,
+                    0f,
+                    maxMargins
+                ).roundToInt()
 
                 leftPad.offsetX = 0f
                 rightPad.offsetX = 0f
