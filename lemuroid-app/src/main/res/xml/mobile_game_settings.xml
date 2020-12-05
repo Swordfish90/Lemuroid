@@ -14,6 +14,11 @@
         app:icon="@drawable/ic_menu_load"/>
 
     <Preference
+        android:key="pref_game_quit"
+        android:title="@string/game_menu_quit"
+        app:icon="@drawable/ic_menu_quit"/>
+
+    <Preference
         android:key="pref_game_reset"
         android:title="@string/game_menu_restart"
         app:icon="@drawable/ic_menu_restart"/>
@@ -27,11 +32,6 @@
         android:key="pref_game_fast_forward"
         android:title="@string/game_menu_fast_forward"
         app:icon="@drawable/ic_menu_fast_forward"/>
-
-    <Preference
-        android:key="pref_game_quit"
-        android:title="@string/game_menu_quit"
-        app:icon="@drawable/ic_menu_quit"/>
 
     <ListPreference
         android:key="pref_game_section_change_disk"

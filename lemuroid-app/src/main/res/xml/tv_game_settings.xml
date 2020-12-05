@@ -5,35 +5,43 @@
 
     <PreferenceScreen
         android:key="pref_game_section_save"
-        android:title="@string/game_menu_save"/>
+        android:title="@string/game_menu_save"
+        app:icon="@drawable/ic_menu_save"/>
 
     <PreferenceScreen
         android:key="pref_game_section_load"
-        android:title="@string/game_menu_load"/>
-
-    <Preference
-        android:key="pref_game_reset"
-        android:title="@string/game_menu_restart"/>
-
-    <SwitchPreference
-        android:key="pref_game_mute"
-        android:title="@string/game_menu_mute_audio"/>
-
-    <SwitchPreference
-        android:key="pref_game_fast_forward"
-        android:title="@string/game_menu_fast_forward"/>
+        android:title="@string/game_menu_load"
+        app:icon="@drawable/ic_menu_load"/>
 
     <Preference
         android:key="pref_game_quit"
-        android:title="@string/game_menu_quit"/>
+        android:title="@string/game_menu_quit"
+        app:icon="@drawable/ic_menu_quit"/>
+
+    <Preference
+        android:key="pref_game_reset"
+        android:title="@string/game_menu_restart"
+        app:icon="@drawable/ic_menu_restart"/>
+
+    <SwitchPreference
+        android:key="pref_game_mute"
+        android:title="@string/game_menu_mute_audio"
+        app:icon="@drawable/ic_menu_mute"/>
+
+    <SwitchPreference
+        android:key="pref_game_fast_forward"
+        android:title="@string/game_menu_fast_forward"
+        app:icon="@drawable/ic_menu_fast_forward"/>
 
     <ListPreference
         android:key="pref_game_section_change_disk"
         android:title="@string/game_menu_change_disk_button"
-        app:isPreferenceVisible="false"/>
+        app:isPreferenceVisible="false"
+        app:icon="@drawable/ic_menu_disk"/>
 
     <PreferenceScreen
         android:key="pref_game_section_core_options"
-        android:title="@string/game_menu_settings"/>
+        android:title="@string/game_menu_settings"
+        app:icon="@drawable/ic_menu_settings"/>
 
 </PreferenceScreen>
