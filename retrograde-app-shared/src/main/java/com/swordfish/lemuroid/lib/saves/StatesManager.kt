@@ -51,30 +51,37 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
     private fun getSaveState(
         fileName: String,
         coreName: String
-    ): Maybe<SaveState> = Maybe.fromCallable {
-        val saveFile = getStateFileOrDeprecated(fileName, coreName)
-        val metadataFile = getMetadataStateFile(fileName, coreName)
-        if (saveFile.exists()) {
-            val byteArray = saveFile.readBytesUncompressed()
-            val stateMetadata = runCatching {
-                Json.Default.decodeFromString(
-                    SaveState.Metadata.serializer(),
-                    metadataFile.readText()
-                )
+    ): Maybe<SaveState> {
+        val saveStateMaybe: Maybe<SaveState> = Maybe.fromCallable {
+            val saveFile = getStateFileOrDeprecated(fileName, coreName)
+            val metadataFile = getMetadataStateFile(fileName, coreName)
+            if (saveFile.exists()) {
+                val byteArray = saveFile.readBytesUncompressed()
+                val stateMetadata = runCatching {
+                    Json.Default.decodeFromString(
+                        SaveState.Metadata.serializer(),
+                        metadataFile.readText()
+                    )
+                }
+                SaveState(byteArray, stateMetadata.getOrNull() ?: SaveState.Metadata())
+            } else {
+                null
             }
-            SaveState(byteArray, stateMetadata.getOrNull() ?: SaveState.Metadata())
-        } else {
-            null
         }
+
+        return saveStateMaybe.retry(FILE_ACCESS_RETRIES)
     }
 
     private fun setSaveState(
         fileName: String,
         coreName: String,
         saveState: SaveState
-    ) = Completable.fromCallable {
-        writeStateToDisk(fileName, coreName, saveState.state)
-        writeMetadataToDisk(fileName, coreName, saveState.metadata)
+    ): Completable {
+        val saveCompletable = Completable.fromCallable {
+            writeStateToDisk(fileName, coreName, saveState.state)
+            writeMetadataToDisk(fileName, coreName, saveState.metadata)
+        }
+        return saveCompletable.retry(FILE_ACCESS_RETRIES)
     }
 
     private fun writeMetadataToDisk(
@@ -129,5 +136,6 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
 
     companion object {
         const val MAX_STATES = 4
+        private const val FILE_ACCESS_RETRIES = 3L
     }
 }
