@@ -7,21 +7,27 @@ import io.reactivex.Maybe
 import java.io.File
 
 class SavesManager(private val directoriesManager: DirectoriesManager) {
-    fun getSaveRAM(game: Game): Maybe<ByteArray> = Maybe.fromCallable {
-        val saveFile = getSaveFile(getSaveRAMFileName(game))
-        if (saveFile.exists() && saveFile.length() > 0) {
-            saveFile.readBytes()
-        } else {
-            null
+    fun getSaveRAM(game: Game): Maybe<ByteArray> {
+        val sramMaybe: Maybe<ByteArray> = Maybe.fromCallable {
+            val saveFile = getSaveFile(getSaveRAMFileName(game))
+            if (saveFile.exists() && saveFile.length() > 0) {
+                saveFile.readBytes()
+            } else {
+                null
+            }
         }
+        return sramMaybe.retry(FILE_ACCESS_RETRIES)
     }
 
-    fun setSaveRAM(game: Game, data: ByteArray): Completable = Completable.fromAction {
-        if (data.isEmpty())
-            return@fromAction
+    fun setSaveRAM(game: Game, data: ByteArray): Completable {
+        val saveCompletable = Completable.fromAction {
+            if (data.isEmpty())
+                return@fromAction
 
-        val saveFile = getSaveFile(getSaveRAMFileName(game))
-        saveFile.writeBytes(data)
+            val saveFile = getSaveFile(getSaveRAMFileName(game))
+            saveFile.writeBytes(data)
+        }
+        return saveCompletable.retry(FILE_ACCESS_RETRIES)
     }
 
     fun getSaveRAMInfo(game: Game): SaveInfo {
@@ -37,4 +43,8 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
 
     /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
     private fun getSaveRAMFileName(game: Game) = "${game.fileName.substringBeforeLast(".")}.srm"
+
+    companion object {
+        private const val FILE_ACCESS_RETRIES = 3L
+    }
 }

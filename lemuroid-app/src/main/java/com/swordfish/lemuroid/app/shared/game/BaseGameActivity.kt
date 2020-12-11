@@ -574,11 +574,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .flatMapCompletable {
                 statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index)
             }
+            .doOnError { Timber.e(it, "Error while saving slot $index") }
             .andThen(takeScreenshotPreview())
             .flatMapCompletable {
                 statesPreviewManager.setPreviewForSlot(game, it, systemCoreConfig.coreID, index)
             }
-            .doOnError { Timber.e(it, "Error while saving slot $index") }
             .onErrorComplete()
             .doOnSubscribe { loading = true }
             .doAfterTerminate { loading = false }
@@ -591,6 +591,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
+            .doOnError { displayToast(R.string.game_toast_load_state_failed) }
+            .onErrorComplete()
             .doOnSubscribe { loading = true }
             .doAfterTerminate { loading = false }
             .ignoreElement()
