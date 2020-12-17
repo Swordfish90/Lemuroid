@@ -41,4 +41,16 @@ class SettingsManager(private val context: Context) {
         getString(R.string.pref_key_enable_gamepads),
         true
     )
+
+    var syncSaves: Boolean by SharedPreferencesDelegates.BooleanDelegate(
+        sharedPreferences,
+        getString(R.string.pref_key_save_sync_enable),
+        true
+    )
+
+    var syncStates: Boolean by SharedPreferencesDelegates.BooleanDelegate(
+        sharedPreferences,
+        getString(R.string.pref_key_save_sync_enable_states),
+        true
+    )
 }

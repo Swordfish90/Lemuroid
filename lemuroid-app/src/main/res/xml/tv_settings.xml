@@ -40,6 +40,12 @@
         app:iconSpaceReserved="false">
 
         <PreferenceScreen
+            android:key="@string/pref_key_open_save_sync_settings"
+            android:title="@string/settings_title_save_sync"
+            app:summary="@string/settings_description_save_sync"
+            app:iconSpaceReserved="false"/>
+
+        <PreferenceScreen
             android:key="@string/pref_key_open_cores_selection"
             android:title="@string/settings_title_open_cores_selection"
             app:summary="@string/settings_description_open_cores_selection"

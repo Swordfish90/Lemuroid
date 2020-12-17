@@ -29,7 +29,11 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
 
         val notificationsManager = NotificationsManager(applicationContext)
 
-        setForegroundAsync(ForegroundInfo(notificationsManager.getIndexingNotification()))
+        val foregroundInfo = ForegroundInfo(
+            NotificationsManager.LIBRARY_INDEXING_NOTIFICATION_ID,
+            notificationsManager.libraryIndexingNotification()
+        )
+        setForegroundAsync(foregroundInfo)
         return lemuroidLibrary.indexLibrary()
             .toSingleDefault(Result.success())
             .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }

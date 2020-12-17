@@ -24,27 +24,35 @@ import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.SaveSyncFragment
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
+import com.swordfish.lemuroid.app.shared.main.BusyActivity
+import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import io.reactivex.Completable
-import io.reactivex.rxkotlin.subscribeBy
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MainActivity : RetrogradeAppCompatActivity() {
+class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
+
+    @Inject lateinit var postGameHandler: PostGameHandler
 
     private val reviewManager = ReviewManager()
+    private var mainViewModel: MainViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initializeActivity()
     }
+
+    override fun activity(): Activity = this
+    override fun isBusy(): Boolean = mainViewModel?.displayProgress?.value ?: false
 
     private fun initializeActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -66,10 +74,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
+        mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
             .get(MainViewModel::class.java)
 
-        mainViewModel.indexingInProgress.observe(this) { isRunning ->
+        mainViewModel?.displayProgress?.observe(this) { isRunning ->
             findViewById<MaterialProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
         }
     }
@@ -82,16 +90,11 @@ class MainActivity : RetrogradeAppCompatActivity() {
         when (requestCode) {
             GameLauncherActivity.REQUEST_PLAY_GAME -> {
                 val duration = data?.extras?.getLong(GameLauncherActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                displayReviewRequest(duration)
+                val game = data?.extras?.getSerializable(GameLauncherActivity.PLAY_GAME_RESULT_GAME) as Game?
+                val leanback = data?.extras?.getBoolean(GameLauncherActivity.PLAY_GAME_RESULT_LEANBACK)
+                postGameHandler.handleAfterGame(this, leanback!!, game!!, duration!!)
             }
         }
-    }
-
-    private fun displayReviewRequest(durationMillis: Long?) {
-        if (durationMillis == null) return
-        Completable.timer(500, TimeUnit.MILLISECONDS)
-            .andThen { reviewManager.startReviewFlow(this, durationMillis) }
-            .subscribeBy { }
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
@@ -130,6 +133,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         @PerFragment
         @ContributesAndroidInjector(modules = [BiosSettingsFragment.Module::class])
         abstract fun biosInfoFragment(): BiosSettingsFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [SaveSyncFragment.Module::class])
+        abstract fun saveSyncFragment(): SaveSyncFragment
 
         @PerFragment
         @ContributesAndroidInjector(modules = [CoresSelectionFragment.Module::class])

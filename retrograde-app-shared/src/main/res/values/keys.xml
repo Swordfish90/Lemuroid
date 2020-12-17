@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_key_last_save_sync" translatable="false">last_save_sync</string>
     <string name="pref_key_extenral_folder" translatable="false">external_folder</string>
     <string name="pref_key_legacy_external_folder" translatable="false">legacy_external_folder</string>
 </resources>

@@ -31,6 +31,7 @@ android {
     // Stripping created some issues with some libretro cores such as ppsspp
     packagingOptions {
         doNotStrip("*/*/*_libretro_android.so")
+        exclude("META-INF/DEPENDENCIES")
     }
 
     signingConfigs {
@@ -132,6 +133,7 @@ dependencies {
     implementation(deps.libs.rxPreferences)
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.rxKotlin2)
+    implementation(deps.libs.guava)
 
     implementation(deps.libs.libretrodroid)
 

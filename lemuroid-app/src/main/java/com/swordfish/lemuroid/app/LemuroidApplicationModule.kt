@@ -28,6 +28,7 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
@@ -50,6 +51,8 @@ import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
+import com.swordfish.lemuroid.ext.feature.review.ReviewManager
+import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
@@ -310,5 +313,17 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun savesCoherencyEngine(savesManager: SavesManager, statesManager: StatesManager) =
             SavesCoherencyEngine(savesManager, statesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun saveSyncManager(context: Context, directoriesManager: DirectoriesManager) =
+            SaveSyncManager(context, directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun postGameHandler(context: Context, retrogradeDatabase: RetrogradeDatabase) =
+            PostGameHandler(context, ReviewManager(), retrogradeDatabase)
     }
 }

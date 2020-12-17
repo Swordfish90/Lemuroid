@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
 import java.io.PushbackInputStream
+import java.security.MessageDigest
 import java.util.zip.CRC32
 import java.util.zip.CheckedInputStream
 import java.util.zip.GZIPInputStream
@@ -42,6 +43,13 @@ fun InputStream.calculateCrc32(): String = this.use { fileStream ->
         }
         return crcStream.checksum.value.toStringCRC32()
     }
+}
+
+fun File.calculateMd5(): String {
+    val bytes = MessageDigest
+        .getInstance("MD5")
+        .digest(this.readBytes())
+    return bytes.toHexString()
 }
 
 fun InputStream.writeToFile(file: File) {

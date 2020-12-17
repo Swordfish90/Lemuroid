@@ -11,17 +11,17 @@ object deps {
     object versions {
         const val autoDispose     = "1.4.0"
         const val dagger          = "2.19"
-        const val gms             = "15.0.0"
-        const val googleApiClient = "1.27.0"
+        const val gms             = "17.0.0"
         const val koptional       = "1.6.0"
         const val kotlin          = "1.4.0"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
-        const val work            = "2.3.0-beta01"
+        const val work            = "2.4.0"
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
         const val leanback        = "1.1.0-alpha03"
+        const val googleApiClient = "1.30.9"
         const val libretrodroid   = "0.5.2"
         const val radialgamepad   = "0.2.0"
     }
@@ -37,7 +37,7 @@ object deps {
                 const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
             }
             object ktx {
-                const val core = "androidx.core:core-ktx:1.0.1"
+                const val core = "androidx.core:core-ktx:1.1.0"
                 const val collection = "androidx.collection:collection-ktx:1.0.0"
             }
             object lifecycle {
@@ -104,6 +104,12 @@ object deps {
         object play {
             const val core = "com.google.android.play:core:1.8.2"
             const val coreKtx = "com.google.android.play:core-ktx:1.8.1"
+            const val playServices = "com.google.android.gms:play-services-auth:19.0.0"
+        }
+        object gdrive {
+            const val apiClient            = "com.google.api-client:google-api-client:${versions.googleApiClient}"
+            const val apiClientAndroid     = "com.google.api-client:google-api-client-android:${versions.googleApiClient}"
+            const val apiServicesDrive     = "com.google.apis:google-api-services-drive:v3-rev20200413-${versions.googleApiClient}"
         }
 
         const val koptional                = "com.gojuno.koptional:koptional:${versions.koptional}"
@@ -125,6 +131,7 @@ object deps {
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
         const val material                 = "com.google.android.material:material:1.2.1"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
+        const val guava                    = "com.google.guava:guava:29.0-android"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 

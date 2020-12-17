@@ -9,6 +9,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -17,7 +18,6 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
-import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,6 +45,8 @@ class GameLauncherActivity : ImmersiveActivity() {
         super.onCreate(savedInstanceState)
 
         startGameTime = System.currentTimeMillis()
+
+        SaveSyncWork.cancelUniqueWork(applicationContext)
 
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
@@ -127,15 +129,15 @@ class GameLauncherActivity : ImmersiveActivity() {
 
         val resultIntent = Intent().apply {
             putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
+            putExtra(PLAY_GAME_RESULT_GAME, intent.getSerializableExtra(EXTRA_GAME))
+            putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
         }
 
-        setResult(Activity.RESULT_OK, resultIntent)
-        triggerCacheCleanup()
-        finish()
-    }
+        // After a game has been successfully closed, sync save games.
+        SaveSyncWork.enqueueUniqueWork(applicationContext, 5, TimeUnit.MINUTES)
 
-    private fun triggerCacheCleanup() {
-        CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 
     override fun onBackPressed() {
@@ -158,6 +160,8 @@ class GameLauncherActivity : ImmersiveActivity() {
 
         const val REQUEST_PLAY_GAME = 1001
         const val PLAY_GAME_RESULT_SESSION_DURATION = "PLAY_GAME_RESULT_SESSION_DURATION"
+        const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
+        const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
 
         fun launchGame(activity: Activity, game: Game, loadSave: Boolean, useLeanback: Boolean) {
             activity.startActivityForResult(
