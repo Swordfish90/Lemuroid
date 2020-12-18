@@ -30,7 +30,7 @@ class GamesFragment : RecyclerViewFragment() {
             .get(GamesViewModel::class.java)
 
         gamesViewModel.games.observe(this) { pagedList ->
-            gamesAdapter?.submitList(pagedList)
+            gamesAdapter?.submitData(lifecycle, pagedList)
         }
 
         args.systemIds.let {

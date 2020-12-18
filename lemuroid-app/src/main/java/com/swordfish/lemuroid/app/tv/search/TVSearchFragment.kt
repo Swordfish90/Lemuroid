@@ -3,17 +3,18 @@ package com.swordfish.lemuroid.app.tv.search
 import android.content.Context
 import android.os.Bundle
 import androidx.leanback.app.SearchSupportFragment
+import androidx.leanback.paging.PagingDataAdapter
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.cachedIn
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
-import com.swordfish.lemuroid.app.tv.shared.PagedListObjectAdapter
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -52,9 +53,9 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         val factory = TVSearchViewModel.Factory(retrogradeDb)
         searchViewModel = ViewModelProviders.of(this, factory).get(TVSearchViewModel::class.java)
 
-        searchViewModel.searchResults.observe(this) {
-            val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagedListObjectAdapter<Game>
-            gamesAdapter.pagedList = it
+        searchViewModel.searchResults.cachedIn(lifecycle).observe(this) {
+            val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagingDataAdapter<Game>
+            gamesAdapter.submitData(lifecycle, it)
         }
 
         searchRelay
@@ -74,7 +75,7 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
             gameInteractor
         )
 
-        val gamesAdapter = PagedListObjectAdapter(gamePresenter, Game.DIFF_CALLBACK)
+        val gamesAdapter = PagingDataAdapter(gamePresenter, Game.DIFF_CALLBACK)
         searchAdapter.add(
             ListRow(
                 HeaderItem(resources.getString(R.string.tv_search_results)),

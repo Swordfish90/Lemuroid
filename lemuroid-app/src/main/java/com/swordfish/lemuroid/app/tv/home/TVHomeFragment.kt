@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.ClassPresenterSelector
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
@@ -16,7 +17,6 @@ import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagedList
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
@@ -25,7 +25,6 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
-import com.swordfish.lemuroid.app.tv.shared.PagedListObjectAdapter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -64,6 +63,7 @@ class TVHomeFragment : BrowseSupportFragment() {
                         TVSetting.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
                         TVSetting.CHOOSE_DIRECTORY -> launchFolderPicker()
                         TVSetting.SETTINGS -> launchTVSettings()
+                        TVSetting.SHOW_ALL_FAVORITES -> launchFavorites()
                     }
                 }
             }
@@ -104,7 +104,7 @@ class TVHomeFragment : BrowseSupportFragment() {
             }
     }
 
-    private fun update(favoritesGames: PagedList<Game>, recentGames: List<Game>, metaSystems: List<MetaSystemInfo>) {
+    private fun update(favoritesGames: List<Game>, recentGames: List<Game>, metaSystems: List<MetaSystemInfo>) {
         val adapterHasFavorites = findAdapterById<ObjectAdapter>(FAVORITES_ADAPTER) != null
         val adapterHasGames = findAdapterById<ObjectAdapter>(RECENTS_ADAPTER) != null
         val adapterHasSystems = findAdapterById<ObjectAdapter>(SYSTEM_ADAPTER) != null
@@ -117,7 +117,15 @@ class TVHomeFragment : BrowseSupportFragment() {
             recreateAdapter(favoritesGames.isNotEmpty(), recentGames.isNotEmpty(), metaSystems.isNotEmpty())
         }
 
-        findAdapterById<PagedListObjectAdapter<Game>>(FAVORITES_ADAPTER)?.pagedList = favoritesGames
+        findAdapterById<ArrayObjectAdapter>(FAVORITES_ADAPTER)?.apply {
+            if (favoritesGames.size <= TVHomeViewModel.CAROUSEL_MAX_ITEMS) {
+                setItems(favoritesGames, LEANBACK_MULTI_DIFF_CALLBACK)
+            } else {
+                val allItems = favoritesGames.subList(0, TVHomeViewModel.CAROUSEL_MAX_ITEMS) +
+                    listOf(TVSetting.SHOW_ALL_FAVORITES)
+                setItems(allItems, LEANBACK_MULTI_DIFF_CALLBACK)
+            }
+        }
         findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
         findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(metaSystems, LEANBACK_SYSTEM_DIFF_CALLBACK)
     }
@@ -142,8 +150,10 @@ class TVHomeFragment : BrowseSupportFragment() {
         val cardPadding = resources.getDimensionPixelSize(R.dimen.card_padding)
 
         if (includeFavorites) {
-            val presenter = GamePresenter(cardSize, gameInteractor)
-            val favouritesItems = PagedListObjectAdapter(presenter, Game.DIFF_CALLBACK)
+            val presenter = ClassPresenterSelector()
+            presenter.addClassPresenter(Game::class.java, GamePresenter(cardSize, gameInteractor))
+            presenter.addClassPresenter(TVSetting::class.java, SettingPresenter(cardSize, cardPadding))
+            val favouritesItems = ArrayObjectAdapter(presenter)
             val title = resources.getString(R.string.tv_home_section_favorites)
             result.add(ListRow(HeaderItem(FAVORITES_ADAPTER, title), favouritesItems))
         }
@@ -182,11 +192,41 @@ class TVHomeFragment : BrowseSupportFragment() {
         startActivity(Intent(requireContext(), TVSettingsActivity::class.java))
     }
 
+    private fun launchFavorites() {
+        findNavController().navigate(R.id.navigation_favorites)
+    }
+
     companion object {
         const val RECENTS_ADAPTER = 1L
         const val SYSTEM_ADAPTER = 2L
         const val SETTINGS_ADAPTER = 3L
         const val FAVORITES_ADAPTER = 4L
+
+        val LEANBACK_MULTI_DIFF_CALLBACK = object : DiffCallback<Any>() {
+            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+                return when {
+                    (oldItem is Game && newItem is Game) -> {
+                        LEANBACK_GAME_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+                    }
+                    (oldItem is TVSetting && newItem is TVSetting) -> {
+                        LEANBACK_SETTING_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+                    }
+                    else -> false
+                }
+            }
+
+            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+                return when {
+                    (oldItem is Game && newItem is Game) -> {
+                        LEANBACK_GAME_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
+                    }
+                    (oldItem is TVSetting && newItem is TVSetting) -> {
+                        LEANBACK_SETTING_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
+                    }
+                    else -> false
+                }
+            }
+        }
 
         val LEANBACK_GAME_DIFF_CALLBACK = object : DiffCallback<Game>() {
             override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
@@ -205,6 +245,16 @@ class TVHomeFragment : BrowseSupportFragment() {
 
             override fun areItemsTheSame(oldInfo: MetaSystemInfo, newInfo: MetaSystemInfo): Boolean {
                 return oldInfo.metaSystem.name == newInfo.metaSystem.name
+            }
+        }
+
+        val LEANBACK_SETTING_DIFF_CALLBACK = object : DiffCallback<TVSetting>() {
+            override fun areContentsTheSame(oldItem: TVSetting, newItem: TVSetting): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areItemsTheSame(oldItem: TVSetting, newItem: TVSetting): Boolean {
+                return oldItem == newItem
             }
         }
     }

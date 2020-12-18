@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.tv.games
+package com.swordfish.lemuroid.app.tv.favorites
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,6 @@ import androidx.leanback.paging.PagingDataAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.navArgs
 import androidx.paging.cachedIn
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -17,12 +16,10 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class TVGamesFragment : VerticalGridSupportFragment() {
+class TVFavoritesFragment : VerticalGridSupportFragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
-
-    private val args: TVGamesFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,20 +37,16 @@ class TVGamesFragment : VerticalGridSupportFragment() {
     override fun onResume() {
         super.onResume()
 
-        val factory = TVGamesViewModel.Factory(retrogradeDb)
-        val gamesViewModel = ViewModelProviders.of(this, factory).get(TVGamesViewModel::class.java)
+        val factory = TVFavoritesViewModel.Factory(retrogradeDb)
+        val gamesViewModel = ViewModelProviders.of(this, factory).get(TVFavoritesViewModel::class.java)
 
         val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
         val pagingAdapter = PagingDataAdapter(GamePresenter(cardSize, gameInteractor), Game.DIFF_CALLBACK)
 
         this.adapter = pagingAdapter
 
-        gamesViewModel.games.cachedIn(lifecycle).observe(this) { pagedList ->
+        gamesViewModel.favorites.cachedIn(lifecycle).observe(this) { pagedList ->
             pagingAdapter.submitData(lifecycle, pagedList)
-        }
-
-        args.systemIds.let {
-            gamesViewModel.systemIds.value = listOf(*it)
         }
 
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->

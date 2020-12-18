@@ -104,8 +104,9 @@ dependencies {
     kapt(deps.libs.epoxy.processor)
     kapt(deps.libs.androidx.lifecycle.processor)
 
-    implementation(deps.libs.androidx.appcompat.leanback)
-    implementation(deps.libs.androidx.appcompat.leanbackPreference)
+    implementation(deps.libs.androidx.leanback.leanback)
+    implementation(deps.libs.androidx.leanback.leanbackPreference)
+    implementation(deps.libs.androidx.leanback.leanbackPaging)
 
     implementation(deps.libs.androidx.appcompat.recyclerView)
     implementation(deps.libs.androidx.paging.common)
@@ -134,6 +135,7 @@ dependencies {
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.guava)
+    implementation(deps.libs.androidx.documentfile)
 
     implementation(deps.libs.libretrodroid)
 

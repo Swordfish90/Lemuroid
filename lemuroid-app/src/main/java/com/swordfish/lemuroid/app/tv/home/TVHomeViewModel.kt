@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.app.tv.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.toObservable
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -13,7 +12,6 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     companion object {
         const val CAROUSEL_MAX_ITEMS = 10
-        const val PAGE_SIZE = 10
     }
 
     class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
@@ -24,7 +22,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     val recentGames = retrogradeDb.gameDao().rxSelectFirstUnfavoriteRecents(CAROUSEL_MAX_ITEMS)
 
-    val favoritesGames = retrogradeDb.gameDao().selectFavorites().toObservable(PAGE_SIZE)
+    val favoritesGames = retrogradeDb.gameDao().rxSelectFirstFavoritesRecents(CAROUSEL_MAX_ITEMS + 1)
 
     val availableSystems: Observable<List<MetaSystemInfo>> = retrogradeDb.gameDao()
         .selectSystemsWithCount()

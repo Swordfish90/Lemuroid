@@ -20,7 +20,7 @@
 package com.swordfish.lemuroid.lib.library.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -50,7 +50,7 @@ interface GameDao {
     fun selectCounts(): Single<GameLibraryCounts>
 
     @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
-    fun selectAll(): DataSource.Factory<Int, Game>
+    fun selectAll(): PagingSource<Int, Game>
 
     @Query("SELECT * FROM games WHERE id = :id")
     fun selectById(id: Int): Maybe<Game>
@@ -62,10 +62,10 @@ interface GameDao {
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC")
-    fun selectRecentlyPlayed(): DataSource.Factory<Int, Game>
+    fun selectRecentlyPlayed(): PagingSource<Int, Game>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY title ASC")
-    fun selectFavorites(): DataSource.Factory<Int, Game>
+    fun selectFavorites(): PagingSource<Int, Game>
 
     @Query(
         """
@@ -82,16 +82,19 @@ interface GameDao {
     fun rxSelectFirstUnfavoriteRecents(limit: Int): Observable<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
+    fun rxSelectFirstFavoritesRecents(limit: Int): Observable<List<Game>>
+
+    @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
     fun selectFirstFavorites(limit: Int): LiveData<List<Game>>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NULL LIMIT :limit")
     fun selectFirstNotPlayed(limit: Int): LiveData<List<Game>>
 
     @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY title ASC, id DESC")
-    fun selectBySystem(systemId: String): DataSource.Factory<Int, Game>
+    fun selectBySystem(systemId: String): PagingSource<Int, Game>
 
     @Query("SELECT * FROM games WHERE systemId IN (:systemIds) ORDER BY title ASC, id DESC")
-    fun selectBySystems(systemIds: List<String>): DataSource.Factory<Int, Game>
+    fun selectBySystems(systemIds: List<String>): PagingSource<Int, Game>
 
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
     fun selectSystems(): LiveData<List<String>>

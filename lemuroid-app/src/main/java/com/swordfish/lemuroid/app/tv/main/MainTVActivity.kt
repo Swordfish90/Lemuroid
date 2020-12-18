@@ -12,6 +12,7 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
+import com.swordfish.lemuroid.app.tv.favorites.TVFavoritesFragment
 import com.swordfish.lemuroid.app.tv.games.TVGamesFragment
 import com.swordfish.lemuroid.app.tv.home.TVHomeFragment
 import com.swordfish.lemuroid.app.tv.search.TVSearchFragment
@@ -113,6 +114,10 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
         @PerFragment
         @ContributesAndroidInjector(modules = [TVSearchFragment.Module::class])
         abstract fun tvSearchFragment(): TVSearchFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [TVFavoritesFragment.Module::class])
+        abstract fun tvFavoritesFragment(): TVFavoritesFragment
 
         @dagger.Module
         companion object {

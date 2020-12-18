@@ -1,6 +1,6 @@
 package com.swordfish.lemuroid.lib.library.db.dao
 
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.RawQuery
 import androidx.room.RoomDatabase
@@ -64,7 +64,7 @@ class GameSearchDao(private val internalDao: Internal) {
         }
     }
 
-    fun search(query: String): DataSource.Factory<Int, Game> =
+    fun search(query: String): PagingSource<Int, Game> =
         internalDao.rawSearch(
             SimpleSQLiteQuery(
                 """
@@ -80,6 +80,6 @@ class GameSearchDao(private val internalDao: Internal) {
     @Dao
     interface Internal {
         @RawQuery(observedEntities = [(Game::class)])
-        fun rawSearch(query: SupportSQLiteQuery): DataSource.Factory<Int, Game>
+        fun rawSearch(query: SupportSQLiteQuery): PagingSource<Int, Game>
     }
 }

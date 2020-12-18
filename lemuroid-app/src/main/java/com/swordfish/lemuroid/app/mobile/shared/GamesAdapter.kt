@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
@@ -57,7 +57,7 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 class GamesAdapter(
     private val baseLayout: Int,
     private val gameInteractor: GameInteractor
-) : PagedListAdapter<Game, GameViewHolder>(Game.DIFF_CALLBACK) {
+) : PagingDataAdapter<Game, GameViewHolder>(Game.DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         return GameViewHolder(LayoutInflater.from(parent.context).inflate(baseLayout, parent, false))

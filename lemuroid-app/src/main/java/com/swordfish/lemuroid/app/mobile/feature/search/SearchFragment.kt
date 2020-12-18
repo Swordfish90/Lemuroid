@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.swordfish.lemuroid.R
@@ -80,12 +81,12 @@ class SearchFragment : RecyclerViewFragment() {
         activity?.invalidateOptionsMenu()
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
-        searchViewModel.searchResults.observe(this) {
-            gamesAdapter.submitList(it)
+        searchViewModel.searchResults.cachedIn(lifecycle).observe(this) {
+            gamesAdapter.submitData(lifecycle, it)
         }
 
-        searchViewModel.emptyViewVisible.observe(this) {
-            emptyView?.setVisibleOrGone(it)
+        gamesAdapter.addLoadStateListener {
+            emptyView?.setVisibleOrGone(gamesAdapter.itemCount == 0)
         }
 
         searchSubject

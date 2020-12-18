@@ -5,8 +5,9 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import com.swordfish.lemuroid.common.paging.buildLiveDataPaging
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -20,11 +21,15 @@ class TVGamesViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     val systemIds = MutableLiveData<List<String>>()
 
-    val games: LiveData<PagedList<Game>> = Transformations.switchMap(systemIds) {
-        if (it.size == 1) {
-            LivePagedListBuilder(retrogradeDb.gameDao().selectBySystem(it[0]), 20).build()
+    val games: LiveData<PagingData<Game>> = Transformations.switchMap(systemIds) { systems ->
+        if (systems.size == 1) {
+            buildLiveDataPaging(20, viewModelScope) {
+                retrogradeDb.gameDao().selectBySystem(systems[0])
+            }
         } else {
-            LivePagedListBuilder(retrogradeDb.gameDao().selectBySystems(it), 20).build()
+            buildLiveDataPaging(20, viewModelScope) {
+                retrogradeDb.gameDao().selectBySystems(systems)
+            }
         }
     }
 }

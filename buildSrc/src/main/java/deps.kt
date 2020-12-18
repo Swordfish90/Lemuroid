@@ -20,8 +20,10 @@ object deps {
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
-        const val leanback        = "1.1.0-alpha03"
+        const val leanback        = "1.1.0-beta01"
         const val googleApiClient = "1.30.9"
+        const val paging          = "3.0.0-alpha11"
+        const val room            = "2.3.0-alpha04"
         const val libretrodroid   = "0.5.2"
         const val radialgamepad   = "0.2.0"
     }
@@ -30,11 +32,13 @@ object deps {
         object androidx {
             object appcompat {
                 const val appcompat = "androidx.appcompat:appcompat:1.0.2"
-                const val leanback = "androidx.leanback:leanback:${versions.leanback}"
-                const val leanbackPreference = "androidx.leanback:leanback-preference:${versions.leanback}"
-                const val palette = "androidx.palette:palette:1.0.0"
                 const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
                 const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
+            }
+            object leanback {
+                const val leanback = "androidx.leanback:leanback:${versions.leanback}"
+                const val leanbackPreference = "androidx.leanback:leanback-preference:${versions.leanback}"
+                const val leanbackPaging = "androidx.leanback:leanback-paging:1.1.0-alpha06"
             }
             object ktx {
                 const val core = "androidx.core:core-ktx:1.1.0"
@@ -49,19 +53,19 @@ object deps {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
             }
             object paging {
-                const val common = "androidx.paging:paging-common:2.1.2"
-                const val runtime = "androidx.paging:paging-runtime:2.1.2"
-                const val rxjava2 = "androidx.paging:paging-rxjava2-ktx:2.1.2"
+                const val common = "androidx.paging:paging-common:${versions.paging}"
+                const val runtime = "androidx.paging:paging-runtime:${versions.paging}"
+                const val rxjava2 = "androidx.paging:paging-rxjava2-ktx:${versions.paging}"
             }
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
                 const val navigationUi = "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
             }
             object room {
-                const val common = "androidx.room:room-common:2.2.2"
-                const val compiler = "androidx.room:room-compiler:2.2.2"
-                const val runtime = "androidx.room:room-runtime:2.2.2"
-                const val rxjava2 = "androidx.room:room-rxjava2:2.2.2"
+                const val common = "androidx.room:room-common:${versions.room}"
+                const val compiler = "androidx.room:room-compiler:${versions.room}"
+                const val runtime = "androidx.room:room-runtime:${versions.room}"
+                const val rxjava2 = "androidx.room:room-rxjava2:${versions.room}"
             }
             const val documentfile = "androidx.documentfile:documentfile:1.0.1"
         }
