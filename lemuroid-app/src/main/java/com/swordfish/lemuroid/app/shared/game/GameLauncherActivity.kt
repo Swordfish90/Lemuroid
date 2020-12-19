@@ -44,15 +44,14 @@ class GameLauncherActivity : ImmersiveActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startGameTime = System.currentTimeMillis()
-
-        SaveSyncWork.cancelUniqueWork(applicationContext)
-
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
             val game = intent.getSerializableExtra(EXTRA_GAME) as Game
             val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
             val useLeanback = intent.getBooleanExtra(EXTRA_LEANBACK, false)
+
+            startGameTime = System.currentTimeMillis()
+            SaveSyncWork.cancelUniqueWork(applicationContext)
 
             val loadingStatesSubject = PublishSubject.create<GameLoader.LoadingState>()
             loadingStatesSubject.subscribeOn(Schedulers.io())

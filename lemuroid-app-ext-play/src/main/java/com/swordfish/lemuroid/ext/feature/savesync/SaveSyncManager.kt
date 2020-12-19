@@ -256,15 +256,11 @@ class SaveSyncManager(
         return sequence {
             do {
                 val query =
-                    """
-                    '$folderId' in parents and trashed = false and mimeType = 'application/x-binary'
-                    """.trimIndent()
+                    "'$folderId' in parents and trashed = false and mimeType = 'application/x-binary'"
 
                 val fields =
-                    """
-                    nextPageToken,
-                    files(id, name, size, appProperties, modifiedTime, parents, md5Checksum)
-                    """.trimIndent()
+                    "nextPageToken, " +
+                        "files(id, name, size, appProperties, modifiedTime, parents, md5Checksum)"
 
                 val result = drive.files().list()
                     .setSpaces("appDataFolder")
