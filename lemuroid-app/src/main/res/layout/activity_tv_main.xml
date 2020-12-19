@@ -13,19 +13,13 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/tv_navigation" />
 
-    <FrameLayout
+    <ProgressBar
         android:id="@+id/tv_loading"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#44000000">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true" />
-
-    </FrameLayout>
+        android:layout_margin="@dimen/grid_unit_3x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimaryVariant"/>
 
 </FrameLayout>

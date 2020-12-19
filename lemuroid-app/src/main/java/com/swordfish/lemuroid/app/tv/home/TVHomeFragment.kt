@@ -59,11 +59,11 @@ class TVHomeFragment : BrowseSupportFragment() {
                     findNavController().navigate(action)
                 }
                 is TVSetting -> {
-                    when (item) {
-                        TVSetting.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
-                        TVSetting.CHOOSE_DIRECTORY -> launchFolderPicker()
-                        TVSetting.SETTINGS -> launchTVSettings()
-                        TVSetting.SHOW_ALL_FAVORITES -> launchFavorites()
+                    when (item.type) {
+                        TVSettingType.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
+                        TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
+                        TVSettingType.SETTINGS -> launchTVSettings()
+                        TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
                     }
                 }
             }
@@ -87,8 +87,15 @@ class TVHomeFragment : BrowseSupportFragment() {
     override fun onResume() {
         super.onResume()
 
-        val factory = TVHomeViewModel.Factory(retrogradeDb)
+        val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
+
+        homeViewModel.indexingInProgress.observe(this) { inProgress ->
+            findAdapterById<ArrayObjectAdapter>(SETTINGS_ADAPTER)?.setItems(
+                buildSettingsRowItems(!inProgress),
+                LEANBACK_SETTING_DIFF_CALLBACK
+            )
+        }
 
         val entriesObservable = Observables.combineLatest(
             homeViewModel.favoritesGames,
@@ -122,7 +129,7 @@ class TVHomeFragment : BrowseSupportFragment() {
                 setItems(favoritesGames, LEANBACK_MULTI_DIFF_CALLBACK)
             } else {
                 val allItems = favoritesGames.subList(0, TVHomeViewModel.CAROUSEL_MAX_ITEMS) +
-                    listOf(TVSetting.SHOW_ALL_FAVORITES)
+                    listOf(TVSetting(TVSettingType.SHOW_ALL_FAVORITES))
                 setItems(allItems, LEANBACK_MULTI_DIFF_CALLBACK)
             }
         }
@@ -171,13 +178,19 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, cardPadding))
-        settingsItems.add(0, TVSetting.RESCAN)
-        settingsItems.add(1, TVSetting.CHOOSE_DIRECTORY)
-        settingsItems.add(2, TVSetting.SETTINGS)
+        settingsItems.setItems(buildSettingsRowItems(true), LEANBACK_SETTING_DIFF_CALLBACK)
         val settingsTitle = resources.getString(R.string.tv_home_section_settings)
         result.add(ListRow(HeaderItem(SETTINGS_ADAPTER, settingsTitle), settingsItems))
 
         adapter = result
+    }
+
+    private fun buildSettingsRowItems(rescanEnabled: Boolean): List<TVSetting> {
+        return listOf(
+            TVSetting(TVSettingType.RESCAN, rescanEnabled),
+            TVSetting(TVSettingType.CHOOSE_DIRECTORY, rescanEnabled),
+            TVSetting(TVSettingType.SETTINGS)
+        )
     }
 
     private fun launchFolderPicker() {
@@ -254,7 +267,7 @@ class TVHomeFragment : BrowseSupportFragment() {
             }
 
             override fun areItemsTheSame(oldItem: TVSetting, newItem: TVSetting): Boolean {
-                return oldItem == newItem
+                return oldItem.type == newItem.type
             }
         }
     }
