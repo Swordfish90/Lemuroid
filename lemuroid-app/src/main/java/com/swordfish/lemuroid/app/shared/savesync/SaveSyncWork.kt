@@ -1,10 +1,14 @@
 package com.swordfish.lemuroid.app.shared.savesync
 
 import android.content.Context
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.ListenableWorker
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.RxWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -54,17 +58,35 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
         val UNIQUE_WORK_ID: String = SaveSyncWork::class.java.simpleName
         val UNIQUE_PERIODIC_WORK_ID: String = SaveSyncWork::class.java.simpleName + "Periodic"
 
-        fun enqueueUniqueWork(applicationContext: Context, duration: Long = 0, timeUnit: TimeUnit = TimeUnit.SECONDS) {
+        fun enqueueManualWork(applicationContext: Context) {
             WorkManager.getInstance(applicationContext).enqueueUniqueWork(
                 UNIQUE_WORK_ID,
                 ExistingWorkPolicy.REPLACE,
-                OneTimeWorkRequestBuilder<SaveSyncWork>()
-                    .setInitialDelay(duration, timeUnit).build()
+                OneTimeWorkRequestBuilder<SaveSyncWork>().build()
             )
         }
 
-        fun cancelUniqueWork(applicationContext: Context) {
+        fun enqueueAutoWork(applicationContext: Context, delayMinutes: Long = 0) {
+            WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+                UNIQUE_PERIODIC_WORK_ID,
+                ExistingPeriodicWorkPolicy.KEEP,
+                PeriodicWorkRequestBuilder<SaveSyncWork>(3, TimeUnit.HOURS)
+                    .setConstraints(
+                        Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.UNMETERED)
+                            .setRequiresBatteryNotLow(true)
+                            .build()
+                    )
+                    .setInitialDelay(delayMinutes, TimeUnit.MINUTES).build()
+            )
+        }
+
+        fun cancelManualWork(applicationContext: Context) {
             WorkManager.getInstance(applicationContext).cancelUniqueWork(UNIQUE_WORK_ID)
+        }
+
+        fun cancelAutoWork(applicationContext: Context) {
+            WorkManager.getInstance(applicationContext).cancelUniqueWork(UNIQUE_PERIODIC_WORK_ID)
         }
     }
 

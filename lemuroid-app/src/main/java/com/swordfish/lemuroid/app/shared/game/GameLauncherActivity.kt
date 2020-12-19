@@ -51,7 +51,8 @@ class GameLauncherActivity : ImmersiveActivity() {
             val useLeanback = intent.getBooleanExtra(EXTRA_LEANBACK, false)
 
             startGameTime = System.currentTimeMillis()
-            SaveSyncWork.cancelUniqueWork(applicationContext)
+            SaveSyncWork.cancelManualWork(applicationContext)
+            SaveSyncWork.cancelAutoWork(applicationContext)
 
             val loadingStatesSubject = PublishSubject.create<GameLoader.LoadingState>()
             loadingStatesSubject.subscribeOn(Schedulers.io())
@@ -133,7 +134,7 @@ class GameLauncherActivity : ImmersiveActivity() {
         }
 
         // After a game has been successfully closed, sync save games.
-        SaveSyncWork.enqueueUniqueWork(applicationContext, 5, TimeUnit.MINUTES)
+        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
 
         setResult(Activity.RESULT_OK, resultIntent)
         finish()

@@ -114,6 +114,6 @@ class SaveSyncPreferences(
     }
 
     private fun handleSaveSyncRefresh(context: Context) {
-        SaveSyncWork.enqueueUniqueWork(context.applicationContext)
+        SaveSyncWork.enqueueManualWork(context.applicationContext)
     }
 }

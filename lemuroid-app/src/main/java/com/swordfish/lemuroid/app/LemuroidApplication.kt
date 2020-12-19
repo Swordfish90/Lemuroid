@@ -66,7 +66,7 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
         WorkManager.initialize(this, config)
 
         if (isMainProcess()) {
-            SaveSyncWork.enqueueUniqueWork(applicationContext)
+            SaveSyncWork.enqueueAutoWork(applicationContext, 0)
         }
     }
 
