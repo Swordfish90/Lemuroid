@@ -39,6 +39,7 @@ object deps {
                 const val leanback = "androidx.leanback:leanback:${versions.leanback}"
                 const val leanbackPreference = "androidx.leanback:leanback-preference:${versions.leanback}"
                 const val leanbackPaging = "androidx.leanback:leanback-paging:1.1.0-alpha06"
+                const val tvProvider = "androidx.tvprovider:tvprovider:1.0.0"
             }
             object ktx {
                 const val core = "androidx.core:core-ktx:1.1.0"
@@ -136,6 +137,7 @@ object deps {
         const val material                 = "com.google.android.material:material:1.2.1"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:29.0-android"
+        const val rxWorkManagerObservers   = "com.github.PaulinaSadowska:RxWorkManagerObservers:1.0.0"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 

@@ -10,8 +10,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 102
-        versionName = "1.8.0"
+        versionCode = 103
+        versionName = "1.9.0-alpha1"
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -97,6 +97,7 @@ dependencies {
     implementation(deps.libs.arch.work.rxjava2)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.extensions)
+    implementation(deps.libs.rxWorkManagerObservers)
     implementation(deps.libs.materialProgressBar)
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)
@@ -136,6 +137,7 @@ dependencies {
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.guava)
     implementation(deps.libs.androidx.documentfile)
+    implementation(deps.libs.androidx.leanback.tvProvider)
 
     implementation(deps.libs.libretrodroid)
 

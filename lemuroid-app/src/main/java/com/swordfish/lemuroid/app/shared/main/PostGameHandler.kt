@@ -1,40 +1,48 @@
 package com.swordfish.lemuroid.app.shared.main
 
 import android.app.Activity
-import android.content.Context
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import io.reactivex.Completable
-import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class PostGameHandler(
-    private val applicationContext: Context,
     private val reviewManager: ReviewManager,
     private val retrogradeDb: RetrogradeDatabase
 ) {
 
-    fun handleAfterGame(activity: Activity, leanback: Boolean, game: Game, duration: Long) {
-        CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
-        updateGamePlayedTimestamp(game)
+    fun handleAfterGame(
+        activity: Activity,
+        leanback: Boolean,
+        gameId: Int,
+        duration: Long
+    ): Completable {
 
-        if (!leanback) {
-            displayReviewRequest(activity, duration)
-        }
+        return retrogradeDb.gameDao()
+            .selectById(gameId)
+            .flatMapCompletable { game ->
+                val comps = mutableListOf<Completable>().apply {
+                    add(updateGamePlayedTimestamp(game))
+
+                    if (leanback) {
+                        add(displayReviewRequest(activity, duration))
+                    }
+                }
+                Completable.concat(comps)
+            }
+            .subscribeOn(Schedulers.io())
     }
 
-    private fun displayReviewRequest(activity: Activity, durationMillis: Long) {
-        Completable.timer(500, TimeUnit.MILLISECONDS)
+    private fun displayReviewRequest(activity: Activity, durationMillis: Long): Completable {
+        return Completable.timer(500, TimeUnit.MILLISECONDS)
             .andThen { reviewManager.startReviewFlow(activity, durationMillis) }
-            .subscribeBy { }
     }
 
-    private fun updateGamePlayedTimestamp(game: Game) {
-        retrogradeDb.gameDao()
+    private fun updateGamePlayedTimestamp(game: Game): Completable {
+        return retrogradeDb.gameDao()
             .updateAsync(game.copy(lastPlayedAt = System.currentTimeMillis()))
-            .subscribeBy { }
     }
 }

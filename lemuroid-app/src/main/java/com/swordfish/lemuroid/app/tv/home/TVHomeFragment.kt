@@ -84,8 +84,8 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)

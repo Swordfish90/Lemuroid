@@ -51,6 +51,9 @@ import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
+import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
+import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
+import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.bios.BiosManager
@@ -90,6 +93,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun gameLauncherActivity(): GameLauncherActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun externalGameLauncherActivity(): ExternalGameLauncherActivity
 
     @PerActivity
     @ContributesAndroidInjector
@@ -323,7 +330,19 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun postGameHandler(context: Context, retrogradeDatabase: RetrogradeDatabase) =
-            PostGameHandler(context, ReviewManager(), retrogradeDatabase)
+        fun postGameHandler(retrogradeDatabase: RetrogradeDatabase) =
+            PostGameHandler(ReviewManager(), retrogradeDatabase)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun shortcutsGenerator(context: Context, retrofit: Retrofit) =
+            ShortcutsGenerator(context, retrofit)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun channelHandler(context: Context, retrogradeDatabase: RetrogradeDatabase) =
+            ChannelHandler(context, retrogradeDatabase)
     }
 }

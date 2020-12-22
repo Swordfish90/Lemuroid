@@ -18,6 +18,7 @@ import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
+import java.util.concurrent.TimeUnit
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
     RxWorker(context, workerParams) {
@@ -33,9 +34,11 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
             NotificationsManager.LIBRARY_INDEXING_NOTIFICATION_ID,
             notificationsManager.libraryIndexingNotification()
         )
+
         setForegroundAsync(foregroundInfo)
         return lemuroidLibrary.indexLibrary()
             .toSingleDefault(Result.success())
+            .delay(10, TimeUnit.SECONDS)
             .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
             .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
     }

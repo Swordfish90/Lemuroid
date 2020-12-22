@@ -10,14 +10,18 @@ import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
+import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
+import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
+import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,6 +38,7 @@ import kotlin.system.exitProcess
  */
 class GameLauncherActivity : ImmersiveActivity() {
 
+    @Inject lateinit var retrogradeDatabase: RetrogradeDatabase
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var coresSelection: CoresSelection
@@ -41,18 +46,40 @@ class GameLauncherActivity : ImmersiveActivity() {
 
     var startGameTime: Long = System.currentTimeMillis()
 
+    private fun retrieveGameId(): Int {
+        return intent.getIntExtra(EXTRA_GAME, -1)
+    }
+
+    private fun stopBackgroundWork() {
+        SaveSyncWork.cancelManualWork(applicationContext)
+        SaveSyncWork.cancelAutoWork(applicationContext)
+
+        if (TVHelper.isTV(applicationContext)) {
+            ChannelUpdateWork.cancel(applicationContext)
+        }
+    }
+
+    private fun restartBackgroundWork() {
+        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
+        CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
+
+        if (TVHelper.isTV(applicationContext)) {
+            ChannelUpdateWork.enqueue(applicationContext)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        RemoteWorkManager
+
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
-            val game = intent.getSerializableExtra(EXTRA_GAME) as Game
-            val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
-            val useLeanback = intent.getBooleanExtra(EXTRA_LEANBACK, false)
+            val gameId = retrieveGameId()
+            val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, true)
+            val useLeanback = intent.getBooleanExtra(EXTRA_LEANBACK, TVHelper.isTV(this))
 
             startGameTime = System.currentTimeMillis()
-            SaveSyncWork.cancelManualWork(applicationContext)
-            SaveSyncWork.cancelAutoWork(applicationContext)
 
             val loadingStatesSubject = PublishSubject.create<GameLoader.LoadingState>()
             loadingStatesSubject.subscribeOn(Schedulers.io())
@@ -61,13 +88,16 @@ class GameLauncherActivity : ImmersiveActivity() {
                 .autoDispose(scope())
                 .subscribe { displayLoadingState(it) }
 
-            val core = getCoreForGame(game)
-            val loadState = requestLoadSave &&
-                settingsManager.autoSave &&
-                core.statesSupported &&
-                !savesCoherencyEngine.shouldDiscardAutoSaveState(game, core.coreID)
+            retrogradeDatabase.gameDao().selectById(gameId)
+                .flatMapObservable { game ->
+                    val core = getCoreForGame(game)
+                    val loadState = requestLoadSave &&
+                        settingsManager.autoSave &&
+                        core.statesSupported &&
+                        !savesCoherencyEngine.shouldDiscardAutoSaveState(game, core.coreID)
 
-            gameLoader.load(applicationContext, game, core, loadState)
+                    gameLoader.load(applicationContext, game, core, loadState)
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())
@@ -129,12 +159,12 @@ class GameLauncherActivity : ImmersiveActivity() {
 
         val resultIntent = Intent().apply {
             putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
-            putExtra(PLAY_GAME_RESULT_GAME, intent.getSerializableExtra(EXTRA_GAME))
+            putExtra(PLAY_GAME_RESULT_GAME, intent.getIntExtra(EXTRA_GAME, -1))
             putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
         }
 
         // After a game has been successfully closed, sync save games.
-        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
+        restartBackgroundWork()
 
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
@@ -163,15 +193,25 @@ class GameLauncherActivity : ImmersiveActivity() {
         const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
         const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
 
-        fun launchGame(activity: Activity, game: Game, loadSave: Boolean, useLeanback: Boolean) {
+        fun launchGame(activity: Activity, gameId: Int, loadSave: Boolean, useLeanback: Boolean) {
             activity.startActivityForResult(
-                Intent(activity, GameLauncherActivity::class.java).apply {
-                    putExtra(EXTRA_GAME, game)
-                    putExtra(EXTRA_LOAD_SAVE, loadSave)
-                    putExtra(EXTRA_LEANBACK, useLeanback)
-                },
+                buildLaunchIntent(activity, gameId, loadSave, useLeanback),
                 REQUEST_PLAY_GAME
             )
+        }
+
+        fun buildLaunchIntent(
+            context: Context,
+            gameId: Int,
+            loadSave: Boolean,
+            useLeanback: Boolean
+        ): Intent {
+            val activityClass = GameLauncherActivity::class.java
+            return Intent(Intent.ACTION_VIEW, null, context, activityClass).apply {
+                putExtra(EXTRA_GAME, gameId)
+                putExtra(EXTRA_LOAD_SAVE, loadSave)
+                putExtra(EXTRA_LEANBACK, useLeanback)
+            }
         }
     }
 }
