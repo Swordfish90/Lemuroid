@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.shared
 
+import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
@@ -16,13 +17,13 @@ class GameInteractor(
     fun onGamePlay(game: Game) {
         // TODO... Display an error message
         if (activity.isBusy()) return
-        GameLauncherActivity.launchGame(activity.activity(), game.id, true, useLeanback)
+        BaseGameActivity.launchGame(activity.activity(), game, true, useLeanback)
     }
 
     fun onGameRestart(game: Game) {
         // TODO... Display an error message
         if (activity.isBusy()) return
-        GameLauncherActivity.launchGame(activity.activity(), game.id, false, useLeanback)
+        BaseGameActivity.launchGame(activity.activity(), game, false, useLeanback)
     }
 
     fun onFavoriteToggle(game: Game, isFavorite: Boolean) {
