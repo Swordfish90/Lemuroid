@@ -25,6 +25,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.SaveSyncFragment
+import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
@@ -88,10 +89,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         if (resultCode != Activity.RESULT_OK) return
 
         when (requestCode) {
-            GameLauncherActivity.REQUEST_PLAY_GAME -> {
-                val duration = data?.extras?.getLong(GameLauncherActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                val game = data?.extras?.getSerializable(GameLauncherActivity.PLAY_GAME_RESULT_GAME) as Game?
-                val leanback = data?.extras?.getBoolean(GameLauncherActivity.PLAY_GAME_RESULT_LEANBACK)
+            BaseGameActivity.REQUEST_PLAY_GAME -> {
+                val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
+                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game?
+                val leanback = data?.extras?.getBoolean(BaseGameActivity.PLAY_GAME_RESULT_LEANBACK)
                 postGameHandler.handleAfterGame(this, leanback!!, game!!, duration!!)
             }
         }

@@ -8,6 +8,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
@@ -60,10 +61,10 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
         if (resultCode != Activity.RESULT_OK) return
 
         when (requestCode) {
-            GameLauncherActivity.REQUEST_PLAY_GAME -> {
-                val duration = data?.extras?.getLong(GameLauncherActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                val game = data?.extras?.getSerializable(GameLauncherActivity.PLAY_GAME_RESULT_GAME) as Game?
-                val leanback = data?.extras?.getBoolean(GameLauncherActivity.PLAY_GAME_RESULT_LEANBACK)
+            BaseGameActivity.REQUEST_PLAY_GAME -> {
+                val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
+                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game?
+                val leanback = data?.extras?.getBoolean(BaseGameActivity.PLAY_GAME_RESULT_LEANBACK)
                 postGameHandler.handleAfterGame(this, leanback!!, game!!, duration!!)
             }
         }

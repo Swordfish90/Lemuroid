@@ -10,23 +10,33 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.core.CoresSelection
+import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderError
+import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
@@ -58,6 +68,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
+import kotlin.system.exitProcess
 
 abstract class BaseGameActivity : ImmersiveActivity() {
 
@@ -69,6 +80,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var leftGamePadContainer: FrameLayout
     protected lateinit var rightGamePadContainer: FrameLayout
     private lateinit var loadingView: ProgressBar
+    private lateinit var loadingMessageView: TextView
 
     @Inject lateinit var settingsManager: SettingsManager
     @Inject lateinit var statesManager: StatesManager
@@ -76,16 +88,24 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
     @Inject lateinit var gamePadManager: GamePadManager
+    @Inject lateinit var gameLoader: GameLoader
+    @Inject lateinit var coresSelection: CoresSelection
 
-    private val loadingSubject: BehaviorRelay<Boolean> = BehaviorRelay.create()
+    private val startGameTime = System.currentTimeMillis()
+
+    private val loadingSubject: BehaviorRelay<Boolean> = BehaviorRelay.createDefault(true)
+    private val loadingMessagesSubject: BehaviorRelay<String> = BehaviorRelay.create()
 
     private val keyEventsSubjects: PublishRelay<KeyEvent> = PublishRelay.create()
     private val motionEventsSubjects: PublishRelay<MotionEvent> = PublishRelay.create()
 
     protected var retroGameView: GLRetroView? = null
 
-    var loading: Boolean by Delegates.observable(false) { _, _, value ->
+    var loading: Boolean by Delegates.observable(true) { _, _, value ->
         loadingSubject.accept(value)
+    }
+    var loadingMessage: String by Delegates.observable("") { _, _, value ->
+        loadingMessagesSubject.accept(value)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,20 +115,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         mainContainerLayout = findViewById(R.id.maincontainer)
         gameContainerLayout = findViewById(R.id.gamecontainer)
         loadingView = findViewById(R.id.progress)
+        loadingMessageView = findViewById(R.id.progress_message)
         leftGamePadContainer = findViewById(R.id.leftgamepad)
         rightGamePadContainer = findViewById(R.id.rightgamepad)
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         system = GameSystem.findById(game.systemId)
-        systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
+        systemCoreConfig = coresSelection.getCoreConfigForSystem(system)
 
-        val directoriesManager = DirectoriesManager(applicationContext)
-
-        initializeRetroGameView(directoriesManager, settingsManager.screenFilter)
-
-        retrieveAutoSaveData()?.let {
-            restoreAutoSaveAsync(it)
-        }
+        loadGame()
 
         if (areGamePadsEnabled()) {
             setupPhysicalPad()
@@ -116,23 +131,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     abstract fun areGamePadsEnabled(): Boolean
-
-    // If the activity is garbage collected we are losing its state. To avoid overwriting the previous autosave we just
-    // reload the previous one. This is far from perfect but definitely improves the current behaviour.
-    private fun retrieveAutoSaveData(): SaveState? {
-        if (intent.getBooleanExtra(EXTRA_LOAD_AUTOSAVE, false)) {
-            return getAndResetTransientQuickSave() ?: statesManager.getAutoSave(game, systemCoreConfig.coreID)
-                .blockingGet()
-        }
-        return null
-    }
-
-    private fun retrieveSRAMData(): ByteArray? {
-        if (intent.getBooleanExtra(EXTRA_LOAD_SRAM, false)) {
-            return getAndResetTransientSaveRAMState() ?: savesManager.getSaveRAM(game).blockingGet()
-        }
-        return null
-    }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
     private fun restoreAutoSaveAsync(saveState: SaveState) {
@@ -160,21 +158,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun initializeRetroGameView(
-        directoriesManager: DirectoriesManager,
+        gameData: GameLoader.GameData,
         screenFilter: String
     ) {
-        val coreVariables =
-            (intent.getSerializableExtra(EXTRA_CORE_VARIABLES) as Array<CoreVariable>? ?: arrayOf())
-                .map { Variable(it.key, it.value) }
-                .toTypedArray()
+        val directoriesManager = DirectoriesManager(applicationContext)
 
         val data = GLRetroViewData(this).apply {
-            coreFilePath = intent.getStringExtra(EXTRA_CORE_PATH)!!
-            gameFilePath = intent.getStringExtra(EXTRA_GAME_PATH)!!
+            coreFilePath = gameData.coreLibrary
+            gameFilePath = gameData.gameFile.absolutePath
             systemDirectory = directoriesManager.getSystemDirectory().absolutePath
             savesDirectory = directoriesManager.getSavesDirectory().absolutePath
-            variables = coreVariables
-            saveRAMState = retrieveSRAMData()
+            variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
+            saveRAMState = gameData.saveRAMData
             shader = getShaderForSystem(screenFilter, system)
         }
 
@@ -193,12 +188,36 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         retroGameView?.let { lifecycle.addObserver(it) }
         gameContainerLayout.addView(retroGameView)
 
+        lifecycle.addObserver(object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            fun onResume() {
+                coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
+                    .autoDispose(scope())
+                    .subscribeBy({}) {
+                        onVariablesRead(it)
+                    }
+            }
+
+            @OnLifecycleEvent(Lifecycle.Event.ON_START)
+            fun onStart() {
+                coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
+                    .autoDispose(scope())
+                    .subscribeBy({}) {
+                        updateCoreVariables(it)
+                    }
+            }
+        })
+
         val layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
         layoutParams.gravity = Gravity.CENTER
         retroGameView?.layoutParams = layoutParams
+
+        gameData.quickSaveData?.let {
+            restoreAutoSaveAsync(it)
+        }
     }
 
     private fun handleRetroViewError(errorCode: Int) {
@@ -276,12 +295,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .throttleLast(200, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribe { loadingView.setVisibleOrGone(it) }
+            .subscribe {
+                loadingView.setVisibleOrGone(it)
+                loadingMessageView.setVisibleOrGone(it)
+            }
 
-        coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
+        loadingMessagesSubject
+            .throttleLast(200, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy({}) {
-                onVariablesRead(it)
+            .subscribe {
+                loadingMessageView.text = it
             }
     }
 
@@ -303,15 +327,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
 
         retroGameView?.updateVariables(*updatedVariables)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
-            .autoDispose(scope())
-            .subscribeBy({}) {
-                updateCoreVariables(it)
-            }
     }
 
     // Now that we wait for the first rendered frame this is probably no longer needed, but we'll keep it just to be sure
@@ -393,7 +408,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .groupBy { (axis, _, _, _) -> axis }
             .flatMap { groups ->
                 groups.distinctUntilChanged()
-                    .doOnNext { (_, button, action, port) -> retroGameView?.sendKeyEvent(action, button, port) }
+                    .doOnNext { (_, button, action, port) -> retroGameView?.sendKeyEvent(
+                        action,
+                        button,
+                        port
+                    ) }
             }
             .autoDispose(scope())
             .subscribeBy { }
@@ -547,7 +566,29 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val autoSaveCompletable = getAutoSaveCompletable(game)
 
         return saveRAMCompletable.andThen(autoSaveCompletable)
-            .doOnComplete { finish() }
+            .doOnComplete { performActivityFinish() }
+    }
+
+    private fun performActivityFinish() {
+        val resultIntent = Intent().apply {
+            putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
+            putExtra(PLAY_GAME_RESULT_GAME, intent.getSerializableExtra(EXTRA_GAME))
+            putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
+        }
+
+        rescheduleBackgroundWork()
+
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
+
+    private fun cancelBackgroundWork() {
+        SaveSyncWork.cancelAutoWork(applicationContext)
+        SaveSyncWork.cancelManualWork(applicationContext)
+    }
+
+    private fun rescheduleBackgroundWork() {
+        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
     }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
@@ -670,39 +711,72 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    companion object {
-        const val EXTRA_GAME = "game"
-        const val EXTRA_SYSTEM_CORE_CONFIG = "system_core_config"
-        const val EXTRA_CORE_PATH = "core_path"
-        const val EXTRA_GAME_PATH = "game_path"
-        const val EXTRA_CORE_VARIABLES = "core_variables"
-        const val EXTRA_LOAD_SRAM = "load_sram"
-        const val EXTRA_LOAD_AUTOSAVE = "load_autosave"
+    fun loadGame() {
+        val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
 
+        cancelBackgroundWork()
+
+        val core = coresSelection.getCoreConfigForSystem(system)
+        val loadState = requestLoadSave && settingsManager.autoSave && core.statesSupported
+
+        gameLoader.load(applicationContext, game, loadState)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
+            .autoDispose(scope())
+            .subscribe(
+                {
+                    displayLoadingState(it)
+                    if (it is GameLoader.LoadingState.Ready) {
+                        initializeRetroGameView(it.gameData, settingsManager.screenFilter)
+                    }
+                },
+                {
+                    displayGameLoaderError((it as GameLoaderException).error)
+                }
+            )
+    }
+
+    private fun displayLoadingState(loadingState: GameLoader.LoadingState) {
+        loadingMessage = when (loadingState) {
+            is GameLoader.LoadingState.LoadingCore -> getString(R.string.game_loading_download_core)
+            is GameLoader.LoadingState.LoadingGame -> getString(R.string.game_loading_preparing_game)
+            else -> ""
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        exitProcess(0)
+    }
+
+    companion object {
         const val DIALOG_REQUEST = 100
 
-        private var transientStashedState: SaveState? = null
-        private var transientSRAMState: ByteArray? = null
+        private const val EXTRA_GAME = "GAME"
+        private const val EXTRA_LOAD_SAVE = "LOAD_SAVE"
+        private const val EXTRA_LEANBACK = "LEANBACK"
 
-        /** A full savestate may not fit a bundle, so we need to ask for forgiveness and pass it statically. */
-        fun setTransientQuickSave(state: SaveState?) {
-            transientStashedState = state
-        }
+        const val REQUEST_PLAY_GAME = 1001
+        const val PLAY_GAME_RESULT_SESSION_DURATION = "PLAY_GAME_RESULT_SESSION_DURATION"
+        const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
+        const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
 
-        fun setTransientSaveRAMState(data: ByteArray?) {
-            transientSRAMState = data
-        }
-
-        fun getAndResetTransientQuickSave(): SaveState? {
-            val result = transientStashedState
-            transientStashedState = null
-            return result
-        }
-
-        fun getAndResetTransientSaveRAMState(): ByteArray? {
-            val result = transientSRAMState
-            transientSRAMState = null
-            return result
+        fun launchGame(activity: Activity, game: Game, loadSave: Boolean, useLeanback: Boolean) {
+            val gameActivity = if (useLeanback) {
+                TVGameActivity::class.java
+            } else {
+                GameActivity::class.java
+            }
+            activity.startActivityForResult(
+                Intent(activity, gameActivity).apply {
+                    putExtra(EXTRA_GAME, game)
+                    putExtra(EXTRA_LOAD_SAVE, loadSave)
+                    putExtra(EXTRA_LEANBACK, useLeanback)
+                },
+                REQUEST_PLAY_GAME
+            )
         }
     }
 }

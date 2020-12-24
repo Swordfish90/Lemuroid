@@ -262,14 +262,18 @@ abstract class LemuroidApplicationModule {
             statesManager: StatesManager,
             savesManager: SavesManager,
             coreVariablesManager: CoreVariablesManager,
-            retrogradeDatabase: RetrogradeDatabase
+            retrogradeDatabase: RetrogradeDatabase,
+            coresSelection: CoresSelection,
+            savesCoherencyEngine: SavesCoherencyEngine
         ) = GameLoader(
             coreManager,
             lemuroidLibrary,
             statesManager,
             savesManager,
             coreVariablesManager,
-            retrogradeDatabase
+            retrogradeDatabase,
+            coresSelection,
+            savesCoherencyEngine
         )
 
         @Provides

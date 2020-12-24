@@ -26,6 +26,7 @@ import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
@@ -33,6 +34,7 @@ import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.saves.SaveState
+import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import io.reactivex.Observable
@@ -45,15 +47,16 @@ class GameLoader(
     private val statesManager: StatesManager,
     private val savesManager: SavesManager,
     private val coreVariablesManager: CoreVariablesManager,
-    private val retrogradeDatabase: RetrogradeDatabase
+    private val retrogradeDatabase: RetrogradeDatabase,
+    private val coresSelection: CoresSelection,
+    private val savesCoherencyEngine: SavesCoherencyEngine
 ) {
     fun load(
         applicationContext: Context,
         game: Game,
-        systemCoreConfig: SystemCoreConfig,
         loadSave: Boolean
     ): Observable<LoadingState> {
-        return prepareGame(applicationContext, game, systemCoreConfig, loadSave)
+        return prepareGame(applicationContext, game, loadSave)
     }
 
     sealed class LoadingState {
@@ -72,13 +75,13 @@ class GameLoader(
     private fun prepareGame(
         appContext: Context,
         game: Game,
-        systemCoreConfig: SystemCoreConfig,
         loadQuickSave: Boolean
     ) = Observable.create<LoadingState> { emitter ->
         try {
             emitter.onNext(LoadingState.LoadingCore)
 
             val system = GameSystem.findById(game.systemId)
+            val systemCoreConfig = coresSelection.getCoreConfigForSystem(system)
 
             val coreLibrary = runCatching {
                 coreManager.downloadCore(
@@ -105,7 +108,7 @@ class GameLoader(
             }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
 
             val quickSaveData = runCatching {
-                if (loadQuickSave) {
+                if (loadQuickSave && !savesCoherencyEngine.shouldDiscardAutoSaveState(game, systemCoreConfig.coreID)) {
                     statesManager.getAutoSave(game, systemCoreConfig.coreID)
                         .toSingleAsOptional()
                         .blockingGet()
