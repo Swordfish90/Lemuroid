@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.app.shared
 
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
-import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase

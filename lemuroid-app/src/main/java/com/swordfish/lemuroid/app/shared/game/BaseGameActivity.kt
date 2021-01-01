@@ -292,7 +292,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         super.onResume()
 
         loadingSubject
-            .throttleLast(200, TimeUnit.MILLISECONDS)
+            .debounce(200, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe {
@@ -301,7 +301,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
 
         loadingMessagesSubject
-            .throttleLast(200, TimeUnit.MILLISECONDS)
+            .debounce(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe {

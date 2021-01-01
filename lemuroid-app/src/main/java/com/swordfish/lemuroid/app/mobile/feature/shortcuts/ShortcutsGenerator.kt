@@ -33,14 +33,15 @@ class ShortcutsGenerator(
 
         val shortcutManager = appContext.getSystemService(ShortcutManager::class.java)!!
 
-        return thumbnailsApi.downloadThumbnail(game.coverFrontUrl!!)
+        return Single.fromCallable { game.coverFrontUrl }
+            .flatMap { thumbnailsApi.downloadThumbnail(it) }
             .map { BitmapFactory.decodeStream(it.body()).cropToSquare().toOptional() }
             .onErrorReturnItem(None)
             .map { optionalBitmap ->
                 val builder = ShortcutInfo.Builder(appContext, "game_${game.id}")
                     .setShortLabel(game.title)
                     .setLongLabel(game.title)
-                    .setIntent(DeepLink.launchIntentForGame(game))
+                    .setIntent(DeepLink.launchIntentForGame(appContext, game))
 
                 optionalBitmap.toNullable()?.let {
                     builder.setIcon(Icon.createWithBitmap(it))

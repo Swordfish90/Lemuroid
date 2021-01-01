@@ -97,7 +97,7 @@ dependencies {
     implementation(deps.libs.arch.work.rxjava2)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.extensions)
-    implementation(deps.libs.rxWorkManagerObservers)
+    implementation(deps.libs.androidx.lifecycle.reactiveStreams)
     implementation(deps.libs.materialProgressBar)
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)

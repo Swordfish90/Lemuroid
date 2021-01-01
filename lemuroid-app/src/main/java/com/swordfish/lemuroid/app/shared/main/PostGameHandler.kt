@@ -6,6 +6,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
@@ -16,18 +17,17 @@ class PostGameHandler(
 
     fun handleAfterGame(
         activity: Activity,
-        leanback: Boolean,
-        gameId: Int,
+        enableRatingFlow: Boolean,
+        game: Game,
         duration: Long
     ): Completable {
 
-        return retrogradeDb.gameDao()
-            .selectById(gameId)
+        return Single.just(game)
             .flatMapCompletable { game ->
                 val comps = mutableListOf<Completable>().apply {
                     add(updateGamePlayedTimestamp(game))
 
-                    if (leanback) {
+                    if (enableRatingFlow) {
                         add(displayReviewRequest(activity, duration))
                     }
                 }

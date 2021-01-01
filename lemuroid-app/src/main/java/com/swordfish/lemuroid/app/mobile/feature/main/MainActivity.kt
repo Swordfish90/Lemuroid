@@ -26,21 +26,18 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.SaveSyncFragment
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
-import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
-import com.swordfish.lemuroid.lib.util.subscribeBy
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDispose
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.rxkotlin.subscribeBy
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
@@ -95,9 +92,9 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
                 val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game?
-                val leanback = data?.extras?.getBoolean(BaseGameActivity.PLAY_GAME_RESULT_LEANBACK)
-                postGameHandler.handleAfterGame(this, leanback!!, game!!, duration!!)
+                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
+                postGameHandler.handleAfterGame(this, true, game, duration!!)
+                    .subscribeBy { }
             }
         }
     }

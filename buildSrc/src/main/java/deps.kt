@@ -24,7 +24,7 @@ object deps {
         const val googleApiClient = "1.30.9"
         const val paging          = "3.0.0-alpha11"
         const val room            = "2.3.0-alpha04"
-        const val libretrodroid   = "d30aec1c8f"
+        const val libretrodroid   = "2a496fdc"
         const val radialgamepad   = "0.2.0"
     }
 
@@ -49,6 +49,7 @@ object deps {
                 const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
                 const val extensions = "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
                 const val processor = "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+                const val reactiveStreams = "android.arch.lifecycle:reactivestreams:1.1.1"
             }
             object preferences {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
@@ -137,7 +138,6 @@ object deps {
         const val material                 = "com.google.android.material:material:1.2.1"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:29.0-android"
-        const val rxWorkManagerObservers   = "com.github.PaulinaSadowska:RxWorkManagerObservers:1.0.0"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 

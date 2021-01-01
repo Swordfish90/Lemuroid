@@ -40,9 +40,7 @@ class ChannelUpdateWork(context: Context, workerParams: WorkerParameters) :
             WorkManager.getInstance(applicationContext).enqueueUniqueWork(
                 UNIQUE_WORK_ID,
                 ExistingWorkPolicy.REPLACE,
-                OneTimeWorkRequestBuilder<ChannelUpdateWork>()
-                    //.setInitialDelay(5, TimeUnit.MINUTES) // TODO FILIPPO ENABLE THIS...
-                    .build()
+                OneTimeWorkRequestBuilder<ChannelUpdateWork>().build()
             )
         }
 

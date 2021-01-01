@@ -31,23 +31,14 @@
         </activity>
 
         <activity
-            android:name="com.swordfish.lemuroid.app.shared.game.GameLauncherActivity"
-            android:process=":game"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:theme="@style/GameTheme"/>
-
-        <activity
             android:name="com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/GameTheme">
             <intent-filter>
-                <!-- Used to launch our content directly from home screen launcher or Assistant -->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <!-- TODO FILIPPO... Consider using package name to handle debug variants -->
-                <data android:scheme="lemuroid" android:host="play.game" android:pathPattern="/.*"/>
+                <data android:scheme="lemuroid" android:host="${applicationId}" android:pathPattern="/play-game/id/.*"/>
             </intent-filter>
         </activity>
 

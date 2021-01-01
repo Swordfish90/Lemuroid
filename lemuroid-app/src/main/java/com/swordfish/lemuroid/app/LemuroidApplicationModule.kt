@@ -24,7 +24,6 @@ import android.preference.PreferenceManager
 import androidx.room.Room
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
-import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
@@ -89,10 +88,6 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [MainActivity.Module::class])
     abstract fun mainActivity(): MainActivity
-
-    @PerActivity
-    @ContributesAndroidInjector
-    abstract fun gameLauncherActivity(): GameLauncherActivity
 
     @PerActivity
     @ContributesAndroidInjector

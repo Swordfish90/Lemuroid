@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.app.tv.channel
 
 import android.content.ContentUris
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -14,6 +13,7 @@ import androidx.tvprovider.media.tv.ChannelLogoUtils
 import androidx.tvprovider.media.tv.PreviewProgram
 import androidx.tvprovider.media.tv.TvContractCompat
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.deeplink.DeepLink
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import io.reactivex.Completable
@@ -24,7 +24,7 @@ class ChannelHandler(
     private val retrogradeDatabase: RetrogradeDatabase
 ) {
 
-    private fun create(): Long {
+    private fun getOrCreateChannelId(): Long {
         var channelId = findChannel()
 
         if (channelId != null)
@@ -33,7 +33,7 @@ class ChannelHandler(
         val builder = Channel.Builder()
             .setType(TvContractCompat.Channels.TYPE_PREVIEW)
             .setDisplayName(DEFAULT_CHANNEL_DISPLAY_NAME)
-            .setAppLinkIntentUri(Uri.parse("lemuroid://play.game"))
+            .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
 
         val channelUri = appContext.contentResolver.insert(
             TvContractCompat.Channels.CONTENT_URI,
@@ -48,7 +48,7 @@ class ChannelHandler(
         return channelId
     }
 
-    fun convertToBitmap(context: Context, resourceId: Int): Bitmap? {
+    private fun convertToBitmap(context: Context, resourceId: Int): Bitmap? {
         val drawable = context.getDrawable(resourceId)
         if (drawable is VectorDrawable) {
             val bitmap: Bitmap = Bitmap.createBitmap(
@@ -70,13 +70,12 @@ class ChannelHandler(
             .firstElement()
             .filter { it.isNotEmpty() }
             .doOnSuccess {
-                val channelId = create()
+                val channelId = getOrCreateChannelId()
 
                 val channel = Channel.Builder()
-                channel.setDisplayName("Lemuroid")
+                channel.setDisplayName(DEFAULT_CHANNEL_DISPLAY_NAME)
                     .setType(TvContractCompat.Channels.TYPE_PREVIEW)
-                    //.setAppLinkIntentUri(Uri.parse("torrserve://${BuildConfig.APPLICATION_ID}/open_main_list"))
-                    .setAppLinkIntentUri(Uri.parse("lemuroid://play.game"))
+                    .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
                     .build()
 
                 appContext.contentResolver.delete(
@@ -103,7 +102,7 @@ class ChannelHandler(
     }
 
     private fun getGameProgram(channelId: Long, game: Game): PreviewProgram {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("lemuroid://play.game/${game.id}"))
+        val intent = DeepLink.launchIntentForGame(appContext, game)
 
         val preview = PreviewProgram.Builder()
             .setChannelId(channelId)
