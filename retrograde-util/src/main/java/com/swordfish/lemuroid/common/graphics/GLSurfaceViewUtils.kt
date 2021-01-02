@@ -15,21 +15,32 @@ fun GLSurfaceView.takeScreenshot(maxResolution: Int): Maybe<Bitmap> = Maybe.crea
 
     queueEvent {
         try {
-            val scaling = maxResolution / maxOf(width, height).toFloat()
-            val bitmap: Bitmap = Bitmap.createBitmap(
-                (width * scaling).roundToInt(),
-                (height * scaling).roundToInt(),
+            val outputScaling = maxResolution / maxOf(width, height).toFloat()
+            val inputScaling = outputScaling * 2
+
+            val inputBitmap = Bitmap.createBitmap(
+                (width * inputScaling).roundToInt(),
+                (height * inputScaling).roundToInt(),
                 Bitmap.Config.ARGB_8888
             )
 
             val onCompleted = { result: Int ->
                 if (result == PixelCopy.SUCCESS) {
-                    emitter.onSuccess(bitmap)
+
+                    // This rescaling limits the artifacts introduced by shaders.
+                    val outputBitmap = Bitmap.createScaledBitmap(
+                        inputBitmap,
+                        (width * outputScaling).roundToInt(),
+                        (height * outputScaling).roundToInt(),
+                        true
+                    )
+
+                    emitter.onSuccess(outputBitmap)
                 } else {
                     emitter.onError(RuntimeException("Cannot take screenshot. Error code: $result"))
                 }
             }
-            PixelCopy.request(this, bitmap, onCompleted, handler)
+            PixelCopy.request(this, inputBitmap, onCompleted, handler)
         } catch (e: Exception) {
             emitter.onError(e)
         }
