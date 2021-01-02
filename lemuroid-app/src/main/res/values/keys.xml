@@ -13,8 +13,9 @@
     <string name="pref_key_reset_settings" translatable="false">reset_settings</string>
     <string name="pref_key_enable_gamepads" translatable="false">enable_gamepads</string>
 
-    <string name="pref_key_save_sync_enable">enable_save_sync</string>
-    <string name="pref_key_save_sync_enable_states">enable_state_sync</string>
+    <string name="pref_key_save_sync_auto">save_sync_auto</string>
+    <string name="pref_key_save_sync_enable">save_sync_enable</string>
+    <string name="pref_key_save_sync_enable_states">save_sync_enable_states</string>
     <string name="pref_key_save_sync_configure">save_sync_configure</string>
 
     <string name="pref_key_shader_filter" translatable="false">shader_filter</string>

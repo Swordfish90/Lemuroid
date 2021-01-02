@@ -25,6 +25,8 @@ class SaveSyncManager(
         0L
     )
 
+    fun getProvider(): String = "Google Drive"
+
     fun getSettingsActivity() = ActivateGoogleDriveActivity::class.java
 
     fun isSupported(): Boolean = true
@@ -32,7 +34,11 @@ class SaveSyncManager(
     fun isConfigured(): Boolean = GoogleSignIn.getLastSignedInAccount(appContext) != null
 
     fun getLastSyncInfo(): String {
-        val dateString = SimpleDateFormat.getDateTimeInstance().format(lastSyncTimestamp)
+        val dateString = if (lastSyncTimestamp > 0) {
+            SimpleDateFormat.getDateTimeInstance().format(lastSyncTimestamp)
+        } else {
+            "-"
+        }
         return appContext.getString(R.string.gdrive_last_sync_completed, dateString)
     }
 

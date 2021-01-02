@@ -32,6 +32,11 @@ class SaveSyncPreferences(
             preferenceScreen.addPreference(this)
         }
 
+        SwitchPreference(context).apply {
+            key = keyAutoSync(context)
+            preferenceScreen.addPreference(this)
+        }
+
         Preference(context).apply {
             key = keyForceSync(context)
             preferenceScreen.addPreference(this)
@@ -44,7 +49,10 @@ class SaveSyncPreferences(
         val context = preferenceScreen.context
 
         preferenceScreen.findPreference<Preference>(keyConfigure(context))?.apply {
-            title = context.getString(R.string.settings_save_sync_configure)
+            title = context.getString(
+                R.string.settings_save_sync_configure,
+                saveSyncManager.getProvider()
+            )
             isIconSpaceReserved = false
             isEnabled = !syncInProgress
             summary = saveSyncManager.getConfigInfo()
@@ -71,10 +79,21 @@ class SaveSyncPreferences(
             isIconSpaceReserved = false
         }
 
+        preferenceScreen.findPreference<Preference>(keyAutoSync(context))?.apply {
+            title = context.getString(R.string.settings_save_sync_enable_auto)
+            isEnabled = saveSyncManager.isConfigured() && !syncInProgress
+            summary = context.getString(R.string.settings_save_sync_enable_auto_description)
+            dependency = keySyncEnabled(context)
+            isIconSpaceReserved = false
+        }
+
         preferenceScreen.findPreference<Preference>(keyForceSync(context))?.apply {
             title = context.getString(R.string.settings_save_sync_refresh)
             isEnabled = saveSyncManager.isConfigured() && !syncInProgress
-            summary = saveSyncManager.getLastSyncInfo()
+            summary = context.getString(
+                R.string.settings_save_sync_refresh_description,
+                saveSyncManager.getLastSyncInfo()
+            )
             dependency = keySyncEnabled(context)
             isIconSpaceReserved = false
         }
@@ -106,6 +125,10 @@ class SaveSyncPreferences(
 
     private fun keyConfigure(context: Context) =
         context.getString(R.string.pref_key_save_sync_configure)
+
+    private fun keyAutoSync(context: Context) =
+        context.getString(R.string.pref_key_save_sync_auto)
+
 
     private fun handleSaveSyncConfigure(activity: Activity?) {
         activity?.startActivity(

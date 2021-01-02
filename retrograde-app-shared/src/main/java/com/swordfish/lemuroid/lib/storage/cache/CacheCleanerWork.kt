@@ -44,6 +44,10 @@ class CacheCleanerWork(context: Context, workerParams: WorkerParameters) : RxWor
             )
         }
 
+        fun cancelCleanCacheLRU(applicationContext: Context) {
+            WorkManager.getInstance(applicationContext).cancelUniqueWork(UNIQUE_WORK_ID)
+        }
+
         fun enqueueCleanCacheAll(applicationContext: Context) {
             val inputData: Data = workDataOf(CLEAN_EVERYTHING to true)
 

@@ -9,6 +9,7 @@ import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.BuildConfig
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
@@ -28,8 +29,10 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
     lateinit var rxPrefs: RxSharedPreferences
     @Inject
     lateinit var gdriveStorageProvider: GDriveStorageProvider*/
-    @Inject
-    lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
+
+    @Inject lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
+
+    @Inject lateinit var saveSyncScheduler: SaveSyncScheduler
 
     @SuppressLint("CheckResult")
     override fun onCreate() {
@@ -66,7 +69,7 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
         WorkManager.initialize(this, config)
 
         if (isMainProcess()) {
-            SaveSyncWork.enqueueAutoWork(applicationContext, 0)
+            saveSyncScheduler.scheduleSaveSyncIfNeeded(0)
         }
     }
 

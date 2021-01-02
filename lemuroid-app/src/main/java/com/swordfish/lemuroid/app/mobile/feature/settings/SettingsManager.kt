@@ -42,6 +42,12 @@ class SettingsManager(private val context: Context) {
         true
     )
 
+    var autoSaveSync: Boolean by SharedPreferencesDelegates.BooleanDelegate(
+        sharedPreferences,
+        getString(R.string.pref_key_save_sync_auto),
+        false
+    )
+
     var syncSaves: Boolean by SharedPreferencesDelegates.BooleanDelegate(
         sharedPreferences,
         getString(R.string.pref_key_save_sync_enable),
@@ -51,6 +57,6 @@ class SettingsManager(private val context: Context) {
     var syncStates: Boolean by SharedPreferencesDelegates.BooleanDelegate(
         sharedPreferences,
         getString(R.string.pref_key_save_sync_enable_states),
-        true
+        false
     )
 }

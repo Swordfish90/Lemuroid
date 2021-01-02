@@ -52,6 +52,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
@@ -325,6 +326,12 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun saveSyncManager(context: Context, directoriesManager: DirectoriesManager) =
             SaveSyncManager(context, directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun saveSyncScheduler(context: Context, settingsManager: SettingsManager) =
+            SaveSyncScheduler(context, settingsManager)
 
         @Provides
         @PerApp
