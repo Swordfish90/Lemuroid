@@ -10,7 +10,6 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

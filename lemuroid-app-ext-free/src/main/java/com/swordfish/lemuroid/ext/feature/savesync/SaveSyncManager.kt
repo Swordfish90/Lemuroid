@@ -8,6 +8,8 @@ class SaveSyncManager(
     private val appContext: Context,
     private val directoriesManager: DirectoriesManager
 ) {
+    fun getProvider(): String = ""
+
     fun getSettingsActivity() = null
 
     fun isSupported(): Boolean = false

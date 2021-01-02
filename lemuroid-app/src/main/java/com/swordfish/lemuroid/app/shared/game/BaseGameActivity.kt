@@ -25,7 +25,6 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.dump
@@ -191,25 +190,27 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         retroGameView?.let { lifecycle.addObserver(it) }
         gameContainerLayout.addView(retroGameView)
 
-        lifecycle.addObserver(object : LifecycleObserver {
-            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-            fun onResume() {
-                coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
-                    .autoDispose(scope())
-                    .subscribeBy({}) {
-                        onVariablesRead(it)
-                    }
-            }
+        lifecycle.addObserver(
+            object : LifecycleObserver {
+                @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+                fun onResume() {
+                    coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
+                        .autoDispose(scope())
+                        .subscribeBy({}) {
+                            onVariablesRead(it)
+                        }
+                }
 
-            @OnLifecycleEvent(Lifecycle.Event.ON_START)
-            fun onStart() {
-                coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
-                    .autoDispose(scope())
-                    .subscribeBy({}) {
-                        updateCoreVariables(it)
-                    }
+                @OnLifecycleEvent(Lifecycle.Event.ON_START)
+                fun onStart() {
+                    coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
+                        .autoDispose(scope())
+                        .subscribeBy({}) {
+                            updateCoreVariables(it)
+                        }
+                }
             }
-        })
+        )
 
         val layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -411,11 +412,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .groupBy { (axis, _, _, _) -> axis }
             .flatMap { groups ->
                 groups.distinctUntilChanged()
-                    .doOnNext { (_, button, action, port) -> retroGameView?.sendKeyEvent(
-                        action,
-                        button,
-                        port
-                    ) }
+                    .doOnNext { (_, button, action, port) ->
+                        retroGameView?.sendKeyEvent(action, button, port)
+                    }
             }
             .autoDispose(scope())
             .subscribeBy { }

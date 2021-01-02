@@ -129,7 +129,6 @@ class SaveSyncPreferences(
     private fun keyAutoSync(context: Context) =
         context.getString(R.string.pref_key_save_sync_auto)
 
-
     private fun handleSaveSyncConfigure(activity: Activity?) {
         activity?.startActivity(
             Intent(activity, saveSyncManager.getSettingsActivity())

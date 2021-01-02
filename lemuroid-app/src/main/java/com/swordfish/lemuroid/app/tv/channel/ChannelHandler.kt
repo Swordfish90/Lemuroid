@@ -18,7 +18,6 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import io.reactivex.Completable
 
-
 class ChannelHandler(
     private val appContext: Context,
     private val retrogradeDatabase: RetrogradeDatabase
@@ -42,8 +41,11 @@ class ChannelHandler(
         channelId = ContentUris.parseId(channelUri)
 
         ChannelLogoUtils.storeChannelLogo(
-            appContext, channelId, convertToBitmap(appContext, R.mipmap.lemuroid_tv_channel)!!
+            appContext,
+            channelId,
+            convertToBitmap(appContext, R.mipmap.lemuroid_tv_channel)!!
         )
+
         TvContractCompat.requestChannelBrowsable(appContext, channelId)
         return channelId
     }
@@ -86,7 +88,9 @@ class ChannelHandler(
 
                 appContext.contentResolver.update(
                     TvContractCompat.buildChannelUri(channelId),
-                    channel.build().toContentValues(), null, null
+                    channel.build().toContentValues(),
+                    null,
+                    null
                 )
 
                 if (it.isNotEmpty())
