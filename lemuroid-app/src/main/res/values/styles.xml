@@ -32,9 +32,10 @@
     </style>
 
     <style name="PreferenceOverlay" parent="GameTheme">
-        <item name="android:windowBackground">#dd000000</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.75</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
