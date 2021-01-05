@@ -20,9 +20,12 @@
 package com.swordfish.lemuroid.common.kotlin
 
 import androidx.documentfile.provider.DocumentFile
+import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry
+import org.apache.commons.compress.archivers.sevenz.SevenZFile
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.PushbackInputStream
 import java.util.zip.CRC32
@@ -62,9 +65,28 @@ fun ZipInputStream.extractEntryToFile(entryName: String, gameFile: File) {
     }
 }
 
+fun SevenZFile.extractEntryToFile(entryName: String, gameFile: File) {
+    var entry: SevenZArchiveEntry
+    while (this.nextEntry.also { entry = it } != null) {
+        if (entryName == gameFile.name) {
+            val out = FileOutputStream(gameFile)
+            val content = ByteArray(entry.size.toInt())
+            this.read(content, 0, content.size)
+            out.write(content)
+            out.close()
+            break
+        }
+    }
+    this.close()
+}
+
 fun File.isZipped() = extension == "zip"
 
+fun File.isSevenZipped() = extension == "7z"
+
 fun DocumentFile.isZipped() = type == "application/zip"
+
+fun DocumentFile.isSevenZipped() = type == "application/x-7z-compressed"
 
 /** Returns the uncompressed input stream if gzip compressed. */
 private fun File.uncompressedInputStream(): InputStream {
@@ -74,6 +96,22 @@ private fun File.uncompressedInputStream(): InputStream {
     pb.unread(signature, 0, len)
     return if (signature[0] == 0x1f.toByte() && signature[1] == 0x8b.toByte())
         GZIPInputStream(pb, GZIP_INPUT_STREAM_BUFFER_SIZE) else pb
+}
+
+fun File.copyInputStreamToFile(inputStream: InputStream) {
+    val buffer = ByteArray(1024)
+
+    inputStream.use { input ->
+        this.outputStream().use { fileOut ->
+            while (true) {
+                val length = input.read(buffer)
+                if (length <= 0)
+                    break
+                fileOut.write(buffer, 0, length)
+            }
+            fileOut.flush()
+        }
+    }
 }
 
 /** Write bytes to file using GZIP compression. */

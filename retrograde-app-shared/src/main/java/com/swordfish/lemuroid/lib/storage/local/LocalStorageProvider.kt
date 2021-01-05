@@ -25,6 +25,7 @@ import androidx.core.net.toUri
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
+import com.swordfish.lemuroid.common.kotlin.isSevenZipped
 import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
@@ -37,6 +38,7 @@ import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import org.apache.commons.compress.archivers.sevenz.SevenZFile
 import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
@@ -108,6 +110,11 @@ class LocalStorageProvider(
         if (originalFile.isZipped()) {
             val stream = ZipInputStream(originalFile.inputStream())
             stream.extractEntryToFile(game.fileName, cacheFile)
+        }
+
+        if (originalFile.isSevenZipped()) {
+            val sevenZFile = SevenZFile(originalFile)
+            sevenZFile.extractEntryToFile(game.fileName, cacheFile)
         }
 
         cacheFile

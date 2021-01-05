@@ -38,6 +38,8 @@ dependencies {
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.kotlin.serialization)
+    implementation(deps.libs.xz)
+    implementation(deps.libs.compress)
 
     kapt(deps.libs.androidx.room.compiler)
 }
