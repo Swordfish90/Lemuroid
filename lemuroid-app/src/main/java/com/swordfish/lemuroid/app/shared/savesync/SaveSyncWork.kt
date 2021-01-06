@@ -17,6 +17,7 @@ import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
+import com.swordfish.lemuroid.lib.library.findByName
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
@@ -47,7 +48,7 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
         setForegroundAsync(foregroundInfo)
 
         return saveSyncManager
-            .sync(settingsManager.syncStates)
+            .sync(settingsManager.syncStatesCores.mapNotNull { findByName(it) }.toSet())
             .doOnError { e -> Timber.e(e, "Error in saves sync") }
             .subscribeOn(Schedulers.io())
             .onErrorComplete()

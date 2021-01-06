@@ -9,6 +9,7 @@ import com.google.api.services.drive.Drive
 import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
 import com.swordfish.lemuroid.common.kotlin.calculateMd5
 import com.swordfish.lemuroid.ext.R
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import timber.log.Timber
@@ -51,26 +52,29 @@ class SaveSyncManager(
         }
     }
 
-    fun sync(includeStates: Boolean) = Completable.fromAction {
+    fun sync(cores: Set<CoreID>) = Completable.fromAction {
         synchronized(SYNC_LOCK) {
             val drive = DriveFactory(appContext).create().toNullable() ?: return@fromAction
 
             syncLocalAndRemoteFolder(
                 drive,
                 getOrCreateAppDataFolder("saves"),
-                directoriesManager.getSavesDirectory()
+                directoriesManager.getSavesDirectory(),
+                null
             )
 
-            if (includeStates) {
+            if (cores.isNotEmpty()) {
                 syncLocalAndRemoteFolder(
                     drive,
                     getOrCreateAppDataFolder("states"),
-                    directoriesManager.getStatesDirectory()
+                    directoriesManager.getStatesDirectory(),
+                    cores.map { it.coreName }.toSet()
                 )
                 syncLocalAndRemoteFolder(
                     drive,
                     getOrCreateAppDataFolder("state-previews"),
-                    directoriesManager.getStatesPreviewDirectory()
+                    directoriesManager.getStatesPreviewDirectory(),
+                    cores.map { it.coreName }.toSet()
                 )
             }
 
@@ -80,7 +84,8 @@ class SaveSyncManager(
 
     fun computeSavesSpace() = getSizeHumanReadable(directoriesManager.getSavesDirectory())
 
-    fun computeStatesSpace() = getSizeHumanReadable(directoriesManager.getStatesDirectory())
+    fun computeStatesSpace(core: CoreID) =
+        getSizeHumanReadable(File(directoriesManager.getStatesDirectory(), core.coreName))
 
     private fun getSizeHumanReadable(directory: File): String {
         val size = directory.walkBottomUp()
@@ -88,14 +93,24 @@ class SaveSyncManager(
         return android.text.format.Formatter.formatShortFileSize(appContext, size)
     }
 
-    private fun syncLocalAndRemoteFolder(drive: Drive, remoteFolderId: String, localFolder: File) {
+    private fun syncLocalAndRemoteFolder(
+        drive: Drive,
+        remoteFolderId: String,
+        localFolder: File,
+        prefixes: Set<String>?
+    ) {
         val remoteFiles = getRemoteFiles(drive, remoteFolderId)
         val remoteFilesMap = buildRemoteFileMap(remoteFiles)
         val localFilesMap = buildLocalFileMap(localFolder)
 
-        (remoteFilesMap.keys + localFilesMap.keys).forEach {
+        getFilteredKeys(remoteFilesMap.keys + localFilesMap.keys, prefixes).forEach {
             handleFileSync(drive, remoteFolderId, localFolder, remoteFilesMap[it], localFilesMap[it])
         }
+    }
+
+    private fun getFilteredKeys(keys: Set<String>, prefixes: Set<String>?): Set<String> {
+        if (prefixes == null) return keys
+        return keys.filter { key -> prefixes.any { key.startsWith(it) } }.toSet()
     }
 
     private fun handleFileSync(

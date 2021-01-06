@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.ext.feature.savesync
 
 import android.content.Context
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 
@@ -20,9 +21,9 @@ class SaveSyncManager(
 
     fun getConfigInfo(): String = ""
 
-    fun sync(includeStates: Boolean) = Completable.complete()
+    fun sync(cores: Set<CoreID>) = Completable.complete()
 
     fun computeSavesSpace() = ""
 
-    fun computeStatesSpace() = ""
+    fun computeStatesSpace(coreID: CoreID) = ""
 }

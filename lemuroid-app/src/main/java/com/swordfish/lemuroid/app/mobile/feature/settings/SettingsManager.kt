@@ -54,9 +54,9 @@ class SettingsManager(private val context: Context) {
         true
     )
 
-    var syncStates: Boolean by SharedPreferencesDelegates.BooleanDelegate(
+    var syncStatesCores: Set<String> by SharedPreferencesDelegates.StringSetDelegate(
         sharedPreferences,
-        getString(R.string.pref_key_save_sync_enable_states),
-        false
+        getString(R.string.pref_key_save_sync_cores),
+        setOf()
     )
 }

@@ -71,3 +71,6 @@ enum class CoreID(
         "libmelonds_libretro_android.so"
     ),
 }
+
+fun findByName(query: String): CoreID? =
+    CoreID.values().firstOrNull { it.coreName == query }

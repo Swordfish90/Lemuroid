@@ -70,4 +70,19 @@ class SharedPreferencesDelegates {
             sharedPreferences.edit().putLong(key, value).apply()
         }
     }
+
+    class StringSetDelegate(
+        private val sharedPreferences: SharedPreferences,
+        private val key: String,
+        private val defaultValue: Set<String>
+    ) : ReadWriteProperty<Any, Set<String>> {
+
+        override fun getValue(thisRef: Any, property: KProperty<*>): Set<String> {
+            return sharedPreferences.getStringSet(key, defaultValue) ?: defaultValue
+        }
+
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: Set<String>) {
+            sharedPreferences.edit().putStringSet(key, value).apply()
+        }
+    }
 }

@@ -3,12 +3,15 @@ package com.swordfish.lemuroid.app.shared.settings
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.library.CoreID
+import com.swordfish.lemuroid.lib.library.GameSystem
 
 class SaveSyncPreferences(
     private val saveSyncManager: SaveSyncManager
@@ -27,8 +30,8 @@ class SaveSyncPreferences(
             preferenceScreen.addPreference(this)
         }
 
-        SwitchPreference(context).apply {
-            key = keySyncStates(context)
+        MultiSelectListPreference(context).apply {
+            key = keySyncCores(context)
             preferenceScreen.addPreference(this)
         }
 
@@ -68,17 +71,6 @@ class SaveSyncPreferences(
             isIconSpaceReserved = false
         }
 
-        preferenceScreen.findPreference<Preference>(keySyncStates(context))?.apply {
-            title = context.getString(R.string.settings_save_sync_include_states)
-            summary = context.getString(
-                R.string.settings_save_sync_include_states_description,
-                saveSyncManager.computeStatesSpace()
-            )
-            dependency = keySyncEnabled(context)
-            isEnabled = saveSyncManager.isConfigured() && !syncInProgress
-            isIconSpaceReserved = false
-        }
-
         preferenceScreen.findPreference<Preference>(keyAutoSync(context))?.apply {
             title = context.getString(R.string.settings_save_sync_enable_auto)
             isEnabled = saveSyncManager.isConfigured() && !syncInProgress
@@ -97,6 +89,33 @@ class SaveSyncPreferences(
             dependency = keySyncEnabled(context)
             isIconSpaceReserved = false
         }
+
+        preferenceScreen.findPreference<MultiSelectListPreference>(keySyncCores(context))?.apply {
+            title = context.getString(R.string.settings_save_sync_include_states)
+            summary = context.getString(R.string.settings_save_sync_include_states_description)
+            dependency = keySyncEnabled(context)
+            isEnabled = saveSyncManager.isConfigured() && !syncInProgress
+            entries = CoreID.values().map { getDisplayNameForCore(context, it) }.toTypedArray()
+            entryValues = CoreID.values().map { it.coreName }.toTypedArray()
+            isIconSpaceReserved = false
+        }
+    }
+
+    private fun getDisplayNameForCore(context: Context, coreID: CoreID): String {
+        val systems = GameSystem.findSystemForCore(coreID)
+        val systemHasMultipleCores = systems.any { it.systemCoreConfigs.size > 1 }
+
+        val chunks = mutableListOf<String>().apply {
+            add(systems.joinToString(", ") { context.getString(it.shortTitleResId) })
+
+            if (systemHasMultipleCores) {
+                add(coreID.coreDisplayName)
+            }
+
+            add(saveSyncManager.computeStatesSpace(coreID))
+        }
+
+        return chunks.joinToString(" - ")
     }
 
     fun onPreferenceTreeClick(activity: Activity?, preference: Preference): Boolean {
@@ -114,9 +133,6 @@ class SaveSyncPreferences(
         }
     }
 
-    private fun keySyncStates(context: Context) =
-        context.getString(R.string.pref_key_save_sync_enable_states)
-
     private fun keySyncEnabled(context: Context) =
         context.getString(R.string.pref_key_save_sync_enable)
 
@@ -128,6 +144,9 @@ class SaveSyncPreferences(
 
     private fun keyAutoSync(context: Context) =
         context.getString(R.string.pref_key_save_sync_auto)
+
+    private fun keySyncCores(context: Context) =
+        context.getString(R.string.pref_key_save_sync_cores)
 
     private fun handleSaveSyncConfigure(activity: Activity?) {
         activity?.startActivity(
