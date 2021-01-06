@@ -86,7 +86,7 @@ dependencies {
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)
     implementation(deps.libs.material)
-    implementation(deps.libs.picasso)
+    implementation(deps.libs.coil)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.preferences.preferencesKtx)

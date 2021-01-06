@@ -7,9 +7,12 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.Icon
 import android.os.Build
 import com.gojuno.koptional.None
+import com.gojuno.koptional.Some
 import com.gojuno.koptional.toOptional
+import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.deeplink.DeepLink
 import com.swordfish.lemuroid.common.bitmap.cropToSquare
+import com.swordfish.lemuroid.common.bitmap.toBitmap
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -35,17 +38,14 @@ class ShortcutsGenerator(
 
         return Single.fromCallable { game.coverFrontUrl }
             .flatMap { thumbnailsApi.downloadThumbnail(it) }
-            .map { BitmapFactory.decodeStream(it.body()).cropToSquare().toOptional() }
-            .onErrorReturnItem(None)
-            .map { optionalBitmap ->
+            .map { BitmapFactory.decodeStream(it.body()).cropToSquare() }
+            .onErrorReturn { CoverLoader.getFallbackDrawable(game).toBitmap(256, 256) }
+            .map { bitmap ->
                 val builder = ShortcutInfo.Builder(appContext, "game_${game.id}")
                     .setShortLabel(game.title)
                     .setLongLabel(game.title)
                     .setIntent(DeepLink.launchIntentForGame(appContext, game))
-
-                optionalBitmap.toNullable()?.let {
-                    builder.setIcon(Icon.createWithBitmap(it))
-                }
+                    .setIcon(Icon.createWithBitmap(bitmap))
 
                 builder.build()
             }

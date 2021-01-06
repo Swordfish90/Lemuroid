@@ -125,7 +125,7 @@ object deps {
         const val okio                     = "com.squareup.okio:okio:2.1.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"
         const val okHttp3Logging           = "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"
-        const val picasso                  = "com.squareup.picasso:picasso:2.71828"
+        const val coil                     = "io.coil-kt:coil:1.0.0"
         const val retrofit                 = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
         const val retrofitRxJava2          = "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
         const val rxAndroid2               = "io.reactivex.rxjava2:rxandroid:2.1.0"

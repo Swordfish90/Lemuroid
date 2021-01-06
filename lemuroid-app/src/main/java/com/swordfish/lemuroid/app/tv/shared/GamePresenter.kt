@@ -9,7 +9,7 @@ import androidx.leanback.widget.Presenter
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.covers.PicassoWrapper
+import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -30,21 +30,21 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
         (cardView.findViewById<View>(R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
-        return ViewHolder(cardView, cardSize)
+        return ViewHolder(cardView)
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder?) {
         val viewHolder = viewHolder as ViewHolder
         viewHolder.mCardView.mainImage = null
-        PicassoWrapper.cancelRequest(viewHolder.mCardView.mainImageView)
+        CoverLoader.cancelRequest(viewHolder.mCardView.mainImageView)
         viewHolder.view.setOnCreateContextMenuListener(null)
     }
 
-    class ViewHolder(view: ImageCardView, private val cardSize: Int) : Presenter.ViewHolder(view) {
+    class ViewHolder(view: ImageCardView) : Presenter.ViewHolder(view) {
         val mCardView: ImageCardView = view
 
         fun updateCardViewImage(game: Game) {
-            PicassoWrapper.loadResizeCover(game, mCardView.mainImageView, cardSize)
+            CoverLoader.loadCover(game, mCardView.mainImageView)
         }
     }
 }
