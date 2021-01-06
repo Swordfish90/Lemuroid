@@ -64,7 +64,10 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -581,7 +584,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         rescheduleBackgroundWork()
 
         setResult(Activity.RESULT_OK, resultIntent)
+
+        finishAndExitProcess()
+    }
+
+    private fun finishAndExitProcess() {
+        val animationTime = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        GlobalScope.launch {
+            sleep(animationTime)
+            exitProcess(0)
+        }
         finish()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     private fun cancelBackgroundWork() {
@@ -750,11 +764,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        exitProcess(0)
-    }
-
     companion object {
         const val DIALOG_REQUEST = 100
 
@@ -781,6 +790,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 },
                 REQUEST_PLAY_GAME
             )
+            activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 }
