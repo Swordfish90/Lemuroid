@@ -348,7 +348,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun channelHandler(context: Context, retrogradeDatabase: RetrogradeDatabase) =
-            ChannelHandler(context, retrogradeDatabase)
+        fun channelHandler(context: Context, retrogradeDatabase: RetrogradeDatabase, retrofit: Retrofit) =
+            ChannelHandler(context, retrogradeDatabase, retrofit)
     }
 }
