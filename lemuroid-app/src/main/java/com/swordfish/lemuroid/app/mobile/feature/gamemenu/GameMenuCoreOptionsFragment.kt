@@ -25,18 +25,18 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
         val coreOptions = extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
             ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
+        val advancedCoreOptions = extras?.getSerializable(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS) as Array<CoreOption>?
+            ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+
         val game = extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
             ?: throw InvalidParameterException("Missing EXTRA_GAME")
 
-        coreOptions
-            .map {
-                CoreOptionsPreferenceHelper.convertToPreference(
-                    preferenceScreen.context,
-                    it,
-                    game.systemId
-                )
-            }
-            .forEach { preferenceScreen.addPreference(it) }
+        CoreOptionsPreferenceHelper.addPreferences(
+            preferenceScreen,
+            game.systemId,
+            coreOptions.toList(),
+            advancedCoreOptions.toList()
+        )
     }
 
     @dagger.Module

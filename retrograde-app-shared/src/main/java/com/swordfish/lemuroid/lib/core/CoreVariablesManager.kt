@@ -42,7 +42,7 @@ class CoreVariablesManager(context: Context) {
         systemCoreConfig: SystemCoreConfig
     ) = Single.fromCallable {
 
-        val requestedKeys = systemCoreConfig.exposedSettings
+        val requestedKeys = (systemCoreConfig.exposedSettings + systemCoreConfig.exposedAdvancedSettings)
             .map { computeSharedPreferenceKey(it, systemID.dbname) }
 
         sharedPreferences.all.filter { it.key in requestedKeys }

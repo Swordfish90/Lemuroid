@@ -8,7 +8,6 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
-import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -28,6 +27,7 @@ class TVGameMenuFragment(
     private val game: Game,
     private val systemCoreConfig: SystemCoreConfig,
     private val coreOptions: Array<CoreOption>,
+    private val advancedCoreOptions: Array<CoreOption>,
     private val numDisks: Int,
     private val currentDisk: Int,
     private val audioEnabled: Boolean,
@@ -53,16 +53,14 @@ class TVGameMenuFragment(
 
     private fun setupCoreOptions() {
         val coreOptionsScreen = findPreference<PreferenceScreen>(GameMenuHelper.SECTION_CORE_OPTIONS)
-        coreOptionsScreen?.isVisible = coreOptions.isNotEmpty()
-        coreOptions
-            .map {
-                CoreOptionsPreferenceHelper.convertToPreference(
-                    preferenceScreen.context,
-                    it,
-                    game.systemId
-                )
-            }
-            .forEach { coreOptionsScreen?.addPreference(it) }
+            ?: return
+
+        CoreOptionsPreferenceHelper.addPreferences(
+            coreOptionsScreen,
+            game.systemId,
+            coreOptions.toList(),
+            advancedCoreOptions.toList()
+        )
     }
 
     private fun setupLoadAndSave() {

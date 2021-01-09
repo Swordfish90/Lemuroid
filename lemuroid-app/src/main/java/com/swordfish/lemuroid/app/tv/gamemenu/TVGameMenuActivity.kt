@@ -29,6 +29,9 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val options = intent.extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
                 ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
+            val advancedOptions = intent.extras?.getSerializable(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS) as Array<CoreOption>?
+                ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
                 ?: throw InvalidParameterException("Missing EXTRA_DISKS")
 
@@ -50,6 +53,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 game,
                 core,
                 options,
+                advancedOptions,
                 numDisks,
                 currentDisk,
                 audioEnabled,
@@ -72,6 +76,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         private val game: Game,
         private val systemCoreConfig: SystemCoreConfig,
         private val coreOptions: Array<CoreOption>,
+        private val advancedCoreOptions: Array<CoreOption>,
         private val numDisks: Int,
         private val currentDisk: Int,
         private val audioEnabled: Boolean,
@@ -86,6 +91,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 game,
                 systemCoreConfig,
                 coreOptions,
+                advancedCoreOptions,
                 numDisks,
                 currentDisk,
                 audioEnabled,
