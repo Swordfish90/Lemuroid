@@ -136,6 +136,15 @@
         If your games are compressed, try uncompressing them. If this doesn\'t work try putting ROMs into separate directories, one for each system with the following names: <i>psp</i>, <i>fbneo</i>, <i>gba</i>, <i>gbc</i>, <i>gb</i>, <i>nes</i>, <i>snes</i>, <i>sms</i>, <i>genesis</i>, <i>n64</i>, <i>psx</i>, <i>atari2600</i>, <i>gg</i>.
     ]]></string>
 
+    <string name="lemuroid_crash_disclamer">It looks like the Libretro core has experienced an unexpected issue. If it\'s persistent please try the following:\n
+    \n\u2022 Disable auto-save and re-run the game
+    \n\u2022 Go into Android settings and clear the app cache
+    \n\u2022 Go into Lemuroid settings and perform a Factory Reset
+    \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
+    </string>
+
+    <string name="lemuroid_crash_message">Error message: %1$s</string>
+
     <string-array name="pref_key_shader_filter_names">
         <item>Auto</item>
         <item>Sharp</item>

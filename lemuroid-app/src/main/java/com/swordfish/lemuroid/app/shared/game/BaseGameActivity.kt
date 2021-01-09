@@ -24,6 +24,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
+import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
@@ -117,6 +118,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
+        setupCrashActivity()
+
         mainContainerLayout = findViewById(R.id.maincontainer)
         gameContainerLayout = findViewById(R.id.gamecontainer)
         loadingView = findViewById(R.id.progress)
@@ -133,6 +136,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (areGamePadsEnabled()) {
             setupPhysicalPad()
         }
+    }
+
+    private fun setupCrashActivity() {
+        val systemHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(GameCrashHandler(this, systemHandler))
     }
 
     abstract fun areGamePadsEnabled(): Boolean
