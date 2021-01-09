@@ -13,7 +13,9 @@ import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
@@ -40,6 +42,8 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore =
+            SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
         setPreferencesFromResource(R.xml.tv_settings, rootKey)
 
         getCoresSelectionScreen()?.let {

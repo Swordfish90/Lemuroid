@@ -138,6 +138,7 @@ object deps {
         const val material                 = "com.google.android.material:material:1.2.1"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:29.0-android"
+        const val harmony                  = "com.frybits.harmony:harmony:1.1.3"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 

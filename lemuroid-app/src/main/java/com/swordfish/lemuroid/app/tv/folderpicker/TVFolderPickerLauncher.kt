@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 
 class TVFolderPickerLauncher : ImmersiveActivity() {
 
@@ -23,7 +24,7 @@ class TVFolderPickerLauncher : ImmersiveActivity() {
         super.onActivityResult(requestCode, resultCode, resultData)
 
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+            val sharedPreferences = SharedPreferencesHelper.getLegacySharedPreferences(this)
             val preferenceKey = getString(R.string.pref_key_legacy_external_folder)
 
             val currentValue: String? = sharedPreferences.getString(preferenceKey, null)

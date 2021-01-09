@@ -2,9 +2,9 @@ package com.swordfish.lemuroid.lib.core
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import io.reactivex.Single
 import java.security.InvalidParameterException
 
@@ -12,7 +12,7 @@ class CoreVariablesManager(context: Context) {
     private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(context)
 
     private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+        return SharedPreferencesHelper.getSharedPreferences(context)
     }
 
     fun getOptionsForCore(

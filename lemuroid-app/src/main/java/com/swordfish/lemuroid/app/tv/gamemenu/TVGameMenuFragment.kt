@@ -8,9 +8,11 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
+import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -34,6 +36,9 @@ class TVGameMenuFragment(
 ) : LeanbackPreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore =
+            SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
+
         setPreferencesFromResource(R.xml.tv_game_settings, rootKey)
         setupCoreOptions()
         setupLoadAndSave()

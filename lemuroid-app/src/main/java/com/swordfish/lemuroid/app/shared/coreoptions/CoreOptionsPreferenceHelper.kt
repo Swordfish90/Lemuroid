@@ -24,6 +24,7 @@ object CoreOptionsPreferenceHelper {
         preference.title = it.name
         preference.entries = it.optionValues.map { it.capitalize() }.toTypedArray()
         preference.entryValues = it.optionValues.toTypedArray()
+        preference.setDefaultValue(it.variable.value)
         preference.setValueIndex(it.optionValues.indexOf(it.variable.value))
         preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         preference.isIconSpaceReserved = false
@@ -34,6 +35,7 @@ object CoreOptionsPreferenceHelper {
         val preference = SwitchPreference(context)
         preference.key = CoreVariablesManager.computeSharedPreferenceKey(it.variable.key, systemID)
         preference.title = it.name
+        preference.setDefaultValue(it.variable.value == "enabled")
         preference.isChecked = it.variable.value == "enabled"
         preference.isIconSpaceReserved = false
         return preference

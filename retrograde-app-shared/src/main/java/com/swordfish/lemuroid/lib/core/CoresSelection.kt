@@ -6,12 +6,13 @@ import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 
 class CoresSelection(appContext: Context) {
     private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(appContext)
 
     private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+        return SharedPreferencesHelper.getSharedPreferences(context)
     }
 
     fun getCoreConfigForSystem(system: GameSystem): SystemCoreConfig {

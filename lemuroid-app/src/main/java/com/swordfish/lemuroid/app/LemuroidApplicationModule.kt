@@ -59,6 +59,7 @@ import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
@@ -249,7 +250,7 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun rxPrefs(context: Context) =
-            RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
+            RxSharedPreferences.create(SharedPreferencesHelper.getLegacySharedPreferences(context))
 
         @Provides
         @PerApp

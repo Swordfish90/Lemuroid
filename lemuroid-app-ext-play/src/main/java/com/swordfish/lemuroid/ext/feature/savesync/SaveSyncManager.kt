@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
 import com.swordfish.lemuroid.common.kotlin.calculateMd5
 import com.swordfish.lemuroid.ext.R
 import com.swordfish.lemuroid.lib.library.CoreID
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import timber.log.Timber
@@ -21,7 +22,7 @@ class SaveSyncManager(
     private val directoriesManager: DirectoriesManager
 ) {
     private var lastSyncTimestamp: Long by SharedPreferencesDelegates.LongDelegate(
-        PreferenceManager.getDefaultSharedPreferences(appContext),
+        SharedPreferencesHelper.getSharedPreferences(appContext),
         appContext.getString(R.string.pref_key_last_save_sync),
         0L
     )

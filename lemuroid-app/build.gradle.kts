@@ -32,6 +32,7 @@ android {
     packagingOptions {
         doNotStrip("*/*/*_libretro_android.so")
         exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/library_release.kotlin_module")
     }
 
     signingConfigs {
@@ -138,6 +139,7 @@ dependencies {
     implementation(deps.libs.guava)
     implementation(deps.libs.androidx.documentfile)
     implementation(deps.libs.androidx.leanback.tvProvider)
+    implementation(deps.libs.harmony)
 
     implementation(deps.libs.libretrodroid)
 

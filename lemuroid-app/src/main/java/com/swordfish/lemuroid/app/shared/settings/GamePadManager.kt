@@ -7,6 +7,7 @@ import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.preference.PreferenceManager
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -19,7 +20,7 @@ class GamePadManager(context: Context) {
     private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(context)
 
     private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+        return SharedPreferencesHelper.getSharedPreferences(context)
     }
 
     fun getGamePadsBindingsObservable(): Observable<(InputDevice?)->Map<Int, Int>> {

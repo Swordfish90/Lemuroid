@@ -13,6 +13,7 @@ import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
@@ -51,7 +52,7 @@ class StorageAccessFrameworkProvider(
 
     private fun getExternalFolder(): String? {
         val prefString = context.getString(R.string.pref_key_extenral_folder)
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
+        val preferenceManager = SharedPreferencesHelper.getLegacySharedPreferences(context)
         return preferenceManager.getString(prefString, null)
     }
 

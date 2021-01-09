@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.gamemenu
 import android.content.Context
 import android.os.Bundle
 import androidx.navigation.fragment.findNavController
+import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
