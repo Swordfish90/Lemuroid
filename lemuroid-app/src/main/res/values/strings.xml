@@ -82,7 +82,6 @@
     <string name="game_menu_fast_forward">Fast-Forward</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
 
-    <string name="game_loading_download_core">Downloading assets…</string>
     <string name="game_loading_preparing_game">Preparing game…</string>
 
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
