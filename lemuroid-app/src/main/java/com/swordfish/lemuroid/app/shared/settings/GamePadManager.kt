@@ -6,7 +6,6 @@ import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
-import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import io.reactivex.Completable
 import io.reactivex.Observable

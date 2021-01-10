@@ -9,11 +9,10 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
-import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.uber.autodispose.android.lifecycle.scope

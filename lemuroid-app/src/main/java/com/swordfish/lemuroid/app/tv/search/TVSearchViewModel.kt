@@ -2,9 +2,9 @@ package com.swordfish.lemuroid.app.tv.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.swordfish.lemuroid.common.paging.buildLiveDataPaging

@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.RxWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
@@ -16,9 +17,8 @@ import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
 import io.reactivex.Single
 import timber.log.Timber
-import javax.inject.Inject
-import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
     RxWorker(context, workerParams) {

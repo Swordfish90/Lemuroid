@@ -28,7 +28,6 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
-import com.swordfish.touchinput.radial.VirtualGamePadSettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
@@ -45,6 +44,7 @@ import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.touchinput.radial.GamePadFactory
 import com.swordfish.touchinput.radial.RadialPadConfigs
 import com.swordfish.touchinput.radial.VirtualGamePadCustomizer
+import com.swordfish.touchinput.radial.VirtualGamePadSettingsManager
 import com.swordfish.touchinput.radial.sensors.TiltSensor
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose

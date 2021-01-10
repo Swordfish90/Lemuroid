@@ -17,9 +17,11 @@ class GameCrashHandler(
             throwable.message
         }
 
-        appContext.startActivity(Intent(appContext, GameCrashActivity::class.java).apply {
-            putExtra(GameCrashActivity.EXTRA_MESSAGE, message)
-        })
+        appContext.startActivity(
+            Intent(appContext, GameCrashActivity::class.java).apply {
+                putExtra(GameCrashActivity.EXTRA_MESSAGE, message)
+            }
+        )
         systemHandler?.uncaughtException(thread, throwable)
     }
 }

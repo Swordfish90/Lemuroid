@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.app.shared.settings
 
 import android.content.Context
-import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager

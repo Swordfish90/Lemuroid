@@ -4,9 +4,9 @@ import com.airbnb.epoxy.AsyncEpoxyController
 import com.airbnb.epoxy.carousel
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.shared.withModelsFrom
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
-import com.swordfish.lemuroid.app.mobile.shared.withModelsFrom
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class EpoxyHomeController(

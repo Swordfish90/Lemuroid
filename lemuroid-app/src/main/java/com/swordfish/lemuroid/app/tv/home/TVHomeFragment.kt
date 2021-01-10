@@ -9,19 +9,19 @@ import android.view.ViewGroup
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ClassPresenterSelector
+import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
-import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
-import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
@@ -30,12 +30,10 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
-import timber.log.Timber
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {

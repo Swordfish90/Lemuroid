@@ -2,8 +2,8 @@ package com.swordfish.lemuroid.app.tv.gamemenu
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.GameMenuContract
+import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -23,14 +23,17 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val game = intent.extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
                 ?: throw InvalidParameterException("Missing EXTRA_GAME")
 
-            val core = intent.extras?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
-                ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
+            val core = intent.extras?.getSerializable(
+                GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG
+            ) as SystemCoreConfig? ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
 
-            val options = intent.extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
-                ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
+            val options = intent.extras?.getSerializable(
+                GameMenuContract.EXTRA_CORE_OPTIONS
+            ) as Array<CoreOption>? ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
-            val advancedOptions = intent.extras?.getSerializable(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS) as Array<CoreOption>?
-                ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+            val advancedOptions = intent.extras?.getSerializable(
+                GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS
+            ) as Array<CoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
 
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
                 ?: throw InvalidParameterException("Missing EXTRA_DISKS")

@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.app.mobile.feature.settings
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper

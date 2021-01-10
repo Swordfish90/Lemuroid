@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import javax.inject.Inject
 

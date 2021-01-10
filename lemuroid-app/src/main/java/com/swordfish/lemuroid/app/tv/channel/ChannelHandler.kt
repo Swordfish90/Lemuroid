@@ -13,7 +13,6 @@ import androidx.tvprovider.media.tv.ChannelLogoUtils
 import androidx.tvprovider.media.tv.PreviewProgram
 import androidx.tvprovider.media.tv.TvContractCompat
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.deeplink.DeepLink
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -23,12 +22,8 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.GET
 import retrofit2.http.HEAD
-import retrofit2.http.Streaming
 import retrofit2.http.Url
-import timber.log.Timber
-import java.io.InputStream
 
 class ChannelHandler(
     private val appContext: Context,

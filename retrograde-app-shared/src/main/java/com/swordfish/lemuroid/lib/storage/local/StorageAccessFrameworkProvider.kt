@@ -5,7 +5,6 @@ import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
-import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
 import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.common.kotlin.writeToFile

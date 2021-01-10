@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.ext.feature.savesync
 
 import android.content.Context
-import android.preference.PreferenceManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.http.FileContent
 import com.google.api.client.util.DateTime

@@ -20,8 +20,6 @@
 package com.swordfish.lemuroid.lib.game
 
 import android.content.Context
-import com.swordfish.lemuroid.lib.library.LemuroidLibrary
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
@@ -29,10 +27,12 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
-import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.LemuroidLibrary
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager

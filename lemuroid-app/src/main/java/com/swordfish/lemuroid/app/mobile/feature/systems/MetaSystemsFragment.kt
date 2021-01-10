@@ -13,7 +13,6 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
-import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.favorites.TVFavoritesFragment
 import com.swordfish.lemuroid.app.tv.games.TVGamesFragment

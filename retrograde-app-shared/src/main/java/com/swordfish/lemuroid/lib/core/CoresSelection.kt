@@ -2,9 +2,8 @@ package com.swordfish.lemuroid.lib.core
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
-import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 

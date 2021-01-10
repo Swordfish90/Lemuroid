@@ -12,9 +12,9 @@ import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider

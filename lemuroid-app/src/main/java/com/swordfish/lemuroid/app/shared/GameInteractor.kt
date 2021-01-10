@@ -1,8 +1,8 @@
 package com.swordfish.lemuroid.app.shared
 
+import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
-import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
 import com.swordfish.lemuroid.lib.library.db.entity.Game

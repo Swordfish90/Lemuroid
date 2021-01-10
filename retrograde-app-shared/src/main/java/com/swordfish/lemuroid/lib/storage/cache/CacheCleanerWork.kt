@@ -5,8 +5,8 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.RxWorker
-import androidx.work.WorkerParameters
 import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import io.reactivex.Completable
 import io.reactivex.Single

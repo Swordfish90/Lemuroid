@@ -13,6 +13,7 @@ import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
 import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
+import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -50,18 +51,24 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
             val loadingSubject = BehaviorSubject.createDefault(true)
 
+            val animationTime = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+
             Observable.fromPublisher(publisher)
                 .filter { !it }
                 .firstElement()
-                .flatMap { retrogradeDatabase.gameDao().selectById(gameId).subscribeOn(Schedulers.io()) }
-                .doOnSubscribe { loadingSubject.onNext(true) }
+                .flatMap {
+                    retrogradeDatabase.gameDao().selectById(gameId).subscribeOn(Schedulers.io())
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError {
+                    displayErrorDialog(R.string.game_loader_error_load_game, R.string.ok) { finish() }
+                }
+                .delay(animationTime, TimeUnit.MILLISECONDS)
+                .doOnSubscribe { loadingSubject.onNext(true) }
                 .doOnTerminate { loadingSubject.onNext(false) }
-                .delay(250, TimeUnit.MILLISECONDS)
                 .subscribeBy {
                     BaseGameActivity.launchGame(this, it, true, TVHelper.isTV(applicationContext))
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 }
 
             loadingSubject
@@ -102,11 +109,5 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                 }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        // TODO... This is a workaround for a possibly bad bug.
-        // We are eating the back event. Killing the process while copying the file might result in a corrupted ROM that
-        // doesn't load until a clear cache.
     }
 }

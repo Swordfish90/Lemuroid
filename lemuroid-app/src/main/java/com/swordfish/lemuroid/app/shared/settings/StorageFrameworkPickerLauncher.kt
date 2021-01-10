@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog

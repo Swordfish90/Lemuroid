@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.cachedIn
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.DynamicGridLayoutManager
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import javax.inject.Inject
