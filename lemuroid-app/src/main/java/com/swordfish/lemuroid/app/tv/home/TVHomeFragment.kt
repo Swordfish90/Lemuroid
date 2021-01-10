@@ -29,11 +29,13 @@ import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.util.subscribeBy
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
+import timber.log.Timber
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
@@ -74,6 +76,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         recreateAdapter(
             includeFavorites = false,
             includeRecentGames = false,
@@ -82,10 +85,6 @@ class TVHomeFragment : BrowseSupportFragment() {
         setOnSearchClickedListener {
             findNavController().navigate(R.id.navigation_search)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
@@ -105,7 +104,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
         entriesObservable
             .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
+            .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
             .subscribeBy { (favoriteGames, recentGames, systems) ->
                 update(favoriteGames, recentGames, systems)
             }

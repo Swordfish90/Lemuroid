@@ -26,10 +26,6 @@ class FavoritesFragment : RecyclerViewFragment() {
 
         favoritesViewModel = ViewModelProviders.of(this, FavoritesViewModel.Factory(retrogradeDb))
             .get(FavoritesViewModel::class.java)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor)
         favoritesViewModel.favorites.cachedIn(lifecycle).observe(this) {
@@ -47,7 +43,6 @@ class FavoritesFragment : RecyclerViewFragment() {
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
             GridSpaceDecoration.setSingleGridSpaceDecoration(this, spacingInPixels)
         }
-        restoreRecyclerViewState()
     }
 
     @dagger.Module

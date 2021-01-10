@@ -27,15 +27,6 @@ class TVFavoritesFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter()
         gridPresenter.numberOfColumns = 4
         setGridPresenter(gridPresenter)
-    }
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         val factory = TVFavoritesViewModel.Factory(retrogradeDb)
         val gamesViewModel = ViewModelProviders.of(this, factory).get(TVFavoritesViewModel::class.java)
@@ -54,6 +45,11 @@ class TVFavoritesFragment : VerticalGridSupportFragment() {
                 is Game -> gameInteractor.onGamePlay(item)
             }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     @dagger.Module

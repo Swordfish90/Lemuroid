@@ -30,15 +30,6 @@ class TVGamesFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter()
         gridPresenter.numberOfColumns = 4
         setGridPresenter(gridPresenter)
-    }
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         val factory = TVGamesViewModel.Factory(retrogradeDb)
         val gamesViewModel = ViewModelProviders.of(this, factory).get(TVGamesViewModel::class.java)
@@ -61,6 +52,11 @@ class TVGamesFragment : VerticalGridSupportFragment() {
                 is Game -> gameInteractor.onGamePlay(item)
             }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     @dagger.Module

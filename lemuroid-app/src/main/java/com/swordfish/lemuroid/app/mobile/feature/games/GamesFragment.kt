@@ -1,5 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.games
 
+import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,8 +23,8 @@ class GamesFragment : RecyclerViewFragment() {
 
     private var gamesAdapter: GamesAdapter? = null
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
 
@@ -41,7 +43,6 @@ class GamesFragment : RecyclerViewFragment() {
             adapter = gamesAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        restoreRecyclerViewState()
     }
 
     @dagger.Module

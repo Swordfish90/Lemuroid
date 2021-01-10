@@ -17,6 +17,7 @@ import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -49,6 +50,25 @@ class SearchFragment : RecyclerViewFragment() {
 
         searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
             .get(SearchViewModel::class.java)
+
+        val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
+        searchViewModel.searchResults.cachedIn(lifecycle).observe(this) {
+            gamesAdapter.submitData(lifecycle, it)
+        }
+
+        gamesAdapter.addLoadStateListener {
+            emptyView?.setVisibleOrGone(gamesAdapter.itemCount == 0)
+        }
+
+        searchSubject
+            .distinctUntilChanged()
+            .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
+            .subscribe { searchViewModel.queryString.postValue(it) }
+
+        recyclerView?.apply {
+            adapter = gamesAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     private fun setupSearchMenuItem(menu: Menu) {
@@ -79,26 +99,6 @@ class SearchFragment : RecyclerViewFragment() {
     override fun onResume() {
         super.onResume()
         activity?.invalidateOptionsMenu()
-
-        val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
-        searchViewModel.searchResults.cachedIn(lifecycle).observe(this) {
-            gamesAdapter.submitData(lifecycle, it)
-        }
-
-        gamesAdapter.addLoadStateListener {
-            emptyView?.setVisibleOrGone(gamesAdapter.itemCount == 0)
-        }
-
-        searchSubject
-            .distinctUntilChanged()
-            .autoDispose(scope())
-            .subscribe { searchViewModel.queryString.postValue(it) }
-
-        recyclerView?.apply {
-            adapter = gamesAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-        restoreRecyclerViewState()
     }
 
     @dagger.Module
