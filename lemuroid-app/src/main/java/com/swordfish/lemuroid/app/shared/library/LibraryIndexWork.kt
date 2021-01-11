@@ -38,7 +38,6 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
         setForegroundAsync(foregroundInfo)
         return lemuroidLibrary.indexLibrary()
             .toSingleDefault(Result.success())
-            .delay(10, TimeUnit.SECONDS)
             .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
             .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
     }

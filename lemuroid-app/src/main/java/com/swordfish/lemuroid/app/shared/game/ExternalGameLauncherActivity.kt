@@ -56,8 +56,10 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
             Observable.fromPublisher(publisher)
                 .filter { !it }
                 .firstElement()
-                .flatMap {
-                    retrogradeDatabase.gameDao().selectById(gameId).subscribeOn(Schedulers.io())
+                .flatMapSingle {
+                    retrogradeDatabase.gameDao()
+                        .selectById(gameId).subscribeOn(Schedulers.io())
+                        .toSingle()
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
