@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.shortcuts
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -36,7 +37,10 @@ class ShortcutsGenerator(
         return Single.fromCallable { game.coverFrontUrl }
             .flatMap { thumbnailsApi.downloadThumbnail(it) }
             .map { BitmapFactory.decodeStream(it.body()).cropToSquare() }
-            .onErrorReturn { CoverLoader.getFallbackDrawable(game).toBitmap(256, 256) }
+            .onErrorReturn {
+                val desiredIconSize = getDesiredIconSize()
+                CoverLoader.getFallbackDrawable(game).toBitmap(desiredIconSize, desiredIconSize)
+            }
             .map { bitmap ->
                 val builder = ShortcutInfo.Builder(appContext, "game_${game.id}")
                     .setShortLabel(game.title)
@@ -48,6 +52,11 @@ class ShortcutsGenerator(
             }
             .doOnSuccess { shortcutManager.requestPinShortcut(it, null) }
             .ignoreElement()
+    }
+
+    private fun getDesiredIconSize(): Int {
+        val am = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+        return am?.launcherLargeIconSize ?: 256
     }
 
     fun supportShortcuts(): Boolean {

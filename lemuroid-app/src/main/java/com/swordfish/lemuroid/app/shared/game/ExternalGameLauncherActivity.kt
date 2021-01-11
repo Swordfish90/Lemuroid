@@ -62,10 +62,10 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                         .toSingle()
                 }
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .delay(animationTime, TimeUnit.MILLISECONDS)
                 .doOnSubscribe { loadingSubject.onNext(true) }
                 .doAfterTerminate { loadingSubject.onNext(false) }
+                .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())
                 .subscribeBy(
                     { displayErrorMessage() },

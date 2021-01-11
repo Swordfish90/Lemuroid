@@ -65,6 +65,11 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="lemuroid" android:host="${applicationId}" android:pathPattern="/open-leanback"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".app.tv.settings.TVSettingsActivity"

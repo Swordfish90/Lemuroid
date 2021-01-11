@@ -32,6 +32,8 @@ class ChannelHandler(
 ) {
     private val thumbnailsApi = retrofit.create(ThumbnailsApi::class.java)
 
+    private val appName = appContext.getString(R.string.lemuroid_name)
+
     private fun getOrCreateChannelId(): Long {
         var channelId = findChannel()
 
@@ -40,7 +42,7 @@ class ChannelHandler(
 
         val builder = Channel.Builder()
             .setType(TvContractCompat.Channels.TYPE_PREVIEW)
-            .setDisplayName(DEFAULT_CHANNEL_DISPLAY_NAME)
+            .setDisplayName(appName)
             .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
 
         val channelUri = appContext.contentResolver.insert(
@@ -93,7 +95,7 @@ class ChannelHandler(
                 val channelId = getOrCreateChannelId()
 
                 val channel = Channel.Builder()
-                channel.setDisplayName(DEFAULT_CHANNEL_DISPLAY_NAME)
+                channel.setDisplayName(appName)
                     .setType(TvContractCompat.Channels.TYPE_PREVIEW)
                     .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
                     .build()
@@ -165,11 +167,13 @@ class ChannelHandler(
             null
         )
 
+        appContext.getString(R.string.app_name)
+
         channels?.use {
             if (it.moveToFirst())
                 do {
                     val channel = Channel.fromCursor(it)
-                    if (DEFAULT_CHANNEL_NAME == channel.displayName) {
+                    if (appName == channel.displayName) {
                         return channel.id
                     }
                 } while (it.moveToNext())
@@ -180,10 +184,5 @@ class ChannelHandler(
     interface ThumbnailsApi {
         @HEAD
         fun thumbnailExists(@Url url: String): Single<Response<Void>>
-    }
-
-    companion object {
-        private const val DEFAULT_CHANNEL_NAME = "Lemuroid"
-        private const val DEFAULT_CHANNEL_DISPLAY_NAME = "Lemuroid"
     }
 }
