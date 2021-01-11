@@ -17,7 +17,6 @@ import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
 import io.reactivex.Single
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :

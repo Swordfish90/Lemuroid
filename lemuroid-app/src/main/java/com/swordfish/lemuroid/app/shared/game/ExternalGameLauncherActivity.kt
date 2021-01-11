@@ -63,15 +63,21 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError {
-                    displayErrorDialog(R.string.game_loader_error_load_game, R.string.ok) { finish() }
-                }
                 .delay(animationTime, TimeUnit.MILLISECONDS)
                 .doOnSubscribe { loadingSubject.onNext(true) }
-                .doOnTerminate { loadingSubject.onNext(false) }
-                .subscribeBy {
-                    BaseGameActivity.launchGame(this, it, true, TVHelper.isTV(applicationContext))
-                }
+                .doAfterTerminate { loadingSubject.onNext(false) }
+                .autoDispose(scope())
+                .subscribeBy(
+                    { displayErrorMessage() },
+                    {
+                        BaseGameActivity.launchGame(
+                            this,
+                            it,
+                            true,
+                            TVHelper.isTV(applicationContext)
+                        )
+                    }
+                )
 
             loadingSubject
                 .debounce(500, TimeUnit.MILLISECONDS)
@@ -81,6 +87,10 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                     findViewById<View>(R.id.progressBar).setVisibleOrGone(it)
                 }
         }
+    }
+
+    private fun displayErrorMessage() {
+        displayErrorDialog(R.string.game_loader_error_load_game, R.string.ok) { finish() }
     }
 
     private fun getLoadingLiveData(): LiveData<Boolean> {
