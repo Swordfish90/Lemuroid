@@ -28,6 +28,7 @@ import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
+import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
@@ -245,14 +246,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
         retroGameView = null
         displayGameLoaderError(gameLoaderError)
-    }
-
-    fun displayToast(id: Int) {
-        Toast.makeText(this, id, Toast.LENGTH_SHORT).show()
-    }
-
-    fun displayToast(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     protected fun displayOptionsDialog() {

@@ -131,6 +131,8 @@
 
     <string name="game_edit_touch_controls_error_not_visible">Disconnect your pad to edit your touch controls</string>
 
+    <string name="game_interactory_busy">Wait for the pending operations to complete</string>
+
     <string name="mobile_settings_help">Help</string>
     <string name="lemuroid_help_content"><![CDATA[
         <b>&#8226;How do I use Lemuroid?</b><br/>
