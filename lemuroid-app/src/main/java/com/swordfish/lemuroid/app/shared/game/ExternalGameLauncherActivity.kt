@@ -98,7 +98,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
             LibraryIndexMonitor(applicationContext).getLiveData(),
             SaveSyncMonitor(applicationContext).getLiveData()
         ) { libraryIndex, saveSync ->
-            libraryIndex == true || saveSync == true
+            libraryIndex ?: true || saveSync ?: true
         }
     }
 

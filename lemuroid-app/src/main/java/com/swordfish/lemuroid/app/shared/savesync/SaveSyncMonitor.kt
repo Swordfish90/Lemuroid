@@ -11,7 +11,7 @@ class SaveSyncMonitor(private val appContext: Context) {
 
     fun getLiveData(): LiveData<Boolean> {
         return CombinedLiveData(getPeriodicLiveData(), getOneTimeLiveData()) { b1, b2 ->
-            (b1 ?: false) || (b2 ?: false)
+            (b1 ?: true) || (b2 ?: true)
         }
     }
 
@@ -35,7 +35,7 @@ class SaveSyncMonitor(private val appContext: Context) {
         return Transformations.map(workInfosLiveData) { workInfos ->
             val isRunning = workInfos
                 .map { it.state }
-                .any { it in listOf(WorkInfo.State.RUNNING) }
+                .any { it in listOf(WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING) }
 
             isRunning
         }
