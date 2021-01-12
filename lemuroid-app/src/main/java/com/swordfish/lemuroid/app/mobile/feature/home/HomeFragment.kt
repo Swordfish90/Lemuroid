@@ -36,8 +36,8 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val homeViewModel =
             ViewModelProviders.of(
@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
 
         val pagingController = EpoxyHomeController(gameInteractor, settingsInteractor)
 
-        val recyclerView = view!!.findViewById<RecyclerView>(R.id.home_recyclerview)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.home_recyclerview)
         val layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
 
         recyclerView.layoutManager = layoutManager

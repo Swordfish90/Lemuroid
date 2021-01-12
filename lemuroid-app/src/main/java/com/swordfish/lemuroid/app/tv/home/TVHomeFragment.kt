@@ -15,6 +15,7 @@ import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
@@ -26,14 +27,17 @@ import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
+import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
@@ -87,28 +91,33 @@ class TVHomeFragment : BrowseSupportFragment() {
         val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
 
-        homeViewModel.indexingInProgress.observe(this) { inProgress ->
-            findAdapterById<ArrayObjectAdapter>(SETTINGS_ADAPTER)?.setItems(
-                buildSettingsRowItems(!inProgress),
-                LEANBACK_SETTING_DIFF_CALLBACK
-            )
-        }
+        val indexingProgress: Observable<Boolean> = LiveDataReactiveStreams.toPublisher(
+            this,
+            homeViewModel.indexingInProgress
+        ).let { Observable.fromPublisher(it) }
 
         val entriesObservable = Observables.combineLatest(
             homeViewModel.favoritesGames,
             homeViewModel.recentGames,
-            homeViewModel.availableSystems
-        )
+            homeViewModel.availableSystems,
+            indexingProgress
+        ) { a, b, c, d -> NTuple4(a, b, c, d) }
 
         entriesObservable
+            .debounce(50, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
-            .subscribeBy { (favoriteGames, recentGames, systems) ->
-                update(favoriteGames, recentGames, systems)
+            .subscribeBy { (favoriteGames, recentGames, systems, inProgress) ->
+                update(favoriteGames, recentGames, systems, inProgress)
             }
     }
 
-    private fun update(favoritesGames: List<Game>, recentGames: List<Game>, metaSystems: List<MetaSystemInfo>) {
+    private fun update(
+        favoritesGames: List<Game>,
+        recentGames: List<Game>,
+        metaSystems: List<MetaSystemInfo>,
+        scanningInProgress: Boolean
+    ) {
         val adapterHasFavorites = findAdapterById<ObjectAdapter>(FAVORITES_ADAPTER) != null
         val adapterHasGames = findAdapterById<ObjectAdapter>(RECENTS_ADAPTER) != null
         val adapterHasSystems = findAdapterById<ObjectAdapter>(SYSTEM_ADAPTER) != null
@@ -132,6 +141,10 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
         findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
         findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(metaSystems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+        findAdapterById<ArrayObjectAdapter>(SETTINGS_ADAPTER)?.setItems(
+            buildSettingsRowItems(!scanningInProgress),
+            LEANBACK_SETTING_DIFF_CALLBACK
+        )
     }
 
     private fun <T> findAdapterById(id: Long): T? {
