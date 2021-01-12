@@ -36,9 +36,9 @@ class GamePadManager(context: Context) {
     fun getGamePadsPortMapperObservable(): Observable<(InputDevice?)->Int> {
         return getGamePadsObservable().map { gamePads ->
             val portMappings = gamePads
-                .mapIndexed { index, inputDevice -> inputDevice.controllerNumber to index }
+                .mapIndexed { index, inputDevice -> inputDevice.id to index }
                 .toMap()
-            return@map { inputDevice -> portMappings[inputDevice?.controllerNumber] ?: 0 }
+            return@map { inputDevice -> portMappings[inputDevice?.id] ?: 0 }
         }
     }
 
@@ -112,19 +112,37 @@ class GamePadManager(context: Context) {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
                 .filter { isGamePad(it) }
-                .filter { it.controllerNumber > 0 }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()
     }
 
     private fun isGamePad(device: InputDevice): Boolean {
-        return device.sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD
+        return sequenceOf(
+            device.name !in BLACKLISTED_DEVICES,
+            device.sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD,
+            device.hasKeys(*MINIMAL_SUPPORTED_KEYS).all { it },
+            device.isVirtual.not(),
+            device.controllerNumber > 0
+        ).all { it }
     }
 
     companion object {
         private const val GAME_PAD_BINDING_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding"
 
         private fun getSharedPreferencesId(inputDevice: InputDevice) = inputDevice.descriptor
+
+        // This is a last resort, but sadly there are some devices which present keys and the
+        // SOURCE_GAMEPAD, so we basically black list them.
+        private val BLACKLISTED_DEVICES = setOf(
+            "virtual-search"
+        )
+
+        private val MINIMAL_SUPPORTED_KEYS = intArrayOf(
+            KeyEvent.KEYCODE_BUTTON_A,
+            KeyEvent.KEYCODE_BUTTON_B,
+            KeyEvent.KEYCODE_BUTTON_X,
+            KeyEvent.KEYCODE_BUTTON_Y,
+        )
 
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"
