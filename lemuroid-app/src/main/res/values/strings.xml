@@ -53,7 +53,7 @@
     <string name="settings_save_sync_refresh">Manual Sync</string>
     <string name="settings_save_sync_refresh_description">Perform a manual Sync now.\n%1$s</string>
     <string name="settings_save_sync_enable_auto">Auto-Sync</string>
-    <string name="settings_save_sync_enable_auto_description">Automatically perform a Sync before and after a game session</string>
+    <string name="settings_save_sync_enable_auto_description">Automatically perform a Sync before and after a game session when connected to Wifi</string>
     <string name="settings_save_sync_configure">Configure %1$s</string>
     <string name="settings_save_sync_include_saves">Sync in-game saves</string>
     <string name="settings_save_sync_include_saves_description">%1$s on device</string>
