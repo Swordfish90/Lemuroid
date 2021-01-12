@@ -16,8 +16,6 @@ class MainViewModel(appContext: Context) : ViewModel() {
     }
 
     private val indexingInProgress = LibraryIndexMonitor(appContext).getLiveData()
-    private val isSaveSyncInProgress = SaveSyncMonitor(appContext).getLiveData()
-    val displayProgress = CombinedLiveData(indexingInProgress, isSaveSyncInProgress) { a, b ->
-        a ?: false || b ?: false
-    }
+    private val saveSyncInProgress = SaveSyncMonitor(appContext).getLiveData()
+    val displayProgress = CombinedLiveData(indexingInProgress, saveSyncInProgress) { a, b -> a || b }
 }

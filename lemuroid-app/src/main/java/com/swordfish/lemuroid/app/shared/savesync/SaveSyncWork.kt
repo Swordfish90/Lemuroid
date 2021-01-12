@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.shared.savesync
 
 import android.content.Context
 import androidx.work.Constraints
+import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
@@ -12,6 +13,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.RxWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
@@ -36,7 +38,11 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
     override fun createWork(): Single<Result> {
         AndroidWorkerInjection.inject(this)
 
-        if (!settingsManager.syncSaves || !saveSyncManager.isSupported() || !saveSyncManager.isConfigured())
+        if (!saveSyncManager.isSupported() || !saveSyncManager.isConfigured() || !settingsManager.syncSaves)
+            return Single.just(Result.success())
+
+        val isAutoSync = inputData.getBoolean(IS_AUTO, false)
+        if (isAutoSync && !settingsManager.autoSaveSync)
             return Single.just(Result.success())
 
         val notificationsManager = NotificationsManager(applicationContext)
@@ -58,19 +64,26 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
     companion object {
         val UNIQUE_WORK_ID: String = SaveSyncWork::class.java.simpleName
         val UNIQUE_PERIODIC_WORK_ID: String = SaveSyncWork::class.java.simpleName + "Periodic"
+        private const val IS_AUTO = "IS_AUTO"
 
         fun enqueueManualWork(applicationContext: Context) {
+            val inputData: Data = workDataOf(IS_AUTO to false)
+
             WorkManager.getInstance(applicationContext).enqueueUniqueWork(
                 UNIQUE_WORK_ID,
                 ExistingWorkPolicy.REPLACE,
-                OneTimeWorkRequestBuilder<SaveSyncWork>().build()
+                OneTimeWorkRequestBuilder<SaveSyncWork>()
+                    .setInputData(inputData)
+                    .build()
             )
         }
 
         fun enqueueAutoWork(applicationContext: Context, delayMinutes: Long = 0) {
+            val inputData: Data = workDataOf(IS_AUTO to true)
+
             WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
                 UNIQUE_PERIODIC_WORK_ID,
-                ExistingPeriodicWorkPolicy.KEEP,
+                ExistingPeriodicWorkPolicy.REPLACE,
                 PeriodicWorkRequestBuilder<SaveSyncWork>(3, TimeUnit.HOURS)
                     .setConstraints(
                         Constraints.Builder()
@@ -78,7 +91,9 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
                             .setRequiresBatteryNotLow(true)
                             .build()
                     )
-                    .setInitialDelay(delayMinutes, TimeUnit.MINUTES).build()
+                    .setInputData(inputData)
+                    .setInitialDelay(delayMinutes, TimeUnit.MINUTES)
+                    .build()
             )
         }
 

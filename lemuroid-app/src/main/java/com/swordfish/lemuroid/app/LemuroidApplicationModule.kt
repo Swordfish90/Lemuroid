@@ -29,7 +29,6 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
@@ -331,12 +330,6 @@ abstract class LemuroidApplicationModule {
             context: Context,
             directoriesManager: DirectoriesManager
         ) = SaveSyncManagerImpl(context, directoriesManager)
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun saveSyncScheduler(context: Context, settingsManager: SettingsManager) =
-            SaveSyncScheduler(context, settingsManager)
 
         @Provides
         @PerApp

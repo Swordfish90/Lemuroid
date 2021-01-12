@@ -24,7 +24,7 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashHandler
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncScheduler
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.displayToast
@@ -95,7 +95,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var gamePadManager: GamePadManager
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var coresSelection: CoresSelection
-    @Inject lateinit var saveSyncSchedulers: SaveSyncScheduler
 
     private val startGameTime = System.currentTimeMillis()
 
@@ -605,13 +604,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun cancelBackgroundWork() {
-        saveSyncSchedulers.cancelSaveSync()
+        SaveSyncWork.cancelAutoWork(applicationContext)
+        SaveSyncWork.cancelManualWork(applicationContext)
         CacheCleanerWork.cancelCleanCacheLRU(applicationContext)
     }
 
     private fun rescheduleBackgroundWork() {
         // Let's slightly delay the sync. Maybe the user wants to play another game.
-        saveSyncSchedulers.scheduleSaveSyncIfNeeded(5)
+        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
         CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
     }
 
