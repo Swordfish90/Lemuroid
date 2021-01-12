@@ -17,7 +17,5 @@ class MainTVViewModel(appContext: Context) : ViewModel() {
 
     private val indexingInProgress = LibraryIndexMonitor(appContext).getLiveData()
     private val saveSyncInProgress = SaveSyncMonitor(appContext).getLiveData()
-    val inProgress = CombinedLiveData(indexingInProgress, saveSyncInProgress) { a, b ->
-        a ?: false || b ?: false
-    }
+    val inProgress = CombinedLiveData(indexingInProgress, saveSyncInProgress) { a, b -> a || b }
 }

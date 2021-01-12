@@ -10,9 +10,7 @@ import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
 class SaveSyncMonitor(private val appContext: Context) {
 
     fun getLiveData(): LiveData<Boolean> {
-        return CombinedLiveData(getPeriodicLiveData(), getOneTimeLiveData()) { b1, b2 ->
-            (b1 ?: true) || (b2 ?: true)
-        }
+        return CombinedLiveData(getPeriodicLiveData(), getOneTimeLiveData()) { b1, b2 -> b1 || b2 }
     }
 
     private fun getPeriodicLiveData(): LiveData<Boolean> {
