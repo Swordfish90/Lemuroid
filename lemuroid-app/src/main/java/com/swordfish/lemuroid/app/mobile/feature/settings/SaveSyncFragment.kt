@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
-import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject

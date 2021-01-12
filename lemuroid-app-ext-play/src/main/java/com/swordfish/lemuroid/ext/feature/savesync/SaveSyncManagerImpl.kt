@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.ext.feature.savesync
 
+import android.app.Activity
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.http.FileContent
@@ -10,31 +11,32 @@ import com.swordfish.lemuroid.common.kotlin.calculateMd5
 import com.swordfish.lemuroid.ext.R
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
 
-class SaveSyncManager(
+class SaveSyncManagerImpl(
     private val appContext: Context,
     private val directoriesManager: DirectoriesManager
-) {
+) : SaveSyncManager {
     private var lastSyncTimestamp: Long by SharedPreferencesDelegates.LongDelegate(
         SharedPreferencesHelper.getSharedPreferences(appContext),
         appContext.getString(R.string.pref_key_last_save_sync),
         0L
     )
 
-    fun getProvider(): String = "Google Drive"
+    override fun getProvider(): String = "Google Drive"
 
-    fun getSettingsActivity() = ActivateGoogleDriveActivity::class.java
+    override fun getSettingsActivity(): Class<out Activity>? = ActivateGoogleDriveActivity::class.java
 
-    fun isSupported(): Boolean = true
+    override fun isSupported(): Boolean = true
 
-    fun isConfigured(): Boolean = GoogleSignIn.getLastSignedInAccount(appContext) != null
+    override fun isConfigured(): Boolean = GoogleSignIn.getLastSignedInAccount(appContext) != null
 
-    fun getLastSyncInfo(): String {
+    override fun getLastSyncInfo(): String {
         val dateString = if (lastSyncTimestamp > 0) {
             SimpleDateFormat.getDateTimeInstance().format(lastSyncTimestamp)
         } else {
@@ -43,7 +45,7 @@ class SaveSyncManager(
         return appContext.getString(R.string.gdrive_last_sync_completed, dateString)
     }
 
-    fun getConfigInfo(): String {
+    override fun getConfigInfo(): String {
         val email = GoogleSignIn.getLastSignedInAccount(appContext)?.email
         return if (email != null) {
             appContext.getString(R.string.gdrive_connected_summary, email)
@@ -52,7 +54,7 @@ class SaveSyncManager(
         }
     }
 
-    fun sync(cores: Set<CoreID>) = Completable.fromAction {
+    override fun sync(cores: Set<CoreID>) = Completable.fromAction {
         synchronized(SYNC_LOCK) {
             val drive = DriveFactory(appContext).create().toNullable() ?: return@fromAction
 
@@ -82,9 +84,9 @@ class SaveSyncManager(
         }
     }
 
-    fun computeSavesSpace() = getSizeHumanReadable(directoriesManager.getSavesDirectory())
+    override fun computeSavesSpace() = getSizeHumanReadable(directoriesManager.getSavesDirectory())
 
-    fun computeStatesSpace(core: CoreID) =
+    override fun computeStatesSpace(core: CoreID) =
         getSizeHumanReadable(File(directoriesManager.getStatesDirectory(), core.coreName))
 
     private fun getSizeHumanReadable(directory: File): String {

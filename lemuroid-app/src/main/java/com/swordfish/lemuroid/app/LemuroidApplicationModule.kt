@@ -38,7 +38,7 @@ import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.core.CoreManagerImpl
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
-import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
+import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManagerImpl
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
@@ -55,6 +55,7 @@ import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
@@ -84,6 +85,9 @@ abstract class LemuroidApplicationModule {
 
     @Binds
     abstract fun context(app: LemuroidApplication): Context
+
+    @Binds
+    abstract fun saveSyncManager(saveSyncManagerImpl: SaveSyncManagerImpl): SaveSyncManager
 
     @PerActivity
     @ContributesAndroidInjector(modules = [MainActivity.Module::class])
@@ -323,8 +327,10 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun saveSyncManager(context: Context, directoriesManager: DirectoriesManager) =
-            SaveSyncManager(context, directoriesManager)
+        fun saveSyncManagerImpl(
+            context: Context,
+            directoriesManager: DirectoriesManager
+        ) = SaveSyncManagerImpl(context, directoriesManager)
 
         @Provides
         @PerApp

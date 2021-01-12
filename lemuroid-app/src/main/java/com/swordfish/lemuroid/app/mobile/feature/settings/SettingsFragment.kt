@@ -17,8 +17,8 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
-import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
