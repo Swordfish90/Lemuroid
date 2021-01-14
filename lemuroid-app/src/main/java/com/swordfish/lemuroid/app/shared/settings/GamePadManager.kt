@@ -46,7 +46,7 @@ class GamePadManager(context: Context) {
                         )
                     }
                     ?.let { GameMenuShortcut.findByName(it) }
-                    ?.toOptional()
+                    .toOptional()
             }
     }
 
