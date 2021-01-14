@@ -1,12 +1,12 @@
 package com.swordfish.lemuroid.app.shared.gamecrash
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import com.swordfish.lemuroid.BuildConfig
 
 class GameCrashHandler(
-    private val appContext: Context,
+    private val activity: Activity,
     private val systemHandler: Thread.UncaughtExceptionHandler?
 ) : Thread.UncaughtExceptionHandler {
 
@@ -17,11 +17,12 @@ class GameCrashHandler(
             throwable.message
         }
 
-        appContext.startActivity(
-            Intent(appContext, GameCrashActivity::class.java).apply {
+        activity.startActivity(
+            Intent(activity, GameCrashActivity::class.java).apply {
                 putExtra(GameCrashActivity.EXTRA_MESSAGE, message)
             }
         )
+        activity.finish()
         systemHandler?.uncaughtException(thread, throwable)
     }
 }
