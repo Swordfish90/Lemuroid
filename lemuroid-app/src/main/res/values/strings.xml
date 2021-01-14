@@ -33,6 +33,7 @@
 
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
+    <string name="settings_gamepad_title_game_menu">Menu</string>
 
     <string name="settings_title_open_cores_selection">Change Cores</string>
     <string name="settings_description_open_cores_selection">Select which core is associated to a system</string>

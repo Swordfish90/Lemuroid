@@ -56,6 +56,9 @@ class GamePadSettingsPreferences(private val gamePadManager: GamePadManager) {
             .filter { inputDevice.hasKeys(it)[0] }
             .map { getPreferenceForKey(context, inputDevice, it) }
             .forEach { category.addPreference(it) }
+
+        getGameMenuShortcutPreference(context, inputDevice)
+            ?.let { category.addPreference(it) }
     }
 
     private fun getPreferenceForKey(context: Context, inputDevice: InputDevice, key: Int): Preference {
@@ -73,6 +76,21 @@ class GamePadSettingsPreferences(private val gamePadManager: GamePadManager) {
         preference.summaryProvider = Preference.SummaryProvider<ListPreference> {
             getRetroPadKeyName(context, it.value.toInt())
         }
+        preference.isIconSpaceReserved = false
+        return preference
+    }
+
+    private fun getGameMenuShortcutPreference(context: Context, inputDevice: InputDevice): Preference? {
+        val default = GameMenuShortcut.getDefault(inputDevice) ?: return null
+
+        val preference = ListPreference(context)
+        preference.key = GamePadManager.computeGameMenuShortcutPreference(inputDevice)
+        preference.title = context.getString(R.string.settings_gamepad_title_game_menu)
+        preference.entries = GameMenuShortcut.ALL_SHORTCUTS.map { it.name }.toTypedArray()
+        preference.entryValues = GameMenuShortcut.ALL_SHORTCUTS.map { it.name }.toTypedArray()
+        preference.setValueIndex(GameMenuShortcut.ALL_SHORTCUTS.indexOf(default))
+        preference.setDefaultValue(default.name)
+        preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         preference.isIconSpaceReserved = false
         return preference
     }

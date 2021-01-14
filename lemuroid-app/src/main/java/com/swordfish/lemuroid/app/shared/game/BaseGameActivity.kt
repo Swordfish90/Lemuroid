@@ -32,6 +32,7 @@ import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple4
+import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
@@ -358,37 +359,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadShortcuts() {
-        val gamePadShortcut = getGamePadMenuShortCutObservable()
+        gamePadManager.getGamePadMenuShortCutObservable()
             .distinctUntilChanged()
-            .doOnNext {
-                displayToast(
-                    resources.getString(
-                        R.string.game_toast_settings_button_using_gamepad,
-                        it.label
-                    )
-                )
-            }
-
-        val firstPlayerPressedKeys = Observables.combineLatest(
-            gamePadManager.getGamePadsPortMapperObservable(),
-            keyEventsSubjects
-        )
-            .filter { (ports, key) -> ports(key.device) == 0 }
-            .map { (_, key) -> key }
-            .scan(mutableSetOf<Int>()) { keys, event ->
-                if (event.action == KeyEvent.ACTION_DOWN) {
-                    keys.add(event.keyCode)
-                } else if (event.action == KeyEvent.ACTION_UP) {
-                    keys.remove(event.keyCode)
-                }
-                keys
-            }
-
-        Observables.combineLatest(gamePadShortcut, firstPlayerPressedKeys)
             .autoDispose(scope())
-            .subscribeBy { (shortcut, pressedKeys) ->
-                if (pressedKeys.containsAll(shortcut.keys)) {
-                    displayOptionsDialog()
+            .subscribeBy { shortcut ->
+                shortcut.toNullable()?.let {
+                    displayToast(
+                        resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name)
+                    )
                 }
             }
     }
@@ -429,30 +407,51 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadKeys() {
-        val bindKeys = Observables.combineLatest(
+        val pressedKeys = mutableSetOf<Int>()
+
+        val filteredKeyEvents = keyEventsSubjects
+            .map { Triple(it.device, it.action, it.keyCode) }
+            .distinctUntilChanged()
+
+        val shortcutKeys = gamePadManager.getGamePadMenuShortCutObservable()
+            .map { it.toNullable()?.keys ?: setOf() }
+
+        val combinedObservable = RXUtils.combineLatest(
+            shortcutKeys,
             gamePadManager.getGamePadsPortMapperObservable(),
             gamePadManager.getGamePadsBindingsObservable(),
-            keyEventsSubjects
+            filteredKeyEvents
         )
-            .map { (ports, bindings, event) ->
-                val port = ports(event.device)
-                val bindKeyCode = bindings(event.device)[event.keyCode] ?: event.keyCode
-                Triple(event.action, port, bindKeyCode)
-            }
-            .share()
 
-        bindKeys
+        combinedObservable
+            .doOnSubscribe { pressedKeys.clear() }
+            .doOnDispose { pressedKeys.clear() }
             .autoDispose(scope())
-            .subscribeBy { (action, port, keyCode) ->
-                retroGameView?.sendKeyEvent(action, keyCode, port)
-            }
+            .subscribeBy { (shortcut, ports, bindings, event) ->
+                val (device, action, keyCode) = event
+                val port = ports(device)
+                val bindKeyCode = bindings(device)[keyCode] ?: keyCode
 
-        bindKeys
-            .filter { (action, port, keyCode) ->
-                port == 0 && keyCode == KeyEvent.KEYCODE_BUTTON_MODE && action == KeyEvent.ACTION_DOWN
+                if (port == 0) {
+                    if (bindKeyCode == KeyEvent.KEYCODE_BUTTON_MODE && action == KeyEvent.ACTION_DOWN) {
+                        displayOptionsDialog()
+                        return@subscribeBy
+                    }
+
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        pressedKeys.add(keyCode)
+                    } else if (action == KeyEvent.ACTION_UP) {
+                        pressedKeys.remove(keyCode)
+                    }
+
+                    if (shortcut.isNotEmpty() && pressedKeys.containsAll(shortcut)) {
+                        displayOptionsDialog()
+                        return@subscribeBy
+                    }
+                }
+
+                retroGameView?.sendKeyEvent(action, bindKeyCode, port)
             }
-            .autoDispose(scope())
-            .subscribeBy { displayOptionsDialog() }
     }
 
     private fun sendStickMotions(event: MotionEvent, port: Int) {
@@ -545,16 +544,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             return true
         }
         return super.onKeyUp(keyCode, event)
-    }
-
-    private fun getGamePadMenuShortCutObservable(): Observable<GameMenuShortcut> {
-        return gamePadManager
-            .getGamePadsObservable()
-            .flatMapMaybe {
-                Maybe.fromCallable {
-                    it.getOrNull(0)?.let { GameMenuShortcut.getBestShortcutForInputDevice(it) }
-                }
-            }
     }
 
     override fun onBackPressed() {

@@ -6,6 +6,8 @@ import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.toOptional
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -31,6 +33,21 @@ class GamePadManager(context: Context) {
             }
             .map { it.toMap() }
             .map { bindings -> { bindings[it] ?: mapOf() } }
+    }
+
+    fun getGamePadMenuShortCutObservable(): Observable<Optional<GameMenuShortcut>> {
+        return getGamePadsObservable()
+            .map { devices ->
+                devices.firstOrNull()
+                    ?.let {
+                        sharedPreferences.getString(
+                            computeGameMenuShortcutPreference(it),
+                            GameMenuShortcut.getDefault(it)?.name
+                        )
+                    }
+                    ?.let { GameMenuShortcut.findByName(it) }
+                    ?.toOptional()
+            }
     }
 
     fun getGamePadsPortMapperObservable(): Observable<(InputDevice?)->Int> {
@@ -143,6 +160,9 @@ class GamePadManager(context: Context) {
             KeyEvent.KEYCODE_BUTTON_X,
             KeyEvent.KEYCODE_BUTTON_Y,
         )
+
+        fun computeGameMenuShortcutPreference(inputDevice: InputDevice) =
+            "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_gamemenu"
 
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"

@@ -97,8 +97,8 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
         return CombinedLiveData(
             LibraryIndexMonitor(applicationContext).getLiveData(),
             SaveSyncMonitor(applicationContext).getLiveData()
-        ) {
-            libraryIndex, saveSync -> libraryIndex || saveSync
+        ) { libraryIndex, saveSync ->
+            libraryIndex || saveSync
         }
     }
 
