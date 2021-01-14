@@ -21,7 +21,6 @@ package com.swordfish.lemuroid.app
 
 import android.content.Context
 import androidx.room.Room
-import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
@@ -246,12 +245,6 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun rxTree() = RxTimberTree()
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun rxPrefs(context: Context) =
-            RxSharedPreferences.create(SharedPreferencesHelper.getLegacySharedPreferences(context))
 
         @Provides
         @PerApp

@@ -29,7 +29,6 @@ import javax.inject.Inject
 class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject lateinit var settingsInteractor: SettingsInteractor
-    @Inject lateinit var rxSharedPreferences: RxSharedPreferences
     @Inject lateinit var directoriesManager: DirectoriesManager
     @Inject lateinit var saveSyncManager: SaveSyncManager
 
@@ -78,8 +77,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        val settingsViewModel = ViewModelProviders.of(this, SettingsViewModel.Factory(context!!, rxSharedPreferences))
-            .get(SettingsViewModel::class.java)
+        val settingsViewModel = ViewModelProviders.of(
+            this,
+            SettingsViewModel.Factory(
+                context!!,
+                RxSharedPreferences.create(
+                    SharedPreferencesHelper.getLegacySharedPreferences(context!!)
+                )
+            )
+        ).get(SettingsViewModel::class.java)
 
         val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
