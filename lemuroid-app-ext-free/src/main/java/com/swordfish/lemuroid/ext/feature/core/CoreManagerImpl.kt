@@ -39,7 +39,7 @@ class CoreManagerImpl(
 
     // This is the last tagged versions of cores.
     companion object {
-        private val CORES_VERSION = "1.8.0"
+        private val CORES_VERSION = "1.9.0-beta1"
     }
 
     private val baseUri = Uri.parse("https://github.com/")
