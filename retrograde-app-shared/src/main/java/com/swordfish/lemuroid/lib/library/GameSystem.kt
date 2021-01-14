@@ -80,11 +80,12 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.FCEUMM,
-                        exposedAdvancedSettings = listOf(
-                            "fceumm_nospritelimit",
-                            "fceumm_sndquality",
+                        exposedSettings = listOf(
                             "fceumm_overscan_h",
                             "fceumm_overscan_v",
+                        ),
+                        exposedAdvancedSettings = listOf(
+                            "fceumm_nospritelimit",
                         )
                     )
                 ),
@@ -185,8 +186,6 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.GAMBATTE,
                         exposedSettings = listOf(
-                            "gambatte_gb_colorization",
-                            "gambatte_gb_internal_palette",
                             "gambatte_mix_frames",
                             "gambatte_dark_filter_level"
                         )
@@ -225,7 +224,7 @@ data class GameSystem(
                         defaultSettings = listOf(
                             CoreVariable("mupen64plus-43screensize", "320x240")
                         ),
-                        exposedAdvancedSettings = listOf(
+                        exposedSettings = listOf(
                             "mupen64plus-43screensize",
                             "mupen64plus-cpucore",
                             "mupen64plus-BilinearMode",

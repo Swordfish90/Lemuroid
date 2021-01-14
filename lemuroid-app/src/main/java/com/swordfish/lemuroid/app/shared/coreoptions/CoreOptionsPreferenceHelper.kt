@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
@@ -20,27 +21,29 @@ object CoreOptionsPreferenceHelper {
         advancedOptions: List<CoreOption>
     ) {
         val context = preferenceScreen.context
-        if (baseOptions.isNotEmpty()) {
-            val title = context.getString(R.string.core_settings_category_basic)
-            initializeCategory(preferenceScreen, title, baseOptions, systemID)
-        }
 
         if (advancedOptions.isNotEmpty()) {
-            val title = context.getString(R.string.core_settings_category_advanced)
-            initializeCategory(preferenceScreen, title, advancedOptions, systemID)
+            val basicTitle = context.getString(R.string.core_settings_category_basic)
+            val basicCategory = createCategory(preferenceScreen.context, preferenceScreen, basicTitle)
+            addPreferences(context, basicCategory, baseOptions, systemID)
+
+            val advanceTitle = context.getString(R.string.core_settings_category_advanced)
+            val advanceCategory = createCategory(preferenceScreen.context, preferenceScreen, advanceTitle)
+            addPreferences(context, advanceCategory, advancedOptions, systemID)
+        } else {
+            addPreferences(context, preferenceScreen, baseOptions, systemID)
         }
     }
 
-    private fun initializeCategory(
-        preferenceScreen: PreferenceScreen,
-        title: String,
-        baseOptions: List<CoreOption>,
+    private fun addPreferences(
+        context: Context,
+        preferenceGroup: PreferenceGroup,
+        options: List<CoreOption>,
         systemID: String
     ) {
-        val baseCategory = createCategory(preferenceScreen.context, preferenceScreen, title)
-        baseOptions
-            .map { convertToPreference(preferenceScreen.context, it, systemID) }
-            .forEach { baseCategory.addPreference(it) }
+        options
+            .map { convertToPreference(context, it, systemID) }
+            .forEach { preferenceGroup.addPreference(it) }
     }
 
     private fun convertToPreference(context: Context, it: CoreOption, systemID: String): Preference {
