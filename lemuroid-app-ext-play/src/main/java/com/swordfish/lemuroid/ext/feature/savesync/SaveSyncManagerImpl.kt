@@ -286,6 +286,7 @@ class SaveSyncManagerImpl(
                         "files(id, name, size, appProperties, modifiedTime, parents, md5Checksum)"
 
                 val result = drive.files().list()
+                    .setPageSize(500)
                     .setSpaces("appDataFolder")
                     .setQ(query)
                     .setFields(fields)
