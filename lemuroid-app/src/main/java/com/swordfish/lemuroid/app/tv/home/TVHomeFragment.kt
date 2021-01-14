@@ -27,7 +27,7 @@ import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
-import com.swordfish.lemuroid.common.kotlin.NTuple4
+import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -36,7 +36,6 @@ import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.Observables
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -96,12 +95,12 @@ class TVHomeFragment : BrowseSupportFragment() {
             homeViewModel.indexingInProgress
         ).let { Observable.fromPublisher(it) }
 
-        val entriesObservable = Observables.combineLatest(
+        val entriesObservable = RXUtils.combineLatest(
             homeViewModel.favoritesGames,
             homeViewModel.recentGames,
             homeViewModel.availableSystems,
             indexingProgress
-        ) { a, b, c, d -> NTuple4(a, b, c, d) }
+        )
 
         entriesObservable
             .debounce(50, TimeUnit.MILLISECONDS)
