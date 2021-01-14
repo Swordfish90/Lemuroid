@@ -2,9 +2,9 @@ package com.swordfish.touchinput.radial
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
 import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.touchinput.controller.R
 import kotlin.math.roundToInt
 
@@ -19,7 +19,7 @@ class VirtualGamePadSettingsManager(
     }
 
     private val sharedPreferences: SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
+        SharedPreferencesHelper.getSharedPreferences(context)
 
     var scale: Float by SharedPreferencesDelegates.PercentageDelegate(
         sharedPreferences,

@@ -1,12 +1,14 @@
 package com.swordfish.lemuroid.app.mobile.feature.games
 
+import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import javax.inject.Inject
 
@@ -21,8 +23,8 @@ class GamesFragment : RecyclerViewFragment() {
 
     private var gamesAdapter: GamesAdapter? = null
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
 
@@ -30,7 +32,7 @@ class GamesFragment : RecyclerViewFragment() {
             .get(GamesViewModel::class.java)
 
         gamesViewModel.games.observe(this) { pagedList ->
-            gamesAdapter?.submitList(pagedList)
+            gamesAdapter?.submitData(lifecycle, pagedList)
         }
 
         args.systemIds.let {
@@ -41,7 +43,6 @@ class GamesFragment : RecyclerViewFragment() {
             adapter = gamesAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        restoreRecyclerViewState()
     }
 
     @dagger.Module

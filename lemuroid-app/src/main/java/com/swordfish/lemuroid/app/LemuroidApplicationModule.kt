@@ -20,43 +20,46 @@
 package com.swordfish.lemuroid.app
 
 import android.content.Context
-import android.preference.PreferenceManager
 import androidx.room.Room
-import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
-import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
+import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
+import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
+import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.core.CoreManagerImpl
+import com.swordfish.lemuroid.ext.feature.review.ReviewManager
+import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManagerImpl
+import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerApp
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
+import com.swordfish.lemuroid.lib.library.db.dao.Migrations
 import com.swordfish.lemuroid.lib.logging.RxTimberTree
+import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
+import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
-import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
+import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
-import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
-import com.swordfish.lemuroid.lib.bios.BiosManager
-import com.swordfish.lemuroid.lib.core.CoresSelection
-import com.swordfish.lemuroid.lib.library.db.dao.Migrations
-import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
-import com.swordfish.lemuroid.lib.saves.SavesManager
-import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
-
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -80,13 +83,16 @@ abstract class LemuroidApplicationModule {
     @Binds
     abstract fun context(app: LemuroidApplication): Context
 
+    @Binds
+    abstract fun saveSyncManager(saveSyncManagerImpl: SaveSyncManagerImpl): SaveSyncManager
+
     @PerActivity
     @ContributesAndroidInjector(modules = [MainActivity.Module::class])
     abstract fun mainActivity(): MainActivity
 
     @PerActivity
     @ContributesAndroidInjector
-    abstract fun gameLauncherActivity(): GameLauncherActivity
+    abstract fun externalGameLauncherActivity(): ExternalGameLauncherActivity
 
     @PerActivity
     @ContributesAndroidInjector
@@ -242,12 +248,6 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun rxPrefs(context: Context) =
-            RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
-
-        @Provides
-        @PerApp
-        @JvmStatic
         fun coreVariablesManager(context: Context) = CoreVariablesManager(context)
 
         @Provides
@@ -259,14 +259,18 @@ abstract class LemuroidApplicationModule {
             statesManager: StatesManager,
             savesManager: SavesManager,
             coreVariablesManager: CoreVariablesManager,
-            retrogradeDatabase: RetrogradeDatabase
+            retrogradeDatabase: RetrogradeDatabase,
+            coresSelection: CoresSelection,
+            savesCoherencyEngine: SavesCoherencyEngine
         ) = GameLoader(
             coreManager,
             lemuroidLibrary,
             statesManager,
             savesManager,
             coreVariablesManager,
-            retrogradeDatabase
+            retrogradeDatabase,
+            coresSelection,
+            savesCoherencyEngine
         )
 
         @Provides
@@ -310,5 +314,31 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun savesCoherencyEngine(savesManager: SavesManager, statesManager: StatesManager) =
             SavesCoherencyEngine(savesManager, statesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun saveSyncManagerImpl(
+            context: Context,
+            directoriesManager: DirectoriesManager
+        ) = SaveSyncManagerImpl(context, directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun postGameHandler(retrogradeDatabase: RetrogradeDatabase) =
+            PostGameHandler(ReviewManager(), retrogradeDatabase)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun shortcutsGenerator(context: Context, retrofit: Retrofit) =
+            ShortcutsGenerator(context, retrofit)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun channelHandler(context: Context, retrogradeDatabase: RetrogradeDatabase, retrofit: Retrofit) =
+            ChannelHandler(context, retrogradeDatabase, retrofit)
     }
 }

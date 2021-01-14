@@ -12,4 +12,9 @@ object TVHelper {
                 pm.hasSystemFeature("android.hardware.type.automotive")
             )
     }
+
+    fun isTV(context: Context): Boolean {
+        val pm: PackageManager = context.packageManager
+        return pm.hasSystemFeature("android.hardware.type.television")
+    }
 }

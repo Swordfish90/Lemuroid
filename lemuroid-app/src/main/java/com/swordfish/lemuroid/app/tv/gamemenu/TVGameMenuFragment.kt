@@ -11,6 +11,7 @@ import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -26,6 +27,7 @@ class TVGameMenuFragment(
     private val game: Game,
     private val systemCoreConfig: SystemCoreConfig,
     private val coreOptions: Array<CoreOption>,
+    private val advancedCoreOptions: Array<CoreOption>,
     private val numDisks: Int,
     private val currentDisk: Int,
     private val audioEnabled: Boolean,
@@ -34,6 +36,9 @@ class TVGameMenuFragment(
 ) : LeanbackPreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore =
+            SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
+
         setPreferencesFromResource(R.xml.tv_game_settings, rootKey)
         setupCoreOptions()
         setupLoadAndSave()
@@ -48,16 +53,14 @@ class TVGameMenuFragment(
 
     private fun setupCoreOptions() {
         val coreOptionsScreen = findPreference<PreferenceScreen>(GameMenuHelper.SECTION_CORE_OPTIONS)
-        coreOptionsScreen?.isVisible = coreOptions.isNotEmpty()
-        coreOptions
-            .map {
-                CoreOptionsPreferenceHelper.convertToPreference(
-                    preferenceScreen.context,
-                    it,
-                    game.systemId
-                )
-            }
-            .forEach { coreOptionsScreen?.addPreference(it) }
+            ?: return
+
+        CoreOptionsPreferenceHelper.addPreferences(
+            coreOptionsScreen,
+            game.systemId,
+            coreOptions.toList(),
+            advancedCoreOptions.toList()
+        )
     }
 
     private fun setupLoadAndSave() {

@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.Carousel
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -36,8 +36,8 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val homeViewModel =
             ViewModelProviders.of(
@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
 
         val pagingController = EpoxyHomeController(gameInteractor, settingsInteractor)
 
-        val recyclerView = view!!.findViewById<RecyclerView>(R.id.home_recyclerview)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.home_recyclerview)
         val layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
 
         recyclerView.layoutManager = layoutManager

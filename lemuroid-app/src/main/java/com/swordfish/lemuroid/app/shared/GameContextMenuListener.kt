@@ -32,5 +32,12 @@ class GameContextMenuListener(
                 true
             }
         }
+
+        if (gameInteractor.supportShortcuts()) {
+            menu.add(R.string.game_context_menu_create_shortcut).setOnMenuItemClickListener {
+                gameInteractor.onCreateShortcut(game)
+                true
+            }
+        }
     }
 }

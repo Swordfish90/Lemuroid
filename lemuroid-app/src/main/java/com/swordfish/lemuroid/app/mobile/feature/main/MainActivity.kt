@@ -8,43 +8,53 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesFragment
-import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeFragment
 import com.swordfish.lemuroid.app.mobile.feature.search.SearchFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.SaveSyncFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
+import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
+import com.swordfish.lemuroid.app.shared.main.BusyActivity
+import com.swordfish.lemuroid.app.shared.main.PostGameHandler
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
-import com.swordfish.lemuroid.app.shared.game.GameLauncherActivity
-import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
-import com.swordfish.lemuroid.ext.feature.review.ReviewManager
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import io.reactivex.Completable
 import io.reactivex.rxkotlin.subscribeBy
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MainActivity : RetrogradeAppCompatActivity() {
+class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
+
+    @Inject lateinit var postGameHandler: PostGameHandler
 
     private val reviewManager = ReviewManager()
+    private var mainViewModel: MainViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initializeActivity()
     }
+
+    override fun activity(): Activity = this
+    override fun isBusy(): Boolean = mainViewModel?.displayProgress?.value ?: false
 
     private fun initializeActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -66,10 +76,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
+        mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
             .get(MainViewModel::class.java)
 
-        mainViewModel.indexingInProgress.observe(this) { isRunning ->
+        mainViewModel?.displayProgress?.observe(this) { isRunning ->
             findViewById<MaterialProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
         }
     }
@@ -80,18 +90,13 @@ class MainActivity : RetrogradeAppCompatActivity() {
         if (resultCode != Activity.RESULT_OK) return
 
         when (requestCode) {
-            GameLauncherActivity.REQUEST_PLAY_GAME -> {
-                val duration = data?.extras?.getLong(GameLauncherActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                displayReviewRequest(duration)
+            BaseGameActivity.REQUEST_PLAY_GAME -> {
+                val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
+                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
+                postGameHandler.handleAfterGame(this, true, game, duration!!)
+                    .subscribeBy { }
             }
         }
-    }
-
-    private fun displayReviewRequest(durationMillis: Long?) {
-        if (durationMillis == null) return
-        Completable.timer(500, TimeUnit.MILLISECONDS)
-            .andThen { reviewManager.startReviewFlow(this, durationMillis) }
-            .subscribeBy { }
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
@@ -132,6 +137,10 @@ class MainActivity : RetrogradeAppCompatActivity() {
         abstract fun biosInfoFragment(): BiosSettingsFragment
 
         @PerFragment
+        @ContributesAndroidInjector(modules = [SaveSyncFragment.Module::class])
+        abstract fun saveSyncFragment(): SaveSyncFragment
+
+        @PerFragment
         @ContributesAndroidInjector(modules = [CoresSelectionFragment.Module::class])
         abstract fun coresSelectionFragment(): CoresSelectionFragment
 
@@ -147,8 +156,12 @@ class MainActivity : RetrogradeAppCompatActivity() {
             @Provides
             @PerActivity
             @JvmStatic
-            fun gameInteractor(activity: MainActivity, retrogradeDb: RetrogradeDatabase) =
-                GameInteractor(activity, retrogradeDb, false)
+            fun gameInteractor(
+                activity: MainActivity,
+                retrogradeDb: RetrogradeDatabase,
+                shortcutsGenerator: ShortcutsGenerator
+            ) =
+                GameInteractor(activity, retrogradeDb, false, shortcutsGenerator)
         }
     }
 }

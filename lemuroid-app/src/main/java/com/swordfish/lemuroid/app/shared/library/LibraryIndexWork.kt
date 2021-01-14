@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.RxWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
@@ -17,7 +18,6 @@ import dagger.multibindings.IntoMap
 import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
-import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
     RxWorker(context, workerParams) {
@@ -29,7 +29,12 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
 
         val notificationsManager = NotificationsManager(applicationContext)
 
-        setForegroundAsync(ForegroundInfo(notificationsManager.getIndexingNotification()))
+        val foregroundInfo = ForegroundInfo(
+            NotificationsManager.LIBRARY_INDEXING_NOTIFICATION_ID,
+            notificationsManager.libraryIndexingNotification()
+        )
+
+        setForegroundAsync(foregroundInfo)
         return lemuroidLibrary.indexLibrary()
             .toSingleDefault(Result.success())
             .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }

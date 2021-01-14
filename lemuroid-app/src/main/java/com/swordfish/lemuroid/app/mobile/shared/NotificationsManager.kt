@@ -10,13 +10,27 @@ import androidx.core.content.ContextCompat
 import com.swordfish.lemuroid.R
 
 class NotificationsManager(private val applicationContext: Context) {
-    fun getIndexingNotification(): Notification {
+
+    fun libraryIndexingNotification(): Notification {
         createDefaultNotificationChannel()
 
         val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lemuroid_tiny)
             .setContentTitle(applicationContext.getString(R.string.library_index_notification_title))
             .setContentText(applicationContext.getString(R.string.library_index_notification_message))
+            .setProgress(100, 0, true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+
+        return builder.build()
+    }
+
+    fun saveSyncNotification(): Notification {
+        createDefaultNotificationChannel()
+
+        val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_lemuroid_tiny)
+            .setContentTitle(applicationContext.getString(R.string.save_sync_notification_title))
+            .setContentText(applicationContext.getString(R.string.save_sync_notification_message))
             .setProgress(100, 0, true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
 
@@ -37,5 +51,8 @@ class NotificationsManager(private val applicationContext: Context) {
 
     companion object {
         const val DEFAULT_CHANNEL_ID = "DEFAULT_CHANNEL_ID"
+
+        const val LIBRARY_INDEXING_NOTIFICATION_ID = 1
+        const val SAVE_SYNC_NOTIFICATION_ID = 2
     }
 }

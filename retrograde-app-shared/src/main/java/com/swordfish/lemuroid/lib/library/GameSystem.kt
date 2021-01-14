@@ -63,7 +63,10 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         coreID = CoreID.STELLA,
-                        exposedSettings = listOf("stella_filter")
+                        exposedSettings = listOf(
+                            "stella_filter",
+                            "stella_crop_hoverscan"
+                        )
                     )
                 ),
                 uniqueExtensions = listOf("a26"),
@@ -74,7 +77,17 @@ data class GameSystem(
                 "Nintendo - Nintendo Entertainment System",
                 R.string.game_system_title_nes,
                 R.string.game_system_abbr_nes,
-                listOf(SystemCoreConfig(CoreID.FCEUMM)),
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.FCEUMM,
+                        exposedAdvancedSettings = listOf(
+                            "fceumm_nospritelimit",
+                            "fceumm_sndquality",
+                            "fceumm_overscan_h",
+                            "fceumm_overscan_v",
+                        )
+                    )
+                ),
                 uniqueExtensions = listOf("nes"),
                 mergeDPADAndLeftStickEvents = true
             ),
@@ -83,7 +96,11 @@ data class GameSystem(
                 "Nintendo - Super Nintendo Entertainment System",
                 R.string.game_system_title_snes,
                 R.string.game_system_abbr_snes,
-                listOf(SystemCoreConfig(CoreID.SNES9X)),
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.SNES9X
+                    )
+                ),
                 uniqueExtensions = listOf("smc", "sfc"),
                 mergeDPADAndLeftStickEvents = true
             ),
@@ -96,6 +113,10 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
                         exposedSettings = listOf("genesis_plus_gx_blargg_ntsc_filter"),
+                        exposedAdvancedSettings = listOf(
+                            "genesis_plus_gx_no_sprite_limit",
+                            "genesis_plus_gx_overscan"
+                        )
                     )
                 ),
                 uniqueExtensions = listOf("sms"),
@@ -110,6 +131,10 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
                         exposedSettings = listOf("genesis_plus_gx_blargg_ntsc_filter"),
+                        exposedAdvancedSettings = listOf(
+                            "genesis_plus_gx_no_sprite_limit",
+                            "genesis_plus_gx_overscan"
+                        )
                     )
                 ),
                 uniqueExtensions = listOf("gen", "smd", "md"),
@@ -124,6 +149,9 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
                         exposedSettings = listOf("genesis_plus_gx_lcd_filter"),
+                        exposedAdvancedSettings = listOf(
+                            "genesis_plus_gx_no_sprite_limit",
+                        )
                     )
                 ),
                 uniqueExtensions = listOf("gg"),
@@ -140,7 +168,8 @@ data class GameSystem(
                         exposedSettings = listOf(
                             "gambatte_gb_colorization",
                             "gambatte_gb_internal_palette",
-                            "gambatte_mix_frames"
+                            "gambatte_mix_frames",
+                            "gambatte_dark_filter_level"
                         )
                     ),
                 ),
@@ -158,7 +187,8 @@ data class GameSystem(
                         exposedSettings = listOf(
                             "gambatte_gb_colorization",
                             "gambatte_gb_internal_palette",
-                            "gambatte_mix_frames"
+                            "gambatte_mix_frames",
+                            "gambatte_dark_filter_level"
                         )
                     ),
                 ),
@@ -194,6 +224,11 @@ data class GameSystem(
                         CoreID.MUPEN64_PLUS_NEXT,
                         defaultSettings = listOf(
                             CoreVariable("mupen64plus-43screensize", "320x240")
+                        ),
+                        exposedAdvancedSettings = listOf(
+                            "mupen64plus-43screensize",
+                            "mupen64plus-cpucore",
+                            "mupen64plus-BilinearMode",
                         )
                     )
                 ),
@@ -209,13 +244,15 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.PCSX_REARMED,
                         exposedSettings = listOf(
-                            "pcsx_rearmed_drc",
                             "pcsx_rearmed_frameskip",
                             "pcsx_rearmed_pad1type",
                             "pcsx_rearmed_pad2type"
                         ),
+                        exposedAdvancedSettings = listOf(
+                            "pcsx_rearmed_drc"
+                        ),
                         defaultSettings = listOf(
-                            CoreVariable("pcsx_rearmed_drc", "disabled")
+                            CoreVariable("pcsx_rearmed_drc", "disabled"),
                         )
                     )
                 ),
@@ -241,6 +278,13 @@ data class GameSystem(
                             "ppsspp_auto_frameskip",
                             "ppsspp_frameskip"
                         ),
+                        exposedAdvancedSettings = listOf(
+                            "ppsspp_cpu_core",
+                            "ppsspp_internal_resolution",
+                            "ppsspp_texture_scaling_level",
+                            "ppsspp_texture_scaling_type",
+                            "ppsspp_texture_filtering"
+                        )
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -315,9 +359,11 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.MELONDS,
                         exposedSettings = listOf(
+                            "melonds_screen_layout"
+                        ),
+                        exposedAdvancedSettings = listOf(
                             "melonds_threaded_renderer",
                             "melonds_jit_enable",
-                            "melonds_screen_layout"
                         ),
                         defaultSettings = listOf(
                             CoreVariable("melonds_touch_mode", "Touch"),
@@ -351,6 +397,10 @@ data class GameSystem(
 
         fun getSupportedExtensions(): List<String> {
             return SYSTEMS.flatMap { it.supportedExtensions }
+        }
+
+        fun findSystemForCore(coreID: CoreID): List<GameSystem> {
+            return all().filter { system -> system.systemCoreConfigs.any { it.coreID == coreID } }
         }
 
         fun findByUniqueFileExtension(fileExtension: String): GameSystem? =

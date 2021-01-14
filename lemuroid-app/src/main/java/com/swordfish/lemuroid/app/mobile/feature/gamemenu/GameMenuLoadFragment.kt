@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
+import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -33,6 +34,7 @@ class GameMenuLoadFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore = DummyDataStore
         addPreferencesFromResource(R.xml.empty_preference_screen)
     }
 

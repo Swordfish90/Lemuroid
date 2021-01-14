@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
 
     <application
         android:name="com.swordfish.lemuroid.app.LemuroidApplication"
@@ -30,11 +31,16 @@
         </activity>
 
         <activity
-            android:name="com.swordfish.lemuroid.app.shared.game.GameLauncherActivity"
-            android:process=":game"
+            android:name="com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:theme="@style/GameTheme"/>
+            android:launchMode="singleTask"
+            android:theme="@style/GameTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="lemuroid" android:host="${applicationId}" android:pathPattern="/play-game/id/.*"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="com.swordfish.lemuroid.app.mobile.feature.game.GameActivity"
@@ -59,6 +65,11 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="lemuroid" android:host="${applicationId}" android:pathPattern="/open-leanback"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".app.tv.settings.TVSettingsActivity"
@@ -76,6 +87,9 @@
         <activity android:name=".app.tv.gamemenu.TVGameMenuActivity"
             android:theme="@style/LeanbackPreferences"
             android:process=":game" />
+
+        <activity android:name=".app.shared.gamecrash.GameCrashActivity"
+            android:theme="@style/GameTheme" />
 
         <!-- It is not possible to invoke Work from another process with the default initializer.
              We have to disable it and manually initialize it in our custom Application. -->

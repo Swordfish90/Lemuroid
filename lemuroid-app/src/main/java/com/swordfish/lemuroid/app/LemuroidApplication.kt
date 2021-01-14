@@ -1,11 +1,15 @@
 package com.swordfish.lemuroid.app
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.Context
+import android.os.Build
+import android.os.Process
 import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.BuildConfig
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -24,8 +28,8 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
     lateinit var rxPrefs: RxSharedPreferences
     @Inject
     lateinit var gdriveStorageProvider: GDriveStorageProvider*/
-    @Inject
-    lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
+
+    @Inject lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
 
     @SuppressLint("CheckResult")
     override fun onCreate() {
@@ -60,6 +64,26 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
             .build()
 
         WorkManager.initialize(this, config)
+
+        if (isMainProcess()) {
+            SaveSyncWork.enqueueAutoWork(applicationContext, 0)
+        }
+    }
+
+    private fun isMainProcess(): Boolean {
+        return retrieveProcessName() == packageName
+    }
+
+    private fun retrieveProcessName(): String? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return getProcessName()
+        }
+
+        val currentPID = Process.myPid()
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        return manager.runningAppProcesses
+            .firstOrNull { it.pid == currentPID }
+            ?.processName
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

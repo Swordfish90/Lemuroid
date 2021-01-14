@@ -17,6 +17,9 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
@@ -26,7 +29,8 @@ import javax.inject.Inject
 class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject lateinit var settingsInteractor: SettingsInteractor
-    @Inject lateinit var rxSharedPreferences: RxSharedPreferences
+    @Inject lateinit var directoriesManager: DirectoriesManager
+    @Inject lateinit var saveSyncManager: SaveSyncManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -61,14 +65,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore =
+            SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
         setPreferencesFromResource(R.xml.mobile_settings, rootKey)
+
+        findPreference<Preference>(getString(R.string.pref_key_open_save_sync_settings))?.apply {
+            isVisible = saveSyncManager.isSupported()
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
-        val settingsViewModel = ViewModelProviders.of(this, SettingsViewModel.Factory(context!!, rxSharedPreferences))
-            .get(SettingsViewModel::class.java)
+        val settingsViewModel = ViewModelProviders.of(
+            this,
+            SettingsViewModel.Factory(
+                context!!,
+                RxSharedPreferences.create(
+                    SharedPreferencesHelper.getLegacySharedPreferences(context!!)
+                )
+            )
+        ).get(SettingsViewModel::class.java)
 
         val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
@@ -97,6 +114,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_key_rescan) -> rescanLibrary()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
+            getString(R.string.pref_key_open_save_sync_settings) -> handleDisplaySaveSync()
             getString(R.string.pref_key_open_cores_selection) -> handleDisplayCorePage()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
             getString(R.string.pref_key_reset_settings) -> handleResetSettings()
@@ -110,6 +128,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun handleDisplayCorePage() {
         findNavController().navigate(R.id.navigation_settings_cores_selection)
+    }
+
+    private fun handleDisplaySaveSync() {
+        findNavController().navigate(R.id.navigation_settings_save_sync)
     }
 
     private fun handleOpenGamepadBindings() {

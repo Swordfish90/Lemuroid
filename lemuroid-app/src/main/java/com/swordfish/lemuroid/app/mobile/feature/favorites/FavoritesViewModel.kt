@@ -3,8 +3,9 @@ package com.swordfish.lemuroid.app.mobile.feature.favorites
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import com.swordfish.lemuroid.common.paging.buildLiveDataPaging
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -16,6 +17,6 @@ class FavoritesViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
         }
     }
 
-    val favorites: LiveData<PagedList<Game>> =
-        LivePagedListBuilder(retrogradeDb.gameDao().selectFavorites(), 20).build()
+    val favorites: LiveData<PagingData<Game>> =
+        buildLiveDataPaging(20, viewModelScope) { retrogradeDb.gameDao().selectFavorites() }
 }

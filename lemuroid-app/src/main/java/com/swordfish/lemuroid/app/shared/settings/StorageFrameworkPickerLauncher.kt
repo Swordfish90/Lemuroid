@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import javax.inject.Inject
 
@@ -45,7 +45,7 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
         super.onActivityResult(requestCode, resultCode, resultData)
 
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+            val sharedPreferences = SharedPreferencesHelper.getLegacySharedPreferences(this)
             val preferenceKey = getString(R.string.pref_key_extenral_folder)
 
             val currentValue: String? = sharedPreferences.getString(preferenceKey, null)

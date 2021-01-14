@@ -1,12 +1,12 @@
 package com.swordfish.lemuroid.lib.storage
 
 import com.swordfish.lemuroid.common.files.FileUtils
-import java.io.InputStream
-import kotlin.math.ceil
-import kotlin.math.roundToInt
 import com.swordfish.lemuroid.common.kotlin.indexOf
 import com.swordfish.lemuroid.common.kotlin.kb
 import com.swordfish.lemuroid.common.kotlin.mb
+import java.io.InputStream
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 object ISOScanner {
     private val WINDOW_SIZE = 8.kb()

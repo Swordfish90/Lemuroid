@@ -8,33 +8,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.ClassPresenterSelector
+import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
-import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagedList
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
+import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
-import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
-import com.swordfish.lemuroid.app.tv.shared.PagedListObjectAdapter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
+import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.util.subscribeBy
-import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.Observables
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
@@ -60,10 +62,11 @@ class TVHomeFragment : BrowseSupportFragment() {
                     findNavController().navigate(action)
                 }
                 is TVSetting -> {
-                    when (item) {
-                        TVSetting.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
-                        TVSetting.CHOOSE_DIRECTORY -> launchFolderPicker()
-                        TVSetting.SETTINGS -> launchTVSettings()
+                    when (item.type) {
+                        TVSettingType.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
+                        TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
+                        TVSettingType.SETTINGS -> launchTVSettings()
+                        TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
                     }
                 }
             }
@@ -74,6 +77,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         recreateAdapter(
             includeFavorites = false,
             includeRecentGames = false,
@@ -82,29 +86,37 @@ class TVHomeFragment : BrowseSupportFragment() {
         setOnSearchClickedListener {
             findNavController().navigate(R.id.navigation_search)
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-
-        val factory = TVHomeViewModel.Factory(retrogradeDb)
+        val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
         val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
 
-        val entriesObservable = Observables.combineLatest(
+        val indexingProgress: Observable<Boolean> = LiveDataReactiveStreams.toPublisher(
+            this,
+            homeViewModel.indexingInProgress
+        ).let { Observable.fromPublisher(it) }
+
+        val entriesObservable = RXUtils.combineLatest(
             homeViewModel.favoritesGames,
             homeViewModel.recentGames,
-            homeViewModel.availableSystems
+            homeViewModel.availableSystems,
+            indexingProgress
         )
 
         entriesObservable
+            .debounce(50, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribeBy { (favoriteGames, recentGames, systems) ->
-                update(favoriteGames, recentGames, systems)
+            .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
+            .subscribeBy { (favoriteGames, recentGames, systems, inProgress) ->
+                update(favoriteGames, recentGames, systems, inProgress)
             }
     }
 
-    private fun update(favoritesGames: PagedList<Game>, recentGames: List<Game>, metaSystems: List<MetaSystemInfo>) {
+    private fun update(
+        favoritesGames: List<Game>,
+        recentGames: List<Game>,
+        metaSystems: List<MetaSystemInfo>,
+        scanningInProgress: Boolean
+    ) {
         val adapterHasFavorites = findAdapterById<ObjectAdapter>(FAVORITES_ADAPTER) != null
         val adapterHasGames = findAdapterById<ObjectAdapter>(RECENTS_ADAPTER) != null
         val adapterHasSystems = findAdapterById<ObjectAdapter>(SYSTEM_ADAPTER) != null
@@ -117,9 +129,21 @@ class TVHomeFragment : BrowseSupportFragment() {
             recreateAdapter(favoritesGames.isNotEmpty(), recentGames.isNotEmpty(), metaSystems.isNotEmpty())
         }
 
-        findAdapterById<PagedListObjectAdapter<Game>>(FAVORITES_ADAPTER)?.pagedList = favoritesGames
+        findAdapterById<ArrayObjectAdapter>(FAVORITES_ADAPTER)?.apply {
+            if (favoritesGames.size <= TVHomeViewModel.CAROUSEL_MAX_ITEMS) {
+                setItems(favoritesGames, LEANBACK_MULTI_DIFF_CALLBACK)
+            } else {
+                val allItems = favoritesGames.subList(0, TVHomeViewModel.CAROUSEL_MAX_ITEMS) +
+                    listOf(TVSetting(TVSettingType.SHOW_ALL_FAVORITES))
+                setItems(allItems, LEANBACK_MULTI_DIFF_CALLBACK)
+            }
+        }
         findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
         findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(metaSystems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+        findAdapterById<ArrayObjectAdapter>(SETTINGS_ADAPTER)?.setItems(
+            buildSettingsRowItems(!scanningInProgress),
+            LEANBACK_SETTING_DIFF_CALLBACK
+        )
     }
 
     private fun <T> findAdapterById(id: Long): T? {
@@ -142,8 +166,10 @@ class TVHomeFragment : BrowseSupportFragment() {
         val cardPadding = resources.getDimensionPixelSize(R.dimen.card_padding)
 
         if (includeFavorites) {
-            val presenter = GamePresenter(cardSize, gameInteractor)
-            val favouritesItems = PagedListObjectAdapter(presenter, Game.DIFF_CALLBACK)
+            val presenter = ClassPresenterSelector()
+            presenter.addClassPresenter(Game::class.java, GamePresenter(cardSize, gameInteractor))
+            presenter.addClassPresenter(TVSetting::class.java, SettingPresenter(cardSize, cardPadding))
+            val favouritesItems = ArrayObjectAdapter(presenter)
             val title = resources.getString(R.string.tv_home_section_favorites)
             result.add(ListRow(HeaderItem(FAVORITES_ADAPTER, title), favouritesItems))
         }
@@ -161,13 +187,19 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, cardPadding))
-        settingsItems.add(0, TVSetting.RESCAN)
-        settingsItems.add(1, TVSetting.CHOOSE_DIRECTORY)
-        settingsItems.add(2, TVSetting.SETTINGS)
+        settingsItems.setItems(buildSettingsRowItems(true), LEANBACK_SETTING_DIFF_CALLBACK)
         val settingsTitle = resources.getString(R.string.tv_home_section_settings)
         result.add(ListRow(HeaderItem(SETTINGS_ADAPTER, settingsTitle), settingsItems))
 
         adapter = result
+    }
+
+    private fun buildSettingsRowItems(rescanEnabled: Boolean): List<TVSetting> {
+        return listOf(
+            TVSetting(TVSettingType.RESCAN, rescanEnabled),
+            TVSetting(TVSettingType.CHOOSE_DIRECTORY, rescanEnabled),
+            TVSetting(TVSettingType.SETTINGS)
+        )
     }
 
     private fun launchFolderPicker() {
@@ -182,11 +214,41 @@ class TVHomeFragment : BrowseSupportFragment() {
         startActivity(Intent(requireContext(), TVSettingsActivity::class.java))
     }
 
+    private fun launchFavorites() {
+        findNavController().navigate(R.id.navigation_favorites)
+    }
+
     companion object {
         const val RECENTS_ADAPTER = 1L
         const val SYSTEM_ADAPTER = 2L
         const val SETTINGS_ADAPTER = 3L
         const val FAVORITES_ADAPTER = 4L
+
+        val LEANBACK_MULTI_DIFF_CALLBACK = object : DiffCallback<Any>() {
+            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+                return when {
+                    (oldItem is Game && newItem is Game) -> {
+                        LEANBACK_GAME_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+                    }
+                    (oldItem is TVSetting && newItem is TVSetting) -> {
+                        LEANBACK_SETTING_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+                    }
+                    else -> false
+                }
+            }
+
+            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+                return when {
+                    (oldItem is Game && newItem is Game) -> {
+                        LEANBACK_GAME_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
+                    }
+                    (oldItem is TVSetting && newItem is TVSetting) -> {
+                        LEANBACK_SETTING_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
+                    }
+                    else -> false
+                }
+            }
+        }
 
         val LEANBACK_GAME_DIFF_CALLBACK = object : DiffCallback<Game>() {
             override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
@@ -205,6 +267,16 @@ class TVHomeFragment : BrowseSupportFragment() {
 
             override fun areItemsTheSame(oldInfo: MetaSystemInfo, newInfo: MetaSystemInfo): Boolean {
                 return oldInfo.metaSystem.name == newInfo.metaSystem.name
+            }
+        }
+
+        val LEANBACK_SETTING_DIFF_CALLBACK = object : DiffCallback<TVSetting>() {
+            override fun areContentsTheSame(oldItem: TVSetting, newItem: TVSetting): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areItemsTheSame(oldItem: TVSetting, newItem: TVSetting): Boolean {
+                return oldItem.type == newItem.type
             }
         }
     }

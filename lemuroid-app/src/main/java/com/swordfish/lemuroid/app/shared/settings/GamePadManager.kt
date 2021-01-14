@@ -6,7 +6,9 @@ import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
-import androidx.preference.PreferenceManager
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.toOptional
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -19,7 +21,7 @@ class GamePadManager(context: Context) {
     private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(context)
 
     private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+        return SharedPreferencesHelper.getSharedPreferences(context)
     }
 
     fun getGamePadsBindingsObservable(): Observable<(InputDevice?)->Map<Int, Int>> {
@@ -33,12 +35,27 @@ class GamePadManager(context: Context) {
             .map { bindings -> { bindings[it] ?: mapOf() } }
     }
 
+    fun getGamePadMenuShortCutObservable(): Observable<Optional<GameMenuShortcut>> {
+        return getGamePadsObservable()
+            .map { devices ->
+                devices.firstOrNull()
+                    ?.let {
+                        sharedPreferences.getString(
+                            computeGameMenuShortcutPreference(it),
+                            GameMenuShortcut.getDefault(it)?.name
+                        )
+                    }
+                    ?.let { GameMenuShortcut.findByName(it) }
+                    ?.toOptional()
+            }
+    }
+
     fun getGamePadsPortMapperObservable(): Observable<(InputDevice?)->Int> {
         return getGamePadsObservable().map { gamePads ->
             val portMappings = gamePads
-                .mapIndexed { index, inputDevice -> inputDevice.controllerNumber to index }
+                .mapIndexed { index, inputDevice -> inputDevice.id to index }
                 .toMap()
-            return@map { inputDevice -> portMappings[inputDevice?.controllerNumber] ?: 0 }
+            return@map { inputDevice -> portMappings[inputDevice?.id] ?: 0 }
         }
     }
 
@@ -112,19 +129,40 @@ class GamePadManager(context: Context) {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
                 .filter { isGamePad(it) }
-                .filter { it.controllerNumber > 0 }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()
     }
 
     private fun isGamePad(device: InputDevice): Boolean {
-        return device.sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD
+        return sequenceOf(
+            device.name !in BLACKLISTED_DEVICES,
+            device.sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD,
+            device.hasKeys(*MINIMAL_SUPPORTED_KEYS).all { it },
+            device.isVirtual.not(),
+            device.controllerNumber > 0
+        ).all { it }
     }
 
     companion object {
         private const val GAME_PAD_BINDING_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding"
 
         private fun getSharedPreferencesId(inputDevice: InputDevice) = inputDevice.descriptor
+
+        // This is a last resort, but sadly there are some devices which present keys and the
+        // SOURCE_GAMEPAD, so we basically black list them.
+        private val BLACKLISTED_DEVICES = setOf(
+            "virtual-search"
+        )
+
+        private val MINIMAL_SUPPORTED_KEYS = intArrayOf(
+            KeyEvent.KEYCODE_BUTTON_A,
+            KeyEvent.KEYCODE_BUTTON_B,
+            KeyEvent.KEYCODE_BUTTON_X,
+            KeyEvent.KEYCODE_BUTTON_Y,
+        )
+
+        fun computeGameMenuShortcutPreference(inputDevice: InputDevice) =
+            "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_gamemenu"
 
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"

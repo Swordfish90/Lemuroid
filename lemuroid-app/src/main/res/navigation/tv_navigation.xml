@@ -32,4 +32,9 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.swordfish.lemuroid.app.tv.favorites.TVFavoritesFragment"
+        android:label="@string/favorites"/>
+
 </navigation>

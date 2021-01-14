@@ -5,8 +5,8 @@ import android.os.Environment
 import android.os.StatFs
 import android.system.Os
 import android.text.format.Formatter
-import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
+import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import io.reactivex.Completable
 import timber.log.Timber
 import java.io.File

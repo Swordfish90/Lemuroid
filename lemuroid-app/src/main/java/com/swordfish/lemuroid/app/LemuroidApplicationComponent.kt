@@ -20,7 +20,9 @@
 package com.swordfish.lemuroid.app
 
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.tv.LemuroidTVApplicationModule
+import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjectionModule
 import com.swordfish.lemuroid.lib.injection.PerApp
 import dagger.Component
@@ -33,9 +35,9 @@ import dagger.android.support.AndroidSupportInjectionModule
         AndroidWorkerInjectionModule::class,
         LemuroidApplicationModule::class,
         LibraryIndexWork.Module::class,
+        SaveSyncWork.Module::class,
+        ChannelUpdateWork.Module::class,
         LemuroidTVApplicationModule::class
-        // GDriveApplicationModule::class,
-        // WebDavApplicationModule::class,
     ]
 )
 @PerApp

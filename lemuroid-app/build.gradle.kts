@@ -10,8 +10,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 104
-        versionName = "1.8.1"
+        versionCode = 105
+        versionName = "1.9.0-beta1"
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -31,6 +31,8 @@ android {
     // Stripping created some issues with some libretro cores such as ppsspp
     packagingOptions {
         doNotStrip("*/*/*_libretro_android.so")
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/library_release.kotlin_module")
     }
 
     signingConfigs {
@@ -85,7 +87,7 @@ dependencies {
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)
     implementation(deps.libs.material)
-    implementation(deps.libs.picasso)
+    implementation(deps.libs.coil)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.preferences.preferencesKtx)
@@ -96,6 +98,7 @@ dependencies {
     implementation(deps.libs.arch.work.rxjava2)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.extensions)
+    implementation(deps.libs.androidx.lifecycle.reactiveStreams)
     implementation(deps.libs.materialProgressBar)
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)
@@ -103,8 +106,9 @@ dependencies {
     kapt(deps.libs.epoxy.processor)
     kapt(deps.libs.androidx.lifecycle.processor)
 
-    implementation(deps.libs.androidx.appcompat.leanback)
-    implementation(deps.libs.androidx.appcompat.leanbackPreference)
+    implementation(deps.libs.androidx.leanback.leanback)
+    implementation(deps.libs.androidx.leanback.leanbackPreference)
+    implementation(deps.libs.androidx.leanback.leanbackPaging)
 
     implementation(deps.libs.androidx.appcompat.recyclerView)
     implementation(deps.libs.androidx.paging.common)
@@ -132,6 +136,10 @@ dependencies {
     implementation(deps.libs.rxPreferences)
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.rxKotlin2)
+    implementation(deps.libs.guava)
+    implementation(deps.libs.androidx.documentfile)
+    implementation(deps.libs.androidx.leanback.tvProvider)
+    implementation(deps.libs.harmony)
 
     implementation(deps.libs.libretrodroid)
 
