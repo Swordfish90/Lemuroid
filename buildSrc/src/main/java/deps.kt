@@ -24,7 +24,7 @@ object deps {
         const val googleApiClient = "1.30.9"
         const val paging          = "3.0.0-alpha11"
         const val room            = "2.3.0-alpha04"
-        const val libretrodroid   = "2a496fdc"
+        const val libretrodroid   = "54bb8c8"
         const val radialgamepad   = "0.2.0"
     }
 
