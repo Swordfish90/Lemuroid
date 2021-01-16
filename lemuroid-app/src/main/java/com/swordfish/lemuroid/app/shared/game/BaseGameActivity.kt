@@ -65,6 +65,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -206,7 +207,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
                 fun onResume() {
                     coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
-                        .autoDispose(scope())
                         .subscribeBy({}) {
                             onVariablesRead(it)
                         }
@@ -215,7 +215,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 @OnLifecycleEvent(Lifecycle.Event.ON_START)
                 fun onStart() {
                     coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
-                        .autoDispose(scope())
                         .subscribeBy({}) {
                             updateCoreVariables(it)
                         }
