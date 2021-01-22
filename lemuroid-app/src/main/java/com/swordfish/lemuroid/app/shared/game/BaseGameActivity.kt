@@ -247,6 +247,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     protected fun displayOptionsDialog() {
+        if (loading) return
+
         val options = getCoreOptions()
             .filter { it.variable.key in systemCoreConfig.exposedSettings }
 

@@ -33,7 +33,6 @@
         <activity
             android:name="com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
             android:theme="@style/GameTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -45,8 +44,8 @@
         <activity
             android:name="com.swordfish.lemuroid.app.mobile.feature.game.GameActivity"
             android:process=":game"
+            android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:theme="@style/GameTheme"/>
 
         <activity
