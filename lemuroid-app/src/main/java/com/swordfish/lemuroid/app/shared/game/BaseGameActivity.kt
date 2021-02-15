@@ -15,7 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.jakewharton.rxrelay2.BehaviorRelay
+import com.gojuno.koptional.Some
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
@@ -26,13 +26,22 @@ import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple4
+import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
+import com.swordfish.lemuroid.common.kotlin.toIndexedMap
+import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.rx.RXUtils
+import com.swordfish.lemuroid.common.rx.RxNullableProperty
+import com.swordfish.lemuroid.common.rx.RxProperty
+import com.swordfish.lemuroid.common.rx.asNullableObservable
+import com.swordfish.lemuroid.common.rx.asObservable
+import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
@@ -51,6 +60,7 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
+import com.swordfish.libretrodroid.Controller
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
@@ -74,7 +84,6 @@ import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.properties.Delegates
 import kotlin.system.exitProcess
 
 abstract class BaseGameActivity : ImmersiveActivity() {
@@ -97,23 +106,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var gamePadManager: GamePadManager
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var coresSelection: CoresSelection
+    @Inject lateinit var controllerConfigsManager: ControllerConfigsManager
 
     private val startGameTime = System.currentTimeMillis()
-
-    private val loadingSubject: BehaviorRelay<Boolean> = BehaviorRelay.createDefault(true)
-    private val loadingMessagesSubject: BehaviorRelay<String> = BehaviorRelay.create()
 
     private val keyEventsSubjects: PublishRelay<KeyEvent> = PublishRelay.create()
     private val motionEventsSubjects: PublishRelay<MotionEvent> = PublishRelay.create()
 
-    protected var retroGameView: GLRetroView? = null
+    protected var retroGameView: GLRetroView? by RxNullableProperty(null)
 
-    var loading: Boolean by Delegates.observable(true) { _, _, value ->
-        loadingSubject.accept(value)
-    }
-    var loadingMessage: String by Delegates.observable("") { _, _, value ->
-        loadingMessagesSubject.accept(value)
-    }
+    var loading: Boolean by RxProperty(true)
+    var loadingMessage: String by RxProperty("")
+    var controllerConfigs: Map<Int, ControllerConfig> by RxProperty(mapOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,6 +141,21 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (areGamePadsEnabled()) {
             setupPhysicalPad()
         }
+
+        initializeControllers()
+    }
+
+    private fun initializeControllers() {
+        this::retroGameView.asNullableObservable()
+            .filter { it is Some }
+            .flatMap { it.toNullable()?.getGLRetroEvents() ?: Observable.empty() }
+            .filter { it is GLRetroView.GLRetroEvents.FrameRendered }
+            .firstElement()
+            .flatMapObservable { this::controllerConfigs.asObservable() }
+            .autoDispose(scope())
+            .subscribeBy({}) {
+                updateControllers(it)
+            }
     }
 
     private fun setupCrashActivity() {
@@ -145,6 +164,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     abstract fun areGamePadsEnabled(): Boolean
+
+    fun getControllerType(): Observable<Map<Int, ControllerConfig>> {
+        return this::controllerConfigs.asObservable()
+    }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
     private fun restoreAutoSaveAsync(saveState: SaveState) {
@@ -210,6 +233,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         .subscribeBy({}) {
                             onVariablesRead(it)
                         }
+
+                    controllerConfigsManager.getControllerConfigs(system.id, systemCoreConfig)
+                        .subscribeBy {
+                            controllerConfigs = it
+                        }
                 }
 
                 @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -232,6 +260,23 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         gameData.quickSaveData?.let {
             restoreAutoSaveAsync(it)
         }
+    }
+
+    private fun updateControllers(controllers: Map<Int, ControllerConfig>) {
+        retroGameView
+            ?.getControllers()?.toIndexedMap()
+            ?.zipOnKeys(controllers, this::findControllerId)
+            ?.filterNotNullValues()
+            ?.forEach { (port, controllerId) ->
+                Timber.i("Controls setting $port to $controllerId")
+                retroGameView?.setControllerType(port, controllerId)
+            }
+    }
+
+    private fun findControllerId(supported: Array<Controller>, controllerConfig: ControllerConfig): Int? {
+        return supported
+            .firstOrNull { it.description == controllerConfig.libretroDescriptor }
+            ?.id
     }
 
     private fun handleRetroViewError(errorCode: Int) {
@@ -305,7 +350,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     override fun onResume() {
         super.onResume()
 
-        loadingSubject
+        this::loading.asObservable()
             .debounce(200, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
@@ -314,7 +359,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 loadingMessageView.setVisibleOrGone(it)
             }
 
-        loadingMessagesSubject
+        this::loadingMessage.asObservable()
             .debounce(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
@@ -459,7 +504,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
-                if (system.mergeDPADAndLeftStickEvents) {
+                if (controllerConfigs[port]?.mergeDPADAndLeftStickEvents == true) {
                     sendMergedMotionEvents(event, port)
                 } else {
                     sendSeparateMotionEvents(event, port)

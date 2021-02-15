@@ -91,8 +91,9 @@
     <string name="empty_view_default">No Items</string>
 
     <string name="core_settings_title">Core Settings</string>
-    <string name="core_settings_category_basic">Basic</string>
-    <string name="core_settings_category_advanced">Advanced</string>
+    <string name="core_settings_category_preferences">Preferences</string>
+    <string name="core_settings_category_controllers">Controllers</string>
+    <string name="core_settings_controller">Controller %1$s</string>
 
     <string name="game_menu_title">Game menu</string>
 

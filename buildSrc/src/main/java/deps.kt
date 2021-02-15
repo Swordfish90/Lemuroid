@@ -24,7 +24,7 @@ object deps {
         const val googleApiClient = "1.30.9"
         const val paging          = "3.0.0-alpha11"
         const val room            = "2.3.0-alpha04"
-        const val libretrodroid   = "0.5.4"
+        const val libretrodroid   = "799f0cdae"
         const val radialgamepad   = "0.3.0"
     }
 
@@ -101,6 +101,7 @@ object deps {
         object kotlin {
             const val stdlib = "stdlib"
             const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC"
+            const val reflect = "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
         }
         object epoxy {
             const val expoxy = "com.airbnb.android:epoxy:3.8.0"
@@ -132,7 +133,7 @@ object deps {
         const val rxJava2                  = "io.reactivex.rxjava2:rxjava:2.2.4"
         const val rxKotlin2                = "io.reactivex.rxjava2:rxkotlin:2.3.0"
         const val rxPermissions2           = "com.github.tbruyelle:rxpermissions:0.10.2"
-        const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.0"
+        const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.1"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
         const val material                 = "com.google.android.material:material:1.2.1"

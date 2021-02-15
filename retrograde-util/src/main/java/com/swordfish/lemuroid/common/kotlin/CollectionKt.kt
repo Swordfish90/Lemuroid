@@ -19,4 +19,24 @@
 
 package com.swordfish.lemuroid.common.kotlin
 
-fun <E> Collection<E>.containsAny(vararg elements: E): Boolean = elements.any { element -> this.contains(element) }
+fun <K, V> Map<K, V?>.filterNotNullValues(): Map<K, V> {
+    val destination = mutableMapOf<K, V>()
+    for ((key, value) in this) {
+        if (value != null) {
+            destination[key] = value
+        }
+    }
+    return destination
+}
+
+inline fun <X, Y, Z, H> Map<X, Y>.zipOnKeys(other: Map<X, Z>, f: (Y, Z) -> H): Map<X, H> {
+    return this.keys.intersect(other.keys)
+        .map { key ->
+            key to f(this[key]!!, other[key]!!)
+        }
+        .toMap()
+}
+
+fun <E> Array<E>.toIndexedMap(): Map<Int, E> = this
+    .mapIndexed { index, e -> index to e }
+    .toMap()

@@ -49,4 +49,10 @@
         android:title="@string/game_menu_settings"
         app:icon="@drawable/ic_menu_settings"/>
 
+    <ListPreference
+        android:key="pref_game_controller_1"
+        android:title="Game Controller 1"
+        app:isPreferenceVisible="false"
+        app:icon="@drawable/ic_favorite_black_24dp"/>
+
 </PreferenceScreen>

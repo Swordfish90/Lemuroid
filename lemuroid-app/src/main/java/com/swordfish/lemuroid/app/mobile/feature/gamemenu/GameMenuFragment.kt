@@ -7,11 +7,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
-import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
 import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import dagger.android.support.AndroidSupportInjection
-import java.security.InvalidParameterException
 
 class GameMenuFragment : PreferenceFragmentCompat() {
 
@@ -52,21 +50,6 @@ class GameMenuFragment : PreferenceFragmentCompat() {
         if (numDisks > 1) {
             GameMenuHelper.setupChangeDiskOption(activity, preferenceScreen, currentDisk, numDisks)
         }
-
-        val coreOptionsPreference = findPreference<Preference>(GameMenuHelper.SECTION_CORE_OPTIONS)
-        coreOptionsPreference?.isVisible = hasCoreOptions()
-    }
-
-    private fun hasCoreOptions(): Boolean {
-        val coreOptions = activity?.intent?.getSerializableExtra(
-            GameMenuContract.EXTRA_CORE_OPTIONS
-        ) as Array<CoreOption>? ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
-
-        val advancedOptions = activity?.intent?.getSerializableExtra(
-            GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS
-        ) as Array<CoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
-
-        return coreOptions.isNotEmpty() || advancedOptions.isNotEmpty()
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

@@ -32,6 +32,7 @@ import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.core.CoreManagerImpl
@@ -340,5 +341,11 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun channelHandler(context: Context, retrogradeDatabase: RetrogradeDatabase, retrofit: Retrofit) =
             ChannelHandler(context, retrogradeDatabase, retrofit)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun retroControllerManager(context: Context) =
+            ControllerConfigsManager(context)
     }
 }

@@ -26,13 +26,15 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
+import com.gojuno.koptional.Some
+import com.gojuno.koptional.toOptional
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.math.linearInterpolation
-import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
@@ -41,16 +43,17 @@ import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
 import com.swordfish.radialgamepad.library.event.Event
 import com.swordfish.radialgamepad.library.event.GestureType
-import com.swordfish.touchinput.radial.GamePadFactory
 import com.swordfish.touchinput.radial.RadialPadConfigs
-import com.swordfish.touchinput.radial.VirtualGamePadCustomizer
-import com.swordfish.touchinput.radial.VirtualGamePadSettingsManager
+import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
+import com.swordfish.lemuroid.lib.controller.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.sensors.TiltSensor
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
@@ -63,28 +66,56 @@ class GameActivity : BaseGameActivity() {
         RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK
     )
 
-    private lateinit var leftPad: RadialGamePad
-    private lateinit var rightPad: RadialGamePad
+    private var leftPad: RadialGamePad? = null
+    private var rightPad: RadialGamePad? = null
 
-    private lateinit var gamePadConfig: GamePadFactory.Config
+    private val virtualControllerDisposables = CompositeDisposable()
 
-    var padScale: Float by Delegates.observable(VirtualGamePadSettingsManager.DEFAULT_SCALE) { _, _, _ ->
-        updateLayout()
-    }
-    var padRotation: Float by Delegates.observable(VirtualGamePadSettingsManager.DEFAULT_ROTATION) { _, _, _ ->
-        updateLayout()
-    }
-    var padMarginsX: Float by Delegates.observable(VirtualGamePadSettingsManager.DEFAULT_MARGIN_X) { _, _, _ ->
-        updateLayout()
-    }
-    var padMarginsY: Float by Delegates.observable(VirtualGamePadSettingsManager.DEFAULT_MARGIN_Y) { _, _, _ ->
+    private var controllerConfig: ControllerConfig? = null
+
+    var padSettings: TouchControllerSettingsManager.Settings by Delegates.observable(
+        TouchControllerSettingsManager.Settings()
+    ) { _, _, _ ->
         updateLayout()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setupVirtualPad(system)
+        tiltSensor = TiltSensor(applicationContext)
+        tiltSensor.setSensitivity(settingsManager.tiltSensitivity)
+
+        setupVirtualGamePadVisibility()
+        setVirtualGamePads()
+    }
+
+    private fun setVirtualGamePads() {
+        getControllerType()
+            .map { it[0].toOptional() }
+            .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                when (it) {
+                    is Some -> {
+                        initializeController(it.value)
+                    }
+                    else -> { /*Do nothing*/ }
+                }
+            }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) { }
+    }
+
+    private fun setupVirtualGamePadVisibility() {
+        gamePadManager
+            .getGamePadsObservable()
+            .map { it.size }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) {
+                val isVisible = !areGamePadsEnabled() || it == 0
+                leftGamePadContainer.setVisibleOrGone(isVisible)
+                rightGamePadContainer.setVisibleOrGone(isVisible)
+            }
     }
 
     override fun areGamePadsEnabled(): Boolean {
@@ -102,15 +133,22 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun updateLayout() {
-        LayoutHandler().handleOrientationChange()
+        controllerConfig?.let { LayoutHandler().handleOrientationChange(it) }
     }
 
-    private fun setupVirtualPad(system: GameSystem) {
-        gamePadConfig = GamePadFactory.getRadialPadConfig(system.id, systemCoreConfig.coreID)
-        leftPad = RadialGamePad(
+    private fun initializeController(controllerConfig: ControllerConfig) {
+        this.controllerConfig = controllerConfig
+
+        virtualControllerDisposables.clear()
+        leftGamePadContainer.removeAllViews()
+        rightGamePadContainer.removeAllViews()
+
+        val touchControllerConfig = controllerConfig.getTouchControllerConfig()
+
+        val leftPad = RadialGamePad(
             wrapGamePadConfig(
                 applicationContext,
-                gamePadConfig.leftConfig,
+                touchControllerConfig.leftConfig,
                 settingsManager.vibrateOnTouch
             ),
             DEFAULT_MARGINS_DP,
@@ -118,10 +156,10 @@ class GameActivity : BaseGameActivity() {
         )
         leftGamePadContainer.addView(leftPad)
 
-        rightPad = RadialGamePad(
+        val rightPad = RadialGamePad(
             wrapGamePadConfig(
                 applicationContext,
-                gamePadConfig.rightConfig,
+                touchControllerConfig.rightConfig,
                 settingsManager.vibrateOnTouch
             ),
             DEFAULT_MARGINS_DP,
@@ -131,34 +169,30 @@ class GameActivity : BaseGameActivity() {
 
         loadVirtualGamePadSettings()
 
-        tiltSensor = TiltSensor(applicationContext)
-        tiltSensor.setSensitivity(settingsManager.tiltSensitivity)
-
-        Observable.merge(leftPad.events(), rightPad.events())
-            .doOnNext { handleTrackingEvent(it) }
-            .autoDispose(scope())
-            .subscribe {
-                when (it) {
-                    is Event.Button -> {
-                        handleGamePadButton(it)
-                    }
-                    is Event.Direction -> {
-                        handleGamePadDirection(it)
+        virtualControllerDisposables.add(
+            Observable.merge(leftPad.events(), rightPad.events())
+                .doOnNext { handleTrackingEvent(it) }
+                .subscribeBy {
+                    when (it) {
+                        is Event.Button -> {
+                            handleGamePadButton(it)
+                        }
+                        is Event.Direction -> {
+                            handleGamePadDirection(it)
+                        }
                     }
                 }
-            }
+        )
 
-        gamePadManager
-            .getGamePadsObservable()
-            .map { it.size }
-            .autoDispose(scope())
-            .subscribeBy(Timber::e) {
-                val isVisible = !areGamePadsEnabled() || it == 0
-                leftPad.setVisibleOrGone(isVisible)
-                rightPad.setVisibleOrGone(isVisible)
-            }
+        this.leftPad = leftPad
+        this.rightPad = rightPad
 
         updateLayout()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        virtualControllerDisposables.clear()
     }
 
     private fun handleTrackingEvent(it: Event?) {
@@ -265,16 +299,16 @@ class GameActivity : BaseGameActivity() {
         currentTiltId?.let {
             val xTilt = (sensorValues[0] + 1f) / 2f
             val yTilt = (sensorValues[1] + 1f) / 2f
-            rightPad.simulateMotionEvent(it, xTilt, yTilt)
-            leftPad.simulateMotionEvent(it, xTilt, yTilt)
+            rightPad?.simulateMotionEvent(it, xTilt, yTilt)
+            leftPad?.simulateMotionEvent(it, xTilt, yTilt)
         }
     }
 
     private fun stopTrackingId(id: Int) {
         currentTiltId = null
         tiltSensor.shouldRun = false
-        leftPad.simulateClearMotionEvent(id)
-        rightPad.simulateClearMotionEvent(id)
+        leftPad?.simulateClearMotionEvent(id)
+        rightPad?.simulateClearMotionEvent(id)
     }
 
     private fun startTrackingId(id: Int) {
@@ -286,42 +320,34 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun loadVirtualGamePadSettings() {
-        val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager()
-        padMarginsX = virtualGamePadSettingsManager.marginX
-        padMarginsY = virtualGamePadSettingsManager.marginY
-        padRotation = virtualGamePadSettingsManager.rotation
-        padScale = virtualGamePadSettingsManager.scale
+        val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager() ?: return
+        padSettings = virtualGamePadSettingsManager.retrieveSettings()
     }
 
-    private fun getVirtualGamePadSettingsManager(): VirtualGamePadSettingsManager {
+    private fun getVirtualGamePadSettingsManager(): TouchControllerSettingsManager? {
         val orientation = if (getCurrentOrientation() == Configuration.ORIENTATION_PORTRAIT) {
-            VirtualGamePadSettingsManager.Orientation.PORTRAIT
+            TouchControllerSettingsManager.Orientation.PORTRAIT
         } else {
-            VirtualGamePadSettingsManager.Orientation.LANDSCAPE
+            TouchControllerSettingsManager.Orientation.LANDSCAPE
         }
 
-        return VirtualGamePadSettingsManager(
-            applicationContext,
-            system.id,
-            orientation
-        )
+        return controllerConfig?.let {
+            TouchControllerSettingsManager(applicationContext, it.touchControllerID, orientation)
+        }
     }
 
     private fun storeVirtualGamePadSettings() {
-        val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager()
-        virtualGamePadSettingsManager.scale = padScale
-        virtualGamePadSettingsManager.rotation = padRotation
-        virtualGamePadSettingsManager.marginX = padMarginsX
-        virtualGamePadSettingsManager.marginY = padMarginsY
+        val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager() ?: return
+        virtualGamePadSettingsManager.storeSettings(padSettings)
     }
 
     private fun displayCustomizationOptions(): Completable {
-        val customizer = VirtualGamePadCustomizer()
-        val initialSettings = VirtualGamePadCustomizer.Settings(
-            padScale,
-            padRotation,
-            padMarginsX,
-            padMarginsY
+        val customizer = TouchControllerCustomizer()
+        val initialSettings = TouchControllerCustomizer.Settings(
+            padSettings.scale,
+            padSettings.rotation,
+            padSettings.marginX,
+            padSettings.marginY
         )
 
         val customizeObservable = customizer.displayCustomizationPopup(
@@ -334,15 +360,14 @@ class GameActivity : BaseGameActivity() {
         return customizeObservable
             .doOnNext {
                 when (it) {
-                    is VirtualGamePadCustomizer.Event.Scale -> {
-                        padScale = it.value
+                    is TouchControllerCustomizer.Event.Scale -> {
+                        padSettings = padSettings.copy(scale = it.value)
                     }
-                    is VirtualGamePadCustomizer.Event.Rotation -> {
-                        padRotation = it.value
+                    is TouchControllerCustomizer.Event.Rotation -> {
+                        padSettings = padSettings.copy(rotation = it.value)
                     }
-                    is VirtualGamePadCustomizer.Event.Margins -> {
-                        padMarginsX = it.x
-                        padMarginsY = it.y
+                    is TouchControllerCustomizer.Event.Margins -> {
+                        padSettings = padSettings.copy(marginX = it.x, marginY = it.y)
                     }
                     else -> Unit
                 }
@@ -355,7 +380,7 @@ class GameActivity : BaseGameActivity() {
 
     inner class LayoutHandler {
 
-        private fun handleRetroViewLayout(constraintSet: ConstraintSet) {
+        private fun handleRetroViewLayout(constraintSet: ConstraintSet, controllerConfig: ControllerConfig) {
             if (this@GameActivity.getCurrentOrientation() == Configuration.ORIENTATION_PORTRAIT) {
                 constraintSet.connect(
                     R.id.gamecontainer,
@@ -399,7 +424,7 @@ class GameActivity : BaseGameActivity() {
                     ConstraintSet.TOP
                 )
 
-                if (system.virtualGamePadOptions.allowOverlay) {
+                if (controllerConfig.allowTouchOverlay) {
                     constraintSet.connect(
                         R.id.gamecontainer,
                         ConstraintSet.LEFT,
@@ -434,8 +459,15 @@ class GameActivity : BaseGameActivity() {
             constraintSet.constrainedHeight(R.id.gamecontainer, true)
         }
 
-        private fun handleVirtualGamePadLayout(constraintSet: ConstraintSet) {
+        private fun handleVirtualGamePadLayout(
+            constraintSet: ConstraintSet,
+            controllerConfig: ControllerConfig
+        ) {
             val orientation = this@GameActivity.getCurrentOrientation()
+            val touchControllerConfig = controllerConfig.getTouchControllerConfig()
+
+            val leftPad = leftPad ?: return
+            val rightPad = rightPad ?: return
 
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 constraintSet.clear(R.id.leftgamepad, ConstraintSet.TOP)
@@ -455,57 +487,57 @@ class GameActivity : BaseGameActivity() {
                 )
             }
 
-            val minScale = VirtualGamePadSettingsManager.MIN_SCALE
-            val maxScale = VirtualGamePadSettingsManager.MAX_SCALE
+            val minScale = TouchControllerSettingsManager.MIN_SCALE
+            val maxScale = TouchControllerSettingsManager.MAX_SCALE
 
             val leftScale = linearInterpolation(
-                padScale,
+                padSettings.scale,
                 minScale,
                 maxScale
-            ) * gamePadConfig.leftScaling
+            ) * touchControllerConfig.leftScale
 
             val rightScale = linearInterpolation(
-                padScale,
+                padSettings.scale,
                 minScale,
                 maxScale
-            ) * gamePadConfig.rightScaling
+            ) * touchControllerConfig.rightScale
 
             val maxMargins = GraphicsUtils.convertDpToPixel(
-                VirtualGamePadSettingsManager.MAX_MARGINS,
+                TouchControllerSettingsManager.MAX_MARGINS,
                 applicationContext
             )
 
-            constraintSet.setHorizontalWeight(R.id.leftgamepad, gamePadConfig.leftScaling)
-            constraintSet.setHorizontalWeight(R.id.rightgamepad, gamePadConfig.rightScaling)
+            constraintSet.setHorizontalWeight(R.id.leftgamepad, touchControllerConfig.leftScale)
+            constraintSet.setHorizontalWeight(R.id.rightgamepad, touchControllerConfig.rightScale)
 
             leftPad.primaryDialMaxSizeDp = DEFAULT_PRIMARY_DIAL_SIZE * leftScale
             rightPad.primaryDialMaxSizeDp = DEFAULT_PRIMARY_DIAL_SIZE * rightScale
 
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 leftPad.spacingBottom = linearInterpolation(
-                    padMarginsY,
+                    padSettings.marginY,
                     0f,
                     maxMargins
                 ).roundToInt()
                 leftPad.spacingLeft = 0
                 rightPad.spacingBottom = linearInterpolation(
-                    padMarginsY,
+                    padSettings.marginY,
                     0f,
                     maxMargins
                 ).roundToInt()
                 rightPad.spacingRight = 0
 
-                leftPad.offsetX = linearInterpolation(padMarginsX, 0f, maxMargins)
-                rightPad.offsetX = -linearInterpolation(padMarginsX, 0f, maxMargins)
+                leftPad.offsetX = linearInterpolation(padSettings.marginX, 0f, maxMargins)
+                rightPad.offsetX = -linearInterpolation(padSettings.marginX, 0f, maxMargins)
 
                 leftPad.offsetY = 0f
                 rightPad.offsetY = 0f
             } else {
                 leftPad.spacingBottom = 0
-                leftPad.spacingLeft = linearInterpolation(padMarginsX, 0f, maxMargins).roundToInt()
+                leftPad.spacingLeft = linearInterpolation(padSettings.marginX, 0f, maxMargins).roundToInt()
                 rightPad.spacingBottom = 0
                 rightPad.spacingRight = linearInterpolation(
-                    padMarginsX,
+                    padSettings.marginX,
                     0f,
                     maxMargins
                 ).roundToInt()
@@ -513,8 +545,8 @@ class GameActivity : BaseGameActivity() {
                 leftPad.offsetX = 0f
                 rightPad.offsetX = 0f
 
-                leftPad.offsetY = -linearInterpolation(padMarginsY, 0f, maxMargins)
-                rightPad.offsetY = -linearInterpolation(padMarginsY, 0f, maxMargins)
+                leftPad.offsetY = -linearInterpolation(padSettings.marginY, 0f, maxMargins)
+                rightPad.offsetY = -linearInterpolation(padSettings.marginY, 0f, maxMargins)
             }
 
             leftPad.gravityY = 1f
@@ -540,19 +572,19 @@ class GameActivity : BaseGameActivity() {
             constraintSet.constrainWidth(R.id.leftgamepad, constrainWidth)
             constraintSet.constrainWidth(R.id.rightgamepad, constrainWidth)
 
-            if (system.virtualGamePadOptions.hasRotation) {
-                val maxRotation = VirtualGamePadSettingsManager.MAX_ROTATION
-                leftPad.secondaryDialRotation = linearInterpolation(padRotation, 0f, maxRotation)
-                rightPad.secondaryDialRotation = -linearInterpolation(padRotation, 0f, maxRotation)
+            if (controllerConfig.allowTouchRotation) {
+                val maxRotation = TouchControllerSettingsManager.MAX_ROTATION
+                leftPad.secondaryDialRotation = linearInterpolation(padSettings.rotation, 0f, maxRotation)
+                rightPad.secondaryDialRotation = -linearInterpolation(padSettings.rotation, 0f, maxRotation)
             }
         }
 
-        fun handleOrientationChange() {
+        fun handleOrientationChange(config: ControllerConfig) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(mainContainerLayout)
 
-            handleVirtualGamePadLayout(constraintSet)
-            handleRetroViewLayout(constraintSet)
+            handleVirtualGamePadLayout(constraintSet, config)
+            handleRetroViewLayout(constraintSet, config)
 
             constraintSet.applyTo(mainContainerLayout)
 

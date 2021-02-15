@@ -5,6 +5,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import android.os.Process
+import android.os.StrictMode
 import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkManager
@@ -39,6 +40,7 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            enableStrictMode()
         }
 
         // var isPlanted = false
@@ -56,6 +58,15 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
                         }
                     }
                 }*/
+    }
+
+    private fun enableStrictMode() {
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+        )
     }
 
     private fun initializeWorkManager() {

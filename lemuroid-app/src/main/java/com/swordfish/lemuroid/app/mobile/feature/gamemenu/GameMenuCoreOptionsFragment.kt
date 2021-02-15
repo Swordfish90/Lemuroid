@@ -6,6 +6,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import java.security.InvalidParameterException
@@ -32,11 +33,21 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
         val game = extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
             ?: throw InvalidParameterException("Missing EXTRA_GAME")
 
+        val coreConfig = extras?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
+            ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
+
         CoreOptionsPreferenceHelper.addPreferences(
             preferenceScreen,
             game.systemId,
             coreOptions.toList(),
             advancedCoreOptions.toList()
+        )
+
+        CoreOptionsPreferenceHelper.addControllers(
+            preferenceScreen,
+            game.systemId,
+            coreConfig.coreID,
+            coreConfig.controllerConfigs
         )
     }
 

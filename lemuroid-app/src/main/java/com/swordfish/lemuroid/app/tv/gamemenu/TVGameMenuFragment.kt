@@ -61,6 +61,13 @@ class TVGameMenuFragment(
             coreOptions.toList(),
             advancedCoreOptions.toList()
         )
+
+        CoreOptionsPreferenceHelper.addControllers(
+            coreOptionsScreen,
+            game.systemId,
+            systemCoreConfig.coreID,
+            systemCoreConfig.controllerConfigs
+        )
     }
 
     private fun setupLoadAndSave() {

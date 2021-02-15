@@ -1,4 +1,4 @@
-package com.swordfish.touchinput.radial
+package com.swordfish.lemuroid.lib.controller
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
@@ -14,7 +14,7 @@ import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.touchinput.controller.R
 import io.reactivex.Observable
 
-class VirtualGamePadCustomizer {
+class TouchControllerCustomizer {
 
     private lateinit var touchDetector: MultiTouchGestureDetector
     private var editControlsWindow: PopupWindow? = null
@@ -49,10 +49,10 @@ class VirtualGamePadCustomizer {
         )
         editControlsWindow?.contentView?.findViewById<Button>(R.id.edit_control_reset)
             ?.setOnClickListener {
-                scale = VirtualGamePadSettingsManager.DEFAULT_SCALE
-                rotation = VirtualGamePadSettingsManager.DEFAULT_ROTATION
-                marginX = VirtualGamePadSettingsManager.DEFAULT_MARGIN_X
-                marginY = VirtualGamePadSettingsManager.DEFAULT_MARGIN_Y
+                scale = TouchControllerSettingsManager.DEFAULT_SCALE
+                rotation = TouchControllerSettingsManager.DEFAULT_ROTATION
+                marginX = TouchControllerSettingsManager.DEFAULT_MARGIN_X
+                marginY = TouchControllerSettingsManager.DEFAULT_MARGIN_Y
 
                 emitter.onNext(Event.Margins(marginX, marginY))
                 emitter.onNext(Event.Rotation(rotation))
@@ -68,7 +68,7 @@ class VirtualGamePadCustomizer {
             activity,
             object : MultiTouchGestureDetector.SimpleOnMultiTouchGestureListener() {
                 val moveScale: Float = GraphicsUtils.convertDpToPixel(
-                    VirtualGamePadSettingsManager.MAX_MARGINS,
+                    TouchControllerSettingsManager.MAX_MARGINS,
                     activity.applicationContext
                 )
 
@@ -96,10 +96,10 @@ class VirtualGamePadCustomizer {
                 }
 
                 override fun onRotate(detector: MultiTouchGestureDetector) {
-                    val currentRotation = rotation * VirtualGamePadSettingsManager.MAX_ROTATION
+                    val currentRotation = rotation * TouchControllerSettingsManager.MAX_ROTATION
                     val nextRotation = currentRotation - invertXAxis * detector.rotation
                     rotation = MathUtils.clamp(
-                        nextRotation / VirtualGamePadSettingsManager.MAX_ROTATION,
+                        nextRotation / TouchControllerSettingsManager.MAX_ROTATION,
                         0f,
                         1f
                     )

@@ -10,6 +10,7 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 class CacheCleanerWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
 
@@ -19,7 +20,7 @@ class CacheCleanerWork(context: Context, workerParams: WorkerParameters) : RxWor
         } else {
             createCleanLRUCompletable(applicationContext)
         }
-        return cleanCompletable.onErrorComplete().toSingleDefault(Result.success())
+        return cleanCompletable.subscribeOn(Schedulers.io()).onErrorComplete().toSingleDefault(Result.success())
     }
 
     private fun createCleanLRUCompletable(context: Context): Completable {

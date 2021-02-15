@@ -1,53 +1,70 @@
-package com.swordfish.touchinput.radial
+package com.swordfish.lemuroid.lib.controller
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
-import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.touchinput.controller.R
 import kotlin.math.roundToInt
 
-class VirtualGamePadSettingsManager(
+class TouchControllerSettingsManager(
     private val context: Context,
-    private val systemID: SystemID,
+    private val controllerID: TouchControllerID,
     orientation: Orientation
 ) {
-    enum class Orientation {
-        PORTRAIT,
-        LANDSCAPE
-    }
-
     private val sharedPreferences: SharedPreferences =
         SharedPreferencesHelper.getSharedPreferences(context)
 
-    var scale: Float by SharedPreferencesDelegates.PercentageDelegate(
+    private var scale: Float by SharedPreferencesDelegates.PercentageDelegate(
         sharedPreferences,
         getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
         floatToIndex(DEFAULT_SCALE),
         100
     )
 
-    var rotation: Float by SharedPreferencesDelegates.PercentageDelegate(
+    private var rotation: Float by SharedPreferencesDelegates.PercentageDelegate(
         sharedPreferences,
         getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
         floatToIndex(DEFAULT_ROTATION),
         100
     )
 
-    var marginX: Float by SharedPreferencesDelegates.PercentageDelegate(
+    private var marginX: Float by SharedPreferencesDelegates.PercentageDelegate(
         sharedPreferences,
         getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
         floatToIndex(DEFAULT_MARGIN_X),
         100
     )
 
-    var marginY: Float by SharedPreferencesDelegates.PercentageDelegate(
+    private var marginY: Float by SharedPreferencesDelegates.PercentageDelegate(
         sharedPreferences,
         getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
         floatToIndex(DEFAULT_MARGIN_Y),
         100
     )
+
+    enum class Orientation {
+        PORTRAIT,
+        LANDSCAPE
+    }
+
+    data class Settings(
+        val scale: Float = DEFAULT_SCALE,
+        val rotation: Float = DEFAULT_ROTATION,
+        val marginX: Float = DEFAULT_MARGIN_X,
+        val marginY: Float = DEFAULT_MARGIN_Y
+    )
+
+    fun retrieveSettings(): Settings {
+        return Settings(scale, rotation, marginX, marginY)
+    }
+
+    fun storeSettings(settings: Settings) {
+        this.scale = settings.scale
+        this.rotation = settings.rotation
+        this.marginX = settings.marginX
+        this.marginY = settings.marginY
+    }
 
     private fun floatToIndex(value: Float): Int = (value * 100).roundToInt()
 
@@ -65,6 +82,6 @@ class VirtualGamePadSettingsManager(
     }
 
     private fun getPreferenceString(preferenceStringId: Int, orientation: Orientation): String {
-        return "${context.getString(preferenceStringId)}_${systemID}_${orientation.ordinal}"
+        return "${context.getString(preferenceStringId)}_${controllerID}_${orientation.ordinal}"
     }
 }
