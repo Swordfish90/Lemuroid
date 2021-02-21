@@ -2,47 +2,18 @@ package com.swordfish.lemuroid.lib.controller
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
-import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.touchinput.controller.R
 import kotlin.math.roundToInt
+import dagger.Lazy
+import io.reactivex.Completable
+import io.reactivex.Single
 
 class TouchControllerSettingsManager(
     private val context: Context,
     private val controllerID: TouchControllerID,
-    orientation: Orientation
+    private val sharedPreferences: Lazy<SharedPreferences>,
+    private val orientation: Orientation
 ) {
-    private val sharedPreferences: SharedPreferences =
-        SharedPreferencesHelper.getSharedPreferences(context)
-
-    private var scale: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
-        floatToIndex(DEFAULT_SCALE),
-        100
-    )
-
-    private var rotation: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
-        floatToIndex(DEFAULT_ROTATION),
-        100
-    )
-
-    private var marginX: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
-        floatToIndex(DEFAULT_MARGIN_X),
-        100
-    )
-
-    private var marginY: Float by SharedPreferencesDelegates.PercentageDelegate(
-        sharedPreferences,
-        getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
-        floatToIndex(DEFAULT_MARGIN_Y),
-        100
-    )
-
     enum class Orientation {
         PORTRAIT,
         LANDSCAPE
@@ -55,16 +26,64 @@ class TouchControllerSettingsManager(
         val marginY: Float = DEFAULT_MARGIN_Y
     )
 
-    fun retrieveSettings(): Settings {
-        return Settings(scale, rotation, marginX, marginY)
+    fun retrieveSettings(): Single<Settings> {
+        return Single.fromCallable { sharedPreferences.get() }
+            .map {
+                Settings(
+                    scale = indexToFloat(
+                        it.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
+                            floatToIndex(DEFAULT_SCALE)
+                        )
+                    ),
+                    rotation = indexToFloat(
+                        it.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
+                            floatToIndex(DEFAULT_ROTATION)
+                        )
+                    ),
+                    marginX = indexToFloat(
+                        it.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
+                            floatToIndex(DEFAULT_MARGIN_X)
+                        )
+                    ),
+                    marginY = indexToFloat(
+                        it.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
+                            floatToIndex(DEFAULT_MARGIN_Y)
+                        )
+                    )
+                )
+            }
     }
 
-    fun storeSettings(settings: Settings) {
-        this.scale = settings.scale
-        this.rotation = settings.rotation
-        this.marginX = settings.marginX
-        this.marginY = settings.marginY
+    fun storeSettings(settings: Settings): Completable {
+        return Single.fromCallable { sharedPreferences.get() }
+            .doOnSuccess {
+                it.edit().apply {
+                    putInt(
+                        getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
+                        floatToIndex(settings.scale)
+                    ).apply()
+                    putInt(
+                        getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
+                        floatToIndex(settings.rotation)
+                    ).apply()
+                    putInt(
+                        getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
+                        floatToIndex(settings.marginX)
+                    ).apply()
+                    putInt(
+                        getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
+                        floatToIndex(settings.marginY)
+                    ).apply()
+                }
+            }
+            .ignoreElement()
     }
+
+    private fun indexToFloat(index: Int): Float = index / 100f
 
     private fun floatToIndex(value: Float): Int = (value * 100).roundToInt()
 

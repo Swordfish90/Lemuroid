@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
+import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
@@ -116,9 +117,10 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
             fun gameInteractor(
                 activity: MainTVActivity,
                 retrogradeDb: RetrogradeDatabase,
-                shortcutsGenerator: ShortcutsGenerator
+                shortcutsGenerator: ShortcutsGenerator,
+                gameLauncher: GameLauncher
             ) =
-                GameInteractor(activity, retrogradeDb, true, shortcutsGenerator)
+                GameInteractor(activity, retrogradeDb, true, shortcutsGenerator, gameLauncher)
         }
     }
 }

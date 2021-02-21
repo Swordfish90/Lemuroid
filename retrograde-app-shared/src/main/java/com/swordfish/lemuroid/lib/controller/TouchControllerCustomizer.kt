@@ -23,6 +23,7 @@ class TouchControllerCustomizer {
         class Rotation(val value: Float) : Event()
         class Scale(val value: Float) : Event()
         class Margins(val x: Float, val y: Float) : Event()
+        object Save : Event()
     }
 
     data class Settings(
@@ -60,6 +61,7 @@ class TouchControllerCustomizer {
             }
         editControlsWindow?.contentView?.findViewById<Button>(R.id.edit_control_done)
             ?.setOnClickListener {
+                emitter.onNext(Event.Save)
                 hideCustomizationOptions()
                 emitter.onComplete()
             }

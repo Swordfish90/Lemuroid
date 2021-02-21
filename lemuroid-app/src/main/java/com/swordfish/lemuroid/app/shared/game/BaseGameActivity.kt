@@ -12,14 +12,10 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import com.gojuno.koptional.Some
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
-import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
@@ -39,12 +35,10 @@ import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.common.rx.RxNullableProperty
 import com.swordfish.lemuroid.common.rx.RxProperty
-import com.swordfish.lemuroid.common.rx.asNullableObservable
 import com.swordfish.lemuroid.common.rx.asObservable
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
-import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderError
 import com.swordfish.lemuroid.lib.game.GameLoaderException
@@ -56,7 +50,6 @@ import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
-import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -75,7 +68,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
-import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -98,14 +91,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private lateinit var loadingView: ProgressBar
     private lateinit var loadingMessageView: TextView
 
-    @Inject lateinit var settingsManager: SettingsManager
+    @Inject lateinit var settingsManager: RxSettingsManager
     @Inject lateinit var statesManager: StatesManager
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
     @Inject lateinit var gamePadManager: GamePadManager
     @Inject lateinit var gameLoader: GameLoader
-    @Inject lateinit var coresSelection: CoresSelection
     @Inject lateinit var controllerConfigsManager: ControllerConfigsManager
 
     private val startGameTime = System.currentTimeMillis()
@@ -133,27 +125,24 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         rightGamePadContainer = findViewById(R.id.rightgamepad)
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
+        systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
         system = GameSystem.findById(game.systemId)
-        systemCoreConfig = coresSelection.getCoreConfigForSystem(system)
 
         loadGame()
 
-        if (areGamePadsEnabled()) {
-            setupPhysicalPad()
-        }
+        setupPhysicalPad()
 
         initializeControllers()
     }
 
     private fun initializeControllers() {
-        this::retroGameView.asNullableObservable()
-            .filter { it is Some }
-            .flatMap { it.toNullable()?.getGLRetroEvents() ?: Observable.empty() }
+        retroGameViewMaybe()
+            .flatMapObservable { it.getGLRetroEvents() }
             .filter { it is GLRetroView.GLRetroEvents.FrameRendered }
             .firstElement()
             .flatMapObservable { this::controllerConfigs.asObservable() }
             .autoDispose(scope())
-            .subscribeBy({}) {
+            .subscribeBy(Timber::e) {
                 updateControllers(it)
             }
     }
@@ -163,7 +152,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         Thread.setDefaultUncaughtExceptionHandler(GameCrashHandler(this, systemHandler))
     }
 
-    abstract fun areGamePadsEnabled(): Boolean
+    abstract fun areGamePadsEnabled(): Single<Boolean>
 
     fun getControllerType(): Observable<Map<Int, ControllerConfig>> {
         return this::controllerConfigs.asObservable()
@@ -171,18 +160,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
     private fun restoreAutoSaveAsync(saveState: SaveState) {
-        if (!isAutoSaveEnabled()) {
-            return
-        }
-
         // PPSSPP and Mupen64 initialize some state while rendering the first frame, so we have to wait before restoring
         // the autosave. Do not change thread here. Stick to the GL one to avoid issues with PPSSPP.
-        retroGameView?.getGLRetroEvents()
-            ?.filter { it is GLRetroView.GLRetroEvents.FrameRendered }
-            ?.firstElement()
-            ?.flatMapCompletable { getRetryRestoreQuickSave(saveState) }
-            ?.autoDispose(scope())
-            ?.subscribe()
+        isAutoSaveEnabled()
+            .filter { it }
+            .flatMapObservable {
+                retroGameViewMaybe().flatMapObservable { it.getGLRetroEvents() }
+            }
+            .filter { it is GLRetroView.GLRetroEvents.FrameRendered }
+            .firstElement()
+            .flatMapCompletable { getRetryRestoreQuickSave(saveState) }
+            .autoDispose(scope())
+            .subscribe()
     }
 
     private fun takeScreenshotPreview(): Maybe<Bitmap> {
@@ -197,69 +186,36 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun initializeRetroGameView(
         gameData: GameLoader.GameData,
         screenFilter: String
-    ) {
-        val directoriesManager = DirectoriesManager(applicationContext)
-
+    ): GLRetroView {
         val data = GLRetroViewData(this).apply {
             coreFilePath = gameData.coreLibrary
             gameFilePath = gameData.gameFile.absolutePath
-            systemDirectory = directoriesManager.getSystemDirectory().absolutePath
-            savesDirectory = directoriesManager.getSavesDirectory().absolutePath
+            systemDirectory = gameData.systemDirectory.absolutePath
+            savesDirectory = gameData.savesDirectory.absolutePath
             variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
             saveRAMState = gameData.saveRAMData
             shader = getShaderForSystem(screenFilter, system)
         }
 
-        retroGameView = GLRetroView(this, data)
-        retroGameView?.isFocusable = false
-        retroGameView?.isFocusableInTouchMode = false
+        val retroGameView = GLRetroView(this, data)
+        retroGameView.isFocusable = false
+        retroGameView.isFocusableInTouchMode = false
 
-        retroGameView
-            ?.getGLRetroErrors()
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.autoDispose(scope())
-            ?.subscribeBy({ Timber.e(it, "Exception in GLRetroErrors. Ironic.") }) {
-                handleRetroViewError(it)
-            }
-
-        retroGameView?.let { lifecycle.addObserver(it) }
+        lifecycle.addObserver(retroGameView)
         gameContainerLayout.addView(retroGameView)
-
-        lifecycle.addObserver(
-            object : LifecycleObserver {
-                @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-                fun onResume() {
-                    coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
-                        .subscribeBy({}) {
-                            onVariablesRead(it)
-                        }
-
-                    controllerConfigsManager.getControllerConfigs(system.id, systemCoreConfig)
-                        .subscribeBy {
-                            controllerConfigs = it
-                        }
-                }
-
-                @OnLifecycleEvent(Lifecycle.Event.ON_START)
-                fun onStart() {
-                    coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
-                        .subscribeBy({}) {
-                            updateCoreVariables(it)
-                        }
-                }
-            }
-        )
 
         val layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
         layoutParams.gravity = Gravity.CENTER
-        retroGameView?.layoutParams = layoutParams
+        retroGameView.layoutParams = layoutParams
 
         gameData.quickSaveData?.let {
             restoreAutoSaveAsync(it)
         }
+
+        return retroGameView
     }
 
     private fun updateControllers(controllers: Map<Int, ControllerConfig>) {
@@ -280,6 +236,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun handleRetroViewError(errorCode: Int) {
+        Timber.e("Error in GLRetroView $errorCode")
         val gameLoaderError = when (errorCode) {
             GLRetroView.ERROR_GL_NOT_COMPATIBLE -> GameLoaderError.GL_INCOMPATIBLE
             GLRetroView.ERROR_LOAD_GAME -> GameLoaderError.LOAD_GAME
@@ -343,8 +300,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun isAutoSaveEnabled(): Boolean {
-        return settingsManager.autoSave && systemCoreConfig.statesSupported
+    private fun isAutoSaveEnabled(): Single<Boolean> {
+        return settingsManager.autoSave.map { it && systemCoreConfig.statesSupported }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        retroGameViewMaybe()
+            .flatMapObservable { it.getGLRetroErrors() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribeBy({ Timber.e(it, "Exception in GLRetroErrors. Ironic.") }) {
+                handleRetroViewError(it)
+            }
     }
 
     override fun onResume() {
@@ -366,10 +335,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribe {
                 loadingMessageView.text = it
             }
-    }
 
-    private fun onVariablesRead(coreVariables: List<CoreVariable>) {
-        updateCoreVariables(coreVariables)
+        retroGameViewMaybe()
+            .flatMapSingle { coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig) }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) {
+                updateCoreVariables(it)
+            }
+
+        retroGameViewMaybe()
+            .flatMapSingle { controllerConfigsManager.getControllerConfigs(system.id, systemCoreConfig) }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) {
+                controllerConfigs = it
+            }
     }
 
     private fun getCoreOptions(): List<CoreOption> {
@@ -407,6 +386,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun setupGamePadShortcuts() {
         gamePadManager.getGamePadMenuShortCutObservable()
             .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribeBy { shortcut ->
                 shortcut.toNullable()?.let {
@@ -421,14 +401,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val events = Observables.combineLatest(
             gamePadManager.getGamePadsPortMapperObservable(),
             motionEventsSubjects
-        )
-            .share()
+        ).share()
 
-        events
+        areGamePadsEnabled()
+            .filter { it }
+            .flatMapObservable { events }
             .autoDispose(scope())
             .subscribeBy { (ports, event) -> sendStickMotions(event, ports(event.device)) }
 
-        events
+        areGamePadsEnabled()
+            .filter { it }
+            .flatMapObservable { events }
             .flatMap { (ports, event) ->
                 val port = ports(event.device)
                 val axes = GamePadManager.TRIGGER_MOTIONS_TO_KEYS.entries
@@ -469,7 +452,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             filteredKeyEvents
         )
 
-        combinedObservable
+        areGamePadsEnabled()
+            .filter { it }
+            .flatMapObservable { combinedObservable }
             .doOnSubscribe { pressedKeys.clear() }
             .doOnDispose { pressedKeys.clear() }
             .autoDispose(scope())
@@ -651,7 +636,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
-        return Single.fromCallable { isAutoSaveEnabled() }
+        return isAutoSaveEnabled()
             .filter { it }
             .map { getCurrentSaveState() }
             .doOnSuccess { Timber.i("Stored autosave file with size: ${it?.state?.size}") }
@@ -770,25 +755,30 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    fun loadGame() {
+    private fun loadGame() {
         val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
 
         cancelBackgroundWork()
 
-        val core = coresSelection.getCoreConfigForSystem(system)
-        val loadState = requestLoadSave && settingsManager.autoSave && core.statesSupported
+        setupLoadingView()
 
-        gameLoader.load(applicationContext, game, loadState)
-            .subscribeOn(Schedulers.io())
+        Singles.zip(settingsManager.autoSave, settingsManager.screenFilter, ::Pair)
+            .flatMapObservable { (autoSaveEnabled, filter) ->
+                gameLoader.load(
+                    applicationContext,
+                    game,
+                    requestLoadSave && autoSaveEnabled,
+                    systemCoreConfig
+                ).map { filter to it }
+            }
+            .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { loading = true }
-            .doAfterTerminate { loading = false }
             .autoDispose(scope())
             .subscribe(
-                {
-                    displayLoadingState(it)
-                    if (it is GameLoader.LoadingState.Ready) {
-                        initializeRetroGameView(it.gameData, settingsManager.screenFilter)
+                { (filter, loadingState) ->
+                    displayLoadingState(loadingState)
+                    if (loadingState is GameLoader.LoadingState.Ready) {
+                        retroGameView = initializeRetroGameView(loadingState.gameData, filter)
                     }
                 },
                 {
@@ -796,6 +786,19 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
             )
     }
+
+    private fun setupLoadingView() {
+        retroGameViewMaybe()
+            .flatMapObservable { it.getGLRetroEvents() }
+            .filter { it is GLRetroView.GLRetroEvents.FrameRendered }
+            .firstElement()
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) { }
+    }
+
+    private fun retroGameViewMaybe() = this::retroGameView.asObservable().firstElement()
 
     private fun displayLoadingState(loadingState: GameLoader.LoadingState) {
         loadingMessage = when (loadingState) {
@@ -811,13 +814,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         private const val EXTRA_GAME = "GAME"
         private const val EXTRA_LOAD_SAVE = "LOAD_SAVE"
         private const val EXTRA_LEANBACK = "LEANBACK"
+        private const val EXTRA_SYSTEM_CORE_CONFIG = "EXTRA_SYSTEM_CORE_CONFIG"
 
         const val REQUEST_PLAY_GAME = 1001
         const val PLAY_GAME_RESULT_SESSION_DURATION = "PLAY_GAME_RESULT_SESSION_DURATION"
         const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
         const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
 
-        fun launchGame(activity: Activity, game: Game, loadSave: Boolean, useLeanback: Boolean) {
+        fun launchGame(
+            activity: Activity,
+            systemCoreConfig: SystemCoreConfig,
+            game: Game,
+            loadSave: Boolean,
+            useLeanback: Boolean
+        ) {
             val gameActivity = if (useLeanback) {
                 TVGameActivity::class.java
             } else {
@@ -828,6 +838,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     putExtra(EXTRA_GAME, game)
                     putExtra(EXTRA_LOAD_SAVE, loadSave)
                     putExtra(EXTRA_LEANBACK, useLeanback)
+                    putExtra(EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
                 },
                 REQUEST_PLAY_GAME
             )

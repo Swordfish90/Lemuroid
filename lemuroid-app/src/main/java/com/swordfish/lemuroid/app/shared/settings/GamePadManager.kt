@@ -8,24 +8,21 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
-import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import dagger.Lazy
 
-class GamePadManager(context: Context) {
+class GamePadManager(context: Context, private val sharedPreferences: Lazy<SharedPreferences>) {
 
     private val inputManager = context.getSystemService(Context.INPUT_SERVICE) as InputManager
-    private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(context)
-
-    private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
-        return SharedPreferencesHelper.getSharedPreferences(context)
-    }
 
     fun getGamePadsBindingsObservable(): Observable<(InputDevice?)->Map<Int, Int>> {
         return getGamePadsObservable()
+            .observeOn(Schedulers.io())
             .flatMapSingle { inputDevices ->
                 Observable.fromIterable(inputDevices).flatMapSingle { inputDevice ->
                     getBindings(inputDevice).map { inputDevice to it }
@@ -37,10 +34,11 @@ class GamePadManager(context: Context) {
 
     fun getGamePadMenuShortCutObservable(): Observable<Optional<GameMenuShortcut>> {
         return getGamePadsObservable()
+            .observeOn(Schedulers.io())
             .map { devices ->
                 devices.firstOrNull()
                     ?.let {
-                        sharedPreferences.getString(
+                        sharedPreferences.get().getString(
                             computeGameMenuShortcutPreference(it),
                             GameMenuShortcut.getDefault(it)?.name
                         )
@@ -69,13 +67,12 @@ class GamePadManager(context: Context) {
             }
             .toList()
             .map { it.toMap() }
-            .subscribeOn(Schedulers.io())
     }
 
     fun resetAllBindings(): Completable {
         val actionCompletable = Completable.fromAction {
-            val editor = sharedPreferences.edit()
-            sharedPreferences.all.keys
+            val editor = sharedPreferences.get().edit()
+            sharedPreferences.get().all.keys
                 .filter { it.startsWith(GAME_PAD_BINDING_PREFERENCE_BASE_KEY) }
                 .forEach { editor.remove(it) }
             editor.commit()
@@ -107,6 +104,7 @@ class GamePadManager(context: Context) {
         return subject
             .doOnSubscribe { inputManager.registerInputDeviceListener(listener, null) }
             .doFinally { inputManager.unregisterInputDeviceListener(listener) }
+            .subscribeOn(AndroidSchedulers.mainThread())
     }
 
     private fun retrieveMappingFromPreferences(
@@ -116,7 +114,7 @@ class GamePadManager(context: Context) {
         val valueSingle = Single.fromCallable {
             val sharedPreferencesKey = computeKeyBindingPreference(inputDevice, keyCode)
             val sharedPreferencesDefault = getDefaultBinding(keyCode).toString()
-            sharedPreferences.getString(sharedPreferencesKey, sharedPreferencesDefault)
+            sharedPreferences.get().getString(sharedPreferencesKey, sharedPreferencesDefault)
         }
 
         return valueSingle.map { it.toInt() }.subscribeOn(Schedulers.io())

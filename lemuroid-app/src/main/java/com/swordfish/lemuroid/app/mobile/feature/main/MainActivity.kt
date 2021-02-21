@@ -23,6 +23,7 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
+import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -159,9 +160,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
             fun gameInteractor(
                 activity: MainActivity,
                 retrogradeDb: RetrogradeDatabase,
-                shortcutsGenerator: ShortcutsGenerator
+                shortcutsGenerator: ShortcutsGenerator,
+                gameLauncher: GameLauncher
             ) =
-                GameInteractor(activity, retrogradeDb, false, shortcutsGenerator)
+                GameInteractor(activity, retrogradeDb, false, shortcutsGenerator, gameLauncher)
         }
     }
 }

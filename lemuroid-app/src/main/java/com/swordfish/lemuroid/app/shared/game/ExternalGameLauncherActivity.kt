@@ -15,6 +15,8 @@ import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
+import com.swordfish.lemuroid.lib.core.CoresSelection
+import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
@@ -38,6 +40,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
     @Inject lateinit var retrogradeDatabase: RetrogradeDatabase
     @Inject lateinit var postGameHandler: PostGameHandler
+    @Inject lateinit var coresSelection: CoresSelection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +62,10 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                 .flatMapSingle {
                     retrogradeDatabase.gameDao()
                         .selectById(gameId).subscribeOn(Schedulers.io())
-                        .toSingle()
+                        .flatMapSingle { game ->
+                            coresSelection.getCoreConfigForSystem(GameSystem.findById(game.systemId))
+                                .map { game to it }
+                        }
                 }
                 .subscribeOn(Schedulers.io())
                 .delay(animationTime, TimeUnit.MILLISECONDS)
@@ -69,10 +75,11 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                 .autoDispose(scope())
                 .subscribeBy(
                     { displayErrorMessage() },
-                    {
+                    { (game, systemCoreConfig) ->
                         BaseGameActivity.launchGame(
                             this,
-                            it,
+                            systemCoreConfig,
+                            game,
                             true,
                             TVHelper.isTV(applicationContext)
                         )

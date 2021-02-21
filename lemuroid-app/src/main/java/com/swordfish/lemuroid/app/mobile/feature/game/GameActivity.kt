@@ -21,12 +21,13 @@ package com.swordfish.lemuroid.app.mobile.feature.game
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
-import com.gojuno.koptional.Some
+import com.gojuno.koptional.rxjava2.filterSome
 import com.gojuno.koptional.toOptional
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
@@ -34,6 +35,8 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.math.linearInterpolation
+import com.swordfish.lemuroid.common.rx.RxProperty
+import com.swordfish.lemuroid.common.rx.asObservable
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -51,16 +54,22 @@ import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.properties.Delegates
+import dagger.Lazy
+import io.reactivex.rxkotlin.Observables
 
 class GameActivity : BaseGameActivity() {
+    @Inject lateinit var sharedPreferences: Lazy<SharedPreferences>
+
     private lateinit var tiltSensor: TiltSensor
     private var currentTiltId: Int? = null
+
     private val tiltTrackedIds = setOf(
         RadialPadConfigs.MOTION_SOURCE_LEFT_STICK,
         RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK
@@ -73,52 +82,65 @@ class GameActivity : BaseGameActivity() {
 
     private var controllerConfig: ControllerConfig? = null
 
-    var padSettings: TouchControllerSettingsManager.Settings by Delegates.observable(
-        TouchControllerSettingsManager.Settings()
-    ) { _, _, _ ->
-        updateLayout()
-    }
+    private var padSettings: TouchControllerSettingsManager.Settings
+    by RxProperty(TouchControllerSettingsManager.Settings())
+
+    private var orientation: Int by RxProperty(Configuration.ORIENTATION_PORTRAIT)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        orientation = getCurrentOrientation()
 
         tiltSensor = TiltSensor(applicationContext)
-        tiltSensor.setSensitivity(settingsManager.tiltSensitivity)
 
         setupVirtualGamePadVisibility()
-        setVirtualGamePads()
+        setupVirtualGamePads()
+
+        this::padSettings.asObservable()
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribeBy { updateLayout() }
     }
 
-    private fun setVirtualGamePads() {
-        getControllerType()
-            .map { it[0].toOptional() }
+    private fun setupVirtualGamePads() {
+        val firstGamePad = getControllerType()
+            .map { it.get(0).toOptional() }
+            .filterSome()
             .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                when (it) {
-                    is Some -> {
-                        initializeController(it.value)
-                    }
-                    else -> { /*Do nothing*/ }
-                }
-            }
+
+        Observables.combineLatest(firstGamePad, this::orientation.asObservable())
+            .flatMapCompletable { (pad, orientation) -> setupController(pad, orientation) }
             .autoDispose(scope())
             .subscribeBy(Timber::e) { }
     }
 
+    private fun setupController(controllerConfig: ControllerConfig, orientation: Int): Completable {
+        return settingsManager.vibrateOnTouch
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { setupTouchViews(controllerConfig, it) }
+            .ignoreElement()
+            .observeOn(AndroidSchedulers.mainThread())
+            .andThen(loadVirtualGamePadSettings(controllerConfig, orientation))
+    }
+
     private fun setupVirtualGamePadVisibility() {
-        gamePadManager
+        val gamePadsConnected = gamePadManager
             .getGamePadsObservable()
-            .map { it.size }
+            .map { it.isNotEmpty() }
+
+        val gamePadsEnabled = areGamePadsEnabled().toObservable()
+
+        Observables.combineLatest(gamePadsConnected, gamePadsEnabled)
+            .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy(Timber::e) {
-                val isVisible = !areGamePadsEnabled() || it == 0
+            .subscribeBy(Timber::e) { (connected, enabled) ->
+                val isVisible = !connected || !enabled
                 leftGamePadContainer.setVisibleOrGone(isVisible)
                 rightGamePadContainer.setVisibleOrGone(isVisible)
             }
     }
 
-    override fun areGamePadsEnabled(): Boolean {
+    override fun areGamePadsEnabled(): Single<Boolean> {
         return settingsManager.gamepadsEnabled
     }
 
@@ -128,17 +150,14 @@ class GameActivity : BaseGameActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        loadVirtualGamePadSettings()
-        updateLayout()
+        orientation = newConfig.orientation
     }
 
     private fun updateLayout() {
-        controllerConfig?.let { LayoutHandler().handleOrientationChange(it) }
+        controllerConfig?.let { LayoutHandler().updateLayout(it, orientation) }
     }
 
-    private fun initializeController(controllerConfig: ControllerConfig) {
-        this.controllerConfig = controllerConfig
-
+    private fun setupTouchViews(controllerConfig: ControllerConfig, vibrateOnTouch: Boolean) {
         virtualControllerDisposables.clear()
         leftGamePadContainer.removeAllViews()
         rightGamePadContainer.removeAllViews()
@@ -149,7 +168,7 @@ class GameActivity : BaseGameActivity() {
             wrapGamePadConfig(
                 applicationContext,
                 touchControllerConfig.leftConfig,
-                settingsManager.vibrateOnTouch
+                vibrateOnTouch
             ),
             DEFAULT_MARGINS_DP,
             this
@@ -160,14 +179,12 @@ class GameActivity : BaseGameActivity() {
             wrapGamePadConfig(
                 applicationContext,
                 touchControllerConfig.rightConfig,
-                settingsManager.vibrateOnTouch
+                vibrateOnTouch
             ),
             DEFAULT_MARGINS_DP,
             this
         )
         rightGamePadContainer.addView(rightPad)
-
-        loadVirtualGamePadSettings()
 
         virtualControllerDisposables.add(
             Observable.merge(leftPad.events(), rightPad.events())
@@ -187,7 +204,7 @@ class GameActivity : BaseGameActivity() {
         this.leftPad = leftPad
         this.rightPad = rightPad
 
-        updateLayout()
+        this.controllerConfig = controllerConfig
     }
 
     override fun onDestroy() {
@@ -286,6 +303,10 @@ class GameActivity : BaseGameActivity() {
     override fun onResume() {
         super.onResume()
 
+        settingsManager.tiltSensitivity
+            .autoDispose(scope())
+            .subscribeBy { tiltSensor.setSensitivity(it) }
+
         tiltSensor
             .getTiltEvents()
             .observeOn(AndroidSchedulers.mainThread())
@@ -319,26 +340,35 @@ class GameActivity : BaseGameActivity() {
         }
     }
 
-    private fun loadVirtualGamePadSettings() {
-        val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager() ?: return
-        padSettings = virtualGamePadSettingsManager.retrieveSettings()
+    private fun storeVirtualGamePadSettings(controllerConfig: ControllerConfig, orientation: Int): Completable {
+        val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager(controllerConfig, orientation)
+        return virtualGamePadSettingsManager.storeSettings(padSettings)
     }
 
-    private fun getVirtualGamePadSettingsManager(): TouchControllerSettingsManager? {
-        val orientation = if (getCurrentOrientation() == Configuration.ORIENTATION_PORTRAIT) {
+    private fun loadVirtualGamePadSettings(controllerConfig: ControllerConfig, orientation: Int): Completable {
+        return getVirtualGamePadSettingsManager(controllerConfig, orientation)
+            .retrieveSettings()
+            .toMaybe()
+            .doOnSuccess { padSettings = it }
+            .ignoreElement()
+    }
+
+    private fun getVirtualGamePadSettingsManager(
+        controllerConfig: ControllerConfig,
+        orientation: Int
+    ): TouchControllerSettingsManager {
+        val settingsOrientation = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             TouchControllerSettingsManager.Orientation.PORTRAIT
         } else {
             TouchControllerSettingsManager.Orientation.LANDSCAPE
         }
 
-        return controllerConfig?.let {
-            TouchControllerSettingsManager(applicationContext, it.touchControllerID, orientation)
-        }
-    }
-
-    private fun storeVirtualGamePadSettings() {
-        val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager() ?: return
-        virtualGamePadSettingsManager.storeSettings(padSettings)
+        return TouchControllerSettingsManager(
+            applicationContext,
+            controllerConfig.touchControllerID,
+            sharedPreferences,
+            settingsOrientation
+        )
     }
 
     private fun displayCustomizationOptions(): Completable {
@@ -374,14 +404,18 @@ class GameActivity : BaseGameActivity() {
             }
             .doOnSubscribe { findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(true) }
             .doFinally { findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(false) }
-            .doFinally { storeVirtualGamePadSettings() }
-            .ignoreElements()
+            .filter { it is TouchControllerCustomizer.Event.Save }
+            .flatMapCompletable { storeVirtualGamePadSettings(controllerConfig!!, orientation) }
     }
 
     inner class LayoutHandler {
 
-        private fun handleRetroViewLayout(constraintSet: ConstraintSet, controllerConfig: ControllerConfig) {
-            if (this@GameActivity.getCurrentOrientation() == Configuration.ORIENTATION_PORTRAIT) {
+        private fun handleRetroViewLayout(
+            constraintSet: ConstraintSet,
+            controllerConfig: ControllerConfig,
+            orientation: Int
+        ) {
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 constraintSet.connect(
                     R.id.gamecontainer,
                     ConstraintSet.BOTTOM,
@@ -461,9 +495,9 @@ class GameActivity : BaseGameActivity() {
 
         private fun handleVirtualGamePadLayout(
             constraintSet: ConstraintSet,
-            controllerConfig: ControllerConfig
+            controllerConfig: ControllerConfig,
+            orientation: Int
         ) {
-            val orientation = this@GameActivity.getCurrentOrientation()
             val touchControllerConfig = controllerConfig.getTouchControllerConfig()
 
             val leftPad = leftPad ?: return
@@ -579,12 +613,12 @@ class GameActivity : BaseGameActivity() {
             }
         }
 
-        fun handleOrientationChange(config: ControllerConfig) {
+        fun updateLayout(config: ControllerConfig, orientation: Int) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(mainContainerLayout)
 
-            handleVirtualGamePadLayout(constraintSet, config)
-            handleRetroViewLayout(constraintSet, config)
+            handleVirtualGamePadLayout(constraintSet, config, orientation)
+            handleRetroViewLayout(constraintSet, config, orientation)
 
             constraintSet.applyTo(mainContainerLayout)
 
