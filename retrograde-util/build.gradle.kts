@@ -16,7 +16,6 @@ dependencies {
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxRelay2)
-    implementation(deps.libs.kotlin.reflect)
 
     implementation(deps.libs.androidx.paging.common)
     implementation(deps.libs.androidx.paging.runtime)

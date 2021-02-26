@@ -29,14 +29,14 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
 import com.gojuno.koptional.rxjava2.filterSome
 import com.gojuno.koptional.toOptional
+import com.jakewharton.rxrelay2.BehaviorRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.math.linearInterpolation
-import com.swordfish.lemuroid.common.rx.RxProperty
-import com.swordfish.lemuroid.common.rx.asObservable
+import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -82,10 +82,11 @@ class GameActivity : BaseGameActivity() {
 
     private var controllerConfig: ControllerConfig? = null
 
-    private var padSettings: TouchControllerSettingsManager.Settings
-    by RxProperty(TouchControllerSettingsManager.Settings())
+    private var padSettingsObservable = BehaviorRelay.createDefault(TouchControllerSettingsManager.Settings())
+    private var padSettings: TouchControllerSettingsManager.Settings by BehaviorRelayProperty(padSettingsObservable)
 
-    private var orientation: Int by RxProperty(Configuration.ORIENTATION_PORTRAIT)
+    private var orientationObservable = BehaviorRelay.createDefault(Configuration.ORIENTATION_PORTRAIT)
+    private var orientation: Int by BehaviorRelayProperty(orientationObservable)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +97,7 @@ class GameActivity : BaseGameActivity() {
         setupVirtualGamePadVisibility()
         setupVirtualGamePads()
 
-        this::padSettings.asObservable()
+        padSettingsObservable
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribeBy { updateLayout() }
@@ -108,7 +109,7 @@ class GameActivity : BaseGameActivity() {
             .filterSome()
             .distinctUntilChanged()
 
-        Observables.combineLatest(firstGamePad, this::orientation.asObservable())
+        Observables.combineLatest(firstGamePad, orientationObservable)
             .flatMapCompletable { (pad, orientation) -> setupController(pad, orientation) }
             .autoDispose(scope())
             .subscribeBy(Timber::e) { }

@@ -12,6 +12,10 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.gojuno.koptional.None
+import com.gojuno.koptional.Optional
+import com.gojuno.koptional.rxjava2.filterSome
+import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
@@ -32,10 +36,9 @@ import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
 import com.swordfish.lemuroid.common.kotlin.zipOnKeys
+import com.swordfish.lemuroid.common.rx.BehaviorRelayNullableProperty
+import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
 import com.swordfish.lemuroid.common.rx.RXUtils
-import com.swordfish.lemuroid.common.rx.RxNullableProperty
-import com.swordfish.lemuroid.common.rx.RxProperty
-import com.swordfish.lemuroid.common.rx.asObservable
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
@@ -105,11 +108,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private val keyEventsSubjects: PublishRelay<KeyEvent> = PublishRelay.create()
     private val motionEventsSubjects: PublishRelay<MotionEvent> = PublishRelay.create()
 
-    protected var retroGameView: GLRetroView? by RxNullableProperty(null)
+    protected val retroGameViewObservable = BehaviorRelay.createDefault<Optional<GLRetroView>>(None)
+    protected var retroGameView: GLRetroView? by BehaviorRelayNullableProperty(retroGameViewObservable)
 
-    var loading: Boolean by RxProperty(true)
-    var loadingMessage: String by RxProperty("")
-    var controllerConfigs: Map<Int, ControllerConfig> by RxProperty(mapOf())
+    val loadingObservable = BehaviorRelay.createDefault(true)
+    var loading: Boolean by BehaviorRelayProperty(loadingObservable)
+
+    val loadingMessageObservable = BehaviorRelay.createDefault("")
+    var loadingMessage: String by BehaviorRelayProperty(loadingMessageObservable)
+
+    val controllerConfigObservable = BehaviorRelay.createDefault<Map<Int, ControllerConfig>>(mapOf())
+    var controllerConfigs: Map<Int, ControllerConfig> by BehaviorRelayProperty(controllerConfigObservable)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,7 +149,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .flatMapObservable { it.getGLRetroEvents() }
             .filter { it is GLRetroView.GLRetroEvents.FrameRendered }
             .firstElement()
-            .flatMapObservable { this::controllerConfigs.asObservable() }
+            .flatMapObservable { controllerConfigObservable }
             .autoDispose(scope())
             .subscribeBy(Timber::e) {
                 updateControllers(it)
@@ -155,7 +164,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     abstract fun areGamePadsEnabled(): Single<Boolean>
 
     fun getControllerType(): Observable<Map<Int, ControllerConfig>> {
-        return this::controllerConfigs.asObservable()
+        return controllerConfigObservable
     }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
@@ -319,7 +328,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     override fun onResume() {
         super.onResume()
 
-        this::loading.asObservable()
+        loadingObservable
             .debounce(200, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
@@ -328,7 +337,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 loadingMessageView.setVisibleOrGone(it)
             }
 
-        this::loadingMessage.asObservable()
+        loadingMessageObservable
             .debounce(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
@@ -798,7 +807,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy(Timber::e) { }
     }
 
-    private fun retroGameViewMaybe() = this::retroGameView.asObservable().firstElement()
+    private fun retroGameViewMaybe() = retroGameViewObservable.filterSome().firstElement()
 
     private fun displayLoadingState(loadingState: GameLoader.LoadingState) {
         loadingMessage = when (loadingState) {
