@@ -21,8 +21,6 @@ package com.swordfish.lemuroid.lib.library
 
 import androidx.annotation.StringRes
 import com.swordfish.lemuroid.lib.R
-import com.swordfish.lemuroid.lib.controller.ControllerConfig
-import com.swordfish.lemuroid.lib.controller.TouchControllerID
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import java.util.Locale
 
@@ -66,14 +64,7 @@ data class GameSystem(
                             "stella_crop_hoverscan"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.ATARI2600,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.ATARI_2600)
                         )
                     )
                 ),
@@ -95,15 +86,7 @@ data class GameSystem(
                             "fceumm_nospritelimit",
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.NES,
-                                    mergeDPADAndLeftStickEvents = true
-
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.NES)
                         ),
                     )
                 ),
@@ -118,14 +101,7 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.SNES9X,
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.SNES,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.SNES)
                         )
                     )
                 ),
@@ -145,14 +121,7 @@ data class GameSystem(
                             "genesis_plus_gx_overscan"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.SMS,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.SMS)
                         )
                     )
                 ),
@@ -172,22 +141,10 @@ data class GameSystem(
                             "genesis_plus_gx_overscan"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default_3",
-                                    R.string.controller_genesis_3,
-                                    TouchControllerID.GENESIS_3,
-                                    mergeDPADAndLeftStickEvents = true,
-                                    libretroDescriptor = "MD Joypad 3 Button"
-                                ),
-                                ControllerConfig(
-                                    "default_6",
-                                    R.string.controller_genesis_6,
-                                    TouchControllerID.GENESIS_6,
-                                    mergeDPADAndLeftStickEvents = true,
-                                    libretroDescriptor = "MD Joypad 6 Button"
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
+                            1 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
+                            2 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
+                            3 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6)
                         )
                     )
                 ),
@@ -206,14 +163,7 @@ data class GameSystem(
                             "genesis_plus_gx_no_sprite_limit",
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.GG,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.GG)
                         )
                     )
                 ),
@@ -234,14 +184,7 @@ data class GameSystem(
                             "gambatte_dark_filter_level"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.GB,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.GB)
                         )
                     ),
                 ),
@@ -260,14 +203,7 @@ data class GameSystem(
                             "gambatte_dark_filter_level"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.GB,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.GB)
                         )
                     ),
                 ),
@@ -288,14 +224,7 @@ data class GameSystem(
                             "mgba_color_correction"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.GBA,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.GBA)
                         )
                     ),
                 ),
@@ -318,14 +247,7 @@ data class GameSystem(
                             CoreVariable("mupen64plus-43screensize", "320x240")
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.N64,
-                                    allowTouchRotation = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.N64)
                         )
                     )
                 ),
@@ -340,38 +262,10 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.PCSX_REARMED,
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "standard",
-                                    R.string.controller_standard,
-                                    TouchControllerID.PSX,
-                                    mergeDPADAndLeftStickEvents = true,
-                                    libretroDescriptor = "standard"
-                                ),
-                                ControllerConfig(
-                                    "dualshock",
-                                    R.string.controller_dualshock,
-                                    TouchControllerID.PSX_DUALSHOCK,
-                                    allowTouchRotation = true,
-                                    libretroDescriptor = "dualshock"
-                                )
-                            ),
-                            1 to arrayListOf(
-                                ControllerConfig(
-                                    "standard",
-                                    R.string.controller_standard,
-                                    TouchControllerID.PSX,
-                                    mergeDPADAndLeftStickEvents = true,
-                                    libretroDescriptor = "standard"
-                                ),
-                                ControllerConfig(
-                                    "dualshock",
-                                    R.string.controller_dualshock,
-                                    TouchControllerID.PSX_DUALSHOCK,
-                                    allowTouchRotation = true,
-                                    libretroDescriptor = "dualshock",
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                            1 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                            2 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                            3 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
                         ),
                         exposedSettings = listOf(
                             "pcsx_rearmed_frameskip"
@@ -413,14 +307,7 @@ data class GameSystem(
                             "ppsspp_texture_filtering"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.PSP,
-                                    allowTouchRotation = true,
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.PSP)
                         )
                     )
                 ),
@@ -446,20 +333,7 @@ data class GameSystem(
                             "fbneo-cpu-speed-adjust"
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default_4",
-                                    R.string.controller_arcade_4,
-                                    TouchControllerID.ARCADE_4,
-                                    mergeDPADAndLeftStickEvents = true
-                                ),
-                                ControllerConfig(
-                                    "default_6",
-                                    R.string.controller_arcade_6,
-                                    TouchControllerID.ARCADE_6,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.FB_NEO_4, ControllerConfigs.FB_NEO_6)
                         )
                     )
                 ),
@@ -482,20 +356,7 @@ data class GameSystem(
                         CoreID.MAME2003PLUS,
                         statesSupported = false,
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default_4",
-                                    R.string.controller_arcade_4,
-                                    TouchControllerID.ARCADE_4,
-                                    mergeDPADAndLeftStickEvents = true
-                                ),
-                                ControllerConfig(
-                                    "default_6",
-                                    R.string.controller_arcade_6,
-                                    TouchControllerID.ARCADE_6,
-                                    mergeDPADAndLeftStickEvents = true
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.MAME_2003_4, ControllerConfigs.MAME_2003_6)
                         )
                     )
                 ),
@@ -522,14 +383,7 @@ data class GameSystem(
                             CoreVariable("desmume_frameskip", "1")
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.DESMUME,
-                                    allowTouchOverlay = false
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.DESMUME)
                         )
                     ),
                     SystemCoreConfig(
@@ -546,15 +400,7 @@ data class GameSystem(
                             CoreVariable("melonds_threaded_renderer", "enabled")
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(
-                                ControllerConfig(
-                                    "default",
-                                    R.string.controller_default,
-                                    TouchControllerID.MELONDS,
-                                    mergeDPADAndLeftStickEvents = true,
-                                    allowTouchOverlay = false
-                                )
-                            )
+                            0 to arrayListOf(ControllerConfigs.MELONDS)
                         )
                     )
                 ),

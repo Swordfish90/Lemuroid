@@ -247,7 +247,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun handleGamePadButton(it: Event.Button) {
-        if (it.action == KeyEvent.ACTION_DOWN && it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
+        if (it.id == KeyEvent.KEYCODE_BUTTON_MODE && it.action == KeyEvent.ACTION_DOWN) {
             displayOptionsDialog()
         } else {
             retroGameView?.sendKeyEvent(it.action, it.id)

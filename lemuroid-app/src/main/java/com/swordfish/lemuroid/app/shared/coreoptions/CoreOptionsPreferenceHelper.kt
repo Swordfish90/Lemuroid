@@ -40,14 +40,15 @@ object CoreOptionsPreferenceHelper {
         preferenceScreen: PreferenceScreen,
         systemID: String,
         coreID: CoreID,
+        connectedGamePads: Int,
         controllers: Map<Int, List<ControllerConfig>>
     ) {
-        val visibleControllers = controllers.entries
-            .filter { (_, controllers) -> controllers.size >= 2 }
+        val visibleControllers = (0 until connectedGamePads)
+            .map { it to controllers[it] }
+            .filter { (_, controllers) -> controllers != null && controllers.size >= 2 }
 
-        if (visibleControllers.isEmpty()) {
+        if (visibleControllers.isEmpty())
             return
-        }
 
         val context = preferenceScreen.context
         val title = context.getString(R.string.core_settings_category_controllers)
@@ -55,7 +56,7 @@ object CoreOptionsPreferenceHelper {
 
         visibleControllers
             .forEach { (port, controllers) ->
-                val preference = buildControllerPreference(context, systemID, coreID, port, controllers)
+                val preference = buildControllerPreference(context, systemID, coreID, port, controllers!!)
                 category.addPreference(preference)
             }
     }
