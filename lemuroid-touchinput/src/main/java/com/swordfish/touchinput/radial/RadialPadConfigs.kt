@@ -140,6 +140,15 @@ object RadialPadConfigs {
                         contentDescription = "Microphone"
                     )
                 ),
+                SecondaryDialConfig.SingleButton(
+                    10,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L2,
+                        iconId = R.drawable.button_close_screen,
+                        contentDescription = "Close"
+                    )
+                ),
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
                 SecondaryDialConfig.SingleButton(
                     4,
@@ -200,6 +209,15 @@ object RadialPadConfigs {
                         id = KeyEvent.KEYCODE_BUTTON_L2,
                         iconId = R.drawable.button_mic,
                         contentDescription = "Microphone"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(
+                    10,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_THUMBL,
+                        iconId = R.drawable.button_close_screen,
+                        contentDescription = "Close"
                     )
                 ),
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
