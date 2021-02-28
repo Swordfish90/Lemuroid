@@ -13,6 +13,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.lib.library.CoreID
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveInfo
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
@@ -35,6 +36,17 @@ object GameMenuHelper {
         val preference = screen.findPreference<SwitchPreference>(FAST_FORWARD)
         preference?.isChecked = fastForwardEnabled
         preference?.isEnabled = fastForwardSupported
+    }
+
+    fun setupSaveOption(
+        screen: PreferenceScreen,
+        systemCoreConfig: SystemCoreConfig
+    ) {
+        val savesOption = screen.findPreference<Preference>(SECTION_SAVE_GAME)
+        savesOption?.isEnabled = systemCoreConfig.statesSupported
+
+        val loadOption = screen.findPreference<Preference>(SECTION_LOAD_GAME)
+        loadOption?.isEnabled = systemCoreConfig.statesSupported
     }
 
     fun setupChangeDiskOption(
