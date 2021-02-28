@@ -41,15 +41,16 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.swordfish.lemuroid.app.mobile.feature.game.GameActivity"
+        <activity android:name="com.swordfish.lemuroid.app.mobile.feature.game.GameActivity"
             android:process=":game"
             android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/GameTheme"/>
 
-        <activity
-            android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity"
+        <service android:name=".app.mobile.feature.game.GameService"
+            android:process=":game" />
+
+        <activity android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity"
             android:process=":game"
             android:theme="@style/PreferenceOverlay"/>
 
@@ -57,8 +58,7 @@
             android:theme="@style/InvisibleTheme"/>
 
         <!-- Leanback activities -->
-        <activity
-            android:name=".app.tv.main.MainTVActivity"
+        <activity android:name=".app.tv.main.MainTVActivity"
             android:theme="@style/LeanbackTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

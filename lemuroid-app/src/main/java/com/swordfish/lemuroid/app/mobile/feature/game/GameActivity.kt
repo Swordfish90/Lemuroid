@@ -56,6 +56,8 @@ import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 class GameActivity : BaseGameActivity() {
+    private lateinit var serviceIntent: Intent
+
     private lateinit var tiltSensor: TiltSensor
     private var currentTiltId: Int? = null
     private val tiltTrackedIds = setOf(
@@ -84,7 +86,14 @@ class GameActivity : BaseGameActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        serviceIntent = GameService.startService(applicationContext, game)
+
         setupVirtualPad(system)
+    }
+
+    override fun onDestroy() {
+        GameService.stopService(applicationContext, serviceIntent)
+        super.onDestroy()
     }
 
     override fun areGamePadsEnabled(): Boolean {
