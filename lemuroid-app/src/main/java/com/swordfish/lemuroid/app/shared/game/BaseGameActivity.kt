@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.shared.game
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.PointF
 import android.os.Bundle
 import android.view.Gravity
 import android.view.InputDevice
@@ -57,6 +58,7 @@ import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RI
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
 import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
+import com.swordfish.radialgamepad.library.math.MathUtils
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
@@ -73,6 +75,7 @@ import timber.log.Timber
 import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 import kotlin.system.exitProcess
@@ -469,10 +472,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun sendMergedMotionEvents(event: MotionEvent, port: Int) {
-        val xAxises = setOf(MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_X)
-        val yAxises = setOf(MotionEvent.AXIS_HAT_Y, MotionEvent.AXIS_Y)
-        val xVal = xAxises.map { event.getAxisValue(it) }.maxBy { kotlin.math.abs(it) }!!
-        val yVal = yAxises.map { event.getAxisValue(it) }.maxBy { kotlin.math.abs(it) }!!
+        val events = listOf(
+            retrieveNormalizedStickCoordinates(event, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y),
+            retrieveNormalizedStickCoordinates(event, MotionEvent.AXIS_X, MotionEvent.AXIS_Y)
+        )
+
+        val xVal = events.maxByOrNull { abs(it.x) }?.x ?: 0f
+        val yVal = events.maxByOrNull { abs(it.y) }?.y ?: 0f
+
         retroGameView?.sendMotionEvent(MOTION_SOURCE_DPAD, xVal, yVal, port)
         retroGameView?.sendMotionEvent(MOTION_SOURCE_ANALOG_LEFT, xVal, yVal, port)
 
@@ -516,12 +523,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         yAxis: Int,
         port: Int
     ) {
-        retroGameView?.sendMotionEvent(
-            source,
-            event.getAxisValue(xAxis),
-            event.getAxisValue(yAxis),
-            port
-        )
+        val coords = retrieveNormalizedStickCoordinates(event, xAxis, yAxis)
+        retroGameView?.sendMotionEvent(source, coords.x, coords.y, port)
+    }
+
+    private fun retrieveNormalizedStickCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
+        val rawX = event.getAxisValue(xAxis)
+        val rawY = -event.getAxisValue(yAxis)
+
+        val angle = MathUtils.angle(0f, rawX, 0f, rawY)
+        val distance = MathUtils.clamp(MathUtils.distance(0f, rawX, 0f, rawY), 0f, 1f)
+
+        return MathUtils.convertPolarCoordinatesToSquares(angle, distance)
     }
 
     override fun onGenericMotionEvent(event: MotionEvent?): Boolean {
