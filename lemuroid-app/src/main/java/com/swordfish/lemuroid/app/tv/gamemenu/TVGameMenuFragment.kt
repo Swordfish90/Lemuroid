@@ -45,6 +45,7 @@ class TVGameMenuFragment(
 
         GameMenuHelper.setupAudioOption(preferenceScreen, audioEnabled)
         GameMenuHelper.setupFastForwardOption(preferenceScreen, fastForwardEnabled, fastForwardSupported)
+        GameMenuHelper.setupSaveOption(preferenceScreen, systemCoreConfig)
 
         if (numDisks > 1) {
             GameMenuHelper.setupChangeDiskOption(activity, preferenceScreen, currentDisk, numDisks)

@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
 import com.swordfish.lemuroid.common.preferences.DummyDataStore
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import dagger.android.support.AndroidSupportInjection
 import java.security.InvalidParameterException
 
@@ -46,6 +47,12 @@ class GameMenuFragment : PreferenceFragmentCompat() {
             fastForwardEnabled,
             fastForwardSupported
         )
+
+        val systemCoreConfig = activity?.intent?.getSerializableExtra(
+            GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG
+        ) as SystemCoreConfig
+
+        GameMenuHelper.setupSaveOption(preferenceScreen, systemCoreConfig)
 
         val numDisks = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_DISKS, 0) ?: 0
         val currentDisk = activity?.intent?.getIntExtra(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0
