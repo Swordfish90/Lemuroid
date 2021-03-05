@@ -10,6 +10,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
+import com.swordfish.lemuroid.ext.feature.context.ContextHandler
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -84,6 +85,11 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
         return manager.runningAppProcesses
             .firstOrNull { it.pid == currentPID }
             ?.processName
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        ContextHandler.attachBaseContext(base)
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
