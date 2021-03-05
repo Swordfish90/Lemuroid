@@ -110,7 +110,7 @@ object deps {
         object play {
             const val core = "com.google.android.play:core:1.8.2"
             const val coreKtx = "com.google.android.play:core-ktx:1.8.1"
-            const val playServices = "com.google.android.gms:play-services-auth:19.0.0"
+            const val playServices = "com.google.android.gms:play-services-auth:17.0.0"
         }
         object gdrive {
             const val apiClient            = "com.google.api-client:google-api-client:${versions.googleApiClient}"
