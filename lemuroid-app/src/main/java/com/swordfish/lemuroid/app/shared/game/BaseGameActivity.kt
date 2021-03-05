@@ -114,7 +114,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected val retroGameViewObservable = BehaviorRelay.createDefault<Optional<GLRetroView>>(None)
     protected var retroGameView: GLRetroView? by BehaviorRelayNullableProperty(retroGameViewObservable)
 
-    val loadingObservable = BehaviorRelay.createDefault(true)
+    val loadingObservable = BehaviorRelay.createDefault(false)
     var loading: Boolean by BehaviorRelayProperty(loadingObservable)
 
     val loadingMessageObservable = BehaviorRelay.createDefault("")
