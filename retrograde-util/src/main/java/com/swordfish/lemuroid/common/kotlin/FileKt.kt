@@ -37,11 +37,11 @@ private const val GZIP_INPUT_STREAM_BUFFER_SIZE = 8 * 1024
 
 fun InputStream.calculateCrc32(): String = this.use { fileStream ->
     val buffer = ByteArray(CRC32_BYTE_ARRAY_SIZE)
-    CheckedInputStream(fileStream, CRC32()).use { crcStream ->
+    return CheckedInputStream(fileStream, CRC32()).use { crcStream ->
         while (crcStream.read(buffer) != -1) {
             // Read file in completely
         }
-        return crcStream.checksum.value.toStringCRC32()
+        crcStream.checksum.value.toStringCRC32()
     }
 }
 

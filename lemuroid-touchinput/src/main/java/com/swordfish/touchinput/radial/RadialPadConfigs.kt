@@ -290,6 +290,65 @@ object RadialPadConfigs {
                         label = "L2"
                     )
                 ),
+                SecondaryDialConfig.Empty(8, 1, 1f)
+            )
+        )
+
+    val PSX_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                listOf(
+                    BUTTON_CONFIG_CIRCLE,
+                    BUTTON_CONFIG_TRIANGLE,
+                    BUTTON_CONFIG_SQUARE,
+                    BUTTON_CONFIG_CROSS
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(
+                    2,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_R2,
+                        label = "R2"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(
+                    3,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_R1,
+                        label = "R1"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
+
+    val PSX_DUALSHOCK_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.SingleButton(
+                    3,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L1,
+                        label = "L1"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(
+                    4,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L2,
+                        label = "L2"
+                    )
+                ),
                 SecondaryDialConfig.Stick(
                     9,
                     2.2f,
@@ -301,7 +360,7 @@ object RadialPadConfigs {
             )
         )
 
-    val PSX_RIGHT =
+    val PSX_DUALSHOCK_RIGHT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
@@ -560,7 +619,42 @@ object RadialPadConfigs {
             )
         )
 
-    val GENESIS_LEFT =
+    val GENESIS_3_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val GENESIS_3_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "C"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "B"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_Y,
+                        label = "A"
+                    ),
+                ),
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
+
+    val GENESIS_6_LEFT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
@@ -572,7 +666,7 @@ object RadialPadConfigs {
             )
         )
 
-    val GENESIS_RIGHT =
+    val GENESIS_6_RIGHT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
@@ -732,7 +826,47 @@ object RadialPadConfigs {
             )
         )
 
-    val ARCADE_LEFT =
+    val ARCADE_4_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD_AND_LEFT_STICK),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_COIN),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val ARCADE_4_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                rotationInDegrees = 60f,
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_X,
+                        contentDescription = "X",
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_Y,
+                        contentDescription = "Y",
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        contentDescription = "B",
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        contentDescription = "A",
+                    )
+                ),
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
+
+    val ARCADE_6_LEFT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD_AND_LEFT_STICK),
@@ -744,7 +878,7 @@ object RadialPadConfigs {
             )
         )
 
-    val ARCADE_RIGHT =
+    val ARCADE_6_RIGHT =
         RadialGamePadConfig(
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(

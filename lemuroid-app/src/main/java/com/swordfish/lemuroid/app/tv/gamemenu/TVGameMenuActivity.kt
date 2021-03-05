@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
+import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -16,6 +17,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
     @Inject lateinit var statesManager: StatesManager
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
+    @Inject lateinit var gamePadManager: GamePadManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val fragment = TVGameMenuFragmentWrapper(
                 statesManager,
                 statesPreviewManager,
+                gamePadManager,
                 game,
                 core,
                 options,
@@ -76,6 +79,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
     class TVGameMenuFragmentWrapper(
         private val statesManager: StatesManager,
         private val statesPreviewManager: StatesPreviewManager,
+        private val gamePadManager: GamePadManager,
         private val game: Game,
         private val systemCoreConfig: SystemCoreConfig,
         private val coreOptions: Array<CoreOption>,
@@ -91,6 +95,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             return TVGameMenuFragment(
                 statesManager,
                 statesPreviewManager,
+                gamePadManager,
                 game,
                 systemCoreConfig,
                 coreOptions,

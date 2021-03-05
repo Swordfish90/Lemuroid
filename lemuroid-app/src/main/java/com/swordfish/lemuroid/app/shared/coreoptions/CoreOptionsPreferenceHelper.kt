@@ -8,7 +8,10 @@ import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
+import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.library.CoreID
 
 object CoreOptionsPreferenceHelper {
 
@@ -20,19 +23,42 @@ object CoreOptionsPreferenceHelper {
         baseOptions: List<CoreOption>,
         advancedOptions: List<CoreOption>
     ) {
+        if (baseOptions.isEmpty() && advancedOptions.isEmpty()) {
+            return
+        }
+
         val context = preferenceScreen.context
 
-        if (advancedOptions.isNotEmpty()) {
-            val basicTitle = context.getString(R.string.core_settings_category_basic)
-            val basicCategory = createCategory(preferenceScreen.context, preferenceScreen, basicTitle)
-            addPreferences(context, basicCategory, baseOptions, systemID)
+        val title = context.getString(R.string.core_settings_category_preferences)
+        val preferencesCategory = createCategory(preferenceScreen.context, preferenceScreen, title)
 
-            val advanceTitle = context.getString(R.string.core_settings_category_advanced)
-            val advanceCategory = createCategory(preferenceScreen.context, preferenceScreen, advanceTitle)
-            addPreferences(context, advanceCategory, advancedOptions, systemID)
-        } else {
-            addPreferences(context, preferenceScreen, baseOptions, systemID)
-        }
+        addPreferences(context, preferencesCategory, baseOptions, systemID)
+        addPreferences(context, preferencesCategory, advancedOptions, systemID)
+    }
+
+    fun addControllers(
+        preferenceScreen: PreferenceScreen,
+        systemID: String,
+        coreID: CoreID,
+        connectedGamePads: Int,
+        controllers: Map<Int, List<ControllerConfig>>
+    ) {
+        val visibleControllers = (0 until connectedGamePads)
+            .map { it to controllers[it] }
+            .filter { (_, controllers) -> controllers != null && controllers.size >= 2 }
+
+        if (visibleControllers.isEmpty())
+            return
+
+        val context = preferenceScreen.context
+        val title = context.getString(R.string.core_settings_category_controllers)
+        val category = createCategory(context, preferenceScreen, title)
+
+        visibleControllers
+            .forEach { (port, controllers) ->
+                val preference = buildControllerPreference(context, systemID, coreID, port, controllers!!)
+                category.addPreference(preference)
+            }
     }
 
     private fun addPreferences(
@@ -74,6 +100,24 @@ object CoreOptionsPreferenceHelper {
         preference.setDefaultValue(it.variable.value == "enabled")
         preference.isChecked = it.variable.value == "enabled"
         preference.isIconSpaceReserved = false
+        return preference
+    }
+
+    private fun buildControllerPreference(
+        context: Context,
+        systemID: String,
+        coreID: CoreID,
+        port: Int,
+        controllerConfigs: List<ControllerConfig>
+    ): Preference {
+        val preference = ListPreference(context)
+        preference.key = ControllerConfigsManager.getSharedPreferencesId(systemID, coreID, port)
+        preference.title = context.getString(R.string.core_settings_controller, (port + 1).toString())
+        preference.entries = controllerConfigs.map { context.getString(it.displayName) }.toTypedArray()
+        preference.entryValues = controllerConfigs.map { it.name }.toTypedArray()
+        preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        preference.isIconSpaceReserved = false
+        preference.setDefaultValue(controllerConfigs.map { it.name }.first())
         return preference
     }
 

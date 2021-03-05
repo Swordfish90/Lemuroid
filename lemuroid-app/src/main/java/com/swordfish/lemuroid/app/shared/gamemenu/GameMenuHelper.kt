@@ -198,12 +198,15 @@ object GameMenuHelper {
     fun getSaveStateBitmap(
         context: Context,
         statesPreviewManager: StatesPreviewManager,
+        saveStateInfo: SaveInfo,
         game: Game,
         coreID: CoreID,
         index: Int
     ): Maybe<Bitmap> {
         val imageSize = GraphicsUtils.convertDpToPixel(96f, context).roundToInt()
-        return statesPreviewManager.getPreviewForSlot(game, coreID, index, imageSize)
+        return statesPreviewManager
+            .getPreviewForSlot(game, coreID, index, imageSize)
+            .filter { saveStateInfo.exists }
     }
 
     const val FAST_FORWARD = "pref_game_fast_forward"

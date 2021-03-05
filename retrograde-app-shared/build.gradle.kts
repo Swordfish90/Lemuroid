@@ -9,6 +9,7 @@ plugins {
 
 dependencies {
     implementation(project(":retrograde-util"))
+    implementation(project(":lemuroid-touchinput"))
 
     api(deps.libs.androidx.lifecycle.commonJava8)
 
@@ -39,6 +40,7 @@ dependencies {
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.kotlin.serialization)
     implementation(deps.libs.harmony)
+    implementation(deps.libs.multitouchGestures)
 
     kapt(deps.libs.androidx.room.compiler)
 }

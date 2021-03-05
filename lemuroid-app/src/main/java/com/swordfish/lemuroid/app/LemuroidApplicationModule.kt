@@ -20,15 +20,18 @@
 package com.swordfish.lemuroid.app
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
-import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
+import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
+import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
@@ -48,6 +51,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
 import com.swordfish.lemuroid.lib.logging.RxTimberTree
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -76,6 +80,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.zip.ZipInputStream
+import dagger.Lazy
 
 @Module
 abstract class LemuroidApplicationModule {
@@ -170,7 +175,7 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun lemuroidLibrary(
             db: RetrogradeDatabase,
-            storageProviderRegistry: StorageProviderRegistry,
+            storageProviderRegistry: Lazy<StorageProviderRegistry>,
             biosManager: BiosManager
         ) = LemuroidLibrary(db, storageProviderRegistry, biosManager)
 
@@ -248,7 +253,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coreVariablesManager(context: Context) = CoreVariablesManager(context)
+        fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) = CoreVariablesManager(sharedPreferences)
 
         @Provides
         @PerApp
@@ -260,8 +265,8 @@ abstract class LemuroidApplicationModule {
             savesManager: SavesManager,
             coreVariablesManager: CoreVariablesManager,
             retrogradeDatabase: RetrogradeDatabase,
-            coresSelection: CoresSelection,
-            savesCoherencyEngine: SavesCoherencyEngine
+            savesCoherencyEngine: SavesCoherencyEngine,
+            directoriesManager: DirectoriesManager
         ) = GameLoader(
             coreManager,
             lemuroidLibrary,
@@ -269,19 +274,15 @@ abstract class LemuroidApplicationModule {
             savesManager,
             coreVariablesManager,
             retrogradeDatabase,
-            coresSelection,
-            savesCoherencyEngine
+            savesCoherencyEngine,
+            directoriesManager
         )
 
         @Provides
         @PerApp
         @JvmStatic
-        fun settingsManager(context: Context) = SettingsManager(context)
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun gamepadsManager(context: Context) = GamePadManager(context)
+        fun gamepadsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+            GamePadManager(context, sharedPreferences)
 
         @Provides
         @PerApp
@@ -296,7 +297,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coresSelection(appContext: Context) = CoresSelection(appContext)
+        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) = CoresSelection(sharedPreferences)
 
         @Provides
         @PerApp
@@ -338,7 +339,35 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun channelHandler(context: Context, retrogradeDatabase: RetrogradeDatabase, retrofit: Retrofit) =
+        fun channelHandler(
+            context: Context,
+            retrogradeDatabase: RetrogradeDatabase,
+            retrofit: Retrofit
+        ) =
             ChannelHandler(context, retrogradeDatabase, retrofit)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun retroControllerManager(sharedPreferences: Lazy<SharedPreferences>) =
+            ControllerConfigsManager(sharedPreferences)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun rxSettingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+            RxSettingsManager(context, sharedPreferences)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun sharedPreferences(context: Context) =
+            SharedPreferencesHelper.getSharedPreferences(context)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun gameLauncher(coresSelection: CoresSelection) =
+            GameLauncher(coresSelection)
     }
 }

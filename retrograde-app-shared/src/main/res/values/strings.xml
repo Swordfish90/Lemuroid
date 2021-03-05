@@ -2,4 +2,14 @@
 <resources>
     <string name="local_storage">Local Storage</string>
     <string name="dismiss">Dismiss</string>
+
+    <string name="controller_arcade_4">Default (4 buttons)</string>
+    <string name="controller_arcade_6">Default (6 buttons)</string>
+
+    <string name="controller_genesis_3">Default (3 buttons)</string>
+    <string name="controller_genesis_6">Default (6 buttons)</string>
+
+    <string name="controller_default">Default</string>
+    <string name="controller_dualshock">DualShock</string>
+    <string name="controller_standard">Standard</string>
 </resources>

@@ -39,13 +39,9 @@ data class GameSystem(
 
     val uniqueExtensions: List<String>,
 
-    val mergeDPADAndLeftStickEvents: Boolean = false,
-
     val scanOptions: ScanOptions = ScanOptions(),
 
     val supportedExtensions: List<String> = uniqueExtensions,
-
-    val virtualGamePadOptions: VirtualGamePadOptions = VirtualGamePadOptions(),
 
     val hasMultiDiskSupport: Boolean = false,
 
@@ -66,11 +62,13 @@ data class GameSystem(
                         exposedSettings = listOf(
                             "stella_filter",
                             "stella_crop_hoverscan"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.ATARI_2600)
                         )
                     )
                 ),
                 uniqueExtensions = listOf("a26"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.NES,
@@ -86,11 +84,13 @@ data class GameSystem(
                         ),
                         exposedAdvancedSettings = listOf(
                             "fceumm_nospritelimit",
-                        )
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NES)
+                        ),
                     )
                 ),
                 uniqueExtensions = listOf("nes"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.SNES,
@@ -99,11 +99,13 @@ data class GameSystem(
                 R.string.game_system_abbr_snes,
                 listOf(
                     SystemCoreConfig(
-                        CoreID.SNES9X
+                        CoreID.SNES9X,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.SNES)
+                        )
                     )
                 ),
                 uniqueExtensions = listOf("smc", "sfc"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.SMS,
@@ -117,11 +119,13 @@ data class GameSystem(
                         exposedAdvancedSettings = listOf(
                             "genesis_plus_gx_no_sprite_limit",
                             "genesis_plus_gx_overscan"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.SMS)
                         )
                     )
                 ),
                 uniqueExtensions = listOf("sms"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GENESIS,
@@ -135,11 +139,16 @@ data class GameSystem(
                         exposedAdvancedSettings = listOf(
                             "genesis_plus_gx_no_sprite_limit",
                             "genesis_plus_gx_overscan"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
+                            1 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
+                            2 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
+                            3 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6)
                         )
                     )
                 ),
                 uniqueExtensions = listOf("gen", "smd", "md"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GG,
@@ -152,11 +161,13 @@ data class GameSystem(
                         exposedSettings = listOf("genesis_plus_gx_lcd_filter"),
                         exposedAdvancedSettings = listOf(
                             "genesis_plus_gx_no_sprite_limit",
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.GG)
                         )
                     )
                 ),
                 uniqueExtensions = listOf("gg"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GB,
@@ -171,11 +182,13 @@ data class GameSystem(
                             "gambatte_gb_internal_palette",
                             "gambatte_mix_frames",
                             "gambatte_dark_filter_level"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.GB)
                         )
                     ),
                 ),
                 uniqueExtensions = listOf("gb"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GBC,
@@ -188,11 +201,13 @@ data class GameSystem(
                         exposedSettings = listOf(
                             "gambatte_mix_frames",
                             "gambatte_dark_filter_level"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.GB)
                         )
                     ),
                 ),
                 uniqueExtensions = listOf("gbc"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.GBA,
@@ -207,11 +222,13 @@ data class GameSystem(
                             "mgba_interframe_blending",
                             "mgba_frameskip",
                             "mgba_color_correction"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.GBA)
                         )
                     ),
                 ),
                 uniqueExtensions = listOf("gba"),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.N64,
@@ -221,18 +238,20 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.MUPEN64_PLUS_NEXT,
-                        defaultSettings = listOf(
-                            CoreVariable("mupen64plus-43screensize", "320x240")
-                        ),
                         exposedSettings = listOf(
                             "mupen64plus-43screensize",
                             "mupen64plus-cpucore",
                             "mupen64plus-BilinearMode",
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("mupen64plus-43screensize", "320x240")
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.N64)
                         )
                     )
                 ),
                 uniqueExtensions = listOf("n64", "z64"),
-                virtualGamePadOptions = VirtualGamePadOptions(true),
             ),
             GameSystem(
                 SystemID.PSX,
@@ -242,10 +261,14 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.PCSX_REARMED,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                            1 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                            2 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                            3 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                        ),
                         exposedSettings = listOf(
-                            "pcsx_rearmed_frameskip",
-                            "pcsx_rearmed_pad1type",
-                            "pcsx_rearmed_pad2type"
+                            "pcsx_rearmed_frameskip"
                         ),
                         exposedAdvancedSettings = listOf(
                             "pcsx_rearmed_drc"
@@ -262,7 +285,6 @@ data class GameSystem(
                     scanByUniqueExtension = false,
                     scanByPathAndSupportedExtensions = true
                 ),
-                virtualGamePadOptions = VirtualGamePadOptions(true),
                 hasMultiDiskSupport = true
             ),
             GameSystem(
@@ -283,6 +305,9 @@ data class GameSystem(
                             "ppsspp_texture_scaling_level",
                             "ppsspp_texture_scaling_type",
                             "ppsspp_texture_filtering"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.PSP)
                         )
                     )
                 ),
@@ -293,7 +318,6 @@ data class GameSystem(
                     scanByUniqueExtension = false,
                     scanByPathAndSupportedExtensions = true
                 ),
-                virtualGamePadOptions = VirtualGamePadOptions(true),
                 fastForwardSupport = false
             ),
             GameSystem(
@@ -307,6 +331,9 @@ data class GameSystem(
                         exposedSettings = listOf(
                             "fbneo-frameskip",
                             "fbneo-cpu-speed-adjust"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.FB_NEO_4, ControllerConfigs.FB_NEO_6)
                         )
                     )
                 ),
@@ -318,7 +345,6 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.MAME2003PLUS,
@@ -328,7 +354,10 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.MAME2003PLUS,
-                        statesSupported = false
+                        statesSupported = false,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.MAME_2003_4, ControllerConfigs.MAME_2003_6)
+                        )
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -339,7 +368,6 @@ data class GameSystem(
                     scanByPathAndFilename = true,
                     scanByPathAndSupportedExtensions = false
                 ),
-                mergeDPADAndLeftStickEvents = true
             ),
             GameSystem(
                 SystemID.NDS,
@@ -353,6 +381,9 @@ data class GameSystem(
                         defaultSettings = listOf(
                             CoreVariable("desmume_pointer_type", "touch"),
                             CoreVariable("desmume_frameskip", "1")
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.DESMUME)
                         )
                     ),
                     SystemCoreConfig(
@@ -367,15 +398,13 @@ data class GameSystem(
                         defaultSettings = listOf(
                             CoreVariable("melonds_touch_mode", "Touch"),
                             CoreVariable("melonds_threaded_renderer", "enabled")
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.MELONDS)
                         )
                     )
                 ),
                 uniqueExtensions = listOf("nds"),
-                mergeDPADAndLeftStickEvents = true,
-                virtualGamePadOptions = VirtualGamePadOptions(
-                    hasRotation = false,
-                    allowOverlay = false
-                )
             )
         )
 
@@ -410,11 +439,6 @@ data class GameSystem(
             val scanByUniqueExtension: Boolean = true,
             val scanByPathAndFilename: Boolean = false,
             val scanByPathAndSupportedExtensions: Boolean = true
-        )
-
-        data class VirtualGamePadOptions(
-            val hasRotation: Boolean = false,
-            val allowOverlay: Boolean = true,
         )
     }
 }

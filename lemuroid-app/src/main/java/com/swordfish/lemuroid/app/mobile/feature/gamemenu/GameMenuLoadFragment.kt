@@ -62,6 +62,7 @@ class GameMenuLoadFragment : PreferenceFragmentCompat() {
                 GameMenuHelper.getSaveStateBitmap(
                     requireContext(),
                     statesPreviewManager,
+                    saveInfo,
                     game,
                     systemCoreConfig.coreID,
                     index

@@ -8,6 +8,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
+import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -24,6 +25,7 @@ import io.reactivex.schedulers.Schedulers
 class TVGameMenuFragment(
     private val statesManager: StatesManager,
     private val statesPreviewManager: StatesPreviewManager,
+    private val gamePadManager: GamePadManager,
     private val game: Game,
     private val systemCoreConfig: SystemCoreConfig,
     private val coreOptions: Array<CoreOption>,
@@ -38,10 +40,20 @@ class TVGameMenuFragment(
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore =
             SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
-
         setPreferencesFromResource(R.xml.tv_game_settings, rootKey)
-        setupCoreOptions()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         setupLoadAndSave()
+
+        gamePadManager.getGamePadsObservable()
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(scope())
+            .subscribeBy {
+                setupCoreOptions(it.size)
+            }
 
         GameMenuHelper.setupAudioOption(preferenceScreen, audioEnabled)
         GameMenuHelper.setupFastForwardOption(preferenceScreen, fastForwardEnabled, fastForwardSupported)
@@ -52,15 +64,25 @@ class TVGameMenuFragment(
         }
     }
 
-    private fun setupCoreOptions() {
+    private fun setupCoreOptions(connectedGamePads: Int) {
         val coreOptionsScreen = findPreference<PreferenceScreen>(GameMenuHelper.SECTION_CORE_OPTIONS)
             ?: return
+
+        coreOptionsScreen.removeAll()
 
         CoreOptionsPreferenceHelper.addPreferences(
             coreOptionsScreen,
             game.systemId,
             coreOptions.toList(),
             advancedCoreOptions.toList()
+        )
+
+        CoreOptionsPreferenceHelper.addControllers(
+            coreOptionsScreen,
+            game.systemId,
+            systemCoreConfig.coreID,
+            connectedGamePads,
+            systemCoreConfig.controllerConfigs
         )
     }
 
@@ -80,6 +102,7 @@ class TVGameMenuFragment(
                 GameMenuHelper.getSaveStateBitmap(
                     requireContext(),
                     statesPreviewManager,
+                    saveInfo,
                     game,
                     systemCoreConfig.coreID,
                     index
