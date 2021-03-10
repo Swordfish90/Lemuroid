@@ -85,6 +85,10 @@ class GameLoader(
 
             emitter.onNext(LoadingState.LoadingGame)
 
+            if (!areRequiredBiosFilesPresent(systemCoreConfig)) {
+                throw GameLoaderException(GameLoaderError.MISSING_BIOS)
+            }
+
             val gameFile = runCatching {
                 lemuroidLibrary.getGameRom(game).blockingGet()
             }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_GAME) }
@@ -140,6 +144,12 @@ class GameLoader(
         } finally {
             emitter.onComplete()
         }
+    }
+
+    private fun areRequiredBiosFilesPresent(systemCoreConfig: SystemCoreConfig): Boolean {
+        return systemCoreConfig.requiredBIOSFiles
+            .map { File(directoriesManager.getSystemDirectory(), it) }
+            .all { it.exists() }
     }
 
     @Suppress("ArrayInDataClass")

@@ -10,5 +10,6 @@ data class SystemCoreConfig(
     val exposedSettings: List<String> = listOf(),
     val exposedAdvancedSettings: List<String> = listOf(),
     val defaultSettings: List<CoreVariable> = listOf(),
-    val statesSupported: Boolean = true
+    val statesSupported: Boolean = true,
+    val requiredBIOSFiles: List<String> = listOf()
 ) : Serializable

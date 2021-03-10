@@ -917,4 +917,123 @@ object RadialPadConfigs {
                 SecondaryDialConfig.Empty(3, 1, 0.5f)
             )
         )
+
+    val LYNX_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(
+                    4,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_L1,
+                        label = "OPTION 1"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(
+                    2,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_R1,
+                        label = "OPTION 2"
+                    )
+                ),
+                SecondaryDialConfig.SingleButton(
+                    8,
+                    1,
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_SELECT,
+                        iconId = R.drawable.button_rotate,
+                        contentDescription = "Rotate"
+                    )
+                ),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val LYNX_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                rotationInDegrees = 15f,
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "A"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "B"
+                    )
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.Empty(4, 1, 1f),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
+
+    val ATARI7800_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val ATARI7800_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "2"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "1"
+                    )
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
+
+    val PCE_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val PCE_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "II"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "I"
+                    )
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
 }

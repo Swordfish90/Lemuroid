@@ -34,6 +34,9 @@
     <string name="game_system_abbr_psp">PSP</string>
     <string name="game_system_abbr_arcade_fbneo">FBNeo</string>
     <string name="game_system_abbr_arcade_mame2003_plus">MAME2003</string>
+    <string name="game_system_abbr_atari7800">A78</string>
+    <string name="game_system_abbr_lynx">Lynx</string>
+    <string name="game_system_abbr_pce">PCE</string>
 
     <string name="game_system_title_nes">Nintendo</string>
     <string name="game_system_title_atari2600">Atari 2600</string>
@@ -50,6 +53,9 @@
     <string name="game_system_title_psp">PlayStation Portable</string>
     <string name="game_system_title_arcade_fbneo">FBNeo</string>
     <string name="game_system_title_arcade_mame2003_plus">MAME2003 Plus</string>
+    <string name="game_system_title_atari7800">Atari 7800</string>
+    <string name="game_system_title_lynx">Atari Lynx</string>
+    <string name="game_system_title_pce">PCEngine</string>
 
     <string name="game_system_title_arcade">Arcade</string>
 </resources>

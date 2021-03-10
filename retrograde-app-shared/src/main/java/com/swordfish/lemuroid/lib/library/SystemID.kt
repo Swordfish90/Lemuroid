@@ -16,4 +16,7 @@ enum class SystemID(val dbname: String) {
     PSX("psx"),
     FBNEO("fbneo"),
     MAME2003PLUS("mame2003plus"),
+    PC_ENGINE("pce"),
+    LYNX("lynx"),
+    ATARI7800("atari7800")
 }

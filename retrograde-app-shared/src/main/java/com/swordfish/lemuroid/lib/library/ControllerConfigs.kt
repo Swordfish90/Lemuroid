@@ -143,4 +143,25 @@ object ControllerConfigs {
         mergeDPADAndLeftStickEvents = true,
         allowTouchOverlay = false
     )
+
+    val LYNX = ControllerConfig(
+        "default",
+        R.string.controller_default,
+        TouchControllerID.LYNX,
+        mergeDPADAndLeftStickEvents = true,
+    )
+
+    val ATARI7800 = ControllerConfig(
+        "default",
+        R.string.controller_default,
+        TouchControllerID.ATARI7800,
+        mergeDPADAndLeftStickEvents = true,
+    )
+
+    val PCE = ControllerConfig(
+        "default",
+        R.string.controller_default,
+        TouchControllerID.PCE,
+        mergeDPADAndLeftStickEvents = true,
+    )
 }

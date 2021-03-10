@@ -70,6 +70,21 @@ enum class CoreID(
         "MelonDS",
         "libmelonds_libretro_android.so"
     ),
+    HANDY(
+        "handy",
+        "Handy",
+        "libhandy_libretro_android.so"
+    ),
+    MEDNAFEN_PCE_FAST(
+        "mednafen_pce_fast",
+        "PCEFast",
+        "libmednafen_pce_fast_libretro_android.so"
+    ),
+    PROSYSTEM(
+        "prosystem",
+        "ProSystem",
+        "libprosystem_libretro_android.so"
+    ),
 }
 
 fun findByName(query: String): CoreID? =

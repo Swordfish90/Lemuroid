@@ -405,6 +405,56 @@ data class GameSystem(
                     )
                 ),
                 uniqueExtensions = listOf("nds"),
+            ),
+            GameSystem(
+                SystemID.ATARI7800,
+                "Atari - 7800",
+                R.string.game_system_title_atari7800,
+                R.string.game_system_abbr_atari7800,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.PROSYSTEM,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.ATARI7800)
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("a78"),
+                supportedExtensions = listOf("bin")
+            ),
+            GameSystem(
+                SystemID.LYNX,
+                "Atari - Lynx",
+                R.string.game_system_title_lynx,
+                R.string.game_system_abbr_lynx,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.HANDY,
+                        requiredBIOSFiles = listOf(
+                            "lynxboot2.img"
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.LYNX)
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("lnx"),
+            ),
+            GameSystem(
+                SystemID.PC_ENGINE,
+                "NEC - PC Engine - TurboGrafx 16",
+                R.string.game_system_title_pce,
+                R.string.game_system_abbr_pce,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MEDNAFEN_PCE_FAST,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.PCE)
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("pce"),
+                supportedExtensions = listOf("bin"),
             )
         )
 

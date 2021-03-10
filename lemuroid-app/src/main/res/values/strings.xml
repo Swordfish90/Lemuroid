@@ -109,6 +109,7 @@
     <string name="game_loader_error_load_game">Something bad happened while loading your game. Make sure the ROM is supported by Lemuroid and rescan your games.</string>
     <string name="game_loader_error_save">Something bad happened with your save file. If the issue persists, try disabling auto-save.</string>
     <string name="game_loader_error_generic">Something went wrong with Lemuroid. Please file a bug on GitHub and tell me what happened.</string>
+    <string name="game_loader_error_missing_bios">It looks like you\'re missing a required bios file</string>
 
     <string name="game_shortcut_error">Something bad happened while loading your game. Please make sure this game still exists in your library.</string>
 

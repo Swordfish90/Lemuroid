@@ -76,6 +76,21 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
         R.string.game_system_title_arcade,
         R.drawable.game_system_arcade,
         listOf(SystemID.FBNEO, SystemID.MAME2003PLUS)
+    ),
+    ATARI7800(
+        R.string.game_system_title_atari7800,
+        R.drawable.game_system_atari7800,
+        listOf(SystemID.ATARI7800)
+    ),
+    LYNX(
+        R.string.game_system_title_lynx,
+        R.drawable.game_system_lynx,
+        listOf(SystemID.LYNX)
+    ),
+    PC_ENGINE(
+        R.string.game_system_title_pce,
+        R.drawable.game_system_pce,
+        listOf(SystemID.PC_ENGINE)
     );
 
     companion object {
@@ -96,6 +111,9 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
                 SystemID.PSX -> PSX
                 SystemID.SMS -> SMS
                 SystemID.SNES -> SNES
+                SystemID.PC_ENGINE -> PC_ENGINE
+                SystemID.LYNX -> LYNX
+                SystemID.ATARI7800 -> ATARI7800
             }
         }
     }
