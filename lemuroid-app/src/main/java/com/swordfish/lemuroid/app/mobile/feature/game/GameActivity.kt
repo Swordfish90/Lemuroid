@@ -67,6 +67,8 @@ import io.reactivex.rxkotlin.Observables
 class GameActivity : BaseGameActivity() {
     @Inject lateinit var sharedPreferences: Lazy<SharedPreferences>
 
+    private lateinit var serviceIntent: Intent
+
     private lateinit var tiltSensor: TiltSensor
     private var currentTiltId: Int? = null
 
@@ -93,6 +95,8 @@ class GameActivity : BaseGameActivity() {
         orientation = getCurrentOrientation()
 
         tiltSensor = TiltSensor(applicationContext)
+
+        serviceIntent = GameService.startService(applicationContext, game)
 
         setupVirtualGamePadVisibility()
         setupVirtualGamePads()
@@ -209,8 +213,9 @@ class GameActivity : BaseGameActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        GameService.stopService(applicationContext, serviceIntent)
         virtualControllerDisposables.clear()
+        super.onDestroy()
     }
 
     private fun handleTrackingEvent(it: Event?) {

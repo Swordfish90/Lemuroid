@@ -104,6 +104,9 @@
     <string name="save_sync_notification_title">Cloud save Sync in progress</string>
     <string name="save_sync_notification_message">This can take up to a few minutes</string>
 
+    <string name="game_running_notification_title">%1$s is running</string>
+    <string name="game_running_notification_message">Make sure to save your progress</string>
+
     <string name="game_loader_error_gl_incompatible">This Core requires an OpenGL ES version which is not supported by your device.</string>
     <string name="game_loader_error_load_core">Something bad happened while loading the underlying core. Make sure your device is connected to internet and try clearing your settings to default. If the issue persists try rebooting your device.</string>
     <string name="game_loader_error_load_game">Something bad happened while loading your game. Make sure the ROM is supported by Lemuroid and rescan your games.</string>
