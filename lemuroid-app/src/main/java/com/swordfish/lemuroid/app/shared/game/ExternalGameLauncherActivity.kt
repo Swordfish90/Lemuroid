@@ -15,6 +15,7 @@ import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
+import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -54,8 +55,6 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
             val loadingSubject = BehaviorSubject.createDefault(true)
 
-            val animationTime = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-
             Observable.fromPublisher(publisher)
                 .filter { !it }
                 .firstElement()
@@ -68,7 +67,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                         }
                 }
                 .subscribeOn(Schedulers.io())
-                .delay(animationTime, TimeUnit.MILLISECONDS)
+                .delay(animationDuration().toLong(), TimeUnit.MILLISECONDS)
                 .doOnSubscribe { loadingSubject.onNext(true) }
                 .doAfterTerminate { loadingSubject.onNext(false) }
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -10,7 +8,7 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 119
+        versionCode = 126
         versionName = "1.10.0-alpha"
         applicationId = "com.swordfish.lemuroid"
     }
@@ -18,6 +16,7 @@ android {
     if (usePlayDynamicFeatures()) {
         println("Building Google Play version. Bundling dynamic features.")
         dynamicFeatures = mutableSetOf(
+            ":lemuroid_core_gambatte",
             ":lemuroid_core_desmume",
             ":lemuroid_core_melonds",
             ":lemuroid_core_fbneo",
@@ -96,7 +95,6 @@ android {
     }
 
     kotlinOptions {
-        this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
 }
