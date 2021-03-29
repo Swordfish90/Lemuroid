@@ -4,6 +4,12 @@ plugins {
     id("kotlin-kapt")
 }
 
+android {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
@@ -19,6 +25,18 @@ dependencies {
     implementation(deps.libs.gdrive.apiClientAndroid)
     implementation(deps.libs.gdrive.apiServicesDrive)
     implementation(deps.libs.play.playServices)
+    implementation(deps.libs.play.billing)
+    implementation(deps.libs.rxBilling)
+    implementation(deps.libs.autodispose.core)
+    implementation(deps.libs.autodispose.android.core)
+    implementation(deps.libs.autodispose.android.archComponents)
+    implementation(deps.libs.androidx.lifecycle.commonJava8)
+    implementation(deps.libs.androidx.lifecycle.extensions)
+    kapt(deps.libs.androidx.lifecycle.processor)
+
+    implementation(deps.libs.androidx.leanback.leanback)
+    implementation(deps.libs.androidx.appcompat.constraintLayout)
+    implementation(deps.libs.material)
 
     implementation(deps.libs.dagger.core)
 }

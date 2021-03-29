@@ -9,6 +9,7 @@
         <item name="defaultBrandColorDark">@color/leanbackForeground</item>
         <item name="defaultSearchColor">@color/main_color</item>
         <item name="colorAccent">@color/main_color</item>
+        <item name="android:colorAccent">@color/main_color</item>
         <item name="android:colorPrimary">@color/leanbackForeground</item>
         <item name="android:windowBackground">@color/leanbackBackground</item>
         <item name="imageCardViewStyle">@style/LemuroidCard</item>

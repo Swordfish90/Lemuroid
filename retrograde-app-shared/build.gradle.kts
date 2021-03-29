@@ -41,6 +41,7 @@ dependencies {
     implementation(deps.libs.kotlin.serialization)
     implementation(deps.libs.harmony)
     implementation(deps.libs.multitouchGestures)
+    implementation(deps.libs.material)
 
     kapt(deps.libs.androidx.room.compiler)
 }

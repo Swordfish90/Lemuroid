@@ -3,6 +3,8 @@ package com.swordfish.lemuroid.app.mobile.feature.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,6 +29,7 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.ext.feature.donate.IAPHandler
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
@@ -97,6 +100,23 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
                 postGameHandler.handleAfterGame(this, true, game, duration!!)
                     .subscribeBy { }
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        if (IAPHandler.IS_SUPPORTED) {
+            menuInflater.inflate(R.menu.menu_mobile_donate, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_options_support -> {
+                IAPHandler.launchDonateScreen(this)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

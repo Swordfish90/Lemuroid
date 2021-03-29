@@ -29,6 +29,7 @@ import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
+import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
@@ -639,9 +640,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun finishAndExitProcess() {
-        val animationTime = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
         GlobalScope.launch {
-            sleep(animationTime)
+            sleep(animationDuration().toLong())
             exitProcess(0)
         }
         finish()
