@@ -431,7 +431,7 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.HANDY,
                         requiredBIOSFiles = listOf(
-                            "lynxboot2.img"
+                            "lynxboot.img"
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.LYNX)

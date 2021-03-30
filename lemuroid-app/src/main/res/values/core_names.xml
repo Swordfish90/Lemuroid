@@ -13,4 +13,7 @@
     <string name="core_name_stella">stella</string>
     <string name="core_name_mame2003_plus">mame2003_plus</string>
     <string name="core_name_melonds">melonds</string>
+    <string name="core_name_handy">handy</string>
+    <string name="core_name_prosystem">prosystem</string>
+    <string name="core_name_mednafen_pce_fast">mednafen_pce_fast</string>
 </resources>

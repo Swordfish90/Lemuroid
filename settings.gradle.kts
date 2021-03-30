@@ -18,17 +18,20 @@ fun usePlayDynamicFeatures(): Boolean {
 
 if (usePlayDynamicFeatures()) {
     include(
-        ":lemuroid_core_gambatte",
         ":lemuroid_core_desmume",
-        ":lemuroid_core_melonds",
         ":lemuroid_core_fbneo",
         ":lemuroid_core_fceumm",
+        ":lemuroid_core_gambatte",
         ":lemuroid_core_genesis_plus_gx",
+        ":lemuroid_core_handy",
         ":lemuroid_core_mame2003_plus",
+        ":lemuroid_core_mednafen_pce_fast",
+        ":lemuroid_core_melonds",
         ":lemuroid_core_mgba",
         ":lemuroid_core_mupen64plus_next_gles3",
         ":lemuroid_core_pcsx_rearmed",
         ":lemuroid_core_ppsspp",
+        ":lemuroid_core_prosystem",
         ":lemuroid_core_snes9x",
         ":lemuroid_core_stella"
     )
@@ -46,4 +49,7 @@ if (usePlayDynamicFeatures()) {
     project(":lemuroid_core_ppsspp").projectDir = File("lemuroid-cores/lemuroid_core_ppsspp")
     project(":lemuroid_core_snes9x").projectDir = File("lemuroid-cores/lemuroid_core_snes9x")
     project(":lemuroid_core_stella").projectDir = File("lemuroid-cores/lemuroid_core_stella")
+    project(":lemuroid_core_handy").projectDir = File("lemuroid-cores/lemuroid_core_handy")
+    project(":lemuroid_core_prosystem").projectDir = File("lemuroid-cores/lemuroid_core_prosystem")
+    project(":lemuroid_core_mednafen_pce_fast").projectDir = File("lemuroid-cores/lemuroid_core_mednafen_pce_fast")
 }
