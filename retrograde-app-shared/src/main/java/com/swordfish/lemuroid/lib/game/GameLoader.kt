@@ -138,6 +138,9 @@ class GameLoader(
                     )
                 )
             )
+        } catch (e: GameLoaderException) {
+            Timber.e(e, "Error while preparing game")
+            emitter.onError(e)
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")
             emitter.onError(GameLoaderException(GameLoaderError.GENERIC))

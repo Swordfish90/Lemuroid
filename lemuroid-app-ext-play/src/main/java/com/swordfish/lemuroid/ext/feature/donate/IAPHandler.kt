@@ -61,7 +61,9 @@ class IAPHandler(private val applicationContext: Context) {
             .map { purchases ->
                 Tier.values().toList().reversed()
                     .firstOrNull { tier ->
-                        purchases.any { it.sku == tier.skuId }
+                        purchases
+                            .filter { it.purchaseState == Purchase.PurchaseState.PURCHASED }
+                            .any { it.sku == tier.skuId }
                     } ?: Tier.NONE
             }
             .subscribeOn(Schedulers.io())

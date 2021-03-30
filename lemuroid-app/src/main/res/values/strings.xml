@@ -112,8 +112,15 @@
     <string name="game_loader_error_load_core">Something bad happened while loading the underlying core. Make sure your device is connected to internet and try clearing your settings to default. If the issue persists try rebooting your device.</string>
     <string name="game_loader_error_load_game">Something bad happened while loading your game. Make sure the ROM is supported by Lemuroid and rescan your games.</string>
     <string name="game_loader_error_save">Something bad happened with your save file. If the issue persists, try disabling auto-save.</string>
-    <string name="game_loader_error_generic">Something went wrong with Lemuroid. Please file a bug on GitHub and tell me what happened.</string>
-    <string name="game_loader_error_missing_bios">It looks like you\'re missing a required bios file</string>
+
+    <string name="game_loader_error_generic">Something bad happened. Try the following:\n
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into Lemuroid settings and perform a Factory Reset
+        \n\nIf none of the above works, it might be possible that this Game/Core is not supported by this device.
+    </string>
+
+    <string name="game_loader_error_missing_bios">It looks like you\'re missing the required BIOS, put them in your ROMs directory and rescan. Required files: %1$s</string>
 
     <string name="game_shortcut_error">Something bad happened while loading your game. Please make sure this game still exists in your library.</string>
 
@@ -150,10 +157,10 @@
     ]]></string>
 
     <string name="lemuroid_crash_disclamer">It looks like the Libretro core has experienced an unexpected issue. If it\'s persistent please try the following:\n
-    \n\u2022 Disable auto-save and re-run the game
-    \n\u2022 Go into Android settings and clear the app cache
-    \n\u2022 Go into Lemuroid settings and perform a Factory Reset
-    \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into Lemuroid settings and perform a Factory Reset
+        \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
     </string>
 
     <string name="lemuroid_crash_message">Error message: %1$s</string>

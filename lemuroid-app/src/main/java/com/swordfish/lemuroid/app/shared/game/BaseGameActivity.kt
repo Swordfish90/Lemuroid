@@ -258,7 +258,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             else -> GameLoaderError.GENERIC
         }
         retroGameView = null
-        displayGameLoaderError(gameLoaderError)
+        displayGameLoaderError(gameLoaderError, systemCoreConfig)
     }
 
     protected fun displayOptionsDialog() {
@@ -807,7 +807,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     }
                 },
                 {
-                    displayGameLoaderError((it as GameLoaderException).error)
+                    displayGameLoaderError((it as GameLoaderException).error, systemCoreConfig)
                 }
             )
     }
