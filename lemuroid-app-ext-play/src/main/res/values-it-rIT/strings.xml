@@ -24,6 +24,6 @@
     <string name="gdrive_missing_play_services">Google Drive richiede Google Play Services che non sono supportati dal tuo dispositivo</string>
     <string name="gdrive_connected_summary">Collegato a %s</string>
     <string name="gdrive_connected_none_summary">Non configurato</string>
-    <string name="gdrive_last_sync_completed">Last sync: %s</string>
-    <string name="game_loading_download_core">Retrieving assets…</string>
+    <string name="gdrive_last_sync_completed">Ultima sincronizzazione: %s</string>
+    <string name="game_loading_download_core">Recupero degli asset…</string>
 </resources>
