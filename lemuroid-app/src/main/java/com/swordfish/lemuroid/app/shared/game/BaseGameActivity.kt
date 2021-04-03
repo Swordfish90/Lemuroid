@@ -529,8 +529,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun sendMergedMotionEvents(event: MotionEvent, port: Int) {
         val events = listOf(
-            retrieveNormalizedStickCoordinates(event, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y),
-            retrieveNormalizedStickCoordinates(event, MotionEvent.AXIS_X, MotionEvent.AXIS_Y)
+            retrieveCoordinates(event, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y),
+            retrieveNormalizedCoordinates(event, MotionEvent.AXIS_X, MotionEvent.AXIS_Y)
         )
 
         val xVal = events.maxByOrNull { abs(it.x) }?.x ?: 0f
@@ -549,7 +549,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun sendSeparateMotionEvents(event: MotionEvent, port: Int) {
-        sendStickMotion(
+        sendDPADMotion(
             event,
             MOTION_SOURCE_DPAD,
             MotionEvent.AXIS_HAT_X,
@@ -579,11 +579,21 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         yAxis: Int,
         port: Int
     ) {
-        val coords = retrieveNormalizedStickCoordinates(event, xAxis, yAxis)
+        val coords = retrieveNormalizedCoordinates(event, xAxis, yAxis)
         retroGameView?.sendMotionEvent(source, coords.x, coords.y, port)
     }
 
-    private fun retrieveNormalizedStickCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
+    private fun sendDPADMotion(
+        event: MotionEvent,
+        source: Int,
+        xAxis: Int,
+        yAxis: Int,
+        port: Int
+    ) {
+        retroGameView?.sendMotionEvent(source, event.getAxisValue(xAxis), event.getAxisValue(yAxis), port)
+    }
+
+    private fun retrieveNormalizedCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
         val rawX = event.getAxisValue(xAxis)
         val rawY = -event.getAxisValue(yAxis)
 
@@ -591,6 +601,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val distance = MathUtils.clamp(MathUtils.distance(0f, rawX, 0f, rawY), 0f, 1f)
 
         return MathUtils.convertPolarCoordinatesToSquares(angle, distance)
+    }
+
+    private fun retrieveCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
+        return PointF(event.getAxisValue(xAxis), event.getAxisValue(yAxis))
     }
 
     override fun onGenericMotionEvent(event: MotionEvent?): Boolean {
