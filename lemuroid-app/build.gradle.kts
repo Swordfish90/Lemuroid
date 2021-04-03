@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -10,21 +8,54 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 122
-        versionName = "1.9.2"
+        versionCode = 130
+        versionName = "1.10.0-beta"
         applicationId = "com.swordfish.lemuroid"
     }
 
+    if (usePlayDynamicFeatures()) {
+        println("Building Google Play version. Bundling dynamic features.")
+        dynamicFeatures = mutableSetOf(
+            ":lemuroid_core_desmume",
+            ":lemuroid_core_fbneo",
+            ":lemuroid_core_fceumm",
+            ":lemuroid_core_gambatte",
+            ":lemuroid_core_genesis_plus_gx",
+            ":lemuroid_core_handy",
+            ":lemuroid_core_mame2003_plus",
+            ":lemuroid_core_mednafen_pce_fast",
+            ":lemuroid_core_melonds",
+            ":lemuroid_core_mgba",
+            ":lemuroid_core_mupen64plus_next_gles3",
+            ":lemuroid_core_pcsx_rearmed",
+            ":lemuroid_core_ppsspp",
+            ":lemuroid_core_prosystem",
+            ":lemuroid_core_snes9x",
+            ":lemuroid_core_stella"
+        )
+    }
+
     // Since some dependencies are closed source we make a completely free as in free speech variant.
-    flavorDimensions("opensource")
+    flavorDimensions("opensource", "cores")
 
     productFlavors {
+
         create("free") {
             dimension = "opensource"
         }
 
         create("play") {
             dimension = "opensource"
+        }
+
+        // Include cores in the final apk
+        create("bundle") {
+            dimension = "cores"
+        }
+
+        // Download cores on demand (from GooglePlay or GitHub)
+        create("dynamic") {
+            dimension = "cores"
         }
     }
 
@@ -67,7 +98,6 @@ android {
     }
 
     kotlinOptions {
-        this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
 }
@@ -78,8 +108,7 @@ dependencies {
     implementation(project(":lemuroid-metadata-libretro-db"))
     implementation(project(":lemuroid-touchinput"))
 
-    // Only the play version bundles cores. The free version downloads them on demand.
-    "playImplementation"(project(":lemuroid-cores"))
+    "bundleImplementation"(project(":bundled-cores"))
 
     "freeImplementation"(project(":lemuroid-app-ext-free"))
     "playImplementation"(project(":lemuroid-app-ext-play"))
@@ -145,4 +174,9 @@ dependencies {
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)
+}
+
+fun usePlayDynamicFeatures(): Boolean {
+    val task = gradle.startParameter.taskRequests.toString()
+    return task.contains("Play") && task.contains("Dynamic")
 }

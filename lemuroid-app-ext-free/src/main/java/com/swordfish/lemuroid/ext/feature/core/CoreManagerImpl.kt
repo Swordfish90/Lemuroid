@@ -27,6 +27,7 @@ import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import io.reactivex.Maybe
 import io.reactivex.Single
 import retrofit2.Retrofit
 import timber.log.Timber
@@ -56,7 +57,9 @@ class CoreManagerImpl(
         assetsManager: CoreManager.AssetsManager
     ): Single<String> {
         return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
-            .andThen(downloadCoreFromGithub(coreID).map { it.absolutePath })
+            .andThen(findBundledLibrary(context, coreID))
+            .switchIfEmpty(downloadCoreFromGithub(coreID))
+            .map { it.absolutePath }
     }
 
     private fun downloadCoreFromGithub(coreID: CoreID): Single<File> {
@@ -91,6 +94,12 @@ class CoreManagerImpl(
                 destFile
             }
             .doOnError { destFile.safeDelete() }
+    }
+
+    private fun findBundledLibrary(context: Context, coreID: CoreID) = Maybe.fromCallable {
+        File(context.applicationInfo.nativeLibraryDir)
+            .walkBottomUp()
+            .firstOrNull { it.name == coreID.libretroFileName }
     }
 
     private fun deleteOutdatedCores(mainCoresDirectory: File, applicationVersion: String) {

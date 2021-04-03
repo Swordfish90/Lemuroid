@@ -78,6 +78,13 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
                 "924E392ED05558FFDB115408C263DCCF",
                 "PS Original 2.2 NTSC-U/C",
                 SystemID.PSX
+            ),
+            Bios(
+                "lynxboot.img",
+                "0D973C9D",
+                "FCD403DB69F54290B51035D82F835E7B",
+                "Lynx Boot Image",
+                SystemID.LYNX
             )
         )
     }

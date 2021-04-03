@@ -36,7 +36,7 @@ enum class CoreID(
         "libmgba_libretro_android.so"
     ),
     MUPEN64_PLUS_NEXT(
-        "mupen64plus_next",
+        "mupen64plus_next_gles3",
         "Mupen64Plus",
         "libmupen64plus_next_gles3_libretro_android.so"
     ),
@@ -69,6 +69,21 @@ enum class CoreID(
         "melonds",
         "MelonDS",
         "libmelonds_libretro_android.so"
+    ),
+    HANDY(
+        "handy",
+        "Handy",
+        "libhandy_libretro_android.so"
+    ),
+    MEDNAFEN_PCE_FAST(
+        "mednafen_pce_fast",
+        "PCEFast",
+        "libmednafen_pce_fast_libretro_android.so"
+    ),
+    PROSYSTEM(
+        "prosystem",
+        "ProSystem",
+        "libprosystem_libretro_android.so"
     ),
 }
 

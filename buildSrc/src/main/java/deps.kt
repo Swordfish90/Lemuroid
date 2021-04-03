@@ -13,7 +13,7 @@ object deps {
         const val dagger          = "2.19"
         const val gms             = "17.0.0"
         const val koptional       = "1.6.0"
-        const val kotlin          = "1.4.0"
+        const val kotlin          = "1.4.30"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
         const val work            = "2.4.0"
@@ -24,7 +24,7 @@ object deps {
         const val googleApiClient = "1.30.9"
         const val paging          = "3.0.0-alpha11"
         const val room            = "2.3.0-alpha04"
-        const val libretrodroid   = "0.5.4"
+        const val libretrodroid   = "0.5.5"
         const val radialgamepad   = "0.3.1"
     }
 
@@ -101,6 +101,7 @@ object deps {
         object kotlin {
             const val stdlib = "stdlib"
             const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC"
+            const val reflect = "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
         }
         object epoxy {
             const val expoxy = "com.airbnb.android:epoxy:3.8.0"
@@ -108,9 +109,10 @@ object deps {
             const val processor = "com.airbnb.android:epoxy-processor:3.8.0"
         }
         object play {
-            const val core = "com.google.android.play:core:1.8.2"
+            const val core = "com.google.android.play:core:1.10.0"
             const val coreKtx = "com.google.android.play:core-ktx:1.8.1"
-            const val playServices = "com.google.android.gms:play-services-auth:19.0.0"
+            const val playServices = "com.google.android.gms:play-services-auth:17.0.0"
+            const val billing = "com.android.billingclient:billing-ktx:3.0.0"
         }
         object gdrive {
             const val apiClient            = "com.google.api-client:google-api-client:${versions.googleApiClient}"
@@ -132,13 +134,14 @@ object deps {
         const val rxJava2                  = "io.reactivex.rxjava2:rxjava:2.2.4"
         const val rxKotlin2                = "io.reactivex.rxjava2:rxkotlin:2.3.0"
         const val rxPermissions2           = "com.github.tbruyelle:rxpermissions:0.10.2"
-        const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.0"
+        const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.1"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
         const val material                 = "com.google.android.material:material:1.2.1"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:29.0-android"
-        const val harmony                  = "com.frybits.harmony:harmony:1.1.3"
+        const val harmony                  = "com.frybits.harmony:harmony:1.1.4"
+        const val rxBilling                = "com.github.betterme-dev:RxBilling:3.0.0"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
 

@@ -5,6 +5,7 @@ class GameLoaderException(val error: GameLoaderError) : RuntimeException("Game L
 enum class GameLoaderError {
     GL_INCOMPATIBLE,
     GENERIC,
+    MISSING_BIOS,
     LOAD_CORE,
     LOAD_GAME,
     SAVES

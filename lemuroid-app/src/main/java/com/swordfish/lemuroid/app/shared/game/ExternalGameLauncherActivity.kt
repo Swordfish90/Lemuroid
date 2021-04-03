@@ -15,6 +15,9 @@ import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
+import com.swordfish.lemuroid.common.animationDuration
+import com.swordfish.lemuroid.lib.core.CoresSelection
+import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
@@ -38,6 +41,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
     @Inject lateinit var retrogradeDatabase: RetrogradeDatabase
     @Inject lateinit var postGameHandler: PostGameHandler
+    @Inject lateinit var coresSelection: CoresSelection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,28 +55,30 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
             val loadingSubject = BehaviorSubject.createDefault(true)
 
-            val animationTime = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-
             Observable.fromPublisher(publisher)
                 .filter { !it }
                 .firstElement()
                 .flatMapSingle {
                     retrogradeDatabase.gameDao()
                         .selectById(gameId).subscribeOn(Schedulers.io())
-                        .toSingle()
+                        .flatMapSingle { game ->
+                            coresSelection.getCoreConfigForSystem(GameSystem.findById(game.systemId))
+                                .map { game to it }
+                        }
                 }
                 .subscribeOn(Schedulers.io())
-                .delay(animationTime, TimeUnit.MILLISECONDS)
+                .delay(animationDuration().toLong(), TimeUnit.MILLISECONDS)
                 .doOnSubscribe { loadingSubject.onNext(true) }
                 .doAfterTerminate { loadingSubject.onNext(false) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .autoDispose(scope())
                 .subscribeBy(
                     { displayErrorMessage() },
-                    {
+                    { (game, systemCoreConfig) ->
                         BaseGameActivity.launchGame(
                             this,
-                            it,
+                            systemCoreConfig,
+                            game,
                             true,
                             TVHelper.isTV(applicationContext)
                         )

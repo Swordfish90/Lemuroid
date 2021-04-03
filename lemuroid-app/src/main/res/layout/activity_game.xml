@@ -29,6 +29,7 @@
     android:layout_height="match_parent"
     tools:context=".app.mobile.feature.game.GameActivity"
     android:animateLayoutChanges="true"
+    android:keepScreenOn="true"
     tools:ignore="MergeRootFrame">
 
     <FrameLayout
@@ -75,10 +76,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="@id/gamecontainer"
-        app:layout_constraintEnd_toEndOf="@id/gamecontainer"
-        app:layout_constraintStart_toStartOf="@id/gamecontainer"
-        app:layout_constraintTop_toTopOf="@id/gamecontainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
     <com.google.android.material.textview.MaterialTextView

@@ -24,7 +24,6 @@ import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
-import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import com.swordfish.lemuroid.lib.library.CoreID
@@ -37,6 +36,7 @@ import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Observable
 import timber.log.Timber
 import java.io.File
@@ -48,17 +48,9 @@ class GameLoader(
     private val savesManager: SavesManager,
     private val coreVariablesManager: CoreVariablesManager,
     private val retrogradeDatabase: RetrogradeDatabase,
-    private val coresSelection: CoresSelection,
-    private val savesCoherencyEngine: SavesCoherencyEngine
+    private val savesCoherencyEngine: SavesCoherencyEngine,
+    private val directoriesManager: DirectoriesManager
 ) {
-    fun load(
-        applicationContext: Context,
-        game: Game,
-        loadSave: Boolean
-    ): Observable<LoadingState> {
-        return prepareGame(applicationContext, game, loadSave)
-    }
-
     sealed class LoadingState {
         object LoadingCore : LoadingState()
         object LoadingGame : LoadingState()
@@ -72,16 +64,16 @@ class GameLoader(
         }
     }
 
-    private fun prepareGame(
+    fun load(
         appContext: Context,
         game: Game,
-        loadQuickSave: Boolean
-    ) = Observable.create<LoadingState> { emitter ->
+        loadSave: Boolean,
+        systemCoreConfig: SystemCoreConfig
+    ): Observable<LoadingState> = Observable.create { emitter ->
         try {
             emitter.onNext(LoadingState.LoadingCore)
 
             val system = GameSystem.findById(game.systemId)
-            val systemCoreConfig = coresSelection.getCoreConfigForSystem(system)
 
             val coreLibrary = runCatching {
                 coreManager.downloadCore(
@@ -92,6 +84,10 @@ class GameLoader(
             }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
 
             emitter.onNext(LoadingState.LoadingGame)
+
+            if (!areRequiredBiosFilesPresent(systemCoreConfig)) {
+                throw GameLoaderException(GameLoaderError.MISSING_BIOS)
+            }
 
             val gameFile = runCatching {
                 lemuroidLibrary.getGameRom(game).blockingGet()
@@ -108,7 +104,10 @@ class GameLoader(
             }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
 
             val quickSaveData = runCatching {
-                if (loadQuickSave && !savesCoherencyEngine.shouldDiscardAutoSaveState(game, systemCoreConfig.coreID)) {
+                val shouldDiscardSave =
+                    !savesCoherencyEngine.shouldDiscardAutoSaveState(game, systemCoreConfig.coreID)
+
+                if (systemCoreConfig.statesSupported && loadSave && shouldDiscardSave) {
                     statesManager.getAutoSave(game, systemCoreConfig.coreID)
                         .toSingleAsOptional()
                         .blockingGet()
@@ -122,6 +121,9 @@ class GameLoader(
                 .blockingGet()
                 .toTypedArray()
 
+            val systemDirectory = directoriesManager.getSystemDirectory()
+            val savesDirectory = directoriesManager.getSavesDirectory()
+
             emitter.onNext(
                 LoadingState.Ready(
                     GameData(
@@ -131,16 +133,26 @@ class GameLoader(
                         quickSaveData,
                         saveRAMData,
                         coreVariables,
-                        systemCoreConfig
+                        systemDirectory,
+                        savesDirectory
                     )
                 )
             )
+        } catch (e: GameLoaderException) {
+            Timber.e(e, "Error while preparing game")
+            emitter.onError(e)
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")
             emitter.onError(GameLoaderException(GameLoaderError.GENERIC))
         } finally {
             emitter.onComplete()
         }
+    }
+
+    private fun areRequiredBiosFilesPresent(systemCoreConfig: SystemCoreConfig): Boolean {
+        return systemCoreConfig.requiredBIOSFiles
+            .map { File(directoriesManager.getSystemDirectory(), it) }
+            .all { it.exists() }
     }
 
     @Suppress("ArrayInDataClass")
@@ -151,6 +163,7 @@ class GameLoader(
         val quickSaveData: SaveState?,
         val saveRAMData: ByteArray?,
         val coreVariables: Array<CoreVariable>,
-        val systemCoreConfig: SystemCoreConfig
+        val systemDirectory: File,
+        val savesDirectory: File
     )
 }

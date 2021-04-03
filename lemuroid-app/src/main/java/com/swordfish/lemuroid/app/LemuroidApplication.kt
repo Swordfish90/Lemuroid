@@ -5,11 +5,13 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import android.os.Process
+import android.os.StrictMode
 import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
+import com.swordfish.lemuroid.ext.feature.context.ContextHandler
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -39,6 +41,7 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            enableStrictMode()
         }
 
         // var isPlanted = false
@@ -56,6 +59,15 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
                         }
                     }
                 }*/
+    }
+
+    private fun enableStrictMode() {
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+        )
     }
 
     private fun initializeWorkManager() {
@@ -84,6 +96,11 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
         return manager.runningAppProcesses
             .firstOrNull { it.pid == currentPID }
             ?.processName
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        ContextHandler.attachBaseContext(base)
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

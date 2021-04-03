@@ -1,19 +1,13 @@
 package com.swordfish.lemuroid.lib.core
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
-import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import io.reactivex.Single
 import java.security.InvalidParameterException
+import dagger.Lazy
 
-class CoreVariablesManager(context: Context) {
-    private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(context)
-
-    private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
-        return SharedPreferencesHelper.getSharedPreferences(context)
-    }
+class CoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences>) {
 
     fun getOptionsForCore(
         systemID: SystemID,
@@ -42,10 +36,13 @@ class CoreVariablesManager(context: Context) {
         systemCoreConfig: SystemCoreConfig
     ) = Single.fromCallable {
 
-        val requestedKeys = (systemCoreConfig.exposedSettings + systemCoreConfig.exposedAdvancedSettings)
+        val exposedKeys = systemCoreConfig.exposedSettings
+        val exposedAdvancedKeys = systemCoreConfig.exposedAdvancedSettings
+
+        val requestedKeys = (exposedKeys + exposedAdvancedKeys).map { it.key }
             .map { computeSharedPreferenceKey(it, systemID.dbname) }
 
-        sharedPreferences.all.filter { it.key in requestedKeys }
+        sharedPreferences.get().all.filter { it.key in requestedKeys }
             .map { (key, value) ->
                 val result = when (value!!) {
                     is Boolean -> if (value as Boolean) "enabled" else "disabled"

@@ -1,23 +1,26 @@
 package com.swordfish.lemuroid.lib.core
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
-import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
+import dagger.Lazy
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
-class CoresSelection(appContext: Context) {
-    private val sharedPreferences: SharedPreferences = getDefaultSharedPreferences(appContext)
+class CoresSelection(private val sharedPreferences: Lazy<SharedPreferences>) {
 
-    private fun getDefaultSharedPreferences(context: Context): SharedPreferences {
-        return SharedPreferencesHelper.getSharedPreferences(context)
+    fun getCoreConfigForSystem(system: GameSystem): Single<SystemCoreConfig> {
+        return Single.fromCallable { fetchSystemCoreConfig(system) }
+            .subscribeOn(Schedulers.io())
     }
 
-    fun getCoreConfigForSystem(system: GameSystem): SystemCoreConfig {
-        val setting = sharedPreferences.getString(computeSystemPreferenceKey(system.id), null)
-        val chosen = system.systemCoreConfigs.firstOrNull { it.coreID.coreName == setting }
-        return chosen ?: system.systemCoreConfigs.first()
+    private fun fetchSystemCoreConfig(system: GameSystem): SystemCoreConfig {
+        val setting = sharedPreferences.get()
+            .getString(computeSystemPreferenceKey(system.id), null)
+
+        return system.systemCoreConfigs.firstOrNull { it.coreID.coreName == setting }
+            ?: system.systemCoreConfigs.first()
     }
 
     companion object {

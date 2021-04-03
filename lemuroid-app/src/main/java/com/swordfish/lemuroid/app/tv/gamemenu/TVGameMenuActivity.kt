@@ -3,7 +3,8 @@ package com.swordfish.lemuroid.app.tv.gamemenu
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.swordfish.lemuroid.app.shared.GameMenuContract
-import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
+import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
+import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -16,6 +17,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
     @Inject lateinit var statesManager: StatesManager
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
+    @Inject lateinit var gamePadManager: GamePadManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +31,11 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
             val options = intent.extras?.getSerializable(
                 GameMenuContract.EXTRA_CORE_OPTIONS
-            ) as Array<CoreOption>? ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
+            ) as Array<LemuroidCoreOption>? ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
             val advancedOptions = intent.extras?.getSerializable(
                 GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS
-            ) as Array<CoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+            ) as Array<LemuroidCoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
 
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
                 ?: throw InvalidParameterException("Missing EXTRA_DISKS")
@@ -53,6 +55,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             val fragment = TVGameMenuFragmentWrapper(
                 statesManager,
                 statesPreviewManager,
+                gamePadManager,
                 game,
                 core,
                 options,
@@ -76,10 +79,11 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
     class TVGameMenuFragmentWrapper(
         private val statesManager: StatesManager,
         private val statesPreviewManager: StatesPreviewManager,
+        private val gamePadManager: GamePadManager,
         private val game: Game,
         private val systemCoreConfig: SystemCoreConfig,
-        private val coreOptions: Array<CoreOption>,
-        private val advancedCoreOptions: Array<CoreOption>,
+        private val coreOptions: Array<LemuroidCoreOption>,
+        private val advancedCoreOptions: Array<LemuroidCoreOption>,
         private val numDisks: Int,
         private val currentDisk: Int,
         private val audioEnabled: Boolean,
@@ -91,6 +95,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
             return TVGameMenuFragment(
                 statesManager,
                 statesPreviewManager,
+                gamePadManager,
                 game,
                 systemCoreConfig,
                 coreOptions,

@@ -39,16 +39,19 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
+import dagger.Lazy
 
 class LemuroidLibrary(
     private val retrogradedb: RetrogradeDatabase,
-    private val providerProviderRegistry: StorageProviderRegistry,
+    private val providerProviderRegistry: Lazy<StorageProviderRegistry>,
     private val biosManager: BiosManager
 ) {
     fun indexLibrary(): Completable {
         val startedAtMs = System.currentTimeMillis()
 
-        return Observable.fromIterable(providerProviderRegistry.enabledProviders)
+        return Single
+            .fromCallable { providerProviderRegistry.get() }
+            .flatMapObservable { Observable.fromIterable(it.enabledProviders) }
             .concatMap { provider ->
                 provider.listBaseStorageFiles()
                     .map { StorageFilesMerger.mergeDataFiles(provider, it) }
@@ -253,10 +256,12 @@ class LemuroidLibrary(
     }
 
     fun prepareDataFile(game: Game, dataFile: DataFile): Completable =
-        providerProviderRegistry.getProvider(game).prepareDataFile(game, dataFile)
+        Single.fromCallable { providerProviderRegistry.get() }
+            .flatMapCompletable { it.getProvider(game).prepareDataFile(game, dataFile) }
 
     fun getGameRom(game: Game): Single<File> =
-        providerProviderRegistry.getProvider(game).getGameRom(game)
+        Single.fromCallable { providerProviderRegistry.get() }
+            .flatMap { it.getProvider(game).getGameRom(game) }
 
     companion object {
         // We batch database updates to avoid unnecessary UI updates.
