@@ -49,6 +49,17 @@ object GameMenuHelper {
         loadOption?.isEnabled = systemCoreConfig.statesSupported
     }
 
+    fun setupSettingsOption(
+        screen: PreferenceScreen,
+        systemCoreConfig: SystemCoreConfig
+    ) {
+        screen.findPreference<Preference>(SECTION_CORE_OPTIONS)?.isEnabled = sequenceOf(
+            systemCoreConfig.exposedSettings.isNotEmpty(),
+            systemCoreConfig.exposedAdvancedSettings.isNotEmpty(),
+            systemCoreConfig.controllerConfigs.values.any { it.size > 1 }
+        ).any { it }
+    }
+
     fun setupChangeDiskOption(
         activity: Activity?,
         screen: PreferenceScreen,

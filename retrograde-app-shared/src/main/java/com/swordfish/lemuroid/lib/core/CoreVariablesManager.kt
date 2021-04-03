@@ -36,7 +36,10 @@ class CoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences
         systemCoreConfig: SystemCoreConfig
     ) = Single.fromCallable {
 
-        val requestedKeys = (systemCoreConfig.exposedSettings + systemCoreConfig.exposedAdvancedSettings)
+        val exposedKeys = systemCoreConfig.exposedSettings
+        val exposedAdvancedKeys = systemCoreConfig.exposedAdvancedSettings
+
+        val requestedKeys = (exposedKeys + exposedAdvancedKeys).map { it.key }
             .map { computeSharedPreferenceKey(it, systemID.dbname) }
 
         sharedPreferences.get().all.filter { it.key in requestedKeys }

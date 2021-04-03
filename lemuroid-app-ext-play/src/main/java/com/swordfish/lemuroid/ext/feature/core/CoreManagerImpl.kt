@@ -62,8 +62,6 @@ class CoreManagerImpl(
 
         Log.i(TAG_LOG, "Cores is not installed")
 
-        var currentSessionId = 0
-
         val request = SplitInstallRequest.newBuilder()
             .addModule(moduleSplitName)
             .build()
@@ -72,7 +70,7 @@ class CoreManagerImpl(
 
             override fun onStateUpdate(state: SplitInstallSessionState) {
                 Log.i(TAG_LOG, "SplitInstall update $state")
-                if (state.sessionId() == currentSessionId) {
+                if (state.moduleNames().contains(moduleSplitName)) {
                     when (state.status()) {
                         SplitInstallSessionStatus.INSTALLED -> {
                             emitSuccess()
@@ -81,6 +79,9 @@ class CoreManagerImpl(
                             emitFailure()
                         }
                         SplitInstallSessionStatus.CANCELED -> {
+                            emitFailure()
+                        }
+                        SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
                             emitFailure()
                         }
                     }
@@ -109,7 +110,6 @@ class CoreManagerImpl(
         installManager.startInstall(request)
             .addOnSuccessListener {
                 Log.i(TAG_LOG, "SplitInstall successfully initiated")
-                currentSessionId = it
             }
             .addOnFailureListener {
                 Log.i(TAG_LOG, "Error installing core: ${it.message}")

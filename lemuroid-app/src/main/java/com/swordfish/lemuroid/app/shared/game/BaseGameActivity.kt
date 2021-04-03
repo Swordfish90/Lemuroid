@@ -24,6 +24,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
+import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
@@ -47,6 +48,7 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderError
 import com.swordfish.lemuroid.lib.game.GameLoaderException
+import com.swordfish.lemuroid.lib.library.ExposedSetting
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
@@ -261,14 +263,25 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         displayGameLoaderError(gameLoaderError, systemCoreConfig)
     }
 
+    private fun transformExposedSetting(
+        exposedSetting: ExposedSetting,
+        coreOptions: List<CoreOption>
+    ): LemuroidCoreOption? {
+        return coreOptions
+            .firstOrNull { it.variable.key == exposedSetting.key }
+            ?.let { LemuroidCoreOption(exposedSetting, it) }
+    }
+
     protected fun displayOptionsDialog() {
         if (loading) return
 
-        val options = getCoreOptions()
-            .filter { it.variable.key in systemCoreConfig.exposedSettings }
+        val coreOptions = getCoreOptions()
 
-        val advancedOptions = getCoreOptions()
-            .filter { it.variable.key in systemCoreConfig.exposedAdvancedSettings }
+        val options = systemCoreConfig.exposedSettings
+            .mapNotNull { transformExposedSetting(it, coreOptions) }
+
+        val advancedOptions = systemCoreConfig.exposedAdvancedSettings
+            .mapNotNull { transformExposedSetting(it, coreOptions) }
 
         val intent = Intent(this, getDialogClass()).apply {
             this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())

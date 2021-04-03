@@ -20,8 +20,8 @@ object CoreOptionsPreferenceHelper {
     fun addPreferences(
         preferenceScreen: PreferenceScreen,
         systemID: String,
-        baseOptions: List<CoreOption>,
-        advancedOptions: List<CoreOption>
+        baseOptions: List<LemuroidCoreOption>,
+        advancedOptions: List<LemuroidCoreOption>
     ) {
         if (baseOptions.isEmpty() && advancedOptions.isEmpty()) {
             return
@@ -64,7 +64,7 @@ object CoreOptionsPreferenceHelper {
     private fun addPreferences(
         context: Context,
         preferenceGroup: PreferenceGroup,
-        options: List<CoreOption>,
+        options: List<LemuroidCoreOption>,
         systemID: String
     ) {
         options
@@ -72,33 +72,33 @@ object CoreOptionsPreferenceHelper {
             .forEach { preferenceGroup.addPreference(it) }
     }
 
-    private fun convertToPreference(context: Context, it: CoreOption, systemID: String): Preference {
-        return if (it.optionValues.toSet() == BOOLEAN_SET) {
+    private fun convertToPreference(context: Context, it: LemuroidCoreOption, systemID: String): Preference {
+        return if (it.getEntriesValues().toSet() == BOOLEAN_SET) {
             buildSwitchPreference(context, it, systemID)
         } else {
             buildListPreference(context, it, systemID)
         }
     }
 
-    private fun buildListPreference(context: Context, it: CoreOption, systemID: String): ListPreference {
+    private fun buildListPreference(context: Context, it: LemuroidCoreOption, systemID: String): ListPreference {
         val preference = ListPreference(context)
-        preference.key = CoreVariablesManager.computeSharedPreferenceKey(it.variable.key, systemID)
-        preference.title = it.name
-        preference.entries = it.optionValues.map { it.capitalize() }.toTypedArray()
-        preference.entryValues = it.optionValues.toTypedArray()
-        preference.setDefaultValue(it.variable.value)
-        preference.setValueIndex(it.optionValues.indexOf(it.variable.value))
+        preference.key = CoreVariablesManager.computeSharedPreferenceKey(it.getKey(), systemID)
+        preference.title = it.getDisplayName(context)
+        preference.entries = it.getEntries(context).toTypedArray()
+        preference.entryValues = it.getEntriesValues().toTypedArray()
+        preference.setDefaultValue(it.getCurrentValue())
+        preference.setValueIndex(it.getCurrentIndex())
         preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         preference.isIconSpaceReserved = false
         return preference
     }
 
-    private fun buildSwitchPreference(context: Context, it: CoreOption, systemID: String): SwitchPreference {
+    private fun buildSwitchPreference(context: Context, it: LemuroidCoreOption, systemID: String): SwitchPreference {
         val preference = SwitchPreference(context)
-        preference.key = CoreVariablesManager.computeSharedPreferenceKey(it.variable.key, systemID)
-        preference.title = it.name
-        preference.setDefaultValue(it.variable.value == "enabled")
-        preference.isChecked = it.variable.value == "enabled"
+        preference.key = CoreVariablesManager.computeSharedPreferenceKey(it.getKey(), systemID)
+        preference.title = it.getDisplayName(context)
+        preference.setDefaultValue(it.getCurrentValue() == "enabled")
+        preference.isChecked = it.getCurrentValue() == "enabled"
         preference.isIconSpaceReserved = false
         return preference
     }

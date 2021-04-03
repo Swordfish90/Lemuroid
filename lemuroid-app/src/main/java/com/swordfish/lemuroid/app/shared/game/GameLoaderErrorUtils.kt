@@ -15,7 +15,8 @@ fun Activity.displayGameLoaderError(gameError: GameLoaderError, coreConfig: Syst
         GameLoaderError.LOAD_GAME -> getString(R.string.game_loader_error_load_game)
         GameLoaderError.SAVES -> getString(R.string.game_loader_error_save)
         GameLoaderError.MISSING_BIOS -> getString(
-            R.string.game_loader_error_missing_bios, coreConfig.requiredBIOSFiles.joinToString(",")
+            R.string.game_loader_error_missing_bios,
+            coreConfig.requiredBIOSFiles.joinToString(",")
         )
     }
 

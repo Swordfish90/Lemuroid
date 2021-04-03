@@ -60,8 +60,33 @@ data class GameSystem(
                     SystemCoreConfig(
                         coreID = CoreID.STELLA,
                         exposedSettings = listOf(
-                            "stella_filter",
-                            "stella_crop_hoverscan"
+                            ExposedSetting(
+                                "stella_filter",
+                                R.string.setting_stella_filter,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_stella_filter_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "composite",
+                                        R.string.value_stella_filter_composite
+                                    ),
+                                    ExposedSetting.Value(
+                                        "s-video",
+                                        R.string.value_stella_filter_svideo
+                                    ),
+                                    ExposedSetting.Value("rgb", R.string.value_stella_filter_rgb),
+                                    ExposedSetting.Value(
+                                        "badly adjusted",
+                                        R.string.value_stella_filter_badlyadjusted
+                                    ),
+                                )
+                            ),
+                            ExposedSetting(
+                                "stella_crop_hoverscan",
+                                R.string.setting_stella_crop_hoverscan
+                            )
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.ATARI_2600)
@@ -79,11 +104,20 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.FCEUMM,
                         exposedSettings = listOf(
-                            "fceumm_overscan_h",
-                            "fceumm_overscan_v",
+                            ExposedSetting(
+                                "fceumm_overscan_h",
+                                R.string.setting_fceumm_overscan_h
+                            ),
+                            ExposedSetting(
+                                "fceumm_overscan_v",
+                                R.string.setting_fceumm_overscan_v
+                            ),
                         ),
                         exposedAdvancedSettings = listOf(
-                            "fceumm_nospritelimit",
+                            ExposedSetting(
+                                "fceumm_nospritelimit",
+                                R.string.setting_fceumm_nospritelimit
+                            ),
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.NES)
@@ -115,10 +149,61 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
-                        exposedSettings = listOf("genesis_plus_gx_blargg_ntsc_filter"),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "genesis_plus_gx_blargg_ntsc_filter",
+                                R.string.setting_genesis_plus_gx_blargg_ntsc_filter,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "monochrome",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_monochrome
+                                    ),
+                                    ExposedSetting.Value(
+                                        "composite",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_composite
+                                    ),
+                                    ExposedSetting.Value(
+                                        "svideo",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_svideo
+                                    ),
+                                    ExposedSetting.Value(
+                                        "rgb",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_rgb
+                                    ),
+                                )
+                            )
+                        ),
                         exposedAdvancedSettings = listOf(
-                            "genesis_plus_gx_no_sprite_limit",
-                            "genesis_plus_gx_overscan"
+                            ExposedSetting(
+                                "genesis_plus_gx_no_sprite_limit",
+                                R.string.setting_genesis_plus_gx_no_sprite_limit
+                            ),
+                            ExposedSetting(
+                                "genesis_plus_gx_overscan",
+                                R.string.setting_genesis_plus_gx_overscan,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_genesis_plus_gx_overscan_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "top/bottom",
+                                        R.string.value_genesis_plus_gx_overscan_topbottom
+                                    ),
+                                    ExposedSetting.Value(
+                                        "left/right",
+                                        R.string.value_genesis_plus_gx_overscan_leftright
+                                    ),
+                                    ExposedSetting.Value(
+                                        "full",
+                                        R.string.value_genesis_plus_gx_overscan_full
+                                    ),
+                                )
+                            )
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.SMS)
@@ -135,16 +220,79 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
-                        exposedSettings = listOf("genesis_plus_gx_blargg_ntsc_filter"),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "genesis_plus_gx_blargg_ntsc_filter",
+                                R.string.setting_genesis_plus_gx_blargg_ntsc_filter,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "monochrome",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_monochrome
+                                    ),
+                                    ExposedSetting.Value(
+                                        "composite",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_composite
+                                    ),
+                                    ExposedSetting.Value(
+                                        "svideo",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_svideo
+                                    ),
+                                    ExposedSetting.Value(
+                                        "rgb",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_rgb
+                                    ),
+                                )
+                            )
+                        ),
                         exposedAdvancedSettings = listOf(
-                            "genesis_plus_gx_no_sprite_limit",
-                            "genesis_plus_gx_overscan"
+                            ExposedSetting(
+                                "genesis_plus_gx_no_sprite_limit",
+                                R.string.setting_genesis_plus_gx_no_sprite_limit
+                            ),
+                            ExposedSetting(
+                                "genesis_plus_gx_overscan",
+                                R.string.setting_genesis_plus_gx_overscan,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_genesis_plus_gx_overscan_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "top/bottom",
+                                        R.string.value_genesis_plus_gx_overscan_topbottom
+                                    ),
+                                    ExposedSetting.Value(
+                                        "left/right",
+                                        R.string.value_genesis_plus_gx_overscan_leftright
+                                    ),
+                                    ExposedSetting.Value(
+                                        "full",
+                                        R.string.value_genesis_plus_gx_overscan_full
+                                    ),
+                                )
+                            )
                         ),
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
-                            1 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
-                            2 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6),
-                            3 to arrayListOf(ControllerConfigs.GENESIS_3, ControllerConfigs.GENESIS_6)
+                            0 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            ),
+                            1 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            ),
+                            2 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            ),
+                            3 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            )
                         )
                     )
                 ),
@@ -158,9 +306,17 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
-                        exposedSettings = listOf("genesis_plus_gx_lcd_filter"),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "genesis_plus_gx_lcd_filter",
+                                R.string.setting_genesis_plus_gx_lcd_filter
+                            )
+                        ),
                         exposedAdvancedSettings = listOf(
-                            "genesis_plus_gx_no_sprite_limit",
+                            ExposedSetting(
+                                "genesis_plus_gx_no_sprite_limit",
+                                R.string.setting_genesis_plus_gx_no_sprite_limit
+                            ),
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GG)
@@ -178,10 +334,40 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.GAMBATTE,
                         exposedSettings = listOf(
-                            "gambatte_gb_colorization",
-                            "gambatte_gb_internal_palette",
-                            "gambatte_mix_frames",
-                            "gambatte_dark_filter_level"
+                            ExposedSetting(
+                                "gambatte_gb_colorization",
+                                R.string.setting_gambatte_gb_colorization
+                            ),
+                            ExposedSetting(
+                                "gambatte_gb_internal_palette",
+                                R.string.setting_gambatte_gb_internal_palette
+                            ),
+                            ExposedSetting(
+                                "gambatte_mix_frames",
+                                R.string.setting_gambatte_mix_frames,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_gambatte_mix_frames_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "mix",
+                                        R.string.value_gambatte_mix_frames_mix
+                                    ),
+                                    ExposedSetting.Value(
+                                        "lcd_ghosting",
+                                        R.string.value_gambatte_mix_frames_lcd_ghosting
+                                    ),
+                                    ExposedSetting.Value(
+                                        "lcd_ghosting_fast",
+                                        R.string.value_gambatte_mix_frames_lcd_ghosting_fast
+                                    ),
+                                )
+                            ),
+                            ExposedSetting(
+                                "gambatte_dark_filter_level",
+                                R.string.setting_gambatte_dark_filter_level
+                            )
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GB)
@@ -199,8 +385,32 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.GAMBATTE,
                         exposedSettings = listOf(
-                            "gambatte_mix_frames",
-                            "gambatte_dark_filter_level"
+                            ExposedSetting(
+                                "gambatte_mix_frames",
+                                R.string.setting_gambatte_mix_frames,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_gambatte_mix_frames_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "mix",
+                                        R.string.value_gambatte_mix_frames_mix
+                                    ),
+                                    ExposedSetting.Value(
+                                        "lcd_ghosting",
+                                        R.string.value_gambatte_mix_frames_lcd_ghosting
+                                    ),
+                                    ExposedSetting.Value(
+                                        "lcd_ghosting_fast",
+                                        R.string.value_gambatte_mix_frames_lcd_ghosting_fast
+                                    ),
+                                )
+                            ),
+                            ExposedSetting(
+                                "gambatte_dark_filter_level",
+                                R.string.setting_gambatte_dark_filter_level
+                            )
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GB)
@@ -218,10 +428,57 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.MGBA,
                         exposedSettings = listOf(
-                            "mgba_solar_sensor_level",
-                            "mgba_interframe_blending",
-                            "mgba_frameskip",
-                            "mgba_color_correction"
+                            ExposedSetting(
+                                "mgba_solar_sensor_level",
+                                R.string.setting_mgba_solar_sensor_level
+                            ),
+                            ExposedSetting(
+                                "mgba_interframe_blending",
+                                R.string.setting_mgba_interframe_blending,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "OFF",
+                                        R.string.value_mgba_interframe_blending_off
+                                    ),
+                                    ExposedSetting.Value(
+                                        "mix",
+                                        R.string.value_mgba_interframe_blending_mix
+                                    ),
+                                    ExposedSetting.Value(
+                                        "lcd_ghosting",
+                                        R.string.value_mgba_interframe_blending_lcd_ghosting
+                                    ),
+                                    ExposedSetting.Value(
+                                        "lcd_ghosting_fast",
+                                        R.string.value_mgba_interframe_blending_lcd_ghosting_fast
+                                    ),
+                                )
+                            ),
+                            ExposedSetting(
+                                "mgba_frameskip",
+                                R.string.setting_mgba_frameskip,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_mgba_frameskip_disabled
+                                    ),
+                                    ExposedSetting.Value("auto", R.string.value_mgba_frameskip_auto)
+                                )
+                            ),
+                            ExposedSetting(
+                                "mgba_color_correction",
+                                R.string.setting_mgba_color_correction,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "OFF",
+                                        R.string.value_mgba_color_correction_off
+                                    ),
+                                    ExposedSetting.Value(
+                                        "GBA",
+                                        R.string.value_mgba_color_correction_gba
+                                    )
+                                )
+                            ),
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GBA)
@@ -239,9 +496,42 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.MUPEN64_PLUS_NEXT,
                         exposedSettings = listOf(
-                            "mupen64plus-43screensize",
-                            "mupen64plus-cpucore",
-                            "mupen64plus-BilinearMode",
+                            ExposedSetting(
+                                "mupen64plus-43screensize",
+                                R.string.setting_mupen64plus_43screensize
+                            ),
+                            ExposedSetting(
+                                "mupen64plus-cpucore",
+                                R.string.setting_mupen64plus_cpucore,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "dynamic_recompiler",
+                                        R.string.value_mupen64plus_cpucore_dynamicrecompiler
+                                    ),
+                                    ExposedSetting.Value(
+                                        "pure_interpreter",
+                                        R.string.value_mupen64plus_cpucore_pureinterpreter
+                                    ),
+                                    ExposedSetting.Value(
+                                        "cached_interpreter",
+                                        R.string.value_mupen64plus_cpucore_cachedinterpreter
+                                    ),
+                                )
+                            ),
+                            ExposedSetting(
+                                "mupen64plus-BilinearMode",
+                                R.string.setting_mupen64plus_BilinearMode,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "standard",
+                                        R.string.value_mupen64plus_bilinearmode_standard
+                                    ),
+                                    ExposedSetting.Value(
+                                        "3point",
+                                        R.string.value_mupen64plus_bilinearmode_3point
+                                    ),
+                                )
+                            ),
                         ),
                         defaultSettings = listOf(
                             CoreVariable("mupen64plus-43screensize", "320x240")
@@ -262,16 +552,34 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.PCSX_REARMED,
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
-                            1 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
-                            2 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
-                            3 to arrayListOf(ControllerConfigs.PSX_STANDARD, ControllerConfigs.PSX_DUALSHOCK),
+                            0 to arrayListOf(
+                                ControllerConfigs.PSX_STANDARD,
+                                ControllerConfigs.PSX_DUALSHOCK
+                            ),
+                            1 to arrayListOf(
+                                ControllerConfigs.PSX_STANDARD,
+                                ControllerConfigs.PSX_DUALSHOCK
+                            ),
+                            2 to arrayListOf(
+                                ControllerConfigs.PSX_STANDARD,
+                                ControllerConfigs.PSX_DUALSHOCK
+                            ),
+                            3 to arrayListOf(
+                                ControllerConfigs.PSX_STANDARD,
+                                ControllerConfigs.PSX_DUALSHOCK
+                            ),
                         ),
                         exposedSettings = listOf(
-                            "pcsx_rearmed_frameskip"
+                            ExposedSetting(
+                                "pcsx_rearmed_frameskip",
+                                R.string.setting_pcsx_rearmed_frameskip
+                            )
                         ),
                         exposedAdvancedSettings = listOf(
-                            "pcsx_rearmed_drc"
+                            ExposedSetting(
+                                "pcsx_rearmed_drc",
+                                R.string.setting_pcsx_rearmed_drc
+                            )
                         ),
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled"),
@@ -296,15 +604,39 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.PPSSPP,
                         exposedSettings = listOf(
-                            "ppsspp_auto_frameskip",
-                            "ppsspp_frameskip"
+                            ExposedSetting(
+                                "ppsspp_auto_frameskip",
+                                R.string.setting_ppsspp_auto_frameskip
+                            ),
+                            ExposedSetting(
+                                "ppsspp_frameskip",
+                                R.string.setting_mgba_frameskip
+                            )
                         ),
                         exposedAdvancedSettings = listOf(
-                            "ppsspp_cpu_core",
-                            "ppsspp_internal_resolution",
-                            "ppsspp_texture_scaling_level",
-                            "ppsspp_texture_scaling_type",
-                            "ppsspp_texture_filtering"
+                            ExposedSetting(
+                                "ppsspp_cpu_core",
+                                R.string.setting_ppsspp_cpu_core,
+                                arrayListOf(
+                                    ExposedSetting.Value("jit", R.string.value_ppsspp_cpu_core_jit),
+                                    ExposedSetting.Value(
+                                        "IR jit",
+                                        R.string.value_ppsspp_cpu_core_irjit
+                                    ),
+                                    ExposedSetting.Value(
+                                        "interpreter",
+                                        R.string.value_ppsspp_cpu_core_interpreter
+                                    ),
+                                )
+                            ),
+                            ExposedSetting(
+                                "ppsspp_internal_resolution",
+                                R.string.setting_ppsspp_internal_resolution
+                            ),
+                            ExposedSetting(
+                                "ppsspp_texture_scaling_level",
+                                R.string.setting_ppsspp_texture_scaling_level
+                            ),
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.PSP)
@@ -329,8 +661,14 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.FBNEO,
                         exposedSettings = listOf(
-                            "fbneo-frameskip",
-                            "fbneo-cpu-speed-adjust"
+                            ExposedSetting(
+                                "fbneo-frameskip",
+                                R.string.setting_fbneo_frameskip
+                            ),
+                            ExposedSetting(
+                                "fbneo-cpu-speed-adjust",
+                                R.string.setting_fbneo_cpu_speed_adjust
+                            )
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.FB_NEO_4, ControllerConfigs.FB_NEO_6)
@@ -356,7 +694,10 @@ data class GameSystem(
                         CoreID.MAME2003PLUS,
                         statesSupported = false,
                         controllerConfigs = hashMapOf(
-                            0 to arrayListOf(ControllerConfigs.MAME_2003_4, ControllerConfigs.MAME_2003_6)
+                            0 to arrayListOf(
+                                ControllerConfigs.MAME_2003_4,
+                                ControllerConfigs.MAME_2003_6
+                            )
                         )
                     )
                 ),
@@ -377,7 +718,12 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.DESMUME,
-                        exposedSettings = listOf("desmume_frameskip"),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "desmume_frameskip",
+                                R.string.setting_desmume_frameskip
+                            )
+                        ),
                         defaultSettings = listOf(
                             CoreVariable("desmume_pointer_type", "touch"),
                             CoreVariable("desmume_frameskip", "1")
@@ -389,11 +735,38 @@ data class GameSystem(
                     SystemCoreConfig(
                         CoreID.MELONDS,
                         exposedSettings = listOf(
-                            "melonds_screen_layout"
+                            ExposedSetting(
+                                "melonds_screen_layout",
+                                R.string.setting_melonds_screen_layout,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "Top/Bottom",
+                                        R.string.value_melonds_screen_layout_topbottom
+                                    ),
+                                    ExposedSetting.Value(
+                                        "Left/Right",
+                                        R.string.value_melonds_screen_layout_leftright
+                                    ),
+                                    ExposedSetting.Value(
+                                        "Hybrid Top",
+                                        R.string.value_melonds_screen_layout_hybridtop
+                                    ),
+                                    ExposedSetting.Value(
+                                        "Hybrid Bottom",
+                                        R.string.value_melonds_screen_layout_hybridbottom
+                                    ),
+                                )
+                            )
                         ),
                         exposedAdvancedSettings = listOf(
-                            "melonds_threaded_renderer",
-                            "melonds_jit_enable",
+                            ExposedSetting(
+                                "melonds_threaded_renderer",
+                                R.string.setting_melonds_threaded_renderer
+                            ),
+                            ExposedSetting(
+                                "melonds_jit_enable",
+                                R.string.setting_melonds_jit_enable
+                            ),
                         ),
                         defaultSettings = listOf(
                             CoreVariable("melonds_touch_mode", "Touch"),

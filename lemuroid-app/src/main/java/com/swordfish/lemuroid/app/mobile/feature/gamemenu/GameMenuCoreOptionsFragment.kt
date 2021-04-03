@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
-import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
+import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -49,12 +49,12 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
 
         val extras = activity?.intent?.extras
 
-        val coreOptions = extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<CoreOption>?
+        val coreOptions = extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<LemuroidCoreOption>?
             ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
         val advancedCoreOptions = extras?.getSerializable(
             GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS
-        ) as Array<CoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+        ) as Array<LemuroidCoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
 
         val game = extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
             ?: throw InvalidParameterException("Missing EXTRA_GAME")

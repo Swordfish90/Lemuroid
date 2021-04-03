@@ -7,8 +7,8 @@ import java.io.Serializable
 data class SystemCoreConfig(
     val coreID: CoreID,
     val controllerConfigs: HashMap<Int, ArrayList<ControllerConfig>>,
-    val exposedSettings: List<String> = listOf(),
-    val exposedAdvancedSettings: List<String> = listOf(),
+    val exposedSettings: List<ExposedSetting> = listOf(),
+    val exposedAdvancedSettings: List<ExposedSetting> = listOf(),
     val defaultSettings: List<CoreVariable> = listOf(),
     val statesSupported: Boolean = true,
     val requiredBIOSFiles: List<String> = listOf()

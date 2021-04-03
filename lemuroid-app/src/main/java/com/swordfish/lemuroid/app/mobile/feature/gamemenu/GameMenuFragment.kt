@@ -57,6 +57,8 @@ class GameMenuFragment : PreferenceFragmentCompat() {
         if (numDisks > 1) {
             GameMenuHelper.setupChangeDiskOption(activity, preferenceScreen, currentDisk, numDisks)
         }
+
+        GameMenuHelper.setupSettingsOption(preferenceScreen, systemCoreConfig)
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
