@@ -19,6 +19,8 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 
 ### Supported Systems:
 - Atari 2600 (A26) ([stella](https://docs.libretro.com/library/stella/))
+- Atari 7800 (A78) ([prosystem](https://docs.libretro.com/library/prosystem/)
+- Atari Lynx (Lynx) ([handy](https://docs.libretro.com/library/handy/))
 - Nintendo (NES) ([fceumm](https://docs.libretro.com/library/fceumm/))
 - Super Nintendo (SNES) ([snes9x](https://docs.libretro.com/library/snes9x/))
 - Game Boy (GB) ([gambatte](https://docs.libretro.com/library/gambatte/))
@@ -45,3 +47,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Local multiplayer
 - Tilt to analog stick
 - Customizable touch controls (size and position)
+- Cloud save sync
+
+### Lanugages
+You can help translate Lemuroid in your native language by going here: https://crowdin.com/project/lemuroid
