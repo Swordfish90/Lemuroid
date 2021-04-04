@@ -16,6 +16,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="settings">Settings</string>
+    <string name="support">Support</string>
     <string name="show_all">Show All</string>
     <string name="settings_category_general">General</string>
     <string name="settings_category_touch_input">Touch input</string>
@@ -77,19 +78,28 @@
     <string name="game_toast_load_state_failed">Cannot load this state</string>
     <string name="empty_view_default">No Items</string>
     <string name="core_settings_title">Core Settings</string>
-    <string name="core_settings_category_basic">Basic</string>
-    <string name="core_settings_category_advanced">Advanced</string>
+    <string name="core_settings_category_preferences">Preferences</string>
+    <string name="core_settings_category_controllers">Controllers</string>
+    <string name="core_settings_controller">Controller %1$s</string>
     <string name="game_menu_title">Game menu</string>
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning in progress</string>
     <string name="library_index_notification_message">This can take up to a few minutes</string>
     <string name="save_sync_notification_title">Cloud save Sync in progress</string>
     <string name="save_sync_notification_message">This can take up to a few minutes</string>
+    <string name="game_running_notification_title">%1$s is running</string>
+    <string name="game_running_notification_message">Make sure to save your progress</string>
     <string name="game_loader_error_gl_incompatible">This Core requires an OpenGL ES version which is not supported by your device.</string>
     <string name="game_loader_error_load_core">Something bad happened while loading the underlying core. Make sure your device is connected to internet and try clearing your settings to default. If the issue persists try rebooting your device.</string>
     <string name="game_loader_error_load_game">Something bad happened while loading your game. Make sure the ROM is supported by Lemuroid and rescan your games.</string>
     <string name="game_loader_error_save">Something bad happened with your save file. If the issue persists, try disabling auto-save.</string>
-    <string name="game_loader_error_generic">Something went wrong with Lemuroid. Please file a bug on GitHub and tell me what happened.</string>
+    <string name="game_loader_error_generic">Something bad happened. Try the following:\n
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into Lemuroid settings and perform a Factory Reset
+        \n\nIf none of the above works, it might be possible that this Game/Core is not supported by this device.
+    </string>
+    <string name="game_loader_error_missing_bios">It looks like you\'re missing the required BIOS, put them in your ROMs directory and rescan. Required files: %1$s</string>
     <string name="game_shortcut_error">Something bad happened while loading your game. Please make sure this game still exists in your library.</string>
     <string name="dialog_saf_not_found">This device does not support the StorageAccessFramework file picker. Please manually copy uncompressed ROM files into %1$s and hit Rescan.</string>
     <string name="system_grid_details">%1$s games</string>
@@ -108,16 +118,17 @@
     <string name="game_edit_touch_controls_error_not_visible">Disconnect your pad to edit your touch controls</string>
     <string name="game_interactory_busy">Wait for the pending operations to complete</string>
     <string name="mobile_settings_help">Help</string>
+    <string name="mobile_settings_support">Support</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;How do I use Lemuroid?</b><br/>
         Copy all your ROMs files into a directory on your device and select it within Lemuroid. This directory is allowed to have subdirectories. After the scan completes you should see your games.<br/><br/>
         <b>&#8226;Why aren\'t my games detected?</b><br/>
         If your games are compressed, try uncompressing them. If this doesn\'t work try putting ROMs into separate directories, one for each system with the following names: <i>psp</i>, <i>fbneo</i>, <i>gba</i>, <i>gbc</i>, <i>gb</i>, <i>nes</i>, <i>snes</i>, <i>sms</i>, <i>genesis</i>, <i>n64</i>, <i>psx</i>, <i>atari2600</i>, <i>gg</i>.
     ]]></string>
     <string name="lemuroid_crash_disclamer">It looks like the Libretro core has experienced an unexpected issue. If it\'s persistent please try the following:\n
-    \n\u2022 Disable auto-save and re-run the game
-    \n\u2022 Go into Android settings and clear the app cache
-    \n\u2022 Go into Lemuroid settings and perform a Factory Reset
-    \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into Lemuroid settings and perform a Factory Reset
+        \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
     </string>
     <string name="lemuroid_crash_message">Error message: %1$s</string>
     <string-array name="pref_key_shader_filter_names">
