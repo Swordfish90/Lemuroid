@@ -119,10 +119,10 @@
     <string name="game_interactory_busy">Attendere che le operazioni in sospeso siano completate</string>
     <string name="mobile_settings_help">Aiuto</string>
     <string name="mobile_settings_support">Supporta</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Come si usa Lemuroid?</b><br/>
-        Copia tutte le ROM in una cartella sul dispositivo e selezionala all'interno di Lemuroid. Questa cartella può avere sotto-cartelle. Una volta completata la scansione, dovresti vedere i tuoi giochi.<br/><br/>
-        <b>&#8226;Perché non vedo i miei giochi?</b><br/>
-        Se i tuoi giochi sono compressi, prova a decomprimerli. Se questo non funziona, prova a mettere le ROM in directory separate, una per ogni sistema con i seguenti nomi: <i>psp</i>, <i>fbneo</i>, <i>gba</i>, <i>gbc</i>, <i>gb</i>, <i>nes</i>, <i>snes</i>, <i>sms</i>, <i>genesi</i>, <i>n64</i>, <i>psx</i>, <i>atari2600</i>, <i>gg</i>.
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;How do I use Lemuroid?</b><br/>
+        Copy all your ROMs files into a directory on your device and select it within Lemuroid. This directory is allowed to have subdirectories. After the scan completes you should see your games.<br/><br/>
+        <b>&#8226;Why aren\'t my games detected?</b><br/>
+        If your games are compressed, try uncompressing them. If this doesn\'t work try putting ROMs into separate directories, one for each system with the following names: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Sembra che il Core Libretro si sia fermato. Se il problema persiste, prova quanto segue:\n
     \n\u2022 Disabilita il salvataggio automatico e riavvia il gioco
