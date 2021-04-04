@@ -16,6 +16,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Annulla</string>
     <string name="settings">Impostazioni</string>
+    <string name="support">Supporto</string>
     <string name="show_all">Mostra Tutto</string>
     <string name="settings_category_general">Generale</string>
     <string name="settings_category_touch_input">Controlli touch</string>
@@ -77,19 +78,28 @@
     <string name="game_toast_load_state_failed">Impossibile caricare questo stato</string>
     <string name="empty_view_default">Nessun Elemento</string>
     <string name="core_settings_title">Impostazioni Core</string>
-    <string name="core_settings_category_basic">Base</string>
-    <string name="core_settings_category_advanced">Avanzate</string>
+    <string name="core_settings_category_preferences">Impostazioni</string>
+    <string name="core_settings_category_controllers">Controller</string>
+    <string name="core_settings_controller">Controller %1$s</string>
     <string name="game_menu_title">Menu di gioco</string>
     <string name="notification_channel_name">Tutte le notifiche</string>
     <string name="library_index_notification_title">Scansione delle ROM in corso</string>
     <string name="library_index_notification_message">Questo può richiedere fino a qualche minuto</string>
     <string name="save_sync_notification_title">Sincronizzazione salvataggi Cloud in corso</string>
     <string name="save_sync_notification_message">Questo può richiedere fino a qualche minuto</string>
+    <string name="game_running_notification_title">%1$s è in esecuzione</string>
+    <string name="game_running_notification_message">Assicurati di salvare i tuoi progressi</string>
     <string name="game_loader_error_gl_incompatible">Questo Core richiede una versione OpenGL ES che non è supportata dal tuo dispositivo.</string>
     <string name="game_loader_error_load_core">Qualcosa non ha funzionato durante il caricamento del Core. Assicurati che il tuo dispositivo sia connesso a internet e prova a cancellare le impostazioni predefinite. Se il problema persiste, prova a riavviare il dispositivo.</string>
     <string name="game_loader_error_load_game">Qualcosa non ha funzionato durante il caricamento del gioco. Assicurati che la ROM sia supportata da Lemuroid e riscansiona i tuoi giochi.</string>
     <string name="game_loader_error_save">Qualcosa non ha funzionato con il file di salvataggio. Se il problema persiste, prova a disabilitare il salvataggio automatico.</string>
-    <string name="game_loader_error_generic">Qualcosa non ha funzionato con Lemuroid. Si prega di inviare un bug su GitHub e dirmi cosa è successo.</string>
+    <string name="game_loader_error_generic">Something bad happened. Try the following:\n
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into Lemuroid settings and perform a Factory Reset
+        \n\nIf none of the above works, it might be possible that this Game/Core is not supported by this device.
+    </string>
+    <string name="game_loader_error_missing_bios">It looks like you\'re missing the required BIOS, put them in your ROMs directory and rescan. Required files: %1$s</string>
     <string name="game_shortcut_error">Qualcosa non ha funzionato durante il caricamento del gioco. Assicurati che questo gioco esista ancora nella tua libreria.</string>
     <string name="dialog_saf_not_found">Questo dispositivo non supporta il selettore di file StorageAccessFramework. Copiare manualmente i file ROM non compressi in %1$s e premere Rescan.</string>
     <string name="system_grid_details">%1$s giochi</string>
@@ -108,16 +118,17 @@
     <string name="game_edit_touch_controls_error_not_visible">Disconnetti il tuo pad per modificare i controlli touch</string>
     <string name="game_interactory_busy">Attendere che le operazioni in sospeso siano completate</string>
     <string name="mobile_settings_help">Aiuto</string>
+    <string name="mobile_settings_support">Support</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Come si usa Lemuroid?</b><br/>
         Copia tutte le ROM in una cartella sul dispositivo e selezionala all'interno di Lemuroid. Questa cartella può avere sotto-cartelle. Una volta completata la scansione, dovresti vedere i tuoi giochi.<br/><br/>
         <b>&#8226;Perché non vedo i miei giochi?</b><br/>
         Se i tuoi giochi sono compressi, prova a decomprimerli. Se questo non funziona, prova a mettere le ROM in directory separate, una per ogni sistema con i seguenti nomi: <i>psp</i>, <i>fbneo</i>, <i>gba</i>, <i>gbc</i>, <i>gb</i>, <i>nes</i>, <i>snes</i>, <i>sms</i>, <i>genesi</i>, <i>n64</i>, <i>psx</i>, <i>atari2600</i>, <i>gg</i>.
     ]]></string>
-    <string name="lemuroid_crash_disclamer">Sembra che il Core Libretro si sia fermato. Se il problema persiste, prova quanto segue:\n
-    \n\u2022 Disabilita il salvataggio automatico e riavvia il gioco
-    \n\u2022 Vai nelle impostazioni di Android e cancella la cache di Lemuroid
-    \n\u2022 Vai nelle impostazioni di Lemuroid e ripristina le impostazioni di fabbrica
-    \n\n Se niente di tutto ciò ha funzionato, questo gioco/Core potrebbero non essere supportati da questo dispositivo.
+    <string name="lemuroid_crash_disclamer">It looks like the Libretro core has experienced an unexpected issue. If it\'s persistent please try the following:\n
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into Lemuroid settings and perform a Factory Reset
+        \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
     </string>
     <string name="lemuroid_crash_message">Messaggio di errore: %1$s</string>
     <string-array name="pref_key_shader_filter_names">
