@@ -40,14 +40,10 @@ class CoreManagerImpl(
 
     // This is the last tagged versions of cores.
     companion object {
-        private val CORES_VERSION = "1.9.0"
+        private val CORES_VERSION = "1.10"
     }
 
-    private val baseUri = Uri.parse("https://github.com/")
-    private val coresUri = baseUri.buildUpon()
-        .appendEncodedPath("Swordfish90/LemuroidCores/raw/$CORES_VERSION/src/main/jniLibs/")
-        .appendPath(Build.SUPPORTED_ABIS.first())
-        .build()
+    private val baseUri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
 
     private val api = retrofit.create(CoreManager.CoreManagerApi::class.java)
 
@@ -79,7 +75,9 @@ class CoreManagerImpl(
             deleteOutdatedCores(mainCoresDirectory, CORES_VERSION)
         }
 
-        val uri = coresUri.buildUpon()
+        val uri = baseUri.buildUpon()
+            .appendEncodedPath("raw/$CORES_VERSION/lemuroid_core_${coreID.coreName}/src/main/jniLibs/")
+            .appendPath(Build.SUPPORTED_ABIS.first())
             .appendPath(libFileName)
             .build()
 
