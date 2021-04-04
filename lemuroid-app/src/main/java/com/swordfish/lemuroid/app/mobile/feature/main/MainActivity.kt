@@ -3,8 +3,10 @@ package com.swordfish.lemuroid.app.mobile.feature.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -34,6 +36,8 @@ import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
+import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
@@ -107,6 +111,7 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         if (IAPHandler.IS_SUPPORTED) {
             menuInflater.inflate(R.menu.menu_mobile_donate, menu)
         }
+        menuInflater.inflate(R.menu.menu_mobile_settings, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -116,8 +121,24 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
                 IAPHandler.launchDonateScreen(this)
                 true
             }
+            R.id.menu_options_help -> {
+                displayLemuroidHelp()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun displayLemuroidHelp() {
+        val systemFolders = SystemID.values()
+            .map { it.dbname }
+            .map { "<i>$it</i>" }
+            .joinToString(", ")
+
+        val message = getString(R.string.lemuroid_help_content).replace("\$SYSTEMS", systemFolders)
+        AlertDialog.Builder(this)
+            .setMessage(Html.fromHtml(message))
+            .show()
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()

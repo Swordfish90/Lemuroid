@@ -153,7 +153,7 @@
         <b>&#8226;How do I use Lemuroid?</b><br/>
         Copy all your ROMs files into a directory on your device and select it within Lemuroid. This directory is allowed to have subdirectories. After the scan completes you should see your games.<br/><br/>
         <b>&#8226;Why aren\'t my games detected?</b><br/>
-        If your games are compressed, try uncompressing them. If this doesn\'t work try putting ROMs into separate directories, one for each system with the following names: <i>psp</i>, <i>fbneo</i>, <i>gba</i>, <i>gbc</i>, <i>gb</i>, <i>nes</i>, <i>snes</i>, <i>sms</i>, <i>genesis</i>, <i>n64</i>, <i>psx</i>, <i>atari2600</i>, <i>gg</i>.
+        If your games are compressed, try uncompressing them. If this doesn\'t work try putting ROMs into separate directories, one for each system with the following names: $SYSTEMS.
     ]]></string>
 
     <string name="lemuroid_crash_disclamer">It looks like the Libretro core has experienced an unexpected issue. If it\'s persistent please try the following:\n
