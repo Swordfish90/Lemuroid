@@ -18,28 +18,28 @@
   ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="gdrive_sign_in_failed">Google Sign In failed: %s (%s)</string>
-    <string name="gdrive_sign_in_success">Logged in to Google as %s</string>
-    <string name="gdrive_sign_out_success">Logged out from Google</string>
-    <string name="gdrive_missing_play_services">Google Drive requires Google Play Services which are not supported on your device</string>
-    <string name="gdrive_connected_summary">Linked to %s</string>
-    <string name="gdrive_connected_none_summary">Not configured</string>
-    <string name="gdrive_last_sync_completed">Last sync: %s</string>
-    <string name="game_loading_download_core">Downloading Core…</string>
-    <string name="support_description"><![CDATA[        <b>Purchase the Support Badge</b><br/><br/>
-        Lemuroid is an open-source emulation project based on Libretro. All of its features are available for free and without any Ads.<br/><br/>
-        By purchasing one of the Support Badges you allow me to dedicate more time and resources into this project and the cores backing it, safe-guarding its future.<br/><br/>
-        Thank you for being part of this amazing community.
+    <string name="gdrive_sign_in_failed">Error al iniciar sesión de Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Sesión iniciada en Google como %s</string>
+    <string name="gdrive_sign_out_success">Sesión cerrada de Google</string>
+    <string name="gdrive_missing_play_services">Google Drive requiere Servicios de Google Play que no son compatibles con tu dispositivo</string>
+    <string name="gdrive_connected_summary">Conectado a %s</string>
+    <string name="gdrive_connected_none_summary">Sin configurar</string>
+    <string name="gdrive_last_sync_completed">Última sincronización: %s</string>
+    <string name="game_loading_download_core">Descargando core…</string>
+    <string name="support_description"><![CDATA[        <b>Compra la Placa de Apoyo</b><br/><br/>
+        Lemuroid es un proyecto de emulación de código abierto basado en Libretro. Todas sus características están disponibles de forma gratuita y sin anuncios.<br/><br/>
+        Al comprar una de las Placas de Apoyo me permites dedicar más tiempo y recursos a este proyecto y a los core que lo respaldan, protegiendo su futuro.<br/><br/>
+        Gracias por ser parte de esta increíble comunidad.
     ]]></string>
-    <string name="support_description_short">        By purchasing one of the Support Badges you allow me to dedicate more time and resources into this project and the cores backing it
+    <string name="support_description_short">        Comprando una de las Placas de Apoyo me permites dedicar más tiempo y recursos a este proyecto y a los core que lo respaldan
     </string>
-    <string name="support_thankyou"><![CDATA[        Thank you for purchasing one of the support Badges.<br/>It\'s thanks to people like you that I\'m able to work on my open-source projects.<br/><br/>
-        Feel proud of your new badge and get back to games. Bosses aren\'t going to defeat themselves.
+    <string name="support_thankyou"><![CDATA[        Gracias por comprar uno de las Placas de Apoyo.<br/>Gracias a gente como tú puedo trabajar en mis proyectos de código abierto.<br/><br/>
+        Siéntete orgulloso de tu nueva Placa y vuelve a los juegos. Los jefes no se van a derrotar a solas.
     ]]></string>
-    <string name="support_thankyou_short">        Thank you for purchasing one of the support Badges.\nIt\'s thanks to people like you that I\'m able to work on my open-source projects.
+    <string name="support_thankyou_short">        Gracias por comprar una de las Placas de Apoyo.\nGracias a personas como tú, puedo trabajar en mis proyectos de código abierto.
     </string>
-    <string name="support_badge">Support Badge</string>
-    <string name="support_bronze">Bronze - %1$s</string>
-    <string name="support_silver">Silver - %1$s</string>
-    <string name="support_gold">Gold - %1$s</string>
+    <string name="support_badge">Placa de Apoyo</string>
+    <string name="support_bronze">Bronce - %1$s</string>
+    <string name="support_silver">Plata - %1$s</string>
+    <string name="support_gold">Oro - %1$s</string>
 </resources>
