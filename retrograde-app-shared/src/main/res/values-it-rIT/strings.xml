@@ -31,7 +31,7 @@
     <string name="setting_mupen64plus_BilinearMode">Modalità bilineare</string>
     <string name="setting_pcsx_rearmed_frameskip">Frameskip</string>
     <string name="setting_pcsx_rearmed_drc">Ricompilatore dinamico</string>
-    <string name="setting_ppsspp_auto_frameskip">Auto frameskip</string>
+    <string name="setting_ppsspp_auto_frameskip">Frameskip automatico</string>
     <string name="setting_ppsspp_frameskip">Frameskip</string>
     <string name="setting_ppsspp_cpu_core">Ricompilatore dinamico</string>
     <string name="setting_ppsspp_internal_resolution">Risoluzione</string>
