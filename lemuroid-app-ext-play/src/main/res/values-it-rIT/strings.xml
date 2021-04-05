@@ -18,18 +18,18 @@
   ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="gdrive_sign_in_failed">Accesso Google non riuscito: %s (%s)</string>
+    <string name="gdrive_sign_in_failed">Accesso a Google non riuscito: %s (%s)</string>
     <string name="gdrive_sign_in_success">Accesso effettuato a Google come %s</string>
     <string name="gdrive_sign_out_success">Disconnesso da Google</string>
     <string name="gdrive_missing_play_services">Google Drive richiede Google Play Services che non sono supportati dal tuo dispositivo</string>
     <string name="gdrive_connected_summary">Collegato a %s</string>
     <string name="gdrive_connected_none_summary">Non configurato</string>
     <string name="gdrive_last_sync_completed">Ultima sincronizzazione: %s</string>
-    <string name="game_loading_download_core">Download core…</string>
+    <string name="game_loading_download_core">Scaricamento core…</string>
     <string name="support_description"><![CDATA[        <b>Acquista il Badge di Supporto</b><br/><br/>
-        Lemuroid è un progetto di emulazione open-source basato su Libretro. Tutte le sue funzionalita' sono disponibili gratuitamente e senza pubblicità.<br/><br/>
-        Acquistando uno dei Badge di Supporto mi permetti di dedicare più tempo e risorse a questo progetto e ai core che lo sostengono, assicurandoti il suo futuro.<br/><br/>
-        Grazie per essere parte di questa straordinaria comunità.
+        Lemuroid è un progetto di emulazione open-source basato su Libretro. Tutte le sue funzionalità sono disponibili gratuitamente e senza pubblicità.<br/><br/>
+        Acquistando uno dei Badge di Supporto mi permetti di dedicare più tempo e risorse a questo progetto e ai core che lo compongono, assicurandoti il suo futuro.<br/><br/>
+        Grazie far essere parte di questa straordinaria comunità.
     ]]></string>
     <string name="support_description_short">        Acquistando uno dei Badge di Supporto mi permetti di dedicare più tempo e risorse a questo progetto e ai core che lo supportano
     </string>
