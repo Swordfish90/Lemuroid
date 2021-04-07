@@ -24,19 +24,21 @@ import android.net.Uri
 import android.os.Build
 import com.swordfish.lemuroid.common.files.safeDelete
 import com.swordfish.lemuroid.common.kotlin.writeToFile
-import com.swordfish.lemuroid.lib.core.CoreManager
+import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.io.File
 
-class CoreManagerImpl(
+class CoreUpdaterImpl(
     private val directoriesManager: DirectoriesManager,
     retrofit: Retrofit
-) : CoreManager {
+) : CoreUpdater {
 
     // This is the last tagged versions of cores.
     companion object {
@@ -45,20 +47,22 @@ class CoreManagerImpl(
 
     private val baseUri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
 
-    private val api = retrofit.create(CoreManager.CoreManagerApi::class.java)
+    private val api = retrofit.create(CoreUpdater.CoreManagerApi::class.java)
 
-    override fun downloadCore(
-        context: Context,
-        coreID: CoreID,
-        assetsManager: CoreManager.AssetsManager
-    ): Single<String> {
-        return assetsManager.retrieveAssetsIfNeeded(api, directoriesManager)
-            .andThen(findBundledLibrary(context, coreID))
-            .switchIfEmpty(downloadCoreFromGithub(coreID))
-            .map { it.absolutePath }
+    override fun downloadCores(context: Context, coreIDs: List<CoreID>): Completable {
+        return Observable.fromIterable(coreIDs)
+            .flatMapCompletable { coreId ->
+                CoreID.getAssetManager(coreId)
+                    .retrieveAssetsIfNeeded(api, directoriesManager)
+                    .andThen(findBundledLibrary(context, coreId))
+                    .switchIfEmpty(downloadCoreFromGithub(coreId))
+                    .ignoreElement()
+            }
     }
 
     private fun downloadCoreFromGithub(coreID: CoreID): Single<File> {
+        Timber.i("Downloading core $coreID from github")
+
         val mainCoresDirectory = directoriesManager.getCoresDirectory()
         val coresDirectory = File(mainCoresDirectory, CORES_VERSION).apply {
             mkdirs()

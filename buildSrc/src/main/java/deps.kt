@@ -16,7 +16,7 @@ object deps {
         const val kotlin          = "1.4.30"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
-        const val work            = "2.4.0"
+        const val work            = "2.5.0"
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"

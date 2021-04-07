@@ -1,12 +1,13 @@
 package com.swordfish.lemuroid.lib.core.assetsmanager
 
-import com.swordfish.lemuroid.lib.core.CoreManager
+import com.swordfish.lemuroid.lib.core.CoreUpdater
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import timber.log.Timber
 import java.io.File
 
-class PPSSPPAssetsManager : CoreManager.AssetsManager {
+class PPSSPPAssetsManager : CoreID.AssetsManager {
 
     override fun clearAssets(directoriesManager: DirectoriesManager) = Completable.fromAction {
         getAssetsDirectory(directoriesManager).deleteRecursively()
@@ -14,13 +15,13 @@ class PPSSPPAssetsManager : CoreManager.AssetsManager {
 
     // TODO Here we should handle versioning.
     override fun retrieveAssetsIfNeeded(
-        coreManagerApi: CoreManager.CoreManagerApi,
+        coreUpdaterApi: CoreUpdater.CoreManagerApi,
         directoriesManager: DirectoriesManager
     ): Completable {
         if (getAssetsDirectory(directoriesManager).exists())
             return Completable.complete()
 
-        return coreManagerApi.downloadZip(PPSSPP_ASSETS_URL).doOnSuccess { response ->
+        return coreUpdaterApi.downloadZip(PPSSPP_ASSETS_URL).doOnSuccess { response ->
             val coreAssetsDirectory = getAssetsDirectory(directoriesManager)
             coreAssetsDirectory.mkdirs()
 

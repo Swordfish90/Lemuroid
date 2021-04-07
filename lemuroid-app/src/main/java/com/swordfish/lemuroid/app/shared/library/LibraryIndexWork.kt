@@ -1,12 +1,9 @@
 package com.swordfish.lemuroid.app.shared.library
 
 import android.content.Context
-import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.ListenableWorker
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.RxWorker
-import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
@@ -39,18 +36,6 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
             .toSingleDefault(Result.success())
             .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
             .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
-    }
-
-    companion object {
-        val UNIQUE_WORK_ID: String = LibraryIndexWork::class.java.simpleName
-
-        fun enqueueUniqueWork(applicationContext: Context) {
-            WorkManager.getInstance(applicationContext).enqueueUniqueWork(
-                UNIQUE_WORK_ID,
-                ExistingWorkPolicy.APPEND,
-                OneTimeWorkRequestBuilder<LibraryIndexWork>().build()
-            )
-        }
     }
 
     @dagger.Module(subcomponents = [Subcomponent::class])

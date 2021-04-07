@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
@@ -64,7 +64,7 @@ class TVHomeFragment : BrowseSupportFragment() {
                 }
                 is TVSetting -> {
                     when (item.type) {
-                        TVSettingType.RESCAN -> LibraryIndexWork.enqueueUniqueWork(context!!.applicationContext)
+                        TVSettingType.RESCAN -> LibraryIndexScheduler.scheduleFullSync(context!!.applicationContext)
                         TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
                         TVSettingType.SETTINGS -> launchTVSettings()
                         TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()

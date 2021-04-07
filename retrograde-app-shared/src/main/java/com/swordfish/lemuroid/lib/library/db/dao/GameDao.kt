@@ -102,6 +102,9 @@ interface GameDao {
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
     fun selectSystems(): LiveData<List<String>>
 
+    @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
+    fun rxSelectSystems(): Observable<List<String>>
+
     @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
     fun selectSystemsWithCount(): Observable<List<SystemCount>>
 

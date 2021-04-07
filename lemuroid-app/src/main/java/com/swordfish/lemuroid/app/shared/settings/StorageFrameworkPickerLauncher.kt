@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -80,7 +80,7 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
     }
 
     private fun startLibraryIndexWork() {
-        LibraryIndexWork.enqueueUniqueWork(applicationContext)
+        LibraryIndexScheduler.scheduleFullSync(applicationContext)
     }
 
     companion object {

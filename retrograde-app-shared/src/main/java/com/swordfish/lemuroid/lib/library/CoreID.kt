@@ -1,5 +1,11 @@
 package com.swordfish.lemuroid.lib.library
 
+import com.swordfish.lemuroid.lib.core.CoreUpdater
+import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
+import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import io.reactivex.Completable
+
 enum class CoreID(
     val coreName: String,
     val coreDisplayName: String,
@@ -84,7 +90,25 @@ enum class CoreID(
         "prosystem",
         "ProSystem",
         "libprosystem_libretro_android.so"
-    ),
+    );
+
+    companion object {
+        fun getAssetManager(coreID: CoreID): AssetsManager {
+            return when (coreID) {
+                PPSSPP -> PPSSPPAssetsManager()
+                else -> NoAssetsManager()
+            }
+        }
+    }
+
+    interface AssetsManager {
+        fun retrieveAssetsIfNeeded(
+            coreUpdaterApi: CoreUpdater.CoreManagerApi,
+            directoriesManager: DirectoriesManager
+        ): Completable
+
+        fun clearAssets(directoriesManager: DirectoriesManager): Completable
+    }
 }
 
 fun findByName(query: String): CoreID? =

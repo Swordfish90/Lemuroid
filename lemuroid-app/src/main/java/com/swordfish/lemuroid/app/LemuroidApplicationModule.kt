@@ -37,10 +37,11 @@ import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
-import com.swordfish.lemuroid.ext.feature.core.CoreManagerImpl
+import com.swordfish.lemuroid.ext.feature.core.CoreUpdaterImpl
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManagerImpl
 import com.swordfish.lemuroid.lib.bios.BiosManager
+import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -243,7 +244,7 @@ abstract class LemuroidApplicationModule {
         fun coreManager(
             directoriesManager: DirectoriesManager,
             retrofit: Retrofit
-        ) = CoreManagerImpl(directoriesManager, retrofit)
+        ): CoreUpdater = CoreUpdaterImpl(directoriesManager, retrofit)
 
         @Provides
         @PerApp
@@ -259,7 +260,6 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun gameLoader(
-            coreManager: CoreManagerImpl,
             lemuroidLibrary: LemuroidLibrary,
             statesManager: StatesManager,
             savesManager: SavesManager,
@@ -268,7 +268,6 @@ abstract class LemuroidApplicationModule {
             savesCoherencyEngine: SavesCoherencyEngine,
             directoriesManager: DirectoriesManager
         ) = GameLoader(
-            coreManager,
             lemuroidLibrary,
             statesManager,
             savesManager,
