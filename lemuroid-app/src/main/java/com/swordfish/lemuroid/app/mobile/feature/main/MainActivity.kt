@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -44,7 +45,6 @@ import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import io.reactivex.rxkotlin.subscribeBy
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import javax.inject.Inject
 
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
@@ -87,7 +87,7 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
             .get(MainViewModel::class.java)
 
         mainViewModel?.displayProgress?.observe(this) { isRunning ->
-            findViewById<MaterialProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
+            findViewById<ProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
         }
     }
 
