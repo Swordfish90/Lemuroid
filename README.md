@@ -34,6 +34,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - PlayStation Portable (PSP) ([ppsspp](https://docs.libretro.com/library/ppsspp/))
 - FinalBurn Neo (Arcade) ([fbneo](https://github.com/libretro/FBNeo/))
 - Nintendo DS (NDS) ([desmume](https://docs.libretro.com/library/desmume/)/[MelonDS](https://docs.libretro.com/library/melonds/))
+- NEC PC Engine (PCE) ([beetle_pce_fast](https://docs.libretro.com/library/beetle_pce_fast/))
 
 ### Features:
 - Android TV support
