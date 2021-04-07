@@ -17,15 +17,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/toolbar" />
 
-        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:indeterminate="true"
-            app:mpb_progressStyle="horizontal"
-            app:mpb_useIntrinsicPadding="false"
-            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding" />
+            android:indeterminate="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

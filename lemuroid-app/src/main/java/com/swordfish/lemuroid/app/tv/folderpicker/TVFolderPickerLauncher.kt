@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
-import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 
 class TVFolderPickerLauncher : ImmersiveActivity() {
@@ -42,7 +42,7 @@ class TVFolderPickerLauncher : ImmersiveActivity() {
     }
 
     private fun startLibraryIndexWork() {
-        LibraryIndexWork.enqueueUniqueWork(applicationContext)
+        LibraryIndexScheduler.scheduleFullSync(applicationContext)
     }
 
     companion object {

@@ -16,7 +16,7 @@ object deps {
         const val kotlin          = "1.4.30"
         const val okHttp          = "3.12.0"
         const val retrofit        = "2.5.0"
-        const val work            = "2.4.0"
+        const val work            = "2.5.0"
         const val navigation      = "2.1.0"
         const val rxbindings      = "3.0.0"
         const val lifecycle       = "2.1.0"
@@ -137,16 +137,13 @@ object deps {
         const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.1"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         const val timber                   = "com.jakewharton.timber:timber:4.7.1"
-        const val material                 = "com.google.android.material:material:1.2.1"
+        const val material                 = "com.google.android.material:material:1.3.0"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:29.0-android"
         const val harmony                  = "com.frybits.harmony:harmony:1.1.4"
         const val rxBilling                = "com.github.betterme-dev:RxBilling:3.0.0"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
-
-        // This will be replaced by native material components when they will be ready.
-        const val materialProgressBar      = "me.zhanghai.android.materialprogressbar:library:1.6.1"
     }
 
     object plugins {

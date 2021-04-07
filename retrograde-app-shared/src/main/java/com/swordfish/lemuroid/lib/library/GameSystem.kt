@@ -369,6 +369,10 @@ data class GameSystem(
                                 R.string.setting_gambatte_dark_filter_level
                             )
                         ),
+                        defaultSettings = listOf(
+                            CoreVariable("gambatte_gb_colorization", "internal"),
+                            CoreVariable("gambatte_gb_internal_palette", "GB - Pocket")
+                        ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GB)
                         )

@@ -11,7 +11,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
+import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
@@ -134,7 +134,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun rescanLibrary() {
-        context?.let { LibraryIndexWork.enqueueUniqueWork(it) }
+        context?.let { LibraryIndexScheduler.scheduleFullSync(it) }
     }
 
     @dagger.Module

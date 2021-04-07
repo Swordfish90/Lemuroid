@@ -10,6 +10,7 @@ import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.BuildConfig
+import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.ext.feature.context.ContextHandler
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
@@ -79,6 +80,7 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
 
         if (isMainProcess()) {
             SaveSyncWork.enqueueAutoWork(applicationContext, 0)
+            LibraryIndexScheduler.scheduleCoreUpdate(applicationContext)
         }
     }
 

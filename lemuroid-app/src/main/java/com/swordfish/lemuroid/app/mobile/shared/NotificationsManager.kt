@@ -47,6 +47,19 @@ class NotificationsManager(private val applicationContext: Context) {
         return builder.build()
     }
 
+    fun installingCoresNotification(): Notification {
+        createDefaultNotificationChannel()
+
+        val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_lemuroid_tiny)
+            .setContentTitle(applicationContext.getString(R.string.installing_core_notification_title))
+            .setContentText(applicationContext.getString(R.string.installing_core_notification_message))
+            .setProgress(100, 0, true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+
+        return builder.build()
+    }
+
     fun saveSyncNotification(): Notification {
         createDefaultNotificationChannel()
 
@@ -78,5 +91,6 @@ class NotificationsManager(private val applicationContext: Context) {
         const val LIBRARY_INDEXING_NOTIFICATION_ID = 1
         const val SAVE_SYNC_NOTIFICATION_ID = 2
         const val GAME_RUNNING_NOTIFICATION_ID = 3
+        const val CORE_INSTALL_NOTIFICATION_ID = 4
     }
 }

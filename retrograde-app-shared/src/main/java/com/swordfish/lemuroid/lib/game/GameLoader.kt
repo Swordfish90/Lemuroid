@@ -21,11 +21,8 @@ package com.swordfish.lemuroid.lib.game
 
 import android.content.Context
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
-import com.swordfish.lemuroid.lib.core.CoreManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
-import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
-import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
@@ -42,7 +39,6 @@ import timber.log.Timber
 import java.io.File
 
 class GameLoader(
-    private val coreManager: CoreManager,
     private val lemuroidLibrary: LemuroidLibrary,
     private val statesManager: StatesManager,
     private val savesManager: SavesManager,
@@ -57,13 +53,6 @@ class GameLoader(
         class Ready(val gameData: GameData) : LoadingState()
     }
 
-    private fun getAssetManagerForCore(coreID: CoreID): CoreManager.AssetsManager {
-        return when (coreID) {
-            CoreID.PPSSPP -> PPSSPPAssetsManager()
-            else -> NoAssetsManager()
-        }
-    }
-
     fun load(
         appContext: Context,
         game: Game,
@@ -76,11 +65,7 @@ class GameLoader(
             val system = GameSystem.findById(game.systemId)
 
             val coreLibrary = runCatching {
-                coreManager.downloadCore(
-                    appContext,
-                    systemCoreConfig.coreID,
-                    getAssetManagerForCore(systemCoreConfig.coreID)
-                ).blockingGet()
+                findLibrary(appContext, systemCoreConfig.coreID)!!.absolutePath
             }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
 
             emitter.onNext(LoadingState.LoadingGame)
@@ -147,6 +132,17 @@ class GameLoader(
         } finally {
             emitter.onComplete()
         }
+    }
+
+    private fun findLibrary(context: Context, coreID: CoreID): File? {
+        val files = sequenceOf(
+            File(context.applicationInfo.nativeLibraryDir),
+            context.filesDir
+        )
+
+        return files
+            .flatMap { it.walkBottomUp() }
+            .firstOrNull { it.name == coreID.libretroFileName }
     }
 
     private fun areRequiredBiosFilesPresent(systemCoreConfig: SystemCoreConfig): Boolean {

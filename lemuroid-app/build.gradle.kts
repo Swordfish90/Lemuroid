@@ -8,7 +8,7 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 130
+        versionCode = 137
         versionName = "1.10.0-beta"
         applicationId = "com.swordfish.lemuroid"
     }
@@ -128,7 +128,6 @@ dependencies {
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.extensions)
     implementation(deps.libs.androidx.lifecycle.reactiveStreams)
-    implementation(deps.libs.materialProgressBar)
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)
 
