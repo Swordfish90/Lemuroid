@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Accesso a Google non riuscito: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Accesso effettuato a Google come %s</string>
+    <string name="gdrive_sign_out_success">Disconnesso da Google</string>
+    <string name="gdrive_missing_play_services">Google Drive richiede Google Play Services che non sono supportati dal tuo dispositivo</string>
+    <string name="gdrive_connected_summary">Collegato a %s</string>
+    <string name="gdrive_connected_none_summary">Non configurato</string>
+    <string name="gdrive_last_sync_completed">Ultima sincronizzazione: %s</string>
+    <string name="game_loading_download_core">Scaricamento core…</string>
+    <string name="support_description"><![CDATA[        <b>Acquista il Badge di Supporto</b><br/><br/>
+        Lemuroid è un progetto di emulazione open-source basato su Libretro. Tutte le sue funzionalità sono disponibili gratuitamente e senza pubblicità.<br/><br/>
+        Acquistando uno dei Badge di Supporto mi permetti di dedicare più tempo e risorse a questo progetto e ai core che lo compongono, assicurandoti il suo futuro.<br/><br/>
+        Grazie far essere parte di questa straordinaria comunità.
+    ]]></string>
+    <string name="support_description_short">        Acquistando uno dei Badge di Supporto mi permetti di dedicare più tempo e risorse a questo progetto e ai core che lo supportano
+    </string>
+    <string name="support_thankyou"><![CDATA[        Grazie per aver acquistato uno dei Badge di supporto.<br/>È grazie a persone come te che sono in grado di lavorare ai miei progetti open-source.<br/><br/>
+        Sentiti orgoglioso del tuo nuovo Badge e torna ai tuoi giochi. I boss non si sconfiggono da soli.
+    ]]></string>
+    <string name="support_thankyou_short">        Grazie per aver acquistato uno dei Badge di supporto.\nÈ grazie a persone come te che sono in grado di lavorare ai miei progetti open-source.
+    </string>
+    <string name="support_badge">Badge di Supporto</string>
+    <string name="support_bronze">Bronzo - %1$s</string>
+    <string name="support_silver">Argento - %1$s</string>
+    <string name="support_gold">Oro - %1$s</string>
+</resources>
