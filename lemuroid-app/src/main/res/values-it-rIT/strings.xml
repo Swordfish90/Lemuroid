@@ -88,9 +88,12 @@
     <string name="save_sync_notification_title">Sincronizzazione salvataggi Cloud in corso</string>
     <string name="save_sync_notification_message">Questo può richiedere fino a qualche minuto</string>
     <string name="game_running_notification_title">%1$s è in esecuzione</string>
+    <string name="game_running_notification_title_alternative">Il gioco è in esecuzione</string>
     <string name="game_running_notification_message">Assicurati di salvare i tuoi progressi</string>
+    <string name="installing_core_notification_title">Aggiornamento dei Core</string>
+    <string name="installing_core_notification_message">Questo può richiedere fino a qualche minuto</string>
     <string name="game_loader_error_gl_incompatible">Questo Core richiede una versione OpenGL ES che non è supportata dal tuo dispositivo.</string>
-    <string name="game_loader_error_load_core">Qualcosa non ha funzionato durante il caricamento del Core. Assicurati che il tuo dispositivo sia connesso a internet e prova a riportare Lemuroid alle impostazioni di fabbrica. Se il problema persiste, prova a riavviare il dispositivo.</string>
+    <string name="game_loader_error_load_core">Sembra che il Core Libretro non sia stato caricato. Assicurati che il tuo dispositivo sia connesso a internet e prova a scansionare la tua libreria. Se il problema persiste, questo core potrebbe non essere supportato sul tuo dispositivo.</string>
     <string name="game_loader_error_load_game">Qualcosa non ha funzionato durante il caricamento del gioco. Assicurati che la ROM sia supportata da Lemuroid e scansiona nuovamente tuoi giochi.</string>
     <string name="game_loader_error_save">Qualcosa non ha funzionato con il file di salvataggio. Se il problema persiste, prova a disabilitare il salvataggio automatico.</string>
     <string name="game_loader_error_generic">Qualcosa non ha funzionato. Se il problema persiste, prova quanto segue:\n
