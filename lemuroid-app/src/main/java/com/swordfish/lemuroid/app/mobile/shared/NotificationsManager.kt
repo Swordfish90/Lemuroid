@@ -15,15 +15,19 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class NotificationsManager(private val applicationContext: Context) {
 
-    fun gameRunningNotification(game: Game): Notification {
+    fun gameRunningNotification(game: Game?): Notification {
         createDefaultNotificationChannel()
 
         val intent = Intent(applicationContext, GameActivity::class.java)
         val contentIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        val title = game?.let {
+            applicationContext.getString(R.string.game_running_notification_title, game.title)
+        } ?: applicationContext.getString(R.string.game_running_notification_title_alternative)
+
         val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lemuroid_tiny)
-            .setContentTitle(applicationContext.getString(R.string.game_running_notification_title, game.title))
+            .setContentTitle(title)
             .setContentText(applicationContext.getString(R.string.game_running_notification_message))
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setOngoing(true)

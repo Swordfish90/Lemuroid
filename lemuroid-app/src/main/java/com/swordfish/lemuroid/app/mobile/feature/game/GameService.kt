@@ -15,12 +15,12 @@ class GameService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val game = intent.extras?.getSerializable(EXTRA_GAME) as Game
+        val game = intent.extras?.getSerializable(EXTRA_GAME) as Game?
         displayNotification(game)
         return START_STICKY
     }
 
-    private fun displayNotification(game: Game) {
+    private fun displayNotification(game: Game?) {
         val notification = NotificationsManager(applicationContext).gameRunningNotification(game)
         startForeground(NotificationsManager.GAME_RUNNING_NOTIFICATION_ID, notification)
     }
