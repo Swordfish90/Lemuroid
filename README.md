@@ -50,5 +50,5 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Customizable touch controls (size and position)
 - Cloud save sync
 
-### Lanugages
+### Lanugages:
 You can help translate Lemuroid in your native language by going here: https://crowdin.com/project/lemuroid
