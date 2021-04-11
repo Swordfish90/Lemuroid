@@ -123,7 +123,7 @@
     <string name="mobile_settings_help">Aiuto</string>
     <string name="mobile_settings_support">Supporta</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Come si usa Lemuroid?</b><br/>
-        Copia tutte le ROM in una cartella sul dispositivo e selezionala all'interno di Lemuroid. Questa cartella può avere sotto-cartelle. Una volta completata la scansione, dovresti vedere i tuoi giochi.<br/><br/>
+        Copia tutte le ROM in una cartella sul dispositivo e selezionala all\'interno di Lemuroid. Questa cartella può avere sotto-cartelle. Una volta completata la scansione, dovresti vedere i tuoi giochi.<br/><br/>
         <b>&#8226;Perché non vedo i miei giochi?</b><br/>
         Se i tuoi giochi sono compressi, prova a decomprimerli. Se questo non funziona, prova a mettere le ROM in directory separate, una per ogni sistema con i seguenti nomi: $SYSTEMS.
     ]]></string>
