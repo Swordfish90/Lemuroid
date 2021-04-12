@@ -24,7 +24,7 @@
     <string name="setting_gambatte_dark_filter_level">Pantalla oscura</string>
     <string name="setting_mgba_solar_sensor_level">Nivel del sensor solar</string>
     <string name="setting_mgba_interframe_blending">Ghosting LCD</string>
-    <string name="setting_mgba_frameskip">Frameskip</string>
+    <string name="setting_mgba_frameskip">Salto de frames</string>
     <string name="setting_mgba_color_correction">Corrección de color</string>
     <string name="setting_mupen64plus_43screensize">Tamaño de pantalla 4:3</string>
     <string name="setting_mupen64plus_cpucore">Recompilador dinámico</string>
