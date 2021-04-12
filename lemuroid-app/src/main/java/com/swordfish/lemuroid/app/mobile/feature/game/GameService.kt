@@ -15,9 +15,12 @@ class GameService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val game = intent.extras?.getSerializable(EXTRA_GAME) as Game?
+        val game = kotlin.runCatching {
+            intent.extras?.getSerializable(EXTRA_GAME) as Game?
+        }.getOrNull()
+
         displayNotification(game)
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     private fun displayNotification(game: Game?) {
