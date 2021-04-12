@@ -10,7 +10,7 @@
     <string name="discover">Descubrir</string>
     <string name="rescan">Re-escanear</string>
     <string name="none">Ninguno</string>
-    <string name="directory">Carpeta</string>
+    <string name="directory">Directorio</string>
     <string name="display_filter">Filtro de imagen</string>
     <string name="roms">ROMs</string>
     <string name="ok">Aceptar</string>
@@ -22,10 +22,10 @@
     <string name="settings_category_touch_input">Control táctil</string>
     <string name="settings_category_gamepads">Mandos</string>
     <string name="settings_category_advanced">Avanzado</string>
-    <string name="settings_title_enable_autosave">Autoguardar estado</string>
+    <string name="settings_title_enable_autosave">Estado del autoguardado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar al tocar</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidad de inclinación</string>
-    <string name="settings_title_enable_external_gamepads">Permitir mandos</string>
+    <string name="settings_title_enable_external_gamepads">Activar mandos</string>
     <string name="settings_gamepad_bindings">Asociaciones de mando…</string>
     <string name="settings_gamepad_button_name">Botón %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -95,12 +95,12 @@
     <string name="game_loader_error_gl_incompatible">Este núcleo requiere una versión de OpenGL ES que no es compatible con tu dispositivo.</string>
     <string name="game_loader_error_load_core">Parece que el Núcleo de Libretro no se ha cargado. Asegúrate de que tu dispositivo está conectado a Internet e intenta escanear otra vez la biblioteca. Si el problema persiste, es posible que el Núcleo no sea compatible con el dispositivo.</string>
     <string name="game_loader_error_load_game">Se produjo un error al cargar el juego. Asegúrate de que la ROM está soportada por Lemuroid y vuelve a escanear tus juegos.</string>
-    <string name="game_loader_error_save">Se produjo un error con tu archivo guardado. Si el problema persiste, intenta desactivar el guardado automático.</string>
-    <string name="game_loader_error_generic">Se produjo un error, intenta lo siguiente:\n
+    <string name="game_loader_error_save">Se produjo un error con tu archivo de guardado. Si el problema persiste, intenta desactivar el guardado automático.</string>
+    <string name="game_loader_error_generic">Se produjo un error. Intenta lo siguiente:\n
         \n\u2022 Desactiva el autoguardado y reinicia el juego
-        \n\u2022 Limpia la caché de la aplicación en las opciones de Android
+        \n\u2022 Ve a las opciones de Android y limpia el caché de la aplicación
         \n\u2022 Entra en las opciones de Lemuroid y realiza una restauración de fábrica
-        \n\nSi nada de esto funciona es posible que este juego/núcleo no sea compatible con este dispositivo.
+        \n\nSi nada de esto funciona, es posible que este juego/núcleo no sea compatible con este dispositivo.
     </string>
     <string name="game_loader_error_missing_bios">Parece que faltan las BIOS requeridas, póngalas en el directorio de ROMs y escanee de nuevo. Archivos requeridos: %1$s</string>
     <string name="game_shortcut_error">Algo salió mal al cargar el juego. Por favor, asegúrate de que el juego que intentas cargar existe y está en tu librería.</string>
