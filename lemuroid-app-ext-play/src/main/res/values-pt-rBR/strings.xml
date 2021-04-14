@@ -21,7 +21,7 @@
     <string name="gdrive_sign_in_failed">Falha no login do Google: %s (%s)</string>
     <string name="gdrive_sign_in_success">Conectado ao Google como %s</string>
     <string name="gdrive_sign_out_success">Sessão encerrada do Google</string>
-    <string name="gdrive_missing_play_services">O Google Drive requer o Google Play Services que não são suportados no seu dispositivo</string>
+    <string name="gdrive_missing_play_services">O Google Drive exige serviços do Google Play que não são suportados no seu dispositivo</string>
     <string name="gdrive_connected_summary">Vinculado a %s</string>
     <string name="gdrive_connected_none_summary">Não configurado</string>
     <string name="gdrive_last_sync_completed">Última sincronização: %s</string>
