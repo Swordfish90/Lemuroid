@@ -113,7 +113,7 @@
     <string name="tv_folder_storage_secondary">Armazenamento secundário %1$s</string>
     <string name="tv_folder_storage_title">Seleccionar armazenamento</string>
     <string name="tv_home_section_favorites">Favoritos</string>
-    <string name="tv_home_section_recents">Recentes</string>
+    <string name="tv_home_section_recents">Recente</string>
     <string name="tv_home_section_systems">Sistemas</string>
     <string name="tv_home_section_settings">Configurações</string>
     <string name="tv_search_results">Jogos</string>
