@@ -90,6 +90,11 @@ enum class CoreID(
         "prosystem",
         "ProSystem",
         "libprosystem_libretro_android.so"
+    ),
+    DOSBOX_PURE(
+        "dosbox_pure",
+        "DosBox Pure",
+        "libdosbox_pure_libretro_android.so"
     );
 
     companion object {

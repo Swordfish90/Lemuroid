@@ -12,6 +12,10 @@
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standard</string>
 
+    <string name="controller_dos_auto">Auto</string>
+    <string name="controller_dos_mouse_left">Mouse with Left Stick</string>
+    <string name="controller_dos_mouse_right">Mouse with Right Stick</string>
+
     <!-- Core settings titles -->
     <string name="setting_stella_filter">TV effect</string>
     <string name="setting_stella_crop_hoverscan">Crop horizontal overscan</string>

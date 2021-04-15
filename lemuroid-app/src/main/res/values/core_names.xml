@@ -16,4 +16,5 @@
     <string name="core_name_handy">handy</string>
     <string name="core_name_prosystem">prosystem</string>
     <string name="core_name_mednafen_pce_fast">mednafen_pce_fast</string>
+    <string name="core_name_dosbox_pure">dosbox_pure</string>
 </resources>

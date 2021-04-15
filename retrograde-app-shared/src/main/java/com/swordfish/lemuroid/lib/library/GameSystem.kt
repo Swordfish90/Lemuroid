@@ -832,7 +832,35 @@ data class GameSystem(
                 ),
                 uniqueExtensions = listOf("pce"),
                 supportedExtensions = listOf("bin"),
-            )
+            ),
+            GameSystem(
+                SystemID.DOS,
+                "DOS",
+                R.string.game_system_title_dos,
+                R.string.game_system_abbr_dos,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.DOSBOX_PURE,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(
+                                ControllerConfigs.DOS_AUTO,
+                                ControllerConfigs.DOS_MOUSE_LEFT,
+                                ControllerConfigs.DOS_MOUSE_RIGHT,
+                            )
+                        ),
+                        statesSupported = false,
+                    )
+                ),
+                fastForwardSupport = false,
+                uniqueExtensions = listOf("dosz"),
+                supportedExtensions = listOf("zip"),
+                scanOptions = ScanOptions(
+                    scanByFilename = false,
+                    scanByUniqueExtension = true,
+                    scanByPathAndFilename = false,
+                    scanByPathAndSupportedExtensions = true
+                ),
+            ),
         )
 
         private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id.dbname to it }.toTypedArray()) }

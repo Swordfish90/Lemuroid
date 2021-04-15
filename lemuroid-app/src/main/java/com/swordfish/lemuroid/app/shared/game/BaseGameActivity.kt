@@ -246,8 +246,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun findControllerId(supported: Array<Controller>, controllerConfig: ControllerConfig): Int? {
         return supported
-            .firstOrNull { it.description == controllerConfig.libretroDescriptor }
-            ?.id
+            .firstOrNull { controller ->
+                sequenceOf(
+                    controller.id == controllerConfig.libretroId,
+                    controller.description == controllerConfig.libretroDescriptor
+                ).any { it }
+            }?.id
     }
 
     private fun handleRetroViewError(errorCode: Int) {
@@ -325,6 +329,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.ATARI7800 -> GLRetroView.SHADER_CRT
                 SystemID.PC_ENGINE -> GLRetroView.SHADER_CRT
                 SystemID.LYNX -> GLRetroView.SHADER_LCD
+                SystemID.DOS -> GLRetroView.SHADER_CRT
             }
         }
     }
