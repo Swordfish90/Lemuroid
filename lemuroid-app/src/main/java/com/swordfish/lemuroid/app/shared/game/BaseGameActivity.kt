@@ -330,6 +330,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.PC_ENGINE -> GLRetroView.SHADER_CRT
                 SystemID.LYNX -> GLRetroView.SHADER_LCD
                 SystemID.DOS -> GLRetroView.SHADER_CRT
+                SystemID.NGP -> GLRetroView.SHADER_LCD
+                SystemID.NGC -> GLRetroView.SHADER_LCD
             }
         }
     }

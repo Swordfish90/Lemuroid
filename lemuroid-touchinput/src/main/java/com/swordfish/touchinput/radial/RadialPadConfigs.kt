@@ -1142,4 +1142,35 @@ object RadialPadConfigs {
                 SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
             )
         )
+
+    val NGP_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            secondaryDials = listOf(
+                SecondaryDialConfig.Empty(4, 1, 1f),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val NGP_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "B"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "A"
+                    )
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
 }

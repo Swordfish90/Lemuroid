@@ -91,6 +91,11 @@ enum class CoreID(
         "ProSystem",
         "libprosystem_libretro_android.so"
     ),
+    MEDNAFEN_NGP(
+        "mednafen_ngp",
+        "Mednafen NGP",
+        "libmednafen_ngp_libretro_android.so"
+    ),
     DOSBOX_PURE(
         "dosbox_pure",
         "DosBox Pure",

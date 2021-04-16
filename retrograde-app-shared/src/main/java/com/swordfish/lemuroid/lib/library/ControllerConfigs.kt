@@ -165,12 +165,19 @@ object ControllerConfigs {
         mergeDPADAndLeftStickEvents = true,
     )
 
+    val NGP = ControllerConfig(
+        "default",
+        R.string.controller_default,
+        TouchControllerID.NGP,
+        mergeDPADAndLeftStickEvents = true,
+    )
+
     val DOS_AUTO = ControllerConfig(
         "auto",
         R.string.controller_dos_auto,
         TouchControllerID.DOS,
         allowTouchRotation = true,
-        libretroId = 0
+        libretroId = 1
     )
 
     val DOS_MOUSE_LEFT = ControllerConfig(

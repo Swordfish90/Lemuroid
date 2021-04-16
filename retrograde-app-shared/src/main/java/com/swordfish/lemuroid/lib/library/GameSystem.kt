@@ -834,6 +834,36 @@ data class GameSystem(
                 supportedExtensions = listOf("bin"),
             ),
             GameSystem(
+                SystemID.NGP,
+                "SNK - Neo Geo Pocket",
+                R.string.game_system_title_ngp,
+                R.string.game_system_abbr_ngp,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MEDNAFEN_NGP,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NGP)
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("ngp"),
+            ),
+            GameSystem(
+                SystemID.NGC,
+                "SNK - Neo Geo Pocket Color",
+                R.string.game_system_title_ngc,
+                R.string.game_system_abbr_ngc,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MEDNAFEN_NGP,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NGP)
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("ngc"),
+            ),
+            GameSystem(
                 SystemID.DOS,
                 "DOS",
                 R.string.game_system_title_dos,
@@ -853,7 +883,6 @@ data class GameSystem(
                 ),
                 fastForwardSupport = false,
                 uniqueExtensions = listOf("dosz"),
-                supportedExtensions = listOf("zip"),
                 scanOptions = ScanOptions(
                     scanByFilename = false,
                     scanByUniqueExtension = true,
