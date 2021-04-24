@@ -24,7 +24,7 @@
     <string name="settings_category_advanced">Advanced</string>
     <string name="settings_title_enable_autosave">Autosave state</string>
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
-    <string name="settings_title_tilt_sensitivity">Tilt to stick sensitivity</string>
+    <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
     <string name="settings_title_enable_external_gamepads">Enable gamepads</string>
 
     <string name="settings_gamepad_bindings">Gamepad bindings…</string>
