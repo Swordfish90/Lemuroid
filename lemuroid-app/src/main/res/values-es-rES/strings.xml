@@ -22,7 +22,7 @@
     <string name="settings_category_touch_input">Control táctil</string>
     <string name="settings_category_gamepads">Mandos</string>
     <string name="settings_category_advanced">Avanzado</string>
-    <string name="settings_title_enable_autosave">Estado del autoguardado</string>
+    <string name="settings_title_enable_autosave">Autoguardar estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar al tocar</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidad de inclinación</string>
     <string name="settings_title_enable_external_gamepads">Activar mandos</string>
@@ -41,8 +41,8 @@
     <string name="settings_bios_category_not_detected">Admitidos</string>
     <string name="settings_title_reset_settings">Restablecer datos de fábrica</string>
     <string name="settings_description_reset_settings">Restablecer Lemuroid a datos de fábrica</string>
-    <string name="reset_settings_warning_message_title">¿Estás seguro/a?</string>
-    <string name="reset_settings_warning_message_description">Esto restablecerá Lemuroid a sus ajustes de fábrica. Se conservarán los datos de guardado y los de estado.</string>
+    <string name="reset_settings_warning_message_title">¿Estás seguro?</string>
+    <string name="reset_settings_warning_message_description">Esto restablecerá Lemuroid a sus ajustes de fábrica. Se conservarán los guardados y los estados.</string>
     <string name="settings_title_save_sync">Guardados en la nube</string>
     <string name="settings_description_save_sync">Respaldar y sincronizar tus partidas en la nube</string>
     <string name="settings_save_sync_refresh">Sincronización manual</string>
@@ -111,7 +111,7 @@
     <string name="tv_folder_picker_action_cancel">Cancelar</string>
     <string name="tv_folder_storage_primary">Almacenamiento principal</string>
     <string name="tv_folder_storage_secondary">Almacenamiento secundario %1$s</string>
-    <string name="tv_folder_storage_title">Elija almacenamiento</string>
+    <string name="tv_folder_storage_title">Seleccionar almacenamiento</string>
     <string name="tv_home_section_favorites">Favoritos</string>
     <string name="tv_home_section_recents">Recientes</string>
     <string name="tv_home_section_systems">Sistemas</string>
