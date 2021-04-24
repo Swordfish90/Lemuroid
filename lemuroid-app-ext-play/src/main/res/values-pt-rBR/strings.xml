@@ -21,20 +21,20 @@
     <string name="gdrive_sign_in_failed">Falha no login do Google: %s (%s)</string>
     <string name="gdrive_sign_in_success">Conectado ao Google como %s</string>
     <string name="gdrive_sign_out_success">Sessão encerrada do Google</string>
-    <string name="gdrive_missing_play_services">O Google Drive requer o Google Play Services que não são suportados no seu dispositivo</string>
+    <string name="gdrive_missing_play_services">O Google Drive exige serviços do Google Play que não são suportados no seu dispositivo</string>
     <string name="gdrive_connected_summary">Vinculado a %s</string>
     <string name="gdrive_connected_none_summary">Não configurado</string>
     <string name="gdrive_last_sync_completed">Última sincronização: %s</string>
     <string name="game_loading_download_core">Baixando núcleo…</string>
     <string name="support_description"><![CDATA[        <b>Adquira o Emblema de Suporte</b><br/><br/>
         Lemuroid é um projeto de emulação de código aberto baseado no Libretro. Todos os seus recursos estão disponíveis de graça e sem anúncios.<br/><br/>
-        Adquirindo um dos Emblemas de Suporte você me permite dedicar mais tempo e recursos a este projeto e os núcleos que o apoiam. guarda segura de seu futuro.<br/><br/>
+        Adquirindo um dos Emblemas de Suporte você me permite dedicar mais tempo e recursos a este projeto e os núcleos que o compõe, preparando-o para o futuro.<br/><br/>
         Obrigado por fazer parte dessa incrível comunidade.
     ]]></string>
-    <string name="support_description_short">        Comprando um dos Emblemas de Suporte você me permite dedicar mais tempo e recursos a este projeto e os núcleos que o apoiam
+    <string name="support_description_short">        Comprando um dos Emblemas de Suporte você me permite dedicar mais tempo e recursos a este projeto e os núcleos que o compõe
     </string>
-    <string name="support_thankyou"><![CDATA[        Obrigado por comprar um dos Emblemas de Suporto.<br/>É graças a pessoas como você que posso trabalhar nos meus projetos de código aberto.<br/><br/>
-        Sinta-se orgulhoso do seu novo emblema e volte a jogos. Os chefes não vão se derrotar.
+    <string name="support_thankyou"><![CDATA[        Obrigado por comprar um dos Emblemas de Suporte.<br/>É graças a pessoas como você que posso trabalhar nos meus projetos de código aberto.<br/><br/>
+        Sinta-se orgulhoso do seu novo emblema e volte a jogar. Os chefes não vão se matar sozinhos.
     ]]></string>
     <string name="support_thankyou_short">        Obrigado por comprar um dos Emblemas de Suporte.\nÉ graças a pessoas como você que eu posso trabalhar em meus projetos de código aberto.
     </string>

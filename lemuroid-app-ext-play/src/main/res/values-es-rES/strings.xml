@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Error al iniciar sesión de Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Sesión iniciada en Google como %s</string>
+    <string name="gdrive_sign_out_success">Sesión cerrada de Google</string>
+    <string name="gdrive_missing_play_services">Google Drive requiere Servicios de Google Play que no son compatibles con tu dispositivo</string>
+    <string name="gdrive_connected_summary">Conectado a %s</string>
+    <string name="gdrive_connected_none_summary">Sin configurar</string>
+    <string name="gdrive_last_sync_completed">Última sincronización: %s</string>
+    <string name="game_loading_download_core">Descargando core…</string>
+    <string name="support_description"><![CDATA[        <b>Compra la Placa de Apoyo</b><br/><br/>
+        Lemuroid es un proyecto de emulación de código abierto basado en Libretro. Todas sus características están disponibles de forma gratuita y sin anuncios.<br/><br/>
+        Al comprar una de las Placas de Apoyo me permites dedicar más tiempo y recursos a este proyecto y a los core que lo respaldan, protegiendo su futuro.<br/><br/>
+        Gracias por ser parte de esta increíble comunidad.
+    ]]></string>
+    <string name="support_description_short">        Comprando una de las Placas de Apoyo me permites dedicar más tiempo y recursos a este proyecto y a los core que lo respaldan
+    </string>
+    <string name="support_thankyou"><![CDATA[        Gracias por comprar uno de las Placas de Apoyo.<br/>Gracias a gente como tú puedo trabajar en mis proyectos de código abierto.<br/><br/>
+        Siéntete orgulloso de tu nueva Placa y vuelve a los juegos. Los jefes no se van a derrotar a solas.
+    ]]></string>
+    <string name="support_thankyou_short">        Gracias por comprar una de las Placas de Apoyo.\nGracias a personas como tú, puedo trabajar en mis proyectos de código abierto.
+    </string>
+    <string name="support_badge">Placa de Apoyo</string>
+    <string name="support_bronze">Bronce - %1$s</string>
+    <string name="support_silver">Plata - %1$s</string>
+    <string name="support_gold">Oro - %1$s</string>
+</resources>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Головна</string>
+    <string name="title_search">Пошук</string>
+    <string name="title_systems">Системи</string>
+    <string name="title_games">Ігри</string>
+    <string name="title_settings">Налаштування</string>
+    <string name="recent">Останні</string>
+    <string name="favorites">Обране</string>
+    <string name="discover">Огляд</string>
+    <string name="rescan">Сканувати знову</string>
+    <string name="none">Нiчого</string>
+    <string name="directory">Каталог</string>
+    <string name="display_filter">Відобразити фільтр</string>
+    <string name="roms">Прошивки</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">Скасувати</string>
+    <string name="settings">Налаштування</string>
+    <string name="support">Підтримка</string>
+    <string name="show_all">Показати все</string>
+    <string name="settings_category_general">Загальне</string>
+    <string name="settings_category_touch_input">Сенсорне введення</string>
+    <string name="settings_category_gamepads">Ґеймпади</string>
+    <string name="settings_category_advanced">Додатково</string>
+    <string name="settings_title_enable_autosave">Стан автозбереження</string>
+    <string name="settings_title_enable_touch_feedback">Вібрувати при дотику</string>
+    <string name="settings_title_tilt_sensitivity">Чутливість стіка</string>
+    <string name="settings_title_enable_external_gamepads">Увімкнути Геймпади</string>
+    <string name="settings_gamepad_bindings">Прив\'язки ґеймпада…</string>
+    <string name="settings_gamepad_button_name">Кнопка %1$s</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_retropad_button_unassigned">Не назначено</string>
+    <string name="settings_gamepad_category_general">Загальні</string>
+    <string name="settings_gamepad_title_reset_bindings">Скинути прив\'язки клавіш</string>
+    <string name="settings_gamepad_title_game_menu">Меню</string>
+    <string name="settings_title_open_cores_selection">Змінити ядра</string>
+    <string name="settings_description_open_cores_selection">Виберіть, яке ядро пов’язане з системою</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">Відображати знайдені та підтримувані файли BIOS</string>
+    <string name="settings_bios_category_detected">Знайдено</string>
+    <string name="settings_bios_category_not_detected">Підтримується</string>
+    <string name="settings_title_reset_settings">Відновлення заводських налаштувань</string>
+    <string name="settings_description_reset_settings">Скинути Lemuroid до заводських налаштувань</string>
+    <string name="reset_settings_warning_message_title">Ви впевнені?</string>
+    <string name="reset_settings_warning_message_description">Це скине Lemuroid до заводських налаштувань. Збереження та Стани будуть збережені.</string>
+    <string name="settings_title_save_sync">Зберігати в хмарці</string>
+    <string name="settings_description_save_sync">Резервне копіювання і синхронізація збереження в хмарі</string>
+    <string name="settings_save_sync_refresh">Ручна синхронізація</string>
+    <string name="settings_save_sync_refresh_description">Виконати ручну синхронізацію зараз.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Автосинхронізація</string>
+    <string name="settings_save_sync_enable_auto_description">Автоматично виконувати синхронізацію перед та після ігрового сеансу при підключенні до Wi-Fi</string>
+    <string name="settings_save_sync_configure">Налаштувати %1$s</string>
+    <string name="settings_save_sync_include_saves">Синхронізувати внутрішньо-ігрові збереження</string>
+    <string name="settings_save_sync_include_saves_description">%1$s на пристрої</string>
+    <string name="settings_save_sync_include_states">Синхронізувати стани</string>
+    <string name="settings_save_sync_include_states_description">Більш зручно, але важче і менш надійно. Оберіть, які ядра/системи Ви хочете синхронізувати</string>
+    <string name="game_context_menu_add_to_favorites">Додати в обране</string>
+    <string name="game_context_menu_remove_from_favorites">Видалити з обраного</string>
+    <string name="game_context_menu_resume">Поновити</string>
+    <string name="game_context_menu_restart">Перезапуск</string>
+    <string name="game_context_menu_create_shortcut">Закріпити у лаунчері</string>
+    <string name="home_empty_title">Виберіть каталог ROM</string>
+    <string name="home_empty_message">Lemuroid повинен сканувати каталог, що містить ROM файли.\nЦе може зайняти до декількох хвилин.</string>
+    <string name="home_empty_action">Виберіть каталог</string>
+    <string name="game_menu_save">Зберегти</string>
+    <string name="game_menu_load">Завантажити</string>
+    <string name="game_menu_restart">Перезапуск</string>
+    <string name="game_menu_quit">Вийти</string>
+    <string name="game_menu_settings">Налаштування</string>
+    <string name="game_menu_state">Стан %1$s</string>
+    <string name="game_menu_change_disk_button">Змінити Диск</string>
+    <string name="game_menu_edit_touch_controls">Змінити елементи керування</string>
+    <string name="game_menu_mute_audio">Вимкнути звук</string>
+    <string name="game_menu_fast_forward">Перемотати вперед</string>
+    <string name="game_menu_change_disk_disk">Диск %1$s</string>
+    <string name="game_loading_preparing_game">Підготовка гри…</string>
+    <string name="game_toast_settings_button_using_gamepad">Виявлено геймпад. Доступ до меню налаштувань через %1$s.</string>
+    <string name="game_toast_load_state_failed">Не вдається завантажити цей стан</string>
+    <string name="empty_view_default">Немає елементів</string>
+    <string name="core_settings_title">Налаштування ядра</string>
+    <string name="core_settings_category_preferences">Налаштування</string>
+    <string name="core_settings_category_controllers">Контролери</string>
+    <string name="core_settings_controller">Контроллер %1$s</string>
+    <string name="game_menu_title">Меню гри</string>
+    <string name="notification_channel_name">Усі сповіщення</string>
+    <string name="library_index_notification_title">Виконується сканування прошивок</string>
+    <string name="library_index_notification_message">Це може зайняти кілька хвилин</string>
+    <string name="save_sync_notification_title">Виконується збереження в Cloud</string>
+    <string name="save_sync_notification_message">Це може зайняти кілька хвилин</string>
+    <string name="game_running_notification_title">%1$s працює</string>
+    <string name="game_running_notification_title_alternative">Гра працює</string>
+    <string name="game_running_notification_message">Переконайтеся, що ви зберегли свій прогрес</string>
+    <string name="installing_core_notification_title">Оновлення ядер</string>
+    <string name="installing_core_notification_message">Це може зайняти кілька хвилин</string>
+    <string name="game_loader_error_gl_incompatible">Це ядро потребує версію OpenGL ES яка не підтримується вашим пристроєм.</string>
+    <string name="game_loader_error_load_core">Схоже, ядро Libretro не було завантажено. Переконайтеся, що пристрій підключено до Інтернету і спробуйте повторно сканувати вашу бібліотеку. У разі, якщо проблема не зникне, можливо використання цього ядра на вашому пристрої не підтримується.</string>
+    <string name="game_loader_error_load_game">Трапилось щось погане під час завантаження вашої гри. Переконайтеся, що прошивка підтримується Lemuroid і перескануйте ваші ігри.</string>
+    <string name="game_loader_error_save">Щось пішло не так при збереженні файлу. Якщо проблема не зникне, спробуйте вимкнути автозбереження.</string>
+    <string name="game_loader_error_generic">Щось погане трапилося. Спробуйте наступне:\n
+        \n\u2022 Вимкнути автозбереження і повторно запустити гру
+        \n\u2022 В налаштуваннях Android очистити кеш програми
+        \n\u2022 В налаштуваннях Lemuroid виконати Factory Reset
+        \n\nЯкщо нічого з переліченого не допомогло, може бути що ця гра/ядро не підтримується на вашому приладі.
+    </string>
+    <string name="game_loader_error_missing_bios">Схоже, що у вас відсутній необхідний BIOS, помістіть його у папку з вашими ROM-ами і повторно проскануйте. Необхідні файли: %1$s</string>
+    <string name="game_shortcut_error">Щось пішло не так під час завантаження вашої гри. Переконайтеся, що ця гра все ще існує у вашій бібліотеці.</string>
+    <string name="dialog_saf_not_found">Цей пристрій не підтримує вікно вибору файлів StorageAccessFramework. Будь ласка, скопіюйте розпаковані файли ROM в %1$s і натисніть \"Повторити сканування\".</string>
+    <string name="system_grid_details">%1$s ігор</string>
+    <string name="tv_folder_picker_title">Вибрати директорію з ROM</string>
+    <string name="tv_folder_picker_action_choose">Обрати</string>
+    <string name="tv_folder_picker_action_cancel">Відміна</string>
+    <string name="tv_folder_storage_primary">Основне сховище</string>
+    <string name="tv_folder_storage_secondary">Вторинне сховище %1$s</string>
+    <string name="tv_folder_storage_title">Обрати сховище</string>
+    <string name="tv_home_section_favorites">Обране</string>
+    <string name="tv_home_section_recents">Нещодавні</string>
+    <string name="tv_home_section_systems">Системи</string>
+    <string name="tv_home_section_settings">Налаштування</string>
+    <string name="tv_search_results">Ігри</string>
+    <string name="tv_game_message_missing_gamepad">Для гри потрібні геймпади. Будь ласка, підключіть один.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Від\'єднайте геймпад для редагування сенсорних кнопок</string>
+    <string name="game_interactory_busy">Дочекайтеся завершення операції</string>
+    <string name="mobile_settings_help">Допомога</string>
+    <string name="mobile_settings_support">Підтримка</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Як я використовую Лемуроїд?</b><br/>
+        Скопіюйте всі файли ROM в каталог на вашому пристрої і виберіть його в Lemuroid. Цей каталог може містити підкаталоги. Після того, як сканування завершиться, ви повинні побачити свої ігри.<br/><br/>,        <b>&#8226;Чому не виявлено моїх ігор?</b><br/>
+        Якщо ваші ігри стиснуті, спробуйте розпакувати їх. Якщо це не спрацює, спробуйте покласти прошивки в окремі каталоги, одну для кожної системи з такими іменами: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Схоже що ядро Libretro отримала неочікувану помилку. Якщо помилка залишається, спробуйте зробити наступне:\n
+        \n\u2022 Вимкнути автозбереження і повторно запустити гру
+        \n\u2022 В налаштуваннях Android очистити кеш програми
+        \n\u2022 В налаштуваннях Lemuroid виконати Factory Reset
+        \n\nЯкщо нічого з переліченого не допомогло, може бути що ця гра/ядро не підтримується на вашому приладі.
+    </string>
+    <string name="lemuroid_crash_message">Повідомлення про помилку: %1$s</string>
+    <string-array name="pref_key_shader_filter_names">
+        <item>Авто</item>
+        <item>Гострий</item>
+        <item>Плавний</item>
+        <item>CRT</item>
+        <item>LCD</item>
+    </string-array>
+</resources>
