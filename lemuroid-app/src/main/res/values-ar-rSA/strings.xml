@@ -24,7 +24,7 @@
     <string name="settings_category_advanced">متقدمة</string>
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
-    <string name="settings_title_tilt_sensitivity">الميل إلى تثبيت الحساسية</string>
+    <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميول</string>
     <string name="settings_title_enable_external_gamepads">تمكين وحدة التحكم</string>
     <string name="settings_gamepad_bindings">ربط لوحة التحكم…</string>
     <string name="settings_gamepad_button_name">الزر %1$s</string>
