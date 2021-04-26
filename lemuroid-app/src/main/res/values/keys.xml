@@ -3,7 +3,7 @@
     <string name="pref_key_rescan" translatable="false">rescan</string>
     <string name="pref_key_display_bios_info" translatable="false">display_bios_info</string>
     <string name="pref_key_open_cores_selection" translatable="false">open_cores_selection</string>
-    <string name="pref_key_open_gamepad_bindings" translatable="false">open_gamepad_bindings</string>
+    <string name="pref_key_open_gamepad_settings" translatable="false">open_gamepad_settings</string>
     <string name="pref_key_open_save_sync_settings" translatable="false">open_save_sync_settings</string>
     <string name="pref_key_save_sync_force_refresh" translatable="false">save_sync_force_refresh</string>
     <string name="pref_key_reset_gamepad_bindings" translatable="false">reset_gamepad_bindings</string>
@@ -11,7 +11,6 @@
     <string name="pref_key_tilt_sensitivity_index" translatable="false">tilt_sensitivity_index</string>
     <string name="pref_key_autosave" translatable="false">autosave</string>
     <string name="pref_key_reset_settings" translatable="false">reset_settings</string>
-    <string name="pref_key_enable_gamepads" translatable="false">enable_gamepads</string>
 
     <string name="pref_key_save_sync_auto" translatable="false">save_sync_auto</string>
     <string name="pref_key_save_sync_enable" translatable="false">save_sync_enable</string>

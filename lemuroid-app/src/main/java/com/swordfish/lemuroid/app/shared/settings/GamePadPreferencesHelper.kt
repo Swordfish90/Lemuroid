@@ -7,17 +7,44 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
+import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 
-class GamePadSettingsPreferences(private val gamePadManager: GamePadManager) {
+class GamePadPreferencesHelper(private val gamePadManager: GamePadManager) {
 
-    fun resetAllBindings() = gamePadManager.resetAllBindings()
+    fun resetBindingsAndRefresh() = gamePadManager.resetAllBindings()
+        .andThen(gamePadManager.getGamePadsObservable().firstElement())
 
-    fun addGamePadsPreferencesToScreen(context: Context, preferenceScreen: PreferenceScreen) {
-        gamePadManager.getDistinctGamePads()
+    fun addGamePadsPreferencesToScreen(
+        context: Context,
+        preferenceScreen: PreferenceScreen,
+        gamePads: List<InputDevice>
+    ) {
+        val distinctGamePads = gamePads.distinctBy { it.descriptor }
+
+        addEnabledCategory(context, preferenceScreen, distinctGamePads)
+
+        distinctGamePads
             .forEach { addPreferenceCategoryForInputDevice(context, preferenceScreen, it) }
 
         addExtraCategory(context, preferenceScreen)
+    }
+
+    private fun addEnabledCategory(
+        context: Context,
+        preferenceScreen: PreferenceScreen,
+        gamePads: List<InputDevice>
+    ) {
+        if (gamePads.isEmpty())
+            return
+
+        val categoryTitle = context.resources.getString(R.string.settings_gamepad_category_enabled)
+        val category = createCategory(context, preferenceScreen, categoryTitle)
+        preferenceScreen.addPreference(category)
+
+        gamePads.forEach { gamePad ->
+            category.addPreference(buildGamePadEnabledPreference(context, gamePad))
+        }
     }
 
     private fun addExtraCategory(context: Context, preferenceScreen: PreferenceScreen) {
@@ -54,14 +81,26 @@ class GamePadSettingsPreferences(private val gamePadManager: GamePadManager) {
 
         GamePadManager.INPUT_KEYS
             .filter { inputDevice.hasKeys(it)[0] }
-            .map { getPreferenceForKey(context, inputDevice, it) }
-            .forEach { category.addPreference(it) }
+            .map { buildKeyBindingPreference(context, inputDevice, it) }
+            .forEach {
+                category.addPreference(it)
+            }
 
-        getGameMenuShortcutPreference(context, inputDevice)
-            ?.let { category.addPreference(it) }
+        buildGameMenuShortcutPreference(context, inputDevice)?.let {
+            category.addPreference(it)
+        }
     }
 
-    private fun getPreferenceForKey(context: Context, inputDevice: InputDevice, key: Int): Preference {
+    private fun buildGamePadEnabledPreference(context: Context, inputDevice: InputDevice): Preference {
+        val preference = SwitchPreference(context)
+        preference.key = GamePadManager.computeEnabledGamePadPreference(inputDevice)
+        preference.title = inputDevice.name
+        preference.setDefaultValue(true)
+        preference.isIconSpaceReserved = false
+        return preference
+    }
+
+    private fun buildKeyBindingPreference(context: Context, inputDevice: InputDevice, key: Int): Preference {
         val outputKeys = GamePadManager.OUTPUT_KEYS
         val outputKeysName = outputKeys.map { getRetroPadKeyName(context, it) }
         val defaultBinding = gamePadManager.getDefaultBinding(key)
@@ -80,7 +119,7 @@ class GamePadSettingsPreferences(private val gamePadManager: GamePadManager) {
         return preference
     }
 
-    private fun getGameMenuShortcutPreference(context: Context, inputDevice: InputDevice): Preference? {
+    private fun buildGameMenuShortcutPreference(context: Context, inputDevice: InputDevice): Preference? {
         val default = GameMenuShortcut.getDefault(inputDevice) ?: return null
 
         val preference = ListPreference(context)

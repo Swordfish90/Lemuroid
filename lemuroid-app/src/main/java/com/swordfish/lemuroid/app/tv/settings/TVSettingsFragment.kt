@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.tv.settings
 
 import android.content.Context
 import android.os.Bundle
+import android.view.InputDevice
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
@@ -10,7 +11,7 @@ import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
-import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -25,7 +26,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     @Inject lateinit var settingsInteractor: SettingsInteractor
     @Inject lateinit var biosPreferences: BiosPreferences
-    @Inject lateinit var gamePadSettingsPreferences: GamePadSettingsPreferences
+    @Inject lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
     @Inject lateinit var gamePadManager: GamePadManager
     @Inject lateinit var coresSelectionPreferences: CoresSelectionPreferences
     @Inject lateinit var saveSyncManager: SaveSyncManager
@@ -67,7 +68,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribe { refreshGamePadBindingsScreen() }
+            .subscribe { refreshGamePadBindingsScreen(it) }
 
         refreshSaveSyncScreen()
 
@@ -79,7 +80,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     }
 
     private fun getGamePadPreferenceScreen(): PreferenceScreen? {
-        return findPreference(resources.getString(R.string.pref_key_open_gamepad_bindings))
+        return findPreference(resources.getString(R.string.pref_key_open_gamepad_settings))
     }
 
     private fun getSaveSyncScreen(): PreferenceScreen? {
@@ -94,10 +95,10 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         return findPreference(resources.getString(R.string.pref_key_display_bios_info))
     }
 
-    private fun refreshGamePadBindingsScreen() {
+    private fun refreshGamePadBindingsScreen(gamePads: List<InputDevice>) {
         getGamePadPreferenceScreen()?.let {
             it.removeAll()
-            gamePadSettingsPreferences.addGamePadsPreferencesToScreen(requireContext(), it)
+            gamePadPreferencesHelper.addGamePadsPreferencesToScreen(requireContext(), it, gamePads)
         }
     }
 
@@ -120,10 +121,10 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     }
 
     private fun handleResetGamePadBindings() {
-        gamePadSettingsPreferences.resetAllBindings()
+        gamePadPreferencesHelper.resetBindingsAndRefresh()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribe { refreshGamePadBindingsScreen() }
+            .subscribe { refreshGamePadBindingsScreen(it) }
     }
 
     private fun handleResetSettings() {
