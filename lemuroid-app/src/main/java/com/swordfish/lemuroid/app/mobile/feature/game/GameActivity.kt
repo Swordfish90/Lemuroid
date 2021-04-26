@@ -32,6 +32,10 @@ import com.gojuno.koptional.toOptional
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.mobile.feature.tilt.CrossTiltTracker
+import com.swordfish.lemuroid.app.mobile.feature.tilt.StickTiltTracker
+import com.swordfish.lemuroid.app.mobile.feature.tilt.TiltTracker
+import com.swordfish.lemuroid.app.mobile.feature.tilt.TwoButtonsTiltTracker
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
@@ -63,6 +67,8 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 import dagger.Lazy
 import io.reactivex.rxkotlin.Observables
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class GameActivity : BaseGameActivity() {
     @Inject lateinit var sharedPreferences: Lazy<SharedPreferences>
@@ -70,12 +76,7 @@ class GameActivity : BaseGameActivity() {
     private lateinit var serviceIntent: Intent
 
     private lateinit var tiltSensor: TiltSensor
-    private var currentTiltId: Int? = null
-
-    private val tiltTrackedIds = setOf(
-        RadialPadConfigs.MOTION_SOURCE_LEFT_STICK,
-        RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK
-    )
+    private var currentTiltTracker: TiltTracker? = null
 
     private var leftPad: RadialGamePad? = null
     private var rightPad: RadialGamePad? = null
@@ -191,9 +192,11 @@ class GameActivity : BaseGameActivity() {
         )
         rightGamePadContainer.addView(rightPad)
 
+        val virtualPadEvents = Observable.merge(leftPad.events(), rightPad.events())
+            .share()
+
         virtualControllerDisposables.add(
-            Observable.merge(leftPad.events(), rightPad.events())
-                .doOnNext { handleTrackingEvent(it) }
+            virtualPadEvents
                 .subscribeBy {
                     when (it) {
                         is Event.Button -> {
@@ -201,6 +204,35 @@ class GameActivity : BaseGameActivity() {
                         }
                         is Event.Direction -> {
                             handleGamePadDirection(it)
+                        }
+                        is Event.Gesture -> {
+                            handleGamePadGesture(it)
+                        }
+                    }
+                }
+        )
+
+        virtualControllerDisposables.add(
+            virtualPadEvents
+                .ofType(Event.Gesture::class.java)
+                .subscribeOn(Schedulers.single())
+                .filter { it.type == GestureType.TRIPLE_TAP }
+                .buffer(500, TimeUnit.MILLISECONDS)
+                .filter { it.isNotEmpty() }
+                .subscribeBy { events ->
+                    handleTripleTaps(events)
+                }
+        )
+
+        virtualControllerDisposables.add(
+            virtualPadEvents
+                .ofType(Event.Gesture::class.java)
+                .filter { it.type == GestureType.FIRST_TOUCH }
+                .subscribeOn(Schedulers.single())
+                .subscribeBy { event ->
+                    currentTiltTracker?.let { tracker ->
+                        if (event.id in tracker.trackedIds()) {
+                            stopTrackingId(tracker)
                         }
                     }
                 }
@@ -212,31 +244,58 @@ class GameActivity : BaseGameActivity() {
         this.controllerConfig = controllerConfig
     }
 
+    private fun handleTripleTaps(events: MutableList<Event.Gesture>) {
+        val eventsTracker = when (events.map { it.id }.toSet()) {
+            setOf(RadialPadConfigs.MOTION_SOURCE_LEFT_STICK) -> StickTiltTracker(
+                RadialPadConfigs.MOTION_SOURCE_LEFT_STICK
+            )
+            setOf(RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK) -> StickTiltTracker(
+                RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK
+            )
+            setOf(RadialPadConfigs.MOTION_SOURCE_DPAD) -> CrossTiltTracker(
+                RadialPadConfigs.MOTION_SOURCE_DPAD
+            )
+            setOf(RadialPadConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK) -> CrossTiltTracker(
+                RadialPadConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK
+            )
+            setOf(RadialPadConfigs.MOTION_SOURCE_RIGHT_DPAD) -> CrossTiltTracker(
+                RadialPadConfigs.MOTION_SOURCE_RIGHT_DPAD
+            )
+            setOf(
+                KeyEvent.KEYCODE_BUTTON_L1,
+                KeyEvent.KEYCODE_BUTTON_R1
+            ) -> TwoButtonsTiltTracker(
+                KeyEvent.KEYCODE_BUTTON_L1,
+                KeyEvent.KEYCODE_BUTTON_R1
+            )
+            setOf(
+                KeyEvent.KEYCODE_BUTTON_L2,
+                KeyEvent.KEYCODE_BUTTON_R2
+            ) -> TwoButtonsTiltTracker(
+                KeyEvent.KEYCODE_BUTTON_L2,
+                KeyEvent.KEYCODE_BUTTON_R2
+            )
+            else -> null
+        }
+
+        eventsTracker?.let { startTrackingId(eventsTracker) }
+    }
+
     override fun onDestroy() {
         GameService.stopService(applicationContext, serviceIntent)
         virtualControllerDisposables.clear()
         super.onDestroy()
     }
 
-    private fun handleTrackingEvent(it: Event?) {
-        when (it) {
-            is Event.Gesture -> {
-                if (it.type == GestureType.TRIPLE_TAP && it.id in tiltTrackedIds) {
-                    startTrackingId(it.id)
-                } else if (it.id == currentTiltId) {
-                    stopTrackingId(it.id)
-                }
-            }
-        }
-    }
-
     private fun getGamePadTheme(context: Context): RadialGamePadTheme {
         val accentColor = GraphicsUtils.colorToRgb(context.getColor(R.color.colorPrimary))
         val alpha = (255 * PRESSED_COLOR_ALPHA).roundToInt()
         val pressedColor = GraphicsUtils.rgbaToColor(accentColor + listOf(alpha))
+        val simulatedColor = GraphicsUtils.rgbaToColor(accentColor + (255 * 0.25f).roundToInt())
         return RadialGamePadTheme(
             normalColor = context.getColor(R.color.touch_control_normal),
             pressedColor = pressedColor,
+            simulatedColor = simulatedColor,
             primaryDialBackground = context.getColor(R.color.touch_control_background),
             textColor = context.getColor(R.color.touch_control_text)
         )
@@ -252,11 +311,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun handleGamePadButton(it: Event.Button) {
-        if (it.id == KeyEvent.KEYCODE_BUTTON_MODE && it.action == KeyEvent.ACTION_DOWN) {
-            displayOptionsDialog()
-        } else {
-            retroGameView?.sendKeyEvent(it.action, it.id)
-        }
+        retroGameView?.sendKeyEvent(it.action, it.id)
     }
 
     private fun handleGamePadDirection(it: Event.Direction) {
@@ -286,6 +341,20 @@ class GameActivity : BaseGameActivity() {
                 )
                 retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, it.xAxis, it.yAxis)
             }
+            RadialPadConfigs.MOTION_SOURCE_RIGHT_DPAD -> {
+                retroGameView?.sendMotionEvent(
+                    GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
+                    it.xAxis,
+                    it.yAxis
+                )
+            }
+        }
+    }
+
+    private fun handleGamePadGesture(it: Event.Gesture) {
+        if (it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
+            displayOptionsDialog()
+            simulateVirtualGamepadHaptic()
         }
     }
 
@@ -323,27 +392,30 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun sendTiltEvent(sensorValues: FloatArray) {
-        currentTiltId?.let {
+        currentTiltTracker?.let {
             val xTilt = (sensorValues[0] + 1f) / 2f
             val yTilt = (sensorValues[1] + 1f) / 2f
-            rightPad?.simulateMotionEvent(it, xTilt, yTilt)
-            leftPad?.simulateMotionEvent(it, xTilt, yTilt)
+            it.updateTracking(xTilt, yTilt, sequenceOf(leftPad, rightPad).filterNotNull())
         }
     }
 
-    private fun stopTrackingId(id: Int) {
-        currentTiltId = null
+    private fun stopTrackingId(trackedEvent: TiltTracker) {
+        currentTiltTracker = null
         tiltSensor.shouldRun = false
-        leftPad?.simulateClearMotionEvent(id)
-        rightPad?.simulateClearMotionEvent(id)
+        trackedEvent.stopTracking(sequenceOf(leftPad, rightPad).filterNotNull())
     }
 
-    private fun startTrackingId(id: Int) {
-        if (currentTiltId != id) {
-            currentTiltId?.let { stopTrackingId(it) }
-            currentTiltId = id
+    private fun startTrackingId(trackedEvent: TiltTracker) {
+        if (currentTiltTracker != trackedEvent) {
+            currentTiltTracker?.let { stopTrackingId(it) }
+            currentTiltTracker = trackedEvent
             tiltSensor.shouldRun = true
+            simulateVirtualGamepadHaptic()
         }
+    }
+
+    private fun simulateVirtualGamepadHaptic() {
+        leftPad?.performHapticFeedback()
     }
 
     private fun storeVirtualGamePadSettings(controllerConfig: ControllerConfig, orientation: Int): Completable {

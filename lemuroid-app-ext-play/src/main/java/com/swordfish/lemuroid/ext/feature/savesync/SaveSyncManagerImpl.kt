@@ -56,32 +56,42 @@ class SaveSyncManagerImpl(
 
     override fun sync(cores: Set<CoreID>) = Completable.fromAction {
         synchronized(SYNC_LOCK) {
-            val drive = DriveFactory(appContext).create().toNullable() ?: return@fromAction
-
-            syncLocalAndRemoteFolder(
-                drive,
-                getOrCreateAppDataFolder("saves"),
-                directoriesManager.getSavesDirectory(),
-                null
-            )
-
-            if (cores.isNotEmpty()) {
-                syncLocalAndRemoteFolder(
-                    drive,
-                    getOrCreateAppDataFolder("states"),
-                    directoriesManager.getStatesDirectory(),
-                    cores.map { it.coreName }.toSet()
-                )
-                syncLocalAndRemoteFolder(
-                    drive,
-                    getOrCreateAppDataFolder("state-previews"),
-                    directoriesManager.getStatesPreviewDirectory(),
-                    cores.map { it.coreName }.toSet()
-                )
+            val saveSyncResult = runCatching {
+                performSaveSyncForCores(cores)
             }
 
-            lastSyncTimestamp = System.currentTimeMillis()
+            saveSyncResult.onFailure {
+                Timber.e(it, "Error while performing save sync.")
+            }
         }
+    }
+
+    private fun performSaveSyncForCores(cores: Set<CoreID>) {
+        val drive = DriveFactory(appContext).create().toNullable() ?: return
+
+        syncLocalAndRemoteFolder(
+            drive,
+            getOrCreateAppDataFolder("saves"),
+            directoriesManager.getSavesDirectory(),
+            null
+        )
+
+        if (cores.isNotEmpty()) {
+            syncLocalAndRemoteFolder(
+                drive,
+                getOrCreateAppDataFolder("states"),
+                directoriesManager.getStatesDirectory(),
+                cores.map { it.coreName }.toSet()
+            )
+            syncLocalAndRemoteFolder(
+                drive,
+                getOrCreateAppDataFolder("state-previews"),
+                directoriesManager.getStatesPreviewDirectory(),
+                cores.map { it.coreName }.toSet()
+            )
+        }
+
+        lastSyncTimestamp = System.currentTimeMillis()
     }
 
     override fun computeSavesSpace() = getSizeHumanReadable(directoriesManager.getSavesDirectory())

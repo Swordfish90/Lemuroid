@@ -15,7 +15,6 @@
         android:allowBackup="true"
         android:label="@string/lemuroid_name"
         android:requestLegacyExternalStorage="true"
-        android:isGame="true"
         android:icon="@mipmap/lemuroid_launcher"
         android:roundIcon="@mipmap/lemuroid_launcher_round"
         android:banner="@mipmap/ic_banner"
