@@ -26,6 +26,7 @@ import com.swordfish.lemuroid.common.files.safeDelete
 import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -50,10 +51,11 @@ class CoreUpdaterImpl(
     private val api = retrofit.create(CoreUpdater.CoreManagerApi::class.java)
 
     override fun downloadCores(context: Context, coreIDs: List<CoreID>): Completable {
+        val sharedPreferences = SharedPreferencesHelper.getSharedPreferences(context.applicationContext)
         return Observable.fromIterable(coreIDs)
             .flatMapCompletable { coreId ->
                 CoreID.getAssetManager(coreId)
-                    .retrieveAssetsIfNeeded(api, directoriesManager)
+                    .retrieveAssetsIfNeeded(api, directoriesManager, sharedPreferences)
                     .andThen(findBundledLibrary(context, coreId))
                     .switchIfEmpty(downloadCoreFromGithub(coreId))
                     .ignoreElement()
