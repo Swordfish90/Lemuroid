@@ -312,6 +312,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.GB -> GLRetroView.SHADER_LCD
                 SystemID.N64 -> GLRetroView.SHADER_CRT
                 SystemID.GENESIS -> GLRetroView.SHADER_CRT
+                SystemID.SEGACD -> GLRetroView.SHADER_CRT
                 SystemID.NES -> GLRetroView.SHADER_CRT
                 SystemID.SNES -> GLRetroView.SHADER_CRT
                 SystemID.FBNEO -> GLRetroView.SHADER_CRT

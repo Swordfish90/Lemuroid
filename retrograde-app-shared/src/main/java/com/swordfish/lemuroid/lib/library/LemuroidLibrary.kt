@@ -153,7 +153,7 @@ class LemuroidLibrary(
         provider: StorageProvider,
         startedAtMs: Long
     ): Single<Pair<GroupedStorageFiles, Optional<Game>>> {
-        return Observable.fromIterable(groupedStorageFile.allFiles())
+        return Observable.fromIterable(sortedFilesForScanning(groupedStorageFile))
             .flatMapMaybe {
                 Maybe.fromCallable<StorageFile> { provider.getStorageFile(it) }.onErrorComplete()
             }
@@ -166,6 +166,10 @@ class LemuroidLibrary(
             .filter { it is Some }
             .first(None)
             .map { groupedStorageFile to it }
+    }
+
+    private fun sortedFilesForScanning(groupedStorageFile: GroupedStorageFiles): List<BaseStorageFile> {
+        return groupedStorageFile.dataFiles.sortedBy { it.name } + listOf(groupedStorageFile.primaryFile)
     }
 
     private fun convertGameMetadataToGame(

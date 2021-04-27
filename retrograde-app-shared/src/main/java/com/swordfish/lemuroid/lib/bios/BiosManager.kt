@@ -85,6 +85,27 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
                 "FCD403DB69F54290B51035D82F835E7B",
                 "Lynx Boot Image",
                 SystemID.LYNX
+            ),
+            Bios(
+                "bios_CD_E.bin",
+                "529AC15A",
+                "E66FA1DC5820D254611FDCDBA0662372",
+                "Sega CD E",
+                SystemID.SEGACD
+            ),
+            Bios(
+                "bios_CD_J.bin",
+                "9D2DA8F2",
+                "278A9397D192149E84E820AC621A8EDD",
+                "Sega CD J",
+                SystemID.SEGACD
+            ),
+            Bios(
+                "bios_CD_U.bin",
+                "C6D10268",
+                "2EFD74E3232FF260E371B99F84024F7F",
+                "Sega CD U",
+                SystemID.SEGACD
             )
         )
     }

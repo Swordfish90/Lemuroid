@@ -21,6 +21,7 @@ package com.swordfish.lemuroid.lib.storage
 
 import android.net.Uri
 import com.swordfish.lemuroid.common.files.FileUtils
+import com.swordfish.lemuroid.lib.library.SystemID
 
 data class StorageFile(
 
@@ -34,7 +35,9 @@ data class StorageFile(
 
     val uri: Uri,
 
-    val path: String? = null
+    val path: String? = null,
+
+    val systemID: SystemID? = null
 ) {
 
     val extension: String

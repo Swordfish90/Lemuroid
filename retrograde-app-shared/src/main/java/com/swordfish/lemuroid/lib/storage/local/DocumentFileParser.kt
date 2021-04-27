@@ -4,7 +4,7 @@ import android.content.Context
 import com.swordfish.lemuroid.common.kotlin.calculateCrc32
 import com.swordfish.lemuroid.common.kotlin.toStringCRC32
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
-import com.swordfish.lemuroid.lib.storage.ISOScanner
+import com.swordfish.lemuroid.lib.storage.scanner.DiskScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import timber.log.Timber
 import java.util.zip.ZipEntry
@@ -47,41 +47,43 @@ object DocumentFileParser {
     ): StorageFile {
         Timber.d("Processing zipped entry: ${entry.name}")
 
-        val serial = ISOScanner.extractSerial(entry.name, zipInputStream)
+        val diskInfo = DiskScanner.extractInfo(entry.name, zipInputStream)
 
         return StorageFile(
             entry.name,
             entry.size,
             entry.crc.toStringCRC32(),
-            serial,
+            diskInfo.serial,
             baseStorageFile.uri,
-            baseStorageFile.uri.path
+            baseStorageFile.uri.path,
+            diskInfo.systemID
         )
     }
 
     private fun parseStandardFile(context: Context, baseStorageFile: BaseStorageFile): StorageFile {
-        val serial = context.contentResolver.openInputStream(baseStorageFile.uri)
-            ?.let { inputStream -> ISOScanner.extractSerial(baseStorageFile.name, inputStream) }
+        val diskInfo = context.contentResolver.openInputStream(baseStorageFile.uri)
+            ?.let { inputStream -> DiskScanner.extractInfo(baseStorageFile.name, inputStream) }
 
-        val crc32 = if (baseStorageFile.size < MAX_SIZE_CRC32 && serial == null) {
+        val crc32 = if (baseStorageFile.size < MAX_SIZE_CRC32 && diskInfo?.serial == null) {
             context.contentResolver.openInputStream(baseStorageFile.uri)?.calculateCrc32()
         } else {
             null
         }
 
-        Timber.d("Detected file name: ${baseStorageFile.name}, crc: $crc32")
+        Timber.d("Parsed standard file: $baseStorageFile")
 
         return StorageFile(
             baseStorageFile.name,
             baseStorageFile.size,
             crc32,
-            serial,
+            diskInfo?.serial,
             baseStorageFile.uri,
-            baseStorageFile.uri.path
+            baseStorageFile.uri.path,
+            diskInfo?.systemID
         )
     }
 
-    /* Finds a zip entry which we assume is a game. Lemuroids only supports single archive games,
+    /* Finds a zip entry which we assume is a game. Lemuroid only supports single archive games,
        so we are looking for an entry which occupies a large percentage of the archive space.
        This is very fast heuristic to compute and avoids reading the whole stream in most
        scenarios.*/
