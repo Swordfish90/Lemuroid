@@ -12,6 +12,7 @@ import com.swordfish.lemuroid.ext.utils.toCompletable
 import com.swordfish.lemuroid.ext.utils.toSingle
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -32,7 +33,7 @@ class CoreUpdaterImpl(
 
         return cancelPendingInstalls(splitInstallManager)
             .andThen(installCores(splitInstallManager, coreIDs))
-            .andThen(installAssets(coreIDs))
+            .andThen(installAssets(context, coreIDs))
             .doAfterTerminate { log("Terminating downloadCores") }
     }
 
@@ -91,10 +92,11 @@ class CoreUpdaterImpl(
             .flatMapCompletable { waitForCompletion(it, splitInstallManager) }
     }
 
-    private fun installAssets(coreIDs: List<CoreID>): Completable {
+    private fun installAssets(context: Context, coreIDs: List<CoreID>): Completable {
+        val sharedPreferences = SharedPreferencesHelper.getSharedPreferences(context.applicationContext)
         return Observable.fromIterable(coreIDs)
             .map { CoreID.getAssetManager(it) }
-            .flatMapCompletable { it.retrieveAssetsIfNeeded(api, directoriesManager) }
+            .flatMapCompletable { it.retrieveAssetsIfNeeded(api, directoriesManager, sharedPreferences) }
     }
 
     private fun cancelPendingInstalls(installManager: SplitInstallManager): Completable {

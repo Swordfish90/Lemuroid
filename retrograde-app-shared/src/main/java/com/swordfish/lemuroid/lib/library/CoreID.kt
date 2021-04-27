@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.lib.library
 
+import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
@@ -104,7 +105,8 @@ enum class CoreID(
     interface AssetsManager {
         fun retrieveAssetsIfNeeded(
             coreUpdaterApi: CoreUpdater.CoreManagerApi,
-            directoriesManager: DirectoriesManager
+            directoriesManager: DirectoriesManager,
+            sharedPreferences: SharedPreferences
         ): Completable
 
         fun clearAssets(directoriesManager: DirectoriesManager): Completable
