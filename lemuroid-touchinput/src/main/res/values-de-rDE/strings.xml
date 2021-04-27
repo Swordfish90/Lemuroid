@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Erledigt</string>
+    <string name="touch_customize_button_reset">Zurücksetzen</string>
+    <string name="touch_customize_info">Ziehe und kneife die Steuerelemente um Position und Größe zu ändern</string>
+</resources>
