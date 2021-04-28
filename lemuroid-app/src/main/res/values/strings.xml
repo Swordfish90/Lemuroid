@@ -19,19 +19,18 @@
     <string name="show_all">Show All</string>
 
     <string name="settings_category_general">General</string>
-    <string name="settings_category_touch_input">Touch input</string>
-    <string name="settings_category_gamepads">Gamepads</string>
+    <string name="settings_category_input">Input</string>
     <string name="settings_category_advanced">Advanced</string>
     <string name="settings_title_enable_autosave">Autosave state</string>
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
-    <string name="settings_title_enable_external_gamepads">Enable gamepads</string>
 
-    <string name="settings_gamepad_bindings">Gamepad bindings…</string>
+    <string name="settings_gamepad_settings">Gamepad settings</string>
     <string name="settings_gamepad_button_name">Button %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Unassigned</string>
 
+    <string name="settings_gamepad_category_enabled">Enabled Gamepads</string>
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>

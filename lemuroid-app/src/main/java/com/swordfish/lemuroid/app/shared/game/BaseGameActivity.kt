@@ -167,8 +167,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         Thread.setDefaultUncaughtExceptionHandler(GameCrashHandler(this, systemHandler))
     }
 
-    abstract fun areGamePadsEnabled(): Single<Boolean>
-
     fun getControllerType(): Observable<Map<Int, ControllerConfig>> {
         return controllerConfigObservable
     }
@@ -246,8 +244,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun findControllerId(supported: Array<Controller>, controllerConfig: ControllerConfig): Int? {
         return supported
-            .firstOrNull { it.description == controllerConfig.libretroDescriptor }
-            ?.id
+            .firstOrNull { controller ->
+                sequenceOf(
+                    controller.id == controllerConfig.libretroId,
+                    controller.description == controllerConfig.libretroDescriptor
+                ).any { it }
+            }?.id
     }
 
     private fun handleRetroViewError(errorCode: Int) {
@@ -326,6 +328,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.ATARI7800 -> GLRetroView.SHADER_CRT
                 SystemID.PC_ENGINE -> GLRetroView.SHADER_CRT
                 SystemID.LYNX -> GLRetroView.SHADER_LCD
+                SystemID.DOS -> GLRetroView.SHADER_CRT
+                SystemID.NGP -> GLRetroView.SHADER_LCD
+                SystemID.NGC -> GLRetroView.SHADER_LCD
             }
         }
     }
@@ -433,15 +438,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             motionEventsSubjects
         ).share()
 
-        areGamePadsEnabled()
-            .filter { it }
-            .flatMapObservable { events }
+        events
             .autoDispose(scope())
-            .subscribeBy { (ports, event) -> sendStickMotions(event, ports(event.device)) }
+            .subscribeBy { (ports, event) ->
+                ports(event.device)?.let {
+                    sendStickMotions(event, it)
+                }
+            }
 
-        areGamePadsEnabled()
-            .filter { it }
-            .flatMapObservable { events }
+        events
             .flatMap { (ports, event) ->
                 val port = ports(event.device)
                 val axes = GamePadManager.TRIGGER_MOTIONS_TO_KEYS.entries
@@ -458,7 +463,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .flatMap { groups ->
                 groups.distinctUntilChanged()
                     .doOnNext { (_, button, action, port) ->
-                        retroGameView?.sendKeyEvent(action, button, port)
+                        port?.let {
+                            retroGameView?.sendKeyEvent(action, button, it)
+                        }
                     }
             }
             .autoDispose(scope())
@@ -482,9 +489,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             filteredKeyEvents
         )
 
-        areGamePadsEnabled()
-            .filter { it }
-            .flatMapObservable { combinedObservable }
+        combinedObservable
             .doOnSubscribe { pressedKeys.clear() }
             .doOnDispose { pressedKeys.clear() }
             .autoDispose(scope())
@@ -511,7 +516,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     }
                 }
 
-                retroGameView?.sendKeyEvent(action, bindKeyCode, port)
+                port?.let {
+                    retroGameView?.sendKeyEvent(action, bindKeyCode, it)
+                }
             }
     }
 

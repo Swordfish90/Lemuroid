@@ -930,7 +930,64 @@ data class GameSystem(
                 ),
                 uniqueExtensions = listOf("pce"),
                 supportedExtensions = listOf("bin"),
-            )
+            ),
+            GameSystem(
+                SystemID.NGP,
+                "SNK - Neo Geo Pocket",
+                R.string.game_system_title_ngp,
+                R.string.game_system_abbr_ngp,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MEDNAFEN_NGP,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NGP)
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("ngp"),
+            ),
+            GameSystem(
+                SystemID.NGC,
+                "SNK - Neo Geo Pocket Color",
+                R.string.game_system_title_ngc,
+                R.string.game_system_abbr_ngc,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MEDNAFEN_NGP,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NGP)
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("ngc"),
+            ),
+            GameSystem(
+                SystemID.DOS,
+                "DOS",
+                R.string.game_system_title_dos,
+                R.string.game_system_abbr_dos,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.DOSBOX_PURE,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(
+                                ControllerConfigs.DOS_AUTO,
+                                ControllerConfigs.DOS_MOUSE_LEFT,
+                                ControllerConfigs.DOS_MOUSE_RIGHT,
+                            )
+                        ),
+                        statesSupported = false,
+                    )
+                ),
+                fastForwardSupport = false,
+                uniqueExtensions = listOf("dosz"),
+                scanOptions = ScanOptions(
+                    scanByFilename = false,
+                    scanByUniqueExtension = true,
+                    scanByPathAndFilename = false,
+                    scanByPathAndSupportedExtensions = true
+                ),
+            ),
         )
 
         private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id.dbname to it }.toTypedArray()) }

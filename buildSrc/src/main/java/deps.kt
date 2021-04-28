@@ -51,7 +51,7 @@ object deps {
                 const val reactiveStreams = "android.arch.lifecycle:reactivestreams:1.1.1"
             }
             object preferences {
-                const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
+                const val preferencesKtx = "androidx.preference:preference-ktx:1.1.1"
             }
             object paging {
                 const val common = "androidx.paging:paging-common:${versions.paging}"

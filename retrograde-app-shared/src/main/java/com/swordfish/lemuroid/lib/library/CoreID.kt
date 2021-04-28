@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.lib.library
 
+import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
@@ -90,6 +91,16 @@ enum class CoreID(
         "prosystem",
         "ProSystem",
         "libprosystem_libretro_android.so"
+    ),
+    MEDNAFEN_NGP(
+        "mednafen_ngp",
+        "Mednafen NGP",
+        "libmednafen_ngp_libretro_android.so"
+    ),
+    DOSBOX_PURE(
+        "dosbox_pure",
+        "DosBox Pure",
+        "libdosbox_pure_libretro_android.so"
     );
 
     companion object {
@@ -104,7 +115,8 @@ enum class CoreID(
     interface AssetsManager {
         fun retrieveAssetsIfNeeded(
             coreUpdaterApi: CoreUpdater.CoreManagerApi,
-            directoriesManager: DirectoriesManager
+            directoriesManager: DirectoriesManager,
+            sharedPreferences: SharedPreferences
         ): Completable
 
         fun clearAssets(directoriesManager: DirectoriesManager): Completable

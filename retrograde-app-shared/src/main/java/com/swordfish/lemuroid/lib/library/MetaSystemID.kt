@@ -91,6 +91,16 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
         R.string.game_system_title_pce,
         R.drawable.game_system_pce,
         listOf(SystemID.PC_ENGINE)
+    ),
+    NGP(
+        R.string.game_system_title_ngp,
+        R.drawable.game_system_ngp,
+        listOf(SystemID.NGP, SystemID.NGC)
+    ),
+    DOS(
+        R.string.game_system_title_dos,
+        R.drawable.game_system_dos,
+        listOf(SystemID.DOS)
     );
 
     companion object {
@@ -115,6 +125,9 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
                 SystemID.PC_ENGINE -> PC_ENGINE
                 SystemID.LYNX -> LYNX
                 SystemID.ATARI7800 -> ATARI7800
+                SystemID.DOS -> DOS
+                SystemID.NGP -> NGP
+                SystemID.NGC -> NGP
             }
         }
     }
