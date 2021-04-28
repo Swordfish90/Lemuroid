@@ -965,7 +965,7 @@ object RadialPadConfigs {
     val DOS_LEFT =
         RadialGamePadConfig(
             sockets = 12,
-            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(
                     2,
@@ -1004,7 +1004,8 @@ object RadialPadConfigs {
                     9,
                     2.2f,
                     MOTION_SOURCE_LEFT_STICK,
-                    contentDescription = "Left Stick"
+                    contentDescription = "Left Stick",
+                    supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
                 ),
                 SecondaryDialConfig.Empty(8, 1, 1f)
             )
@@ -1062,7 +1063,8 @@ object RadialPadConfigs {
                     8,
                     2.2f,
                     MOTION_SOURCE_RIGHT_STICK,
-                    contentDescription = "Right Stick"
+                    contentDescription = "Right Stick",
+                    supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
                 ),
                 SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
             )
@@ -1071,7 +1073,7 @@ object RadialPadConfigs {
     val NGP_LEFT =
         RadialGamePadConfig(
             sockets = 12,
-            primaryDial = PrimaryDialConfig.Cross(MOTION_SOURCE_DPAD),
+            primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.Empty(4, 1, 1f),
                 SecondaryDialConfig.Empty(10, 1, 1f)

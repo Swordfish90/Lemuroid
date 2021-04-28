@@ -6,7 +6,7 @@
     <string name="core_name_fceumm" translatable="false">fceumm</string>
     <string name="core_name_genesis_plus_gx" translatable="false">genesis_plus_gx</string>
     <string name="core_name_mgba" translatable="false">mgba</string>
-    <string name="core_name_mupen64plus_next_gles3 translatable="false"">mupen64plus_next_gles3</string>
+    <string name="core_name_mupen64plus_next_gles3" translatable="false">mupen64plus_next_gles3</string>
     <string name="core_name_pcsx_rearmed" translatable="false">pcsx_rearmed</string>
     <string name="core_name_ppsspp" translatable="false">ppsspp</string>
     <string name="core_name_snes9x" translatable="false">snes9x</string>
