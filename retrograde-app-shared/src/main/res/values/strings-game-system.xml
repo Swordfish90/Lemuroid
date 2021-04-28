@@ -37,6 +37,9 @@
     <string name="game_system_abbr_atari7800">A78</string>
     <string name="game_system_abbr_lynx">Lynx</string>
     <string name="game_system_abbr_pce">PCE</string>
+    <string name="game_system_abbr_ngp">NGP</string>
+    <string name="game_system_abbr_ngc">NGC</string>
+    <string name="game_system_abbr_dos">DOS</string>
 
     <string name="game_system_title_nes">Nintendo</string>
     <string name="game_system_title_atari2600">Atari 2600</string>
@@ -56,6 +59,9 @@
     <string name="game_system_title_atari7800">Atari 7800</string>
     <string name="game_system_title_lynx">Atari Lynx</string>
     <string name="game_system_title_pce">PCEngine</string>
+    <string name="game_system_title_ngp">Neo Geo Pocket</string>
+    <string name="game_system_title_ngc">Neo Geo Pocket Color</string>
+    <string name="game_system_title_dos">DOS (Beta)</string>
 
     <string name="game_system_title_arcade">Arcade</string>
 </resources>

@@ -164,4 +164,35 @@ object ControllerConfigs {
         TouchControllerID.PCE,
         mergeDPADAndLeftStickEvents = true,
     )
+
+    val NGP = ControllerConfig(
+        "default",
+        R.string.controller_default,
+        TouchControllerID.NGP,
+        mergeDPADAndLeftStickEvents = true,
+    )
+
+    val DOS_AUTO = ControllerConfig(
+        "auto",
+        R.string.controller_dos_auto,
+        TouchControllerID.DOS,
+        allowTouchRotation = true,
+        libretroId = 1
+    )
+
+    val DOS_MOUSE_LEFT = ControllerConfig(
+        "mouse_left",
+        R.string.controller_dos_mouse_left,
+        TouchControllerID.DOS,
+        allowTouchRotation = true,
+        libretroId = 513
+    )
+
+    val DOS_MOUSE_RIGHT = ControllerConfig(
+        "mouse_right",
+        R.string.controller_dos_mouse_right,
+        TouchControllerID.DOS,
+        allowTouchRotation = true,
+        libretroId = 769
+    )
 }
