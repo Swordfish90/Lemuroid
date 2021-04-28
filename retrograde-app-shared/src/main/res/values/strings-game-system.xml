@@ -23,6 +23,7 @@
     <string name="game_system_abbr_atari2600">A26</string>
     <string name="game_system_abbr_snes">SNES</string>
     <string name="game_system_abbr_genesis">Genesis</string>
+    <string name="game_system_abbr_scd">SCD</string>
     <string name="game_system_abbr_gg">GG</string>
     <string name="game_system_abbr_gb">GB</string>
     <string name="game_system_abbr_gbc">GBC</string>
@@ -45,6 +46,7 @@
     <string name="game_system_title_atari2600">Atari 2600</string>
     <string name="game_system_title_snes">Super Nintendo</string>
     <string name="game_system_title_genesis">Sega Genesis</string>
+    <string name="game_system_title_scd">Sega CD</string>
     <string name="game_system_title_gg">Game Gear</string>
     <string name="game_system_title_gb">Game Boy</string>
     <string name="game_system_title_gbc">Game Boy Color</string>

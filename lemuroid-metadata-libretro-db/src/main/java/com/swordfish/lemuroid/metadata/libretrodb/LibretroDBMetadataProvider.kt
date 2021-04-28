@@ -36,6 +36,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
                             .switchIfEmpty(findByFilename(db, file))
                             .switchIfEmpty(findByPathAndFilename(db, file))
                             .switchIfEmpty(findByUniqueExtension(file))
+                            .switchIfEmpty(findByKnownSystem(file))
                             .switchIfEmpty(findByPathAndSupportedExtension(file))
                             .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
                             .toSingleAsOptional()
@@ -107,6 +108,18 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         if (file.serial == null) return Maybe.empty()
         return db.gameDao().findBySerial(file.serial!!)
             .map { convertToGameMetadata(it) }
+    }
+
+    private fun findByKnownSystem(file: StorageFile) = Maybe.fromCallable<GameMetadata> {
+        if (file.systemID == null) return@fromCallable null
+
+        GameMetadata(
+            name = file.extensionlessName,
+            romName = file.name,
+            thumbnail = null,
+            system = file.systemID!!.dbname,
+            developer = null,
+        )
     }
 
     private fun findByUniqueExtension(file: StorageFile) = Maybe.fromCallable {

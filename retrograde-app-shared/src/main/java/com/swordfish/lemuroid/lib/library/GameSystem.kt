@@ -299,6 +299,104 @@ data class GameSystem(
                 uniqueExtensions = listOf("gen", "smd", "md"),
             ),
             GameSystem(
+                SystemID.SEGACD,
+                "Sega - Mega-CD - Sega CD",
+                R.string.game_system_title_scd,
+                R.string.game_system_abbr_scd,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.GENESIS_PLUS_GX,
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "genesis_plus_gx_blargg_ntsc_filter",
+                                R.string.setting_genesis_plus_gx_blargg_ntsc_filter,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "monochrome",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_monochrome
+                                    ),
+                                    ExposedSetting.Value(
+                                        "composite",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_composite
+                                    ),
+                                    ExposedSetting.Value(
+                                        "svideo",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_svideo
+                                    ),
+                                    ExposedSetting.Value(
+                                        "rgb",
+                                        R.string.value_genesis_plus_gx_blargg_ntsc_filter_rgb
+                                    ),
+                                )
+                            )
+                        ),
+                        exposedAdvancedSettings = listOf(
+                            ExposedSetting(
+                                "genesis_plus_gx_no_sprite_limit",
+                                R.string.setting_genesis_plus_gx_no_sprite_limit
+                            ),
+                            ExposedSetting(
+                                "genesis_plus_gx_overscan",
+                                R.string.setting_genesis_plus_gx_overscan,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_genesis_plus_gx_overscan_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "top/bottom",
+                                        R.string.value_genesis_plus_gx_overscan_topbottom
+                                    ),
+                                    ExposedSetting.Value(
+                                        "left/right",
+                                        R.string.value_genesis_plus_gx_overscan_leftright
+                                    ),
+                                    ExposedSetting.Value(
+                                        "full",
+                                        R.string.value_genesis_plus_gx_overscan_full
+                                    ),
+                                )
+                            )
+                        ),
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            ),
+                            1 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            ),
+                            2 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            ),
+                            3 to arrayListOf(
+                                ControllerConfigs.GENESIS_3,
+                                ControllerConfigs.GENESIS_6
+                            )
+                        ),
+                        requiredBIOSFiles = listOf(
+                            "bios_CD_E.bin",
+                            "bios_CD_J.bin",
+                            "bios_CD_U.bin"
+                        ),
+                    )
+                ),
+                scanOptions = ScanOptions(
+                    scanByFilename = false,
+                    scanByUniqueExtension = false,
+                    scanByPathAndSupportedExtensions = true,
+                    scanBySimilarSerial = true
+                ),
+                uniqueExtensions = listOf(),
+                supportedExtensions = listOf("cue", "iso", "chd"),
+            ),
+            GameSystem(
                 SystemID.GG,
                 "Sega - Game Gear",
                 R.string.game_system_title_gg,
@@ -922,7 +1020,8 @@ data class GameSystem(
             val scanByFilename: Boolean = true,
             val scanByUniqueExtension: Boolean = true,
             val scanByPathAndFilename: Boolean = false,
-            val scanByPathAndSupportedExtensions: Boolean = true
+            val scanByPathAndSupportedExtensions: Boolean = true,
+            val scanBySimilarSerial: Boolean = false
         )
     }
 }
