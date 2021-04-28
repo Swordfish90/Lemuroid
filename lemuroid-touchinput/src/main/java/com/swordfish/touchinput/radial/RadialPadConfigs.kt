@@ -444,7 +444,7 @@ object RadialPadConfigs {
                     9,
                     2.2f,
                     MOTION_SOURCE_LEFT_STICK,
-                    supportsGestures = setOf(GestureType.TRIPLE_TAP)
+                    supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
                 ),
                 SecondaryDialConfig.Empty(8, 1, 1f)
             )
