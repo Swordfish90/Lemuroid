@@ -8,20 +8,17 @@ import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
-import io.reactivex.Single
 import timber.log.Timber
 
 class TVGameActivity : BaseGameActivity() {
 
     override fun getDialogClass() = TVGameMenuActivity::class.java
 
-    override fun areGamePadsEnabled(): Single<Boolean> = Single.just(true)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         gamePadManager
-            .getGamePadsObservable()
+            .getEnabledGamePadsObservable()
             .filter { it.isEmpty() }
             .autoDispose(scope())
             .subscribeBy(Timber::e) { displayToast(R.string.tv_game_message_missing_gamepad) }

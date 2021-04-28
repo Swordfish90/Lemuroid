@@ -58,7 +58,6 @@ import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -130,24 +129,16 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupVirtualGamePadVisibility() {
-        val gamePadsConnected = gamePadManager
-            .getGamePadsObservable()
+        gamePadManager
+            .getEnabledGamePadsObservable()
             .map { it.isNotEmpty() }
-
-        val gamePadsEnabled = areGamePadsEnabled().toObservable()
-
-        Observables.combineLatest(gamePadsConnected, gamePadsEnabled)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy(Timber::e) { (connected, enabled) ->
-                val isVisible = !connected || !enabled
+            .subscribeBy(Timber::e) { connected ->
+                val isVisible = !connected
                 leftGamePadContainer.setVisibleOrGone(isVisible)
                 rightGamePadContainer.setVisibleOrGone(isVisible)
             }
-    }
-
-    override fun areGamePadsEnabled(): Single<Boolean> {
-        return settingsManager.gamepadsEnabled
     }
 
     private fun getCurrentOrientation() = resources.configuration.orientation

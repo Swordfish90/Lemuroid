@@ -34,7 +34,7 @@ import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
-import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.core.CoreUpdaterImpl
@@ -307,7 +307,7 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun gamepadSettingsPreferences(gamePadManager: GamePadManager) =
-            GamePadSettingsPreferences(gamePadManager)
+            GamePadPreferencesHelper(gamePadManager)
 
         @Provides
         @PerApp
