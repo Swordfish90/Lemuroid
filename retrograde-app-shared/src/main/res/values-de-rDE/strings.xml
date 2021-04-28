@@ -8,6 +8,9 @@
     <string name="controller_default">Standard</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standard</string>
+    <string name="controller_dos_auto">Automatisch</string>
+    <string name="controller_dos_mouse_left">Maus mit linkem Joystick</string>
+    <string name="controller_dos_mouse_right">Maus mit rechtem Joystick</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">TV-Effekt</string>
     <string name="setting_stella_crop_hoverscan">Horizontalen Overscan abschneiden</string>
