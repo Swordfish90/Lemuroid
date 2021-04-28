@@ -54,4 +54,6 @@ if (usePlayDynamicFeatures()) {
     project(":lemuroid_core_handy").projectDir = File("lemuroid-cores/lemuroid_core_handy")
     project(":lemuroid_core_prosystem").projectDir = File("lemuroid-cores/lemuroid_core_prosystem")
     project(":lemuroid_core_mednafen_pce_fast").projectDir = File("lemuroid-cores/lemuroid_core_mednafen_pce_fast")
+    project(":lemuroid_core_mednafen_ngp").projectDir = File("lemuroid-cores/lemuroid_core_mednafen_ngp")
+    project(":lemuroid_core_dosbox_pure").projectDir = File("lemuroid-cores/lemuroid_core_dosbox_pure")
 }
