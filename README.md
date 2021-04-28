@@ -19,7 +19,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 
 ### Supported Systems:
 - Atari 2600 (A26) ([stella](https://docs.libretro.com/library/stella/))
-- Atari 7800 (A78) ([prosystem](https://docs.libretro.com/library/prosystem/)
+- Atari 7800 (A78) ([prosystem](https://docs.libretro.com/library/prosystem/))
 - Atari Lynx (Lynx) ([handy](https://docs.libretro.com/library/handy/))
 - Nintendo (NES) ([fceumm](https://docs.libretro.com/library/fceumm/))
 - Super Nintendo (SNES) ([snes9x](https://docs.libretro.com/library/snes9x/))
@@ -27,6 +27,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Game Boy Color (GBC) ([gambatte](https://docs.libretro.com/library/gambatte/))
 - Game Boy Advance (GBA) ([mgba](https://docs.libretro.com/library/mgba/))
 - Sega Genesis (aka Megadrive) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
+- Sega CD (aka Mega CD) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
 - Sega Master System (SMS) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
 - Sega Game Gear (GG) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
 - Nintendo 64 (N64) ([mupen64plus](https://docs.libretro.com/library/mupen64plus/))
@@ -35,6 +36,8 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - FinalBurn Neo (Arcade) ([fbneo](https://github.com/libretro/FBNeo/))
 - Nintendo DS (NDS) ([desmume](https://docs.libretro.com/library/desmume/)/[MelonDS](https://docs.libretro.com/library/melonds/))
 - NEC PC Engine (PCE) ([beetle_pce_fast](https://docs.libretro.com/library/beetle_pce_fast/))
+- Neo Geo Pocket (NGP) ([mednafen_ngp](https://docs.libretro.com/library/beetle_neopop/))
+- Neo Geo Pocket Color (NGC) ([mednafen_ngp](https://docs.libretro.com/library/beetle_neopop/))
 
 ### Features:
 - Android TV support
@@ -46,7 +49,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Display simulation (LCD/CRT)
 - Gamepad support
 - Local multiplayer
-- Tilt to analog stick
+- Tilt input
 - Customizable touch controls (size and position)
 - Cloud save sync
 
