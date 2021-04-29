@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
@@ -53,6 +54,7 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.saves.IncompatibleStateException
 import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -183,6 +185,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .filter { it is GLRetroView.GLRetroEvents.FrameRendered }
             .firstElement()
             .flatMapCompletable { getRetryRestoreQuickSave(saveState) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { displayLoadStateErrorMessage(it) }
+            .onErrorComplete()
             .autoDispose(scope())
             .subscribe()
     }
@@ -736,7 +741,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
-            .doOnError { displayToast(R.string.game_toast_load_state_failed) }
+            .doOnError { displayLoadStateErrorMessage(it) }
             .onErrorComplete()
             .doOnSubscribe { loading = true }
             .doAfterTerminate { loading = false }
@@ -752,19 +757,34 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
         return SaveState(
             retroGameView.serializeState(),
-            SaveState.Metadata(currentDisk)
+            SaveState.Metadata(currentDisk, systemCoreConfig.statesVersion)
         )
     }
 
     private fun loadSaveState(saveState: SaveState): Boolean {
         val retroGameView = retroGameView ?: return false
+
+        if (systemCoreConfig.statesVersion != saveState.metadata.version) {
+            throw IncompatibleStateException()
+        }
+
         if (system.hasMultiDiskSupport &&
             retroGameView.getAvailableDisks() > 1 &&
             retroGameView.getCurrentDisk() != saveState.metadata.diskIndex
         ) {
             retroGameView.changeDisk(saveState.metadata.diskIndex)
         }
+
         return retroGameView.unserializeState(saveState.state)
+    }
+
+    private fun displayLoadStateErrorMessage(throwable: Throwable) {
+        when (throwable) {
+            is IncompatibleStateException ->
+                displayToast(R.string.error_message_incompatible_state, Toast.LENGTH_LONG)
+
+            else -> displayToast(R.string.game_toast_load_state_failed)
+        }
     }
 
     private fun reset() {
