@@ -19,17 +19,16 @@
     <string name="support">Supporto</string>
     <string name="show_all">Mostra Tutto</string>
     <string name="settings_category_general">Generale</string>
-    <string name="settings_category_touch_input">Controlli touch</string>
-    <string name="settings_category_gamepads">Controller</string>
+    <string name="settings_category_input">Input</string>
     <string name="settings_category_advanced">Avanzate</string>
     <string name="settings_title_enable_autosave">Salvataggio automatico stato</string>
     <string name="settings_title_enable_touch_feedback">Vibra al tocco</string>
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
-    <string name="settings_title_enable_external_gamepads">Abilita controller</string>
-    <string name="settings_gamepad_bindings">Associazioni controller…</string>
+    <string name="settings_gamepad_settings">Impostazioni controller</string>
     <string name="settings_gamepad_button_name">Pulsante %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Non assegnato</string>
+    <string name="settings_gamepad_category_enabled">Controller abilitati</string>
     <string name="settings_gamepad_category_general">Generale</string>
     <string name="settings_gamepad_title_reset_bindings">Resetta associazioni</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
@@ -134,6 +133,7 @@
     \n\n Se niente di tutto ciò ha funzionato, questo Gioco/Core potrebbe non essere supportato da questo dispositivo.
     </string>
     <string name="lemuroid_crash_message">Messaggio di errore: %1$s</string>
+    <string name="error_message_incompatible_state">Questo stato di salvataggio non è compatibile con la versione corrente del Core. Carica il salvataggio in gioco più recente o usa una versione precedente di Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Automatico</item>
         <item>Nitido</item>

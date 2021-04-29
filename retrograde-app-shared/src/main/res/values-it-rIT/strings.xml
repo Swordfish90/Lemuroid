@@ -8,6 +8,9 @@
     <string name="controller_default">Predefinito</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standard</string>
+    <string name="controller_dos_auto">Automatico</string>
+    <string name="controller_dos_mouse_left">Mouse con Analogico sinistro</string>
+    <string name="controller_dos_mouse_right">Mouse con Analogico destro</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">Effetto TV</string>
     <string name="setting_stella_crop_hoverscan">Ritaglia sovrascrittura orizzontale</string>
