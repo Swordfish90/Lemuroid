@@ -27,7 +27,7 @@
     <string name="gdrive_last_sync_completed">Dernière synchro: %s</string>
     <string name="game_loading_download_core">Téléchargement du module…</string>
     <string name="support_description"><![CDATA[        <b>Acheter le Badge de Support</b><br/><br/>
-        Lemuroid est un projet d'émulation open-source basé sur Libretro. Toutes ses fonctionnalités sont disponibles gratuitement et sans publicité.<br/><br/>
+        Lemuroid est un projet d\'émulation open-source basé sur Libretro. Toutes ses fonctionnalités sont disponibles gratuitement et sans publicité.<br/><br/>
         En achetant un des badges de soutien, vous me permettez de consacrer plus de temps et de ressources à ce projet et aux différents modules qui le soutiennent, protégeant ainsi la stabilité de son devenir.<br/><br/>
         En vous remerciant de votre présence dans cette formidable communauté.
     ]]></string>
