@@ -29,8 +29,6 @@ class RxSettingsManager(
         context.resources.getStringArray(R.array.pref_key_shader_filter_values).first()
     )
 
-    val gamepadsEnabled = booleanPreference(R.string.pref_key_enable_gamepads, true)
-
     val tiltSensitivity = floatPreference(R.string.pref_key_tilt_sensitivity_index, 10, 0.6f)
 
     val autoSaveSync = booleanPreference(R.string.pref_key_save_sync_auto, false)

@@ -81,13 +81,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun getDisplayNameForFolderUri(uri: Uri) = DocumentFile.fromTreeUri(context!!, uri)?.name
+    private fun getDisplayNameForFolderUri(uri: Uri) = DocumentFile.fromTreeUri(requireContext(), uri)?.name
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> rescanLibrary()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
-            getString(R.string.pref_key_open_gamepad_bindings) -> handleOpenGamepadBindings()
+            getString(R.string.pref_key_open_gamepad_settings) -> handleOpenGamePadSettings()
             getString(R.string.pref_key_open_save_sync_settings) -> handleDisplaySaveSync()
             getString(R.string.pref_key_open_cores_selection) -> handleDisplayCorePage()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
@@ -108,7 +108,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findNavController().navigate(R.id.navigation_settings_save_sync)
     }
 
-    private fun handleOpenGamepadBindings() {
+    private fun handleOpenGamePadSettings() {
         findNavController().navigate(R.id.navigation_settings_gamepad)
     }
 

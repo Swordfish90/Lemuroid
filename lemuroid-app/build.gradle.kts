@@ -8,8 +8,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 142
-        versionName = "1.10.1"
+        versionCode = 145
+        versionName = "1.11.0-beta1"
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -17,12 +17,14 @@ android {
         println("Building Google Play version. Bundling dynamic features.")
         dynamicFeatures = mutableSetOf(
             ":lemuroid_core_desmume",
+            ":lemuroid_core_dosbox_pure",
             ":lemuroid_core_fbneo",
             ":lemuroid_core_fceumm",
             ":lemuroid_core_gambatte",
             ":lemuroid_core_genesis_plus_gx",
             ":lemuroid_core_handy",
             ":lemuroid_core_mame2003_plus",
+            ":lemuroid_core_mednafen_ngp",
             ":lemuroid_core_mednafen_pce_fast",
             ":lemuroid_core_melonds",
             ":lemuroid_core_mgba",

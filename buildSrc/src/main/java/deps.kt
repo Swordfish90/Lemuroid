@@ -1,7 +1,6 @@
 /* ktlint-disable no-multi-spaces max-line-length */
 object deps {
     object android {
-        // Sadly we can't have both target sdk 29 and PPSSPP since the core uses ashmem. We need to wait for an upstream fix.
         const val targetSdkVersion  = 29
         const val compileSdkVersion = 29
         const val minSdkVersion     = 23
@@ -25,7 +24,7 @@ object deps {
         const val paging          = "3.0.0-alpha11"
         const val room            = "2.3.0-alpha04"
         const val libretrodroid   = "0.5.5"
-        const val radialgamepad   = "0.3.1"
+        const val radialgamepad   = "0.4.0"
     }
 
     object libs {
@@ -52,7 +51,7 @@ object deps {
                 const val reactiveStreams = "android.arch.lifecycle:reactivestreams:1.1.1"
             }
             object preferences {
-                const val preferencesKtx = "androidx.preference:preference-ktx:1.1.0"
+                const val preferencesKtx = "androidx.preference:preference-ktx:1.1.1"
             }
             object paging {
                 const val common = "androidx.paging:paging-common:${versions.paging}"

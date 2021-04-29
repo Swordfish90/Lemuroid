@@ -23,7 +23,9 @@ enum class TouchControllerID {
     ARCADE_6,
     LYNX,
     ATARI7800,
-    PCE;
+    PCE,
+    NGP,
+    DOS;
 
     class Config(
         val leftConfig: RadialGamePadConfig,
@@ -55,6 +57,8 @@ enum class TouchControllerID {
                 LYNX -> Config(RadialPadConfigs.LYNX_LEFT, RadialPadConfigs.LYNX_RIGHT)
                 ATARI7800 -> Config(RadialPadConfigs.ATARI7800_LEFT, RadialPadConfigs.ATARI7800_RIGHT)
                 PCE -> Config(RadialPadConfigs.PCE_LEFT, RadialPadConfigs.PCE_RIGHT)
+                NGP -> Config(RadialPadConfigs.NGP_LEFT, RadialPadConfigs.NGP_RIGHT)
+                DOS -> Config(RadialPadConfigs.DOS_LEFT, RadialPadConfigs.DOS_RIGHT)
             }
         }
     }

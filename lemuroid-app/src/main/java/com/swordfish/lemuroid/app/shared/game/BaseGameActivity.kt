@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
@@ -53,6 +54,7 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.saves.IncompatibleStateException
 import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -167,8 +169,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         Thread.setDefaultUncaughtExceptionHandler(GameCrashHandler(this, systemHandler))
     }
 
-    abstract fun areGamePadsEnabled(): Single<Boolean>
-
     fun getControllerType(): Observable<Map<Int, ControllerConfig>> {
         return controllerConfigObservable
     }
@@ -185,6 +185,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .filter { it is GLRetroView.GLRetroEvents.FrameRendered }
             .firstElement()
             .flatMapCompletable { getRetryRestoreQuickSave(saveState) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { displayLoadStateErrorMessage(it) }
+            .onErrorComplete()
             .autoDispose(scope())
             .subscribe()
     }
@@ -246,8 +249,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun findControllerId(supported: Array<Controller>, controllerConfig: ControllerConfig): Int? {
         return supported
-            .firstOrNull { it.description == controllerConfig.libretroDescriptor }
-            ?.id
+            .firstOrNull { controller ->
+                sequenceOf(
+                    controller.id == controllerConfig.libretroId,
+                    controller.description == controllerConfig.libretroDescriptor
+                ).any { it }
+            }?.id
     }
 
     private fun handleRetroViewError(errorCode: Int) {
@@ -312,6 +319,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.GB -> GLRetroView.SHADER_LCD
                 SystemID.N64 -> GLRetroView.SHADER_CRT
                 SystemID.GENESIS -> GLRetroView.SHADER_CRT
+                SystemID.SEGACD -> GLRetroView.SHADER_CRT
                 SystemID.NES -> GLRetroView.SHADER_CRT
                 SystemID.SNES -> GLRetroView.SHADER_CRT
                 SystemID.FBNEO -> GLRetroView.SHADER_CRT
@@ -325,6 +333,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.ATARI7800 -> GLRetroView.SHADER_CRT
                 SystemID.PC_ENGINE -> GLRetroView.SHADER_CRT
                 SystemID.LYNX -> GLRetroView.SHADER_LCD
+                SystemID.DOS -> GLRetroView.SHADER_CRT
+                SystemID.NGP -> GLRetroView.SHADER_LCD
+                SystemID.NGC -> GLRetroView.SHADER_LCD
             }
         }
     }
@@ -432,15 +443,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             motionEventsSubjects
         ).share()
 
-        areGamePadsEnabled()
-            .filter { it }
-            .flatMapObservable { events }
+        events
             .autoDispose(scope())
-            .subscribeBy { (ports, event) -> sendStickMotions(event, ports(event.device)) }
+            .subscribeBy { (ports, event) ->
+                ports(event.device)?.let {
+                    sendStickMotions(event, it)
+                }
+            }
 
-        areGamePadsEnabled()
-            .filter { it }
-            .flatMapObservable { events }
+        events
             .flatMap { (ports, event) ->
                 val port = ports(event.device)
                 val axes = GamePadManager.TRIGGER_MOTIONS_TO_KEYS.entries
@@ -457,7 +468,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .flatMap { groups ->
                 groups.distinctUntilChanged()
                     .doOnNext { (_, button, action, port) ->
-                        retroGameView?.sendKeyEvent(action, button, port)
+                        port?.let {
+                            retroGameView?.sendKeyEvent(action, button, it)
+                        }
                     }
             }
             .autoDispose(scope())
@@ -481,9 +494,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             filteredKeyEvents
         )
 
-        areGamePadsEnabled()
-            .filter { it }
-            .flatMapObservable { combinedObservable }
+        combinedObservable
             .doOnSubscribe { pressedKeys.clear() }
             .doOnDispose { pressedKeys.clear() }
             .autoDispose(scope())
@@ -510,7 +521,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     }
                 }
 
-                retroGameView?.sendKeyEvent(action, bindKeyCode, port)
+                port?.let {
+                    retroGameView?.sendKeyEvent(action, bindKeyCode, it)
+                }
             }
     }
 
@@ -728,7 +741,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (!it) displayToast(R.string.game_toast_load_state_failed) }
-            .doOnError { displayToast(R.string.game_toast_load_state_failed) }
+            .doOnError { displayLoadStateErrorMessage(it) }
             .onErrorComplete()
             .doOnSubscribe { loading = true }
             .doAfterTerminate { loading = false }
@@ -744,19 +757,34 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
         return SaveState(
             retroGameView.serializeState(),
-            SaveState.Metadata(currentDisk)
+            SaveState.Metadata(currentDisk, systemCoreConfig.statesVersion)
         )
     }
 
     private fun loadSaveState(saveState: SaveState): Boolean {
         val retroGameView = retroGameView ?: return false
+
+        if (systemCoreConfig.statesVersion != saveState.metadata.version) {
+            throw IncompatibleStateException()
+        }
+
         if (system.hasMultiDiskSupport &&
             retroGameView.getAvailableDisks() > 1 &&
             retroGameView.getCurrentDisk() != saveState.metadata.diskIndex
         ) {
             retroGameView.changeDisk(saveState.metadata.diskIndex)
         }
+
         return retroGameView.unserializeState(saveState.state)
+    }
+
+    private fun displayLoadStateErrorMessage(throwable: Throwable) {
+        when (throwable) {
+            is IncompatibleStateException ->
+                displayToast(R.string.error_message_incompatible_state, Toast.LENGTH_LONG)
+
+            else -> displayToast(R.string.game_toast_load_state_failed)
+        }
     }
 
     private fun reset() {

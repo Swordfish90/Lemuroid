@@ -6,6 +6,7 @@ import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
 import io.reactivex.Completable
@@ -16,12 +17,21 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import dagger.Lazy
 
-class GamePadManager(context: Context, private val sharedPreferences: Lazy<SharedPreferences>) {
+class GamePadManager(
+    context: Context,
+    sharedPreferencesFactory: Lazy<SharedPreferences>
+) {
 
     private val inputManager = context.getSystemService(Context.INPUT_SERVICE) as InputManager
 
+    private val sharedPreferences by lazy { sharedPreferencesFactory.get() }
+
+    private val rxSharedPreferences = Single.fromCallable {
+        RxSharedPreferences.create(sharedPreferencesFactory.get())
+    }
+
     fun getGamePadsBindingsObservable(): Observable<(InputDevice?)->Map<Int, Int>> {
-        return getGamePadsObservable()
+        return getEnabledGamePadsObservable()
             .observeOn(Schedulers.io())
             .flatMapSingle { inputDevices ->
                 Observable.fromIterable(inputDevices).flatMapSingle { inputDevice ->
@@ -33,12 +43,12 @@ class GamePadManager(context: Context, private val sharedPreferences: Lazy<Share
     }
 
     fun getGamePadMenuShortCutObservable(): Observable<Optional<GameMenuShortcut>> {
-        return getGamePadsObservable()
+        return getEnabledGamePadsObservable()
             .observeOn(Schedulers.io())
             .map { devices ->
                 devices.firstOrNull()
                     ?.let {
-                        sharedPreferences.get().getString(
+                        sharedPreferences.getString(
                             computeGameMenuShortcutPreference(it),
                             GameMenuShortcut.getDefault(it)?.name
                         )
@@ -48,12 +58,12 @@ class GamePadManager(context: Context, private val sharedPreferences: Lazy<Share
             }
     }
 
-    fun getGamePadsPortMapperObservable(): Observable<(InputDevice?)->Int> {
-        return getGamePadsObservable().map { gamePads ->
+    fun getGamePadsPortMapperObservable(): Observable<(InputDevice?)->Int?> {
+        return getEnabledGamePadsObservable().map { gamePads ->
             val portMappings = gamePads
                 .mapIndexed { index, inputDevice -> inputDevice.id to index }
                 .toMap()
-            return@map { inputDevice -> portMappings[inputDevice?.id] ?: 0 }
+            return@map { inputDevice -> portMappings[inputDevice?.id] }
         }
     }
 
@@ -71,17 +81,13 @@ class GamePadManager(context: Context, private val sharedPreferences: Lazy<Share
 
     fun resetAllBindings(): Completable {
         val actionCompletable = Completable.fromAction {
-            val editor = sharedPreferences.get().edit()
-            sharedPreferences.get().all.keys
+            val editor = sharedPreferences.edit()
+            sharedPreferences.all.keys
                 .filter { it.startsWith(GAME_PAD_BINDING_PREFERENCE_BASE_KEY) }
                 .forEach { editor.remove(it) }
             editor.commit()
         }
         return actionCompletable.subscribeOn(Schedulers.io())
-    }
-
-    fun getDistinctGamePads(): List<InputDevice> {
-        return getAllGamePads().distinctBy { getSharedPreferencesId(it) }
     }
 
     fun getGamePadsObservable(): Observable<List<InputDevice>> {
@@ -107,6 +113,26 @@ class GamePadManager(context: Context, private val sharedPreferences: Lazy<Share
             .subscribeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getEnabledGamePadsObservable(): Observable<List<InputDevice>> {
+        return getGamePadsObservable()
+            .flatMap { devices ->
+                if (devices.isEmpty()) {
+                    return@flatMap Observable.just(listOf())
+                }
+
+                val enabledGamePads = devices.map { device ->
+                    rxSharedPreferences
+                        .flatMapObservable {
+                            it.getBoolean(computeEnabledGamePadPreference(device)).asObservable()
+                        }
+                }
+
+                Observable.combineLatest(enabledGamePads) { results ->
+                    devices.filterIndexed { index, _ -> results[index] == true }
+                }
+            }
+    }
+
     private fun retrieveMappingFromPreferences(
         inputDevice: InputDevice,
         keyCode: Int
@@ -114,7 +140,7 @@ class GamePadManager(context: Context, private val sharedPreferences: Lazy<Share
         val valueSingle = Single.fromCallable {
             val sharedPreferencesKey = computeKeyBindingPreference(inputDevice, keyCode)
             val sharedPreferencesDefault = getDefaultBinding(keyCode).toString()
-            sharedPreferences.get().getString(sharedPreferencesKey, sharedPreferencesDefault)
+            sharedPreferences.getString(sharedPreferencesKey, sharedPreferencesDefault)
         }
 
         return valueSingle.map { it.toInt() }.subscribeOn(Schedulers.io())
@@ -143,6 +169,7 @@ class GamePadManager(context: Context, private val sharedPreferences: Lazy<Share
 
     companion object {
         private const val GAME_PAD_BINDING_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding"
+        private const val GAME_PAD_ENABLED_PREFERENCE_BASE_KEY = "pref_key_gamepad_enabled"
 
         private fun getSharedPreferencesId(inputDevice: InputDevice) = inputDevice.descriptor
 
@@ -158,6 +185,9 @@ class GamePadManager(context: Context, private val sharedPreferences: Lazy<Share
             KeyEvent.KEYCODE_BUTTON_X,
             KeyEvent.KEYCODE_BUTTON_Y,
         )
+
+        fun computeEnabledGamePadPreference(inputDevice: InputDevice) =
+            "${GAME_PAD_ENABLED_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}"
 
         fun computeGameMenuShortcutPreference(inputDevice: InputDevice) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_gamemenu"

@@ -2,11 +2,12 @@ package com.swordfish.lemuroid.app.mobile.feature.settings
 
 import android.content.Context
 import android.os.Bundle
+import android.view.InputDevice
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
-import com.swordfish.lemuroid.app.shared.settings.GamePadSettingsPreferences
+import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 class GamepadSettingsFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var gamePadSettingsPreferences: GamePadSettingsPreferences
+    @Inject lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
     @Inject lateinit var gamePadManager: GamePadManager
 
     override fun onAttach(context: Context) {
@@ -32,12 +33,16 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribe { refreshBindings() }
+            .subscribe { refreshGamePads(it) }
     }
 
-    private fun refreshBindings() {
+    private fun refreshGamePads(gamePads: List<InputDevice>) {
         preferenceScreen.removeAll()
-        gamePadSettingsPreferences.addGamePadsPreferencesToScreen(requireContext(), preferenceScreen)
+        gamePadPreferencesHelper.addGamePadsPreferencesToScreen(
+            requireContext(),
+            preferenceScreen,
+            gamePads
+        )
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -48,10 +53,10 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun handleResetBindings() {
-        gamePadSettingsPreferences.resetAllBindings()
+        gamePadPreferencesHelper.resetBindingsAndRefresh()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribe { refreshBindings() }
+            .subscribe { refreshGamePads(it) }
     }
 
     @dagger.Module
