@@ -9,7 +9,7 @@
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">قياسي</string>
     <string name="controller_dos_auto">التلقائي</string>
-    <string name="controller_dos_mouse_left">الفأرة مع العصا اليسرا</string>
+    <string name="controller_dos_mouse_left">الفأرة مع العصا اليسرى</string>
     <string name="controller_dos_mouse_right">الفأرة مع العصا اليمنى</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">تأثير التلفاز</string>
