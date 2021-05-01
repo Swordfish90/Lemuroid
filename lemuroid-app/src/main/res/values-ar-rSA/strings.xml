@@ -19,17 +19,16 @@
     <string name="support">الدعم</string>
     <string name="show_all">عرض الكل</string>
     <string name="settings_category_general">عام</string>
-    <string name="settings_category_touch_input">الادخال اللمسي</string>
-    <string name="settings_category_gamepads">لوحة التحكم</string>
+    <string name="settings_category_input">إدخال</string>
     <string name="settings_category_advanced">متقدمة</string>
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
     <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميول</string>
-    <string name="settings_title_enable_external_gamepads">تمكين وحدة التحكم</string>
-    <string name="settings_gamepad_bindings">ربط لوحة التحكم…</string>
+    <string name="settings_gamepad_settings">إعدادات لوحة التحكم</string>
     <string name="settings_gamepad_button_name">الزر %1$s</string>
     <string name="settings_retropad_button_name">لوحة قديمة %1$s</string>
     <string name="settings_retropad_button_unassigned">غير مسند</string>
+    <string name="settings_gamepad_category_enabled">تمكين لوحة التحكم</string>
     <string name="settings_gamepad_category_general">عام</string>
     <string name="settings_gamepad_title_reset_bindings">إعادة ضبط الارتباطات</string>
     <string name="settings_gamepad_title_game_menu">القائمة</string>
@@ -134,6 +133,7 @@
         \n\n إذا لم يعمل أي من التطبيقات المذكورة أعلاه، قد يكون من الممكن أن تكون هذه اللعبة/النواة غير مدعومة من هذا الجهاز.
     </string>
     <string name="lemuroid_crash_message">رسالة خطأ: %1$s</string>
+    <string name="error_message_incompatible_state">حالة الحفظ هذه غير متوافقة مع الإصدار الأساسي الحالي. الرجاء تحميل أحدث نسخة احتياطية في اللعبة أو استخدام اصدار محاكي Lemuroid السابق.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>تلقائي</item>
         <item>حاد</item>
