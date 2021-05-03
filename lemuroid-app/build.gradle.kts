@@ -99,6 +99,10 @@ android {
         }
     }
 
+    lintOptions {
+        disable += setOf("MissingTranslation", "ExtraTranslation")
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
