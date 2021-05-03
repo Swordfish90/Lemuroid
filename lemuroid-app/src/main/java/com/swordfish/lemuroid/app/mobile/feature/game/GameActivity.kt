@@ -27,6 +27,8 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
+import com.gojuno.koptional.None
+import com.gojuno.koptional.Optional
 import com.gojuno.koptional.rxjava2.filterSome
 import com.gojuno.koptional.toOptional
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -40,7 +42,9 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.math.linearInterpolation
+import com.swordfish.lemuroid.common.rx.BehaviorRelayNullableProperty
 import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
+import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -82,12 +86,15 @@ class GameActivity : BaseGameActivity() {
 
     private val virtualControllerDisposables = CompositeDisposable()
 
-    private var controllerConfig: ControllerConfig? = null
+    private val touchControllerConfigObservable = BehaviorRelay.createDefault<Optional<ControllerConfig>>(None)
+    private var touchControllerConfig: ControllerConfig?
+    by BehaviorRelayNullableProperty(touchControllerConfigObservable)
 
-    private var padSettingsObservable = BehaviorRelay.createDefault(TouchControllerSettingsManager.Settings())
-    private var padSettings: TouchControllerSettingsManager.Settings by BehaviorRelayProperty(padSettingsObservable)
+    private val padSettingsObservable = BehaviorRelay.createDefault(TouchControllerSettingsManager.Settings())
+    private var padSettings: TouchControllerSettingsManager.Settings
+    by BehaviorRelayProperty(padSettingsObservable)
 
-    private var orientationObservable = BehaviorRelay.createDefault(Configuration.ORIENTATION_PORTRAIT)
+    private val orientationObservable = BehaviorRelay.createDefault(Configuration.ORIENTATION_PORTRAIT)
     private var orientation: Int by BehaviorRelayProperty(orientationObservable)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,10 +108,17 @@ class GameActivity : BaseGameActivity() {
         setupVirtualGamePadVisibility()
         setupVirtualGamePads()
 
-        padSettingsObservable
+        RXUtils.combineLatest(
+            touchControllerConfigObservable.filterSome(),
+            orientationObservable,
+            isVirtualGamePadVisible(),
+            padSettingsObservable
+        )
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy { updateLayout() }
+            .subscribeBy(Timber::e) { (config, orientation, virtualGamePadVisible, padSettings) ->
+                LayoutHandler().updateLayout(config, padSettings, orientation, virtualGamePadVisible)
+            }
     }
 
     private fun setupVirtualGamePads() {
@@ -129,16 +143,19 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupVirtualGamePadVisibility() {
-        gamePadManager
-            .getEnabledGamePadsObservable()
-            .map { it.isNotEmpty() }
+        isVirtualGamePadVisible()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy(Timber::e) { connected ->
-                val isVisible = !connected
-                leftGamePadContainer.setVisibleOrGone(isVisible)
-                rightGamePadContainer.setVisibleOrGone(isVisible)
+            .subscribeBy(Timber::e) {
+                leftGamePadContainer.setVisibleOrGone(it)
+                rightGamePadContainer.setVisibleOrGone(it)
             }
+    }
+
+    private fun isVirtualGamePadVisible(): Observable<Boolean> {
+        return gamePadManager
+            .getEnabledGamePadsObservable()
+            .map { it.isEmpty() }
     }
 
     private fun getCurrentOrientation() = resources.configuration.orientation
@@ -148,10 +165,6 @@ class GameActivity : BaseGameActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         orientation = newConfig.orientation
-    }
-
-    private fun updateLayout() {
-        controllerConfig?.let { LayoutHandler().updateLayout(it, orientation) }
     }
 
     private fun setupTouchViews(controllerConfig: ControllerConfig, vibrateOnTouch: Boolean) {
@@ -232,7 +245,7 @@ class GameActivity : BaseGameActivity() {
         this.leftPad = leftPad
         this.rightPad = rightPad
 
-        this.controllerConfig = controllerConfig
+        this.touchControllerConfig = controllerConfig
     }
 
     private fun handleTripleTaps(events: MutableList<Event.Gesture>) {
@@ -474,7 +487,7 @@ class GameActivity : BaseGameActivity() {
             .doOnSubscribe { findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(true) }
             .doFinally { findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(false) }
             .filter { it is TouchControllerCustomizer.Event.Save }
-            .flatMapCompletable { storeVirtualGamePadSettings(controllerConfig!!, orientation) }
+            .flatMapCompletable { storeVirtualGamePadSettings(touchControllerConfig!!, orientation) }
     }
 
     inner class LayoutHandler {
@@ -482,8 +495,37 @@ class GameActivity : BaseGameActivity() {
         private fun handleRetroViewLayout(
             constraintSet: ConstraintSet,
             controllerConfig: ControllerConfig,
-            orientation: Int
+            orientation: Int,
+            virtualPadVisible: Boolean
         ) {
+            if (!virtualPadVisible) {
+                constraintSet.connect(
+                    R.id.gamecontainer,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP
+                )
+                constraintSet.connect(
+                    R.id.gamecontainer,
+                    ConstraintSet.LEFT,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.LEFT
+                )
+                constraintSet.connect(
+                    R.id.gamecontainer,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM
+                )
+                constraintSet.connect(
+                    R.id.gamecontainer,
+                    ConstraintSet.RIGHT,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.RIGHT
+                )
+                return
+            }
+
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 constraintSet.connect(
                     R.id.gamecontainer,
@@ -564,6 +606,7 @@ class GameActivity : BaseGameActivity() {
 
         private fun handleVirtualGamePadLayout(
             constraintSet: ConstraintSet,
+            padSettings: TouchControllerSettingsManager.Settings,
             controllerConfig: ControllerConfig,
             orientation: Int
         ) {
@@ -682,12 +725,17 @@ class GameActivity : BaseGameActivity() {
             }
         }
 
-        fun updateLayout(config: ControllerConfig, orientation: Int) {
+        fun updateLayout(
+            config: ControllerConfig,
+            padSettings: TouchControllerSettingsManager.Settings,
+            orientation: Int,
+            virtualPadVisible: Boolean
+        ) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(mainContainerLayout)
 
-            handleVirtualGamePadLayout(constraintSet, config, orientation)
-            handleRetroViewLayout(constraintSet, config, orientation)
+            handleVirtualGamePadLayout(constraintSet, padSettings, config, orientation)
+            handleRetroViewLayout(constraintSet, config, orientation, virtualPadVisible)
 
             constraintSet.applyTo(mainContainerLayout)
 
