@@ -19,17 +19,16 @@
     <string name="support">Suporte</string>
     <string name="show_all">Mostrar Todos</string>
     <string name="settings_category_general">Geral</string>
-    <string name="settings_category_touch_input">Entrada de toque</string>
-    <string name="settings_category_gamepads">Comandos</string>
+    <string name="settings_category_input">Entrada</string>
     <string name="settings_category_advanced">Avançado</string>
     <string name="settings_title_enable_autosave">Auto-gravar estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar ao toque</string>
-    <string name="settings_title_tilt_sensitivity">Sensibilidade da inclinação do stick</string>
-    <string name="settings_title_enable_external_gamepads">Activar comandos</string>
-    <string name="settings_gamepad_bindings">Combinações do comandos…</string>
+    <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
+    <string name="settings_gamepad_settings">Configurações do Comando</string>
     <string name="settings_gamepad_button_name">Botão %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Não atribuído</string>
+    <string name="settings_gamepad_category_enabled">Comandos Ativos</string>
     <string name="settings_gamepad_category_general">Geral</string>
     <string name="settings_gamepad_title_reset_bindings">Redefinir combinações</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
@@ -134,6 +133,7 @@
         \n\n Se nenhuma destas sugestões funcionar, é possível que este Jogo/Núcleo não seja suportado pelo seu dispositivo.
     </string>
     <string name="lemuroid_crash_message">Mensagem de erro: %1$s</string>
+    <string name="error_message_incompatible_state">Este estado de gravação não é compatível com a versão actual do núcleo. Por favor, carregue a última gravação dentro do jogo ou use uma versão anterior do Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Automático</item>
         <item>Afiado</item>
