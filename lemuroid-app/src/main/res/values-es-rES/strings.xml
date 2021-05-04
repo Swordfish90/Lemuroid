@@ -19,17 +19,16 @@
     <string name="support">Soporte</string>
     <string name="show_all">Mostrar todo</string>
     <string name="settings_category_general">General</string>
-    <string name="settings_category_touch_input">Control táctil</string>
-    <string name="settings_category_gamepads">Mandos</string>
+    <string name="settings_category_input">Entrada</string>
     <string name="settings_category_advanced">Avanzado</string>
     <string name="settings_title_enable_autosave">Autoguardar estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar al tocar</string>
-    <string name="settings_title_tilt_sensitivity">Sensibilidad de inclinación</string>
-    <string name="settings_title_enable_external_gamepads">Activar mandos</string>
-    <string name="settings_gamepad_bindings">Asociaciones de mando…</string>
+    <string name="settings_title_tilt_sensitivity">Sensibilidad del sensor de inclinación</string>
+    <string name="settings_gamepad_settings">Ajustes del mando</string>
     <string name="settings_gamepad_button_name">Botón %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Sin asignar</string>
+    <string name="settings_gamepad_category_enabled">Activar mandos</string>
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Restablecer asociaciones</string>
     <string name="settings_gamepad_title_game_menu">Menú</string>
@@ -134,6 +133,7 @@
         \n\n Si nada de lo anterior funciona, es posible que este Juego/Núcleo no sea soportado para este dispositivo.
     </string>
     <string name="lemuroid_crash_message">Mensaje de error: %1$s</string>
+    <string name="error_message_incompatible_state">Este estado guardado no es compatible con la versión actual del núcleo. Por favor carga el último guardado hecho en el juego o usa una versión anterior de Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Automático</item>
         <item>Nítido</item>
