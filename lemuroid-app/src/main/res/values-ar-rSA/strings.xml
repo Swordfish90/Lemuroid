@@ -112,20 +112,19 @@
     <string name="tv_folder_storage_secondary">وحدة التخزين الثانوية %1$s</string>
     <string name="tv_folder_storage_title">اختر وحدة التخزين</string>
     <string name="tv_home_section_favorites">المفضلات</string>
-    <string name="tv_home_section_recents">الحديثه</string>
+    <string name="tv_home_section_recents">المستخدمة مؤخّراً</string>
     <string name="tv_home_section_systems">الأنظمة</string>
     <string name="tv_home_section_settings">الإعدادات</string>
     <string name="tv_search_results">الألعاب</string>
     <string name="tv_game_message_missing_gamepad">وحدة التحكم مطلوبة للعب. الرجاء توصيل واحدة منها.</string>
-    <string name="game_edit_touch_controls_error_not_visible">قطع الاتصال بالوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
+    <string name="game_edit_touch_controls_error_not_visible">أقطع الاتصال بالوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
     <string name="game_interactory_busy">انتظر حتى تكتمل العمليات المعلقة</string>
     <string name="mobile_settings_help">مساعدة</string>
     <string name="mobile_settings_support">الدعم</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;كيف أستخدم Lemuroid؟</b><br/>
-        نسخ جميع ملفات ROMs الخاصة بك في مجلد على جهازك واختيارها داخل تطبيق Lemuroid. يسمح لهذا المجلد بأن يحتوي على دلائل فرعية. بعد الانتهاء من الفحص، يجب أن ترى ألعابك.<br/><br/>
+        نسخ جميع ملفات الالعاب الخاصة بك في مجلد على جهازك واختيارها داخل تطبيق Lemuroid. يسمح لهذا المجلد بأن يحتوي على دلائل فرعية. بعد الانتهاء من الفحص، لابد ان ترى ألعابك.<br/><br/>
         <b>&#8226;لماذا لم يتم اكتشاف ألعابي؟</b><br/>
-        إذا تم الضغط على ألعابك، حاول إلغاء الضغط عليها. إذا لم يعمل هذا على وضع ROMs في مجلدات منفصلة، واحد لكل نظام مع الأسماء التالية: $SYSTEMS.
-    ]]></string>
+        إذا كانت العابك بصيغة مضغوطة قم بأستخراجها.و في حال لم يتم العثور عليها قم بوضعها في مجلدات منفصلة حسب تسميات النظم التالية: $SYSTEMS.    ]]></string>
     <string name="lemuroid_crash_disclamer">يبدو أن نواة ليبرترو قد واجهة مشكلة غير متوقعة. إذا كان الأمر مستمرا الرجاء محاولة ما يلي:\n
         \n\u2022 تعطيل الحفظ التلقائي وإعادة تشغيل اللعبة
         \n\u2022 اذهب إلى إعدادات أندرويد ومسح ذاكرة التخزين المؤقت للتطبيق
@@ -138,7 +137,7 @@
         <item>تلقائي</item>
         <item>حاد</item>
         <item>سلاسة</item>
-        <item>CRT</item>
-        <item>LCD</item>
+        <item>تلفاز قديم</item>
+        <item>شاشة كريستالية</item>
     </string-array>
 </resources>
