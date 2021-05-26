@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Ana sayfa</string>
+    <string name="title_search">Ara</string>
+    <string name="title_systems">Sistemler</string>
+    <string name="title_games">Oyunlar</string>
+    <string name="title_settings">Ayarlar</string>
+    <string name="recent">En son</string>
+    <string name="favorites">Favoriler</string>
+    <string name="discover">Keşfet</string>
+    <string name="rescan">Yeniden tara</string>
+    <string name="directory">Dizin</string>
+    <string name="display_filter">Görüntü filtresi</string>
+    <string name="roms">ROMlar</string>
+    <string name="cancel">İptal</string>
+    <string name="settings">Ayarlar</string>
+    <string name="support">Destek</string>
+    <string name="show_all">Hepsini Göster</string>
+    <string name="settings_category_general">Genel</string>
+    <string name="settings_category_input">Giriş</string>
+    <string name="settings_category_advanced">Gelişmiş</string>
+    <string name="settings_title_enable_autosave">Durumu otomatik kaydet</string>
+    <string name="settings_title_enable_touch_feedback">Dokunurken titret</string>
+    <string name="settings_title_tilt_sensitivity">Tilt sensör hassasiyeti</string>
+    <string name="settings_gamepad_settings">Gamepad ayarları</string>
+    <string name="settings_gamepad_button_name">Dügme %1$s</string>
+    <string name="settings_retropad_button_unassigned">Atanmamış</string>
+    <string name="settings_gamepad_category_general">Genel</string>
+    <string name="settings_gamepad_title_reset_bindings">Bağları sıfırla</string>
+    <string name="settings_gamepad_title_game_menu">Menü</string>
+    <string name="settings_title_open_cores_selection">Çekirdekleri Değiştir</string>
+    <string name="settings_description_open_cores_selection">Hangi çekirdeğin bir sistemle ilişkili olduğunu seçin</string>
+    <string name="settings_description_display_bios_info">Algılanan ve desteklenen BIOS dosyalarını göster</string>
+    <string name="settings_bios_category_detected">Algılanan</string>
+    <string name="settings_bios_category_not_detected">Desteklenen</string>
+    <string name="settings_title_reset_settings">Fabrika ayarlarına sıfırla</string>
+    <string name="settings_description_reset_settings">Lemuroid\'i fabrika ayarlarına sıfırla</string>
+    <string name="reset_settings_warning_message_title">Emin misin?</string>
+    <string name="reset_settings_warning_message_description">Bu Lemuroid\'i fabrika ayarlarına sıfırlayacak. Kayıtlar ve Durumlar korunacak.</string>
+    <string name="settings_title_save_sync">Bulut kayıtlar</string>
+    <string name="settings_description_save_sync">Bulutta kayıtlarınızı yedekleyin ve senkronize edin</string>
+    <string name="settings_save_sync_refresh">Manuel Senkronize</string>
+    <string name="settings_save_sync_refresh_description">Şimdi bir manuel senkronize yapın.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Otomatik Senkronize</string>
+    <string name="settings_save_sync_enable_auto_description">Wi-Fi\'a bağlandığında oyun oturumundan önce ve sonra senkronizasyonu otomatik yapın</string>
+    <string name="settings_save_sync_include_saves">Oyun içi kayıtları senkronize et</string>
+    <string name="settings_save_sync_include_saves_description">Cihazda %1$s</string>
+    <string name="settings_save_sync_include_states">Senkronize durumu</string>
+    <string name="settings_save_sync_include_states_description">Daha uygun, ama ağır ve daha az güvenilir. Hangi çekirdekleri/sistemleri senkronize etmek istediğinizi seçin</string>
+    <string name="game_context_menu_add_to_favorites">Favorilere ekle</string>
+    <string name="game_context_menu_remove_from_favorites">Favorilerden kaldır</string>
+    <string name="game_context_menu_resume">Devam et</string>
+    <string name="game_context_menu_restart">Yeniden başlat</string>
+    <string name="game_context_menu_create_shortcut">Başlatıcıya sabitle</string>
+    <string name="home_empty_title">ROMların konumunu seç</string>
+    <string name="home_empty_message">Lemuroid\'in ROM dosyalarını içeren bir dizini taraması gerekiyor.\n Bu birkaç dakika sürebilir.</string>
+    <string name="home_empty_action">Konum seç</string>
+    <string name="game_menu_save">Kaydet</string>
+    <string name="game_menu_load">Yükle</string>
+    <string name="game_menu_restart">Yeniden başlat</string>
+    <string name="game_menu_quit">Çık</string>
+    <string name="game_menu_settings">Ayarlar</string>
+    <string name="game_menu_change_disk_button">Disk değiştir</string>
+    <string name="game_menu_edit_touch_controls">Kontrolleri düzenle</string>
+    <string name="game_menu_mute_audio">Sesi kapat</string>
+    <string name="game_menu_fast_forward">Hızlı-İleri</string>
+    <string name="game_loading_preparing_game">Oyun hazırlanıyor…</string>
+    <string name="game_toast_settings_button_using_gamepad">Gamepad tespit edildi. %1$s ile ayarlar menüsüne erişin.</string>
+    <string name="game_toast_load_state_failed">Bu durum yüklenemiyor</string>
+    <string name="empty_view_default">Eşya yok</string>
+    <string name="core_settings_title">Çekirdek ayarları</string>
+    <string name="core_settings_category_preferences">Tercihler</string>
+    <string name="core_settings_category_controllers">Kontroller</string>
+    <string name="core_settings_controller">%1$s Kontrolleri</string>
+    <string name="game_menu_title">Oyun menüsü</string>
+    <string name="notification_channel_name">Tüm bildirimler</string>
+    <string name="library_index_notification_title">ROMları tarama devam ediyor</string>
+    <string name="library_index_notification_message">Bu birkaç dakika sürebilir</string>
+    <string name="save_sync_notification_title">Bulut kayıt senkronizasyonu devam ediyor</string>
+    <string name="save_sync_notification_message">Bu birkaç dakika sürebilir</string>
+    <string name="game_running_notification_title">%1$s çalışıyor</string>
+    <string name="game_running_notification_title_alternative">Oyun çalışıyor</string>
+    <string name="game_running_notification_message">Oyunu kaydettiğinizden emin olun</string>
+    <string name="installing_core_notification_title">Çekirdekler güncelleniyor</string>
+    <string name="installing_core_notification_message">Bu birkaç dakika sürebilir</string>
+    <string name="game_loader_error_gl_incompatible">Bu çekirdek cihazınız tarafından desteklenmeyen bir OpenGL ES versiyonunu gerektiriyor.</string>
+    <string name="game_loader_error_load_core">Görünüşe göre Libreto çekirdeği yüklenmedi. Cihazınızın internete bağlı olduğundan emin olun ve kütüphanenizi yeniden taramayı deneyin. Eğer sorun devam ediyorsa çekirdek cihazınız tarafından desteklenmiyor olabilir.</string>
+    <string name="game_loader_error_load_game">Oyununuzu yüklerken kötü birşey oldu. ROM\'un Lemuroid tarafından desteklendiğinden emin olun ve oyunlarınızı yeniden tarayın.</string>
+    <string name="game_loader_error_save">Kayıt dosyası ile kötü birşey oldu. Eğer sorun devam ediyorsa, otomatik kayıtı devre dışı bırakmayı deneyin.</string>
+    <string name="game_loader_error_generic">Kötü birşey oldu. Aşağıdakileri deneyin:\n
+        \n\u2022 Otomatik kayıtı devre dışı bırakın ve oyunu yeniden çalıştırın
+        \n\u2022 Android ayarlarına gidin ve uygulama önbelleğini temizleyin
+        \n\u2022 Lemuroid ayarlarına gidin ve fabrika ayarı sıfırlaması yapın
+        \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu oyun/çekirdek bu cihazın desteklenmiyor olabilir.
+    </string>
+    <string name="game_loader_error_missing_bios">Görünüşe göre gerekli olan BIOS\'unuz eksik. ROM\'unuza ekleyin ve yeniden tarayın. Gerekli dosyalar: %1$s</string>
+    <string name="game_shortcut_error">Oyununuzu yüklerken kötü birşey oldu. Bu oyunun kitaplıkta olduğundan emin olun.</string>
+    <string name="dialog_saf_not_found">Bu cihaz StorageAccessFramework dosya seçicisini desteklemiyor. Lütfen sıkıştırılmamış ROM dosyalarını %1$s a koyun ve Yeniden taraya dokunun.</string>
+    <string name="system_grid_details">%1$s oyunlar</string>
+    <string name="tv_folder_picker_title">ROMların konumunu seç</string>
+    <string name="tv_folder_picker_action_choose">Seç</string>
+    <string name="tv_folder_picker_action_cancel">İptal</string>
+    <string name="tv_folder_storage_primary">Ana depolama</string>
+    <string name="tv_folder_storage_secondary">İkincil depolama %1$s</string>
+    <string name="tv_folder_storage_title">Depolama seç</string>
+    <string name="tv_home_section_favorites">Favoriler</string>
+    <string name="tv_home_section_recents">En son</string>
+    <string name="tv_home_section_systems">Sistemler</string>
+    <string name="tv_home_section_settings">Ayarlar</string>
+    <string name="tv_search_results">Oyunlar</string>
+    <string name="tv_game_message_missing_gamepad">Gamepad\'ler oynamak için gerekli. Lütfen birini bağlayın.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Dokunma kontrollerinizi düzenlemek için pad\'in bağlantısını kesin</string>
+    <string name="game_interactory_busy">Bekleyen işlemlerin tamamlanmasını bekleyin</string>
+    <string name="mobile_settings_help">Yardım</string>
+    <string name="mobile_settings_support">Destek</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroid\'i nasıl kullanırım?</b></b>
+        Tüm ROMları bir klasör içinde kopyalayın ve Lemuroid içinde seçin. Bu klasörün alt klasör olmasına izin verilebilir. Tarama tamamlandıktan sonra oyunlarınızı görmelisiniz.<br/><br/>
+        <b>&#8226; Neden oyunlarım tespit edilmedi?</b><br/>
+        Eğer oyunlarınız sıkıştırılmışsa, çıkartmayı deneyin. Eğer bu çalışmıyorsa ROMları ayrı klasöre koyun, aşağıdaki adlara sahip her sistem için bir tane: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_message">Hata mesajı: %1$s</string>
+    <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
+    <string-array name="pref_key_shader_filter_names">
+        <item>Otomatik</item>
+        <item>Keskin</item>
+        <item>Akıcı</item>
+        <item>CRT</item>
+        <item>LCD</item>
+    </string-array>
+</resources>

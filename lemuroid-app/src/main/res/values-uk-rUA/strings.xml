@@ -19,14 +19,9 @@
     <string name="support">Підтримка</string>
     <string name="show_all">Показати все</string>
     <string name="settings_category_general">Загальне</string>
-    <string name="settings_category_touch_input">Сенсорне введення</string>
-    <string name="settings_category_gamepads">Ґеймпади</string>
     <string name="settings_category_advanced">Додатково</string>
     <string name="settings_title_enable_autosave">Стан автозбереження</string>
     <string name="settings_title_enable_touch_feedback">Вібрувати при дотику</string>
-    <string name="settings_title_tilt_sensitivity">Чутливість стіка</string>
-    <string name="settings_title_enable_external_gamepads">Увімкнути Геймпади</string>
-    <string name="settings_gamepad_bindings">Прив\'язки ґеймпада…</string>
     <string name="settings_gamepad_button_name">Кнопка %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Не назначено</string>

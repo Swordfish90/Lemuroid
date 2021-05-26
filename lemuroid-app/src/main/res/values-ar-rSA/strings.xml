@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_home">الصفحة الرئيسية</string>
-    <string name="title_search">البحث</string>
-    <string name="title_systems">النظم</string>
+    <string name="title_home">الرئيسية</string>
+    <string name="title_search">بحث</string>
+    <string name="title_systems">الأنظمة</string>
     <string name="title_games">الألعاب</string>
     <string name="title_settings">الإعدادات</string>
-    <string name="recent">الحديثه</string>
-    <string name="favorites">المفضلات</string>
+    <string name="recent">الحديثة</string>
+    <string name="favorites">المفضلة</string>
     <string name="discover">اكتشف</string>
     <string name="rescan">إعادة الفحص</string>
     <string name="none">لا شيء</string>
-    <string name="directory">الدليل</string>
+    <string name="directory">المجلد</string>
     <string name="display_filter">فلتر العرض</string>
     <string name="roms">الأقراص</string>
     <string name="ok">حسناً</string>
@@ -19,17 +19,16 @@
     <string name="support">الدعم</string>
     <string name="show_all">عرض الكل</string>
     <string name="settings_category_general">عام</string>
-    <string name="settings_category_touch_input">الادخال اللمسي</string>
-    <string name="settings_category_gamepads">لوحة التحكم</string>
+    <string name="settings_category_input">إدخال</string>
     <string name="settings_category_advanced">متقدمة</string>
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
-    <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميول</string>
-    <string name="settings_title_enable_external_gamepads">تمكين وحدة التحكم</string>
-    <string name="settings_gamepad_bindings">ربط لوحة التحكم…</string>
+    <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميل</string>
+    <string name="settings_gamepad_settings">إعدادات وحدات التحكم</string>
     <string name="settings_gamepad_button_name">الزر %1$s</string>
     <string name="settings_retropad_button_name">لوحة قديمة %1$s</string>
     <string name="settings_retropad_button_unassigned">غير مسند</string>
+    <string name="settings_gamepad_category_enabled">وحدات التحكم المفعلة</string>
     <string name="settings_gamepad_category_general">عام</string>
     <string name="settings_gamepad_title_reset_bindings">إعادة ضبط الارتباطات</string>
     <string name="settings_gamepad_title_game_menu">القائمة</string>
@@ -42,7 +41,7 @@
     <string name="settings_title_reset_settings">إعادة تعيين جميع الإعدادات</string>
     <string name="settings_description_reset_settings">إعادة تعيين Lemuroid إلى إعدادات المصنع</string>
     <string name="reset_settings_warning_message_title">هل أنت متأكد؟</string>
-    <string name="reset_settings_warning_message_description">سيؤدي هذا إلى إعادة ضبط الليمورود إلى إعدادات المصنع. سيتم حفظ حالات التقدم.</string>
+    <string name="reset_settings_warning_message_description">سيؤدي هذا إلى إعادة ضبط المحاكي إلى إعدادات المصنع. سيتم حفظ حالات التقدم.</string>
     <string name="settings_title_save_sync">الحفظ السحابي</string>
     <string name="settings_description_save_sync">النسخ الاحتياطي ومزامنة عمليات الحفظ على السحابة</string>
     <string name="settings_save_sync_refresh">مزامنة يدويّة</string>
@@ -58,7 +57,7 @@
     <string name="game_context_menu_remove_from_favorites">إزالة من المفضلة</string>
     <string name="game_context_menu_resume">استئناف</string>
     <string name="game_context_menu_restart">إعادة التشغيل</string>
-    <string name="game_context_menu_create_shortcut">تثبيت إلى المشغل</string>
+    <string name="game_context_menu_create_shortcut">تثبيت على الشاشة الرئيسية</string>
     <string name="home_empty_title">حدد مجلد ROM</string>
     <string name="home_empty_message">يحتاج Lemuroid إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
     <string name="home_empty_action">حدد المجلد</string>
@@ -83,7 +82,7 @@
     <string name="core_settings_controller">التحكم %1$s</string>
     <string name="game_menu_title">قائمة اللعبة</string>
     <string name="notification_channel_name">جميع الإشعارات</string>
-    <string name="library_index_notification_title">مسح الأقراص المدمجة قيد التقدم</string>
+    <string name="library_index_notification_title">فحص الأقراص المدمجة قيد التقدم</string>
     <string name="library_index_notification_message">قد يستغرق ذلك بضع دقائق</string>
     <string name="save_sync_notification_title">يتم مزامنة الحفظ السحابي</string>
     <string name="save_sync_notification_message">قد يستغرق ذلك بضع دقائق</string>
@@ -113,20 +112,19 @@
     <string name="tv_folder_storage_secondary">وحدة التخزين الثانوية %1$s</string>
     <string name="tv_folder_storage_title">اختر وحدة التخزين</string>
     <string name="tv_home_section_favorites">المفضلات</string>
-    <string name="tv_home_section_recents">الحديثه</string>
+    <string name="tv_home_section_recents">المستخدمة مؤخّراً</string>
     <string name="tv_home_section_systems">الأنظمة</string>
     <string name="tv_home_section_settings">الإعدادات</string>
     <string name="tv_search_results">الألعاب</string>
     <string name="tv_game_message_missing_gamepad">وحدة التحكم مطلوبة للعب. الرجاء توصيل واحدة منها.</string>
-    <string name="game_edit_touch_controls_error_not_visible">قطع الاتصال بالوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
+    <string name="game_edit_touch_controls_error_not_visible">أقطع الاتصال بالوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
     <string name="game_interactory_busy">انتظر حتى تكتمل العمليات المعلقة</string>
     <string name="mobile_settings_help">مساعدة</string>
     <string name="mobile_settings_support">الدعم</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;كيف أستخدم Lemuroid؟</b><br/>
-        نسخ جميع ملفات ROMs الخاصة بك في مجلد على جهازك واختيارها داخل تطبيق Lemuroid. يسمح لهذا المجلد بأن يحتوي على دلائل فرعية. بعد الانتهاء من الفحص، يجب أن ترى ألعابك.<br/><br/>
+        نسخ جميع ملفات الالعاب الخاصة بك في مجلد على جهازك واختيارها داخل تطبيق Lemuroid. يسمح لهذا المجلد بأن يحتوي على دلائل فرعية. بعد الانتهاء من الفحص، لابد ان ترى ألعابك.<br/><br/>
         <b>&#8226;لماذا لم يتم اكتشاف ألعابي؟</b><br/>
-        إذا تم الضغط على ألعابك، حاول إلغاء الضغط عليها. إذا لم يعمل هذا على وضع ROMs في مجلدات منفصلة، واحد لكل نظام مع الأسماء التالية: $SYSTEMS.
-    ]]></string>
+        إذا كانت العابك بصيغة مضغوطة قم بأستخراجها.و في حال لم يتم العثور عليها قم بوضعها في مجلدات منفصلة حسب تسميات النظم التالية: $SYSTEMS.    ]]></string>
     <string name="lemuroid_crash_disclamer">يبدو أن نواة ليبرترو قد واجهة مشكلة غير متوقعة. إذا كان الأمر مستمرا الرجاء محاولة ما يلي:\n
         \n\u2022 تعطيل الحفظ التلقائي وإعادة تشغيل اللعبة
         \n\u2022 اذهب إلى إعدادات أندرويد ومسح ذاكرة التخزين المؤقت للتطبيق
@@ -134,11 +132,12 @@
         \n\n إذا لم يعمل أي من التطبيقات المذكورة أعلاه، قد يكون من الممكن أن تكون هذه اللعبة/النواة غير مدعومة من هذا الجهاز.
     </string>
     <string name="lemuroid_crash_message">رسالة خطأ: %1$s</string>
+    <string name="error_message_incompatible_state">حالة الحفظ هذه غير متوافقة مع الإصدار الأساسي الحالي. الرجاء تحميل أحدث نسخة احتياطية في اللعبة أو استخدام اصدار محاكي Lemuroid السابق.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>تلقائي</item>
         <item>حاد</item>
         <item>سلاسة</item>
-        <item>CRT</item>
-        <item>LCD</item>
+        <item>تلفاز قديم</item>
+        <item>شاشة كريستالية</item>
     </string-array>
 </resources>

@@ -8,6 +8,9 @@
     <string name="controller_default">Por defecto</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Estándar</string>
+    <string name="controller_dos_auto">Automático</string>
+    <string name="controller_dos_mouse_left">Ratón con Stick Izquierdo</string>
+    <string name="controller_dos_mouse_right">Ratón con Stick Derecho</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">Efecto de TV</string>
     <string name="setting_stella_crop_hoverscan">Recortar excedente horizontal</string>
