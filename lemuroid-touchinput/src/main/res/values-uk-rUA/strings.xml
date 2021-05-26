@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Готово</string>
+    <string name="touch_customize_button_reset">Скинути</string>
+    <string name="touch_customize_info">Перетягніть та Щипніть контроли щоб змінити позицію та розмір</string>
+</resources>
