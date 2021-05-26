@@ -123,7 +123,7 @@ class GamePadManager(
                 val enabledGamePads = devices.map { device ->
                     rxSharedPreferences
                         .flatMapObservable {
-                            it.getBoolean(computeEnabledGamePadPreference(device)).asObservable()
+                            it.getBoolean(computeEnabledGamePadPreference(device), true).asObservable()
                         }
                 }
 
