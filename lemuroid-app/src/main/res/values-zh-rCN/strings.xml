@@ -94,9 +94,23 @@
     <string name="game_loader_error_gl_incompatible">此内核需要您的设备不支持 OpenGL ES 版本。</string>
     <string name="game_loader_error_load_core">看来 Libretro 内核它并未加载。请确保您的设备已经连接到互联网，并尝试重新扫描您的媒体库。如果问题持续存在，您的设备可能不支持此内核。</string>
     <string name="game_loader_error_load_game">在加载您的游戏时发生了不好的事件。请确保是否受 Lemuroid 支持的 ROM 并重新扫描您的游戏。</string>
+    <string name="game_loader_error_save">您保存的文件出了点问题。如果问题仍然存在，请尝试关闭自动保存功能。</string>
+    <string name="game_loader_error_generic">发生了不好的事件。 请尝试以下方法：\n
+        \n\u2022 禁用自动保存并重新运行游戏
+        \n\u2022 进入 Android 设置并清除应用缓存
+        \n\u2022 进入 Lemuroid 设置并执行重置数据
+        \n\n如果上述方法都不起作用，可能是该设备不支持此游戏/内核。
+    </string>
     <string name="tv_folder_picker_action_choose">选择</string>
     <string name="tv_folder_picker_action_cancel">取消</string>
     <string name="tv_folder_storage_primary">主存储</string>
     <string name="tv_folder_storage_secondary">副存储 %1$s</string>
     <string name="tv_folder_storage_title">选择存储</string>
+    <string-array name="pref_key_shader_filter_names">
+        <item>Auto</item>
+        <item>Sharp</item>
+        <item>顺畅</item>
+        <item>CRT</item>
+        <item>LCD</item>
+    </string-array>
 </resources>
