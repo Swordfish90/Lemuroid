@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google 登录失败：%s (%s)</string>
+    <string name="gdrive_sign_in_success">以 %s 身份登录 Google</string>
+    <string name="gdrive_sign_out_success">登出 Google</string>
+    <string name="gdrive_missing_play_services">Google 云端硬盘需要 Google Play 服务，因此您的设备不支持该服务</string>
+    <string name="gdrive_connected_summary">已关联到 %s</string>
+    <string name="gdrive_connected_none_summary">未配置</string>
+    <string name="gdrive_last_sync_completed">最后一次同步：%s</string>
+    <string name="game_loading_download_core">正在下载内核…</string>
+    <string name="support_description"><![CDATA[        <b>购买支持徽章</b><br/><br/>
+        Lemuroid 是一个基于 Libretro 的开源模拟器项目。它的所有功能都是免费提供和没有任何广告。<br/><br/>
+        通过购买一个支持徽章，您可以让我为这个项目和支持它的内核投入更多的时间和资源，以维护它的未来。<br/><br/>
+        感谢您成为这个了不起的社区一部分。
+    ]]></string>
+    <string name="support_description_short">        通过购买一个支持徽章，您可以让我为这个项目和支持它的内核投入更多的时间和资源
+    </string>
+    <string name="support_thankyou"><![CDATA[        感谢您购买一个支持徽章。<br/>正是因为有您这样的人，我才能够从事我的开源项目。<br/><br/>
+        为您的新徽章感到骄傲并回到游戏中。老百姓是不会打败自己的。
+    ]]></string>
+</resources>
