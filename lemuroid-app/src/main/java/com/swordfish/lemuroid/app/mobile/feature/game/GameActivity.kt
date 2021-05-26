@@ -76,7 +76,7 @@ import java.util.concurrent.TimeUnit
 class GameActivity : BaseGameActivity() {
     @Inject lateinit var sharedPreferences: Lazy<SharedPreferences>
 
-    private lateinit var serviceIntent: Intent
+    private var serviceController: GameService.GameServiceController? = null
 
     private lateinit var tiltSensor: TiltSensor
     private var currentTiltTracker: TiltTracker? = null
@@ -103,7 +103,7 @@ class GameActivity : BaseGameActivity() {
 
         tiltSensor = TiltSensor(applicationContext)
 
-        serviceIntent = GameService.startService(applicationContext, game)
+        serviceController = GameService.startService(applicationContext, game)
 
         setupVirtualGamePadVisibility()
         setupVirtualGamePads()
@@ -286,7 +286,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     override fun onDestroy() {
-        GameService.stopService(applicationContext, serviceIntent)
+        serviceController = GameService.stopService(applicationContext, serviceController)
         virtualControllerDisposables.clear()
         super.onDestroy()
     }

@@ -543,7 +543,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun sendMergedMotionEvents(event: MotionEvent, port: Int) {
         val events = listOf(
             retrieveCoordinates(event, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y),
-            retrieveNormalizedCoordinates(event, MotionEvent.AXIS_X, MotionEvent.AXIS_Y)
+            retrieveCoordinates(event, MotionEvent.AXIS_X, MotionEvent.AXIS_Y)
         )
 
         val xVal = events.maxByOrNull { abs(it.x) }?.x ?: 0f
@@ -592,7 +592,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         yAxis: Int,
         port: Int
     ) {
-        val coords = retrieveNormalizedCoordinates(event, xAxis, yAxis)
+        val coords = retrieveCoordinates(event, xAxis, yAxis)
         retroGameView?.sendMotionEvent(source, coords.x, coords.y, port)
     }
 
@@ -606,6 +606,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         retroGameView?.sendMotionEvent(source, event.getAxisValue(xAxis), event.getAxisValue(yAxis), port)
     }
 
+    @Deprecated("This sadly creates some issues with certain controllers and input lag on very slow devices.")
     private fun retrieveNormalizedCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
         val rawX = event.getAxisValue(xAxis)
         val rawY = -event.getAxisValue(yAxis)
