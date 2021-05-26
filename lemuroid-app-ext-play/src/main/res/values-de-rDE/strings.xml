@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google Anmeldung fehlgeschlagen: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Bei Google angemeldet als %s</string>
+    <string name="gdrive_sign_out_success">Von Google abgemeldet</string>
+    <string name="gdrive_missing_play_services">Google Drive benötigt Google Play Services, die auf Ihrem Gerät nicht unterstützt werden</string>
+    <string name="gdrive_connected_summary">Verknüpft mit %s</string>
+    <string name="gdrive_connected_none_summary">Nicht konfiguriert</string>
+    <string name="gdrive_last_sync_completed">Letzte Synchronisierung: %s</string>
+    <string name="game_loading_download_core">Lade Core herunter…</string>
+    <string name="support_description"><![CDATA[        <b>Kaufen Sie das Unterstützungs Abzeichen</b><br/><br/>
+        Lemuroid ist ein Open Source Emulationsprojekt basierend auf Libretro. Alle Funktionen sind kostenlos und ohne Werbung verfügbar.<br/><br/>
+          Durch den Kauf eines der Unterstützungs Abzeichen erlauben Sie mir, mehr Zeit und Ressourcen in dieses Projekt und die dahinter stehenden Cores zu investieren, um seine Zukunft zu sichern.<br/><br/>
+        Vielen Dank, dass du Teil dieser erstaunlichen Community bist.
+    ]]></string>
+    <string name="support_description_short">          Durch den Kauf eines der Unterstützungs Abzeichen erlauben Sie mir, mehr Zeit und Ressourcen in dieses Projekt und die dahinter stehenden Kerne zu investieren
+    </string>
+    <string name="support_thankyou"><![CDATA[        Vielen Dank für den Kauf eines der Unterstützungs Abzeichen.<br/>Dank Leuten wie Ihnen kann ich an meinen Open Source Projekten arbeiten.<br/><br/>
+        Seien Sie stolz auf Ihr neues Abzeichen und kehren Sie zu den Spielen zurück. Die Boss-Gegner besiegen sich nicht von selbst.
+    ]]></string>
+    <string name="support_thankyou_short">        Vielen Dank für den Kauf eines der Unterstützungs Abzeichen.\nDank Leuten wie Ihnen kann ich an meinen Open Source Projekten arbeiten.
+    </string>
+    <string name="support_badge">Unterstützungs Abzeichen</string>
+    <string name="support_bronze">Bronze - %1$s</string>
+    <string name="support_silver">Silber - %1$s</string>
+    <string name="support_gold">Gold - %1$s</string>
+</resources>
