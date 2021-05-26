@@ -19,14 +19,9 @@
     <string name="support">Hỗ trợ</string>
     <string name="show_all">Hiện tất cả</string>
     <string name="settings_category_general">Cài đặt chung</string>
-    <string name="settings_category_touch_input">Cảm ứng đầu vào</string>
-    <string name="settings_category_gamepads">Gamepad</string>
     <string name="settings_category_advanced">Nâng cao</string>
     <string name="settings_title_enable_autosave">Tự động lưu trạng thái</string>
     <string name="settings_title_enable_touch_feedback">Rung khi chạm</string>
-    <string name="settings_title_tilt_sensitivity">Nghiêng để cố định độ nhạy</string>
-    <string name="settings_title_enable_external_gamepads">Bật gamepad</string>
-    <string name="settings_gamepad_bindings">Liên kết với gamepad…</string>
     <string name="settings_gamepad_button_name">Nút %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Chưa được gán</string>
@@ -40,9 +35,9 @@
     <string name="settings_bios_category_detected">Đã phát hiện</string>
     <string name="settings_bios_category_not_detected">Được hỗ trợ</string>
     <string name="settings_title_reset_settings">Đặt lại dữ liệu gốc</string>
-    <string name="settings_description_reset_settings">Đặt lại Lemudroid về cài đặt gốc</string>
+    <string name="settings_description_reset_settings">Đặt lại Lemuroid về cài đặt gốc</string>
     <string name="reset_settings_warning_message_title">Bạn có chắc không?</string>
-    <string name="reset_settings_warning_message_description">Việc này sẽ đặt lại Lemudroid về cài đặt gốc. Các Bản lưu và Trạng thái sẽ được giữ lại.</string>
+    <string name="reset_settings_warning_message_description">Việc này sẽ đặt lại Lemuroid về cài đặt gốc. Các Bản lưu và Trạng thái sẽ được giữ lại.</string>
     <string name="settings_title_save_sync">Bản lưu trên đám mây</string>
     <string name="settings_description_save_sync">Sao lưu và Đồng bộ các bản lưu của bạn trên đám mây</string>
     <string name="settings_save_sync_refresh">Đồng bộ thủ công</string>
@@ -60,7 +55,7 @@
     <string name="game_context_menu_restart">Bắt đầu lại</string>
     <string name="game_context_menu_create_shortcut">Ghim vào launcher</string>
     <string name="home_empty_title">Chọn thư mục chứa ROM</string>
-    <string name="home_empty_message">Lemudroid cần quét một thư mục chứa các tệp ROM.\nViệc này có thể sẽ mất tối đa một vài phút.</string>
+    <string name="home_empty_message">Lemuroid cần quét một thư mục chứa các tệp ROM.\nViệc này có thể sẽ mất tối đa một vài phút.</string>
     <string name="home_empty_action">Chọn thư mục</string>
     <string name="game_menu_save">Lưu</string>
     <string name="game_menu_load">Tải</string>
@@ -94,12 +89,12 @@
     <string name="installing_core_notification_message">Việc này có thể mất tối đa vài phút</string>
     <string name="game_loader_error_gl_incompatible">Lõi này yêu cầu một phiên bản OpenGL ES không được thiết bị của bạn hỗ trợ.</string>
     <string name="game_loader_error_load_core">Có vẻ như lõi Libretro không được tải. Hãy đảm bảo rằng thiết bị của bạn có kết nối internet và cố gắng quét lại thư viện của bạn. Nếu vấn đề này vẫn tiếp diễn thì lõi này có thể không được hỗ trợ trên thiết bị của bạn.</string>
-    <string name="game_loader_error_load_game">Có gì đó tệ đã xảy ra khi đang tải trò chơi của bạn. Hãy đảm bảo rằng ROM này được Lemudroid hỗ trợ và quét lại các trò chơi của bạn.</string>
+    <string name="game_loader_error_load_game">Có gì đó tệ đã xảy ra khi đang tải trò chơi của bạn. Hãy đảm bảo rằng ROM này được Lemuroid hỗ trợ và quét lại các trò chơi của bạn.</string>
     <string name="game_loader_error_save">Có gì đó tệ đã xảy ra với tệp lưu của bạn. Nếu vấn đề này vẫn tiếp diễn, hãy thử tắt tự động lưu.</string>
     <string name="game_loader_error_generic">Có gì đó tệ đã xảy ra. Hãy thử những điều sau:\n
         \n\u2022 Tắt tự động lưu và chạy lại trò chơi
         \n\u2022 Đi đến cài đặt của Android và xoá bộ nhớ đệm của ứng dụng
-        \n\u2022 Đi đến cài đặt của Lemudroid và thực hiện đặt lại dữ liệu gốc
+        \n\u2022 Đi đến cài đặt của Lemuroid và thực hiện đặt lại dữ liệu gốc
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
     <string name="game_loader_error_missing_bios">Có vẻ như bạn thiếu BIOS được yêu cầu, hãy đặt chúng trong thư mục chứa các ROM của bạn và quét lại. Các tệp được yêu cầu: %1$s</string>
@@ -122,15 +117,15 @@
     <string name="game_interactory_busy">Hãy đợi các hoạt động đang chờ được hoàn tất</string>
     <string name="mobile_settings_help">Trợ giúp</string>
     <string name="mobile_settings_support">Hỗ trợ</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Tôi sử dụng Lemudroid như thế nào?</b><br/>
-        Sao chép tất cả tệp ROM vào một thư mục trên thiết bị và chọn nó từ trong Lemudroid. Thư mục này có thể có các thư mục con. Sau khi việc quét hoàn tất thì bạn sẽ thấy các trò chơi của bạn.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Tôi sử dụng Lemuroid như thế nào?</b><br/>
+        Sao chép tất cả tệp ROM vào một thư mục trên thiết bị và chọn nó từ trong Lemuroid. Thư mục này có thể có các thư mục con. Sau khi việc quét hoàn tất thì bạn sẽ thấy các trò chơi của bạn.<br/><br/>
         <b>&#8226;Tại sao các trò chơi của tôi không được phát hiện?</b><br/>
         Nếu các trò chơi của bạn đã được nén, hãy thử giải nén chúng. Nếu việc này không được thì hãy thử đặt các ROM vào các thư mục riêng, mỗi thư mục cho một hệ thống với các tên như sau: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Có vẻ như lõi Libretro đã gặp một vấn đề không mong đợi. Nếu vấn đề vẫn tiếp diễn thì vui lòng thử những điều sau:\n
         \n\u2022 Tắt tự động lưu và chạy lại trò chơi
         \n\u2022 Đi đến cài đặt của Android và xoá bộ nhớ đệm của ứng dụng
-        \n\u2022 Đi đến cài đặt của Lemudroid và thực hiện đặt lại dữ liệu gốc
+        \n\u2022 Đi đến cài đặt của Lemuroid và thực hiện đặt lại dữ liệu gốc
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
     <string name="lemuroid_crash_message">Thông báo lỗi: %1$s</string>
