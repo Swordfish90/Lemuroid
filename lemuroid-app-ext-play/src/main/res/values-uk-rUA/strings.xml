@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Помилка входу в Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Ви увійшли в Google як %s</string>
+    <string name="gdrive_sign_out_success">Ви вийшли з Google</string>
+    <string name="gdrive_missing_play_services">Google Drive вимагає сервіси Google Play, які не підтримуються на вашому пристрої</string>
+    <string name="gdrive_connected_summary">Прив\'язано до %s</string>
+    <string name="gdrive_connected_none_summary">Не налаштовано</string>
+    <string name="gdrive_last_sync_completed">Синхронізовано: %s</string>
+    <string name="game_loading_download_core">Завантаження ядра…</string>
+    <string name="support_description"><![CDATA[        <b>Придбати значок підтримки</b><br/><br/>
+        Lemuroid є проектом емуляції з відкритим вихідним кодом на основі Libretro. Всі функції доступні безкоштовно і без будь-якої реклами.<br/><br/>
+        Купуючи один з Значків підтримки ви дозволяєте мені присвячувати більше часу та ресурсів на підтримку проекту та ядер які він підтримує, забезпечення його майбутнього.<br/><br/>
+        Дякуємо за те, що ви частина цієї дивовижної спільноти.
+    ]]></string>
+    <string name="support_description_short">        Купуючи один з значків підтримки, ви дозволяєте мені присвятити більше часу і ресурсів на цей проект і ядра, що він підтримує
+    </string>
+    <string name="support_thankyou"><![CDATA[        Дякуємо за придбання одного з Значків підтримки.<br/>Щиро дякую вам, що можу працювати з моїми проектами з відкритим вихідним кодом.<br/><br/>
+        Пишайтеся новим значком і поверніться до ігор. Боси не переможуть самі себе.
+    ]]></string>
+    <string name="support_thankyou_short">        Дякуємо за придбання одного з Значків підтримки.\nЗавдяки таким людям як ви, я можу працювати над моїми проектами з відкритим кодом.
+    </string>
+    <string name="support_badge">Значок підтримки</string>
+    <string name="support_bronze">Бронза - %1$s</string>
+    <string name="support_silver">Срібло - %1$s</string>
+    <string name="support_gold">Золото - %1$s</string>
+</resources>
