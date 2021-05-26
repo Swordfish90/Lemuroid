@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="local_storage">本地存储</string>
+    <string name="controller_arcade_4">默认（4个按钮）</string>
+    <string name="controller_arcade_6">默认（6个按钮）</string>
+    <string name="controller_genesis_3">默认（3个按钮）</string>
+    <string name="controller_genesis_6">默认（6个按钮）</string>
+    <string name="controller_default">默认</string>
+    <string name="controller_dualshock">双摇杆</string>
+    <string name="controller_standard">标准</string>
+    <string name="controller_dos_auto">自动</string>
+    <string name="controller_dos_mouse_left">鼠标与左摇杆</string>
+    <string name="controller_dos_mouse_right">鼠标与右摇杆</string>
+    <!-- Core settings titles -->
+    <string name="setting_stella_filter">电视效果</string>
+    <string name="setting_stella_crop_hoverscan">裁剪横向扫描</string>
+    <string name="setting_fceumm_overscan_h">裁剪横向扫描</string>
+    <string name="setting_fceumm_overscan_v">裁剪垂直扫描</string>
+    <string name="setting_genesis_plus_gx_blargg_ntsc_filter">电视效果</string>
+    <string name="setting_genesis_plus_gx_overscan">边框</string>
+    <string name="setting_genesis_plus_gx_lcd_filter">LCD 重影</string>
+    <string name="setting_gambatte_gb_colorization">着色</string>
+    <string name="setting_gambatte_gb_internal_palette">内置调色板</string>
+    <string name="setting_gambatte_mix_frames">LCD 重影</string>
+    <string name="setting_gambatte_dark_filter_level">使屏幕变暗</string>
+    <string name="setting_mgba_solar_sensor_level">光感传感器级别</string>
+    <string name="setting_mgba_interframe_blending">LCD 重影</string>
+    <!-- Core settings values. Duplicated here to ease the translation process. -->
+</resources>
