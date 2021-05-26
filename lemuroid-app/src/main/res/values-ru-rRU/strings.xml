@@ -19,14 +19,9 @@
     <string name="support">Потдержка</string>
     <string name="show_all">Показать всё</string>
     <string name="settings_category_general">Общий</string>
-    <string name="settings_category_touch_input">Сенсорный ввод</string>
-    <string name="settings_category_gamepads">Джойстики</string>
     <string name="settings_category_advanced">Расширенное</string>
     <string name="settings_title_enable_autosave">Автосохранение</string>
     <string name="settings_title_enable_touch_feedback">Вибрация нажатия</string>
-    <string name="settings_title_tilt_sensitivity">Чувствительность Стика</string>
-    <string name="settings_title_enable_external_gamepads">Включите Геймпад</string>
-    <string name="settings_gamepad_bindings">Синхронизация Геймпада...</string>
     <string name="settings_gamepad_button_name">Клавиша %1$s</string>
     <string name="settings_retropad_button_name">Ретро клавиша%1$s</string>
     <string name="settings_retropad_button_unassigned">Не назначен</string>
