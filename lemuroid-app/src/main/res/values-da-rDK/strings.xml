@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Startside</string>
+    <string name="title_search">Søg</string>
+    <string name="title_systems">Systemer</string>
+    <string name="title_games">Spil</string>
+    <string name="title_settings">Indstillinger</string>
+    <string name="recent">For nylig</string>
+    <string name="favorites">Favoritter</string>
+    <string name="discover">Opdag</string>
+    <string name="rescan">Scan igen</string>
+    <string name="none">Ingen</string>
+    <string name="directory">Mappe</string>
+    <string name="display_filter">Skærmfilter</string>
+    <string name="roms">ROM\'er</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Annullér</string>
+    <string name="settings">Indstillinger</string>
+    <string name="support">Support</string>
+    <string name="show_all">Vis alle</string>
+    <string name="settings_category_general">Generelt</string>
+    <string name="settings_category_advanced">Avanceret</string>
+    <string name="settings_title_enable_autosave">Gem tilstand automatisk</string>
+    <string name="settings_title_enable_touch_feedback">Vibrér ved berøring</string>
+</resources>
