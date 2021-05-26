@@ -113,10 +113,10 @@
     <string name="game_interactory_busy">Bekleyen işlemlerin tamamlanmasını bekleyin</string>
     <string name="mobile_settings_help">Yardım</string>
     <string name="mobile_settings_support">Destek</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroid'i nasıl kullanırım?</b></b>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroid\'i nasıl kullanırım?</b></b>
         Tüm ROMları bir klasör içinde kopyalayın ve Lemuroid içinde seçin. Bu klasörün alt klasör olmasına izin verilebilir. Tarama tamamlandıktan sonra oyunlarınızı görmelisiniz.<br/><br/>
         <b>&#8226; Neden oyunlarım tespit edilmedi?</b><br/>
-        Eğer oyunlarınız sıkıştırılmışsa, çıkartmayı deneyin. Eğer bu çalışmıyorsa ROMları ayrı klasöre koyun, aşağıdaki adlara sahip her sistem için bir tane: $SYSTEMS
+        Eğer oyunlarınız sıkıştırılmışsa, çıkartmayı deneyin. Eğer bu çalışmıyorsa ROMları ayrı klasöre koyun, aşağıdaki adlara sahip her sistem için bir tane: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_message">Hata mesajı: %1$s</string>
     <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
