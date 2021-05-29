@@ -92,7 +92,7 @@
     <string name="installing_core_notification_title">正在更新内核</string>
     <string name="installing_core_notification_message">这可能需要几分钟的时间</string>
     <string name="game_loader_error_gl_incompatible">此内核需要您的设备不支持 OpenGL ES 版本。</string>
-    <string name="game_loader_error_load_core">看来 Libretro 内核它并未加载。请确保您的设备已经连接到互联网，并尝试重新扫描您的媒体库。如果问题持续存在，您的设备可能不支持此内核。</string>
+    <string name="game_loader_error_load_core">似乎 Libretro 内核它并未加载。请确保您的设备已经连接到互联网，并尝试重新扫描您的媒体库。如果问题持续存在，您的设备可能不支持此内核。</string>
     <string name="game_loader_error_load_game">在加载您的游戏时发生了不好的事件。请确保是否受 Lemuroid 支持的 ROM 并重新扫描您的游戏。</string>
     <string name="game_loader_error_save">您保存的文件出了点问题。如果问题仍然存在，请尝试关闭自动保存功能。</string>
     <string name="game_loader_error_generic">发生了不好的事件。 请尝试以下方法：\n
@@ -101,15 +101,43 @@
         \n\u2022 进入 Lemuroid 设置并执行重置数据
         \n\n如果上述方法都不起作用，可能是该设备不支持此游戏/内核。
     </string>
+    <string name="game_loader_error_missing_bios">似乎您缺少所需的 BIOS，把它们放到您的 ROM 目录并重新扫描。所需文件：%1$s</string>
+    <string name="game_shortcut_error">在加载您的游戏时发生了不好的事件。请确保这个游戏仍在您的媒体库中。</string>
+    <string name="dialog_saf_not_found">该设备不支持 StorageAccessFramework 文件选取器。请手动将未压缩的 ROM 文件复制到 %1$s 并点击重新扫描。</string>
+    <string name="system_grid_details">%1$s 个游戏</string>
+    <string name="tv_folder_picker_title">选择 ROM 目录</string>
     <string name="tv_folder_picker_action_choose">选择</string>
     <string name="tv_folder_picker_action_cancel">取消</string>
     <string name="tv_folder_storage_primary">主存储</string>
     <string name="tv_folder_storage_secondary">副存储 %1$s</string>
     <string name="tv_folder_storage_title">选择存储</string>
+    <string name="tv_home_section_favorites">收藏</string>
+    <string name="tv_home_section_recents">最近</string>
+    <string name="tv_home_section_systems">系统</string>
+    <string name="tv_home_section_settings">设置</string>
+    <string name="tv_search_results">游戏</string>
+    <string name="tv_game_message_missing_gamepad">需要玩游戏手柄。 请连接一个。</string>
+    <string name="game_edit_touch_controls_error_not_visible">您需要断开键盘来编辑您的触摸控制</string>
+    <string name="game_interactory_busy">待处理操作完成</string>
+    <string name="mobile_settings_help">帮助</string>
+    <string name="mobile_settings_support">支持</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;我如何使用 Lemuroid？</b><br/>
+        将您所有的 ROM 文件复制到您设备上的一个目录里，并在 Lemuroid 中选择它。这个目录允许具有子目录。扫描完成后，您应该会看到自己的游戏。<br/><br/>
+        <b>&#8226;为什么检测不到我的游戏？</b><br/>
+        如果您的游戏是压缩的，请尝试将其解压缩。 如果这样做不起作用，请尝试将 ROM 放入单独的目录里，每个系统都有一个目录，其名称如下：$SYSTEMS。
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">似乎 Libretro 内核遇到了一个意外的问题。 如果它持续存在，请尝试以下方法：\n
+        \n\u2022 禁用自动保存并重新运行游戏
+        \n\u2022 进入 Android 设置并清除应用缓存
+        \n\u2022 进入 Lemuroid 设置并执行重置数据
+        \n\n 如果上述方法都不起作用，可能是该设备不支持这个游戏/内核。
+    </string>
+    <string name="lemuroid_crash_message">错误消息：%1$s</string>
+    <string name="error_message_incompatible_state">此保存状态与当前内核版本不兼容。请加载游戏内最新的保存状态或使用以前的 Lemuroid 版本。</string>
     <string-array name="pref_key_shader_filter_names">
-        <item>Auto</item>
-        <item>Sharp</item>
-        <item>顺畅</item>
+        <item>自动</item>
+        <item>灵敏</item>
+        <item>顺滑</item>
         <item>CRT</item>
         <item>LCD</item>
     </string-array>

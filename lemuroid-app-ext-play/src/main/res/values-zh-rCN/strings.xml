@@ -36,4 +36,10 @@
     <string name="support_thankyou"><![CDATA[        感谢您购买一个支持徽章。<br/>正是因为有您这样的人，我才能够从事我的开源项目。<br/><br/>
         为您的新徽章感到骄傲并回到游戏中。老百姓是不会打败自己的。
     ]]></string>
+    <string name="support_thankyou_short">        感谢您购买一个支持徽章。\n正是因为有您这样的人，我才能够从事我的开源项目。
+    </string>
+    <string name="support_badge">支持徽章</string>
+    <string name="support_bronze">青铜 - %1$s</string>
+    <string name="support_silver">白银 - %1$s</string>
+    <string name="support_gold">黄金 - %1$s</string>
 </resources>
