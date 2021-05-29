@@ -103,7 +103,7 @@ class GameActivity : BaseGameActivity() {
 
         tiltSensor = TiltSensor(applicationContext)
 
-        serviceController = GameService.startService(applicationContext, game)
+        startGameService()
 
         setupVirtualGamePadVisibility()
         setupVirtualGamePads()
@@ -286,9 +286,22 @@ class GameActivity : BaseGameActivity() {
     }
 
     override fun onDestroy() {
-        serviceController = GameService.stopService(applicationContext, serviceController)
+        stopGameService()
         virtualControllerDisposables.clear()
         super.onDestroy()
+    }
+
+    private fun startGameService() {
+        serviceController = GameService.startService(applicationContext, game)
+    }
+
+    private fun stopGameService() {
+        serviceController = GameService.stopService(applicationContext, serviceController)
+    }
+
+    override fun onFinishTriggered() {
+        super.onFinishTriggered()
+        stopGameService()
     }
 
     private fun getGamePadTheme(context: Context): RadialGamePadTheme {
