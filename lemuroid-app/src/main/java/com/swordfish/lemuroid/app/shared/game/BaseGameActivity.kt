@@ -681,6 +681,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun finishAndExitProcess() {
+        onFinishTriggered()
         GlobalScope.launch {
             sleep(animationDuration().toLong())
             exitProcess(0)
@@ -688,6 +689,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         finish()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
+
+    open fun onFinishTriggered() { }
 
     private fun cancelBackgroundWork() {
         SaveSyncWork.cancelAutoWork(applicationContext)
