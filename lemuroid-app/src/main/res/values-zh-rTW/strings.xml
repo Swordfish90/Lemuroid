@@ -22,6 +22,7 @@
     <string name="settings_category_advanced">進階設置</string>
     <string name="settings_title_enable_autosave">自動儲存</string>
     <string name="settings_title_enable_touch_feedback">觸控時震動</string>
+    <string name="settings_title_tilt_sensitivity">傾斜感應器敏感度</string>
     <string name="settings_gamepad_settings">外接控制器</string>
     <string name="settings_gamepad_button_name">按鍵 %1$s</string>
     <string name="settings_gamepad_category_general">一般設定</string>
@@ -31,6 +32,10 @@
     <string name="settings_title_reset_settings">重設所有資料</string>
     <string name="reset_settings_warning_message_title">是否確定？</string>
     <string name="settings_title_save_sync">雲端存檔</string>
+    <string name="game_context_menu_add_to_favorites">加入最愛</string>
+    <string name="game_context_menu_remove_from_favorites">移出最愛</string>
+    <string name="game_context_menu_resume">繼續遊戲</string>
+    <string name="game_context_menu_restart">重新啟動</string>
     <string name="system_grid_details">%1$s 個遊戲</string>
     <string name="tv_folder_picker_title">選擇 ROMs 目錄</string>
     <string name="tv_folder_picker_action_choose">選擇</string>
