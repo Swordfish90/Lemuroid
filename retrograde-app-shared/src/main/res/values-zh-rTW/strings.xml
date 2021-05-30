@@ -12,5 +12,46 @@
     <string name="controller_dos_mouse_right">滑鼠右鍵</string>
     <!-- Core settings titles -->
     <string name="setting_genesis_plus_gx_overscan">邊界</string>
+    <string name="setting_genesis_plus_gx_lcd_filter">LCD 重影</string>
+    <string name="setting_gambatte_mix_frames">LCD 重影</string>
+    <string name="setting_mgba_interframe_blending">LCD 重影</string>
+    <string name="setting_mgba_frameskip">跳幀</string>
+    <string name="setting_mupen64plus_43screensize">螢幕比例 4:3</string>
+    <string name="setting_pcsx_rearmed_frameskip">跳幀</string>
+    <string name="setting_ppsspp_auto_frameskip">自動跳幀</string>
+    <string name="setting_ppsspp_frameskip">跳幀</string>
+    <string name="setting_ppsspp_internal_resolution">解析度</string>
+    <string name="setting_ppsspp_texture_scaling_level">紋理縮放等級</string>
+    <string name="setting_fbneo_frameskip">跳幀</string>
+    <string name="setting_fbneo_cpu_speed_adjust">CPU 速度</string>
+    <string name="setting_desmume_frameskip">跳幀</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
+    <string name="value_gambatte_mix_frames_mix">簡單</string>
+    <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD 重影(快速)</string>
+    <string name="value_mgba_interframe_blending_off">停用</string>
+    <string name="value_mgba_interframe_blending_mix">簡單</string>
+    <string name="value_mgba_interframe_blending_lcd_ghosting">LCD 重影(精準)</string>
+    <string name="value_mgba_interframe_blending_lcd_ghosting_fast">LCD 重影(快速)</string>
+    <string name="value_mgba_frameskip_disabled">停用</string>
+    <string name="value_mgba_frameskip_auto">自動</string>
+    <string name="value_mgba_color_correction_off">停用</string>
+    <string name="value_mgba_color_correction_gba">GBA</string>
+    <string name="value_stella_filter_disabled">停用</string>
+    <string name="value_stella_filter_composite">複合</string>
+    <string name="value_stella_filter_svideo">S 端子</string>
+    <string name="value_stella_filter_rgb">RGB</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">停用</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">複合</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_svideo">S 端子</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_rgb">RGB</string>
+    <string name="value_genesis_plus_gx_overscan_disabled">停用</string>
+    <string name="value_genesis_plus_gx_overscan_topbottom">上/下</string>
+    <string name="value_genesis_plus_gx_overscan_leftright">左/右</string>
+    <string name="value_mupen64plus_bilinearmode_standard">標準</string>
+    <string name="value_mupen64plus_bilinearmode_3point">3-Point</string>
+    <string name="value_melonds_screen_layout_topbottom">上 - 下</string>
+    <string name="value_melonds_screen_layout_leftright">左 - 右</string>
+    <string name="value_ppsspp_cpu_core_jit">JIT</string>
+    <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
+    <string name="value_ppsspp_cpu_core_interpreter">直譯器</string>
 </resources>
