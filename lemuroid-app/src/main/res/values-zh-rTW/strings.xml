@@ -12,6 +12,7 @@
     <string name="none">無</string>
     <string name="directory">資料夾</string>
     <string name="display_filter">濾鏡</string>
+    <string name="roms">ROMs</string>
     <string name="ok">確定</string>
     <string name="cancel">取消</string>
     <string name="settings">設定</string>
@@ -25,11 +26,15 @@
     <string name="settings_title_tilt_sensitivity">傾斜感應器敏感度</string>
     <string name="settings_gamepad_settings">外接控制器</string>
     <string name="settings_gamepad_button_name">按鍵 %1$s</string>
+    <string name="settings_retropad_button_name">%1$s 鍵</string>
+    <string name="settings_retropad_button_unassigned">未指定</string>
     <string name="settings_gamepad_category_enabled">啟用外接控制器</string>
     <string name="settings_gamepad_category_general">一般設定</string>
+    <string name="settings_gamepad_title_reset_bindings">重新綁定</string>
     <string name="settings_gamepad_title_game_menu">主選單</string>
     <string name="settings_title_open_cores_selection">模擬器核心</string>
     <string name="settings_description_open_cores_selection">選擇模擬器所要使用的核心</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">顯示偵測到能支援的 BIOS 檔</string>
     <string name="settings_bios_category_detected">已偵測到</string>
     <string name="settings_bios_category_not_detected">支援</string>
@@ -100,8 +105,14 @@
     <string name="tv_home_section_settings">設定</string>
     <string name="tv_search_results">遊戲</string>
     <string name="tv_game_message_missing_gamepad">需要遊戲手柄才能玩，請進行連接。</string>
+    <string name="game_interactory_busy">操作處理中，請稍待片刻。</string>
     <string name="mobile_settings_help">幫助</string>
     <string name="mobile_settings_support">支援</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;如何使用Lemuroid？</ b> <br/>
+         將所有 ROM 複製到設備上的資料夾中，然後在 Lemuroid 中選擇該資料夾。 這個資料夾允許有子資料夾。 掃描完成後，您應該會看到您的遊戲。<br/><br/>
+         <b>&#8226;為什麼我的遊戲沒有被偵測到？</b><br/>
+         如果您的遊戲已壓縮，請嘗試解壓縮。 如果這不起作用，請嘗試將 ROM 放入單獨的資料夾中，每個遊戲主機對應一個資料夾，其名稱如下：$SYSTEMS。
+    ]]></string>
     <string name="lemuroid_crash_disclamer">Libretro 核心遇到了意外的問題。如果問題持續存在，請嘗試以下操作：\n
          \n\u2022 關閉自動保存並重新運行遊戲
          \n\u2022 進入安卓設置，清除應用緩存
