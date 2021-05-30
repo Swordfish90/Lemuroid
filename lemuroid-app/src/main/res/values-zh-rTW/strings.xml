@@ -2,7 +2,7 @@
 <resources>
     <string name="title_home">首頁</string>
     <string name="title_search">搜尋</string>
-    <string name="title_systems">遊戲機</string>
+    <string name="title_systems">主機</string>
     <string name="title_games">遊戲</string>
     <string name="title_settings">設定</string>
     <string name="recent">最近</string>
@@ -81,15 +81,39 @@
     <string name="installing_core_notification_title">正在更新核心</string>
     <string name="installing_core_notification_message">這可能需要幾分鐘的時間。</string>
     <string name="game_loader_error_load_game">載入遊戲時出現問題。請確定 Lemuroid 支援該 ROM，然後重新掃描您的遊戲。</string>
+    <string name="game_loader_error_save">您的遊戲存檔出了點問題。如果問題仍然存在，請嘗試關閉自動儲存。</string>
+    <string name="game_loader_error_generic">發生錯誤。請嘗試以下操作：\n
+         \n\u2022 關閉自動儲存並重新運行遊戲
+         \ n \ u2022 進入安卓系統設定，清除應用緩存
+         \ n \ u2022 進入 Lemuroid 設置並執行恢復出廠設置
+         \ n \ n如果以上方法均無效，則可能是該設備不支持該遊戲/核心。</string>
+    <string name="game_loader_error_missing_bios">您好像缺少了必要的BIOS，請將它們放在ROMs目錄中並重新掃描。所需文件: %1$s</string>
+    <string name="game_shortcut_error">載入遊戲時發生錯誤。請確認該遊戲仍然存在於您的遊戲庫中。</string>
     <string name="system_grid_details">%1$s 個遊戲</string>
     <string name="tv_folder_picker_title">選擇 ROMs 目錄</string>
     <string name="tv_folder_picker_action_choose">選擇</string>
     <string name="tv_folder_picker_action_cancel">取消</string>
+    <string name="tv_folder_storage_primary">主存儲</string>
     <string name="tv_home_section_favorites">最愛</string>
     <string name="tv_home_section_recents">最新的</string>
     <string name="tv_home_section_systems">遊戲機</string>
     <string name="tv_home_section_settings">設定</string>
     <string name="tv_search_results">遊戲</string>
+    <string name="tv_game_message_missing_gamepad">需要遊戲手柄才能玩，請進行連接。</string>
     <string name="mobile_settings_help">幫助</string>
     <string name="mobile_settings_support">支援</string>
+    <string name="lemuroid_crash_disclamer">Libretro 核心遇到了意外的問題。如果問題持續存在，請嘗試以下操作：\n
+         \n\u2022 關閉自動保存並重新運行遊戲
+         \n\u2022 進入安卓設置，清除應用緩存
+         \n\u2022 進入 Lemuroid 設置並執行恢復出廠設置
+         \n\n 如果上述方法均無效，則該設備可能不支持該遊戲/核心。</string>
+    <string name="lemuroid_crash_message">錯誤訊息:%1$s</string>
+    <string name="error_message_incompatible_state">此自動存檔與當前核心版本不兼容。請載入最新的遊戲內存檔或使用以前的 Lemuroid 版本。</string>
+    <string-array name="pref_key_shader_filter_names">
+        <item>自動</item>
+        <item>銳利</item>
+        <item>平滑</item>
+        <item>傳統電視</item>
+        <item>液晶電視</item>
+    </string-array>
 </resources>
