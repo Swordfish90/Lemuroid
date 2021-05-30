@@ -21,8 +21,22 @@
     <string name="gdrive_sign_in_failed">Google 登錄失敗： %s (%s)</string>
     <string name="gdrive_sign_in_success">Google 登入帳戶 %s</string>
     <string name="gdrive_sign_out_success">登出 Google 帳戶</string>
-    <string name="gdrive_connected_summary">連結帳戶 %s</string>
+    <string name="gdrive_missing_play_services">Google 雲端硬碟需要 Google Play 服務，您的設備不支援。</string>
+    <string name="gdrive_connected_summary">已連結帳戶 %s</string>
     <string name="gdrive_connected_none_summary">未設定</string>
     <string name="gdrive_last_sync_completed">最後同步：%s</string>
     <string name="game_loading_download_core">正在下載核心...</string>
+    <string name="support_description"><![CDATA[<b>購買支持徽章</b><br/><br/>
+         Lemuroid是基於Libretro的開源項目。 它的所有功能都是免費的，沒有任何廣告。<br/><br/>
+         通過購買一個支持徽章，您可以讓我將更多的時間和資源投入到這個項目和支持它的核心，保護它的未來。<br/><br/>
+         感謝您成為這個社群的一員。]]></string>
+    <string name="support_description_short">        購買一個支持徽章，您可以讓我將更多的時間和資源投入到這個項目和支持它的核心    </string>
+    <string name="support_thankyou"><![CDATA[        感謝您購買其中一個支持徽章。<br/>感謝像您這樣的人，讓我能夠從事我的開源項目。<br/><br/>
+         為您的新徽章感到自豪吧並回到遊戲中。    ]]></string>
+    <string name="support_thankyou_short">        感謝您購買其中一個支持徽章。\n感謝像您這樣的人，讓我能夠從事我的開源項目。
+    </string>
+    <string name="support_badge">支持徽章</string>
+    <string name="support_bronze">青銅 - %1$s</string>
+    <string name="support_silver">白銀 - %1$s</string>
+    <string name="support_gold">黃金 - %1$s</string>
 </resources>
