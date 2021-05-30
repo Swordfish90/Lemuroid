@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="local_storage">本地儲存</string>
+    <string name="controller_arcade_4">預設(4鍵)</string>
+    <string name="controller_arcade_6">預設(6鍵)</string>
+    <string name="controller_genesis_3">預設(3鍵)</string>
+    <string name="controller_genesis_6">預設(6鍵)</string>
+    <string name="controller_default">預設</string>
+    <string name="controller_standard">標準</string>
+    <string name="controller_dos_auto">自動</string>
+    <string name="controller_dos_mouse_left">滑鼠左鍵</string>
+    <string name="controller_dos_mouse_right">滑鼠右鍵</string>
     <!-- Core settings titles -->
+    <string name="setting_genesis_plus_gx_overscan">邊界</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
 </resources>
