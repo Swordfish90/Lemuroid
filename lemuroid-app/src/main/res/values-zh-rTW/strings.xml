@@ -45,7 +45,7 @@
     <string name="settings_title_save_sync">雲端存檔</string>
     <string name="settings_description_save_sync">備份和同步您的遊戲存檔到雲端硬碟</string>
     <string name="settings_save_sync_refresh">手動同步</string>
-    <string name="settings_save_sync_refresh_description">立即執行手動同步。\n%1$s</string>
+    <string name="settings_save_sync_refresh_description">立即手動執行同步。\n%1$s</string>
     <string name="settings_save_sync_enable_auto">自動同步</string>
     <string name="settings_save_sync_enable_auto_description">當連接 Wifi 時在遊戲環節前後自動執行同步</string>
     <string name="settings_save_sync_configure">設定 %1$s</string>
