@@ -17,4 +17,28 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<resources></resources>
+<resources>
+    <string name="gdrive_sign_in_failed">Google login mislukt: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Ingelogd bij Google als %s</string>
+    <string name="gdrive_sign_out_success">Uigelogd van Google</string>
+    <string name="gdrive_missing_play_services">Google Drive heeft Google Play Services nodig, wat jouw apparaat niet ondersteund</string>
+    <string name="gdrive_connected_summary">Gekoppeld aan %s</string>
+    <string name="gdrive_connected_none_summary">Niet geconfigureerd</string>
+    <string name="gdrive_last_sync_completed">Laatst gesynchroniseerd op: %s</string>
+    <string name="game_loading_download_core">Core downloaden…</string>
+    <string name="support_description"><![CDATA[        <b>Koop de Support Badge</b><br/><br/>
+        Lemuroid is een open-source emulatie project gebaseerd op Libretro. Alle functies zijn gratis en zonder advertenties.<br/><br/>
+        Door één van de Support Badges te kopen zorg je ervoor dat ik meer tijd kan besteden aan dit project en zijn cores, om zijn toekomst te beschermen.<br/><br/>
+        Dank je wel om deel te zijn van deze community.
+    ]]></string>
+    <string name="support_description_short">Door één van de Support Badges te kopen zorg je ervoor dat ik meer tijd kan besteden aan dit project en zijn cores, om zijn toekomst te beschermen
+    </string>
+    <string name="support_thankyou"><![CDATA[        Bedankt voor het kopen van één van de support Badges.<br/>Door mensen als jij kan ik werken aan mijn open-source projects.<br/><br/>
+        Wees blij met je nieuwe badge en ga terug naar games. Bazen gaan zichzelf niet verslaan.
+    ]]></string>
+    <string name="support_thankyou_short">Bedankt voor het kopen van één van de support Badges\nDoor mensen als jij kan ik werken aan mijn open-source projects.    </string>
+    <string name="support_badge">Support Badge</string>
+    <string name="support_bronze">Bronzen - %1$s</string>
+    <string name="support_silver">Zilveren - %1$s</string>
+    <string name="support_gold">Gouden - %1$s</string>
+</resources>
