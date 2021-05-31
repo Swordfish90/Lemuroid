@@ -86,9 +86,9 @@
     <string name="library_index_notification_message">這可能需要幾分鐘的時間。</string>
     <string name="save_sync_notification_title">遊戲存檔雲端同步中</string>
     <string name="save_sync_notification_message">這可能需要幾分鐘的時間。</string>
-    <string name="game_running_notification_title">%1$s 正在執行。</string>
-    <string name="game_running_notification_title_alternative">遊戲進行中</string>
-    <string name="game_running_notification_message">確保您的保存進度。</string>
+    <string name="game_running_notification_title">%1$s 運行中。</string>
+    <string name="game_running_notification_title_alternative">遊戲運行中</string>
+    <string name="game_running_notification_message">請記得儲存您的遊戲進度。</string>
     <string name="installing_core_notification_title">正在更新核心</string>
     <string name="installing_core_notification_message">這可能需要幾分鐘的時間。</string>
     <string name="game_loader_error_gl_incompatible">此核心需要 OpenGL ES ，您的設備不支援。</string>
@@ -97,9 +97,9 @@
     <string name="game_loader_error_save">您的遊戲存檔出了點問題。如果問題仍然存在，請嘗試關閉自動儲存。</string>
     <string name="game_loader_error_generic">發生錯誤。請嘗試以下操作：\n
          \n\u2022 關閉自動儲存並重新運行遊戲
-         \ n \ u2022 進入安卓系統設定，清除應用緩存
-         \ n \ u2022 進入 Lemuroid 設置並執行恢復出廠設置
-         \ n \ n如果以上方法均無效，則可能是該設備不支持該遊戲/核心。</string>
+         \n\u2022 進入安卓系統設定，應用程式清除快取
+          \n\u2022 進入 Lemuroid 設置並執行恢復出廠設置
+         \n\n如果以上方法均無效，則可能是該設備不支持該遊戲/核心。    </string>
     <string name="game_loader_error_missing_bios">您好像缺少了必要的BIOS，請將它們放在ROMs目錄中並重新掃描。所需文件: %1$s</string>
     <string name="game_shortcut_error">載入遊戲時發生錯誤。請確認該遊戲仍然存在於您的遊戲庫中。</string>
     <string name="dialog_saf_not_found">此設備不支援 StorageAccessFramework 文件選擇器。 請手動將未壓縮的 ROM 複製到 %1$s 並點擊重新掃描。</string>
@@ -127,9 +127,10 @@
     ]]></string>
     <string name="lemuroid_crash_disclamer">Libretro 核心遇到了意外的問題。如果問題持續存在，請嘗試以下操作：\n
          \n\u2022 關閉自動保存並重新運行遊戲
-         \n\u2022 進入安卓設置，清除應用緩存
+         \n\u2022 進入安卓系統設定，應用程式清除快取
          \n\u2022 進入 Lemuroid 設置並執行恢復出廠設置
-         \n\n 如果上述方法均無效，則該設備可能不支持該遊戲/核心。</string>
+         \n\n 如果上述方法均無效，則該設備可能不支持該遊戲/核心。
+    </string>
     <string name="lemuroid_crash_message">錯誤訊息:%1$s</string>
     <string name="error_message_incompatible_state">此自動存檔與當前核心版本不兼容。請載入最新的遊戲內存檔或使用以前的 Lemuroid 版本。</string>
     <string-array name="pref_key_shader_filter_names">
