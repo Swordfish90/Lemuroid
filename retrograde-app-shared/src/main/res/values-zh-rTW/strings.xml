@@ -6,6 +6,7 @@
     <string name="controller_genesis_3">預設(3鍵)</string>
     <string name="controller_genesis_6">預設(6鍵)</string>
     <string name="controller_default">預設</string>
+    <string name="controller_dualshock">雙類比</string>
     <string name="controller_standard">標準</string>
     <string name="controller_dos_auto">自動</string>
     <string name="controller_dos_mouse_left">滑鼠左鍵</string>
@@ -26,7 +27,9 @@
     <string name="setting_fbneo_cpu_speed_adjust">CPU 速度</string>
     <string name="setting_desmume_frameskip">跳幀</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
+    <string name="value_gambatte_mix_frames_disabled">停用</string>
     <string name="value_gambatte_mix_frames_mix">簡單</string>
+    <string name="value_gambatte_mix_frames_lcd_ghosting">LCD 重影(精準)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD 重影(快速)</string>
     <string name="value_mgba_interframe_blending_off">停用</string>
     <string name="value_mgba_interframe_blending_mix">簡單</string>
