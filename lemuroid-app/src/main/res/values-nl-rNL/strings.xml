@@ -1,2 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">Start</string>
+    <string name="title_search">Zoeken</string>
+    <string name="title_systems">Systemen</string>
+    <string name="title_games">Spellen</string>
+    <string name="title_settings">Instellingen</string>
+    <string name="recent">Recent</string>
+    <string name="favorites">Favorieten</string>
+    <string name="discover">Ontdekken</string>
+    <string name="rescan">Herscannen</string>
+    <string name="none">Geen</string>
+    <string name="directory">Map</string>
+    <string name="display_filter">Scherm filters</string>
+    <string name="roms">ROMS</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Annuleren</string>
+    <string name="settings">Instellingen</string>
+    <string name="support">Ondersteuning</string>
+    <string name="show_all">Laat alle zien</string>
+    <string name="settings_category_general">Algemene instellingen</string>
+    <string name="settings_category_input">Besturing</string>
+    <string name="settings_category_advanced">Geadvanceerde</string>
+    <string name="settings_title_enable_autosave">Automatisch state opslaan</string>
+    <string name="settings_title_enable_touch_feedback">Trillen bij aanraking</string>
+    <string name="settings_title_tilt_sensitivity">Kantel sensitiviteit</string>
+    <string name="settings_gamepad_settings">Controller instellingen</string>
+    <string name="settings_gamepad_button_name">Knop %1$s</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_retropad_button_unassigned">Niet toegewezen</string>
+    <string name="settings_gamepad_category_enabled">Geactiveerde Controllers</string>
+    <string name="settings_gamepad_category_general">Algemeen</string>
+    <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
+    <string name="settings_gamepad_title_game_menu">Menu</string>
+    <string name="settings_title_open_cores_selection">Verander Cores</string>
+    <string name="library_index_notification_message">Dit kan een paar minuten duren</string>
+    <string name="save_sync_notification_title">Cloud opslag wordt gesynchroniseerd</string>
+    <string name="save_sync_notification_message">Dit kan een paar minuten duren</string>
+    <string name="game_running_notification_title">%1$s is actief</string>
+    <string name="game_running_notification_title_alternative">Game is actief</string>
+    <string name="game_running_notification_message">Zorg ervoor dat je je voortgang opslaat</string>
+    <string name="installing_core_notification_title">Cores worden geüpdate</string>
+    <string name="installing_core_notification_message">Dit kan een paar minuten duren</string>
+    <string name="game_loader_error_gl_incompatible">Deze Core heeft een OpenGL ES versie nodig die je apparaat niet ondersteund.</string>
+</resources>
