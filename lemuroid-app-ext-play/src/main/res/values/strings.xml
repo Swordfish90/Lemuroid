@@ -28,29 +28,4 @@
     <string name="gdrive_last_sync_completed">Last sync: %s</string>
 
     <string name="game_loading_download_core">Downloading Core…</string>
-
-    <string name="support_description"><![CDATA[
-        <b>Purchase the Support Badge</b><br/><br/>
-        Lemuroid is an open-source emulation project based on Libretro. All of its features are available for free and without any Ads.<br/><br/>
-        By purchasing one of the Support Badges you allow me to dedicate more time and resources into this project and the cores backing it, safe-guarding its future.<br/><br/>
-        Thank you for being part of this amazing community.
-    ]]></string>
-
-    <string name="support_description_short">
-        By purchasing one of the Support Badges you allow me to dedicate more time and resources into this project and the cores backing it
-    </string>
-
-    <string name="support_thankyou"><![CDATA[
-        Thank you for purchasing one of the support Badges.<br/>It\'s thanks to people like you that I\'m able to work on my open-source projects.<br/><br/>
-        Feel proud of your new badge and get back to games. Bosses aren\'t going to defeat themselves.
-    ]]></string>
-
-    <string name="support_thankyou_short">
-        Thank you for purchasing one of the support Badges.\nIt\'s thanks to people like you that I\'m able to work on my open-source projects.
-    </string>
-
-    <string name="support_badge">Support Badge</string>
-    <string name="support_bronze">Bronze - %1$s</string>
-    <string name="support_silver">Silver - %1$s</string>
-    <string name="support_gold">Gold - %1$s</string>
 </resources>

@@ -32,7 +32,6 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
-import com.swordfish.lemuroid.ext.feature.donate.IAPHandler
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
@@ -107,19 +106,12 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (IAPHandler.IS_SUPPORTED) {
-            menuInflater.inflate(R.menu.menu_mobile_donate, menu)
-        }
         menuInflater.inflate(R.menu.menu_mobile_settings, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_options_support -> {
-                IAPHandler.launchDonateScreen(this)
-                true
-            }
             R.id.menu_options_help -> {
                 displayLemuroidHelp()
                 true

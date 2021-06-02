@@ -7,5 +7,4 @@ enum class TVSettingType(val icon: Int, val text: Int) {
     SHOW_ALL_FAVORITES(R.drawable.ic_more_games, R.string.show_all),
     CHOOSE_DIRECTORY(R.drawable.ic_folder_white_64dp, R.string.directory),
     SETTINGS(R.drawable.ic_settings_white_64dp, R.string.settings),
-    DONATE(R.drawable.ic_support, R.string.support)
 }
