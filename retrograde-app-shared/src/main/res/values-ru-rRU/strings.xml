@@ -8,6 +8,8 @@
     <string name="controller_default">По умолчанию</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Стандартный</string>
+    <string name="controller_dos_mouse_left">Мышь с левым стиком</string>
+    <string name="controller_dos_mouse_right">Мышь с правым стиком</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">ТВ-эффект</string>
     <string name="setting_stella_crop_hoverscan">Обрезать горизонтальные наложения</string>
