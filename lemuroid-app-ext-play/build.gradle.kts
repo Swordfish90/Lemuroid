@@ -25,8 +25,6 @@ dependencies {
     implementation(deps.libs.gdrive.apiClientAndroid)
     implementation(deps.libs.gdrive.apiServicesDrive)
     implementation(deps.libs.play.playServices)
-    implementation(deps.libs.play.billing)
-    implementation(deps.libs.rxBilling)
     implementation(deps.libs.autodispose.core)
     implementation(deps.libs.autodispose.android.core)
     implementation(deps.libs.autodispose.android.archComponents)

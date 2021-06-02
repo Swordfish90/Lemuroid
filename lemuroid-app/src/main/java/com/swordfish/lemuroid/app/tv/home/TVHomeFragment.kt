@@ -28,7 +28,6 @@ import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.common.rx.RXUtils
-import com.swordfish.lemuroid.ext.feature.donate.IAPHandler
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.util.subscribeBy
@@ -68,7 +67,6 @@ class TVHomeFragment : BrowseSupportFragment() {
                         TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
                         TVSettingType.SETTINGS -> launchTVSettings()
                         TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
-                        TVSettingType.DONATE -> launchSupport()
                     }
                 }
             }
@@ -201,10 +199,6 @@ class TVHomeFragment : BrowseSupportFragment() {
             add(TVSetting(TVSettingType.RESCAN, rescanEnabled))
             add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, rescanEnabled))
             add(TVSetting(TVSettingType.SETTINGS))
-
-            if (IAPHandler.IS_SUPPORTED) {
-                add(TVSetting(TVSettingType.DONATE))
-            }
         }
     }
 
@@ -222,10 +216,6 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     private fun launchFavorites() {
         findNavController().navigate(R.id.navigation_favorites)
-    }
-
-    private fun launchSupport() {
-        IAPHandler.launchTVDonateScreen(requireActivity())
     }
 
     companion object {
