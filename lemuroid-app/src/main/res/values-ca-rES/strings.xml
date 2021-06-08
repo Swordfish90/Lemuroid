@@ -1,2 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="settings_category_input">Entrada</string>
+    <string name="settings_category_advanced">Avançat</string>
+    <string name="settings_title_enable_touch_feedback">Vibrar en tocar</string>
+    <string name="settings_retropad_button_unassigned">Sense assignar</string>
+    <string name="settings_gamepad_category_general">General</string>
+    <string name="settings_gamepad_title_game_menu">Menú</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_bios_category_detected">Detectat</string>
+    <string name="settings_bios_category_not_detected">Suportat</string>
+    <string name="settings_title_reset_settings">Restabliment de fàbrica</string>
+    <string name="reset_settings_warning_message_title">Estàs segur?</string>
+    <string name="settings_save_sync_refresh">Sincronització manual</string>
+    <string name="settings_save_sync_enable_auto">Sincronització Automàtica</string>
+    <string name="game_menu_quit">Surt</string>
+    <string name="game_menu_settings">Configuració</string>
+    <string name="game_menu_state">Estat: %1$s</string>
+    <string name="game_menu_mute_audio">Silencia</string>
+    <string name="game_menu_fast_forward">Avança ràpid</string>
+    <string name="empty_view_default">Sense elements</string>
+    <string name="core_settings_category_preferences">Preferències</string>
+    <string name="notification_channel_name">Totes les notificacions</string>
+    <string name="library_index_notification_message">Això pot trigar uns minuts</string>
+    <string name="save_sync_notification_message">Això pot trigar uns minuts</string>
+    <string name="game_running_notification_title">%1$s s\'està executant</string>
+    <string name="installing_core_notification_title">Actualitzant els nuclis</string>
+    <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
+</resources>
