@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="title_home">Inici</string>
+    <string name="title_search">Cerca</string>
+    <string name="title_systems">Sistemes</string>
+    <string name="title_games">Jocs</string>
+    <string name="title_settings">Configuració</string>
+    <string name="recent">Recents</string>
+    <string name="favorites">Preferits</string>
+    <string name="discover">Descobreix</string>
+    <string name="rescan">Tornar a escanejar</string>
+    <string name="none">Cap</string>
+    <string name="roms">ROMS</string>
+    <string name="ok">D\'acord</string>
+    <string name="cancel">Cancel·la</string>
+    <string name="settings">Configuració</string>
+    <string name="show_all">Mostra\'ls tots</string>
+    <string name="settings_category_general">General</string>
     <string name="settings_category_input">Entrada</string>
     <string name="settings_category_advanced">Avançat</string>
     <string name="settings_title_enable_touch_feedback">Vibrar en tocar</string>
+    <string name="settings_gamepad_button_name">Botó %1$s</string>
     <string name="settings_retropad_button_unassigned">Sense assignar</string>
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_game_menu">Menú</string>
@@ -13,11 +30,20 @@
     <string name="reset_settings_warning_message_title">Estàs segur?</string>
     <string name="settings_save_sync_refresh">Sincronització manual</string>
     <string name="settings_save_sync_enable_auto">Sincronització Automàtica</string>
+    <string name="game_context_menu_add_to_favorites">Afegeix als preferits</string>
+    <string name="game_context_menu_remove_from_favorites">Elimina dels preferits</string>
+    <string name="game_context_menu_resume">Reprèn</string>
+    <string name="game_context_menu_restart">Reinicia</string>
+    <string name="home_empty_action">Seleccioneu la carpeta</string>
+    <string name="game_menu_save">Desar</string>
+    <string name="game_menu_load">Carrega</string>
+    <string name="game_menu_restart">Reinicia</string>
     <string name="game_menu_quit">Surt</string>
     <string name="game_menu_settings">Configuració</string>
     <string name="game_menu_state">Estat: %1$s</string>
     <string name="game_menu_mute_audio">Silencia</string>
     <string name="game_menu_fast_forward">Avança ràpid</string>
+    <string name="game_toast_load_state_failed">No es pot carregar aquest estat</string>
     <string name="empty_view_default">Sense elements</string>
     <string name="core_settings_category_preferences">Preferències</string>
     <string name="notification_channel_name">Totes les notificacions</string>
@@ -26,4 +52,18 @@
     <string name="game_running_notification_title">%1$s s\'està executant</string>
     <string name="installing_core_notification_title">Actualitzant els nuclis</string>
     <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
+    <string name="tv_home_section_favorites">Preferits</string>
+    <string name="tv_home_section_recents">Recents</string>
+    <string name="tv_home_section_systems">Sistemes</string>
+    <string name="tv_home_section_settings">Configuració</string>
+    <string name="tv_search_results">Jocs</string>
+    <string name="mobile_settings_help">Ajuda</string>
+    <string name="mobile_settings_support">Assistència</string>
+    <string-array name="pref_key_shader_filter_names">
+        <item>Automàtic</item>
+        <item>Sharp</item>
+        <item>Suau</item>
+        <item>CRT</item>
+        <item>LCD</item>
+    </string-array>
 </resources>
