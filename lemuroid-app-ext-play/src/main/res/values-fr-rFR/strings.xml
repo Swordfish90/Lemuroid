@@ -26,20 +26,4 @@
     <string name="gdrive_connected_none_summary">Pas configuré</string>
     <string name="gdrive_last_sync_completed">Dernière synchro: %s</string>
     <string name="game_loading_download_core">Téléchargement du module…</string>
-    <string name="support_description"><![CDATA[        <b>Acheter le Badge de Support</b><br/><br/>
-        Lemuroid est un projet d\'émulation open-source basé sur Libretro. Toutes ses fonctionnalités sont disponibles gratuitement et sans publicité.<br/><br/>
-        En achetant un des badges de soutien, vous me permettez de consacrer plus de temps et de ressources à ce projet et aux différents modules qui le soutiennent, protégeant ainsi la stabilité de son devenir.<br/><br/>
-        En vous remerciant de votre présence dans cette formidable communauté.
-    ]]></string>
-    <string name="support_description_short">        En achetant un des badges de soutien, vous m\'aidez à consacrer plus de temps et de ressources dans ce projet ainsi que les différents modules lui correspondant.
-    </string>
-    <string name="support_thankyou"><![CDATA[        Merci infiniment d\'avoir acheté un des badges de soutien.<br/>C\'est grâce à des gens comme vous que je suis en mesure de travailler sur mes projets de logiciel libre.<br/><br/>
-        Soyez fier de votre nouveau badge et reprenez dès à présent vos jeux préférés. Les boss et autre défis ne vont pas se vaincre tout seuls.
-    ]]></string>
-    <string name="support_thankyou_short">        Merci d\'avoir acheté un des badges de soutien.\nC\'est grâce à des gens comme vous que je suis en mesure de travailler sur mes projets de logiciel libre.
-    </string>
-    <string name="support_badge">Badge de Soutien</string>
-    <string name="support_bronze">Bronze - %1$s</string>
-    <string name="support_silver">Argent - %1$s</string>
-    <string name="support_gold">Or - %1$s</string>
 </resources>
