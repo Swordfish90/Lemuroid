@@ -5,11 +5,5 @@
         <activity
             android:name="com.swordfish.lemuroid.ext.feature.savesync.ActivateGoogleDriveActivity"
             android:theme="@style/InvisibleTheme"/>
-        <activity
-            android:name="com.swordfish.lemuroid.ext.feature.donate.DonateActivity"
-            android:theme="@style/RaisedFlatTheme"/>
-        <activity
-            android:name="com.swordfish.lemuroid.ext.feature.donate.TVDonateActivity"
-            android:theme="@style/LeanbackTheme"/>
     </application>
 </manifest>

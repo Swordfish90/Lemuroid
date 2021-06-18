@@ -111,7 +111,6 @@ object deps {
             const val core = "com.google.android.play:core:1.10.0"
             const val coreKtx = "com.google.android.play:core-ktx:1.8.1"
             const val playServices = "com.google.android.gms:play-services-auth:17.0.0"
-            const val billing = "com.android.billingclient:billing-ktx:3.0.0"
         }
         object gdrive {
             const val apiClient            = "com.google.api-client:google-api-client:${versions.googleApiClient}"
@@ -140,7 +139,6 @@ object deps {
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:29.0-android"
         const val harmony                  = "com.frybits.harmony:harmony:1.1.4"
-        const val rxBilling                = "com.github.betterme-dev:RxBilling:3.0.0"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
     }
