@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Gotowe</string>
+    <string name="touch_customize_button_reset">Resetuj</string>
+</resources>
