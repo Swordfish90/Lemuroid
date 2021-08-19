@@ -9,7 +9,7 @@
 
 ## Description
 
-Lemuroid is an Android open-source emulation project based on Libretro. It's main goals are ease of use, good Android integration and great user experience.
+Lemuroid is an open-source emulation project for Android based on Libretro. Its main goal is ease of use, good Android integration and a great user experience.
 
 It originated from a rib of [Retrograde](https://github.com/retrograde/retrograde-android), but graduated to a standalone project integrating [LibretroDroid](https://github.com/Swordfish90/LibretroDroid).
 
