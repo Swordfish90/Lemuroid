@@ -30,6 +30,7 @@
     <string name="setting_gambatte_gb_internal_palette">Internal palette</string>
     <string name="setting_gambatte_mix_frames">LCD ghosting</string>
     <string name="setting_gambatte_dark_filter_level">Darken screen</string>
+    <string name="setting_gambatte_gbc_color_correction">Color correction</string>
     <string name="setting_mgba_solar_sensor_level">Solar sensor level</string>
     <string name="setting_mgba_interframe_blending">LCD ghosting</string>
     <string name="setting_mgba_frameskip">Frameskip</string>
@@ -58,6 +59,8 @@
     <string name="value_gambatte_mix_frames_mix">Simple</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">LCD Ghosting (Accurate)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD Ghosting (Fast)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Enabled</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Disabled</string>
 
     <string name="value_mgba_interframe_blending_off">Disabled</string>
     <string name="value_mgba_interframe_blending_mix">Simple</string>
@@ -68,7 +71,7 @@
     <string name="value_mgba_frameskip_auto">Auto</string>
 
     <string name="value_mgba_color_correction_off">Disabled</string>
-    <string name="value_mgba_color_correction_gba">GBA</string>
+    <string name="value_mgba_color_correction_gba">Enabled</string>
 
     <string name="value_stella_filter_disabled">Disabled</string>
     <string name="value_stella_filter_composite">Composite</string>
