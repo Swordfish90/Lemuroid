@@ -19,6 +19,7 @@ import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesFragment
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeFragment
 import com.swordfish.lemuroid.app.mobile.feature.search.SearchFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.AdvancedSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
@@ -168,6 +169,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         @PerFragment
         @ContributesAndroidInjector(modules = [BiosSettingsFragment.Module::class])
         abstract fun biosInfoFragment(): BiosSettingsFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [AdvancedSettingsFragment.Module::class])
+        abstract fun advancedSettingsFragment(): AdvancedSettingsFragment
 
         @PerFragment
         @ContributesAndroidInjector(modules = [SaveSyncFragment.Module::class])

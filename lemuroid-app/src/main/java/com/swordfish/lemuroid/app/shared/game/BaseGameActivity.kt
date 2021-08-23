@@ -203,7 +203,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun initializeRetroGameView(
         gameData: GameLoader.GameData,
-        screenFilter: String
+        screenFilter: String,
+        lowLatencyAudio: Boolean,
     ): GLRetroView {
         val data = GLRetroViewData(this).apply {
             coreFilePath = gameData.coreLibrary
@@ -213,6 +214,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
             saveRAMState = gameData.saveRAMData
             shader = getShaderForSystem(screenFilter, system)
+            preferLowLatencyAudio = lowLatencyAudio
         }
 
         val retroGameView = GLRetroView(this, data)
@@ -846,23 +848,23 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         setupLoadingView()
 
-        Singles.zip(settingsManager.autoSave, settingsManager.screenFilter, ::Pair)
-            .flatMapObservable { (autoSaveEnabled, filter) ->
+        Singles.zip(settingsManager.autoSave, settingsManager.screenFilter, settingsManager.lowLatencyAudio, ::Triple)
+            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio) ->
                 gameLoader.load(
                     applicationContext,
                     game,
                     requestLoadSave && autoSaveEnabled,
                     systemCoreConfig
-                ).map { filter to it }
+                ).map { Triple(it, filter, lowLatencyAudio) }
             }
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe(
-                { (filter, loadingState) ->
+                { (loadingState, filter, lowLatencyAudio) ->
                     displayLoadingState(loadingState)
                     if (loadingState is GameLoader.LoadingState.Ready) {
-                        retroGameView = initializeRetroGameView(loadingState.gameData, filter)
+                        retroGameView = initializeRetroGameView(loadingState.gameData, filter, lowLatencyAudio)
                     }
                 },
                 {

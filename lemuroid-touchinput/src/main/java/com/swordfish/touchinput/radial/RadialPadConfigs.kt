@@ -105,7 +105,8 @@ object RadialPadConfigs {
 
     private val PRIMARY_DIAL_CROSS = PrimaryDialConfig.Cross(
         MOTION_SOURCE_DPAD,
-        supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+        supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
+        diagonalRatio = 3
     )
 
     private val PRIMARY_DIAL_CROSS_MERGED = PrimaryDialConfig.Cross(
