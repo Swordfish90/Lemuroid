@@ -30,7 +30,6 @@ import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
-import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -40,7 +39,6 @@ import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides

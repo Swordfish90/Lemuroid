@@ -23,7 +23,6 @@ import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.uber.autodispose.android.lifecycle.scope
@@ -34,7 +33,6 @@ import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
-import timber.log.Timber.e
 import javax.inject.Inject
 
 class MainTVActivity : BaseTVActivity(), BusyActivity {
