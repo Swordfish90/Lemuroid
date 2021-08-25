@@ -30,6 +30,7 @@ import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
+import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashActivity
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -45,6 +46,7 @@ import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import io.reactivex.rxkotlin.subscribeBy
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
@@ -94,14 +96,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode != Activity.RESULT_OK) return
-
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
-                postGameHandler.handleAfterGame(this, true, game, duration!!)
-                    .subscribeBy { }
+                postGameHandler.handle(true, this, resultCode, data)
+                    .subscribeBy(Timber::e) { }
             }
         }
     }

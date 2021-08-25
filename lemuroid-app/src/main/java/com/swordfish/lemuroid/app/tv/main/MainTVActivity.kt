@@ -30,8 +30,11 @@ import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import timber.log.Timber
+import timber.log.Timber.e
 import javax.inject.Inject
 
 class MainTVActivity : BaseTVActivity(), BusyActivity {
@@ -61,15 +64,11 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode != Activity.RESULT_OK) return
-
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
-                postGameHandler.handleAfterGame(this, false, game, duration!!)
-                    .subscribeBy { }
-                ChannelUpdateWork.enqueue(applicationContext)
+                postGameHandler.handle(false, this, resultCode, data)
+                    .andThen(Completable.fromCallable { ChannelUpdateWork.enqueue(applicationContext) })
+                    .subscribeBy(Timber::e) { }
             }
         }
     }
