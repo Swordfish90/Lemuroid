@@ -22,5 +22,7 @@ enum class SystemID(val dbname: String) {
     SEGACD("scd"),
     NGP("ngp"),
     NGC("ngc"),
+    WS("ws"),
+    WSC("wsc"),
     DOS("dos"),
 }
