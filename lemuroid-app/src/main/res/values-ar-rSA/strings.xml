@@ -19,7 +19,6 @@
     <string name="show_all">عرض الكل</string>
     <string name="settings_category_general">عام</string>
     <string name="settings_category_input">إدخال</string>
-    <string name="settings_category_advanced">متقدمة</string>
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
     <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميل</string>
