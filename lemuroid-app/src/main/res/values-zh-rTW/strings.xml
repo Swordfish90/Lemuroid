@@ -19,7 +19,6 @@
     <string name="show_all">全部顯示</string>
     <string name="settings_category_general">一般設定</string>
     <string name="settings_category_input">輸入</string>
-    <string name="settings_category_advanced">進階設置</string>
     <string name="settings_title_enable_autosave">自動儲存</string>
     <string name="settings_title_enable_touch_feedback">觸控時震動</string>
     <string name="settings_title_tilt_sensitivity">傾斜感應器敏感度</string>
