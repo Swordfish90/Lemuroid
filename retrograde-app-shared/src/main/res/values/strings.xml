@@ -11,6 +11,8 @@
     <string name="controller_default">Default</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standard</string>
+    <string name="controller_landscape">Landscape</string>
+    <string name="controller_portrait">Portrait</string>
 
     <string name="controller_dos_auto">Auto</string>
     <string name="controller_dos_mouse_left">Mouse with Left Stick</string>
@@ -53,6 +55,9 @@
     <string name="setting_melonds_screen_layout">Screens layout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamic recompiler</string>
+    <string name="setting_wswan_rotate_display">Orientation</string>
+    <string name="setting_wswan_mono_palette">Colorization</string>
+    <string name="setting_handy_rot">Orientation</string>
 
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Disabled</string>
@@ -105,5 +110,11 @@
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpreter</string>
+
+    <string name="value_wswan_rotate_display_landscape">Landscape</string>
+    <string name="value_wswan_rotate_display_portrait">Portrait</string>
+
+    <string name="value_handy_rot_none">Landscape</string>
+    <string name="value_handy_rot_90">Portrait</string>
 
 </resources>

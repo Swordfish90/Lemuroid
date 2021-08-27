@@ -858,20 +858,11 @@ object RadialPadConfigs {
                     )
                 ),
                 SecondaryDialConfig.SingleButton(
-                    2,
+                    8,
                     1,
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_R1,
                         label = "OPTION 2"
-                    )
-                ),
-                SecondaryDialConfig.SingleButton(
-                    8,
-                    1,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                        iconId = R.drawable.button_rotate,
-                        contentDescription = "Rotate"
                     )
                 ),
                 SecondaryDialConfig.Empty(10, 1, 1f)
@@ -896,7 +887,6 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.Empty(4, 1, 1f),
                 SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
             )
         )
@@ -1093,6 +1083,77 @@ object RadialPadConfigs {
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_B,
                         label = "A"
+                    )
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
+
+    val WS_LANDSCAPE_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PRIMARY_DIAL_CROSS,
+            secondaryDials = listOf(
+                SecondaryDialConfig.Empty(4, 1, 1f),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val WS_LANDSCAPE_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                rotationInDegrees = 30f,
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "A"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "B"
+                    )
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            )
+        )
+
+    val WS_PORTRAIT_LEFT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PRIMARY_DIAL_CROSS,
+            secondaryDials = listOf(
+                SecondaryDialConfig.Empty(4, 1, 1f),
+                SecondaryDialConfig.Empty(10, 1, 1f)
+            )
+        )
+
+    val WS_PORTRAIT_RIGHT =
+        RadialGamePadConfig(
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "X3"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_X,
+                        label = "X2"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_Y,
+                        label = "X1"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "X4"
                     )
                 )
             ),

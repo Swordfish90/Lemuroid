@@ -19,6 +19,7 @@ import com.gojuno.koptional.Optional
 import com.gojuno.koptional.rxjava2.filterSome
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
+import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
@@ -238,7 +239,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             restoreAutoSaveAsync(it)
         }
 
+        if (BuildConfig.DEBUG) {
+            printRetroVariables(retroGameView)
+        }
+
         return retroGameView
+    }
+
+    private fun printRetroVariables(retroGameView: GLRetroView) {
+        retroGameView.getVariables().forEach {
+            Timber.i("Libretro variable: $it")
+        }
     }
 
     private fun updateControllers(controllers: Map<Int, ControllerConfig>) {
@@ -341,6 +352,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.DOS -> GLRetroView.SHADER_CRT
                 SystemID.NGP -> GLRetroView.SHADER_LCD
                 SystemID.NGC -> GLRetroView.SHADER_LCD
+                SystemID.WS -> GLRetroView.SHADER_LCD
+                SystemID.WSC -> GLRetroView.SHADER_LCD
             }
         }
     }

@@ -928,6 +928,25 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.LYNX)
+                        ),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "handy_rot",
+                                R.string.setting_handy_rot,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "None",
+                                        R.string.value_handy_rot_none
+                                    ),
+                                    ExposedSetting.Value(
+                                        "90",
+                                        R.string.value_handy_rot_90
+                                    ),
+                                )
+                            )
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("handy_rot", "None")
                         )
                     ),
                 ),
@@ -978,6 +997,79 @@ data class GameSystem(
                     ),
                 ),
                 uniqueExtensions = listOf("ngc"),
+            ),
+            GameSystem(
+                SystemID.WS,
+                "Bandai - WonderSwan",
+                R.string.game_system_title_ws,
+                R.string.game_system_abbr_ws,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MEDNAFEN_WSWAN,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.WS_LANDSCAPE, ControllerConfigs.WS_PORTRAIT)
+                        ),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "wswan_rotate_display",
+                                R.string.setting_wswan_rotate_display,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "landscape",
+                                        R.string.value_wswan_rotate_display_landscape
+                                    ),
+                                    ExposedSetting.Value(
+                                        "portrait",
+                                        R.string.value_wswan_rotate_display_portrait
+                                    ),
+                                )
+                            ),
+                            ExposedSetting(
+                                "wswan_mono_palette",
+                                R.string.setting_wswan_mono_palette
+                            )
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("wswan_rotate_display", "landscape"),
+                            CoreVariable("wswan_mono_palette", "wonderswan"),
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("ws"),
+            ),
+            GameSystem(
+                SystemID.WSC,
+                "Bandai - WonderSwan Color",
+                R.string.game_system_title_wsc,
+                R.string.game_system_abbr_wsc,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.MEDNAFEN_WSWAN,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.WS_LANDSCAPE, ControllerConfigs.WS_PORTRAIT)
+                        ),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "wswan_rotate_display",
+                                R.string.setting_wswan_rotate_display,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "landscape",
+                                        R.string.value_wswan_rotate_display_landscape
+                                    ),
+                                    ExposedSetting.Value(
+                                        "portrait",
+                                        R.string.value_wswan_rotate_display_portrait
+                                    ),
+                                )
+                            )
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("wswan_rotate_display", "landscape")
+                        )
+                    ),
+                ),
+                uniqueExtensions = listOf("wsc"),
             ),
             GameSystem(
                 SystemID.DOS,

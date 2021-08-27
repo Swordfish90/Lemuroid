@@ -26,6 +26,7 @@ android {
             ":lemuroid_core_mame2003_plus",
             ":lemuroid_core_mednafen_ngp",
             ":lemuroid_core_mednafen_pce_fast",
+            ":lemuroid_core_mednafen_wswan",
             ":lemuroid_core_melonds",
             ":lemuroid_core_mgba",
             ":lemuroid_core_mupen64plus_next_gles3",
