@@ -19,7 +19,6 @@
     <string name="show_all">Alle anzeigen</string>
     <string name="settings_category_general">Allgemein</string>
     <string name="settings_category_input">Eingabe</string>
-    <string name="settings_category_advanced">Weiteres</string>
     <string name="settings_title_enable_autosave">Automatisch gespeicherte Zustand</string>
     <string name="settings_title_enable_touch_feedback">Vibrieren bei Berührung</string>
     <string name="settings_title_tilt_sensitivity">Neigungssensor Empfindlichkeit</string>
