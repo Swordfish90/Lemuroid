@@ -57,6 +57,7 @@ import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.touchinput.radial.RadialPadConfigs
 import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
 import com.swordfish.lemuroid.lib.controller.TouchControllerSettingsManager
+import com.swordfish.radialgamepad.library.haptics.HapticConfig
 import com.swordfish.touchinput.radial.sensors.TiltSensor
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -134,7 +135,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupController(controllerConfig: ControllerConfig, orientation: Int): Completable {
-        return settingsManager.vibrateOnTouch
+        return settingsManager.hapticFeedbackMode
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { setupTouchViews(controllerConfig, it) }
             .ignoreElement()
@@ -167,18 +168,25 @@ class GameActivity : BaseGameActivity() {
         orientation = newConfig.orientation
     }
 
-    private fun setupTouchViews(controllerConfig: ControllerConfig, vibrateOnTouch: Boolean) {
+    private fun setupTouchViews(controllerConfig: ControllerConfig, hapticFeedbackType: String) {
         virtualControllerDisposables.clear()
         leftGamePadContainer.removeAllViews()
         rightGamePadContainer.removeAllViews()
 
         val touchControllerConfig = controllerConfig.getTouchControllerConfig()
 
+        val hapticConfig = when (hapticFeedbackType) {
+            "none" -> HapticConfig.OFF
+            "press" -> HapticConfig.PRESS
+            "press_release" -> HapticConfig.PRESS_AND_RELEASE
+            else -> HapticConfig.OFF
+        }
+
         val leftPad = RadialGamePad(
             wrapGamePadConfig(
                 applicationContext,
                 touchControllerConfig.leftConfig,
-                vibrateOnTouch
+                hapticConfig
             ),
             DEFAULT_MARGINS_DP,
             this
@@ -189,7 +197,7 @@ class GameActivity : BaseGameActivity() {
             wrapGamePadConfig(
                 applicationContext,
                 touchControllerConfig.rightConfig,
-                vibrateOnTouch
+                hapticConfig
             ),
             DEFAULT_MARGINS_DP,
             this
@@ -321,10 +329,10 @@ class GameActivity : BaseGameActivity() {
     private fun wrapGamePadConfig(
         context: Context,
         config: RadialGamePadConfig,
-        vibrateOnTouch: Boolean
+        hapticConfig: HapticConfig
     ): RadialGamePadConfig {
         val padTheme = getGamePadTheme(context)
-        return config.copy(theme = padTheme, haptic = vibrateOnTouch)
+        return config.copy(theme = padTheme, haptic = hapticConfig)
     }
 
     private fun handleGamePadButton(it: Event.Button) {

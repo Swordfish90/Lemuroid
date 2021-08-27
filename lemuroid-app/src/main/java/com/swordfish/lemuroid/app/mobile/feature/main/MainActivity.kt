@@ -19,6 +19,7 @@ import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesFragment
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeFragment
 import com.swordfish.lemuroid.app.mobile.feature.search.SearchFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.AdvancedSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
 import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
@@ -38,12 +39,12 @@ import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import io.reactivex.rxkotlin.subscribeBy
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
@@ -93,14 +94,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode != Activity.RESULT_OK) return
-
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
-                postGameHandler.handleAfterGame(this, true, game, duration!!)
-                    .subscribeBy { }
+                postGameHandler.handle(true, this, resultCode, data)
+                    .subscribeBy(Timber::e) { }
             }
         }
     }
@@ -168,6 +165,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         @PerFragment
         @ContributesAndroidInjector(modules = [BiosSettingsFragment.Module::class])
         abstract fun biosInfoFragment(): BiosSettingsFragment
+
+        @PerFragment
+        @ContributesAndroidInjector(modules = [AdvancedSettingsFragment.Module::class])
+        abstract fun advancedSettingsFragment(): AdvancedSettingsFragment
 
         @PerFragment
         @ContributesAndroidInjector(modules = [SaveSyncFragment.Module::class])

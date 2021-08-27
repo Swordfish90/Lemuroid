@@ -510,9 +510,26 @@ data class GameSystem(
                                 )
                             ),
                             ExposedSetting(
+                                "gambatte_gbc_color_correction",
+                                R.string.setting_gambatte_gbc_color_correction,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "disabled",
+                                        R.string.value_gambatte_gbc_color_correction_disabled
+                                    ),
+                                    ExposedSetting.Value(
+                                        "always",
+                                        R.string.value_gambatte_gbc_color_correction_always
+                                    )
+                                )
+                            ),
+                            ExposedSetting(
                                 "gambatte_dark_filter_level",
                                 R.string.setting_gambatte_dark_filter_level
                             )
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("gambatte_gbc_color_correction", "disabled"),
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GB)

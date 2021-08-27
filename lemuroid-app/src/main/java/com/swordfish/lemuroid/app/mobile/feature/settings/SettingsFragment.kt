@@ -91,9 +91,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_key_open_save_sync_settings) -> handleDisplaySaveSync()
             getString(R.string.pref_key_open_cores_selection) -> handleDisplayCorePage()
             getString(R.string.pref_key_display_bios_info) -> handleDisplayBiosInfo()
+            getString(R.string.pref_key_advanced_settings) -> handleAdvancedSettings()
             getString(R.string.pref_key_reset_settings) -> handleResetSettings()
         }
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun handleAdvancedSettings() {
+        findNavController().navigate(R.id.navigation_settings_advanced)
     }
 
     private fun handleDisplayBiosInfo() {
