@@ -28,6 +28,7 @@ if (usePlayDynamicFeatures()) {
         ":lemuroid_core_mame2003_plus",
         ":lemuroid_core_mednafen_ngp",
         ":lemuroid_core_mednafen_pce_fast",
+        ":lemuroid_core_mednafen_wswan",
         ":lemuroid_core_melonds",
         ":lemuroid_core_mgba",
         ":lemuroid_core_mupen64plus_next_gles3",
@@ -55,5 +56,6 @@ if (usePlayDynamicFeatures()) {
     project(":lemuroid_core_prosystem").projectDir = File("lemuroid-cores/lemuroid_core_prosystem")
     project(":lemuroid_core_mednafen_pce_fast").projectDir = File("lemuroid-cores/lemuroid_core_mednafen_pce_fast")
     project(":lemuroid_core_mednafen_ngp").projectDir = File("lemuroid-cores/lemuroid_core_mednafen_ngp")
+    project(":lemuroid_core_mednafen_wswan").projectDir = File("lemuroid-cores/lemuroid_core_mednafen_wswan")
     project(":lemuroid_core_dosbox_pure").projectDir = File("lemuroid-cores/lemuroid_core_dosbox_pure")
 }
