@@ -19,7 +19,6 @@
     <string name="show_all">Mostra Tutto</string>
     <string name="settings_category_general">Generale</string>
     <string name="settings_category_input">Input</string>
-    <string name="settings_category_advanced">Avanzate</string>
     <string name="settings_title_enable_autosave">Salvataggio automatico stato</string>
     <string name="settings_title_enable_touch_feedback">Vibra al tocco</string>
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
