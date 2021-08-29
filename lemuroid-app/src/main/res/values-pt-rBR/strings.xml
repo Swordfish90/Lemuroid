@@ -19,6 +19,7 @@
     <string name="show_all">Mostrar todos</string>
     <string name="settings_category_general">Geral</string>
     <string name="settings_category_input">Entrada</string>
+    <string name="settings_category_misc">Outras configurações</string>
     <string name="settings_title_enable_autosave">Auto-Salvar Estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar no toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
@@ -39,6 +40,7 @@
     <string name="settings_title_reset_settings">Redefinição de fábrica</string>
     <string name="settings_description_reset_settings">Redefinir Lemuroid para suas configurações de fábrica</string>
     <string name="settings_title_advanced_settings">Configurações avançadas</string>
+    <string name="settings_description_advanced_settings">Exibir configurações avançadas</string>
     <string name="settings_title_low_latency_audio">Preferir áudio com baixa latência</string>
     <string name="settings_description_low_latency_audio">Reduzir a latência do áudio nos dispositivos suportados. Pode aumentar as falhas no áudio.</string>
     <string name="reset_settings_warning_message_title">Você tem certeza?</string>
