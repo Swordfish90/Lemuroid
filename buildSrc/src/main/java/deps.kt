@@ -24,7 +24,7 @@ object deps {
         const val paging          = "3.0.0-alpha11"
         const val room            = "2.3.0-alpha04"
         const val libretrodroid   = "38a50579"
-        const val radialgamepad   = "edafb222"
+        const val radialgamepad   = "0a0f4b1f"
     }
 
     object libs {
