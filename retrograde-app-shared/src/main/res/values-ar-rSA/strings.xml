@@ -8,6 +8,8 @@
     <string name="controller_default">الافتراضي</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">قياسي</string>
+    <string name="controller_landscape">أفقي</string>
+    <string name="controller_portrait">عمودي</string>
     <string name="controller_dos_auto">التلقائي</string>
     <string name="controller_dos_mouse_left">الفأرة مع العصا اليسرى</string>
     <string name="controller_dos_mouse_right">الفأرة مع العصا اليمنى</string>
@@ -25,6 +27,7 @@
     <string name="setting_gambatte_gb_internal_palette">اللوحة الداخلية</string>
     <string name="setting_gambatte_mix_frames">شبح LCD</string>
     <string name="setting_gambatte_dark_filter_level">شاشة مظلمة</string>
+    <string name="setting_gambatte_gbc_color_correction">تصحيح الألوان</string>
     <string name="setting_mgba_solar_sensor_level">مستوى الاستشعار الشمسي</string>
     <string name="setting_mgba_interframe_blending">شبح LCD</string>
     <string name="setting_mgba_frameskip">تخطي الإطارات</string>
@@ -47,11 +50,16 @@
     <string name="setting_melonds_screen_layout">تخطيط الشاشات</string>
     <string name="setting_melonds_threaded_renderer">معالجة متعددة المهام</string>
     <string name="setting_melonds_jit_enable">إعادة تجميع ديناميكية</string>
+    <string name="setting_wswan_rotate_display">الاتجاه</string>
+    <string name="setting_wswan_mono_palette">تلوين</string>
+    <string name="setting_handy_rot">الاتجاه</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">معطل</string>
     <string name="value_gambatte_mix_frames_mix">بسيطة</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">LCD Ghost (دقيقة)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD Ghost (سريع)</string>
+    <string name="value_gambatte_gbc_color_correction_always">تمكين</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">تعطيل</string>
     <string name="value_mgba_interframe_blending_off">معطل</string>
     <string name="value_mgba_interframe_blending_mix">بسيطة</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">LCD Ghost (دقيقة)</string>
@@ -59,6 +67,7 @@
     <string name="value_mgba_frameskip_disabled">معطل</string>
     <string name="value_mgba_frameskip_auto">تلقائي</string>
     <string name="value_mgba_color_correction_off">معطل</string>
+    <string name="value_mgba_color_correction_gba">ممكن</string>
     <string name="value_stella_filter_disabled">معطل</string>
     <string name="value_stella_filter_composite">مركبة</string>
     <string name="value_stella_filter_svideo">فيديو S-</string>
@@ -85,4 +94,8 @@
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">المترجم</string>
+    <string name="value_wswan_rotate_display_landscape">أفقي</string>
+    <string name="value_wswan_rotate_display_portrait">عمودي</string>
+    <string name="value_handy_rot_none">الأفقي</string>
+    <string name="value_handy_rot_90">عمودي</string>
 </resources>
