@@ -14,9 +14,10 @@ buildscript {
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
-    id("com.github.ben-manes.versions") version "0.20.0"
+    id("com.github.ben-manes.versions") version "0.39.0"
     id("org.jmailen.kotlinter") version "3.0.2"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.4.0"
+    id("name.remal.check-dependency-updates") version "1.5.0"
     checkstyle
 }
 

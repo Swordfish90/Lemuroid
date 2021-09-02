@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -49,8 +49,7 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
         setContentView(R.layout.activity_tv_main)
 
         val factory = MainTVViewModel.Factory(applicationContext)
-        mainViewModel = ViewModelProviders.of(this, factory)
-            .get(MainTVViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, factory).get(MainTVViewModel::class.java)
 
         mainViewModel?.inProgress?.observe(this) {
             findViewById<View>(R.id.tv_loading).setVisibleOrGone(it)

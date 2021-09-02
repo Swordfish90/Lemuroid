@@ -8,7 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -83,7 +83,7 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory(applicationContext))
+        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(applicationContext))
             .get(MainViewModel::class.java)
 
         mainViewModel?.displayProgress?.observe(this) { isRunning ->

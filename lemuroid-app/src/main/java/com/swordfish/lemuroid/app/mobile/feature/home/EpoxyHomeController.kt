@@ -70,7 +70,7 @@ class EpoxyHomeController(
                 EpoxyGameView_()
                     .id(item.id)
                     .game(item)
-                    .gameInteractor(gameInteractor)
+                    .gameInteractor(this@EpoxyHomeController.gameInteractor)
             }
         }
     }
@@ -81,8 +81,8 @@ class EpoxyHomeController(
                 .title(R.string.home_empty_title)
                 .message(R.string.home_empty_message)
                 .action(R.string.home_empty_action)
-                .actionEnabled(!libraryIndexingInProgress)
-                .onClick { settingsInteractor.changeLocalStorageFolder() }
+                .actionEnabled(!this@EpoxyHomeController.libraryIndexingInProgress)
+                .onClick { this@EpoxyHomeController.settingsInteractor.changeLocalStorageFolder() }
         }
     }
 
