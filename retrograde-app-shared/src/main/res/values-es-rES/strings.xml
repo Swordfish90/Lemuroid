@@ -59,7 +59,6 @@
     <string name="value_mgba_frameskip_disabled">Desactivado</string>
     <string name="value_mgba_frameskip_auto">Automático</string>
     <string name="value_mgba_color_correction_off">Desactivado</string>
-    <string name="value_mgba_color_correction_gba">GBA</string>
     <string name="value_stella_filter_disabled">Desactivado</string>
     <string name="value_stella_filter_composite">Compuesto</string>
     <string name="value_stella_filter_svideo">S-Vídeo</string>

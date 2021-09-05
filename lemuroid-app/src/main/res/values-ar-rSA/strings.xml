@@ -19,7 +19,7 @@
     <string name="show_all">عرض الكل</string>
     <string name="settings_category_general">عام</string>
     <string name="settings_category_input">إدخال</string>
-    <string name="settings_category_advanced">متقدمة</string>
+    <string name="settings_category_misc">متفرقات</string>
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
     <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميل</string>
@@ -39,6 +39,10 @@
     <string name="settings_bios_category_not_detected">مدعومة</string>
     <string name="settings_title_reset_settings">إعادة تعيين جميع الإعدادات</string>
     <string name="settings_description_reset_settings">إعادة تعيين Lemuroid إلى إعدادات المصنع</string>
+    <string name="settings_title_advanced_settings">إعدادات متقدمة</string>
+    <string name="settings_description_advanced_settings">عرض الإعدادات المتقدمة</string>
+    <string name="settings_title_low_latency_audio">تفضيل صوت مباشر</string>
+    <string name="settings_description_low_latency_audio">تقليل تأخير الصوت على الأجهزة المدعومة. قد يؤدي ذلك إلى زيادة اخطاء في الصوت.</string>
     <string name="reset_settings_warning_message_title">هل أنت متأكد؟</string>
     <string name="reset_settings_warning_message_description">سيؤدي هذا إلى إعادة ضبط المحاكي إلى إعدادات المصنع. سيتم حفظ حالات التقدم.</string>
     <string name="settings_title_save_sync">الحفظ السحابي</string>
@@ -138,5 +142,10 @@
         <item>سلاسة</item>
         <item>تلفاز قديم</item>
         <item>شاشة كريستالية</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>لا شيء</item>
+        <item>اضغط</item>
+        <item>اضغط &amp; الإصدار</item>
     </string-array>
 </resources>

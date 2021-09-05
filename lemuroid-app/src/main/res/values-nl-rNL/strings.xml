@@ -19,7 +19,6 @@
     <string name="show_all">Laat alle zien</string>
     <string name="settings_category_general">Algemene instellingen</string>
     <string name="settings_category_input">Besturing</string>
-    <string name="settings_category_advanced">Geadvanceerde</string>
     <string name="settings_title_enable_autosave">Automatisch state opslaan</string>
     <string name="settings_title_enable_touch_feedback">Trillen bij aanraking</string>
     <string name="settings_title_tilt_sensitivity">Kantel sensitiviteit</string>

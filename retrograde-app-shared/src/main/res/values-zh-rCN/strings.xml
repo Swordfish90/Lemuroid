@@ -59,7 +59,6 @@
     <string name="value_mgba_frameskip_disabled">停用</string>
     <string name="value_mgba_frameskip_auto">自动</string>
     <string name="value_mgba_color_correction_off">停用</string>
-    <string name="value_mgba_color_correction_gba">GBA</string>
     <string name="value_stella_filter_disabled">停用</string>
     <string name="value_stella_filter_composite">混合</string>
     <string name="value_stella_filter_svideo">S 视频</string>

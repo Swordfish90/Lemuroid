@@ -19,7 +19,7 @@
     <string name="show_all">Mostra Tutto</string>
     <string name="settings_category_general">Generale</string>
     <string name="settings_category_input">Input</string>
-    <string name="settings_category_advanced">Avanzate</string>
+    <string name="settings_category_misc">Altro</string>
     <string name="settings_title_enable_autosave">Salvataggio automatico stato</string>
     <string name="settings_title_enable_touch_feedback">Vibra al tocco</string>
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
@@ -39,6 +39,10 @@
     <string name="settings_bios_category_not_detected">Supportato</string>
     <string name="settings_title_reset_settings">Ripristino impostazioni di fabbrica</string>
     <string name="settings_description_reset_settings">Reimposta Lemuroid alle sue impostazioni di fabbrica</string>
+    <string name="settings_title_advanced_settings">Impostazioni avanzate</string>
+    <string name="settings_description_advanced_settings">Mostra impostazioni avanzate</string>
+    <string name="settings_title_low_latency_audio">Preferisci audio a bassa latenza</string>
+    <string name="settings_description_low_latency_audio">Riduce la latenza audio sui dispositivi supportati. Potrebbe causare piccoli glitch sonori.</string>
     <string name="reset_settings_warning_message_title">Sei sicuro?</string>
     <string name="reset_settings_warning_message_description">Questo ripristinerà Lemuroid alle sue impostazioni di fabbrica. Salvataggi e Stati saranno preservati.</string>
     <string name="settings_title_save_sync">Salvataggi Cloud</string>
@@ -139,5 +143,10 @@
         <item>Lineare</item>
         <item>CRT</item>
         <item>LCD</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>Nessuno</item>
+        <item>Pressione</item>
+        <item>Pressione &amp; rilascio</item>
     </string-array>
 </resources>

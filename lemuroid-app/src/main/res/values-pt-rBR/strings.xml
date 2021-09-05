@@ -19,8 +19,8 @@
     <string name="show_all">Mostrar todos</string>
     <string name="settings_category_general">Geral</string>
     <string name="settings_category_input">Entrada</string>
-    <string name="settings_category_advanced">Avançado</string>
-    <string name="settings_title_enable_autosave">Autosave state</string>
+    <string name="settings_category_misc">Outras configurações</string>
+    <string name="settings_title_enable_autosave">Auto-Salvar Estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar no toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
     <string name="settings_gamepad_settings">Configurações do Gamepad</string>
@@ -39,6 +39,10 @@
     <string name="settings_bios_category_not_detected">Suportado</string>
     <string name="settings_title_reset_settings">Redefinição de fábrica</string>
     <string name="settings_description_reset_settings">Redefinir Lemuroid para suas configurações de fábrica</string>
+    <string name="settings_title_advanced_settings">Configurações avançadas</string>
+    <string name="settings_description_advanced_settings">Exibir configurações avançadas</string>
+    <string name="settings_title_low_latency_audio">Preferir áudio com baixa latência</string>
+    <string name="settings_description_low_latency_audio">Reduzir a latência do áudio nos dispositivos suportados. Pode aumentar as falhas no áudio.</string>
     <string name="reset_settings_warning_message_title">Você tem certeza?</string>
     <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Salvas e Estados serão preservados.</string>
     <string name="settings_title_save_sync">Salva na nuvem</string>
@@ -102,7 +106,7 @@
     </string>
     <string name="game_loader_error_missing_bios">Parece que você está faltando o BIOS necessário, coloque-o no diretório das suas ROMs e tente novamente. Arquivos necessários: %1$s</string>
     <string name="game_shortcut_error">Algo ruim aconteceu durante o carregamento do seu jogo. Por favor, certifique-se de que este jogo ainda existe na sua biblioteca.</string>
-    <string name="dialog_saf_not_found">Este dispositivo não suporta o selecionador de arquivo StorageAccessFramework. Por favor copie manualmente arquivos da ROM descomprimida para %1$s e aperte o Rescan.</string>
+    <string name="dialog_saf_not_found">Este dispositivo não suporta o selecionador de arquivo StorageAccessFramework. Por favor copie manualmente arquivos da ROM descomprimida para %1$s e aperte o reescanear.</string>
     <string name="system_grid_details">%1$s Jogos</string>
     <string name="tv_folder_picker_title">Selecionar diretório das ROMs</string>
     <string name="tv_folder_picker_action_choose">Selecionar</string>
@@ -139,5 +143,10 @@
         <item>Suave</item>
         <item>CRT</item>
         <item>LCD</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>Nenhum</item>
+        <item>Pressione</item>
+        <item>Pressione &amp; solte</item>
     </string-array>
 </resources>

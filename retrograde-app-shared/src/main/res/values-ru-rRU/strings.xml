@@ -58,7 +58,6 @@
     <string name="value_mgba_frameskip_disabled">Отключено</string>
     <string name="value_mgba_frameskip_auto">Автоматически</string>
     <string name="value_mgba_color_correction_off">Отключено</string>
-    <string name="value_mgba_color_correction_gba">GBA</string>
     <string name="value_stella_filter_disabled">Отключено</string>
     <string name="value_stella_filter_composite">Композит</string>
     <string name="value_stella_filter_svideo">S-Video</string>

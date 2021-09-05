@@ -18,7 +18,6 @@
     <string name="settings">Cài đặt</string>
     <string name="show_all">Hiện tất cả</string>
     <string name="settings_category_general">Cài đặt chung</string>
-    <string name="settings_category_advanced">Nâng cao</string>
     <string name="settings_title_enable_autosave">Tự động lưu trạng thái</string>
     <string name="settings_title_enable_touch_feedback">Rung khi chạm</string>
     <string name="settings_gamepad_button_name">Nút %1$s</string>

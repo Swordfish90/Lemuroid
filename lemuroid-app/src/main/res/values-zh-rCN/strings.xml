@@ -19,7 +19,6 @@
     <string name="show_all">全部显示</string>
     <string name="settings_category_general">常规</string>
     <string name="settings_category_input">输入</string>
-    <string name="settings_category_advanced">高级</string>
     <string name="settings_title_enable_autosave">自动保存</string>
     <string name="settings_title_enable_touch_feedback">触摸振动</string>
     <string name="settings_title_tilt_sensitivity">倾斜灵敏度</string>
