@@ -8,6 +8,8 @@
     <string name="controller_default">Predefinito</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standard</string>
+    <string name="controller_landscape">Orizzontale</string>
+    <string name="controller_portrait">Verticale</string>
     <string name="controller_dos_auto">Automatico</string>
     <string name="controller_dos_mouse_left">Mouse con Analogico sinistro</string>
     <string name="controller_dos_mouse_right">Mouse con Analogico destro</string>
@@ -25,6 +27,7 @@
     <string name="setting_gambatte_gb_internal_palette">Palette interna</string>
     <string name="setting_gambatte_mix_frames">Ghosting LCD</string>
     <string name="setting_gambatte_dark_filter_level">Scurisci schermo</string>
+    <string name="setting_gambatte_gbc_color_correction">Correzione colore</string>
     <string name="setting_mgba_solar_sensor_level">Livello sensore solare</string>
     <string name="setting_mgba_interframe_blending">Ghosting LCD</string>
     <string name="setting_mgba_frameskip">Frameskip</string>
@@ -47,11 +50,16 @@
     <string name="setting_melonds_screen_layout">Disposizione schermi</string>
     <string name="setting_melonds_threaded_renderer">Rendering parallelo</string>
     <string name="setting_melonds_jit_enable">Ricompilatore dinamico</string>
+    <string name="setting_wswan_rotate_display">Orientamento</string>
+    <string name="setting_wswan_mono_palette">Colorazione</string>
+    <string name="setting_handy_rot">Orientamento</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Disabilitato</string>
     <string name="value_gambatte_mix_frames_mix">Semplice</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">Ghosting LCD (accurato)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">Ghosting LCD (veloce)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Abilitato</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Disabilitato</string>
     <string name="value_mgba_interframe_blending_off">Disabilitato</string>
     <string name="value_mgba_interframe_blending_mix">Semplice</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">Ghosting LCD (Accurato)</string>
@@ -59,6 +67,7 @@
     <string name="value_mgba_frameskip_disabled">Disabilitato</string>
     <string name="value_mgba_frameskip_auto">Automatico</string>
     <string name="value_mgba_color_correction_off">Disabilitato</string>
+    <string name="value_mgba_color_correction_gba">Abilitato</string>
     <string name="value_stella_filter_disabled">Disabilitato</string>
     <string name="value_stella_filter_composite">Composito</string>
     <string name="value_stella_filter_svideo">S-Video</string>
@@ -85,4 +94,8 @@
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interprete</string>
+    <string name="value_wswan_rotate_display_landscape">Orizzontale</string>
+    <string name="value_wswan_rotate_display_portrait">Verticale</string>
+    <string name="value_handy_rot_none">Orizzontale</string>
+    <string name="value_handy_rot_90">Verticale</string>
 </resources>
