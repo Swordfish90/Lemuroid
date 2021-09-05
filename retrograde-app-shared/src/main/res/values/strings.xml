@@ -11,6 +11,8 @@
     <string name="controller_default">Default</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standard</string>
+    <string name="controller_landscape">Landscape</string>
+    <string name="controller_portrait">Portrait</string>
 
     <string name="controller_dos_auto">Auto</string>
     <string name="controller_dos_mouse_left">Mouse with Left Stick</string>
@@ -30,6 +32,7 @@
     <string name="setting_gambatte_gb_internal_palette">Internal palette</string>
     <string name="setting_gambatte_mix_frames">LCD ghosting</string>
     <string name="setting_gambatte_dark_filter_level">Darken screen</string>
+    <string name="setting_gambatte_gbc_color_correction">Color correction</string>
     <string name="setting_mgba_solar_sensor_level">Solar sensor level</string>
     <string name="setting_mgba_interframe_blending">LCD ghosting</string>
     <string name="setting_mgba_frameskip">Frameskip</string>
@@ -52,12 +55,17 @@
     <string name="setting_melonds_screen_layout">Screens layout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamic recompiler</string>
+    <string name="setting_wswan_rotate_display">Orientation</string>
+    <string name="setting_wswan_mono_palette">Colorization</string>
+    <string name="setting_handy_rot">Orientation</string>
 
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Disabled</string>
     <string name="value_gambatte_mix_frames_mix">Simple</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">LCD Ghosting (Accurate)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD Ghosting (Fast)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Enabled</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Disabled</string>
 
     <string name="value_mgba_interframe_blending_off">Disabled</string>
     <string name="value_mgba_interframe_blending_mix">Simple</string>
@@ -68,7 +76,7 @@
     <string name="value_mgba_frameskip_auto">Auto</string>
 
     <string name="value_mgba_color_correction_off">Disabled</string>
-    <string name="value_mgba_color_correction_gba">GBA</string>
+    <string name="value_mgba_color_correction_gba">Enabled</string>
 
     <string name="value_stella_filter_disabled">Disabled</string>
     <string name="value_stella_filter_composite">Composite</string>
@@ -102,5 +110,11 @@
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpreter</string>
+
+    <string name="value_wswan_rotate_display_landscape">Landscape</string>
+    <string name="value_wswan_rotate_display_portrait">Portrait</string>
+
+    <string name="value_handy_rot_none">Landscape</string>
+    <string name="value_handy_rot_90">Portrait</string>
 
 </resources>

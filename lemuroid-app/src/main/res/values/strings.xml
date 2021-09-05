@@ -19,7 +19,7 @@
 
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Input</string>
-    <string name="settings_category_advanced">Advanced</string>
+    <string name="settings_category_misc">Miscellaneous</string>
     <string name="settings_title_enable_autosave">Autosave state</string>
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
@@ -44,6 +44,11 @@
 
     <string name="settings_title_reset_settings">Factory reset</string>
     <string name="settings_description_reset_settings">Reset Lemuroid to its factory settings</string>
+
+    <string name="settings_title_advanced_settings">Advanced settings</string>
+    <string name="settings_description_advanced_settings">Display advanced settings</string>
+    <string name="settings_title_low_latency_audio">Prefer low-latency audio</string>
+    <string name="settings_description_low_latency_audio">Reduce audio latency on supported devices. Might increase audio glitches.</string>
 
     <string name="reset_settings_warning_message_title">Are you sure?</string>
     <string name="reset_settings_warning_message_description">This will reset Lemuroid to its factory settings. Saves and States will be preserved.</string>
@@ -175,6 +180,12 @@
         <item>Smooth</item>
         <item>CRT</item>
         <item>LCD</item>
+    </string-array>
+
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>None</item>
+        <item>Press</item>
+        <item>Press &amp; release</item>
     </string-array>
 
 </resources>

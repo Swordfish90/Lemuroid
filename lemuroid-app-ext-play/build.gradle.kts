@@ -29,7 +29,6 @@ dependencies {
     implementation(deps.libs.autodispose.android.core)
     implementation(deps.libs.autodispose.android.archComponents)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
-    implementation(deps.libs.androidx.lifecycle.extensions)
     kapt(deps.libs.androidx.lifecycle.processor)
 
     implementation(deps.libs.androidx.leanback.leanback)

@@ -1,6 +1,5 @@
 package com.swordfish.lemuroid.app.shared.game
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -19,16 +18,17 @@ import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -111,20 +111,20 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode != Activity.RESULT_OK) return
-
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-                val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
-                postGameHandler.handleAfterGame(this, false, game, duration!!)
-                    .doOnTerminate { finish() }
-                    .subscribeBy { }
+                val isLeanback = data?.extras?.getBoolean(BaseGameActivity.PLAY_GAME_RESULT_LEANBACK) == true
 
-                val leanback = data?.extras?.getBoolean(BaseGameActivity.PLAY_GAME_RESULT_LEANBACK)
-                if (leanback == true) {
-                    ChannelUpdateWork.enqueue(applicationContext)
+                val updateChannelCallback = if (isLeanback) {
+                    Completable.fromCallable { ChannelUpdateWork.enqueue(applicationContext) }
+                } else {
+                    Completable.complete()
                 }
+
+                postGameHandler.handle(false, this, resultCode, data)
+                    .andThen { updateChannelCallback }
+                    .doAfterTerminate { finish() }
+                    .subscribeBy(Timber::e) { }
             }
         }
     }

@@ -19,6 +19,7 @@ import com.gojuno.koptional.Optional
 import com.gojuno.koptional.rxjava2.filterSome
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
+import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
@@ -26,7 +27,6 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
-import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.GamePadManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
@@ -111,6 +111,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var controllerConfigsManager: ControllerConfigsManager
 
+    private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
+
     private val startGameTime = System.currentTimeMillis()
 
     private val keyEventsSubjects: PublishRelay<KeyEvent> = PublishRelay.create()
@@ -132,7 +134,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        setupCrashActivity()
+        setUpExceptionsHandler()
 
         mainContainerLayout = findViewById(R.id.maincontainer)
         gameContainerLayout = findViewById(R.id.gamecontainer)
@@ -164,9 +166,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
     }
 
-    private fun setupCrashActivity() {
-        val systemHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(GameCrashHandler(this, systemHandler))
+    private fun setUpExceptionsHandler() {
+        Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
+            performUnsuccessfulActivityFinish(exception)
+            defaultExceptionHandler?.uncaughtException(thread, exception)
+        }
     }
 
     fun getControllerType(): Observable<Map<Int, ControllerConfig>> {
@@ -203,7 +207,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun initializeRetroGameView(
         gameData: GameLoader.GameData,
-        screenFilter: String
+        screenFilter: String,
+        lowLatencyAudio: Boolean,
     ): GLRetroView {
         val data = GLRetroViewData(this).apply {
             coreFilePath = gameData.coreLibrary
@@ -213,6 +218,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
             saveRAMState = gameData.saveRAMData
             shader = getShaderForSystem(screenFilter, system)
+            preferLowLatencyAudio = lowLatencyAudio
         }
 
         val retroGameView = GLRetroView(this, data)
@@ -233,7 +239,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             restoreAutoSaveAsync(it)
         }
 
+        if (BuildConfig.DEBUG) {
+            printRetroVariables(retroGameView)
+        }
+
         return retroGameView
+    }
+
+    private fun printRetroVariables(retroGameView: GLRetroView) {
+        retroGameView.getVariables().forEach {
+            Timber.i("Libretro variable: $it")
+        }
     }
 
     private fun updateControllers(controllers: Map<Int, ControllerConfig>) {
@@ -336,6 +352,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.DOS -> GLRetroView.SHADER_CRT
                 SystemID.NGP -> GLRetroView.SHADER_LCD
                 SystemID.NGC -> GLRetroView.SHADER_LCD
+                SystemID.WS -> GLRetroView.SHADER_LCD
+                SystemID.WSC -> GLRetroView.SHADER_LCD
             }
         }
     }
@@ -663,10 +681,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val autoSaveCompletable = getAutoSaveCompletable(game)
 
         return saveRAMCompletable.andThen(autoSaveCompletable)
-            .doOnComplete { performActivityFinish() }
+            .doOnComplete { performSuccessfulActivityFinish() }
     }
 
-    private fun performActivityFinish() {
+    private fun performSuccessfulActivityFinish() {
         val resultIntent = Intent().apply {
             putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
             putExtra(PLAY_GAME_RESULT_GAME, intent.getSerializableExtra(EXTRA_GAME))
@@ -678,6 +696,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         setResult(Activity.RESULT_OK, resultIntent)
 
         finishAndExitProcess()
+    }
+
+    private fun performUnsuccessfulActivityFinish(exception: Throwable) {
+        Timber.e(exception, "Handling java exception in BaseGameActivity")
+        val resultIntent = Intent().apply {
+            putExtra(PLAY_GAME_RESULT_ERROR, exception.message)
+        }
+
+        setResult(Activity.RESULT_CANCELED, resultIntent)
+        finish()
     }
 
     private fun finishAndExitProcess() {
@@ -846,23 +874,23 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         setupLoadingView()
 
-        Singles.zip(settingsManager.autoSave, settingsManager.screenFilter, ::Pair)
-            .flatMapObservable { (autoSaveEnabled, filter) ->
+        Singles.zip(settingsManager.autoSave, settingsManager.screenFilter, settingsManager.lowLatencyAudio, ::Triple)
+            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio) ->
                 gameLoader.load(
                     applicationContext,
                     game,
                     requestLoadSave && autoSaveEnabled,
                     systemCoreConfig
-                ).map { filter to it }
+                ).map { Triple(it, filter, lowLatencyAudio) }
             }
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe(
-                { (filter, loadingState) ->
+                { (loadingState, filter, lowLatencyAudio) ->
                     displayLoadingState(loadingState)
                     if (loadingState is GameLoader.LoadingState.Ready) {
-                        retroGameView = initializeRetroGameView(loadingState.gameData, filter)
+                        retroGameView = initializeRetroGameView(loadingState.gameData, filter, lowLatencyAudio)
                     }
                 },
                 {
@@ -904,6 +932,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         const val PLAY_GAME_RESULT_SESSION_DURATION = "PLAY_GAME_RESULT_SESSION_DURATION"
         const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
         const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
+        const val PLAY_GAME_RESULT_ERROR = "PLAY_GAME_RESULT_ERROR"
 
         fun launchGame(
             activity: Activity,

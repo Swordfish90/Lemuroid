@@ -39,6 +39,7 @@ dependencies {
     implementation(deps.libs.rxKotlin2)
     implementation(deps.libs.rxRelay2)
     implementation(deps.libs.kotlin.serialization)
+    implementation(deps.libs.kotlin.serializationJson)
     implementation(deps.libs.harmony)
     implementation(deps.libs.multitouchGestures)
     implementation(deps.libs.material)

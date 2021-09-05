@@ -2,7 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.systems
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.DynamicGridLayoutManager
@@ -29,7 +29,7 @@ class MetaSystemsFragment : RecyclerViewFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        metaSystemsViewModel = ViewModelProviders.of(this, MetaSystemsViewModel.Factory(retrogradeDb))
+        metaSystemsViewModel = ViewModelProvider(this, MetaSystemsViewModel.Factory(retrogradeDb))
             .get(MetaSystemsViewModel::class.java)
 
         metaSystemsAdapter = MetaSystemsAdapter { navigateToGames(it) }

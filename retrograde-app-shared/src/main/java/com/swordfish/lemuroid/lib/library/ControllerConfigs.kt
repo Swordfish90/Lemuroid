@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.lib.library
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.controller.TouchControllerID
+import com.swordfish.lemuroid.lib.core.CoreVariable
 
 object ControllerConfigs {
 
@@ -194,5 +195,19 @@ object ControllerConfigs {
         TouchControllerID.DOS,
         allowTouchRotation = true,
         libretroId = 769
+    )
+
+    val WS_LANDSCAPE = ControllerConfig(
+        "landscape",
+        R.string.controller_landscape,
+        TouchControllerID.WS_LANDSCAPE,
+        mergeDPADAndLeftStickEvents = true,
+    )
+
+    val WS_PORTRAIT = ControllerConfig(
+        "portrait",
+        R.string.controller_portrait,
+        TouchControllerID.WS_PORTRAIT,
+        mergeDPADAndLeftStickEvents = true,
     )
 }

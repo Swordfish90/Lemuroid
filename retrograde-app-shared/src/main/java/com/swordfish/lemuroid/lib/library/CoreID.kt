@@ -97,6 +97,11 @@ enum class CoreID(
         "Mednafen NGP",
         "libmednafen_ngp_libretro_android.so"
     ),
+    MEDNAFEN_WSWAN(
+        "mednafen_wswan",
+        "Beetle Cygne",
+        "libmednafen_wswan_libretro_android.so"
+    ),
     DOSBOX_PURE(
         "dosbox_pure",
         "DosBox Pure",

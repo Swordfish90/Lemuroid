@@ -16,7 +16,7 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.lifecycle.LiveDataReactiveStreams
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -88,7 +88,7 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
-        val homeViewModel = ViewModelProviders.of(this, factory).get(TVHomeViewModel::class.java)
+        val homeViewModel = ViewModelProvider(this, factory).get(TVHomeViewModel::class.java)
 
         val indexingProgress: Observable<Boolean> = LiveDataReactiveStreams.toPublisher(
             this,

@@ -97,6 +97,11 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
         R.drawable.game_system_ngp,
         listOf(SystemID.NGP, SystemID.NGC)
     ),
+    WS(
+        R.string.game_system_title_ws,
+        R.drawable.game_system_ws,
+        listOf(SystemID.WS, SystemID.WSC)
+    ),
     DOS(
         R.string.game_system_title_dos,
         R.drawable.game_system_dos,
@@ -128,6 +133,8 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
                 SystemID.DOS -> DOS
                 SystemID.NGP -> NGP
                 SystemID.NGC -> NGP
+                SystemID.WS -> WS
+                SystemID.WSC -> WS
             }
         }
     }

@@ -22,7 +22,9 @@ class RxSettingsManager(
 
     val autoSave = booleanPreference(R.string.pref_key_autosave, true)
 
-    val vibrateOnTouch = booleanPreference(R.string.pref_key_vibrate_on_touch, true)
+    val hapticFeedbackMode = stringPreference(R.string.pref_key_haptic_feedback_mode, "press")
+
+    val lowLatencyAudio = booleanPreference(R.string.pref_key_low_latency_audio, false)
 
     val screenFilter = stringPreference(
         R.string.pref_key_shader_filter,

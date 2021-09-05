@@ -8,8 +8,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 150
-        versionName = "1.11.3"
+        versionCode = 152
+        versionName = "1.12.0-beta1"
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -26,6 +26,7 @@ android {
             ":lemuroid_core_mame2003_plus",
             ":lemuroid_core_mednafen_ngp",
             ":lemuroid_core_mednafen_pce_fast",
+            ":lemuroid_core_mednafen_wswan",
             ":lemuroid_core_melonds",
             ":lemuroid_core_mgba",
             ":lemuroid_core_mupen64plus_next_gles3",
@@ -132,7 +133,6 @@ dependencies {
     implementation(deps.libs.arch.work.runtimeKtx)
     implementation(deps.libs.arch.work.rxjava2)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
-    implementation(deps.libs.androidx.lifecycle.extensions)
     implementation(deps.libs.androidx.lifecycle.reactiveStreams)
     implementation(deps.libs.epoxy.expoxy)
     implementation(deps.libs.epoxy.paging)

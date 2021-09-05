@@ -58,6 +58,11 @@
         android:label="@string/settings_title_display_bios_info" />
 
     <fragment
+        android:id="@+id/navigation_settings_advanced"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.AdvancedSettingsFragment"
+        android:label="@string/settings_title_advanced_settings" />
+
+    <fragment
         android:id="@+id/navigation_settings_save_sync"
         android:name="com.swordfish.lemuroid.app.mobile.feature.settings.SaveSyncFragment"
         android:label="@string/settings_title_save_sync" />
