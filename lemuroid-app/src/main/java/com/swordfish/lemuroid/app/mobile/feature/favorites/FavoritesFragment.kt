@@ -2,7 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.favorites
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.cachedIn
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.DynamicGridLayoutManager
@@ -24,11 +24,11 @@ class FavoritesFragment : RecyclerViewFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favoritesViewModel = ViewModelProviders.of(this, FavoritesViewModel.Factory(retrogradeDb))
+        favoritesViewModel = ViewModelProvider(this, FavoritesViewModel.Factory(retrogradeDb))
             .get(FavoritesViewModel::class.java)
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor)
-        favoritesViewModel.favorites.cachedIn(lifecycle).observe(this) {
+        favoritesViewModel.favorites.cachedIn(lifecycle).observe(viewLifecycleOwner) {
             gamesAdapter.submitData(lifecycle, it)
         }
 

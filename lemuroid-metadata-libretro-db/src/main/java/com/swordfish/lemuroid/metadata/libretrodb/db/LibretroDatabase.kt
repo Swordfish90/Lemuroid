@@ -7,7 +7,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
 
 @Database(
     entities = [LibretroRom::class],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 abstract class LibretroDatabase : RoomDatabase() {

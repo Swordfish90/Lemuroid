@@ -14,7 +14,6 @@ dependencies {
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
-    implementation(deps.libs.androidx.lifecycle.extensions)
     implementation(deps.libs.material)
     implementation(deps.libs.androidx.preferences.preferencesKtx)
 

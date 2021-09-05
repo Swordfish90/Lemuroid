@@ -6,7 +6,7 @@ import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.paging.PagingDataAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.VerticalGridPresenter
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.cachedIn
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -29,7 +29,7 @@ class TVFavoritesFragment : VerticalGridSupportFragment() {
         setGridPresenter(gridPresenter)
 
         val factory = TVFavoritesViewModel.Factory(retrogradeDb)
-        val gamesViewModel = ViewModelProviders.of(this, factory).get(TVFavoritesViewModel::class.java)
+        val gamesViewModel = ViewModelProvider(this, factory).get(TVFavoritesViewModel::class.java)
 
         val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
         val pagingAdapter = PagingDataAdapter(GamePresenter(cardSize, gameInteractor), Game.DIFF_CALLBACK)

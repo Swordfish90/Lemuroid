@@ -9,7 +9,7 @@ import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.cachedIn
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
@@ -51,7 +51,7 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         rowsAdapter = createAdapter()
 
         val factory = TVSearchViewModel.Factory(retrogradeDb)
-        searchViewModel = ViewModelProviders.of(this, factory).get(TVSearchViewModel::class.java)
+        searchViewModel = ViewModelProvider(this, factory).get(TVSearchViewModel::class.java)
 
         searchViewModel.searchResults.cachedIn(lifecycle).observe(this) {
             val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagingDataAdapter<Game>

@@ -7,7 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
@@ -48,7 +48,7 @@ class SearchFragment : RecyclerViewFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel = ViewModelProviders.of(this, SearchViewModel.Factory(retrogradeDb))
+        searchViewModel = ViewModelProvider(this, SearchViewModel.Factory(retrogradeDb))
             .get(SearchViewModel::class.java)
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)

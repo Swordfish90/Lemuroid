@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.documentfile.provider.DocumentFile
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -51,12 +51,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        val settingsViewModel = ViewModelProviders.of(
+        val settingsViewModel = ViewModelProvider(
             this,
             SettingsViewModel.Factory(
-                context!!,
+                requireContext(),
                 RxSharedPreferences.create(
-                    SharedPreferencesHelper.getLegacySharedPreferences(context!!)
+                    SharedPreferencesHelper.getLegacySharedPreferences(requireContext())
                 )
             )
         ).get(SettingsViewModel::class.java)
