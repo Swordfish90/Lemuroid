@@ -30,6 +30,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.GroupedStorageFiles
+import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
@@ -38,7 +39,6 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
-import java.io.File
 import dagger.Lazy
 
 class LemuroidLibrary(
@@ -259,13 +259,14 @@ class LemuroidLibrary(
         retrogradedb.gameDao().delete(games)
     }
 
-    fun prepareDataFile(game: Game, dataFile: DataFile): Completable =
-        Single.fromCallable { providerProviderRegistry.get() }
-            .flatMapCompletable { it.getProvider(game).prepareDataFile(game, dataFile) }
-
-    fun getGameRom(game: Game): Single<File> =
-        Single.fromCallable { providerProviderRegistry.get() }
-            .flatMap { it.getProvider(game).getGameRom(game) }
+    fun getGameFiles(
+        game: Game,
+        dataFiles: List<DataFile>,
+        allowVirtualFiles: Boolean
+    ): Single<RomFiles> {
+        return Single.fromCallable { providerProviderRegistry.get() }
+            .flatMap { it.getProvider(game).getGameRomFiles(game, dataFiles, allowVirtualFiles) }
+    }
 
     companion object {
         // We batch database updates to avoid unnecessary UI updates.

@@ -52,7 +52,7 @@ class SearchFragment : RecyclerViewFragment() {
             .get(SearchViewModel::class.java)
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
-        searchViewModel.searchResults.cachedIn(lifecycle).observe(this) {
+        searchViewModel.searchResults.cachedIn(lifecycle).observe(viewLifecycleOwner) {
             gamesAdapter.submitData(lifecycle, it)
         }
 
@@ -94,11 +94,6 @@ class SearchFragment : RecyclerViewFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe(searchSubject)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activity?.invalidateOptionsMenu()
     }
 
     @dagger.Module

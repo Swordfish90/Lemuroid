@@ -24,10 +24,8 @@ import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.io.File
 import java.io.InputStream
 
 interface StorageProvider {
@@ -50,7 +48,9 @@ interface StorageProvider {
 
     fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile?
 
-    fun prepareDataFile(game: Game, dataFile: DataFile): Completable
-
-    fun getGameRom(game: Game): Single<File>
+    fun getGameRomFiles(
+        game: Game,
+        dataFiles: List<DataFile>,
+        allowVirtualFiles: Boolean
+    ): Single<RomFiles>
 }

@@ -32,9 +32,9 @@ import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
@@ -91,18 +91,21 @@ class LocalStorageProvider(
 
     // There is no need to handle anything. Data file have to be in the same directory for detection we expect them
     // to still be there.
-    override fun prepareDataFile(game: Game, dataFile: DataFile) = Completable.complete()
+    private fun getDataFile(dataFile: DataFile): File {
+        val dataFilePath = Uri.parse(dataFile.fileUri).path
+        return File(dataFilePath)
+    }
 
-    override fun getGameRom(game: Game): Single<File> = Single.fromCallable {
+    private fun getGameRom(game: Game): File {
         val gamePath = Uri.parse(game.fileUri).path
         val originalFile = File(gamePath)
         if (!originalFile.isZipped() || originalFile.name == game.fileName) {
-            return@fromCallable originalFile
+            return originalFile
         }
 
         val cacheFile = GameCacheUtils.getCacheFileForGame(LOCAL_STORAGE_CACHE_SUBFOLDER, context, game)
         if (cacheFile.exists()) {
-            return@fromCallable cacheFile
+            return cacheFile
         }
 
         if (originalFile.isZipped()) {
@@ -110,7 +113,15 @@ class LocalStorageProvider(
             stream.extractEntryToFile(game.fileName, cacheFile)
         }
 
-        cacheFile
+        return cacheFile
+    }
+
+    override fun getGameRomFiles(
+        game: Game,
+        dataFiles: List<DataFile>,
+        allowVirtualFiles: Boolean
+    ): Single<RomFiles> = Single.fromCallable {
+        RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
     }
 
     override fun getInputStream(uri: Uri): InputStream {

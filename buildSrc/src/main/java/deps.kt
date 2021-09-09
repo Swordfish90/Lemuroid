@@ -25,7 +25,7 @@ object deps {
         const val room            = "2.3.0"
         const val epoxy           = "4.6.3-vinay-compose"
         const val serialization   = "1.2.2"
-        const val libretrodroid   = "0.6.0-beta1"
+        const val libretrodroid   = "e94793e6"
         const val radialgamepad   = "0.5.0"
     }
 
