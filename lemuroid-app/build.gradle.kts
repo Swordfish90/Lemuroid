@@ -177,6 +177,9 @@ dependencies {
 
     implementation(deps.libs.libretrodroid)
 
+    // Uncomment this when using a local aar file.
+    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)
 }

@@ -702,7 +702,8 @@ data class GameSystem(
                         ),
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled"),
-                        )
+                        ),
+                        useLibretroVFS = true
                     )
                 ),
                 uniqueExtensions = listOf(),
