@@ -115,6 +115,7 @@ class TouchControllerCustomizer {
         editControlsWindow?.contentView?.setOnTouchListener { _, event ->
             touchDetector.onTouchEvent(event)
         }
+        editControlsWindow?.isFocusable = false
         editControlsWindow?.showAtLocation(view, Gravity.CENTER, 0, 0)
     }
 

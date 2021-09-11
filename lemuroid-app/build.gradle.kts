@@ -8,8 +8,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 152
-        versionName = "1.12.0-beta1"
+        versionCode = 153
+        versionName = "1.12.0-beta2"
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -176,6 +176,9 @@ dependencies {
     implementation(deps.libs.harmony)
 
     implementation(deps.libs.libretrodroid)
+
+    // Uncomment this when using a local aar file.
+    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)
