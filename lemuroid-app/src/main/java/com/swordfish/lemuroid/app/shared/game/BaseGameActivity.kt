@@ -221,7 +221,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
                 is RomFiles.Virtual -> {
                     gameVirtualFiles = gameFiles.files
-                        .map { VirtualFile(it.filePath, it.fd.detachFd()) }
+                        .map { VirtualFile(it.filePath, it.fd) }
                 }
             }
 
