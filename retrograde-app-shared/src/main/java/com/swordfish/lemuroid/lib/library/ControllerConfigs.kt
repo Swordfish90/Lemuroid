@@ -3,7 +3,6 @@ package com.swordfish.lemuroid.lib.library
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.controller.TouchControllerID
-import com.swordfish.lemuroid.lib.core.CoreVariable
 
 object ControllerConfigs {
 

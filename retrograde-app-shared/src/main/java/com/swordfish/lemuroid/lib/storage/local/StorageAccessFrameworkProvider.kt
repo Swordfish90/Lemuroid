@@ -172,7 +172,6 @@ class StorageAccessFrameworkProvider(
         return RomFiles.Standard(listOf(cacheFile))
     }
 
-
     private fun getGameRomFilesVirtual(game: Game, dataFiles: List<DataFile>): RomFiles {
         val gameEntry = getGameRomVirtual(game)
         val dataEntries = dataFiles.map { getDataFileVirtual(it) }

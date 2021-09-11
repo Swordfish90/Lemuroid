@@ -216,7 +216,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             coreFilePath = gameData.coreLibrary
 
             when (val gameFiles = gameData.gameFiles) {
-                is RomFiles.Standard ->{
+                is RomFiles.Standard -> {
                     gameFilePath = gameFiles.files.first().absolutePath
                 }
                 is RomFiles.Virtual -> {
