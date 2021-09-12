@@ -1,2 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">홈</string>
+    <string name="title_search">검색</string>
+    <string name="title_systems">시스템</string>
+    <string name="title_games">게임</string>
+    <string name="title_settings">설정</string>
+    <string name="recent">최근 실행</string>
+    <string name="favorites">즐겨찾기</string>
+    <string name="discover">발견하기</string>
+    <string name="rescan">다시 검색</string>
+    <string name="none">없음</string>
+    <string name="directory">디렉토리</string>
+    <string name="display_filter">디스플레이 필터</string>
+    <string name="roms">ROM</string>
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="settings">설정</string>
+    <string name="show_all">모두 표시</string>
+    <string name="settings_category_general">일반</string>
+    <string name="settings_category_input">입력</string>
+    <string name="settings_category_misc">기타</string>
+    <string name="settings_title_enable_autosave">상태 자동 저장</string>
+    <string name="settings_title_enable_touch_feedback">터치 시 진동</string>
+    <string name="settings_title_tilt_sensitivity">기울임 센서 감도</string>
+    <string name="settings_gamepad_settings">게임패드 설정</string>
+    <string name="settings_gamepad_button_name">버튼 %1$s</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_retropad_button_unassigned">할당 안 됨</string>
+    <string name="settings_gamepad_category_enabled">활성화된 게임패드</string>
+    <string name="settings_gamepad_category_general">일반</string>
+    <string name="settings_gamepad_title_game_menu">메뉴</string>
+</resources>
