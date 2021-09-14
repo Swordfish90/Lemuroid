@@ -19,6 +19,7 @@
     <string name="show_all">全部显示</string>
     <string name="settings_category_general">常规</string>
     <string name="settings_category_input">输入</string>
+    <string name="settings_category_misc">其他选项</string>
     <string name="settings_title_enable_autosave">自动保存</string>
     <string name="settings_title_enable_touch_feedback">触摸振动</string>
     <string name="settings_title_tilt_sensitivity">倾斜灵敏度</string>
@@ -38,6 +39,10 @@
     <string name="settings_bios_category_not_detected">已支持</string>
     <string name="settings_title_reset_settings">重置数据</string>
     <string name="settings_description_reset_settings">重置 Lemuroid 所有数据</string>
+    <string name="settings_title_advanced_settings">高级设置</string>
+    <string name="settings_description_advanced_settings">显示高级设置</string>
+    <string name="settings_title_low_latency_audio">偏好低延迟音频</string>
+    <string name="settings_description_low_latency_audio">在支持的设备上减少音频延迟。可能会增加音频闪烁。</string>
     <string name="reset_settings_warning_message_title">您确定吗？</string>
     <string name="reset_settings_warning_message_description">这将会重置 Lemuroid 所有数据。保存和状态将被保留。</string>
     <string name="settings_title_save_sync">云端保存</string>
@@ -138,5 +143,10 @@
         <item>顺滑</item>
         <item>CRT</item>
         <item>LCD</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>无</item>
+        <item>按下</item>
+        <item>按下并松开</item>
     </string-array>
 </resources>
