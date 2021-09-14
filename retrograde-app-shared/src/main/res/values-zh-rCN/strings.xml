@@ -8,6 +8,8 @@
     <string name="controller_default">默认</string>
     <string name="controller_dualshock">双摇杆</string>
     <string name="controller_standard">标准</string>
+    <string name="controller_landscape">横屏</string>
+    <string name="controller_portrait">竖屏</string>
     <string name="controller_dos_auto">自动</string>
     <string name="controller_dos_mouse_left">鼠标与左摇杆</string>
     <string name="controller_dos_mouse_right">鼠标与右摇杆</string>
@@ -25,6 +27,7 @@
     <string name="setting_gambatte_gb_internal_palette">内置调色板</string>
     <string name="setting_gambatte_mix_frames">LCD 重影</string>
     <string name="setting_gambatte_dark_filter_level">使屏幕变暗</string>
+    <string name="setting_gambatte_gbc_color_correction">色彩校正</string>
     <string name="setting_mgba_solar_sensor_level">光感传感器级别</string>
     <string name="setting_mgba_interframe_blending">LCD 重影</string>
     <string name="setting_mgba_frameskip">跳帧</string>
@@ -47,11 +50,16 @@
     <string name="setting_melonds_screen_layout">屏幕布局</string>
     <string name="setting_melonds_threaded_renderer">多线程渲染</string>
     <string name="setting_melonds_jit_enable">动态重新编译</string>
+    <string name="setting_wswan_rotate_display">屏幕方向</string>
+    <string name="setting_wswan_mono_palette">着色</string>
+    <string name="setting_handy_rot">屏幕方向</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">停用</string>
     <string name="value_gambatte_mix_frames_mix">简单</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">LCD 重影（精准）</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD 重影（快速）</string>
+    <string name="value_gambatte_gbc_color_correction_always">已启用</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">已停用</string>
     <string name="value_mgba_interframe_blending_off">停用</string>
     <string name="value_mgba_interframe_blending_mix">简单</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">LCD 重影（精准）</string>
@@ -59,6 +67,7 @@
     <string name="value_mgba_frameskip_disabled">停用</string>
     <string name="value_mgba_frameskip_auto">自动</string>
     <string name="value_mgba_color_correction_off">停用</string>
+    <string name="value_mgba_color_correction_gba">已启用</string>
     <string name="value_stella_filter_disabled">停用</string>
     <string name="value_stella_filter_composite">混合</string>
     <string name="value_stella_filter_svideo">S 视频</string>
@@ -85,4 +94,8 @@
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">解释器</string>
+    <string name="value_wswan_rotate_display_landscape">横屏</string>
+    <string name="value_wswan_rotate_display_portrait">竖屏</string>
+    <string name="value_handy_rot_none">横屏</string>
+    <string name="value_handy_rot_90">竖屏</string>
 </resources>
