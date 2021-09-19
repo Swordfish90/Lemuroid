@@ -8,6 +8,8 @@
     <string name="controller_default">Standard</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standard</string>
+    <string name="controller_landscape">Querformat</string>
+    <string name="controller_portrait">Hochformat</string>
     <string name="controller_dos_auto">Automatisch</string>
     <string name="controller_dos_mouse_left">Maus mit linkem Joystick</string>
     <string name="controller_dos_mouse_right">Maus mit rechtem Joystick</string>
@@ -25,6 +27,7 @@
     <string name="setting_gambatte_gb_internal_palette">Interne Palette</string>
     <string name="setting_gambatte_mix_frames">LCD Schlieren</string>
     <string name="setting_gambatte_dark_filter_level">Bildschirm abdunkeln</string>
+    <string name="setting_gambatte_gbc_color_correction">Farbkorrektur</string>
     <string name="setting_mgba_solar_sensor_level">Solarsensorpegel</string>
     <string name="setting_mgba_interframe_blending">LCD Schlieren</string>
     <string name="setting_mgba_frameskip">Frameskip</string>
@@ -47,11 +50,16 @@
     <string name="setting_melonds_screen_layout">Bildschirmlayout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamischer Neukompilierer</string>
+    <string name="setting_wswan_rotate_display">Bildschirmausrichtung</string>
+    <string name="setting_wswan_mono_palette">Färbung</string>
+    <string name="setting_handy_rot">Bildschirmausrichtung</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Deaktiviert</string>
     <string name="value_gambatte_mix_frames_mix">Einfach</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">LCD Schlieren (Genau)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD Schlieren (Schnell)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Aktiv</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Deaktiviert</string>
     <string name="value_mgba_interframe_blending_off">Deaktiviert</string>
     <string name="value_mgba_interframe_blending_mix">Einfach</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">LCD Schlieren (Genau)</string>
@@ -59,6 +67,7 @@
     <string name="value_mgba_frameskip_disabled">Deaktiviert</string>
     <string name="value_mgba_frameskip_auto">Automatisch</string>
     <string name="value_mgba_color_correction_off">Deaktiviert</string>
+    <string name="value_mgba_color_correction_gba">Aktiv</string>
     <string name="value_stella_filter_disabled">Deaktiviert</string>
     <string name="value_stella_filter_composite">Composite</string>
     <string name="value_stella_filter_svideo">S-Video</string>
@@ -85,4 +94,8 @@
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpreter</string>
+    <string name="value_wswan_rotate_display_landscape">Querformat</string>
+    <string name="value_wswan_rotate_display_portrait">Hochformat</string>
+    <string name="value_handy_rot_none">Querformat</string>
+    <string name="value_handy_rot_90">Hochformat</string>
 </resources>
