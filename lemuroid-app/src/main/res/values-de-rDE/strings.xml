@@ -146,7 +146,7 @@
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>Nichts</item>
-        <item>Press</item>
-        <item>Press &amp; release</item>
+        <item>Tippen</item>
+        <item>Tippen und Loslassen</item>
     </string-array>
 </resources>
