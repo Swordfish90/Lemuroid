@@ -24,7 +24,7 @@ class RxSettingsManager(
 
     val hapticFeedbackMode = stringPreference(R.string.pref_key_haptic_feedback_mode, "press")
 
-    val lowLatencyAudio = booleanPreference(R.string.pref_key_low_latency_audio, true)
+    val lowLatencyAudio = booleanPreference(R.string.pref_key_low_latency_audio, false)
 
     val screenFilter = stringPreference(
         R.string.pref_key_shader_filter,
