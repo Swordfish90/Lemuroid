@@ -8,8 +8,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 153
-        versionName = "1.12.0-beta2"
+        versionCode = 154
+        versionName = "1.12.0"
         applicationId = "com.swordfish.lemuroid"
     }
 
