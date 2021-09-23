@@ -193,6 +193,10 @@ class StorageAccessFrameworkProvider(
             dataFile
         )
 
+        if (cacheFile.exists()) {
+            return cacheFile
+        }
+
         val stream = context.contentResolver.openInputStream(Uri.parse(dataFile.fileUri))!!
         stream.writeToFile(cacheFile)
         return cacheFile
@@ -207,6 +211,11 @@ class StorageAccessFrameworkProvider(
 
     private fun getGameRomStandard(game: Game, originalDocument: DocumentFile): File {
         val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
+
+        if (cacheFile.exists()) {
+            return cacheFile
+        }
+
         val stream = context.contentResolver.openInputStream(originalDocument.uri)!!
         stream.writeToFile(cacheFile)
         return cacheFile
