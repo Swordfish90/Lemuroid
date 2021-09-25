@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         val homeViewModel =
             ViewModelProvider(
                 this,
-                HomeViewModel.Factory(context!!.applicationContext, retrogradeDb)
+                HomeViewModel.Factory(requireContext().applicationContext, retrogradeDb)
             ).get(HomeViewModel::class.java)
 
         // Disable snapping in carousel view
@@ -51,24 +51,24 @@ class HomeFragment : Fragment() {
         val pagingController = EpoxyHomeController(gameInteractor, settingsInteractor)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_recyclerview)
-        val layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = pagingController.adapter
 
-        homeViewModel.recentGames.observe(this) {
+        homeViewModel.recentGames.observe(viewLifecycleOwner) {
             pagingController.updateRecents(it)
         }
 
-        homeViewModel.favoriteGames.observe(this) {
+        homeViewModel.favoriteGames.observe(viewLifecycleOwner) {
             pagingController.updateFavorites(it)
         }
 
-        homeViewModel.discoverGames.observe(this) {
+        homeViewModel.discoverGames.observe(viewLifecycleOwner) {
             pagingController.updateDiscover(it)
         }
 
-        homeViewModel.indexingInProgress.observe(this) {
+        homeViewModel.indexingInProgress.observe(viewLifecycleOwner) {
             pagingController.updateLibraryIndexingInProgress(it)
         }
     }

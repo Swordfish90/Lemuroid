@@ -63,7 +63,9 @@ class TVHomeFragment : BrowseSupportFragment() {
                 }
                 is TVSetting -> {
                     when (item.type) {
-                        TVSettingType.RESCAN -> LibraryIndexScheduler.scheduleFullSync(context!!.applicationContext)
+                        TVSettingType.RESCAN -> LibraryIndexScheduler.scheduleFullSync(
+                            requireContext().applicationContext
+                        )
                         TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
                         TVSettingType.SETTINGS -> launchTVSettings()
                         TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()

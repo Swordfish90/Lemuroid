@@ -84,7 +84,7 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
         File(directoriesManager.getSystemDirectory(), PPSSPP_ASSETS_FOLDER_NAME)
 
     companion object {
-        const val PPSSPP_ASSETS_VERSION = "1.11"
+        const val PPSSPP_ASSETS_VERSION = "1.12"
 
         val PPSSPP_ASSETS_URL: Uri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
             .buildUpon()

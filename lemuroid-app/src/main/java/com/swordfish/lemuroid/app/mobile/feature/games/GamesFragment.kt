@@ -31,7 +31,7 @@ class GamesFragment : RecyclerViewFragment() {
         gamesViewModel = ViewModelProvider(this, GamesViewModel.Factory(retrogradeDb))
             .get(GamesViewModel::class.java)
 
-        gamesViewModel.games.observe(this) { pagedList ->
+        gamesViewModel.games.observe(viewLifecycleOwner) { pagedList ->
             gamesAdapter?.submitData(lifecycle, pagedList)
         }
 
