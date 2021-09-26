@@ -9,6 +9,7 @@
     <string name="favorites">Favoriler</string>
     <string name="discover">Keşfet</string>
     <string name="rescan">Yeniden tara</string>
+    <string name="none">Hiçbiri</string>
     <string name="directory">Dizin</string>
     <string name="display_filter">Görüntü filtresi</string>
     <string name="roms">ROMlar</string>
@@ -17,12 +18,14 @@
     <string name="show_all">Hepsini Göster</string>
     <string name="settings_category_general">Genel</string>
     <string name="settings_category_input">Giriş</string>
+    <string name="settings_category_misc">Diğer</string>
     <string name="settings_title_enable_autosave">Durumu otomatik kaydet</string>
     <string name="settings_title_enable_touch_feedback">Dokunurken titret</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensör hassasiyeti</string>
     <string name="settings_gamepad_settings">Gamepad ayarları</string>
     <string name="settings_gamepad_button_name">Dügme %1$s</string>
     <string name="settings_retropad_button_unassigned">Atanmamış</string>
+    <string name="settings_gamepad_category_enabled">Etkin Gamepadler</string>
     <string name="settings_gamepad_category_general">Genel</string>
     <string name="settings_gamepad_title_reset_bindings">Bağları sıfırla</string>
     <string name="settings_gamepad_title_game_menu">Menü</string>
