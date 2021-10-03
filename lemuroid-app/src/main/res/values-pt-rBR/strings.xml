@@ -49,7 +49,7 @@
     <string name="settings_description_save_sync">Faça backup e sincronize suas salvas na nuvem</string>
     <string name="settings_save_sync_refresh">Sincronização Manual</string>
     <string name="settings_save_sync_refresh_description">Execute uma Sincronização manual agora.\n%1$s</string>
-    <string name="settings_save_sync_enable_auto">Auto-Sincronização</string>
+    <string name="settings_save_sync_enable_auto">Auto Sincronizar</string>
     <string name="settings_save_sync_enable_auto_description">Executar automaticamente uma sincronização antes e depois de uma sessão de jogo quando conectado a um Wi-Fi</string>
     <string name="settings_save_sync_configure">Configurar %1$s</string>
     <string name="settings_save_sync_include_saves">Sincronizar saves no jogo</string>
@@ -139,7 +139,7 @@
     <string name="error_message_incompatible_state">Este estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Automático</item>
-        <item>Sharp</item>
+        <item>Nítido</item>
         <item>Suave</item>
         <item>CRT</item>
         <item>LCD</item>
