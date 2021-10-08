@@ -3,4 +3,6 @@
     <color name="touch_control_text">#7fff</color>
     <color name="touch_control_normal">#7777</color>
     <color name="touch_control_background">#3777</color>
+    <color name="touch_control_stroke">#0CFFFFFF</color>
+    <color name="touch_control_stroke_light">#06FFFFFF</color>
 </resources>
