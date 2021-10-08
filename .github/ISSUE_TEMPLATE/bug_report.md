@@ -7,6 +7,12 @@ assignees: ''
 
 ---
 
+**Disclamer**
+In order to keep this bug tracker manageable, you need to keep a few things in mind:
+* Any issue not following this template will be closed as invalid
+* Is the issue reproducible on RetroArch with the same core? If so, it's very likely a core issue and the upstream core repository is a better place to file it
+* Is the issue already opened? Try out a search before filing one.
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
