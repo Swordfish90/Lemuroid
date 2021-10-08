@@ -2,6 +2,7 @@ package com.swordfish.touchinput.radial
 
 import android.view.KeyEvent
 import com.swordfish.radialgamepad.library.config.ButtonConfig
+import com.swordfish.radialgamepad.library.config.CrossConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
 import com.swordfish.radialgamepad.library.config.PrimaryDialConfig
 import com.swordfish.radialgamepad.library.config.SecondaryDialConfig
@@ -32,9 +33,7 @@ object RadialPadConfigs {
     private val BUTTON_CONFIG_MENU = ButtonConfig(
         id = KeyEvent.KEYCODE_BUTTON_MODE,
         iconId = R.drawable.button_menu,
-        contentDescription = "Menu",
-        supportsGestures = setOf(GestureType.FIRST_TOUCH),
-        supportsButtons = false
+        contentDescription = "Menu"
     )
 
     private val BUTTON_CONFIG_CROSS = ButtonConfig(
@@ -104,13 +103,19 @@ object RadialPadConfigs {
     )
 
     private val PRIMARY_DIAL_CROSS = PrimaryDialConfig.Cross(
-        MOTION_SOURCE_DPAD,
-        supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+        CrossConfig(
+            id = MOTION_SOURCE_DPAD,
+            shape = CrossConfig.Shape.STANDARD,
+            supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+        ),
     )
 
     private val PRIMARY_DIAL_CROSS_MERGED = PrimaryDialConfig.Cross(
-        MOTION_SOURCE_DPAD_AND_LEFT_STICK,
-        supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+        CrossConfig(
+            id = MOTION_SOURCE_DPAD_AND_LEFT_STICK,
+            shape = CrossConfig.Shape.STANDARD,
+            supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+        )
     )
 
     val GB_LEFT =
@@ -141,7 +146,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -172,7 +177,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -229,7 +234,7 @@ object RadialPadConfigs {
         secondaryDials = listOf(
             SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_R),
             SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            buildMenuButtonConfig(10)
         )
     )
 
@@ -286,7 +291,7 @@ object RadialPadConfigs {
         secondaryDials = listOf(
             SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_R),
             SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-            SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+            buildMenuButtonConfig(10)
         )
     )
 
@@ -317,7 +322,7 @@ object RadialPadConfigs {
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_R2),
                 SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_R1),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -364,7 +369,7 @@ object RadialPadConfigs {
                     contentDescription = "Right Stick",
                     supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
                 ),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -419,16 +424,18 @@ object RadialPadConfigs {
                 SecondaryDialConfig.Cross(
                     8,
                     2.2f,
-                    MOTION_SOURCE_RIGHT_DPAD,
-                    R.drawable.direction_alt_background,
-                    R.drawable.direction_alt_foreground,
-                    contentDescription = CrossContentDescription(
-                        baseName = "c"
-                    ),
-                    supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
-                    useDiagonals = false
+                    CrossConfig(
+                        id = MOTION_SOURCE_RIGHT_DPAD,
+                        shape = CrossConfig.Shape.CIRCLE,
+                        rightDrawableForegroundId = R.drawable.direction_alt_foreground,
+                        contentDescription = CrossContentDescription(
+                            baseName = "c"
+                        ),
+                        supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
+                        useDiagonals = false
+                    )
                 ),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -464,7 +471,7 @@ object RadialPadConfigs {
                 SecondaryDialConfig.SingleButton(2, 2, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
                 SecondaryDialConfig.Empty(8, 2, 2.2f),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -505,7 +512,7 @@ object RadialPadConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 2, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -539,7 +546,7 @@ object RadialPadConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 2, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -574,7 +581,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -585,7 +592,7 @@ object RadialPadConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
                 SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
+                buildMenuButtonConfig(8),
                 SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
@@ -683,7 +690,7 @@ object RadialPadConfigs {
                         label = "SELECT"
                     )
                 ),
-                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(8)
             )
         )
 
@@ -714,7 +721,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -746,7 +753,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -786,7 +793,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -797,7 +804,7 @@ object RadialPadConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_COIN),
                 SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(8, 1, BUTTON_CONFIG_MENU),
+                buildMenuButtonConfig(8),
                 SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
@@ -885,7 +892,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -916,7 +923,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -947,7 +954,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -1055,7 +1062,7 @@ object RadialPadConfigs {
                     contentDescription = "Right Stick",
                     supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
                 ),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -1086,7 +1093,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -1118,7 +1125,7 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
 
@@ -1157,7 +1164,16 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                SecondaryDialConfig.SingleButton(10, 1, BUTTON_CONFIG_MENU)
+                buildMenuButtonConfig(10)
             )
         )
+
+    private fun buildMenuButtonConfig(index: Int): SecondaryDialConfig {
+        return SecondaryDialConfig.SingleButton(
+            index = index,
+            spread = 1,
+            buttonConfig = BUTTON_CONFIG_MENU,
+            processSecondaryDialRotation = { -it }
+        )
+    }
 }

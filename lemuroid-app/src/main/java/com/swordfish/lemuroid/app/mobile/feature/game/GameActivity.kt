@@ -19,6 +19,7 @@
 
 package com.swordfish.lemuroid.app.mobile.feature.game
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -26,6 +27,8 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewConfiguration
+import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintSet
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
@@ -79,6 +82,9 @@ class GameActivity : BaseGameActivity() {
 
     private var serviceController: GameService.GameServiceController? = null
 
+    private lateinit var settingsLoadingView: View
+    private lateinit var settingsLoadingProgressView: ProgressBar
+
     private lateinit var tiltSensor: TiltSensor
     private var currentTiltTracker: TiltTracker? = null
 
@@ -100,6 +106,10 @@ class GameActivity : BaseGameActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        settingsLoadingView = findViewById(R.id.settings_loading)
+        settingsLoadingProgressView = findViewById(R.id.settings_loading_progress)
+
         orientation = getCurrentOrientation()
 
         tiltSensor = TiltSensor(applicationContext)
@@ -207,6 +217,17 @@ class GameActivity : BaseGameActivity() {
         val virtualPadEvents = Observable.merge(leftPad.events(), rightPad.events())
             .share()
 
+        setupDefaultActions(virtualPadEvents)
+        setupTiltActions(virtualPadEvents)
+        setupVirtualMenuActions(virtualPadEvents)
+
+        this.leftPad = leftPad
+        this.rightPad = rightPad
+
+        this.touchControllerConfig = controllerConfig
+    }
+
+    private fun setupDefaultActions(virtualPadEvents: Observable<Event>) {
         virtualControllerDisposables.add(
             virtualPadEvents
                 .subscribeBy {
@@ -217,13 +238,12 @@ class GameActivity : BaseGameActivity() {
                         is Event.Direction -> {
                             handleGamePadDirection(it)
                         }
-                        is Event.Gesture -> {
-                            handleGamePadGesture(it)
-                        }
                     }
                 }
         )
+    }
 
+    private fun setupTiltActions(virtualPadEvents: Observable<Event>) {
         virtualControllerDisposables.add(
             virtualPadEvents
                 .ofType(Event.Gesture::class.java)
@@ -249,11 +269,58 @@ class GameActivity : BaseGameActivity() {
                     }
                 }
         )
+    }
 
-        this.leftPad = leftPad
-        this.rightPad = rightPad
+    private fun setupVirtualMenuActions(virtualPadEvents: Observable<Event>) {
+        val allMenuButtonEvents = virtualPadEvents
+            .ofType(Event.Button::class.java)
+            .filter { it.id == KeyEvent.KEYCODE_BUTTON_MODE }
+            .share()
 
-        this.touchControllerConfig = controllerConfig
+        virtualControllerDisposables.add(
+            allMenuButtonEvents
+                .filter { it.action == KeyEvent.ACTION_DOWN }
+                .concatMapCompletable { displayLongPressCompletable(allMenuButtonEvents) }
+                .subscribeBy(Timber::e) { }
+        )
+    }
+
+    private fun displayLongPressCompletable(
+        allMenuButtonEvents: Observable<Event.Button>
+    ): Completable {
+        val cancelMenuButtonEvents = allMenuButtonEvents
+            .filter { it.action == KeyEvent.ACTION_UP }
+
+        return Observable.timer(500, TimeUnit.MILLISECONDS)
+            .takeUntil(cancelMenuButtonEvents)
+            .firstElement()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doAfterSuccess {
+                displayOptionsDialog()
+                simulateVirtualGamepadHaptic()
+            }
+            .doOnSubscribe { displayLongPressView() }
+            .doAfterTerminate { hideLongPressView() }
+            .onErrorComplete()
+            .ignoreElement()
+    }
+
+    private fun displayLongPressView() {
+        settingsLoadingProgressView.progress = 0
+        settingsLoadingView.setVisibleOrGone(true)
+        animateLongPressProgress()
+    }
+
+    private fun hideLongPressView() {
+        settingsLoadingView.setVisibleOrGone(false)
+    }
+
+    private fun animateLongPressProgress() {
+        ObjectAnimator.ofInt(settingsLoadingProgressView, "progress", 100).apply {
+            duration = LONG_PRESS_DELAY_MS
+            setAutoCancel(true)
+            start()
+        }
     }
 
     private fun handleTripleTaps(events: MutableList<Event.Gesture>) {
@@ -322,7 +389,11 @@ class GameActivity : BaseGameActivity() {
             pressedColor = pressedColor,
             simulatedColor = simulatedColor,
             primaryDialBackground = context.getColor(R.color.touch_control_background),
-            textColor = context.getColor(R.color.touch_control_text)
+            textColor = context.getColor(R.color.touch_control_text),
+            enableStroke = true,
+            strokeColor = context.getColor(R.color.touch_control_stroke),
+            strokeLightColor = context.getColor(R.color.touch_control_stroke_light),
+            strokeWidthDp = context.resources.getInteger(R.integer.touch_control_stroke_size_int).toFloat()
         )
     }
 
@@ -373,13 +444,6 @@ class GameActivity : BaseGameActivity() {
                     it.yAxis
                 )
             }
-        }
-    }
-
-    private fun handleGamePadGesture(it: Event.Gesture) {
-        if (it.id == KeyEvent.KEYCODE_BUTTON_MODE) {
-            displayOptionsDialog()
-            simulateVirtualGamepadHaptic()
         }
     }
 
@@ -722,6 +786,9 @@ class GameActivity : BaseGameActivity() {
             leftPad.gravityX = -1f
             rightPad.gravityX = 1f
 
+            leftPad.secondaryDialSpacing = 0.1f
+            rightPad.secondaryDialSpacing = 0.1f
+
             val constrainHeight = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 ConstraintSet.WRAP_CONTENT
             } else {
@@ -767,9 +834,8 @@ class GameActivity : BaseGameActivity() {
 
     companion object {
         const val DEFAULT_MARGINS_DP = 8f
-
         const val PRESSED_COLOR_ALPHA = 0.5f
-
         const val DEFAULT_PRIMARY_DIAL_SIZE = 160f
+        val LONG_PRESS_DELAY_MS = ViewConfiguration.getLongPressTimeout().toLong()
     }
 }
