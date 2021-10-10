@@ -528,6 +528,7 @@ data class GameSystem(
                                 R.string.setting_gambatte_dark_filter_level
                             )
                         ),
+                        rumbleSupported = true,
                         defaultSettings = listOf(
                             CoreVariable("gambatte_gbc_color_correction", "disabled"),
                         ),
@@ -599,6 +600,7 @@ data class GameSystem(
                                 )
                             ),
                         ),
+                        rumbleSupported = true,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GBA)
                         )
@@ -651,13 +653,46 @@ data class GameSystem(
                                     ),
                                 )
                             ),
+                            ExposedSetting(
+                                "mupen64plus-pak1",
+                                R.string.setting_mupen64plus_pak1,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "memory",
+                                        R.string.value_mupen64plus_mupen64plus_pak1_memory
+                                    ),
+                                    ExposedSetting.Value(
+                                        "rumble",
+                                        R.string.value_mupen64plus_mupen64plus_pak1_rumble
+                                    ),
+                                    ExposedSetting.Value(
+                                        "none",
+                                        R.string.value_mupen64plus_mupen64plus_pak1_none
+                                    )
+                                )
+                            ),
+                            ExposedSetting(
+                                "mupen64plus-pak2",
+                                R.string.setting_mupen64plus_pak2,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "none",
+                                        R.string.value_mupen64plus_mupen64plus_pak2_none
+                                    ),
+                                    ExposedSetting.Value(
+                                        "rumble",
+                                        R.string.value_mupen64plus_mupen64plus_pak2_rumble
+                                    )
+                                )
+                            )
                         ),
                         defaultSettings = listOf(
                             CoreVariable("mupen64plus-43screensize", "320x240")
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.N64)
-                        )
+                        ),
+                        rumbleSupported = true
                     )
                 ),
                 uniqueExtensions = listOf("n64", "z64"),
@@ -703,6 +738,7 @@ data class GameSystem(
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled"),
                         ),
+                        rumbleSupported = true,
                         useLibretroVFS = true
                     )
                 ),

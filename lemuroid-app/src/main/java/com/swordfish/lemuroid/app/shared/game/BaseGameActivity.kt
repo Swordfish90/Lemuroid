@@ -25,6 +25,7 @@ import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
@@ -112,6 +113,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var gamePadManager: GamePadManager
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var controllerConfigsManager: ControllerConfigsManager
+    @Inject lateinit var rumbleManager: RumbleManager
 
     private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
 
@@ -154,6 +156,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         setupPhysicalPad()
 
         initializeControllers()
+        initializeRumble()
     }
 
     private fun initializeControllers() {
@@ -166,6 +169,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy(Timber::e) {
                 updateControllers(it)
             }
+    }
+
+    private fun initializeRumble() {
+        retroGameViewMaybe()
+            .flatMapCompletable {
+                rumbleManager.processRumbleEvents(systemCoreConfig, it.getRumbleEvents())
+            }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) { }
     }
 
     private fun setUpExceptionsHandler() {
@@ -211,6 +223,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         gameData: GameLoader.GameData,
         screenFilter: String,
         lowLatencyAudio: Boolean,
+        enableRumble: Boolean
     ): GLRetroView {
         val data = GLRetroViewData(this).apply {
             coreFilePath = gameData.coreLibrary
@@ -231,6 +244,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             saveRAMState = gameData.saveRAMData
             shader = getShaderForSystem(screenFilter, system)
             preferLowLatencyAudio = lowLatencyAudio
+            rumbleEventsEnabled = enableRumble
         }
 
         val retroGameView = GLRetroView(this, data)
@@ -886,23 +900,34 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         setupLoadingView()
 
-        Singles.zip(settingsManager.autoSave, settingsManager.screenFilter, settingsManager.lowLatencyAudio, ::Triple)
-            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio) ->
+        Singles.zip(
+            settingsManager.autoSave,
+            settingsManager.screenFilter,
+            settingsManager.lowLatencyAudio,
+            settingsManager.enableRumble,
+            ::NTuple4
+        )
+            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio, enableRumble) ->
                 gameLoader.load(
                     applicationContext,
                     game,
                     requestLoadSave && autoSaveEnabled,
                     systemCoreConfig
-                ).map { Triple(it, filter, lowLatencyAudio) }
+                ).map { NTuple4(it, filter, lowLatencyAudio, enableRumble) }
             }
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe(
-                { (loadingState, filter, lowLatencyAudio) ->
+                { (loadingState, filter, lowLatencyAudio, enableRumble) ->
                     displayLoadingState(loadingState)
                     if (loadingState is GameLoader.LoadingState.Ready) {
-                        retroGameView = initializeRetroGameView(loadingState.gameData, filter, lowLatencyAudio)
+                        retroGameView = initializeRetroGameView(
+                            loadingState.gameData,
+                            filter,
+                            lowLatencyAudio,
+                            systemCoreConfig.rumbleSupported && enableRumble
+                        )
                     }
                 },
                 {

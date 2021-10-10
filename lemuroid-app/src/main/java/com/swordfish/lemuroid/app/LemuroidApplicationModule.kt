@@ -27,6 +27,7 @@ import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
+import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
@@ -368,5 +369,15 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun gameLauncher(coresSelection: CoresSelection) =
             GameLauncher(coresSelection)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun rumbleManager(
+            context: Context,
+            rxSettingsManager: RxSettingsManager,
+            gamePadManager: GamePadManager
+        ) =
+            RumbleManager(context, rxSettingsManager, gamePadManager)
     }
 }
