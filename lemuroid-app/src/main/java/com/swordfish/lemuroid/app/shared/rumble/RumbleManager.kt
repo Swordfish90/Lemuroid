@@ -35,13 +35,20 @@ class RumbleManager(
             .switchMapCompletable { vibrators ->
                 rumbleEventsObservable
                     .subscribeOn(Schedulers.from(singleThreadExecutor))
-                    .doOnSubscribe { vibrators.forEach { it.cancel() } }
                     .doOnNext {
                         kotlin.runCatching { vibrate(vibrators[it.port], it) }
                     }
+                    .doOnSubscribe { stopAllVibrators(vibrators) }
+                    .doAfterTerminate { stopAllVibrators(vibrators) }
                     .ignoreElements()
                     .onErrorComplete()
             }
+    }
+
+    private fun stopAllVibrators(vibrators: List<Vibrator>) {
+        vibrators.forEach {
+            kotlin.runCatching { it.cancel() }
+        }
     }
 
     private fun getVibrators(gamePads: List<InputDevice>): Single<List<Vibrator>> {

@@ -156,7 +156,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         setupPhysicalPad()
 
         initializeControllers()
-        initializeRumble()
     }
 
     private fun initializeControllers() {
@@ -433,6 +432,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy(Timber::e) {
                 controllerConfigs = it
             }
+
+        initializeRumble()
     }
 
     private fun getCoreOptions(): List<CoreOption> {
