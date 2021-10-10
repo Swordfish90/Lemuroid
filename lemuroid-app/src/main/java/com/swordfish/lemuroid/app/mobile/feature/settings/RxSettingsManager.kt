@@ -39,6 +39,10 @@ class RxSettingsManager(
 
     val syncStatesCores = stringSetPreference(R.string.pref_key_save_sync_cores, setOf())
 
+    val enableRumble = booleanPreference(R.string.pref_key_enable_rumble, true)
+
+    val enableDeviceRumble = booleanPreference(R.string.pref_key_enable_device_rumble, true)
+
     private fun booleanPreference(keyId: Int, default: Boolean): Single<Boolean> {
         return rxSharedPreferences.flatMap {
             it.getBoolean(getString(keyId), default)

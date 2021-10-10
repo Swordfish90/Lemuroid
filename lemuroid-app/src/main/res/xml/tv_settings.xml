@@ -63,18 +63,37 @@
             android:summary="@string/settings_description_advanced_settings"
             app:iconSpaceReserved="false">
 
-            <SwitchPreference
-                android:key="@string/pref_key_low_latency_audio"
-                android:title="@string/settings_title_low_latency_audio"
-                android:summary="@string/settings_description_low_latency_audio"
-                app:iconSpaceReserved="false"
-                android:defaultValue="false"/>
+            <PreferenceCategory
+                android:title="@string/settings_category_input"
+                app:iconSpaceReserved="false">
 
-            <Preference
-                android:key="@string/pref_key_reset_settings"
-                android:title="@string/settings_title_reset_settings"
-                app:summary="@string/settings_description_reset_settings"
-                app:iconSpaceReserved="false"/>
+                <SwitchPreferenceCompat
+                    android:key="@string/pref_key_enable_rumble"
+                    android:title="@string/settings_title_enable_rumble"
+                    android:summary="@string/settings_description_enable_rumble"
+                    app:iconSpaceReserved="false"
+                    android:defaultValue="false"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/settings_category_general"
+                app:iconSpaceReserved="false">
+
+                <SwitchPreference
+                    android:key="@string/pref_key_low_latency_audio"
+                    android:title="@string/settings_title_low_latency_audio"
+                    android:summary="@string/settings_description_low_latency_audio"
+                    app:iconSpaceReserved="false"
+                    android:defaultValue="false"/>
+
+                <Preference
+                    android:key="@string/pref_key_reset_settings"
+                    android:title="@string/settings_title_reset_settings"
+                    app:summary="@string/settings_description_reset_settings"
+                    app:iconSpaceReserved="false"/>
+
+            </PreferenceCategory>
 
         </PreferenceScreen>
 
