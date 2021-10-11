@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:visibility="gone"
     android:background="@drawable/loading_circle_background">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/settings_loading_progress"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/settings_loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:textAppearance="?attr/textAppearanceOverline"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"/>
 
-    <ImageView
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_menu_settings"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center_vertical">
 
-</FrameLayout>
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/settings_loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/settings_loading_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
