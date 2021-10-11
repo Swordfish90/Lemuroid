@@ -44,6 +44,9 @@
     <string name="settings_title_low_latency_audio">Preferir áudio com baixa latência</string>
     <string name="settings_description_low_latency_audio">Reduzir a latência do áudio nos dispositivos suportados. Pode aumentar as falhas no áudio.</string>
     <string name="settings_title_enable_rumble">Vibração</string>
+    <string name="settings_description_enable_rumble">Ativar vibração em jogos e controles suportados</string>
+    <string name="settings_title_enable_device_rumble">Vibração do dispositivo</string>
+    <string name="settings_description_enable_device_rumble">Quando nenhum controle estiver conectado vibrar o dispositivo</string>
     <string name="reset_settings_warning_message_title">Você tem certeza?</string>
     <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Salvas e Estados serão preservados.</string>
     <string name="settings_title_save_sync">Salva na nuvem</string>
