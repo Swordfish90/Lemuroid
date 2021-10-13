@@ -5,17 +5,35 @@ import android.os.Environment
 import android.os.StatFs
 import android.system.Os
 import android.text.format.Formatter
+import com.swordfish.lemuroid.common.kotlin.gigaBytes
+import com.swordfish.lemuroid.common.kotlin.megaBytes
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import io.reactivex.Completable
 import timber.log.Timber
 import java.io.File
+import kotlin.math.abs
+import kotlin.math.roundToLong
 
 object CacheCleaner {
 
-    fun getOptimalCacheSize(): Long {
-        // We are capping cache size to be 1/20th of total internal memory...
-        return getInternalMemorySize() / 20
+    private val MIN_CACHE_SIZE = 256L.megaBytes()
+    private val MAX_CACHE_SIZE = 16L.gigaBytes()
+
+    fun getSupportedCacheSizes(): List<Long> {
+        return generateSequence(MIN_CACHE_SIZE) { it * 2L }
+            .takeWhile { it <= MAX_CACHE_SIZE }
+            .toList()
+    }
+
+    fun getDefaultCacheSize(): Long {
+        val defaultCacheSize = (getInternalMemorySize() * 0.05f).roundToLong()
+        return getClosestCacheSize(defaultCacheSize)
+    }
+
+    private fun getClosestCacheSize(size: Long): Long {
+        return getSupportedCacheSizes()
+            .minByOrNull { abs(it - size) } ?: 0
     }
 
     private fun getInternalMemorySize(): Long {
@@ -29,8 +47,9 @@ object CacheCleaner {
         appContext.cacheDir.listFiles()?.forEach { it.deleteRecursively() }
     }
 
-    fun clean(appContext: Context, maxByteSize: Long) = Completable.fromAction {
+    fun clean(appContext: Context, requestedMaxSize: Long) = Completable.fromAction {
         Timber.i("Running cache cleanup lru task")
+        val maxByteSize = getClosestCacheSize(requestedMaxSize)
 
         val cacheFoldersSequence = sequenceOf(
             File(appContext.cacheDir, StorageAccessFrameworkProvider.SAF_CACHE_SUBFOLDER).walkBottomUp(),

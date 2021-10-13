@@ -13,9 +13,7 @@ import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 
-class SaveSyncPreferences(
-    private val saveSyncManager: SaveSyncManager
-) {
+class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
 
     fun addSaveSyncPreferences(preferenceScreen: PreferenceScreen) {
         val context = preferenceScreen.context

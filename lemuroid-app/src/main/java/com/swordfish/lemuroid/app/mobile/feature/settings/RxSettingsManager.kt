@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Lazy
 import io.reactivex.Single
+import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 import kotlin.math.roundToInt
 
-class RxSettingsManager(
-    private val context: Context,
-    sharedPreferences: Lazy<SharedPreferences>
-) {
+class RxSettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
 
     private val rxSharedPreferences = Single.fromCallable {
         RxSharedPreferences.create(sharedPreferences.get())
@@ -22,13 +21,16 @@ class RxSettingsManager(
 
     val autoSave = booleanPreference(R.string.pref_key_autosave, true)
 
-    val hapticFeedbackMode = stringPreference(R.string.pref_key_haptic_feedback_mode, "press")
+    val hapticFeedbackMode = stringPreference(
+        R.string.pref_key_haptic_feedback_mode,
+        Single.just("press")
+    )
 
     val lowLatencyAudio = booleanPreference(R.string.pref_key_low_latency_audio, false)
 
     val screenFilter = stringPreference(
         R.string.pref_key_shader_filter,
-        context.resources.getStringArray(R.array.pref_key_shader_filter_values).first()
+        Single.just(context.resources.getStringArray(R.array.pref_key_shader_filter_values).first())
     )
 
     val tiltSensitivity = floatPreference(R.string.pref_key_tilt_sensitivity_index, 10, 0.6f)
@@ -43,6 +45,11 @@ class RxSettingsManager(
 
     val enableDeviceRumble = booleanPreference(R.string.pref_key_enable_device_rumble, true)
 
+    val cacheSizeBytes = stringPreference(
+        R.string.pref_key_max_cache_size,
+        Single.fromCallable { CacheCleaner.getDefaultCacheSize().toString() }
+    )
+
     private fun booleanPreference(keyId: Int, default: Boolean): Single<Boolean> {
         return rxSharedPreferences.flatMap {
             it.getBoolean(getString(keyId), default)
@@ -52,8 +59,8 @@ class RxSettingsManager(
         }
     }
 
-    private fun stringPreference(keyId: Int, default: String): Single<String> {
-        return rxSharedPreferences.flatMap {
+    private fun stringPreference(keyId: Int, defaultSingle: Single<String>): Single<String> {
+        return Singles.zip(rxSharedPreferences, defaultSingle).flatMap { (it, default) ->
             it.getString(getString(keyId), default)
                 .asObservable()
                 .subscribeOn(Schedulers.io())

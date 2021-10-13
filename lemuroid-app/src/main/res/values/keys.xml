@@ -15,6 +15,7 @@
     <string name="pref_key_low_latency_audio" translatable="false">low_latency_audio</string>
     <string name="pref_key_enable_rumble" translatable="false">enable_rumble</string>
     <string name="pref_key_enable_device_rumble" translatable="false">enable_device_rumble</string>
+    <string name="pref_key_max_cache_size" translatable="false">max_cache_size_bytes</string>
 
     <string name="pref_key_save_sync_auto" translatable="false">save_sync_auto</string>
     <string name="pref_key_save_sync_enable" translatable="false">save_sync_enable</string>
