@@ -4,7 +4,7 @@ import android.content.Context
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
+import com.swordfish.lemuroid.app.shared.storage.cache.CacheCleanerWork
 
 class SettingsInteractor(
     private val context: Context,

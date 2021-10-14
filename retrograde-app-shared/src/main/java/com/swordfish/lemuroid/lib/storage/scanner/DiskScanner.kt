@@ -2,8 +2,8 @@ package com.swordfish.lemuroid.lib.storage.scanner
 
 import com.swordfish.lemuroid.common.files.FileUtils
 import com.swordfish.lemuroid.common.kotlin.indexOf
-import com.swordfish.lemuroid.common.kotlin.kb
-import com.swordfish.lemuroid.common.kotlin.mb
+import com.swordfish.lemuroid.common.kotlin.kiloBytes
+import com.swordfish.lemuroid.common.kotlin.megaBytes
 import com.swordfish.lemuroid.common.kotlin.startsWithAny
 import com.swordfish.lemuroid.lib.library.SystemID
 import timber.log.Timber
@@ -13,7 +13,7 @@ import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 object DiskScanner {
-    private val READ_BUFFER_SIZE = 64.kb()
+    private val READ_BUFFER_SIZE = 64.kiloBytes()
 
     data class DiskInfo(val serial: String?, val systemID: SystemID?)
 
@@ -220,7 +220,7 @@ object DiskScanner {
     }
 
     private fun extractInfoForPSX(openedStream: InputStream): DiskInfo {
-        val headerSize = 64.kb()
+        val headerSize = 64.kiloBytes()
         if (openedStream.available() < headerSize) {
             return DiskInfo(null, null)
         }
@@ -232,7 +232,7 @@ object DiskScanner {
     }
 
     private fun extractInfoForPSP(openedStream: InputStream): DiskInfo {
-        val headerSize = 64.kb()
+        val headerSize = 64.kiloBytes()
         if (openedStream.available() < headerSize) {
             return DiskInfo(null, null)
         }
@@ -244,7 +244,7 @@ object DiskScanner {
     }
 
     private fun extractInfoForPBP(openedStream: InputStream): DiskInfo {
-        val headerSize = 2.mb()
+        val headerSize = 2.megaBytes()
         if (openedStream.available() < headerSize) {
             return DiskInfo(null, null)
         }
@@ -276,7 +276,7 @@ object DiskScanner {
         openedStream: InputStream,
         resultSize: Int,
         streamSize: Int,
-        windowSize: Int = 8.kb(),
+        windowSize: Int = 8.kiloBytes(),
         skipSize: Int = windowSize - resultSize,
         charset: Charset = Charsets.US_ASCII
     ): Sequence<String> {

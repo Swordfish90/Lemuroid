@@ -1,5 +1,5 @@
 package com.swordfish.lemuroid.common.kotlin
 
-fun Int.kb(): Int = this * 1024
+fun Int.kiloBytes(): Int = this * 1000
 
-fun Int.mb(): Int = this * 1024 * 1024
+fun Int.megaBytes(): Int = this.kiloBytes() * 1000

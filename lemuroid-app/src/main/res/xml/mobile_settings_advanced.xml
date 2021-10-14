@@ -41,6 +41,11 @@
             app:iconSpaceReserved="false"
             android:defaultValue="false"/>
 
+        <ListPreference
+            android:key="@string/pref_key_max_cache_size"
+            android:title="@string/settings_title_maximum_cache_usage"
+            app:iconSpaceReserved="false"/>
+
         <Preference
             android:key="@string/pref_key_reset_settings"
             android:title="@string/settings_title_reset_settings"
