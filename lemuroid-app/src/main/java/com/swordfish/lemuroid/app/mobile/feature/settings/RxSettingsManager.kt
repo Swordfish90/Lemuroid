@@ -21,16 +21,13 @@ class RxSettingsManager(private val context: Context, sharedPreferences: Lazy<Sh
 
     val autoSave = booleanPreference(R.string.pref_key_autosave, true)
 
-    val hapticFeedbackMode = stringPreference(
-        R.string.pref_key_haptic_feedback_mode,
-        Single.just("press")
-    )
+    val hapticFeedbackMode = stringPreference(R.string.pref_key_haptic_feedback_mode, "press")
 
     val lowLatencyAudio = booleanPreference(R.string.pref_key_low_latency_audio, false)
 
     val screenFilter = stringPreference(
         R.string.pref_key_shader_filter,
-        Single.just(context.resources.getStringArray(R.array.pref_key_shader_filter_values).first())
+        context.resources.getStringArray(R.array.pref_key_shader_filter_values).first()
     )
 
     val tiltSensitivity = floatPreference(R.string.pref_key_tilt_sensitivity_index, 10, 0.6f)
@@ -47,7 +44,7 @@ class RxSettingsManager(private val context: Context, sharedPreferences: Lazy<Sh
 
     val cacheSizeBytes = stringPreference(
         R.string.pref_key_max_cache_size,
-        Single.fromCallable { CacheCleaner.getDefaultCacheSize().toString() }
+        Single.fromCallable { CacheCleaner.getDefaultCacheLimit().toString() }
     )
 
     private fun booleanPreference(keyId: Int, default: Boolean): Single<Boolean> {
@@ -59,12 +56,16 @@ class RxSettingsManager(private val context: Context, sharedPreferences: Lazy<Sh
         }
     }
 
-    private fun stringPreference(keyId: Int, defaultSingle: Single<String>): Single<String> {
-        return Singles.zip(rxSharedPreferences, defaultSingle).flatMap { (it, default) ->
-            it.getString(getString(keyId), default)
+    private fun stringPreference(keyId: Int, default: String): Single<String> {
+        return stringPreference(keyId, Single.just(default))
+    }
+
+    private fun stringPreference(keyId: Int, default: Single<String>): Single<String> {
+        return Singles.zip(rxSharedPreferences, default).flatMap { (preferences, defaultValue) ->
+            preferences.getString(getString(keyId), defaultValue)
                 .asObservable()
                 .subscribeOn(Schedulers.io())
-                .first(default)
+                .first(defaultValue)
         }
     }
 

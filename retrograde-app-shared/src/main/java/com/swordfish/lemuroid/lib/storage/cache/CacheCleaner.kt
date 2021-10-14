@@ -17,22 +17,22 @@ import kotlin.math.roundToLong
 
 object CacheCleaner {
 
-    private val MIN_CACHE_SIZE = 256L.megaBytes()
-    private val MAX_CACHE_SIZE = 16L.gigaBytes()
+    private val MIN_CACHE_LIMIT = 256L.megaBytes()
+    private val MAX_CACHE_LIMIT = 10L.gigaBytes()
 
-    fun getSupportedCacheSizes(): List<Long> {
-        return generateSequence(MIN_CACHE_SIZE) { it * 2L }
-            .takeWhile { it <= MAX_CACHE_SIZE }
+    fun getSupportedCacheLimits(): List<Long> {
+        return generateSequence(MIN_CACHE_LIMIT) { it * 2L }
+            .takeWhile { it <= MAX_CACHE_LIMIT }
             .toList()
     }
 
-    fun getDefaultCacheSize(): Long {
+    fun getDefaultCacheLimit(): Long {
         val defaultCacheSize = (getInternalMemorySize() * 0.05f).roundToLong()
-        return getClosestCacheSize(defaultCacheSize)
+        return getClosestCacheLimit(defaultCacheSize)
     }
 
-    private fun getClosestCacheSize(size: Long): Long {
-        return getSupportedCacheSizes()
+    private fun getClosestCacheLimit(size: Long): Long {
+        return getSupportedCacheLimits()
             .minByOrNull { abs(it - size) } ?: 0
     }
 
@@ -47,9 +47,9 @@ object CacheCleaner {
         appContext.cacheDir.listFiles()?.forEach { it.deleteRecursively() }
     }
 
-    fun clean(appContext: Context, requestedMaxSize: Long) = Completable.fromAction {
+    fun clean(appContext: Context, requestedLimit: Long) = Completable.fromAction {
         Timber.i("Running cache cleanup lru task")
-        val maxByteSize = getClosestCacheSize(requestedMaxSize)
+        val cacheLimit = getClosestCacheLimit(requestedLimit)
 
         val cacheFoldersSequence = sequenceOf(
             File(appContext.cacheDir, StorageAccessFrameworkProvider.SAF_CACHE_SUBFOLDER).walkBottomUp(),
@@ -65,9 +65,9 @@ object CacheCleaner {
             .map { it.length() }
             .sum()
 
-        Timber.i("Space used by cache: ${printSize(appContext, cacheSize)} / ${printSize(appContext, maxByteSize)}")
+        Timber.i("Space used by cache: ${printSize(appContext, cacheSize)} / ${printSize(appContext, cacheLimit)}")
 
-        var spaceToBeDeleted = maxOf(cacheSize - maxByteSize, 0)
+        var spaceToBeDeleted = maxOf(cacheSize - cacheLimit, 0)
 
         Timber.i("Freeing cache space: ${printSize(appContext, spaceToBeDeleted)}")
 

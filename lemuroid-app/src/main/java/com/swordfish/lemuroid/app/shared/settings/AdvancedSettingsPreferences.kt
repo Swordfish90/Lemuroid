@@ -12,10 +12,10 @@ object AdvancedSettingsPreferences {
     fun updateCachePreferences(preferenceScreen: PreferenceScreen) {
         val cacheKey = preferenceScreen.context.getString(R.string.pref_key_max_cache_size)
         preferenceScreen.findPreference<ListPreference>(cacheKey)?.apply {
-            val supportedCacheValues = CacheCleaner.getSupportedCacheSizes()
+            val supportedCacheValues = CacheCleaner.getSupportedCacheLimits()
 
             entries = supportedCacheValues
-                .map { printSize(preferenceScreen.context, it) }
+                .map { getSizeLabel(preferenceScreen.context, it) }
                 .toTypedArray()
 
             entryValues = supportedCacheValues
@@ -23,14 +23,14 @@ object AdvancedSettingsPreferences {
                 .toTypedArray()
 
             if (value == null) {
-                setValueIndex(supportedCacheValues.indexOf(CacheCleaner.getDefaultCacheSize()))
+                setValueIndex(supportedCacheValues.indexOf(CacheCleaner.getDefaultCacheLimit()))
             }
 
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         }
     }
 
-    private fun printSize(appContext: Context, size: Long): String {
+    private fun getSizeLabel(appContext: Context, size: Long): String {
         return Formatter.formatShortFileSize(appContext, size)
     }
 }
