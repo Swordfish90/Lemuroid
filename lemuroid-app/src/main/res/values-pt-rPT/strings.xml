@@ -22,11 +22,9 @@
     <string name="settings_title_enable_autosave">Auto-gravar estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar ao toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
-    <string name="settings_gamepad_settings">Configurações do Comando</string>
     <string name="settings_gamepad_button_name">Botão %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Não atribuído</string>
-    <string name="settings_gamepad_category_enabled">Comandos Ativos</string>
     <string name="settings_gamepad_category_general">Geral</string>
     <string name="settings_gamepad_title_reset_bindings">Redefinir combinações</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
