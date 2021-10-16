@@ -159,7 +159,7 @@ class InputDeviceManager(
         return runCatching {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
-                .filter { InputClassGamePad.isSupported(it) || InputClassKeyboard.isSupported(it) }
+                .filter { it.getInputClass().isSupported(it) }
                 .filter { it.name !in BLACKLISTED_DEVICES }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()
