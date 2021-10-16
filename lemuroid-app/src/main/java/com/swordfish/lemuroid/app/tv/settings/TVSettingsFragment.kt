@@ -11,7 +11,7 @@ import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
 import com.swordfish.lemuroid.app.shared.settings.AdvancedSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -28,7 +28,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     @Inject lateinit var settingsInteractor: SettingsInteractor
     @Inject lateinit var biosPreferences: BiosPreferences
     @Inject lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
-    @Inject lateinit var gamePadManager: GamePadManager
+    @Inject lateinit var inputDeviceManager: InputDeviceManager
     @Inject lateinit var coresSelectionPreferences: CoresSelectionPreferences
     @Inject lateinit var saveSyncManager: SaveSyncManager
 
@@ -69,7 +69,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        gamePadManager.getGamePadsObservable()
+        inputDeviceManager.getGamePadsObservable()
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())

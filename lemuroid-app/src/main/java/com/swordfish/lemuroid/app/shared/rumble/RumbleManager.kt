@@ -6,7 +6,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.InputDevice
 import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.libretrodroid.RumbleEvent
 import io.reactivex.Completable
@@ -19,7 +19,7 @@ import kotlin.math.roundToInt
 class RumbleManager(
     applicationContext: Context,
     private val rxSettingsManager: RxSettingsManager,
-    private val gamePadManager: GamePadManager
+    private val inputDeviceManager: InputDeviceManager
 ) {
     private val deviceVibrator = applicationContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     private val singleThreadExecutor = Executors.newSingleThreadExecutor()
@@ -30,7 +30,7 @@ class RumbleManager(
     ): Completable {
         return rxSettingsManager.enableRumble
             .filter { it && systemCoreConfig.rumbleSupported }
-            .flatMapObservable { gamePadManager.getEnabledGamePadsObservable() }
+            .flatMapObservable { inputDeviceManager.getEnabledInputsObservable() }
             .flatMapSingle { getVibrators(it) }
             .switchMapCompletable { vibrators ->
                 rumbleEventsObservable

@@ -30,8 +30,9 @@
 
         <PreferenceScreen
             android:key="@string/pref_key_open_gamepad_settings"
+            android:summary="@string/settings_description_gamepad_settings"
             app:iconSpaceReserved="false"
-            android:title="@string/settings_gamepad_settings"/>
+            android:title="@string/settings_title_gamepad_settings"/>
 
     </PreferenceCategory>
 

@@ -30,17 +30,14 @@ import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.getInputClass
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
-import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple4
-import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
-import com.swordfish.lemuroid.common.kotlin.toIndexedMap
-import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.rx.BehaviorRelayNullableProperty
 import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
 import com.swordfish.lemuroid.common.rx.RXUtils
@@ -62,6 +59,10 @@ import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.lemuroid.app.shared.storage.cache.CacheCleanerWork
+import com.swordfish.lemuroid.common.graphics.takeScreenshot
+import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
+import com.swordfish.lemuroid.common.kotlin.toIndexedMap
+import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.Controller
@@ -110,7 +111,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
-    @Inject lateinit var gamePadManager: GamePadManager
+    @Inject lateinit var inputDeviceManager: InputDeviceManager
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var controllerConfigsManager: ControllerConfigsManager
     @Inject lateinit var rumbleManager: RumbleManager
@@ -469,7 +470,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadShortcuts() {
-        gamePadManager.getGamePadMenuShortCutObservable()
+        inputDeviceManager.getInputMenuShortCutObservable()
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
@@ -484,7 +485,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun setupGamePadMotions() {
         val events = Observables.combineLatest(
-            gamePadManager.getGamePadsPortMapperObservable(),
+            inputDeviceManager.getGamePadsPortMapperObservable(),
             motionEventsSubjects
         ).share()
 
@@ -499,7 +500,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         events
             .flatMap { (ports, event) ->
                 val port = ports(event.device)
-                val axes = GamePadManager.TRIGGER_MOTIONS_TO_KEYS.entries
+                val axes = event.device.getInputClass().getAxesMap().entries
                 Observable.fromIterable(axes).map { (axis, button) ->
                     val action = if (event.getAxisValue(axis) > 0.5) {
                         KeyEvent.ACTION_DOWN
@@ -526,16 +527,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val pressedKeys = mutableSetOf<Int>()
 
         val filteredKeyEvents = keyEventsSubjects
+            .filter { it.repeatCount == 0 }
             .map { Triple(it.device, it.action, it.keyCode) }
             .distinctUntilChanged()
 
-        val shortcutKeys = gamePadManager.getGamePadMenuShortCutObservable()
+        val shortcutKeys = inputDeviceManager.getInputMenuShortCutObservable()
             .map { it.toNullable()?.keys ?: setOf() }
 
         val combinedObservable = RXUtils.combineLatest(
             shortcutKeys,
-            gamePadManager.getGamePadsPortMapperObservable(),
-            gamePadManager.getGamePadsBindingsObservable(),
+            inputDeviceManager.getGamePadsPortMapperObservable(),
+            inputDeviceManager.getInputBindingsObservable(),
             filteredKeyEvents
         )
 
@@ -674,7 +676,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in GamePadManager.INPUT_KEYS) {
+        if (event != null && keyCode in event.device.getInputClass().getInputKeys()) {
             keyEventsSubjects.accept(event)
             return true
         }
@@ -682,7 +684,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in GamePadManager.INPUT_KEYS) {
+        if (event != null && keyCode in event.device.getInputClass().getInputKeys()) {
             keyEventsSubjects.accept(event)
             return true
         }

@@ -17,8 +17,8 @@ class TVGameActivity : BaseGameActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        gamePadManager
-            .getEnabledGamePadsObservable()
+        inputDeviceManager
+            .getEnabledInputsObservable()
             .filter { it.isEmpty() }
             .autoDispose(scope())
             .subscribeBy(Timber::e) { displayToast(R.string.tv_game_message_missing_gamepad) }
