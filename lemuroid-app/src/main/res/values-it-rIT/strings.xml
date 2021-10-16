@@ -23,11 +23,9 @@
     <string name="settings_title_enable_autosave">Salvataggio automatico stato</string>
     <string name="settings_title_enable_touch_feedback">Vibra al tocco</string>
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
-    <string name="settings_gamepad_settings">Impostazioni controller</string>
     <string name="settings_gamepad_button_name">Pulsante %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Non assegnato</string>
-    <string name="settings_gamepad_category_enabled">Controller abilitati</string>
     <string name="settings_gamepad_category_general">Generale</string>
     <string name="settings_gamepad_title_reset_bindings">Resetta associazioni</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
