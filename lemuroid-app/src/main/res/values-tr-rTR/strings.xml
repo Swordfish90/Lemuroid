@@ -22,7 +22,6 @@
     <string name="settings_title_enable_autosave">Durumu otomatik kaydet</string>
     <string name="settings_title_enable_touch_feedback">Dokunurken titret</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensör hassasiyeti</string>
-    <string name="settings_gamepad_settings">Gamepad ayarları</string>
     <string name="settings_gamepad_button_name">Dügme %1$s</string>
     <string name="settings_retropad_button_unassigned">Atanmamış</string>
     <string name="settings_gamepad_category_general">Genel</string>
