@@ -23,11 +23,9 @@
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
     <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميل</string>
-    <string name="settings_gamepad_settings">إعدادات وحدات التحكم</string>
     <string name="settings_gamepad_button_name">الزر %1$s</string>
     <string name="settings_retropad_button_name">لوحة قديمة %1$s</string>
     <string name="settings_retropad_button_unassigned">غير مسند</string>
-    <string name="settings_gamepad_category_enabled">وحدات التحكم المفعلة</string>
     <string name="settings_gamepad_category_general">عام</string>
     <string name="settings_gamepad_title_reset_bindings">إعادة ضبط الارتباطات</string>
     <string name="settings_gamepad_title_game_menu">القائمة</string>
