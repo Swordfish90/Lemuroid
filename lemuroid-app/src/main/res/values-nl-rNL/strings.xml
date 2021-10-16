@@ -22,11 +22,9 @@
     <string name="settings_title_enable_autosave">Automatisch state opslaan</string>
     <string name="settings_title_enable_touch_feedback">Trillen bij aanraking</string>
     <string name="settings_title_tilt_sensitivity">Kantel sensitiviteit</string>
-    <string name="settings_gamepad_settings">Controller instellingen</string>
     <string name="settings_gamepad_button_name">Knop %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Niet toegewezen</string>
-    <string name="settings_gamepad_category_enabled">Geactiveerde Controllers</string>
     <string name="settings_gamepad_category_general">Algemeen</string>
     <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
