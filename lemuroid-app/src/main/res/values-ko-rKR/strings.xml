@@ -23,11 +23,9 @@
     <string name="settings_title_enable_autosave">상태 자동 저장</string>
     <string name="settings_title_enable_touch_feedback">터치 시 진동</string>
     <string name="settings_title_tilt_sensitivity">기울임 센서 감도</string>
-    <string name="settings_gamepad_settings">게임패드 설정</string>
     <string name="settings_gamepad_button_name">버튼 %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">할당 안 됨</string>
-    <string name="settings_gamepad_category_enabled">활성화된 게임패드</string>
     <string name="settings_gamepad_category_general">일반</string>
     <string name="settings_gamepad_title_reset_bindings">매핑 초기화</string>
     <string name="settings_gamepad_title_game_menu">메뉴</string>
