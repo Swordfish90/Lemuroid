@@ -155,8 +155,8 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun isVirtualGamePadVisible(): Observable<Boolean> {
-        return gamePadManager
-            .getEnabledGamePadsObservable()
+        return inputDeviceManager
+            .getEnabledInputsObservable()
             .map { it.isEmpty() }
     }
 

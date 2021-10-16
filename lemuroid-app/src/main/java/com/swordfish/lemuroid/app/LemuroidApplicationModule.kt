@@ -34,7 +34,7 @@ import com.swordfish.lemuroid.app.shared.main.PostGameHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
@@ -282,7 +282,7 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun gamepadsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            GamePadManager(context, sharedPreferences)
+            InputDeviceManager(context, sharedPreferences)
 
         @Provides
         @PerApp
@@ -307,8 +307,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gamepadSettingsPreferences(gamePadManager: GamePadManager) =
-            GamePadPreferencesHelper(gamePadManager)
+        fun inputDeviceManager(inputDeviceManager: InputDeviceManager) =
+            GamePadPreferencesHelper(inputDeviceManager)
 
         @Provides
         @PerApp
@@ -376,8 +376,8 @@ abstract class LemuroidApplicationModule {
         fun rumbleManager(
             context: Context,
             rxSettingsManager: RxSettingsManager,
-            gamePadManager: GamePadManager
+            inputDeviceManager: InputDeviceManager
         ) =
-            RumbleManager(context, rxSettingsManager, gamePadManager)
+            RumbleManager(context, rxSettingsManager, inputDeviceManager)
     }
 }

@@ -1,14 +1,14 @@
-package com.swordfish.lemuroid.app.shared.settings
+package com.swordfish.lemuroid.app.shared.input
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
-import android.view.MotionEvent
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.gojuno.koptional.Optional
 import com.gojuno.koptional.toOptional
+import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -17,8 +17,8 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import dagger.Lazy
 
-class GamePadManager(
-    context: Context,
+class InputDeviceManager(
+    private val context: Context,
     sharedPreferencesFactory: Lazy<SharedPreferences>
 ) {
 
@@ -30,8 +30,8 @@ class GamePadManager(
         RxSharedPreferences.create(sharedPreferencesFactory.get())
     }
 
-    fun getGamePadsBindingsObservable(): Observable<(InputDevice?)->Map<Int, Int>> {
-        return getEnabledGamePadsObservable()
+    fun getInputBindingsObservable(): Observable<(InputDevice?)->Map<Int, Int>> {
+        return getEnabledInputsObservable()
             .observeOn(Schedulers.io())
             .flatMapSingle { inputDevices ->
                 Observable.fromIterable(inputDevices).flatMapSingle { inputDevice ->
@@ -42,24 +42,25 @@ class GamePadManager(
             .map { bindings -> { bindings[it] ?: mapOf() } }
     }
 
-    fun getGamePadMenuShortCutObservable(): Observable<Optional<GameMenuShortcut>> {
-        return getEnabledGamePadsObservable()
+    fun getInputMenuShortCutObservable(): Observable<Optional<GameMenuShortcut>> {
+        return getEnabledInputsObservable()
             .observeOn(Schedulers.io())
             .map { devices ->
-                devices.firstOrNull()
+                val device = devices.firstOrNull()
+                device
                     ?.let {
                         sharedPreferences.getString(
                             computeGameMenuShortcutPreference(it),
                             GameMenuShortcut.getDefault(it)?.name
                         )
                     }
-                    ?.let { GameMenuShortcut.findByName(it) }
+                    ?.let { GameMenuShortcut.findByName(device, it) }
                     .toOptional()
             }
     }
 
     fun getGamePadsPortMapperObservable(): Observable<(InputDevice?)->Int?> {
-        return getEnabledGamePadsObservable().map { gamePads ->
+        return getEnabledInputsObservable().map { gamePads ->
             val portMappings = gamePads
                 .mapIndexed { index, inputDevice -> inputDevice.id to index }
                 .toMap()
@@ -68,7 +69,7 @@ class GamePadManager(
     }
 
     private fun getBindings(inputDevice: InputDevice): Single<Map<Int, Int>> {
-        return Observable.fromIterable(INPUT_KEYS)
+        return Observable.fromIterable(inputDevice.getInputClass().getInputKeys())
             .flatMapSingle { keyCode ->
                 retrieveMappingFromPreferences(
                     inputDevice,
@@ -113,7 +114,7 @@ class GamePadManager(
             .subscribeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getEnabledGamePadsObservable(): Observable<List<InputDevice>> {
+    fun getEnabledInputsObservable(): Observable<List<InputDevice>> {
         return getGamePadsObservable()
             .flatMap { devices ->
                 if (devices.isEmpty()) {
@@ -123,7 +124,8 @@ class GamePadManager(
                 val enabledGamePads = devices.map { device ->
                     rxSharedPreferences
                         .flatMapObservable {
-                            it.getBoolean(computeEnabledGamePadPreference(device), true).asObservable()
+                            val defaultValue = device.getInputClass().isEnabledByDefault(context)
+                            it.getBoolean(computeEnabledGamePadPreference(device), defaultValue).asObservable()
                         }
                 }
 
@@ -139,32 +141,28 @@ class GamePadManager(
     ): Single<Int> {
         val valueSingle = Single.fromCallable {
             val sharedPreferencesKey = computeKeyBindingPreference(inputDevice, keyCode)
-            val sharedPreferencesDefault = getDefaultBinding(keyCode).toString()
+            val sharedPreferencesDefault = getDefaultBinding(inputDevice, keyCode).toString()
             sharedPreferences.getString(sharedPreferencesKey, sharedPreferencesDefault)
         }
 
         return valueSingle.map { it.toInt() }.subscribeOn(Schedulers.io())
     }
 
-    fun getDefaultBinding(keyCode: Int) = DEFAULT_BINDINGS.getValue(keyCode)
+    fun getDefaultBinding(inputDevice: InputDevice, keyCode: Int): Int {
+        return inputDevice
+            .getInputClass()
+            .getDefaultBindings()
+            .getValue(keyCode)
+    }
 
     private fun getAllGamePads(): List<InputDevice> {
         return runCatching {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
-                .filter { isGamePad(it) }
+                .filter { InputClassGamePad.isSupported(it) || InputClassKeyboard.isSupported(it) }
+                .filter { it.name !in BLACKLISTED_DEVICES }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()
-    }
-
-    private fun isGamePad(device: InputDevice): Boolean {
-        return sequenceOf(
-            device.name !in BLACKLISTED_DEVICES,
-            device.sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD,
-            device.hasKeys(*MINIMAL_SUPPORTED_KEYS).all { it },
-            device.isVirtual.not(),
-            device.controllerNumber > 0
-        ).all { it }
     }
 
     companion object {
@@ -179,13 +177,6 @@ class GamePadManager(
             "virtual-search"
         )
 
-        private val MINIMAL_SUPPORTED_KEYS = intArrayOf(
-            KeyEvent.KEYCODE_BUTTON_A,
-            KeyEvent.KEYCODE_BUTTON_B,
-            KeyEvent.KEYCODE_BUTTON_X,
-            KeyEvent.KEYCODE_BUTTON_Y,
-        )
-
         fun computeEnabledGamePadPreference(inputDevice: InputDevice) =
             "${GAME_PAD_ENABLED_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}"
 
@@ -194,47 +185,6 @@ class GamePadManager(
 
         fun computeKeyBindingPreference(inputDevice: InputDevice, keyCode: Int) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"
-
-        val TRIGGER_MOTIONS_TO_KEYS = mapOf(
-            MotionEvent.AXIS_BRAKE to KeyEvent.KEYCODE_BUTTON_L2,
-            MotionEvent.AXIS_THROTTLE to KeyEvent.KEYCODE_BUTTON_R2,
-            MotionEvent.AXIS_LTRIGGER to KeyEvent.KEYCODE_BUTTON_L2,
-            MotionEvent.AXIS_RTRIGGER to KeyEvent.KEYCODE_BUTTON_R2
-        )
-
-        val INPUT_KEYS = listOf(
-            KeyEvent.KEYCODE_BUTTON_A,
-            KeyEvent.KEYCODE_BUTTON_B,
-            KeyEvent.KEYCODE_BUTTON_X,
-            KeyEvent.KEYCODE_BUTTON_Y,
-            KeyEvent.KEYCODE_BUTTON_START,
-            KeyEvent.KEYCODE_BUTTON_SELECT,
-            KeyEvent.KEYCODE_BUTTON_L1,
-            KeyEvent.KEYCODE_BUTTON_R1,
-            KeyEvent.KEYCODE_BUTTON_L2,
-            KeyEvent.KEYCODE_BUTTON_R2,
-            KeyEvent.KEYCODE_BUTTON_THUMBL,
-            KeyEvent.KEYCODE_BUTTON_THUMBR,
-            KeyEvent.KEYCODE_BUTTON_C,
-            KeyEvent.KEYCODE_BUTTON_Z,
-            KeyEvent.KEYCODE_BUTTON_1,
-            KeyEvent.KEYCODE_BUTTON_2,
-            KeyEvent.KEYCODE_BUTTON_3,
-            KeyEvent.KEYCODE_BUTTON_4,
-            KeyEvent.KEYCODE_BUTTON_5,
-            KeyEvent.KEYCODE_BUTTON_6,
-            KeyEvent.KEYCODE_BUTTON_7,
-            KeyEvent.KEYCODE_BUTTON_8,
-            KeyEvent.KEYCODE_BUTTON_9,
-            KeyEvent.KEYCODE_BUTTON_10,
-            KeyEvent.KEYCODE_BUTTON_11,
-            KeyEvent.KEYCODE_BUTTON_12,
-            KeyEvent.KEYCODE_BUTTON_13,
-            KeyEvent.KEYCODE_BUTTON_14,
-            KeyEvent.KEYCODE_BUTTON_15,
-            KeyEvent.KEYCODE_BUTTON_16,
-            KeyEvent.KEYCODE_BUTTON_MODE
-        )
 
         val OUTPUT_KEYS = listOf(
             KeyEvent.KEYCODE_BUTTON_A,
@@ -250,14 +200,11 @@ class GamePadManager(
             KeyEvent.KEYCODE_BUTTON_THUMBL,
             KeyEvent.KEYCODE_BUTTON_THUMBR,
             KeyEvent.KEYCODE_BUTTON_MODE,
-            KeyEvent.KEYCODE_UNKNOWN
+            KeyEvent.KEYCODE_UNKNOWN,
+            KeyEvent.KEYCODE_DPAD_UP,
+            KeyEvent.KEYCODE_DPAD_LEFT,
+            KeyEvent.KEYCODE_DPAD_DOWN,
+            KeyEvent.KEYCODE_DPAD_RIGHT,
         )
-
-        private val DEFAULT_BINDINGS = mapOf(
-            KeyEvent.KEYCODE_BUTTON_A to KeyEvent.KEYCODE_BUTTON_B,
-            KeyEvent.KEYCODE_BUTTON_B to KeyEvent.KEYCODE_BUTTON_A,
-            KeyEvent.KEYCODE_BUTTON_X to KeyEvent.KEYCODE_BUTTON_Y,
-            KeyEvent.KEYCODE_BUTTON_Y to KeyEvent.KEYCODE_BUTTON_X
-        ).withDefault { if (it in OUTPUT_KEYS) it else KeyEvent.KEYCODE_UNKNOWN }
     }
 }

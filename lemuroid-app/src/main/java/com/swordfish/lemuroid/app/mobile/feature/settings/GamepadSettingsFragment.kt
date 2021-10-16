@@ -6,7 +6,7 @@ import android.view.InputDevice
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.uber.autodispose.android.lifecycle.scope
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class GamepadSettingsFragment : PreferenceFragmentCompat() {
 
     @Inject lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
-    @Inject lateinit var gamePadManager: GamePadManager
+    @Inject lateinit var inputDeviceManager: InputDeviceManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -29,7 +29,7 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore =
             SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
         setPreferencesFromResource(R.xml.empty_preference_screen, rootKey)
-        gamePadManager.getGamePadsObservable()
+        inputDeviceManager.getGamePadsObservable()
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())

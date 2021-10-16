@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers
 class TVGameMenuFragment(
     private val statesManager: StatesManager,
     private val statesPreviewManager: StatesPreviewManager,
-    private val gamePadManager: GamePadManager,
+    private val inputDeviceManager: InputDeviceManager,
     private val game: Game,
     private val systemCoreConfig: SystemCoreConfig,
     private val coreOptions: Array<LemuroidCoreOption>,
@@ -48,7 +48,7 @@ class TVGameMenuFragment(
 
         setupLoadAndSave()
 
-        gamePadManager.getGamePadsObservable()
+        inputDeviceManager.getGamePadsObservable()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribeBy {
