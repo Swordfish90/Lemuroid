@@ -23,11 +23,9 @@
     <string name="settings_title_enable_autosave">Automatisch gespeicherte Zustand</string>
     <string name="settings_title_enable_touch_feedback">Vibrieren bei Berührung</string>
     <string name="settings_title_tilt_sensitivity">Neigungssensor Empfindlichkeit</string>
-    <string name="settings_gamepad_settings">Gamepad Einstellungen</string>
     <string name="settings_gamepad_button_name">Taste %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Unbelegt</string>
-    <string name="settings_gamepad_category_enabled">Aktivierte Gamepads</string>
     <string name="settings_gamepad_category_general">Allgemein</string>
     <string name="settings_gamepad_title_reset_bindings">Zuordnungen zurücksetzen</string>
     <string name="settings_gamepad_title_game_menu">Menü</string>
