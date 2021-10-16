@@ -22,11 +22,9 @@
     <string name="settings_title_enable_autosave">Автосохранение</string>
     <string name="settings_title_enable_touch_feedback">Вибрация нажатия</string>
     <string name="settings_title_tilt_sensitivity">Чувствительность датчика наклона</string>
-    <string name="settings_gamepad_settings">Настройки геймпада</string>
     <string name="settings_gamepad_button_name">Клавиша %1$s</string>
     <string name="settings_retropad_button_name">Ретро клавиша%1$s</string>
     <string name="settings_retropad_button_unassigned">Не назначен</string>
-    <string name="settings_gamepad_category_enabled">Включенные геймпады</string>
     <string name="settings_gamepad_category_general">Общее</string>
     <string name="settings_gamepad_title_reset_bindings">Сбросить назначение клавиш</string>
     <string name="settings_gamepad_title_game_menu">Меню.</string>
