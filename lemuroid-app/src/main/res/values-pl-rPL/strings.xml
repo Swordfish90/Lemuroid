@@ -22,11 +22,9 @@
     <string name="settings_title_enable_autosave">Automatyczne zapisywanie stanu</string>
     <string name="settings_title_enable_touch_feedback">Wibracje przy dotknięciu</string>
     <string name="settings_title_tilt_sensitivity">Czułość czujnika nachylenia</string>
-    <string name="settings_gamepad_settings">Ustawienia kontrolera</string>
     <string name="settings_gamepad_button_name">Przycisk %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Nie przypisano</string>
-    <string name="settings_gamepad_category_enabled">Włącz Kontrolery</string>
     <string name="settings_gamepad_category_general">Ogólne</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
     <string name="settings_title_open_cores_selection">Zmień Rdzenie</string>
