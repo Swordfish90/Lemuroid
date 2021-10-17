@@ -25,7 +25,7 @@
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
     <string name="settings_title_maximum_cache_usage">Limite dimensione cache</string>
     <string name="settings_title_gamepad_settings">Dispositivi esterni</string>
-    <string name="settings_description_gamepad_settings">Configura controller e tastiere</string>
+    <string name="settings_description_gamepad_settings">Configura controller e tastiere collegati</string>
     <string name="settings_gamepad_button_name">Pulsante %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Non assegnato</string>
@@ -48,7 +48,7 @@
     <string name="settings_title_enable_rumble">Vibrazione</string>
     <string name="settings_description_enable_rumble">Abilita vibrazione per giochi e controller supportati</string>
     <string name="settings_title_enable_device_rumble">Vibrazione dispositivo</string>
-    <string name="settings_description_enable_device_rumble">Quando nessun controller è collegato fai vibrare il device</string>
+    <string name="settings_description_enable_device_rumble">Quando nessun controller è collegato fai vibrare il dispositivo</string>
     <string name="reset_settings_warning_message_title">Sei sicuro?</string>
     <string name="reset_settings_warning_message_description">Questo ripristinerà Lemuroid alle sue impostazioni di fabbrica. Salvataggi e Stati saranno preservati.</string>
     <string name="settings_title_save_sync">Salvataggi Cloud</string>
