@@ -23,9 +23,13 @@
     <string name="settings_title_enable_autosave">Salvataggio automatico stato</string>
     <string name="settings_title_enable_touch_feedback">Vibra al tocco</string>
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
+    <string name="settings_title_maximum_cache_usage">Limite dimensione cache</string>
+    <string name="settings_title_gamepad_settings">Dispositivi esterni</string>
+    <string name="settings_description_gamepad_settings">Configura controller e tastiere</string>
     <string name="settings_gamepad_button_name">Pulsante %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Non assegnato</string>
+    <string name="settings_gamepad_category_enabled">Dispositivi abilitati</string>
     <string name="settings_gamepad_category_general">Generale</string>
     <string name="settings_gamepad_title_reset_bindings">Resetta associazioni</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
@@ -41,6 +45,10 @@
     <string name="settings_description_advanced_settings">Mostra impostazioni avanzate</string>
     <string name="settings_title_low_latency_audio">Preferisci audio a bassa latenza</string>
     <string name="settings_description_low_latency_audio">Riduce la latenza audio sui dispositivi supportati. Potrebbe causare piccoli glitch sonori.</string>
+    <string name="settings_title_enable_rumble">Vibrazione</string>
+    <string name="settings_description_enable_rumble">Abilita vibrazione per giochi e controller supportati</string>
+    <string name="settings_title_enable_device_rumble">Vibrazione dispositivo</string>
+    <string name="settings_description_enable_device_rumble">Quando nessun controller è collegato fai vibrare il device</string>
     <string name="reset_settings_warning_message_title">Sei sicuro?</string>
     <string name="reset_settings_warning_message_description">Questo ripristinerà Lemuroid alle sue impostazioni di fabbrica. Salvataggi e Stati saranno preservati.</string>
     <string name="settings_title_save_sync">Salvataggi Cloud</string>
@@ -81,6 +89,7 @@
     <string name="core_settings_category_preferences">Impostazioni</string>
     <string name="core_settings_category_controllers">Controller</string>
     <string name="core_settings_controller">Controller %1$s</string>
+    <string name="game_menu_long_press">Tieni premuto</string>
     <string name="game_menu_title">Menu di gioco</string>
     <string name="notification_channel_name">Tutte le notifiche</string>
     <string name="library_index_notification_title">Scansione delle ROM in corso</string>
