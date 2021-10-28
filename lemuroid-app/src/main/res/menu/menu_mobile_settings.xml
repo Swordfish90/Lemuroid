@@ -6,4 +6,10 @@
         android:icon="@drawable/ic_help"
         app:showAsAction="always"
         android:title="@string/mobile_settings_help" />
+
+    <item
+        android:id="@+id/menu_options_sync"
+        android:icon="@drawable/ic_sync_white_24dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/save_sync" />
 </menu>

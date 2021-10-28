@@ -32,6 +32,7 @@ import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
@@ -111,6 +112,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         return when (item.itemId) {
             R.id.menu_options_help -> {
                 displayLemuroidHelp()
+                true
+            }
+            R.id.menu_options_sync -> {
+                SaveSyncWork.enqueueManualWork(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)

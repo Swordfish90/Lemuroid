@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
@@ -69,6 +70,7 @@ class TVHomeFragment : BrowseSupportFragment() {
                         TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
                         TVSettingType.SETTINGS -> launchTVSettings()
                         TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
+                        TVSettingType.SAVE_SYNC -> SaveSyncWork.enqueueManualWork(requireContext())
                     }
                 }
             }
@@ -201,6 +203,7 @@ class TVHomeFragment : BrowseSupportFragment() {
             add(TVSetting(TVSettingType.RESCAN, rescanEnabled))
             add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, rescanEnabled))
             add(TVSetting(TVSettingType.SETTINGS))
+            add(TVSetting(TVSettingType.SAVE_SYNC, rescanEnabled))
         }
     }
 
