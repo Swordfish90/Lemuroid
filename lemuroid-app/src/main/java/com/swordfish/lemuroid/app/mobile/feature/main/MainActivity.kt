@@ -32,6 +32,7 @@ import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.PostGameHandler
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
@@ -41,6 +42,7 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import io.reactivex.rxkotlin.subscribeBy
@@ -50,6 +52,7 @@ import javax.inject.Inject
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
     @Inject lateinit var postGameHandler: PostGameHandler
+    @Inject lateinit var saveSyncManager: SaveSyncManager
 
     private val reviewManager = ReviewManager()
     private var mainViewModel: MainViewModel? = null
@@ -102,6 +105,13 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         }
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val isSupported = saveSyncManager.isSupported()
+        val isConfigured = saveSyncManager.isConfigured()
+        menu?.findItem(R.id.menu_options_sync)?.isVisible = isSupported && isConfigured
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_mobile_settings, menu)
         return super.onCreateOptionsMenu(menu)
@@ -111,6 +121,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         return when (item.itemId) {
             R.id.menu_options_help -> {
                 displayLemuroidHelp()
+                true
+            }
+            R.id.menu_options_sync -> {
+                SaveSyncWork.enqueueManualWork(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)

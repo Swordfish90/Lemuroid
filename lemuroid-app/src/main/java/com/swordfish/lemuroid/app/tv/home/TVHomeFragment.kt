@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
@@ -30,6 +31,7 @@ import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.autoDispose
@@ -43,6 +45,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
+    @Inject lateinit var saveSyncManager: SaveSyncManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -69,6 +72,7 @@ class TVHomeFragment : BrowseSupportFragment() {
                         TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
                         TVSettingType.SETTINGS -> launchTVSettings()
                         TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
+                        TVSettingType.SAVE_SYNC -> SaveSyncWork.enqueueManualWork(requireContext())
                     }
                 }
             }
@@ -201,6 +205,9 @@ class TVHomeFragment : BrowseSupportFragment() {
             add(TVSetting(TVSettingType.RESCAN, rescanEnabled))
             add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, rescanEnabled))
             add(TVSetting(TVSettingType.SETTINGS))
+            if (saveSyncManager.isSupported() && saveSyncManager.isConfigured()) {
+                add(TVSetting(TVSettingType.SAVE_SYNC, rescanEnabled))
+            }
         }
     }
 
