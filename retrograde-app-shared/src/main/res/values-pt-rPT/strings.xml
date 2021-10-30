@@ -25,6 +25,7 @@
     <string name="setting_gambatte_gb_internal_palette">Paleta interna</string>
     <string name="setting_gambatte_mix_frames">Efeito Fantasma do LCD</string>
     <string name="setting_gambatte_dark_filter_level">Escurecer a tela</string>
+    <string name="setting_gambatte_gbc_color_correction">Correção de cor</string>
     <string name="setting_mgba_solar_sensor_level">Nível do sensor solar</string>
     <string name="setting_mgba_interframe_blending">Efeito Fantasma do LCD</string>
     <string name="setting_mgba_frameskip">Frameskip</string>
@@ -52,6 +53,7 @@
     <string name="value_gambatte_mix_frames_mix">Simples</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">Efeito Fantasma do LCD (Preciso)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">Efeito Fantasma do LCD (Rápido)</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Desabilitado</string>
     <string name="value_mgba_interframe_blending_off">Desabilitado</string>
     <string name="value_mgba_interframe_blending_mix">Simples</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">Efeito Fantasma do LCD (Preciso)</string>
@@ -78,6 +80,9 @@
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Interpretador em cache</string>
     <string name="value_mupen64plus_bilinearmode_standard">Padrão</string>
     <string name="value_mupen64plus_bilinearmode_3point">3-Pontos</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_memory">Memória</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Nenhum</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">Nenhum</string>
     <string name="value_melonds_screen_layout_topbottom">Superior - Inferior</string>
     <string name="value_melonds_screen_layout_leftright">Esquerda - Direita</string>
     <string name="value_melonds_screen_layout_hybridtop">Topo Híbrido</string>
