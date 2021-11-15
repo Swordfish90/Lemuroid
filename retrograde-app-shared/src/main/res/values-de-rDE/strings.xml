@@ -35,6 +35,8 @@
     <string name="setting_mupen64plus_43screensize">Bildschirmgröße 4:3</string>
     <string name="setting_mupen64plus_cpucore">Dynamischer Neukompilierer</string>
     <string name="setting_mupen64plus_BilinearMode">Bilinear Modus</string>
+    <string name="setting_mupen64plus_pak1">Spieler 1 Pak</string>
+    <string name="setting_mupen64plus_pak2">Spieler 2 Pak</string>
     <string name="setting_pcsx_rearmed_frameskip">Frameskip</string>
     <string name="setting_pcsx_rearmed_drc">Dynamischer Neukompilierer</string>
     <string name="setting_ppsspp_auto_frameskip">Auto frameskip</string>
@@ -87,6 +89,11 @@
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Zwischengespeicherter Interpreter</string>
     <string name="value_mupen64plus_bilinearmode_standard">Standard</string>
     <string name="value_mupen64plus_bilinearmode_3point">3-Punkt</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_memory">Arbeitsspeicher</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_rumble">Rumble</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Nichts</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">Nichts</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_rumble">Rumble</string>
     <string name="value_melonds_screen_layout_topbottom">Oben - Unten</string>
     <string name="value_melonds_screen_layout_leftright">Links - Rechts</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybrid oben</string>
