@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="local_storage">Lokale Opslag</string>
+    <string name="controller_arcade_4">Standaard (4 knoppen)</string>
+    <string name="controller_arcade_6">Standaard (6 knoppen)</string>
+    <string name="controller_genesis_3">Standaard (3 knoppen)</string>
+    <string name="controller_genesis_6">Standaard (6 knoppen)</string>
+    <string name="controller_default">Standaard</string>
+    <string name="controller_dualshock">DualShock</string>
+    <string name="controller_standard">Standaard</string>
+    <string name="controller_landscape">Landschap</string>
+    <string name="controller_portrait">Portret</string>
+    <string name="controller_dos_auto">Automatisch</string>
+    <string name="controller_dos_mouse_left">Muis met linkerstick</string>
+    <string name="controller_dos_mouse_right">Muis met rechterstick</string>
     <!-- Core settings titles -->
+    <string name="setting_stella_filter">TV effect</string>
+    <string name="setting_stella_crop_hoverscan">Horizontale overscan bijsnijden</string>
+    <string name="setting_fceumm_overscan_h">Horizontale overscan bijsnijden</string>
+    <string name="setting_fceumm_overscan_v">Verticale overscan bijsnijden</string>
+    <string name="setting_fceumm_nospritelimit">Geen sprite-limiet</string>
+    <string name="setting_genesis_plus_gx_blargg_ntsc_filter">TV effect</string>
+    <string name="setting_genesis_plus_gx_overscan">Randen</string>
+    <string name="setting_genesis_plus_gx_lcd_filter">LCD ghosting</string>
+    <string name="setting_genesis_plus_gx_no_sprite_limit">Geen sprite-limiet</string>
+    <string name="setting_gambatte_gb_colorization">Kleur</string>
+    <string name="setting_gambatte_gb_internal_palette">Interne palet</string>
+    <string name="setting_gambatte_mix_frames">LCD ghosting</string>
+    <string name="setting_gambatte_dark_filter_level">Scherm donker maken</string>
+    <string name="setting_gambatte_gbc_color_correction">Kleurcorrectie</string>
+    <string name="setting_mgba_solar_sensor_level">Sensorniveau zon</string>
+    <string name="setting_mgba_interframe_blending">LCD ghosting</string>
+    <string name="setting_mgba_frameskip">Frameskip</string>
+    <string name="setting_mgba_color_correction">Kleurcorrectie</string>
+    <string name="setting_mupen64plus_43screensize">Schermgrootte 4:3</string>
+    <string name="setting_mupen64plus_cpucore">Dynamische recompiler</string>
+    <string name="setting_mupen64plus_BilinearMode">Bilinear modus</string>
+    <string name="setting_mupen64plus_pak1">Speler 1 Pak</string>
+    <string name="setting_mupen64plus_pak2">Speler 2 Pak</string>
+    <string name="setting_pcsx_rearmed_frameskip">Frameskip</string>
+    <string name="setting_pcsx_rearmed_drc">Dynamische recompiler</string>
+    <string name="setting_ppsspp_auto_frameskip">Auto frameskip</string>
+    <string name="setting_ppsspp_frameskip">Frameskip</string>
+    <string name="setting_ppsspp_cpu_core">Dynamische recompiler</string>
+    <string name="setting_ppsspp_internal_resolution">Resolutie</string>
+    <string name="setting_ppsspp_texture_scaling_level">Textuur schaal niveau</string>
+    <string name="setting_ppsspp_texture_scaling_type">Textuur schaal type</string>
+    <string name="setting_ppsspp_texture_filtering">Textuur filtering</string>
+    <string name="setting_fbneo_frameskip">Frameskip</string>
+    <string name="setting_fbneo_cpu_speed_adjust">CPU Snelheid</string>
+    <string name="setting_desmume_frameskip">Frameskip</string>
+    <string name="setting_melonds_screen_layout">Scherm lay-out</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
 </resources>
