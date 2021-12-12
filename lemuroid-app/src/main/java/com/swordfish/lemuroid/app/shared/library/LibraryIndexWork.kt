@@ -35,6 +35,7 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
         return lemuroidLibrary.indexLibrary()
             .toSingleDefault(Result.success())
             .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
+            .doFinally { LibraryIndexScheduler.scheduleCoreUpdate(applicationContext) }
             .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
     }
 

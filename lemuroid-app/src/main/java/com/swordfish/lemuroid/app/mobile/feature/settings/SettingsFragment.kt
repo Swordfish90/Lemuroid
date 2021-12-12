@@ -63,6 +63,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
+        val stopRescanPreference: Preference? = findPreference(getString(R.string.pref_key_stop_rescan))
         val displayBiosPreference: Preference? = findPreference(getString(R.string.pref_key_display_bios_info))
         val resetSettings: Preference? = findPreference(getString(R.string.pref_key_reset_settings))
 
@@ -74,7 +75,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
 
         settingsViewModel.indexingInProgress.observe(this) {
-            rescanPreference?.isEnabled = !it
+            stopRescanPreference?.isVisible = it
+            rescanPreference?.isVisible = !it
             currentDirectory?.isEnabled = !it
             displayBiosPreference?.isEnabled = !it
             resetSettings?.isEnabled = !it
@@ -86,6 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             getString(R.string.pref_key_rescan) -> rescanLibrary()
+            getString(R.string.pref_key_stop_rescan) -> stopRescanLibrary()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
             getString(R.string.pref_key_open_gamepad_settings) -> handleOpenGamePadSettings()
             getString(R.string.pref_key_open_save_sync_settings) -> handleDisplaySaveSync()
@@ -139,7 +142,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun rescanLibrary() {
-        context?.let { LibraryIndexScheduler.scheduleFullSync(it) }
+        context?.let { LibraryIndexScheduler.scheduleLibrarySync(it) }
+    }
+
+    private fun stopRescanLibrary() {
+        context?.let { LibraryIndexScheduler.cancelLibrarySync(it) }
     }
 
     @dagger.Module

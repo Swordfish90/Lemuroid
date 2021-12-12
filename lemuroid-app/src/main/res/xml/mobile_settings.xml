@@ -19,6 +19,13 @@
             app:iconSpaceReserved="false"
             android:persistent="false"/>
 
+        <Preference
+            android:key="@string/pref_key_stop_rescan"
+            android:title="@string/stop"
+            app:iconSpaceReserved="false"
+            app:isPreferenceVisible="false"
+            android:persistent="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

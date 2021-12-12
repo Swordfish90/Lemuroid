@@ -17,7 +17,7 @@ class SettingsInteractor(
     fun resetAllSettings() {
         SharedPreferencesHelper.getLegacySharedPreferences(context).edit().clear().apply()
         SharedPreferencesHelper.getSharedPreferences(context).edit().clear().apply()
-        LibraryIndexScheduler.scheduleFullSync(context.applicationContext)
+        LibraryIndexScheduler.scheduleLibrarySync(context.applicationContext)
         CacheCleanerWork.enqueueCleanCacheAll(context.applicationContext)
         deleteDownloadedCores()
     }

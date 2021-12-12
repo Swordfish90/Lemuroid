@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_key_rescan" translatable="false">rescan</string>
+    <string name="pref_key_stop_rescan" translatable="false">stop_rescan</string>
     <string name="pref_key_display_bios_info" translatable="false">display_bios_info</string>
     <string name="pref_key_advanced_settings" translatable="false">advanced_settings</string>
     <string name="pref_key_open_cores_selection" translatable="false">open_cores_selection</string>

@@ -66,13 +66,18 @@ class TVHomeFragment : BrowseSupportFragment() {
                 }
                 is TVSetting -> {
                     when (item.type) {
-                        TVSettingType.RESCAN -> LibraryIndexScheduler.scheduleFullSync(
+                        TVSettingType.STOP_RESCAN -> LibraryIndexScheduler.cancelLibrarySync(
+                            requireContext().applicationContext
+                        )
+                        TVSettingType.RESCAN -> LibraryIndexScheduler.scheduleLibrarySync(
                             requireContext().applicationContext
                         )
                         TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
                         TVSettingType.SETTINGS -> launchTVSettings()
                         TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
-                        TVSettingType.SAVE_SYNC -> SaveSyncWork.enqueueManualWork(requireContext())
+                        TVSettingType.SAVE_SYNC -> SaveSyncWork.enqueueManualWork(
+                            requireContext().applicationContext
+                        )
                     }
                 }
             }
@@ -202,7 +207,12 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     private fun buildSettingsRowItems(rescanEnabled: Boolean): List<TVSetting> {
         return mutableListOf<TVSetting>().apply {
-            add(TVSetting(TVSettingType.RESCAN, rescanEnabled))
+            if (rescanEnabled) {
+                add(TVSetting(TVSettingType.RESCAN, true))
+            } else {
+                add(TVSetting(TVSettingType.STOP_RESCAN, true))
+            }
+
             add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, rescanEnabled))
             add(TVSetting(TVSettingType.SETTINGS))
             if (saveSyncManager.isSupported() && saveSyncManager.isConfigured()) {
