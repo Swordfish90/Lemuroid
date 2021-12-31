@@ -16,15 +16,21 @@
     <string name="ok">Aceptar</string>
     <string name="cancel">Cancelar</string>
     <string name="settings">Configuración</string>
+    <string name="save_sync">Guardar Sincronización</string>
     <string name="show_all">Mostrar todo</string>
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Entrada</string>
+    <string name="settings_category_misc">Otros</string>
     <string name="settings_title_enable_autosave">Autoguardar estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar al tocar</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidad del sensor de inclinación</string>
+    <string name="settings_title_maximum_cache_usage">Límite de tamaño en caché</string>
+    <string name="settings_title_gamepad_settings">Dispositivos externos</string>
+    <string name="settings_description_gamepad_settings">Configurar gamepads y teclados externos</string>
     <string name="settings_gamepad_button_name">Botón %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Sin asignar</string>
+    <string name="settings_gamepad_category_enabled">Dispositivos habilitados</string>
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Restablecer asociaciones</string>
     <string name="settings_gamepad_title_game_menu">Menú</string>
@@ -36,6 +42,14 @@
     <string name="settings_bios_category_not_detected">Admitidos</string>
     <string name="settings_title_reset_settings">Restablecer datos de fábrica</string>
     <string name="settings_description_reset_settings">Restablecer Lemuroid a datos de fábrica</string>
+    <string name="settings_title_advanced_settings">Configuración avanzada</string>
+    <string name="settings_description_advanced_settings">Muestra la configuración avanzada</string>
+    <string name="settings_title_low_latency_audio">Preferir audio de baja latencia</string>
+    <string name="settings_description_low_latency_audio">Reduce la latencia de audio en los dispositivos compatibles. Puede aumentar los fallos de audio.</string>
+    <string name="settings_title_enable_rumble">Vibración</string>
+    <string name="settings_description_enable_rumble">Habilita la vibración en juegos y controladores compatibles</string>
+    <string name="settings_title_enable_device_rumble">Vibración del dispositivo</string>
+    <string name="settings_description_enable_device_rumble">Cuando ningún controlador esté conectado vibrará el dispositivo en su lugar</string>
     <string name="reset_settings_warning_message_title">¿Estás seguro?</string>
     <string name="reset_settings_warning_message_description">Esto restablecerá Lemuroid a sus ajustes de fábrica. Se conservarán los guardados y los estados.</string>
     <string name="settings_title_save_sync">Guardados en la nube</string>
@@ -76,6 +90,7 @@
     <string name="core_settings_category_preferences">Preferencias</string>
     <string name="core_settings_category_controllers">Mandos</string>
     <string name="core_settings_controller">Mando %1$s</string>
+    <string name="game_menu_long_press">Pausar</string>
     <string name="game_menu_title">Menú de juegos</string>
     <string name="notification_channel_name">Todas las notificaciones</string>
     <string name="library_index_notification_title">Escaneo de ROMs en curso</string>
@@ -136,5 +151,10 @@
         <item>Suavizado</item>
         <item>CRT</item>
         <item>LCD</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>Ninguno</item>
+        <item>Presionar</item>
+        <item>Presionar &amp; liberar</item>
     </string-array>
 </resources>
