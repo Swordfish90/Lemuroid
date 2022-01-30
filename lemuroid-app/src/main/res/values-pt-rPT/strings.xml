@@ -9,6 +9,7 @@
     <string name="favorites">Favoritos</string>
     <string name="discover">Descobrir</string>
     <string name="rescan">Reanalisar</string>
+    <string name="stop">Parar</string>
     <string name="none">Nenhum</string>
     <string name="directory">Directoria</string>
     <string name="display_filter">Filtro de exibição</string>
@@ -95,6 +96,7 @@
     <string name="notification_channel_name">Todas as notificações</string>
     <string name="library_index_notification_title">Verificação de ROMs em andamento</string>
     <string name="library_index_notification_message">Isto pode levar alguns minutos</string>
+    <string name="library_index_notification_action_cancel">@string/cancelar</string>
     <string name="save_sync_notification_title">Sincronização das gravações da cloud em curso</string>
     <string name="save_sync_notification_message">Isto pode levar alguns minutos</string>
     <string name="game_running_notification_title">%1$s está em execução</string>
