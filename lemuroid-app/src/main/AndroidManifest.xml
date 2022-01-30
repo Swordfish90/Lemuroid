@@ -91,6 +91,8 @@
         <activity android:name=".app.shared.gamecrash.GameCrashActivity"
             android:theme="@style/GameTheme" />
 
+        <receiver android:name=".app.shared.library.LibraryIndexBroadcastReceiver"/>
+
         <!-- It is not possible to invoke Work from another process with the default initializer.
              We have to disable it and manually initialize it in our custom Application. -->
         <provider

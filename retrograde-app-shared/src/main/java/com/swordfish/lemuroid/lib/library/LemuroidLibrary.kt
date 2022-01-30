@@ -77,9 +77,9 @@ class LemuroidLibrary(
                         handleUnknownFiles(provider, unknownFiles, startedAtMs)
                     }
             }
-            .doOnComplete { removeDeletedBios(startedAtMs) }
-            .doOnComplete { removeDeletedGames(startedAtMs) }
-            .doOnComplete { removeDeletedDataFiles(startedAtMs) }
+            .doFinally { removeDeletedBios(startedAtMs) }
+            .doFinally { removeDeletedGames(startedAtMs) }
+            .doFinally { removeDeletedDataFiles(startedAtMs) }
             .doOnComplete {
                 Timber.i(
                     "Library indexing completed in: ${System.currentTimeMillis() - startedAtMs} ms"
