@@ -9,6 +9,7 @@
     <string name="favorites">المفضلة</string>
     <string name="discover">اكتشف</string>
     <string name="rescan">إعادة الفحص</string>
+    <string name="stop">إيقاف</string>
     <string name="none">لا شيء</string>
     <string name="directory">المجلد</string>
     <string name="display_filter">فلتر العرض</string>
@@ -95,6 +96,7 @@
     <string name="notification_channel_name">جميع الإشعارات</string>
     <string name="library_index_notification_title">فحص الأقراص المدمجة قيد التقدم</string>
     <string name="library_index_notification_message">قد يستغرق ذلك بضع دقائق</string>
+    <string name="library_index_notification_action_cancel">@string/الغاء</string>
     <string name="save_sync_notification_title">يتم مزامنة الحفظ السحابي</string>
     <string name="save_sync_notification_message">قد يستغرق ذلك بضع دقائق</string>
     <string name="game_running_notification_title">%1$s قيد التشغيل</string>
