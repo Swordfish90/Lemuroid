@@ -9,6 +9,7 @@
     <string name="favorites">즐겨찾기</string>
     <string name="discover">발견하기</string>
     <string name="rescan">다시 검색</string>
+    <string name="stop">중단</string>
     <string name="none">없음</string>
     <string name="directory">디렉토리</string>
     <string name="display_filter">디스플레이 필터</string>
@@ -95,6 +96,7 @@
     <string name="notification_channel_name">모든 알림</string>
     <string name="library_index_notification_title">ROM 검색 중</string>
     <string name="library_index_notification_message">몇 분 정도 걸립니다</string>
+    <string name="library_index_notification_action_cancel">@string/cancel</string>
     <string name="save_sync_notification_title">클라우드 동기화 진행 중</string>
     <string name="save_sync_notification_message">몇 분 정도 걸립니다</string>
     <string name="game_running_notification_title">%1$s 실행 중</string>
