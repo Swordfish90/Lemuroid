@@ -739,7 +739,7 @@ data class GameSystem(
                             CoreVariable("pcsx_rearmed_drc", "disabled"),
                         ),
                         rumbleSupported = true,
-                        useLibretroVFS = true
+                        supportsLibretroVFS = true
                     )
                 ),
                 uniqueExtensions = listOf(),
