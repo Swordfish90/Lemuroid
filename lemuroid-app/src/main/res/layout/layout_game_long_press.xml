@@ -1,38 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
     android:visibility="gone"
     android:background="@drawable/loading_circle_background">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/settings_loading_text"
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/settings_loading_progress"
+        app:indicatorSize="@dimen/loading_circle_size"
+        app:trackThickness="@dimen/loading_circle_progress_thickness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceOverline"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"/>
+        android:layout_gravity="center"
+        app:indicatorColor="@color/touch_control_text"/>
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+    <ImageView
+        android:id="@+id/settings_loading_icon"
+        android:layout_width="@dimen/loading_circle_icon_size"
+        android:layout_height="@dimen/loading_circle_icon_size"
+        android:layout_gravity="center"/>
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/settings_loading_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:indicatorColor="@color/touch_control_text"/>
-
-        <ImageView
-            android:id="@+id/settings_loading_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-
-    </FrameLayout>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

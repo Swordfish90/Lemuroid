@@ -279,7 +279,6 @@ class GameActivity : BaseGameActivity() {
                     VirtualLongPressHandler.displayLoading(
                         this,
                         R.drawable.ic_menu,
-                        R.string.game_menu_long_press,
                         cancelMenuButtonEvents
                     )
                         .doOnSuccess {

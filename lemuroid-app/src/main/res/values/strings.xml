@@ -113,8 +113,6 @@
     <string name="core_settings_category_controllers">Controllers</string>
     <string name="core_settings_controller">Controller %1$s</string>
 
-    <string name="game_menu_long_press">Hold</string>
-
     <string name="game_menu_title">Game menu</string>
 
     <string name="notification_channel_name">All notifications</string>
