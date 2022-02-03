@@ -4,14 +4,22 @@ import android.content.Context
 import android.widget.ImageView
 import coil.ImageLoader
 import coil.load
+import coil.util.CoilUtils
 import com.swordfish.lemuroid.common.drawable.TextDrawable
 import com.swordfish.lemuroid.common.graphics.ColorUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import okhttp3.OkHttpClient
 
 class CoverLoader(applicationContext: Context) {
 
     private val imageLoader = ImageLoader.Builder(applicationContext)
         .crossfade(true)
+        .okHttpClient {
+            OkHttpClient.Builder()
+                .cache(CoilUtils.createDefaultCache(applicationContext))
+                .addNetworkInterceptor(ThrottleFailedThumbnailsInterceptor)
+                .build()
+        }
         .build()
 
     fun loadCover(game: Game, imageView: ImageView?) {
