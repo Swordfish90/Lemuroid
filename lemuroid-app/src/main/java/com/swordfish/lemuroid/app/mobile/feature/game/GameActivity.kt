@@ -183,26 +183,26 @@ class GameActivity : BaseGameActivity() {
             else -> HapticConfig.OFF
         }
 
-        val leftPad = RadialGamePad(
-            wrapGamePadConfig(
-                applicationContext,
-                touchControllerConfig.leftConfig,
+        val leftConfig = RadialPadConfigs.getRadialGamePadConfig(
+            touchControllerConfig.leftConfig,
+            RadialPadConfigs.Config(
+                getGamePadTheme(applicationContext),
+                getMenuTheme(applicationContext),
                 hapticConfig
-            ),
-            DEFAULT_MARGINS_DP,
-            this
+            )
         )
+        val leftPad = RadialGamePad(leftConfig, DEFAULT_MARGINS_DP, this)
         leftGamePadContainer.addView(leftPad)
 
-        val rightPad = RadialGamePad(
-            wrapGamePadConfig(
-                applicationContext,
-                touchControllerConfig.rightConfig,
+        val rightConfig = RadialPadConfigs.getRadialGamePadConfig(
+            touchControllerConfig.rightConfig,
+            RadialPadConfigs.Config(
+                getGamePadTheme(applicationContext),
+                getMenuTheme(applicationContext),
                 hapticConfig
-            ),
-            DEFAULT_MARGINS_DP,
-            this
+            )
         )
+        val rightPad = RadialGamePad(rightConfig, DEFAULT_MARGINS_DP, this)
         rightGamePadContainer.addView(rightPad)
 
         val virtualPadEvents = Observable.merge(leftPad.events(), rightPad.events())
@@ -365,13 +365,22 @@ class GameActivity : BaseGameActivity() {
         )
     }
 
-    private fun wrapGamePadConfig(
-        context: Context,
-        config: RadialGamePadConfig,
-        hapticConfig: HapticConfig
-    ): RadialGamePadConfig {
-        val padTheme = getGamePadTheme(context)
-        return config.copy(theme = padTheme, haptic = hapticConfig)
+    private fun getMenuTheme(context: Context): RadialGamePadTheme {
+        val accentColor = GraphicsUtils.colorToRgb(context.getColor(R.color.colorPrimary))
+        val alpha = (255 * PRESSED_COLOR_ALPHA).roundToInt()
+        val pressedColor = GraphicsUtils.rgbaToColor(accentColor + listOf(alpha))
+        val simulatedColor = GraphicsUtils.rgbaToColor(accentColor + (255 * 0.25f).roundToInt())
+        return RadialGamePadTheme(
+            normalColor = context.getColor(R.color.touch_control_background),
+            pressedColor = pressedColor,
+            simulatedColor = simulatedColor,
+            primaryDialBackground = context.getColor(R.color.touch_control_background),
+            textColor = context.getColor(R.color.touch_control_text),
+            enableStroke = true,
+            strokeColor = context.getColor(R.color.touch_control_stroke),
+            strokeLightColor = context.getColor(R.color.touch_control_stroke_light),
+            strokeWidthDp = context.resources.getInteger(R.integer.touch_control_stroke_size_int).toFloat()
+        )
     }
 
     private fun handleGamePadButton(it: Event.Button) {

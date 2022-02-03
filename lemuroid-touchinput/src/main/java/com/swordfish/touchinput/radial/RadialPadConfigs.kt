@@ -7,10 +7,122 @@ import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
 import com.swordfish.radialgamepad.library.config.PrimaryDialConfig
 import com.swordfish.radialgamepad.library.config.SecondaryDialConfig
 import com.swordfish.radialgamepad.library.config.CrossContentDescription
+import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
 import com.swordfish.radialgamepad.library.event.GestureType
+import com.swordfish.radialgamepad.library.haptics.HapticConfig
 import com.swordfish.touchinput.controller.R
 
 object RadialPadConfigs {
+
+    enum class Kind {
+        GB_LEFT,
+        GB_RIGHT,
+        NES_LEFT,
+        NES_RIGHT,
+        DESMUME_LEFT,
+        DESMUME_RIGHT,
+        MELONDS_NDS_LEFT,
+        MELONDS_NDS_RIGHT,
+        PSX_LEFT,
+        PSX_RIGHT,
+        PSX_DUALSHOCK_LEFT,
+        PSX_DUALSHOCK_RIGHT,
+        PSP_LEFT,
+        PSP_RIGHT,
+        SNES_LEFT,
+        SNES_RIGHT,
+        GBA_LEFT,
+        GBA_RIGHT,
+        SMS_LEFT,
+        SMS_RIGHT,
+        GG_LEFT,
+        GG_RIGHT,
+        LYNX_LEFT,
+        LYNX_RIGHT,
+        PCE_LEFT,
+        PCE_RIGHT,
+        DOS_LEFT,
+        DOS_RIGHT,
+        NGP_LEFT,
+        NGP_RIGHT,
+        WS_LANDSCAPE_LEFT,
+        WS_LANDSCAPE_RIGHT,
+        WS_PORTRAIT_LEFT,
+        WS_PORTRAIT_RIGHT,
+        N64_LEFT,
+        N64_RIGHT,
+        GENESIS_3_LEFT,
+        GENESIS_3_RIGHT,
+        GENESIS_6_LEFT,
+        GENESIS_6_RIGHT,
+        ATARI2600_LEFT,
+        ATARI2600_RIGHT,
+        ARCADE_4_LEFT,
+        ARCADE_4_RIGHT,
+        ARCADE_6_LEFT,
+        ARCADE_6_RIGHT,
+        ATARI7800_LEFT,
+        ATARI7800_RIGHT,
+    }
+
+    data class Config(
+        val standardTheme: RadialGamePadTheme,
+        val menuTheme: RadialGamePadTheme,
+        val haptic: HapticConfig
+    )
+
+    fun getRadialGamePadConfig(kind: Kind, config: Config): RadialGamePadConfig {
+        return when (kind) {
+            Kind.GB_LEFT -> getGBLeft(config)
+            Kind.GB_RIGHT -> getGBRight(config)
+            Kind.NES_LEFT -> getNESLeft(config)
+            Kind.NES_RIGHT -> getNESRight(config)
+            Kind.DESMUME_LEFT -> getDesmumeLeft(config)
+            Kind.DESMUME_RIGHT -> getDesmumeRight(config)
+            Kind.MELONDS_NDS_LEFT -> getMelondsLeft(config)
+            Kind.MELONDS_NDS_RIGHT -> getMelondsRight(config)
+            Kind.PSX_LEFT -> getPSXLeft(config)
+            Kind.PSX_RIGHT -> getPSXRight(config)
+            Kind.PSX_DUALSHOCK_LEFT -> getPSXDualshockLeft(config)
+            Kind.PSX_DUALSHOCK_RIGHT -> getPSXDualshockRight(config)
+            Kind.PSP_LEFT -> getPSPLeft(config)
+            Kind.PSP_RIGHT -> getPSPRight(config)
+            Kind.SNES_LEFT -> getSNESLeft(config)
+            Kind.SNES_RIGHT -> getSNESRight(config)
+            Kind.GBA_LEFT -> getGBALeft(config)
+            Kind.GBA_RIGHT -> getGBARight(config)
+            Kind.SMS_LEFT -> getSMSLeft(config)
+            Kind.SMS_RIGHT -> getSMSRight(config)
+            Kind.GG_LEFT -> getGGLeft(config)
+            Kind.GG_RIGHT -> getGGRight(config)
+            Kind.LYNX_LEFT -> getLynxLeft(config)
+            Kind.LYNX_RIGHT -> getLynxRight(config)
+            Kind.PCE_LEFT -> getPCELeft(config)
+            Kind.PCE_RIGHT -> getPCERight(config)
+            Kind.DOS_LEFT -> getDOSLeft(config)
+            Kind.DOS_RIGHT -> getDOSRight(config)
+            Kind.NGP_LEFT -> getNGPLeft(config)
+            Kind.NGP_RIGHT -> getNGPRight(config)
+            Kind.WS_LANDSCAPE_LEFT -> getWSLandscapeLeft(config)
+            Kind.WS_LANDSCAPE_RIGHT -> getWSLandscapeRight(config)
+            Kind.WS_PORTRAIT_LEFT -> getWSPortraitLeft(config)
+            Kind.WS_PORTRAIT_RIGHT -> getWSPortraitRight(config)
+            Kind.N64_LEFT -> getN64Left(config)
+            Kind.N64_RIGHT -> getN64Right(config)
+            Kind.GENESIS_3_LEFT -> getGenesis3Left(config)
+            Kind.GENESIS_3_RIGHT -> getGenesis3Right(config)
+            Kind.GENESIS_6_LEFT -> getGenesis6Left(config)
+            Kind.GENESIS_6_RIGHT -> getGenesis6Right(config)
+            Kind.ATARI2600_LEFT -> getAtari2600Left(config)
+            Kind.ATARI2600_RIGHT -> getAtari2600Right(config)
+            Kind.ARCADE_4_LEFT -> getArcade4Left(config)
+            Kind.ARCADE_4_RIGHT -> getArcade4Right(config)
+            Kind.ARCADE_6_LEFT -> getArcade6Left(config)
+            Kind.ARCADE_6_RIGHT -> getArcade6Right(config)
+            Kind.ATARI7800_LEFT -> getAtari7800Left(config)
+            Kind.ATARI7800_RIGHT -> getAtari7800Right(config)
+        }
+    }
 
     const val MOTION_SOURCE_DPAD = 0
     const val MOTION_SOURCE_LEFT_STICK = 1
@@ -118,8 +230,9 @@ object RadialPadConfigs {
         )
     )
 
-    val GB_LEFT =
+    private fun getGBLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -128,8 +241,9 @@ object RadialPadConfigs {
             )
         )
 
-    val GB_RIGHT =
+    private fun getGBRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -146,12 +260,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val NES_LEFT =
+    private fun getNESLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -160,8 +275,9 @@ object RadialPadConfigs {
             )
         )
 
-    val NES_RIGHT =
+    private fun getNESRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -177,12 +293,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val DESMUME_LEFT =
+    private fun getDesmumeLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -209,8 +326,9 @@ object RadialPadConfigs {
             )
         )
 
-    val DESMUME_RIGHT = RadialGamePadConfig(
-        sockets = 12,
+    private fun getDesmumeRight(config: Config) = RadialGamePadConfig(
+        theme = config.standardTheme,
+            sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
                 ButtonConfig(
@@ -234,12 +352,13 @@ object RadialPadConfigs {
         secondaryDials = listOf(
             SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_R),
             SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-            buildMenuButtonConfig(10)
+            buildMenuButtonConfig(10, config)
         )
     )
 
-    val MELONDS_NDS_LEFT =
+    private fun getMelondsLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -266,8 +385,9 @@ object RadialPadConfigs {
             )
         )
 
-    val MELONDS_NDS_RIGHT = RadialGamePadConfig(
-        sockets = 12,
+    private fun getMelondsRight(config: Config) = RadialGamePadConfig(
+        theme = config.standardTheme,
+            sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
                 ButtonConfig(
@@ -291,12 +411,13 @@ object RadialPadConfigs {
         secondaryDials = listOf(
             SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_R),
             SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-            buildMenuButtonConfig(10)
+            buildMenuButtonConfig(10, config)
         )
     )
 
-    val PSX_LEFT =
+    private fun getPSXLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -307,8 +428,9 @@ object RadialPadConfigs {
             )
         )
 
-    val PSX_RIGHT =
+    private fun getPSXRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -322,12 +444,13 @@ object RadialPadConfigs {
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_R2),
                 SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_R1),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val PSX_DUALSHOCK_LEFT =
+    private fun getPSXDualshockLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -346,8 +469,9 @@ object RadialPadConfigs {
             )
         )
 
-    val PSX_DUALSHOCK_RIGHT =
+    private fun getPSXDualshockRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -369,12 +493,13 @@ object RadialPadConfigs {
                     contentDescription = "Right Stick",
                     supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
                 ),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val N64_LEFT =
+    private fun getN64Left(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -398,8 +523,9 @@ object RadialPadConfigs {
             )
         )
 
-    val N64_RIGHT =
+    private fun getN64Right(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -435,12 +561,13 @@ object RadialPadConfigs {
                         useDiagonals = false
                     )
                 ),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val PSP_LEFT =
+    private fun getPSPLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -456,8 +583,9 @@ object RadialPadConfigs {
             )
         )
 
-    val PSP_RIGHT =
+    private fun getPSPRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -471,12 +599,13 @@ object RadialPadConfigs {
                 SecondaryDialConfig.SingleButton(2, 2, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
                 SecondaryDialConfig.Empty(8, 2, 2.2f),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val SNES_LEFT =
+    private fun getSNESLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -486,8 +615,9 @@ object RadialPadConfigs {
             )
         )
 
-    val SNES_RIGHT =
+    private fun getSNESRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -512,12 +642,13 @@ object RadialPadConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 2, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val GBA_LEFT =
+    private fun getGBALeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -527,8 +658,9 @@ object RadialPadConfigs {
             )
         )
 
-    val GBA_RIGHT =
+    private fun getGBARight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -546,12 +678,13 @@ object RadialPadConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 2, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val GENESIS_3_LEFT =
+    private fun getGenesis3Left(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -560,8 +693,9 @@ object RadialPadConfigs {
             )
         )
 
-    val GENESIS_3_RIGHT =
+    private fun getGenesis3Right(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -581,24 +715,26 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val GENESIS_6_LEFT =
+    private fun getGenesis6Left(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
                 SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(8),
+                buildMenuButtonConfig(8, config),
                 SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
 
-    val GENESIS_6_RIGHT =
+    private fun getGenesis6Right(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -638,8 +774,9 @@ object RadialPadConfigs {
             )
         )
 
-    val ATARI2600_LEFT =
+    private fun getAtari2600Left(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 10,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -663,8 +800,9 @@ object RadialPadConfigs {
             )
         )
 
-    val ATARI2600_RIGHT =
+    private fun getAtari2600Right(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 10,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(),
@@ -690,12 +828,13 @@ object RadialPadConfigs {
                         label = "SELECT"
                     )
                 ),
-                buildMenuButtonConfig(8)
+                buildMenuButtonConfig(8, config)
             )
         )
 
-    val SMS_LEFT =
+    private fun getSMSLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -704,8 +843,9 @@ object RadialPadConfigs {
             )
         )
 
-    val SMS_RIGHT =
+    private fun getSMSRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -721,12 +861,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val GG_LEFT =
+    private fun getGGLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -735,8 +876,9 @@ object RadialPadConfigs {
             )
         )
 
-    val GG_RIGHT =
+    private fun getGGRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -753,12 +895,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val ARCADE_4_LEFT =
+    private fun getArcade4Left(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS_MERGED,
             secondaryDials = listOf(
@@ -767,8 +910,9 @@ object RadialPadConfigs {
             )
         )
 
-    val ARCADE_4_RIGHT =
+    private fun getArcade4Right(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 rotationInDegrees = 60f,
@@ -793,24 +937,26 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val ARCADE_6_LEFT =
+    private fun getArcade6Left(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS_MERGED,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_COIN),
                 SecondaryDialConfig.SingleButton(3, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(8),
+                buildMenuButtonConfig(8, config),
                 SecondaryDialConfig.Empty(9, 1, 1f)
             )
         )
 
-    val ARCADE_6_RIGHT =
+    private fun getArcade6Right(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -849,8 +995,9 @@ object RadialPadConfigs {
             )
         )
 
-    val LYNX_LEFT =
+    private fun getLynxLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -874,8 +1021,9 @@ object RadialPadConfigs {
             )
         )
 
-    val LYNX_RIGHT =
+    private fun getLynxRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 rotationInDegrees = 15f,
@@ -892,12 +1040,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val ATARI7800_LEFT =
+    private fun getAtari7800Left(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -906,8 +1055,9 @@ object RadialPadConfigs {
             )
         )
 
-    val ATARI7800_RIGHT =
+    private fun getAtari7800Right(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -923,12 +1073,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val PCE_LEFT =
+    private fun getPCELeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -937,8 +1088,9 @@ object RadialPadConfigs {
             )
         )
 
-    val PCE_RIGHT =
+    private fun getPCERight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -954,12 +1106,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val DOS_LEFT =
+    private fun getDOSLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1007,8 +1160,9 @@ object RadialPadConfigs {
             )
         )
 
-    val DOS_RIGHT =
+    private fun getDOSRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -1062,12 +1216,13 @@ object RadialPadConfigs {
                     contentDescription = "Right Stick",
                     supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
                 ),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val NGP_LEFT =
+    private fun getNGPLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1076,8 +1231,9 @@ object RadialPadConfigs {
             )
         )
 
-    val NGP_RIGHT =
+    private fun getNGPRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1093,12 +1249,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val WS_LANDSCAPE_LEFT =
+    private fun getWSLandscapeLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1107,8 +1264,9 @@ object RadialPadConfigs {
             )
         )
 
-    val WS_LANDSCAPE_RIGHT =
+    private fun getWSLandscapeRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 rotationInDegrees = 30f,
@@ -1125,12 +1283,13 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    val WS_PORTRAIT_LEFT =
+    private fun getWSPortraitLeft(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1139,8 +1298,9 @@ object RadialPadConfigs {
             )
         )
 
-    val WS_PORTRAIT_RIGHT =
+    private fun getWSPortraitRight(config: Config) =
         RadialGamePadConfig(
+            theme = config.standardTheme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1164,16 +1324,17 @@ object RadialPadConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10)
+                buildMenuButtonConfig(10, config)
             )
         )
 
-    private fun buildMenuButtonConfig(index: Int): SecondaryDialConfig {
+    private fun buildMenuButtonConfig(index: Int, config: Config): SecondaryDialConfig {
         return SecondaryDialConfig.SingleButton(
             index = index,
             spread = 1,
             buttonConfig = BUTTON_CONFIG_MENU,
-            processSecondaryDialRotation = { -it }
+            processSecondaryDialRotation = { -it },
+            theme = config.menuTheme
         )
     }
 }
