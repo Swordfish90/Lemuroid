@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.Carousel
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import dagger.android.support.AndroidSupportInjection
@@ -21,6 +22,7 @@ class HomeFragment : Fragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
+    @Inject lateinit var coverLoader: CoverLoader
     @Inject lateinit var settingsInteractor: SettingsInteractor
 
     override fun onAttach(context: Context) {
@@ -48,7 +50,7 @@ class HomeFragment : Fragment() {
         // Disable snapping in carousel view
         Carousel.setDefaultGlobalSnapHelperFactory(null)
 
-        val pagingController = EpoxyHomeController(gameInteractor, settingsInteractor)
+        val pagingController = EpoxyHomeController(gameInteractor, settingsInteractor, coverLoader)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_recyclerview)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

@@ -6,12 +6,14 @@ import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.withModelsFrom
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class EpoxyHomeController(
     private val gameInteractor: GameInteractor,
-    private val settingsInteractor: SettingsInteractor
+    private val settingsInteractor: SettingsInteractor,
+    private val coverLoader: CoverLoader
 ) : AsyncEpoxyController() {
 
     private var recentGames = listOf<Game>()
@@ -71,6 +73,7 @@ class EpoxyHomeController(
                     .id(item.id)
                     .game(item)
                     .gameInteractor(this@EpoxyHomeController.gameInteractor)
+                    .coverLoader(this@EpoxyHomeController.coverLoader)
             }
         }
     }
