@@ -7,11 +7,11 @@ import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
 import com.swordfish.lemuroid.app.shared.settings.AdvancedSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -78,9 +78,11 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         refreshSaveSyncScreen()
 
         getSaveSyncScreen()?.let { screen ->
-            SaveSyncMonitor(requireContext()).getLiveData().observe(this) { syncInProgress ->
-                saveSyncPreferences.updatePreferences(screen, syncInProgress)
-            }
+            PendingOperationsMonitor(requireContext())
+                .anySaveOperationInProgress()
+                .observe(this) { syncInProgress ->
+                    saveSyncPreferences.updatePreferences(screen, syncInProgress)
+                }
         }
     }
 

@@ -75,11 +75,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
 
         settingsViewModel.indexingInProgress.observe(this) {
-            stopRescanPreference?.isVisible = it
-            rescanPreference?.isVisible = !it
+            rescanPreference?.isEnabled = !it
             currentDirectory?.isEnabled = !it
             displayBiosPreference?.isEnabled = !it
             resetSettings?.isEnabled = !it
+        }
+
+        settingsViewModel.directoryScanInProgress.observe(this) {
+            stopRescanPreference?.isVisible = it
+            rescanPreference?.isVisible = !it
         }
     }
 

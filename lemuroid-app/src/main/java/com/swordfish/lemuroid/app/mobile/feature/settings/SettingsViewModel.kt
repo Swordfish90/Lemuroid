@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.library.LibraryIndexMonitor
+import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 
 class SettingsViewModel(
     context: Context,
@@ -28,5 +28,7 @@ class SettingsViewModel(
         .asObservable()
         .filter { it.isNotBlank() }
 
-    val indexingInProgress = LibraryIndexMonitor(context).getLiveData()
+    val indexingInProgress = PendingOperationsMonitor(context).anyLibraryOperationInProgress()
+
+    val directoryScanInProgress = PendingOperationsMonitor(context).isDirectoryScanInProgress()
 }

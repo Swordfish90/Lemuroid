@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
+import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
@@ -43,7 +43,7 @@ class SaveSyncFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         saveSyncPreferences.updatePreferences(preferenceScreen, false)
-        SaveSyncMonitor(requireContext()).getLiveData().observe(this) {
+        PendingOperationsMonitor(requireContext()).anySaveOperationInProgress().observe(this) {
             saveSyncPreferences.updatePreferences(preferenceScreen, it)
         }
     }
