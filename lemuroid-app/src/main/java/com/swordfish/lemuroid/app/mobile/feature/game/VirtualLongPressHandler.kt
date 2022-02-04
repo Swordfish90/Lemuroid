@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.TextView
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.common.view.animateProgress
 import com.swordfish.lemuroid.common.view.animateVisibleOrGone
