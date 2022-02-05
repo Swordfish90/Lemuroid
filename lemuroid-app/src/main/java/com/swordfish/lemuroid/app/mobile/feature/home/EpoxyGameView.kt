@@ -23,11 +23,14 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var gameInteractor: GameInteractor
 
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    lateinit var coverLoader: CoverLoader
+
     override fun bind(holder: Holder) {
         holder.titleView?.text = game.title
         holder.subtitleView?.let { it.text = GameUtils.getGameSubtitle(it.context, game) }
 
-        CoverLoader.loadCover(game, holder.coverView)
+        coverLoader.loadCover(game, holder.coverView)
 
         holder.itemView?.setOnClickListener { gameInteractor.onGamePlay(game) }
         holder.itemView?.setOnCreateContextMenuListener(
@@ -38,7 +41,7 @@ abstract class EpoxyGameView : EpoxyModelWithHolder<EpoxyGameView.Holder>() {
     override fun unbind(holder: Holder) {
         holder.itemView?.setOnClickListener(null)
         holder.coverView?.apply {
-            CoverLoader.cancelRequest(this)
+            coverLoader.cancelRequest(this)
         }
         holder.itemView?.setOnCreateContextMenuListener(null)
     }

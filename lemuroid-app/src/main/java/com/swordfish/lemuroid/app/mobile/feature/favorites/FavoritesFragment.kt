@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import javax.inject.Inject
@@ -18,6 +19,7 @@ class FavoritesFragment : RecyclerViewFragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
+    @Inject lateinit var coverLoader: CoverLoader
 
     private lateinit var favoritesViewModel: FavoritesViewModel
 
@@ -27,7 +29,7 @@ class FavoritesFragment : RecyclerViewFragment() {
         favoritesViewModel = ViewModelProvider(this, FavoritesViewModel.Factory(retrogradeDb))
             .get(FavoritesViewModel::class.java)
 
-        val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor)
+        val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor, coverLoader)
         favoritesViewModel.favorites.cachedIn(lifecycle).observe(viewLifecycleOwner) {
             gamesAdapter.submitData(lifecycle, it)
         }

@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.TextView
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.common.view.animateProgress
 import com.swordfish.lemuroid.common.view.animateVisibleOrGone
@@ -23,7 +22,6 @@ object VirtualLongPressHandler {
     fun displayLoading(
         activity: GameActivity,
         iconId: Int,
-        textId: Int,
         cancellation: Observable<Unit>
     ): Maybe<Unit> {
         return Observable.timer(LONG_PRESS_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -33,7 +31,6 @@ object VirtualLongPressHandler {
             .doOnSubscribe {
                 longPressView(activity).alpha = 0f
                 longPressIconView(activity).setImageResource(iconId)
-                longPressTextView(activity).setText(textId)
             }
             .doAfterSuccess {
                 longPressView(activity).setVisibleOrGone(false)
@@ -43,9 +40,6 @@ object VirtualLongPressHandler {
             .onErrorComplete()
             .map { Unit }
     }
-
-    private fun longPressTextView(activity: GameActivity) =
-        activity.findViewById<TextView>(R.id.settings_loading_text)
 
     private fun longPressIconView(activity: GameActivity) =
         activity.findViewById<ImageView>(R.id.settings_loading_icon)

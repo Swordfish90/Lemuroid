@@ -47,6 +47,8 @@ class RxSettingsManager(private val context: Context, sharedPreferences: Lazy<Sh
         Single.fromCallable { CacheCleaner.getDefaultCacheLimit().toString() }
     )
 
+    val allowDirectGameLoad = booleanPreference(R.string.pref_key_allow_direct_game_load, true)
+
     private fun booleanPreference(keyId: Int, default: Boolean): Single<Boolean> {
         return rxSharedPreferences.flatMap {
             it.getBoolean(getString(keyId), default)

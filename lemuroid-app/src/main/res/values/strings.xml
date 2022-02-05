@@ -55,6 +55,9 @@
     <string name="settings_title_low_latency_audio">Prefer low-latency audio</string>
     <string name="settings_description_low_latency_audio">Reduce audio latency on supported devices. Might increase audio glitches.</string>
 
+    <string name="settings_title_direct_game_load">Direct game load</string>
+    <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>
+
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Enable rumble in supported games and controllers</string>
 
@@ -109,8 +112,6 @@
     <string name="core_settings_category_preferences">Preferences</string>
     <string name="core_settings_category_controllers">Controllers</string>
     <string name="core_settings_controller">Controller %1$s</string>
-
-    <string name="game_menu_long_press">Hold</string>
 
     <string name="game_menu_title">Game menu</string>
 

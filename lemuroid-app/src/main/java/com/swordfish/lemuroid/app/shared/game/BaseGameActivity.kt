@@ -60,6 +60,7 @@ import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.lemuroid.app.shared.storage.cache.CacheCleanerWork
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
+import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
 import com.swordfish.lemuroid.common.kotlin.zipOnKeys
@@ -908,14 +909,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             settingsManager.screenFilter,
             settingsManager.lowLatencyAudio,
             settingsManager.enableRumble,
-            ::NTuple4
+            settingsManager.allowDirectGameLoad,
+            ::NTuple5
         )
-            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio, enableRumble) ->
+            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio, enableRumble, directLoad) ->
                 gameLoader.load(
                     applicationContext,
                     game,
                     requestLoadSave && autoSaveEnabled,
-                    systemCoreConfig
+                    systemCoreConfig,
+                    directLoad
                 ).map { NTuple4(it, filter, lowLatencyAudio, enableRumble) }
             }
             .subscribeOn(Schedulers.single())
