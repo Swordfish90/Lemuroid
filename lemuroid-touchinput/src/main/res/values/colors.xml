@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="touch_control_text">#7fff</color>
+    <color name="touch_control_text">#7FFF</color>
     <color name="touch_control_normal">#7777</color>
     <color name="touch_control_background">#3777</color>
     <color name="touch_control_stroke">#0CFFFFFF</color>
     <color name="touch_control_stroke_light">#06FFFFFF</color>
+
+    <color name="touch_control_dark_background">#7333</color>
+
 </resources>
