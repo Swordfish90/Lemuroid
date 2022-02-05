@@ -15,7 +15,6 @@ import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
@@ -28,6 +27,7 @@ import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
+import com.swordfish.lemuroid.app.utils.livedata.toObservable
 import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -36,7 +36,6 @@ import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -101,24 +100,23 @@ class TVHomeFragment : BrowseSupportFragment() {
         val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
         val homeViewModel = ViewModelProvider(this, factory).get(TVHomeViewModel::class.java)
 
-        val indexingProgress: Observable<Boolean> = LiveDataReactiveStreams.toPublisher(
-            this,
-            homeViewModel.indexingInProgress
-        ).let { Observable.fromPublisher(it) }
+        val indexingProgress = homeViewModel.indexingInProgress.toObservable(this)
+        val directoryScanInProgress = homeViewModel.directoryScanInProgress.toObservable(this)
 
         val entriesObservable = RXUtils.combineLatest(
             homeViewModel.favoritesGames,
             homeViewModel.recentGames,
             homeViewModel.availableSystems,
-            indexingProgress
+            indexingProgress,
+            directoryScanInProgress
         )
 
         entriesObservable
             .debounce(50, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
-            .subscribeBy { (favoriteGames, recentGames, systems, inProgress) ->
-                update(favoriteGames, recentGames, systems, inProgress)
+            .subscribeBy { (favoriteGames, recentGames, systems, indexInProgress, scanInProgress) ->
+                update(favoriteGames, recentGames, systems, indexInProgress, scanInProgress)
             }
     }
 
@@ -126,7 +124,8 @@ class TVHomeFragment : BrowseSupportFragment() {
         favoritesGames: List<Game>,
         recentGames: List<Game>,
         metaSystems: List<MetaSystemInfo>,
-        scanningInProgress: Boolean
+        indexInProgress: Boolean,
+        scanInProgress: Boolean
     ) {
         val adapterHasFavorites = findAdapterById<ObjectAdapter>(FAVORITES_ADAPTER) != null
         val adapterHasGames = findAdapterById<ObjectAdapter>(RECENTS_ADAPTER) != null
@@ -152,7 +151,7 @@ class TVHomeFragment : BrowseSupportFragment() {
         findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
         findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(metaSystems, LEANBACK_SYSTEM_DIFF_CALLBACK)
         findAdapterById<ArrayObjectAdapter>(SETTINGS_ADAPTER)?.setItems(
-            buildSettingsRowItems(!scanningInProgress),
+            buildSettingsRowItems(indexInProgress, scanInProgress),
             LEANBACK_SETTING_DIFF_CALLBACK
         )
     }
@@ -198,25 +197,31 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, cardPadding))
-        settingsItems.setItems(buildSettingsRowItems(true), LEANBACK_SETTING_DIFF_CALLBACK)
+        settingsItems.setItems(
+            buildSettingsRowItems(indexInProgress = false, scanInProgress = false),
+            LEANBACK_SETTING_DIFF_CALLBACK
+        )
         val settingsTitle = resources.getString(R.string.tv_home_section_settings)
         result.add(ListRow(HeaderItem(SETTINGS_ADAPTER, settingsTitle), settingsItems))
 
         adapter = result
     }
 
-    private fun buildSettingsRowItems(rescanEnabled: Boolean): List<TVSetting> {
+    private fun buildSettingsRowItems(
+        indexInProgress: Boolean,
+        scanInProgress: Boolean
+    ): List<TVSetting> {
         return mutableListOf<TVSetting>().apply {
-            if (rescanEnabled) {
-                add(TVSetting(TVSettingType.RESCAN, true))
-            } else {
+            if (scanInProgress) {
                 add(TVSetting(TVSettingType.STOP_RESCAN, true))
+            } else {
+                add(TVSetting(TVSettingType.RESCAN, !indexInProgress))
             }
 
-            add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, rescanEnabled))
-            add(TVSetting(TVSettingType.SETTINGS))
+            add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, !indexInProgress))
+            add(TVSetting(TVSettingType.SETTINGS, !indexInProgress))
             if (saveSyncManager.isSupported() && saveSyncManager.isConfigured()) {
-                add(TVSetting(TVSettingType.SAVE_SYNC, rescanEnabled))
+                add(TVSetting(TVSettingType.SAVE_SYNC, !indexInProgress))
             }
         }
     }
