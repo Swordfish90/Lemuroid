@@ -1,5 +1,6 @@
 package com.swordfish.touchinput.radial
 
+import android.content.Context
 import android.view.KeyEvent
 import com.swordfish.radialgamepad.library.config.ButtonConfig
 import com.swordfish.radialgamepad.library.config.CrossConfig
@@ -12,7 +13,7 @@ import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.radialgamepad.library.haptics.HapticConfig
 import com.swordfish.touchinput.controller.R
 
-object RadialPadConfigs {
+object LemuroidTouchConfigs {
 
     enum class Kind {
         GB_LEFT,
@@ -71,7 +72,17 @@ object RadialPadConfigs {
         val haptic: HapticConfig
     )
 
-    fun getRadialGamePadConfig(kind: Kind, config: Config): RadialGamePadConfig {
+    fun getRadialGamePadConfig(
+        kind: Kind,
+        accentColor: Int,
+        haptic: HapticConfig,
+        context: Context
+    ): RadialGamePadConfig {
+        val config = Config(
+            LemuroidTouchThemes.getGamePadTheme(accentColor, context),
+            LemuroidTouchThemes.getMenuTheme(accentColor, context),
+            haptic
+        )
         return when (kind) {
             Kind.GB_LEFT -> getGBLeft(config)
             Kind.GB_RIGHT -> getGBRight(config)
@@ -328,7 +339,7 @@ object RadialPadConfigs {
 
     private fun getDesmumeRight(config: Config) = RadialGamePadConfig(
         theme = config.standardTheme,
-            sockets = 12,
+        sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
                 ButtonConfig(
@@ -387,7 +398,7 @@ object RadialPadConfigs {
 
     private fun getMelondsRight(config: Config) = RadialGamePadConfig(
         theme = config.standardTheme,
-            sockets = 12,
+        sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
                 ButtonConfig(

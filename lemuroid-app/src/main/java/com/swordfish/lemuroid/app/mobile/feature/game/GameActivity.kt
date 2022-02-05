@@ -19,7 +19,6 @@
 
 package com.swordfish.lemuroid.app.mobile.feature.game
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
@@ -45,34 +44,32 @@ import com.swordfish.lemuroid.common.math.linearInterpolation
 import com.swordfish.lemuroid.common.rx.BehaviorRelayNullableProperty
 import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
 import com.swordfish.lemuroid.common.rx.RXUtils
-import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
+import com.swordfish.lemuroid.lib.controller.ControllerConfig
+import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
+import com.swordfish.lemuroid.lib.controller.TouchControllerSettingsManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.radialgamepad.library.RadialGamePad
-import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
-import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
 import com.swordfish.radialgamepad.library.event.Event
 import com.swordfish.radialgamepad.library.event.GestureType
-import com.swordfish.touchinput.radial.RadialPadConfigs
-import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
-import com.swordfish.lemuroid.lib.controller.TouchControllerSettingsManager
 import com.swordfish.radialgamepad.library.haptics.HapticConfig
+import com.swordfish.touchinput.radial.LemuroidTouchConfigs
 import com.swordfish.touchinput.radial.sensors.TiltSensor
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
+import dagger.Lazy
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import dagger.Lazy
-import io.reactivex.rxkotlin.Observables
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 class GameActivity : BaseGameActivity() {
     @Inject lateinit var sharedPreferences: Lazy<SharedPreferences>
@@ -183,24 +180,20 @@ class GameActivity : BaseGameActivity() {
             else -> HapticConfig.OFF
         }
 
-        val leftConfig = RadialPadConfigs.getRadialGamePadConfig(
+        val leftConfig = LemuroidTouchConfigs.getRadialGamePadConfig(
             touchControllerConfig.leftConfig,
-            RadialPadConfigs.Config(
-                getGamePadTheme(applicationContext),
-                getMenuTheme(applicationContext),
-                hapticConfig
-            )
+            applicationContext.getColor(R.color.colorPrimary),
+            hapticConfig,
+            applicationContext
         )
         val leftPad = RadialGamePad(leftConfig, DEFAULT_MARGINS_DP, this)
         leftGamePadContainer.addView(leftPad)
 
-        val rightConfig = RadialPadConfigs.getRadialGamePadConfig(
+        val rightConfig = LemuroidTouchConfigs.getRadialGamePadConfig(
             touchControllerConfig.rightConfig,
-            RadialPadConfigs.Config(
-                getGamePadTheme(applicationContext),
-                getMenuTheme(applicationContext),
-                hapticConfig
-            )
+            applicationContext.getColor(R.color.colorPrimary),
+            hapticConfig,
+            applicationContext
         )
         val rightPad = RadialGamePad(rightConfig, DEFAULT_MARGINS_DP, this)
         rightGamePadContainer.addView(rightPad)
@@ -293,20 +286,20 @@ class GameActivity : BaseGameActivity() {
 
     private fun handleTripleTaps(events: MutableList<Event.Gesture>) {
         val eventsTracker = when (events.map { it.id }.toSet()) {
-            setOf(RadialPadConfigs.MOTION_SOURCE_LEFT_STICK) -> StickTiltTracker(
-                RadialPadConfigs.MOTION_SOURCE_LEFT_STICK
+            setOf(LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK) -> StickTiltTracker(
+                LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK
             )
-            setOf(RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK) -> StickTiltTracker(
-                RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK
+            setOf(LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK) -> StickTiltTracker(
+                LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK
             )
-            setOf(RadialPadConfigs.MOTION_SOURCE_DPAD) -> CrossTiltTracker(
-                RadialPadConfigs.MOTION_SOURCE_DPAD
+            setOf(LemuroidTouchConfigs.MOTION_SOURCE_DPAD) -> CrossTiltTracker(
+                LemuroidTouchConfigs.MOTION_SOURCE_DPAD
             )
-            setOf(RadialPadConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK) -> CrossTiltTracker(
-                RadialPadConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK
+            setOf(LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK) -> CrossTiltTracker(
+                LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK
             )
-            setOf(RadialPadConfigs.MOTION_SOURCE_RIGHT_DPAD) -> CrossTiltTracker(
-                RadialPadConfigs.MOTION_SOURCE_RIGHT_DPAD
+            setOf(LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD) -> CrossTiltTracker(
+                LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD
             )
             setOf(
                 KeyEvent.KEYCODE_BUTTON_L1,
@@ -347,66 +340,30 @@ class GameActivity : BaseGameActivity() {
         stopGameService()
     }
 
-    private fun getGamePadTheme(context: Context): RadialGamePadTheme {
-        val accentColor = GraphicsUtils.colorToRgb(context.getColor(R.color.colorPrimary))
-        val alpha = (255 * PRESSED_COLOR_ALPHA).roundToInt()
-        val pressedColor = GraphicsUtils.rgbaToColor(accentColor + listOf(alpha))
-        val simulatedColor = GraphicsUtils.rgbaToColor(accentColor + (255 * 0.25f).roundToInt())
-        return RadialGamePadTheme(
-            normalColor = context.getColor(R.color.touch_control_normal),
-            pressedColor = pressedColor,
-            simulatedColor = simulatedColor,
-            primaryDialBackground = context.getColor(R.color.touch_control_background),
-            textColor = context.getColor(R.color.touch_control_text),
-            enableStroke = true,
-            strokeColor = context.getColor(R.color.touch_control_stroke),
-            strokeLightColor = context.getColor(R.color.touch_control_stroke_light),
-            strokeWidthDp = context.resources.getInteger(R.integer.touch_control_stroke_size_int).toFloat()
-        )
-    }
-
-    private fun getMenuTheme(context: Context): RadialGamePadTheme {
-        val accentColor = GraphicsUtils.colorToRgb(context.getColor(R.color.colorPrimary))
-        val alpha = (255 * PRESSED_COLOR_ALPHA).roundToInt()
-        val pressedColor = GraphicsUtils.rgbaToColor(accentColor + listOf(alpha))
-        val simulatedColor = GraphicsUtils.rgbaToColor(accentColor + (255 * 0.25f).roundToInt())
-        return RadialGamePadTheme(
-            normalColor = context.getColor(R.color.touch_control_background),
-            pressedColor = pressedColor,
-            simulatedColor = simulatedColor,
-            primaryDialBackground = context.getColor(R.color.touch_control_background),
-            textColor = context.getColor(R.color.touch_control_text),
-            enableStroke = true,
-            strokeColor = context.getColor(R.color.touch_control_stroke),
-            strokeLightColor = context.getColor(R.color.touch_control_stroke_light),
-            strokeWidthDp = context.resources.getInteger(R.integer.touch_control_stroke_size_int).toFloat()
-        )
-    }
-
     private fun handleGamePadButton(it: Event.Button) {
         retroGameView?.sendKeyEvent(it.action, it.id)
     }
 
     private fun handleGamePadDirection(it: Event.Direction) {
         when (it.id) {
-            RadialPadConfigs.MOTION_SOURCE_DPAD -> {
+            LemuroidTouchConfigs.MOTION_SOURCE_DPAD -> {
                 retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, it.xAxis, it.yAxis)
             }
-            RadialPadConfigs.MOTION_SOURCE_LEFT_STICK -> {
+            LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK -> {
                 retroGameView?.sendMotionEvent(
                     GLRetroView.MOTION_SOURCE_ANALOG_LEFT,
                     it.xAxis,
                     it.yAxis
                 )
             }
-            RadialPadConfigs.MOTION_SOURCE_RIGHT_STICK -> {
+            LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK -> {
                 retroGameView?.sendMotionEvent(
                     GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
                     it.xAxis,
                     it.yAxis
                 )
             }
-            RadialPadConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK -> {
+            LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK -> {
                 retroGameView?.sendMotionEvent(
                     GLRetroView.MOTION_SOURCE_ANALOG_LEFT,
                     it.xAxis,
@@ -414,7 +371,7 @@ class GameActivity : BaseGameActivity() {
                 )
                 retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, it.xAxis, it.yAxis)
             }
-            RadialPadConfigs.MOTION_SOURCE_RIGHT_DPAD -> {
+            LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD -> {
                 retroGameView?.sendMotionEvent(
                     GLRetroView.MOTION_SOURCE_ANALOG_RIGHT,
                     it.xAxis,
@@ -811,7 +768,6 @@ class GameActivity : BaseGameActivity() {
 
     companion object {
         const val DEFAULT_MARGINS_DP = 8f
-        const val PRESSED_COLOR_ALPHA = 0.5f
         const val DEFAULT_PRIMARY_DIAL_SIZE = 160f
     }
 }
