@@ -47,6 +47,8 @@
     <string name="settings_description_advanced_settings">Geavanceerde instellingen weergeven</string>
     <string name="settings_title_low_latency_audio">Bij voorkeur audio met lage latentie</string>
     <string name="settings_description_low_latency_audio">Verminder audiolatentie op ondersteunde apparaten. Kan zorgen voor audio glitches.</string>
+    <string name="settings_title_direct_game_load">Directe spel lading</string>
+    <string name="settings_description_direct_game_load">(Experimenteel) Verminder laadtijd en cache-gebruik op ondersteunde consoles.</string>
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Rumble inschakelen in ondersteunde games en controllers</string>
     <string name="settings_title_enable_device_rumble">Apparaat rumble</string>
