@@ -90,7 +90,6 @@
     <string name="core_settings_category_preferences">Preferencias</string>
     <string name="core_settings_category_controllers">Mandos</string>
     <string name="core_settings_controller">Mando %1$s</string>
-    <string name="game_menu_long_press">Pausar</string>
     <string name="game_menu_title">Menú de juegos</string>
     <string name="notification_channel_name">Todas las notificaciones</string>
     <string name="library_index_notification_title">Escaneo de ROMs en curso</string>
