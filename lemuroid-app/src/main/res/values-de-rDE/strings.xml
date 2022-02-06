@@ -90,7 +90,6 @@
     <string name="core_settings_category_preferences">Einstellungen</string>
     <string name="core_settings_category_controllers">Kontroller</string>
     <string name="core_settings_controller">Kontroller %1$s</string>
-    <string name="game_menu_long_press">Halten</string>
     <string name="game_menu_title">Spielmenü</string>
     <string name="notification_channel_name">Alle Benachrichtigungen</string>
     <string name="library_index_notification_title">ROMs Scannen läuft</string>
