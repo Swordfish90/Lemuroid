@@ -47,6 +47,8 @@
     <string name="settings_description_advanced_settings">Exibir configurações avançadas</string>
     <string name="settings_title_low_latency_audio">Preferir áudio de baixa latência</string>
     <string name="settings_description_low_latency_audio">Reduzir a latência de áudio nos dispositivos suportados. Pode aumentar as falhas de áudio.</string>
+    <string name="settings_title_direct_game_load">Carregamento direto do jogo</string>
+    <string name="settings_description_direct_game_load">(Experimental) Reduzir o tempo de carregamento e o uso de cache em consolas suportadas.</string>
     <string name="settings_title_enable_rumble">Vibração</string>
     <string name="settings_description_enable_rumble">Habilitar vibração em jogos e comandos suportados</string>
     <string name="settings_title_enable_device_rumble">Vibração do dispositivo</string>
