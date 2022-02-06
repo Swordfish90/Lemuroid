@@ -89,7 +89,6 @@
     <string name="core_settings_category_preferences">Impostazioni</string>
     <string name="core_settings_category_controllers">Controller</string>
     <string name="core_settings_controller">Controller %1$s</string>
-    <string name="game_menu_long_press">Tieni premuto</string>
     <string name="game_menu_title">Menu di gioco</string>
     <string name="notification_channel_name">Tutte le notifiche</string>
     <string name="library_index_notification_title">Scansione delle ROM in corso</string>
