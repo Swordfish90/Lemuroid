@@ -90,7 +90,6 @@
     <string name="core_settings_category_preferences">Tuỳ chọn</string>
     <string name="core_settings_category_controllers">Điều khiển</string>
     <string name="core_settings_controller">Điều khiển %1$s</string>
-    <string name="game_menu_long_press">Giữ</string>
     <string name="game_menu_title">Menu trò chơi</string>
     <string name="notification_channel_name">Tất cả thông báo</string>
     <string name="library_index_notification_title">Đang quét các ROM</string>
