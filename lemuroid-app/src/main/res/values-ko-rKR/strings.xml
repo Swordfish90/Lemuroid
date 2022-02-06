@@ -91,7 +91,6 @@
     <string name="core_settings_category_preferences">설정</string>
     <string name="core_settings_category_controllers">컨트롤러</string>
     <string name="core_settings_controller">컨트롤러 %1$s</string>
-    <string name="game_menu_long_press">홀드</string>
     <string name="game_menu_title">게임 메뉴</string>
     <string name="notification_channel_name">모든 알림</string>
     <string name="library_index_notification_title">ROM 검색 중</string>
