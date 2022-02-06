@@ -91,7 +91,6 @@
     <string name="core_settings_category_preferences">Instellingen</string>
     <string name="core_settings_category_controllers">Controllers</string>
     <string name="core_settings_controller">Controller %1$s</string>
-    <string name="game_menu_long_press">Vasthouden</string>
     <string name="game_menu_title">Spel menu</string>
     <string name="notification_channel_name">Alle notificaties</string>
     <string name="library_index_notification_title">Bezig met scannen van ROMs</string>
