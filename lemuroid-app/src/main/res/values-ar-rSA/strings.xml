@@ -91,7 +91,6 @@
     <string name="core_settings_category_preferences">التفضيلات</string>
     <string name="core_settings_category_controllers">التحكم</string>
     <string name="core_settings_controller">التحكم %1$s</string>
-    <string name="game_menu_long_press">الضغط</string>
     <string name="game_menu_title">قائمة اللعبة</string>
     <string name="notification_channel_name">جميع الإشعارات</string>
     <string name="library_index_notification_title">فحص الأقراص المدمجة قيد التقدم</string>
