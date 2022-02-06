@@ -90,7 +90,6 @@
     <string name="core_settings_category_preferences">Preferências</string>
     <string name="core_settings_category_controllers">Controladores</string>
     <string name="core_settings_controller">Controlador %1$s</string>
-    <string name="game_menu_long_press">Apertar e segurar</string>
     <string name="game_menu_title">Menu do jogo</string>
     <string name="notification_channel_name">Todas as notificações</string>
     <string name="library_index_notification_title">Verificação de ROMs em andamento</string>
