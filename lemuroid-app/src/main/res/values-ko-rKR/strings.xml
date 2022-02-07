@@ -47,6 +47,7 @@
     <string name="settings_description_advanced_settings">고급 설정 표시</string>
     <string name="settings_title_low_latency_audio">저지연 오디오 선호</string>
     <string name="settings_description_low_latency_audio">지원되는 기기에서 오디오 레이턴시를 줄입니다. 오디오 문제가 발생할 수 있습니다.</string>
+    <string name="settings_title_direct_game_load">게임 직접 불러오기</string>
     <string name="settings_title_enable_rumble">진동</string>
     <string name="settings_description_enable_rumble">지원되는 게임과 컨트롤러에서 진동을 사용합니다</string>
     <string name="settings_title_enable_device_rumble">장치 진동</string>
