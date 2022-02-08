@@ -282,7 +282,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -700,7 +700,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -917,7 +917,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS_MERGED,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_COIN),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -1028,7 +1028,7 @@ object LemuroidTouchConfigs {
                         label = "OPTION 2"
                     )
                 ),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -1062,7 +1062,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -1095,7 +1095,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_SELECT),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -1238,7 +1238,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.Empty(4, 1, 1f),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -1271,7 +1271,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.Empty(4, 1, 1f),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
@@ -1305,7 +1305,7 @@ object LemuroidTouchConfigs {
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.Empty(4, 1, 1f),
-                SecondaryDialConfig.Empty(10, 1, 1f)
+                SecondaryDialConfig.Empty(8, 1, 1f)
             )
         )
 
