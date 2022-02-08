@@ -53,8 +53,8 @@
     </style>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:navigationBarColor">#242424</item>
-        <item name="android:statusBarColor">#212121</item>
+        <item name="android:navigationBarColor">@color/surface_elevation_3dp</item>
+        <item name="android:statusBarColor">@color/surface_elevation_2dp</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorSecondary">@color/colorSecondary</item>
@@ -66,17 +66,6 @@
     <style name="GameTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:navigationBarColor">@android:color/black</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorControlHighlight">@android:color/transparent</item>
-    </style>
-
-    <style name="RaisedFlatTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">#212121</item>
-        <item name="android:navigationBarColor">#212121</item>
-        <item name="android:statusBarColor">#212121</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorSecondary">@color/colorSecondary</item>

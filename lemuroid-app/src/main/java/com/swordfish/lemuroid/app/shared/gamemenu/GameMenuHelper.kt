@@ -35,7 +35,7 @@ object GameMenuHelper {
     ) {
         val preference = screen.findPreference<SwitchPreference>(FAST_FORWARD)
         preference?.isChecked = fastForwardEnabled
-        preference?.isEnabled = fastForwardSupported
+        preference?.isVisible = fastForwardSupported
     }
 
     fun setupSaveOption(
@@ -43,17 +43,17 @@ object GameMenuHelper {
         systemCoreConfig: SystemCoreConfig
     ) {
         val savesOption = screen.findPreference<Preference>(SECTION_SAVE_GAME)
-        savesOption?.isEnabled = systemCoreConfig.statesSupported
+        savesOption?.isVisible = systemCoreConfig.statesSupported
 
         val loadOption = screen.findPreference<Preference>(SECTION_LOAD_GAME)
-        loadOption?.isEnabled = systemCoreConfig.statesSupported
+        loadOption?.isVisible = systemCoreConfig.statesSupported
     }
 
     fun setupSettingsOption(
         screen: PreferenceScreen,
         systemCoreConfig: SystemCoreConfig
     ) {
-        screen.findPreference<Preference>(SECTION_CORE_OPTIONS)?.isEnabled = sequenceOf(
+        screen.findPreference<Preference>(SECTION_CORE_OPTIONS)?.isVisible = sequenceOf(
             systemCoreConfig.exposedSettings.isNotEmpty(),
             systemCoreConfig.exposedAdvancedSettings.isNotEmpty(),
             systemCoreConfig.controllerConfigs.values.any { it.size > 1 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="touch_control_text">#7FFF</color>
-    <color name="touch_control_normal">#7777</color>
-    <color name="touch_control_background">#3777</color>
-    <color name="touch_control_stroke">#0CFFFFFF</color>
-    <color name="touch_control_stroke_light">#06FFFFFF</color>
+    <color name="touch_control_text">#80FFFFFF</color>
+    <color name="touch_control_normal">#80808080</color>
+    <color name="touch_control_background">#10FFFFFF</color>
+    <color name="touch_control_stroke">#08FFFFFF</color>
+    <color name="touch_control_stroke_light">#08FFFFFF</color>
 
-    <color name="touch_control_dark_background">#7333</color>
-
+    <color name="touch_control_dark_background">#80404040</color>
+    <color name="touch_control_dark_stroke">#08FFFFFF</color>
 </resources>
