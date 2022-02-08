@@ -31,6 +31,7 @@ object LemuroidTouchThemes {
     fun getMenuTheme(accentColor: Int, context: Context): RadialGamePadTheme {
         return getGamePadTheme(accentColor, context).copy(
             normalColor = context.getColor(R.color.touch_control_dark_background),
+            strokeColor = context.getColor(R.color.touch_control_dark_stroke)
         )
     }
 }

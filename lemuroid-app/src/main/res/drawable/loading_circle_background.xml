@@ -4,9 +4,9 @@
     android:shape="oval">
 
     <solid
-        android:color="@color/touch_control_normal"/>
+        android:color="@color/touch_control_dark_background"/>
 
     <stroke
-        android:color="@color/touch_control_stroke"
+        android:color="@color/touch_control_dark_stroke"
         android:width="@dimen/touch_control_stroke_size"/>
 </shape>
