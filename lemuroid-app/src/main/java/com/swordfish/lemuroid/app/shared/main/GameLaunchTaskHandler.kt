@@ -1,9 +1,12 @@
 package com.swordfish.lemuroid.app.shared.main
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashActivity
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
+import com.swordfish.lemuroid.app.shared.storage.cache.CacheCleanerWork
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
@@ -14,20 +17,37 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class PostGameHandler(
+class GameLaunchTaskHandler(
     private val reviewManager: ReviewManager,
     private val retrogradeDb: RetrogradeDatabase
 ) {
 
-    fun handle(enableRatingFlow: Boolean, activity: Activity, resultCode: Int, data: Intent?): Completable {
+    fun handleGameStart(context: Context) {
+        cancelBackgroundWork(context)
+    }
+
+    fun handleGameFinish(enableRatingFlow: Boolean, activity: Activity, resultCode: Int, data: Intent?): Completable {
+        rescheduleBackgroundWork(activity.applicationContext)
         return if (resultCode == Activity.RESULT_OK) {
-            handleSuccessfulGame(activity, enableRatingFlow, data)
+            handleSuccessfulGameFinish(activity, enableRatingFlow, data)
         } else {
-            handleUnsuccessfulGame(activity, data)
+            handleUnsuccessfulGameFinish(activity, data)
         }
     }
 
-    private fun handleUnsuccessfulGame(activity: Activity, data: Intent?): Completable {
+    private fun cancelBackgroundWork(context: Context) {
+        SaveSyncWork.cancelAutoWork(context)
+        SaveSyncWork.cancelManualWork(context)
+        CacheCleanerWork.cancelCleanCacheLRU(context)
+    }
+
+    private fun rescheduleBackgroundWork(context: Context) {
+        // Let's slightly delay the sync. Maybe the user wants to play another game.
+        SaveSyncWork.enqueueAutoWork(context, 5)
+        CacheCleanerWork.enqueueCleanCacheLRU(context)
+    }
+
+    private fun handleUnsuccessfulGameFinish(activity: Activity, data: Intent?): Completable {
         return Completable.fromAction {
             val message = data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR)
             val intent = Intent(activity, GameCrashActivity::class.java).apply {
@@ -37,7 +57,7 @@ class PostGameHandler(
         }.subscribeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun handleSuccessfulGame(
+    private fun handleSuccessfulGameFinish(
         activity: Activity,
         enableRatingFlow: Boolean,
         data: Intent?

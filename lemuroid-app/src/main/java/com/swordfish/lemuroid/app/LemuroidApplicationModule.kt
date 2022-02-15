@@ -31,7 +31,7 @@ import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
-import com.swordfish.lemuroid.app.shared.main.PostGameHandler
+import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
@@ -329,7 +329,7 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun postGameHandler(retrogradeDatabase: RetrogradeDatabase) =
-            PostGameHandler(ReviewManager(), retrogradeDatabase)
+            GameLaunchTaskHandler(ReviewManager(), retrogradeDatabase)
 
         @Provides
         @PerApp
@@ -368,8 +368,11 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gameLauncher(coresSelection: CoresSelection) =
-            GameLauncher(coresSelection)
+        fun gameLauncher(
+            coresSelection: CoresSelection,
+            gameLaunchTaskHandler: GameLaunchTaskHandler
+        ) =
+            GameLauncher(coresSelection, gameLaunchTaskHandler)
 
         @Provides
         @PerApp

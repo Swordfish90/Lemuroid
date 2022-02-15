@@ -21,6 +21,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintDimensionRatio="@string/system_card_image_ratio"
+            app:tint="?attr/colorOnSurface"
+            android:tintMode="multiply"
             android:background="@color/imageview_background"
             tools:ignore="ContentDescription" />
 

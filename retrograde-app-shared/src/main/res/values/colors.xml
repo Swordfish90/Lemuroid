@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Main colors are now defined in build.gradle.kts -->
 
-    <color name="colorPrimary">@color/main_color_light</color>
-    <color name="colorPrimaryVariant">@color/main_color</color>
+<!--    <color name="colorPrimary">@color/main_color_light</color>-->
+<!--    <color name="colorPrimaryVariant">@color/main_color</color>-->
 
-    <color name="colorSecondary">@color/colorPrimary</color>
-    <color name="colorSecondaryVariant">@color/colorPrimaryVariant</color>
+<!--    <color name="colorSecondary">@color/colorPrimary</color>-->
+<!--    <color name="colorSecondaryVariant">@color/colorPrimaryVariant</color>-->
 
-    <color name="leanbackBackground">@color/surface_elevation_0dp</color>
-    <color name="leanbackForeground">@color/surface_elevation_4dp</color>
-    <color name="leanbackInfo">@color/surface_elevation_1dp</color>
-
-    <color name="imageview_background">#09ffffff</color>
-
-    <color name="editControlOverlay">#99000000</color>
 </resources>

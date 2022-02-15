@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.shared.game
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PointF
@@ -721,8 +722,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
         }
 
-        rescheduleBackgroundWork()
-
         setResult(Activity.RESULT_OK, resultIntent)
 
         finishAndExitProcess()
@@ -749,18 +748,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     open fun onFinishTriggered() { }
-
-    private fun cancelBackgroundWork() {
-        SaveSyncWork.cancelAutoWork(applicationContext)
-        SaveSyncWork.cancelManualWork(applicationContext)
-        CacheCleanerWork.cancelCleanCacheLRU(applicationContext)
-    }
-
-    private fun rescheduleBackgroundWork() {
-        // Let's slightly delay the sync. Maybe the user wants to play another game.
-        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
-        CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
-    }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
         return isAutoSaveEnabled()
@@ -899,8 +886,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun loadGame() {
         val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
-
-        cancelBackgroundWork()
 
         setupLoadingView()
 

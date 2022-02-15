@@ -1,0 +1,5 @@
+<resources>
+    <color name="leanback_background">@color/surface_elevation_0dp</color>
+    <color name="leanback_foreground">@color/surface_elevation_3dp</color>
+    <color name="leanback_info">@color/surface_elevation_1dp</color>
+</resources>

@@ -1,10 +1,10 @@
 /* ktlint-disable no-multi-spaces max-line-length */
 object deps {
     object android {
-        const val targetSdkVersion  = 29
-        const val compileSdkVersion = 29
+        const val targetSdkVersion  = 31
+        const val compileSdkVersion = 31
         const val minSdkVersion     = 23
-        const val buildToolsVersion = "29.0.3"
+        const val buildToolsVersion = "30.0.2"
     }
 
     object versions {
@@ -15,7 +15,7 @@ object deps {
         const val kotlin          = "1.4.30"
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
-        const val work            = "2.5.0"
+        const val work            = "2.7.1"
         const val navigation      = "2.3.5"
         const val rxbindings      = "3.1.0"
         const val lifecycle       = "2.3.1"
@@ -76,6 +76,7 @@ object deps {
                 const val runtime = "androidx.work:work-runtime:${versions.work}"
                 const val runtimeKtx = "androidx.work:work-runtime-ktx:${versions.work}"
                 const val rxjava2 ="androidx.work:work-rxjava2:${versions.work}"
+                const val multiprocess ="androidx.work:work-multiprocess:${versions.work}"
             }
         }
         object autodispose {
@@ -136,10 +137,11 @@ object deps {
         const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.1"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
-        const val material                 = "com.google.android.material:material:1.4.0"
+        const val material                 = "com.google.android.material:material:1.5.0"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:30.1.1-android"
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"
+        const val startup                  = "androidx.startup:startup-runtime:1.1.1"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
     }

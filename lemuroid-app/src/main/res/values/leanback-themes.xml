@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Here we override the defualt Leanback colors to make them look Lemuroidish -->
+    <color name="lb_basic_card_bg_color">@color/leanback_foreground</color>
+    <color name="lb_basic_card_info_bg_color">@color/leanback_info</color>
+
+    <style name="LemuroidLeanbackTheme" parent="Theme.Leanback">
+        <item name="defaultBrandColor">@color/leanback_foreground</item>
+        <item name="defaultBrandColorDark">@color/leanback_foreground</item>
+        <item name="defaultSearchColor">@color/main_color</item>
+        <item name="colorAccent">@color/main_color</item>
+        <item name="android:colorAccent">@color/main_color</item>
+        <item name="android:colorPrimary">@color/leanback_foreground</item>
+        <item name="android:windowBackground">@color/leanback_background</item>
+        <item name="imageCardViewStyle">@style/LemuroidLeanbackTheme.ImageCardViewStyle</item>
+    </style>
+
+    <style name="LemuroidLeanbackTheme.ImageCardViewStyle" parent="Widget.Leanback.ImageCardViewStyle">
+        <item name="infoVisibility">always</item>
+    </style>
+
+    <style name="LemuroidLeanbackPreferencesTheme" parent="Theme.Leanback">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:colorPrimary">@color/main_color</item>
+    </style>
+</resources>
