@@ -21,7 +21,6 @@ class WorkManagerTasksInitializer : Initializer<Unit> {
         }
     }
 
-
     override fun dependencies(): List<Class<out Initializer<*>>> {
         return listOf(WorkManagerInitializer::class.java, DebugInitializer::class.java)
     }

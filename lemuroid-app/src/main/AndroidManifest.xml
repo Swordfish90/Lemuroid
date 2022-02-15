@@ -103,10 +103,9 @@
             android:exported="false"
             tools:node="merge">
 
-            <meta-data  android:name="com.swordfish.lemuroid.app.shared.startup.WorkManagerTasksInitializer"
+            <meta-data android:name="com.swordfish.lemuroid.app.shared.startup.WorkManagerTasksInitializer"
                 android:value="androidx.startup" />
         </provider>
-
 
     </application>
 

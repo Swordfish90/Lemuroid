@@ -2,16 +2,13 @@ package com.swordfish.lemuroid.app
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.StrictMode
 import androidx.work.ListenableWorker
 import com.google.android.material.color.DynamicColors
-import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.ext.feature.context.ContextHandler
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerApplication
-import timber.log.Timber
 import javax.inject.Inject
 
 class LemuroidApplication : DaggerApplication(), HasWorkerInjector {

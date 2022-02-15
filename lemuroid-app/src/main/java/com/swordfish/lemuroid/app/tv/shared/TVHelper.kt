@@ -8,10 +8,11 @@ object TVHelper {
     fun isSAFSupported(context: Context): Boolean {
         val packageManager = context.packageManager
 
-        val isStandardHardware =
-            !packageManager.hasSystemFeature("android.hardware.type.television") and
-            !packageManager.hasSystemFeature("android.hardware.type.watch") and
-            !packageManager.hasSystemFeature("android.hardware.type.automotive")
+        val isStandardHardware = listOf(
+            !packageManager.hasSystemFeature("android.hardware.type.television"),
+            !packageManager.hasSystemFeature("android.hardware.type.watch"),
+            !packageManager.hasSystemFeature("android.hardware.type.automotive"),
+        ).all { it }
 
         val isNotLegacyStorage =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Environment.isExternalStorageLegacy()
