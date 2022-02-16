@@ -20,7 +20,12 @@ class NotificationsManager(private val applicationContext: Context) {
         createDefaultNotificationChannel()
 
         val intent = Intent(applicationContext, GameActivity::class.java)
-        val contentIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val contentIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
         val title = game?.let {
             applicationContext.getString(R.string.game_running_notification_title, game.title)
@@ -43,8 +48,12 @@ class NotificationsManager(private val applicationContext: Context) {
         createDefaultNotificationChannel()
 
         val broadcastIntent = Intent(applicationContext, LibraryIndexBroadcastReceiver::class.java)
-        val broadcastPendingIntent: PendingIntent =
-            PendingIntent.getBroadcast(applicationContext, 0, broadcastIntent, 0)
+        val broadcastPendingIntent: PendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            0,
+            broadcastIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lemuroid_tiny)

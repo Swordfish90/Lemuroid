@@ -68,7 +68,7 @@
                 android:title="@string/settings_category_input"
                 app:iconSpaceReserved="false">
 
-                <SwitchPreferenceCompat
+                <SwitchPreference
                     android:key="@string/pref_key_enable_rumble"
                     android:title="@string/settings_title_enable_rumble"
                     android:summary="@string/settings_description_enable_rumble"

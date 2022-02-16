@@ -1,7 +1,7 @@
 package com.swordfish.touchinput.radial
 
-import android.content.Context
 import android.view.KeyEvent
+import android.view.View
 import com.swordfish.radialgamepad.library.config.ButtonConfig
 import com.swordfish.radialgamepad.library.config.CrossConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
@@ -66,24 +66,22 @@ object LemuroidTouchConfigs {
         ATARI7800_RIGHT,
     }
 
-    data class Config(
+    private data class Config(
         val standardTheme: RadialGamePadTheme,
-        val menuTheme: RadialGamePadTheme,
-        val haptic: HapticConfig
+        val alternateTheme: RadialGamePadTheme
     )
 
     fun getRadialGamePadConfig(
         kind: Kind,
-        accentColor: Int,
         haptic: HapticConfig,
-        context: Context
+        view: View
     ): RadialGamePadConfig {
         val config = Config(
-            LemuroidTouchThemes.getGamePadTheme(accentColor, context),
-            LemuroidTouchThemes.getMenuTheme(accentColor, context),
-            haptic
+            LemuroidTouchOverlayThemes.getGamePadTheme(view),
+            LemuroidTouchOverlayThemes.getGamePadAlternate(view)
         )
-        return when (kind) {
+
+        val radialGamePadConfig = when (kind) {
             Kind.GB_LEFT -> getGBLeft(config)
             Kind.GB_RIGHT -> getGBRight(config)
             Kind.NES_LEFT -> getNESLeft(config)
@@ -133,6 +131,8 @@ object LemuroidTouchConfigs {
             Kind.ATARI7800_LEFT -> getAtari7800Left(config)
             Kind.ATARI7800_RIGHT -> getAtari7800Right(config)
         }
+
+        return radialGamePadConfig.copy(haptic = haptic)
     }
 
     const val MOTION_SOURCE_DPAD = 0
@@ -1345,7 +1345,7 @@ object LemuroidTouchConfigs {
             spread = 1,
             buttonConfig = BUTTON_CONFIG_MENU,
             processSecondaryDialRotation = { -it },
-            theme = config.menuTheme
+            theme = config.alternateTheme
         )
     }
 }

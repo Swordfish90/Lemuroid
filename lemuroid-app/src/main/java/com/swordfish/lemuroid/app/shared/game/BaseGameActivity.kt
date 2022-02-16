@@ -28,7 +28,6 @@ import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.getInputClass
@@ -58,7 +57,6 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.storage.RomFiles
-import com.swordfish.lemuroid.app.shared.storage.cache.CacheCleanerWork
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
@@ -721,8 +719,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
         }
 
-        rescheduleBackgroundWork()
-
         setResult(Activity.RESULT_OK, resultIntent)
 
         finishAndExitProcess()
@@ -749,18 +745,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     open fun onFinishTriggered() { }
-
-    private fun cancelBackgroundWork() {
-        SaveSyncWork.cancelAutoWork(applicationContext)
-        SaveSyncWork.cancelManualWork(applicationContext)
-        CacheCleanerWork.cancelCleanCacheLRU(applicationContext)
-    }
-
-    private fun rescheduleBackgroundWork() {
-        // Let's slightly delay the sync. Maybe the user wants to play another game.
-        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
-        CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
-    }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
         return isAutoSaveEnabled()
@@ -899,8 +883,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun loadGame() {
         val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
-
-        cancelBackgroundWork()
 
         setupLoadingView()
 

@@ -1,13 +1,15 @@
 package com.swordfish.lemuroid.app.mobile.feature.game
 
+import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.ImageView
-import android.widget.ProgressBar
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.common.view.animateProgress
 import com.swordfish.lemuroid.common.view.animateVisibleOrGone
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
+import com.swordfish.touchinput.radial.LemuroidTouchOverlayThemes
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,6 +20,16 @@ object VirtualLongPressHandler {
     private val APPEAR_ANIMATION = (ViewConfiguration.getLongPressTimeout() * 0.1f).toLong()
     private val DISAPPEAR_ANIMATION = (ViewConfiguration.getLongPressTimeout() * 2f).toLong()
     private val LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout().toLong()
+
+    fun initializeTheme(gameActivity: GameActivity) {
+        val palette = LemuroidTouchOverlayThemes.getGamePadAlternate(longPressView(gameActivity))
+        longPressIconView(gameActivity).setColorFilter(palette.textColor)
+        longPressProgressBar(gameActivity).setIndicatorColor(palette.textColor)
+        longPressView(gameActivity).background = GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            setColor(palette.normalColor)
+        }
+    }
 
     fun displayLoading(
         activity: GameActivity,
@@ -45,7 +57,7 @@ object VirtualLongPressHandler {
         activity.findViewById<ImageView>(R.id.settings_loading_icon)
 
     private fun longPressProgressBar(activity: GameActivity) =
-        activity.findViewById<ProgressBar>(R.id.settings_loading_progress)
+        activity.findViewById<CircularProgressIndicator>(R.id.settings_loading_progress)
 
     private fun longPressView(activity: GameActivity) =
         activity.findViewById<View>(R.id.settings_loading)

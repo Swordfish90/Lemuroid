@@ -182,18 +182,16 @@ class GameActivity : BaseGameActivity() {
 
         val leftConfig = LemuroidTouchConfigs.getRadialGamePadConfig(
             touchControllerConfig.leftConfig,
-            applicationContext.getColor(R.color.colorPrimary),
             hapticConfig,
-            applicationContext
+            leftGamePadContainer
         )
         val leftPad = RadialGamePad(leftConfig, DEFAULT_MARGINS_DP, this)
         leftGamePadContainer.addView(leftPad)
 
         val rightConfig = LemuroidTouchConfigs.getRadialGamePadConfig(
             touchControllerConfig.rightConfig,
-            applicationContext.getColor(R.color.colorPrimary),
             hapticConfig,
-            applicationContext
+            leftGamePadContainer
         )
         val rightPad = RadialGamePad(rightConfig, DEFAULT_MARGINS_DP, this)
         rightGamePadContainer.addView(rightPad)
@@ -256,6 +254,8 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun setupVirtualMenuActions(virtualPadEvents: Observable<Event>) {
+        VirtualLongPressHandler.initializeTheme(this)
+
         val allMenuButtonEvents = virtualPadEvents
             .ofType(Event.Button::class.java)
             .filter { it.id == KeyEvent.KEYCODE_BUTTON_MODE }

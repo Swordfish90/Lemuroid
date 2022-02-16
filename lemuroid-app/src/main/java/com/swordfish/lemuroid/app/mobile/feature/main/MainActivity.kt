@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.elevation.SurfaceColors
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesFragment
@@ -31,7 +32,7 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
-import com.swordfish.lemuroid.app.shared.main.PostGameHandler
+import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
@@ -51,7 +52,7 @@ import javax.inject.Inject
 
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
-    @Inject lateinit var postGameHandler: PostGameHandler
+    @Inject lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
     @Inject lateinit var saveSyncManager: SaveSyncManager
 
     private val reviewManager = ReviewManager()
@@ -59,6 +60,8 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
+        window.statusBarColor = SurfaceColors.SURFACE_2.getColor(this)
         setContentView(R.layout.activity_main)
         initializeActivity()
     }
@@ -99,7 +102,7 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                postGameHandler.handle(true, this, resultCode, data)
+                gameLaunchTaskHandler.handleGameFinish(true, this, resultCode, data)
                     .subscribeBy(Timber::e) { }
             }
         }

@@ -30,7 +30,7 @@
     tools:context=".app.mobile.feature.game.GameActivity"
     android:keepScreenOn="true"
     tools:ignore="MergeRootFrame"
-    android:background="@color/surface_elevation_0dp">
+    android:background="?attr/colorSurface">
 
     <FrameLayout
         android:id="@+id/gamecontainer"
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:background="@color/editControlOverlay"/>
+        android:background="@color/edit_control_overlay"/>
 
     <FrameLayout
         android:id="@+id/rightgamepad"

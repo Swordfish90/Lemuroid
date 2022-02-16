@@ -12,7 +12,7 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
-import com.swordfish.lemuroid.app.shared.main.PostGameHandler
+import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.favorites.TVFavoritesFragment
 import com.swordfish.lemuroid.app.tv.games.TVGamesFragment
@@ -37,7 +37,7 @@ import javax.inject.Inject
 
 class MainTVActivity : BaseTVActivity(), BusyActivity {
 
-    @Inject lateinit var postGameHandler: PostGameHandler
+    @Inject lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
 
     var mainViewModel: MainTVViewModel? = null
 
@@ -63,7 +63,7 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
 
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                postGameHandler.handle(false, this, resultCode, data)
+                gameLaunchTaskHandler.handleGameFinish(false, this, resultCode, data)
                     .andThen(Completable.fromCallable { ChannelUpdateWork.enqueue(applicationContext) })
                     .subscribeBy(Timber::e) { }
             }

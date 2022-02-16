@@ -214,6 +214,9 @@ class TVHomeFragment : BrowseSupportFragment() {
         scanInProgress: Boolean
     ): List<TVSetting> {
         return mutableListOf<TVSetting>().apply {
+            if (saveSyncManager.isSupported() && saveSyncManager.isConfigured()) {
+                add(TVSetting(TVSettingType.SAVE_SYNC, !indexInProgress))
+            }
             if (scanInProgress) {
                 add(TVSetting(TVSettingType.STOP_RESCAN, true))
             } else {
@@ -222,9 +225,6 @@ class TVHomeFragment : BrowseSupportFragment() {
 
             add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, !indexInProgress))
             add(TVSetting(TVSettingType.SETTINGS, !indexInProgress))
-            if (saveSyncManager.isSupported() && saveSyncManager.isConfigured()) {
-                add(TVSetting(TVSettingType.SAVE_SYNC, !indexInProgress))
-            }
         }
     }
 
