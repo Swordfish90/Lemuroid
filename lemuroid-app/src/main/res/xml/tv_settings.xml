@@ -98,7 +98,7 @@
                     android:title="@string/settings_title_direct_game_load"
                     android:summary="@string/settings_description_direct_game_load"
                     app:iconSpaceReserved="false"
-                    android:defaultValue="false"/>
+                    android:defaultValue="true"/>
 
                 <Preference
                     android:key="@string/pref_key_reset_settings"
