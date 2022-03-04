@@ -35,6 +35,8 @@ data class GameSystem(
     @StringRes
     val shortTitleResId: Int,
 
+    val releaseYear: Int?,
+
     val systemCoreConfigs: List<SystemCoreConfig>,
 
     val uniqueExtensions: List<String>,
@@ -56,6 +58,7 @@ data class GameSystem(
                 "Atari - 2600",
                 R.string.game_system_title_atari2600,
                 R.string.game_system_abbr_atari2600,
+                1977,
                 listOf(
                     SystemCoreConfig(
                         coreID = CoreID.STELLA,
@@ -100,6 +103,7 @@ data class GameSystem(
                 "Nintendo - Nintendo Entertainment System",
                 R.string.game_system_title_nes,
                 R.string.game_system_abbr_nes,
+                1983,
                 listOf(
                     SystemCoreConfig(
                         CoreID.FCEUMM,
@@ -131,6 +135,7 @@ data class GameSystem(
                 "Nintendo - Super Nintendo Entertainment System",
                 R.string.game_system_title_snes,
                 R.string.game_system_abbr_snes,
+                1990,
                 listOf(
                     SystemCoreConfig(
                         CoreID.SNES9X,
@@ -146,6 +151,7 @@ data class GameSystem(
                 "Sega - Master System - Mark III",
                 R.string.game_system_title_sms,
                 R.string.game_system_abbr_sms,
+                1985,
                 listOf(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
@@ -217,6 +223,7 @@ data class GameSystem(
                 "Sega - Mega Drive - Genesis",
                 R.string.game_system_title_genesis,
                 R.string.game_system_abbr_genesis,
+                1988,
                 listOf(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
@@ -303,6 +310,7 @@ data class GameSystem(
                 "Sega - Mega-CD - Sega CD",
                 R.string.game_system_title_scd,
                 R.string.game_system_abbr_scd,
+                1991,
                 listOf(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
@@ -401,6 +409,7 @@ data class GameSystem(
                 "Sega - Game Gear",
                 R.string.game_system_title_gg,
                 R.string.game_system_abbr_gg,
+                1990,
                 listOf(
                     SystemCoreConfig(
                         CoreID.GENESIS_PLUS_GX,
@@ -428,6 +437,7 @@ data class GameSystem(
                 "Nintendo - Game Boy",
                 R.string.game_system_title_gb,
                 R.string.game_system_abbr_gb,
+                1989,
                 listOf(
                     SystemCoreConfig(
                         CoreID.GAMBATTE,
@@ -483,6 +493,7 @@ data class GameSystem(
                 "Nintendo - Game Boy Color",
                 R.string.game_system_title_gbc,
                 R.string.game_system_abbr_gbc,
+                1998,
                 listOf(
                     SystemCoreConfig(
                         CoreID.GAMBATTE,
@@ -544,6 +555,7 @@ data class GameSystem(
                 "Nintendo - Game Boy Advance",
                 R.string.game_system_title_gba,
                 R.string.game_system_abbr_gba,
+                2001,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MGBA,
@@ -613,6 +625,7 @@ data class GameSystem(
                 "Nintendo - Nintendo 64",
                 R.string.game_system_title_n64,
                 R.string.game_system_abbr_n64,
+                1996,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MUPEN64_PLUS_NEXT,
@@ -702,6 +715,7 @@ data class GameSystem(
                 "Sony - PlayStation",
                 R.string.game_system_title_psx,
                 R.string.game_system_abbr_psx,
+                1994,
                 listOf(
                     SystemCoreConfig(
                         CoreID.PCSX_REARMED,
@@ -758,6 +772,7 @@ data class GameSystem(
                 "Sony - PlayStation Portable",
                 R.string.game_system_title_psp,
                 R.string.game_system_abbr_psp,
+                2004,
                 listOf(
                     SystemCoreConfig(
                         CoreID.PPSSPP,
@@ -816,6 +831,7 @@ data class GameSystem(
                 "FBNeo - Arcade Games",
                 R.string.game_system_title_arcade_fbneo,
                 R.string.game_system_abbr_arcade_fbneo,
+                null,
                 listOf(
                     SystemCoreConfig(
                         CoreID.FBNEO,
@@ -848,6 +864,7 @@ data class GameSystem(
                 "MAME 2003-Plus",
                 R.string.game_system_title_arcade_mame2003_plus,
                 R.string.game_system_abbr_arcade_mame2003_plus,
+                null,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MAME2003PLUS,
@@ -874,6 +891,7 @@ data class GameSystem(
                 "Nintendo - Nintendo DS",
                 R.string.game_system_title_nds,
                 R.string.game_system_abbr_nds,
+                2004,
                 listOf(
                     SystemCoreConfig(
                         CoreID.DESMUME,
@@ -944,6 +962,7 @@ data class GameSystem(
                 "Atari - 7800",
                 R.string.game_system_title_atari7800,
                 R.string.game_system_abbr_atari7800,
+                1986,
                 listOf(
                     SystemCoreConfig(
                         CoreID.PROSYSTEM,
@@ -960,6 +979,7 @@ data class GameSystem(
                 "Atari - Lynx",
                 R.string.game_system_title_lynx,
                 R.string.game_system_abbr_lynx,
+                1989,
                 listOf(
                     SystemCoreConfig(
                         CoreID.HANDY,
@@ -997,6 +1017,7 @@ data class GameSystem(
                 "NEC - PC Engine - TurboGrafx 16",
                 R.string.game_system_title_pce,
                 R.string.game_system_abbr_pce,
+                1987,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MEDNAFEN_PCE_FAST,
@@ -1013,6 +1034,7 @@ data class GameSystem(
                 "SNK - Neo Geo Pocket",
                 R.string.game_system_title_ngp,
                 R.string.game_system_abbr_ngp,
+                1998,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MEDNAFEN_NGP,
@@ -1028,6 +1050,7 @@ data class GameSystem(
                 "SNK - Neo Geo Pocket Color",
                 R.string.game_system_title_ngc,
                 R.string.game_system_abbr_ngc,
+                1999,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MEDNAFEN_NGP,
@@ -1043,6 +1066,7 @@ data class GameSystem(
                 "Bandai - WonderSwan",
                 R.string.game_system_title_ws,
                 R.string.game_system_abbr_ws,
+                1999,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MEDNAFEN_WSWAN,
@@ -1082,6 +1106,7 @@ data class GameSystem(
                 "Bandai - WonderSwan Color",
                 R.string.game_system_title_wsc,
                 R.string.game_system_abbr_wsc,
+                2000,
                 listOf(
                     SystemCoreConfig(
                         CoreID.MEDNAFEN_WSWAN,
@@ -1116,6 +1141,7 @@ data class GameSystem(
                 "DOS",
                 R.string.game_system_title_dos,
                 R.string.game_system_abbr_dos,
+                null,
                 listOf(
                     SystemCoreConfig(
                         CoreID.DOSBOX_PURE,
@@ -1143,6 +1169,7 @@ data class GameSystem(
                 "Nintendo - Nintendo 3DS",
                 R.string.game_system_title_3ds,
                 R.string.game_system_abbr_3ds,
+                2011,
                 listOf(
                     SystemCoreConfig(
                         CoreID.CITRA,

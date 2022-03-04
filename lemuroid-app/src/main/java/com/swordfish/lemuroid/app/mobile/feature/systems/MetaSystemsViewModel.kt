@@ -19,9 +19,13 @@ class MetaSystemsViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
     val availableMetaSystems: Observable<List<MetaSystemInfo>> = retrogradeDb.gameDao()
         .selectSystemsWithCount()
         .map { systemCounts ->
-            systemCounts.filter { (_, count) -> count > 0 }
+            systemCounts
+                .asSequence()
+                .filter { (_, count) -> count > 0 }
                 .map { (systemId, count) -> GameSystem.findById(systemId).metaSystemID() to count }
                 .groupBy { (metaSystemId, _) -> metaSystemId }
                 .map { (metaSystemId, counts) -> MetaSystemInfo(metaSystemId, counts.sumBy { it.second }) }
+                .sortedBy { it.metaSystem.sortOrder }
+                .toList()
         }
 }
