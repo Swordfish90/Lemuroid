@@ -33,7 +33,8 @@ android {
             ":lemuroid_core_ppsspp",
             ":lemuroid_core_prosystem",
             ":lemuroid_core_snes9x",
-            ":lemuroid_core_stella"
+            ":lemuroid_core_stella",
+            ":lemuroid_core_citra"
         )
     }
 
