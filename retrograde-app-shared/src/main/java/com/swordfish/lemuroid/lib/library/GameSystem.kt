@@ -1135,6 +1135,29 @@ data class GameSystem(
                     scanByPathAndSupportedExtensions = true
                 ),
             ),
+            GameSystem(
+                SystemID.NINTENDO_3DS,
+                "Nintendo - Nintendo 3DS",
+                R.string.game_system_title_3ds,
+                R.string.game_system_abbr_3ds,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.CITRA,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NINTENDO_3DS)
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("citra_use_acc_mul", "disabled"),
+                            CoreVariable("citra_touch_touchscreen", "enabled"),
+                            CoreVariable("citra_mouse_touchscreen", "disabled"),
+                            CoreVariable("citra_render_touchscreen", "disabled"),
+                            CoreVariable("citra_use_hw_shader_cache", "disabled"),
+                        ),
+                        supportsLibretroVFS = true
+                    ),
+                ),
+                uniqueExtensions = listOf("3ds"),
+            ),
         )
 
         private val byIdCache by lazy { mapOf(*SYSTEMS.map { it.id.dbname to it }.toTypedArray()) }

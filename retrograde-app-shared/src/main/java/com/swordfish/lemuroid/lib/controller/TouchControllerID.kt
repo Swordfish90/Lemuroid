@@ -26,7 +26,8 @@ enum class TouchControllerID {
     NGP,
     DOS,
     WS_LANDSCAPE,
-    WS_PORTRAIT;
+    WS_PORTRAIT,
+    NINTENDO_3DS;
 
     class Config(
         val leftConfig: LemuroidTouchConfigs.Kind,
@@ -137,6 +138,10 @@ enum class TouchControllerID {
                 WS_PORTRAIT -> Config(
                     LemuroidTouchConfigs.Kind.WS_PORTRAIT_LEFT,
                     LemuroidTouchConfigs.Kind.WS_PORTRAIT_RIGHT
+                )
+                NINTENDO_3DS -> Config(
+                    LemuroidTouchConfigs.Kind.NINTENDO_3DS_LEFT,
+                    LemuroidTouchConfigs.Kind.NINTENDO_3DS_RIGHT
                 )
             }
         }

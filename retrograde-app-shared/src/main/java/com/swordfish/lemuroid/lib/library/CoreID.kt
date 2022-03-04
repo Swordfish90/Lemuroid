@@ -102,6 +102,11 @@ enum class CoreID(
         "Beetle Cygne",
         "libmednafen_wswan_libretro_android.so"
     ),
+    CITRA(
+        "citra",
+        "Citra",
+        "libcitra_libretro_android.so"
+    ),
     DOSBOX_PURE(
         "dosbox_pure",
         "DosBox Pure",
