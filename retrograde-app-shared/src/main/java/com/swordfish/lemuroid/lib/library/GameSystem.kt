@@ -737,9 +737,11 @@ data class GameSystem(
                         ),
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled"),
+                            CoreVariable("pcsx_rearmed_duping_enable", "enabled"),
                         ),
                         rumbleSupported = true,
-                        supportsLibretroVFS = true
+                        supportsLibretroVFS = true,
+                        skipDuplicateFrames = false
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -796,7 +798,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.PSP)
-                        )
+                        ),
+                        supportsLibretroVFS = true
                     )
                 ),
                 uniqueExtensions = listOf(),

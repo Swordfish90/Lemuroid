@@ -38,9 +38,9 @@ class RxSettingsManager(private val context: Context, sharedPreferences: Lazy<Sh
 
     val syncStatesCores = stringSetPreference(R.string.pref_key_save_sync_cores, setOf())
 
-    val enableRumble = booleanPreference(R.string.pref_key_enable_rumble, true)
+    val enableRumble = booleanPreference(R.string.pref_key_enable_rumble, false)
 
-    val enableDeviceRumble = booleanPreference(R.string.pref_key_enable_device_rumble, true)
+    val enableDeviceRumble = booleanPreference(R.string.pref_key_enable_device_rumble, false)
 
     val cacheSizeBytes = stringPreference(
         R.string.pref_key_max_cache_size,
