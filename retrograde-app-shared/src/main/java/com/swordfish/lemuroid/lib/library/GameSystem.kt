@@ -791,13 +791,13 @@ data class GameSystem(
                                 "ppsspp_cpu_core",
                                 R.string.setting_ppsspp_cpu_core,
                                 arrayListOf(
-                                    ExposedSetting.Value("jit", R.string.value_ppsspp_cpu_core_jit),
+                                    ExposedSetting.Value("JIT", R.string.value_ppsspp_cpu_core_jit),
                                     ExposedSetting.Value(
-                                        "IR jit",
+                                        "IR JIT",
                                         R.string.value_ppsspp_cpu_core_irjit
                                     ),
                                     ExposedSetting.Value(
-                                        "interpreter",
+                                        "Interpreter",
                                         R.string.value_ppsspp_cpu_core_interpreter
                                     ),
                                 )
