@@ -17,7 +17,7 @@ import kotlin.math.roundToLong
 
 object CacheCleaner {
 
-    private val MIN_CACHE_LIMIT = 256L.megaBytes()
+    private val MIN_CACHE_LIMIT = 64L.megaBytes()
     private val MAX_CACHE_LIMIT = 10L.gigaBytes()
 
     fun getSupportedCacheLimits(): List<Long> {
@@ -27,7 +27,7 @@ object CacheCleaner {
     }
 
     fun getDefaultCacheLimit(): Long {
-        val defaultCacheSize = (getInternalMemorySize() * 0.05f).roundToLong()
+        val defaultCacheSize = (getInternalMemorySize() * 0.01f).roundToLong()
         return getClosestCacheLimit(defaultCacheSize)
     }
 
