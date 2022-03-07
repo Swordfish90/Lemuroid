@@ -62,6 +62,7 @@ import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
 import com.swordfish.lemuroid.common.kotlin.zipOnKeys
+import com.swordfish.lemuroid.common.longAnimationDuration
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.Controller
@@ -244,6 +245,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             shader = getShaderForSystem(screenFilter, system)
             preferLowLatencyAudio = lowLatencyAudio
             rumbleEventsEnabled = enableRumble
+            skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
         }
 
         val retroGameView = GLRetroView(this, data)
@@ -379,6 +381,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.NGC -> GLRetroView.SHADER_LCD
                 SystemID.WS -> GLRetroView.SHADER_LCD
                 SystemID.WSC -> GLRetroView.SHADER_LCD
+                SystemID.NINTENDO_3DS -> GLRetroView.SHADER_LCD
             }
         }
     }
@@ -833,8 +836,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun reset() {
-        retroGameView?.reset()
+    private fun reset(): Completable {
+        return Completable.timer(longAnimationDuration().toLong(), TimeUnit.MILLISECONDS)
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
+            .doOnComplete { retroGameView?.reset() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -843,6 +849,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             Timber.i("Game menu dialog response: ${data?.extras.dump()}")
             if (data?.getBooleanExtra(GameMenuContract.RESULT_RESET, false) == true) {
                 reset()
+                    .autoDispose(scope())
+                    .subscribeBy(Timber::e) {
+                        retroGameView?.reset()
+                    }
             }
             if (data?.hasExtra(GameMenuContract.RESULT_SAVE) == true) {
                 saveSlot(data.getIntExtra(GameMenuContract.RESULT_SAVE, 0))

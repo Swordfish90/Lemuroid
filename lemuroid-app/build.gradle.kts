@@ -7,8 +7,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 157
-        versionName = "1.13.0-beta1"
+        versionCode = 160
+        versionName = "1.13.0" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -33,7 +33,8 @@ android {
             ":lemuroid_core_ppsspp",
             ":lemuroid_core_prosystem",
             ":lemuroid_core_snes9x",
-            ":lemuroid_core_stella"
+            ":lemuroid_core_stella",
+            ":lemuroid_core_citra"
         )
     }
 

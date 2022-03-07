@@ -737,9 +737,11 @@ data class GameSystem(
                         ),
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled"),
+                            CoreVariable("pcsx_rearmed_duping_enable", "enabled"),
                         ),
                         rumbleSupported = true,
-                        supportsLibretroVFS = true
+                        supportsLibretroVFS = true,
+                        skipDuplicateFrames = false
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -774,13 +776,13 @@ data class GameSystem(
                                 "ppsspp_cpu_core",
                                 R.string.setting_ppsspp_cpu_core,
                                 arrayListOf(
-                                    ExposedSetting.Value("jit", R.string.value_ppsspp_cpu_core_jit),
+                                    ExposedSetting.Value("JIT", R.string.value_ppsspp_cpu_core_jit),
                                     ExposedSetting.Value(
-                                        "IR jit",
+                                        "IR JIT",
                                         R.string.value_ppsspp_cpu_core_irjit
                                     ),
                                     ExposedSetting.Value(
-                                        "interpreter",
+                                        "Interpreter",
                                         R.string.value_ppsspp_cpu_core_interpreter
                                     ),
                                 )
@@ -796,7 +798,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.PSP)
-                        )
+                        ),
+                        supportsLibretroVFS = true
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -1134,6 +1137,29 @@ data class GameSystem(
                     scanByPathAndFilename = false,
                     scanByPathAndSupportedExtensions = true
                 ),
+            ),
+            GameSystem(
+                SystemID.NINTENDO_3DS,
+                "Nintendo - Nintendo 3DS",
+                R.string.game_system_title_3ds,
+                R.string.game_system_abbr_3ds,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.CITRA,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NINTENDO_3DS)
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("citra_use_acc_mul", "disabled"),
+                            CoreVariable("citra_touch_touchscreen", "enabled"),
+                            CoreVariable("citra_mouse_touchscreen", "disabled"),
+                            CoreVariable("citra_render_touchscreen", "disabled"),
+                            CoreVariable("citra_use_hw_shader_cache", "disabled"),
+                        ),
+                        supportsLibretroVFS = true
+                    ),
+                ),
+                uniqueExtensions = listOf("3ds"),
             ),
         )
 

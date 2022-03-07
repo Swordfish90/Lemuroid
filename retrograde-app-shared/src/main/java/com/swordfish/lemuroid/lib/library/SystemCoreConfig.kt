@@ -14,5 +14,6 @@ data class SystemCoreConfig(
     val rumbleSupported: Boolean = false,
     val requiredBIOSFiles: List<String> = listOf(),
     val statesVersion: Int = 0,
-    val supportsLibretroVFS: Boolean = false
+    val supportsLibretroVFS: Boolean = false,
+    val skipDuplicateFrames: Boolean = true
 ) : Serializable

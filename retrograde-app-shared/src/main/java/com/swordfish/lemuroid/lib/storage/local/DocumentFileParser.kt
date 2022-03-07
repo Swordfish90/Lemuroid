@@ -4,7 +4,7 @@ import android.content.Context
 import com.swordfish.lemuroid.common.kotlin.calculateCrc32
 import com.swordfish.lemuroid.common.kotlin.toStringCRC32
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
-import com.swordfish.lemuroid.lib.storage.scanner.DiskScanner
+import com.swordfish.lemuroid.lib.storage.scanner.SerialScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import timber.log.Timber
 import java.util.zip.ZipEntry
@@ -47,7 +47,7 @@ object DocumentFileParser {
     ): StorageFile {
         Timber.d("Processing zipped entry: ${entry.name}")
 
-        val diskInfo = DiskScanner.extractInfo(entry.name, zipInputStream)
+        val diskInfo = SerialScanner.extractInfo(entry.name, zipInputStream)
 
         return StorageFile(
             entry.name,
@@ -62,7 +62,7 @@ object DocumentFileParser {
 
     private fun parseStandardFile(context: Context, baseStorageFile: BaseStorageFile): StorageFile {
         val diskInfo = context.contentResolver.openInputStream(baseStorageFile.uri)
-            ?.let { inputStream -> DiskScanner.extractInfo(baseStorageFile.name, inputStream) }
+            ?.let { inputStream -> SerialScanner.extractInfo(baseStorageFile.name, inputStream) }
 
         val crc32 = if (baseStorageFile.size < MAX_SIZE_CRC32 && diskInfo?.serial == null) {
             context.contentResolver.openInputStream(baseStorageFile.uri)?.calculateCrc32()

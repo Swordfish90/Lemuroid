@@ -64,6 +64,8 @@ object LemuroidTouchConfigs {
         ARCADE_6_RIGHT,
         ATARI7800_LEFT,
         ATARI7800_RIGHT,
+        NINTENDO_3DS_LEFT,
+        NINTENDO_3DS_RIGHT
     }
 
     private data class Config(
@@ -130,6 +132,8 @@ object LemuroidTouchConfigs {
             Kind.ARCADE_6_RIGHT -> getArcade6Right(config)
             Kind.ATARI7800_LEFT -> getAtari7800Left(config)
             Kind.ATARI7800_RIGHT -> getAtari7800Right(config)
+            Kind.NINTENDO_3DS_LEFT -> getNintendo3DSLeft(config)
+            Kind.NINTENDO_3DS_RIGHT -> getNintendo3DSRight(config)
         }
 
         return radialGamePadConfig.copy(haptic = haptic)
@@ -1335,6 +1339,56 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_START),
+                buildMenuButtonConfig(10, config)
+            )
+        )
+
+    private fun getNintendo3DSLeft(config: Config) =
+        RadialGamePadConfig(
+            theme = config.standardTheme,
+            sockets = 12,
+            primaryDial = PRIMARY_DIAL_CROSS,
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 1, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.SingleButton(3, 2, BUTTON_CONFIG_L),
+                SecondaryDialConfig.Stick(
+                    9,
+                    2.2f,
+                    MOTION_SOURCE_LEFT_STICK,
+                    supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+                ),
+                SecondaryDialConfig.Empty(8, 1, 1f)
+            )
+        )
+
+    private fun getNintendo3DSRight(config: Config) =
+        RadialGamePadConfig(
+            theme = config.standardTheme,
+            sockets = 12,
+            primaryDial = PrimaryDialConfig.PrimaryButtons(
+                dials = listOf(
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_A,
+                        label = "A"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_X,
+                        label = "X"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_Y,
+                        label = "Y"
+                    ),
+                    ButtonConfig(
+                        id = KeyEvent.KEYCODE_BUTTON_B,
+                        label = "B"
+                    )
+                )
+            ),
+            secondaryDials = listOf(
+                SecondaryDialConfig.SingleButton(2, 2, BUTTON_CONFIG_R),
+                SecondaryDialConfig.SingleButton(4, 1, BUTTON_CONFIG_START),
+                SecondaryDialConfig.Empty(8, 2, 2.2f),
                 buildMenuButtonConfig(10, config)
             )
         )

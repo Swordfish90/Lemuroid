@@ -29,7 +29,10 @@ class MetaSystemsFragment : RecyclerViewFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        metaSystemsViewModel = ViewModelProvider(this, MetaSystemsViewModel.Factory(retrogradeDb))
+        metaSystemsViewModel = ViewModelProvider(
+            this,
+            MetaSystemsViewModel.Factory(retrogradeDb, requireContext().applicationContext)
+        )
             .get(MetaSystemsViewModel::class.java)
 
         metaSystemsAdapter = MetaSystemsAdapter { navigateToGames(it) }
