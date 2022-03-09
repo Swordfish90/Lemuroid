@@ -47,6 +47,7 @@
     <string name="settings_description_advanced_settings">عرض الإعدادات المتقدمة</string>
     <string name="settings_title_low_latency_audio">تفضيل صوت مباشر</string>
     <string name="settings_description_low_latency_audio">تقليل تأخير الصوت على الأجهزة المدعومة. قد يؤدي ذلك إلى زيادة اخطاء في الصوت.</string>
+    <string name="settings_title_direct_game_load">Direct game load</string>
     <string name="settings_title_enable_rumble">الاهتزاز</string>
     <string name="settings_description_enable_rumble">تمكين الاهتزاز في الألعاب المدعومة والتحكم</string>
     <string name="settings_title_enable_device_rumble">اهتزاز الجهاز</string>
