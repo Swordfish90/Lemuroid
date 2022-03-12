@@ -13,7 +13,11 @@ import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-class GamePresenter(private val cardSize: Int, private val gameInteractor: GameInteractor) : Presenter() {
+class GamePresenter(
+    private val cardSize: Int,
+    private val gameInteractor: GameInteractor,
+    private val coverLoader: CoverLoader
+) : Presenter() {
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any?) {
         if (item == null || viewHolder !is ViewHolder) return
@@ -21,7 +25,7 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
         viewHolder.mCardView.titleText = game.title
         viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
-        viewHolder.updateCardViewImage(game)
+        viewHolder.updateCardViewImage(game, coverLoader)
         viewHolder.view.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
     }
 
@@ -36,15 +40,15 @@ class GamePresenter(private val cardSize: Int, private val gameInteractor: GameI
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder?) {
         val viewHolder = viewHolder as ViewHolder
         viewHolder.mCardView.mainImage = null
-        CoverLoader.cancelRequest(viewHolder.mCardView.mainImageView)
+        coverLoader.cancelRequest(viewHolder.mCardView.mainImageView)
         viewHolder.view.setOnCreateContextMenuListener(null)
     }
 
     class ViewHolder(view: ImageCardView) : Presenter.ViewHolder(view) {
         val mCardView: ImageCardView = view
 
-        fun updateCardViewImage(game: Game) {
-            CoverLoader.loadCover(game, mCardView.mainImageView)
+        fun updateCardViewImage(game: Game, coverLoader: CoverLoader) {
+            coverLoader.loadCover(game, mCardView.mainImageView)
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.lib.controller
 
-import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
-import com.swordfish.touchinput.radial.RadialPadConfigs
+import com.swordfish.touchinput.radial.LemuroidTouchConfigs
 
 enum class TouchControllerID {
     GB,
@@ -27,11 +26,12 @@ enum class TouchControllerID {
     NGP,
     DOS,
     WS_LANDSCAPE,
-    WS_PORTRAIT;
+    WS_PORTRAIT,
+    NINTENDO_3DS;
 
     class Config(
-        val leftConfig: RadialGamePadConfig,
-        val rightConfig: RadialGamePadConfig,
+        val leftConfig: LemuroidTouchConfigs.Kind,
+        val rightConfig: LemuroidTouchConfigs.Kind,
         val leftScale: Float = 1.0f,
         val rightScale: Float = 1.0f
     )
@@ -39,30 +39,110 @@ enum class TouchControllerID {
     companion object {
         fun getConfig(id: TouchControllerID): Config {
             return when (id) {
-                GB -> Config(RadialPadConfigs.GB_LEFT, RadialPadConfigs.GB_RIGHT)
-                NES -> Config(RadialPadConfigs.NES_LEFT, RadialPadConfigs.NES_RIGHT)
-                DESMUME -> Config(RadialPadConfigs.DESMUME_LEFT, RadialPadConfigs.DESMUME_RIGHT)
-                MELONDS -> Config(RadialPadConfigs.MELONDS_NDS_LEFT, RadialPadConfigs.MELONDS_NDS_RIGHT)
-                PSX -> Config(RadialPadConfigs.PSX_LEFT, RadialPadConfigs.PSX_RIGHT)
-                PSX_DUALSHOCK -> Config(RadialPadConfigs.PSX_DUALSHOCK_LEFT, RadialPadConfigs.PSX_DUALSHOCK_RIGHT)
-                N64 -> Config(RadialPadConfigs.N64_LEFT, RadialPadConfigs.N64_RIGHT)
-                PSP -> Config(RadialPadConfigs.PSP_LEFT, RadialPadConfigs.PSP_RIGHT)
-                SNES -> Config(RadialPadConfigs.SNES_LEFT, RadialPadConfigs.SNES_RIGHT)
-                GBA -> Config(RadialPadConfigs.GBA_LEFT, RadialPadConfigs.GBA_RIGHT)
-                GENESIS_3 -> Config(RadialPadConfigs.GENESIS_3_LEFT, RadialPadConfigs.GENESIS_3_RIGHT)
-                GENESIS_6 -> Config(RadialPadConfigs.GENESIS_6_LEFT, RadialPadConfigs.GENESIS_6_RIGHT, 1.0f, 1.2f)
-                ATARI2600 -> Config(RadialPadConfigs.ATARI2600_LEFT, RadialPadConfigs.ATARI2600_RIGHT)
-                SMS -> Config(RadialPadConfigs.SMS_LEFT, RadialPadConfigs.SMS_RIGHT)
-                GG -> Config(RadialPadConfigs.GG_LEFT, RadialPadConfigs.GG_RIGHT)
-                ARCADE_4 -> Config(RadialPadConfigs.ARCADE_4_LEFT, RadialPadConfigs.ARCADE_4_RIGHT)
-                ARCADE_6 -> Config(RadialPadConfigs.ARCADE_6_LEFT, RadialPadConfigs.ARCADE_6_RIGHT, 1.0f, 1.2f)
-                LYNX -> Config(RadialPadConfigs.LYNX_LEFT, RadialPadConfigs.LYNX_RIGHT)
-                ATARI7800 -> Config(RadialPadConfigs.ATARI7800_LEFT, RadialPadConfigs.ATARI7800_RIGHT)
-                PCE -> Config(RadialPadConfigs.PCE_LEFT, RadialPadConfigs.PCE_RIGHT)
-                NGP -> Config(RadialPadConfigs.NGP_LEFT, RadialPadConfigs.NGP_RIGHT)
-                DOS -> Config(RadialPadConfigs.DOS_LEFT, RadialPadConfigs.DOS_RIGHT)
-                WS_LANDSCAPE -> Config(RadialPadConfigs.WS_LANDSCAPE_LEFT, RadialPadConfigs.WS_LANDSCAPE_RIGHT)
-                WS_PORTRAIT -> Config(RadialPadConfigs.WS_PORTRAIT_LEFT, RadialPadConfigs.WS_PORTRAIT_RIGHT)
+                GB -> Config(
+                    LemuroidTouchConfigs.Kind.GB_LEFT,
+                    LemuroidTouchConfigs.Kind.GB_RIGHT
+                )
+                NES -> Config(
+                    LemuroidTouchConfigs.Kind.NES_LEFT,
+                    LemuroidTouchConfigs.Kind.NES_RIGHT
+                )
+                DESMUME -> Config(
+                    LemuroidTouchConfigs.Kind.DESMUME_LEFT,
+                    LemuroidTouchConfigs.Kind.DESMUME_RIGHT
+                )
+                MELONDS -> Config(
+                    LemuroidTouchConfigs.Kind.MELONDS_NDS_LEFT,
+                    LemuroidTouchConfigs.Kind.MELONDS_NDS_RIGHT
+                )
+                PSX -> Config(
+                    LemuroidTouchConfigs.Kind.PSX_LEFT,
+                    LemuroidTouchConfigs.Kind.PSX_RIGHT
+                )
+                PSX_DUALSHOCK -> Config(
+                    LemuroidTouchConfigs.Kind.PSX_DUALSHOCK_LEFT,
+                    LemuroidTouchConfigs.Kind.PSX_DUALSHOCK_RIGHT
+                )
+                N64 -> Config(
+                    LemuroidTouchConfigs.Kind.N64_LEFT,
+                    LemuroidTouchConfigs.Kind.N64_RIGHT
+                )
+                PSP -> Config(
+                    LemuroidTouchConfigs.Kind.PSP_LEFT,
+                    LemuroidTouchConfigs.Kind.PSP_RIGHT
+                )
+                SNES -> Config(
+                    LemuroidTouchConfigs.Kind.SNES_LEFT,
+                    LemuroidTouchConfigs.Kind.SNES_RIGHT
+                )
+                GBA -> Config(
+                    LemuroidTouchConfigs.Kind.GBA_LEFT,
+                    LemuroidTouchConfigs.Kind.GBA_RIGHT
+                )
+                GENESIS_3 -> Config(
+                    LemuroidTouchConfigs.Kind.GENESIS_3_LEFT,
+                    LemuroidTouchConfigs.Kind.GENESIS_3_RIGHT
+                )
+                GENESIS_6 -> Config(
+                    LemuroidTouchConfigs.Kind.GENESIS_6_LEFT,
+                    LemuroidTouchConfigs.Kind.GENESIS_6_RIGHT,
+                    1.0f,
+                    1.2f
+                )
+                ATARI2600 -> Config(
+                    LemuroidTouchConfigs.Kind.ATARI2600_LEFT,
+                    LemuroidTouchConfigs.Kind.ATARI2600_RIGHT
+                )
+                SMS -> Config(
+                    LemuroidTouchConfigs.Kind.SMS_LEFT,
+                    LemuroidTouchConfigs.Kind.SMS_RIGHT
+                )
+                GG -> Config(
+                    LemuroidTouchConfigs.Kind.GG_LEFT,
+                    LemuroidTouchConfigs.Kind.GG_RIGHT
+                )
+                ARCADE_4 -> Config(
+                    LemuroidTouchConfigs.Kind.ARCADE_4_LEFT,
+                    LemuroidTouchConfigs.Kind.ARCADE_4_RIGHT
+                )
+                ARCADE_6 -> Config(
+                    LemuroidTouchConfigs.Kind.ARCADE_6_LEFT,
+                    LemuroidTouchConfigs.Kind.ARCADE_6_RIGHT,
+                    1.0f,
+                    1.2f
+                )
+                LYNX -> Config(
+                    LemuroidTouchConfigs.Kind.LYNX_LEFT,
+                    LemuroidTouchConfigs.Kind.LYNX_RIGHT
+                )
+                ATARI7800 -> Config(
+                    LemuroidTouchConfigs.Kind.ATARI7800_LEFT,
+                    LemuroidTouchConfigs.Kind.ATARI7800_RIGHT
+                )
+                PCE -> Config(
+                    LemuroidTouchConfigs.Kind.PCE_LEFT,
+                    LemuroidTouchConfigs.Kind.PCE_RIGHT
+                )
+                NGP -> Config(
+                    LemuroidTouchConfigs.Kind.NGP_LEFT,
+                    LemuroidTouchConfigs.Kind.NGP_RIGHT
+                )
+                DOS -> Config(
+                    LemuroidTouchConfigs.Kind.DOS_LEFT,
+                    LemuroidTouchConfigs.Kind.DOS_RIGHT
+                )
+                WS_LANDSCAPE -> Config(
+                    LemuroidTouchConfigs.Kind.WS_LANDSCAPE_LEFT,
+                    LemuroidTouchConfigs.Kind.WS_LANDSCAPE_RIGHT
+                )
+                WS_PORTRAIT -> Config(
+                    LemuroidTouchConfigs.Kind.WS_PORTRAIT_LEFT,
+                    LemuroidTouchConfigs.Kind.WS_PORTRAIT_RIGHT
+                )
+                NINTENDO_3DS -> Config(
+                    LemuroidTouchConfigs.Kind.NINTENDO_3DS_LEFT,
+                    LemuroidTouchConfigs.Kind.NINTENDO_3DS_RIGHT
+                )
             }
         }
     }

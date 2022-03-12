@@ -209,4 +209,11 @@ object ControllerConfigs {
         TouchControllerID.WS_PORTRAIT,
         mergeDPADAndLeftStickEvents = true,
     )
+
+    val NINTENDO_3DS = ControllerConfig(
+        "default",
+        R.string.controller_default,
+        TouchControllerID.NINTENDO_3DS,
+        allowTouchOverlay = false
+    )
 }

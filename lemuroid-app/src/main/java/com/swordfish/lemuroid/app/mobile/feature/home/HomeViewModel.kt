@@ -3,7 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.home
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.swordfish.lemuroid.app.shared.library.LibraryIndexMonitor
+import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 
 class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : ViewModel() {
@@ -24,5 +24,5 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
 
     val recentGames = retrogradeDb.gameDao().selectFirstUnfavoriteRecents(CAROUSEL_MAX_ITEMS)
 
-    val indexingInProgress = LibraryIndexMonitor(appContext).getLiveData()
+    val indexingInProgress = PendingOperationsMonitor(appContext).anyLibraryOperationInProgress()
 }

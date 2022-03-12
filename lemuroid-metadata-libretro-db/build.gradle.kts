@@ -22,4 +22,7 @@ dependencies {
 
 android {
     resourcePrefix("libretrodb_")
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }

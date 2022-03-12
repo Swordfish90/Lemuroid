@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="surface_elevation_0dp">#121212</color>
+    <color name="surface_elevation_1dp">#1D1D1D</color>
+    <color name="surface_elevation_2dp">#212121</color>
+    <color name="surface_elevation_3dp">#242424</color>
+    <color name="surface_elevation_4dp">#272727</color>
+    <color name="surface_elevation_6dp">#2C2C2C</color>
+    <color name="surface_elevation_8dp">#2D2D2D</color>
+    <color name="surface_elevation_12dp">#323232</color>
+    <color name="surface_elevation_16dp">#353535</color>
+    <color name="surface_elevation_24dp">#383838</color>
+</resources>

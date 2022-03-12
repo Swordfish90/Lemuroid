@@ -38,6 +38,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - NEC PC Engine (PCE) ([beetle_pce_fast](https://docs.libretro.com/library/beetle_pce_fast/))
 - Neo Geo Pocket (NGP) ([mednafen_ngp](https://docs.libretro.com/library/beetle_neopop/))
 - Neo Geo Pocket Color (NGC) ([mednafen_ngp](https://docs.libretro.com/library/beetle_neopop/))
+- Nintendo 3DS (3DS) ([citra](https://docs.libretro.com/library/citra/))
 
 ### Features:
 - Android TV support

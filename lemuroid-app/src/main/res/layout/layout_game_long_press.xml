@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:visibility="gone">
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/settings_loading_progress"
+        app:indicatorSize="@dimen/loading_circle_size"
+        app:trackThickness="@dimen/loading_circle_progress_thickness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:indicatorColor="@color/touch_control_text"/>
+
+    <ImageView
+        android:id="@+id/settings_loading_icon"
+        android:layout_width="@dimen/loading_circle_icon_size"
+        android:layout_height="@dimen/loading_circle_icon_size"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

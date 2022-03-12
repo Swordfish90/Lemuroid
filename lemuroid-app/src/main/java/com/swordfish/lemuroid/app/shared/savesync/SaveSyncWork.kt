@@ -23,6 +23,7 @@ import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
+import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -57,6 +58,10 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
             .doOnError { e -> Timber.e(e, "Error in saves sync") }
             .onErrorComplete()
             .andThen(Single.just(Result.success()))
+    }
+
+    override fun getBackgroundScheduler(): Scheduler {
+        return Schedulers.io()
     }
 
     private fun shouldPerformSync(): Single<Boolean> {

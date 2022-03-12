@@ -106,6 +106,11 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
         R.string.game_system_title_dos,
         R.drawable.game_system_dos,
         listOf(SystemID.DOS)
+    ),
+    NINTENDO_3DS(
+        R.string.game_system_title_3ds,
+        R.drawable.game_system_3ds,
+        listOf(SystemID.NINTENDO_3DS)
     );
 
     companion object {
@@ -135,6 +140,7 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
                 SystemID.NGC -> NGP
                 SystemID.WS -> WS
                 SystemID.WSC -> WS
+                SystemID.NINTENDO_3DS -> NINTENDO_3DS
             }
         }
     }

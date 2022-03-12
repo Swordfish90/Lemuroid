@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.settings.AdvancedSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import dagger.android.support.AndroidSupportInjection
@@ -29,6 +30,7 @@ class AdvancedSettingsFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore =
             SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
         setPreferencesFromResource(R.xml.mobile_settings_advanced, rootKey)
+        AdvancedSettingsPreferences.updateCachePreferences(preferenceScreen)
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

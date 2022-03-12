@@ -1,15 +1,14 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
     defaultConfig {
-        versionCode = 155
-        versionName = "1.12.1"
+        versionCode = 161
+        versionName = "1.13.0" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -34,7 +33,8 @@ android {
             ":lemuroid_core_ppsspp",
             ":lemuroid_core_prosystem",
             ":lemuroid_core_snes9x",
-            ":lemuroid_core_stella"
+            ":lemuroid_core_stella",
+            ":lemuroid_core_citra"
         )
     }
 
@@ -88,15 +88,11 @@ android {
             signingConfig = signingConfigs["release"]
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             resValue("string", "lemuroid_name", "Lemuroid")
-            resValue("color", "main_color", "#00c64e")
-            resValue("color", "main_color_light", "#9de3aa")
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
             resValue("string", "lemuroid_name", "LemuroiDebug")
-            resValue("color", "main_color", "#f44336")
-            resValue("color", "main_color_light", "#ef9a9a")
         }
     }
 
@@ -174,6 +170,7 @@ dependencies {
     implementation(deps.libs.androidx.documentfile)
     implementation(deps.libs.androidx.leanback.tvProvider)
     implementation(deps.libs.harmony)
+    implementation(deps.libs.startup)
 
     implementation(deps.libs.libretrodroid)
 

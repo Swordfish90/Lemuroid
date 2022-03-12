@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_key_rescan" translatable="false">rescan</string>
+    <string name="pref_key_stop_rescan" translatable="false">stop_rescan</string>
     <string name="pref_key_display_bios_info" translatable="false">display_bios_info</string>
     <string name="pref_key_advanced_settings" translatable="false">advanced_settings</string>
     <string name="pref_key_open_cores_selection" translatable="false">open_cores_selection</string>
@@ -13,6 +14,10 @@
     <string name="pref_key_autosave" translatable="false">autosave</string>
     <string name="pref_key_reset_settings" translatable="false">reset_settings</string>
     <string name="pref_key_low_latency_audio" translatable="false">low_latency_audio</string>
+    <string name="pref_key_enable_rumble" translatable="false">enable_rumble</string>
+    <string name="pref_key_enable_device_rumble" translatable="false">enable_device_rumble</string>
+    <string name="pref_key_max_cache_size" translatable="false">max_cache_size_bytes</string>
+    <string name="pref_key_allow_direct_game_load" translatable="false">allow_direct_game_load</string>
 
     <string name="pref_key_save_sync_auto" translatable="false">save_sync_auto</string>
     <string name="pref_key_save_sync_enable" translatable="false">save_sync_enable</string>

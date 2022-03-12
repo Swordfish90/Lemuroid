@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:indeterminate="true"
-        android:indeterminateTint="@color/colorPrimaryVariant"/>
+        android:indeterminateTint="@color/main_color"/>
 
 </FrameLayout>

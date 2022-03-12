@@ -58,7 +58,8 @@ class GameLoader(
         appContext: Context,
         game: Game,
         loadSave: Boolean,
-        systemCoreConfig: SystemCoreConfig
+        systemCoreConfig: SystemCoreConfig,
+        directLoad: Boolean
     ): Observable<LoadingState> = Observable.create { emitter ->
         try {
             emitter.onNext(LoadingState.LoadingCore)
@@ -76,7 +77,7 @@ class GameLoader(
             }
 
             val gameFiles = runCatching {
-                val useVFS = systemCoreConfig.useLibretroVFS
+                val useVFS = systemCoreConfig.supportsLibretroVFS && directLoad
                 val dataFiles = retrogradeDatabase.dataFileDao().selectDataFilesForGame(game.id)
                 lemuroidLibrary.getGameFiles(game, dataFiles, useVFS).blockingGet()
             }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_GAME) }

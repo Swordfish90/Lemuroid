@@ -28,12 +28,12 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         favoriteToggle = itemView.findViewById(R.id.favorite_toggle)
     }
 
-    fun bind(game: Game, gameInteractor: GameInteractor) {
+    fun bind(game: Game, gameInteractor: GameInteractor, coverLoader: CoverLoader) {
         titleView?.text = game.title
         subtitleView?.text = GameUtils.getGameSubtitle(itemView.context, game)
         favoriteToggle?.isChecked = game.isFavorite
 
-        CoverLoader.loadCover(game, coverView)
+        coverLoader.loadCover(game, coverView)
 
         itemView.setOnClickListener { gameInteractor.onGamePlay(game) }
         itemView.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
@@ -43,9 +43,9 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         }
     }
 
-    fun unbind() {
+    fun unbind(coverLoader: CoverLoader) {
         coverView?.apply {
-            CoverLoader.cancelRequest(this)
+            coverLoader.cancelRequest(this)
             this.setImageDrawable(null)
         }
         itemView.setOnClickListener(null)
@@ -56,7 +56,8 @@ class GameViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
 class GamesAdapter(
     private val baseLayout: Int,
-    private val gameInteractor: GameInteractor
+    private val gameInteractor: GameInteractor,
+    private val coverLoader: CoverLoader
 ) : PagingDataAdapter<Game, GameViewHolder>(Game.DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -64,10 +65,10 @@ class GamesAdapter(
     }
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it, gameInteractor) }
+        getItem(position)?.let { holder.bind(it, gameInteractor, coverLoader) }
     }
 
     override fun onViewRecycled(holder: GameViewHolder) {
-        holder.unbind()
+        holder.unbind(coverLoader)
     }
 }

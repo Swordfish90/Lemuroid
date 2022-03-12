@@ -4,26 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
-import com.swordfish.lemuroid.app.shared.library.LibraryIndexMonitor
-import com.swordfish.lemuroid.app.shared.main.PostGameHandler
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncMonitor
+import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
+import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
-import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
+import com.swordfish.lemuroid.app.utils.livedata.toObservable
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.lib.core.CoresSelection
-import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -40,8 +36,9 @@ import javax.inject.Inject
 class ExternalGameLauncherActivity : ImmersiveActivity() {
 
     @Inject lateinit var retrogradeDatabase: RetrogradeDatabase
-    @Inject lateinit var postGameHandler: PostGameHandler
+    @Inject lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
     @Inject lateinit var coresSelection: CoresSelection
+    @Inject lateinit var gameLauncher: GameLauncher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,20 +48,16 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
             val gameId = intent.data?.pathSegments?.let { it[it.size - 1].toInt() }!!
 
-            val publisher = LiveDataReactiveStreams.toPublisher(this, getLoadingLiveData())
-
             val loadingSubject = BehaviorSubject.createDefault(true)
 
-            Observable.fromPublisher(publisher)
+            getLoadingLiveData()
+                .toObservable(this)
                 .filter { !it }
                 .firstElement()
-                .flatMapSingle {
+                .flatMap {
                     retrogradeDatabase.gameDao()
-                        .selectById(gameId).subscribeOn(Schedulers.io())
-                        .flatMapSingle { game ->
-                            coresSelection.getCoreConfigForSystem(GameSystem.findById(game.systemId))
-                                .map { game to it }
-                        }
+                        .selectById(gameId)
+                        .subscribeOn(Schedulers.io())
                 }
                 .subscribeOn(Schedulers.io())
                 .delay(animationDuration().toLong(), TimeUnit.MILLISECONDS)
@@ -74,10 +67,10 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                 .autoDispose(scope())
                 .subscribeBy(
                     { displayErrorMessage() },
-                    { (game, systemCoreConfig) ->
-                        BaseGameActivity.launchGame(
+                    { },
+                    { game ->
+                        gameLauncher.launchGameAsync(
                             this,
-                            systemCoreConfig,
                             game,
                             true,
                             TVHelper.isTV(applicationContext)
@@ -100,12 +93,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
     }
 
     private fun getLoadingLiveData(): LiveData<Boolean> {
-        return CombinedLiveData(
-            LibraryIndexMonitor(applicationContext).getLiveData(),
-            SaveSyncMonitor(applicationContext).getLiveData()
-        ) { libraryIndex, saveSync ->
-            libraryIndex || saveSync
-        }
+        return PendingOperationsMonitor(applicationContext).anyOperationInProgress()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -121,9 +109,10 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                     Completable.complete()
                 }
 
-                postGameHandler.handle(false, this, resultCode, data)
-                    .andThen { updateChannelCallback }
-                    .doAfterTerminate { finish() }
+                gameLaunchTaskHandler.handleGameFinish(false, this, resultCode, data)
+                    .andThen(updateChannelCallback)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doFinally { finish() }
                     .subscribeBy(Timber::e) { }
             }
         }

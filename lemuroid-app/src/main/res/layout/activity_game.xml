@@ -29,7 +29,8 @@
     android:layout_height="match_parent"
     tools:context=".app.mobile.feature.game.GameActivity"
     android:keepScreenOn="true"
-    tools:ignore="MergeRootFrame">
+    tools:ignore="MergeRootFrame"
+    android:background="?attr/colorSurface">
 
     <FrameLayout
         android:id="@+id/gamecontainer"
@@ -38,14 +39,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#000"/>
 
     <View
         android:id="@+id/editcontrolsdarkening"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:background="@color/editControlOverlay"/>
+        android:background="@color/edit_control_overlay"/>
 
     <FrameLayout
         android:id="@+id/rightgamepad"
@@ -91,5 +93,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progress" />
+
+    <include layout="@layout/layout_game_long_press"
+        android:id="@+id/settings_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/gamecontainer"
+        app:layout_constraintEnd_toEndOf="@id/gamecontainer"
+        app:layout_constraintStart_toStartOf="@id/gamecontainer"
+        app:layout_constraintTop_toTopOf="@id/gamecontainer"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

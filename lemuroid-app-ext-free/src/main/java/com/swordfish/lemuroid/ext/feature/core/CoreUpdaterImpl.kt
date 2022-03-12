@@ -43,7 +43,7 @@ class CoreUpdaterImpl(
 
     // This is the last tagged versions of cores.
     companion object {
-        private const val CORES_VERSION = "1.12"
+        private const val CORES_VERSION = "1.13"
     }
 
     private val baseUri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")

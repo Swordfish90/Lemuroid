@@ -4,6 +4,12 @@ plugins {
     id("kotlin-kapt")
 }
 
+android {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))

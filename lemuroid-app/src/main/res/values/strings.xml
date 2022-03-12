@@ -8,6 +8,7 @@
     <string name="favorites">Favorites</string>
     <string name="discover">Discover</string>
     <string name="rescan">Rescan</string>
+    <string name="stop">Stop</string>
     <string name="none">None</string>
     <string name="directory">Directory</string>
     <string name="display_filter">Display filter</string>
@@ -15,6 +16,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="settings">Settings</string>
+    <string name="save_sync">Save Sync</string>
     <string name="show_all">Show All</string>
 
     <string name="settings_category_general">General</string>
@@ -23,13 +25,16 @@
     <string name="settings_title_enable_autosave">Autosave state</string>
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
+    <string name="settings_title_maximum_cache_usage">Cache size limit</string>
 
-    <string name="settings_gamepad_settings">Gamepad settings</string>
+    <string name="settings_title_gamepad_settings">External devices</string>
+    <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
+
     <string name="settings_gamepad_button_name">Button %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Unassigned</string>
 
-    <string name="settings_gamepad_category_enabled">Enabled Gamepads</string>
+    <string name="settings_gamepad_category_enabled">Enabled devices</string>
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
@@ -49,6 +54,15 @@
     <string name="settings_description_advanced_settings">Display advanced settings</string>
     <string name="settings_title_low_latency_audio">Prefer low-latency audio</string>
     <string name="settings_description_low_latency_audio">Reduce audio latency on supported devices. Might increase audio glitches.</string>
+
+    <string name="settings_title_direct_game_load">Direct game load</string>
+    <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>
+
+    <string name="settings_title_enable_rumble">Rumble</string>
+    <string name="settings_description_enable_rumble">Enable rumble in supported games and controllers</string>
+
+    <string name="settings_title_enable_device_rumble">Device rumble</string>
+    <string name="settings_description_enable_device_rumble">When no controller is connected vibrate the device instead</string>
 
     <string name="reset_settings_warning_message_title">Are you sure?</string>
     <string name="reset_settings_warning_message_description">This will reset Lemuroid to its factory settings. Saves and States will be preserved.</string>
@@ -104,6 +118,7 @@
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning in progress</string>
     <string name="library_index_notification_message">This can take up to a few minutes</string>
+    <string name="library_index_notification_action_cancel">@string/cancel</string>
 
     <string name="save_sync_notification_title">Cloud save Sync in progress</string>
     <string name="save_sync_notification_message">This can take up to a few minutes</string>

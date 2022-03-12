@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   styles.xml
 
   Copyright (C) 2017 Retrograde Project
@@ -19,28 +18,6 @@
   -->
 
 <resources>
-    <style name="SimpleCardViewStyle" parent="Widget.Leanback.ImageCardViewStyle">
-        <item name="lbImageCardViewType">Title</item>
-    </style>
-    <style name="SimpleCardViewColoredTitle" parent="Widget.Leanback.ImageCardView.TitleStyle">
-        <item name="android:textAlignment">center</item>
-
-    </style>
-    <style name="SimpleImageCardTheme" parent="Theme.Leanback">
-        <item name="imageCardViewStyle">@style/SimpleCardViewStyle</item>
-        <item name="imageCardViewTitleStyle">@style/SimpleCardViewColoredTitle</item>
-    </style>
-
-    <style name="GameCardTitle" parent="Widget.Leanback.ImageCardView.TitleStyle">
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:scrollHorizontally">true</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
-    <style name="GameCardTheme" parent="Theme.Leanback">
-        <item name="imageCardViewTitleStyle">@style/GameCardTitle</item>
-    </style>
-
     <style name="InvisibleTheme" parent="@android:style/Theme.Translucent.NoTitleBar">
         <item name="android:background">#00000000</item>
         <item name="android:windowNoTitle">true</item>
@@ -51,37 +28,4 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
-
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:navigationBarColor">#242424</item>
-        <item name="android:statusBarColor">#212121</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-    </style>
-
-    <style name="GameTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">@android:color/black</item>
-        <item name="android:navigationBarColor">@android:color/black</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorControlHighlight">@android:color/transparent</item>
-    </style>
-
-    <style name="RaisedFlatTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">#212121</item>
-        <item name="android:navigationBarColor">#212121</item>
-        <item name="android:statusBarColor">#212121</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorControlHighlight">@android:color/transparent</item>
-    </style>
-
 </resources>

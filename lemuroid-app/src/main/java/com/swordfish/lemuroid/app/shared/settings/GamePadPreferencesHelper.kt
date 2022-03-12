@@ -9,11 +9,13 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.getInputClass
 
-class GamePadPreferencesHelper(private val gamePadManager: GamePadManager) {
+class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManager) {
 
-    fun resetBindingsAndRefresh() = gamePadManager.resetAllBindings()
-        .andThen(gamePadManager.getGamePadsObservable().firstElement())
+    fun resetBindingsAndRefresh() = inputDeviceManager.resetAllBindings()
+        .andThen(inputDeviceManager.getGamePadsObservable().firstElement())
 
     fun addGamePadsPreferencesToScreen(
         context: Context,
@@ -79,7 +81,7 @@ class GamePadPreferencesHelper(private val gamePadManager: GamePadManager) {
         val category = createCategory(context, preferenceScreen, inputDevice.name)
         preferenceScreen.addPreference(category)
 
-        GamePadManager.INPUT_KEYS
+        inputDevice.getInputClass().getCustomizableKeys()
             .filter { inputDevice.hasKeys(it)[0] }
             .map { buildKeyBindingPreference(context, inputDevice, it) }
             .forEach {
@@ -93,20 +95,20 @@ class GamePadPreferencesHelper(private val gamePadManager: GamePadManager) {
 
     private fun buildGamePadEnabledPreference(context: Context, inputDevice: InputDevice): Preference {
         val preference = SwitchPreference(context)
-        preference.key = GamePadManager.computeEnabledGamePadPreference(inputDevice)
+        preference.key = InputDeviceManager.computeEnabledGamePadPreference(inputDevice)
         preference.title = inputDevice.name
-        preference.setDefaultValue(true)
+        preference.setDefaultValue(inputDevice.getInputClass().isEnabledByDefault(context))
         preference.isIconSpaceReserved = false
         return preference
     }
 
     private fun buildKeyBindingPreference(context: Context, inputDevice: InputDevice, key: Int): Preference {
-        val outputKeys = GamePadManager.OUTPUT_KEYS
+        val outputKeys = InputDeviceManager.OUTPUT_KEYS
         val outputKeysName = outputKeys.map { getRetroPadKeyName(context, it) }
-        val defaultBinding = gamePadManager.getDefaultBinding(key)
+        val defaultBinding = inputDeviceManager.getDefaultBinding(inputDevice, key)
 
         val preference = ListPreference(context)
-        preference.key = GamePadManager.computeKeyBindingPreference(inputDevice, key)
+        preference.key = InputDeviceManager.computeKeyBindingPreference(inputDevice, key)
         preference.title = getButtonKeyName(context, key)
         preference.entries = outputKeysName.toTypedArray()
         preference.entryValues = outputKeys.map { it.toString() }.toTypedArray()
@@ -121,13 +123,14 @@ class GamePadPreferencesHelper(private val gamePadManager: GamePadManager) {
 
     private fun buildGameMenuShortcutPreference(context: Context, inputDevice: InputDevice): Preference? {
         val default = GameMenuShortcut.getDefault(inputDevice) ?: return null
+        val supportedShortcuts = inputDevice.getInputClass().getSupportedShortcuts()
 
         val preference = ListPreference(context)
-        preference.key = GamePadManager.computeGameMenuShortcutPreference(inputDevice)
+        preference.key = InputDeviceManager.computeGameMenuShortcutPreference(inputDevice)
         preference.title = context.getString(R.string.settings_gamepad_title_game_menu)
-        preference.entries = GameMenuShortcut.ALL_SHORTCUTS.map { it.name }.toTypedArray()
-        preference.entryValues = GameMenuShortcut.ALL_SHORTCUTS.map { it.name }.toTypedArray()
-        preference.setValueIndex(GameMenuShortcut.ALL_SHORTCUTS.indexOf(default))
+        preference.entries = supportedShortcuts.map { it.name }.toTypedArray()
+        preference.entryValues = supportedShortcuts.map { it.name }.toTypedArray()
+        preference.setValueIndex(supportedShortcuts.indexOf(default))
         preference.setDefaultValue(default.name)
         preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         preference.isIconSpaceReserved = false
@@ -179,6 +182,38 @@ class GamePadPreferencesHelper(private val gamePadManager: GamePadManager) {
                 KeyEvent.KEYCODE_BUTTON_MODE to "Option",
                 KeyEvent.KEYCODE_BUTTON_Z to "Z",
                 KeyEvent.KEYCODE_BUTTON_C to "C",
+                KeyEvent.KEYCODE_Q to "Q",
+                KeyEvent.KEYCODE_W to "W",
+                KeyEvent.KEYCODE_E to "E",
+                KeyEvent.KEYCODE_R to "R",
+                KeyEvent.KEYCODE_T to "T",
+                KeyEvent.KEYCODE_Y to "Y",
+                KeyEvent.KEYCODE_U to "U",
+                KeyEvent.KEYCODE_I to "I",
+                KeyEvent.KEYCODE_O to "O",
+                KeyEvent.KEYCODE_P to "P",
+                KeyEvent.KEYCODE_A to "A",
+                KeyEvent.KEYCODE_S to "S",
+                KeyEvent.KEYCODE_D to "D",
+                KeyEvent.KEYCODE_F to "F",
+                KeyEvent.KEYCODE_G to "G",
+                KeyEvent.KEYCODE_H to "H",
+                KeyEvent.KEYCODE_J to "J",
+                KeyEvent.KEYCODE_K to "K",
+                KeyEvent.KEYCODE_L to "L",
+                KeyEvent.KEYCODE_Z to "Z",
+                KeyEvent.KEYCODE_X to "X",
+                KeyEvent.KEYCODE_C to "C",
+                KeyEvent.KEYCODE_V to "V",
+                KeyEvent.KEYCODE_B to "B",
+                KeyEvent.KEYCODE_N to "N",
+                KeyEvent.KEYCODE_M to "M",
+                KeyEvent.KEYCODE_DPAD_UP to "Up",
+                KeyEvent.KEYCODE_DPAD_LEFT to "Left",
+                KeyEvent.KEYCODE_DPAD_RIGHT to "Right",
+                KeyEvent.KEYCODE_DPAD_DOWN to "Down",
+                KeyEvent.KEYCODE_ENTER to "Enter",
+                KeyEvent.KEYCODE_SHIFT_LEFT to "Shift",
                 KeyEvent.KEYCODE_UNKNOWN to ""
             )
         }

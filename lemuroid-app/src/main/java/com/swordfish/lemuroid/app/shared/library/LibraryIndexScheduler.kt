@@ -6,26 +6,30 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 
 object LibraryIndexScheduler {
-    val UNIQUE_WORK_ID: String = LibraryIndexScheduler::class.java.simpleName
+    val CORE_UPDATE_WORK_ID: String = CoreUpdateWork::class.java.simpleName
+    val LIBRARY_INDEX_WORK_ID: String = LibraryIndexWork::class.java.simpleName
 
-    fun scheduleFullSync(applicationContext: Context) {
+    fun scheduleLibrarySync(applicationContext: Context) {
         WorkManager.getInstance(applicationContext)
             .beginUniqueWork(
-                UNIQUE_WORK_ID,
-                ExistingWorkPolicy.APPEND,
+                LIBRARY_INDEX_WORK_ID,
+                ExistingWorkPolicy.APPEND_OR_REPLACE,
                 OneTimeWorkRequestBuilder<LibraryIndexWork>().build()
             )
-            .then(OneTimeWorkRequestBuilder<CoreUpdateWork>().build())
             .enqueue()
     }
 
     fun scheduleCoreUpdate(applicationContext: Context) {
         WorkManager.getInstance(applicationContext)
             .beginUniqueWork(
-                UNIQUE_WORK_ID,
-                ExistingWorkPolicy.APPEND,
+                CORE_UPDATE_WORK_ID,
+                ExistingWorkPolicy.APPEND_OR_REPLACE,
                 OneTimeWorkRequestBuilder<CoreUpdateWork>().build()
             )
             .enqueue()
+    }
+
+    fun cancelLibrarySync(applicationContext: Context) {
+        WorkManager.getInstance(applicationContext).cancelUniqueWork(LIBRARY_INDEX_WORK_ID)
     }
 }

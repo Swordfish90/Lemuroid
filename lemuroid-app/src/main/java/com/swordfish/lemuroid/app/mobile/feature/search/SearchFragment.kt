@@ -15,8 +15,9 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDispose
@@ -29,6 +30,7 @@ class SearchFragment : RecyclerViewFragment() {
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
+    @Inject lateinit var coverLoader: CoverLoader
 
     private lateinit var searchViewModel: SearchViewModel
 
@@ -51,7 +53,7 @@ class SearchFragment : RecyclerViewFragment() {
         searchViewModel = ViewModelProvider(this, SearchViewModel.Factory(retrogradeDb))
             .get(SearchViewModel::class.java)
 
-        val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor)
+        val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor, coverLoader)
         searchViewModel.searchResults.cachedIn(lifecycle).observe(viewLifecycleOwner) {
             gamesAdapter.submitData(lifecycle, it)
         }

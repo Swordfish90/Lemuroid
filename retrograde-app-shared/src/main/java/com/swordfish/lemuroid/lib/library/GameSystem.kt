@@ -528,6 +528,7 @@ data class GameSystem(
                                 R.string.setting_gambatte_dark_filter_level
                             )
                         ),
+                        rumbleSupported = true,
                         defaultSettings = listOf(
                             CoreVariable("gambatte_gbc_color_correction", "disabled"),
                         ),
@@ -599,6 +600,7 @@ data class GameSystem(
                                 )
                             ),
                         ),
+                        rumbleSupported = true,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GBA)
                         )
@@ -651,13 +653,46 @@ data class GameSystem(
                                     ),
                                 )
                             ),
+                            ExposedSetting(
+                                "mupen64plus-pak1",
+                                R.string.setting_mupen64plus_pak1,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "memory",
+                                        R.string.value_mupen64plus_mupen64plus_pak1_memory
+                                    ),
+                                    ExposedSetting.Value(
+                                        "rumble",
+                                        R.string.value_mupen64plus_mupen64plus_pak1_rumble
+                                    ),
+                                    ExposedSetting.Value(
+                                        "none",
+                                        R.string.value_mupen64plus_mupen64plus_pak1_none
+                                    )
+                                )
+                            ),
+                            ExposedSetting(
+                                "mupen64plus-pak2",
+                                R.string.setting_mupen64plus_pak2,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "none",
+                                        R.string.value_mupen64plus_mupen64plus_pak2_none
+                                    ),
+                                    ExposedSetting.Value(
+                                        "rumble",
+                                        R.string.value_mupen64plus_mupen64plus_pak2_rumble
+                                    )
+                                )
+                            )
                         ),
                         defaultSettings = listOf(
                             CoreVariable("mupen64plus-43screensize", "320x240")
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.N64)
-                        )
+                        ),
+                        rumbleSupported = true
                     )
                 ),
                 uniqueExtensions = listOf("n64", "z64"),
@@ -702,8 +737,11 @@ data class GameSystem(
                         ),
                         defaultSettings = listOf(
                             CoreVariable("pcsx_rearmed_drc", "disabled"),
+                            CoreVariable("pcsx_rearmed_duping_enable", "enabled"),
                         ),
-                        useLibretroVFS = true
+                        rumbleSupported = true,
+                        supportsLibretroVFS = true,
+                        skipDuplicateFrames = false
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -738,13 +776,13 @@ data class GameSystem(
                                 "ppsspp_cpu_core",
                                 R.string.setting_ppsspp_cpu_core,
                                 arrayListOf(
-                                    ExposedSetting.Value("jit", R.string.value_ppsspp_cpu_core_jit),
+                                    ExposedSetting.Value("JIT", R.string.value_ppsspp_cpu_core_jit),
                                     ExposedSetting.Value(
-                                        "IR jit",
+                                        "IR JIT",
                                         R.string.value_ppsspp_cpu_core_irjit
                                     ),
                                     ExposedSetting.Value(
-                                        "interpreter",
+                                        "Interpreter",
                                         R.string.value_ppsspp_cpu_core_interpreter
                                     ),
                                 )
@@ -760,7 +798,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.PSP)
-                        )
+                        ),
+                        supportsLibretroVFS = true
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -1098,6 +1137,30 @@ data class GameSystem(
                     scanByPathAndFilename = false,
                     scanByPathAndSupportedExtensions = true
                 ),
+            ),
+            GameSystem(
+                SystemID.NINTENDO_3DS,
+                "Nintendo - Nintendo 3DS",
+                R.string.game_system_title_3ds,
+                R.string.game_system_abbr_3ds,
+                listOf(
+                    SystemCoreConfig(
+                        CoreID.CITRA,
+                        controllerConfigs = hashMapOf(
+                            0 to arrayListOf(ControllerConfigs.NINTENDO_3DS)
+                        ),
+                        defaultSettings = listOf(
+                            CoreVariable("citra_use_acc_mul", "disabled"),
+                            CoreVariable("citra_touch_touchscreen", "enabled"),
+                            CoreVariable("citra_mouse_touchscreen", "disabled"),
+                            CoreVariable("citra_render_touchscreen", "disabled"),
+                            CoreVariable("citra_use_hw_shader_cache", "disabled"),
+                        ),
+                        statesSupported = false,
+                        supportsLibretroVFS = true
+                    ),
+                ),
+                uniqueExtensions = listOf("3ds"),
             ),
         )
 

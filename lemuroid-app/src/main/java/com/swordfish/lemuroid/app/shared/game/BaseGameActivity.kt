@@ -25,21 +25,18 @@ import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
+import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
-import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
-import com.swordfish.lemuroid.app.shared.settings.GamePadManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.getInputClass
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
-import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple4
-import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
-import com.swordfish.lemuroid.common.kotlin.toIndexedMap
-import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.rx.BehaviorRelayNullableProperty
 import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
 import com.swordfish.lemuroid.common.rx.RXUtils
@@ -60,8 +57,13 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.storage.RomFiles
-import com.swordfish.lemuroid.lib.storage.cache.CacheCleanerWork
-import com.swordfish.lemuroid.lib.ui.setVisibleOrGone
+import com.swordfish.lemuroid.common.graphics.takeScreenshot
+import com.swordfish.lemuroid.common.kotlin.NTuple5
+import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
+import com.swordfish.lemuroid.common.kotlin.toIndexedMap
+import com.swordfish.lemuroid.common.kotlin.zipOnKeys
+import com.swordfish.lemuroid.common.longAnimationDuration
+import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.Controller
 import com.swordfish.libretrodroid.GLRetroView
@@ -109,9 +111,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
     @Inject lateinit var savesManager: SavesManager
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
-    @Inject lateinit var gamePadManager: GamePadManager
+    @Inject lateinit var inputDeviceManager: InputDeviceManager
     @Inject lateinit var gameLoader: GameLoader
     @Inject lateinit var controllerConfigsManager: ControllerConfigsManager
+    @Inject lateinit var rumbleManager: RumbleManager
 
     private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
 
@@ -168,6 +171,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
     }
 
+    private fun initializeRumble() {
+        retroGameViewMaybe()
+            .flatMapCompletable {
+                rumbleManager.processRumbleEvents(systemCoreConfig, it.getRumbleEvents())
+            }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) { }
+    }
+
     private fun setUpExceptionsHandler() {
         Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
             performUnsuccessfulActivityFinish(exception)
@@ -211,6 +223,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         gameData: GameLoader.GameData,
         screenFilter: String,
         lowLatencyAudio: Boolean,
+        enableRumble: Boolean
     ): GLRetroView {
         val data = GLRetroViewData(this).apply {
             coreFilePath = gameData.coreLibrary
@@ -231,6 +244,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             saveRAMState = gameData.saveRAMData
             shader = getShaderForSystem(screenFilter, system)
             preferLowLatencyAudio = lowLatencyAudio
+            rumbleEventsEnabled = enableRumble
+            skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
         }
 
         val retroGameView = GLRetroView(this, data)
@@ -366,6 +381,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 SystemID.NGC -> GLRetroView.SHADER_LCD
                 SystemID.WS -> GLRetroView.SHADER_LCD
                 SystemID.WSC -> GLRetroView.SHADER_LCD
+                SystemID.NINTENDO_3DS -> GLRetroView.SHADER_LCD
             }
         }
     }
@@ -419,6 +435,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .subscribeBy(Timber::e) {
                 controllerConfigs = it
             }
+
+        initializeRumble()
     }
 
     private fun getCoreOptions(): List<CoreOption> {
@@ -454,7 +472,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setupGamePadShortcuts() {
-        gamePadManager.getGamePadMenuShortCutObservable()
+        inputDeviceManager.getInputMenuShortCutObservable()
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
@@ -469,7 +487,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun setupGamePadMotions() {
         val events = Observables.combineLatest(
-            gamePadManager.getGamePadsPortMapperObservable(),
+            inputDeviceManager.getGamePadsPortMapperObservable(),
             motionEventsSubjects
         ).share()
 
@@ -484,7 +502,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         events
             .flatMap { (ports, event) ->
                 val port = ports(event.device)
-                val axes = GamePadManager.TRIGGER_MOTIONS_TO_KEYS.entries
+                val axes = event.device.getInputClass().getAxesMap().entries
                 Observable.fromIterable(axes).map { (axis, button) ->
                     val action = if (event.getAxisValue(axis) > 0.5) {
                         KeyEvent.ACTION_DOWN
@@ -511,16 +529,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val pressedKeys = mutableSetOf<Int>()
 
         val filteredKeyEvents = keyEventsSubjects
+            .filter { it.repeatCount == 0 }
             .map { Triple(it.device, it.action, it.keyCode) }
             .distinctUntilChanged()
 
-        val shortcutKeys = gamePadManager.getGamePadMenuShortCutObservable()
+        val shortcutKeys = inputDeviceManager.getInputMenuShortCutObservable()
             .map { it.toNullable()?.keys ?: setOf() }
 
         val combinedObservable = RXUtils.combineLatest(
             shortcutKeys,
-            gamePadManager.getGamePadsPortMapperObservable(),
-            gamePadManager.getGamePadsBindingsObservable(),
+            inputDeviceManager.getGamePadsPortMapperObservable(),
+            inputDeviceManager.getInputBindingsObservable(),
             filteredKeyEvents
         )
 
@@ -659,7 +678,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in GamePadManager.INPUT_KEYS) {
+        if (event != null && keyCode in event.device.getInputClass().getInputKeys()) {
             keyEventsSubjects.accept(event)
             return true
         }
@@ -667,7 +686,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in GamePadManager.INPUT_KEYS) {
+        if (event != null && keyCode in event.device.getInputClass().getInputKeys()) {
             keyEventsSubjects.accept(event)
             return true
         }
@@ -703,8 +722,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
         }
 
-        rescheduleBackgroundWork()
-
         setResult(Activity.RESULT_OK, resultIntent)
 
         finishAndExitProcess()
@@ -731,18 +748,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     open fun onFinishTriggered() { }
-
-    private fun cancelBackgroundWork() {
-        SaveSyncWork.cancelAutoWork(applicationContext)
-        SaveSyncWork.cancelManualWork(applicationContext)
-        CacheCleanerWork.cancelCleanCacheLRU(applicationContext)
-    }
-
-    private fun rescheduleBackgroundWork() {
-        // Let's slightly delay the sync. Maybe the user wants to play another game.
-        SaveSyncWork.enqueueAutoWork(applicationContext, 5)
-        CacheCleanerWork.enqueueCleanCacheLRU(applicationContext)
-    }
 
     private fun getAutoSaveCompletable(game: Game): Completable {
         return isAutoSaveEnabled()
@@ -831,8 +836,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun reset() {
-        retroGameView?.reset()
+    private fun reset(): Completable {
+        return Completable.timer(longAnimationDuration().toLong(), TimeUnit.MILLISECONDS)
+            .doOnSubscribe { loading = true }
+            .doAfterTerminate { loading = false }
+            .doOnComplete { retroGameView?.reset() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -841,6 +849,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             Timber.i("Game menu dialog response: ${data?.extras.dump()}")
             if (data?.getBooleanExtra(GameMenuContract.RESULT_RESET, false) == true) {
                 reset()
+                    .autoDispose(scope())
+                    .subscribeBy(Timber::e) {
+                        retroGameView?.reset()
+                    }
             }
             if (data?.hasExtra(GameMenuContract.RESULT_SAVE) == true) {
                 saveSlot(data.getIntExtra(GameMenuContract.RESULT_SAVE, 0))
@@ -882,27 +894,38 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun loadGame() {
         val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
 
-        cancelBackgroundWork()
-
         setupLoadingView()
 
-        Singles.zip(settingsManager.autoSave, settingsManager.screenFilter, settingsManager.lowLatencyAudio, ::Triple)
-            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio) ->
+        Singles.zip(
+            settingsManager.autoSave,
+            settingsManager.screenFilter,
+            settingsManager.lowLatencyAudio,
+            settingsManager.enableRumble,
+            settingsManager.allowDirectGameLoad,
+            ::NTuple5
+        )
+            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio, enableRumble, directLoad) ->
                 gameLoader.load(
                     applicationContext,
                     game,
                     requestLoadSave && autoSaveEnabled,
-                    systemCoreConfig
-                ).map { Triple(it, filter, lowLatencyAudio) }
+                    systemCoreConfig,
+                    directLoad
+                ).map { NTuple4(it, filter, lowLatencyAudio, enableRumble) }
             }
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe(
-                { (loadingState, filter, lowLatencyAudio) ->
+                { (loadingState, filter, lowLatencyAudio, enableRumble) ->
                     displayLoadingState(loadingState)
                     if (loadingState is GameLoader.LoadingState.Ready) {
-                        retroGameView = initializeRetroGameView(loadingState.gameData, filter, lowLatencyAudio)
+                        retroGameView = initializeRetroGameView(
+                            loadingState.gameData,
+                            filter,
+                            lowLatencyAudio,
+                            systemCoreConfig.rumbleSupported && enableRumble
+                        )
                     }
                 },
                 {

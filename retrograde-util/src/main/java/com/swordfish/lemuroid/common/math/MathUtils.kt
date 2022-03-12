@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.common.math
 
 import android.graphics.PointF
-import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -9,15 +8,6 @@ import kotlin.math.sqrt
 fun linearInterpolation(t: Float, a: Float, b: Float) = (a * (1.0f - t)) + (b * t)
 
 object MathUtils {
-    /** Compute the angle with the x axis of the line between two points. Results in range [0,2pi[.*/
-    fun angle(x1: Float, x2: Float, y1: Float, y2: Float): Float {
-        return ((-atan2(y2 - y1, x2 - x1) + PI2) % (PI2))
-    }
-
-    fun clamp(x: Float, min: Float, max: Float): Float {
-        return maxOf(minOf(x, max), min)
-    }
-
     fun distance(x1: Float, x2: Float, y1: Float, y2: Float): Float {
         return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
     }

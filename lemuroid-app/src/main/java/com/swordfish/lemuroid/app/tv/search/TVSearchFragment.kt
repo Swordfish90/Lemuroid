@@ -14,6 +14,7 @@ import androidx.paging.cachedIn
 import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -28,6 +29,7 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
 
     @Inject lateinit var retrogradeDb: RetrogradeDatabase
     @Inject lateinit var gameInteractor: GameInteractor
+    @Inject lateinit var coverLoader: CoverLoader
 
     private val searchRelay: PublishRelay<String> = PublishRelay.create()
 
@@ -72,7 +74,8 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
 
         val gamePresenter = GamePresenter(
             resources.getDimensionPixelSize(R.dimen.card_size),
-            gameInteractor
+            gameInteractor,
+            coverLoader
         )
 
         val gamesAdapter = PagingDataAdapter(gamePresenter, Game.DIFF_CALLBACK)
