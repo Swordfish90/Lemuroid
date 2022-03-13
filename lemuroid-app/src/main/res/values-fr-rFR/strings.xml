@@ -43,6 +43,14 @@
     <string name="settings_description_reset_settings">Réinitialiser Lemuroid à ses paramètres d\'origine</string>
     <string name="settings_title_advanced_settings">Paramètres avancés</string>
     <string name="settings_description_advanced_settings">Afficher les paramètres avancés</string>
+    <string name="settings_title_low_latency_audio">Préférer l\'audio à faible latence</string>
+    <string name="settings_description_low_latency_audio">Réduire la latence audio sur les périphériques supportés. Cela peut augmenter les bugs audio.</string>
+    <string name="settings_title_direct_game_load">Chargement direct du jeu</string>
+    <string name="settings_description_direct_game_load">(Expérimental) Réduire le temps de chargement et l\'utilisation du cache sur les consoles supportées.</string>
+    <string name="settings_title_enable_rumble">Vibrations</string>
+    <string name="settings_description_enable_rumble">Activer les vibrations dans les jeux et les contrôleurs pris en charge</string>
+    <string name="settings_title_enable_device_rumble">Vibrations de l\'appareil</string>
+    <string name="settings_description_enable_device_rumble">Quand aucun contrôleur n\'est connecté, utiliser les vibrations de l\'appareil</string>
     <string name="reset_settings_warning_message_title">Etes-vous sûr(e)?</string>
     <string name="reset_settings_warning_message_description">Cela réinitialisera Lemuroid à ses paramètres d\'origine. Les sauvegardes et sauvegardes automatiques seront préservés.</string>
     <string name="settings_title_save_sync">Sauvegarde dans le Nuage</string>
@@ -87,6 +95,7 @@
     <string name="notification_channel_name">Toutes les notifications</string>
     <string name="library_index_notification_title">Scan des ROMs en cours</string>
     <string name="library_index_notification_message">Cela peut prendre quelques minutes</string>
+    <string name="library_index_notification_action_cancel">@string/annuler</string>
     <string name="save_sync_notification_title">Synchronisation des sauvegardes dans le Nuage en cours</string>
     <string name="save_sync_notification_message">Cela peut prendre quelques minutes</string>
     <string name="game_running_notification_title">%1$s est en cours d\'exécution</string>
