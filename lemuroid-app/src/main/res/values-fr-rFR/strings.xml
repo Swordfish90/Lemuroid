@@ -16,8 +16,11 @@
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
     <string name="settings">Paramètres</string>
+    <string name="save_sync">Synchroniser la sauvegarde</string>
     <string name="show_all">Tout afficher</string>
     <string name="settings_category_general">Général</string>
+    <string name="settings_category_input">Systèmes d\'interaction</string>
+    <string name="settings_category_misc">Autre</string>
     <string name="settings_title_enable_autosave">Sauvegarde automatique</string>
     <string name="settings_title_enable_touch_feedback">Vibrer au toucher</string>
     <string name="settings_title_tilt_sensitivity">Sensibilité du capteur d\'inclinaison</string>

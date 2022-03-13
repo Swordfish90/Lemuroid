@@ -9,6 +9,7 @@
     <string name="favorites">المفضلة</string>
     <string name="discover">اكتشف</string>
     <string name="rescan">إعادة الفحص</string>
+    <string name="stop">إيقاف</string>
     <string name="none">لا شيء</string>
     <string name="directory">المجلد</string>
     <string name="display_filter">فلتر العرض</string>
@@ -16,6 +17,7 @@
     <string name="ok">حسناً</string>
     <string name="cancel">إلغاء</string>
     <string name="settings">الإعدادات</string>
+    <string name="save_sync">حفظ المزامنة</string>
     <string name="show_all">عرض الكل</string>
     <string name="settings_category_general">عام</string>
     <string name="settings_category_input">إدخال</string>
@@ -23,11 +25,13 @@
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
     <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميل</string>
-    <string name="settings_gamepad_settings">إعدادات وحدات التحكم</string>
+    <string name="settings_title_maximum_cache_usage">حد حجم الذاكرة المؤقتة</string>
+    <string name="settings_title_gamepad_settings">أجهزة خارجية</string>
+    <string name="settings_description_gamepad_settings">تكوين ألعاب خارجية ولوحات المفاتيح</string>
     <string name="settings_gamepad_button_name">الزر %1$s</string>
     <string name="settings_retropad_button_name">لوحة قديمة %1$s</string>
     <string name="settings_retropad_button_unassigned">غير مسند</string>
-    <string name="settings_gamepad_category_enabled">وحدات التحكم المفعلة</string>
+    <string name="settings_gamepad_category_enabled">الأجهزة المفعلة</string>
     <string name="settings_gamepad_category_general">عام</string>
     <string name="settings_gamepad_title_reset_bindings">إعادة ضبط الارتباطات</string>
     <string name="settings_gamepad_title_game_menu">القائمة</string>
@@ -43,6 +47,11 @@
     <string name="settings_description_advanced_settings">عرض الإعدادات المتقدمة</string>
     <string name="settings_title_low_latency_audio">تفضيل صوت مباشر</string>
     <string name="settings_description_low_latency_audio">تقليل تأخير الصوت على الأجهزة المدعومة. قد يؤدي ذلك إلى زيادة اخطاء في الصوت.</string>
+    <string name="settings_title_direct_game_load">Direct game load</string>
+    <string name="settings_title_enable_rumble">الاهتزاز</string>
+    <string name="settings_description_enable_rumble">تمكين الاهتزاز في الألعاب المدعومة والتحكم</string>
+    <string name="settings_title_enable_device_rumble">اهتزاز الجهاز</string>
+    <string name="settings_description_enable_device_rumble">عندما لا يتم توصيل أي وحدة تحكم يهتز الجهاز بدلاً من ذلك</string>
     <string name="reset_settings_warning_message_title">هل أنت متأكد؟</string>
     <string name="reset_settings_warning_message_description">سيؤدي هذا إلى إعادة ضبط المحاكي إلى إعدادات المصنع. سيتم حفظ حالات التقدم.</string>
     <string name="settings_title_save_sync">الحفظ السحابي</string>
@@ -87,6 +96,7 @@
     <string name="notification_channel_name">جميع الإشعارات</string>
     <string name="library_index_notification_title">فحص الأقراص المدمجة قيد التقدم</string>
     <string name="library_index_notification_message">قد يستغرق ذلك بضع دقائق</string>
+    <string name="library_index_notification_action_cancel">الغاء</string>
     <string name="save_sync_notification_title">يتم مزامنة الحفظ السحابي</string>
     <string name="save_sync_notification_message">قد يستغرق ذلك بضع دقائق</string>
     <string name="game_running_notification_title">%1$s قيد التشغيل</string>

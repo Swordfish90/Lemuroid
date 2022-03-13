@@ -9,6 +9,7 @@
     <string name="favorites">즐겨찾기</string>
     <string name="discover">발견하기</string>
     <string name="rescan">다시 검색</string>
+    <string name="stop">중단</string>
     <string name="none">없음</string>
     <string name="directory">디렉토리</string>
     <string name="display_filter">디스플레이 필터</string>
@@ -16,6 +17,7 @@
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="settings">설정</string>
+    <string name="save_sync">세이브 동기화</string>
     <string name="show_all">모두 표시</string>
     <string name="settings_category_general">일반</string>
     <string name="settings_category_input">입력</string>
@@ -23,11 +25,13 @@
     <string name="settings_title_enable_autosave">상태 자동 저장</string>
     <string name="settings_title_enable_touch_feedback">터치 시 진동</string>
     <string name="settings_title_tilt_sensitivity">기울임 센서 감도</string>
-    <string name="settings_gamepad_settings">게임패드 설정</string>
+    <string name="settings_title_maximum_cache_usage">캐시 크기 제한</string>
+    <string name="settings_title_gamepad_settings">외장 장치</string>
+    <string name="settings_description_gamepad_settings">외장 게임패드와 키보드를 설정합니다</string>
     <string name="settings_gamepad_button_name">버튼 %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">할당 안 됨</string>
-    <string name="settings_gamepad_category_enabled">활성화된 게임패드</string>
+    <string name="settings_gamepad_category_enabled">활성화된 장치</string>
     <string name="settings_gamepad_category_general">일반</string>
     <string name="settings_gamepad_title_reset_bindings">매핑 초기화</string>
     <string name="settings_gamepad_title_game_menu">메뉴</string>
@@ -43,6 +47,12 @@
     <string name="settings_description_advanced_settings">고급 설정 표시</string>
     <string name="settings_title_low_latency_audio">저지연 오디오 선호</string>
     <string name="settings_description_low_latency_audio">지원되는 기기에서 오디오 레이턴시를 줄입니다. 오디오 문제가 발생할 수 있습니다.</string>
+    <string name="settings_title_direct_game_load">게임 직접 불러오기</string>
+    <string name="settings_description_direct_game_load">(실험적 기능) 지원되는 콘솔에 대해 로딩 시간과 캐시 사용량을 감소시킵니다.</string>
+    <string name="settings_title_enable_rumble">진동</string>
+    <string name="settings_description_enable_rumble">지원되는 게임과 컨트롤러에서 진동을 사용합니다</string>
+    <string name="settings_title_enable_device_rumble">장치 진동</string>
+    <string name="settings_description_enable_device_rumble">연결된 컨트롤러가 없을 경우 장치를 진동합니다</string>
     <string name="reset_settings_warning_message_title">확실한가요?</string>
     <string name="reset_settings_warning_message_description">Lemuroid 설정을 초기 설정으로 되돌립니다. 게임 세이브와 상태저장은 보존됩니다.</string>
     <string name="settings_title_save_sync">클라우드 저장</string>

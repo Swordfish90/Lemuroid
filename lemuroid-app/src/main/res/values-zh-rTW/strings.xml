@@ -22,11 +22,9 @@
     <string name="settings_title_enable_autosave">自動儲存</string>
     <string name="settings_title_enable_touch_feedback">觸控時震動</string>
     <string name="settings_title_tilt_sensitivity">傾斜感應器敏感度</string>
-    <string name="settings_gamepad_settings">外接遊戲控制器</string>
     <string name="settings_gamepad_button_name">按鍵 %1$s</string>
     <string name="settings_retropad_button_name">%1$s 鍵</string>
     <string name="settings_retropad_button_unassigned">未指定</string>
-    <string name="settings_gamepad_category_enabled">啟用外接控制器</string>
     <string name="settings_gamepad_category_general">一般設定</string>
     <string name="settings_gamepad_title_reset_bindings">重新綁定</string>
     <string name="settings_gamepad_title_game_menu">主選單</string>

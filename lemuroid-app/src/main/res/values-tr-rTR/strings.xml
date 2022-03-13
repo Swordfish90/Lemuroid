@@ -9,6 +9,7 @@
     <string name="favorites">Favoriler</string>
     <string name="discover">Keşfet</string>
     <string name="rescan">Yeniden tara</string>
+    <string name="none">Hiçbiri</string>
     <string name="directory">Dizin</string>
     <string name="display_filter">Görüntü filtresi</string>
     <string name="roms">ROMlar</string>
@@ -17,10 +18,10 @@
     <string name="show_all">Hepsini Göster</string>
     <string name="settings_category_general">Genel</string>
     <string name="settings_category_input">Giriş</string>
+    <string name="settings_category_misc">Diğer</string>
     <string name="settings_title_enable_autosave">Durumu otomatik kaydet</string>
     <string name="settings_title_enable_touch_feedback">Dokunurken titret</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensör hassasiyeti</string>
-    <string name="settings_gamepad_settings">Gamepad ayarları</string>
     <string name="settings_gamepad_button_name">Dügme %1$s</string>
     <string name="settings_retropad_button_unassigned">Atanmamış</string>
     <string name="settings_gamepad_category_general">Genel</string>
@@ -33,6 +34,10 @@
     <string name="settings_bios_category_not_detected">Desteklenen</string>
     <string name="settings_title_reset_settings">Fabrika ayarlarına sıfırla</string>
     <string name="settings_description_reset_settings">Lemuroid\'i fabrika ayarlarına sıfırla</string>
+    <string name="settings_title_advanced_settings">Gelişmiş ayarlar</string>
+    <string name="settings_description_advanced_settings">Gelişmiş ayarları göster</string>
+    <string name="settings_title_low_latency_audio">Düşük gecikmeli sesi tercih et</string>
+    <string name="settings_description_low_latency_audio">Desteklenen cihazlarda ses gecikmesini azaltın. Ses aksaklıkları artabilir.</string>
     <string name="reset_settings_warning_message_title">Emin misin?</string>
     <string name="reset_settings_warning_message_description">Bu Lemuroid\'i fabrika ayarlarına sıfırlayacak. Kayıtlar ve Durumlar korunacak.</string>
     <string name="settings_title_save_sync">Bulut kayıtlar</string>
@@ -41,6 +46,7 @@
     <string name="settings_save_sync_refresh_description">Şimdi bir manuel senkronize yapın.\n%1$s</string>
     <string name="settings_save_sync_enable_auto">Otomatik Senkronize</string>
     <string name="settings_save_sync_enable_auto_description">Wi-Fi\'a bağlandığında oyun oturumundan önce ve sonra senkronizasyonu otomatik yapın</string>
+    <string name="settings_save_sync_configure">%1$s Yapılandır</string>
     <string name="settings_save_sync_include_saves">Oyun içi kayıtları senkronize et</string>
     <string name="settings_save_sync_include_saves_description">Cihazda %1$s</string>
     <string name="settings_save_sync_include_states">Senkronize durumu</string>
@@ -58,6 +64,7 @@
     <string name="game_menu_restart">Yeniden başlat</string>
     <string name="game_menu_quit">Çık</string>
     <string name="game_menu_settings">Ayarlar</string>
+    <string name="game_menu_state">Durum %1$s</string>
     <string name="game_menu_change_disk_button">Disk değiştir</string>
     <string name="game_menu_edit_touch_controls">Kontrolleri düzenle</string>
     <string name="game_menu_mute_audio">Sesi kapat</string>
@@ -116,6 +123,12 @@
         <b>&#8226; Neden oyunlarım tespit edilmedi?</b><br/>
         Eğer oyunlarınız sıkıştırılmışsa, çıkartmayı deneyin. Eğer bu çalışmıyorsa ROMları ayrı klasöre koyun, aşağıdaki adlara sahip her sistem için bir tane: $SYSTEMS.
     ]]></string>
+    <string name="lemuroid_crash_disclamer">Görünüşe göre Libretro çekirdeği beklenmedik bir sorunla karşılaştı. Eğer kalıcıysa şunları deneyin:\n
+        \n\u2022 Otomatik kayıtı devre dışı bırakın ve oyunu yeniden çalıştırın
+        \n\u2022 Android ayarlarına gidin ve uygulama önbelleğini temizleyin
+        \n\u2022 Lemuroid ayarlarına gidin ve fabrika ayarı sıfırlaması yapın
+        \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklemiyor olabilir.
+    </string>
     <string name="lemuroid_crash_message">Hata mesajı: %1$s</string>
     <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
     <string-array name="pref_key_shader_filter_names">
@@ -124,5 +137,10 @@
         <item>Akıcı</item>
         <item>CRT</item>
         <item>LCD</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>Hiçbiri</item>
+        <item>Bas</item>
+        <item>Bas &amp; bırak</item>
     </string-array>
 </resources>

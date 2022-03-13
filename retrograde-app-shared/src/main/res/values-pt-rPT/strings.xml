@@ -8,6 +8,8 @@
     <string name="controller_default">Padrão</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Padrão</string>
+    <string name="controller_landscape">Paisagem</string>
+    <string name="controller_portrait">Retrato</string>
     <string name="controller_dos_auto">Automático</string>
     <string name="controller_dos_mouse_left">Rato com o Stick Esquerdo</string>
     <string name="controller_dos_mouse_right">Rato com o Stick Direito</string>
@@ -25,6 +27,7 @@
     <string name="setting_gambatte_gb_internal_palette">Paleta interna</string>
     <string name="setting_gambatte_mix_frames">Efeito Fantasma do LCD</string>
     <string name="setting_gambatte_dark_filter_level">Escurecer a tela</string>
+    <string name="setting_gambatte_gbc_color_correction">Correção de cor</string>
     <string name="setting_mgba_solar_sensor_level">Nível do sensor solar</string>
     <string name="setting_mgba_interframe_blending">Efeito Fantasma do LCD</string>
     <string name="setting_mgba_frameskip">Frameskip</string>
@@ -32,6 +35,8 @@
     <string name="setting_mupen64plus_43screensize">Tamanho da tela 4:3</string>
     <string name="setting_mupen64plus_cpucore">Re-compilador dinâmico</string>
     <string name="setting_mupen64plus_BilinearMode">Modo Bilinear</string>
+    <string name="setting_mupen64plus_pak1">Pak do Jogador 1</string>
+    <string name="setting_mupen64plus_pak2">Pak do Jogador 2</string>
     <string name="setting_pcsx_rearmed_frameskip">Frameskip</string>
     <string name="setting_pcsx_rearmed_drc">Re-compilador dinâmico</string>
     <string name="setting_ppsspp_auto_frameskip">Auto frameskip</string>
@@ -47,11 +52,16 @@
     <string name="setting_melonds_screen_layout">Layout das telas</string>
     <string name="setting_melonds_threaded_renderer">Renderizador Threaded</string>
     <string name="setting_melonds_jit_enable">Re-compilador dinâmico</string>
+    <string name="setting_wswan_rotate_display">Orientação</string>
+    <string name="setting_wswan_mono_palette">Colorização</string>
+    <string name="setting_handy_rot">Orientação</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Desabilitado</string>
     <string name="value_gambatte_mix_frames_mix">Simples</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">Efeito Fantasma do LCD (Preciso)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">Efeito Fantasma do LCD (Rápido)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Activo</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Desabilitado</string>
     <string name="value_mgba_interframe_blending_off">Desabilitado</string>
     <string name="value_mgba_interframe_blending_mix">Simples</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">Efeito Fantasma do LCD (Preciso)</string>
@@ -59,6 +69,7 @@
     <string name="value_mgba_frameskip_disabled">Desabilitado</string>
     <string name="value_mgba_frameskip_auto">Automático</string>
     <string name="value_mgba_color_correction_off">Desabilitado</string>
+    <string name="value_mgba_color_correction_gba">Activo</string>
     <string name="value_stella_filter_disabled">Desabilitado</string>
     <string name="value_stella_filter_composite">Compósito</string>
     <string name="value_stella_filter_svideo">S-Video</string>
@@ -78,6 +89,11 @@
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Interpretador em cache</string>
     <string name="value_mupen64plus_bilinearmode_standard">Padrão</string>
     <string name="value_mupen64plus_bilinearmode_3point">3-Pontos</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_memory">Memória</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_rumble">Vibração</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Nenhum</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">Nenhum</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_rumble">Vibração</string>
     <string name="value_melonds_screen_layout_topbottom">Superior - Inferior</string>
     <string name="value_melonds_screen_layout_leftright">Esquerda - Direita</string>
     <string name="value_melonds_screen_layout_hybridtop">Topo Híbrido</string>
@@ -85,4 +101,8 @@
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpretador</string>
+    <string name="value_wswan_rotate_display_landscape">Paisagem</string>
+    <string name="value_wswan_rotate_display_portrait">Retrato</string>
+    <string name="value_handy_rot_none">Paisagem</string>
+    <string name="value_handy_rot_90">Retrato</string>
 </resources>

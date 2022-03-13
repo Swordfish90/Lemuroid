@@ -35,6 +35,8 @@
     <string name="setting_mupen64plus_43screensize">حجم الشاشة 4:3</string>
     <string name="setting_mupen64plus_cpucore">إعادة تجميع ديناميكية</string>
     <string name="setting_mupen64plus_BilinearMode">الوضع الثنائي الخطي</string>
+    <string name="setting_mupen64plus_pak1">حزمة اللاعب 1</string>
+    <string name="setting_mupen64plus_pak2">حزمة اللاعب 2</string>
     <string name="setting_pcsx_rearmed_frameskip">تخطي الإطارات</string>
     <string name="setting_pcsx_rearmed_drc">إعادة تجميع ديناميكية</string>
     <string name="setting_ppsspp_auto_frameskip">تخطي الإطارات تلقائيا</string>
@@ -87,6 +89,11 @@
     <string name="value_mupen64plus_cpucore_cachedinterpreter">مترجم مؤقت</string>
     <string name="value_mupen64plus_bilinearmode_standard">قياسي</string>
     <string name="value_mupen64plus_bilinearmode_3point">3-نقاط</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_memory">الذاكرة</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_rumble">الاهتزاز</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">لا شيء</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">لا شيء</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_rumble">الاهتزاز</string>
     <string name="value_melonds_screen_layout_topbottom">الأعلى - أسفل</string>
     <string name="value_melonds_screen_layout_leftright">اليسار - اليمين</string>
     <string name="value_melonds_screen_layout_hybridtop">الأعلى الهجين</string>

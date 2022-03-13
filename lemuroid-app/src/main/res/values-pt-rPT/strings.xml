@@ -9,6 +9,7 @@
     <string name="favorites">Favoritos</string>
     <string name="discover">Descobrir</string>
     <string name="rescan">Reanalisar</string>
+    <string name="stop">Parar</string>
     <string name="none">Nenhum</string>
     <string name="directory">Directoria</string>
     <string name="display_filter">Filtro de exibição</string>
@@ -16,17 +17,21 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
     <string name="settings">Configurações</string>
+    <string name="save_sync">Gravar Sincronização</string>
     <string name="show_all">Mostrar Todos</string>
     <string name="settings_category_general">Geral</string>
     <string name="settings_category_input">Entrada</string>
+    <string name="settings_category_misc">Diversos</string>
     <string name="settings_title_enable_autosave">Auto-gravar estado</string>
     <string name="settings_title_enable_touch_feedback">Vibrar ao toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
-    <string name="settings_gamepad_settings">Configurações do Comando</string>
+    <string name="settings_title_maximum_cache_usage">Tamanho máximo da cache</string>
+    <string name="settings_title_gamepad_settings">Dispositivos externos</string>
+    <string name="settings_description_gamepad_settings">Configurar comandos externos e teclados</string>
     <string name="settings_gamepad_button_name">Botão %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_retropad_button_unassigned">Não atribuído</string>
-    <string name="settings_gamepad_category_enabled">Comandos Ativos</string>
+    <string name="settings_gamepad_category_enabled">Dispositivos habilitados</string>
     <string name="settings_gamepad_category_general">Geral</string>
     <string name="settings_gamepad_title_reset_bindings">Redefinir combinações</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
@@ -38,6 +43,16 @@
     <string name="settings_bios_category_not_detected">Suportado</string>
     <string name="settings_title_reset_settings">Redefinição de fábrica</string>
     <string name="settings_description_reset_settings">Redefinir Lemuroid para as suas configurações de fábrica</string>
+    <string name="settings_title_advanced_settings">Configurações avançadas</string>
+    <string name="settings_description_advanced_settings">Exibir configurações avançadas</string>
+    <string name="settings_title_low_latency_audio">Preferir áudio de baixa latência</string>
+    <string name="settings_description_low_latency_audio">Reduzir a latência de áudio nos dispositivos suportados. Pode aumentar as falhas de áudio.</string>
+    <string name="settings_title_direct_game_load">Carregamento direto do jogo</string>
+    <string name="settings_description_direct_game_load">(Experimental) Reduzir o tempo de carregamento e o uso de cache em consolas suportadas.</string>
+    <string name="settings_title_enable_rumble">Vibração</string>
+    <string name="settings_description_enable_rumble">Habilitar vibração em jogos e comandos suportados</string>
+    <string name="settings_title_enable_device_rumble">Vibração do dispositivo</string>
+    <string name="settings_description_enable_device_rumble">Vibrar o dispositivo quando nenhum comando estiver conectado</string>
     <string name="reset_settings_warning_message_title">Tem a certeza?</string>
     <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid para as suas configurações de fábrica. Gravações e Estados serão preservados.</string>
     <string name="settings_title_save_sync">Gravações da cloud</string>
@@ -138,5 +153,10 @@
         <item>Suave</item>
         <item>CRT</item>
         <item>LCD</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>Nenhum</item>
+        <item>Pressionar</item>
+        <item>Pressione &amp; soltar</item>
     </string-array>
 </resources>

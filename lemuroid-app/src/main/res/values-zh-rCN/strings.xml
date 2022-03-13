@@ -23,11 +23,9 @@
     <string name="settings_title_enable_autosave">自动保存</string>
     <string name="settings_title_enable_touch_feedback">触摸振动</string>
     <string name="settings_title_tilt_sensitivity">倾斜灵敏度</string>
-    <string name="settings_gamepad_settings">游戏手柄设置</string>
     <string name="settings_gamepad_button_name">按钮 %1$s</string>
     <string name="settings_retropad_button_name">倒计时 %1$s</string>
     <string name="settings_retropad_button_unassigned">未指定</string>
-    <string name="settings_gamepad_category_enabled">已启用游戏手柄</string>
     <string name="settings_gamepad_category_general">常规</string>
     <string name="settings_gamepad_title_reset_bindings">重置绑定</string>
     <string name="settings_gamepad_title_game_menu">菜单</string>
