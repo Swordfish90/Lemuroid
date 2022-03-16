@@ -17,4 +17,12 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<resources></resources>
+<resources>
+    <string name="gdrive_sign_in_failed">התחברות דרך גוגל נכשלה: %s (%s)</string>
+    <string name="gdrive_sign_in_success">מחובר דרך גוגל כ%s</string>
+    <string name="gdrive_sign_out_success">התנקת בהצלחה מגוגל</string>
+    <string name="gdrive_missing_play_services">התחברות דרך גוגל דרייב מצריכה את שירותי Google Play שאינם זמינים במכשירך</string>
+    <string name="gdrive_connected_summary">מקושר אל %s</string>
+    <string name="gdrive_last_sync_completed">סנכרון אחרון: %s</string>
+    <string name="game_loading_download_core">מוריד ליבה…</string>
+</resources>
