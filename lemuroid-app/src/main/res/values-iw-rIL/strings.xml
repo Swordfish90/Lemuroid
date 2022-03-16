@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">מסך הבית</string>
+    <string name="title_search">חיפוש</string>
+    <string name="title_systems">קונסולות</string>
+    <string name="title_games">משחקים</string>
+    <string name="title_settings">הגדרות</string>
+    <string name="recent">אחרונים</string>
+    <string name="favorites">מועדפים</string>
+    <string name="rescan">סריקה מחדש</string>
+    <string name="stop">עצור</string>
+    <string name="roms">קבצי משחק (ROMs)</string>
+    <string name="ok">בסדר</string>
+    <string name="cancel">ביטול</string>
+    <string name="settings">הגדרות</string>
+    <string name="save_sync">שמור סנכרון</string>
+    <string name="show_all">הראה הכל</string>
+    <string name="settings_category_general">כללי</string>
+    <string name="settings_category_misc">שונות</string>
+    <string name="settings_title_enable_autosave">מצב שמירה אוטומטית</string>
+    <string name="settings_title_enable_touch_feedback">רטט במגע</string>
+    <string name="settings_title_tilt_sensitivity">רגישות חיישן ההטייה</string>
+    <string name="settings_title_maximum_cache_usage">גודל מקסימלי של המטמון</string>
+    <string name="settings_title_gamepad_settings">התקן חיצוני</string>
+    <string name="settings_description_gamepad_settings">הגדר מקלדות ובקרים חיצוניים</string>
+    <string name="settings_gamepad_button_name">לחצן %1$s</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_retropad_button_unassigned">לא מוגדר</string>
+    <string name="settings_gamepad_category_enabled">מכשירים מופעלים</string>
+    <string name="settings_gamepad_category_general">כללי</string>
+    <string name="settings_gamepad_title_game_menu">תפריט</string>
+    <string name="settings_title_open_cores_selection">שנה ליבה</string>
+    <string name="settings_description_open_cores_selection">הגדר אילו ליבות יקושרו לקונסולות</string>
+</resources>
