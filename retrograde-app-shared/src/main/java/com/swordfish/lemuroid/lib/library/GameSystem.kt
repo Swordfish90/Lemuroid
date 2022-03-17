@@ -889,7 +889,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.DESMUME)
-                        )
+                        ),
+                        skipDuplicateFrames = false
                     ),
                     SystemCoreConfig(
                         CoreID.MELONDS,
