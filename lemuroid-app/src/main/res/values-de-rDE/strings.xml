@@ -9,6 +9,7 @@
     <string name="favorites">Favoriten</string>
     <string name="discover">Entdecken</string>
     <string name="rescan">Erneut scannen</string>
+    <string name="stop">Stop</string>
     <string name="none">Nichts</string>
     <string name="directory">Verzeichnis</string>
     <string name="display_filter">Anzeigefilter</string>
@@ -46,6 +47,8 @@
     <string name="settings_description_advanced_settings">Erweiterte Einstellungen anzeigen</string>
     <string name="settings_title_low_latency_audio">Bevorzuge latenzarmen Ton</string>
     <string name="settings_description_low_latency_audio">Reduziert die Audio-Latenz auf unterstützten Geräten. Erhöht möglicherweise Audiofehler.</string>
+    <string name="settings_title_direct_game_load">Spiele sofort laden</string>
+    <string name="settings_description_direct_game_load">(Experimentell) Reduziert Ladezeit und Cache-Nutzung auf unterstützten Konsolen.</string>
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Rumble in unterstützten Spielen und Controllern aktivieren</string>
     <string name="settings_title_enable_device_rumble">Gerät-Rumble</string>
