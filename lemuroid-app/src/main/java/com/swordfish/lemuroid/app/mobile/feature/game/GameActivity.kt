@@ -677,18 +677,23 @@ class GameActivity : BaseGameActivity() {
             leftPad.primaryDialMaxSizeDp = DEFAULT_PRIMARY_DIAL_SIZE * leftScale
             rightPad.primaryDialMaxSizeDp = DEFAULT_PRIMARY_DIAL_SIZE * rightScale
 
+            val baseVerticalMargin = GraphicsUtils.convertDpToPixel(
+                touchControllerConfig.verticalMarginDP,
+                applicationContext
+            )
+
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 leftPad.spacingBottom = linearInterpolation(
                     padSettings.marginY,
                     0f,
                     maxMargins
-                ).roundToInt()
+                ).roundToInt() + baseVerticalMargin.roundToInt()
                 leftPad.spacingLeft = 0
                 rightPad.spacingBottom = linearInterpolation(
                     padSettings.marginY,
                     0f,
                     maxMargins
-                ).roundToInt()
+                ).roundToInt() + baseVerticalMargin.roundToInt()
                 rightPad.spacingRight = 0
 
                 leftPad.offsetX = linearInterpolation(padSettings.marginX, 0f, maxMargins)
@@ -697,9 +702,9 @@ class GameActivity : BaseGameActivity() {
                 leftPad.offsetY = 0f
                 rightPad.offsetY = 0f
             } else {
-                leftPad.spacingBottom = 0
+                leftPad.spacingBottom = baseVerticalMargin.roundToInt()
                 leftPad.spacingLeft = linearInterpolation(padSettings.marginX, 0f, maxMargins).roundToInt()
-                rightPad.spacingBottom = 0
+                rightPad.spacingBottom = baseVerticalMargin.roundToInt()
                 rightPad.spacingRight = linearInterpolation(
                     padSettings.marginX,
                     0f,

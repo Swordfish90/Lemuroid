@@ -33,7 +33,8 @@ enum class TouchControllerID {
         val leftConfig: LemuroidTouchConfigs.Kind,
         val rightConfig: LemuroidTouchConfigs.Kind,
         val leftScale: Float = 1.0f,
-        val rightScale: Float = 1.0f
+        val rightScale: Float = 1.0f,
+        val verticalMarginDP: Float = 0f
     )
 
     companion object {
@@ -65,7 +66,8 @@ enum class TouchControllerID {
                 )
                 N64 -> Config(
                     LemuroidTouchConfigs.Kind.N64_LEFT,
-                    LemuroidTouchConfigs.Kind.N64_RIGHT
+                    LemuroidTouchConfigs.Kind.N64_RIGHT,
+                    verticalMarginDP = 8f
                 )
                 PSP -> Config(
                     LemuroidTouchConfigs.Kind.PSP_LEFT,

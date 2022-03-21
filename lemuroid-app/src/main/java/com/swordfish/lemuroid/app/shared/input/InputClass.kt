@@ -20,8 +20,9 @@ interface InputClass {
     fun getSupportedShortcuts(): List<GameMenuShortcut>
 }
 
-fun InputDevice.getInputClass(): InputClass {
+fun InputDevice?.getInputClass(): InputClass {
     return when {
+        this == null -> InputClassUnknown
         (sources and InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD -> InputClassGamePad
         (sources and InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD -> InputClassKeyboard
         else -> InputClassUnknown
