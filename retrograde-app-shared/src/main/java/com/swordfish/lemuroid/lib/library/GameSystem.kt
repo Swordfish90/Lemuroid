@@ -687,12 +687,14 @@ data class GameSystem(
                             )
                         ),
                         defaultSettings = listOf(
-                            CoreVariable("mupen64plus-43screensize", "320x240")
+                            CoreVariable("mupen64plus-43screensize", "320x240"),
+                            CoreVariable("mupen64plus-FrameDuping", "True")
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.N64)
                         ),
-                        rumbleSupported = true
+                        rumbleSupported = true,
+                        skipDuplicateFrames = false
                     )
                 ),
                 uniqueExtensions = listOf("n64", "z64"),
