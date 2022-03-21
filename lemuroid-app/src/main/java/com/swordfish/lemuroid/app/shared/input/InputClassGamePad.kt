@@ -13,6 +13,8 @@ object InputClassGamePad : InputClass {
         KeyEvent.KEYCODE_BUTTON_B,
         KeyEvent.KEYCODE_BUTTON_X,
         KeyEvent.KEYCODE_BUTTON_Y,
+        KeyEvent.KEYCODE_BUTTON_START,
+        KeyEvent.KEYCODE_BUTTON_SELECT,
     )
 
     private val INPUT_KEYS = listOf(
