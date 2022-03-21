@@ -9,6 +9,7 @@
     <string name="favorites">Preferiti</string>
     <string name="discover">Scopri</string>
     <string name="rescan">Scansiona</string>
+    <string name="stop">Stop</string>
     <string name="none">Nessuno</string>
     <string name="directory">Cartella</string>
     <string name="display_filter">Filtro schermo</string>
@@ -16,6 +17,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Annulla</string>
     <string name="settings">Impostazioni</string>
+    <string name="save_sync">Sincronizza Salvataggi</string>
     <string name="show_all">Mostra Tutto</string>
     <string name="settings_category_general">Generale</string>
     <string name="settings_category_input">Input</string>
@@ -45,6 +47,8 @@
     <string name="settings_description_advanced_settings">Mostra impostazioni avanzate</string>
     <string name="settings_title_low_latency_audio">Preferisci audio a bassa latenza</string>
     <string name="settings_description_low_latency_audio">Riduce la latenza audio sui dispositivi supportati. Potrebbe causare piccoli glitch sonori.</string>
+    <string name="settings_title_direct_game_load">Caricamento diretto del gioco</string>
+    <string name="settings_description_direct_game_load">(Sperimentale) Riduce il tempo di caricamento e l\'utilizzo della cache sulle console supportate.</string>
     <string name="settings_title_enable_rumble">Vibrazione</string>
     <string name="settings_description_enable_rumble">Abilita vibrazione per giochi e controller supportati</string>
     <string name="settings_title_enable_device_rumble">Vibrazione dispositivo</string>
@@ -93,6 +97,7 @@
     <string name="notification_channel_name">Tutte le notifiche</string>
     <string name="library_index_notification_title">Scansione delle ROM in corso</string>
     <string name="library_index_notification_message">Questo può richiedere fino a qualche minuto</string>
+    <string name="library_index_notification_action_cancel">@string/cancel</string>
     <string name="save_sync_notification_title">Sincronizzazione salvataggi Cloud in corso</string>
     <string name="save_sync_notification_message">Questo può richiedere fino a qualche minuto</string>
     <string name="game_running_notification_title">%1$s è in esecuzione</string>
