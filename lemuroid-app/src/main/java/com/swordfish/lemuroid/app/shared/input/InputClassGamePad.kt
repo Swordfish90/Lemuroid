@@ -13,17 +13,11 @@ object InputClassGamePad : InputClass {
         KeyEvent.KEYCODE_BUTTON_B,
         KeyEvent.KEYCODE_BUTTON_X,
         KeyEvent.KEYCODE_BUTTON_Y,
+        KeyEvent.KEYCODE_BUTTON_START,
+        KeyEvent.KEYCODE_BUTTON_SELECT,
     )
 
     private val INPUT_KEYS = listOf(
-        KeyEvent.KEYCODE_DPAD_UP,
-        KeyEvent.KEYCODE_DPAD_DOWN,
-        KeyEvent.KEYCODE_DPAD_RIGHT,
-        KeyEvent.KEYCODE_DPAD_LEFT,
-        KeyEvent.KEYCODE_DPAD_UP_LEFT,
-        KeyEvent.KEYCODE_DPAD_UP_RIGHT,
-        KeyEvent.KEYCODE_DPAD_DOWN_LEFT,
-        KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
         KeyEvent.KEYCODE_BUTTON_A,
         KeyEvent.KEYCODE_BUTTON_B,
         KeyEvent.KEYCODE_BUTTON_X,
