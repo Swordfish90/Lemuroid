@@ -8,13 +8,13 @@
     <string name="recent">الحديثة</string>
     <string name="favorites">المفضلة</string>
     <string name="discover">اكتشف</string>
-    <string name="rescan">إعادة الفحص</string>
+    <string name="rescan">إعادة المسح</string>
     <string name="stop">إيقاف</string>
     <string name="none">لا شيء</string>
     <string name="directory">المجلد</string>
     <string name="display_filter">فلتر العرض</string>
     <string name="roms">الأقراص</string>
-    <string name="ok">حسناً</string>
+    <string name="ok">موافق</string>
     <string name="cancel">إلغاء</string>
     <string name="settings">الإعدادات</string>
     <string name="save_sync">حفظ المزامنة</string>
@@ -48,6 +48,7 @@
     <string name="settings_title_low_latency_audio">تفضيل صوت مباشر</string>
     <string name="settings_description_low_latency_audio">تقليل تأخير الصوت على الأجهزة المدعومة. قد يؤدي ذلك إلى زيادة اخطاء في الصوت.</string>
     <string name="settings_title_direct_game_load">Direct game load</string>
+    <string name="settings_description_direct_game_load">(تجريبي) تقليل وقت التحميل واستخدام ذاكرة التخزين المؤقت على وحدات التحكم المدعومة.</string>
     <string name="settings_title_enable_rumble">الاهتزاز</string>
     <string name="settings_description_enable_rumble">تمكين الاهتزاز في الألعاب المدعومة والتحكم</string>
     <string name="settings_title_enable_device_rumble">اهتزاز الجهاز</string>
