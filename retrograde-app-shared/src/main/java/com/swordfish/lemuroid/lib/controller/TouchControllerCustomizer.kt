@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.lib.controller
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.graphics.Rect
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +38,8 @@ class TouchControllerCustomizer {
         activity: Activity,
         layoutInflater: LayoutInflater,
         view: View,
-        settings: Settings
+        settings: Settings,
+        insets: Rect
     ): Observable<Event> = Observable.create { emitter ->
         var (scale, rotation, marginX, marginY) = settings
 
@@ -74,6 +76,12 @@ class TouchControllerCustomizer {
                     activity.applicationContext
                 )
 
+                val maxMarginY: Float = 1f
+                val minMarginY: Float = -insets.bottom / moveScale
+
+                val maxMarginX: Float = 1f
+                val minMarginX: Float = -maxOf(insets.left, insets.right) / moveScale
+
                 var invertXAxis: Float = 1f
 
                 override fun onBegin(detector: MultiTouchGestureDetector): Boolean {
@@ -88,11 +96,15 @@ class TouchControllerCustomizer {
                 }
 
                 override fun onMove(detector: MultiTouchGestureDetector) {
-                    marginY = MathUtils.clamp(marginY - detector.moveY / moveScale, 0f, 1f)
+                    marginY = MathUtils.clamp(
+                        marginY - detector.moveY / moveScale,
+                        minMarginY,
+                        maxMarginY
+                    )
                     marginX = MathUtils.clamp(
                         marginX + invertXAxis * detector.moveX / moveScale,
-                        0f,
-                        1f
+                        minMarginX,
+                        maxMarginX
                     )
                     emitter.onNext(Event.Margins(marginX, marginY))
                 }
@@ -123,10 +135,11 @@ class TouchControllerCustomizer {
         activity: Activity,
         layoutInflater: LayoutInflater,
         view: View,
+        insets: Rect,
         settings: Settings
     ): Observable<Event> {
         val originalRequestedOrientation = activity.requestedOrientation
-        return getObservable(activity, layoutInflater, view, settings)
+        return getObservable(activity, layoutInflater, view, settings, insets)
             .doOnSubscribe { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED }
             .doFinally { activity.requestedOrientation = originalRequestedOrientation }
             .doFinally { hideCustomizationOptions() }
