@@ -55,6 +55,8 @@
     <string name="setting_wswan_rotate_display">الاتجاه</string>
     <string name="setting_wswan_mono_palette">تلوين</string>
     <string name="setting_handy_rot">الاتجاه</string>
+    <string name="setting_citra_use_acc_mul">ضرب الظلال الدقيقة</string>
+    <string name="setting_citra_use_acc_geo_shaders">الظلال الهندسية الدقيقة</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">معطل</string>
     <string name="value_gambatte_mix_frames_mix">بسيطة</string>
