@@ -22,9 +22,12 @@ package com.swordfish.lemuroid.app.mobile.feature.game
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowInsets
 import androidx.constraintlayout.widget.ConstraintSet
 import com.gojuno.koptional.None
 import com.gojuno.koptional.Optional
@@ -92,6 +95,8 @@ class GameActivity : BaseGameActivity() {
     private var padSettings: TouchControllerSettingsManager.Settings
     by BehaviorRelayProperty(padSettingsObservable)
 
+    private val insetsObservable = BehaviorRelay.createDefault<Optional<Rect>>(None)
+
     private val orientationObservable = BehaviorRelay.createDefault(Configuration.ORIENTATION_PORTRAIT)
     private var orientation: Int by BehaviorRelayProperty(orientationObservable)
 
@@ -102,6 +107,8 @@ class GameActivity : BaseGameActivity() {
 
         tiltSensor = TiltSensor(applicationContext)
 
+        initializeInsetsObservable()
+
         startGameService()
 
         setupVirtualGamePadVisibility()
@@ -111,13 +118,29 @@ class GameActivity : BaseGameActivity() {
             touchControllerConfigObservable.filterSome(),
             orientationObservable,
             isVirtualGamePadVisible(),
-            padSettingsObservable
+            padSettingsObservable,
+            insetsObservable.filterSome()
         )
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
-            .subscribeBy(Timber::e) { (config, orientation, virtualGamePadVisible, padSettings) ->
-                LayoutHandler().updateLayout(config, padSettings, orientation, virtualGamePadVisible)
+            .subscribeBy(Timber::e) { (config, orientation, virtualGamePadVisible, padSettings, insets) ->
+                LayoutHandler().updateLayout(config, padSettings, orientation, virtualGamePadVisible, insets)
             }
+    }
+
+    private fun initializeInsetsObservable() {
+        mainContainerLayout.setOnApplyWindowInsetsListener { _, windowInsets ->
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val insets = windowInsets.getInsetsIgnoringVisibility(
+                    WindowInsets.Type.displayCutout()
+                )
+                Rect(insets.left, insets.top, insets.right, insets.bottom)
+            } else {
+                Rect(0, 0, 0, 0)
+            }
+            insetsObservable.accept(result.toOptional())
+            windowInsets
+        }
     }
 
     private fun setupVirtualGamePads() {
@@ -480,14 +503,17 @@ class GameActivity : BaseGameActivity() {
             padSettings.marginY
         )
 
-        val customizeObservable = customizer.displayCustomizationPopup(
-            this@GameActivity,
-            layoutInflater,
-            mainContainerLayout,
-            initialSettings
-        )
-
-        return customizeObservable
+        return insetsObservable.filterSome()
+            .firstElement()
+            .flatMapObservable { insets ->
+                customizer.displayCustomizationPopup(
+                    this@GameActivity,
+                    layoutInflater,
+                    mainContainerLayout,
+                    insets,
+                    initialSettings
+                )
+            }
             .doOnNext {
                 when (it) {
                     is TouchControllerCustomizer.Event.Scale -> {
@@ -514,7 +540,8 @@ class GameActivity : BaseGameActivity() {
             constraintSet: ConstraintSet,
             controllerConfig: ControllerConfig,
             orientation: Int,
-            virtualPadVisible: Boolean
+            virtualPadVisible: Boolean,
+            insets: Rect
         ) {
             if (!virtualPadVisible) {
                 constraintSet.connect(
@@ -620,13 +647,16 @@ class GameActivity : BaseGameActivity() {
 
             constraintSet.constrainedWidth(R.id.gamecontainer, true)
             constraintSet.constrainedHeight(R.id.gamecontainer, true)
+
+            constraintSet.setMargin(R.id.gamecontainer, ConstraintSet.TOP, insets.top)
         }
 
         private fun handleVirtualGamePadLayout(
             constraintSet: ConstraintSet,
             padSettings: TouchControllerSettingsManager.Settings,
             controllerConfig: ControllerConfig,
-            orientation: Int
+            orientation: Int,
+            insets: Rect
         ) {
             val touchControllerConfig = controllerConfig.getTouchControllerConfig()
 
@@ -683,39 +713,22 @@ class GameActivity : BaseGameActivity() {
             )
 
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                leftPad.spacingBottom = linearInterpolation(
-                    padSettings.marginY,
-                    0f,
-                    maxMargins
-                ).roundToInt() + baseVerticalMargin.roundToInt()
-                leftPad.spacingLeft = 0
-                rightPad.spacingBottom = linearInterpolation(
-                    padSettings.marginY,
-                    0f,
-                    maxMargins
-                ).roundToInt() + baseVerticalMargin.roundToInt()
-                rightPad.spacingRight = 0
-
-                leftPad.offsetX = linearInterpolation(padSettings.marginX, 0f, maxMargins)
-                rightPad.offsetX = -linearInterpolation(padSettings.marginX, 0f, maxMargins)
-
-                leftPad.offsetY = 0f
-                rightPad.offsetY = 0f
+                setupMarginsForPortrait(
+                    leftPad,
+                    rightPad,
+                    maxMargins,
+                    padSettings,
+                    baseVerticalMargin.roundToInt() + insets.bottom
+                )
             } else {
-                leftPad.spacingBottom = baseVerticalMargin.roundToInt()
-                leftPad.spacingLeft = linearInterpolation(padSettings.marginX, 0f, maxMargins).roundToInt()
-                rightPad.spacingBottom = baseVerticalMargin.roundToInt()
-                rightPad.spacingRight = linearInterpolation(
-                    padSettings.marginX,
-                    0f,
-                    maxMargins
-                ).roundToInt()
-
-                leftPad.offsetX = 0f
-                rightPad.offsetX = 0f
-
-                leftPad.offsetY = -linearInterpolation(padSettings.marginY, 0f, maxMargins)
-                rightPad.offsetY = -linearInterpolation(padSettings.marginY, 0f, maxMargins)
+                setupMarginsForLandscape(
+                    leftPad,
+                    rightPad,
+                    maxMargins,
+                    padSettings,
+                    baseVerticalMargin.roundToInt() + insets.bottom,
+                    maxOf(insets.left, insets.right)
+                )
             }
 
             leftPad.gravityY = 1f
@@ -751,17 +764,74 @@ class GameActivity : BaseGameActivity() {
             }
         }
 
+        private fun setupMarginsForLandscape(
+            leftPad: RadialGamePad,
+            rightPad: RadialGamePad,
+            maxMargins: Float,
+            padSettings: TouchControllerSettingsManager.Settings,
+            verticalSpacing: Int,
+            horizontalSpacing: Int
+        ) {
+            leftPad.spacingBottom = verticalSpacing
+            leftPad.spacingLeft = linearInterpolation(
+                padSettings.marginX,
+                0f,
+                maxMargins
+            ).roundToInt() + horizontalSpacing
+
+            rightPad.spacingBottom = verticalSpacing
+            rightPad.spacingRight = linearInterpolation(
+                padSettings.marginX,
+                0f,
+                maxMargins
+            ).roundToInt() + horizontalSpacing
+
+            leftPad.offsetX = 0f
+            rightPad.offsetX = 0f
+
+            leftPad.offsetY = -linearInterpolation(padSettings.marginY, 0f, maxMargins)
+            rightPad.offsetY = -linearInterpolation(padSettings.marginY, 0f, maxMargins)
+        }
+
+        private fun setupMarginsForPortrait(
+            leftPad: RadialGamePad,
+            rightPad: RadialGamePad,
+            maxMargins: Float,
+            padSettings: TouchControllerSettingsManager.Settings,
+            verticalSpacing: Int
+        ) {
+            leftPad.spacingBottom = linearInterpolation(
+                padSettings.marginY,
+                0f,
+                maxMargins
+            ).roundToInt() + verticalSpacing
+            leftPad.spacingLeft = 0
+            rightPad.spacingBottom = linearInterpolation(
+                padSettings.marginY,
+                0f,
+                maxMargins
+            ).roundToInt() + verticalSpacing
+            rightPad.spacingRight = 0
+
+            leftPad.offsetX = linearInterpolation(padSettings.marginX, 0f, maxMargins)
+            rightPad.offsetX = -linearInterpolation(padSettings.marginX, 0f, maxMargins)
+
+            leftPad.offsetY = 0f
+            rightPad.offsetY = 0f
+        }
+
         fun updateLayout(
             config: ControllerConfig,
             padSettings: TouchControllerSettingsManager.Settings,
             orientation: Int,
-            virtualPadVisible: Boolean
+            virtualPadVisible: Boolean,
+            insets: Rect
         ) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(mainContainerLayout)
 
-            handleVirtualGamePadLayout(constraintSet, padSettings, config, orientation)
-            handleRetroViewLayout(constraintSet, config, orientation, virtualPadVisible)
+            handleVirtualGamePadLayout(constraintSet, padSettings, config, orientation, insets)
+            handleRetroViewLayout(constraintSet, config, orientation, virtualPadVisible, insets)
 
             constraintSet.applyTo(mainContainerLayout)
 
