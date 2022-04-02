@@ -36,6 +36,7 @@
     <string name="settings_bios_category_not_detected">支援</string>
     <string name="settings_title_reset_settings">重設所有資料</string>
     <string name="settings_description_reset_settings">將 Lemuroid 重置為出廠設置</string>
+    <string name="settings_title_advanced_settings">進階設定</string>
     <string name="reset_settings_warning_message_title">是否確定？</string>
     <string name="reset_settings_warning_message_description">將Lemuroid重置為出廠設置，並保留遊戲的存檔。</string>
     <string name="settings_title_save_sync">雲端存檔</string>
