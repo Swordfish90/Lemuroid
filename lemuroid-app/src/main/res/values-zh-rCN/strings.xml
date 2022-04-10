@@ -97,6 +97,7 @@
     <string name="notification_channel_name">所有通知</string>
     <string name="library_index_notification_title">正在进行 ROM 扫描</string>
     <string name="library_index_notification_message">这可能需要几分钟的时间</string>
+    <string name="library_index_notification_action_cancel">取消</string>
     <string name="save_sync_notification_title">正在进行云端存档同步</string>
     <string name="save_sync_notification_message">这可能需要几分钟的时间</string>
     <string name="game_running_notification_title">%1$s 正在运行</string>
