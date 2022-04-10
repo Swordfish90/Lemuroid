@@ -9,6 +9,7 @@
     <string name="favorites">收藏</string>
     <string name="discover">发现</string>
     <string name="rescan">刷新</string>
+    <string name="stop">停止</string>
     <string name="none">无</string>
     <string name="directory">目录</string>
     <string name="display_filter">显示器</string>
@@ -16,6 +17,7 @@
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="settings">设置</string>
+    <string name="save_sync">保存同步</string>
     <string name="show_all">全部显示</string>
     <string name="settings_category_general">常规</string>
     <string name="settings_category_input">输入</string>
@@ -23,9 +25,13 @@
     <string name="settings_title_enable_autosave">自动保存</string>
     <string name="settings_title_enable_touch_feedback">触摸振动</string>
     <string name="settings_title_tilt_sensitivity">倾斜灵敏度</string>
+    <string name="settings_title_maximum_cache_usage">缓存大小限制</string>
+    <string name="settings_title_gamepad_settings">外接设备</string>
+    <string name="settings_description_gamepad_settings">配置外接手柄和键盘</string>
     <string name="settings_gamepad_button_name">按钮 %1$s</string>
     <string name="settings_retropad_button_name">倒计时 %1$s</string>
     <string name="settings_retropad_button_unassigned">未指定</string>
+    <string name="settings_gamepad_category_enabled">已启用的设备</string>
     <string name="settings_gamepad_category_general">常规</string>
     <string name="settings_gamepad_title_reset_bindings">重置绑定</string>
     <string name="settings_gamepad_title_game_menu">菜单</string>
@@ -41,6 +47,12 @@
     <string name="settings_description_advanced_settings">显示高级设置</string>
     <string name="settings_title_low_latency_audio">偏好低延迟音频</string>
     <string name="settings_description_low_latency_audio">在支持的设备上减少音频延迟。可能会增加音频闪烁。</string>
+    <string name="settings_title_direct_game_load">直接加载游戏</string>
+    <string name="settings_description_direct_game_load">(实验性) 在支持的平台上减少加载时间和缓存使用量。</string>
+    <string name="settings_title_enable_rumble">振动</string>
+    <string name="settings_description_enable_rumble">在支持的游戏和控制器中启用振动。</string>
+    <string name="settings_title_enable_device_rumble">设备振动</string>
+    <string name="settings_description_enable_device_rumble">当没有控制器连接时启用设备振动</string>
     <string name="reset_settings_warning_message_title">您确定吗？</string>
     <string name="reset_settings_warning_message_description">这将会重置 Lemuroid 所有数据。保存和状态将被保留。</string>
     <string name="settings_title_save_sync">云端保存</string>
