@@ -97,7 +97,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         val preference = SwitchPreference(context)
         preference.key = InputDeviceManager.computeEnabledGamePadPreference(inputDevice)
         preference.title = inputDevice.name
-        preference.setDefaultValue(inputDevice.getInputClass().isEnabledByDefault(context))
+        preference.setDefaultValue(inputDevice.getInputClass().isEnabledByDefault(context, inputDevice))
         preference.isIconSpaceReserved = false
         return preference
     }

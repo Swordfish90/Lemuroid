@@ -13,7 +13,7 @@ interface InputClass {
 
     fun isSupported(device: InputDevice): Boolean
 
-    fun isEnabledByDefault(appContext: Context): Boolean
+    fun isEnabledByDefault(appContext: Context, device: InputDevice): Boolean
 
     fun getCustomizableKeys(): List<Int>
 

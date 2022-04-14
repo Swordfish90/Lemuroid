@@ -124,7 +124,7 @@ class InputDeviceManager(
                 val enabledGamePads = devices.map { device ->
                     rxSharedPreferences
                         .flatMapObservable {
-                            val defaultValue = device.getInputClass().isEnabledByDefault(context)
+                            val defaultValue = device.getInputClass().isEnabledByDefault(context, device)
                             it.getBoolean(computeEnabledGamePadPreference(device), defaultValue).asObservable()
                         }
                 }

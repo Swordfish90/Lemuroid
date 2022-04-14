@@ -15,7 +15,7 @@ object InputClassUnknown : InputClass {
 
     override fun isSupported(device: InputDevice): Boolean = false
 
-    override fun isEnabledByDefault(appContext: Context): Boolean = false
+    override fun isEnabledByDefault(appContext: Context, device: InputDevice): Boolean = false
 
     override fun getSupportedShortcuts(): List<GameMenuShortcut> = emptyList()
 }

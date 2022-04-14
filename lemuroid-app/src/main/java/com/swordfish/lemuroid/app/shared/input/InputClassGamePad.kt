@@ -13,6 +13,9 @@ object InputClassGamePad : InputClass {
         KeyEvent.KEYCODE_BUTTON_B,
         KeyEvent.KEYCODE_BUTTON_X,
         KeyEvent.KEYCODE_BUTTON_Y,
+    )
+
+    private val MINIMAL_KEYS_DEFAULT_ENABLED = MINIMAL_SUPPORTED_KEYS + intArrayOf(
         KeyEvent.KEYCODE_BUTTON_START,
         KeyEvent.KEYCODE_BUTTON_SELECT,
     )
@@ -105,7 +108,9 @@ object InputClassGamePad : InputClass {
 
     override fun getDefaultBindings() = DEFAULT_BINDINGS
 
-    override fun isEnabledByDefault(appContext: Context): Boolean = true
+    override fun isEnabledByDefault(appContext: Context, device: InputDevice): Boolean {
+        return device.hasKeys(*MINIMAL_KEYS_DEFAULT_ENABLED).all { it }
+    }
 
     override fun getCustomizableKeys(): List<Int> = CUSTOMIZABLE_KEYS
 
