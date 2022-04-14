@@ -8,38 +8,27 @@ import com.google.android.material.R
 
 object LemuroidTouchOverlayThemes {
 
-    private const val BASE_TRANSPARENCY = 0.6f
+    private const val BASE_TRANSPARENCY = 0.8f
 
     fun getGamePadTheme(view: View): RadialGamePadTheme {
         val colorOnSurface = MaterialColors.getColor(view, R.attr.colorOnSurface)
         val colorSurface = MaterialColors.getColor(view, R.attr.colorSurface)
         val colorPrimary = MaterialColors.getColor(view, R.attr.colorPrimary)
-        val colorIntermediate = ColorUtils.blendARGB(colorSurface, colorOnSurface, 0.5f)
+        val colorSecondary = MaterialColors.getColor(view, R.attr.colorSecondary)
+        val colorIntermediate = ColorUtils.blendARGB(colorSurface, colorOnSurface, 0.4f)
 
         return RadialGamePadTheme(
-            normalColor = withAlpha(colorIntermediate, 0.75f),
-            primaryDialBackground = withAlpha(colorIntermediate, 0.25f),
+            normalColor = withAlpha(colorIntermediate, 0.8f),
+            backgroundColor = withAlpha(colorIntermediate, 0.4f),
             pressedColor = withAlpha(colorPrimary, 1f),
             textColor = withAlpha(colorOnSurface, 1f),
-            simulatedColor = withAlpha(colorPrimary, 0.75f),
-            lightColor = withAlpha(colorOnSurface, 0.25f),
+            simulatedColor = withAlpha(colorSecondary, 0.8f),
+            lightColor = withAlpha(colorIntermediate, 0.4f),
         )
     }
 
     fun getGamePadAlternate(view: View): RadialGamePadTheme {
-        val colorOnSurface = MaterialColors.getColor(view, R.attr.colorOnSurface)
-        val colorSurface = MaterialColors.getColor(view, R.attr.colorSurface)
-        val colorPrimary = MaterialColors.getColor(view, R.attr.colorPrimary)
-        val colorIntermediate = ColorUtils.blendARGB(colorSurface, colorOnSurface, 0.25f)
-
-        return RadialGamePadTheme(
-            normalColor = withAlpha(colorIntermediate, 0.75f),
-            primaryDialBackground = withAlpha(colorIntermediate, 0.25f),
-            pressedColor = withAlpha(colorPrimary, 1f),
-            textColor = withAlpha(colorOnSurface, 1f),
-            simulatedColor = withAlpha(colorPrimary, 0.75f),
-            lightColor = withAlpha(colorOnSurface, 0.25f),
-        )
+        return getGamePadTheme(view)
     }
 
     private fun withAlpha(color: Int, alpha: Float): Int {

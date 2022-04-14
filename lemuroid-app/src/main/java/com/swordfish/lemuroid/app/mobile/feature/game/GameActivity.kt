@@ -145,7 +145,7 @@ class GameActivity : BaseGameActivity() {
 
     private fun setupVirtualGamePads() {
         val firstGamePad = getControllerType()
-            .map { it.get(0).toOptional() }
+            .map { it[0].toOptional() }
             .filterSome()
             .distinctUntilChanged()
 

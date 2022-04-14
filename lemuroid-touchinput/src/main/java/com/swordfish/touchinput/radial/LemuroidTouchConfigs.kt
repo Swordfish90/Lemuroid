@@ -235,7 +235,8 @@ object LemuroidTouchConfigs {
         CrossConfig(
             id = MOTION_SOURCE_DPAD,
             shape = CrossConfig.Shape.STANDARD,
-            supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+            supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
+            rightDrawableForegroundId = R.drawable.direction_foreground
         ),
     )
 
