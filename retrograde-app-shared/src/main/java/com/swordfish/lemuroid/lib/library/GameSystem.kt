@@ -1159,6 +1159,16 @@ data class GameSystem(
                             CoreVariable("citra_render_touchscreen", "disabled"),
                             CoreVariable("citra_use_hw_shader_cache", "disabled"),
                         ),
+                        exposedSettings = listOf(
+                            ExposedSetting(
+                                "citra_use_acc_mul",
+                                R.string.setting_citra_use_acc_mul
+                            ),
+                            ExposedSetting(
+                                "citra_use_acc_geo_shaders",
+                                R.string.setting_citra_use_acc_geo_shaders
+                            )
+                        ),
                         statesSupported = false,
                         supportsLibretroVFS = true
                     ),

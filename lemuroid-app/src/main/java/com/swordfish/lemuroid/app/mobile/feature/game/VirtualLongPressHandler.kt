@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.game
 
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.view.ViewConfiguration
@@ -22,12 +23,17 @@ object VirtualLongPressHandler {
     private val LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout().toLong()
 
     fun initializeTheme(gameActivity: GameActivity) {
-        val palette = LemuroidTouchOverlayThemes.getGamePadAlternate(longPressView(gameActivity))
+        val palette = LemuroidTouchOverlayThemes.getGamePadOverlayTheme(longPressView(gameActivity))
         longPressIconView(gameActivity).setColorFilter(palette.textColor)
         longPressProgressBar(gameActivity).setIndicatorColor(palette.textColor)
-        longPressView(gameActivity).background = GradientDrawable().apply {
+        longPressView(gameActivity).background = buildCircleDrawable(palette.backgroundColor)
+        longPressForegroundView(gameActivity).background = buildCircleDrawable(palette.normalColor)
+    }
+
+    private fun buildCircleDrawable(color: Int): Drawable {
+        return GradientDrawable().apply {
             shape = GradientDrawable.OVAL
-            setColor(palette.normalColor)
+            setColor(color)
         }
     }
 
@@ -50,7 +56,7 @@ object VirtualLongPressHandler {
             .doOnSubscribe { displayLongPressView(activity) }
             .doAfterTerminate { hideLongPressView(activity) }
             .onErrorComplete()
-            .map { Unit }
+            .map { }
     }
 
     private fun longPressIconView(activity: GameActivity) =
@@ -61,6 +67,9 @@ object VirtualLongPressHandler {
 
     private fun longPressView(activity: GameActivity) =
         activity.findViewById<View>(R.id.settings_loading)
+
+    private fun longPressForegroundView(activity: GameActivity) =
+        activity.findViewById<View>(R.id.long_press_foreground)
 
     private fun displayLongPressView(activity: GameActivity) {
         longPressView(activity).animateVisibleOrGone(true, APPEAR_ANIMATION)

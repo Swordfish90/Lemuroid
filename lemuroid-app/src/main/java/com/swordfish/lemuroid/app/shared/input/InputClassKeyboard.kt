@@ -136,7 +136,7 @@ object InputClassKeyboard : InputClass {
 
     override fun getCustomizableKeys(): List<Int> = CUSTOMIZABLE_KEYS
 
-    override fun isEnabledByDefault(appContext: Context): Boolean {
+    override fun isEnabledByDefault(appContext: Context, device: InputDevice): Boolean {
         return !appContext.packageManager.hasSystemFeature("android.hardware.touchscreen")
     }
 

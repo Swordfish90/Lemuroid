@@ -7,6 +7,13 @@
     android:layout_gravity="center_vertical"
     android:visibility="gone">
 
+    <View
+        android:id="@+id/long_press_foreground"
+        android:layout_margin="@dimen/loading_circle_progress_thickness"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/loading_circle_size"
+        android:layout_height="@dimen/loading_circle_size"/>
+
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/settings_loading_progress"
         app:indicatorSize="@dimen/loading_circle_size"
