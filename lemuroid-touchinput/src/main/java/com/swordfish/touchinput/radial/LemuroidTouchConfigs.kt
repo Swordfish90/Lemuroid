@@ -1,7 +1,6 @@
 package com.swordfish.touchinput.radial
 
 import android.view.KeyEvent
-import android.view.View
 import com.swordfish.radialgamepad.library.config.ButtonConfig
 import com.swordfish.radialgamepad.library.config.CrossConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
