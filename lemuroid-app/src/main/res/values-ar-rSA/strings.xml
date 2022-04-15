@@ -129,7 +129,7 @@
     <string name="tv_home_section_recents">المستخدمة مؤخّراً</string>
     <string name="tv_home_section_systems">الأنظمة</string>
     <string name="tv_home_section_settings">الإعدادات</string>
-    <string name="tv_search_results">الألعاب</string>
+    <string name="tv_search_results">الأعاب</string>
     <string name="tv_game_message_missing_gamepad">وحدة التحكم مطلوبة للعب. الرجاء توصيل واحدة منها.</string>
     <string name="game_edit_touch_controls_error_not_visible">أقطع الاتصال بالوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
     <string name="game_interactory_busy">انتظر حتى تكتمل العمليات المعلقة</string>
