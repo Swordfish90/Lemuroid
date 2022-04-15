@@ -70,72 +70,62 @@ object LemuroidTouchConfigs {
         NINTENDO_3DS_RIGHT
     }
 
-    private data class Config(
-        val standardTheme: RadialGamePadTheme,
-        val alternateTheme: RadialGamePadTheme
-    )
-
     fun getRadialGamePadConfig(
         kind: Kind,
         haptic: HapticConfig,
-        view: View
+        theme: RadialGamePadTheme
     ): RadialGamePadConfig {
-        val config = Config(
-            LemuroidTouchOverlayThemes.getGamePadTheme(view),
-            LemuroidTouchOverlayThemes.getGamePadAlternate(view)
-        )
-
         val radialGamePadConfig = when (kind) {
-            Kind.GB_LEFT -> getGBLeft(config)
-            Kind.GB_RIGHT -> getGBRight(config)
-            Kind.NES_LEFT -> getNESLeft(config)
-            Kind.NES_RIGHT -> getNESRight(config)
-            Kind.DESMUME_LEFT -> getDesmumeLeft(config)
-            Kind.DESMUME_RIGHT -> getDesmumeRight(config)
-            Kind.MELONDS_NDS_LEFT -> getMelondsLeft(config)
-            Kind.MELONDS_NDS_RIGHT -> getMelondsRight(config)
-            Kind.PSX_LEFT -> getPSXLeft(config)
-            Kind.PSX_RIGHT -> getPSXRight(config)
-            Kind.PSX_DUALSHOCK_LEFT -> getPSXDualshockLeft(config)
-            Kind.PSX_DUALSHOCK_RIGHT -> getPSXDualshockRight(config)
-            Kind.PSP_LEFT -> getPSPLeft(config)
-            Kind.PSP_RIGHT -> getPSPRight(config)
-            Kind.SNES_LEFT -> getSNESLeft(config)
-            Kind.SNES_RIGHT -> getSNESRight(config)
-            Kind.GBA_LEFT -> getGBALeft(config)
-            Kind.GBA_RIGHT -> getGBARight(config)
-            Kind.SMS_LEFT -> getSMSLeft(config)
-            Kind.SMS_RIGHT -> getSMSRight(config)
-            Kind.GG_LEFT -> getGGLeft(config)
-            Kind.GG_RIGHT -> getGGRight(config)
-            Kind.LYNX_LEFT -> getLynxLeft(config)
-            Kind.LYNX_RIGHT -> getLynxRight(config)
-            Kind.PCE_LEFT -> getPCELeft(config)
-            Kind.PCE_RIGHT -> getPCERight(config)
-            Kind.DOS_LEFT -> getDOSLeft(config)
-            Kind.DOS_RIGHT -> getDOSRight(config)
-            Kind.NGP_LEFT -> getNGPLeft(config)
-            Kind.NGP_RIGHT -> getNGPRight(config)
-            Kind.WS_LANDSCAPE_LEFT -> getWSLandscapeLeft(config)
-            Kind.WS_LANDSCAPE_RIGHT -> getWSLandscapeRight(config)
-            Kind.WS_PORTRAIT_LEFT -> getWSPortraitLeft(config)
-            Kind.WS_PORTRAIT_RIGHT -> getWSPortraitRight(config)
-            Kind.N64_LEFT -> getN64Left(config)
-            Kind.N64_RIGHT -> getN64Right(config)
-            Kind.GENESIS_3_LEFT -> getGenesis3Left(config)
-            Kind.GENESIS_3_RIGHT -> getGenesis3Right(config)
-            Kind.GENESIS_6_LEFT -> getGenesis6Left(config)
-            Kind.GENESIS_6_RIGHT -> getGenesis6Right(config)
-            Kind.ATARI2600_LEFT -> getAtari2600Left(config)
-            Kind.ATARI2600_RIGHT -> getAtari2600Right(config)
-            Kind.ARCADE_4_LEFT -> getArcade4Left(config)
-            Kind.ARCADE_4_RIGHT -> getArcade4Right(config)
-            Kind.ARCADE_6_LEFT -> getArcade6Left(config)
-            Kind.ARCADE_6_RIGHT -> getArcade6Right(config)
-            Kind.ATARI7800_LEFT -> getAtari7800Left(config)
-            Kind.ATARI7800_RIGHT -> getAtari7800Right(config)
-            Kind.NINTENDO_3DS_LEFT -> getNintendo3DSLeft(config)
-            Kind.NINTENDO_3DS_RIGHT -> getNintendo3DSRight(config)
+            Kind.GB_LEFT -> getGBLeft(theme)
+            Kind.GB_RIGHT -> getGBRight(theme)
+            Kind.NES_LEFT -> getNESLeft(theme)
+            Kind.NES_RIGHT -> getNESRight(theme)
+            Kind.DESMUME_LEFT -> getDesmumeLeft(theme)
+            Kind.DESMUME_RIGHT -> getDesmumeRight(theme)
+            Kind.MELONDS_NDS_LEFT -> getMelondsLeft(theme)
+            Kind.MELONDS_NDS_RIGHT -> getMelondsRight(theme)
+            Kind.PSX_LEFT -> getPSXLeft(theme)
+            Kind.PSX_RIGHT -> getPSXRight(theme)
+            Kind.PSX_DUALSHOCK_LEFT -> getPSXDualshockLeft(theme)
+            Kind.PSX_DUALSHOCK_RIGHT -> getPSXDualshockRight(theme)
+            Kind.PSP_LEFT -> getPSPLeft(theme)
+            Kind.PSP_RIGHT -> getPSPRight(theme)
+            Kind.SNES_LEFT -> getSNESLeft(theme)
+            Kind.SNES_RIGHT -> getSNESRight(theme)
+            Kind.GBA_LEFT -> getGBALeft(theme)
+            Kind.GBA_RIGHT -> getGBARight(theme)
+            Kind.SMS_LEFT -> getSMSLeft(theme)
+            Kind.SMS_RIGHT -> getSMSRight(theme)
+            Kind.GG_LEFT -> getGGLeft(theme)
+            Kind.GG_RIGHT -> getGGRight(theme)
+            Kind.LYNX_LEFT -> getLynxLeft(theme)
+            Kind.LYNX_RIGHT -> getLynxRight(theme)
+            Kind.PCE_LEFT -> getPCELeft(theme)
+            Kind.PCE_RIGHT -> getPCERight(theme)
+            Kind.DOS_LEFT -> getDOSLeft(theme)
+            Kind.DOS_RIGHT -> getDOSRight(theme)
+            Kind.NGP_LEFT -> getNGPLeft(theme)
+            Kind.NGP_RIGHT -> getNGPRight(theme)
+            Kind.WS_LANDSCAPE_LEFT -> getWSLandscapeLeft(theme)
+            Kind.WS_LANDSCAPE_RIGHT -> getWSLandscapeRight(theme)
+            Kind.WS_PORTRAIT_LEFT -> getWSPortraitLeft(theme)
+            Kind.WS_PORTRAIT_RIGHT -> getWSPortraitRight(theme)
+            Kind.N64_LEFT -> getN64Left(theme)
+            Kind.N64_RIGHT -> getN64Right(theme)
+            Kind.GENESIS_3_LEFT -> getGenesis3Left(theme)
+            Kind.GENESIS_3_RIGHT -> getGenesis3Right(theme)
+            Kind.GENESIS_6_LEFT -> getGenesis6Left(theme)
+            Kind.GENESIS_6_RIGHT -> getGenesis6Right(theme)
+            Kind.ATARI2600_LEFT -> getAtari2600Left(theme)
+            Kind.ATARI2600_RIGHT -> getAtari2600Right(theme)
+            Kind.ARCADE_4_LEFT -> getArcade4Left(theme)
+            Kind.ARCADE_4_RIGHT -> getArcade4Right(theme)
+            Kind.ARCADE_6_LEFT -> getArcade6Left(theme)
+            Kind.ARCADE_6_RIGHT -> getArcade6Right(theme)
+            Kind.ATARI7800_LEFT -> getAtari7800Left(theme)
+            Kind.ATARI7800_RIGHT -> getAtari7800Right(theme)
+            Kind.NINTENDO_3DS_LEFT -> getNintendo3DSLeft(theme)
+            Kind.NINTENDO_3DS_RIGHT -> getNintendo3DSRight(theme)
         }
 
         return radialGamePadConfig.copy(haptic = haptic)
@@ -248,9 +238,9 @@ object LemuroidTouchConfigs {
         )
     )
 
-    private fun getGBLeft(config: Config) =
+    private fun getGBLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -259,9 +249,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getGBRight(config: Config) =
+    private fun getGBRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -278,13 +268,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getNESLeft(config: Config) =
+    private fun getNESLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -293,9 +283,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getNESRight(config: Config) =
+    private fun getNESRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -311,13 +301,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getDesmumeLeft(config: Config) =
+    private fun getDesmumeLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -346,8 +336,8 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getDesmumeRight(config: Config) = RadialGamePadConfig(
-        theme = config.standardTheme,
+    private fun getDesmumeRight(theme: RadialGamePadTheme) = RadialGamePadConfig(
+        theme = theme,
         sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
@@ -372,13 +362,13 @@ object LemuroidTouchConfigs {
         secondaryDials = listOf(
             SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_R),
             SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-            buildMenuButtonConfig(10, config)
+            buildMenuButtonConfig(10, theme)
         )
     )
 
-    private fun getMelondsLeft(config: Config) =
+    private fun getMelondsLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -407,8 +397,8 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getMelondsRight(config: Config) = RadialGamePadConfig(
-        theme = config.standardTheme,
+    private fun getMelondsRight(theme: RadialGamePadTheme) = RadialGamePadConfig(
+        theme = theme,
         sockets = 12,
         primaryDial = PrimaryDialConfig.PrimaryButtons(
             dials = listOf(
@@ -433,13 +423,13 @@ object LemuroidTouchConfigs {
         secondaryDials = listOf(
             SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_R),
             SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-            buildMenuButtonConfig(10, config)
+            buildMenuButtonConfig(10, theme)
         )
     )
 
-    private fun getPSXLeft(config: Config) =
+    private fun getPSXLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -450,9 +440,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getPSXRight(config: Config) =
+    private fun getPSXRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -466,13 +456,13 @@ object LemuroidTouchConfigs {
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_R2),
                 SecondaryDialConfig.SingleButton(3, 1f, 0f, BUTTON_CONFIG_R1),
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getPSXDualshockLeft(config: Config) =
+    private fun getPSXDualshockLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -494,9 +484,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getPSXDualshockRight(config: Config) =
+    private fun getPSXDualshockRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -510,7 +500,7 @@ object LemuroidTouchConfigs {
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_R2),
                 SecondaryDialConfig.SingleButton(3, 1f, 0f, BUTTON_CONFIG_R1),
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config),
+                buildMenuButtonConfig(10, theme),
                 SecondaryDialConfig.Stick(
                     8,
                     2,
@@ -525,9 +515,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getN64Left(config: Config) =
+    private fun getN64Left(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -554,9 +544,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getN64Right(config: Config) =
+    private fun getN64Right(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -588,7 +578,7 @@ object LemuroidTouchConfigs {
                             return -rotation
                         }
                     },
-                    theme = config.alternateTheme
+                    theme = theme
                 ),
                 SecondaryDialConfig.Cross(
                     8,
@@ -610,9 +600,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getPSPLeft(config: Config) =
+    private fun getPSPLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -631,9 +621,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getPSPRight(config: Config) =
+    private fun getPSPRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -646,7 +636,7 @@ object LemuroidTouchConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.DoubleButton(2, 0f, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config),
+                buildMenuButtonConfig(10, theme),
                 SecondaryDialConfig.Empty(
                     8,
                     2,
@@ -657,9 +647,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getSNESLeft(config: Config) =
+    private fun getSNESLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -669,9 +659,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getSNESRight(config: Config) =
+    private fun getSNESRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -696,13 +686,13 @@ object LemuroidTouchConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.DoubleButton(2, 0f, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getGBALeft(config: Config) =
+    private fun getGBALeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -712,9 +702,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getGBARight(config: Config) =
+    private fun getGBARight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -732,13 +722,13 @@ object LemuroidTouchConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.DoubleButton(2, 0f, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getGenesis3Left(config: Config) =
+    private fun getGenesis3Left(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -747,9 +737,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getGenesis3Right(config: Config) =
+    private fun getGenesis3Right(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -769,26 +759,26 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getGenesis6Left(config: Config) =
+    private fun getGenesis6Left(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_SELECT),
                 SecondaryDialConfig.SingleButton(3, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(8, config),
+                buildMenuButtonConfig(8, theme),
                 SecondaryDialConfig.Empty(9, 1, 1f, 0f)
             )
         )
 
-    private fun getGenesis6Right(config: Config) =
+    private fun getGenesis6Right(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -828,9 +818,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getAtari2600Left(config: Config) =
+    private fun getAtari2600Left(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -856,9 +846,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getAtari2600Right(config: Config) =
+    private fun getAtari2600Right(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(),
@@ -886,13 +876,13 @@ object LemuroidTouchConfigs {
                         label = "SELECT"
                     )
                 ),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getSMSLeft(config: Config) =
+    private fun getSMSLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -901,9 +891,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getSMSRight(config: Config) =
+    private fun getSMSRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -919,13 +909,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getGGLeft(config: Config) =
+    private fun getGGLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -934,9 +924,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getGGRight(config: Config) =
+    private fun getGGRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -953,13 +943,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getArcade4Left(config: Config) =
+    private fun getArcade4Left(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS_MERGED,
             secondaryDials = listOf(
@@ -968,9 +958,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getArcade4Right(config: Config) =
+    private fun getArcade4Right(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 rotationInDegrees = 60f,
@@ -995,26 +985,26 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getArcade6Left(config: Config) =
+    private fun getArcade6Left(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS_MERGED,
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_COIN),
                 SecondaryDialConfig.SingleButton(3, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(8, config),
+                buildMenuButtonConfig(8, theme),
                 SecondaryDialConfig.Empty(9, 1, 1f, 0f)
             )
         )
 
-    private fun getArcade6Right(config: Config) =
+    private fun getArcade6Right(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1053,9 +1043,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getLynxLeft(config: Config) =
+    private fun getLynxLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1081,9 +1071,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getLynxRight(config: Config) =
+    private fun getLynxRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 rotationInDegrees = 15f,
@@ -1100,13 +1090,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getAtari7800Left(config: Config) =
+    private fun getAtari7800Left(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1115,9 +1105,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getAtari7800Right(config: Config) =
+    private fun getAtari7800Right(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1133,13 +1123,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getPCELeft(config: Config) =
+    private fun getPCELeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1148,9 +1138,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getPCERight(config: Config) =
+    private fun getPCERight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1166,13 +1156,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getDOSLeft(config: Config) =
+    private fun getDOSLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1227,9 +1217,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getDOSRight(config: Config) =
+    private fun getDOSRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 listOf(
@@ -1279,7 +1269,7 @@ object LemuroidTouchConfigs {
                         contentDescription = "Start"
                     )
                 ),
-                buildMenuButtonConfig(10, config),
+                buildMenuButtonConfig(10, theme),
                 SecondaryDialConfig.Stick(
                     8,
                     2,
@@ -1293,9 +1283,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getNGPLeft(config: Config) =
+    private fun getNGPLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1304,9 +1294,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getNGPRight(config: Config) =
+    private fun getNGPRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1322,13 +1312,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getWSLandscapeLeft(config: Config) =
+    private fun getWSLandscapeLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1337,9 +1327,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getWSLandscapeRight(config: Config) =
+    private fun getWSLandscapeRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 rotationInDegrees = 30f,
@@ -1356,13 +1346,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getWSPortraitLeft(config: Config) =
+    private fun getWSPortraitLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1371,9 +1361,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getWSPortraitRight(config: Config) =
+    private fun getWSPortraitRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1397,13 +1387,13 @@ object LemuroidTouchConfigs {
             ),
             secondaryDials = listOf(
                 SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config)
+                buildMenuButtonConfig(10, theme)
             )
         )
 
-    private fun getNintendo3DSLeft(config: Config) =
+    private fun getNintendo3DSLeft(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
@@ -1422,9 +1412,9 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun getNintendo3DSRight(config: Config) =
+    private fun getNintendo3DSRight(theme: RadialGamePadTheme) =
         RadialGamePadConfig(
-            theme = config.standardTheme,
+            theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
                 dials = listOf(
@@ -1449,7 +1439,7 @@ object LemuroidTouchConfigs {
             secondaryDials = listOf(
                 SecondaryDialConfig.DoubleButton(2, 0f, BUTTON_CONFIG_R),
                 SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
-                buildMenuButtonConfig(10, config),
+                buildMenuButtonConfig(10, theme),
                 SecondaryDialConfig.Empty(
                     8,
                     2,
@@ -1460,7 +1450,7 @@ object LemuroidTouchConfigs {
             )
         )
 
-    private fun buildMenuButtonConfig(index: Int, config: Config): SecondaryDialConfig {
+    private fun buildMenuButtonConfig(index: Int, theme: RadialGamePadTheme): SecondaryDialConfig {
         return SecondaryDialConfig.SingleButton(
             index = index,
             scale = 1f,
@@ -1471,7 +1461,7 @@ object LemuroidTouchConfigs {
                     return -rotation
                 }
             },
-            theme = config.alternateTheme
+            theme = theme
         )
     }
 

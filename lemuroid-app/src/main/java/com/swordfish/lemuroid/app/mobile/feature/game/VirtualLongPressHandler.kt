@@ -23,7 +23,7 @@ object VirtualLongPressHandler {
     private val LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout().toLong()
 
     fun initializeTheme(gameActivity: GameActivity) {
-        val palette = LemuroidTouchOverlayThemes.getGamePadAlternate(longPressView(gameActivity))
+        val palette = LemuroidTouchOverlayThemes.getGamePadOverlayTheme(longPressView(gameActivity))
         longPressIconView(gameActivity).setColorFilter(palette.textColor)
         longPressProgressBar(gameActivity).setIndicatorColor(palette.textColor)
         longPressView(gameActivity).background = buildCircleDrawable(palette.backgroundColor)
@@ -56,7 +56,7 @@ object VirtualLongPressHandler {
             .doOnSubscribe { displayLongPressView(activity) }
             .doAfterTerminate { hideLongPressView(activity) }
             .onErrorComplete()
-            .map { Unit }
+            .map { }
     }
 
     private fun longPressIconView(activity: GameActivity) =
