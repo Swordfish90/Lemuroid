@@ -30,7 +30,7 @@
     tools:context=".app.mobile.feature.game.GameActivity"
     android:keepScreenOn="true"
     tools:ignore="MergeRootFrame"
-    android:background="?attr/colorSurface">
+    android:background="#000">
 
     <FrameLayout
         android:id="@+id/gamecontainer"

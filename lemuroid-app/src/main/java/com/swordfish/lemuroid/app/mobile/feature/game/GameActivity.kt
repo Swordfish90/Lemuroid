@@ -204,11 +204,7 @@ class GameActivity : BaseGameActivity() {
             else -> HapticConfig.OFF
         }
 
-        val theme = if (isTouchControlOverlay(orientation, controllerConfig)) {
-            LemuroidTouchOverlayThemes.getGamePadOverlayTheme(leftGamePadContainer)
-        } else {
-            LemuroidTouchOverlayThemes.getGamePadTheme(leftGamePadContainer)
-        }
+        val theme = LemuroidTouchOverlayThemes.getGamePadTheme(leftGamePadContainer)
 
         val leftConfig = LemuroidTouchConfigs.getRadialGamePadConfig(
             touchControllerConfig.leftConfig,
@@ -237,10 +233,6 @@ class GameActivity : BaseGameActivity() {
         this.rightPad = rightPad
 
         this.touchControllerConfig = controllerConfig
-    }
-
-    private fun isTouchControlOverlay(orientation: Int, controllerConfig: ControllerConfig): Boolean {
-        return orientation != Configuration.ORIENTATION_PORTRAIT && controllerConfig.allowTouchOverlay
     }
 
     private fun setupDefaultActions(virtualPadEvents: Observable<Event>) {

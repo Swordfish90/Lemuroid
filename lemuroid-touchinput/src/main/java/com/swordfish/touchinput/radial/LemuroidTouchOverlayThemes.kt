@@ -8,58 +8,32 @@ import com.google.android.material.R
 
 object LemuroidTouchOverlayThemes {
 
+    private const val LIGHTNESS = 0.5f
+    private const val TEXT_LIGHTNESS = 1f
     private const val ALPHA_FOREGROUND = 0.75f
     private const val ALPHA_MIDDLE = 0.5f
     private const val ALPHA_BACKGROUND = 0.25f
 
-    private data class Palette(
-        val foreground: Int,
-        val normal: Int,
-        val background: Int,
-        val primary: Int,
-        val secondary: Int
-    )
-
     fun getGamePadTheme(view: View): RadialGamePadTheme {
-        val colorSurface = MaterialColors.getColor(view, R.attr.colorSurface)
-        val palette = buildDefaultPalette(view)
-
-        // When in overlay the transparent control is drawn on black while here on colorSurface.
-        // Adjusting the background color we're able to preserve the contrast in the two modes.
-        val adjustedPalette = palette.copy(
-            background = ColorUtils.blendARGB(colorSurface, palette.normal, ALPHA_MIDDLE)
-        )
-        return buildTheme(adjustedPalette)
+        return buildTheme(view)
     }
 
-    fun getGamePadOverlayTheme(view: View): RadialGamePadTheme {
-        return buildTheme(buildDefaultPalette(view))
-    }
-
-    private fun buildDefaultPalette(view: View): Palette {
+    private fun buildTheme(view: View): RadialGamePadTheme {
         val colorOnSurface = MaterialColors.getColor(view, R.attr.colorOnSurface)
         val colorSurface = MaterialColors.getColor(view, R.attr.colorSurface)
         val colorPrimary = MaterialColors.getColor(view, R.attr.colorPrimary)
         val colorSecondary = MaterialColors.getColor(view, R.attr.colorSecondary)
-        val colorIntermediate = ColorUtils.blendARGB(colorSurface, colorOnSurface, 0.5f)
 
-        return Palette(
-            colorOnSurface,
-            colorIntermediate,
-            colorIntermediate,
-            colorPrimary,
-            colorSecondary
-        )
-    }
+        val mainColor = ColorUtils.blendARGB(colorSurface, colorOnSurface, LIGHTNESS)
+        val mainTextColor = ColorUtils.blendARGB(colorSurface, colorOnSurface, TEXT_LIGHTNESS)
 
-    private fun buildTheme(palette: Palette): RadialGamePadTheme {
         return RadialGamePadTheme(
-            normalColor = withAlpha(palette.normal, ALPHA_MIDDLE),
-            backgroundColor = withAlpha(palette.background, ALPHA_BACKGROUND),
-            pressedColor = withAlpha(palette.primary, ALPHA_FOREGROUND),
-            textColor = withAlpha(palette.foreground, ALPHA_FOREGROUND),
-            simulatedColor = withAlpha(palette.secondary, ALPHA_MIDDLE),
-            lightColor = withAlpha(palette.normal, ALPHA_BACKGROUND),
+            normalColor = withAlpha(mainColor, ALPHA_MIDDLE),
+            backgroundColor = withAlpha(mainColor, ALPHA_BACKGROUND),
+            pressedColor = withAlpha(colorPrimary, ALPHA_FOREGROUND),
+            textColor = withAlpha(mainTextColor, ALPHA_FOREGROUND),
+            simulatedColor = withAlpha(colorSecondary, ALPHA_MIDDLE),
+            lightColor = withAlpha(mainColor, ALPHA_BACKGROUND),
         )
     }
 
