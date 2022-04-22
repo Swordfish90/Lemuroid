@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.game
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewConfiguration
 import android.widget.ImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.view.animateProgress
 import com.swordfish.lemuroid.common.view.animateVisibleOrGone
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
@@ -15,6 +17,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 
 object VirtualLongPressHandler {
 
@@ -26,14 +29,25 @@ object VirtualLongPressHandler {
         val palette = LemuroidTouchOverlayThemes.getGamePadTheme(longPressView(gameActivity))
         longPressIconView(gameActivity).setColorFilter(palette.textColor)
         longPressProgressBar(gameActivity).setIndicatorColor(palette.textColor)
-        longPressView(gameActivity).background = buildCircleDrawable(palette.backgroundColor)
-        longPressForegroundView(gameActivity).background = buildCircleDrawable(palette.normalColor)
+        longPressView(gameActivity).background = buildCircleDrawable(
+            gameActivity,
+            palette.backgroundColor,
+            palette.backgroundStrokeColor,
+            palette.strokeWidthDp
+        )
+        longPressForegroundView(gameActivity).background = buildCircleDrawable(
+            gameActivity,
+            palette.normalColor,
+            palette.normalStrokeColor,
+            palette.strokeWidthDp
+        )
     }
 
-    private fun buildCircleDrawable(color: Int): Drawable {
+    private fun buildCircleDrawable(context: Context, fillColor: Int, strokeColor: Int, strokeSize: Float): Drawable {
         return GradientDrawable().apply {
             shape = GradientDrawable.OVAL
-            setColor(color)
+            setColor(fillColor)
+            setStroke(GraphicsUtils.convertDpToPixel(strokeSize, context).roundToInt(), strokeColor)
         }
     }
 
