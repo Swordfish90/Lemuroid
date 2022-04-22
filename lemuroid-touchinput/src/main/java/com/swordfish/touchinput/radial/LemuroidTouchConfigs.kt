@@ -223,17 +223,18 @@ object LemuroidTouchConfigs {
     private val PRIMARY_DIAL_CROSS = PrimaryDialConfig.Cross(
         CrossConfig(
             id = MOTION_SOURCE_DPAD,
-            shape = CrossConfig.Shape.STANDARD,
+            shape = CrossConfig.Shape.CIRCLE,
             supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
-            rightDrawableForegroundId = R.drawable.direction_foreground
+            rightDrawableForegroundId = R.drawable.direction_alt_foreground
         ),
     )
 
     private val PRIMARY_DIAL_CROSS_MERGED = PrimaryDialConfig.Cross(
         CrossConfig(
             id = MOTION_SOURCE_DPAD_AND_LEFT_STICK,
-            shape = CrossConfig.Shape.STANDARD,
-            supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH)
+            shape = CrossConfig.Shape.CIRCLE,
+            supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
+            rightDrawableForegroundId = R.drawable.direction_alt_foreground
         )
     )
 
@@ -1200,7 +1201,8 @@ object LemuroidTouchConfigs {
                         id = KeyEvent.KEYCODE_BUTTON_THUMBL,
                         iconId = R.drawable.button_keyboard,
                         contentDescription = "Keyboard"
-                    )
+                    ),
+                    rotationProcessor = rotationInvert(),
                 ),
                 SecondaryDialConfig.Stick(
                     9,
@@ -1455,11 +1457,7 @@ object LemuroidTouchConfigs {
             scale = 1f,
             distance = 0f,
             buttonConfig = BUTTON_CONFIG_MENU,
-            rotationProcessor = object : SecondaryDialConfig.RotationProcessor() {
-                override fun getRotation(rotation: Float): Float {
-                    return -rotation
-                }
-            },
+            rotationProcessor = rotationInvert(),
             theme = theme
         )
     }
@@ -1469,6 +1467,12 @@ object LemuroidTouchConfigs {
             override fun getRotation(rotation: Float): Float {
                 return rotation + degrees
             }
+        }
+    }
+
+    private fun rotationInvert() = object : SecondaryDialConfig.RotationProcessor() {
+        override fun getRotation(rotation: Float): Float {
+            return -rotation
         }
     }
 }

@@ -7,7 +7,11 @@
     <string name="system_card_image_ratio">4:3</string>
     <string name="game_card_image_ratio">1:1</string>
 
-    <dimen name="loading_circle_size">58dp</dimen>
-    <dimen name="loading_circle_icon_size">32dp</dimen>
+    <string name="touch_control_stroke_size">2dp</string>
+
+    <dimen name="loading_circle_outer">80dp</dimen>
+    <dimen name="loading_circle_inner">68dp</dimen>
+    <dimen name="loading_circle_progress">56dp</dimen>
+    <dimen name="loading_circle_icon">32dp</dimen>
     <dimen name="loading_circle_progress_thickness">6dp</dimen>
 </resources>

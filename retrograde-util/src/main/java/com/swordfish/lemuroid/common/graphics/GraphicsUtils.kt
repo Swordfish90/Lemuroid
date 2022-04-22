@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.common.graphics
 import android.content.Context
 import android.graphics.Color
 import android.util.DisplayMetrics
+import android.util.TypedValue
 
 object GraphicsUtils {
 
@@ -24,5 +25,11 @@ object GraphicsUtils {
 
     fun convertPixelsToDp(px: Float, context: Context): Float {
         return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    fun getRawDpSize(context: Context, resource: Int): Float {
+        val value = TypedValue()
+        context.resources.getValue(resource, value, true)
+        return TypedValue.complexToFloat(value.data)
     }
 }

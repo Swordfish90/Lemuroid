@@ -21,7 +21,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/maincontainer"
@@ -94,10 +95,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progress" />
 
+    <View
+        android:id="@+id/horizontaldividier"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/touch_control_stroke_size"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/leftgamepad"/>
+
+    <View
+        android:id="@+id/leftverticaldivider"
+        android:orientation="vertical"
+        android:layout_width="@dimen/touch_control_stroke_size"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/leftgamepad"/>
+
+    <View
+        android:id="@+id/rightverticaldivider"
+        android:orientation="vertical"
+        android:layout_width="@dimen/touch_control_stroke_size"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/rightgamepad"/>
+
     <include layout="@layout/layout_game_long_press"
         android:id="@+id/settings_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/loading_circle_outer"
+        android:layout_height="@dimen/loading_circle_outer"
         app:layout_constraintBottom_toBottomOf="@id/gamecontainer"
         app:layout_constraintEnd_toEndOf="@id/gamecontainer"
         app:layout_constraintStart_toStartOf="@id/gamecontainer"
