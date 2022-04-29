@@ -55,6 +55,8 @@
     <string name="setting_wswan_rotate_display">Orientação</string>
     <string name="setting_wswan_mono_palette">Coloração</string>
     <string name="setting_handy_rot">Orientação</string>
+    <string name="setting_citra_use_acc_mul">Multiplicação precisa de sombras</string>
+    <string name="setting_citra_use_acc_geo_shaders">Geometria precisa de sombras</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Desabilitado</string>
     <string name="value_gambatte_mix_frames_mix">Simples</string>
