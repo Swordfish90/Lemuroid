@@ -33,7 +33,7 @@ import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
-import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
+import com.swordfish.lemuroid.app.shared.settings.CustomCoreOptions
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
@@ -350,8 +350,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun retroControllerManager(sharedPreferences: Lazy<SharedPreferences>) =
-            ControllerConfigsManager(sharedPreferences)
+        fun customCoreOptions(sharedPreferences: Lazy<SharedPreferences>) =
+            CustomCoreOptions(sharedPreferences)
 
         @Provides
         @PerApp

@@ -112,6 +112,7 @@
     <string name="core_settings_category_preferences">Preferences</string>
     <string name="core_settings_category_controllers">Controllers</string>
     <string name="core_settings_controller">Controller %1$s</string>
+    <string name="core_settings_pixel_art_upscaling">Pixel-Art upscaling</string>
 
     <string name="game_menu_title">Game menu</string>
 

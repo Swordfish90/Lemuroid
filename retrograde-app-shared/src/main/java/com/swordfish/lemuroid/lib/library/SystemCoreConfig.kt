@@ -15,5 +15,6 @@ data class SystemCoreConfig(
     val requiredBIOSFiles: List<String> = listOf(),
     val statesVersion: Int = 0,
     val supportsLibretroVFS: Boolean = false,
-    val skipDuplicateFrames: Boolean = true
+    val skipDuplicateFrames: Boolean = true,
+    val supportPixelArtUpscaling: Boolean,
 ) : Serializable

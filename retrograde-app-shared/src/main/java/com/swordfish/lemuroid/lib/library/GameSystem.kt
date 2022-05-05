@@ -90,7 +90,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.ATARI_2600)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true
                     )
                 ),
                 uniqueExtensions = listOf("a26"),
@@ -122,7 +123,8 @@ data class GameSystem(
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.NES)
                         ),
-                    )
+                        supportPixelArtUpscaling = true
+                    ),
                 ),
                 uniqueExtensions = listOf("nes"),
             ),
@@ -136,7 +138,8 @@ data class GameSystem(
                         CoreID.SNES9X,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.SNES)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true
                     )
                 ),
                 uniqueExtensions = listOf("smc", "sfc"),
@@ -207,7 +210,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.SMS)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true
                     )
                 ),
                 uniqueExtensions = listOf("sms"),
@@ -293,7 +297,8 @@ data class GameSystem(
                                 ControllerConfigs.GENESIS_3,
                                 ControllerConfigs.GENESIS_6
                             )
-                        )
+                        ),
+                        supportPixelArtUpscaling = true
                     )
                 ),
                 uniqueExtensions = listOf("gen", "smd", "md"),
@@ -385,6 +390,7 @@ data class GameSystem(
                             "bios_CD_J.bin",
                             "bios_CD_U.bin"
                         ),
+                        supportPixelArtUpscaling = true,
                     )
                 ),
                 scanOptions = ScanOptions(
@@ -418,7 +424,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GG)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     )
                 ),
                 uniqueExtensions = listOf("gg"),
@@ -473,7 +480,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GB)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("gb"),
@@ -534,7 +542,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GB)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("gbc"),
@@ -603,7 +612,8 @@ data class GameSystem(
                         rumbleSupported = true,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.GBA)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("gba"),
@@ -694,7 +704,8 @@ data class GameSystem(
                             0 to arrayListOf(ControllerConfigs.N64)
                         ),
                         rumbleSupported = true,
-                        skipDuplicateFrames = false
+                        skipDuplicateFrames = false,
+                        supportPixelArtUpscaling = false,
                     )
                 ),
                 uniqueExtensions = listOf("n64", "z64"),
@@ -743,7 +754,8 @@ data class GameSystem(
                         ),
                         rumbleSupported = true,
                         supportsLibretroVFS = true,
-                        skipDuplicateFrames = false
+                        skipDuplicateFrames = false,
+                        supportPixelArtUpscaling = false,
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -801,7 +813,8 @@ data class GameSystem(
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.PSP)
                         ),
-                        supportsLibretroVFS = true
+                        supportsLibretroVFS = true,
+                        supportPixelArtUpscaling = false,
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -833,7 +846,8 @@ data class GameSystem(
                         ),
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.FB_NEO_4, ControllerConfigs.FB_NEO_6)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -859,7 +873,8 @@ data class GameSystem(
                                 ControllerConfigs.MAME_2003_4,
                                 ControllerConfigs.MAME_2003_6
                             )
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     )
                 ),
                 uniqueExtensions = listOf(),
@@ -892,7 +907,8 @@ data class GameSystem(
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.DESMUME)
                         ),
-                        skipDuplicateFrames = false
+                        skipDuplicateFrames = false,
+                        supportPixelArtUpscaling = false,
                     ),
                     SystemCoreConfig(
                         CoreID.MELONDS,
@@ -938,6 +954,7 @@ data class GameSystem(
                             0 to arrayListOf(ControllerConfigs.MELONDS)
                         ),
                         statesVersion = 1,
+                        supportPixelArtUpscaling = false,
                     )
                 ),
                 uniqueExtensions = listOf("nds"),
@@ -952,7 +969,8 @@ data class GameSystem(
                         CoreID.PROSYSTEM,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.ATARI7800)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("a78"),
@@ -990,7 +1008,8 @@ data class GameSystem(
                         ),
                         defaultSettings = listOf(
                             CoreVariable("handy_rot", "None")
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("lnx"),
@@ -1005,7 +1024,8 @@ data class GameSystem(
                         CoreID.MEDNAFEN_PCE_FAST,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.PCE)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("pce"),
@@ -1021,7 +1041,8 @@ data class GameSystem(
                         CoreID.MEDNAFEN_NGP,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.NGP)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("ngp"),
@@ -1036,7 +1057,8 @@ data class GameSystem(
                         CoreID.MEDNAFEN_NGP,
                         controllerConfigs = hashMapOf(
                             0 to arrayListOf(ControllerConfigs.NGP)
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("ngc"),
@@ -1075,7 +1097,8 @@ data class GameSystem(
                         defaultSettings = listOf(
                             CoreVariable("wswan_rotate_display", "landscape"),
                             CoreVariable("wswan_mono_palette", "wonderswan"),
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("ws"),
@@ -1109,7 +1132,8 @@ data class GameSystem(
                         ),
                         defaultSettings = listOf(
                             CoreVariable("wswan_rotate_display", "landscape")
-                        )
+                        ),
+                        supportPixelArtUpscaling = true,
                     ),
                 ),
                 uniqueExtensions = listOf("wsc"),
@@ -1130,6 +1154,7 @@ data class GameSystem(
                             )
                         ),
                         statesSupported = false,
+                        supportPixelArtUpscaling = true,
                     )
                 ),
                 fastForwardSupport = false,
@@ -1170,7 +1195,8 @@ data class GameSystem(
                             )
                         ),
                         statesSupported = false,
-                        supportsLibretroVFS = true
+                        supportsLibretroVFS = true,
+                        supportPixelArtUpscaling = false,
                     ),
                 ),
                 uniqueExtensions = listOf("3ds"),

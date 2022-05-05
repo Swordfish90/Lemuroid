@@ -28,7 +28,7 @@ import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
-import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
+import com.swordfish.lemuroid.app.shared.settings.CustomCoreOptions
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.getInputClass
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
@@ -36,6 +36,7 @@ import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
+import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.common.rx.BehaviorRelayNullableProperty
 import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
@@ -57,7 +58,6 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.storage.RomFiles
-import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
@@ -113,7 +113,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject lateinit var coreVariablesManager: CoreVariablesManager
     @Inject lateinit var inputDeviceManager: InputDeviceManager
     @Inject lateinit var gameLoader: GameLoader
-    @Inject lateinit var controllerConfigsManager: ControllerConfigsManager
+    @Inject lateinit var customCoreOptions: CustomCoreOptions
     @Inject lateinit var rumbleManager: RumbleManager
 
     private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
@@ -221,7 +221,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun initializeRetroGameView(
         gameData: GameLoader.GameData,
-        screenFilter: String,
+        screenFilter: Int,
         lowLatencyAudio: Boolean,
         enableRumble: Boolean
     ): GLRetroView {
@@ -242,7 +242,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             savesDirectory = gameData.savesDirectory.absolutePath
             variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
             saveRAMState = gameData.saveRAMData
-            shader = getShaderForSystem(screenFilter, system)
+            shader = screenFilter
             preferLowLatencyAudio = lowLatencyAudio
             rumbleEventsEnabled = enableRumble
             skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
@@ -430,10 +430,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
 
         retroGameViewMaybe()
-            .flatMapSingle { controllerConfigsManager.getControllerConfigs(system.id, systemCoreConfig) }
+            .flatMapSingle { customCoreOptions.getControllerConfigs(system.id, systemCoreConfig) }
             .autoDispose(scope())
             .subscribeBy(Timber::e) {
                 controllerConfigs = it
+            }
+
+        retroGameViewMaybe()
+            .flatMapSingle { retroView -> getCurrentShader().map { retroView to it } }
+            .autoDispose(scope())
+            .subscribeBy(Timber::e) { (retroView, shaderType) ->
+                retroView.shaderType = shaderType
             }
 
         initializeRumble()
@@ -897,32 +904,32 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         setupLoadingView()
 
         Singles.zip(
+            getCurrentShader(),
             settingsManager.autoSave,
-            settingsManager.screenFilter,
             settingsManager.lowLatencyAudio,
             settingsManager.enableRumble,
             settingsManager.allowDirectGameLoad,
             ::NTuple5
         )
-            .flatMapObservable { (autoSaveEnabled, filter, lowLatencyAudio, enableRumble, directLoad) ->
+            .flatMapObservable { (shader, autoSaveEnabled, lowLatencyAudio, enableRumble, directLoad) ->
                 gameLoader.load(
                     applicationContext,
                     game,
                     requestLoadSave && autoSaveEnabled,
                     systemCoreConfig,
                     directLoad
-                ).map { NTuple4(it, filter, lowLatencyAudio, enableRumble) }
+                ).map { NTuple4(it, shader, lowLatencyAudio, enableRumble) }
             }
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .autoDispose(scope())
             .subscribe(
-                { (loadingState, filter, lowLatencyAudio, enableRumble) ->
+                { (loadingState, shader, lowLatencyAudio, enableRumble) ->
                     displayLoadingState(loadingState)
                     if (loadingState is GameLoader.LoadingState.Ready) {
                         retroGameView = initializeRetroGameView(
                             loadingState.gameData,
-                            filter,
+                            shader,
                             lowLatencyAudio,
                             systemCoreConfig.rumbleSupported && enableRumble
                         )
@@ -932,6 +939,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     displayGameLoaderError((it as GameLoaderException).error, systemCoreConfig)
                 }
             )
+    }
+
+    private fun getCurrentShader(): Single<Int> {
+        val upscalingFilter = customCoreOptions.getPixelArtUpscaling(system.id, systemCoreConfig)
+            .filter { it }
+            .map { GLRetroView.SHADER_TRIANGLE_UPSCALE }
+
+        val defaultFilter = settingsManager.screenFilter
+            .map { getShaderForSystem(it, system) }
+
+        return upscalingFilter.switchIfEmpty(defaultFilter)
     }
 
     private fun setupLoadingView() {

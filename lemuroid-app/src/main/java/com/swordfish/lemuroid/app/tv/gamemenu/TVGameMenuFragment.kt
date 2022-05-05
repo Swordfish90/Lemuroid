@@ -73,6 +73,7 @@ class TVGameMenuFragment(
         CoreOptionsPreferenceHelper.addPreferences(
             coreOptionsScreen,
             game.systemId,
+            systemCoreConfig,
             coreOptions.toList(),
             advancedCoreOptions.toList()
         )
@@ -80,9 +81,8 @@ class TVGameMenuFragment(
         CoreOptionsPreferenceHelper.addControllers(
             coreOptionsScreen,
             game.systemId,
-            systemCoreConfig.coreID,
-            connectedGamePads,
-            systemCoreConfig.controllerConfigs
+            systemCoreConfig,
+            connectedGamePads
         )
     }
 

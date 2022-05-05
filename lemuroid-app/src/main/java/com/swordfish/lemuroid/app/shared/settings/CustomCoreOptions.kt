@@ -9,7 +9,18 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import dagger.Lazy
 
-class ControllerConfigsManager(private val sharedPreferences: Lazy<SharedPreferences>) {
+class CustomCoreOptions(private val sharedPreferences: Lazy<SharedPreferences>) {
+
+    fun getPixelArtUpscaling(systemId: SystemID, systemCoreConfig: SystemCoreConfig): Single<Boolean> {
+        return Single.just(systemCoreConfig.supportPixelArtUpscaling)
+            .filter { it }
+            .map {
+                val key = pixelArtUpscalingPreferenceId(systemId.dbname, systemCoreConfig.coreID)
+                sharedPreferences.get().getBoolean(key, false)
+            }
+            .toSingle(false)
+            .subscribeOn(Schedulers.io())
+    }
 
     fun getControllerConfigs(
         systemId: SystemID,
@@ -18,7 +29,7 @@ class ControllerConfigsManager(private val sharedPreferences: Lazy<SharedPrefere
         systemCoreConfig.controllerConfigs.entries
             .map { (port, controllers) ->
                 val currentName = sharedPreferences.get().getString(
-                    getSharedPreferencesId(systemId.dbname, systemCoreConfig.coreID, port),
+                    controllersPreferenceId(systemId.dbname, systemCoreConfig.coreID, port),
                     null
                 )
 
@@ -31,7 +42,10 @@ class ControllerConfigsManager(private val sharedPreferences: Lazy<SharedPrefere
     }.subscribeOn(Schedulers.io())
 
     companion object {
-        fun getSharedPreferencesId(systemId: String, coreID: CoreID, port: Int) =
+        fun controllersPreferenceId(systemId: String, coreID: CoreID, port: Int) =
             "pref_key_controller_type_${systemId}_${coreID.coreName}_$port"
+
+        fun pixelArtUpscalingPreferenceId(systemId: String, coreID: CoreID) =
+            "pref_key_pixel_art_upscaling_${systemId}_${coreID.coreName}"
     }
 }

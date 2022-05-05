@@ -65,6 +65,7 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
         CoreOptionsPreferenceHelper.addPreferences(
             preferenceScreen,
             game.systemId,
+            coreConfig,
             coreOptions.toList(),
             advancedCoreOptions.toList()
         )
@@ -72,9 +73,8 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
         CoreOptionsPreferenceHelper.addControllers(
             preferenceScreen,
             game.systemId,
-            coreConfig.coreID,
-            maxOf(1, connectedGamePads),
-            coreConfig.controllerConfigs
+            coreConfig,
+            maxOf(1, connectedGamePads)
         )
     }
 
