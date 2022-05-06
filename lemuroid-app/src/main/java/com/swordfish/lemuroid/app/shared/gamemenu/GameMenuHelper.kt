@@ -11,6 +11,7 @@ import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
+import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
@@ -53,11 +54,8 @@ object GameMenuHelper {
         screen: PreferenceScreen,
         systemCoreConfig: SystemCoreConfig
     ) {
-        screen.findPreference<Preference>(SECTION_CORE_OPTIONS)?.isVisible = sequenceOf(
-            systemCoreConfig.exposedSettings.isNotEmpty(),
-            systemCoreConfig.exposedAdvancedSettings.isNotEmpty(),
-            systemCoreConfig.controllerConfigs.values.any { it.size > 1 }
-        ).any { it }
+        val optionsVisible = CoreOptionsPreferenceHelper.hasPreferences(systemCoreConfig)
+        screen.findPreference<Preference>(SECTION_CORE_OPTIONS)?.isVisible = optionsVisible
     }
 
     fun setupChangeDiskOption(

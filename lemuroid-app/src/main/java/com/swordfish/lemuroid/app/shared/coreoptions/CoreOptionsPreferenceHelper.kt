@@ -18,6 +18,15 @@ object CoreOptionsPreferenceHelper {
 
     private val BOOLEAN_SET = setOf("enabled", "disabled")
 
+    fun hasPreferences(coreConfig: SystemCoreConfig): Boolean {
+        return sequenceOf(
+            coreConfig.exposedSettings.isNotEmpty(),
+            coreConfig.exposedAdvancedSettings.isNotEmpty(),
+            coreConfig.controllerConfigs.values.any { it.size > 1 },
+            coreConfig.supportPixelArtUpscaling
+        ).any { it }
+    }
+
     fun addPreferences(
         preferenceScreen: PreferenceScreen,
         systemID: String,
@@ -25,7 +34,7 @@ object CoreOptionsPreferenceHelper {
         baseOptions: List<LemuroidCoreOption>,
         advancedOptions: List<LemuroidCoreOption>
     ) {
-        if (baseOptions.isEmpty() && advancedOptions.isEmpty()) {
+        if (!hasPreferences(coreConfig)) {
             return
         }
 
