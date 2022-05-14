@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="game_loading_download_core">Téléchargement du cœur…</string>
+    <string name="game_loading_download_core">Downloading core…</string>
 </resources>
