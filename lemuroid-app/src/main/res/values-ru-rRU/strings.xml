@@ -9,6 +9,7 @@
     <string name="favorites">Избранное</string>
     <string name="discover">Найти</string>
     <string name="rescan">Пересканировать</string>
+    <string name="stop">Стоп</string>
     <string name="none">Нет</string>
     <string name="directory">Директория</string>
     <string name="display_filter">Показать фильтр</string>
@@ -16,16 +17,21 @@
     <string name="ok">Принять</string>
     <string name="cancel">Отменить</string>
     <string name="settings">Настройки</string>
+    <string name="save_sync">Сохранить Синхронизацию</string>
     <string name="show_all">Показать всё</string>
     <string name="settings_category_general">Общий</string>
     <string name="settings_category_input">Ввод</string>
+    <string name="settings_category_misc">Прочее</string>
     <string name="settings_title_enable_autosave">Автосохранение</string>
     <string name="settings_title_enable_touch_feedback">Вибрация нажатия</string>
     <string name="settings_title_tilt_sensitivity">Чувствительность датчика наклона</string>
     <string name="settings_title_maximum_cache_usage">Максимальный размер кэша</string>
+    <string name="settings_title_gamepad_settings">Внешние устройства</string>
+    <string name="settings_description_gamepad_settings">Настроить внешние геймпады и клавиатуры</string>
     <string name="settings_gamepad_button_name">Клавиша %1$s</string>
     <string name="settings_retropad_button_name">Ретро клавиша%1$s</string>
     <string name="settings_retropad_button_unassigned">Не назначен</string>
+    <string name="settings_gamepad_category_enabled">Подключаемые устройства</string>
     <string name="settings_gamepad_category_general">Общее</string>
     <string name="settings_gamepad_title_reset_bindings">Сбросить назначение клавиш</string>
     <string name="settings_gamepad_title_game_menu">Меню.</string>
@@ -34,9 +40,19 @@
     <string name="settings_title_display_bios_info">БИОС.</string>
     <string name="settings_description_display_bios_info">Обнаруженные и поддерживаемые файлы БИОС</string>
     <string name="settings_bios_category_detected">Обнаружено</string>
-    <string name="settings_bios_category_not_detected">Потдержка</string>
+    <string name="settings_bios_category_not_detected">Поддержка</string>
     <string name="settings_title_reset_settings">Сброс к заводским настройкам</string>
     <string name="settings_description_reset_settings">Сброс Lemuroid к заводским настройкам</string>
+    <string name="settings_title_advanced_settings">Расширенные настройки</string>
+    <string name="settings_description_advanced_settings">Показать дополнительные параметры</string>
+    <string name="settings_title_low_latency_audio">Звук с низкой задержкой</string>
+    <string name="settings_description_low_latency_audio">Уменьшите задержку звука на поддерживаемых устройствах. Могут быть увеличены звуковые сбои.</string>
+    <string name="settings_title_direct_game_load">Прямая загрузка игр</string>
+    <string name="settings_description_direct_game_load">(Экспериментально) Уменьшает время загрузки и кэширования на поддерживаемех консолях.</string>
+    <string name="settings_title_enable_rumble">Вибрация</string>
+    <string name="settings_description_enable_rumble">Включить вибрацию в поддерживаемых играх и контроллерах</string>
+    <string name="settings_title_enable_device_rumble">Вибрация устройства</string>
+    <string name="settings_description_enable_device_rumble">Когда контроллер не подключен, вибрировать устройство</string>
     <string name="reset_settings_warning_message_title">Вы уверены?</string>
     <string name="reset_settings_warning_message_description">Это вернет Lemuroid к заводским настройкам.  Сохранения и Значения будут сохранены</string>
     <string name="settings_title_save_sync">Облачное сохранение</string>
@@ -137,5 +153,10 @@
         <item>Мягкий</item>
         <item>Кинескоп</item>
         <item>ЖК</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>None</item>
+        <item>Нажатие</item>
+        <item>Press &amp; release</item>
     </string-array>
 </resources>
