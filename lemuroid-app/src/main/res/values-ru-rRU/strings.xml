@@ -97,6 +97,7 @@
     <string name="notification_channel_name">Все уведомления</string>
     <string name="library_index_notification_title">Идёт сканирование ROM\'ов</string>
     <string name="library_index_notification_message">Это может занять несколько минут</string>
+    <string name="library_index_notification_action_cancel">\@строка/отмена</string>
     <string name="save_sync_notification_title">Облачное сохранение еще в разработке</string>
     <string name="save_sync_notification_message">Это может занять несколько минут</string>
     <string name="game_running_notification_title">%1$s выполняется</string>
@@ -155,8 +156,8 @@
         <item>ЖК</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>None</item>
+        <item>Отсутствует</item>
         <item>Нажатие</item>
-        <item>Press &amp; release</item>
+        <item>Нажмите &amp; </item>
     </string-array>
 </resources>
