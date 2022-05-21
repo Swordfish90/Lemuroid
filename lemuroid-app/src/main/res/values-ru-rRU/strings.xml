@@ -37,7 +37,7 @@
     <string name="settings_gamepad_title_game_menu">Меню.</string>
     <string name="settings_title_open_cores_selection">Сменить ядро</string>
     <string name="settings_description_open_cores_selection">Выберите, какое ядро ​​связано с системой.</string>
-    <string name="settings_title_display_bios_info">БИОС.</string>
+    <string name="settings_title_display_bios_info">БИОС</string>
     <string name="settings_description_display_bios_info">Обнаруженные и поддерживаемые файлы БИОС</string>
     <string name="settings_bios_category_detected">Обнаружено</string>
     <string name="settings_bios_category_not_detected">Поддержка</string>
@@ -45,9 +45,9 @@
     <string name="settings_description_reset_settings">Сброс Lemuroid к заводским настройкам</string>
     <string name="settings_title_advanced_settings">Расширенные настройки</string>
     <string name="settings_description_advanced_settings">Показать дополнительные параметры</string>
-    <string name="settings_title_low_latency_audio">Звук с низкой задержкой</string>
-    <string name="settings_description_low_latency_audio">Уменьшите задержку звука на поддерживаемых устройствах. Могут быть увеличены звуковые сбои.</string>
-    <string name="settings_title_direct_game_load">Прямая загрузка игр</string>
+    <string name="settings_title_low_latency_audio">Аудио с низкой задержкой</string>
+    <string name="settings_description_low_latency_audio">Уменьшение задержки звука на поддерживаемых устройствах. Могут быть увеличены звуковые неполадки.</string>
+    <string name="settings_title_direct_game_load">Прямая загрузка игры</string>
     <string name="settings_description_direct_game_load">(Экспериментально) Уменьшает время загрузки и кэширования на поддерживаемех консолях.</string>
     <string name="settings_title_enable_rumble">Вибрация</string>
     <string name="settings_description_enable_rumble">Включить вибрацию в поддерживаемых играх и контроллерах</string>
