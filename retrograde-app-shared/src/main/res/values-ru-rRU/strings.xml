@@ -55,6 +55,8 @@
     <string name="value_gambatte_mix_frames_mix">Простой</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">ЖК-двоение (Точно)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">ЖК-двоение (Быстро)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Включено</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Отключено</string>
     <string name="value_mgba_interframe_blending_off">Отключено</string>
     <string name="value_mgba_interframe_blending_mix">Простой</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">ЖК-двоение (Точно)</string>
@@ -62,6 +64,7 @@
     <string name="value_mgba_frameskip_disabled">Отключено</string>
     <string name="value_mgba_frameskip_auto">Автоматически</string>
     <string name="value_mgba_color_correction_off">Отключено</string>
+    <string name="value_mgba_color_correction_gba">Включено</string>
     <string name="value_stella_filter_disabled">Отключено</string>
     <string name="value_stella_filter_composite">Композит</string>
     <string name="value_stella_filter_svideo">S-Video</string>
@@ -74,13 +77,21 @@
     <string name="value_genesis_plus_gx_overscan_disabled">Отключено</string>
     <string name="value_genesis_plus_gx_overscan_topbottom">Вверх/Вниз</string>
     <string name="value_genesis_plus_gx_overscan_leftright">Влево/Вправо</string>
+    <string name="value_genesis_plus_gx_overscan_full">Полный</string>
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Динамический рекомпилятор</string>
     <string name="value_mupen64plus_cpucore_pureinterpreter">Чистый интерпретатор</string>
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Кешированный интерпретатор</string>
     <string name="value_mupen64plus_bilinearmode_standard">Стандартный</string>
     <string name="value_mupen64plus_bilinearmode_3point">3 точки</string>
     <string name="value_mupen64plus_mupen64plus_pak1_memory">Память</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_rumble">Вибрация</string>
+    <string name="value_melonds_screen_layout_topbottom">Вверх/Вниз</string>
+    <string name="value_melonds_screen_layout_leftright">Влево/Вправо</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Интерпретатор</string>
+    <string name="value_wswan_rotate_display_landscape">Альбомная ориентация</string>
+    <string name="value_wswan_rotate_display_portrait">Портретная ориентация</string>
+    <string name="value_handy_rot_none">Альбомная ориентация</string>
+    <string name="value_handy_rot_90">Портретная ориентация</string>
 </resources>
