@@ -22,6 +22,7 @@
     <string name="settings_title_enable_autosave">Автосохранение</string>
     <string name="settings_title_enable_touch_feedback">Вибрация нажатия</string>
     <string name="settings_title_tilt_sensitivity">Чувствительность датчика наклона</string>
+    <string name="settings_title_maximum_cache_usage">Максимальный размер кэша</string>
     <string name="settings_gamepad_button_name">Клавиша %1$s</string>
     <string name="settings_retropad_button_name">Ретро клавиша%1$s</string>
     <string name="settings_retropad_button_unassigned">Не назначен</string>
