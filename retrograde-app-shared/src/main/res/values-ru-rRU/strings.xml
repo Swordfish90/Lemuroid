@@ -83,8 +83,8 @@
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_svideo">S-Video</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_rgb">RGB</string>
     <string name="value_genesis_plus_gx_overscan_disabled">Отключено</string>
-    <string name="value_genesis_plus_gx_overscan_topbottom">Вверх/Вниз</string>
-    <string name="value_genesis_plus_gx_overscan_leftright">Влево/Вправо</string>
+    <string name="value_genesis_plus_gx_overscan_topbottom">Сверху/Снизу</string>
+    <string name="value_genesis_plus_gx_overscan_leftright">Слева/Справа</string>
     <string name="value_genesis_plus_gx_overscan_full">Полностью</string>
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Динамический рекомпилятор</string>
     <string name="value_mupen64plus_cpucore_pureinterpreter">Чистый интерпретатор</string>
