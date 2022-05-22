@@ -156,7 +156,7 @@
         <item>ЖК</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Отсутствует</item>
+        <item>Пусто</item>
         <item>Нажатие</item>
         <item>Нажмите &amp; </item>
     </string-array>
