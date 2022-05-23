@@ -158,6 +158,6 @@
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>Пусто</item>
         <item>Нажатие</item>
-        <item>Нажмите &amp; </item>
+        <item>Нажатие и отпускании</item>
     </string-array>
 </resources>
