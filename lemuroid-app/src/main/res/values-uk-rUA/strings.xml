@@ -45,7 +45,7 @@
     <string name="settings_description_reset_settings">Скинути Lemuroid до заводських налаштувань</string>
     <string name="settings_title_advanced_settings">Додаткові параметри</string>
     <string name="settings_description_advanced_settings">Відобразити додаткові налаштування</string>
-    <string name="settings_title_low_latency_audio">Перевага звуку з низькою затримкою</string>
+    <string name="settings_title_low_latency_audio">Звук з низькою затримкою</string>
     <string name="settings_description_low_latency_audio">Зменшення затримки аудіо на підтримуваних пристроях. Може збільшити аудіо відламки.</string>
     <string name="settings_title_direct_game_load">Пряме завантаження гри</string>
     <string name="settings_description_direct_game_load">(Експериментальне) Зменшує час завантаження та використання кеша на підтримуваних консолях.</string>
