@@ -9,7 +9,7 @@
     <string name="favorites">Избранное</string>
     <string name="discover">Найти</string>
     <string name="rescan">Пересканировать</string>
-    <string name="stop">Стоп</string>
+    <string name="stop">Остановить</string>
     <string name="none">Нет</string>
     <string name="directory">Директория</string>
     <string name="display_filter">Показать фильтр</string>
