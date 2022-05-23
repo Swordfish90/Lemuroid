@@ -56,7 +56,7 @@
     <string name="setting_wswan_mono_palette">Окрашивание</string>
     <string name="setting_handy_rot">Ориентация</string>
     <string name="setting_citra_use_acc_mul">Точное умножение шейдеров</string>
-    <string name="setting_citra_use_acc_geo_shaders">Точные геометрические шейдеры</string>
+    <string name="setting_citra_use_acc_geo_shaders">Точная геометрия шейдеров</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Отключено</string>
     <string name="value_gambatte_mix_frames_mix">Простой</string>
