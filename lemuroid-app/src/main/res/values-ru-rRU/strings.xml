@@ -97,7 +97,7 @@
     <string name="notification_channel_name">Все уведомления</string>
     <string name="library_index_notification_title">Идёт сканирование ROM\'ов</string>
     <string name="library_index_notification_message">Это может занять несколько минут</string>
-    <string name="library_index_notification_action_cancel">@string/отмена</string>
+    <string name="library_index_notification_action_cancel">@string/cancel</string>
     <string name="save_sync_notification_title">Облачное сохранение еще в разработке</string>
     <string name="save_sync_notification_message">Это может занять несколько минут</string>
     <string name="game_running_notification_title">%1$s выполняется</string>
