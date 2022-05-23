@@ -97,7 +97,7 @@
     <string name="notification_channel_name">Усі сповіщення</string>
     <string name="library_index_notification_title">Виконується сканування прошивок</string>
     <string name="library_index_notification_message">Це може зайняти кілька хвилин</string>
-    <string name="library_index_notification_action_cancel">@string/скасувати</string>
+    <string name="library_index_notification_action_cancel">@string/cancel</string>
     <string name="save_sync_notification_title">Виконується збереження в Cloud</string>
     <string name="save_sync_notification_message">Це може зайняти кілька хвилин</string>
     <string name="game_running_notification_title">%1$s працює</string>
