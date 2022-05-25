@@ -153,6 +153,7 @@
         <item>Мягкий</item>
         <item>Кинескоп</item>
         <item>ЖК</item>
+        <item>HD</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>Нет</item>
