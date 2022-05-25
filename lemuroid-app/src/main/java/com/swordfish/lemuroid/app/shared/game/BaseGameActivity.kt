@@ -356,6 +356,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             "lcd" -> GLRetroView.SHADER_LCD
             "smooth" -> GLRetroView.SHADER_DEFAULT
             "sharp" -> GLRetroView.SHADER_SHARP
+            "hd" -> when (system.id) {
+                SystemID.PSP -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
+                SystemID.NDS -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
+                SystemID.NINTENDO_3DS -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
+                SystemID.DOS -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
+                SystemID.N64 -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
+                SystemID.PSX -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
+                else -> GLRetroView.SHADER_UPSCALE_CUT_SHARP
+            }
             else -> when (system.id) {
                 SystemID.GBA -> GLRetroView.SHADER_LCD
                 SystemID.GBC -> GLRetroView.SHADER_LCD

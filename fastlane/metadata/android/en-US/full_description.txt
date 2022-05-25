@@ -1,20 +1,32 @@
-Lemuroid is an open-source emulation project based on Libretro. It's completely free, without ads and focused on ease of use and good user experience.
+Lemuroid is an open-source emulator based on Libretro. It's designed to work on a wide range of devices, from phones to TVs, and to provide the best user experience on Android. It's completely free and without ads.
+
 
 Supported Systems:
 
 - Atari 2600 (A26)
-- NES
-- SNES
+- Atari 7800 (A78)
+- Atari Lynx (Lynx)
+- Nintendo (NES)
+- Super Nintendo (SNES)
 - Game Boy (GB)
 - Game Boy Color (GBC)
 - Game Boy Advance (GBA)
-- Sega Master System (SMS)
 - Sega Genesis (aka Megadrive)
+- Sega CD (aka Mega CD)
+- Sega Master System (SMS)
 - Sega Game Gear (GG)
 - Nintendo 64 (N64)
-- Nintendo DS (DS)
 - PlayStation (PSX)
 - PlayStation Portable (PSP)
+- FinalBurn Neo (Arcade)
+- Nintendo DS (NDS)
+- NEC PC Engine (PCE)
+- Neo Geo Pocket (NGP)
+- Neo Geo Pocket Color (NGC)
+- WonderSwan (WS)
+- WonderSwan Color (WSC)
+- Nintendo 3DS (3DS)
+
 
 Features:
 
@@ -24,13 +36,14 @@ Features:
 - Quick save/load with slots
 - Support for zipped ROMs
 - Display simulation (LCD/CRT)
+- Fast-forward support
 - Gamepad support
-- Local multiplayer
 - Tilt to stick support
+- Touch control customization (size and position)
+- Cloud save sync
 - No ads
+- Local multiplayer (connect multiple gamepads to the same device)
 
-Keep in mind not every device can emulate every console. A very powerful one is required for more recent systems such as PSP and DS.
-
-Do you have any questions? Maybe we've got you covered: https://github.com/Swordfish90/Lemuroid/wiki/Frequently-Asked-Questions
+Keep in mind not every device can emulate every console. A very powerful one is required for more recent systems such as PSP and DS and 3DS.
 
 This application does not contain any games. You need to provide your own legally owned ROM files.
