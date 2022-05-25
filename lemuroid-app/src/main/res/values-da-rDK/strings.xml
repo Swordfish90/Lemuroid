@@ -20,4 +20,12 @@
     <string name="settings_category_general">Generelt</string>
     <string name="settings_title_enable_autosave">Gem tilstand automatisk</string>
     <string name="settings_title_enable_touch_feedback">Vibrér ved berøring</string>
+    <string-array name="pref_key_shader_filter_names">
+        <item>Auto</item>
+        <item>Sharp</item>
+        <item>Smooth</item>
+        <item>CRT</item>
+        <item>LCD</item>
+        <item>HD</item>
+    </string-array>
 </resources>
