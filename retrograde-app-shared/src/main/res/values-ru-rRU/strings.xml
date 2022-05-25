@@ -8,6 +8,9 @@
     <string name="controller_default">По умолчанию</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Стандартный</string>
+    <string name="controller_landscape">Горизонтальный</string>
+    <string name="controller_portrait">Вертикальный</string>
+    <string name="controller_dos_auto">Авто</string>
     <string name="controller_dos_mouse_left">Мышь с левым стиком</string>
     <string name="controller_dos_mouse_right">Мышь с правым стиком</string>
     <!-- Core settings titles -->
@@ -24,6 +27,7 @@
     <string name="setting_gambatte_gb_internal_palette">Внутренняя палитра</string>
     <string name="setting_gambatte_mix_frames">ЖК-двоение</string>
     <string name="setting_gambatte_dark_filter_level">Затемнить экран</string>
+    <string name="setting_gambatte_gbc_color_correction">Коррекция цвета</string>
     <string name="setting_mgba_solar_sensor_level">Уровень солнечного датчика</string>
     <string name="setting_mgba_interframe_blending">ЖК-двоение</string>
     <string name="setting_mgba_frameskip">Пропуск Кадров</string>
@@ -31,6 +35,8 @@
     <string name="setting_mupen64plus_43screensize">Размер экрана 4:3</string>
     <string name="setting_mupen64plus_cpucore">Динамический рекомпилятор</string>
     <string name="setting_mupen64plus_BilinearMode">Билинейный режим</string>
+    <string name="setting_mupen64plus_pak1">Игрок 1</string>
+    <string name="setting_mupen64plus_pak2">Игрок 2</string>
     <string name="setting_pcsx_rearmed_frameskip">Пропуск кадров</string>
     <string name="setting_pcsx_rearmed_drc">Динамический рекомпилятор</string>
     <string name="setting_ppsspp_auto_frameskip">Автоматический пропуск кадров</string>
@@ -46,11 +52,18 @@
     <string name="setting_melonds_screen_layout">Расположение экрана</string>
     <string name="setting_melonds_threaded_renderer">Потоковый рендер</string>
     <string name="setting_melonds_jit_enable">Динамический рекомпилятор</string>
+    <string name="setting_wswan_rotate_display">Ориентация</string>
+    <string name="setting_wswan_mono_palette">Окрашивание</string>
+    <string name="setting_handy_rot">Ориентация</string>
+    <string name="setting_citra_use_acc_mul">Точное умножение шейдеров</string>
+    <string name="setting_citra_use_acc_geo_shaders">Точная геометрия шейдеров</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Отключено</string>
     <string name="value_gambatte_mix_frames_mix">Простой</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">ЖК-двоение (Точно)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">ЖК-двоение (Быстро)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Включено</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Отключено</string>
     <string name="value_mgba_interframe_blending_off">Отключено</string>
     <string name="value_mgba_interframe_blending_mix">Простой</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">ЖК-двоение (Точно)</string>
@@ -58,22 +71,40 @@
     <string name="value_mgba_frameskip_disabled">Отключено</string>
     <string name="value_mgba_frameskip_auto">Автоматически</string>
     <string name="value_mgba_color_correction_off">Отключено</string>
+    <string name="value_mgba_color_correction_gba">Включено</string>
     <string name="value_stella_filter_disabled">Отключено</string>
     <string name="value_stella_filter_composite">Композит</string>
     <string name="value_stella_filter_svideo">S-Video</string>
     <string name="value_stella_filter_rgb">RGB</string>
+    <string name="value_stella_filter_badlyadjusted">Плохая корректировка</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">Отключено</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_monochrome">Монохром</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">Композит</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_svideo">S-Video</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_rgb">RGB</string>
     <string name="value_genesis_plus_gx_overscan_disabled">Отключено</string>
+    <string name="value_genesis_plus_gx_overscan_topbottom">Сверху/Снизу</string>
+    <string name="value_genesis_plus_gx_overscan_leftright">Слева/Справа</string>
+    <string name="value_genesis_plus_gx_overscan_full">Полностью</string>
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Динамический рекомпилятор</string>
     <string name="value_mupen64plus_cpucore_pureinterpreter">Чистый интерпретатор</string>
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Кешированный интерпретатор</string>
     <string name="value_mupen64plus_bilinearmode_standard">Стандартный</string>
     <string name="value_mupen64plus_bilinearmode_3point">3 точки</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_memory">Память</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_rumble">Вибрация</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Отсутствует</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">Отсутствует</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_rumble">Вибрация</string>
+    <string name="value_melonds_screen_layout_topbottom">Вверх/Вниз</string>
+    <string name="value_melonds_screen_layout_leftright">Влево/Вправо</string>
+    <string name="value_melonds_screen_layout_hybridtop">Гибридно вверх</string>
+    <string name="value_melonds_screen_layout_hybridbottom">Гибридно вниз</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Интерпретатор</string>
+    <string name="value_wswan_rotate_display_landscape">Альбомная ориентация</string>
+    <string name="value_wswan_rotate_display_portrait">Портретная ориентация</string>
+    <string name="value_handy_rot_none">Альбомная ориентация</string>
+    <string name="value_handy_rot_90">Портретная ориентация</string>
 </resources>

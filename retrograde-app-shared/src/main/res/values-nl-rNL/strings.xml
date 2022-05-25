@@ -55,6 +55,8 @@
     <string name="setting_wswan_rotate_display">Oriëntatie</string>
     <string name="setting_wswan_mono_palette">Kleur</string>
     <string name="setting_handy_rot">Oriëntatie</string>
+    <string name="setting_citra_use_acc_mul">Nauwkeurige shaders vermenigvuldiging</string>
+    <string name="setting_citra_use_acc_geo_shaders">Nauwkeurige geometrie-shaders</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Uitgeschakeld</string>
     <string name="value_gambatte_mix_frames_mix">Simpel</string>
