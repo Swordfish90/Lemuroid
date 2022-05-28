@@ -152,6 +152,7 @@
         <item>سلاسة</item>
         <item>تلفاز قديم</item>
         <item>شاشة كريستالية</item>
+        <item>HD</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>لا شيء</item>

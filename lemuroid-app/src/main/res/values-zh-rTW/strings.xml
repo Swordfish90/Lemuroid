@@ -152,6 +152,7 @@
         <item>平滑</item>
         <item>傳統電視</item>
         <item>液晶電視</item>
+        <item>HD</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>無</item>
