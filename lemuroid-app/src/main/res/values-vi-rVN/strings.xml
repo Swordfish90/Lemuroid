@@ -17,6 +17,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Hủy</string>
     <string name="settings">Cài đặt</string>
+    <string name="save_sync">Đồng bộ và lưu lại</string>
     <string name="show_all">Hiện tất cả</string>
     <string name="settings_category_general">Cài đặt chung</string>
     <string name="settings_category_input">Đầu vào</string>
@@ -46,6 +47,8 @@
     <string name="settings_description_advanced_settings">Hiển thị cài đặt nâng cao</string>
     <string name="settings_title_low_latency_audio">Ưu tiên âm thanh độ trễ thấp</string>
     <string name="settings_description_low_latency_audio">Giảm độ trễ âm thanh ở các thiết bị được hỗ trợ. Có thể làm tăng lỗi âm thanh.</string>
+    <string name="settings_title_direct_game_load">Trực tiếp tải trò chơi</string>
+    <string name="settings_description_direct_game_load">(Thử nghiệm) Giảm thời gian tải và sử dụng bộ nhớ cache trên bảng điều khiển được hỗ trợ.</string>
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Bật rumble ở các trò chơi và tay cầm điều khiển được hỗ trợ</string>
     <string name="settings_title_enable_device_rumble">Rumble thiết bị</string>
@@ -94,6 +97,7 @@
     <string name="notification_channel_name">Tất cả thông báo</string>
     <string name="library_index_notification_title">Đang quét các ROM</string>
     <string name="library_index_notification_message">Việc này có thể mất tối đa vài phút</string>
+    <string name="library_index_notification_action_cancel">\@ chuỗi / hủy</string>
     <string name="save_sync_notification_title">Đang đồng bộ bản lưu trên đám mây</string>
     <string name="save_sync_notification_message">Việc này có thể mất tối đa vài phút</string>
     <string name="game_running_notification_title">%1$s đang chạy</string>
@@ -143,6 +147,7 @@
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
     <string name="lemuroid_crash_message">Thông báo lỗi: %1$s</string>
+    <string name="error_message_incompatible_state">Trạng thái lưu này không tương thích với phiên bản lõi hiện tại. Vui lòng tải bản lưu trong trò chơi mới nhất hoặc sử dụng phiên bản Lemuroid trước đó.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Tự động</item>
         <item>Sắc nét</item>
@@ -150,5 +155,10 @@
         <item>CRT</item>
         <item>LCD</item>
         <item>HD</item>
+    </string-array>
+    <string-array name="pref_key_haptic_feedback_mode_names">
+        <item>Không có</item>
+        <item>Nhấn</item>
+        <item>Nhấn &amp; nhả</item>
     </string-array>
 </resources>
