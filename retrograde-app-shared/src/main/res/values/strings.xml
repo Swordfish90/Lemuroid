@@ -53,6 +53,7 @@
     <string name="setting_ppsspp_texture_filtering">Texture filtering</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">CPU speed</string>
+    <string name="setting_desmume_screens_layout">Screens layout</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Screens layout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
@@ -122,6 +123,9 @@
 
     <string name="value_citra_layout_option_topbottom">Top - Bottom</string>
     <string name="value_citra_layout_option_sidebyside">Left - Right</string>
+
+    <string name="value_desmume_screens_layout_topbottom">Top - Bottom</string>
+    <string name="value_desmume_screens_layout_leftright">Left - Right</string>
 
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
