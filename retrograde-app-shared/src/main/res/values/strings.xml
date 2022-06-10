@@ -60,6 +60,8 @@
     <string name="setting_wswan_rotate_display">Orientation</string>
     <string name="setting_wswan_mono_palette">Colorization</string>
     <string name="setting_handy_rot">Orientation</string>
+    <string name="setting_citra_layout_option">Screens layout</string>
+    <string name="setting_citra_resolution_factor">Resolution scaling</string>
     <string name="setting_citra_use_acc_mul">Accurate shaders multiplication</string>
     <string name="setting_citra_use_acc_geo_shaders">Accurate geometry shaders</string>
 
@@ -117,6 +119,9 @@
     <string name="value_melonds_screen_layout_leftright">Left - Right</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybrid Top</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybrid Bottom</string>
+
+    <string name="value_citra_layout_option_topbottom">Top - Bottom</string>
+    <string name="value_citra_layout_option_sidebyside">Left - Right</string>
 
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
