@@ -999,11 +999,16 @@ data class GameSystem(
                                         "90",
                                         R.string.value_handy_rot_90
                                     ),
+                                    ExposedSetting.Value(
+                                        "270",
+                                        R.string.value_handy_rot_270
+                                    ),
                                 )
                             )
                         ),
                         defaultSettings = listOf(
-                            CoreVariable("handy_rot", "None")
+                            CoreVariable("handy_rot", "None"),
+                            CoreVariable("handy_refresh_rate", "60")
                         )
                     ),
                 ),
