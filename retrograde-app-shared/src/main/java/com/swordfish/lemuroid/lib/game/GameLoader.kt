@@ -21,6 +21,7 @@ package com.swordfish.lemuroid.lib.game
 
 import android.content.Context
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
+import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.CoreID
@@ -46,7 +47,8 @@ class GameLoader(
     private val coreVariablesManager: CoreVariablesManager,
     private val retrogradeDatabase: RetrogradeDatabase,
     private val savesCoherencyEngine: SavesCoherencyEngine,
-    private val directoriesManager: DirectoriesManager
+    private val directoriesManager: DirectoriesManager,
+    private val biosManager: BiosManager
 ) {
     sealed class LoadingState {
         object LoadingCore : LoadingState()
@@ -68,23 +70,24 @@ class GameLoader(
 
             val coreLibrary = runCatching {
                 findLibrary(appContext, systemCoreConfig.coreID)!!.absolutePath
-            }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
+            }.getOrElse { throw GameLoaderException(GameLoaderError.LoadCore) }
 
             emitter.onNext(LoadingState.LoadingGame)
 
-            if (!areRequiredBiosFilesPresent(systemCoreConfig)) {
-                throw GameLoaderException(GameLoaderError.MISSING_BIOS)
+            val missingBiosFiles = biosManager.getMissingBiosFiles(systemCoreConfig, game)
+            if (missingBiosFiles.isNotEmpty()) {
+                throw GameLoaderException(GameLoaderError.MissingBiosFiles(missingBiosFiles))
             }
 
             val gameFiles = runCatching {
                 val useVFS = systemCoreConfig.supportsLibretroVFS && directLoad
                 val dataFiles = retrogradeDatabase.dataFileDao().selectDataFilesForGame(game.id)
                 lemuroidLibrary.getGameFiles(game, dataFiles, useVFS).blockingGet()
-            }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_GAME) }
+            }.getOrElse { throw GameLoaderException(GameLoaderError.LoadGame) }
 
             val saveRAMData = runCatching {
                 savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
-            }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
+            }.getOrElse { throw GameLoaderException(GameLoaderError.Saves) }
 
             val quickSaveData = runCatching {
                 val shouldDiscardSave =
@@ -98,7 +101,7 @@ class GameLoader(
                 } else {
                     null
                 }
-            }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
+            }.getOrElse { throw GameLoaderException(GameLoaderError.Saves) }
 
             val coreVariables = coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
                 .blockingGet()
@@ -126,7 +129,7 @@ class GameLoader(
             emitter.onError(e)
         } catch (e: Exception) {
             Timber.e(e, "Error while preparing game")
-            emitter.onError(GameLoaderException(GameLoaderError.GENERIC))
+            emitter.onError(GameLoaderException(GameLoaderError.Generic))
         } finally {
             emitter.onComplete()
         }
@@ -141,12 +144,6 @@ class GameLoader(
         return files
             .flatMap { it.walkBottomUp() }
             .firstOrNull { it.name == coreID.libretroFileName }
-    }
-
-    private fun areRequiredBiosFilesPresent(systemCoreConfig: SystemCoreConfig): Boolean {
-        return systemCoreConfig.requiredBIOSFiles
-            .map { File(directoriesManager.getSystemDirectory(), it) }
-            .all { it.exists() }
     }
 
     @Suppress("ArrayInDataClass")

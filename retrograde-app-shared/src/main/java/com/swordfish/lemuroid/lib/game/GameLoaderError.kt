@@ -2,11 +2,11 @@ package com.swordfish.lemuroid.lib.game
 
 class GameLoaderException(val error: GameLoaderError) : RuntimeException("Game Loader error: $error")
 
-enum class GameLoaderError {
-    GL_INCOMPATIBLE,
-    GENERIC,
-    MISSING_BIOS,
-    LOAD_CORE,
-    LOAD_GAME,
-    SAVES
+sealed class GameLoaderError {
+    object GLIncompatible : GameLoaderError()
+    object Generic : GameLoaderError()
+    object LoadCore : GameLoaderError()
+    object LoadGame : GameLoaderError()
+    object Saves : GameLoaderError()
+    data class MissingBiosFiles(val missingFiles: List<String>) : GameLoaderError()
 }

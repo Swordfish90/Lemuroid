@@ -3,7 +3,9 @@ package com.swordfish.lemuroid.lib.bios
 import com.swordfish.lemuroid.common.files.safeDelete
 import com.swordfish.lemuroid.common.kotlin.associateByNotNull
 import com.swordfish.lemuroid.common.kotlin.writeToFile
+import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import timber.log.Timber
@@ -14,6 +16,27 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
 
     private val crcLookup = SUPPORTED_BIOS.associateByNotNull { it.externalCRC32 }
     private val nameLookup = SUPPORTED_BIOS.associateByNotNull { it.externalName }
+
+    fun getMissingBiosFiles(coreConfig: SystemCoreConfig, game: Game): List<String> {
+        val regionalBiosFiles = coreConfig.regionalBIOSFiles
+
+        val gameLabels = Regex("\\([A-Za-z]+\\)")
+            .findAll(game.title)
+            .map { it.value.drop(1).dropLast(1) }
+            .filter { it.isNotBlank() }
+            .toSet()
+
+        Timber.d("Found game labels: $gameLabels")
+
+        val requiredRegionalFiles = gameLabels.intersect(regionalBiosFiles.keys)
+            .ifEmpty { regionalBiosFiles.keys }
+            .mapNotNull { regionalBiosFiles[it] }
+
+        Timber.d("Required regional files for game: $requiredRegionalFiles")
+
+        return (coreConfig.requiredBIOSFiles + requiredRegionalFiles)
+            .filter { !File(directoriesManager.getSystemDirectory(), it).exists() }
+    }
 
     fun deleteBiosBefore(timestampMs: Long) {
         Timber.i("Pruning old bios files")

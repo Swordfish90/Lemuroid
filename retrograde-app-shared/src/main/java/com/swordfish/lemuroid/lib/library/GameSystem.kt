@@ -380,10 +380,10 @@ data class GameSystem(
                                 ControllerConfigs.GENESIS_6
                             )
                         ),
-                        requiredBIOSFiles = listOf(
-                            "bios_CD_E.bin",
-                            "bios_CD_J.bin",
-                            "bios_CD_U.bin"
+                        regionalBIOSFiles = mapOf(
+                            "Europe" to "bios_CD_E.bin",
+                            "Japan" to "bios_CD_J.bin",
+                            "USA" to "bios_CD_U.bin"
                         ),
                     )
                 ),

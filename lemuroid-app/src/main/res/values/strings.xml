@@ -185,8 +185,6 @@
         \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
     </string>
 
-    <string name="lemuroid_crash_message">Error message: %1$s</string>
-
     <string name="error_message_incompatible_state">This save state is not compatible with the current core version. Please load the latest in-game save or use a previous Lemuroid version.</string>
 
     <string-array name="pref_key_shader_filter_names">

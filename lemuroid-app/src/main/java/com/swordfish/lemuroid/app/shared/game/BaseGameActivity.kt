@@ -182,7 +182,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun setUpExceptionsHandler() {
         Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
-            performUnsuccessfulActivityFinish(exception)
+            performUnexpectedErrorFinish(exception)
             defaultExceptionHandler?.uncaughtException(thread, exception)
         }
     }
@@ -303,11 +303,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun handleRetroViewError(errorCode: Int) {
         Timber.e("Error in GLRetroView $errorCode")
         val gameLoaderError = when (errorCode) {
-            GLRetroView.ERROR_GL_NOT_COMPATIBLE -> GameLoaderError.GL_INCOMPATIBLE
-            GLRetroView.ERROR_LOAD_GAME -> GameLoaderError.LOAD_GAME
-            GLRetroView.ERROR_LOAD_LIBRARY -> GameLoaderError.LOAD_CORE
-            GLRetroView.ERROR_SERIALIZATION -> GameLoaderError.SAVES
-            else -> GameLoaderError.GENERIC
+            GLRetroView.ERROR_GL_NOT_COMPATIBLE -> GameLoaderError.GLIncompatible
+            GLRetroView.ERROR_LOAD_GAME -> GameLoaderError.LoadGame
+            GLRetroView.ERROR_LOAD_LIBRARY -> GameLoaderError.LoadCore
+            GLRetroView.ERROR_SERIALIZATION -> GameLoaderError.Saves
+            else -> GameLoaderError.Generic
         }
         retroGameView = null
         displayGameLoaderError(gameLoaderError, systemCoreConfig)
@@ -736,14 +736,23 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         finishAndExitProcess()
     }
 
-    private fun performUnsuccessfulActivityFinish(exception: Throwable) {
+    private fun performUnexpectedErrorFinish(exception: Throwable) {
         Timber.e(exception, "Handling java exception in BaseGameActivity")
         val resultIntent = Intent().apply {
             putExtra(PLAY_GAME_RESULT_ERROR, exception.message)
         }
 
-        setResult(Activity.RESULT_CANCELED, resultIntent)
-        finish()
+        setResult(RESULT_UNEXPECTED_ERROR, resultIntent)
+        finishAndExitProcess()
+    }
+
+    private fun performErrorFinish(message: String) {
+        val resultIntent = Intent().apply {
+            putExtra(PLAY_GAME_RESULT_ERROR, message)
+        }
+
+        setResult(RESULT_ERROR, resultIntent)
+        finishAndExitProcess()
     }
 
     private fun finishAndExitProcess() {
@@ -964,6 +973,23 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
+    private fun displayGameLoaderError(gameError: GameLoaderError, coreConfig: SystemCoreConfig) {
+
+        val messageId = when (gameError) {
+            is GameLoaderError.GLIncompatible -> getString(R.string.game_loader_error_gl_incompatible)
+            is GameLoaderError.Generic -> getString(R.string.game_loader_error_generic)
+            is GameLoaderError.LoadCore -> getString(R.string.game_loader_error_load_core)
+            is GameLoaderError.LoadGame -> getString(R.string.game_loader_error_load_game)
+            is GameLoaderError.Saves -> getString(R.string.game_loader_error_save)
+            is GameLoaderError.MissingBiosFiles -> getString(
+                R.string.game_loader_error_missing_bios,
+                gameError.missingFiles
+            )
+        }
+
+        performErrorFinish(messageId)
+    }
+
     companion object {
         const val DIALOG_REQUEST = 100
 
@@ -977,6 +1003,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
         const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
         const val PLAY_GAME_RESULT_ERROR = "PLAY_GAME_RESULT_ERROR"
+
+        const val RESULT_ERROR = Activity.RESULT_FIRST_USER + 2
+        const val RESULT_UNEXPECTED_ERROR = Activity.RESULT_FIRST_USER + 3
 
         fun launchGame(
             activity: Activity,
