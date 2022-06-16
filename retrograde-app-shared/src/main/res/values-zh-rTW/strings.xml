@@ -54,7 +54,6 @@
     <string name="setting_melonds_jit_enable">動態重新編譯</string>
     <string name="setting_wswan_rotate_display">方向</string>
     <string name="setting_wswan_mono_palette">著色</string>
-    <string name="setting_handy_rot">方向</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">停用</string>
     <string name="value_gambatte_mix_frames_mix">簡單</string>
@@ -103,6 +102,4 @@
     <string name="value_ppsspp_cpu_core_interpreter">直譯器</string>
     <string name="value_wswan_rotate_display_landscape">橫向</string>
     <string name="value_wswan_rotate_display_portrait">纵向</string>
-    <string name="value_handy_rot_none">橫向</string>
-    <string name="value_handy_rot_90">纵向</string>
 </resources>
