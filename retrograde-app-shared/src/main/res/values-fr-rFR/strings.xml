@@ -54,7 +54,6 @@
     <string name="setting_melonds_jit_enable">Recompilateur dynamique</string>
     <string name="setting_wswan_rotate_display">Orientation</string>
     <string name="setting_wswan_mono_palette">Colorisation</string>
-    <string name="setting_handy_rot">Orientation</string>
     <string name="setting_citra_use_acc_mul">Multiplication précise des shaders</string>
     <string name="setting_citra_use_acc_geo_shaders">Géométrie précise des shaders</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -105,6 +104,4 @@
     <string name="value_ppsspp_cpu_core_interpreter">Interpréteur</string>
     <string name="value_wswan_rotate_display_landscape">Paysage</string>
     <string name="value_wswan_rotate_display_portrait">Portrait</string>
-    <string name="value_handy_rot_none">Paysage</string>
-    <string name="value_handy_rot_90">Portrait</string>
 </resources>
