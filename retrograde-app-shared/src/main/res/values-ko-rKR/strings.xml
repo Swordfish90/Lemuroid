@@ -54,7 +54,6 @@
     <string name="setting_melonds_jit_enable">다이내믹 리컴파일러</string>
     <string name="setting_wswan_rotate_display">방향</string>
     <string name="setting_wswan_mono_palette">색 입히기</string>
-    <string name="setting_handy_rot">방향</string>
     <string name="setting_citra_use_acc_mul">정확한 셰이더 곱연산</string>
     <string name="setting_citra_use_acc_geo_shaders">정확한 기하 셰이더</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -105,6 +104,4 @@
     <string name="value_ppsspp_cpu_core_interpreter">인터프리터</string>
     <string name="value_wswan_rotate_display_landscape">가로</string>
     <string name="value_wswan_rotate_display_portrait">세로</string>
-    <string name="value_handy_rot_none">가로</string>
-    <string name="value_handy_rot_90">세로</string>
 </resources>
