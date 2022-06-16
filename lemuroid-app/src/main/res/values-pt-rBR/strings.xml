@@ -146,7 +146,6 @@
         \n\u2022 Vá nas configurações do Lemuroid e execute a formatação de fábrica
         \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
     </string>
-    <string name="lemuroid_crash_message">Mensagem de erro: %1$s</string>
     <string name="error_message_incompatible_state">Este estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Automático</item>
