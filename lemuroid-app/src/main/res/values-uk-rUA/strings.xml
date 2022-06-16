@@ -144,7 +144,6 @@
         \n\u2022 В налаштуваннях Lemuroid виконати Factory Reset
         \n\nЯкщо нічого з переліченого не допомогло, може бути що ця гра/ядро не підтримується на вашому приладі.
     </string>
-    <string name="lemuroid_crash_message">Повідомлення про помилку: %1$s</string>
     <string name="error_message_incompatible_state">Цей стан збереження несумісний з поточною версією ядра. Будь ласка, завантажте останню версію в грі, або використовуйте попередню версію Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Авто</item>
