@@ -146,7 +146,6 @@
         \n\u2022 Lemuroid 설정에서 설정 초기화
         \n\n 이후에도 계속 문제가 발생할 경우, 이 장치에서 이 게임 또는 코어가 지원되지 않는 것일 수도 있습니다.
     </string>
-    <string name="lemuroid_crash_message">오류 메시지: %1$s</string>
     <string name="error_message_incompatible_state">이 상태저장은 현재 코어 버전과 호환되지 않습니다. 가장 최근의 인게임 세이브 데이터를 사용하거나 이전 버전의 Lemuroid를 사용하세요.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>자동</item>
