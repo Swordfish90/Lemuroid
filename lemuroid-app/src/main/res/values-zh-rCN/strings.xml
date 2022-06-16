@@ -146,7 +146,6 @@
         \n\u2022 进入 Lemuroid 设置并执行重置数据
         \n\n 如果上述方法都不起作用，可能是该设备不支持这个游戏/内核。
     </string>
-    <string name="lemuroid_crash_message">错误消息：%1$s</string>
     <string name="error_message_incompatible_state">此保存状态与当前内核版本不兼容。请加载游戏内最新的保存状态或使用以前的 Lemuroid 版本。</string>
     <string-array name="pref_key_shader_filter_names">
         <item>自动</item>
