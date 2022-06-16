@@ -45,7 +45,6 @@
     <string name="setting_melonds_jit_enable">Dinamik yeniden derleyici</string>
     <string name="setting_wswan_rotate_display">Döndürme</string>
     <string name="setting_wswan_mono_palette">Renklendirme</string>
-    <string name="setting_handy_rot">Döndürme</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Devre dışı</string>
     <string name="value_gambatte_mix_frames_mix">Basit</string>
@@ -77,6 +76,4 @@
     <string name="value_melonds_screen_layout_hybridbottom">Hibrit Alt</string>
     <string name="value_wswan_rotate_display_landscape">Yatay</string>
     <string name="value_wswan_rotate_display_portrait">Dikey</string>
-    <string name="value_handy_rot_none">Yatay</string>
-    <string name="value_handy_rot_90">Dikey</string>
 </resources>
