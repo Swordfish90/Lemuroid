@@ -145,7 +145,6 @@
          \n\u2022 進入 Lemuroid 設置並執行恢復出廠設置
          \n\n 如果上述方法均無效，則該設備可能不支持該遊戲/核心。
     </string>
-    <string name="lemuroid_crash_message">錯誤訊息:%1$s</string>
     <string name="error_message_incompatible_state">此自動存檔與當前核心版本不兼容。請載入最新的遊戲內存檔或使用以前的 Lemuroid 版本。</string>
     <string-array name="pref_key_shader_filter_names">
         <item>自動</item>
