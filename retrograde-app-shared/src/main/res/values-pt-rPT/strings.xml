@@ -54,7 +54,6 @@
     <string name="setting_melonds_jit_enable">Re-compilador dinâmico</string>
     <string name="setting_wswan_rotate_display">Orientação</string>
     <string name="setting_wswan_mono_palette">Colorização</string>
-    <string name="setting_handy_rot">Orientação</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Desabilitado</string>
     <string name="value_gambatte_mix_frames_mix">Simples</string>
@@ -103,6 +102,4 @@
     <string name="value_ppsspp_cpu_core_interpreter">Interpretador</string>
     <string name="value_wswan_rotate_display_landscape">Paisagem</string>
     <string name="value_wswan_rotate_display_portrait">Retrato</string>
-    <string name="value_handy_rot_none">Paisagem</string>
-    <string name="value_handy_rot_90">Retrato</string>
 </resources>
