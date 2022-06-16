@@ -146,7 +146,6 @@
         \n\u2022 Vá às configurações do Lemuroid e faça uma Redefinição de Fábrica
         \n\n Se nenhuma destas sugestões funcionar, é possível que este Jogo/Núcleo não seja suportado pelo seu dispositivo.
     </string>
-    <string name="lemuroid_crash_message">Mensagem de erro: %1$s</string>
     <string name="error_message_incompatible_state">Este estado de gravação não é compatível com a versão actual do núcleo. Por favor, carregue a última gravação dentro do jogo ou use uma versão anterior do Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Automático</item>
