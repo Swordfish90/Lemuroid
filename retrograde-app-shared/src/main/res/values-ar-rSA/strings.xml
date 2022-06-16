@@ -54,7 +54,6 @@
     <string name="setting_melonds_jit_enable">إعادة تجميع ديناميكية</string>
     <string name="setting_wswan_rotate_display">الاتجاه</string>
     <string name="setting_wswan_mono_palette">تلوين</string>
-    <string name="setting_handy_rot">الاتجاه</string>
     <string name="setting_citra_use_acc_mul">ضرب الظلال الدقيقة</string>
     <string name="setting_citra_use_acc_geo_shaders">الظلال الهندسية الدقيقة</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -105,6 +104,4 @@
     <string name="value_ppsspp_cpu_core_interpreter">المترجم</string>
     <string name="value_wswan_rotate_display_landscape">أفقي</string>
     <string name="value_wswan_rotate_display_portrait">عمودي</string>
-    <string name="value_handy_rot_none">الأفقي</string>
-    <string name="value_handy_rot_90">عمودي</string>
 </resources>
