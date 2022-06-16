@@ -54,7 +54,6 @@
     <string name="setting_melonds_jit_enable">Динамический рекомпилятор</string>
     <string name="setting_wswan_rotate_display">Ориентация</string>
     <string name="setting_wswan_mono_palette">Окрашивание</string>
-    <string name="setting_handy_rot">Ориентация</string>
     <string name="setting_citra_use_acc_mul">Точное умножение шейдеров</string>
     <string name="setting_citra_use_acc_geo_shaders">Точная геометрия шейдеров</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -105,6 +104,4 @@
     <string name="value_ppsspp_cpu_core_interpreter">Интерпретатор</string>
     <string name="value_wswan_rotate_display_landscape">Альбомная ориентация</string>
     <string name="value_wswan_rotate_display_portrait">Портретная ориентация</string>
-    <string name="value_handy_rot_none">Альбомная ориентация</string>
-    <string name="value_handy_rot_90">Портретная ориентация</string>
 </resources>
