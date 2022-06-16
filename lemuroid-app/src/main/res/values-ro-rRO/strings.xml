@@ -24,4 +24,24 @@
     <string name="settings_category_misc">Diverse</string>
     <string name="settings_title_enable_autosave">Autosalvare in curs</string>
     <string name="settings_title_enable_touch_feedback">Vibrează la atingere</string>
+    <string name="settings_title_tilt_sensitivity">Sensibilitate senzor înclinare</string>
+    <string name="settings_title_maximum_cache_usage">Dimensiune limita cache</string>
+    <string name="settings_title_gamepad_settings">Dispozitive externe</string>
+    <string name="settings_description_gamepad_settings">Configurați gamepad-urile externe și tastaturile</string>
+    <string name="settings_gamepad_button_name">Buton %1$s</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_retropad_button_unassigned">Neatribuit</string>
+    <string name="settings_gamepad_category_enabled">Dispozitive activate</string>
+    <string name="settings_gamepad_category_general">Setări generale</string>
+    <string name="settings_gamepad_title_reset_bindings">Resetare legături</string>
+    <string name="settings_gamepad_title_game_menu">Meniu</string>
+    <string name="settings_title_open_cores_selection">Schimbă Nucleele</string>
+    <string name="settings_description_open_cores_selection">Selectați care nucleu este asociat unui sistem</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">Afișează fișierele BIOS detectate și suportate</string>
+    <string name="settings_bios_category_detected">Detectat</string>
+    <string name="settings_bios_category_not_detected">Suportat</string>
+    <string name="settings_title_reset_settings">Resetare la valorile din fabrică</string>
+    <string name="settings_description_reset_settings">Resetați Lemuroid la setările sale din fabrică</string>
+    <string name="settings_title_advanced_settings">Setări avansate</string>
 </resources>
