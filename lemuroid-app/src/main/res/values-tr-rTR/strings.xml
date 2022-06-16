@@ -129,7 +129,6 @@
         \n\u2022 Lemuroid ayarlarına gidin ve fabrika ayarı sıfırlaması yapın
         \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklemiyor olabilir.
     </string>
-    <string name="lemuroid_crash_message">Hata mesajı: %1$s</string>
     <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Otomatik</item>
