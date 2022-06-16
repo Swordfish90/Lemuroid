@@ -1,2 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">Acasă</string>
+    <string name="title_search">Caută</string>
+    <string name="title_systems">Sisteme</string>
+    <string name="title_games">Jocuri</string>
+    <string name="title_settings">Setări</string>
+    <string name="recent">Recente</string>
+    <string name="favorites">Favorite</string>
+    <string name="discover">Descoperă</string>
+    <string name="rescan">Rescan</string>
+    <string name="stop">Oprire</string>
+    <string name="none">Nimic</string>
+    <string name="directory">Dosar</string>
+    <string name="display_filter">Afișare filtru</string>
+    <string name="roms">ROM-uri</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Anulare</string>
+    <string name="settings">Setări</string>
+    <string name="save_sync">Salvează sincronizarea</string>
+    <string name="show_all">Afișare toate</string>
+    <string name="settings_category_general">Setări generale</string>
+    <string name="settings_category_input">Intrări</string>
+    <string name="settings_category_misc">Diverse</string>
+    <string name="settings_title_enable_autosave">Autosalvare in curs</string>
+    <string name="settings_title_enable_touch_feedback">Vibrează la atingere</string>
+</resources>
