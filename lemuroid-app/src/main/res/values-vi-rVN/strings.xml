@@ -146,7 +146,6 @@
         \n\u2022 Đi đến cài đặt của Lemuroid và thực hiện đặt lại dữ liệu gốc
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
-    <string name="lemuroid_crash_message">Thông báo lỗi: %1$s</string>
     <string name="error_message_incompatible_state">Trạng thái lưu này không tương thích với phiên bản lõi hiện tại. Vui lòng tải bản lưu trong trò chơi mới nhất hoặc sử dụng phiên bản Lemuroid trước đó.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Tự động</item>
