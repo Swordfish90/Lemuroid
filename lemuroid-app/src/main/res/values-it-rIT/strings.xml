@@ -146,7 +146,6 @@
     \n\u2022 Vai nelle impostazioni di Lemuroid e ripristina le impostazioni di fabbrica
     \n\n Se niente di tutto ciò ha funzionato, questo Gioco/Core potrebbe non essere supportato da questo dispositivo.
     </string>
-    <string name="lemuroid_crash_message">Messaggio di errore: %1$s</string>
     <string name="error_message_incompatible_state">Questo stato di salvataggio non è compatibile con la versione corrente del Core. Carica il salvataggio in gioco più recente o usa una versione precedente di Lemuroid.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Automatico</item>
