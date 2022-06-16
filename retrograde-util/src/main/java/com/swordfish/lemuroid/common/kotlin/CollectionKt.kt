@@ -40,3 +40,9 @@ inline fun <X, Y, Z, H> Map<X, Y>.zipOnKeys(other: Map<X, Z>, f: (Y, Z) -> H): M
 fun <E> Array<E>.toIndexedMap(): Map<Int, E> = this
     .mapIndexed { index, e -> index to e }
     .toMap()
+
+inline fun <T, K> Iterable<T>.associateByNotNull(keySelector: (T) -> K?): Map<K, T> {
+    return this.map { keySelector(it) to it }
+        .filter { (key, _) -> key != null }
+        .associate { (key, value) -> key!! to value }
+}

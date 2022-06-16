@@ -38,7 +38,7 @@ class BiosPreferences(private val biosManager: BiosManager) {
     private fun createBiosPreference(context: Context, bios: Bios): Preference {
         val preference = Preference(context)
         preference.title = bios.description
-        preference.summary = bios.fileName
+        preference.summary = bios.displayName()
         preference.isIconSpaceReserved = false
         return preference
     }

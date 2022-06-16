@@ -380,10 +380,10 @@ data class GameSystem(
                                 ControllerConfigs.GENESIS_6
                             )
                         ),
-                        requiredBIOSFiles = listOf(
-                            "bios_CD_E.bin",
-                            "bios_CD_J.bin",
-                            "bios_CD_U.bin"
+                        regionalBIOSFiles = mapOf(
+                            "Europe" to "bios_CD_E.bin",
+                            "Japan" to "bios_CD_J.bin",
+                            "USA" to "bios_CD_U.bin"
                         ),
                     )
                 ),
@@ -881,9 +881,23 @@ data class GameSystem(
                         CoreID.DESMUME,
                         exposedSettings = listOf(
                             ExposedSetting(
+                                "desmume_screens_layout",
+                                R.string.setting_desmume_screens_layout,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "top/bottom",
+                                        R.string.value_desmume_screens_layout_topbottom
+                                    ),
+                                    ExposedSetting.Value(
+                                        "left/right",
+                                        R.string.value_desmume_screens_layout_leftright
+                                    )
+                                )
+                            ),
+                            ExposedSetting(
                                 "desmume_frameskip",
                                 R.string.setting_desmume_frameskip
-                            )
+                            ),
                         ),
                         defaultSettings = listOf(
                             CoreVariable("desmume_pointer_type", "touch"),
@@ -985,11 +999,16 @@ data class GameSystem(
                                         "90",
                                         R.string.value_handy_rot_90
                                     ),
+                                    ExposedSetting.Value(
+                                        "270",
+                                        R.string.value_handy_rot_270
+                                    ),
                                 )
                             )
                         ),
                         defaultSettings = listOf(
-                            CoreVariable("handy_rot", "None")
+                            CoreVariable("handy_rot", "None"),
+                            CoreVariable("handy_refresh_rate", "60")
                         )
                     ),
                 ),
@@ -1161,13 +1180,31 @@ data class GameSystem(
                         ),
                         exposedSettings = listOf(
                             ExposedSetting(
+                                "citra_layout_option",
+                                R.string.setting_citra_layout_option,
+                                arrayListOf(
+                                    ExposedSetting.Value(
+                                        "Default Top-Bottom Screen",
+                                        R.string.value_citra_layout_option_topbottom
+                                    ),
+                                    ExposedSetting.Value(
+                                        "Side by Side",
+                                        R.string.value_citra_layout_option_sidebyside
+                                    )
+                                )
+                            ),
+                            ExposedSetting(
+                                "citra_resolution_factor",
+                                R.string.setting_citra_resolution_factor
+                            ),
+                            ExposedSetting(
                                 "citra_use_acc_mul",
                                 R.string.setting_citra_use_acc_mul
                             ),
                             ExposedSetting(
                                 "citra_use_acc_geo_shaders",
                                 R.string.setting_citra_use_acc_geo_shaders
-                            )
+                            ),
                         ),
                         statesSupported = false,
                         supportsLibretroVFS = true

@@ -12,20 +12,19 @@
         android:layout_margin="32dp">
 
         <ImageView
-            android:src="@drawable/bug"
-            android:id="@+id/bugimage"
+            android:src="@drawable/ic_warning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/crashtext"
+            android:id="@+id/text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/lemuroid_crash_disclamer" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/crashmessage"
+            android:id="@+id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp" />

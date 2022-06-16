@@ -53,13 +53,16 @@
     <string name="setting_ppsspp_texture_filtering">Texture filtering</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">CPU speed</string>
+    <string name="setting_desmume_screens_layout">Screens layout</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Screens layout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamic recompiler</string>
     <string name="setting_wswan_rotate_display">Orientation</string>
     <string name="setting_wswan_mono_palette">Colorization</string>
-    <string name="setting_handy_rot">Orientation</string>
+    <string name="setting_handy_rot">Display rotation</string>
+    <string name="setting_citra_layout_option">Screens layout</string>
+    <string name="setting_citra_resolution_factor">Resolution scaling</string>
     <string name="setting_citra_use_acc_mul">Accurate shaders multiplication</string>
     <string name="setting_citra_use_acc_geo_shaders">Accurate geometry shaders</string>
 
@@ -118,6 +121,12 @@
     <string name="value_melonds_screen_layout_hybridtop">Hybrid Top</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybrid Bottom</string>
 
+    <string name="value_citra_layout_option_topbottom">Top - Bottom</string>
+    <string name="value_citra_layout_option_sidebyside">Left - Right</string>
+
+    <string name="value_desmume_screens_layout_topbottom">Top - Bottom</string>
+    <string name="value_desmume_screens_layout_leftright">Left - Right</string>
+
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpreter</string>
@@ -125,7 +134,8 @@
     <string name="value_wswan_rotate_display_landscape">Landscape</string>
     <string name="value_wswan_rotate_display_portrait">Portrait</string>
 
-    <string name="value_handy_rot_none">Landscape</string>
-    <string name="value_handy_rot_90">Portrait</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">90</string>
+    <string name="value_handy_rot_270">270</string>
 
 </resources>
