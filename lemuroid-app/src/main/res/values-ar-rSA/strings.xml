@@ -145,7 +145,6 @@
         \n\u2022 اذهب إلى إعدادات Lemuroid وأجري إعادة تعيين المصنع
         \n\n إذا لم يعمل أي من التطبيقات المذكورة أعلاه، قد يكون من الممكن أن تكون هذه اللعبة/النواة غير مدعومة من هذا الجهاز.
     </string>
-    <string name="lemuroid_crash_message">رسالة خطأ: %1$s</string>
     <string name="error_message_incompatible_state">حالة الحفظ هذه غير متوافقة مع الإصدار الأساسي الحالي. الرجاء تحميل أحدث نسخة احتياطية في اللعبة أو استخدام اصدار محاكي Lemuroid السابق.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>تلقائي</item>
