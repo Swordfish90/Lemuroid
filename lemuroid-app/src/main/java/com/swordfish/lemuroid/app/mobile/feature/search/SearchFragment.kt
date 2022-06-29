@@ -7,10 +7,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
+import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
@@ -19,10 +21,9 @@ import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.android.lifecycle.autoDispose
 import com.uber.autodispose.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -34,7 +35,7 @@ class SearchFragment : RecyclerViewFragment() {
 
     private lateinit var searchViewModel: SearchViewModel
 
-    private var searchSubject: PublishSubject<String> = PublishSubject.create()
+    private val searchRelay: PublishRelay<String> = PublishRelay.create()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -62,7 +63,7 @@ class SearchFragment : RecyclerViewFragment() {
             emptyView?.setVisibleOrGone(gamesAdapter.itemCount == 0)
         }
 
-        searchSubject
+        searchRelay
             .distinctUntilChanged()
             .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
             .subscribe { searchViewModel.queryString.postValue(it) }
@@ -94,8 +95,8 @@ class SearchFragment : RecyclerViewFragment() {
             .debounce(1, TimeUnit.SECONDS)
             .map { it.toString() }
             .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribe(searchSubject)
+            .autoDispose(this, Lifecycle.Event.ON_DESTROY)
+            .subscribe(searchRelay)
     }
 
     @dagger.Module
