@@ -13,6 +13,7 @@ data class SystemCoreConfig(
     val statesSupported: Boolean = true,
     val rumbleSupported: Boolean = false,
     val requiredBIOSFiles: List<String> = listOf(),
+    val regionalBIOSFiles: Map<String, String> = mapOf(),
     val statesVersion: Int = 0,
     val supportsLibretroVFS: Boolean = false,
     val skipDuplicateFrames: Boolean = true

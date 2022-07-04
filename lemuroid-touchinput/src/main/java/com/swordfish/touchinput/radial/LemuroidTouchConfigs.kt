@@ -1166,33 +1166,9 @@ object LemuroidTouchConfigs {
             sockets = 12,
             primaryDial = PRIMARY_DIAL_CROSS,
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(
-                    2,
-                    1f,
-                    0f,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_SELECT,
-                        contentDescription = "Select"
-                    )
-                ),
-                SecondaryDialConfig.SingleButton(
-                    3,
-                    1f,
-                    0f,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_L1,
-                        contentDescription = "L1"
-                    )
-                ),
-                SecondaryDialConfig.SingleButton(
-                    4,
-                    1f,
-                    0f,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_L2,
-                        contentDescription = "L2"
-                    )
-                ),
+                SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_SELECT),
+                SecondaryDialConfig.SingleButton(3, 1f, 0f, BUTTON_CONFIG_L1),
+                SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_L2),
                 SecondaryDialConfig.SingleButton(
                     8,
                     1f,
@@ -1213,8 +1189,7 @@ object LemuroidTouchConfigs {
                     contentDescription = "Left Stick",
                     supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
                     rotationProcessor = rotationOffset(-DEFAULT_STICK_ROTATION)
-                ),
-                SecondaryDialConfig.Empty(8, 1, 1f, 0f)
+                )
             )
         )
 
@@ -1223,53 +1198,29 @@ object LemuroidTouchConfigs {
             theme = theme,
             sockets = 12,
             primaryDial = PrimaryDialConfig.PrimaryButtons(
-                listOf(
+                dials = listOf(
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_A,
-                        contentDescription = "A"
+                        label = "A"
                     ),
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_X,
-                        contentDescription = "X"
+                        label = "X"
                     ),
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_Y,
-                        contentDescription = "Y"
+                        label = "Y"
                     ),
                     ButtonConfig(
                         id = KeyEvent.KEYCODE_BUTTON_B,
-                        contentDescription = "B"
+                        label = "B"
                     )
                 )
             ),
             secondaryDials = listOf(
-                SecondaryDialConfig.SingleButton(
-                    2,
-                    1f,
-                    0f,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_R2,
-                        contentDescription = "R2"
-                    )
-                ),
-                SecondaryDialConfig.SingleButton(
-                    3,
-                    1f,
-                    0f,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_R1,
-                        contentDescription = "R1"
-                    )
-                ),
-                SecondaryDialConfig.SingleButton(
-                    4,
-                    1f,
-                    0f,
-                    ButtonConfig(
-                        id = KeyEvent.KEYCODE_BUTTON_START,
-                        contentDescription = "Start"
-                    )
-                ),
+                SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_R2),
+                SecondaryDialConfig.SingleButton(3, 1f, 0f, BUTTON_CONFIG_R1),
+                SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
                 buildMenuButtonConfig(10, theme),
                 SecondaryDialConfig.Stick(
                     8,
@@ -1277,6 +1228,7 @@ object LemuroidTouchConfigs {
                     2.2f,
                     0f,
                     MOTION_SOURCE_RIGHT_STICK,
+                    KeyEvent.KEYCODE_BUTTON_THUMBR,
                     contentDescription = "Right Stick",
                     supportsGestures = setOf(GestureType.TRIPLE_TAP, GestureType.FIRST_TOUCH),
                     rotationProcessor = rotationOffset(DEFAULT_STICK_ROTATION)

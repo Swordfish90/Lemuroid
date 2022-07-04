@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.shared.main
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashActivity
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
@@ -28,10 +29,19 @@ class GameLaunchTaskHandler(
 
     fun handleGameFinish(enableRatingFlow: Boolean, activity: Activity, resultCode: Int, data: Intent?): Completable {
         rescheduleBackgroundWork(activity.applicationContext)
-        return if (resultCode == Activity.RESULT_OK) {
-            handleSuccessfulGameFinish(activity, enableRatingFlow, data)
-        } else {
-            handleUnsuccessfulGameFinish(activity, data)
+        return when (resultCode) {
+            Activity.RESULT_OK -> handleSuccessfulGameFinish(activity, enableRatingFlow, data)
+            BaseGameActivity.RESULT_ERROR -> handleUnsuccessfulGameFinish(
+                activity,
+                data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR)!!,
+                null
+            )
+            BaseGameActivity.RESULT_UNEXPECTED_ERROR -> handleUnsuccessfulGameFinish(
+                activity,
+                activity.getString(R.string.lemuroid_crash_disclamer),
+                data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR)
+            )
+            else -> Completable.complete()
         }
     }
 
@@ -47,13 +57,9 @@ class GameLaunchTaskHandler(
         CacheCleanerWork.enqueueCleanCacheLRU(context)
     }
 
-    private fun handleUnsuccessfulGameFinish(activity: Activity, data: Intent?): Completable {
+    private fun handleUnsuccessfulGameFinish(activity: Activity, message: String, messageDetail: String?): Completable {
         return Completable.fromAction {
-            val message = data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR)
-            val intent = Intent(activity, GameCrashActivity::class.java).apply {
-                putExtra(GameCrashActivity.EXTRA_MESSAGE, message)
-            }
-            activity.startActivity(intent)
+            GameCrashActivity.launch(activity, message, messageDetail)
         }.subscribeOn(AndroidSchedulers.mainThread())
     }
 
