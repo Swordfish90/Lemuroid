@@ -48,12 +48,17 @@
     <string name="setting_ppsspp_texture_filtering">Filtro delle texture</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">Velocità CPU</string>
+    <string name="setting_desmume_screens_layout">Layout dello schermo</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Disposizione schermi</string>
     <string name="setting_melonds_threaded_renderer">Rendering parallelo</string>
     <string name="setting_melonds_jit_enable">Ricompilatore dinamico</string>
     <string name="setting_wswan_rotate_display">Orientamento</string>
     <string name="setting_wswan_mono_palette">Colorazione</string>
+    <string name="setting_handy_rot">Rotazione del display</string>
+    <string name="setting_citra_layout_option">Layout degli schermi</string>
+    <string name="setting_citra_resolution_factor">Scaling della risoluzione</string>
+    <string name="setting_citra_use_acc_mul">Moltiplicazione accurata degli shaders</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Disabilitato</string>
     <string name="value_gambatte_mix_frames_mix">Semplice</string>
