@@ -97,6 +97,7 @@
     <string name="notification_channel_name">جميع الإشعارات</string>
     <string name="library_index_notification_title">فحص الأقراص المدمجة قيد التقدم</string>
     <string name="library_index_notification_message">قد يستغرق ذلك بضع دقائق</string>
+    <string name="library_index_notification_action_cancel">@string/الغاء</string>
     <string name="save_sync_notification_title">يتم مزامنة الحفظ السحابي</string>
     <string name="save_sync_notification_message">قد يستغرق ذلك بضع دقائق</string>
     <string name="game_running_notification_title">%1$s قيد التشغيل</string>
@@ -152,7 +153,6 @@
         <item>سلاسة</item>
         <item>تلفاز قديم</item>
         <item>شاشة كريستالية</item>
-        <item>HD</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>لا شيء</item>

@@ -99,7 +99,6 @@
         <item>חלק</item>
         <item>טלוויזיה ישנה (CRT)</item>
         <item>מסך LCD</item>
-        <item>HD</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>ללא</item>

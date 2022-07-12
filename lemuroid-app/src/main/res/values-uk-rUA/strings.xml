@@ -152,7 +152,6 @@
         <item>Плавний</item>
         <item>CRT</item>
         <item>LCD</item>
-        <item>HD</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>Відсутня</item>
