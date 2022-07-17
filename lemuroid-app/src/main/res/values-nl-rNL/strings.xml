@@ -97,7 +97,6 @@
     <string name="notification_channel_name">Alle notificaties</string>
     <string name="library_index_notification_title">Bezig met scannen van ROMs</string>
     <string name="library_index_notification_message">Dit kan een paar minuten duren</string>
-    <string name="library_index_notification_action_cancel">@string/annuleer</string>
     <string name="save_sync_notification_title">Cloud opslag wordt gesynchroniseerd</string>
     <string name="save_sync_notification_message">Dit kan een paar minuten duren</string>
     <string name="game_running_notification_title">%1$s is actief</string>
@@ -154,6 +153,7 @@
         <item>Vloeiend</item>
         <item>CRT</item>
         <item>LCD</item>
+        <item>HD</item>
     </string-array>
     <string-array name="pref_key_haptic_feedback_mode_names">
         <item>Geen</item>
