@@ -187,19 +187,15 @@
 
     <string name="error_message_incompatible_state">This save state is not compatible with the current core version. Please load the latest in-game save or use a previous Lemuroid version.</string>
 
-    <string-array name="pref_key_shader_filter_names">
-        <item>Auto</item>
-        <item>Sharp</item>
-        <item>Smooth</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
+    <string name="shader_filter_names_auto">Auto</string>
+    <string name="shader_filter_names_sharp">Sharp</string>
+    <string name="shader_filter_names_smooth">Smooth</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
 
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>None</item>
-        <item>Press</item>
-        <item>Press &amp; release</item>
-    </string-array>
+    <string name="haptic_feedback_mode_names_none">None</string>
+    <string name="haptic_feedback_mode_names_press">Press</string>
+    <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
 
 </resources>
