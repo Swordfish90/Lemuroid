@@ -112,12 +112,4 @@
     <string name="mobile_settings_help">Pomoc</string>
     <string name="mobile_settings_support">Wsparcie</string>
     <string name="error_message_incompatible_state">Ten stan zapisu nie jest kompatybilny z aktualną wersją jądra. Proszę załadować najnowszy zapis w grze lub użyć poprzedniej wersji Lemuroid.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automatycznie</item>
-        <item>Ostre</item>
-        <item>Gładkie</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
 </resources>
