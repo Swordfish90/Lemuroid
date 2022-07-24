@@ -146,17 +146,4 @@
         \n\n Если ничего из вышеперечисленного не работает, Возможно, эта игра/ядро не поддерживается этим устройством.
     </string>
     <string name="error_message_incompatible_state">Это сохранение не совместимо с текущей версией ядра. Пожалуйста, загрузите последнюю версию сохранения в игре или воспользуйтесь предыдущей версией Lemuroid.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Автоматически</item>
-        <item>Резкий</item>
-        <item>Мягкий</item>
-        <item>Кинескоп</item>
-        <item>ЖК</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Нет</item>
-        <item>Нажатие</item>
-        <item>Нажатии и отпускании</item>
-    </string-array>
 </resources>
