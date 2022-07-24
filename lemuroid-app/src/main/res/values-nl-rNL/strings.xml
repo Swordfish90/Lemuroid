@@ -147,17 +147,4 @@
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
     <string name="error_message_incompatible_state">Deze opslagstaat is niet compatibel met de huidige core versie. Laad de laatste versie van het spel of gebruik een eerdere Lemuroid versie.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automatisch</item>
-        <item>Scherp</item>
-        <item>Vloeiend</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Geen</item>
-        <item>Druk</item>
-        <item>Druk &amp; loslaten</item>
-    </string-array>
 </resources>
