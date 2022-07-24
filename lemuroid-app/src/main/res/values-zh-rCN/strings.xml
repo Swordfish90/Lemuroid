@@ -147,17 +147,4 @@
         \n\n 如果上述方法都不起作用，可能是该设备不支持这个游戏/内核。
     </string>
     <string name="error_message_incompatible_state">此保存状态与当前内核版本不兼容。请加载游戏内最新的保存状态或使用以前的 Lemuroid 版本。</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>自动</item>
-        <item>灵敏</item>
-        <item>顺滑</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>高画质</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>无</item>
-        <item>按下</item>
-        <item>按下并松开</item>
-    </string-array>
 </resources>
