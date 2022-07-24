@@ -145,17 +145,4 @@
         \n\nЯкщо нічого з переліченого не допомогло, може бути що ця гра/ядро не підтримується на вашому приладі.
     </string>
     <string name="error_message_incompatible_state">Цей стан збереження несумісний з поточною версією ядра. Будь ласка, завантажте останню версію в грі, або використовуйте попередню версію Lemuroid.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Авто</item>
-        <item>Гострий</item>
-        <item>Плавний</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Відсутня</item>
-        <item>При натисканні</item>
-        <item>При натисканні та відпусканні</item>
-    </string-array>
 </resources>
