@@ -146,17 +146,4 @@
         \n\n Wenn keine der oben genannten Möglichkeiten funktioniert, ist es möglich, dass dieses Game/Core von diesem Gerät nicht unterstützt wird.
     </string>
     <string name="error_message_incompatible_state">Dieser Speicherstatus ist nicht mit der aktuellen Core-Version kompatibel. Bitte laden Sie den aktuellen Spielspeicher oder verwenden Sie eine vorherige Lemuroid-Version.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automatisch</item>
-        <item>Scharf</item>
-        <item>Glätten</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Nichts</item>
-        <item>Tippen</item>
-        <item>Tippen und Loslassen</item>
-    </string-array>
 </resources>
