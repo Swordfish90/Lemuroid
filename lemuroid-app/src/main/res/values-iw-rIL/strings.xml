@@ -92,17 +92,4 @@
         \n\n אם אף אחד מהפתרונות לא עזר, ייתכן שהמשחק/הליבה אינם נתמכים במכשיר זה.
     </string>
     <string name="error_message_incompatible_state">מצב שמירה זה אינו נתמך על ידי גרסת הליבה הנוכחית. טען את השמירה האחרונה שבוצעה על ידי המשחק (in-game) או לחלופין, התקן גרסה ישנה יותר של Lemuroid.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>אוטומטי</item>
-        <item>חד</item>
-        <item>חלק</item>
-        <item>טלוויזיה ישנה (CRT)</item>
-        <item>מסך LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>ללא</item>
-        <item>לחץ</item>
-        <item>לחץ &amp; שחרר</item>
-    </string-array>
 </resources>
