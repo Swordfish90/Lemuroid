@@ -147,17 +147,4 @@
         \n\n 이후에도 계속 문제가 발생할 경우, 이 장치에서 이 게임 또는 코어가 지원되지 않는 것일 수도 있습니다.
     </string>
     <string name="error_message_incompatible_state">이 상태저장은 현재 코어 버전과 호환되지 않습니다. 가장 최근의 인게임 세이브 데이터를 사용하거나 이전 버전의 Lemuroid를 사용하세요.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>자동</item>
-        <item>선명하게</item>
-        <item>부드럽게</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>없음</item>
-        <item>누를 때</item>
-        <item>누를 때 &amp; 뗄 때</item>
-    </string-array>
 </resources>
