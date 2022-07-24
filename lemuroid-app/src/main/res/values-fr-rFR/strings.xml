@@ -147,17 +147,4 @@
         \n\n Si aucun des éléments ci-dessus ne fonctionne, Il est possible que ce jeu/cœur n\'est pas pris en charge par votre appareil.
     </string>
     <string name="error_message_incompatible_state">Cet état de mémoire n\'est pas compatible avec la version actuelle du noyau. Veuillez charger la dernière sauvegarde en jeu ou utiliser une version de Lemuroid antérieure.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Auto</item>
-        <item>Fin</item>
-        <item>Lissé</item>
-        <item>Tube cathodique</item>
-        <item>Écran LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Aucun</item>
-        <item>Appuyer</item>
-        <item>Appuyer &amp; Relâcher</item>
-    </string-array>
 </resources>
