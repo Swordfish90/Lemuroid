@@ -130,17 +130,4 @@
         \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklemiyor olabilir.
     </string>
     <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Otomatik</item>
-        <item>Keskin</item>
-        <item>Akıcı</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Hiçbiri</item>
-        <item>Bas</item>
-        <item>Bas &amp; bırak</item>
-    </string-array>
 </resources>
