@@ -15,7 +15,7 @@ class MetaSystemsViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context
         val retrogradeDb: RetrogradeDatabase,
         val appContext: Context
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MetaSystemsViewModel(retrogradeDb, appContext) as T
         }
     }

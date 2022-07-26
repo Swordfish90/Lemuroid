@@ -56,7 +56,7 @@ interface GameDao {
     fun selectById(id: Int): Maybe<Game>
 
     @Query("SELECT * FROM games WHERE fileUri = :fileUri")
-    fun selectByFileUri(fileUri: String): Maybe<Game>
+    fun selectByFileUri(fileUri: String): Game?
 
     @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>

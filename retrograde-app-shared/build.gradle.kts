@@ -31,6 +31,7 @@ dependencies {
     implementation(deps.libs.androidx.paging.rxjava2)
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.room.rxjava2)
+    implementation(deps.libs.androidx.room.ktx)
     implementation(deps.libs.androidx.documentfile)
     implementation(deps.libs.autodispose.core)
     implementation(deps.libs.dagger.android.core)

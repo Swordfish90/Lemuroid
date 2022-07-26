@@ -19,15 +19,15 @@ import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 
-class StorageAccessFrameworkProvider(
-    private val context: Context,
-    override val metadataProvider: GameMetadataProvider
-) : StorageProvider {
+class StorageAccessFrameworkProvider(private val context: Context) : StorageProvider {
 
     override val id: String = "access_framework"
 
@@ -39,10 +39,10 @@ class StorageAccessFrameworkProvider(
 
     override val enabledByDefault = true
 
-    override fun listBaseStorageFiles(): Observable<List<BaseStorageFile>> {
+    override fun listBaseStorageFiles(): Flow<List<BaseStorageFile>> {
         return getExternalFolder()?.let { folder ->
             traverseDirectoryEntries(Uri.parse(folder))
-        } ?: Observable.empty()
+        } ?: emptyFlow()
     }
 
     override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? {
@@ -55,35 +55,27 @@ class StorageAccessFrameworkProvider(
         return preferenceManager.getString(prefString, null)
     }
 
-    private fun traverseDirectoryEntries(
-        rootUri: Uri
-    ): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
-        try {
-            val directoryDocumentIds = mutableListOf<String>()
-            DocumentsContract.getTreeDocumentId(rootUri)?.let { directoryDocumentIds.add(it) }
+    private fun traverseDirectoryEntries(rootUri: Uri): Flow<List<BaseStorageFile>> = flow {
+        val directoryDocumentIds = mutableListOf<String>()
+        DocumentsContract.getTreeDocumentId(rootUri)?.let { directoryDocumentIds.add(it) }
 
-            while (directoryDocumentIds.isNotEmpty()) {
-                val currentDirectoryDocumentId = directoryDocumentIds.removeAt(0)
+        while (directoryDocumentIds.isNotEmpty()) {
+            val currentDirectoryDocumentId = directoryDocumentIds.removeAt(0)
 
-                val result = runCatching {
-                    listBaseStorageFiles(rootUri, currentDirectoryDocumentId)
-                }
-                if (result.isFailure) {
-                    Timber.e(result.exceptionOrNull(), "Error while listing files")
-                }
-
-                val (files, directories) = result.getOrDefault(
-                    listOf<BaseStorageFile>() to listOf<String>()
-                )
-
-                emitter.onNext(files)
-                directoryDocumentIds.addAll(directories)
+            val result = runCatching {
+                listBaseStorageFiles(rootUri, currentDirectoryDocumentId)
             }
-        } catch (e: Exception) {
-            emitter.onError(e)
-        }
+            if (result.isFailure) {
+                Timber.e(result.exceptionOrNull(), "Error while listing files")
+            }
 
-        emitter.onComplete()
+            val (files, directories) = result.getOrDefault(
+                listOf<BaseStorageFile>() to listOf<String>()
+            )
+
+            emit(files)
+            directoryDocumentIds.addAll(directories)
+        }
     }
 
     private fun listBaseStorageFiles(

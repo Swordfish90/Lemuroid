@@ -20,6 +20,7 @@ dependencies {
     implementation(deps.libs.androidx.preferences.preferencesKtx)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
+    implementation(deps.libs.kotlinxCoroutinesAndroid)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.rxJava2)
     implementation(deps.libs.rxRelay2)

@@ -53,6 +53,7 @@ import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
+import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.logging.RxTimberTree
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
@@ -140,18 +141,16 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun ovgdbMetadataProvider(ovgdbManager: LibretroDBManager) = LibretroDBMetadataProvider(
-            ovgdbManager
+        fun gameMetadataProvider(libretroDBManager: LibretroDBManager): GameMetadataProvider = LibretroDBMetadataProvider(
+            libretroDBManager
         )
 
         @Provides
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localSAFStorageProvider(
-            context: Context,
-            metadataProvider: LibretroDBMetadataProvider
-        ): StorageProvider = StorageAccessFrameworkProvider(context, metadataProvider)
+        fun localSAFStorageProvider(context: Context, ): StorageProvider =
+            StorageAccessFrameworkProvider(context)
 
         @Provides
         @PerApp
@@ -159,10 +158,9 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun localGameStorageProvider(
             context: Context,
-            directoriesManager: DirectoriesManager,
-            metadataProvider: LibretroDBMetadataProvider
+            directoriesManager: DirectoriesManager
         ): StorageProvider =
-            LocalStorageProvider(context, directoriesManager, metadataProvider)
+            LocalStorageProvider(context, directoriesManager)
 
         @Provides
         @PerApp
@@ -179,8 +177,9 @@ abstract class LemuroidApplicationModule {
         fun lemuroidLibrary(
             db: RetrogradeDatabase,
             storageProviderRegistry: Lazy<StorageProviderRegistry>,
+            gameMetadataProvider: Lazy<GameMetadataProvider>,
             biosManager: BiosManager
-        ) = LemuroidLibrary(db, storageProviderRegistry, biosManager)
+        ) = LemuroidLibrary(db, storageProviderRegistry, gameMetadataProvider, biosManager)
 
         @Provides
         @PerApp

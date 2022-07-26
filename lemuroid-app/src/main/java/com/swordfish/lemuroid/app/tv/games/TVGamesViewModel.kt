@@ -14,7 +14,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 class TVGamesViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
     class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return TVGamesViewModel(retrogradeDb) as T
         }
     }

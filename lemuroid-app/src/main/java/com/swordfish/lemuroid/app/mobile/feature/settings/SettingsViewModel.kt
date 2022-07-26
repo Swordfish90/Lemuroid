@@ -18,7 +18,7 @@ class SettingsViewModel(
         private val rxSharedPreferences: RxSharedPreferences
     ) : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val directoryPreference = context.getString(R.string.pref_key_extenral_folder)
             return SettingsViewModel(context, directoryPreference, rxSharedPreferences) as T
         }

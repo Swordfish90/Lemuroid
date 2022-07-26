@@ -37,14 +37,15 @@ import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import io.reactivex.Observable
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 
 class LocalStorageProvider(
     private val context: Context,
-    private val directoriesManager: DirectoriesManager,
-    override val metadataProvider: GameMetadataProvider
+    private val directoriesManager: DirectoriesManager
 ) : StorageProvider {
 
     override val id: String = "local"
@@ -57,7 +58,7 @@ class LocalStorageProvider(
 
     override val enabledByDefault = true
 
-    override fun listBaseStorageFiles(): Observable<List<BaseStorageFile>> =
+    override fun listBaseStorageFiles(): Flow<List<BaseStorageFile>> =
         walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory())
 
     override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? {
@@ -70,7 +71,7 @@ class LocalStorageProvider(
         return preferenceManager.getString(prefString, null)?.let { File(it) }
     }
 
-    private fun walkDirectory(rootDirectory: File): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
+    private fun walkDirectory(rootDirectory: File): Flow<List<BaseStorageFile>> = flow {
         val directories = mutableListOf(rootDirectory)
 
         while (directories.isNotEmpty()) {
@@ -83,10 +84,8 @@ class LocalStorageProvider(
             val newFiles = groups[false] ?: listOf()
 
             directories.addAll(newDirectories)
-            emitter.onNext(newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) })
+            emit((newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) }))
         }
-
-        emitter.onComplete()
     }
 
     // There is no need to handle anything. Data file have to be in the same directory for detection we expect them

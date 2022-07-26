@@ -13,7 +13,7 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
     }
 
     class Factory(val appContext: Context, val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return HomeViewModel(appContext, retrogradeDb) as T
         }
     }

@@ -12,7 +12,7 @@ object deps {
         const val dagger          = "2.19"
         const val gms             = "17.0.0"
         const val koptional       = "1.7.0"
-        const val kotlin          = "1.4.30"
+        const val kotlin          = "1.7.10"
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
         const val work            = "2.7.1"
@@ -25,6 +25,7 @@ object deps {
         const val room            = "2.3.0"
         const val epoxy           = "4.6.3-vinay-compose"
         const val serialization   = "1.2.2"
+        const val fragment        = "1.5.0"
         const val libretrodroid   = "0.8.1"
         const val radialgamepad   = "1.1.0"
     }
@@ -68,6 +69,11 @@ object deps {
                 const val compiler = "androidx.room:room-compiler:${versions.room}"
                 const val runtime = "androidx.room:room-runtime:${versions.room}"
                 const val rxjava2 = "androidx.room:room-rxjava2:${versions.room}"
+                const val ktx = "androidx.room:room-ktx:${versions.room}"
+            }
+            object fragment {
+                const val fragment = "androidx.fragment:fragment:${versions.fragment}"
+                const val ktx = "androidx.fragment:fragment-ktx:${versions.fragment}"
             }
             const val documentfile = "androidx.documentfile:documentfile:1.0.1"
         }
@@ -122,7 +128,7 @@ object deps {
 
         const val koptional                = "com.gojuno.koptional:koptional:${versions.koptional}"
         const val koptionalRxJava2         = "com.gojuno.koptional:koptional-rxjava2-extensions:${versions.koptional}"
-        const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
+        const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
         const val ktlint                   = "com.github.shyiko:ktlint:0.29.0"
         const val okio                     = "com.squareup.okio:okio:2.10.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"
@@ -137,7 +143,7 @@ object deps {
         const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.1"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
-        const val material                 = "com.google.android.material:material:1.5.0"
+        const val material                 = "com.google.android.material:material:1.6.1"
         const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:30.1.1-android"
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"

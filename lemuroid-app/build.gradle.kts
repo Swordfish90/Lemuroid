@@ -14,27 +14,29 @@ android {
 
     if (usePlayDynamicFeatures()) {
         println("Building Google Play version. Bundling dynamic features.")
-        dynamicFeatures = mutableSetOf(
-            ":lemuroid_core_desmume",
-            ":lemuroid_core_dosbox_pure",
-            ":lemuroid_core_fbneo",
-            ":lemuroid_core_fceumm",
-            ":lemuroid_core_gambatte",
-            ":lemuroid_core_genesis_plus_gx",
-            ":lemuroid_core_handy",
-            ":lemuroid_core_mame2003_plus",
-            ":lemuroid_core_mednafen_ngp",
-            ":lemuroid_core_mednafen_pce_fast",
-            ":lemuroid_core_mednafen_wswan",
-            ":lemuroid_core_melonds",
-            ":lemuroid_core_mgba",
-            ":lemuroid_core_mupen64plus_next_gles3",
-            ":lemuroid_core_pcsx_rearmed",
-            ":lemuroid_core_ppsspp",
-            ":lemuroid_core_prosystem",
-            ":lemuroid_core_snes9x",
-            ":lemuroid_core_stella",
-            ":lemuroid_core_citra"
+        dynamicFeatures.addAll(
+            setOf(
+                ":lemuroid_core_desmume",
+                ":lemuroid_core_dosbox_pure",
+                ":lemuroid_core_fbneo",
+                ":lemuroid_core_fceumm",
+                ":lemuroid_core_gambatte",
+                ":lemuroid_core_genesis_plus_gx",
+                ":lemuroid_core_handy",
+                ":lemuroid_core_mame2003_plus",
+                ":lemuroid_core_mednafen_ngp",
+                ":lemuroid_core_mednafen_pce_fast",
+                ":lemuroid_core_mednafen_wswan",
+                ":lemuroid_core_melonds",
+                ":lemuroid_core_mgba",
+                ":lemuroid_core_mupen64plus_next_gles3",
+                ":lemuroid_core_pcsx_rearmed",
+                ":lemuroid_core_ppsspp",
+                ":lemuroid_core_prosystem",
+                ":lemuroid_core_snes9x",
+                ":lemuroid_core_stella",
+                ":lemuroid_core_citra"
+            )
         )
     }
 
@@ -118,6 +120,8 @@ dependencies {
 
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)
+    implementation(deps.libs.androidx.fragment.fragment)
+    implementation(deps.libs.androidx.fragment.ktx)
     implementation(deps.libs.material)
     implementation(deps.libs.coil)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
@@ -147,6 +151,7 @@ dependencies {
     implementation(deps.libs.androidx.room.common)
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.room.rxjava2)
+    implementation(deps.libs.androidx.room.ktx)
     implementation(deps.libs.autodispose.android.archComponents)
     implementation(deps.libs.autodispose.android.core)
     implementation(deps.libs.autodispose.core)

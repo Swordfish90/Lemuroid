@@ -108,10 +108,10 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val isSupported = saveSyncManager.isSupported()
         val isConfigured = saveSyncManager.isConfigured()
-        menu?.findItem(R.id.menu_options_sync)?.isVisible = isSupported && isConfigured
+        menu.findItem(R.id.menu_options_sync)?.isVisible = isSupported && isConfigured
         return super.onPrepareOptionsMenu(menu)
     }
 

@@ -20,7 +20,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         val retrogradeDb: RetrogradeDatabase,
         val appContext: Context
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return TVHomeViewModel(retrogradeDb, appContext) as T
         }
     }

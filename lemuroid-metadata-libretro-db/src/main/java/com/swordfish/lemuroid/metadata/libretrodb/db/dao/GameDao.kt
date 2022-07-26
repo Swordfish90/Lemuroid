@@ -11,14 +11,14 @@ import io.reactivex.Single
 interface GameDao {
 
     @Query("SELECT * FROM games WHERE romName LIKE :romName")
-    fun findByName(romName: String): Single<List<LibretroRom>>
+    fun findByName(romName: String): List<LibretroRom>?
 
     @Query("SELECT * FROM games WHERE romName = :romName LIMIT 1")
-    fun findByFileName(romName: String): Maybe<LibretroRom>
+    fun findByFileName(romName: String): LibretroRom?
 
     @Query("SELECT * FROM games WHERE crc32 = :crc LIMIT 1")
-    fun findByCRC(crc: String): Maybe<LibretroRom>
+    fun findByCRC(crc: String): LibretroRom?
 
     @Query("SELECT * FROM games WHERE serial = :serial LIMIT 1")
-    fun findBySerial(serial: String): Maybe<LibretroRom>
+    fun findBySerial(serial: String): LibretroRom?
 }

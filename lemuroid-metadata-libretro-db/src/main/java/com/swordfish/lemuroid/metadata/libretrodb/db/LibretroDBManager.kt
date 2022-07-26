@@ -2,27 +2,27 @@ package com.swordfish.lemuroid.metadata.libretrodb.db
 
 import android.content.Context
 import androidx.room.Room
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.Single
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import java.util.concurrent.ExecutorService
 
-class LibretroDBManager(context: Context, executorService: ExecutorService) {
+class LibretroDBManager(private val context: Context, executorService: ExecutorService) {
 
     companion object {
         private const val DB_NAME = "libretro-db"
     }
 
-    private val dbRelay = BehaviorRelay.create<LibretroDatabase>()
+    private var dbRelay: LibretroDatabase? = null
 
-    val dbReady: Single<LibretroDatabase> = dbRelay.take(1).singleOrError()
-
-    init {
-        executorService.execute {
-            val db = Room.databaseBuilder(context, LibretroDatabase::class.java, DB_NAME)
+    suspend fun isDBReady(): LibretroDatabase {
+        if (dbRelay == null) {
+            dbRelay = Room.databaseBuilder(context, LibretroDatabase::class.java, DB_NAME)
                 .createFromAsset("libretro-db.sqlite")
                 .fallbackToDestructiveMigration()
                 .build()
-            dbRelay.accept(db)
         }
+
+        return dbRelay!!
     }
 }
