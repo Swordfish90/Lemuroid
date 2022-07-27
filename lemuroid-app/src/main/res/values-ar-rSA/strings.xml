@@ -146,4 +146,13 @@
         \n\n إذا لم يعمل أي من التطبيقات المذكورة أعلاه، قد يكون من الممكن أن تكون هذه اللعبة/النواة غير مدعومة من هذا الجهاز.
     </string>
     <string name="error_message_incompatible_state">حالة الحفظ هذه غير متوافقة مع الإصدار الأساسي الحالي. الرجاء تحميل أحدث نسخة احتياطية في اللعبة أو استخدام اصدار محاكي Lemuroid السابق.</string>
+    <string name="shader_filter_names_auto">تلقائي</string>
+    <string name="shader_filter_names_sharp">حاد</string>
+    <string name="shader_filter_names_smooth">ناعم</string>
+    <string name="shader_filter_names_crt">تأثير CRT</string>
+    <string name="shader_filter_names_lcd">شاشة كريستالية</string>
+    <string name="shader_filter_names_hd">عالي الجودة</string>
+    <string name="haptic_feedback_mode_names_none">لا شيء</string>
+    <string name="haptic_feedback_mode_names_press">اضغط</string>
+    <string name="haptic_feedback_mode_names_press_release">اضغط &amp; الإصدار</string>
 </resources>
