@@ -13,7 +13,8 @@ import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
@@ -54,7 +55,7 @@ class SaveSyncManagerImpl(
         }
     }
 
-    override fun sync(cores: Set<CoreID>) = Completable.fromAction {
+    override suspend fun sync(cores: Set<CoreID>): Unit = withContext(Dispatchers.IO) {
         synchronized(SYNC_LOCK) {
             val saveSyncResult = runCatching {
                 performSaveSyncForCores(cores)

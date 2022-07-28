@@ -123,13 +123,13 @@ enum class CoreID(
     }
 
     interface AssetsManager {
-        fun retrieveAssetsIfNeeded(
+        suspend fun retrieveAssetsIfNeeded(
             coreUpdaterApi: CoreUpdater.CoreManagerApi,
             directoriesManager: DirectoriesManager,
             sharedPreferences: SharedPreferences
-        ): Completable
+        )
 
-        fun clearAssets(directoriesManager: DirectoriesManager): Completable
+        suspend fun clearAssets(directoriesManager: DirectoriesManager)
     }
 }
 

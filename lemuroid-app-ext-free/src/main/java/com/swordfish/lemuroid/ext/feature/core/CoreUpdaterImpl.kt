@@ -20,6 +20,7 @@
 package com.swordfish.lemuroid.ext.feature.core
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import com.swordfish.lemuroid.common.files.safeDelete
@@ -28,10 +29,11 @@ import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.io.File
@@ -50,19 +52,24 @@ class CoreUpdaterImpl(
 
     private val api = retrofit.create(CoreUpdater.CoreManagerApi::class.java)
 
-    override fun downloadCores(context: Context, coreIDs: List<CoreID>): Completable {
+    override suspend fun downloadCores(context: Context, coreIDs: List<CoreID>) {
         val sharedPreferences = SharedPreferencesHelper.getSharedPreferences(context.applicationContext)
-        return Observable.fromIterable(coreIDs)
-            .flatMapCompletable { coreId ->
-                CoreID.getAssetManager(coreId)
-                    .retrieveAssetsIfNeeded(api, directoriesManager, sharedPreferences)
-                    .andThen(findBundledLibrary(context, coreId))
-                    .switchIfEmpty(downloadCoreFromGithub(coreId))
-                    .ignoreElement()
-            }
+        coreIDs.asFlow()
+            .onEach { retrieveAssets(it, sharedPreferences) }
+            .onEach { retrieveFile(context, it) }
+            .collect()
     }
 
-    private fun downloadCoreFromGithub(coreID: CoreID): Single<File> {
+    private suspend fun retrieveFile(context: Context, coreID: CoreID) {
+        findBundledLibrary(context, coreID) ?: downloadCoreFromGithub(coreID)
+    }
+
+    private suspend fun retrieveAssets(coreID: CoreID, sharedPreferences: SharedPreferences) {
+        CoreID.getAssetManager(coreID)
+            .retrieveAssetsIfNeeded(api, directoriesManager, sharedPreferences)
+    }
+
+    private suspend fun downloadCoreFromGithub(coreID: CoreID): File {
         Timber.i("Downloading core $coreID from github")
 
         val mainCoresDirectory = directoriesManager.getCoresDirectory()
@@ -74,7 +81,7 @@ class CoreUpdaterImpl(
         val destFile = File(coresDirectory, libFileName)
 
         if (destFile.exists()) {
-            return Single.just(destFile)
+            return destFile
         }
 
         runCatching {
@@ -87,20 +94,30 @@ class CoreUpdaterImpl(
             .appendPath(libFileName)
             .build()
 
-        return api.downloadFile(uri.toString())
-            .map { response ->
-                if (!response.isSuccessful) {
-                    Timber.e("Download core response was unsuccessful")
-                    throw Exception(response.errorBody()!!.string())
-                }
-                val fileStream = response.body()!!
-                fileStream.writeToFile(destFile)
-                destFile
-            }
-            .doOnError { destFile.safeDelete() }
+        try {
+            downloadFile(uri, destFile)
+            return destFile
+        } catch (e: Throwable) {
+            destFile.safeDelete()
+            throw e
+        }
     }
 
-    private fun findBundledLibrary(context: Context, coreID: CoreID) = Maybe.fromCallable {
+    private suspend fun downloadFile(uri: Uri, destFile: File) {
+        val response = api.downloadFile(uri.toString())
+
+        if (!response.isSuccessful) {
+            Timber.e("Download core response was unsuccessful")
+            throw Exception(response.errorBody()?.string() ?: "Download error")
+        }
+
+        response.body()?.writeToFile(destFile)
+    }
+
+    private suspend fun findBundledLibrary(
+        context: Context,
+        coreID: CoreID
+    ): File? = withContext(Dispatchers.IO) {
         File(context.applicationInfo.nativeLibraryDir)
             .walkBottomUp()
             .firstOrNull { it.name == coreID.libretroFileName }

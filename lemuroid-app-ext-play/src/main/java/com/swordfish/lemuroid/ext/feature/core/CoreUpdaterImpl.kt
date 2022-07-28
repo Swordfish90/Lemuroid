@@ -3,22 +3,27 @@ package com.swordfish.lemuroid.ext.feature.core
 import android.content.Context
 import android.util.Log
 import com.google.android.play.core.ktx.hasTerminalStatus
+import com.google.android.play.core.ktx.sessionId
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallSessionState
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
-import com.swordfish.lemuroid.ext.utils.toCompletable
-import com.swordfish.lemuroid.ext.utils.toSingle
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.tasks.await
 import retrofit2.Retrofit
 
 class CoreUpdaterImpl(
@@ -28,25 +33,26 @@ class CoreUpdaterImpl(
 
     private val api = retrofit.create(CoreUpdater.CoreManagerApi::class.java)
 
-    override fun downloadCores(context: Context, coreIDs: List<CoreID>): Completable {
+    override suspend fun downloadCores(context: Context, coreIDs: List<CoreID>) {
         val splitInstallManager = SplitInstallManagerFactory.create(context)
 
-        return cancelPendingInstalls(splitInstallManager)
-            .andThen(installCores(splitInstallManager, coreIDs))
-            .andThen(installAssets(context, coreIDs))
-            .doAfterTerminate { log("Terminating downloadCores") }
+        cancelPendingInstalls(splitInstallManager)
+        installCores(splitInstallManager, coreIDs)
+        installAssets(context, coreIDs)
+
+        log("downloadCores has terminated")
     }
 
     private fun buildInstallRequest(
         splitInstallManager: SplitInstallManager,
         coreIDs: List<CoreID>
-    ) = Maybe.fromCallable<SplitInstallRequest> {
+    ): SplitInstallRequest? {
         val requiredCores = coreIDs
             .map { computePlayModuleName(it) }
             .filter { it !in splitInstallManager.installedModules }
 
         if (requiredCores.isEmpty()) {
-            return@fromCallable null
+            return null
         }
 
         log("Starting install for the following cores: $requiredCores")
@@ -54,62 +60,66 @@ class CoreUpdaterImpl(
         val result = SplitInstallRequest.newBuilder()
         requiredCores.forEach { result.addModule(it) }
 
-        result.build()
+        return result.build()
     }
 
     private fun computePlayModuleName(it: CoreID) = "lemuroid_core_${it.coreName}"
 
-    private fun startInstallRequest(
+    private suspend fun startInstallRequest(
         request: SplitInstallRequest,
         splitInstallManager: SplitInstallManager
-    ): Single<Int> {
-        return splitInstallManager.startInstall(request)
-            .toSingle()
-            .doOnSuccess { log("Session started with id: $it") }
-            .map { it }
+    ): Int {
+        val sessionId = splitInstallManager.startInstall(request).await()
+        log("Session started with id: $sessionId")
+        return sessionId
     }
 
-    private fun waitForCompletion(sessionId: Int, splitInstallManager: SplitInstallManager): Completable {
-        val eventsSubject = PublishSubject.create<SplitInstallSessionState>()
+    private suspend fun waitForCompletion(
+        sessionId: Int,
+        splitInstallManager: SplitInstallManager
+    ) {
+        val eventsSubject = MutableSharedFlow<SplitInstallSessionState>(1)
 
         val listener = SplitInstallStateUpdatedListener {
-            eventsSubject.onNext(it)
+            eventsSubject.tryEmit(it)
         }
 
-        return eventsSubject
-            .doOnNext { log("Session status updated to $it") }
+        eventsSubject
+            .onEach { log("Session status updated to $it") }
             .filter { it.sessionId() == sessionId }
-            .takeUntil { it.hasTerminalStatus }
-            .doAfterTerminate { log("Terminating monitor install for session: $sessionId") }
-            .ignoreElements()
-            .doOnSubscribe { splitInstallManager.registerListener(listener) }
-            .doAfterTerminate { splitInstallManager.unregisterListener(listener) }
+            .takeWhile { !it.hasTerminalStatus }
+            .onStart { splitInstallManager.registerListener(listener) }
+            .catch { log("Error while waitingForCompletion $it") }
+            .onCompletion { splitInstallManager.unregisterListener(listener) }
+            .onCompletion { log("Terminating monitor install for session: $sessionId") }
+            .collect()
     }
 
-    private fun installCores(splitInstallManager: SplitInstallManager, coreIDs: List<CoreID>): Completable {
-        return buildInstallRequest(splitInstallManager, coreIDs)
-            .flatMapSingle { startInstallRequest(it, splitInstallManager) }
-            .flatMapCompletable { waitForCompletion(it, splitInstallManager) }
+    private suspend fun installCores(
+        splitInstallManager: SplitInstallManager,
+        coreIDs: List<CoreID>
+    ) {
+        val installRequest = buildInstallRequest(splitInstallManager, coreIDs) ?: return
+        val sessionId = startInstallRequest(installRequest, splitInstallManager)
+        waitForCompletion(sessionId, splitInstallManager)
     }
 
-    private fun installAssets(context: Context, coreIDs: List<CoreID>): Completable {
+    private suspend fun installAssets(context: Context, coreIDs: List<CoreID>) {
         val sharedPreferences = SharedPreferencesHelper.getSharedPreferences(context.applicationContext)
-        return Observable.fromIterable(coreIDs)
+        coreIDs.asFlow()
             .map { CoreID.getAssetManager(it) }
-            .flatMapCompletable { it.retrieveAssetsIfNeeded(api, directoriesManager, sharedPreferences) }
+            .onEach { it.retrieveAssetsIfNeeded(api, directoriesManager, sharedPreferences) }
+            .collect()
     }
 
-    private fun cancelPendingInstalls(installManager: SplitInstallManager): Completable {
-        return installManager.sessionStates.toSingle()
-            .flatMapObservable { Observable.fromIterable(it) }
-            .flatMapCompletable {
-                installManager.cancelInstall(it.sessionId())
-                    .toCompletable()
-                    .andThen(waitForCompletion(it.sessionId(), installManager))
-                    .doOnComplete { log("Stopped install for session: $it") }
-                    .onErrorComplete()
-            }
-            .doAfterTerminate { log("Terminating cancelPendingInstalls") }
+    private suspend fun cancelPendingInstalls(installManager: SplitInstallManager) {
+        val sessionStates = installManager.sessionStates.await()
+        sessionStates.asFlow()
+            .onEach { installManager.cancelInstall(it.sessionId).await() }
+            .onEach { log("Terminated install for session: ${it.sessionId}") }
+            .collect()
+
+        log("Terminating cancelPendingInstalls")
     }
 
     private fun log(message: String) {

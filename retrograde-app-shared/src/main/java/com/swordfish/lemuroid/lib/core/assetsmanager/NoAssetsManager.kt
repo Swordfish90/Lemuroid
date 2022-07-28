@@ -8,13 +8,11 @@ import io.reactivex.Completable
 
 class NoAssetsManager : CoreID.AssetsManager {
 
-    override fun clearAssets(directoriesManager: DirectoriesManager) = Completable.complete()
+    override suspend fun clearAssets(directoriesManager: DirectoriesManager) { }
 
-    override fun retrieveAssetsIfNeeded(
+    override suspend fun retrieveAssetsIfNeeded(
         coreUpdaterApi: CoreUpdater.CoreManagerApi,
         directoriesManager: DirectoriesManager,
         sharedPreferences: SharedPreferences
-    ): Completable {
-        return Completable.complete()
-    }
+    ) { }
 }

@@ -125,7 +125,7 @@ class TiltSensor(context: Context) : SensorEventListener {
     }
 
     private fun chooseBestAngleRepresentation(x: Float, offset: Float): Float {
-        return sequenceOf(x, x + offset, x - offset).minBy { abs(it) }!!
+        return sequenceOf(x, x + offset, x - offset).minByOrNull { abs(it) }!!
     }
 
     private fun applyDeadZone(x: Float, deadzone: Float): Float {

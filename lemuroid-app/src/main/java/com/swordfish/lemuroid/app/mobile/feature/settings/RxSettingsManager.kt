@@ -11,6 +11,8 @@ import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 import kotlin.math.roundToInt
 
+// TODO COROUTINES Get rid of this as soon as the migration is complete.
+@Deprecated("We are migrating towards Coroutines/Flow. Use FlowSettingsManager")
 class RxSettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
 
     private val rxSharedPreferences = Single.fromCallable {

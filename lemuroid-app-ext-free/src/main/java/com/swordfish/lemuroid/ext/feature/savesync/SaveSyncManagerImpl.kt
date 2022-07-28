@@ -23,7 +23,7 @@ class SaveSyncManagerImpl(
 
     override fun getConfigInfo(): String = ""
 
-    override fun sync(cores: Set<CoreID>) = Completable.complete()
+    override suspend fun sync(cores: Set<CoreID>) { }
 
     override fun computeSavesSpace() = ""
 

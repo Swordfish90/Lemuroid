@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.shared.savesync
 
 import android.content.Context
 import androidx.work.Constraints
+import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
@@ -10,11 +11,10 @@ import androidx.work.ListenableWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.RxWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.FlowSettingsManager
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
@@ -23,52 +23,57 @@ import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
-    RxWorker(context, workerParams) {
+    CoroutineWorker(context, workerParams) {
 
-    @Inject lateinit var saveSyncManager: SaveSyncManager
-    @Inject lateinit var settingsManager: RxSettingsManager
+    @Inject
+    lateinit var saveSyncManager: SaveSyncManager
+    @Inject
+    lateinit var settingsManager: FlowSettingsManager
 
-    override fun createWork(): Single<Result> {
+    override suspend fun doWork(): Result {
         AndroidWorkerInjection.inject(this)
 
-        if (!saveSyncManager.isSupported() || !saveSyncManager.isConfigured())
-            return Single.just(Result.success())
+        if (!shouldPerformSaveSync()) {
+            return Result.success()
+        }
 
-        return settingsManager.syncSaves
-            .filter { it }
-            .flatMapCompletable {
-                shouldPerformSync()
-                    .filter { it }
-                    .doOnSuccess { displayNotification() }
-                    .flatMapSingle { settingsManager.syncStatesCores }
-                    .flatMapCompletable { coreNames ->
-                        val coresToSync = coreNames.mapNotNull { findByName(it) }.toSet()
-                        saveSyncManager.sync(coresToSync)
-                    }
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnError { e -> Timber.e(e, "Error in saves sync") }
-            .onErrorComplete()
-            .andThen(Single.just(Result.success()))
+        displayNotification()
+
+        val coresToSync = settingsManager.syncStatesCores()
+            .mapNotNull { findByName(it) }
+            .toSet()
+
+        try {
+            saveSyncManager.sync(coresToSync)
+        } catch (e: Throwable) {
+            Timber.e(e, "Error in saves sync")
+        }
+
+        return Result.success()
     }
 
-    override fun getBackgroundScheduler(): Scheduler {
-        return Schedulers.io()
+    private suspend fun shouldPerformSaveSync(): Boolean {
+        val conditionsToRunThisWork = flow {
+            emit(saveSyncManager.isSupported())
+            emit(saveSyncManager.isConfigured())
+            emit(settingsManager.syncSaves())
+            emit(shouldScheduleThisSync())
+        }
+
+        return conditionsToRunThisWork.firstOrNull { !it } ?: true
     }
 
-    private fun shouldPerformSync(): Single<Boolean> {
+    private suspend fun shouldScheduleThisSync(): Boolean {
         val isAutoSync = inputData.getBoolean(IS_AUTO, false)
         val isManualSync = !isAutoSync
-        return settingsManager.autoSaveSync
-            .map { it && isAutoSync || isManualSync }
+        return settingsManager.autoSaveSync() && isAutoSync || isManualSync
     }
 
     private fun displayNotification() {

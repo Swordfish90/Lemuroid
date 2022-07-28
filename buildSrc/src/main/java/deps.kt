@@ -12,7 +12,7 @@ object deps {
         const val dagger          = "2.19"
         const val gms             = "17.0.0"
         const val koptional       = "1.7.0"
-        const val kotlin          = "1.7.10"
+        const val kotlin          = "1.6.21"
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
         const val work            = "2.7.1"
@@ -21,8 +21,8 @@ object deps {
         const val lifecycle       = "2.3.1"
         const val leanback        = "1.1.0-rc01"
         const val googleApiClient = "1.32.1"
-        const val paging          = "3.0.1"
-        const val room            = "2.3.0"
+        const val paging          = "3.1.1"
+        const val room            = "2.4.2"
         const val epoxy           = "4.6.3-vinay-compose"
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.0"
@@ -69,6 +69,7 @@ object deps {
                 const val compiler = "androidx.room:room-compiler:${versions.room}"
                 const val runtime = "androidx.room:room-runtime:${versions.room}"
                 const val rxjava2 = "androidx.room:room-rxjava2:${versions.room}"
+                const val paging = "androidx.room:room-paging:${versions.room}"
                 const val ktx = "androidx.room:room-ktx:${versions.room}"
             }
             object fragment {
@@ -81,8 +82,6 @@ object deps {
             object work {
                 const val runtime = "androidx.work:work-runtime:${versions.work}"
                 const val runtimeKtx = "androidx.work:work-runtime-ktx:${versions.work}"
-                const val rxjava2 ="androidx.work:work-rxjava2:${versions.work}"
-                const val multiprocess ="androidx.work:work-multiprocess:${versions.work}"
             }
         }
         object autodispose {
@@ -116,9 +115,12 @@ object deps {
             const val processor = "com.airbnb.android:epoxy-processor:${versions.epoxy}"
         }
         object play {
-            const val core = "com.google.android.play:core:1.10.0"
-            const val coreKtx = "com.google.android.play:core-ktx:1.8.1"
+            const val review = "com.google.android.play:review:2.0.0"
+            const val reviewKtx = "com.google.android.play:review-ktx:2.0.0"
+            const val featureDelivery = "com.google.android.play:feature-delivery:2.0.0"
+            const val featureDeliveryKtx = "com.google.android.play:feature-delivery-ktx:2.0.0"
             const val playServices = "com.google.android.gms:play-services-auth:17.0.0"
+            const val coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
         }
         object gdrive {
             const val apiClient            = "com.google.api-client:google-api-client:${versions.googleApiClient}"
@@ -141,6 +143,7 @@ object deps {
         const val rxKotlin2                = "io.reactivex.rxjava2:rxkotlin:2.4.0"
         const val rxPermissions2           = "com.github.tbruyelle:rxpermissions:0.10.2"
         const val rxPreferences            = "com.f2prateek.rx.preferences2:rx-preferences:2.0.1"
+        const val flowPreferences          = "com.fredporciuncula:flow-preferences:1.8.0"
         const val rxRelay2                 = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
         const val material                 = "com.google.android.material:material:1.6.1"

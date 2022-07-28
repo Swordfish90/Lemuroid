@@ -11,7 +11,7 @@ interface SaveSyncManager {
     fun isConfigured(): Boolean
     fun getLastSyncInfo(): String
     fun getConfigInfo(): String
-    fun sync(cores: Set<CoreID>): Completable
+    suspend fun sync(cores: Set<CoreID>)
     fun computeSavesSpace(): String
     fun computeStatesSpace(core: CoreID): String
 }

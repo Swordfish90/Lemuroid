@@ -8,6 +8,8 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import timber.log.Timber
 import java.io.File
@@ -15,27 +17,28 @@ import java.util.zip.ZipInputStream
 
 class PPSSPPAssetsManager : CoreID.AssetsManager {
 
-    override fun clearAssets(directoriesManager: DirectoriesManager) = Completable.fromAction {
+    override suspend fun clearAssets(directoriesManager: DirectoriesManager) {
         getAssetsDirectory(directoriesManager).deleteRecursively()
     }
 
-    override fun retrieveAssetsIfNeeded(
+    override suspend fun retrieveAssetsIfNeeded(
         coreUpdaterApi: CoreUpdater.CoreManagerApi,
         directoriesManager: DirectoriesManager,
         sharedPreferences: SharedPreferences
-    ): Completable {
+    ) {
+        if (!updatedRequested(directoriesManager, sharedPreferences)) {
+            return
+        }
 
-        return updatedRequested(directoriesManager, sharedPreferences)
-            .filter { it }
-            .flatMapCompletable {
-                coreUpdaterApi.downloadZip(PPSSPP_ASSETS_URL.toString())
-                    .doOnSuccess { handleSuccess(directoriesManager, it, sharedPreferences) }
-                    .doOnError { getAssetsDirectory(directoriesManager).deleteRecursively() }
-                    .ignoreElement()
-            }
+        try {
+            val response = coreUpdaterApi.downloadZip(PPSSPP_ASSETS_URL.toString())
+            handleSuccess(directoriesManager, response, sharedPreferences)
+        } catch (e: Throwable) {
+            getAssetsDirectory(directoriesManager).deleteRecursively()
+        }
     }
 
-    private fun handleSuccess(
+    private suspend fun handleSuccess(
         directoriesManager: DirectoriesManager,
         response: Response<ZipInputStream>,
         sharedPreferences: SharedPreferences
@@ -65,23 +68,23 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
             .commit()
     }
 
-    private fun updatedRequested(
+    private suspend fun updatedRequested(
         directoriesManager: DirectoriesManager,
         sharedPreferences: SharedPreferences
-    ): Single<Boolean> {
-        val directoryExists = Single.fromCallable {
-            getAssetsDirectory(directoriesManager).exists()
-        }
+    ): Boolean = withContext(Dispatchers.IO) {
+        val directoryExists = getAssetsDirectory(directoriesManager).exists()
 
-        val hasCurrentVersion = Single
-            .fromCallable { sharedPreferences.getString(PPSSPP_ASSETS_VERSION_KEY, "none") }
-            .map { it == PPSSPP_ASSETS_VERSION }
+        val currentVersion = sharedPreferences.getString(PPSSPP_ASSETS_VERSION_KEY, "none")
+        val hasCurrentVersion = currentVersion == PPSSPP_ASSETS_VERSION
 
-        return Singles.zip(directoryExists, hasCurrentVersion) { a, b -> !a || !b }
+        !directoryExists || !hasCurrentVersion
     }
 
-    private fun getAssetsDirectory(directoriesManager: DirectoriesManager) =
-        File(directoriesManager.getSystemDirectory(), PPSSPP_ASSETS_FOLDER_NAME)
+    private suspend fun getAssetsDirectory(directoriesManager: DirectoriesManager): File {
+        return withContext(Dispatchers.IO) {
+            File(directoriesManager.getSystemDirectory(), PPSSPP_ASSETS_FOLDER_NAME)
+        }
+    }
 
     companion object {
         const val PPSSPP_ASSETS_VERSION = "1.12"

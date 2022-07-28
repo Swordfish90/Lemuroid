@@ -21,7 +21,6 @@ dependencies {
 
     implementation(deps.libs.arch.work.runtime)
     implementation(deps.libs.arch.work.runtimeKtx)
-    implementation(deps.libs.arch.work.rxjava2)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.leanback.leanbackPreference)
     implementation(deps.libs.androidx.ktx.collection)
@@ -32,6 +31,7 @@ dependencies {
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.room.rxjava2)
     implementation(deps.libs.androidx.room.ktx)
+    implementation(deps.libs.androidx.room.paging)
     implementation(deps.libs.androidx.documentfile)
     implementation(deps.libs.autodispose.core)
     implementation(deps.libs.dagger.android.core)

@@ -25,6 +25,7 @@ import androidx.room.Room
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
+import com.swordfish.lemuroid.app.mobile.feature.settings.FlowSettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
@@ -359,6 +360,12 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun rxSettingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
             RxSettingsManager(context, sharedPreferences)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun flowSettingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+            FlowSettingsManager(context, sharedPreferences)
 
         @Provides
         @PerApp
