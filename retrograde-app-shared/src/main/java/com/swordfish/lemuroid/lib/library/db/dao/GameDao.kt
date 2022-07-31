@@ -29,26 +29,11 @@ import androidx.room.Update
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
-import org.intellij.lang.annotations.Language
 
 @Dao
 interface GameDao {
-
-    @Language("RoomSql")
-    @Query(
-        """
-        SELECT
-            count(*) totalCount,
-            sum(CASE WHEN isFavorite = 1 THEN 1 ELSE 0 END) favoritesCount,
-            sum(CASE WHEN lastPlayedAt IS NOT NULL THEN 1 ELSE 0 END) recentsCount
-        FROM games
-        """
-    )
-    fun selectCounts(): Single<GameLibraryCounts>
 
     @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
     fun selectAll(): PagingSource<Int, Game>
@@ -73,26 +58,26 @@ interface GameDao {
         SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
         """
     )
-    fun selectFirstUnfavoriteRecents(limit: Int): LiveData<List<Game>>
+    fun selectFirstUnfavoriteRecents(limit: Int): Flow<List<Game>>
 
     @Query(
         """
         SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
         """
     )
-    fun rxSelectFirstUnfavoriteRecents(limit: Int): Observable<List<Game>>
+    fun rxSelectFirstUnfavoriteRecents(limit: Int): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
-    fun rxSelectFirstFavoritesRecents(limit: Int): Observable<List<Game>>
+    fun rxSelectFirstFavoritesRecents(limit: Int): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
     suspend fun asyncSelectFirstRecents(limit: Int): List<Game>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
-    fun selectFirstFavorites(limit: Int): LiveData<List<Game>>
+    fun selectFirstFavorites(limit: Int): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NULL LIMIT :limit")
-    fun selectFirstNotPlayed(limit: Int): LiveData<List<Game>>
+    fun selectFirstNotPlayed(limit: Int): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY title ASC, id DESC")
     fun selectBySystem(systemId: String): PagingSource<Int, Game>
@@ -105,9 +90,6 @@ interface GameDao {
 
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
     suspend fun asyncSelectSystems(): List<String>
-
-    @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
-    fun selectSystemsWithCount(): Observable<List<SystemCount>>
 
     @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
     fun asyncSelectSystemsWithCount(): Flow<List<SystemCount>>
@@ -129,8 +111,6 @@ interface GameDao {
 }
 
 data class SystemCount(val systemId: String, val count: Int)
-
-data class GameLibraryCounts(val totalCount: Long, val favoritesCount: Long, val recentsCount: Long)
 
 fun GameDao.updateAsync(game: Game): Completable = Completable.fromCallable {
     update(game)

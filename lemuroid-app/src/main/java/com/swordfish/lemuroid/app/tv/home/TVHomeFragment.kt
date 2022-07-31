@@ -15,7 +15,10 @@ import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -28,32 +31,35 @@ import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
-import com.swordfish.lemuroid.app.utils.livedata.toObservable
-import com.swordfish.lemuroid.common.rx.RXUtils
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
-import com.swordfish.lemuroid.lib.util.subscribeBy
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
 
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
-    @Inject lateinit var gameInteractor: GameInteractor
-    @Inject lateinit var coverLoader: CoverLoader
-    @Inject lateinit var saveSyncManager: SaveSyncManager
+    @Inject
+    lateinit var retrogradeDb: RetrogradeDatabase
+    @Inject
+    lateinit var gameInteractor: GameInteractor
+    @Inject
+    lateinit var coverLoader: CoverLoader
+    @Inject
+    lateinit var saveSyncManager: SaveSyncManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             when (item) {
                 is Game -> gameInteractor.onGamePlay(item)
@@ -100,60 +106,51 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
-        val homeViewModel = ViewModelProvider(this, factory).get(TVHomeViewModel::class.java)
+        val homeViewModel = ViewModelProvider(this, factory)[TVHomeViewModel::class.java]
 
-        val indexingProgress = homeViewModel.indexingInProgress.toObservable(this)
-        val directoryScanInProgress = homeViewModel.directoryScanInProgress.toObservable(this)
-
-        val entriesObservable = RXUtils.combineLatest(
-            homeViewModel.favoritesGames,
-            homeViewModel.recentGames,
-            homeViewModel.availableSystems,
-            indexingProgress,
-            directoryScanInProgress
-        )
-
-        entriesObservable
-            .debounce(50, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
-            .subscribeBy { (favoriteGames, recentGames, systems, indexInProgress, scanInProgress) ->
-                update(favoriteGames, recentGames, systems, indexInProgress, scanInProgress)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                homeViewModel.getViewStates()
+                    .collect { update(it) }
             }
+        }
     }
 
-    private fun update(
-        favoritesGames: List<Game>,
-        recentGames: List<Game>,
-        metaSystems: List<MetaSystemInfo>,
-        indexInProgress: Boolean,
-        scanInProgress: Boolean
-    ) {
+    private fun update(viewState: TVHomeViewModel.HomeViewState) {
         val adapterHasFavorites = findAdapterById<ObjectAdapter>(FAVORITES_ADAPTER) != null
         val adapterHasGames = findAdapterById<ObjectAdapter>(RECENTS_ADAPTER) != null
         val adapterHasSystems = findAdapterById<ObjectAdapter>(SYSTEM_ADAPTER) != null
 
-        val favoritesChanged = adapterHasFavorites != favoritesGames.isNotEmpty()
-        val recentsChanged = adapterHasGames != recentGames.isNotEmpty()
-        val systemsChanged = adapterHasSystems != metaSystems.isNotEmpty()
+        val favoritesChanged = adapterHasFavorites != viewState.favoritesGames.isNotEmpty()
+        val recentsChanged = adapterHasGames != viewState.recentGames.isNotEmpty()
+        val systemsChanged = adapterHasSystems != viewState.metaSystems.isNotEmpty()
 
         if (favoritesChanged || recentsChanged || systemsChanged) {
-            recreateAdapter(favoritesGames.isNotEmpty(), recentGames.isNotEmpty(), metaSystems.isNotEmpty())
+            recreateAdapter(
+                viewState.favoritesGames.isNotEmpty(),
+                viewState.recentGames.isNotEmpty(),
+                viewState.metaSystems.isNotEmpty()
+            )
         }
 
         findAdapterById<ArrayObjectAdapter>(FAVORITES_ADAPTER)?.apply {
-            if (favoritesGames.size <= TVHomeViewModel.CAROUSEL_MAX_ITEMS) {
-                setItems(favoritesGames, LEANBACK_MULTI_DIFF_CALLBACK)
+            if (viewState.favoritesGames.size <= TVHomeViewModel.CAROUSEL_MAX_ITEMS) {
+                setItems(viewState.favoritesGames, LEANBACK_MULTI_DIFF_CALLBACK)
             } else {
-                val allItems = favoritesGames.subList(0, TVHomeViewModel.CAROUSEL_MAX_ITEMS) +
+                val allItems = viewState.favoritesGames.subList(0, TVHomeViewModel.CAROUSEL_MAX_ITEMS) +
                     listOf(TVSetting(TVSettingType.SHOW_ALL_FAVORITES))
                 setItems(allItems, LEANBACK_MULTI_DIFF_CALLBACK)
             }
         }
-        findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)?.setItems(recentGames, LEANBACK_GAME_DIFF_CALLBACK)
-        findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)?.setItems(metaSystems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+
+        findAdapterById<ArrayObjectAdapter>(RECENTS_ADAPTER)
+            ?.setItems(viewState.recentGames, LEANBACK_GAME_DIFF_CALLBACK)
+
+        findAdapterById<ArrayObjectAdapter>(SYSTEM_ADAPTER)
+            ?.setItems(viewState.metaSystems, LEANBACK_SYSTEM_DIFF_CALLBACK)
+
         findAdapterById<ArrayObjectAdapter>(SETTINGS_ADAPTER)?.setItems(
-            buildSettingsRowItems(indexInProgress, scanInProgress),
+            buildSettingsRowItems(viewState.indexInProgress, viewState.scanInProgress),
             LEANBACK_SETTING_DIFF_CALLBACK
         )
     }
@@ -287,11 +284,17 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         val LEANBACK_SYSTEM_DIFF_CALLBACK = object : DiffCallback<MetaSystemInfo>() {
-            override fun areContentsTheSame(oldInfo: MetaSystemInfo, newInfo: MetaSystemInfo): Boolean {
+            override fun areContentsTheSame(
+                oldInfo: MetaSystemInfo,
+                newInfo: MetaSystemInfo
+            ): Boolean {
                 return oldInfo == newInfo
             }
 
-            override fun areItemsTheSame(oldInfo: MetaSystemInfo, newInfo: MetaSystemInfo): Boolean {
+            override fun areItemsTheSame(
+                oldInfo: MetaSystemInfo,
+                newInfo: MetaSystemInfo
+            ): Boolean {
                 return oldInfo.metaSystem.name == newInfo.metaSystem.name
             }
         }
