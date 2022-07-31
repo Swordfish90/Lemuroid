@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.systems
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.DynamicGridLayoutManager
@@ -11,11 +12,7 @@ import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
-import com.swordfish.lemuroid.lib.util.subscribeBy
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.autoDispose
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MetaSystemsFragment : RecyclerViewFragment() {
@@ -32,18 +29,16 @@ class MetaSystemsFragment : RecyclerViewFragment() {
         metaSystemsViewModel = ViewModelProvider(
             this,
             MetaSystemsViewModel.Factory(retrogradeDb, requireContext().applicationContext)
-        )
-            .get(MetaSystemsViewModel::class.java)
+        )[MetaSystemsViewModel::class.java]
 
         metaSystemsAdapter = MetaSystemsAdapter { navigateToGames(it) }
-        metaSystemsViewModel.availableMetaSystems
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
-            .subscribeBy {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            metaSystemsViewModel.availableMetaSystems.collect {
                 metaSystemsAdapter?.submitList(it)
                 emptyView?.setVisibleOrGone(it.isEmpty())
             }
+        }
 
         recyclerView?.apply {
             this.adapter = metaSystemsAdapter

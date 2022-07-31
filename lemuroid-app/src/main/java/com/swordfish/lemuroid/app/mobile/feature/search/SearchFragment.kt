@@ -1,30 +1,29 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.cachedIn
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jakewharton.rxbinding3.appcompat.queryTextChanges
-import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
-import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.android.lifecycle.autoDispose
-import com.uber.autodispose.autoDispose
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
+import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchFragment : RecyclerViewFragment() {
@@ -35,38 +34,38 @@ class SearchFragment : RecyclerViewFragment() {
 
     private lateinit var searchViewModel: SearchViewModel
 
-    private val searchRelay: PublishRelay<String> = PublishRelay.create()
+    private val searchDebounce = MutableStateFlow("")
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.search_menu, menu)
-        setupSearchMenuItem(menu)
-    }
-
+    @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel = ViewModelProvider(this, SearchViewModel.Factory(retrogradeDb))
-            .get(SearchViewModel::class.java)
+        searchViewModel = ViewModelProvider(
+            this,
+            SearchViewModel.Factory(retrogradeDb)
+        )[SearchViewModel::class.java]
+
+        initializeMenuProvider()
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor, coverLoader)
-        searchViewModel.searchResults.cachedIn(lifecycle).observe(viewLifecycleOwner) {
-            gamesAdapter.submitData(lifecycle, it)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                searchViewModel.searchResults
+                    .collect { gamesAdapter.submitData(viewLifecycleOwner.lifecycle, it) }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                searchDebounce.debounce(1000)
+                    .collect { searchViewModel.queryString.value = it }
+            }
         }
 
         gamesAdapter.addLoadStateListener {
             emptyView?.setVisibleOrGone(gamesAdapter.itemCount == 0)
         }
-
-        searchRelay
-            .distinctUntilChanged()
-            .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
-            .subscribe { searchViewModel.queryString.postValue(it) }
 
         recyclerView?.apply {
             adapter = gamesAdapter
@@ -74,29 +73,55 @@ class SearchFragment : RecyclerViewFragment() {
         }
     }
 
-    private fun setupSearchMenuItem(menu: Menu) {
-        val searchItem = menu.findItem(R.id.action_search)
-        searchItem.expandActionView()
-        searchItem.setOnActionExpandListener(
-            object : MenuItem.OnActionExpandListener {
-                override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                    activity?.onBackPressed()
-                    return true
-                }
+    private fun initializeMenuProvider() {
+        val menuHost: MenuHost = requireActivity() as MenuHost
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {}
 
-                override fun onMenuItemActionExpand(item: MenuItem?) = true
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return true
             }
-        )
+
+            override fun onMenuClosed(menu: Menu) {}
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.search_menu, menu)
+
+                val searchItem = menu.findItem(R.id.action_search)
+                setupSearchMenuItem(searchItem)
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun setupSearchMenuItem(searchItem: MenuItem) {
+        val onExpandListener = object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                activity?.onBackPressed()
+                return true
+            }
+
+            override fun onMenuItemActionExpand(item: MenuItem?) = true
+        }
+        searchItem.setOnActionExpandListener(onExpandListener)
+
+        searchItem.expandActionView()
 
         val searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Integer.MAX_VALUE
+
+        val onQueryTextListener = object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                searchDebounce.value = newText
+                return true
+            }
+        }
+        searchView.setOnQueryTextListener(onQueryTextListener)
         searchView.setQuery(searchViewModel.queryString.value, false)
-        searchView.queryTextChanges()
-            .debounce(1, TimeUnit.SECONDS)
-            .map { it.toString() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(this, Lifecycle.Event.ON_DESTROY)
-            .subscribe(searchRelay)
     }
 
     @dagger.Module

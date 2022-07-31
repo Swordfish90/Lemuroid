@@ -32,6 +32,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
 import org.intellij.lang.annotations.Language
 
 @Dao
@@ -107,6 +108,9 @@ interface GameDao {
 
     @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
     fun selectSystemsWithCount(): Observable<List<SystemCount>>
+
+    @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
+    fun asyncSelectSystemsWithCount(): Flow<List<SystemCount>>
 
     @Insert
     fun insert(game: Game)

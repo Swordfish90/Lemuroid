@@ -17,15 +17,15 @@ object deps {
         const val retrofit        = "2.9.0"
         const val work            = "2.7.1"
         const val navigation      = "2.3.5"
-        const val rxbindings      = "3.1.0"
-        const val lifecycle       = "2.3.1"
+        const val lifecycle       = "2.5.1"
         const val leanback        = "1.1.0-rc01"
         const val googleApiClient = "1.32.1"
         const val paging          = "3.1.1"
         const val room            = "2.4.2"
         const val epoxy           = "4.6.3-vinay-compose"
         const val serialization   = "1.2.2"
-        const val fragment        = "1.5.0"
+        const val fragment        = "1.5.1"
+        const val activity        = "1.5.1"
         const val libretrodroid   = "0.8.1"
         const val radialgamepad   = "1.1.0"
     }
@@ -33,9 +33,9 @@ object deps {
     object libs {
         object androidx {
             object appcompat {
-                const val appcompat = "androidx.appcompat:appcompat:1.3.1"
+                const val appcompat = "androidx.appcompat:appcompat:1.4.2"
                 const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
-                const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.0"
+                const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
             }
             object leanback {
                 const val leanback = "androidx.leanback:leanback:${versions.leanback}"
@@ -44,7 +44,8 @@ object deps {
                 const val tvProvider = "androidx.tvprovider:tvprovider:1.0.0"
             }
             object ktx {
-                const val core = "androidx.core:core-ktx:1.6.0"
+                const val core = "androidx.core:core-ktx:1.8.0"
+                const val coreKtx = "androidx.core:core-ktx:1.8.0"
                 const val collection = "androidx.collection:collection-ktx:1.1.0"
             }
             object lifecycle {
@@ -58,7 +59,6 @@ object deps {
             object paging {
                 const val common = "androidx.paging:paging-common:${versions.paging}"
                 const val runtime = "androidx.paging:paging-runtime:${versions.paging}"
-                const val rxjava2 = "androidx.paging:paging-rxjava2-ktx:${versions.paging}"
             }
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
@@ -77,6 +77,10 @@ object deps {
                 const val ktx = "androidx.fragment:fragment-ktx:${versions.fragment}"
             }
             const val documentfile = "androidx.documentfile:documentfile:1.0.1"
+            object activity {
+                const val activity = "androidx.activity:activity:${versions.activity}"
+                const val activityKtx = "androidx.activity:activity-ktx:${versions.activity}"
+            }
         }
         object arch {
             object work {
@@ -99,10 +103,6 @@ object deps {
                 const val processor = "com.google.dagger:dagger-android-processor:${versions.dagger}"
                 const val support = "com.google.dagger:dagger-android-support:${versions.dagger}"
             }
-        }
-        object rxbindings {
-            const val core = "com.jakewharton.rxbinding3:rxbinding-core:${versions.rxbindings}"
-            const val appcompat = "com.jakewharton.rxbinding3:rxbinding-appcompat:${versions.rxbindings}"
         }
         object kotlin {
             const val stdlib = "stdlib"

@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.lib.savesync
 
 import android.app.Activity
 import com.swordfish.lemuroid.lib.library.CoreID
-import io.reactivex.Completable
 
 interface SaveSyncManager {
     fun getProvider(): String

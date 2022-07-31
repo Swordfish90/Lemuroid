@@ -1,13 +1,12 @@
 package com.swordfish.lemuroid.app.mobile.feature.favorites
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.swordfish.lemuroid.common.paging.buildLiveDataPaging
+import com.swordfish.lemuroid.common.paging.buildFlowPaging
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import kotlinx.coroutines.flow.Flow
 
 class FavoritesViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
 
@@ -17,6 +16,6 @@ class FavoritesViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
         }
     }
 
-    val favorites: LiveData<PagingData<Game>> =
-        buildLiveDataPaging(20, viewModelScope) { retrogradeDb.gameDao().selectFavorites() }
+    val favorites: Flow<PagingData<Game>> =
+        buildFlowPaging(20) { retrogradeDb.gameDao().selectFavorites() }
 }
