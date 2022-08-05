@@ -29,11 +29,8 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.WindowInsets
 import androidx.constraintlayout.widget.ConstraintSet
-import com.gojuno.koptional.None
-import com.gojuno.koptional.Optional
-import com.gojuno.koptional.rxjava2.filterSome
-import com.gojuno.koptional.toOptional
-import com.jakewharton.rxrelay2.BehaviorRelay
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.tilt.CrossTiltTracker
@@ -42,16 +39,17 @@ import com.swordfish.lemuroid.app.mobile.feature.tilt.TiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.TwoButtonsTiltTracker
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
+import com.swordfish.lemuroid.common.flow.batch
+import com.swordfish.lemuroid.common.flow.launchOnState
+import com.swordfish.lemuroid.common.flow.safeCollect
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
+import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.math.linearInterpolation
-import com.swordfish.lemuroid.common.rx.BehaviorRelayNullableProperty
-import com.swordfish.lemuroid.common.rx.BehaviorRelayProperty
-import com.swordfish.lemuroid.common.rx.RXUtils
+import com.swordfish.lemuroid.common.rx.MutableStateProperty
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
 import com.swordfish.lemuroid.lib.controller.TouchControllerSettingsManager
-import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.radialgamepad.library.RadialGamePad
 import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
@@ -61,23 +59,34 @@ import com.swordfish.radialgamepad.library.haptics.HapticConfig
 import com.swordfish.touchinput.radial.LemuroidTouchConfigs
 import com.swordfish.touchinput.radial.LemuroidTouchOverlayThemes
 import com.swordfish.touchinput.radial.sensors.TiltSensor
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDispose
 import dagger.Lazy
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.Observables
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.rx2.asFlow
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class GameActivity : BaseGameActivity() {
-    @Inject lateinit var sharedPreferences: Lazy<SharedPreferences>
+    @Inject
+    lateinit var sharedPreferences: Lazy<SharedPreferences>
 
     private lateinit var horizontalDivider: View
     private lateinit var leftVerticalDivider: View
@@ -91,20 +100,20 @@ class GameActivity : BaseGameActivity() {
     private var leftPad: RadialGamePad? = null
     private var rightPad: RadialGamePad? = null
 
-    private val virtualControllerDisposables = CompositeDisposable()
+    private val virtualControllerJobs = mutableSetOf<Job>()
 
-    private val touchControllerConfigObservable = BehaviorRelay.createDefault<Optional<ControllerConfig>>(None)
+    private val touchControllerConfigObservable = MutableStateFlow<ControllerConfig?>(null)
     private var touchControllerConfig: ControllerConfig?
-    by BehaviorRelayNullableProperty(touchControllerConfigObservable)
+        by MutableStateProperty(touchControllerConfigObservable)
 
-    private val padSettingsObservable = BehaviorRelay.createDefault(TouchControllerSettingsManager.Settings())
+    private val padSettingsObservable = MutableStateFlow(TouchControllerSettingsManager.Settings())
     private var padSettings: TouchControllerSettingsManager.Settings
-    by BehaviorRelayProperty(padSettingsObservable)
+        by MutableStateProperty(padSettingsObservable)
 
-    private val insetsObservable = BehaviorRelay.createDefault<Optional<Rect>>(None)
+    private val insetsState = MutableStateFlow<Rect?>(null)
 
-    private val orientationObservable = BehaviorRelay.createDefault(Configuration.ORIENTATION_PORTRAIT)
-    private var orientation: Int by BehaviorRelayProperty(orientationObservable)
+    private val orientationObservable = MutableStateFlow(Configuration.ORIENTATION_PORTRAIT)
+    private var orientation: Int by MutableStateProperty(orientationObservable)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,28 +126,69 @@ class GameActivity : BaseGameActivity() {
         leftVerticalDivider = findViewById(R.id.leftverticaldivider)
         rightVerticalDivider = findViewById(R.id.rightverticaldivider)
 
-        initializeInsetsObservable()
+        initializeInsetsState()
 
         startGameService()
 
-        setupVirtualGamePadVisibility()
-        setupVirtualGamePads()
+        initializeFlows()
+    }
 
-        RXUtils.combineLatest(
-            touchControllerConfigObservable.filterSome(),
-            orientationObservable,
-            isVirtualGamePadVisible(),
-            padSettingsObservable,
-            insetsObservable.filterSome()
-        )
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribeBy(Timber::e) { (config, orientation, virtualGamePadVisible, padSettings, insets) ->
-                LayoutHandler().updateLayout(config, padSettings, orientation, virtualGamePadVisible, insets)
+    private fun initializeFlows() {
+        launchOnState(Lifecycle.State.CREATED) {
+            initializeVirtualGamePadFlow()
+        }
+
+        launchOnState(Lifecycle.State.CREATED) {
+            initializeLayoutChangeFlow()
+        }
+
+        launchOnState(Lifecycle.State.CREATED) {
+            initializeTiltSensitivityFlow()
+        }
+
+        launchOnState(Lifecycle.State.CREATED) {
+            initializeVirtualControlsVisibilityFlow()
+        }
+
+        launchOnState(Lifecycle.State.RESUMED) {
+            initializeTiltEventsFlow()
+        }
+    }
+
+    private suspend fun initializeVirtualControlsVisibilityFlow() {
+        isVirtualGamePadVisible()
+            .safeCollect {
+                leftGamePadContainer.setVisibleOrGone(it)
+                rightGamePadContainer.setVisibleOrGone(it)
             }
     }
 
-    private fun initializeInsetsObservable() {
+    private suspend fun initializeLayoutChangeFlow() {
+        val combinedFlow = combine(
+            touchControllerConfigObservable.filterNotNull(),
+            orientationObservable,
+            isVirtualGamePadVisible(),
+            padSettingsObservable,
+            insetsState.filterNotNull(),
+            ::NTuple5
+        )
+        combinedFlow.safeCollect { (config, orientation, virtualGamePadVisible, padSettings, insets) ->
+            LayoutHandler().updateLayout(config, padSettings, orientation, virtualGamePadVisible, insets)
+        }
+    }
+
+    private suspend fun initializeTiltEventsFlow() {
+        tiltSensor
+            .getTiltEvents()
+            .safeCollect { sendTiltEvent(it) }
+    }
+
+    private suspend fun initializeTiltSensitivityFlow() {
+        val sensitivity = flowSettingsManager.tiltSensitivity()
+        tiltSensor.setSensitivity(sensitivity)
+    }
+
+    private fun initializeInsetsState() {
         mainContainerLayout.setOnApplyWindowInsetsListener { _, windowInsets ->
             val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val insets = windowInsets.getInsetsIgnoringVisibility(
@@ -148,43 +198,32 @@ class GameActivity : BaseGameActivity() {
             } else {
                 Rect(0, 0, 0, 0)
             }
-            insetsObservable.accept(result.toOptional())
+            insetsState.value = result
             windowInsets
         }
     }
 
-    private fun setupVirtualGamePads() {
+    private suspend fun initializeVirtualGamePadFlow() {
         val firstGamePad = getControllerType()
-            .map { it[0].toOptional() }
-            .filterSome()
+            .map { it[0] }
+            .filterNotNull()
             .distinctUntilChanged()
 
-        Observables.combineLatest(firstGamePad, orientationObservable)
-            .flatMapCompletable { (pad, orientation) -> setupController(pad, orientation) }
-            .autoDispose(scope())
-            .subscribeBy(Timber::e) { }
-    }
-
-    private fun setupController(controllerConfig: ControllerConfig, orientation: Int): Completable {
-        return settingsManager.hapticFeedbackMode
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess { setupTouchViews(controllerConfig, it, orientation) }
-            .ignoreElement()
-            .observeOn(AndroidSchedulers.mainThread())
-            .andThen(loadVirtualGamePadSettings(controllerConfig, orientation))
-    }
-
-    private fun setupVirtualGamePadVisibility() {
-        isVirtualGamePadVisible()
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribeBy(Timber::e) {
-                leftGamePadContainer.setVisibleOrGone(it)
-                rightGamePadContainer.setVisibleOrGone(it)
+        combine(firstGamePad, orientationObservable, ::Pair)
+            .safeCollect { (pad, orientation) ->
+                setupController(pad, orientation)
             }
     }
 
-    private fun isVirtualGamePadVisible(): Observable<Boolean> {
+    private suspend fun setupController(controllerConfig: ControllerConfig, orientation: Int) {
+        val hapticFeedbackMode = flowSettingsManager.hapticFeedbackMode()
+        withContext(Dispatchers.Main) {
+            setupTouchViews(controllerConfig, hapticFeedbackMode, orientation)
+        }
+        loadVirtualGamePadSettings(controllerConfig, orientation)
+    }
+
+    private fun isVirtualGamePadVisible(): Flow<Boolean> {
         return inputDeviceManager
             .getEnabledInputsObservable()
             .map { it.isEmpty() }
@@ -199,8 +238,15 @@ class GameActivity : BaseGameActivity() {
         orientation = newConfig.orientation
     }
 
-    private fun setupTouchViews(controllerConfig: ControllerConfig, hapticFeedbackType: String, orientation: Int) {
-        virtualControllerDisposables.clear()
+    private fun setupTouchViews(
+        controllerConfig: ControllerConfig,
+        hapticFeedbackType: String,
+        orientation: Int
+    ) {
+        virtualControllerJobs
+            .forEach { it.cancel() }
+        virtualControllerJobs.clear()
+
         leftGamePadContainer.removeAllViews()
         rightGamePadContainer.removeAllViews()
 
@@ -233,8 +279,8 @@ class GameActivity : BaseGameActivity() {
         val rightPad = RadialGamePad(rightConfig, DEFAULT_MARGINS_DP, this)
         rightGamePadContainer.addView(rightPad)
 
-        val virtualPadEvents = Observable.merge(leftPad.events(), rightPad.events())
-            .share()
+        val virtualPadEvents = merge(leftPad.events().asFlow(), rightPad.events().asFlow())
+            .shareIn(lifecycleScope, SharingStarted.Lazily)
 
         setupDefaultActions(virtualPadEvents)
         setupTiltActions(virtualPadEvents)
@@ -266,10 +312,10 @@ class GameActivity : BaseGameActivity() {
         divider.setBackgroundColor(theme.backgroundStrokeColor)
     }
 
-    private fun setupDefaultActions(virtualPadEvents: Observable<Event>) {
-        virtualControllerDisposables.add(
+    private fun setupDefaultActions(virtualPadEvents: Flow<Event>) {
+        val job = lifecycleScope.launch {
             virtualPadEvents
-                .subscribeBy {
+                .safeCollect {
                     when (it) {
                         is Event.Button -> {
                             handleGamePadButton(it)
@@ -279,68 +325,72 @@ class GameActivity : BaseGameActivity() {
                         }
                     }
                 }
-        )
+        }
+        virtualControllerJobs.add(job)
     }
 
-    private fun setupTiltActions(virtualPadEvents: Observable<Event>) {
-        virtualControllerDisposables.add(
+    private fun setupTiltActions(virtualPadEvents: Flow<Event>) {
+        val job1 = lifecycleScope.launch {
             virtualPadEvents
-                .ofType(Event.Gesture::class.java)
-                .subscribeOn(Schedulers.single())
+                .filterIsInstance<Event.Gesture>()
                 .filter { it.type == GestureType.TRIPLE_TAP }
-                .buffer(500, TimeUnit.MILLISECONDS)
+                .batch(Int.MAX_VALUE, 500)
                 .filter { it.isNotEmpty() }
-                .subscribeBy { events ->
+                .safeCollect { events ->
                     handleTripleTaps(events)
                 }
-        )
+        }
 
-        virtualControllerDisposables.add(
+        val job2 = lifecycleScope.launch {
             virtualPadEvents
-                .ofType(Event.Gesture::class.java)
+                .filterIsInstance<Event.Gesture>()
                 .filter { it.type == GestureType.FIRST_TOUCH }
-                .subscribeOn(Schedulers.single())
-                .subscribeBy { event ->
+                .safeCollect { event ->
                     currentTiltTracker?.let { tracker ->
                         if (event.id in tracker.trackedIds()) {
                             stopTrackingId(tracker)
                         }
                     }
                 }
-        )
+        }
+
+        virtualControllerJobs.add(job1)
+        virtualControllerJobs.add(job2)
     }
 
-    private fun setupVirtualMenuActions(virtualPadEvents: Observable<Event>) {
+    private fun setupVirtualMenuActions(virtualPadEvents: Flow<Event>) {
         VirtualLongPressHandler.initializeTheme(this)
 
         val allMenuButtonEvents = virtualPadEvents
-            .ofType(Event.Button::class.java)
+            .filterIsInstance<Event.Button>()
             .filter { it.id == KeyEvent.KEYCODE_BUTTON_MODE }
-            .share()
+            .shareIn(lifecycleScope, SharingStarted.Lazily)
 
         val cancelMenuButtonEvents = allMenuButtonEvents
             .filter { it.action == KeyEvent.ACTION_UP }
             .map { Unit }
 
-        virtualControllerDisposables.add(
+        val job = lifecycleScope.launch {
             allMenuButtonEvents
                 .filter { it.action == KeyEvent.ACTION_DOWN }
-                .concatMapMaybe {
+                .map {
                     VirtualLongPressHandler.displayLoading(
-                        this,
+                        this@GameActivity,
                         R.drawable.ic_menu,
                         cancelMenuButtonEvents
                     )
-                        .doOnSuccess {
-                            displayOptionsDialog()
-                            simulateVirtualGamepadHaptic()
-                        }
                 }
-                .subscribeBy(Timber::e) { }
-        )
+                .filter { it }
+                .safeCollect {
+                    displayOptionsDialog()
+                    simulateVirtualGamepadHaptic()
+                }
+        }
+
+        virtualControllerJobs.add(job)
     }
 
-    private fun handleTripleTaps(events: MutableList<Event.Gesture>) {
+    private fun handleTripleTaps(events: List<Event.Gesture>) {
         val eventsTracker = when (events.map { it.id }.toSet()) {
             setOf(LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK) -> StickTiltTracker(
                 LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK
@@ -379,7 +429,7 @@ class GameActivity : BaseGameActivity() {
 
     override fun onDestroy() {
         stopGameService()
-        virtualControllerDisposables.clear()
+        virtualControllerJobs.clear()
         super.onDestroy()
     }
 
@@ -442,9 +492,9 @@ class GameActivity : BaseGameActivity() {
 
         if (requestCode == DIALOG_REQUEST) {
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
-                displayCustomizationOptions()
-                    .autoDispose(scope())
-                    .subscribe()
+                lifecycleScope.launch {
+                    displayCustomizationOptions()
+                }
             }
         }
     }
@@ -456,17 +506,6 @@ class GameActivity : BaseGameActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        settingsManager.tiltSensitivity
-            .autoDispose(scope())
-            .subscribeBy { tiltSensor.setSensitivity(it) }
-
-        tiltSensor
-            .getTiltEvents()
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribe { sendTiltEvent(it) }
-
         tiltSensor.isAllowedToRun = true
     }
 
@@ -497,17 +536,21 @@ class GameActivity : BaseGameActivity() {
         leftPad?.performHapticFeedback()
     }
 
-    private fun storeVirtualGamePadSettings(controllerConfig: ControllerConfig, orientation: Int): Completable {
+    private suspend fun storeVirtualGamePadSettings(
+        controllerConfig: ControllerConfig,
+        orientation: Int
+    ) {
         val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager(controllerConfig, orientation)
         return virtualGamePadSettingsManager.storeSettings(padSettings)
     }
 
-    private fun loadVirtualGamePadSettings(controllerConfig: ControllerConfig, orientation: Int): Completable {
-        return getVirtualGamePadSettingsManager(controllerConfig, orientation)
-            .retrieveSettings()
-            .toMaybe()
-            .doOnSuccess { padSettings = it }
-            .ignoreElement()
+    private suspend fun loadVirtualGamePadSettings(
+        controllerConfig: ControllerConfig,
+        orientation: Int
+    ) {
+        val virtualGamePadSettingsManager =
+            getVirtualGamePadSettingsManager(controllerConfig, orientation)
+        padSettings = virtualGamePadSettingsManager.retrieveSettings()
     }
 
     private fun getVirtualGamePadSettingsManager(
@@ -528,7 +571,7 @@ class GameActivity : BaseGameActivity() {
         )
     }
 
-    private fun displayCustomizationOptions(): Completable {
+    private suspend fun displayCustomizationOptions() {
         val customizer = TouchControllerCustomizer()
         val initialSettings = TouchControllerCustomizer.Settings(
             padSettings.scale,
@@ -537,18 +580,21 @@ class GameActivity : BaseGameActivity() {
             padSettings.marginY
         )
 
-        return insetsObservable.filterSome()
-            .firstElement()
-            .flatMapObservable { insets ->
-                customizer.displayCustomizationPopup(
-                    this@GameActivity,
-                    layoutInflater,
-                    mainContainerLayout,
-                    insets,
-                    initialSettings
-                )
-            }
-            .doOnNext {
+        val insets = insetsState
+            .filterNotNull()
+            .first()
+
+        findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(true)
+
+        customizer.displayCustomizationPopup(
+            this@GameActivity,
+            layoutInflater,
+            mainContainerLayout,
+            insets,
+            initialSettings
+        )
+            .takeWhile { it !is TouchControllerCustomizer.Event.Close }
+            .onEach {
                 when (it) {
                     is TouchControllerCustomizer.Event.Scale -> {
                         padSettings = padSettings.copy(scale = it.value)
@@ -562,10 +608,10 @@ class GameActivity : BaseGameActivity() {
                     else -> Unit
                 }
             }
-            .doOnSubscribe { findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(true) }
-            .doFinally { findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(false) }
-            .filter { it is TouchControllerCustomizer.Event.Save }
-            .flatMapCompletable { storeVirtualGamePadSettings(touchControllerConfig!!, orientation) }
+            .safeCollect {  }
+
+        storeVirtualGamePadSettings(touchControllerConfig!!, orientation)
+        findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(false)
     }
 
     inner class LayoutHandler {

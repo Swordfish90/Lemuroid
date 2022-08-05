@@ -13,7 +13,7 @@ import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
-import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.LegacyStatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
@@ -23,7 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class TVGameMenuFragment(
-    private val statesManager: StatesManager,
+    private val legacyStatesManager: LegacyStatesManager,
     private val statesPreviewManager: StatesPreviewManager,
     private val inputDeviceManager: InputDeviceManager,
     private val game: Game,
@@ -93,7 +93,7 @@ class TVGameMenuFragment(
         saveScreen?.isEnabled = systemCoreConfig.statesSupported
         loadScreen?.isEnabled = systemCoreConfig.statesSupported
 
-        statesManager.getSavedSlotsInfo(game, systemCoreConfig.coreID)
+        legacyStatesManager.getSavedSlotsInfo(game, systemCoreConfig.coreID)
             .toObservable()
             .flatMap {
                 Observable.fromIterable(it.mapIndexed { index, saveInfo -> index to saveInfo })

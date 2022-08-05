@@ -32,6 +32,7 @@ import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
+import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
@@ -46,6 +47,7 @@ import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManagerImpl
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.core.LegacyCoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.injection.PerActivity
@@ -58,6 +60,7 @@ import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.logging.RxTimberTree
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
+import com.swordfish.lemuroid.lib.saves.LegacyStatesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
@@ -227,6 +230,11 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
+        fun legacyStatesManager(directoriesManager: DirectoriesManager) = LegacyStatesManager(directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
         fun statesManager(directoriesManager: DirectoriesManager) = StatesManager(directoriesManager)
 
         @Provides
@@ -256,7 +264,14 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) = CoreVariablesManager(sharedPreferences)
+        fun legacyCoreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) =
+            LegacyCoreVariablesManager(sharedPreferences)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) =
+            CoreVariablesManager(sharedPreferences)
 
         @Provides
         @PerApp
@@ -286,6 +301,12 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun gamepadsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
             InputDeviceManager(context, sharedPreferences)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun flowInputDeviceManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+            FlowInputDeviceManager(context, sharedPreferences)
 
         @Provides
         @PerApp
@@ -387,10 +408,10 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun rumbleManager(
             context: Context,
-            rxSettingsManager: RxSettingsManager,
-            inputDeviceManager: InputDeviceManager
+            settingsManager: FlowSettingsManager,
+            inputDeviceManager: FlowInputDeviceManager
         ) =
-            RumbleManager(context, rxSettingsManager, inputDeviceManager)
+            RumbleManager(context, settingsManager, inputDeviceManager)
 
         @Provides
         @PerApp

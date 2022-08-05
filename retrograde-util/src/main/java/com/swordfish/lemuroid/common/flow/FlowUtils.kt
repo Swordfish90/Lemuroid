@@ -1,11 +1,24 @@
 package com.swordfish.lemuroid.common.flow
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
-fun <T> Flow<T>.batch(maxSize: Int, maxSeconds: Int): Flow<List<T>> = flow {
+suspend fun <T> Flow<T>.safeCollect(block: suspend (T) -> Unit) {
+    this.catch { Timber.e(it) }
+        .collect {
+            try {
+                block(it)
+            } catch (e: Throwable) {
+                Timber.e(e)
+            }
+        }
+}
+
+// TODO COROUTINES Split into multiple functions...
+fun <T> Flow<T>.batch(maxSize: Int, maxMillis: Int): Flow<List<T>> = flow {
     val batch = mutableListOf<T>()
-    val maxMillis = maxSeconds * 1000L
     var lastEmission = System.currentTimeMillis()
 
     collect { value ->

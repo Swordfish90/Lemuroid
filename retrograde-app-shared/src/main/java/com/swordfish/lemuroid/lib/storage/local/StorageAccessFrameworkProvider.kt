@@ -128,13 +128,13 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
         game: Game,
         dataFiles: List<DataFile>,
         allowVirtualFiles: Boolean
-    ): Single<RomFiles> = Single.fromCallable {
+    ): RomFiles {
         val originalDocumentUri = Uri.parse(game.fileUri)
         val originalDocument = DocumentFile.fromSingleUri(context, originalDocumentUri)!!
 
         val isZipped = originalDocument.isZipped() && originalDocument.name != game.fileName
 
-        when {
+        return when {
             isZipped && dataFiles.isEmpty() -> getGameRomFilesZipped(game, originalDocument)
             allowVirtualFiles -> getGameRomFilesVirtual(game, dataFiles)
             else -> getGameRomFilesStandard(game, dataFiles, originalDocument)

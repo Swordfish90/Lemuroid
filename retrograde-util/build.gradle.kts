@@ -18,6 +18,7 @@ dependencies {
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.documentfile)
     implementation(deps.libs.androidx.preferences.preferencesKtx)
+    implementation(deps.libs.androidx.lifecycle.runtime)
     implementation(deps.libs.koptional)
     implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.kotlinxCoroutinesAndroid)

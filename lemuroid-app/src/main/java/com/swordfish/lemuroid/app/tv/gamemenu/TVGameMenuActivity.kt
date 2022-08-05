@@ -8,14 +8,14 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.LegacyStatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
 class TVGameMenuActivity : TVBaseSettingsActivity() {
 
-    @Inject lateinit var statesManager: StatesManager
+    @Inject lateinit var legacyStatesManager: LegacyStatesManager
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
     @Inject lateinit var inputDeviceManager: InputDeviceManager
 
@@ -53,7 +53,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD_SUPPORTED")
 
             val fragment = TVGameMenuFragmentWrapper(
-                statesManager,
+                legacyStatesManager,
                 statesPreviewManager,
                 inputDeviceManager,
                 game,
@@ -77,7 +77,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
     }
 
     class TVGameMenuFragmentWrapper(
-        private val statesManager: StatesManager,
+        private val legacyStatesManager: LegacyStatesManager,
         private val statesPreviewManager: StatesPreviewManager,
         private val inputDeviceManager: InputDeviceManager,
         private val game: Game,
@@ -93,7 +93,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
         override fun createFragment(): Fragment {
             return TVGameMenuFragment(
-                statesManager,
+                legacyStatesManager,
                 statesPreviewManager,
                 inputDeviceManager,
                 game,

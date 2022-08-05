@@ -119,8 +119,8 @@ class LocalStorageProvider(
         game: Game,
         dataFiles: List<DataFile>,
         allowVirtualFiles: Boolean
-    ): Single<RomFiles> = Single.fromCallable {
-        RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
+    ): RomFiles {
+        return RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
     }
 
     override fun getInputStream(uri: Uri): InputStream {

@@ -8,15 +8,17 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import dagger.Lazy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ControllerConfigsManager(private val sharedPreferences: Lazy<SharedPreferences>) {
 
-    fun getControllerConfigs(
+    suspend fun getControllerConfigs(
         systemId: SystemID,
         systemCoreConfig: SystemCoreConfig
-    ): Single<Map<Int, ControllerConfig>> = Single.fromCallable {
+    ): Map<Int, ControllerConfig> = withContext(Dispatchers.IO) {
         systemCoreConfig.controllerConfigs.entries
-            .map { (port, controllers) ->
+            .associate { (port, controllers) ->
                 val currentName = sharedPreferences.get().getString(
                     getSharedPreferencesId(systemId.dbname, systemCoreConfig.coreID, port),
                     null
@@ -27,8 +29,7 @@ class ControllerConfigsManager(private val sharedPreferences: Lazy<SharedPrefere
 
                 port to currentController
             }
-            .toMap()
-    }.subscribeOn(Schedulers.io())
+    }
 
     companion object {
         fun getSharedPreferencesId(systemId: String, coreID: CoreID, port: Int) =

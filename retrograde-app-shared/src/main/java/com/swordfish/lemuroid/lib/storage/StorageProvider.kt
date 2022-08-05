@@ -49,5 +49,5 @@ interface StorageProvider {
         game: Game,
         dataFiles: List<DataFile>,
         allowVirtualFiles: Boolean
-    ): Single<RomFiles>
+    ): RomFiles
 }

@@ -4,6 +4,7 @@ import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.common.kotlin.NTuple5
 import io.reactivex.Observable
 
+@Deprecated("This is no longer used")
 object RXUtils {
     fun <T1, T2, T3, T4> combineLatest(
         source1: Observable<T1>,

@@ -10,7 +10,7 @@ import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
-import com.swordfish.lemuroid.lib.core.CoreVariablesManager
+import com.swordfish.lemuroid.lib.core.LegacyCoreVariablesManager
 import com.swordfish.lemuroid.lib.library.CoreID
 
 object CoreOptionsPreferenceHelper {
@@ -82,7 +82,7 @@ object CoreOptionsPreferenceHelper {
 
     private fun buildListPreference(context: Context, it: LemuroidCoreOption, systemID: String): ListPreference {
         val preference = ListPreference(context)
-        preference.key = CoreVariablesManager.computeSharedPreferenceKey(it.getKey(), systemID)
+        preference.key = LegacyCoreVariablesManager.computeSharedPreferenceKey(it.getKey(), systemID)
         preference.title = it.getDisplayName(context)
         preference.entries = it.getEntries(context).toTypedArray()
         preference.entryValues = it.getEntriesValues().toTypedArray()
@@ -95,7 +95,7 @@ object CoreOptionsPreferenceHelper {
 
     private fun buildSwitchPreference(context: Context, it: LemuroidCoreOption, systemID: String): SwitchPreference {
         val preference = SwitchPreference(context)
-        preference.key = CoreVariablesManager.computeSharedPreferenceKey(it.getKey(), systemID)
+        preference.key = LegacyCoreVariablesManager.computeSharedPreferenceKey(it.getKey(), systemID)
         preference.title = it.getDisplayName(context)
         preference.setDefaultValue(it.getCurrentValue() == "enabled")
         preference.isChecked = it.getCurrentValue() == "enabled"

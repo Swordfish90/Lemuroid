@@ -5,20 +5,25 @@ import android.content.SharedPreferences
 import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
-import com.f2prateek.rx.preferences2.RxSharedPreferences
-import com.gojuno.koptional.Optional
-import com.gojuno.koptional.toOptional
+import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 import dagger.Lazy
+import io.reactivex.Completable
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onSubscription
+import kotlinx.coroutines.withContext
 
-@Deprecated("Use the FlowInputDeviceManager")
-class InputDeviceManager(
+@OptIn(FlowPreview::class)
+class FlowInputDeviceManager(
     private val context: Context,
     sharedPreferencesFactory: Lazy<SharedPreferences>
 ) {
@@ -27,25 +32,16 @@ class InputDeviceManager(
 
     private val sharedPreferences by lazy { sharedPreferencesFactory.get() }
 
-    private val rxSharedPreferences = Single.fromCallable {
-        RxSharedPreferences.create(sharedPreferencesFactory.get())
-    }
-
-    fun getInputBindingsObservable(): Observable<(InputDevice?)->Map<Int, Int>> {
+    fun getInputBindingsObservable(): Flow<(InputDevice?) -> Map<Int, Int>> {
         return getEnabledInputsObservable()
-            .observeOn(Schedulers.io())
-            .flatMapSingle { inputDevices ->
-                Observable.fromIterable(inputDevices).flatMapSingle { inputDevice ->
-                    getBindings(inputDevice).map { inputDevice to it }
-                }.toList()
+            .map { inputDevices ->
+                inputDevices.associateWith { getBindings(it) }
             }
-            .map { it.toMap() }
             .map { bindings -> { bindings[it] ?: mapOf() } }
     }
 
-    fun getInputMenuShortCutObservable(): Observable<Optional<GameMenuShortcut>> {
+    fun getInputMenuShortCutObservable(): Flow<GameMenuShortcut?> {
         return getEnabledInputsObservable()
-            .observeOn(Schedulers.io())
             .map { devices ->
                 val device = devices.firstOrNull()
                 device
@@ -56,11 +52,10 @@ class InputDeviceManager(
                         )
                     }
                     ?.let { GameMenuShortcut.findByName(device, it) }
-                    .toOptional()
             }
     }
 
-    fun getGamePadsPortMapperObservable(): Observable<(InputDevice?)->Int?> {
+    fun getGamePadsPortMapperObservable(): Flow<(InputDevice?) -> Int?> {
         return getEnabledInputsObservable().map { gamePads ->
             val portMappings = gamePads
                 .mapIndexed { index, inputDevice -> inputDevice.id to index }
@@ -69,16 +64,15 @@ class InputDeviceManager(
         }
     }
 
-    private fun getBindings(inputDevice: InputDevice): Single<Map<Int, Int>> {
-        return Observable.fromIterable(inputDevice.getInputClass().getInputKeys())
-            .flatMapSingle { keyCode ->
-                retrieveMappingFromPreferences(
+    private suspend fun getBindings(inputDevice: InputDevice): Map<Int, Int> {
+        return inputDevice.getInputClass().getInputKeys()
+            .associateWith { keyCode ->
+                val mappedKeyCode = retrieveMappingFromPreferences(
                     inputDevice,
                     keyCode
-                ).map { keyCode to it }
+                )
+                mappedKeyCode
             }
-            .toList()
-            .map { it.toMap() }
     }
 
     fun resetAllBindings(): Completable {
@@ -92,61 +86,56 @@ class InputDeviceManager(
         return actionCompletable.subscribeOn(Schedulers.io())
     }
 
-    fun getGamePadsObservable(): Observable<List<InputDevice>> {
-        val subject = BehaviorSubject.createDefault(getAllGamePads())
+    fun getGamePadsObservable(): Flow<List<InputDevice>> {
+        val result = MutableStateFlow(getAllGamePads())
 
         val listener = object : InputManager.InputDeviceListener {
             override fun onInputDeviceAdded(deviceId: Int) {
-                subject.onNext(getAllGamePads())
+                result.value = getAllGamePads()
             }
 
             override fun onInputDeviceChanged(deviceId: Int) {
-                subject.onNext(getAllGamePads())
+                result.value = getAllGamePads()
             }
 
             override fun onInputDeviceRemoved(deviceId: Int) {
-                subject.onNext(getAllGamePads())
+                result.value = getAllGamePads()
             }
         }
 
-        return subject
-            .doOnSubscribe { inputManager.registerInputDeviceListener(listener, null) }
-            .doFinally { inputManager.unregisterInputDeviceListener(listener) }
-            .subscribeOn(AndroidSchedulers.mainThread())
+        return result
+            .onSubscription { inputManager.registerInputDeviceListener(listener, null) }
+            .onCompletion { inputManager.unregisterInputDeviceListener(listener) }
     }
 
-    fun getEnabledInputsObservable(): Observable<List<InputDevice>> {
+    fun getEnabledInputsObservable(): Flow<List<InputDevice>> {
         return getGamePadsObservable()
-            .flatMap { devices ->
+            .flatMapConcat { devices ->
                 if (devices.isEmpty()) {
-                    return@flatMap Observable.just(listOf())
+                    return@flatMapConcat flowOf(emptyList())
                 }
 
                 val enabledGamePads = devices.map { device ->
-                    rxSharedPreferences
-                        .flatMapObservable {
-                            val defaultValue = device.getInputClass().isEnabledByDefault(context, device)
-                            it.getBoolean(computeEnabledGamePadPreference(device), defaultValue).asObservable()
-                        }
+                    val defaultValue = device.getInputClass().isEnabledByDefault(context, device)
+                    FlowSharedPreferences(sharedPreferences)
+                        .getBoolean(computeEnabledGamePadPreference(device), defaultValue).asFlow()
                 }
 
-                Observable.combineLatest(enabledGamePads) { results ->
-                    devices.filterIndexed { index, _ -> results[index] == true }
+                combine(enabledGamePads) { results ->
+                    devices.filterIndexed { index, _ -> results[index] }
                 }
             }
     }
 
-    private fun retrieveMappingFromPreferences(
+    private suspend fun retrieveMappingFromPreferences(
         inputDevice: InputDevice,
         keyCode: Int
-    ): Single<Int> {
-        val valueSingle = Single.fromCallable {
-            val sharedPreferencesKey = computeKeyBindingPreference(inputDevice, keyCode)
-            val sharedPreferencesDefault = getDefaultBinding(inputDevice, keyCode).toString()
-            sharedPreferences.getString(sharedPreferencesKey, sharedPreferencesDefault)
-        }
+    ): Int = withContext(Dispatchers.IO) {
+        val sharedPreferencesKey = computeKeyBindingPreference(inputDevice, keyCode)
+        val sharedPreferencesDefault = getDefaultBinding(inputDevice, keyCode).toString()
+        val result = sharedPreferences.getString(sharedPreferencesKey, sharedPreferencesDefault)!!
 
-        return valueSingle.map { it.toInt() }.subscribeOn(Schedulers.io())
+        result.toInt()
     }
 
     fun getDefaultBinding(inputDevice: InputDevice, keyCode: Int): Int {

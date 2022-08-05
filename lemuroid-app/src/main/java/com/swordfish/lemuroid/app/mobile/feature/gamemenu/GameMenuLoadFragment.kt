@@ -11,7 +11,7 @@ import com.swordfish.lemuroid.common.preferences.DummyDataStore
 import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.StatesManager
+import com.swordfish.lemuroid.lib.saves.LegacyStatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.lemuroid.lib.util.subscribeBy
 import com.uber.autodispose.android.lifecycle.scope
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class GameMenuLoadFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var statesManager: StatesManager
+    @Inject lateinit var legacyStatesManager: LegacyStatesManager
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
 
     override fun onAttach(context: Context) {
@@ -53,7 +53,7 @@ class GameMenuLoadFragment : PreferenceFragmentCompat() {
     }
 
     private fun setupLoadPreference(game: Game, systemCoreConfig: SystemCoreConfig) {
-        statesManager.getSavedSlotsInfo(game, systemCoreConfig.coreID)
+        legacyStatesManager.getSavedSlotsInfo(game, systemCoreConfig.coreID)
             .toObservable()
             .flatMap {
                 Observable.fromIterable(it.mapIndexed { index, saveInfo -> index to saveInfo })

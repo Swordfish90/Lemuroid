@@ -51,6 +51,7 @@ object deps {
             object lifecycle {
                 const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
                 const val processor = "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+                const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}"
                 const val reactiveStreams = "android.arch.lifecycle:reactivestreams:1.1.1"
             }
             object preferences {
@@ -131,6 +132,7 @@ object deps {
         const val koptional                = "com.gojuno.koptional:koptional:${versions.koptional}"
         const val koptionalRxJava2         = "com.gojuno.koptional:koptional-rxjava2-extensions:${versions.koptional}"
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+        const val kotlinxCoroutinesRxJava2 = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.6.4"
         const val ktlint                   = "com.github.shyiko:ktlint:0.29.0"
         const val okio                     = "com.squareup.okio:okio:2.10.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"

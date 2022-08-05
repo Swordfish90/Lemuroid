@@ -55,6 +55,7 @@ dependencies {
     implementation(deps.libs.harmony)
     implementation(deps.libs.multitouchGestures)
     implementation(deps.libs.material)
+    implementation(deps.libs.kotlinxCoroutinesAndroid)
 
     kapt(deps.libs.androidx.room.compiler)
 }

@@ -301,9 +301,9 @@ class LemuroidLibrary(
         game: Game,
         dataFiles: List<DataFile>,
         allowVirtualFiles: Boolean
-    ): Single<RomFiles> {
-        return Single.fromCallable { storageProviderRegistry.get() }
-            .flatMap { it.getProvider(game).getGameRomFiles(game, dataFiles, allowVirtualFiles) }
+    ): RomFiles {
+        val provider = storageProviderRegistry.get()
+        return provider.getProvider(game).getGameRomFiles(game, dataFiles, allowVirtualFiles)
     }
 
     private sealed class ScanEntry {
@@ -315,6 +315,6 @@ class LemuroidLibrary(
         // TODO COROUTINE. We can probably tweak these values as soon as we throttle DB updates.
         // We batch database updates to avoid unnecessary UI updates.
         const val MAX_BUFFER_SIZE = 250
-        const val MAX_TIME = 5
+        const val MAX_TIME = 5000
     }
 }

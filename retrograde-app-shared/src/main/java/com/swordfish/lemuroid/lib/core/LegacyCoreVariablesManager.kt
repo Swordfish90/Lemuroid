@@ -6,19 +6,20 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import io.reactivex.Single
 import java.security.InvalidParameterException
 import dagger.Lazy
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class CoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences>) {
+@Deprecated("Use the Flow variant")
+class LegacyCoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences>) {
 
-    suspend fun getOptionsForCore(
+    fun getOptionsForCore(
         systemID: SystemID,
         systemCoreConfig: SystemCoreConfig
-    ): List<CoreVariable> {
+    ): Single<List<CoreVariable>> {
+
         val defaultMap = convertCoreVariablesToMap(systemCoreConfig.defaultSettings)
-        val coreVariables = retrieveCustomCoreVariables(systemID, systemCoreConfig)
-        val coreVariablesMap = defaultMap + convertCoreVariablesToMap(coreVariables)
-        return convertMapToCoreVariables(coreVariablesMap)
+        return retrieveCustomCoreVariables(systemID, systemCoreConfig)
+            .map { convertCoreVariablesToMap(it) }
+            .map { defaultMap + it }
+            .map { convertMapToCoreVariables(it) }
     }
 
     private fun convertMapToCoreVariables(variablesMap: Map<String, String>): List<CoreVariable> {
@@ -26,13 +27,15 @@ class CoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences
     }
 
     private fun convertCoreVariablesToMap(coreVariables: List<CoreVariable>): Map<String, String> {
-        return coreVariables.associate { it.key to it.value }
+        return coreVariables
+            .map { it.key to it.value }
+            .toMap()
     }
 
-    private suspend fun retrieveCustomCoreVariables(
+    private fun retrieveCustomCoreVariables(
         systemID: SystemID,
         systemCoreConfig: SystemCoreConfig
-    ): List<CoreVariable> = withContext(Dispatchers.IO) {
+    ) = Single.fromCallable {
 
         val exposedKeys = systemCoreConfig.exposedSettings
         val exposedAdvancedKeys = systemCoreConfig.exposedAdvancedSettings
