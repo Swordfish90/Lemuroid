@@ -60,7 +60,11 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         scanInProgress: Boolean
     ): HomeViewState {
         return HomeViewState(
-            favoritesGames, recentGames, metaSystems, indexInProgress, scanInProgress
+            favoritesGames,
+            recentGames,
+            metaSystems,
+            indexInProgress,
+            scanInProgress
         )
     }
 
@@ -92,7 +96,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         retrogradeDb: RetrogradeDatabase,
         appContext: Context
     ) = retrogradeDb.gameDao()
-        .asyncSelectSystemsWithCount()
+        .selectSystemsWithCount()
         .map { systemCounts ->
             systemCounts.asSequence()
                 .filter { (_, count) -> count > 0 }
@@ -105,9 +109,9 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
 
     private fun favoriteGames(retrogradeDb: RetrogradeDatabase) =
         retrogradeDb.gameDao()
-            .rxSelectFirstFavoritesRecents(CAROUSEL_MAX_ITEMS + 1)
+            .selectFirstFavoritesRecents(CAROUSEL_MAX_ITEMS + 1)
 
     private fun recentGames(retrogradeDb: RetrogradeDatabase) =
         retrogradeDb.gameDao()
-            .rxSelectFirstUnfavoriteRecents(CAROUSEL_MAX_ITEMS)
+            .selectFirstUnfavoriteRecents(CAROUSEL_MAX_ITEMS)
 }

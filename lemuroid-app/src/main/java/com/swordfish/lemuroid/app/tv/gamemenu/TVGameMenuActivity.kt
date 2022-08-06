@@ -15,9 +15,12 @@ import javax.inject.Inject
 
 class TVGameMenuActivity : TVBaseSettingsActivity() {
 
-    @Inject lateinit var statesManager: StatesManager
-    @Inject lateinit var statesPreviewManager: StatesPreviewManager
-    @Inject lateinit var inputDeviceManager: FlowInputDeviceManager
+    @Inject
+    lateinit var statesManager: StatesManager
+    @Inject
+    lateinit var statesPreviewManager: StatesPreviewManager
+    @Inject
+    lateinit var inputDeviceManager: FlowInputDeviceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +30,18 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
             val core = intent.extras?.getSerializable(
                 GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG
-            ) as SystemCoreConfig? ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
+            ) as SystemCoreConfig?
+                ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
 
             val options = intent.extras?.getSerializable(
                 GameMenuContract.EXTRA_CORE_OPTIONS
-            ) as Array<LemuroidCoreOption>? ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
+            ) as Array<LemuroidCoreOption>?
+                ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
             val advancedOptions = intent.extras?.getSerializable(
                 GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS
-            ) as Array<LemuroidCoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+            ) as Array<LemuroidCoreOption>?
+                ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
 
             val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
                 ?: throw InvalidParameterException("Missing EXTRA_DISKS")

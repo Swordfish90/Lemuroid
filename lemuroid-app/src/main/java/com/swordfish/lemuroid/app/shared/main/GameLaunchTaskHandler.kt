@@ -22,7 +22,12 @@ class GameLaunchTaskHandler(
         cancelBackgroundWork(context)
     }
 
-    suspend fun handleGameFinish(enableRatingFlow: Boolean, activity: Activity, resultCode: Int, data: Intent?) {
+    suspend fun handleGameFinish(
+        enableRatingFlow: Boolean,
+        activity: Activity,
+        resultCode: Int,
+        data: Intent?
+    ) {
         rescheduleBackgroundWork(activity.applicationContext)
         when (resultCode) {
             Activity.RESULT_OK -> handleSuccessfulGameFinish(activity, enableRatingFlow, data)
@@ -51,7 +56,11 @@ class GameLaunchTaskHandler(
         CacheCleanerWork.enqueueCleanCacheLRU(context)
     }
 
-    private fun handleUnsuccessfulGameFinish(activity: Activity, message: String, messageDetail: String?) {
+    private fun handleUnsuccessfulGameFinish(
+        activity: Activity,
+        message: String,
+        messageDetail: String?
+    ) {
         GameCrashActivity.launch(activity, message, messageDetail)
     }
 
@@ -60,7 +69,8 @@ class GameLaunchTaskHandler(
         enableRatingFlow: Boolean,
         data: Intent?
     ) {
-        val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION) ?: 0L
+        val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
+            ?: 0L
         val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
 
         updateGamePlayedTimestamp(game)

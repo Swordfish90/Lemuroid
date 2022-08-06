@@ -12,12 +12,13 @@ import com.swordfish.lemuroid.app.mobile.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class MetaSystemsFragment : RecyclerViewFragment() {
 
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
+    @Inject
+    lateinit var retrogradeDb: RetrogradeDatabase
 
     private var metaSystemsAdapter: MetaSystemsAdapter? = null
 

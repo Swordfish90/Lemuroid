@@ -5,9 +5,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.launch
 
 fun Fragment.launchOnState(state: Lifecycle.State, block: suspend () -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
@@ -26,7 +26,10 @@ fun LifecycleOwner.launchOnState(state: Lifecycle.State, block: suspend () -> Un
 }
 
 fun LifecycleOwner.launchOnState(
-    context: CoroutineContext = EmptyCoroutineContext, state: Lifecycle.State, block: suspend () -> Unit) {
+    context: CoroutineContext = EmptyCoroutineContext,
+    state: Lifecycle.State,
+    block: suspend () -> Unit
+) {
     lifecycleScope.launch(context) {
         repeatOnLifecycle(state) {
             block()

@@ -18,7 +18,11 @@ open class RecyclerViewFragment : Fragment() {
     protected var recyclerView: RecyclerView? = null
     protected var emptyView: View? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreate(savedInstanceState)
         val root = inflater.inflate(R.layout.fragment_recyclerview, container, false)
         recyclerView = root.findViewById(R.id.recycler_view)

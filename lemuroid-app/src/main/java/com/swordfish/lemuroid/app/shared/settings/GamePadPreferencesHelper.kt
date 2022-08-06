@@ -90,7 +90,10 @@ class GamePadPreferencesHelper(private val inputDeviceManager: FlowInputDeviceMa
         }
     }
 
-    private fun buildGamePadEnabledPreference(context: Context, inputDevice: InputDevice): Preference {
+    private fun buildGamePadEnabledPreference(
+        context: Context,
+        inputDevice: InputDevice
+    ): Preference {
         val preference = SwitchPreference(context)
         preference.key = FlowInputDeviceManager.computeEnabledGamePadPreference(inputDevice)
         preference.title = inputDevice.name
@@ -99,7 +102,11 @@ class GamePadPreferencesHelper(private val inputDeviceManager: FlowInputDeviceMa
         return preference
     }
 
-    private fun buildKeyBindingPreference(context: Context, inputDevice: InputDevice, key: Int): Preference {
+    private fun buildKeyBindingPreference(
+        context: Context,
+        inputDevice: InputDevice,
+        key: Int
+    ): Preference {
         val outputKeys = FlowInputDeviceManager.OUTPUT_KEYS
         val outputKeysName = outputKeys.map { getRetroPadKeyName(context, it) }
         val defaultBinding = inputDeviceManager.getDefaultBinding(inputDevice, key)
@@ -118,7 +125,10 @@ class GamePadPreferencesHelper(private val inputDeviceManager: FlowInputDeviceMa
         return preference
     }
 
-    private fun buildGameMenuShortcutPreference(context: Context, inputDevice: InputDevice): Preference? {
+    private fun buildGameMenuShortcutPreference(
+        context: Context,
+        inputDevice: InputDevice
+    ): Preference? {
         val default = GameMenuShortcut.getDefault(inputDevice) ?: return null
         val supportedShortcuts = inputDevice.getInputClass().getSupportedShortcuts()
 

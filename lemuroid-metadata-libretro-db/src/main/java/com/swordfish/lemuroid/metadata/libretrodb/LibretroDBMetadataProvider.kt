@@ -9,8 +9,8 @@ import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDatabase
 import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
-import timber.log.Timber
 import java.util.Locale
+import timber.log.Timber
 
 class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     GameMetadataProvider {
@@ -22,7 +22,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     }
 
     override suspend fun retrieveMetadata(storageFile: StorageFile): GameMetadata? {
-        val db = ovgdbManager.isDBReady()
+        val db = ovgdbManager.dbInstance
 
         Timber.d("Looking metadata for file: $storageFile")
 

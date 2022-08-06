@@ -19,7 +19,6 @@
 
 package com.swordfish.lemuroid.lib.library.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
@@ -32,9 +31,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GameDao {
 
-    @Query("SELECT * FROM games ORDER BY title ASC, id DESC")
-    fun selectAll(): PagingSource<Int, Game>
-
     @Query("SELECT * FROM games WHERE id = :id")
     suspend fun selectById(id: Int): Game?
 
@@ -43,9 +39,6 @@ interface GameDao {
 
     @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>
-
-    @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC")
-    fun selectRecentlyPlayed(): PagingSource<Int, Game>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY title ASC")
     fun selectFavorites(): PagingSource<Int, Game>
@@ -57,15 +50,8 @@ interface GameDao {
     )
     fun selectFirstUnfavoriteRecents(limit: Int): Flow<List<Game>>
 
-    @Query(
-        """
-        SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
-        """
-    )
-    fun rxSelectFirstUnfavoriteRecents(limit: Int): Flow<List<Game>>
-
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
-    fun rxSelectFirstFavoritesRecents(limit: Int): Flow<List<Game>>
+    fun selectFirstFavoritesRecents(limit: Int): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
     suspend fun asyncSelectFirstRecents(limit: Int): List<Game>
@@ -83,16 +69,10 @@ interface GameDao {
     fun selectBySystems(systemIds: List<String>): PagingSource<Int, Game>
 
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
-    fun selectSystems(): LiveData<List<String>>
-
-    @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
-    suspend fun asyncSelectSystems(): List<String>
+    suspend fun selectSystems(): List<String>
 
     @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
-    fun asyncSelectSystemsWithCount(): Flow<List<SystemCount>>
-
-    @Insert
-    fun insert(game: Game)
+    fun selectSystemsWithCount(): Flow<List<SystemCount>>
 
     @Insert
     fun insert(games: List<Game>): List<Long>
@@ -108,4 +88,3 @@ interface GameDao {
 }
 
 data class SystemCount(val systemId: String, val count: Int)
-

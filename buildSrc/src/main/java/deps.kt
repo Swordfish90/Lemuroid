@@ -150,7 +150,7 @@ object deps {
     }
 
     object plugins {
-        const val android = "com.android.tools.build:gradle:4.1.0"
+        const val android = "com.android.tools.build:gradle:4.2.2"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     }
 }

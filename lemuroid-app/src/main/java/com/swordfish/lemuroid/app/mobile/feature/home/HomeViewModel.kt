@@ -25,7 +25,10 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
         const val DEBOUNCE_TIME = 100L
     }
 
-    class Factory(val appContext: Context, val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
+    class Factory(
+        val appContext: Context,
+        val retrogradeDb: RetrogradeDatabase
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return HomeViewModel(appContext, retrogradeDb) as T
         }

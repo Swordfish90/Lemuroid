@@ -28,11 +28,11 @@ import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
-import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
+import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
@@ -68,22 +68,20 @@ import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import dagger.Binds
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoSet
+import java.io.InputStream
+import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
+import java.util.zip.ZipInputStream
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import java.io.InputStream
-import java.lang.reflect.Type
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import java.util.zip.ZipInputStream
-import dagger.Lazy
 
 @Module
 abstract class LemuroidApplicationModule {
@@ -119,13 +117,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun executorService(): ExecutorService = Executors.newSingleThreadExecutor()
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun libretroDBManager(app: LemuroidApplication, executorService: ExecutorService) =
-            LibretroDBManager(app, executorService)
+        fun libretroDBManager(app: LemuroidApplication) = LibretroDBManager(app)
 
         @Provides
         @PerApp
@@ -140,15 +132,14 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gameMetadataProvider(libretroDBManager: LibretroDBManager): GameMetadataProvider = LibretroDBMetadataProvider(
-            libretroDBManager
-        )
+        fun gameMetadataProvider(libretroDBManager: LibretroDBManager): GameMetadataProvider =
+            LibretroDBMetadataProvider(libretroDBManager)
 
         @Provides
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localSAFStorageProvider(context: Context, ): StorageProvider =
+        fun localSAFStorageProvider(context: Context): StorageProvider =
             StorageAccessFrameworkProvider(context)
 
         @Provides
@@ -294,7 +285,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) = CoresSelection(sharedPreferences)
+        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) =
+            CoresSelection(sharedPreferences)
 
         @Provides
         @PerApp

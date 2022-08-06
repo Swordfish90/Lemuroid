@@ -1,4 +1,3 @@
-
 package com.swordfish.lemuroid.metadata.libretrodb.db.dao
 
 import androidx.room.Dao
@@ -7,7 +6,6 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
 
 @Dao
 interface GameDao {
-
     @Query("SELECT * FROM games WHERE romName LIKE :romName")
     suspend fun findByName(romName: String): List<LibretroRom>?
 

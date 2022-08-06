@@ -20,7 +20,8 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
     @Inject
     lateinit var gdriveStorageProvider: GDriveStorageProvider*/
 
-    @Inject lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
+    @Inject
+    lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
 
     @SuppressLint("CheckResult")
     override fun onCreate() {

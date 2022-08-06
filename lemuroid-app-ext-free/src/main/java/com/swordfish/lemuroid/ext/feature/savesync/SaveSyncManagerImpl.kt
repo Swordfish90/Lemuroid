@@ -22,7 +22,7 @@ class SaveSyncManagerImpl(
 
     override fun getConfigInfo(): String = ""
 
-    override suspend fun sync(cores: Set<CoreID>) { }
+    override suspend fun sync(cores: Set<CoreID>) {}
 
     override fun computeSavesSpace() = ""
 

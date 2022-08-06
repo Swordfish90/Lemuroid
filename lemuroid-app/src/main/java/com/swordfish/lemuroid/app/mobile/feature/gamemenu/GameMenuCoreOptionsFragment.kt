@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var inputDeviceManager: FlowInputDeviceManager
+    @Inject
+    lateinit var inputDeviceManager: FlowInputDeviceManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -53,7 +54,8 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
 
         val advancedCoreOptions = extras?.getSerializable(
             GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS
-        ) as Array<LemuroidCoreOption>? ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+        ) as Array<LemuroidCoreOption>?
+            ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
 
         val game = extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
             ?: throw InvalidParameterException("Missing EXTRA_GAME")

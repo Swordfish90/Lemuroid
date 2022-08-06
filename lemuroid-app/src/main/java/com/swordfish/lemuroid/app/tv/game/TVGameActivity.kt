@@ -5,9 +5,9 @@ import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.tv.gamemenu.TVGameMenuActivity
-import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
+import com.swordfish.lemuroid.common.displayToast
 import kotlinx.coroutines.flow.filter
 
 class TVGameActivity : BaseGameActivity() {

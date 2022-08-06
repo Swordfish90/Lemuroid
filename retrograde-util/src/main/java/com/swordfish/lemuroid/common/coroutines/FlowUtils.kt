@@ -9,7 +9,10 @@ suspend fun <T> Flow<T>.safeCollect(block: suspend (T) -> Unit) {
     this.safeCollect(Timber::e, block)
 }
 
-suspend fun <T> Flow<T>.safeCollect(onError: suspend (e: Throwable) -> Unit, block: suspend (T) -> Unit) {
+suspend fun <T> Flow<T>.safeCollect(
+    onError: suspend (e: Throwable) -> Unit,
+    block: suspend (T) -> Unit
+) {
     this.catch { Timber.e(it) }
         .collect {
             try {

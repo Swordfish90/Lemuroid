@@ -6,10 +6,10 @@ import com.swordfish.lemuroid.common.kotlin.writeBytesCompressed
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import java.io.File
 
 // TODO Since states are core related we should not put them in the same folder. This break previous versions states
 // so I decided to manage a transition phase reading also the old directory. We should safely remove it in a few weeks.

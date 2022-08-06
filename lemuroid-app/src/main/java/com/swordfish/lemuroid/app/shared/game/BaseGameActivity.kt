@@ -69,6 +69,10 @@ import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.libretrodroid.VirtualFile
 import com.swordfish.radialgamepad.library.math.MathUtils
+import javax.inject.Inject
+import kotlin.math.abs
+import kotlin.math.roundToInt
+import kotlin.system.exitProcess
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -96,10 +100,6 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.rx2.asFlow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import kotlin.math.abs
-import kotlin.math.roundToInt
-import kotlin.system.exitProcess
 
 @OptIn(FlowPreview::class, DelicateCoroutinesApi::class)
 abstract class BaseGameActivity : ImmersiveActivity() {
@@ -118,20 +118,28 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     @Inject
     lateinit var settingsManager: SettingsManager
+
     @Inject
     lateinit var statesManager: StatesManager
+
     @Inject
     lateinit var statesPreviewManager: StatesPreviewManager
+
     @Inject
     lateinit var legacySavesManager: SavesManager
+
     @Inject
     lateinit var coreVariablesManager: CoreVariablesManager
+
     @Inject
     lateinit var inputDeviceManager: FlowInputDeviceManager
+
     @Inject
     lateinit var gameLoader: GameLoader
+
     @Inject
     lateinit var controllerConfigsManager: ControllerConfigsManager
+
     @Inject
     lateinit var rumbleManager: RumbleManager
 
@@ -578,7 +586,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
                 next
             }
-            .safeCollect {  }
+            .safeCollect { }
     }
 
     private suspend fun initializeGamePadMotionsFlow() {

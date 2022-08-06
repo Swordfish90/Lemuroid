@@ -12,13 +12,14 @@ import com.swordfish.lemuroid.lib.injection.WorkerKey
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class ChannelUpdateWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
 
-    @Inject lateinit var channelHandler: ChannelHandler
+    @Inject
+    lateinit var channelHandler: ChannelHandler
 
     override suspend fun doWork(): Result {
         AndroidWorkerInjection.inject(this)

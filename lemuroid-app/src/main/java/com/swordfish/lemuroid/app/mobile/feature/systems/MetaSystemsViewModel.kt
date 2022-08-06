@@ -22,7 +22,7 @@ class MetaSystemsViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context
     }
 
     val availableMetaSystems: Flow<List<MetaSystemInfo>> = retrogradeDb.gameDao()
-        .asyncSelectSystemsWithCount()
+        .selectSystemsWithCount()
         .map { systemCounts ->
             systemCounts.asSequence()
                 .filter { (_, count) -> count > 0 }

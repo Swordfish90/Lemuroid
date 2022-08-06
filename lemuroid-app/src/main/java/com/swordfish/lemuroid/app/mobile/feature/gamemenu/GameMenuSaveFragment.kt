@@ -21,8 +21,10 @@ import javax.inject.Inject
 
 class GameMenuSaveFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var statesManager: StatesManager
-    @Inject lateinit var statesPreviewManager: StatesPreviewManager
+    @Inject
+    lateinit var statesManager: StatesManager
+    @Inject
+    lateinit var statesPreviewManager: StatesPreviewManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

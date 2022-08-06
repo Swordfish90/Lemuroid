@@ -20,17 +20,20 @@ import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
-import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
 
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
-    @Inject lateinit var gameInteractor: GameInteractor
-    @Inject lateinit var coverLoader: CoverLoader
+    @Inject
+    lateinit var retrogradeDb: RetrogradeDatabase
+    @Inject
+    lateinit var gameInteractor: GameInteractor
+    @Inject
+    lateinit var coverLoader: CoverLoader
 
     private val searchDebounce = MutableStateFlow("")
 

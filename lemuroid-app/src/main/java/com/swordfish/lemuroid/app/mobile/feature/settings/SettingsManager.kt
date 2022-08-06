@@ -6,9 +6,9 @@ import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Lazy
+import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlin.math.roundToInt
 
 class SettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
 

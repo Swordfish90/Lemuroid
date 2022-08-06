@@ -22,19 +22,25 @@ import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
-    @Inject lateinit var settingsInteractor: SettingsInteractor
-    @Inject lateinit var biosPreferences: BiosPreferences
-    @Inject lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
-    @Inject lateinit var inputDeviceManager: FlowInputDeviceManager
-    @Inject lateinit var coresSelectionPreferences: CoresSelectionPreferences
-    @Inject lateinit var saveSyncManager: SaveSyncManager
+    @Inject
+    lateinit var settingsInteractor: SettingsInteractor
+    @Inject
+    lateinit var biosPreferences: BiosPreferences
+    @Inject
+    lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
+    @Inject
+    lateinit var inputDeviceManager: FlowInputDeviceManager
+    @Inject
+    lateinit var coresSelectionPreferences: CoresSelectionPreferences
+    @Inject
+    lateinit var saveSyncManager: SaveSyncManager
 
     lateinit var saveSyncPreferences: SaveSyncPreferences
 

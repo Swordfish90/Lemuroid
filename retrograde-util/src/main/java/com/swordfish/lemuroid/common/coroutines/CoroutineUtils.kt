@@ -1,10 +1,10 @@
 package com.swordfish.lemuroid.common.coroutines
 
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 fun CoroutineScope.safeLaunch(
     context: CoroutineContext = EmptyCoroutineContext,

@@ -5,7 +5,7 @@ import android.content.Context
 
 // The real ReviewManager is implemented in the play version. This is basically stubbed.
 class ReviewManager {
-    suspend fun initialize(context: Context) { }
+    suspend fun initialize(context: Context) {}
 
-    suspend fun startReviewFlow(activity: Activity, sessionTimeMillis: Long) { }
+    suspend fun startReviewFlow(activity: Activity, sessionTimeMillis: Long) {}
 }

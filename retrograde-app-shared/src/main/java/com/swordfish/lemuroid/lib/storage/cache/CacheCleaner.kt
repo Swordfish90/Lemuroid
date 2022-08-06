@@ -9,12 +9,12 @@ import com.swordfish.lemuroid.common.kotlin.gigaBytes
 import com.swordfish.lemuroid.common.kotlin.megaBytes
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.io.File
 import kotlin.math.abs
 import kotlin.math.roundToLong
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 object CacheCleaner {
 

@@ -12,15 +12,16 @@ import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
 
-    @Inject lateinit var lemuroidLibrary: LemuroidLibrary
+    @Inject
+    lateinit var lemuroidLibrary: LemuroidLibrary
 
     override suspend fun doWork(): Result {
         AndroidWorkerInjection.inject(this)

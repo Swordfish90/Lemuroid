@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 class CoresSelectionFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var coresSelectionPreferences: CoresSelectionPreferences
+    @Inject
+    lateinit var coresSelectionPreferences: CoresSelectionPreferences
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

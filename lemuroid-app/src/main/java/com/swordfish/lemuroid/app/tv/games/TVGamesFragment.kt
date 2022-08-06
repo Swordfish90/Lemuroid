@@ -24,8 +24,10 @@ class TVGamesFragment : VerticalGridSupportFragment() {
 
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
+
     @Inject
     lateinit var gameInteractor: GameInteractor
+
     @Inject
     lateinit var coverLoader: CoverLoader
 

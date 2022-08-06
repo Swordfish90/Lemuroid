@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 class StorageFrameworkPickerLauncher : RetrogradeActivity() {
 
-    @Inject lateinit var directoriesManager: DirectoriesManager
+    @Inject
+    lateinit var directoriesManager: DirectoriesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

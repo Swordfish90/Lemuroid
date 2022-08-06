@@ -24,10 +24,13 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
+
     @Inject
     lateinit var gameInteractor: GameInteractor
+
     @Inject
     lateinit var coverLoader: CoverLoader
+
     @Inject
     lateinit var settingsInteractor: SettingsInteractor
 

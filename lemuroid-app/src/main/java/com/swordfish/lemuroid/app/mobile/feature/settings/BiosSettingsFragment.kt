@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 class BiosSettingsFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var biosPreferences: BiosPreferences
+    @Inject
+    lateinit var biosPreferences: BiosPreferences
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

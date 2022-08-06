@@ -11,7 +11,6 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
@@ -20,17 +19,19 @@ import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import javax.inject.Inject
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
-import javax.inject.Inject
 
 class SearchFragment : RecyclerViewFragment() {
 
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
+
     @Inject
     lateinit var gameInteractor: GameInteractor
+
     @Inject
     lateinit var coverLoader: CoverLoader
 
@@ -77,7 +78,7 @@ class SearchFragment : RecyclerViewFragment() {
 
     private fun initializeMenuProvider() {
         val menuHost: MenuHost = requireActivity() as MenuHost
-        menuHost.addMenuProvider(object : MenuProvider {
+        val menuProvider = object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {}
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -92,7 +93,8 @@ class SearchFragment : RecyclerViewFragment() {
                 val searchItem = menu.findItem(R.id.action_search)
                 setupSearchMenuItem(searchItem)
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }
+        menuHost.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun setupSearchMenuItem(searchItem: MenuItem) {

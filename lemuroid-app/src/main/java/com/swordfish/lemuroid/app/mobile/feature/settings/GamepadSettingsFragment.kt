@@ -14,15 +14,17 @@ import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class GamepadSettingsFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
-    @Inject lateinit var inputDeviceManager: FlowInputDeviceManager
+    @Inject
+    lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
+    @Inject
+    lateinit var inputDeviceManager: FlowInputDeviceManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

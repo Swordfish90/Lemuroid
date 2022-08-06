@@ -23,9 +23,12 @@ import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var settingsInteractor: SettingsInteractor
-    @Inject lateinit var directoriesManager: DirectoriesManager
-    @Inject lateinit var saveSyncManager: SaveSyncManager
+    @Inject
+    lateinit var settingsInteractor: SettingsInteractor
+    @Inject
+    lateinit var directoriesManager: DirectoriesManager
+    @Inject
+    lateinit var saveSyncManager: SaveSyncManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -67,7 +70,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         launchOnState(Lifecycle.State.RESUMED) {
             settingsViewModel.currentFolder
                 .collect {
-                    currentDirectory?.summary = getDisplayNameForFolderUri(Uri.parse(it)) ?: getString(R.string.none)
+                    currentDirectory?.summary = getDisplayNameForFolderUri(Uri.parse(it))
+                        ?: getString(R.string.none)
                 }
         }
 

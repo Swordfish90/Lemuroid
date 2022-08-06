@@ -20,6 +20,7 @@ import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import javax.inject.Inject
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -28,7 +29,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * This activity is used as an entry point when launching games from external shortcuts. This activity
@@ -40,10 +40,13 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
     @Inject
     lateinit var retrogradeDatabase: RetrogradeDatabase
+
     @Inject
     lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
+
     @Inject
     lateinit var coresSelection: CoresSelection
+
     @Inject
     lateinit var gameLauncher: GameLauncher
 

@@ -23,17 +23,18 @@ import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
 
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
+
     @Inject
     lateinit var settingsManager: SettingsManager
 
