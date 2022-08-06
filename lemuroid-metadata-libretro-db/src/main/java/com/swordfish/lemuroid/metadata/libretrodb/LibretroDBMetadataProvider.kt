@@ -1,16 +1,17 @@
 package com.swordfish.lemuroid.metadata.libretrodb
 
-import com.swordfish.lemuroid.common.kotlin.nullIfNot
+import com.swordfish.lemuroid.common.kotlin.filterNullable
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDatabase
 import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
-import com.swordfish.lemuroid.lib.library.SystemID
-import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import timber.log.Timber
 import java.util.Locale
+
 class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     GameMetadataProvider {
 
@@ -56,7 +57,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
 
     private suspend fun findByFilename(db: LibretroDatabase, file: StorageFile): GameMetadata? {
         return db.gameDao().findByFileName(file.name)
-            .nullIfNot { extractGameSystem(it).scanOptions.scanByFilename }
+            .filterNullable { extractGameSystem(it).scanOptions.scanByFilename }
             ?.let { convertToGameMetadata(it) }
     }
 
@@ -65,8 +66,8 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         file: StorageFile
     ): GameMetadata? {
         return db.gameDao().findByFileName(file.name)
-            .nullIfNot { extractGameSystem(it).scanOptions.scanByPathAndFilename }
-            .nullIfNot { parentContainsSystem(file.path, extractGameSystem(it).id.dbname) }
+            .filterNullable { extractGameSystem(it).scanOptions.scanByPathAndFilename }
+            .filterNullable { parentContainsSystem(file.path, extractGameSystem(it).id.dbname) }
             ?.let { convertToGameMetadata(it) }
     }
 

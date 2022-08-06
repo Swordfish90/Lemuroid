@@ -9,14 +9,14 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
 interface GameDao {
 
     @Query("SELECT * FROM games WHERE romName LIKE :romName")
-    fun findByName(romName: String): List<LibretroRom>?
+    suspend fun findByName(romName: String): List<LibretroRom>?
 
     @Query("SELECT * FROM games WHERE romName = :romName LIMIT 1")
-    fun findByFileName(romName: String): LibretroRom?
+    suspend fun findByFileName(romName: String): LibretroRom?
 
     @Query("SELECT * FROM games WHERE crc32 = :crc LIMIT 1")
-    fun findByCRC(crc: String): LibretroRom?
+    suspend fun findByCRC(crc: String): LibretroRom?
 
     @Query("SELECT * FROM games WHERE serial = :serial LIMIT 1")
-    fun findBySerial(serial: String): LibretroRom?
+    suspend fun findBySerial(serial: String): LibretroRom?
 }
