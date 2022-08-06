@@ -12,7 +12,6 @@ import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.common.coroutines.launchOnState
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import javax.inject.Inject
 
@@ -39,11 +38,13 @@ class FavoritesFragment : RecyclerViewFragment() {
 
         launchOnState(Lifecycle.State.RESUMED) {
             favoritesViewModel.favorites
-                .collect { gamesAdapter.submitData(viewLifecycleOwner.lifecycle, it) }
+                .collect {
+                    gamesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                }
         }
 
-        gamesAdapter.addLoadStateListener {
-            emptyView?.setVisibleOrGone(gamesAdapter.itemCount == 0)
+        gamesAdapter.addLoadStateListener { loadState ->
+            updateEmptyViewVisibility(loadState, gamesAdapter.itemCount)
         }
 
         recyclerView?.apply {

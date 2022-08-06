@@ -8,8 +8,10 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
@@ -62,6 +64,10 @@ class SearchFragment : RecyclerViewFragment() {
 
         gamesAdapter.addLoadStateListener {
             emptyView?.setVisibleOrGone(gamesAdapter.itemCount == 0)
+        }
+
+        gamesAdapter.addLoadStateListener { loadState ->
+            updateEmptyViewVisibility(loadState, gamesAdapter.itemCount)
         }
 
         recyclerView?.apply {

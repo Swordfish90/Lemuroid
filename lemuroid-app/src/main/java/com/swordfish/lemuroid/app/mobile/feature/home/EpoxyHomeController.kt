@@ -16,29 +16,45 @@ class EpoxyHomeController(
     private val coverLoader: CoverLoader
 ) : AsyncEpoxyController() {
 
-    private var homeViewState = HomeViewModel.HomeViewState()
+    private var uiState = HomeViewModel.UIState()
 
-    fun update(viewState: HomeViewModel.HomeViewState) {
-        homeViewState = viewState
+    fun update(viewState: HomeViewModel.UIState) {
+        uiState = viewState
         requestModelBuild()
     }
 
     override fun buildModels() {
-        if (homeViewState.favoritesGames.isNotEmpty()) {
-            addCarousel("favorites", R.string.favorites, homeViewState.favoritesGames)
+        if (displayFavorites()) {
+            addCarousel("favorites", R.string.favorites, uiState.favoritesGames)
         }
 
-        if (homeViewState.recentGames.isNotEmpty()) {
-            addCarousel("recent", R.string.recent, homeViewState.recentGames)
+        if (displayRecents()) {
+            addCarousel("recent", R.string.recent, uiState.recentGames)
         }
 
-        if (homeViewState.discoveryGames.isNotEmpty()) {
-            addCarousel("discover", R.string.discover, homeViewState.discoveryGames)
+        if (displayDiscovery()) {
+            addCarousel("discover", R.string.discover, uiState.discoveryGames)
         }
 
-        if (homeViewState.recentGames.isEmpty() && homeViewState.favoritesGames.isEmpty() && homeViewState.discoveryGames.isEmpty()) {
+        if (displayEmptyView()) {
             addEmptyView()
         }
+    }
+
+    private fun displayDiscovery() = uiState.discoveryGames.isNotEmpty()
+
+    private fun displayRecents() = uiState.recentGames.isNotEmpty()
+
+    private fun displayFavorites() = uiState.favoritesGames.isNotEmpty()
+
+    private fun displayEmptyView(): Boolean {
+        val conditions = sequenceOf(
+            uiState.loading.not(),
+            uiState.recentGames.isEmpty(),
+            uiState.favoritesGames.isEmpty(),
+            uiState.discoveryGames.isEmpty(),
+        )
+        return conditions.all { it }
     }
 
     private fun addCarousel(id: String, titleId: Int, games: List<Game>) {
@@ -65,7 +81,7 @@ class EpoxyHomeController(
                 .title(R.string.home_empty_title)
                 .message(R.string.home_empty_message)
                 .action(R.string.home_empty_action)
-                .actionEnabled(!this@EpoxyHomeController.homeViewState.indexInProgress)
+                .actionEnabled(!this@EpoxyHomeController.uiState.indexInProgress)
                 .onClick { this@EpoxyHomeController.settingsInteractor.changeLocalStorageFolder() }
         }
     }

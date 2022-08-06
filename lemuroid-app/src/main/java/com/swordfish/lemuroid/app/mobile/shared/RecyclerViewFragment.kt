@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.swordfish.lemuroid.R
 import dagger.android.support.AndroidSupportInjection
@@ -26,5 +29,18 @@ open class RecyclerViewFragment : Fragment() {
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
+    }
+
+    fun updateEmptyViewVisibility(loadState: CombinedLoadStates, itemCount: Int) {
+        val emptyViewConditions = sequenceOf(
+            loadState.source.refresh is LoadState.NotLoading,
+            loadState.append.endOfPaginationReached,
+            itemCount == 0
+        )
+
+        val emptyViewVisible = emptyViewConditions.all { it }
+
+        recyclerView?.isVisible = !emptyViewVisible
+        emptyView?.isVisible = emptyViewVisible
     }
 }

@@ -31,18 +31,18 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
         }
     }
 
-    // TODO FILIPPO... Handle loading in ViewState
-    data class HomeViewState(
+    data class UIState(
         val favoritesGames: List<Game> = emptyList(),
         val recentGames: List<Game> = emptyList(),
         val discoveryGames: List<Game> = emptyList(),
-        val indexInProgress: Boolean = false
+        val indexInProgress: Boolean = false,
+        val loading: Boolean = true
     )
 
-    private val viewStates = MutableStateFlow(HomeViewState())
+    private val uiStates = MutableStateFlow(UIState())
 
-    fun getViewStates(): Flow<HomeViewState> {
-        return viewStates
+    fun getViewStates(): Flow<UIState> {
+        return uiStates
     }
 
     private fun buildViewState(
@@ -50,10 +50,8 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
         recentGames: List<Game>,
         discoveryGames: List<Game>,
         indexInProgress: Boolean
-    ): HomeViewState {
-        return HomeViewState(
-            favoritesGames, recentGames, discoveryGames, indexInProgress
-        )
+    ): UIState {
+        return UIState(favoritesGames, recentGames, discoveryGames, indexInProgress, false)
     }
 
     init {
@@ -69,7 +67,7 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
             finalFlowable
                 .debounce(DEBOUNCE_TIME)
                 .flowOn(Dispatchers.IO)
-                .collect { viewStates.value = it }
+                .collect { uiStates.value = it }
         }
     }
 
