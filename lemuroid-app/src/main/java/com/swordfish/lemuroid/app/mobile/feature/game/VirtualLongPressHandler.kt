@@ -6,12 +6,12 @@ import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.view.animateProgress
 import com.swordfish.lemuroid.common.view.animateVisibleOrGone
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.touchinput.radial.LemuroidTouchOverlayThemes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -83,7 +83,7 @@ object VirtualLongPressHandler {
 
         withContext(Dispatchers.Main) {
             if (isSuccessful) {
-                longPressView(activity).setVisibleOrGone(false)
+                longPressView(activity).isVisible = false
             }
             hideLongPressView(activity)
         }

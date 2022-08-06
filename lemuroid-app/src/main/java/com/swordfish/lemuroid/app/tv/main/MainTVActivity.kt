@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
@@ -24,7 +25,6 @@ import com.swordfish.lemuroid.app.tv.search.TVSearchFragment
 import com.swordfish.lemuroid.app.tv.shared.BaseTVActivity
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -53,7 +53,7 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
         mainViewModel = ViewModelProvider(this, factory).get(MainTVViewModel::class.java)
 
         mainViewModel?.inProgress?.observe(this) {
-            findViewById<View>(R.id.tv_loading).setVisibleOrGone(it)
+            findViewById<View>(R.id.tv_loading).isVisible = it
         }
 
         ensureLegacyStoragePermissionsIfNeeded()

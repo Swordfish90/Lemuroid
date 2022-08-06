@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.shared.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
@@ -17,7 +18,6 @@ import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import kotlinx.coroutines.FlowPreview
@@ -77,7 +77,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
         loadingSubject
             .debounce(500)
             .collect {
-                findViewById<View>(R.id.progressBar).setVisibleOrGone(it)
+                findViewById<View>(R.id.progressBar).isVisible = it
             }
     }
 

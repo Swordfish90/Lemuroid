@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 
 class GameCrashActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,12 +16,12 @@ class GameCrashActivity : Activity() {
         val messageDetail = intent.getStringExtra(EXTRA_MESSAGE_DETAIL)
 
         findViewById<TextView>(R.id.text1).apply {
-            setVisibleOrGone(!message.isNullOrEmpty())
+            isVisible = !message.isNullOrEmpty()
             text = message
         }
 
         findViewById<TextView>(R.id.text2).apply {
-            setVisibleOrGone(!messageDetail.isNullOrEmpty())
+            isVisible = !messageDetail.isNullOrEmpty()
             text = messageDetail
         }
     }

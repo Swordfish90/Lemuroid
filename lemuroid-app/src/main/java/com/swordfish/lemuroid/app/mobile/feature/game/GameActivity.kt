@@ -29,6 +29,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.WindowInsets
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.R
@@ -39,14 +40,13 @@ import com.swordfish.lemuroid.app.mobile.feature.tilt.TiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.TwoButtonsTiltTracker
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
+import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
 import com.swordfish.lemuroid.common.coroutines.batch
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.math.linearInterpolation
-import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
 import com.swordfish.lemuroid.lib.controller.TouchControllerSettingsManager
@@ -156,8 +156,8 @@ class GameActivity : BaseGameActivity() {
     private suspend fun initializeVirtualControlsVisibilityFlow() {
         isVirtualGamePadVisible()
             .safeCollect {
-                leftGamePadContainer.setVisibleOrGone(it)
-                rightGamePadContainer.setVisibleOrGone(it)
+                leftGamePadContainer.isVisible = it
+                rightGamePadContainer.isVisible = it
             }
     }
 
@@ -306,7 +306,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     private fun updateDivider(divider: View, visible: Boolean, theme: RadialGamePadTheme) {
-        divider.setVisibleOrGone(visible)
+        divider.isVisible = visible
         divider.setBackgroundColor(theme.backgroundStrokeColor)
     }
 
@@ -582,7 +582,7 @@ class GameActivity : BaseGameActivity() {
             .filterNotNull()
             .first()
 
-        findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(true)
+        findViewById<View>(R.id.editcontrolsdarkening).isVisible = true
 
         customizer.displayCustomizationPopup(
             this@GameActivity,
@@ -609,7 +609,7 @@ class GameActivity : BaseGameActivity() {
             .safeCollect {  }
 
         storeVirtualGamePadSettings(touchControllerConfig!!, orientation)
-        findViewById<View>(R.id.editcontrolsdarkening).setVisibleOrGone(false)
+        findViewById<View>(R.id.editcontrolsdarkening).isVisible = false
     }
 
     inner class LayoutHandler {

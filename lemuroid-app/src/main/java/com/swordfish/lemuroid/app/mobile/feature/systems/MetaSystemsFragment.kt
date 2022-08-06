@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.systems
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -11,7 +12,6 @@ import com.swordfish.lemuroid.app.mobile.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class MetaSystemsFragment : RecyclerViewFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             metaSystemsViewModel.availableMetaSystems.collect {
                 metaSystemsAdapter?.submitList(it)
-                emptyView?.setVisibleOrGone(it.isEmpty())
+                emptyView?.isVisible = it.isEmpty()
             }
         }
 
