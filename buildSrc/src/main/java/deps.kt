@@ -8,7 +8,6 @@ object deps {
     }
 
     object versions {
-        const val autoDispose     = "1.4.0"
         const val dagger          = "2.19"
         const val gms             = "17.0.0"
         const val kotlin          = "1.6.21"
@@ -88,13 +87,6 @@ object deps {
                 const val runtimeKtx = "androidx.work:work-runtime-ktx:${versions.work}"
             }
         }
-        object autodispose {
-            const val core = "com.uber.autodispose:autodispose:${versions.autoDispose}"
-            object android {
-                const val core = "com.uber.autodispose:autodispose-android:${versions.autoDispose}"
-                const val archComponents = "com.uber.autodispose:autodispose-android-archcomponents:${versions.autoDispose}"
-            }
-        }
         object dagger {
             const val core = "com.google.dagger:dagger:${versions.dagger}"
             const val compiler = "com.google.dagger:dagger-compiler:${versions.dagger}"
@@ -150,7 +142,7 @@ object deps {
     }
 
     object plugins {
-        const val android = "com.android.tools.build:gradle:4.2.2"
+        const val android = "com.android.tools.build:gradle:7.1.3"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     }
 }

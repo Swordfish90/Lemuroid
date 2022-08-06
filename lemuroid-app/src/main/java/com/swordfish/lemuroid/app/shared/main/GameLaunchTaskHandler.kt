@@ -81,7 +81,7 @@ class GameLaunchTaskHandler(
 
     private suspend fun displayReviewRequest(activity: Activity, durationMillis: Long) {
         delay(500)
-        reviewManager.startReviewFlow(activity, durationMillis)
+        reviewManager.launchReviewFlow(activity, durationMillis)
     }
 
     private suspend fun updateGamePlayedTimestamp(game: Game) {

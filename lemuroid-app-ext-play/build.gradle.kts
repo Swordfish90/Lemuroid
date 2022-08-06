@@ -27,9 +27,6 @@ dependencies {
     implementation(deps.libs.gdrive.apiServicesDrive)
     implementation(deps.libs.play.playServices)
     implementation(deps.libs.play.coroutine)
-    implementation(deps.libs.autodispose.core)
-    implementation(deps.libs.autodispose.android.core)
-    implementation(deps.libs.autodispose.android.archComponents)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     kapt(deps.libs.androidx.lifecycle.processor)
 

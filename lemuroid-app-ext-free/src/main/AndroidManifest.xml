@@ -1,2 +1,4 @@
-<manifest package="com.swordfish.lemuroid.ext">
+<manifest package="com.swordfish.lemuroid.ext"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingLeanbackLauncher">
 </manifest>

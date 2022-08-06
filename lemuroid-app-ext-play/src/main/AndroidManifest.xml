@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.swordfish.lemuroid.ext">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.swordfish.lemuroid.ext"
+    tools:ignore="MissingLeanbackLauncher,ImpliedTouchscreenHardware,MissingLeanbackSupport">
 
     <application>
         <activity

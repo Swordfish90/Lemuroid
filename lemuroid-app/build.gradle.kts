@@ -7,8 +7,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 175
-        versionName = "1.14.1" // Always remember to update Cores Tag!
+        versionCode = 176
+        versionName = "1.15.0-alpha" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -148,9 +148,6 @@ dependencies {
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.room.rxjava2)
     implementation(deps.libs.androidx.room.ktx)
-    implementation(deps.libs.autodispose.android.archComponents)
-    implementation(deps.libs.autodispose.android.core)
-    implementation(deps.libs.autodispose.core)
     implementation(deps.libs.dagger.android.core)
     implementation(deps.libs.dagger.android.support)
     implementation(deps.libs.dagger.core)
