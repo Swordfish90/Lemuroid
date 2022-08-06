@@ -40,7 +40,7 @@ import com.swordfish.lemuroid.app.mobile.feature.tilt.TiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.TwoButtonsTiltTracker
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
-import com.swordfish.lemuroid.common.coroutines.batch
+import com.swordfish.lemuroid.common.coroutines.batchWithTime
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
@@ -323,7 +323,7 @@ class GameActivity : BaseGameActivity() {
             virtualPadEvents
                 .filterIsInstance<Event.Gesture>()
                 .filter { it.type == GestureType.TRIPLE_TAP }
-                .batch(Int.MAX_VALUE, 500)
+                .batchWithTime(500)
                 .filter { it.isNotEmpty() }
                 .safeCollect { events ->
                     handleTripleTaps(events)

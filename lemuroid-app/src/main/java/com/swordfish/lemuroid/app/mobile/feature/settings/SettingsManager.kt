@@ -7,13 +7,14 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Lazy
 import kotlin.math.roundToInt
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class SettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
 
-    // TODO COROUTINE... Make it async
-    private val flowSharedProcess = FlowSharedPreferences(sharedPreferences.get())
+    private val sharedPreferences by lazy { FlowSharedPreferences(sharedPreferences.get()) }
 
     private fun getString(resId: Int) = context.getString(resId)
 
@@ -47,26 +48,39 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
 
     suspend fun allowDirectGameLoad() = booleanPreference(R.string.pref_key_allow_direct_game_load, true)
 
-    private suspend fun booleanPreference(keyId: Int, default: Boolean): Boolean {
-        return flowSharedProcess.getBoolean(getString(keyId), default)
+    private suspend fun booleanPreference(
+        keyId: Int,
+        default: Boolean
+    ): Boolean = withContext(Dispatchers.IO) {
+        sharedPreferences.getBoolean(getString(keyId), default)
             .asFlow()
             .first()
     }
 
-    private suspend fun stringPreference(keyId: Int, default: String): String {
-        return flowSharedProcess.getString(getString(keyId), default)
+    private suspend fun stringPreference(
+        keyId: Int,
+        default: String
+    ): String = withContext(Dispatchers.IO) {
+        sharedPreferences.getString(getString(keyId), default)
             .asFlow()
             .first()
     }
 
-    private suspend fun stringSetPreference(keyId: Int, default: Set<String>): Set<String> {
-        return flowSharedProcess.getStringSet(getString(keyId), default)
+    private suspend fun stringSetPreference(
+        keyId: Int,
+        default: Set<String>
+    ): Set<String> = withContext(Dispatchers.IO) {
+        sharedPreferences.getStringSet(getString(keyId), default)
             .asFlow()
             .first()
     }
 
-    private suspend fun floatPreference(keyId: Int, ticks: Int, default: Float): Float {
-        return flowSharedProcess.getInt(getString(keyId), floatToIndex(default, ticks))
+    private suspend fun floatPreference(
+        keyId: Int,
+        ticks: Int,
+        default: Float
+    ): Float = withContext(Dispatchers.IO) {
+        sharedPreferences.getInt(getString(keyId), floatToIndex(default, ticks))
             .asFlow()
             .map { indexToFloat(it, ticks) }
             .first()

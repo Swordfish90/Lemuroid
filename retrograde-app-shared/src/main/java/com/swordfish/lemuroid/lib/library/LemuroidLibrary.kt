@@ -19,7 +19,7 @@
 
 package com.swordfish.lemuroid.lib.library
 
-import com.swordfish.lemuroid.common.coroutines.batch
+import com.swordfish.lemuroid.common.coroutines.batchWithSizeAndTime
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
@@ -83,7 +83,7 @@ class LemuroidLibrary(
     ): Flow<Unit> {
         return provider.listBaseStorageFiles()
             .flatMapConcat { StorageFilesMerger.mergeDataFiles(provider, it).asFlow() }
-            .batch(MAX_BUFFER_SIZE, MAX_TIME)
+            .batchWithSizeAndTime(MAX_BUFFER_SIZE, MAX_TIME)
             .flatMapMerge { processBatch(it, provider, startedAtMs, gameMetadata) }
     }
 
@@ -311,9 +311,8 @@ class LemuroidLibrary(
     }
 
     companion object {
-        // TODO COROUTINE. We can probably tweak these values as soon as we throttle DB updates.
         // We batch database updates to avoid unnecessary UI updates.
-        const val MAX_BUFFER_SIZE = 250
+        const val MAX_BUFFER_SIZE = 200
         const val MAX_TIME = 5000
     }
 }

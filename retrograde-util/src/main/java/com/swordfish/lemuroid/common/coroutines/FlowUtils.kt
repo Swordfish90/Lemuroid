@@ -23,8 +23,9 @@ suspend fun <T> Flow<T>.safeCollect(
         }
 }
 
-// TODO COROUTINES Split into multiple functions...
-fun <T> Flow<T>.batch(maxSize: Int, maxMillis: Int): Flow<List<T>> = flow {
+fun <T> Flow<T>.batchWithTime(maxMillis: Int) = batchWithSizeAndTime(Int.MAX_VALUE, maxMillis)
+
+fun <T> Flow<T>.batchWithSizeAndTime(maxSize: Int, maxMillis: Int): Flow<List<T>> = flow {
     val batch = mutableListOf<T>()
     var lastEmission = System.currentTimeMillis()
 
