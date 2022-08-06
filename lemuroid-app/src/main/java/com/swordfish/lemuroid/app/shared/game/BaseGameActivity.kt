@@ -18,7 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
-import com.swordfish.lemuroid.app.mobile.feature.settings.FlowSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
@@ -31,8 +31,8 @@ import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
-import com.swordfish.lemuroid.common.flow.launchOnState
-import com.swordfish.lemuroid.common.flow.safeCollect
+import com.swordfish.lemuroid.common.coroutines.launchOnState
+import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple2
@@ -41,7 +41,7 @@ import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
 import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.longAnimationDuration
-import com.swordfish.lemuroid.common.rx.MutableStateProperty
+import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariable
@@ -117,7 +117,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private val rumbleContext = newSingleThreadContext("Rumble")
 
     @Inject
-    lateinit var flowSettingsManager: FlowSettingsManager
+    lateinit var settingsManager: SettingsManager
     @Inject
     lateinit var statesManager: StatesManager
     @Inject
@@ -511,7 +511,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun isAutoSaveEnabled(): Boolean {
-        return systemCoreConfig.statesSupported && flowSettingsManager.autoSave()
+        return systemCoreConfig.statesSupported && settingsManager.autoSave()
     }
 
     private fun getCoreOptions(): List<CoreOption> {
@@ -985,11 +985,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private suspend fun loadGame() {
         val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
 
-        val autoSaveEnabled = flowSettingsManager.autoSave()
-        val filter = flowSettingsManager.screenFilter()
-        val lowLatencyAudio = flowSettingsManager.lowLatencyAudio()
-        val enableRumble = flowSettingsManager.enableRumble()
-        val directLoad = flowSettingsManager.allowDirectGameLoad()
+        val autoSaveEnabled = settingsManager.autoSave()
+        val filter = settingsManager.screenFilter()
+        val lowLatencyAudio = settingsManager.lowLatencyAudio()
+        val enableRumble = settingsManager.enableRumble()
+        val directLoad = settingsManager.allowDirectGameLoad()
 
         val loadingStatesFlow = gameLoader.load(
             applicationContext,

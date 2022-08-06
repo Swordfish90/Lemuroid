@@ -3,7 +3,6 @@ package com.swordfish.lemuroid.lib.core
 import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
-import io.reactivex.Single
 import java.security.InvalidParameterException
 import dagger.Lazy
 import kotlinx.coroutines.Dispatchers

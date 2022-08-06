@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.common.rx
+package com.swordfish.lemuroid.common.coroutines
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.properties.ReadWriteProperty

@@ -5,9 +5,9 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.InputDevice
-import com.swordfish.lemuroid.app.mobile.feature.settings.FlowSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
-import com.swordfish.lemuroid.common.flow.safeCollect
+import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.libretrodroid.RumbleEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,7 +22,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalCoroutinesApi::class)
 class RumbleManager(
     applicationContext: Context,
-    private val settingsManager: FlowSettingsManager,
+    private val settingsManager: SettingsManager,
     private val inputDeviceManager: FlowInputDeviceManager
 ) {
     private val deviceVibrator = applicationContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator

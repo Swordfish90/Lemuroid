@@ -68,7 +68,7 @@ class SaveSyncManagerImpl(
     }
 
     private fun performSaveSyncForCores(cores: Set<CoreID>) {
-        val drive = DriveFactory(appContext).create().toNullable() ?: return
+        val drive = DriveFactory(appContext).create() ?: return
 
         syncLocalAndRemoteFolder(
             drive,
@@ -257,7 +257,7 @@ class SaveSyncManagerImpl(
     }
 
     private fun getOrCreateAppDataFolder(folderName: String): String {
-        val drive = DriveFactory(appContext).create().toNullable()
+        val drive = DriveFactory(appContext).create()
             ?: throw UnsupportedOperationException()
 
         val query = drive.files().list()

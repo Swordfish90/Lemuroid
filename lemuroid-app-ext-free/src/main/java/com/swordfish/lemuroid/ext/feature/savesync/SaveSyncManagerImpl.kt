@@ -5,7 +5,6 @@ import android.content.Context
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
 
 class SaveSyncManagerImpl(
     private val appContext: Context,

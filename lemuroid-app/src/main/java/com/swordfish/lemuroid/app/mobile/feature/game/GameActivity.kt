@@ -39,13 +39,13 @@ import com.swordfish.lemuroid.app.mobile.feature.tilt.TiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.TwoButtonsTiltTracker
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
-import com.swordfish.lemuroid.common.flow.batch
-import com.swordfish.lemuroid.common.flow.launchOnState
-import com.swordfish.lemuroid.common.flow.safeCollect
+import com.swordfish.lemuroid.common.coroutines.batch
+import com.swordfish.lemuroid.common.coroutines.launchOnState
+import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.math.linearInterpolation
-import com.swordfish.lemuroid.common.rx.MutableStateProperty
+import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
 import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
@@ -65,7 +65,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -80,7 +79,6 @@ import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.rx2.asFlow
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -184,7 +182,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     private suspend fun initializeTiltSensitivityFlow() {
-        val sensitivity = flowSettingsManager.tiltSensitivity()
+        val sensitivity = settingsManager.tiltSensitivity()
         tiltSensor.setSensitivity(sensitivity)
     }
 
@@ -216,7 +214,7 @@ class GameActivity : BaseGameActivity() {
     }
 
     private suspend fun setupController(controllerConfig: ControllerConfig, orientation: Int) {
-        val hapticFeedbackMode = flowSettingsManager.hapticFeedbackMode()
+        val hapticFeedbackMode = settingsManager.hapticFeedbackMode()
         withContext(Dispatchers.Main) {
             setupTouchViews(controllerConfig, hapticFeedbackMode, orientation)
         }

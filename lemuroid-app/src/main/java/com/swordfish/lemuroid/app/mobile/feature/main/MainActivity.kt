@@ -35,25 +35,31 @@ import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.common.coroutines.safeLaunch
+import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import io.reactivex.rxkotlin.subscribeBy
-import timber.log.Timber
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(DelicateCoroutinesApi::class)
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
-    @Inject lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
-    @Inject lateinit var saveSyncManager: SaveSyncManager
+    @Inject
+    lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
+
+    @Inject
+    lateinit var saveSyncManager: SaveSyncManager
 
     private val reviewManager = ReviewManager()
     private var mainViewModel: MainViewModel? = null
@@ -72,7 +78,9 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
     private fun initializeActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        reviewManager.initialize(applicationContext)
+        GlobalScope.safeLaunch {
+            reviewManager.initialize(applicationContext)
+        }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -102,8 +110,9 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                gameLaunchTaskHandler.handleGameFinish(true, this, resultCode, data)
-                    .subscribeBy(Timber::e) { }
+                GlobalScope.safeLaunch {
+                    gameLaunchTaskHandler.handleGameFinish(true, this@MainActivity, resultCode, data)
+                }
             }
         }
     }

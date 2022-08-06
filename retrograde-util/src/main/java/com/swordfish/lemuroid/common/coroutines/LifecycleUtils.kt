@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.common.flow
+package com.swordfish.lemuroid.common.coroutines
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner

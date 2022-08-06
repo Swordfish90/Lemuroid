@@ -6,9 +6,6 @@ import com.swordfish.lemuroid.common.kotlin.writeBytesCompressed
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json

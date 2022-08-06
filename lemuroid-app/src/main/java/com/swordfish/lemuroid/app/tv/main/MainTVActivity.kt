@@ -3,8 +3,11 @@ package com.swordfish.lemuroid.app.tv.main
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
@@ -20,24 +23,22 @@ import com.swordfish.lemuroid.app.tv.home.TVHomeFragment
 import com.swordfish.lemuroid.app.tv.search.TVSearchFragment
 import com.swordfish.lemuroid.app.tv.shared.BaseTVActivity
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
+import com.swordfish.lemuroid.common.coroutines.safeLaunch
+import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
-import com.tbruyelle.rxpermissions2.RxPermissions
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDispose
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
-import timber.log.Timber
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import javax.inject.Inject
 
+@OptIn(DelicateCoroutinesApi::class)
 class MainTVActivity : BaseTVActivity(), BusyActivity {
 
-    @Inject lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
+    @Inject
+    lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
 
     var mainViewModel: MainTVViewModel? = null
 
@@ -63,27 +64,31 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
 
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                gameLaunchTaskHandler.handleGameFinish(false, this, resultCode, data)
-                    .andThen(Completable.fromCallable { ChannelUpdateWork.enqueue(applicationContext) })
-                    .subscribeBy(Timber::e) { }
+                GlobalScope.safeLaunch {
+                    gameLaunchTaskHandler.handleGameFinish(false, this@MainTVActivity, resultCode, data)
+                    ChannelUpdateWork.enqueue(applicationContext)
+                }
             }
         }
     }
 
     private fun ensureLegacyStoragePermissionsIfNeeded() {
-        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-        if (!TVHelper.isSAFSupported(this)) {
-            requestLegacyStoragePermissions(permissions)
+        if (TVHelper.isSAFSupported(this) || hasLegacyPermissions()) {
+            return
         }
+
+        val requestPermission = ActivityResultContracts.RequestPermission()
+        val requestPermissionLauncher = registerForActivityResult(requestPermission) { isGranted ->
+            if (!isGranted) {
+                finish()
+            }
+        }
+        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
-    private fun requestLegacyStoragePermissions(permissions: Array<String>) {
-        RxPermissions(this).request(*permissions)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { if (!it) finish() }
-            .autoDispose(scope())
-            .subscribe()
+    private fun hasLegacyPermissions(): Boolean {
+        val result = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        return result == PackageManager.PERMISSION_GRANTED
     }
 
     @dagger.Module

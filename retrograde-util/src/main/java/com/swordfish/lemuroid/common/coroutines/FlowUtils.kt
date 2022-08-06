@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.common.flow
+package com.swordfish.lemuroid.common.coroutines
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -6,12 +6,16 @@ import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 suspend fun <T> Flow<T>.safeCollect(block: suspend (T) -> Unit) {
+    this.safeCollect(Timber::e, block)
+}
+
+suspend fun <T> Flow<T>.safeCollect(onError: suspend (e: Throwable) -> Unit, block: suspend (T) -> Unit) {
     this.catch { Timber.e(it) }
         .collect {
             try {
                 block(it)
             } catch (e: Throwable) {
-                Timber.e(e)
+                onError(e)
             }
         }
 }

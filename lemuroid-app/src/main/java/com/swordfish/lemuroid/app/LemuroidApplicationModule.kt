@@ -25,8 +25,7 @@ import androidx.room.Room
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
-import com.swordfish.lemuroid.app.mobile.feature.settings.FlowSettingsManager
-import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
@@ -37,7 +36,6 @@ import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
@@ -47,7 +45,6 @@ import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManagerImpl
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
-import com.swordfish.lemuroid.lib.core.LegacyCoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.injection.PerActivity
@@ -57,10 +54,8 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
-import com.swordfish.lemuroid.lib.logging.RxTimberTree
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
-import com.swordfish.lemuroid.lib.saves.LegacyStatesManager
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
@@ -230,11 +225,6 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun legacyStatesManager(directoriesManager: DirectoriesManager) = LegacyStatesManager(directoriesManager)
-
-        @Provides
-        @PerApp
-        @JvmStatic
         fun statesManager(directoriesManager: DirectoriesManager) = StatesManager(directoriesManager)
 
         @Provides
@@ -255,17 +245,6 @@ abstract class LemuroidApplicationModule {
             directoriesManager: DirectoriesManager,
             retrofit: Retrofit
         ): CoreUpdater = CoreUpdaterImpl(directoriesManager, retrofit)
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun rxTree() = RxTimberTree()
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun legacyCoreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) =
-            LegacyCoreVariablesManager(sharedPreferences)
 
         @Provides
         @PerApp
@@ -299,12 +278,6 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gamepadsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            InputDeviceManager(context, sharedPreferences)
-
-        @Provides
-        @PerApp
-        @JvmStatic
         fun flowInputDeviceManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
             FlowInputDeviceManager(context, sharedPreferences)
 
@@ -331,7 +304,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun inputDeviceManager(inputDeviceManager: InputDeviceManager) =
+        fun inputDeviceManager(inputDeviceManager: FlowInputDeviceManager) =
             GamePadPreferencesHelper(inputDeviceManager)
 
         @Provides
@@ -379,14 +352,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun rxSettingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            RxSettingsManager(context, sharedPreferences)
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun flowSettingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            FlowSettingsManager(context, sharedPreferences)
+        fun settingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+            SettingsManager(context, sharedPreferences)
 
         @Provides
         @PerApp
@@ -408,7 +375,7 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun rumbleManager(
             context: Context,
-            settingsManager: FlowSettingsManager,
+            settingsManager: SettingsManager,
             inputDeviceManager: FlowInputDeviceManager
         ) =
             RumbleManager(context, settingsManager, inputDeviceManager)

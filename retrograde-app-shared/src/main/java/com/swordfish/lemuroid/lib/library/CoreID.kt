@@ -5,7 +5,6 @@ import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
 
 enum class CoreID(
     val coreName: String,

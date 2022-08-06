@@ -4,8 +4,6 @@ package com.swordfish.lemuroid.metadata.libretrodb.db.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
-import io.reactivex.Maybe
-import io.reactivex.Single
 
 @Dao
 interface GameDao {

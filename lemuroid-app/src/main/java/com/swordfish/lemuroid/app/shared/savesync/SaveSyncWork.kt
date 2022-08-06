@@ -14,7 +14,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.swordfish.lemuroid.app.mobile.feature.settings.FlowSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
@@ -35,7 +35,7 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
     @Inject
-    lateinit var settingsManager: FlowSettingsManager
+    lateinit var settingsManager: SettingsManager
 
     override suspend fun doWork(): Result {
         AndroidWorkerInjection.inject(this)

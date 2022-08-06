@@ -2,30 +2,25 @@ package com.swordfish.lemuroid.app.mobile.feature.gamemenu
 
 import android.content.Context
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.preferences.DummyDataStore
-import com.swordfish.lemuroid.common.rx.toSingleAsOptional
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.LegacyStatesManager
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
-import com.swordfish.lemuroid.lib.util.subscribeBy
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
 class GameMenuLoadFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var legacyStatesManager: LegacyStatesManager
+    @Inject lateinit var statesManager: StatesManager
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
 
     override fun onAttach(context: Context) {
@@ -49,38 +44,31 @@ class GameMenuLoadFragment : PreferenceFragmentCompat() {
         val systemCoreConfig = extras?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
             ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
 
-        setupLoadPreference(game, systemCoreConfig)
+        launchOnState(Lifecycle.State.CREATED) {
+            setupLoadPreference(game, systemCoreConfig)
+        }
     }
 
-    private fun setupLoadPreference(game: Game, systemCoreConfig: SystemCoreConfig) {
-        legacyStatesManager.getSavedSlotsInfo(game, systemCoreConfig.coreID)
-            .toObservable()
-            .flatMap {
-                Observable.fromIterable(it.mapIndexed { index, saveInfo -> index to saveInfo })
-            }
-            .flatMapSingle { (index, saveInfo) ->
-                GameMenuHelper.getSaveStateBitmap(
-                    requireContext(),
-                    statesPreviewManager,
-                    saveInfo,
-                    game,
-                    systemCoreConfig.coreID,
-                    index
-                )
-                    .toSingleAsOptional()
-                    .map { Triple(index, saveInfo, it) }
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribeBy { (index, saveInfo, bitmap) ->
-                GameMenuHelper.addLoadPreference(
-                    preferenceScreen,
-                    index,
-                    saveInfo,
-                    bitmap.toNullable()
-                )
-            }
+    private suspend fun setupLoadPreference(game: Game, systemCoreConfig: SystemCoreConfig) {
+        val slotsInfo = statesManager.getSavedSlotsInfo(game, systemCoreConfig.coreID)
+
+        slotsInfo.forEachIndexed { index, saveInfo ->
+            val bitmap = GameMenuHelper.getSaveStateBitmap(
+                requireContext(),
+                statesPreviewManager,
+                saveInfo,
+                game,
+                systemCoreConfig.coreID,
+                index
+            )
+
+            GameMenuHelper.addLoadPreference(
+                preferenceScreen,
+                index,
+                saveInfo,
+                bitmap
+            )
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

@@ -2,8 +2,6 @@ package com.swordfish.lemuroid.lib.core
 
 import android.content.Context
 import com.swordfish.lemuroid.lib.library.CoreID
-import io.reactivex.Completable
-import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Streaming

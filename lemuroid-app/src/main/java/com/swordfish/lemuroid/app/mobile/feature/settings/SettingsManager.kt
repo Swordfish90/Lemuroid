@@ -2,20 +2,15 @@ package com.swordfish.lemuroid.app.mobile.feature.settings
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
-import com.fredporciuncula.flow.preferences.Preference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Lazy
-import io.reactivex.Single
-import io.reactivex.rxkotlin.Singles
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlin.math.roundToInt
 
-class FlowSettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
+class SettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
 
     // TODO COROUTINE... Make it async
     private val flowSharedProcess = FlowSharedPreferences(sharedPreferences.get())

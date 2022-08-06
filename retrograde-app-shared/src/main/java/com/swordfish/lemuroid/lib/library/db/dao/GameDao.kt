@@ -27,9 +27,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -39,7 +36,7 @@ interface GameDao {
     fun selectAll(): PagingSource<Int, Game>
 
     @Query("SELECT * FROM games WHERE id = :id")
-    fun selectById(id: Int): Maybe<Game>
+    suspend fun selectById(id: Int): Game?
 
     @Query("SELECT * FROM games WHERE fileUri = :fileUri")
     fun selectByFileUri(fileUri: String): Game?
@@ -104,7 +101,7 @@ interface GameDao {
     fun delete(games: List<Game>)
 
     @Update
-    fun update(game: Game)
+    suspend fun update(game: Game)
 
     @Update
     fun update(games: List<Game>)
@@ -112,6 +109,3 @@ interface GameDao {
 
 data class SystemCount(val systemId: String, val count: Int)
 
-fun GameDao.updateAsync(game: Game): Completable = Completable.fromCallable {
-    update(game)
-}.subscribeOn(Schedulers.io())

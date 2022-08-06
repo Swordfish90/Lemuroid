@@ -21,9 +21,6 @@ package com.swordfish.lemuroid.ext.feature.savesync
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.gojuno.koptional.None
-import com.gojuno.koptional.Optional
-import com.gojuno.koptional.toOptional
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.Scope
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
@@ -36,8 +33,8 @@ import com.google.api.services.drive.DriveScopes
 // https://developers.google.com/android/guides/releases#march_20_2018_-_version_1200
 @SuppressLint("RestrictedApi")
 class DriveFactory(private val context: Context) {
-    fun create(): Optional<Drive> {
-        val googleAccount = GoogleSignIn.getLastSignedInAccount(context) ?: return None
+    fun create(): Drive? {
+        val googleAccount = GoogleSignIn.getLastSignedInAccount(context) ?: return null
 
         val scopeNames = listOf(Scope(DriveScopes.DRIVE_APPDATA).toString())
 
@@ -50,6 +47,5 @@ class DriveFactory(private val context: Context) {
         return Drive.Builder(httpTransport, jsonFactory, credential)
             .setApplicationName("com.swordfish.lemuroid")
             .build()
-            .toOptional()
     }
 }

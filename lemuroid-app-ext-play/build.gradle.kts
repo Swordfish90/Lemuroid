@@ -21,7 +21,6 @@ dependencies {
     implementation(deps.libs.play.review)
     implementation(deps.libs.play.reviewKtx)
     implementation(deps.libs.rxJava2)
-    implementation(deps.libs.koptional)
 
     implementation(deps.libs.gdrive.apiClient)
     implementation(deps.libs.gdrive.apiClientAndroid)

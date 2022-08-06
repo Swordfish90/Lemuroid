@@ -19,7 +19,7 @@
 
 package com.swordfish.lemuroid.lib.library
 
-import com.swordfish.lemuroid.common.flow.batch
+import com.swordfish.lemuroid.common.coroutines.batch
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
@@ -33,7 +33,6 @@ import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
 import dagger.Lazy
-import io.reactivex.Single
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow

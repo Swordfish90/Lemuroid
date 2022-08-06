@@ -8,8 +8,6 @@ import android.view.KeyEvent
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 import dagger.Lazy
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -75,15 +73,12 @@ class FlowInputDeviceManager(
             }
     }
 
-    fun resetAllBindings(): Completable {
-        val actionCompletable = Completable.fromAction {
-            val editor = sharedPreferences.edit()
-            sharedPreferences.all.keys
-                .filter { it.startsWith(GAME_PAD_BINDING_PREFERENCE_BASE_KEY) }
-                .forEach { editor.remove(it) }
-            editor.commit()
-        }
-        return actionCompletable.subscribeOn(Schedulers.io())
+    suspend fun resetAllBindings() = withContext(Dispatchers.IO) {
+        val editor = sharedPreferences.edit()
+        sharedPreferences.all.keys
+            .filter { it.startsWith(GAME_PAD_BINDING_PREFERENCE_BASE_KEY) }
+            .forEach { editor.remove(it) }
+        editor.commit()
     }
 
     fun getGamePadsObservable(): Flow<List<InputDevice>> {

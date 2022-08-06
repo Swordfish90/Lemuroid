@@ -23,7 +23,6 @@ import android.net.Uri
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import java.io.InputStream
 

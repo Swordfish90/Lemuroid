@@ -4,9 +4,7 @@ import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
 import android.view.PixelCopy
 import com.swordfish.lemuroid.common.kotlin.runCatchingWithRetry
-import io.reactivex.Maybe
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.lang.RuntimeException
 import kotlin.coroutines.resume

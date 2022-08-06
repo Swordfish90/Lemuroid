@@ -5,21 +5,13 @@ import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
 import dagger.Lazy
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CoresSelection(private val sharedPreferences: Lazy<SharedPreferences>) {
 
-    suspend fun coroutineCoreConfigForSystem(system: GameSystem) = withContext(Dispatchers.IO) {
+    suspend fun getCoreConfigForSystem(system: GameSystem) = withContext(Dispatchers.IO) {
         fetchSystemCoreConfig(system)
-    }
-
-    @Deprecated("Use the Coroutine variant")
-    fun getCoreConfigForSystem(system: GameSystem): Single<SystemCoreConfig> {
-        return Single.fromCallable { fetchSystemCoreConfig(system) }
-            .subscribeOn(Schedulers.io())
     }
 
     private fun fetchSystemCoreConfig(system: GameSystem): SystemCoreConfig {

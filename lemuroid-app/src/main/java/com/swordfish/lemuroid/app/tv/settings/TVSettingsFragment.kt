@@ -4,23 +4,26 @@ import android.content.Context
 import android.os.Bundle
 import android.view.InputDevice
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.AdvancedSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
-import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
@@ -28,7 +31,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     @Inject lateinit var settingsInteractor: SettingsInteractor
     @Inject lateinit var biosPreferences: BiosPreferences
     @Inject lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
-    @Inject lateinit var inputDeviceManager: InputDeviceManager
+    @Inject lateinit var inputDeviceManager: FlowInputDeviceManager
     @Inject lateinit var coresSelectionPreferences: CoresSelectionPreferences
     @Inject lateinit var saveSyncManager: SaveSyncManager
 
@@ -40,6 +43,16 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         saveSyncPreferences = SaveSyncPreferences(saveSyncManager)
 
         super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        launchOnState(Lifecycle.State.RESUMED) {
+            inputDeviceManager.getGamePadsObservable()
+                .distinctUntilChanged()
+                .collect { refreshGamePadBindingsScreen(it) }
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -69,11 +82,6 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        inputDeviceManager.getGamePadsObservable()
-            .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribe { refreshGamePadBindingsScreen(it) }
 
         refreshSaveSyncScreen()
 
@@ -125,17 +133,17 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         }
 
         when (preference.key) {
-            getString(R.string.pref_key_reset_gamepad_bindings) -> handleResetGamePadBindings()
+            getString(R.string.pref_key_reset_gamepad_bindings) -> lifecycleScope.launch {
+                handleResetGamePadBindings()
+            }
             getString(R.string.pref_key_reset_settings) -> handleResetSettings()
         }
         return super.onPreferenceTreeClick(preference)
     }
 
-    private fun handleResetGamePadBindings() {
-        gamePadPreferencesHelper.resetBindingsAndRefresh()
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(scope())
-            .subscribe { refreshGamePadBindingsScreen(it) }
+    private suspend fun handleResetGamePadBindings() {
+        inputDeviceManager.resetAllBindings()
+        refreshGamePadBindingsScreen(inputDeviceManager.getGamePadsObservable().first())
     }
 
     private fun handleResetSettings() {

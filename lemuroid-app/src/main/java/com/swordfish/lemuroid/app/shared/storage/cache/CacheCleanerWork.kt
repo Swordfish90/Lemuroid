@@ -9,7 +9,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.swordfish.lemuroid.app.mobile.feature.settings.FlowSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
@@ -25,7 +25,7 @@ class CacheCleanerWork(
 ) : CoroutineWorker(context, workerParams) {
 
     @Inject
-    lateinit var flowSettingsManager: FlowSettingsManager
+    lateinit var settingsManager: SettingsManager
 
     override suspend fun doWork(): Result {
         AndroidWorkerInjection.inject(this)
@@ -48,7 +48,7 @@ class CacheCleanerWork(
     }
 
     private suspend fun cleanLRU(context: Context) {
-        val size = flowSettingsManager.cacheSizeBytes().toLong()
+        val size = settingsManager.cacheSizeBytes().toLong()
         CacheCleaner.clean(context, size)
     }
 

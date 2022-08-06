@@ -100,7 +100,7 @@ object InputClassGamePad : InputClass {
         KeyEvent.KEYCODE_BUTTON_B to KeyEvent.KEYCODE_BUTTON_A,
         KeyEvent.KEYCODE_BUTTON_X to KeyEvent.KEYCODE_BUTTON_Y,
         KeyEvent.KEYCODE_BUTTON_Y to KeyEvent.KEYCODE_BUTTON_X
-    ).withDefault { if (it in InputDeviceManager.OUTPUT_KEYS) it else KeyEvent.KEYCODE_UNKNOWN }
+    ).withDefault { if (it in FlowInputDeviceManager.OUTPUT_KEYS) it else KeyEvent.KEYCODE_UNKNOWN }
 
     override fun getInputKeys() = INPUT_KEYS
 

@@ -46,7 +46,7 @@ class CoreUpdateWork(context: Context, workerParams: WorkerParameters) :
             val cores = retrogradeDatabase.gameDao().asyncSelectSystems()
                 .asFlow()
                 .map { GameSystem.findById(it) }
-                .map { coresSelection.coroutineCoreConfigForSystem(it) }
+                .map { coresSelection.getCoreConfigForSystem(it) }
                 .map { it.coreID }
                 .toList()
 

@@ -4,20 +4,20 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
-import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
 import com.swordfish.lemuroid.app.tv.shared.TVBaseSettingsActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.LegacyStatesManager
+import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
 class TVGameMenuActivity : TVBaseSettingsActivity() {
 
-    @Inject lateinit var legacyStatesManager: LegacyStatesManager
+    @Inject lateinit var statesManager: StatesManager
     @Inject lateinit var statesPreviewManager: StatesPreviewManager
-    @Inject lateinit var inputDeviceManager: InputDeviceManager
+    @Inject lateinit var inputDeviceManager: FlowInputDeviceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD_SUPPORTED")
 
             val fragment = TVGameMenuFragmentWrapper(
-                legacyStatesManager,
+                statesManager,
                 statesPreviewManager,
                 inputDeviceManager,
                 game,
@@ -77,9 +77,9 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
     }
 
     class TVGameMenuFragmentWrapper(
-        private val legacyStatesManager: LegacyStatesManager,
+        private val statesManager: StatesManager,
         private val statesPreviewManager: StatesPreviewManager,
-        private val inputDeviceManager: InputDeviceManager,
+        private val inputDeviceManager: FlowInputDeviceManager,
         private val game: Game,
         private val systemCoreConfig: SystemCoreConfig,
         private val coreOptions: Array<LemuroidCoreOption>,
@@ -93,7 +93,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
 
         override fun createFragment(): Fragment {
             return TVGameMenuFragment(
-                legacyStatesManager,
+                statesManager,
                 statesPreviewManager,
                 inputDeviceManager,
                 game,
