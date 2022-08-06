@@ -5,22 +5,16 @@ import android.content.SharedPreferences
 import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
-import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.withContext
 
-@OptIn(FlowPreview::class)
 class FlowInputDeviceManager(
     private val context: Context,
     sharedPreferencesFactory: Lazy<SharedPreferences>
@@ -105,21 +99,14 @@ class FlowInputDeviceManager(
 
     fun getEnabledInputsObservable(): Flow<List<InputDevice>> {
         return getGamePadsObservable()
-            .flatMapConcat { devices ->
-                if (devices.isEmpty()) {
-                    return@flatMapConcat flowOf(emptyList())
-                }
-
-                val enabledGamePads = devices.map { device ->
-                    val defaultValue = device.getInputClass().isEnabledByDefault(context, device)
-                    FlowSharedPreferences(sharedPreferences)
-                        .getBoolean(computeEnabledGamePadPreference(device), defaultValue).asFlow()
-                }
-
-                combine(enabledGamePads) { results ->
-                    devices.filterIndexed { index, _ -> results[index] }
-                }
+            .map { devices ->
+                devices.filter { isDeviceEnabled(it) }
             }
+    }
+
+    private suspend fun isDeviceEnabled(device: InputDevice): Boolean = withContext(Dispatchers.IO) {
+        val defaultValue = device.getInputClass().isEnabledByDefault(context, device)
+        sharedPreferences.getBoolean(computeEnabledGamePadPreference(device), defaultValue)
     }
 
     private suspend fun retrieveMappingFromPreferences(
