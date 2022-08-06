@@ -145,14 +145,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected val retroGameViewFlow = MutableStateFlow<GLRetroView?>(null)
     protected var retroGameView: GLRetroView? by MutableStateProperty(retroGameViewFlow)
 
-    val loadingStateFlow = MutableStateFlow(false)
-    var loading: Boolean by MutableStateProperty(loadingStateFlow)
-
-    val loadingMessageStateFlow = MutableStateFlow("")
-    var loadingMessage: String by MutableStateProperty(loadingMessageStateFlow)
-
-    val controllerConfigStateFlow = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
-    var controllerConfigs: Map<Int, ControllerConfig> by MutableStateProperty(controllerConfigStateFlow)
+    private val loadingState = MutableStateFlow(false)
+    private val loadingMessageStateFlow = MutableStateFlow("")
+    private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -232,7 +227,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         try {
             waitRetroGameViewInitialized()
             val controllers = controllerConfigsManager.getControllerConfigs(system.id, systemCoreConfig)
-            controllerConfigs = controllers
+            controllerConfigsState.value = controllers
         } catch (e: Exception) {
             Timber.e(e)
         }
@@ -255,7 +250,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeLoadingVisibilityFlow() {
-        loadingStateFlow
+        loadingState
             .debounce(200)
             .safeCollect {
                 loadingView.isVisible = it
@@ -273,7 +268,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private suspend fun initializeControllerConfigsFlow() {
         waitGLEvent<GLRetroView.GLRetroEvents.FrameRendered>()
-        controllerConfigStateFlow.safeCollect {
+        controllerConfigsState.safeCollect {
             updateControllers(it)
         }
     }
@@ -303,7 +298,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     fun getControllerType(): Flow<Map<Int, ControllerConfig>> {
-        return controllerConfigStateFlow
+        return controllerConfigsState
     }
 
     /* On some cores unserialize fails with no reason. So we need to try multiple times. */
@@ -438,7 +433,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     protected fun displayOptionsDialog() {
-        if (loading) return
+        if (loadingState.value) return
 
         val coreOptions = getCoreOptions()
 
@@ -657,7 +652,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
-                if (controllerConfigs[port]?.mergeDPADAndLeftStickEvents == true) {
+                if (controllerConfigsState.value[port]?.mergeDPADAndLeftStickEvents == true) {
                     sendMergedMotionEvents(event, port)
                 } else {
                     sendSeparateMotionEvents(event, port)
@@ -777,20 +772,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onBackPressed() {
-        if (loading) return
+        if (loadingState.value) return
         lifecycleScope.launch {
             autoSaveAndFinish()
         }
     }
 
-    private suspend fun autoSaveAndFinish() {
-        loading = true
-
+    private suspend fun autoSaveAndFinish() = withLoading {
         saveSRAM(game)
         saveAutoSave(game)
         performSuccessfulActivityFinish()
-
-        loading = false
     }
 
     private fun performSuccessfulActivityFinish() {
@@ -803,6 +794,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         setResult(Activity.RESULT_OK, resultIntent)
 
         finishAndExitProcess()
+    }
+
+    private inline fun withLoading(block: () -> Unit) {
+        loadingState.value = true
+        block()
+        loadingState.value = false
     }
 
     private fun performUnexpectedErrorFinish(exception: Throwable) {
@@ -854,34 +851,33 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun saveSlot(index: Int) {
-        if (loading) return
-        loading = true
-        getCurrentSaveState()?.let {
-            statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index)
-            runCatching {
-                takeScreenshotPreview(index)
+        if (loadingState.value) return
+        withLoading {
+            getCurrentSaveState()?.let {
+                statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index)
+                runCatching {
+                    takeScreenshotPreview(index)
+                }
             }
         }
-        loading = false
     }
 
     private suspend fun loadSlot(index: Int) {
-        if (loading) return
-        loading = true
-
-        try {
-            statesManager.getSlotSave(game, systemCoreConfig.coreID, index)?.let {
-                val loaded = withContext(Dispatchers.IO) {
-                    loadSaveState(it)
+        if (loadingState.value) return
+        withLoading {
+            try {
+                statesManager.getSlotSave(game, systemCoreConfig.coreID, index)?.let {
+                    val loaded = withContext(Dispatchers.IO) {
+                        loadSaveState(it)
+                    }
+                    withContext(Dispatchers.Main) {
+                        if (!loaded) displayToast(R.string.game_toast_load_state_failed)
+                    }
                 }
-                withContext(Dispatchers.Main) {
-                    if (!loaded) displayToast(R.string.game_toast_load_state_failed)
-                }
+            } catch (e: Throwable) {
+                displayLoadStateErrorMessage(e)
             }
-        } catch (e: Throwable) {
-            displayLoadStateErrorMessage(e)
         }
-        loading = false
     }
 
     private fun getCurrentSaveState(): SaveState? {
@@ -923,15 +919,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private suspend fun reset() {
-        loading = true
+    private suspend fun reset() = withLoading {
         try {
             delay(longAnimationDuration().toLong())
             retroGameViewFlow().reset()
         } catch (e: Throwable) {
             Timber.e(e, "Error in reset")
         }
-        loading = false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -1018,15 +1012,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeLoadingViewFlow() {
-        loading = true
-        waitGLEvent<GLRetroView.GLRetroEvents.FrameRendered>()
-        loading = false
+        withLoading {
+            waitGLEvent<GLRetroView.GLRetroEvents.FrameRendered>()
+        }
     }
 
     private suspend fun retroGameViewFlow() = retroGameViewFlow.filterNotNull().first()
 
     private fun displayLoadingState(loadingState: GameLoader.LoadingState) {
-        loadingMessage = when (loadingState) {
+        loadingMessageStateFlow.value = when (loadingState) {
             is GameLoader.LoadingState.LoadingCore -> getString(R.string.game_loading_download_core)
             is GameLoader.LoadingState.LoadingGame -> getString(R.string.game_loading_preparing_game)
             else -> ""

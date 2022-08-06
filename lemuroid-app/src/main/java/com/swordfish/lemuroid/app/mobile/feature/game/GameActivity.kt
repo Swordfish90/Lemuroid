@@ -40,7 +40,6 @@ import com.swordfish.lemuroid.app.mobile.feature.tilt.TiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.TwoButtonsTiltTracker
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
-import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
 import com.swordfish.lemuroid.common.coroutines.batch
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
@@ -100,23 +99,15 @@ class GameActivity : BaseGameActivity() {
 
     private val virtualControllerJobs = mutableSetOf<Job>()
 
-    private val touchControllerConfigObservable = MutableStateFlow<ControllerConfig?>(null)
-    private var touchControllerConfig: ControllerConfig?
-        by MutableStateProperty(touchControllerConfigObservable)
-
-    private val padSettingsObservable = MutableStateFlow(TouchControllerSettingsManager.Settings())
-    private var padSettings: TouchControllerSettingsManager.Settings
-        by MutableStateProperty(padSettingsObservable)
-
+    private val touchControllerConfigState = MutableStateFlow<ControllerConfig?>(null)
+    private val padSettingsState = MutableStateFlow<TouchControllerSettingsManager.Settings?>(null)
     private val insetsState = MutableStateFlow<Rect?>(null)
-
-    private val orientationObservable = MutableStateFlow(Configuration.ORIENTATION_PORTRAIT)
-    private var orientation: Int by MutableStateProperty(orientationObservable)
+    private val orientationState = MutableStateFlow(Configuration.ORIENTATION_PORTRAIT)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        orientation = getCurrentOrientation()
+        orientationState.value = getCurrentOrientation()
 
         tiltSensor = TiltSensor(applicationContext)
 
@@ -163,10 +154,10 @@ class GameActivity : BaseGameActivity() {
 
     private suspend fun initializeLayoutChangeFlow() {
         val combinedFlow = combine(
-            touchControllerConfigObservable.filterNotNull(),
-            orientationObservable,
+            touchControllerConfigState.filterNotNull(),
+            orientationState,
             isVirtualGamePadVisible(),
-            padSettingsObservable,
+            padSettingsState.filterNotNull(),
             insetsState.filterNotNull(),
             ::NTuple5
         )
@@ -207,7 +198,7 @@ class GameActivity : BaseGameActivity() {
             .filterNotNull()
             .distinctUntilChanged()
 
-        combine(firstGamePad, orientationObservable, ::Pair)
+        combine(firstGamePad, orientationState, ::Pair)
             .safeCollect { (pad, orientation) ->
                 setupController(pad, orientation)
             }
@@ -233,7 +224,7 @@ class GameActivity : BaseGameActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        orientation = newConfig.orientation
+        orientationState.value = newConfig.orientation
     }
 
     private fun setupTouchViews(
@@ -287,7 +278,7 @@ class GameActivity : BaseGameActivity() {
         this.leftPad = leftPad
         this.rightPad = rightPad
 
-        this.touchControllerConfig = controllerConfig
+        touchControllerConfigState.value = controllerConfig
     }
 
     private fun updateDividers(
@@ -539,7 +530,7 @@ class GameActivity : BaseGameActivity() {
         orientation: Int
     ) {
         val virtualGamePadSettingsManager = getVirtualGamePadSettingsManager(controllerConfig, orientation)
-        return virtualGamePadSettingsManager.storeSettings(padSettings)
+        return virtualGamePadSettingsManager.storeSettings(padSettingsState.value!!)
     }
 
     private suspend fun loadVirtualGamePadSettings(
@@ -548,7 +539,7 @@ class GameActivity : BaseGameActivity() {
     ) {
         val virtualGamePadSettingsManager =
             getVirtualGamePadSettingsManager(controllerConfig, orientation)
-        padSettings = virtualGamePadSettingsManager.retrieveSettings()
+        padSettingsState.value = virtualGamePadSettingsManager.retrieveSettings()
     }
 
     private fun getVirtualGamePadSettingsManager(
@@ -570,19 +561,27 @@ class GameActivity : BaseGameActivity() {
     }
 
     private suspend fun displayCustomizationOptions() {
+        findViewById<View>(R.id.editcontrolsdarkening).isVisible = true
+
         val customizer = TouchControllerCustomizer()
+
+        val insets = insetsState
+            .filterNotNull()
+            .first()
+
+        val touchControllerConfig = touchControllerConfigState
+            .filterNotNull()
+            .first()
+
+        val padSettings = padSettingsState.filterNotNull()
+            .first()
+
         val initialSettings = TouchControllerCustomizer.Settings(
             padSettings.scale,
             padSettings.rotation,
             padSettings.marginX,
             padSettings.marginY
         )
-
-        val insets = insetsState
-            .filterNotNull()
-            .first()
-
-        findViewById<View>(R.id.editcontrolsdarkening).isVisible = true
 
         customizer.displayCustomizationPopup(
             this@GameActivity,
@@ -593,22 +592,23 @@ class GameActivity : BaseGameActivity() {
         )
             .takeWhile { it !is TouchControllerCustomizer.Event.Close }
             .onEach {
+                val current = padSettingsState.filterNotNull().first()
                 when (it) {
                     is TouchControllerCustomizer.Event.Scale -> {
-                        padSettings = padSettings.copy(scale = it.value)
+                        padSettingsState.value = current.copy(scale = it.value)
                     }
                     is TouchControllerCustomizer.Event.Rotation -> {
-                        padSettings = padSettings.copy(rotation = it.value)
+                        padSettingsState.value = current.copy(rotation = it.value)
                     }
                     is TouchControllerCustomizer.Event.Margins -> {
-                        padSettings = padSettings.copy(marginX = it.x, marginY = it.y)
+                        padSettingsState.value = current.copy(marginX = it.x, marginY = it.y)
                     }
                     else -> Unit
                 }
             }
-            .safeCollect {  }
+            .safeCollect { }
 
-        storeVirtualGamePadSettings(touchControllerConfig!!, orientation)
+        storeVirtualGamePadSettings(touchControllerConfig, orientationState.value)
         findViewById<View>(R.id.editcontrolsdarkening).isVisible = false
     }
 
