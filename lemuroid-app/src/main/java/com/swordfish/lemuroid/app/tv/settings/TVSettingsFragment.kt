@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.tv.settings
 import android.content.Context
 import android.os.Bundle
 import android.view.InputDevice
+import android.view.View
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -45,8 +46,8 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         super.onAttach(context)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         launchOnState(Lifecycle.State.RESUMED) {
             inputDeviceManager.getGamePadsObservable()

@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.tv.gamemenu
 
 import android.os.Bundle
+import android.view.View
 import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import androidx.lifecycle.Lifecycle
 import androidx.preference.Preference
@@ -39,16 +40,8 @@ class TVGameMenuFragment(
         setPreferencesFromResource(R.xml.tv_game_settings, rootKey)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        launchOnState(Lifecycle.State.CREATED) {
-            initializeLoadAndSave()
-        }
-
-        launchOnState(Lifecycle.State.CREATED) {
-            initializeControllers()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         GameMenuHelper.setupAudioOption(preferenceScreen, audioEnabled)
         GameMenuHelper.setupFastForwardOption(preferenceScreen, fastForwardEnabled, fastForwardSupported)
@@ -56,6 +49,14 @@ class TVGameMenuFragment(
 
         if (numDisks > 1) {
             GameMenuHelper.setupChangeDiskOption(activity, preferenceScreen, currentDisk, numDisks)
+        }
+
+        launchOnState(Lifecycle.State.CREATED) {
+            initializeLoadAndSave()
+        }
+
+        launchOnState(Lifecycle.State.CREATED) {
+            initializeControllers()
         }
     }
 

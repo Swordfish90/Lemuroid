@@ -12,19 +12,17 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
@@ -58,21 +56,17 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         val factory = TVSearchViewModel.Factory(retrogradeDb)
         searchViewModel = ViewModelProvider(this, factory)[TVSearchViewModel::class.java]
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                searchViewModel.searchResults
-                    .collect {
-                        val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagingDataAdapter<Game>
-                        gamesAdapter.submitData(lifecycle, it)
-                    }
-            }
+        launchOnState(Lifecycle.State.RESUMED) {
+            searchViewModel.searchResults
+                .collect {
+                    val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagingDataAdapter<Game>
+                    gamesAdapter.submitData(lifecycle, it)
+                }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                searchDebounce.debounce(1000)
-                    .collect { searchViewModel.queryString.value = it }
-            }
+        launchOnState(Lifecycle.State.RESUMED) {
+            searchDebounce.debounce(1000)
+                .collect { searchViewModel.queryString.value = it }
         }
 
         setSearchResultProvider(this)

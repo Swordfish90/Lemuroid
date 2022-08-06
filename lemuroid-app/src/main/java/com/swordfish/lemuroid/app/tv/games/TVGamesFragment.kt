@@ -9,24 +9,25 @@ import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TVGamesFragment : VerticalGridSupportFragment() {
 
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
-    @Inject lateinit var gameInteractor: GameInteractor
-    @Inject lateinit var coverLoader: CoverLoader
+    @Inject
+    lateinit var retrogradeDb: RetrogradeDatabase
+    @Inject
+    lateinit var gameInteractor: GameInteractor
+    @Inject
+    lateinit var coverLoader: CoverLoader
 
     private val args: TVGamesFragmentArgs by navArgs()
 
@@ -50,11 +51,9 @@ class TVGamesFragment : VerticalGridSupportFragment() {
 
         this.adapter = pagingAdapter
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                gamesViewModel.games
-                    .collect { pagingAdapter.submitData(lifecycle, it) }
-            }
+        launchOnState(Lifecycle.State.RESUMED) {
+            gamesViewModel.games
+                .collect { pagingAdapter.submitData(lifecycle, it) }
         }
 
         args.systemIds.let {

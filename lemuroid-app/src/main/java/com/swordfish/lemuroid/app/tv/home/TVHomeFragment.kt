@@ -17,8 +17,6 @@ import androidx.leanback.widget.ObjectAdapter
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -31,22 +29,24 @@ import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
 
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
+
     @Inject
     lateinit var gameInteractor: GameInteractor
+
     @Inject
     lateinit var coverLoader: CoverLoader
+
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
 
@@ -108,11 +108,9 @@ class TVHomeFragment : BrowseSupportFragment() {
         val factory = TVHomeViewModel.Factory(retrogradeDb, requireContext().applicationContext)
         val homeViewModel = ViewModelProvider(this, factory)[TVHomeViewModel::class.java]
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                homeViewModel.getViewStates()
-                    .collect { update(it) }
-            }
+        launchOnState(Lifecycle.State.RESUMED) {
+            homeViewModel.getViewStates()
+                .collect { update(it) }
         }
     }
 

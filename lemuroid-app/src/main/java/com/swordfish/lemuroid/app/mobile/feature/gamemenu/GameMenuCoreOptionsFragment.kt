@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.gamemenu
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
@@ -32,8 +33,8 @@ class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
         addPreferencesFromResource(R.xml.empty_preference_screen)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         launchOnState(Lifecycle.State.CREATED) {
             inputDeviceManager

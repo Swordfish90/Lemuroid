@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings
 import android.content.Context
 import android.os.Bundle
 import android.view.InputDevice
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
@@ -32,6 +33,10 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore =
             SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
         setPreferencesFromResource(R.xml.empty_preference_screen, rootKey)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         launchOnState(Lifecycle.State.CREATED) {
             inputDeviceManager.getGamePadsObservable()
                 .distinctUntilChanged()
