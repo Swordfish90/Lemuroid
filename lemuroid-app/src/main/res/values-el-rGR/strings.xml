@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">Αρχική σελίδα</string>
+    <string name="title_search">Αναζήτηση</string>
+    <string name="title_systems">Συστήματα</string>
+    <string name="title_games">Παιχνίδια</string>
+    <string name="title_settings">Ρυθμίσεις</string>
+    <string name="recent">Πρόσφατα</string>
+    <string name="favorites">Αγαπημένα</string>
+    <string name="discover">Ανακαλύψτε</string>
+    <string name="rescan">Επανασάρωση</string>
+    <string name="stop">Διακοπή</string>
+    <string name="none">Κανένα</string>
+    <string name="directory">Κατάλογος</string>
+    <string name="display_filter">Φίλτρο οθόνης</string>
+    <string name="roms">ROMs</string>
+    <string name="ok">Εντάξει</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="settings">Ρυθμίσεις</string>
+</resources>
