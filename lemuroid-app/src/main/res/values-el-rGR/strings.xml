@@ -17,4 +17,10 @@
     <string name="ok">Εντάξει</string>
     <string name="cancel">Ακύρωση</string>
     <string name="settings">Ρυθμίσεις</string>
+    <string name="save_sync">Συγχρονισμός αρχείων αποθήκευσης</string>
+    <string name="show_all">Εμφάνιση Όλων</string>
+    <string name="settings_category_general">Γενικά</string>
+    <string name="settings_category_input">Είσοδος</string>
+    <string name="settings_category_misc">Διάφορα</string>
+    <string name="settings_title_enable_touch_feedback">Δόνηση κατά το άγγιγμα</string>
 </resources>
