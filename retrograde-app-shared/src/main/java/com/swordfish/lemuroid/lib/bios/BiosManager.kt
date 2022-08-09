@@ -8,9 +8,9 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageFile
-import timber.log.Timber
 import java.io.File
 import java.io.InputStream
+import timber.log.Timber
 
 class BiosManager(private val directoriesManager: DirectoriesManager) {
 
@@ -57,7 +57,11 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
         return BiosInfo(bios.getValue(true), bios.getValue(false))
     }
 
-    fun tryAddBiosAfter(storageFile: StorageFile, inputStream: InputStream, timestampMs: Long): Boolean {
+    fun tryAddBiosAfter(
+        storageFile: StorageFile,
+        inputStream: InputStream,
+        timestampMs: Long
+    ): Boolean {
         val bios = findByCRC(storageFile) ?: findByName(storageFile) ?: return false
 
         Timber.i("Importing bios file: $bios")

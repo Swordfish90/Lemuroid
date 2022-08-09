@@ -14,9 +14,6 @@ import com.swordfish.lemuroid.app.shared.input.getInputClass
 
 class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManager) {
 
-    fun resetBindingsAndRefresh() = inputDeviceManager.resetAllBindings()
-        .andThen(inputDeviceManager.getGamePadsObservable().firstElement())
-
     fun addGamePadsPreferencesToScreen(
         context: Context,
         preferenceScreen: PreferenceScreen,
@@ -93,7 +90,10 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         }
     }
 
-    private fun buildGamePadEnabledPreference(context: Context, inputDevice: InputDevice): Preference {
+    private fun buildGamePadEnabledPreference(
+        context: Context,
+        inputDevice: InputDevice
+    ): Preference {
         val preference = SwitchPreference(context)
         preference.key = InputDeviceManager.computeEnabledGamePadPreference(inputDevice)
         preference.title = inputDevice.name
@@ -102,7 +102,11 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         return preference
     }
 
-    private fun buildKeyBindingPreference(context: Context, inputDevice: InputDevice, key: Int): Preference {
+    private fun buildKeyBindingPreference(
+        context: Context,
+        inputDevice: InputDevice,
+        key: Int
+    ): Preference {
         val outputKeys = InputDeviceManager.OUTPUT_KEYS
         val outputKeysName = outputKeys.map { getRetroPadKeyName(context, it) }
         val defaultBinding = inputDeviceManager.getDefaultBinding(inputDevice, key)
@@ -121,7 +125,10 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         return preference
     }
 
-    private fun buildGameMenuShortcutPreference(context: Context, inputDevice: InputDevice): Preference? {
+    private fun buildGameMenuShortcutPreference(
+        context: Context,
+        inputDevice: InputDevice
+    ): Preference? {
         val default = GameMenuShortcut.getDefault(inputDevice) ?: return null
         val supportedShortcuts = inputDevice.getInputClass().getSupportedShortcuts()
 

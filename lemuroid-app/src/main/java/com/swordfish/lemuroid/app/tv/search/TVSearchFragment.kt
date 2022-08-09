@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.tv.search
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.leanback.app.SearchSupportFragment
 import androidx.leanback.paging.PagingDataAdapter
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -9,29 +10,32 @@ import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.cachedIn
-import com.jakewharton.rxrelay2.PublishRelay
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.util.subscribeBy
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDispose
 import dagger.android.support.AndroidSupportInjection
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
 
+@OptIn(FlowPreview::class)
 class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
 
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
-    @Inject lateinit var gameInteractor: GameInteractor
-    @Inject lateinit var coverLoader: CoverLoader
+    @Inject
+    lateinit var retrogradeDb: RetrogradeDatabase
+    @Inject
+    lateinit var gameInteractor: GameInteractor
+    @Inject
+    lateinit var coverLoader: CoverLoader
 
-    private val searchRelay: PublishRelay<String> = PublishRelay.create()
+    private val searchDebounce = MutableStateFlow("")
 
     private lateinit var rowsAdapter: ArrayObjectAdapter
     private lateinit var searchViewModel: TVSearchViewModel
@@ -41,8 +45,8 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         super.onAttach(context)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setOnItemViewClickedListener { _, item, _, _ ->
             when (item) {
@@ -53,18 +57,20 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         rowsAdapter = createAdapter()
 
         val factory = TVSearchViewModel.Factory(retrogradeDb)
-        searchViewModel = ViewModelProvider(this, factory).get(TVSearchViewModel::class.java)
+        searchViewModel = ViewModelProvider(this, factory)[TVSearchViewModel::class.java]
 
-        searchViewModel.searchResults.cachedIn(lifecycle).observe(this) {
-            val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagingDataAdapter<Game>
-            gamesAdapter.submitData(lifecycle, it)
+        launchOnState(Lifecycle.State.RESUMED) {
+            searchViewModel.searchResults
+                .collect {
+                    val gamesAdapter = (rowsAdapter.get(0) as ListRow).adapter as PagingDataAdapter<Game>
+                    gamesAdapter.submitData(lifecycle, it)
+                }
         }
 
-        searchRelay
-            .debounce(1, TimeUnit.SECONDS)
-            .distinctUntilChanged()
-            .autoDispose(scope())
-            .subscribeBy { searchViewModel.queryString.postValue(it) }
+        launchOnState(Lifecycle.State.RESUMED) {
+            searchDebounce.debounce(1000)
+                .collect { searchViewModel.queryString.value = it }
+        }
 
         setSearchResultProvider(this)
     }
@@ -94,12 +100,12 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
     }
 
     override fun onQueryTextChange(query: String): Boolean {
-        searchRelay.accept(query)
+        searchDebounce.value = query
         return true
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {
-        searchRelay.accept(query)
+        searchDebounce.value = query
         return true
     }
 

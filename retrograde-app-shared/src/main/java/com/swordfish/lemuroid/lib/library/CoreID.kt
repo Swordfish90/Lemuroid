@@ -5,7 +5,6 @@ import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.assetsmanager.NoAssetsManager
 import com.swordfish.lemuroid.lib.core.assetsmanager.PPSSPPAssetsManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
 
 enum class CoreID(
     val coreName: String,
@@ -123,13 +122,13 @@ enum class CoreID(
     }
 
     interface AssetsManager {
-        fun retrieveAssetsIfNeeded(
+        suspend fun retrieveAssetsIfNeeded(
             coreUpdaterApi: CoreUpdater.CoreManagerApi,
             directoriesManager: DirectoriesManager,
             sharedPreferences: SharedPreferences
-        ): Completable
+        )
 
-        fun clearAssets(directoriesManager: DirectoriesManager): Completable
+        suspend fun clearAssets(directoriesManager: DirectoriesManager)
     }
 }
 

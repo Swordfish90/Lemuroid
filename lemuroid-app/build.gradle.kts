@@ -7,34 +7,36 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 175
-        versionName = "1.14.1" // Always remember to update Cores Tag!
+        versionCode = 176
+        versionName = "1.15.0-alpha" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
 
     if (usePlayDynamicFeatures()) {
         println("Building Google Play version. Bundling dynamic features.")
-        dynamicFeatures = mutableSetOf(
-            ":lemuroid_core_desmume",
-            ":lemuroid_core_dosbox_pure",
-            ":lemuroid_core_fbneo",
-            ":lemuroid_core_fceumm",
-            ":lemuroid_core_gambatte",
-            ":lemuroid_core_genesis_plus_gx",
-            ":lemuroid_core_handy",
-            ":lemuroid_core_mame2003_plus",
-            ":lemuroid_core_mednafen_ngp",
-            ":lemuroid_core_mednafen_pce_fast",
-            ":lemuroid_core_mednafen_wswan",
-            ":lemuroid_core_melonds",
-            ":lemuroid_core_mgba",
-            ":lemuroid_core_mupen64plus_next_gles3",
-            ":lemuroid_core_pcsx_rearmed",
-            ":lemuroid_core_ppsspp",
-            ":lemuroid_core_prosystem",
-            ":lemuroid_core_snes9x",
-            ":lemuroid_core_stella",
-            ":lemuroid_core_citra"
+        dynamicFeatures.addAll(
+            setOf(
+                ":lemuroid_core_desmume",
+                ":lemuroid_core_dosbox_pure",
+                ":lemuroid_core_fbneo",
+                ":lemuroid_core_fceumm",
+                ":lemuroid_core_gambatte",
+                ":lemuroid_core_genesis_plus_gx",
+                ":lemuroid_core_handy",
+                ":lemuroid_core_mame2003_plus",
+                ":lemuroid_core_mednafen_ngp",
+                ":lemuroid_core_mednafen_pce_fast",
+                ":lemuroid_core_mednafen_wswan",
+                ":lemuroid_core_melonds",
+                ":lemuroid_core_mgba",
+                ":lemuroid_core_mupen64plus_next_gles3",
+                ":lemuroid_core_pcsx_rearmed",
+                ":lemuroid_core_ppsspp",
+                ":lemuroid_core_prosystem",
+                ":lemuroid_core_snes9x",
+                ":lemuroid_core_stella",
+                ":lemuroid_core_citra"
+            )
         )
     }
 
@@ -121,13 +123,12 @@ dependencies {
     implementation(deps.libs.material)
     implementation(deps.libs.coil)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
+    implementation(deps.libs.androidx.activity.activity)
+    implementation(deps.libs.androidx.activity.activityKtx)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.preferences.preferencesKtx)
-    implementation(deps.libs.rxbindings.core)
-    implementation(deps.libs.rxbindings.appcompat)
     implementation(deps.libs.arch.work.runtime)
     implementation(deps.libs.arch.work.runtimeKtx)
-    implementation(deps.libs.arch.work.rxjava2)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.reactiveStreams)
     implementation(deps.libs.epoxy.expoxy)
@@ -143,29 +144,22 @@ dependencies {
     implementation(deps.libs.androidx.appcompat.recyclerView)
     implementation(deps.libs.androidx.paging.common)
     implementation(deps.libs.androidx.paging.runtime)
-    implementation(deps.libs.androidx.paging.rxjava2)
     implementation(deps.libs.androidx.room.common)
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.room.rxjava2)
-    implementation(deps.libs.autodispose.android.archComponents)
-    implementation(deps.libs.autodispose.android.core)
-    implementation(deps.libs.autodispose.core)
+    implementation(deps.libs.androidx.room.ktx)
     implementation(deps.libs.dagger.android.core)
     implementation(deps.libs.dagger.android.support)
     implementation(deps.libs.dagger.core)
-    implementation(deps.libs.koptional)
-    implementation(deps.libs.koptionalRxJava2)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
+    implementation(deps.libs.kotlinxCoroutinesRxJava2)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.okio)
     implementation(deps.libs.retrofit)
     implementation(deps.libs.retrofitRxJava2)
     implementation(deps.libs.rxAndroid2)
     implementation(deps.libs.rxJava2)
-    implementation(deps.libs.rxPermissions2)
-    implementation(deps.libs.rxPreferences)
-    implementation(deps.libs.rxRelay2)
-    implementation(deps.libs.rxKotlin2)
+    implementation(deps.libs.flowPreferences)
     implementation(deps.libs.guava)
     implementation(deps.libs.androidx.documentfile)
     implementation(deps.libs.androidx.leanback.tvProvider)

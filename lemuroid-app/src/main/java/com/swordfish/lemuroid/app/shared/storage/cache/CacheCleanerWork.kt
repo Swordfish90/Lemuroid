@@ -1,51 +1,58 @@
 package com.swordfish.lemuroid.app.shared.storage.cache
 
 import android.content.Context
+import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.RxWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+import timber.log.Timber
 
-class CacheCleanerWork(context: Context, workerParams: WorkerParameters) : RxWorker(context, workerParams) {
+class CacheCleanerWork(
+    context: Context,
+    workerParams: WorkerParameters
+) : CoroutineWorker(context, workerParams) {
 
-    @Inject lateinit var rxSettingsManager: RxSettingsManager
+    @Inject
+    lateinit var settingsManager: SettingsManager
 
-    override fun createWork(): Single<Result> {
+    override suspend fun doWork(): Result {
         AndroidWorkerInjection.inject(this)
 
-        val cleanCompletable = if (inputData.getBoolean(CLEAN_EVERYTHING, false)) {
-            createCleanAllCompletable(applicationContext)
-        } else {
-            createCleanLRUCompletable(applicationContext)
+        try {
+            performCleaning()
+        } catch (e: Throwable) {
+            Timber.e(e, "Error while clearing cache")
         }
-        return cleanCompletable
-            .subscribeOn(Schedulers.io())
-            .onErrorComplete()
-            .toSingleDefault(Result.success())
+
+        return Result.success()
     }
 
-    private fun createCleanLRUCompletable(context: Context): Completable {
-        return rxSettingsManager.cacheSizeBytes
-            .map { it.toLong() }
-            .flatMapCompletable { CacheCleaner.clean(context, it) }
+    private suspend fun performCleaning() {
+        if (inputData.getBoolean(CLEAN_EVERYTHING, false)) {
+            cleanAll(applicationContext)
+        } else {
+            cleanLRU(applicationContext)
+        }
     }
 
-    private fun createCleanAllCompletable(context: Context): Completable {
+    private suspend fun cleanLRU(context: Context) {
+        val size = settingsManager.cacheSizeBytes().toLong()
+        CacheCleaner.clean(context, size)
+    }
+
+    private suspend fun cleanAll(context: Context) {
         return CacheCleaner.cleanAll(context)
     }
 

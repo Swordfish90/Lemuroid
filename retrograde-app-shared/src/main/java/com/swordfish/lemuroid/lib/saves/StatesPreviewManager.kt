@@ -6,31 +6,31 @@ import android.media.ThumbnailUtils
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
-import io.reactivex.Maybe
 import java.io.File
 import java.io.FileOutputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
 
-    fun getPreviewForSlot(
+    suspend fun getPreviewForSlot(
         game: Game,
         coreID: CoreID,
         index: Int,
         size: Int
-    ) = Maybe.fromCallable {
+    ): Bitmap? = withContext(Dispatchers.IO) {
         val screenshotName = getSlotScreenshotName(game, index)
         val file = getPreviewFile(screenshotName, coreID.coreName)
         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
         ThumbnailUtils.extractThumbnail(bitmap, size, size)
     }
 
-    fun setPreviewForSlot(
+    suspend fun setPreviewForSlot(
         game: Game,
         bitmap: Bitmap,
         coreID: CoreID,
         index: Int
-    ) = Completable.fromAction {
+    ) = withContext(Dispatchers.IO) {
         val screenshotName = getSlotScreenshotName(game, index)
         val file = getPreviewFile(screenshotName, coreID.coreName)
         FileOutputStream(file).use {

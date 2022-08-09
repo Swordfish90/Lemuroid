@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -35,25 +36,29 @@ import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.common.coroutines.safeLaunch
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeAppCompatActivity
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import io.reactivex.rxkotlin.subscribeBy
-import timber.log.Timber
 import javax.inject.Inject
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 
+@OptIn(DelicateCoroutinesApi::class)
 class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
-    @Inject lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
-    @Inject lateinit var saveSyncManager: SaveSyncManager
+    @Inject
+    lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
+
+    @Inject
+    lateinit var saveSyncManager: SaveSyncManager
 
     private val reviewManager = ReviewManager()
     private var mainViewModel: MainViewModel? = null
@@ -72,7 +77,9 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
     private fun initializeActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        reviewManager.initialize(applicationContext)
+        GlobalScope.safeLaunch {
+            reviewManager.initialize(applicationContext)
+        }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -89,11 +96,11 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(applicationContext))
-            .get(MainViewModel::class.java)
+        val factory = MainViewModel.Factory(applicationContext)
+        mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
         mainViewModel?.displayProgress?.observe(this) { isRunning ->
-            findViewById<ProgressBar>(R.id.progress).setVisibleOrGone(isRunning)
+            findViewById<ProgressBar>(R.id.progress).isVisible = isRunning
         }
     }
 
@@ -102,16 +109,17 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
 
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
-                gameLaunchTaskHandler.handleGameFinish(true, this, resultCode, data)
-                    .subscribeBy(Timber::e) { }
+                GlobalScope.safeLaunch {
+                    gameLaunchTaskHandler.handleGameFinish(true, this@MainActivity, resultCode, data)
+                }
             }
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val isSupported = saveSyncManager.isSupported()
         val isConfigured = saveSyncManager.isConfigured()
-        menu?.findItem(R.id.menu_options_sync)?.isVisible = isSupported && isConfigured
+        menu.findItem(R.id.menu_options_sync)?.isVisible = isSupported && isConfigured
         return super.onPrepareOptionsMenu(menu)
     }
 

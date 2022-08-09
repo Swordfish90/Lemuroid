@@ -14,8 +14,8 @@ object StorageFilesMerger {
         files: List<BaseStorageFile>
     ): List<GroupedStorageFiles> {
         val allFiles = files
-            .map { it to listOf<BaseStorageFile>() }
-            .toMap().toMutableMap()
+            .associateWith { listOf<BaseStorageFile>() }
+            .toMutableMap()
 
         mergeBinCueFiles(allFiles, storageProvider)
         removeInvalidBinCuePairs(allFiles, storageProvider)

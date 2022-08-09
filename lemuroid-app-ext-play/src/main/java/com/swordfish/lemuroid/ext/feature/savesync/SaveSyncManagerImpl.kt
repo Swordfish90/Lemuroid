@@ -13,10 +13,11 @@ import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
-import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class SaveSyncManagerImpl(
     private val appContext: Context,
@@ -54,7 +55,7 @@ class SaveSyncManagerImpl(
         }
     }
 
-    override fun sync(cores: Set<CoreID>) = Completable.fromAction {
+    override suspend fun sync(cores: Set<CoreID>): Unit = withContext(Dispatchers.IO) {
         synchronized(SYNC_LOCK) {
             val saveSyncResult = runCatching {
                 performSaveSyncForCores(cores)
@@ -67,7 +68,7 @@ class SaveSyncManagerImpl(
     }
 
     private fun performSaveSyncForCores(cores: Set<CoreID>) {
-        val drive = DriveFactory(appContext).create().toNullable() ?: return
+        val drive = DriveFactory(appContext).create() ?: return
 
         syncLocalAndRemoteFolder(
             drive,
@@ -256,7 +257,7 @@ class SaveSyncManagerImpl(
     }
 
     private fun getOrCreateAppDataFolder(folderName: String): String {
-        val drive = DriveFactory(appContext).create().toNullable()
+        val drive = DriveFactory(appContext).create()
             ?: throw UnsupportedOperationException()
 
         val query = drive.files().list()

@@ -6,18 +6,22 @@ import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.view.animateProgress
 import com.swordfish.lemuroid.common.view.animateVisibleOrGone
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
 import com.swordfish.touchinput.radial.LemuroidTouchOverlayThemes
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.withContext
 
 object VirtualLongPressHandler {
 
@@ -43,7 +47,12 @@ object VirtualLongPressHandler {
         )
     }
 
-    private fun buildCircleDrawable(context: Context, fillColor: Int, strokeColor: Int, strokeSize: Float): Drawable {
+    private fun buildCircleDrawable(
+        context: Context,
+        fillColor: Int,
+        strokeColor: Int,
+        strokeSize: Float
+    ): Drawable {
         return GradientDrawable().apply {
             shape = GradientDrawable.OVAL
             setColor(fillColor)
@@ -51,26 +60,35 @@ object VirtualLongPressHandler {
         }
     }
 
-    fun displayLoading(
+    suspend fun displayLoading(
         activity: GameActivity,
         iconId: Int,
-        cancellation: Observable<Unit>
-    ): Maybe<Unit> {
-        return Observable.timer(LONG_PRESS_TIMEOUT, TimeUnit.MILLISECONDS)
-            .takeUntil(cancellation)
-            .firstElement()
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                longPressView(activity).alpha = 0f
-                longPressIconView(activity).setImageResource(iconId)
+        cancellation: Flow<Unit>
+    ): Boolean {
+        withContext(Dispatchers.Main) {
+            longPressView(activity).alpha = 0f
+            longPressIconView(activity).setImageResource(iconId)
+            displayLongPressView(activity)
+        }
+
+        val successFlow = flow {
+            delay(LONG_PRESS_TIMEOUT)
+            emit(true)
+        }
+
+        val cancellationFlow = cancellation.map { false }
+
+        val isSuccessful = merge(successFlow, cancellationFlow)
+            .first()
+
+        withContext(Dispatchers.Main) {
+            if (isSuccessful) {
+                longPressView(activity).isVisible = false
             }
-            .doAfterSuccess {
-                longPressView(activity).setVisibleOrGone(false)
-            }
-            .doOnSubscribe { displayLongPressView(activity) }
-            .doAfterTerminate { hideLongPressView(activity) }
-            .onErrorComplete()
-            .map { }
+            hideLongPressView(activity)
+        }
+
+        return isSuccessful
     }
 
     private fun longPressIconView(activity: GameActivity) =

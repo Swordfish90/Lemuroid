@@ -1,9 +1,9 @@
 package com.swordfish.lemuroid.app.shared.library
 
 import android.content.Context
+import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.ListenableWorker
-import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
@@ -12,16 +12,18 @@ import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
-import io.reactivex.Single
-import timber.log.Timber
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
-    RxWorker(context, workerParams) {
+    CoroutineWorker(context, workerParams) {
 
-    @Inject lateinit var lemuroidLibrary: LemuroidLibrary
+    @Inject
+    lateinit var lemuroidLibrary: LemuroidLibrary
 
-    override fun createWork(): Single<Result> {
+    override suspend fun doWork(): Result {
         AndroidWorkerInjection.inject(this)
 
         val notificationsManager = NotificationsManager(applicationContext)
@@ -32,11 +34,20 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
         )
 
         setForegroundAsync(foregroundInfo)
-        return lemuroidLibrary.indexLibrary()
-            .toSingleDefault(Result.success())
-            .doOnError { Timber.e(it, "Library indexing failed with exception: $it") }
-            .doFinally { LibraryIndexScheduler.scheduleCoreUpdate(applicationContext) }
-            .onErrorReturn { Result.success() } // We need to return success or the Work chain will die forever.
+
+        val result = withContext(Dispatchers.IO) {
+            kotlin.runCatching {
+                lemuroidLibrary.indexLibrary()
+            }
+        }
+
+        result.exceptionOrNull()?.let {
+            Timber.e("Library indexing work terminated with an exception:", it)
+        }
+
+        LibraryIndexScheduler.scheduleCoreUpdate(applicationContext)
+
+        return Result.success()
     }
 
     @dagger.Module(subcomponents = [Subcomponent::class])

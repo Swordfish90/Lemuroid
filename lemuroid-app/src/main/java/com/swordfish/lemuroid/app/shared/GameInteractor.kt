@@ -6,8 +6,9 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.lib.library.db.dao.updateAsync
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class GameInteractor(
     private val activity: BusyActivity,
@@ -33,11 +34,15 @@ class GameInteractor(
     }
 
     fun onFavoriteToggle(game: Game, isFavorite: Boolean) {
-        retrogradeDb.gameDao().updateAsync(game.copy(isFavorite = isFavorite)).subscribe()
+        GlobalScope.launch {
+            retrogradeDb.gameDao().update(game.copy(isFavorite = isFavorite))
+        }
     }
 
     fun onCreateShortcut(game: Game) {
-        shortcutsGenerator.pinShortcutForGame(game).subscribe()
+        GlobalScope.launch {
+            shortcutsGenerator.pinShortcutForGame(game)
+        }
     }
 
     fun supportShortcuts(): Boolean {

@@ -8,6 +8,7 @@ import com.swordfish.lemuroid.app.mobile.shared.withModelsFrom
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.common.kotlin.lazySequenceOf
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class EpoxyHomeController(
@@ -16,48 +17,45 @@ class EpoxyHomeController(
     private val coverLoader: CoverLoader
 ) : AsyncEpoxyController() {
 
-    private var recentGames = listOf<Game>()
-    private var favoriteGames = listOf<Game>()
-    private var discoverGames = listOf<Game>()
+    private var uiState = HomeViewModel.UIState()
 
-    private var libraryIndexingInProgress = false
-
-    fun updateRecents(games: List<Game>) {
-        recentGames = games
-        requestDelayedModelBuild(UPDATE_DELAY_TIME)
-    }
-
-    fun updateFavorites(games: List<Game>) {
-        favoriteGames = games
-        requestDelayedModelBuild(UPDATE_DELAY_TIME)
-    }
-
-    fun updateDiscover(games: List<Game>) {
-        discoverGames = games
-        requestDelayedModelBuild(UPDATE_DELAY_TIME)
-    }
-
-    fun updateLibraryIndexingInProgress(indexingInProgress: Boolean) {
-        libraryIndexingInProgress = indexingInProgress
-        requestDelayedModelBuild(UPDATE_DELAY_TIME)
+    fun update(viewState: HomeViewModel.UIState) {
+        uiState = viewState
+        requestModelBuild()
     }
 
     override fun buildModels() {
-        if (favoriteGames.isNotEmpty()) {
-            addCarousel("favorites", R.string.favorites, favoriteGames)
+        if (displayFavorites()) {
+            addCarousel("favorites", R.string.favorites, uiState.favoritesGames)
         }
 
-        if (recentGames.isNotEmpty()) {
-            addCarousel("recent", R.string.recent, recentGames)
+        if (displayRecents()) {
+            addCarousel("recent", R.string.recent, uiState.recentGames)
         }
 
-        if (discoverGames.isNotEmpty()) {
-            addCarousel("discover", R.string.discover, discoverGames)
+        if (displayDiscovery()) {
+            addCarousel("discover", R.string.discover, uiState.discoveryGames)
         }
 
-        if (recentGames.isEmpty() && favoriteGames.isEmpty() && discoverGames.isEmpty()) {
+        if (displayEmptyView()) {
             addEmptyView()
         }
+    }
+
+    private fun displayDiscovery() = uiState.discoveryGames.isNotEmpty()
+
+    private fun displayRecents() = uiState.recentGames.isNotEmpty()
+
+    private fun displayFavorites() = uiState.favoritesGames.isNotEmpty()
+
+    private fun displayEmptyView(): Boolean {
+        val conditions = lazySequenceOf(
+            { uiState.loading.not() },
+            { uiState.recentGames.isEmpty() },
+            { uiState.favoritesGames.isEmpty() },
+            { uiState.discoveryGames.isEmpty() },
+        )
+        return conditions.all { it }
     }
 
     private fun addCarousel(id: String, titleId: Int, games: List<Game>) {
@@ -84,7 +82,7 @@ class EpoxyHomeController(
                 .title(R.string.home_empty_title)
                 .message(R.string.home_empty_message)
                 .action(R.string.home_empty_action)
-                .actionEnabled(!this@EpoxyHomeController.libraryIndexingInProgress)
+                .actionEnabled(!this@EpoxyHomeController.uiState.indexInProgress)
                 .onClick { this@EpoxyHomeController.settingsInteractor.changeLocalStorageFolder() }
         }
     }
@@ -97,9 +95,5 @@ class EpoxyHomeController(
 
     override fun onExceptionSwallowed(exception: RuntimeException) {
         throw exception
-    }
-
-    companion object {
-        const val UPDATE_DELAY_TIME = 160
     }
 }

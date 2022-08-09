@@ -1,58 +1,76 @@
 package com.swordfish.lemuroid.lib.saves
 
 import com.swordfish.lemuroid.common.kotlin.readBytesUncompressed
+import com.swordfish.lemuroid.common.kotlin.runCatchingWithRetry
 import com.swordfish.lemuroid.common.kotlin.writeBytesCompressed
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Single
-import kotlinx.serialization.json.Json
 import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 
 // TODO Since states are core related we should not put them in the same folder. This break previous versions states
 // so I decided to manage a transition phase reading also the old directory. We should safely remove it in a few weeks.
 
 class StatesManager(private val directoriesManager: DirectoriesManager) {
 
-    fun getSlotSave(game: Game, coreID: CoreID, index: Int): Maybe<SaveState> {
+    suspend fun getSlotSave(
+        game: Game,
+        coreID: CoreID,
+        index: Int
+    ): SaveState? = withContext(Dispatchers.IO) {
         assert(index in 0 until MAX_STATES)
-        return getSaveState(getSlotSaveFileName(game, index), coreID.coreName)
+        getSaveState(getSlotSaveFileName(game, index), coreID.coreName)
     }
 
-    fun setSlotSave(game: Game, saveState: SaveState, coreID: CoreID, index: Int): Completable {
+    suspend fun setSlotSave(
+        game: Game,
+        saveState: SaveState,
+        coreID: CoreID,
+        index: Int
+    ) = withContext(Dispatchers.IO) {
         assert(index in 0 until MAX_STATES)
-        return setSaveState(getSlotSaveFileName(game, index), coreID.coreName, saveState)
+        setSaveState(getSlotSaveFileName(game, index), coreID.coreName, saveState)
     }
 
-    fun getAutoSaveInfo(game: Game, coreID: CoreID): SaveInfo {
-        val autoSaveFile = getStateFile(getAutoSaveFileName(game), coreID.coreName)
-        val autoSaveHasData = autoSaveFile.length() > 0
-        return SaveInfo(autoSaveFile.exists() && autoSaveHasData, autoSaveFile.lastModified())
-    }
-
-    fun getAutoSave(game: Game, coreID: CoreID) =
-        getSaveState(getAutoSaveFileName(game), coreID.coreName)
-
-    fun setAutoSave(game: Game, coreID: CoreID, saveState: SaveState) =
-        setSaveState(getAutoSaveFileName(game), coreID.coreName, saveState)
-
-    fun getSavedSlotsInfo(
+    suspend fun getAutoSaveInfo(
         game: Game,
         coreID: CoreID
-    ): Single<List<SaveInfo>> = Single.fromCallable {
+    ): SaveInfo = withContext(Dispatchers.IO) {
+        val autoSaveFile = getStateFile(getAutoSaveFileName(game), coreID.coreName)
+        val autoSaveHasData = autoSaveFile.length() > 0
+        SaveInfo(autoSaveFile.exists() && autoSaveHasData, autoSaveFile.lastModified())
+    }
+
+    suspend fun getAutoSave(game: Game, coreID: CoreID) = withContext(Dispatchers.IO) {
+        getSaveState(getAutoSaveFileName(game), coreID.coreName)
+    }
+
+    suspend fun setAutoSave(
+        game: Game,
+        coreID: CoreID,
+        saveState: SaveState
+    ) = withContext(Dispatchers.IO) {
+        setSaveState(getAutoSaveFileName(game), coreID.coreName, saveState)
+    }
+
+    suspend fun getSavedSlotsInfo(
+        game: Game,
+        coreID: CoreID
+    ): List<SaveInfo> = withContext(Dispatchers.IO) {
         (0 until MAX_STATES)
             .map { getStateFileOrDeprecated(getSlotSaveFileName(game, it), coreID.coreName) }
             .map { SaveInfo(it.exists(), it.lastModified()) }
             .toList()
     }
 
-    private fun getSaveState(
+    private suspend fun getSaveState(
         fileName: String,
         coreName: String
-    ): Maybe<SaveState> {
-        val saveStateMaybe: Maybe<SaveState> = Maybe.fromCallable {
+    ): SaveState? {
+        return runCatchingWithRetry(FILE_ACCESS_RETRIES) {
             val saveFile = getStateFileOrDeprecated(fileName, coreName)
             val metadataFile = getMetadataStateFile(fileName, coreName)
             if (saveFile.exists()) {
@@ -67,21 +85,18 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
             } else {
                 null
             }
-        }
-
-        return saveStateMaybe.retry(FILE_ACCESS_RETRIES)
+        }.getOrNull()
     }
 
-    private fun setSaveState(
+    private suspend fun setSaveState(
         fileName: String,
         coreName: String,
         saveState: SaveState
-    ): Completable {
-        val saveCompletable = Completable.fromCallable {
+    ) {
+        runCatchingWithRetry(FILE_ACCESS_RETRIES) {
             writeStateToDisk(fileName, coreName, saveState.state)
             writeMetadataToDisk(fileName, coreName, saveState.metadata)
         }
-        return saveCompletable.retry(FILE_ACCESS_RETRIES)
     }
 
     private fun writeMetadataToDisk(
@@ -119,7 +134,10 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         return File(statesDirectories, fileName)
     }
 
-    private fun getMetadataStateFile(stateFileName: String, coreName: String): File {
+    private fun getMetadataStateFile(
+        stateFileName: String,
+        coreName: String
+    ): File {
         val statesDirectories = File(directoriesManager.getStatesDirectory(), coreName)
         statesDirectories.mkdirs()
         return File(statesDirectories, "$stateFileName.metadata")
@@ -136,6 +154,6 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
 
     companion object {
         const val MAX_STATES = 4
-        private const val FILE_ACCESS_RETRIES = 3L
+        private const val FILE_ACCESS_RETRIES = 3
     }
 }

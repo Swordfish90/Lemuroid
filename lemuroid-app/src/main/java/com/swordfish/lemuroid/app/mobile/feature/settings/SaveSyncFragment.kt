@@ -15,8 +15,10 @@ import javax.inject.Inject
 
 class SaveSyncFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var directoriesManager: DirectoriesManager
-    @Inject lateinit var saveSyncManager: SaveSyncManager
+    @Inject
+    lateinit var directoriesManager: DirectoriesManager
+    @Inject
+    lateinit var saveSyncManager: SaveSyncManager
     private lateinit var saveSyncPreferences: SaveSyncPreferences
 
     override fun onAttach(context: Context) {

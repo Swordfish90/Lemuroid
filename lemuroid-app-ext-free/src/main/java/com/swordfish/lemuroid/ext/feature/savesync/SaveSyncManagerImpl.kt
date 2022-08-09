@@ -5,7 +5,6 @@ import android.content.Context
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
 
 class SaveSyncManagerImpl(
     private val appContext: Context,
@@ -23,7 +22,7 @@ class SaveSyncManagerImpl(
 
     override fun getConfigInfo(): String = ""
 
-    override fun sync(cores: Set<CoreID>) = Completable.complete()
+    override suspend fun sync(cores: Set<CoreID>) {}
 
     override fun computeSavesSpace() = ""
 

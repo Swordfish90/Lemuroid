@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 class MainViewModel(appContext: Context) : ViewModel() {
 
     class Factory(private val appContext: Context) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MainViewModel(appContext) as T
         }
     }

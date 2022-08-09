@@ -5,46 +5,29 @@ import android.content.Context
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
-import io.reactivex.Completable
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.tasks.await
 
 class ReviewManager {
     private var reviewManager: ReviewManager? = null
     private var reviewInfo: ReviewInfo? = null
 
-    fun initialize(context: Context) {
+    suspend fun initialize(context: Context) {
         reviewManager = ReviewManagerFactory.create(context)
 
-        val task = reviewManager?.requestReviewFlow()
-        task?.addOnCompleteListener {
-            if (task.isSuccessful) {
-                Timber.i("Review retrieval was successful")
-                reviewInfo = task.result
-            }
+        runCatching {
+            reviewInfo = reviewManager?.requestReviewFlow()?.await()
         }
     }
 
-    fun startReviewFlow(activity: Activity, sessionTimeMillis: Long): Completable {
+    suspend fun launchReviewFlow(activity: Activity, sessionTimeMillis: Long) {
         // Only sessions which lasted more than 10 minutes considered good sessions
         if (sessionTimeMillis < MIN_GAME_SESSION_LENGTH) {
-            return Completable.complete()
-        }
-        return createReviewCompletable(activity).onErrorComplete()
-    }
-
-    private fun createReviewCompletable(activity: Activity) = Completable.create { emitter ->
-        val task = reviewInfo?.let {
-            reviewManager?.launchReviewFlow(activity, it)
+            return
         }
 
-        if (task == null) {
-            emitter.onComplete()
-            return@create
-        }
-
-        task.addOnCompleteListener {
-            emitter.onComplete()
+        reviewInfo?.let {
+            reviewManager?.launchReviewFlow(activity, it)?.await()
         }
     }
 
