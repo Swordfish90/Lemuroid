@@ -105,7 +105,7 @@ import timber.log.Timber
 abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected lateinit var game: Game
-    protected lateinit var system: GameSystem
+    private lateinit var system: GameSystem
     protected lateinit var systemCoreConfig: SystemCoreConfig
     protected lateinit var mainContainerLayout: ConstraintLayout
     private lateinit var gameContainerLayout: FrameLayout
@@ -259,7 +259,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private suspend fun initializeLoadingVisibilityFlow() {
         loadingState
-            .debounce(200)
+            .debounce(longAnimationDuration().toLong())
             .safeCollect {
                 loadingView.isVisible = it
                 loadingMessageView.isVisible = it
@@ -268,7 +268,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private suspend fun initializeLoadingMessageFlow() {
         loadingMessageStateFlow
-            .debounce(1000)
+            .debounce(2 * longAnimationDuration().toLong())
             .safeCollect {
                 loadingMessageView.text = it
             }
@@ -1002,7 +1002,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         )
 
         loadingStatesFlow
-            .flowOn(Dispatchers.Default)
+            .flowOn(Dispatchers.IO)
             .catch {
                 displayGameLoaderError((it as GameLoaderException).error, systemCoreConfig)
             }

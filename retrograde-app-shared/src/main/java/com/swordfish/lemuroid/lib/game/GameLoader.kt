@@ -20,7 +20,6 @@
 package com.swordfish.lemuroid.lib.game
 
 import android.content.Context
-import android.util.Log
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
@@ -122,11 +121,9 @@ class GameLoader(
                 )
             )
         } catch (e: GameLoaderException) {
-            Log.e("FILIPPO", "Reached the ready state ${e.message}", e)
             Timber.e(e, "Error while preparing game")
             throw e
         } catch (e: Exception) {
-            Log.e("FILIPPO", "Reached the ready state ${e.message}", e)
             Timber.e(e, "Error while preparing game")
             throw GameLoaderException(GameLoaderError.Generic)
         }
