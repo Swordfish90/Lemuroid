@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.AdvancedSettingsPreferences
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
@@ -36,7 +36,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     @Inject
     lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
     @Inject
-    lateinit var inputDeviceManager: FlowInputDeviceManager
+    lateinit var inputDeviceManager: InputDeviceManager
     @Inject
     lateinit var coresSelectionPreferences: CoresSelectionPreferences
     @Inject

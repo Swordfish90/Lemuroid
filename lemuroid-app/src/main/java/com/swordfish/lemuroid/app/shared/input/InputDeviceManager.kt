@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.withContext
 
-class FlowInputDeviceManager(
+class InputDeviceManager(
     private val context: Context,
     sharedPreferencesFactory: Lazy<SharedPreferences>
 ) {

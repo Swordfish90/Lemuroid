@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,10 +42,8 @@ class SearchFragment : RecyclerViewFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel = ViewModelProvider(
-            this,
-            SearchViewModel.Factory(retrogradeDb)
-        )[SearchViewModel::class.java]
+        val factory = SearchViewModel.Factory(retrogradeDb)
+        searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
         initializeMenuProvider()
 
@@ -60,10 +57,6 @@ class SearchFragment : RecyclerViewFragment() {
         launchOnState(Lifecycle.State.RESUMED) {
             searchDebounce.debounce(1000)
                 .collect { searchViewModel.queryString.value = it }
-        }
-
-        gamesAdapter.addLoadStateListener {
-            emptyView?.isVisible = gamesAdapter.itemCount == 0
         }
 
         gamesAdapter.addLoadStateListener { loadState ->

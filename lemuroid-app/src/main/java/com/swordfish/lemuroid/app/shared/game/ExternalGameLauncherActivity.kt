@@ -18,6 +18,7 @@ import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
+import com.swordfish.lemuroid.common.longAnimationDuration
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import javax.inject.Inject
@@ -50,7 +51,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
     @Inject
     lateinit var gameLauncher: GameLauncher
 
-    private val loadingSubject = MutableStateFlow(true)
+    private val loadingState = MutableStateFlow(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,24 +62,24 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
             val gameId = intent.data?.pathSegments?.let { it[it.size - 1].toInt() }!!
 
             lifecycleScope.launch {
-                loadingSubject.value = true
+                loadingState.value = true
                 try {
                     loadGame(gameId)
                 } catch (e: Throwable) {
                     displayErrorMessage()
                 }
-                loadingSubject.value = false
+                loadingState.value = false
             }
 
             launchOnState(Lifecycle.State.RESUMED) {
-                initializeLoadingFlow(loadingSubject)
+                initializeLoadingFlow(loadingState)
             }
         }
     }
 
     private suspend fun initializeLoadingFlow(loadingSubject: MutableStateFlow<Boolean>) {
         loadingSubject
-            .debounce(500)
+            .debounce(longAnimationDuration().toLong())
             .collect {
                 findViewById<View>(R.id.progressBar).isVisible = it
             }

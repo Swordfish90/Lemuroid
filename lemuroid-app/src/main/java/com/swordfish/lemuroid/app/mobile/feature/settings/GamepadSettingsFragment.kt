@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -24,7 +24,7 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
     @Inject
-    lateinit var inputDeviceManager: FlowInputDeviceManager
+    lateinit var inputDeviceManager: InputDeviceManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

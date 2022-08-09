@@ -59,7 +59,7 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
 
     init {
         viewModelScope.launch {
-            val finalFlowable = combine(
+            val uiStatesFlow = combine(
                 favoritesGames(retrogradeDb),
                 recentGames(retrogradeDb),
                 discoveryGames(retrogradeDb),
@@ -67,7 +67,7 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
                 ::buildViewState
             )
 
-            finalFlowable
+            uiStatesFlow
                 .debounce(DEBOUNCE_TIME)
                 .flowOn(Dispatchers.IO)
                 .collect { uiStates.value = it }

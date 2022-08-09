@@ -13,11 +13,12 @@ import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -78,13 +79,14 @@ class CoreUpdaterImpl(
         sessionId: Int,
         splitInstallManager: SplitInstallManager
     ) {
-        val eventsSubject = MutableSharedFlow<SplitInstallSessionState>(1)
+        val eventsState = MutableStateFlow<SplitInstallSessionState?>(null)
 
         val listener = SplitInstallStateUpdatedListener {
-            eventsSubject.tryEmit(it)
+            eventsState.value = it
         }
 
-        eventsSubject
+        eventsState
+            .filterNotNull()
             .onEach { log("Session status updated to $it") }
             .filter { it.sessionId() == sessionId }
             .takeWhile { !it.hasTerminalStatus }

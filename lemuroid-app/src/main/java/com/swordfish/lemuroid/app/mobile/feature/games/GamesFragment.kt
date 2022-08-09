@@ -37,10 +37,8 @@ class GamesFragment : RecyclerViewFragment() {
 
         gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor, coverLoader)
 
-        gamesViewModel = ViewModelProvider(
-            this,
-            GamesViewModel.Factory(retrogradeDb)
-        )[GamesViewModel::class.java]
+        val factory = GamesViewModel.Factory(retrogradeDb)
+        gamesViewModel = ViewModelProvider(this, factory)[GamesViewModel::class.java]
 
         recyclerView?.apply {
             adapter = gamesAdapter

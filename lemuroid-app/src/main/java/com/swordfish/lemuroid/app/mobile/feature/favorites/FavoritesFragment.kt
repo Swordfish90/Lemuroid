@@ -31,10 +31,8 @@ class FavoritesFragment : RecyclerViewFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favoritesViewModel = ViewModelProvider(
-            this,
-            FavoritesViewModel.Factory(retrogradeDb)
-        )[FavoritesViewModel::class.java]
+        val factory = FavoritesViewModel.Factory(retrogradeDb)
+        favoritesViewModel = ViewModelProvider(this, factory)[FavoritesViewModel::class.java]
 
         val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor, coverLoader)
 

@@ -10,7 +10,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.gamemenu.GameMenuHelper
-import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
@@ -22,7 +22,7 @@ import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 class TVGameMenuFragment(
     private val statesManager: StatesManager,
     private val statesPreviewManager: StatesPreviewManager,
-    private val inputDeviceManager: FlowInputDeviceManager,
+    private val inputDeviceManager: InputDeviceManager,
     private val game: Game,
     private val systemCoreConfig: SystemCoreConfig,
     private val coreOptions: Array<LemuroidCoreOption>,

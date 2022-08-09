@@ -9,10 +9,10 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.getInputClass
 
-class GamePadPreferencesHelper(private val inputDeviceManager: FlowInputDeviceManager) {
+class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManager) {
 
     fun addGamePadsPreferencesToScreen(
         context: Context,
@@ -95,7 +95,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: FlowInputDeviceMa
         inputDevice: InputDevice
     ): Preference {
         val preference = SwitchPreference(context)
-        preference.key = FlowInputDeviceManager.computeEnabledGamePadPreference(inputDevice)
+        preference.key = InputDeviceManager.computeEnabledGamePadPreference(inputDevice)
         preference.title = inputDevice.name
         preference.setDefaultValue(inputDevice.getInputClass().isEnabledByDefault(context, inputDevice))
         preference.isIconSpaceReserved = false
@@ -107,12 +107,12 @@ class GamePadPreferencesHelper(private val inputDeviceManager: FlowInputDeviceMa
         inputDevice: InputDevice,
         key: Int
     ): Preference {
-        val outputKeys = FlowInputDeviceManager.OUTPUT_KEYS
+        val outputKeys = InputDeviceManager.OUTPUT_KEYS
         val outputKeysName = outputKeys.map { getRetroPadKeyName(context, it) }
         val defaultBinding = inputDeviceManager.getDefaultBinding(inputDevice, key)
 
         val preference = ListPreference(context)
-        preference.key = FlowInputDeviceManager.computeKeyBindingPreference(inputDevice, key)
+        preference.key = InputDeviceManager.computeKeyBindingPreference(inputDevice, key)
         preference.title = getButtonKeyName(context, key)
         preference.entries = outputKeysName.toTypedArray()
         preference.entryValues = outputKeys.map { it.toString() }.toTypedArray()
@@ -133,7 +133,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: FlowInputDeviceMa
         val supportedShortcuts = inputDevice.getInputClass().getSupportedShortcuts()
 
         val preference = ListPreference(context)
-        preference.key = FlowInputDeviceManager.computeGameMenuShortcutPreference(inputDevice)
+        preference.key = InputDeviceManager.computeGameMenuShortcutPreference(inputDevice)
         preference.title = context.getString(R.string.settings_gamepad_title_game_menu)
         preference.entries = supportedShortcuts.map { it.name }.toTypedArray()
         preference.entryValues = supportedShortcuts.map { it.name }.toTypedArray()

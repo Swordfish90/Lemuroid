@@ -11,6 +11,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.common.kotlin.lazySequenceOf
 import dagger.android.support.AndroidSupportInjection
 
 open class RecyclerViewFragment : Fragment() {
@@ -36,10 +37,10 @@ open class RecyclerViewFragment : Fragment() {
     }
 
     fun updateEmptyViewVisibility(loadState: CombinedLoadStates, itemCount: Int) {
-        val emptyViewConditions = sequenceOf(
-            loadState.source.refresh is LoadState.NotLoading,
-            loadState.append.endOfPaginationReached,
-            itemCount == 0
+        val emptyViewConditions = lazySequenceOf<Boolean>(
+            { loadState.source.refresh is LoadState.NotLoading },
+            { loadState.append.endOfPaginationReached },
+            { itemCount == 0 }
         )
 
         val emptyViewVisible = emptyViewConditions.all { it }

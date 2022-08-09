@@ -96,8 +96,8 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(applicationContext))
-            .get(MainViewModel::class.java)
+        val factory = MainViewModel.Factory(applicationContext)
+        mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
         mainViewModel?.displayProgress?.observe(this) { isRunning ->
             findViewById<ProgressBar>(R.id.progress).isVisible = isRunning

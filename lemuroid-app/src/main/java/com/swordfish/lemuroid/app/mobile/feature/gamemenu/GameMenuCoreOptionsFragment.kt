@@ -9,7 +9,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
-import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class GameMenuCoreOptionsFragment : PreferenceFragmentCompat() {
 
     @Inject
-    lateinit var inputDeviceManager: FlowInputDeviceManager
+    lateinit var inputDeviceManager: InputDeviceManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

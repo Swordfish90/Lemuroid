@@ -30,7 +30,7 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
-import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
@@ -269,8 +269,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun flowInputDeviceManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            FlowInputDeviceManager(context, sharedPreferences)
+        fun inputDeviceManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+            InputDeviceManager(context, sharedPreferences)
 
         @Provides
         @PerApp
@@ -296,7 +296,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun inputDeviceManager(inputDeviceManager: FlowInputDeviceManager) =
+        fun gamePadPreferencesHelper(inputDeviceManager: InputDeviceManager) =
             GamePadPreferencesHelper(inputDeviceManager)
 
         @Provides
@@ -368,7 +368,7 @@ abstract class LemuroidApplicationModule {
         fun rumbleManager(
             context: Context,
             settingsManager: SettingsManager,
-            inputDeviceManager: FlowInputDeviceManager
+            inputDeviceManager: InputDeviceManager
         ) =
             RumbleManager(context, settingsManager, inputDeviceManager)
 

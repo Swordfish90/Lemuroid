@@ -24,7 +24,7 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
-import com.swordfish.lemuroid.app.shared.input.FlowInputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.getInputClass
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
@@ -132,7 +132,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     lateinit var coreVariablesManager: CoreVariablesManager
 
     @Inject
-    lateinit var inputDeviceManager: FlowInputDeviceManager
+    lateinit var inputDeviceManager: InputDeviceManager
 
     @Inject
     lateinit var gameLoader: GameLoader

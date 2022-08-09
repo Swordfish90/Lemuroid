@@ -26,7 +26,7 @@ class GamesViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel()
     val games: Flow<PagingData<Game>> = systemIds.flatMapLatest {
         when (it.size) {
             0 -> emptyFlow()
-            1 -> buildFlowPaging(20) { retrogradeDb.gameDao().selectBySystem(it[0]) }
+            1 -> buildFlowPaging(20) { retrogradeDb.gameDao().selectBySystem(it.first()) }
             else -> buildFlowPaging(20) { retrogradeDb.gameDao().selectBySystems(it) }
         }
     }
