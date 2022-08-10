@@ -98,8 +98,8 @@ android {
         }
     }
 
-    lintOptions {
-        disable += setOf("MissingTranslation", "ExtraTranslation")
+    lint {
+        disable += setOf("MissingTranslation", "ExtraTranslation", "EnsureInitializerMetadata")
     }
 
     kotlinOptions {

@@ -2,8 +2,12 @@ package com.swordfish.lemuroid.app
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.startup.AppInitializer
 import androidx.work.ListenableWorker
 import com.google.android.material.color.DynamicColors
+import com.swordfish.lemuroid.app.shared.startup.GameProcessInitializer
+import com.swordfish.lemuroid.app.shared.startup.MainProcessInitializer
+import com.swordfish.lemuroid.app.utils.android.isMainProcess
 import com.swordfish.lemuroid.ext.feature.context.ContextHandler
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
 import dagger.android.AndroidInjector
@@ -13,13 +17,6 @@ import javax.inject.Inject
 
 class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
 
-    /*@Inject
-    lateinit var rxTimberTree: RxTimberTree
-    @Inject
-    lateinit var rxPrefs: RxSharedPreferences
-    @Inject
-    lateinit var gdriveStorageProvider: GDriveStorageProvider*/
-
     @Inject
     lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
 
@@ -27,23 +24,15 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
     override fun onCreate() {
         super.onCreate()
 
-        DynamicColors.applyToActivitiesIfAvailable(this)
+        val initializeComponent = if (isMainProcess()) {
+            MainProcessInitializer::class.java
+        } else {
+            GameProcessInitializer::class.java
+        }
 
-        // var isPlanted = false
-        /* rxPrefs.getBoolean(getString(R.string.pref_key_flags_logging)).asObservable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { value ->
-                    gdriveStorageProvider.loggingEnabled = value
-                    if (value) {
-                        Timber.plant(rxTimberTree)
-                        isPlanted = true
-                    } else {
-                        if (isPlanted) {
-                            Timber.uproot(rxTimberTree)
-                            isPlanted = false
-                        }
-                    }
-                }*/
+        AppInitializer.getInstance(this).initializeComponent(initializeComponent)
+
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
     override fun attachBaseContext(base: Context) {

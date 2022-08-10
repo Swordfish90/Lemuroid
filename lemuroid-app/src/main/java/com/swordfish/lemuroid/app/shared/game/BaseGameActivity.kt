@@ -96,7 +96,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.rx2.asFlow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -113,8 +112,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var rightGamePadContainer: FrameLayout
     private lateinit var loadingView: ProgressBar
     private lateinit var loadingMessageView: TextView
-
-    private val rumbleContext = newSingleThreadContext("Rumble")
 
     @Inject
     lateinit var settingsManager: SettingsManager
@@ -218,7 +215,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             initializeLoadingVisibilityFlow()
         }
 
-        launchOnState(rumbleContext, Lifecycle.State.RESUMED) {
+        launchOnState(Lifecycle.State.RESUMED) {
             initializeRumbleFlow()
         }
 
