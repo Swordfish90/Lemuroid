@@ -5,13 +5,13 @@ import android.view.InputDevice
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 
 object InputClassUnknown : InputClass {
-    override fun getInputKeys(): List<Int> = emptyList()
+    override fun getInputKeys(): Set<Int> = emptySet()
 
     override fun getAxesMap(): Map<Int, Int> = emptyMap()
 
     override fun getDefaultBindings(): Map<Int, Int> = emptyMap()
 
-    override fun getCustomizableKeys(): List<Int> = emptyList()
+    override fun getCustomizableKeys(device: InputDevice): List<Int> = emptyList()
 
     override fun isSupported(device: InputDevice): Boolean = false
 
