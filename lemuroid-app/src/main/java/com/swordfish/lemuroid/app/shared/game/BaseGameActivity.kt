@@ -921,7 +921,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return retroGameView.unserializeState(saveState.state)
     }
 
-    private fun displayLoadStateErrorMessage(throwable: Throwable) {
+    private suspend fun displayLoadStateErrorMessage(throwable: Throwable) = withContext(Dispatchers.Main){
         when (throwable) {
             is IncompatibleStateException ->
                 displayToast(R.string.error_message_incompatible_state, Toast.LENGTH_LONG)
