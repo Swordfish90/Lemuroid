@@ -629,6 +629,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 val port = ports(device)
                 val bindKeyCode = bindings(device)[keyCode] ?: keyCode
 
+                // On the Nvidia shield the controller select button is remapped at back. We need to make it customizable.
+                if (bindKeyCode == KeyEvent.KEYCODE_BACK && action == KeyEvent.ACTION_DOWN) {
+                    onBackPressed()
+                    return@safeCollect
+                }
+
                 if (port == 0) {
                     if (bindKeyCode == KeyEvent.KEYCODE_BUTTON_MODE && action == KeyEvent.ACTION_DOWN) {
                         displayOptionsDialog()
@@ -915,7 +921,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return retroGameView.unserializeState(saveState.state)
     }
 
-    private fun displayLoadStateErrorMessage(throwable: Throwable) {
+    private suspend fun displayLoadStateErrorMessage(throwable: Throwable) = withContext(Dispatchers.Main){
         when (throwable) {
             is IncompatibleStateException ->
                 displayToast(R.string.error_message_incompatible_state, Toast.LENGTH_LONG)

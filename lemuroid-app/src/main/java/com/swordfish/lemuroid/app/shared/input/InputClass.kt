@@ -5,7 +5,7 @@ import android.view.InputDevice
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 
 interface InputClass {
-    fun getInputKeys(): List<Int>
+    fun getInputKeys(): Set<Int>
 
     fun getAxesMap(): Map<Int, Int>
 
@@ -15,7 +15,7 @@ interface InputClass {
 
     fun isEnabledByDefault(appContext: Context, device: InputDevice): Boolean
 
-    fun getCustomizableKeys(): List<Int>
+    fun getCustomizableKeys(device: InputDevice): List<Int>
 
     fun getSupportedShortcuts(): List<GameMenuShortcut>
 }
