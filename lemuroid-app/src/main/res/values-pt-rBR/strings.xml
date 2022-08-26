@@ -147,4 +147,13 @@
         \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
     </string>
     <string name="error_message_incompatible_state">Este estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
+    <string name="shader_filter_names_auto">Automático</string>
+    <string name="shader_filter_names_sharp">Nítido</string>
+    <string name="shader_filter_names_smooth">Suavização</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_none">Nenhuma</string>
+    <string name="haptic_feedback_mode_names_press">Pressione</string>
+    <string name="haptic_feedback_mode_names_press_release">Pressione &amp; liberar</string>
 </resources>
