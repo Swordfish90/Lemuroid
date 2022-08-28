@@ -32,7 +32,7 @@
         <item>press_release</item>
     </string-array>
 
-    <string-array translatable="false" name="pref_key_haptic_feedback_mode_names">
+    <string-array translatable="false" name="pref_key_haptic_feedback_mode_display_names">
         <item>@string/haptic_feedback_mode_names_none</item>
         <item>@string/haptic_feedback_mode_names_press</item>
         <item>@string/haptic_feedback_mode_names_press_release</item>
@@ -47,7 +47,7 @@
         <item>hd</item>
     </string-array>
 
-    <string-array translatable="false" name="pref_key_shader_filter_names">
+    <string-array translatable="false" name="pref_key_shader_filter_display_names">
         <item>@string/shader_filter_names_auto</item>
         <item>@string/shader_filter_names_sharp</item>
         <item>@string/shader_filter_names_smooth</item>

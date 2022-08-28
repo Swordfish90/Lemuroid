@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onSubscription
@@ -127,6 +128,10 @@ class InputDeviceManager(
     fun getEnabledInputsObservable(): Flow<List<InputDevice>> {
         return getGamePadsObservable()
             .flatMapLatest { devices ->
+                if (devices.isEmpty()) {
+                    return@flatMapLatest flowOf(emptyList())
+                }
+
                 val deviceStatuesFlows = devices.map { getDeviceStatus(it) }
                 combine(deviceStatuesFlows) { deviceStatues ->
                     deviceStatues

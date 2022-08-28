@@ -12,7 +12,7 @@
             android:title="@string/display_filter"
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true"
-            android:entries="@array/pref_key_shader_filter_names"
+            android:entries="@array/pref_key_shader_filter_display_names"
             app:entryValues="@array/pref_key_shader_filter_values"
             android:defaultValue="auto"/>
 

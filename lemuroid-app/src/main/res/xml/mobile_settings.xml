@@ -35,7 +35,7 @@
         <ListPreference
             android:key="@string/pref_key_shader_filter"
             android:title="@string/display_filter"
-            android:entries="@array/pref_key_shader_filter_names"
+            android:entries="@array/pref_key_shader_filter_display_names"
             android:entryValues="@array/pref_key_shader_filter_values"
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true"
@@ -56,7 +56,7 @@
         <ListPreference
             android:key="@string/pref_key_haptic_feedback_mode"
             android:title="@string/settings_title_enable_touch_feedback"
-            android:entries="@array/pref_key_haptic_feedback_mode_names"
+            android:entries="@array/pref_key_haptic_feedback_mode_display_names"
             android:entryValues="@array/pref_key_haptic_feedback_mode_values"
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true"
