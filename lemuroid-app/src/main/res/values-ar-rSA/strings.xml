@@ -106,6 +106,7 @@
     <string name="game_loader_error_load_core">يبدو أن نواة ليبرترو لم يتم تحميلها. تأكد من أن جهازك متصل بالإنترنت ومحاولة إعادة فحص مكتبتك. إذا استمرت المشكلة، قد لا يتم دعم هذا النواة على جهازك.</string>
     <string name="game_loader_error_load_game">حدث شيء سيئ أثناء تحميل لعبتك. تأكد من أن الروم مدعوم من Lemuroid وإعادة فحص ألعابك.</string>
     <string name="game_loader_error_save">حدث شيء سيئ مع حفظ الملف الخاص بك. إذا استمرت المشكلة، حاول تعطيل الحفظ التلقائي.</string>
+    <string name="game_loader_error_unsupported_architecture">هذا النواة غير مدعومة من قبل جهازك.</string>
     <string name="game_loader_error_generic">حدث شيء سيئ. جرب ما يلي:\n
         \n\u2022 تعطيل الحفظ التلقائي وإعادة تشغيل اللعبة
         \n\u2022 انتقل إلى إعدادات أندرويد ومسح ذاكرة التخزين المؤقت للتطبيق
@@ -126,6 +127,8 @@
     <string name="tv_home_section_recents">المستخدمة مؤخّراً</string>
     <string name="tv_home_section_systems">الأنظمة</string>
     <string name="tv_home_section_settings">الإعدادات</string>
+    <string name="gamepad_binding_update_title">ارتبط بـ \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">اضغط على زر على \"%1$s\"</string>
     <string name="tv_search_results">الأعاب</string>
     <string name="tv_game_message_missing_gamepad">وحدة التحكم مطلوبة للعب. الرجاء توصيل واحدة منها.</string>
     <string name="game_edit_touch_controls_error_not_visible">أقطع الاتصال بالوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
