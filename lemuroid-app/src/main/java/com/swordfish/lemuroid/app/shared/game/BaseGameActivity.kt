@@ -25,7 +25,8 @@ import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
-import com.swordfish.lemuroid.app.shared.input.getInputClass
+import com.swordfish.lemuroid.app.shared.input.InputKey
+import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
@@ -627,9 +628,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .safeCollect { (shortcut, ports, bindings, event) ->
                 val (device, action, keyCode) = event
                 val port = ports(device)
-                val bindKeyCode = bindings(device)[keyCode] ?: keyCode
+                val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
 
-                // On the Nvidia shield the controller select button is remapped at back. We need to make it customizable.
                 if (bindKeyCode == KeyEvent.KEYCODE_BACK && action == KeyEvent.ACTION_DOWN) {
                     onBackPressed()
                     return@safeCollect
@@ -763,7 +763,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in event.device.getInputClass().getInputKeys()) {
+        if (event != null && InputKey(keyCode) in event.device.getInputClass().getInputKeys()) {
             lifecycleScope.launch {
                 keyEventsFlow.emit(event)
             }
@@ -773,7 +773,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null && keyCode in event.device.getInputClass().getInputKeys()) {
+        if (event != null && InputKey(keyCode) in event.device.getInputClass().getInputKeys()) {
             lifecycleScope.launch {
                 keyEventsFlow.emit(event)
             }
@@ -921,7 +921,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return retroGameView.unserializeState(saveState.state)
     }
 
-    private suspend fun displayLoadStateErrorMessage(throwable: Throwable) = withContext(Dispatchers.Main){
+    private suspend fun displayLoadStateErrorMessage(throwable: Throwable) = withContext(Dispatchers.Main) {
         when (throwable) {
             is IncompatibleStateException ->
                 displayToast(R.string.error_message_incompatible_state, Toast.LENGTH_LONG)

@@ -12,9 +12,11 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.common.coroutines.launchOnState
+import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -23,6 +25,7 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
+
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
 
@@ -40,19 +43,40 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         launchOnState(Lifecycle.State.CREATED) {
-            inputDeviceManager.getGamePadsObservable()
+            val gamePadStatus = combine(
+                inputDeviceManager.getGamePadsObservable(),
+                inputDeviceManager.getEnabledInputsObservable(),
+                ::NTuple2
+            )
+
+            gamePadStatus
+                .distinctUntilChanged()
+                .collect { (pads, enabledPads) -> addGamePads(pads, enabledPads) }
+        }
+
+        launchOnState(Lifecycle.State.RESUMED) {
+            inputDeviceManager.getEnabledInputsObservable()
                 .distinctUntilChanged()
                 .collect { refreshGamePads(it) }
         }
     }
 
-    private fun refreshGamePads(gamePads: List<InputDevice>) {
-        preferenceScreen.removeAll()
-        gamePadPreferencesHelper.addGamePadsPreferencesToScreen(
-            requireContext(),
-            preferenceScreen,
-            gamePads
-        )
+    private fun addGamePads(pads: List<InputDevice>, enabledPads: List<InputDevice>) {
+        lifecycleScope.launch {
+            preferenceScreen.removeAll()
+            gamePadPreferencesHelper.addGamePadsPreferencesToScreen(
+                requireActivity(),
+                preferenceScreen,
+                pads,
+                enabledPads
+            )
+        }
+    }
+
+    private fun refreshGamePads(enabledGamePads: List<InputDevice>) {
+        lifecycleScope.launch {
+            gamePadPreferencesHelper.refreshGamePadsPreferencesToScreen(preferenceScreen, enabledGamePads)
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -66,7 +90,10 @@ class GamepadSettingsFragment : PreferenceFragmentCompat() {
 
     private suspend fun handleResetBindings() {
         inputDeviceManager.resetAllBindings()
-        refreshGamePads(inputDeviceManager.getGamePadsObservable().first())
+        addGamePads(
+            inputDeviceManager.getGamePadsObservable().first(),
+            inputDeviceManager.getEnabledInputsObservable().first()
+        )
     }
 
     @dagger.Module

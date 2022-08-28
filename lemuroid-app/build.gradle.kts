@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -165,6 +166,8 @@ dependencies {
     implementation(deps.libs.androidx.leanback.tvProvider)
     implementation(deps.libs.harmony)
     implementation(deps.libs.startup)
+    implementation(deps.libs.kotlin.serialization)
+    implementation(deps.libs.kotlin.serializationJson)
 
     implementation(deps.libs.libretrodroid)
 

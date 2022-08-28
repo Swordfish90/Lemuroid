@@ -24,6 +24,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
@@ -36,7 +37,6 @@ import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.core.CoreUpdaterImpl
@@ -111,6 +111,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [GamePadBindingActivity.Module::class])
+    abstract fun gamepadBindingActivity(): GamePadBindingActivity
 
     @Module
     companion object {
@@ -292,12 +296,6 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun coreSelectionPreferences() = CoresSelectionPreferences()
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun gamePadPreferencesHelper(inputDeviceManager: InputDeviceManager) =
-            GamePadPreferencesHelper(inputDeviceManager)
 
         @Provides
         @PerApp

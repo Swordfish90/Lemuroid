@@ -32,9 +32,11 @@ import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
+import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
@@ -211,6 +213,12 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
             @JvmStatic
             fun settingsInteractor(activity: MainActivity, directoriesManager: DirectoriesManager) =
                 SettingsInteractor(activity, directoriesManager)
+
+            @Provides
+            @PerActivity
+            @JvmStatic
+            fun gamePadPreferencesHelper(inputDeviceManager: InputDeviceManager) =
+                GamePadPreferencesHelper(inputDeviceManager, false)
 
             @Provides
             @PerActivity
