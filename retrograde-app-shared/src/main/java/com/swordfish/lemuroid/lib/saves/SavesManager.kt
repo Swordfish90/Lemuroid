@@ -1,14 +1,16 @@
 package com.swordfish.lemuroid.lib.saves
 
+import com.swordfish.lemuroid.common.kotlin.runCatchingWithRetry
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import io.reactivex.Completable
-import io.reactivex.Maybe
 import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SavesManager(private val directoriesManager: DirectoriesManager) {
-    fun getSaveRAM(game: Game): Maybe<ByteArray> {
-        val sramMaybe: Maybe<ByteArray> = Maybe.fromCallable {
+
+    suspend fun getSaveRAM(game: Game): ByteArray? = withContext(Dispatchers.IO) {
+        val result = runCatchingWithRetry(FILE_ACCESS_RETRIES) {
             val saveFile = getSaveFile(getSaveRAMFileName(game))
             if (saveFile.exists() && saveFile.length() > 0) {
                 saveFile.readBytes()
@@ -16,35 +18,35 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
                 null
             }
         }
-        return sramMaybe.retry(FILE_ACCESS_RETRIES)
+        result.getOrNull()
     }
 
-    fun setSaveRAM(game: Game, data: ByteArray): Completable {
-        val saveCompletable = Completable.fromAction {
+    suspend fun setSaveRAM(game: Game, data: ByteArray): Unit = withContext(Dispatchers.IO) {
+        val result = runCatchingWithRetry(FILE_ACCESS_RETRIES) {
             if (data.isEmpty())
-                return@fromAction
+                return@runCatchingWithRetry
 
             val saveFile = getSaveFile(getSaveRAMFileName(game))
             saveFile.writeBytes(data)
         }
-        return saveCompletable.retry(FILE_ACCESS_RETRIES)
+        result.getOrNull()
     }
 
-    fun getSaveRAMInfo(game: Game): SaveInfo {
+    suspend fun getSaveRAMInfo(game: Game): SaveInfo = withContext(Dispatchers.IO) {
         val saveFile = getSaveFile(getSaveRAMFileName(game))
         val fileExists = saveFile.exists() && saveFile.length() > 0
-        return SaveInfo(fileExists, saveFile.lastModified())
+        SaveInfo(fileExists, saveFile.lastModified())
     }
 
-    private fun getSaveFile(fileName: String): File {
+    private suspend fun getSaveFile(fileName: String): File = withContext(Dispatchers.IO) {
         val savesDirectory = directoriesManager.getSavesDirectory()
-        return File(savesDirectory, fileName)
+        File(savesDirectory, fileName)
     }
 
     /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
     private fun getSaveRAMFileName(game: Game) = "${game.fileName.substringBeforeLast(".")}.srm"
 
     companion object {
-        private const val FILE_ACCESS_RETRIES = 3L
+        private const val FILE_ACCESS_RETRIES = 3
     }
 }

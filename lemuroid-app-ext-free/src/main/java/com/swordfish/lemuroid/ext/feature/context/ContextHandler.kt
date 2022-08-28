@@ -3,5 +3,5 @@ package com.swordfish.lemuroid.ext.feature.context
 import android.content.Context
 
 object ContextHandler {
-    fun attachBaseContext(context: Context) { }
+    fun attachBaseContext(context: Context) {}
 }

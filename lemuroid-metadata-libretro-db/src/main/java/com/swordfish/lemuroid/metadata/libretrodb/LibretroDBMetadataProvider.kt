@@ -1,20 +1,16 @@
 package com.swordfish.lemuroid.metadata.libretrodb
 
+import com.swordfish.lemuroid.common.kotlin.filterNullable
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDatabase
 import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
-import com.gojuno.koptional.None
-import com.gojuno.koptional.Optional
-import com.swordfish.lemuroid.common.rx.toSingleAsOptional
-import com.swordfish.lemuroid.lib.library.SystemID
-import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
-import io.reactivex.Maybe
-import io.reactivex.Single
-import timber.log.Timber
 import java.util.Locale
+import timber.log.Timber
 
 class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     GameMetadataProvider {
@@ -25,25 +21,27 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
             .sortedByDescending { it.length }
     }
 
-    override fun retrieveMetadata(storageFile: StorageFile): Single<Optional<GameMetadata>> {
-        return ovgdbManager.dbReady
-            .flatMap { db: LibretroDatabase ->
-                Single.just(storageFile)
-                    .doOnSuccess { Timber.d("Looking metadata for file: $it") }
-                    .flatMap { file ->
-                        findByCRC(file, db)
-                            .switchIfEmpty(findBySerial(file, db))
-                            .switchIfEmpty(findByFilename(db, file))
-                            .switchIfEmpty(findByPathAndFilename(db, file))
-                            .switchIfEmpty(findByUniqueExtension(file))
-                            .switchIfEmpty(findByKnownSystem(file))
-                            .switchIfEmpty(findByPathAndSupportedExtension(file))
-                            .doOnSuccess { Timber.d("Metadata retrieved for item: $it") }
-                            .toSingleAsOptional()
-                            .doOnError { Timber.e("Error in retrieving $file metadata: $it... Skipping.") }
-                            .onErrorReturn { None }
-                    }
-            }
+    override suspend fun retrieveMetadata(storageFile: StorageFile): GameMetadata? {
+        val db = ovgdbManager.dbInstance
+
+        Timber.d("Looking metadata for file: $storageFile")
+
+        val metadata = runCatching {
+            findByCRC(storageFile, db)
+                ?: findBySerial(storageFile, db)
+                ?: findByFilename(db, storageFile)
+                ?: findByPathAndFilename(db, storageFile)
+                ?: findByUniqueExtension(storageFile)
+                ?: findByKnownSystem(storageFile)
+                ?: findByPathAndSupportedExtension(storageFile)
+        }.getOrElse {
+            Timber.e("Error in retrieving $storageFile metadata: $it... Skipping.")
+            null
+        }
+
+        metadata?.let { Timber.d("Metadata retrieved for item: $it") }
+
+        return metadata
     }
 
     private fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
@@ -57,30 +55,30 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         )
     }
 
-    private fun findByFilename(db: LibretroDatabase, file: StorageFile): Maybe<GameMetadata> {
+    private suspend fun findByFilename(db: LibretroDatabase, file: StorageFile): GameMetadata? {
         return db.gameDao().findByFileName(file.name)
-            .filter { extractGameSystem(it).scanOptions.scanByFilename }
-            .map { convertToGameMetadata(it) }
+            .filterNullable { extractGameSystem(it).scanOptions.scanByFilename }
+            ?.let { convertToGameMetadata(it) }
     }
 
-    private fun findByPathAndFilename(
+    private suspend fun findByPathAndFilename(
         db: LibretroDatabase,
         file: StorageFile
-    ): Maybe<GameMetadata> {
+    ): GameMetadata? {
         return db.gameDao().findByFileName(file.name)
-            .filter { extractGameSystem(it).scanOptions.scanByPathAndFilename }
-            .filter { parentContainsSystem(file.path, extractGameSystem(it).id.dbname) }
-            .map { convertToGameMetadata(it) }
+            .filterNullable { extractGameSystem(it).scanOptions.scanByPathAndFilename }
+            .filterNullable { parentContainsSystem(file.path, extractGameSystem(it).id.dbname) }
+            ?.let { convertToGameMetadata(it) }
     }
 
-    private fun findByPathAndSupportedExtension(file: StorageFile) = Maybe.fromCallable {
+    private fun findByPathAndSupportedExtension(file: StorageFile): GameMetadata? {
         val system = sortedSystemIds
             .filter { parentContainsSystem(file.path, it) }
             .map { GameSystem.findById(it) }
             .filter { it.scanOptions.scanByPathAndSupportedExtensions }
             .firstOrNull { it.supportedExtensions.contains(file.extension) }
 
-        system?.let {
+        return system?.let {
             GameMetadata(
                 name = file.extensionlessName,
                 romName = file.name,
@@ -95,25 +93,22 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         return parent?.toLowerCase(Locale.getDefault())?.contains(dbname) == true
     }
 
-    private fun findByCRC(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
-        if (file.crc == null || file.crc == "0") return Maybe.empty()
-        return file.crc?.let { crc32 ->
-            db.gameDao().findByCRC(crc32).map {
-                convertToGameMetadata(it)
-            }
-        } ?: Maybe.empty()
+    private suspend fun findByCRC(file: StorageFile, db: LibretroDatabase): GameMetadata? {
+        if (file.crc == null || file.crc == "0") return null
+        return file.crc?.let { crc32 -> db.gameDao().findByCRC(crc32) }
+            ?.let { convertToGameMetadata(it) }
     }
 
-    private fun findBySerial(file: StorageFile, db: LibretroDatabase): Maybe<GameMetadata> {
-        if (file.serial == null) return Maybe.empty()
+    private suspend fun findBySerial(file: StorageFile, db: LibretroDatabase): GameMetadata? {
+        if (file.serial == null) return null
         return db.gameDao().findBySerial(file.serial!!)
-            .map { convertToGameMetadata(it) }
+            ?.let { convertToGameMetadata(it) }
     }
 
-    private fun findByKnownSystem(file: StorageFile) = Maybe.fromCallable<GameMetadata> {
-        if (file.systemID == null) return@fromCallable null
+    private fun findByKnownSystem(file: StorageFile): GameMetadata? {
+        if (file.systemID == null) return null
 
-        GameMetadata(
+        return GameMetadata(
             name = file.extensionlessName,
             romName = file.name,
             thumbnail = null,
@@ -122,11 +117,11 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         )
     }
 
-    private fun findByUniqueExtension(file: StorageFile) = Maybe.fromCallable {
+    private fun findByUniqueExtension(file: StorageFile): GameMetadata? {
         val system = GameSystem.findByUniqueFileExtension(file.extension)
 
         if (system?.scanOptions?.scanByUniqueExtension == false) {
-            return@fromCallable null
+            return null
         }
 
         val result = system?.let {
@@ -139,7 +134,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
             )
         }
 
-        result
+        return result
     }
 
     private fun extractGameSystem(rom: LibretroRom): GameSystem {

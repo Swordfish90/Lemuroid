@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 class AdvancedSettingsFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var settingsInteractor: SettingsInteractor
+    @Inject
+    lateinit var settingsInteractor: SettingsInteractor
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

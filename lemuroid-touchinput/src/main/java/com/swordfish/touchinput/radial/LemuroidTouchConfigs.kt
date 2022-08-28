@@ -3,11 +3,11 @@ package com.swordfish.touchinput.radial
 import android.view.KeyEvent
 import com.swordfish.radialgamepad.library.config.ButtonConfig
 import com.swordfish.radialgamepad.library.config.CrossConfig
-import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
-import com.swordfish.radialgamepad.library.config.PrimaryDialConfig
-import com.swordfish.radialgamepad.library.config.SecondaryDialConfig
 import com.swordfish.radialgamepad.library.config.CrossContentDescription
+import com.swordfish.radialgamepad.library.config.PrimaryDialConfig
+import com.swordfish.radialgamepad.library.config.RadialGamePadConfig
 import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
+import com.swordfish.radialgamepad.library.config.SecondaryDialConfig
 import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.radialgamepad.library.haptics.HapticConfig
 import com.swordfish.touchinput.controller.R

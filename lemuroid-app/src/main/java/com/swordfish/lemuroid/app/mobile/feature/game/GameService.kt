@@ -21,7 +21,10 @@ class GameService : Service() {
         }
     }
 
-    class GameServiceController(private val intent: Intent, private val connection: ServiceConnection) {
+    class GameServiceController(
+        private val intent: Intent,
+        private val connection: ServiceConnection
+    ) {
         fun stopService(context: Context) {
             context.unbindService(connection)
             context.stopService(intent)
@@ -78,7 +81,10 @@ class GameService : Service() {
             return GameServiceController(intent, connection)
         }
 
-        fun stopService(context: Context, serviceController: GameServiceController?): GameServiceController? {
+        fun stopService(
+            context: Context,
+            serviceController: GameServiceController?
+        ): GameServiceController? {
             serviceController?.stopService(context)
             return null
         }

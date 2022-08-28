@@ -28,23 +28,21 @@ import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.StorageProvider
-import io.reactivex.Observable
-import io.reactivex.Single
 import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class LocalStorageProvider(
     private val context: Context,
-    private val directoriesManager: DirectoriesManager,
-    override val metadataProvider: GameMetadataProvider
+    private val directoriesManager: DirectoriesManager
 ) : StorageProvider {
 
     override val id: String = "local"
@@ -57,7 +55,7 @@ class LocalStorageProvider(
 
     override val enabledByDefault = true
 
-    override fun listBaseStorageFiles(): Observable<List<BaseStorageFile>> =
+    override fun listBaseStorageFiles(): Flow<List<BaseStorageFile>> =
         walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory())
 
     override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? {
@@ -70,7 +68,7 @@ class LocalStorageProvider(
         return preferenceManager.getString(prefString, null)?.let { File(it) }
     }
 
-    private fun walkDirectory(rootDirectory: File): Observable<List<BaseStorageFile>> = Observable.create { emitter ->
+    private fun walkDirectory(rootDirectory: File): Flow<List<BaseStorageFile>> = flow {
         val directories = mutableListOf(rootDirectory)
 
         while (directories.isNotEmpty()) {
@@ -83,10 +81,8 @@ class LocalStorageProvider(
             val newFiles = groups[false] ?: listOf()
 
             directories.addAll(newDirectories)
-            emitter.onNext(newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) })
+            emit((newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) }))
         }
-
-        emitter.onComplete()
     }
 
     // There is no need to handle anything. Data file have to be in the same directory for detection we expect them
@@ -120,8 +116,8 @@ class LocalStorageProvider(
         game: Game,
         dataFiles: List<DataFile>,
         allowVirtualFiles: Boolean
-    ): Single<RomFiles> = Single.fromCallable {
-        RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
+    ): RomFiles {
+        return RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
     }
 
     override fun getInputStream(uri: Uri): InputStream {

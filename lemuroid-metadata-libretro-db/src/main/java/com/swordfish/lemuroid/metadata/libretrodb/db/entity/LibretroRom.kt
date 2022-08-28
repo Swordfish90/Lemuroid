@@ -1,4 +1,3 @@
-
 package com.swordfish.lemuroid.metadata.libretrodb.db.entity
 
 import androidx.room.ColumnInfo

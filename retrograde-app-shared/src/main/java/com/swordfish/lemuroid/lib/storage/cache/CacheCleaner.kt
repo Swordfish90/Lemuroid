@@ -9,11 +9,12 @@ import com.swordfish.lemuroid.common.kotlin.gigaBytes
 import com.swordfish.lemuroid.common.kotlin.megaBytes
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
-import io.reactivex.Completable
-import timber.log.Timber
 import java.io.File
 import kotlin.math.abs
 import kotlin.math.roundToLong
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 object CacheCleaner {
 
@@ -42,12 +43,15 @@ object CacheCleaner {
         return stat.blockSizeLong * stat.blockCountLong
     }
 
-    fun cleanAll(appContext: Context) = Completable.fromAction {
+    suspend fun cleanAll(appContext: Context): Unit = withContext(Dispatchers.IO) {
         Timber.i("Running cache cleanup everything task")
         appContext.cacheDir.listFiles()?.forEach { it.deleteRecursively() }
     }
 
-    fun clean(appContext: Context, requestedLimit: Long) = Completable.fromAction {
+    suspend fun clean(
+        appContext: Context,
+        requestedLimit: Long
+    ): Unit = withContext(Dispatchers.IO) {
         Timber.i("Running cache cleanup lru task")
         val cacheLimit = getClosestCacheLimit(requestedLimit)
 

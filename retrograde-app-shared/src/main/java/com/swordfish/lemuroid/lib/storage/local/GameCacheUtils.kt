@@ -7,7 +7,12 @@ import java.io.File
 
 object GameCacheUtils {
 
-    fun getDataFileForGame(folderName: String, context: Context, game: Game, dataFile: DataFile): File {
+    fun getDataFileForGame(
+        folderName: String,
+        context: Context,
+        game: Game,
+        dataFile: DataFile
+    ): File {
         val gamesCacheDir = getCacheDirForGame(folderName, game, context)
         return File(gamesCacheDir, dataFile.fileName)
     }

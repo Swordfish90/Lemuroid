@@ -31,8 +31,10 @@ import javax.inject.Inject
 
 abstract class RetrogradeActivity : FragmentActivity(), HasFragmentInjector, HasSupportFragmentInjector {
 
-    @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
-    @Inject lateinit var frameworkFragmentInjector: DispatchingAndroidInjector<android.app.Fragment>
+    @Inject
+    lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
+    @Inject
+    lateinit var frameworkFragmentInjector: DispatchingAndroidInjector<android.app.Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)

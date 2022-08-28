@@ -64,7 +64,7 @@ class NotificationsManager(private val applicationContext: Context) {
             .addAction(
                 NotificationCompat.Action(
                     null,
-                    applicationContext.getString(R.string.library_index_notification_action_cancel),
+                    applicationContext.getString(R.string.cancel),
                     broadcastPendingIntent
                 )
             )

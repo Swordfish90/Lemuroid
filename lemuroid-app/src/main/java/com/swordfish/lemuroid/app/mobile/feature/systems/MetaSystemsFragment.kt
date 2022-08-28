@@ -2,25 +2,23 @@ package com.swordfish.lemuroid.app.mobile.feature.systems
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.DynamicGridLayoutManager
 import com.swordfish.lemuroid.app.mobile.shared.GridSpaceDecoration
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import com.swordfish.lemuroid.common.view.setVisibleOrGone
-import com.swordfish.lemuroid.lib.util.subscribeBy
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.autoDispose
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MetaSystemsFragment : RecyclerViewFragment() {
 
-    @Inject lateinit var retrogradeDb: RetrogradeDatabase
+    @Inject
+    lateinit var retrogradeDb: RetrogradeDatabase
 
     private var metaSystemsAdapter: MetaSystemsAdapter? = null
 
@@ -29,21 +27,17 @@ class MetaSystemsFragment : RecyclerViewFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        metaSystemsViewModel = ViewModelProvider(
-            this,
-            MetaSystemsViewModel.Factory(retrogradeDb, requireContext().applicationContext)
-        )
-            .get(MetaSystemsViewModel::class.java)
+        val factory = MetaSystemsViewModel.Factory(retrogradeDb, requireContext().applicationContext)
+        metaSystemsViewModel = ViewModelProvider(this, factory)[MetaSystemsViewModel::class.java]
 
         metaSystemsAdapter = MetaSystemsAdapter { navigateToGames(it) }
-        metaSystemsViewModel.availableMetaSystems
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDispose(AndroidLifecycleScopeProvider.from(viewLifecycleOwner))
-            .subscribeBy {
+
+        launchOnState(Lifecycle.State.CREATED) {
+            metaSystemsViewModel.availableMetaSystems.collect {
                 metaSystemsAdapter?.submitList(it)
-                emptyView?.setVisibleOrGone(it.isEmpty())
+                emptyView?.isVisible = it.isEmpty()
             }
+        }
 
         recyclerView?.apply {
             this.adapter = metaSystemsAdapter

@@ -5,9 +5,13 @@ import com.swordfish.radialgamepad.library.RadialGamePad
 class TwoButtonsTiltTracker(private val leftId: Int, private val rightId: Int) : TiltTracker {
 
     override fun updateTracking(xTilt: Float, yTilt: Float, pads: Sequence<RadialGamePad>) {
+        val leftPressed = xTilt < 0.25
+        val rightPressed = xTilt > 0.75
+        val bothPressed = !leftPressed && !rightPressed && yTilt < 0.1
+
         pads.forEach {
-            it.simulateKeyEvent(leftId, xTilt < 0.5 - ACTIVATION_THRESHOLD)
-            it.simulateKeyEvent(rightId, xTilt > 0.5 + ACTIVATION_THRESHOLD)
+            it.simulateKeyEvent(leftId, bothPressed || leftPressed)
+            it.simulateKeyEvent(rightId, bothPressed || rightPressed)
         }
     }
 
@@ -19,8 +23,4 @@ class TwoButtonsTiltTracker(private val leftId: Int, private val rightId: Int) :
     }
 
     override fun trackedIds(): Set<Int> = setOf(leftId, rightId)
-
-    companion object {
-        private const val ACTIVATION_THRESHOLD = 0.25
-    }
 }

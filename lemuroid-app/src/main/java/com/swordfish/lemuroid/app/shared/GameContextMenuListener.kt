@@ -10,7 +10,11 @@ class GameContextMenuListener(
     private val game: Game
 ) : View.OnCreateContextMenuListener {
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         menu.add(R.string.game_context_menu_resume).setOnMenuItemClickListener {
             gameInteractor.onGamePlay(game)
             true

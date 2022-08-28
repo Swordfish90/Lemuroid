@@ -30,9 +30,7 @@
     <string name="settings_title_gamepad_settings">External devices</string>
     <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
 
-    <string name="settings_gamepad_button_name">Button %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Unassigned</string>
 
     <string name="settings_gamepad_category_enabled">Enabled devices</string>
     <string name="settings_gamepad_category_general">General</string>
@@ -118,7 +116,6 @@
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning in progress</string>
     <string name="library_index_notification_message">This can take up to a few minutes</string>
-    <string name="library_index_notification_action_cancel">@string/cancel</string>
 
     <string name="save_sync_notification_title">Cloud save Sync in progress</string>
     <string name="save_sync_notification_message">This can take up to a few minutes</string>
@@ -134,6 +131,7 @@
     <string name="game_loader_error_load_core">It looks like the Libretro core was not loaded. Make sure your device is connected to internet and try to rescan your library. If the issue persist this core might not be supported on your device.</string>
     <string name="game_loader_error_load_game">Something bad happened while loading your game. Make sure the ROM is supported by Lemuroid and rescan your games.</string>
     <string name="game_loader_error_save">Something bad happened with your save file. If the issue persists, try disabling auto-save.</string>
+    <string name="game_loader_error_unsupported_architecture">This Core is not supported by your device.</string>
 
     <string name="game_loader_error_generic">Something bad happened. Try the following:\n
         \n\u2022 Disable auto-save and re-run the game
@@ -162,6 +160,9 @@
     <string name="tv_home_section_systems">Systems</string>
     <string name="tv_home_section_settings">Settings</string>
 
+    <string name="gamepad_binding_update_title">Associate \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Press a button on your \"%1$s\"</string>
+
     <string name="tv_search_results">Games</string>
     <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>
 
@@ -187,19 +188,15 @@
 
     <string name="error_message_incompatible_state">This save state is not compatible with the current core version. Please load the latest in-game save or use a previous Lemuroid version.</string>
 
-    <string-array name="pref_key_shader_filter_names">
-        <item>Auto</item>
-        <item>Sharp</item>
-        <item>Smooth</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
+    <string name="shader_filter_names_auto">Auto</string>
+    <string name="shader_filter_names_sharp">Sharp</string>
+    <string name="shader_filter_names_smooth">Smooth</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
 
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>None</item>
-        <item>Press</item>
-        <item>Press &amp; release</item>
-    </string-array>
+    <string name="haptic_feedback_mode_names_none">None</string>
+    <string name="haptic_feedback_mode_names_press">Press</string>
+    <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
 
 </resources>

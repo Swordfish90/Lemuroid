@@ -24,19 +24,19 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
-import com.swordfish.lemuroid.app.mobile.feature.settings.RxSettingsManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
-import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
+import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
-import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.ext.feature.core.CoreUpdaterImpl
@@ -53,7 +53,7 @@ import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
-import com.swordfish.lemuroid.lib.logging.RxTimberTree
+import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
@@ -68,22 +68,20 @@ import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import dagger.Binds
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoSet
+import java.io.InputStream
+import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
+import java.util.zip.ZipInputStream
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import java.io.InputStream
-import java.lang.reflect.Type
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import java.util.zip.ZipInputStream
-import dagger.Lazy
 
 @Module
 abstract class LemuroidApplicationModule {
@@ -114,18 +112,16 @@ abstract class LemuroidApplicationModule {
     @ContributesAndroidInjector
     abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
 
+    @PerActivity
+    @ContributesAndroidInjector(modules = [GamePadBindingActivity.Module::class])
+    abstract fun gamepadBindingActivity(): GamePadBindingActivity
+
     @Module
     companion object {
         @Provides
         @PerApp
         @JvmStatic
-        fun executorService(): ExecutorService = Executors.newSingleThreadExecutor()
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun libretroDBManager(app: LemuroidApplication, executorService: ExecutorService) =
-            LibretroDBManager(app, executorService)
+        fun libretroDBManager(app: LemuroidApplication) = LibretroDBManager(app)
 
         @Provides
         @PerApp
@@ -140,18 +136,15 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun ovgdbMetadataProvider(ovgdbManager: LibretroDBManager) = LibretroDBMetadataProvider(
-            ovgdbManager
-        )
+        fun gameMetadataProvider(libretroDBManager: LibretroDBManager): GameMetadataProvider =
+            LibretroDBMetadataProvider(libretroDBManager)
 
         @Provides
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localSAFStorageProvider(
-            context: Context,
-            metadataProvider: LibretroDBMetadataProvider
-        ): StorageProvider = StorageAccessFrameworkProvider(context, metadataProvider)
+        fun localSAFStorageProvider(context: Context): StorageProvider =
+            StorageAccessFrameworkProvider(context)
 
         @Provides
         @PerApp
@@ -159,10 +152,9 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun localGameStorageProvider(
             context: Context,
-            directoriesManager: DirectoriesManager,
-            metadataProvider: LibretroDBMetadataProvider
+            directoriesManager: DirectoriesManager
         ): StorageProvider =
-            LocalStorageProvider(context, directoriesManager, metadataProvider)
+            LocalStorageProvider(context, directoriesManager)
 
         @Provides
         @PerApp
@@ -179,8 +171,9 @@ abstract class LemuroidApplicationModule {
         fun lemuroidLibrary(
             db: RetrogradeDatabase,
             storageProviderRegistry: Lazy<StorageProviderRegistry>,
+            gameMetadataProvider: Lazy<GameMetadataProvider>,
             biosManager: BiosManager
-        ) = LemuroidLibrary(db, storageProviderRegistry, biosManager)
+        ) = LemuroidLibrary(db, storageProviderRegistry, gameMetadataProvider, biosManager)
 
         @Provides
         @PerApp
@@ -251,12 +244,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun rxTree() = RxTimberTree()
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) = CoreVariablesManager(sharedPreferences)
+        fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) =
+            CoreVariablesManager(sharedPreferences)
 
         @Provides
         @PerApp
@@ -284,7 +273,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun gamepadsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+        fun inputDeviceManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
             InputDeviceManager(context, sharedPreferences)
 
         @Provides
@@ -300,18 +289,13 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) = CoresSelection(sharedPreferences)
+        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) =
+            CoresSelection(sharedPreferences)
 
         @Provides
         @PerApp
         @JvmStatic
         fun coreSelectionPreferences() = CoresSelectionPreferences()
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun inputDeviceManager(inputDeviceManager: InputDeviceManager) =
-            GamePadPreferencesHelper(inputDeviceManager)
 
         @Provides
         @PerApp
@@ -358,8 +342,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun rxSettingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            RxSettingsManager(context, sharedPreferences)
+        fun settingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
+            SettingsManager(context, sharedPreferences)
 
         @Provides
         @PerApp
@@ -381,10 +365,10 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun rumbleManager(
             context: Context,
-            rxSettingsManager: RxSettingsManager,
+            settingsManager: SettingsManager,
             inputDeviceManager: InputDeviceManager
         ) =
-            RumbleManager(context, rxSettingsManager, inputDeviceManager)
+            RumbleManager(context, settingsManager, inputDeviceManager)
 
         @Provides
         @PerApp

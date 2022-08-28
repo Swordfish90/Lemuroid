@@ -4,14 +4,7 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.widget.ProgressBar
 import androidx.core.animation.addListener
-
-fun View.setVisibleOrGone(visible: Boolean) {
-    this.visibility = if (visible) View.VISIBLE else View.GONE
-}
-
-fun View.setVisibleOrInvisible(visible: Boolean) {
-    this.visibility = if (visible) View.VISIBLE else View.INVISIBLE
-}
+import androidx.core.view.isVisible
 
 fun View.animateVisibleOrGone(visible: Boolean, durationInMs: Long) {
     val alpha = if (visible) 1.0f else 0.0f
@@ -20,10 +13,10 @@ fun View.animateVisibleOrGone(visible: Boolean, durationInMs: Long) {
         setAutoCancel(true)
         addListener(
             onStart = {
-                if (visible) setVisibleOrGone(true)
+                if (visible) isVisible = true
             },
             onEnd = {
-                if (!visible) setVisibleOrGone(false)
+                if (!visible) isVisible = false
             }
         )
         start()

@@ -19,11 +19,9 @@
 
 package com.swordfish.lemuroid.lib.library.metadata
 
-import com.gojuno.koptional.Optional
 import com.swordfish.lemuroid.lib.storage.StorageFile
-import io.reactivex.Single
 
 interface GameMetadataProvider {
 
-    fun retrieveMetadata(storageFile: StorageFile): Single<Optional<GameMetadata>>
+    suspend fun retrieveMetadata(storageFile: StorageFile): GameMetadata?
 }

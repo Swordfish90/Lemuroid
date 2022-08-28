@@ -7,7 +7,8 @@ import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.metaSystemID
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class MetaSystemsViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : ViewModel() {
 
@@ -15,12 +16,12 @@ class MetaSystemsViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context
         val retrogradeDb: RetrogradeDatabase,
         val appContext: Context
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MetaSystemsViewModel(retrogradeDb, appContext) as T
         }
     }
 
-    val availableMetaSystems: Observable<List<MetaSystemInfo>> = retrogradeDb.gameDao()
+    val availableMetaSystems: Flow<List<MetaSystemInfo>> = retrogradeDb.gameDao()
         .selectSystemsWithCount()
         .map { systemCounts ->
             systemCounts.asSequence()

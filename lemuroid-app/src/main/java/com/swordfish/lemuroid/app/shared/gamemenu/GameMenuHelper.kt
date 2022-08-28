@@ -17,7 +17,6 @@ import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SaveInfo
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
-import io.reactivex.Maybe
 import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
@@ -206,18 +205,17 @@ object GameMenuHelper {
         }
     }
 
-    fun getSaveStateBitmap(
+    suspend fun getSaveStateBitmap(
         context: Context,
         statesPreviewManager: StatesPreviewManager,
         saveStateInfo: SaveInfo,
         game: Game,
         coreID: CoreID,
         index: Int
-    ): Maybe<Bitmap> {
+    ): Bitmap? {
+        if (!saveStateInfo.exists) return null
         val imageSize = GraphicsUtils.convertDpToPixel(96f, context).roundToInt()
-        return statesPreviewManager
-            .getPreviewForSlot(game, coreID, index, imageSize)
-            .filter { saveStateInfo.exists }
+        return statesPreviewManager.getPreviewForSlot(game, coreID, index, imageSize)
     }
 
     const val FAST_FORWARD = "pref_game_fast_forward"

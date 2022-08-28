@@ -19,4 +19,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<manifest package="com.swordfish.lemuroid.lib"/>
+<manifest package="com.swordfish.lemuroid.lib"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingLeanbackLauncher,ImpliedTouchscreenHardware,MissingLeanbackSupport"/>

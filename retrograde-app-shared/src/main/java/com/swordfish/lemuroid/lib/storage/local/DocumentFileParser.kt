@@ -4,11 +4,11 @@ import android.content.Context
 import com.swordfish.lemuroid.common.kotlin.calculateCrc32
 import com.swordfish.lemuroid.common.kotlin.toStringCRC32
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
-import com.swordfish.lemuroid.lib.storage.scanner.SerialScanner
 import com.swordfish.lemuroid.lib.storage.StorageFile
-import timber.log.Timber
+import com.swordfish.lemuroid.lib.storage.scanner.SerialScanner
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
+import timber.log.Timber
 
 object DocumentFileParser {
 

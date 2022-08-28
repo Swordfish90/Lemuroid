@@ -23,10 +23,8 @@ import android.net.Uri
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
-import io.reactivex.Observable
-import io.reactivex.Single
 import java.io.InputStream
+import kotlinx.coroutines.flow.Flow
 
 interface StorageProvider {
 
@@ -38,11 +36,9 @@ interface StorageProvider {
 
     val prefsFragmentClass: Class<out LeanbackPreferenceFragment>?
 
-    val metadataProvider: GameMetadataProvider
-
     val enabledByDefault: Boolean
 
-    fun listBaseStorageFiles(): Observable<List<BaseStorageFile>>
+    fun listBaseStorageFiles(): Flow<List<BaseStorageFile>>
 
     fun getInputStream(uri: Uri): InputStream?
 
@@ -52,5 +48,5 @@ interface StorageProvider {
         game: Game,
         dataFiles: List<DataFile>,
         allowVirtualFiles: Boolean
-    ): Single<RomFiles>
+    ): RomFiles
 }

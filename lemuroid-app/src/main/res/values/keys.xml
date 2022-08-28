@@ -26,18 +26,33 @@
 
     <string name="pref_key_shader_filter" translatable="false">shader_filter</string>
 
-    <string-array name="pref_key_haptic_feedback_mode_values">
+    <string-array translatable="false" name="pref_key_haptic_feedback_mode_values">
         <item>none</item>
         <item>press</item>
         <item>press_release</item>
     </string-array>
 
-    <string-array name="pref_key_shader_filter_values">
+    <string-array translatable="false" name="pref_key_haptic_feedback_mode_names">
+        <item>@string/haptic_feedback_mode_names_none</item>
+        <item>@string/haptic_feedback_mode_names_press</item>
+        <item>@string/haptic_feedback_mode_names_press_release</item>
+    </string-array>
+
+    <string-array translatable="false" name="pref_key_shader_filter_values">
         <item>auto</item>
         <item>sharp</item>
         <item>smooth</item>
         <item>crt</item>
         <item>lcd</item>
         <item>hd</item>
+    </string-array>
+
+    <string-array translatable="false" name="pref_key_shader_filter_names">
+        <item>@string/shader_filter_names_auto</item>
+        <item>@string/shader_filter_names_sharp</item>
+        <item>@string/shader_filter_names_smooth</item>
+        <item>@string/shader_filter_names_crt</item>
+        <item>@string/shader_filter_names_lcd</item>
+        <item>@string/shader_filter_names_hd</item>
     </string-array>
 </resources>

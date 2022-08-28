@@ -3,22 +3,21 @@ package com.swordfish.lemuroid.lib.core
 import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
-import io.reactivex.Single
-import java.security.InvalidParameterException
 import dagger.Lazy
+import java.security.InvalidParameterException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences>) {
 
-    fun getOptionsForCore(
+    suspend fun getOptionsForCore(
         systemID: SystemID,
         systemCoreConfig: SystemCoreConfig
-    ): Single<List<CoreVariable>> {
-
+    ): List<CoreVariable> {
         val defaultMap = convertCoreVariablesToMap(systemCoreConfig.defaultSettings)
-        return retrieveCustomCoreVariables(systemID, systemCoreConfig)
-            .map { convertCoreVariablesToMap(it) }
-            .map { defaultMap + it }
-            .map { convertMapToCoreVariables(it) }
+        val coreVariables = retrieveCustomCoreVariables(systemID, systemCoreConfig)
+        val coreVariablesMap = defaultMap + convertCoreVariablesToMap(coreVariables)
+        return convertMapToCoreVariables(coreVariablesMap)
     }
 
     private fun convertMapToCoreVariables(variablesMap: Map<String, String>): List<CoreVariable> {
@@ -26,15 +25,13 @@ class CoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences
     }
 
     private fun convertCoreVariablesToMap(coreVariables: List<CoreVariable>): Map<String, String> {
-        return coreVariables
-            .map { it.key to it.value }
-            .toMap()
+        return coreVariables.associate { it.key to it.value }
     }
 
-    private fun retrieveCustomCoreVariables(
+    private suspend fun retrieveCustomCoreVariables(
         systemID: SystemID,
         systemCoreConfig: SystemCoreConfig
-    ) = Single.fromCallable {
+    ): List<CoreVariable> = withContext(Dispatchers.IO) {
 
         val exposedKeys = systemCoreConfig.exposedSettings
         val exposedAdvancedKeys = systemCoreConfig.exposedAdvancedSettings
