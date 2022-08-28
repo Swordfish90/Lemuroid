@@ -97,7 +97,6 @@
     <string name="notification_channel_name">所有通知</string>
     <string name="library_index_notification_title">ROMs 掃描中</string>
     <string name="library_index_notification_message">這可能需要幾分鐘的時間。</string>
-    <string name="library_index_notification_action_cancel">@string/取消</string>
     <string name="save_sync_notification_title">遊戲存檔雲端同步中</string>
     <string name="save_sync_notification_message">這可能需要幾分鐘的時間。</string>
     <string name="game_running_notification_title">%1$s 運行中。</string>
