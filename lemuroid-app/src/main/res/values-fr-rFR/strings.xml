@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">Limite de taille de cache</string>
     <string name="settings_title_gamepad_settings">Périphériques externes</string>
     <string name="settings_description_gamepad_settings">Configurer les manettes et claviers externes</string>
-    <string name="settings_gamepad_button_name">Bouton %1$s</string>
     <string name="settings_retropad_button_name">RétroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Non associé</string>
     <string name="settings_gamepad_category_enabled">Périphériques activés</string>
     <string name="settings_gamepad_category_general">Général</string>
     <string name="settings_gamepad_title_reset_bindings">Remettre par défaut</string>
