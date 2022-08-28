@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">Обмеження розміру кешу</string>
     <string name="settings_title_gamepad_settings">Зовнішні пристрої</string>
     <string name="settings_description_gamepad_settings">Налаштування зовнішніх геймпадів та клавіатур</string>
-    <string name="settings_gamepad_button_name">Кнопка %1$s</string>
     <string name="settings_retropad_button_name">Ретро кнопка %1$s</string>
-    <string name="settings_retropad_button_unassigned">Не назначено</string>
     <string name="settings_gamepad_category_enabled">Активні пристрої</string>
     <string name="settings_gamepad_category_general">Загальні</string>
     <string name="settings_gamepad_title_reset_bindings">Скинути прив\'язки клавіш</string>
