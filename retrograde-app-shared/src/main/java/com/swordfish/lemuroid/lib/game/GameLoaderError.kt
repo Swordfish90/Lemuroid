@@ -8,5 +8,6 @@ sealed class GameLoaderError {
     object LoadCore : GameLoaderError()
     object LoadGame : GameLoaderError()
     object Saves : GameLoaderError()
+    object UnsupportedArchitecture : GameLoaderError()
     data class MissingBiosFiles(val missingFiles: List<String>) : GameLoaderError()
 }

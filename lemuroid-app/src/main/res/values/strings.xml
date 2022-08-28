@@ -118,7 +118,6 @@
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning in progress</string>
     <string name="library_index_notification_message">This can take up to a few minutes</string>
-    <string name="library_index_notification_action_cancel">@string/cancel</string>
 
     <string name="save_sync_notification_title">Cloud save Sync in progress</string>
     <string name="save_sync_notification_message">This can take up to a few minutes</string>
@@ -134,6 +133,7 @@
     <string name="game_loader_error_load_core">It looks like the Libretro core was not loaded. Make sure your device is connected to internet and try to rescan your library. If the issue persist this core might not be supported on your device.</string>
     <string name="game_loader_error_load_game">Something bad happened while loading your game. Make sure the ROM is supported by Lemuroid and rescan your games.</string>
     <string name="game_loader_error_save">Something bad happened with your save file. If the issue persists, try disabling auto-save.</string>
+    <string name="game_loader_error_unsupported_architecture">This Core is not supported by your device.</string>
 
     <string name="game_loader_error_generic">Something bad happened. Try the following:\n
         \n\u2022 Disable auto-save and re-run the game

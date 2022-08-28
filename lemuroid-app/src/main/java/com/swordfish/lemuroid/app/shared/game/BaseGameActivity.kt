@@ -1046,6 +1046,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             is GameLoaderError.LoadCore -> getString(R.string.game_loader_error_load_core)
             is GameLoaderError.LoadGame -> getString(R.string.game_loader_error_load_game)
             is GameLoaderError.Saves -> getString(R.string.game_loader_error_save)
+            is GameLoaderError.UnsupportedArchitecture -> getString(R.string.game_loader_error_unsupported_architecture)
             is GameLoaderError.MissingBiosFiles -> getString(
                 R.string.game_loader_error_missing_bios,
                 gameError.missingFiles
