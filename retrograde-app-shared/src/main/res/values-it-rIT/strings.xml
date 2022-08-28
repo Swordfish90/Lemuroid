@@ -103,6 +103,10 @@
     <string name="value_melonds_screen_layout_leftright">Sinistra - Destra</string>
     <string name="value_melonds_screen_layout_hybridtop">Ibrido Superiore</string>
     <string name="value_melonds_screen_layout_hybridbottom">Ibrido Inferiore</string>
+    <string name="value_citra_layout_option_topbottom">Superiore - Inferiore</string>
+    <string name="value_citra_layout_option_sidebyside">Sinistra - Destra</string>
+    <string name="value_desmume_screens_layout_topbottom">Superiore - Inferiore</string>
+    <string name="value_desmume_screens_layout_leftright">Sinistra - Destra</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interprete</string>
