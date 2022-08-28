@@ -97,7 +97,6 @@
     <string name="notification_channel_name">Tất cả thông báo</string>
     <string name="library_index_notification_title">Đang quét các ROM</string>
     <string name="library_index_notification_message">Việc này có thể mất tối đa vài phút</string>
-    <string name="library_index_notification_action_cancel">\@ chuỗi / hủy</string>
     <string name="save_sync_notification_title">Đang đồng bộ bản lưu trên đám mây</string>
     <string name="save_sync_notification_message">Việc này có thể mất tối đa vài phút</string>
     <string name="game_running_notification_title">%1$s đang chạy</string>
