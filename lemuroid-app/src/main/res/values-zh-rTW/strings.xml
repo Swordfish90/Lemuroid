@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">緩存大小限制</string>
     <string name="settings_title_gamepad_settings">外部設備</string>
     <string name="settings_description_gamepad_settings">配置外接遊戲手把和鍵盤 </string>
-    <string name="settings_gamepad_button_name">按鍵 %1$s</string>
     <string name="settings_retropad_button_name">%1$s 鍵</string>
-    <string name="settings_retropad_button_unassigned">未指定</string>
     <string name="settings_gamepad_category_enabled">啟用的設備</string>
     <string name="settings_gamepad_category_general">一般設定</string>
     <string name="settings_gamepad_title_reset_bindings">重新綁定</string>
