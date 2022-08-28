@@ -46,6 +46,7 @@ import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.common.kotlin.NTuple3
+import com.swordfish.lemuroid.common.kotlin.allTrue
 import com.swordfish.lemuroid.common.math.linearInterpolation
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.controller.TouchControllerCustomizer
@@ -245,8 +246,6 @@ class GameActivity : BaseGameActivity() {
 
         val theme = LemuroidTouchOverlayThemes.getGamePadTheme(leftGamePadContainer)
 
-        updateDividers(orientation, theme, controllerConfig)
-
         val leftConfig = LemuroidTouchConfigs.getRadialGamePadConfig(
             touchControllerConfig.leftConfig,
             hapticConfig,
@@ -272,26 +271,6 @@ class GameActivity : BaseGameActivity() {
 
         this.leftPad = leftPad
         this.rightPad = rightPad
-    }
-
-    private fun updateDividers(
-        orientation: Int,
-        theme: RadialGamePadTheme,
-        controllerConfig: ControllerConfig
-    ) {
-        val displayHorizontalDivider = orientation == Configuration.ORIENTATION_PORTRAIT
-
-        val displayVerticalDivider = orientation != Configuration.ORIENTATION_PORTRAIT &&
-            !controllerConfig.allowTouchOverlay
-
-        updateDivider(horizontalDivider, displayHorizontalDivider, theme)
-        updateDivider(leftVerticalDivider, displayVerticalDivider, theme)
-        updateDivider(rightVerticalDivider, displayVerticalDivider, theme)
-    }
-
-    private fun updateDivider(divider: View, visible: Boolean, theme: RadialGamePadTheme) {
-        divider.isVisible = visible
-        divider.setBackgroundColor(theme.backgroundStrokeColor)
     }
 
     private fun setupDefaultActions(touchControllerEvents: Flow<Event>) {
@@ -890,6 +869,34 @@ class GameActivity : BaseGameActivity() {
             rightPad.offsetY = 0f
         }
 
+        private fun updateDividers(
+            orientation: Int,
+            controllerConfig: ControllerConfig,
+            touchControllerVisible: Boolean
+        ) {
+            val theme = LemuroidTouchOverlayThemes.getGamePadTheme(leftGamePadContainer)
+
+            val displayHorizontalDivider = allTrue(
+                orientation == Configuration.ORIENTATION_PORTRAIT,
+                touchControllerVisible
+            )
+
+            val displayVerticalDivider = allTrue(
+                orientation != Configuration.ORIENTATION_PORTRAIT,
+                !controllerConfig.allowTouchOverlay,
+                touchControllerVisible
+            )
+
+            updateDivider(horizontalDivider, displayHorizontalDivider, theme)
+            updateDivider(leftVerticalDivider, displayVerticalDivider, theme)
+            updateDivider(rightVerticalDivider, displayVerticalDivider, theme)
+        }
+
+        private fun updateDivider(divider: View, visible: Boolean, theme: RadialGamePadTheme) {
+            divider.isVisible = visible
+            divider.setBackgroundColor(theme.backgroundStrokeColor)
+        }
+
         fun updateLayout(
             config: ControllerConfig,
             padSettings: TouchControllerSettingsManager.Settings,
@@ -897,6 +904,8 @@ class GameActivity : BaseGameActivity() {
             touchControllerVisible: Boolean,
             insets: Rect
         ) {
+            updateDividers(orientation, config, touchControllerVisible)
+
             val constraintSet = ConstraintSet()
             constraintSet.clone(mainContainerLayout)
 
