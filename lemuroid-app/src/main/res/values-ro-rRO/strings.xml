@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">Dimensiune limita cache</string>
     <string name="settings_title_gamepad_settings">Dispozitive externe</string>
     <string name="settings_description_gamepad_settings">Configurați gamepad-urile externe și tastaturile</string>
-    <string name="settings_gamepad_button_name">Buton %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Neatribuit</string>
     <string name="settings_gamepad_category_enabled">Dispozitive activate</string>
     <string name="settings_gamepad_category_general">Setări generale</string>
     <string name="settings_gamepad_title_reset_bindings">Resetare legături</string>
