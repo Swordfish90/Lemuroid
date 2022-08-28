@@ -20,7 +20,7 @@ object InputClassGamePad : InputClass {
         KeyEvent.KEYCODE_BUTTON_SELECT,
     )
 
-    private val INPUT_KEYS = setOf(
+    private val INPUT_KEYS = listOf(
         KeyEvent.KEYCODE_BUTTON_A,
         KeyEvent.KEYCODE_BUTTON_B,
         KeyEvent.KEYCODE_BUTTON_X,
@@ -51,8 +51,7 @@ object InputClassGamePad : InputClass {
         KeyEvent.KEYCODE_BUTTON_14,
         KeyEvent.KEYCODE_BUTTON_15,
         KeyEvent.KEYCODE_BUTTON_16,
-        KeyEvent.KEYCODE_BUTTON_MODE,
-        KeyEvent.KEYCODE_BACK,
+        KeyEvent.KEYCODE_BUTTON_MODE
     )
 
     private val CUSTOMIZABLE_KEYS = listOf(
@@ -100,8 +99,7 @@ object InputClassGamePad : InputClass {
         KeyEvent.KEYCODE_BUTTON_A to KeyEvent.KEYCODE_BUTTON_B,
         KeyEvent.KEYCODE_BUTTON_B to KeyEvent.KEYCODE_BUTTON_A,
         KeyEvent.KEYCODE_BUTTON_X to KeyEvent.KEYCODE_BUTTON_Y,
-        KeyEvent.KEYCODE_BUTTON_Y to KeyEvent.KEYCODE_BUTTON_X,
-        KeyEvent.KEYCODE_BACK to KeyEvent.KEYCODE_BUTTON_MODE
+        KeyEvent.KEYCODE_BUTTON_Y to KeyEvent.KEYCODE_BUTTON_X
     ).withDefault { if (it in InputDeviceManager.OUTPUT_KEYS) it else KeyEvent.KEYCODE_UNKNOWN }
 
     override fun getInputKeys() = INPUT_KEYS
@@ -114,10 +112,7 @@ object InputClassGamePad : InputClass {
         return device.hasKeys(*MINIMAL_KEYS_DEFAULT_ENABLED).all { it }
     }
 
-    override fun getCustomizableKeys(device: InputDevice): List<Int> {
-        return CUSTOMIZABLE_KEYS
-            .filter { device.hasKeys(it).first() } + listOf(KeyEvent.KEYCODE_BACK)
-    }
+    override fun getCustomizableKeys(): List<Int> = CUSTOMIZABLE_KEYS
 
     override fun getSupportedShortcuts(): List<GameMenuShortcut> = listOf(
         GameMenuShortcut(

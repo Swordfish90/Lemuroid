@@ -78,8 +78,8 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         val category = createCategory(context, preferenceScreen, inputDevice.name)
         preferenceScreen.addPreference(category)
 
-        val inputClass = inputDevice.getInputClass()
-        inputClass.getCustomizableKeys(inputDevice)
+        inputDevice.getInputClass().getCustomizableKeys()
+            .filter { inputDevice.hasKeys(it)[0] }
             .map { buildKeyBindingPreference(context, inputDevice, it) }
             .forEach {
                 category.addPreference(it)
@@ -221,7 +221,6 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
                 KeyEvent.KEYCODE_DPAD_DOWN to "Down",
                 KeyEvent.KEYCODE_ENTER to "Enter",
                 KeyEvent.KEYCODE_SHIFT_LEFT to "Shift",
-                KeyEvent.KEYCODE_BACK to "Back",
                 KeyEvent.KEYCODE_UNKNOWN to ""
             )
         }

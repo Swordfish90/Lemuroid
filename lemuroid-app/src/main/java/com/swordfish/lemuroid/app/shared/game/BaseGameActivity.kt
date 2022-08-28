@@ -629,12 +629,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 val port = ports(device)
                 val bindKeyCode = bindings(device)[keyCode] ?: keyCode
 
-                // On the Nvidia shield the controller select button is remapped at back. We need to make it customizable.
-                if (bindKeyCode == KeyEvent.KEYCODE_BACK && action == KeyEvent.ACTION_DOWN) {
-                    onBackPressed()
-                    return@safeCollect
-                }
-
                 if (port == 0) {
                     if (bindKeyCode == KeyEvent.KEYCODE_BUTTON_MODE && action == KeyEvent.ACTION_DOWN) {
                         displayOptionsDialog()

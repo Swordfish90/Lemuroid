@@ -177,7 +177,6 @@ class InputDeviceManager(
             KeyEvent.KEYCODE_DPAD_LEFT,
             KeyEvent.KEYCODE_DPAD_DOWN,
             KeyEvent.KEYCODE_DPAD_RIGHT,
-            KeyEvent.KEYCODE_BACK
         )
     }
 }

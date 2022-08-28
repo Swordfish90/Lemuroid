@@ -7,7 +7,7 @@ import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 
 object InputClassKeyboard : InputClass {
 
-    private val INPUT_KEYS = setOf(
+    private val INPUT_KEYS = listOf(
         KeyEvent.KEYCODE_Q,
         KeyEvent.KEYCODE_W,
         KeyEvent.KEYCODE_E,
@@ -134,10 +134,7 @@ object InputClassKeyboard : InputClass {
 
     override fun getDefaultBindings() = DEFAULT_BINDINGS
 
-    override fun getCustomizableKeys(device: InputDevice): List<Int> {
-        return CUSTOMIZABLE_KEYS
-            .filter { device.hasKeys(it).first() }
-    }
+    override fun getCustomizableKeys(): List<Int> = CUSTOMIZABLE_KEYS
 
     override fun isEnabledByDefault(appContext: Context, device: InputDevice): Boolean {
         return !appContext.packageManager.hasSystemFeature("android.hardware.touchscreen")
