@@ -22,8 +22,6 @@
     <string name="settings_title_enable_autosave">Durumu otomatik kaydet</string>
     <string name="settings_title_enable_touch_feedback">Dokunurken titret</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensör hassasiyeti</string>
-    <string name="settings_gamepad_button_name">Dügme %1$s</string>
-    <string name="settings_retropad_button_unassigned">Atanmamış</string>
     <string name="settings_gamepad_category_general">Genel</string>
     <string name="settings_gamepad_title_reset_bindings">Bağları sıfırla</string>
     <string name="settings_gamepad_title_game_menu">Menü</string>
@@ -129,19 +127,5 @@
         \n\u2022 Lemuroid ayarlarına gidin ve fabrika ayarı sıfırlaması yapın
         \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklemiyor olabilir.
     </string>
-    <string name="lemuroid_crash_message">Hata mesajı: %1$s</string>
     <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Otomatik</item>
-        <item>Keskin</item>
-        <item>Akıcı</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Hiçbiri</item>
-        <item>Bas</item>
-        <item>Bas &amp; bırak</item>
-    </string-array>
 </resources>

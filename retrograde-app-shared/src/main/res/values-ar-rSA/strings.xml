@@ -48,13 +48,16 @@
     <string name="setting_ppsspp_texture_filtering">تصفية النسق</string>
     <string name="setting_fbneo_frameskip">تخطي الإطارات</string>
     <string name="setting_fbneo_cpu_speed_adjust">سرعة وحدة المعالجة المركزية</string>
+    <string name="setting_desmume_screens_layout">تخطيط الشاشات</string>
     <string name="setting_desmume_frameskip">تخطي الإطارات</string>
     <string name="setting_melonds_screen_layout">تخطيط الشاشات</string>
     <string name="setting_melonds_threaded_renderer">معالجة متعددة المهام</string>
     <string name="setting_melonds_jit_enable">إعادة تجميع ديناميكية</string>
     <string name="setting_wswan_rotate_display">الاتجاه</string>
     <string name="setting_wswan_mono_palette">تلوين</string>
-    <string name="setting_handy_rot">الاتجاه</string>
+    <string name="setting_handy_rot">دِقَّة الشاشة</string>
+    <string name="setting_citra_layout_option">تخطيط الشاشات</string>
+    <string name="setting_citra_resolution_factor">دقة التحجيم</string>
     <string name="setting_citra_use_acc_mul">ضرب الظلال الدقيقة</string>
     <string name="setting_citra_use_acc_geo_shaders">الظلال الهندسية الدقيقة</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -100,11 +103,16 @@
     <string name="value_melonds_screen_layout_leftright">اليسار - اليمين</string>
     <string name="value_melonds_screen_layout_hybridtop">الأعلى الهجين</string>
     <string name="value_melonds_screen_layout_hybridbottom">الاسفل الهجين</string>
+    <string name="value_citra_layout_option_topbottom">الأعلى - أسفل</string>
+    <string name="value_citra_layout_option_sidebyside">اليسار - اليمين</string>
+    <string name="value_desmume_screens_layout_topbottom">الأعلى - أسفل</string>
+    <string name="value_desmume_screens_layout_leftright">اليسار - اليمين</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">المترجم</string>
     <string name="value_wswan_rotate_display_landscape">أفقي</string>
     <string name="value_wswan_rotate_display_portrait">عمودي</string>
-    <string name="value_handy_rot_none">الأفقي</string>
-    <string name="value_handy_rot_90">عمودي</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">٩٠</string>
+    <string name="value_handy_rot_270">٢٧٠</string>
 </resources>

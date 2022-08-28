@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">גודל מקסימלי של המטמון</string>
     <string name="settings_title_gamepad_settings">התקן חיצוני</string>
     <string name="settings_description_gamepad_settings">הגדר מקלדות ובקרים חיצוניים</string>
-    <string name="settings_gamepad_button_name">לחצן %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">לא מוגדר</string>
     <string name="settings_gamepad_category_enabled">מכשירים מופעלים</string>
     <string name="settings_gamepad_category_general">כללי</string>
     <string name="settings_gamepad_title_reset_bindings">אפס את התאמת המקשים בבקר המשחק</string>
@@ -91,19 +89,5 @@
         \n\u2022 כנס אל הגדרות האפליקציה ובצע איפוס להגדרות היצרן
         \n\n אם אף אחד מהפתרונות לא עזר, ייתכן שהמשחק/הליבה אינם נתמכים במכשיר זה.
     </string>
-    <string name="lemuroid_crash_message">הודעת שגיאה: %1$s</string>
     <string name="error_message_incompatible_state">מצב שמירה זה אינו נתמך על ידי גרסת הליבה הנוכחית. טען את השמירה האחרונה שבוצעה על ידי המשחק (in-game) או לחלופין, התקן גרסה ישנה יותר של Lemuroid.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>אוטומטי</item>
-        <item>חד</item>
-        <item>חלק</item>
-        <item>טלוויזיה ישנה (CRT)</item>
-        <item>מסך LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>ללא</item>
-        <item>לחץ</item>
-        <item>לחץ &amp; שחרר</item>
-    </string-array>
 </resources>

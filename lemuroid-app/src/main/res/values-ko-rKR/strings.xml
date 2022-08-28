@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">캐시 크기 제한</string>
     <string name="settings_title_gamepad_settings">외장 장치</string>
     <string name="settings_description_gamepad_settings">외장 게임패드와 키보드를 설정합니다</string>
-    <string name="settings_gamepad_button_name">버튼 %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">할당 안 됨</string>
     <string name="settings_gamepad_category_enabled">활성화된 장치</string>
     <string name="settings_gamepad_category_general">일반</string>
     <string name="settings_gamepad_title_reset_bindings">매핑 초기화</string>
@@ -97,7 +95,6 @@
     <string name="notification_channel_name">모든 알림</string>
     <string name="library_index_notification_title">ROM 검색 중</string>
     <string name="library_index_notification_message">몇 분 정도 걸립니다</string>
-    <string name="library_index_notification_action_cancel">@string/cancel</string>
     <string name="save_sync_notification_title">클라우드 동기화 진행 중</string>
     <string name="save_sync_notification_message">몇 분 정도 걸립니다</string>
     <string name="game_running_notification_title">%1$s 실행 중</string>
@@ -109,6 +106,7 @@
     <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않은 것 같습니다. 장치가 인터넷에 연결되어있는지 확인하고 라이브러리를 다시 한 번 스캔해주세요. 문제가 지속될 경우 이 장치가 해당 코어를 지원하지 않는 것일 수도 있습니다.</string>
     <string name="game_loader_error_load_game">게임을 불러오는 도중 문제가 발생했습니다. ROM 파일이 Lemuroid에서 지원되는 파일인지 확인한 뒤 게임을 다시 검색해주세요.</string>
     <string name="game_loader_error_save">세이브 파일에 문제가 발생했습니다. 문제가 지속될 경우 자동 저장을 비활성화하는 것이 좋습니다.</string>
+    <string name="game_loader_error_unsupported_architecture">이 장치에서 지원되지 않는 코어입니다.</string>
     <string name="game_loader_error_generic">문제가 발생했습니다. 다음 조치를 취해보세요:\n
         \n\u2022 자동 저장을 비활성화하고 게임 다시 실행
         \n\u2022 안드로이드 설정에서 앱 캐시 초기화
@@ -146,19 +144,14 @@
         \n\u2022 Lemuroid 설정에서 설정 초기화
         \n\n 이후에도 계속 문제가 발생할 경우, 이 장치에서 이 게임 또는 코어가 지원되지 않는 것일 수도 있습니다.
     </string>
-    <string name="lemuroid_crash_message">오류 메시지: %1$s</string>
     <string name="error_message_incompatible_state">이 상태저장은 현재 코어 버전과 호환되지 않습니다. 가장 최근의 인게임 세이브 데이터를 사용하거나 이전 버전의 Lemuroid를 사용하세요.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>자동</item>
-        <item>선명하게</item>
-        <item>부드럽게</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>없음</item>
-        <item>누를 때</item>
-        <item>누를 때 &amp; 뗄 때</item>
-    </string-array>
+    <string name="shader_filter_names_auto">자동</string>
+    <string name="shader_filter_names_sharp">선명하게</string>
+    <string name="shader_filter_names_smooth">부드럽게</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_none">없음</string>
+    <string name="haptic_feedback_mode_names_press">누를 때</string>
+    <string name="haptic_feedback_mode_names_press_release">누를 때 &amp; 뗄 때</string>
 </resources>

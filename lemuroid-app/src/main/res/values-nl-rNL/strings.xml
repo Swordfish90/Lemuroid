@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">Cache grootte limiet</string>
     <string name="settings_title_gamepad_settings">Externe apparaten</string>
     <string name="settings_description_gamepad_settings">Configureer externe gamepads en toetsenborden</string>
-    <string name="settings_gamepad_button_name">Knop %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Niet toegewezen</string>
     <string name="settings_gamepad_category_enabled">Ingeschakelde apparaten</string>
     <string name="settings_gamepad_category_general">Algemeen</string>
     <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
@@ -145,19 +143,5 @@
         \n\u2022 Ga naar Lemuroid instellingen en voer een reset uit
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
-    <string name="lemuroid_crash_message">Foutmelding: %1$s</string>
     <string name="error_message_incompatible_state">Deze opslagstaat is niet compatibel met de huidige core versie. Laad de laatste versie van het spel of gebruik een eerdere Lemuroid versie.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automatisch</item>
-        <item>Scherp</item>
-        <item>Vloeiend</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Geen</item>
-        <item>Druk</item>
-        <item>Druk &amp; loslaten</item>
-    </string-array>
 </resources>

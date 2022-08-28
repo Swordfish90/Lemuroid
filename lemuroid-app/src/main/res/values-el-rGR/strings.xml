@@ -1,2 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">Αρχική σελίδα</string>
+    <string name="title_search">Αναζήτηση</string>
+    <string name="title_systems">Συστήματα</string>
+    <string name="title_games">Παιχνίδια</string>
+    <string name="title_settings">Ρυθμίσεις</string>
+    <string name="recent">Πρόσφατα</string>
+    <string name="favorites">Αγαπημένα</string>
+    <string name="discover">Ανακαλύψτε</string>
+    <string name="rescan">Επανασάρωση</string>
+    <string name="stop">Διακοπή</string>
+    <string name="none">Κανένα</string>
+    <string name="directory">Κατάλογος</string>
+    <string name="display_filter">Φίλτρο οθόνης</string>
+    <string name="roms">ROMs</string>
+    <string name="ok">Εντάξει</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="save_sync">Συγχρονισμός αρχείων αποθήκευσης</string>
+    <string name="show_all">Εμφάνιση Όλων</string>
+    <string name="settings_category_general">Γενικά</string>
+    <string name="settings_category_input">Είσοδος</string>
+    <string name="settings_category_misc">Διάφορα</string>
+    <string name="settings_title_enable_touch_feedback">Δόνηση κατά το άγγιγμα</string>
+</resources>

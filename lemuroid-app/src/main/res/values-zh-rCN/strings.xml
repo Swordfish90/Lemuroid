@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">缓存大小限制</string>
     <string name="settings_title_gamepad_settings">外接设备</string>
     <string name="settings_description_gamepad_settings">配置外接手柄和键盘</string>
-    <string name="settings_gamepad_button_name">按钮 %1$s</string>
     <string name="settings_retropad_button_name">倒计时 %1$s</string>
-    <string name="settings_retropad_button_unassigned">未指定</string>
     <string name="settings_gamepad_category_enabled">已启用的设备</string>
     <string name="settings_gamepad_category_general">常规</string>
     <string name="settings_gamepad_title_reset_bindings">重置绑定</string>
@@ -97,7 +95,6 @@
     <string name="notification_channel_name">所有通知</string>
     <string name="library_index_notification_title">正在进行 ROM 扫描</string>
     <string name="library_index_notification_message">这可能需要几分钟的时间</string>
-    <string name="library_index_notification_action_cancel">取消</string>
     <string name="save_sync_notification_title">正在进行云端存档同步</string>
     <string name="save_sync_notification_message">这可能需要几分钟的时间</string>
     <string name="game_running_notification_title">%1$s 正在运行</string>
@@ -146,19 +143,5 @@
         \n\u2022 进入 Lemuroid 设置并执行重置数据
         \n\n 如果上述方法都不起作用，可能是该设备不支持这个游戏/内核。
     </string>
-    <string name="lemuroid_crash_message">错误消息：%1$s</string>
     <string name="error_message_incompatible_state">此保存状态与当前内核版本不兼容。请加载游戏内最新的保存状态或使用以前的 Lemuroid 版本。</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>自动</item>
-        <item>灵敏</item>
-        <item>顺滑</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>无</item>
-        <item>按下</item>
-        <item>按下并松开</item>
-    </string-array>
 </resources>

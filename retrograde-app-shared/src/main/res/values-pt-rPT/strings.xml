@@ -48,13 +48,18 @@
     <string name="setting_ppsspp_texture_filtering">Filtragem de texturas</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">Velocidade da CPU</string>
+    <string name="setting_desmume_screens_layout">Disposição dos ecrãs</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Layout das telas</string>
     <string name="setting_melonds_threaded_renderer">Renderizador Threaded</string>
     <string name="setting_melonds_jit_enable">Re-compilador dinâmico</string>
     <string name="setting_wswan_rotate_display">Orientação</string>
     <string name="setting_wswan_mono_palette">Colorização</string>
-    <string name="setting_handy_rot">Orientação</string>
+    <string name="setting_handy_rot">Rotação do ecrã</string>
+    <string name="setting_citra_layout_option">Disposição dos ecrãs</string>
+    <string name="setting_citra_resolution_factor">Escala da resolução</string>
+    <string name="setting_citra_use_acc_mul">Multiplicação precisa de shaders</string>
+    <string name="setting_citra_use_acc_geo_shaders">Sombras de geometria precisos</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Desabilitado</string>
     <string name="value_gambatte_mix_frames_mix">Simples</string>
@@ -98,11 +103,16 @@
     <string name="value_melonds_screen_layout_leftright">Esquerda - Direita</string>
     <string name="value_melonds_screen_layout_hybridtop">Topo Híbrido</string>
     <string name="value_melonds_screen_layout_hybridbottom">Híbrido Inferior</string>
+    <string name="value_citra_layout_option_topbottom">Superior - Inferior</string>
+    <string name="value_citra_layout_option_sidebyside">Esquerda - Direita</string>
+    <string name="value_desmume_screens_layout_topbottom">Superior - Inferior</string>
+    <string name="value_desmume_screens_layout_leftright">Esquerda - Direita</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpretador</string>
     <string name="value_wswan_rotate_display_landscape">Paisagem</string>
     <string name="value_wswan_rotate_display_portrait">Retrato</string>
-    <string name="value_handy_rot_none">Paisagem</string>
-    <string name="value_handy_rot_90">Retrato</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">90</string>
+    <string name="value_handy_rot_270">270</string>
 </resources>

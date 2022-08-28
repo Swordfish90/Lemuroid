@@ -27,9 +27,7 @@
     <string name="settings_title_maximum_cache_usage">Límite de tamaño en caché</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
     <string name="settings_description_gamepad_settings">Configurar gamepads y teclados externos</string>
-    <string name="settings_gamepad_button_name">Botón %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Sin asignar</string>
     <string name="settings_gamepad_category_enabled">Dispositivos habilitados</string>
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Restablecer asociaciones</string>
@@ -142,19 +140,5 @@
         \n\u2022 Ve a los ajustes de Lemuroid y realiza un Reinicio de Fábrica
         \n\n Si nada de lo anterior funciona, es posible que este Juego/Núcleo no sea soportado para este dispositivo.
     </string>
-    <string name="lemuroid_crash_message">Mensaje de error: %1$s</string>
     <string name="error_message_incompatible_state">Este estado guardado no es compatible con la versión actual del núcleo. Por favor carga el último guardado hecho en el juego o usa una versión anterior de Lemuroid.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automático</item>
-        <item>Nítido</item>
-        <item>Suavizado</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Ninguno</item>
-        <item>Presionar</item>
-        <item>Presionar &amp; liberar</item>
-    </string-array>
 </resources>

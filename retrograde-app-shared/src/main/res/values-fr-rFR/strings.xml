@@ -8,6 +8,11 @@
     <string name="controller_default">Par défaut</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Par défaut</string>
+    <string name="controller_landscape">Paysage</string>
+    <string name="controller_portrait">Portrait</string>
+    <string name="controller_dos_auto">Auto</string>
+    <string name="controller_dos_mouse_left">Souris avec stick gauche</string>
+    <string name="controller_dos_mouse_right">Souris avec Stick droit</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">Effet TV</string>
     <string name="setting_stella_crop_hoverscan">Rogner la surbande horizontale</string>
@@ -22,6 +27,7 @@
     <string name="setting_gambatte_gb_internal_palette">Palette interne</string>
     <string name="setting_gambatte_mix_frames">Persistance LCD</string>
     <string name="setting_gambatte_dark_filter_level">Assombrir</string>
+    <string name="setting_gambatte_gbc_color_correction">Correction des couleurs</string>
     <string name="setting_mgba_solar_sensor_level">Niveau du capteur solaire</string>
     <string name="setting_mgba_interframe_blending">Persistance LCD</string>
     <string name="setting_mgba_frameskip">Saut d\'images</string>
@@ -29,6 +35,8 @@
     <string name="setting_mupen64plus_43screensize">Taille d\'écran 4:3</string>
     <string name="setting_mupen64plus_cpucore">Recompilateur dynamique</string>
     <string name="setting_mupen64plus_BilinearMode">Mode Bilinéaire</string>
+    <string name="setting_mupen64plus_pak1">Pak du joueur 1</string>
+    <string name="setting_mupen64plus_pak2">Pak du joueur 2</string>
     <string name="setting_pcsx_rearmed_frameskip">Saut d\'images</string>
     <string name="setting_pcsx_rearmed_drc">Recompilateur dynamique</string>
     <string name="setting_ppsspp_auto_frameskip">Saut d\'images automatique</string>
@@ -44,18 +52,25 @@
     <string name="setting_melonds_screen_layout">Disposition des écrans</string>
     <string name="setting_melonds_threaded_renderer">Moteur de rendu Threaded</string>
     <string name="setting_melonds_jit_enable">Recompilateur dynamique</string>
+    <string name="setting_wswan_rotate_display">Orientation</string>
+    <string name="setting_wswan_mono_palette">Colorisation</string>
+    <string name="setting_citra_use_acc_mul">Multiplication précise des shaders</string>
+    <string name="setting_citra_use_acc_geo_shaders">Géométrie précise des shaders</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Desactivé</string>
     <string name="value_gambatte_mix_frames_mix">Basique</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting">Résistance du LCD (Réaliste)</string>
     <string name="value_gambatte_mix_frames_lcd_ghosting_fast">Résistance du LCD (Rapide)</string>
+    <string name="value_gambatte_gbc_color_correction_always">Activée</string>
+    <string name="value_gambatte_gbc_color_correction_disabled">Désactivée</string>
     <string name="value_mgba_interframe_blending_off">Desactivé</string>
     <string name="value_mgba_interframe_blending_mix">Basique</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">Résistance du LCD (Réaliste)</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting_fast">Résistance du LCD (Rapide)</string>
     <string name="value_mgba_frameskip_disabled">Desactivé</string>
     <string name="value_mgba_frameskip_auto">Automatique</string>
-    <string name="value_mgba_color_correction_off">Desactivé</string>
+    <string name="value_mgba_color_correction_off">Desactivée</string>
+    <string name="value_mgba_color_correction_gba">Activée</string>
     <string name="value_stella_filter_disabled">Desactivé</string>
     <string name="value_stella_filter_composite">Composite</string>
     <string name="value_stella_filter_svideo">S-Vidéo</string>
@@ -75,11 +90,18 @@
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Interprète mis en cache</string>
     <string name="value_mupen64plus_bilinearmode_standard">Par défaut</string>
     <string name="value_mupen64plus_bilinearmode_3point">3 Points</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_memory">Mémoire</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_rumble">Vibration</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Aucun</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">Aucun</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_rumble">Vibration</string>
     <string name="value_melonds_screen_layout_topbottom">Haut - Bas</string>
     <string name="value_melonds_screen_layout_leftright">Gauche - Droite</string>
     <string name="value_melonds_screen_layout_hybridtop">Haut hybride</string>
     <string name="value_melonds_screen_layout_hybridbottom">Bas hybride</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
-    <string name="value_ppsspp_cpu_core_interpreter">Interprète</string>
+    <string name="value_ppsspp_cpu_core_interpreter">Interpréteur</string>
+    <string name="value_wswan_rotate_display_landscape">Paysage</string>
+    <string name="value_wswan_rotate_display_portrait">Portrait</string>
 </resources>

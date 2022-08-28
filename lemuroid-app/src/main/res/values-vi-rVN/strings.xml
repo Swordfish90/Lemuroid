@@ -17,6 +17,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Hủy</string>
     <string name="settings">Cài đặt</string>
+    <string name="save_sync">Đồng bộ và lưu lại</string>
     <string name="show_all">Hiện tất cả</string>
     <string name="settings_category_general">Cài đặt chung</string>
     <string name="settings_category_input">Đầu vào</string>
@@ -27,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">Giới hạn kích thước bộ nhớ đệm</string>
     <string name="settings_title_gamepad_settings">Thiết bị bên ngoài</string>
     <string name="settings_description_gamepad_settings">Thiết lập gamepad và bàn phím bên ngoài</string>
-    <string name="settings_gamepad_button_name">Nút %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Chưa được gán</string>
     <string name="settings_gamepad_category_enabled">Thiết bị đã bật</string>
     <string name="settings_gamepad_category_general">Cài đặt chung</string>
     <string name="settings_gamepad_title_reset_bindings">Đặt lại các liên kết</string>
@@ -46,6 +45,8 @@
     <string name="settings_description_advanced_settings">Hiển thị cài đặt nâng cao</string>
     <string name="settings_title_low_latency_audio">Ưu tiên âm thanh độ trễ thấp</string>
     <string name="settings_description_low_latency_audio">Giảm độ trễ âm thanh ở các thiết bị được hỗ trợ. Có thể làm tăng lỗi âm thanh.</string>
+    <string name="settings_title_direct_game_load">Trực tiếp tải trò chơi</string>
+    <string name="settings_description_direct_game_load">(Thử nghiệm) Giảm thời gian tải và sử dụng bộ nhớ cache trên bảng điều khiển được hỗ trợ.</string>
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Bật rumble ở các trò chơi và tay cầm điều khiển được hỗ trợ</string>
     <string name="settings_title_enable_device_rumble">Rumble thiết bị</string>
@@ -142,13 +143,5 @@
         \n\u2022 Đi đến cài đặt của Lemuroid và thực hiện đặt lại dữ liệu gốc
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
-    <string name="lemuroid_crash_message">Thông báo lỗi: %1$s</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Tự động</item>
-        <item>Sắc nét</item>
-        <item>Mượt mà</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
+    <string name="error_message_incompatible_state">Trạng thái lưu này không tương thích với phiên bản lõi hiện tại. Vui lòng tải bản lưu trong trò chơi mới nhất hoặc sử dụng phiên bản Lemuroid trước đó.</string>
 </resources>

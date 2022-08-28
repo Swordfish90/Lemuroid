@@ -54,7 +54,6 @@
     <string name="setting_melonds_jit_enable">Динамічний рекомпілятор</string>
     <string name="setting_wswan_rotate_display">Орієнтація</string>
     <string name="setting_wswan_mono_palette">Колоризація</string>
-    <string name="setting_handy_rot">Орієнтація</string>
     <string name="setting_citra_use_acc_mul">Точне множення шейдерів</string>
     <string name="setting_citra_use_acc_geo_shaders">Точна геометрія шейдерів</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -105,6 +104,4 @@
     <string name="value_ppsspp_cpu_core_interpreter">Інтерпретатор</string>
     <string name="value_wswan_rotate_display_landscape">Горизонтально</string>
     <string name="value_wswan_rotate_display_portrait">Вертикально</string>
-    <string name="value_handy_rot_none">Горизонтально</string>
-    <string name="value_handy_rot_90">Вертикально</string>
 </resources>

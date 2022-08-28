@@ -18,8 +18,6 @@
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Entrada</string>
     <string name="settings_title_enable_touch_feedback">Vibrar en tocar</string>
-    <string name="settings_gamepad_button_name">Botó %1$s</string>
-    <string name="settings_retropad_button_unassigned">Sense assignar</string>
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_game_menu">Menú</string>
     <string name="settings_title_display_bios_info">BIOS</string>
@@ -58,12 +56,4 @@
     <string name="tv_search_results">Jocs</string>
     <string name="mobile_settings_help">Ajuda</string>
     <string name="mobile_settings_support">Assistència</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automàtic</item>
-        <item>Sharp</item>
-        <item>Suau</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
 </resources>

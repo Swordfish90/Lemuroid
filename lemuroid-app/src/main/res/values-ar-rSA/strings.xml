@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">حد حجم الذاكرة المؤقتة</string>
     <string name="settings_title_gamepad_settings">أجهزة خارجية</string>
     <string name="settings_description_gamepad_settings">تهيئة أجهزة التحكم ولوحات المفاتيح</string>
-    <string name="settings_gamepad_button_name">الزر %1$s</string>
     <string name="settings_retropad_button_name">لوحة قديمة %1$s</string>
-    <string name="settings_retropad_button_unassigned">غير مسند</string>
     <string name="settings_gamepad_category_enabled">الأجهزة المفعلة</string>
     <string name="settings_gamepad_category_general">عام</string>
     <string name="settings_gamepad_title_reset_bindings">إعادة ضبط الارتباطات</string>
@@ -108,6 +106,7 @@
     <string name="game_loader_error_load_core">يبدو أن نواة ليبرترو لم يتم تحميلها. تأكد من أن جهازك متصل بالإنترنت ومحاولة إعادة فحص مكتبتك. إذا استمرت المشكلة، قد لا يتم دعم هذا النواة على جهازك.</string>
     <string name="game_loader_error_load_game">حدث شيء سيئ أثناء تحميل لعبتك. تأكد من أن الروم مدعوم من Lemuroid وإعادة فحص ألعابك.</string>
     <string name="game_loader_error_save">حدث شيء سيئ مع حفظ الملف الخاص بك. إذا استمرت المشكلة، حاول تعطيل الحفظ التلقائي.</string>
+    <string name="game_loader_error_unsupported_architecture">هذا النواة غير مدعومة من قبل جهازك.</string>
     <string name="game_loader_error_generic">حدث شيء سيئ. جرب ما يلي:\n
         \n\u2022 تعطيل الحفظ التلقائي وإعادة تشغيل اللعبة
         \n\u2022 انتقل إلى إعدادات أندرويد ومسح ذاكرة التخزين المؤقت للتطبيق
@@ -128,6 +127,8 @@
     <string name="tv_home_section_recents">المستخدمة مؤخّراً</string>
     <string name="tv_home_section_systems">الأنظمة</string>
     <string name="tv_home_section_settings">الإعدادات</string>
+    <string name="gamepad_binding_update_title">ارتبط بـ \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">اضغط على زر على \"%1$s\"</string>
     <string name="tv_search_results">الأعاب</string>
     <string name="tv_game_message_missing_gamepad">وحدة التحكم مطلوبة للعب. الرجاء توصيل واحدة منها.</string>
     <string name="game_edit_touch_controls_error_not_visible">أقطع الاتصال بالوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
@@ -144,19 +145,14 @@
         \n\u2022 اذهب إلى إعدادات Lemuroid وأجري إعادة تعيين المصنع
         \n\n إذا لم يعمل أي من التطبيقات المذكورة أعلاه، قد يكون من الممكن أن تكون هذه اللعبة/النواة غير مدعومة من هذا الجهاز.
     </string>
-    <string name="lemuroid_crash_message">رسالة خطأ: %1$s</string>
     <string name="error_message_incompatible_state">حالة الحفظ هذه غير متوافقة مع الإصدار الأساسي الحالي. الرجاء تحميل أحدث نسخة احتياطية في اللعبة أو استخدام اصدار محاكي Lemuroid السابق.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>تلقائي</item>
-        <item>حاد</item>
-        <item>سلاسة</item>
-        <item>تلفاز قديم</item>
-        <item>شاشة كريستالية</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>لا شيء</item>
-        <item>اضغط</item>
-        <item>اضغط &amp; الإصدار</item>
-    </string-array>
+    <string name="shader_filter_names_auto">تلقائي</string>
+    <string name="shader_filter_names_sharp">حاد</string>
+    <string name="shader_filter_names_smooth">ناعم</string>
+    <string name="shader_filter_names_crt">تأثير CRT</string>
+    <string name="shader_filter_names_lcd">شاشة كريستالية</string>
+    <string name="shader_filter_names_hd">عالي الجودة</string>
+    <string name="haptic_feedback_mode_names_none">لا شيء</string>
+    <string name="haptic_feedback_mode_names_press">اضغط</string>
+    <string name="haptic_feedback_mode_names_press_release">اضغط &amp; الإصدار</string>
 </resources>

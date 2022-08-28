@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">Limite dimensione cache</string>
     <string name="settings_title_gamepad_settings">Dispositivi esterni</string>
     <string name="settings_description_gamepad_settings">Configura controller e tastiere collegati</string>
-    <string name="settings_gamepad_button_name">Pulsante %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Non assegnato</string>
     <string name="settings_gamepad_category_enabled">Dispositivi abilitati</string>
     <string name="settings_gamepad_category_general">Generale</string>
     <string name="settings_gamepad_title_reset_bindings">Resetta associazioni</string>
@@ -97,7 +95,6 @@
     <string name="notification_channel_name">Tutte le notifiche</string>
     <string name="library_index_notification_title">Scansione delle ROM in corso</string>
     <string name="library_index_notification_message">Questo può richiedere fino a qualche minuto</string>
-    <string name="library_index_notification_action_cancel">@string/cancel</string>
     <string name="save_sync_notification_title">Sincronizzazione salvataggi Cloud in corso</string>
     <string name="save_sync_notification_message">Questo può richiedere fino a qualche minuto</string>
     <string name="game_running_notification_title">%1$s è in esecuzione</string>
@@ -109,6 +106,7 @@
     <string name="game_loader_error_load_core">Sembra che il Core Libretro non sia stato caricato. Assicurati che il tuo dispositivo sia connesso a internet e prova a scansionare la tua libreria. Se il problema persiste, questo core potrebbe non essere supportato sul tuo dispositivo.</string>
     <string name="game_loader_error_load_game">Qualcosa non ha funzionato durante il caricamento del gioco. Assicurati che la ROM sia supportata da Lemuroid e scansiona nuovamente tuoi giochi.</string>
     <string name="game_loader_error_save">Qualcosa non ha funzionato con il file di salvataggio. Se il problema persiste, prova a disabilitare il salvataggio automatico.</string>
+    <string name="game_loader_error_unsupported_architecture">Questo Core non è supportato dal tuo dispositivo.</string>
     <string name="game_loader_error_generic">Qualcosa non ha funzionato. Se il problema persiste, prova quanto segue:\n
     \n\u2022 Disabilita il salvataggio automatico e riavvia il gioco
     \n\u2022 Vai nelle impostazioni di Android e cancella la cache di Lemuroid
@@ -146,19 +144,14 @@
     \n\u2022 Vai nelle impostazioni di Lemuroid e ripristina le impostazioni di fabbrica
     \n\n Se niente di tutto ciò ha funzionato, questo Gioco/Core potrebbe non essere supportato da questo dispositivo.
     </string>
-    <string name="lemuroid_crash_message">Messaggio di errore: %1$s</string>
     <string name="error_message_incompatible_state">Questo stato di salvataggio non è compatibile con la versione corrente del Core. Carica il salvataggio in gioco più recente o usa una versione precedente di Lemuroid.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automatico</item>
-        <item>Nitido</item>
-        <item>Lineare</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Nessuno</item>
-        <item>Pressione</item>
-        <item>Pressione &amp; rilascio</item>
-    </string-array>
+    <string name="shader_filter_names_auto">Automatico</string>
+    <string name="shader_filter_names_sharp">Nitido</string>
+    <string name="shader_filter_names_smooth">Lineare</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_none">Nessuno</string>
+    <string name="haptic_feedback_mode_names_press">Pressione</string>
+    <string name="haptic_feedback_mode_names_press_release">Pressione &amp; rilascio</string>
 </resources>

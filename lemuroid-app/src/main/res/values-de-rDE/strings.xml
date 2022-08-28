@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">Cache-Größenlimit</string>
     <string name="settings_title_gamepad_settings">Externe Geräte</string>
     <string name="settings_description_gamepad_settings">Konfiguriere externe Gamepads und Tastaturen</string>
-    <string name="settings_gamepad_button_name">Taste %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">Unbelegt</string>
     <string name="settings_gamepad_category_enabled">Aktivierte Geräte</string>
     <string name="settings_gamepad_category_general">Allgemein</string>
     <string name="settings_gamepad_title_reset_bindings">Zuordnungen zurücksetzen</string>
@@ -145,19 +143,5 @@
         \n\u2022 Gehe in die Lemuroid-Einstellungen und setze alles auf Werkseinstellungen zurück 
         \n\n Wenn keine der oben genannten Möglichkeiten funktioniert, ist es möglich, dass dieses Game/Core von diesem Gerät nicht unterstützt wird.
     </string>
-    <string name="lemuroid_crash_message">Fehlermeldung: %1$s</string>
     <string name="error_message_incompatible_state">Dieser Speicherstatus ist nicht mit der aktuellen Core-Version kompatibel. Bitte laden Sie den aktuellen Spielspeicher oder verwenden Sie eine vorherige Lemuroid-Version.</string>
-    <string-array name="pref_key_shader_filter_names">
-        <item>Automatisch</item>
-        <item>Scharf</item>
-        <item>Glätten</item>
-        <item>CRT</item>
-        <item>LCD</item>
-        <item>HD</item>
-    </string-array>
-    <string-array name="pref_key_haptic_feedback_mode_names">
-        <item>Nichts</item>
-        <item>Tippen</item>
-        <item>Tippen und Loslassen</item>
-    </string-array>
 </resources>
