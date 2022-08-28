@@ -1207,7 +1207,8 @@ data class GameSystem(
                             ),
                         ),
                         statesSupported = false,
-                        supportsLibretroVFS = true
+                        supportsLibretroVFS = true,
+                        supportedArchitectures = setOf("arm64-v8a")
                     ),
                 ),
                 uniqueExtensions = listOf("3ds"),

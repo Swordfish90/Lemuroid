@@ -20,6 +20,7 @@
 package com.swordfish.lemuroid.lib.game
 
 import android.content.Context
+import android.os.Build
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
@@ -67,6 +68,10 @@ class GameLoader(
             emit(LoadingState.LoadingCore)
 
             val system = GameSystem.findById(game.systemId)
+
+            if (!isArchitectureSupported(systemCoreConfig)) {
+                throw GameLoaderException(GameLoaderError.UnsupportedArchitecture)
+            }
 
             val coreLibrary = runCatching {
                 findLibrary(appContext, systemCoreConfig.coreID)!!.absolutePath
@@ -128,6 +133,9 @@ class GameLoader(
             throw GameLoaderException(GameLoaderError.Generic)
         }
     }
+
+    private fun isArchitectureSupported(systemCoreConfig: SystemCoreConfig) =
+        Build.SUPPORTED_ABIS.toSet().intersect(systemCoreConfig.supportedArchitectures).isNotEmpty()
 
     private fun findLibrary(context: Context, coreID: CoreID): File? {
         val files = sequenceOf(
