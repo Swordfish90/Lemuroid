@@ -3,11 +3,12 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlinx-serialization")
 }
 
 android {
     defaultConfig {
-        versionCode = 176
+        versionCode = 177
         versionName = "1.15.0-alpha" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
@@ -165,6 +166,8 @@ dependencies {
     implementation(deps.libs.androidx.leanback.tvProvider)
     implementation(deps.libs.harmony)
     implementation(deps.libs.startup)
+    implementation(deps.libs.kotlin.serialization)
+    implementation(deps.libs.kotlin.serializationJson)
 
     implementation(deps.libs.libretrodroid)
 

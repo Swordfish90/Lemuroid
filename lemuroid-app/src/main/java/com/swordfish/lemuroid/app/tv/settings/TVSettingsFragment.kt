@@ -19,10 +19,12 @@ import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.coroutines.launchOnState
+import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -31,14 +33,19 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     @Inject
     lateinit var settingsInteractor: SettingsInteractor
+
     @Inject
     lateinit var biosPreferences: BiosPreferences
+
     @Inject
     lateinit var gamePadPreferencesHelper: GamePadPreferencesHelper
+
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
+
     @Inject
     lateinit var coresSelectionPreferences: CoresSelectionPreferences
+
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
 
@@ -55,8 +62,20 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        launchOnState(Lifecycle.State.CREATED) {
+            val gamePadStatus = combine(
+                inputDeviceManager.getGamePadsObservable(),
+                inputDeviceManager.getEnabledInputsObservable(),
+                ::NTuple2
+            )
+
+            gamePadStatus
+                .distinctUntilChanged()
+                .collect { (pads, enabledPads) -> addGamePadBindingsScreen(pads, enabledPads) }
+        }
+
         launchOnState(Lifecycle.State.RESUMED) {
-            inputDeviceManager.getGamePadsObservable()
+            inputDeviceManager.getEnabledInputsObservable()
                 .distinctUntilChanged()
                 .collect { refreshGamePadBindingsScreen(it) }
         }
@@ -121,10 +140,28 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         return findPreference(resources.getString(R.string.pref_key_advanced_settings))
     }
 
-    private fun refreshGamePadBindingsScreen(gamePads: List<InputDevice>) {
-        getGamePadPreferenceScreen()?.let {
-            it.removeAll()
-            gamePadPreferencesHelper.addGamePadsPreferencesToScreen(requireContext(), it, gamePads)
+    private fun addGamePadBindingsScreen(
+        gamePads: List<InputDevice>,
+        enabledGamePads: List<InputDevice>
+    ) {
+        lifecycleScope.launch {
+            getGamePadPreferenceScreen()?.let {
+                it.removeAll()
+                gamePadPreferencesHelper.addGamePadsPreferencesToScreen(
+                    requireActivity(),
+                    it,
+                    gamePads,
+                    enabledGamePads
+                )
+            }
+        }
+    }
+
+    private fun refreshGamePadBindingsScreen(enabledGamePads: List<InputDevice>) {
+        lifecycleScope.launch {
+            getGamePadPreferenceScreen()?.let {
+                gamePadPreferencesHelper.refreshGamePadsPreferencesToScreen(it, enabledGamePads)
+            }
         }
     }
 
