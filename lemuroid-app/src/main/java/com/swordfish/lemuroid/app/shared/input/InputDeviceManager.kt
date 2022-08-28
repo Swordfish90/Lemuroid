@@ -6,6 +6,7 @@ import android.hardware.input.InputManager
 import android.view.InputDevice
 import android.view.KeyEvent
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
+import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
@@ -136,7 +137,7 @@ class InputDeviceManager(
     }
 
     private fun getDeviceStatus(inputDevice: InputDevice): Flow<DeviceStatus> {
-        val defaultValue = inputDevice.getInputClass().isEnabledByDefault(context)
+        val defaultValue = inputDevice.getLemuroidInputDevice().isEnabledByDefault(context)
         return flowSharedPreferences.getBoolean(computeEnabledGamePadPreference(inputDevice), defaultValue)
             .asFlow()
             .map { isEnabled -> DeviceStatus(inputDevice, isEnabled) }
@@ -144,7 +145,7 @@ class InputDeviceManager(
 
     private fun getDefaultBinding(inputDevice: InputDevice): Map<InputKey, RetroKey> {
         return inputDevice
-            .getInputClass()
+            .getLemuroidInputDevice()
             .getDefaultBindings()
     }
 
@@ -152,7 +153,7 @@ class InputDeviceManager(
         return runCatching {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
-                .filter { it.getInputClass().isSupported() }
+                .filter { it.getLemuroidInputDevice().isSupported() }
                 .filter { it.name !in BLACKLISTED_DEVICES }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()

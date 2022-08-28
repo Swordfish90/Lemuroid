@@ -1,17 +1,18 @@
-package com.swordfish.lemuroid.app.shared.input
+package com.swordfish.lemuroid.app.shared.input.lemuroiddevice
 
 import android.content.Context
 import android.view.InputDevice
 import android.view.KeyEvent
+import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.app.shared.input.RetroKey
+import com.swordfish.lemuroid.app.shared.input.bindingsOf
+import com.swordfish.lemuroid.app.shared.input.inputKeysOf
+import com.swordfish.lemuroid.app.shared.input.supportsAllKeys
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 
-class InputClassKeyboard(private val device: InputDevice) : InputClass {
+class LemuroidInputDeviceKeyboard(private val device: InputDevice) : LemuroidInputDevice {
 
     override fun getCustomizableKeys(): List<RetroKey> = InputDeviceManager.OUTPUT_KEYS
-
-    override fun getInputKeys() = INPUT_KEYS.toSet()
-
-    override fun getAxesMap() = emptyMap<Int, Int>()
 
     override fun getDefaultBindings() = DEFAULT_BINDINGS
 
@@ -30,41 +31,6 @@ class InputClassKeyboard(private val device: InputDevice) : InputClass {
     }
 
     companion object {
-        private val INPUT_KEYS = inputKeysOf(
-            KeyEvent.KEYCODE_Q,
-            KeyEvent.KEYCODE_W,
-            KeyEvent.KEYCODE_E,
-            KeyEvent.KEYCODE_R,
-            KeyEvent.KEYCODE_T,
-            KeyEvent.KEYCODE_Y,
-            KeyEvent.KEYCODE_U,
-            KeyEvent.KEYCODE_I,
-            KeyEvent.KEYCODE_O,
-            KeyEvent.KEYCODE_P,
-            KeyEvent.KEYCODE_A,
-            KeyEvent.KEYCODE_S,
-            KeyEvent.KEYCODE_D,
-            KeyEvent.KEYCODE_F,
-            KeyEvent.KEYCODE_G,
-            KeyEvent.KEYCODE_H,
-            KeyEvent.KEYCODE_J,
-            KeyEvent.KEYCODE_K,
-            KeyEvent.KEYCODE_L,
-            KeyEvent.KEYCODE_Z,
-            KeyEvent.KEYCODE_X,
-            KeyEvent.KEYCODE_C,
-            KeyEvent.KEYCODE_V,
-            KeyEvent.KEYCODE_B,
-            KeyEvent.KEYCODE_N,
-            KeyEvent.KEYCODE_M,
-            KeyEvent.KEYCODE_DPAD_UP,
-            KeyEvent.KEYCODE_DPAD_DOWN,
-            KeyEvent.KEYCODE_DPAD_LEFT,
-            KeyEvent.KEYCODE_DPAD_RIGHT,
-            KeyEvent.KEYCODE_ENTER,
-            KeyEvent.KEYCODE_SHIFT_LEFT,
-            KeyEvent.KEYCODE_ESCAPE,
-        )
 
         private val MINIMAL_SUPPORTED_KEYS = inputKeysOf(
             KeyEvent.KEYCODE_Q,

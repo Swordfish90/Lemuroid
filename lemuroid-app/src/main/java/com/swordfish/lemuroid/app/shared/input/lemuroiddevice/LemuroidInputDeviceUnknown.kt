@@ -1,13 +1,11 @@
-package com.swordfish.lemuroid.app.shared.input
+package com.swordfish.lemuroid.app.shared.input.lemuroiddevice
 
 import android.content.Context
+import com.swordfish.lemuroid.app.shared.input.InputKey
+import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 
-object InputClassUnknown : InputClass {
-    override fun getInputKeys(): Set<InputKey> = emptySet()
-
-    override fun getAxesMap(): Map<Int, Int> = emptyMap()
-
+object LemuroidInputDeviceUnknown : LemuroidInputDevice {
     override fun getDefaultBindings(): Map<InputKey, RetroKey> = emptyMap()
 
     override fun isSupported(): Boolean = false
