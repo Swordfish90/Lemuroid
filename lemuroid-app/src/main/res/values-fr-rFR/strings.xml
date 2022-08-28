@@ -97,7 +97,6 @@
     <string name="notification_channel_name">Toutes les notifications</string>
     <string name="library_index_notification_title">Scan des ROMs en cours</string>
     <string name="library_index_notification_message">Cela peut prendre quelques minutes</string>
-    <string name="library_index_notification_action_cancel">@string/annuler</string>
     <string name="save_sync_notification_title">Synchronisation des sauvegardes dans le Nuage en cours</string>
     <string name="save_sync_notification_message">Cela peut prendre quelques minutes</string>
     <string name="game_running_notification_title">%1$s est en cours d\'exécution</string>
