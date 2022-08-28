@@ -127,6 +127,8 @@
     <string name="tv_home_section_recents">Recente</string>
     <string name="tv_home_section_systems">Sistemas</string>
     <string name="tv_home_section_settings">Configurações</string>
+    <string name="gamepad_binding_update_title">Associar \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Pressione um botão no seu\"%1$s\"</string>
     <string name="tv_search_results">Jogos</string>
     <string name="tv_game_message_missing_gamepad">É necessário comandos para jogar. Por favor, conecte um.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecte o seu comando para editar os seus controles de toque</string>
