@@ -28,9 +28,7 @@
     <string name="settings_title_maximum_cache_usage">캐시 크기 제한</string>
     <string name="settings_title_gamepad_settings">외장 장치</string>
     <string name="settings_description_gamepad_settings">외장 게임패드와 키보드를 설정합니다</string>
-    <string name="settings_gamepad_button_name">버튼 %1$s</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
-    <string name="settings_retropad_button_unassigned">할당 안 됨</string>
     <string name="settings_gamepad_category_enabled">활성화된 장치</string>
     <string name="settings_gamepad_category_general">일반</string>
     <string name="settings_gamepad_title_reset_bindings">매핑 초기화</string>
@@ -108,6 +106,7 @@
     <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않은 것 같습니다. 장치가 인터넷에 연결되어있는지 확인하고 라이브러리를 다시 한 번 스캔해주세요. 문제가 지속될 경우 이 장치가 해당 코어를 지원하지 않는 것일 수도 있습니다.</string>
     <string name="game_loader_error_load_game">게임을 불러오는 도중 문제가 발생했습니다. ROM 파일이 Lemuroid에서 지원되는 파일인지 확인한 뒤 게임을 다시 검색해주세요.</string>
     <string name="game_loader_error_save">세이브 파일에 문제가 발생했습니다. 문제가 지속될 경우 자동 저장을 비활성화하는 것이 좋습니다.</string>
+    <string name="game_loader_error_unsupported_architecture">이 장치에서 지원되지 않는 코어입니다.</string>
     <string name="game_loader_error_generic">문제가 발생했습니다. 다음 조치를 취해보세요:\n
         \n\u2022 자동 저장을 비활성화하고 게임 다시 실행
         \n\u2022 안드로이드 설정에서 앱 캐시 초기화
