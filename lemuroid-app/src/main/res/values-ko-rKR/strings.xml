@@ -127,6 +127,8 @@
     <string name="tv_home_section_recents">최근 실행</string>
     <string name="tv_home_section_systems">시스템</string>
     <string name="tv_home_section_settings">설정</string>
+    <string name="gamepad_binding_update_title">\"RetroPad %1$s\" 연결하기</string>
+    <string name="gamepad_binding_update_description">\"%1$s\"의 버튼을 눌러주세요</string>
     <string name="tv_search_results">게임</string>
     <string name="tv_game_message_missing_gamepad">게임패드가 필요합니다. 게임패드를 연결해주세요.</string>
     <string name="game_edit_touch_controls_error_not_visible">터치 컨트롤을 변경하려면 게임패드 연결을 해제해주세요</string>
