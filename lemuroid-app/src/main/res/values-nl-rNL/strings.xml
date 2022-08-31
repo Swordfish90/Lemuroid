@@ -126,6 +126,7 @@
     <string name="tv_home_section_recents">Recent</string>
     <string name="tv_home_section_systems">Systemen</string>
     <string name="tv_home_section_settings">Instellingen</string>
+    <string name="gamepad_binding_update_description">Druk op een knop op uw \"%1$s\"</string>
     <string name="tv_search_results">Spellen</string>
     <string name="tv_game_message_missing_gamepad">Gamepads zijn vereist om te spelen. Gelieve er een te verbinden.</string>
     <string name="game_edit_touch_controls_error_not_visible">Koppel je pad los om je aanraakbesturingselementen te bewerken</string>
@@ -144,4 +145,10 @@
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
     <string name="error_message_incompatible_state">Deze opslagstaat is niet compatibel met de huidige core versie. Laad de laatste versie van het spel of gebruik een eerdere Lemuroid versie.</string>
+    <string name="shader_filter_names_auto">Automatisch</string>
+    <string name="shader_filter_names_sharp">Scherp</string>
+    <string name="shader_filter_names_smooth">Vloeiend</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_press">Druk</string>
+    <string name="haptic_feedback_mode_names_press_release">Druk &amp; loslaten</string>
 </resources>
