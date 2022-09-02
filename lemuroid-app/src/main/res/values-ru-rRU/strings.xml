@@ -106,6 +106,7 @@
     <string name="game_loader_error_load_core">Похоже, ядро Libretro не было загружено. Убедитесь, что ваше устройство подключено к Интернету и попробуйте пересканировать библиотеку. Если проблема сохраняется, то ядро может не поддерживаться на вашем устройстве.</string>
     <string name="game_loader_error_load_game">При загрузке вашей игры произошла ошибка. Убедитесь, что ROM поддерживается Lemuroid и пересканируйте ваши игры.</string>
     <string name="game_loader_error_save">Что-то пошло не так с вашим файлом сохранения. Если проблема не исчезает, попробуйте отключить автосохранение.</string>
+    <string name="game_loader_error_unsupported_architecture">Это ядро не поддерживается вашим устройством.</string>
     <string name="game_loader_error_generic">Произошла ошибка. Попробуйте следующее:\n
         \n\u2022 Отключить автосохранение и перезапустить игру
         \n\u2022 Перейдите в настройки Android и очистите кэш приложения
@@ -126,6 +127,8 @@
     <string name="tv_home_section_recents">Недавние</string>
     <string name="tv_home_section_systems">Система</string>
     <string name="tv_home_section_settings">Настройки</string>
+    <string name="gamepad_binding_update_title">Связать «Ретропад %1$s»</string>
+    <string name="gamepad_binding_update_description">Нажмите кнопку на вашем \"%1$s\"</string>
     <string name="tv_search_results">Игры</string>
     <string name="tv_game_message_missing_gamepad">Для игры необходимы геймпады. Пожалуйста, подключите один.</string>
     <string name="game_edit_touch_controls_error_not_visible">Отключите контроллер, чтобы редактировать сенсорное управление</string>
@@ -144,4 +147,13 @@
         \n\n Если ничего из вышеперечисленного не работает, Возможно, эта игра/ядро не поддерживается этим устройством.
     </string>
     <string name="error_message_incompatible_state">Это сохранение не совместимо с текущей версией ядра. Пожалуйста, загрузите последнюю версию сохранения в игре или воспользуйтесь предыдущей версией Lemuroid.</string>
+    <string name="shader_filter_names_auto">Авто</string>
+    <string name="shader_filter_names_sharp">Резкий</string>
+    <string name="shader_filter_names_smooth">Мягкий</string>
+    <string name="shader_filter_names_crt">ЭЛТ</string>
+    <string name="shader_filter_names_lcd">ЖК</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_none">Отсутствует</string>
+    <string name="haptic_feedback_mode_names_press">Нажатие</string>
+    <string name="haptic_feedback_mode_names_press_release">Нажми &amp; отпусти</string>
 </resources>
