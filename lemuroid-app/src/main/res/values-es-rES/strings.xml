@@ -9,6 +9,7 @@
     <string name="favorites">Favoritos</string>
     <string name="discover">Descubrir</string>
     <string name="rescan">Re-escanear</string>
+    <string name="stop">Detener</string>
     <string name="none">Ninguno</string>
     <string name="directory">Directorio</string>
     <string name="display_filter">Filtro de imagen</string>
@@ -44,6 +45,8 @@
     <string name="settings_description_advanced_settings">Muestra la configuración avanzada</string>
     <string name="settings_title_low_latency_audio">Preferir audio de baja latencia</string>
     <string name="settings_description_low_latency_audio">Reduce la latencia de audio en los dispositivos compatibles. Puede aumentar los fallos de audio.</string>
+    <string name="settings_title_direct_game_load">Carga directa del juego</string>
+    <string name="settings_description_direct_game_load">(Experimental) Reduce el tiempo de carga y el uso de la caché en consolas soportadas.</string>
     <string name="settings_title_enable_rumble">Vibración</string>
     <string name="settings_description_enable_rumble">Habilita la vibración en juegos y controladores compatibles</string>
     <string name="settings_title_enable_device_rumble">Vibración del dispositivo</string>
@@ -103,6 +106,7 @@
     <string name="game_loader_error_load_core">Parece que el Núcleo de Libretro no se ha cargado. Asegúrate de que tu dispositivo está conectado a Internet e intenta escanear otra vez la biblioteca. Si el problema persiste, es posible que el Núcleo no sea compatible con el dispositivo.</string>
     <string name="game_loader_error_load_game">Se produjo un error al cargar el juego. Asegúrate de que la ROM está soportada por Lemuroid y vuelve a escanear tus juegos.</string>
     <string name="game_loader_error_save">Se produjo un error con tu archivo de guardado. Si el problema persiste, intenta desactivar el guardado automático.</string>
+    <string name="game_loader_error_unsupported_architecture">Este núcleo no es compatible con tu dispositivo.</string>
     <string name="game_loader_error_generic">Se produjo un error. Intenta lo siguiente:\n
         \n\u2022 Desactiva el autoguardado y reinicia el juego
         \n\u2022 Ve a las opciones de Android y limpia el caché de la aplicación
@@ -123,6 +127,8 @@
     <string name="tv_home_section_recents">Recientes</string>
     <string name="tv_home_section_systems">Sistemas</string>
     <string name="tv_home_section_settings">Configuración</string>
+    <string name="gamepad_binding_update_title">Asociar \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Pulsa un botón en tu \"%1$s\"</string>
     <string name="tv_search_results">Juegos</string>
     <string name="tv_game_message_missing_gamepad">Se requiere un mando para jugar. Por favor conecta uno.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecta el mando para editar los controles táctiles</string>
@@ -141,4 +147,13 @@
         \n\n Si nada de lo anterior funciona, es posible que este Juego/Núcleo no sea soportado para este dispositivo.
     </string>
     <string name="error_message_incompatible_state">Este estado guardado no es compatible con la versión actual del núcleo. Por favor carga el último guardado hecho en el juego o usa una versión anterior de Lemuroid.</string>
+    <string name="shader_filter_names_auto">Automático</string>
+    <string name="shader_filter_names_sharp">Nítido</string>
+    <string name="shader_filter_names_smooth">Suave</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_none">Nada</string>
+    <string name="haptic_feedback_mode_names_press">Presionar</string>
+    <string name="haptic_feedback_mode_names_press_release">Presionar &amp; liberar</string>
 </resources>
