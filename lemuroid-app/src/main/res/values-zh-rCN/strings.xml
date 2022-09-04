@@ -106,6 +106,7 @@
     <string name="game_loader_error_load_core">似乎 Libretro 内核它并未加载。请确保您的设备已经连接到互联网，并尝试重新扫描您的媒体库。如果问题持续存在，您的设备可能不支持此内核。</string>
     <string name="game_loader_error_load_game">在加载您的游戏时发生了不好的事件。请确保是否受 Lemuroid 支持的 ROM 并重新扫描您的游戏。</string>
     <string name="game_loader_error_save">您保存的文件出了点问题。如果问题仍然存在，请尝试关闭自动保存功能。</string>
+    <string name="game_loader_error_unsupported_architecture">您的设备不支持该核心。</string>
     <string name="game_loader_error_generic">发生了不好的事件。 请尝试以下方法：\n
         \n\u2022 禁用自动保存并重新运行游戏
         \n\u2022 进入 Android 设置并清除应用缓存
@@ -126,6 +127,8 @@
     <string name="tv_home_section_recents">最近</string>
     <string name="tv_home_section_systems">系统</string>
     <string name="tv_home_section_settings">设置</string>
+    <string name="gamepad_binding_update_title">关联 \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">按下你的 \"%1$s\" 上的一个按钮</string>
     <string name="tv_search_results">游戏</string>
     <string name="tv_game_message_missing_gamepad">需要玩游戏手柄。 请连接一个。</string>
     <string name="game_edit_touch_controls_error_not_visible">您需要断开键盘来编辑您的触摸控制</string>
@@ -144,4 +147,11 @@
         \n\n 如果上述方法都不起作用，可能是该设备不支持这个游戏/内核。
     </string>
     <string name="error_message_incompatible_state">此保存状态与当前内核版本不兼容。请加载游戏内最新的保存状态或使用以前的 Lemuroid 版本。</string>
+    <string name="shader_filter_names_auto">自动</string>
+    <string name="shader_filter_names_sharp">锐利</string>
+    <string name="shader_filter_names_smooth">平滑</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">无</string>
+    <string name="haptic_feedback_mode_names_press">按下</string>
 </resources>
