@@ -12,7 +12,7 @@
     <string name="stop">停止</string>
     <string name="none">无</string>
     <string name="directory">目录</string>
-    <string name="display_filter">显示器</string>
+    <string name="display_filter">显示滤镜</string>
     <string name="roms">ROM</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
@@ -33,8 +33,8 @@
     <string name="settings_gamepad_category_general">常规</string>
     <string name="settings_gamepad_title_reset_bindings">重置绑定</string>
     <string name="settings_gamepad_title_game_menu">菜单</string>
-    <string name="settings_title_open_cores_selection">更改内核</string>
-    <string name="settings_description_open_cores_selection">选择与系统关联的内核</string>
+    <string name="settings_title_open_cores_selection">更改核心</string>
+    <string name="settings_description_open_cores_selection">选择与系统关联的核心</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">显示检测到和受支持的 BIOS 文件</string>
     <string name="settings_bios_category_detected">已检测到</string>
@@ -52,18 +52,18 @@
     <string name="settings_title_enable_device_rumble">设备振动</string>
     <string name="settings_description_enable_device_rumble">当没有控制器连接时启用设备振动</string>
     <string name="reset_settings_warning_message_title">您确定吗？</string>
-    <string name="reset_settings_warning_message_description">这将会重置 Lemuroid 所有数据。存档和状态将被保留。</string>
-    <string name="settings_title_save_sync">云存档</string>
+    <string name="reset_settings_warning_message_description">这将会重置 Lemuroid 所有数据。存档和保存状态将被保留。</string>
+    <string name="settings_title_save_sync">云端保存</string>
     <string name="settings_description_save_sync">备份并同步您在云端上的存档</string>
     <string name="settings_save_sync_refresh">手动同步</string>
     <string name="settings_save_sync_refresh_description">现在执行手动同步。\n%1$s</string>
     <string name="settings_save_sync_enable_auto">自动同步</string>
     <string name="settings_save_sync_enable_auto_description">当连接到 Wifi 时，在游戏会话前后自动执行同步</string>
     <string name="settings_save_sync_configure">配置 %1$s</string>
-    <string name="settings_save_sync_include_saves">同步游戏存档</string>
+    <string name="settings_save_sync_include_saves">同步游戏内存档</string>
     <string name="settings_save_sync_include_saves_description">在设备上有 %1$s</string>
     <string name="settings_save_sync_include_states">同步状态</string>
-    <string name="settings_save_sync_include_states_description">更加方便，但同时也更重和更不可靠。选择您想要同步的内核/系统</string>
+    <string name="settings_save_sync_include_states_description">更加方便，但同时也更重和更不可靠。选择您想要同步的核心/系统</string>
     <string name="game_context_menu_add_to_favorites">添加到收藏</string>
     <string name="game_context_menu_remove_from_favorites">从收藏中移除</string>
     <string name="game_context_menu_resume">继续</string>
@@ -79,7 +79,7 @@
     <string name="game_menu_settings">设置</string>
     <string name="game_menu_state">状态 %1$s</string>
     <string name="game_menu_change_disk_button">更换碟片</string>
-    <string name="game_menu_edit_touch_controls">编辑控制项</string>
+    <string name="game_menu_edit_touch_controls">编辑触控按键</string>
     <string name="game_menu_mute_audio">静音</string>
     <string name="game_menu_fast_forward">快进</string>
     <string name="game_menu_change_disk_disk">碟片 %1$s</string>
@@ -107,7 +107,7 @@
     <string name="game_loader_error_load_game">在加载您的游戏时发生了异常。请确保该 ROM 受 Lemuroid 支持，并重新扫描您的游戏。</string>
     <string name="game_loader_error_save">您的存档文件出了点问题。如果问题仍然存在，请尝试关闭自动存档功能。</string>
     <string name="game_loader_error_unsupported_architecture">您的设备不支持该核心。</string>
-    <string name="game_loader_error_generic">发生了不好的事件。 请尝试以下方法：\n
+    <string name="game_loader_error_generic">发生了异常。 请尝试以下方法：\n
         \n\u2022 禁用自动保存并重新运行游戏
         \n\u2022 进入 Android 设置并清除应用缓存
         \n\u2022 进入 Lemuroid 设置并执行重置数据
@@ -144,14 +144,15 @@
         \n\u2022 禁用自动存档并重新运行游戏
         \n\u2022 进入 Android 设置并清除应用缓存
         \n\u2022 进入 Lemuroid 设置并执行重置数据
-        \n\n 如果上述方法都不起作用，可能是该设备不支持这个游戏/内核。
+        \n\n 如果上述方法都不起作用，可能是该设备不支持这个游戏/核心。
     </string>
-    <string name="error_message_incompatible_state">此保存状态与当前内核版本不兼容。请加载游戏内最新的保存状态或使用以前的 Lemuroid 版本。</string>
+    <string name="error_message_incompatible_state">此保存状态与当前核心版本不兼容。请加载游戏内最新的保存状态或使用以前的 Lemuroid 版本。</string>
     <string name="shader_filter_names_auto">自动</string>
     <string name="shader_filter_names_sharp">锐利</string>
     <string name="shader_filter_names_smooth">平滑</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
     <string name="haptic_feedback_mode_names_none">无</string>
     <string name="haptic_feedback_mode_names_press">按下</string>
     <string name="haptic_feedback_mode_names_press_release">按下并松开</string>
