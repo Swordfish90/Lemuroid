@@ -106,6 +106,7 @@
     <string name="game_loader_error_load_core">Libretro 核心沒有加載。 確保您的設備已連接到網路並嘗試重新掃描您的檔案庫。 如果問題仍然存在，您的設備可能不支援此核心。</string>
     <string name="game_loader_error_load_game">載入遊戲時出現問題。請確定 Lemuroid 支援該 ROM，然後重新掃描您的遊戲。</string>
     <string name="game_loader_error_save">您的遊戲存檔出了點問題。如果問題仍然存在，請嘗試關閉自動儲存。</string>
+    <string name="game_loader_error_unsupported_architecture">您的設備不支援此核心。</string>
     <string name="game_loader_error_generic">發生錯誤。請嘗試以下操作：\n
          \n\u2022 關閉自動儲存並重新運行遊戲
          \n\u2022 進入安卓系統設定，應用程式清除快取
@@ -143,4 +144,6 @@
          \n\n 如果上述方法均無效，則該設備可能不支持該遊戲/核心。
     </string>
     <string name="error_message_incompatible_state">此自動存檔與當前核心版本不兼容。請載入最新的遊戲內存檔或使用以前的 Lemuroid 版本。</string>
+    <string name="haptic_feedback_mode_names_press">按下</string>
+    <string name="haptic_feedback_mode_names_press_release">按下並鬆開</string>
 </resources>
