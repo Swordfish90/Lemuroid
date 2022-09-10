@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.app.shared.library.LibraryIndexMonitor
 class SettingsViewModel(
     context: Context,
     directoryPreference: String,
+    savegameDirectoryPreference: String,
     rxSharedPreferences: RxSharedPreferences
 ) : ViewModel() {
 
@@ -20,7 +21,8 @@ class SettingsViewModel(
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             val directoryPreference = context.getString(R.string.pref_key_extenral_folder)
-            return SettingsViewModel(context, directoryPreference, rxSharedPreferences) as T
+            val savegameDirectoryPreference = context.getString(R.string.pref_key_external_save_folder)
+            return SettingsViewModel(context, directoryPreference, savegameDirectoryPreference, rxSharedPreferences) as T
         }
     }
 
@@ -29,4 +31,9 @@ class SettingsViewModel(
         .filter { it.isNotBlank() }
 
     val indexingInProgress = LibraryIndexMonitor(context).getLiveData()
+
+
+    val currentSavegameFolder = rxSharedPreferences.getString(savegameDirectoryPreference)
+        .asObservable()
+        .filter { it.isNotBlank() }
 }

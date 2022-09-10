@@ -168,6 +168,8 @@
     </string>
 
     <string name="lemuroid_crash_message">Error message: %1$s</string>
+    <string name="savedirectory">Savegame Directory</string>
+    <string name="savegames">Savegames</string>
 
     <string-array name="pref_key_shader_filter_names">
         <item>Auto</item>
