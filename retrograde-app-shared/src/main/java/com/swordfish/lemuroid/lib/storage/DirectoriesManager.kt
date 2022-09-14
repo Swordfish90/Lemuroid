@@ -34,21 +34,15 @@ class DirectoriesManager(private val appContext: Context) {
         mkdirs()
     }
 
-    fun getSavesDirectory(): File {
-        Log.e("tag", "getSaveDir")
+    fun getSavesDirectory(): DocumentFile? {
         val sharedPreferences = SharedPreferencesHelper.getLegacySharedPreferences(appContext)
         val preferenceKey = appContext.getString(R.string.pref_key_external_save_folder)
-
         val saveFolder: String? = sharedPreferences.getString(preferenceKey, null)
-        val romFolder: String? = sharedPreferences.getString(appContext.getString(R.string.pref_key_extenral_folder), null)
+        return DocumentFile.fromTreeUri(appContext, Uri.parse(saveFolder))
+    }
 
-        val folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val saves = File(folder.absolutePath, "saves")
-
-        val t = saves.mkdirs()
-
-        Log.e("tag", "getSaveDir" +saves + t)
-        return saves
+    fun getInternalSavesDirectroy(): File = File(appContext.getExternalFilesDir(null), "saves").apply {
+        mkdirs()
     }
 
     fun getInternalRomsDirectory(): File = File(appContext.getExternalFilesDir(null), "roms").apply {

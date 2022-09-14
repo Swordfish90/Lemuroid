@@ -857,7 +857,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private suspend fun saveSRAM(game: Game) {
         val retroGameView = retroGameView ?: return
         val sramState = retroGameView.serializeSRAM()
-        legacySavesManager.setSaveRAM(game, sramState)
+        legacySavesManager.setSaveRAM(game, sramState, applicationContext)
         Timber.i("Stored sram file with size: ${sramState.size}")
     }
 
