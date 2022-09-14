@@ -13,9 +13,9 @@ import java.io.ByteArrayOutputStream
 class SavesManager(private val directoriesManager: DirectoriesManager) {
 
     suspend fun getSaveRAM(game: Game, context: Context): ByteArray? = withContext(Dispatchers.IO) {
-        val ramFileName = getSaveRAMFileName(game)
-        copyToInternal(ramFileName, context)
         val result = runCatchingWithRetry(FILE_ACCESS_RETRIES) {
+            val ramFileName = getSaveRAMFileName(game)
+            copyToInternal(ramFileName, context)
             val saveFile = getSaveFile(ramFileName)
             if (saveFile.exists() && saveFile.length() > 0) {
                 saveFile.readBytes()
