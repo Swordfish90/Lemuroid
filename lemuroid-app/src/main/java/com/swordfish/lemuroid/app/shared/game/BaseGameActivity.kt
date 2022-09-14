@@ -700,7 +700,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         return Single.fromCallable { retroGameView.serializeSRAM() }
             .doOnSuccess { Timber.i("Stored sram file with size: ${it.size}") }
-            .flatMapCompletable { savesManager.setSaveRAM(game, it) }
+            .flatMapCompletable { savesManager.setSaveRAM(game, it, applicationContext) }
     }
 
     private fun saveSlot(index: Int): Completable {

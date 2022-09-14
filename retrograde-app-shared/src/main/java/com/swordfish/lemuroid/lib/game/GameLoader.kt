@@ -85,7 +85,7 @@ class GameLoader(
             }.getOrElse { throw GameLoaderException(GameLoaderError.LOAD_CORE) }
 
             val saveRAMData = runCatching {
-                savesManager.getSaveRAM(game).toSingleAsOptional().blockingGet().toNullable()
+                savesManager.getSaveRAM(game, appContext).toSingleAsOptional().blockingGet().toNullable()
             }.getOrElse { throw GameLoaderException(GameLoaderError.SAVES) }
 
             val quickSaveData = runCatching {
@@ -107,7 +107,7 @@ class GameLoader(
                 .toTypedArray()
 
             val systemDirectory = directoriesManager.getSystemDirectory()
-            val savesDirectory = directoriesManager.getSavesDirectory()
+            val savesDirectory = directoriesManager.getInternalSavesDirectroy()
 
             emitter.onNext(
                 LoadingState.Ready(

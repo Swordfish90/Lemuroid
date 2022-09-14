@@ -61,7 +61,7 @@ class SaveSyncManagerImpl(
             syncLocalAndRemoteFolder(
                 drive,
                 getOrCreateAppDataFolder("saves"),
-                directoriesManager.getSavesDirectory(),
+                directoriesManager.getInternalSavesDirectroy(),
                 null
             )
 
@@ -84,7 +84,7 @@ class SaveSyncManagerImpl(
         }
     }
 
-    override fun computeSavesSpace() = getSizeHumanReadable(directoriesManager.getSavesDirectory())
+    override fun computeSavesSpace() = getSizeHumanReadable(directoriesManager.getInternalSavesDirectroy())
 
     override fun computeStatesSpace(core: CoreID) =
         getSizeHumanReadable(File(directoriesManager.getStatesDirectory(), core.coreName))
