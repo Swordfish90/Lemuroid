@@ -15,6 +15,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
 
@@ -77,6 +78,9 @@
         <activity
             android:name="com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher"
             android:theme="@style/LemuroidMaterialTheme.Invisible" />
+        <activity
+            android:name="com.swordfish.lemuroid.app.shared.settings.SAFSavePickerLauncher"
+            android:theme="@style/InvisibleTheme"/>
 
         <!-- Leanback activities -->
         <activity

@@ -62,6 +62,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val settingsViewModel = ViewModelProvider(this, factory)[SettingsViewModel::class.java]
 
         val currentDirectory: Preference? = findPreference(getString(R.string.pref_key_extenral_folder))
+        val currentSaveDirectory: Preference? = findPreference(getString(R.string.pref_key_external_save_folder))
         val rescanPreference: Preference? = findPreference(getString(R.string.pref_key_rescan))
         val stopRescanPreference: Preference? = findPreference(getString(R.string.pref_key_stop_rescan))
         val displayBiosPreference: Preference? = findPreference(getString(R.string.pref_key_display_bios_info))
@@ -75,9 +76,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
         }
 
+        launchOnState(Lifecycle.State.RESUMED) {
+            settingsViewModel.currentSavegameFolder
+                .collect {
+                    currentSaveDirectory?.summary = getDisplayNameForFolderUri(Uri.parse(it))
+                        ?: getString(R.string.none)
+                }
+        }
+
         settingsViewModel.indexingInProgress.observe(this) {
             rescanPreference?.isEnabled = !it
             currentDirectory?.isEnabled = !it
+            currentSaveDirectory?.isEnabled = !it
             displayBiosPreference?.isEnabled = !it
             resetSettings?.isEnabled = !it
         }
@@ -99,6 +109,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_key_rescan) -> rescanLibrary()
             getString(R.string.pref_key_stop_rescan) -> stopRescanLibrary()
             getString(R.string.pref_key_extenral_folder) -> handleChangeExternalFolder()
+            getString(R.string.pref_key_external_save_folder) -> handleChangeExternalSaveFolder()
             getString(R.string.pref_key_open_gamepad_settings) -> handleOpenGamePadSettings()
             getString(R.string.pref_key_open_save_sync_settings) -> handleDisplaySaveSync()
             getString(R.string.pref_key_open_cores_selection) -> handleDisplayCorePage()
@@ -131,6 +142,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun handleChangeExternalFolder() {
         settingsInteractor.changeLocalStorageFolder()
+    }
+
+    private fun handleChangeExternalSaveFolder() {
+        settingsInteractor.changeSavegameFolder()
     }
 
     private fun handleResetSettings() {

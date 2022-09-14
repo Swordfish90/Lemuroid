@@ -29,6 +29,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/savegames"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="@string/pref_key_external_save_folder"
+            android:title="@string/savedirectory"
+            app:iconSpaceReserved="false"
+            app:summary="@string/none"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/settings_category_general"
         app:iconSpaceReserved="false">
 

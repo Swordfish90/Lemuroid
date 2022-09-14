@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 class SettingsViewModel(
     context: Context,
     directoryPreference: String,
+    savegameDirectoryPreference: String,
     sharedPreferences: FlowSharedPreferences
 ) : ViewModel() {
 
@@ -25,11 +26,14 @@ class SettingsViewModel(
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val directoryPreference = context.getString(R.string.pref_key_extenral_folder)
-            return SettingsViewModel(context, directoryPreference, sharedPreferences) as T
+            val savegameDirectoryPreference = context.getString(R.string.pref_key_external_save_folder)
+            return SettingsViewModel(context, directoryPreference, savegameDirectoryPreference, sharedPreferences) as T
         }
     }
 
     val currentFolder = MutableStateFlow("")
+
+    val currentSavegameFolder = MutableStateFlow("")
 
     val indexingInProgress = PendingOperationsMonitor(context).anyLibraryOperationInProgress()
 
@@ -40,6 +44,12 @@ class SettingsViewModel(
             sharedPreferences.getString(directoryPreference).asFlow()
                 .flowOn(Dispatchers.IO)
                 .collect { currentFolder.value = it }
+        }
+
+        viewModelScope.launch {
+            sharedPreferences.getString(savegameDirectoryPreference).asFlow()
+                .flowOn(Dispatchers.IO)
+                .collect { currentSavegameFolder.value = it }
         }
     }
 }

@@ -199,4 +199,7 @@
     <string name="haptic_feedback_mode_names_press">Press</string>
     <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
 
+    <string name="savedirectory">Savegame Directory</string>
+    <string name="savegames">Savegames</string>
+
 </resources>
