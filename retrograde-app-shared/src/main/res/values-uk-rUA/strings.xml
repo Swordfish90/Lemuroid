@@ -48,12 +48,16 @@
     <string name="setting_ppsspp_texture_filtering">Фільтрування текстур</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">Швидкість процесора</string>
+    <string name="setting_desmume_screens_layout">Розмітка екрану</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Розташування екранів</string>
     <string name="setting_melonds_threaded_renderer">Розпаралелений рендер</string>
     <string name="setting_melonds_jit_enable">Динамічний рекомпілятор</string>
     <string name="setting_wswan_rotate_display">Орієнтація</string>
     <string name="setting_wswan_mono_palette">Колоризація</string>
+    <string name="setting_handy_rot">Поворот екрану</string>
+    <string name="setting_citra_layout_option">Розмітка екрану</string>
+    <string name="setting_citra_resolution_factor">Масштабування роздільності здатності</string>
     <string name="setting_citra_use_acc_mul">Точне множення шейдерів</string>
     <string name="setting_citra_use_acc_geo_shaders">Точна геометрія шейдерів</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -99,9 +103,16 @@
     <string name="value_melonds_screen_layout_leftright">Ліво - Право</string>
     <string name="value_melonds_screen_layout_hybridtop">Гібридний верх</string>
     <string name="value_melonds_screen_layout_hybridbottom">Гібридний низ</string>
+    <string name="value_citra_layout_option_topbottom">Верх - Низ</string>
+    <string name="value_citra_layout_option_sidebyside">Ліво - Право</string>
+    <string name="value_desmume_screens_layout_topbottom">Верх - Низ</string>
+    <string name="value_desmume_screens_layout_leftright">Ліво - Право</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Інтерпретатор</string>
     <string name="value_wswan_rotate_display_landscape">Горизонтально</string>
     <string name="value_wswan_rotate_display_portrait">Вертикально</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">90</string>
+    <string name="value_handy_rot_270">270</string>
 </resources>
