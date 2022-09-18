@@ -26,4 +26,6 @@
     <string name="gdrive_connected_none_summary">Не налаштовано</string>
     <string name="gdrive_last_sync_completed">Синхронізовано: %s</string>
     <string name="game_loading_download_core">Завантаження ядра…</string>
+    <string name="installing_core_notification_title">Оновлення ядер з Google Play</string>
+    <string name="installing_core_notification_message">Перевірте додаток Google Play Store, щоб побачити поточний статус</string>
 </resources>
