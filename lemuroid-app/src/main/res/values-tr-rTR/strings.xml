@@ -84,8 +84,6 @@
     <string name="game_running_notification_title">%1$s çalışıyor</string>
     <string name="game_running_notification_title_alternative">Oyun çalışıyor</string>
     <string name="game_running_notification_message">Oyunu kaydettiğinizden emin olun</string>
-    <string name="installing_core_notification_title">Çekirdekler güncelleniyor</string>
-    <string name="installing_core_notification_message">Bu birkaç dakika sürebilir</string>
     <string name="game_loader_error_gl_incompatible">Bu çekirdek cihazınız tarafından desteklenmeyen bir OpenGL ES versiyonunu gerektiriyor.</string>
     <string name="game_loader_error_load_core">Görünüşe göre Libreto çekirdeği yüklenmedi. Cihazınızın internete bağlı olduğundan emin olun ve kütüphanenizi yeniden taramayı deneyin. Eğer sorun devam ediyorsa çekirdek cihazınız tarafından desteklenmiyor olabilir.</string>
     <string name="game_loader_error_load_game">Oyununuzu yüklerken kötü birşey oldu. ROM\'un Lemuroid tarafından desteklendiğinden emin olun ve oyunlarınızı yeniden tarayın.</string>
