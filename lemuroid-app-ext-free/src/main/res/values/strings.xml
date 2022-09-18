@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="game_loading_download_core">Downloading core…</string>
+
+    <string name="installing_core_notification_title">Updating Cores</string>
+    <string name="installing_core_notification_message">This can take up to a few minutes</string>
 </resources>
