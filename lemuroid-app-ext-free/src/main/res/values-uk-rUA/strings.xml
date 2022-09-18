@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="game_loading_download_core">Завантаження ядра…</string>
+    <string name="installing_core_notification_title">Оновлення ядер</string>
+    <string name="installing_core_notification_message">Це може зайняти кілька хвилин</string>
 </resources>
