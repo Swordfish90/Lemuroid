@@ -100,8 +100,6 @@
     <string name="game_running_notification_title">%1$s 正在运行</string>
     <string name="game_running_notification_title_alternative">游戏正在运行</string>
     <string name="game_running_notification_message">请务必及时保存您的游戏进度</string>
-    <string name="installing_core_notification_title">正在更新核心</string>
-    <string name="installing_core_notification_message">这可能需要几分钟的时间</string>
     <string name="game_loader_error_gl_incompatible">您的设备不支持此核心需要的 OpenGL ES 版本。</string>
     <string name="game_loader_error_load_core">Libretro 核心似乎没有被加载。请确保您的设备已经连接到互联网，并尝试重新扫描您的游戏库。如果问题依然存在，则您的设备可能不支持此核心。</string>
     <string name="game_loader_error_load_game">在加载您的游戏时发生了异常。请确保该 ROM 受 Lemuroid 支持，并重新扫描您的游戏。</string>
