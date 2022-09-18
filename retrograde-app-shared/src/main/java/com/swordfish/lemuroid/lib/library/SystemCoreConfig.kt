@@ -1,6 +1,5 @@
 package com.swordfish.lemuroid.lib.library
 
-import android.os.Build
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import java.io.Serializable
@@ -18,5 +17,5 @@ data class SystemCoreConfig(
     val statesVersion: Int = 0,
     val supportsLibretroVFS: Boolean = false,
     val skipDuplicateFrames: Boolean = true,
-    val supportedArchitectures: Set<String> = Build.SUPPORTED_ABIS.toSet()
+    val supportedOnlyArchitectures: Set<String>? = null
 ) : Serializable

@@ -134,8 +134,10 @@ class GameLoader(
         }
     }
 
-    private fun isArchitectureSupported(systemCoreConfig: SystemCoreConfig) =
-        Build.SUPPORTED_ABIS.toSet().intersect(systemCoreConfig.supportedArchitectures).isNotEmpty()
+    private fun isArchitectureSupported(systemCoreConfig: SystemCoreConfig): Boolean {
+        val supportedOnlyArchitectures = systemCoreConfig.supportedOnlyArchitectures ?: return true
+        return Build.SUPPORTED_ABIS.toSet().intersect(supportedOnlyArchitectures).isNotEmpty()
+    }
 
     private fun findLibrary(context: Context, coreID: CoreID): File? {
         val files = sequenceOf(
