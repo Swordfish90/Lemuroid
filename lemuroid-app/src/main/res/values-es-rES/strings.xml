@@ -100,8 +100,6 @@
     <string name="game_running_notification_title">%1$s se está ejecutando</string>
     <string name="game_running_notification_title_alternative">El juego se está ejecutando</string>
     <string name="game_running_notification_message">Asegúrate de guardar tu progreso</string>
-    <string name="installing_core_notification_title">Actualizando Núcleos</string>
-    <string name="installing_core_notification_message">Esto puede tardar algunos minutos</string>
     <string name="game_loader_error_gl_incompatible">Este núcleo requiere una versión de OpenGL ES que no es compatible con tu dispositivo.</string>
     <string name="game_loader_error_load_core">Parece que el Núcleo de Libretro no se ha cargado. Asegúrate de que tu dispositivo está conectado a Internet e intenta escanear otra vez la biblioteca. Si el problema persiste, es posible que el Núcleo no sea compatible con el dispositivo.</string>
     <string name="game_loader_error_load_game">Se produjo un error al cargar el juego. Asegúrate de que la ROM está soportada por Lemuroid y vuelve a escanear tus juegos.</string>
