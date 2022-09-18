@@ -100,8 +100,6 @@
     <string name="game_running_notification_title">%1$s est en cours d\'exécution</string>
     <string name="game_running_notification_title_alternative">Un jeu est en marche</string>
     <string name="game_running_notification_message">N\'oubliez pas de sauvegarder votre progression</string>
-    <string name="installing_core_notification_title">Mise à jour des cœurs</string>
-    <string name="installing_core_notification_message">Cela peut prendre quelques minutes</string>
     <string name="game_loader_error_gl_incompatible">Ce Cœur nécessite une version d\'OpenGL ES qui n\'est pas prise en charge par votre appareil.</string>
     <string name="game_loader_error_load_core">Il semble que le cœur de Libretro n\'ait pas été lancé. Assurez-vous que votre appareil est connecté à internet et essayez de rescanner votre bibliothèque. Si le problème persiste, ce cœur pourrait ne pas être pris en charge par votre appareil.</string>
     <string name="game_loader_error_load_game">Un problème est survenu lors du chargement de votre jeu. Assurez-vous que la ROM est compatible avec Lemuroid et réanalysez vos jeux.</string>
