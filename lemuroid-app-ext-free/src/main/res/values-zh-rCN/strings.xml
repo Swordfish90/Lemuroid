@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="game_loading_download_core">正在下载内核…</string>
+    <string name="game_loading_download_core">正在下载核心…</string>
 </resources>

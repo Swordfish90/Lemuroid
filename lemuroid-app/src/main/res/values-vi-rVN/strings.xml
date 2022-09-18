@@ -100,8 +100,6 @@
     <string name="game_running_notification_title">%1$s đang chạy</string>
     <string name="game_running_notification_title_alternative">Trò chơi đang chạy</string>
     <string name="game_running_notification_message">Hãy bảo đảm rằng bạn lưu tiến trình của bạn</string>
-    <string name="installing_core_notification_title">Đang cập nhật các lõi</string>
-    <string name="installing_core_notification_message">Việc này có thể mất tối đa vài phút</string>
     <string name="game_loader_error_gl_incompatible">Lõi này yêu cầu một phiên bản OpenGL ES không được thiết bị của bạn hỗ trợ.</string>
     <string name="game_loader_error_load_core">Có vẻ như lõi Libretro không được tải. Hãy đảm bảo rằng thiết bị của bạn có kết nối internet và cố gắng quét lại thư viện của bạn. Nếu vấn đề này vẫn tiếp diễn thì lõi này có thể không được hỗ trợ trên thiết bị của bạn.</string>
     <string name="game_loader_error_load_game">Có gì đó tệ đã xảy ra khi đang tải trò chơi của bạn. Hãy đảm bảo rằng ROM này được Lemuroid hỗ trợ và quét lại các trò chơi của bạn.</string>

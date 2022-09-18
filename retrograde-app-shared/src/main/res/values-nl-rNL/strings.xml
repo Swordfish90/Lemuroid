@@ -48,12 +48,16 @@
     <string name="setting_ppsspp_texture_filtering">Textuur filtering</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">CPU Snelheid</string>
+    <string name="setting_desmume_screens_layout">Scherm lay-out</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Scherm lay-out</string>
     <string name="setting_melonds_threaded_renderer">Threaded rendering</string>
     <string name="setting_melonds_jit_enable">Dynamische recompiler</string>
     <string name="setting_wswan_rotate_display">Oriëntatie</string>
     <string name="setting_wswan_mono_palette">Kleur</string>
+    <string name="setting_handy_rot">Schermrotatie</string>
+    <string name="setting_citra_layout_option">Scherm lay-out</string>
+    <string name="setting_citra_resolution_factor">Schaal van resolutie</string>
     <string name="setting_citra_use_acc_mul">Nauwkeurige shaders vermenigvuldiging</string>
     <string name="setting_citra_use_acc_geo_shaders">Nauwkeurige geometrie-shaders</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -99,6 +103,10 @@
     <string name="value_melonds_screen_layout_leftright">Links - Rechts</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybride Bovenzijde</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybride Onderzijde</string>
+    <string name="value_citra_layout_option_topbottom">Boven - Onder</string>
+    <string name="value_citra_layout_option_sidebyside">Links - Rechts</string>
+    <string name="value_desmume_screens_layout_topbottom">Boven - Onder</string>
+    <string name="value_desmume_screens_layout_leftright">Links - Rechts</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpretatie</string>

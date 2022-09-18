@@ -47,8 +47,6 @@
     <string name="library_index_notification_message">Això pot trigar uns minuts</string>
     <string name="save_sync_notification_message">Això pot trigar uns minuts</string>
     <string name="game_running_notification_title">%1$s s\'està executant</string>
-    <string name="installing_core_notification_title">Actualitzant els nuclis</string>
-    <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
     <string name="tv_home_section_favorites">Preferits</string>
     <string name="tv_home_section_recents">Recents</string>
     <string name="tv_home_section_systems">Sistemes</string>

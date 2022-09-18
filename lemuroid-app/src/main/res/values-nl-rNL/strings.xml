@@ -100,8 +100,6 @@
     <string name="game_running_notification_title">%1$s is actief</string>
     <string name="game_running_notification_title_alternative">Game is actief</string>
     <string name="game_running_notification_message">Zorg ervoor dat je je voortgang opslaat</string>
-    <string name="installing_core_notification_title">Cores worden geüpdate</string>
-    <string name="installing_core_notification_message">Dit kan een paar minuten duren</string>
     <string name="game_loader_error_gl_incompatible">Deze Core heeft een OpenGL ES versie nodig die je apparaat niet ondersteund.</string>
     <string name="game_loader_error_load_core">Het lijkt erop dat de Libretro core niet is geladen. Zorg ervoor dat uw apparaat is verbonden met internet en probeer uw bibliotheek opnieuw te scannen. Als het probleem aanhoudt, wordt deze core mogelijk niet ondersteund op uw apparaat.</string>
     <string name="game_loader_error_load_game">Er is iets misgegaan tijdens het laden van je spel. Zorg ervoor dat de ROM wordt ondersteund door Lemuroid en rescan je games.</string>
@@ -126,6 +124,7 @@
     <string name="tv_home_section_recents">Recent</string>
     <string name="tv_home_section_systems">Systemen</string>
     <string name="tv_home_section_settings">Instellingen</string>
+    <string name="gamepad_binding_update_description">Druk op een knop op uw \"%1$s\"</string>
     <string name="tv_search_results">Spellen</string>
     <string name="tv_game_message_missing_gamepad">Gamepads zijn vereist om te spelen. Gelieve er een te verbinden.</string>
     <string name="game_edit_touch_controls_error_not_visible">Koppel je pad los om je aanraakbesturingselementen te bewerken</string>
@@ -144,4 +143,10 @@
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
     <string name="error_message_incompatible_state">Deze opslagstaat is niet compatibel met de huidige core versie. Laad de laatste versie van het spel of gebruik een eerdere Lemuroid versie.</string>
+    <string name="shader_filter_names_auto">Automatisch</string>
+    <string name="shader_filter_names_sharp">Scherp</string>
+    <string name="shader_filter_names_smooth">Vloeiend</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_press">Druk</string>
+    <string name="haptic_feedback_mode_names_press_release">Druk &amp; loslaten</string>
 </resources>

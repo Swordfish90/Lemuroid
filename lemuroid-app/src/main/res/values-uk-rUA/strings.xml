@@ -100,12 +100,11 @@
     <string name="game_running_notification_title">%1$s працює</string>
     <string name="game_running_notification_title_alternative">Гра працює</string>
     <string name="game_running_notification_message">Переконайтеся, що ви зберегли свій прогрес</string>
-    <string name="installing_core_notification_title">Оновлення ядер</string>
-    <string name="installing_core_notification_message">Це може зайняти кілька хвилин</string>
     <string name="game_loader_error_gl_incompatible">Це ядро потребує версію OpenGL ES яка не підтримується вашим пристроєм.</string>
     <string name="game_loader_error_load_core">Схоже, ядро Libretro не було завантажено. Переконайтеся, що пристрій підключено до Інтернету і спробуйте повторно сканувати вашу бібліотеку. У разі, якщо проблема не зникне, можливо використання цього ядра на вашому пристрої не підтримується.</string>
     <string name="game_loader_error_load_game">Трапилось щось погане під час завантаження вашої гри. Переконайтеся, що прошивка підтримується Lemuroid і перескануйте ваші ігри.</string>
     <string name="game_loader_error_save">Щось пішло не так при збереженні файлу. Якщо проблема не зникне, спробуйте вимкнути автозбереження.</string>
+    <string name="game_loader_error_unsupported_architecture">Це ядро не підтримується вашим пристроєм.</string>
     <string name="game_loader_error_generic">Щось погане трапилося. Спробуйте наступне:\n
         \n\u2022 Вимкнути автозбереження і повторно запустити гру
         \n\u2022 В налаштуваннях Android очистити кеш програми
@@ -126,6 +125,8 @@
     <string name="tv_home_section_recents">Нещодавні</string>
     <string name="tv_home_section_systems">Системи</string>
     <string name="tv_home_section_settings">Налаштування</string>
+    <string name="gamepad_binding_update_title">Пов\'язати \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Натисніть кнопку на \"%1$s\"</string>
     <string name="tv_search_results">Ігри</string>
     <string name="tv_game_message_missing_gamepad">Для гри потрібні геймпади. Будь ласка, підключіть один.</string>
     <string name="game_edit_touch_controls_error_not_visible">Від\'єднайте геймпад для редагування сенсорних кнопок</string>
@@ -143,4 +144,13 @@
         \n\nЯкщо нічого з переліченого не допомогло, може бути що ця гра/ядро не підтримується на вашому приладі.
     </string>
     <string name="error_message_incompatible_state">Цей стан збереження несумісний з поточною версією ядра. Будь ласка, завантажте останню версію в грі, або використовуйте попередню версію Lemuroid.</string>
+    <string name="shader_filter_names_auto">Автоматично</string>
+    <string name="shader_filter_names_sharp">Різко</string>
+    <string name="shader_filter_names_smooth">Згладжений</string>
+    <string name="shader_filter_names_crt">Ефект \"старого\" телевізора</string>
+    <string name="shader_filter_names_lcd">LCD дисплей</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_none">Відсутньо</string>
+    <string name="haptic_feedback_mode_names_press">Натисніть</string>
+    <string name="haptic_feedback_mode_names_press_release">Натисніть &amp; відпустіть</string>
 </resources>

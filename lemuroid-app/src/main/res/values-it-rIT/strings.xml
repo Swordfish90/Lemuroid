@@ -100,8 +100,6 @@
     <string name="game_running_notification_title">%1$s è in esecuzione</string>
     <string name="game_running_notification_title_alternative">Il gioco è in esecuzione</string>
     <string name="game_running_notification_message">Assicurati di salvare i tuoi progressi</string>
-    <string name="installing_core_notification_title">Aggiornamento dei Core</string>
-    <string name="installing_core_notification_message">Questo può richiedere fino a qualche minuto</string>
     <string name="game_loader_error_gl_incompatible">Questo Core richiede una versione OpenGL ES che non è supportata dal tuo dispositivo.</string>
     <string name="game_loader_error_load_core">Sembra che il Core Libretro non sia stato caricato. Assicurati che il tuo dispositivo sia connesso a internet e prova a scansionare la tua libreria. Se il problema persiste, questo core potrebbe non essere supportato sul tuo dispositivo.</string>
     <string name="game_loader_error_load_game">Qualcosa non ha funzionato durante il caricamento del gioco. Assicurati che la ROM sia supportata da Lemuroid e scansiona nuovamente tuoi giochi.</string>
@@ -127,6 +125,8 @@
     <string name="tv_home_section_recents">Recenti</string>
     <string name="tv_home_section_systems">Sistemi</string>
     <string name="tv_home_section_settings">Impostazioni</string>
+    <string name="gamepad_binding_update_title">Associa \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Premi un pulsante sul tuo \"%1$s\"</string>
     <string name="tv_search_results">Giochi</string>
     <string name="tv_game_message_missing_gamepad">I controller sono necessari per giocare. Si prega di collegarne uno.</string>
     <string name="game_edit_touch_controls_error_not_visible">Disconnetti il tuo controller per modificare i controlli touch</string>
