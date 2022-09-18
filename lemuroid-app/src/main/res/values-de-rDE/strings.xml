@@ -100,8 +100,6 @@
     <string name="game_running_notification_title">%1$s läuft</string>
     <string name="game_running_notification_title_alternative">Spiel läuft</string>
     <string name="game_running_notification_message">Achten Sie darauf, Ihren Fortschritt zu sichern</string>
-    <string name="installing_core_notification_title">Kerne aktualisieren</string>
-    <string name="installing_core_notification_message">Dies kann einige Minuten dauern</string>
     <string name="game_loader_error_gl_incompatible">Dieser Core benötigt eine OpenGL ES Version, die von Ihrem Gerät nicht unterstützt wird.</string>
     <string name="game_loader_error_load_core">Es sieht so aus, als ob der Libretro Core nicht geladen wurde. Bitte stell sicher, dass dein Gerät mit dem Internet verbunden ist und versuche deine Bibliothek erneut zu scannen. Wenn das Problem weiterhin besteht, wird dieser Kern möglicherweise nicht auf deinem Gerät unterstützt.</string>
     <string name="game_loader_error_load_game">Beim Laden deines Spiels ist etwas schief gelaufen. Bitte stell sicher, dass der ROM von Lemuroid unterstützt wird und scanne deine Spiele erneut.</string>
