@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="game_loading_download_core">코어 다운로드 중…</string>
+    <string name="installing_core_notification_title">코어 업데이트 중</string>
+    <string name="installing_core_notification_message">몇 분 정도 걸립니다</string>
 </resources>
