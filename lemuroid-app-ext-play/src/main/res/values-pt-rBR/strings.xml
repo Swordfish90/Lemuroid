@@ -26,4 +26,6 @@
     <string name="gdrive_connected_none_summary">Não configurado</string>
     <string name="gdrive_last_sync_completed">Última sincronização: %s</string>
     <string name="game_loading_download_core">Baixando núcleo…</string>
+    <string name="installing_core_notification_title">Atualizando núcleos do Play</string>
+    <string name="installing_core_notification_message">Verifique o app da Google Play Store para ver o status atual</string>
 </resources>
