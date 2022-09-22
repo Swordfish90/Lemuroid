@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="game_loading_download_core">Baixando núcleo…</string>
+    <string name="installing_core_notification_title">Atualizando núcleos</string>
+    <string name="installing_core_notification_message">Isto pode levar alguns minutos</string>
 </resources>
