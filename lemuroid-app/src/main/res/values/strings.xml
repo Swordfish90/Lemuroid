@@ -113,7 +113,14 @@
 
     <string name="game_menu_title">Game menu</string>
 
-    <string name="notification_channel_name">All notifications</string>
+    <string name="notification_channel_name_game_running">Game Service</string>
+    <string name="notification_channel_description_game_running">Persistent Notification for background service.</string>
+    <string name="notification_channel_name_indexing">Library</string>
+    <string name="notification_channel_description_indexing">Notification for ROM-Indexing Service</string>
+    <string name="notification_channel_name_sync">Google Drive</string>
+    <string name="notification_channel_description_sync">Notification for background sync</string>
+    <string name="notification_channel_name_core_update">Cores</string>
+    <string name="notification_channel_description_core_update">Notification for Core updater</string>
     <string name="library_index_notification_title">ROMs scanning in progress</string>
     <string name="library_index_notification_message">This can take up to a few minutes</string>
 
