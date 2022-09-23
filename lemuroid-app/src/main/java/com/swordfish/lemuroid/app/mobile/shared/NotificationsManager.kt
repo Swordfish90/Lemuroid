@@ -125,6 +125,8 @@ class NotificationsManager(private val applicationContext: Context) {
             mChannel.description =  applicationContext.getString(R.string.notification_channel_description_core_update)
 
             notificationManager?.createNotificationChannel(mChannel)
+
+            notificationManager?.deleteNotificationChannel(DEFAULT_CHANNEL_ID)
         }
     }
 
@@ -147,6 +149,10 @@ class NotificationsManager(private val applicationContext: Context) {
         const val LIBRARY_INDEXING_CHANNEL_ID = "LIBRARY_INDEXING_CHANNEL_ID"
         const val SYNC_CHANNEL_ID = "SYNC_CHANNEL_ID"
         const val CORE_UPDATE_CHANNEL_ID = "CORE_UPDATE_CHANNEL_ID"
+
+        @Deprecated(message="Dont use! Use the proper channel. This ID is kept to remove the old channel.")
+        const val DEFAULT_CHANNEL_ID = "DEFAULT_CHANNEL_ID"
+
 
         const val LIBRARY_INDEXING_NOTIFICATION_ID = 1
         const val SAVE_SYNC_NOTIFICATION_ID = 2
