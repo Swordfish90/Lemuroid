@@ -17,7 +17,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 class NotificationsManager(private val applicationContext: Context) {
 
     fun gameRunningNotification(game: Game?): Notification {
-        createDefaultNotificationChannel()
+        createNotificationChannels()
 
         val intent = Intent(applicationContext, GameActivity::class.java)
         val contentIntent = PendingIntent.getActivity(
@@ -31,7 +31,7 @@ class NotificationsManager(private val applicationContext: Context) {
             applicationContext.getString(R.string.game_running_notification_title, game.title)
         } ?: applicationContext.getString(R.string.game_running_notification_title_alternative)
 
-        val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(applicationContext, GAME_RUNNING_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lemuroid_tiny)
             .setContentTitle(title)
             .setContentText(applicationContext.getString(R.string.game_running_notification_message))
@@ -45,7 +45,7 @@ class NotificationsManager(private val applicationContext: Context) {
     }
 
     fun libraryIndexingNotification(): Notification {
-        createDefaultNotificationChannel()
+        createNotificationChannels()
 
         val broadcastIntent = Intent(applicationContext, LibraryIndexBroadcastReceiver::class.java)
         val broadcastPendingIntent: PendingIntent = PendingIntent.getBroadcast(
@@ -55,7 +55,7 @@ class NotificationsManager(private val applicationContext: Context) {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(applicationContext, LIBRARY_INDEXING_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lemuroid_tiny)
             .setContentTitle(applicationContext.getString(R.string.library_index_notification_title))
             .setContentText(applicationContext.getString(R.string.library_index_notification_message))
@@ -73,9 +73,9 @@ class NotificationsManager(private val applicationContext: Context) {
     }
 
     fun installingCoresNotification(): Notification {
-        createDefaultNotificationChannel()
+        createNotificationChannels()
 
-        val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(applicationContext, CORE_UPDATE_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lemuroid_tiny)
             .setContentTitle(applicationContext.getString(R.string.installing_core_notification_title))
             .setContentText(applicationContext.getString(R.string.installing_core_notification_message))
@@ -86,9 +86,9 @@ class NotificationsManager(private val applicationContext: Context) {
     }
 
     fun saveSyncNotification(): Notification {
-        createDefaultNotificationChannel()
+        createSyncNotificationChannels()
 
-        val builder = NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(applicationContext, SYNC_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lemuroid_tiny)
             .setContentTitle(applicationContext.getString(R.string.save_sync_notification_title))
             .setContentText(applicationContext.getString(R.string.save_sync_notification_message))
@@ -98,20 +98,55 @@ class NotificationsManager(private val applicationContext: Context) {
         return builder.build()
     }
 
-    private fun createDefaultNotificationChannel() {
+    private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = applicationContext.getString(R.string.notification_channel_name)
-            val importance = NotificationManager.IMPORTANCE_MIN
-            val mChannel = NotificationChannel(DEFAULT_CHANNEL_ID, name, importance)
+
             val notificationManager =
                 ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+
+            var name = applicationContext.getString(R.string.notification_channel_name_game_running)
+            var importance = NotificationManager.IMPORTANCE_MIN
+            var mChannel = NotificationChannel(GAME_RUNNING_CHANNEL_ID, name, importance)
+            mChannel.description =  applicationContext.getString(R.string.notification_channel_description_game_running)
+
+            notificationManager?.createNotificationChannel(mChannel)
+
+            name = applicationContext.getString(R.string.notification_channel_name_indexing)
+            importance = NotificationManager.IMPORTANCE_MIN
+            mChannel = NotificationChannel(LIBRARY_INDEXING_CHANNEL_ID, name, importance)
+            mChannel.description =  applicationContext.getString(R.string.notification_channel_description_indexing)
+
+            notificationManager?.createNotificationChannel(mChannel)
+
+
+            name = applicationContext.getString(R.string.notification_channel_name_core_update)
+            importance = NotificationManager.IMPORTANCE_MIN
+            mChannel = NotificationChannel(CORE_UPDATE_CHANNEL_ID, name, importance)
+            mChannel.description =  applicationContext.getString(R.string.notification_channel_description_core_update)
+
+            notificationManager?.createNotificationChannel(mChannel)
+        }
+    }
+
+    private fun createSyncNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager =
+                ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+
+            var name = applicationContext.getString(R.string.notification_channel_name_sync)
+            var importance = NotificationManager.IMPORTANCE_MIN
+            var mChannel = NotificationChannel(SYNC_CHANNEL_ID, name, importance)
+            mChannel.description =  applicationContext.getString(R.string.notification_channel_description_sync)
 
             notificationManager?.createNotificationChannel(mChannel)
         }
     }
 
     companion object {
-        const val DEFAULT_CHANNEL_ID = "DEFAULT_CHANNEL_ID"
+        const val GAME_RUNNING_CHANNEL_ID = "GAME_RUNNING_CHANNEL_ID"
+        const val LIBRARY_INDEXING_CHANNEL_ID = "LIBRARY_INDEXING_CHANNEL_ID"
+        const val SYNC_CHANNEL_ID = "SYNC_CHANNEL_ID"
+        const val CORE_UPDATE_CHANNEL_ID = "CORE_UPDATE_CHANNEL_ID"
 
         const val LIBRARY_INDEXING_NOTIFICATION_ID = 1
         const val SAVE_SYNC_NOTIFICATION_ID = 2
