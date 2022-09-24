@@ -12,10 +12,9 @@ import java.io.ByteArrayOutputStream
 
 class SavesManager(private val directoriesManager: DirectoriesManager) {
 
-    suspend fun getSaveRAM(game: Game, context: Context): ByteArray? = withContext(Dispatchers.IO) {
+    suspend fun getSaveRAM(game: Game): ByteArray? = withContext(Dispatchers.IO) {
         val result = runCatchingWithRetry(FILE_ACCESS_RETRIES) {
-            val ramFileName = getSaveRAMFileName(game)
-            copyToInternal(ramFileName, context)
+            val ramFileName = getSavegameFilename("GBA", game)
             val saveFile = getSaveFile(ramFileName)
             if (saveFile.exists() && saveFile.length() > 0) {
                 saveFile.readBytes()
@@ -26,21 +25,20 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         result.getOrNull()
     }
 
-    suspend fun setSaveRAM(game: Game, data: ByteArray, context: Context): Unit = withContext(Dispatchers.IO) {
-        val ramFileName = getSaveRAMFileName(game)
+    suspend fun setSaveRAM(game: Game, data: ByteArray): Unit = withContext(Dispatchers.IO) {
+        val ramFileName = getSavegameFilename("GBA", game)
         val result = runCatchingWithRetry(FILE_ACCESS_RETRIES) {
             if (data.isEmpty())
                 return@runCatchingWithRetry
 
             val saveFile = getSaveFile(ramFileName)
             saveFile.writeBytes(data)
-            copyToExternal(ramFileName, context)
         }
         result.getOrNull()
     }
 
     suspend fun getSaveRAMInfo(game: Game): SaveInfo = withContext(Dispatchers.IO) {
-        val saveFile = getSaveFile(getSaveRAMFileName(game))
+        val saveFile = getSaveFile(getSavegameFilename("GBA", game))
         val fileExists = saveFile.exists() && saveFile.length() > 0
         SaveInfo(fileExists, saveFile.lastModified())
     }
@@ -50,18 +48,30 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         File(savesDirectory, fileName)
     }
 
-    /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
-    private fun getSaveRAMFileName(game: Game) = "${game.fileName.substringBeforeLast(".")}.srm"
-
     companion object {
         private const val FILE_ACCESS_RETRIES = 3
     }
 
-    private suspend fun copyToInternal(filename: String, context: Context) {
-        Timber.i("Sync Savegamedata from external storage if required.")
+    private fun getSavegameFilename(type: String, game: Game) : String {
+        val gamename = game.fileName.substringBeforeLast(".")
+        return when(type) {
+            /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
+            "gba" -> "$gamename.srm"
+            "nds" -> "$gamename.dsv"
+            else -> ""
+        }
+    }
+
+    suspend fun copyToInternal(corename: String, game: Game, context: Context) {
+        Timber.e("Sync Savegamedata from external storage if required.")
+        val filename = getSavegameFilename(corename.lowercase(), game)
         val internalSaveFile = getSaveFile(filename)
         directoriesManager.getSavesDirectory().let {
-            val test = it?.findFile(filename)
+            var gamefolder = it?.findFile(corename.lowercase())
+            if(gamefolder == null) {
+                gamefolder = it?.createDirectory(corename.lowercase())
+            }
+            val test = gamefolder?.findFile(filename)
             if(test != null) {
                 // File in external storage is newer, so copy it to local
                 if(internalSaveFile.lastModified() < test.lastModified()) {
@@ -86,16 +96,28 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         }
     }
 
-    private suspend fun copyToExternal(filename: String, context: Context) {
+    suspend fun copyToExternal(corename: String, game: Game, context: Context) {
         Timber.i("Sync Savegamedata from internal storage if required.")
+        val filename = getSavegameFilename(corename.lowercase(), game)
         val internalSaveFile = getSaveFile(filename)
 
         directoriesManager.getSavesDirectory().let {
-            val test = it?.findFile(filename)
-            if(test != null) {
+            var gamefolder = it?.findFile(corename.lowercase())
+            if(gamefolder == null) {
+                gamefolder = it?.createDirectory(corename.lowercase())
+            }
+
+            var saveHasBeenCreated = false
+            var savefile = gamefolder?.findFile(filename)
+            if(savefile == null) {
+                savefile = gamefolder?.createFile("application/octet-stream", filename)
+                saveHasBeenCreated = true
+            }
+
+            if(savefile != null) {
                 // File in external storage is newer, so copy it to local
-                if(internalSaveFile.lastModified() > test.lastModified()) {
-                    val outputStream = context.contentResolver.openOutputStream(test.uri)
+                if(internalSaveFile.lastModified() > savefile.lastModified() || saveHasBeenCreated) {
+                    val outputStream = context.contentResolver.openOutputStream(savefile.uri)
                     outputStream?.write(internalSaveFile.readBytes())
                 }
             }

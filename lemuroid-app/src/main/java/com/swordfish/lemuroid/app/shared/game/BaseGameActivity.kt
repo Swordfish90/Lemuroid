@@ -782,6 +782,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return super.onKeyUp(keyCode, event)
     }
 
+
+    override fun onPause() {
+        super.onPause()
+        lifecycleScope.launch {
+            // first save, then copy to external
+            saveSRAM(game)
+            legacySavesManager.copyToExternal(getString(system.shortTitleResId), game, applicationContext)
+        }
+    }
     override fun onBackPressed() {
         if (loadingState.value) return
         lifecycleScope.launch {
@@ -790,7 +799,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun autoSaveAndFinish() = withLoading {
+        // first save, then copy to external
         saveSRAM(game)
+        legacySavesManager.copyToExternal(getString(system.shortTitleResId), game, applicationContext)
         saveAutoSave(game)
         performSuccessfulActivityFinish()
     }
@@ -857,7 +868,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private suspend fun saveSRAM(game: Game) {
         val retroGameView = retroGameView ?: return
         val sramState = retroGameView.serializeSRAM()
-        legacySavesManager.setSaveRAM(game, sramState, applicationContext)
+        legacySavesManager.setSaveRAM(game, sramState)
         Timber.i("Stored sram file with size: ${sramState.size}")
     }
 
