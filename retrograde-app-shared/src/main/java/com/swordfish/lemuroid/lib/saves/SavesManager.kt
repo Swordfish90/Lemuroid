@@ -58,7 +58,10 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
             /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
             "gba" -> "$gamename.srm"
             "nds" -> "$gamename.dsv"
-            else -> ""
+            else -> {
+                Timber.e("Error syncing savegamedata: the proper fileending for ${game.title} with the $type-core is not configured.")
+                ""
+            }
         }
     }
 
