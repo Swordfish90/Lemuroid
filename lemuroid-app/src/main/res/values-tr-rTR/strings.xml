@@ -96,14 +96,14 @@
     <string name="game_loader_error_load_game">Oyununuzu yüklerken kötü bir şey oldu. ROM\'un Lemuroid tarafından desteklendiğinden emin olun ve oyunlarınızı yeniden tarayın.</string>
     <string name="game_loader_error_save">Kayıt dosyası ile kötü bir şey oldu. Eğer sorun devam ediyorsa, otomatik kayıtı devre dışı bırakmayı deneyin.</string>
     <string name="game_loader_error_unsupported_architecture">Bu Çekirdek cihazınız tarafından desteklenmiyor.</string>
-    <string name="game_loader_error_generic">Kötü birşey oldu. Aşağıdakileri deneyin:\n
+    <string name="game_loader_error_generic">Kötü bir şey oldu. Aşağıdakileri deneyin:\n
         \n\u2022 Otomatik kayıtı devre dışı bırakın ve oyunu yeniden çalıştırın
         \n\u2022 Android ayarlarına gidin ve uygulama önbelleğini temizleyin
         \n\u2022 Lemuroid ayarlarına gidin ve fabrika ayarı sıfırlaması yapın
-        \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu oyun/çekirdek bu cihazın desteklenmiyor olabilir.
+        \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklenmiyor olabilir.
     </string>
     <string name="game_loader_error_missing_bios">Görünüşe göre gerekli olan BIOS\'unuz eksik. ROM\'unuza ekleyin ve yeniden tarayın. Gerekli dosyalar: %1$s</string>
-    <string name="game_shortcut_error">Oyununuzu yüklerken kötü birşey oldu. Bu oyunun kitaplıkta olduğundan emin olun.</string>
+    <string name="game_shortcut_error">Oyununuzu yüklerken kötü bir şey oldu. Bu oyunun kitaplığınızda olduğundan emin olun.</string>
     <string name="dialog_saf_not_found">Bu cihaz StorageAccessFramework dosya seçicisini desteklemiyor. Lütfen sıkıştırılmamış ROM dosyalarını %1$s a koyun ve Yeniden taraya dokunun.</string>
     <string name="system_grid_details">%1$s oyunlar</string>
     <string name="tv_folder_picker_title">ROMların konumunu seç</string>
