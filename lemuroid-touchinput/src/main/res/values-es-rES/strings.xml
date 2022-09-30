@@ -2,5 +2,5 @@
 <resources>
     <string name="touch_customize_button_done">Listo</string>
     <string name="touch_customize_button_reset">Reiniciar</string>
-    <string name="touch_customize_info">Arrastra y pellizca los controles para cambiar la posición y el tamaño respectivamente</string>
+    <string name="touch_customize_info">Arrastra y pellizca los controles para cambiar la posición y el tamaño</string>
 </resources>
