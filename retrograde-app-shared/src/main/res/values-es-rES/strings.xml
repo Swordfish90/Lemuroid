@@ -11,18 +11,18 @@
     <string name="controller_landscape">Horizontal</string>
     <string name="controller_portrait">Vertical</string>
     <string name="controller_dos_auto">Automático</string>
-    <string name="controller_dos_mouse_left">Ratón con Stick Izquierdo</string>
-    <string name="controller_dos_mouse_right">Ratón con Stick Derecho</string>
+    <string name="controller_dos_mouse_left">Ratón con Análogo Izquierdo</string>
+    <string name="controller_dos_mouse_right">Ratón con Análogo Derecho</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">Efecto de TV</string>
     <string name="setting_stella_crop_hoverscan">Recortar excedente horizontal</string>
     <string name="setting_fceumm_overscan_h">Recortar excedente horizontal</string>
     <string name="setting_fceumm_overscan_v">Recortar excedente horizontal</string>
-    <string name="setting_fceumm_nospritelimit">Sin límite de sprite</string>
+    <string name="setting_fceumm_nospritelimit">Sin límite de imagen</string>
     <string name="setting_genesis_plus_gx_blargg_ntsc_filter">Efecto de TV</string>
     <string name="setting_genesis_plus_gx_overscan">Bordes</string>
-    <string name="setting_genesis_plus_gx_lcd_filter">Ghosting LCD</string>
-    <string name="setting_genesis_plus_gx_no_sprite_limit">Sin límite de sprite</string>
+    <string name="setting_genesis_plus_gx_lcd_filter">Desaparecimiento de LCD</string>
+    <string name="setting_genesis_plus_gx_no_sprite_limit">Sin límite de imagen</string>
     <string name="setting_gambatte_gb_colorization">Colorización</string>
     <string name="setting_gambatte_gb_internal_palette">Paleta interna</string>
     <string name="setting_gambatte_mix_frames">Ghosting LCD</string>
@@ -51,7 +51,7 @@
     <string name="setting_desmume_screens_layout">Orden de pantallas</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Disposición de pantallas</string>
-    <string name="setting_melonds_threaded_renderer">Renderizador en thread</string>
+    <string name="setting_melonds_threaded_renderer">Renderizador en paralelo</string>
     <string name="setting_melonds_jit_enable">Recompilador dinámico</string>
     <string name="setting_wswan_rotate_display">Orientación</string>
     <string name="setting_wswan_mono_palette">Colorización</string>
@@ -96,11 +96,23 @@
     <string name="value_mupen64plus_bilinearmode_3point">3-Puntos</string>
     <string name="value_mupen64plus_mupen64plus_pak1_memory">Memoria</string>
     <string name="value_mupen64plus_mupen64plus_pak1_rumble">Vibración</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Ninguno</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">Ninguno</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_rumble">Vibración</string>
     <string name="value_melonds_screen_layout_topbottom">Arriba - Abajo</string>
     <string name="value_melonds_screen_layout_leftright">Izquierda - Derecha</string>
     <string name="value_melonds_screen_layout_hybridtop">Superior híbrido</string>
     <string name="value_melonds_screen_layout_hybridbottom">Inferior híbrido</string>
+    <string name="value_citra_layout_option_topbottom">Arriba - Abajo</string>
+    <string name="value_citra_layout_option_sidebyside">Izquierda - Derecha</string>
+    <string name="value_desmume_screens_layout_topbottom">Arriba - Abajo</string>
+    <string name="value_desmume_screens_layout_leftright">Izquierda - Derecha</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Intérprete</string>
+    <string name="value_wswan_rotate_display_landscape">Horizontal</string>
+    <string name="value_wswan_rotate_display_portrait">Vertical</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">90</string>
+    <string name="value_handy_rot_270">270</string>
 </resources>
