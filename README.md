@@ -41,6 +41,7 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - WonderSwan (WS) ([beetle_cygne](https://docs.libretro.com/library/beetle_cygne/))
 - WonderSwan Color (WSC) ([beetle_cygne](https://docs.libretro.com/library/beetle_cygne/))
 - Nintendo 3DS (3DS) ([citra](https://docs.libretro.com/library/citra/))
+- Acode - code editor ([citra](https://apkzar.com/acode-code-editor-mod-apk/))
 
 ### Features:
 - Android TV support
