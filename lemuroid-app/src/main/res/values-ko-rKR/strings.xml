@@ -101,7 +101,6 @@
     <string name="game_running_notification_title_alternative">게임 실행 중</string>
     <string name="game_running_notification_message">진행 상황 저장을 잊지 마세요</string>
     <string name="game_loader_error_gl_incompatible">이 장치에서는 이 코어가 요구하는 OpenGL ES 버전이 지원되지 않습니다.</string>
-    <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않은 것 같습니다. 장치가 인터넷에 연결되어있는지 확인하고 라이브러리를 다시 한 번 스캔해주세요. 문제가 지속될 경우 이 장치가 해당 코어를 지원하지 않는 것일 수도 있습니다.</string>
     <string name="game_loader_error_load_game">게임을 불러오는 도중 문제가 발생했습니다. ROM 파일이 Lemuroid에서 지원되는 파일인지 확인한 뒤 게임을 다시 검색해주세요.</string>
     <string name="game_loader_error_save">세이브 파일에 문제가 발생했습니다. 문제가 지속될 경우 자동 저장을 비활성화하는 것이 좋습니다.</string>
     <string name="game_loader_error_unsupported_architecture">이 장치에서 지원되지 않는 코어입니다.</string>
