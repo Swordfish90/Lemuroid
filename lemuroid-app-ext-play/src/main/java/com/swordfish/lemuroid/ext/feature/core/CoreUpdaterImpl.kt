@@ -56,7 +56,7 @@ class CoreUpdaterImpl(
         try {
             waitForCompletion(installSession, installManager)
         } catch (e: Throwable) {
-            log("Error while installing assets: ${e.message}")
+            log("Error while waiting for core install: ${e.message}")
         }
 
         try {
@@ -136,7 +136,7 @@ class CoreUpdaterImpl(
 
     private fun log(message: String) {
         if (VERBOSE) {
-            Log.w(TAG_LOG, message)
+            Log.i(TAG_LOG, message)
         }
     }
 
