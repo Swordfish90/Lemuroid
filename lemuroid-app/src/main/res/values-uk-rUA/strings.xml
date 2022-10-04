@@ -101,7 +101,6 @@
     <string name="game_running_notification_title_alternative">Гра працює</string>
     <string name="game_running_notification_message">Переконайтеся, що ви зберегли свій прогрес</string>
     <string name="game_loader_error_gl_incompatible">Це ядро потребує версію OpenGL ES яка не підтримується вашим пристроєм.</string>
-    <string name="game_loader_error_load_core">Схоже, ядро Libretro не було завантажено. Переконайтеся, що пристрій підключено до Інтернету і спробуйте повторно сканувати вашу бібліотеку. У разі, якщо проблема не зникне, можливо використання цього ядра на вашому пристрої не підтримується.</string>
     <string name="game_loader_error_load_game">Трапилось щось погане під час завантаження вашої гри. Переконайтеся, що прошивка підтримується Lemuroid і перескануйте ваші ігри.</string>
     <string name="game_loader_error_save">Щось пішло не так при збереженні файлу. Якщо проблема не зникне, спробуйте вимкнути автозбереження.</string>
     <string name="game_loader_error_unsupported_architecture">Це ядро не підтримується вашим пристроєм.</string>
