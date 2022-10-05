@@ -125,6 +125,7 @@
             android:theme="@style/LemuroidMaterialTheme.Game" />
 
         <receiver android:name=".app.shared.library.LibraryIndexBroadcastReceiver" />
+        <receiver android:name=".app.shared.library.CoreUpdateBroadcastReceiver" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

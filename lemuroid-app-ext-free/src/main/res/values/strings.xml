@@ -4,4 +4,6 @@
 
     <string name="installing_core_notification_title">Updating Cores</string>
     <string name="installing_core_notification_message">This can take up to a few minutes</string>
+
+    <string name="game_loader_error_load_core">The Libretro core was not loaded. Make sure your device is connected to internet and try to rescan your library. If the issue persist this core might not be supported on your device.</string>
 </resources>

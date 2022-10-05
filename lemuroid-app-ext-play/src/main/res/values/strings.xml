@@ -31,4 +31,10 @@
 
     <string name="installing_core_notification_title">Updating Cores from Play</string>
     <string name="installing_core_notification_message">Check the Google Play Store app to see the current status</string>
+
+    <string name="game_loader_error_load_core">The Libretro core was not loaded. Try the following:\n
+        \n\u2022 Enable internet connection and rescan your games
+        \n\u2022 Make sure Google Play Store is installed and running
+        \n\u2022 Wait for pending operations in Google Play Store app to complete</string>
+
 </resources>
