@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="game_loading_download_core">正在下載内核…</string>
+    <string name="installing_core_notification_title">正在更新核心</string>
 </resources>

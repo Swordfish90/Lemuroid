@@ -9,6 +9,7 @@
     <string name="favorites">Favoriler</string>
     <string name="discover">Keşfet</string>
     <string name="rescan">Yeniden tara</string>
+    <string name="stop">Dur</string>
     <string name="none">Hiçbiri</string>
     <string name="directory">Dizin</string>
     <string name="display_filter">Görüntü filtresi</string>
@@ -22,6 +23,10 @@
     <string name="settings_title_enable_autosave">Durumu otomatik kaydet</string>
     <string name="settings_title_enable_touch_feedback">Dokunurken titret</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensör hassasiyeti</string>
+    <string name="settings_title_maximum_cache_usage">Önbellek boyut sınırı</string>
+    <string name="settings_title_gamepad_settings">Harici cihazlar</string>
+    <string name="settings_description_gamepad_settings">Harici gamepadleri ve klavyeleri yönet</string>
+    <string name="settings_gamepad_category_enabled">Etkin cihazlar</string>
     <string name="settings_gamepad_category_general">Genel</string>
     <string name="settings_gamepad_title_reset_bindings">Bağları sıfırla</string>
     <string name="settings_gamepad_title_game_menu">Menü</string>
@@ -36,6 +41,8 @@
     <string name="settings_description_advanced_settings">Gelişmiş ayarları göster</string>
     <string name="settings_title_low_latency_audio">Düşük gecikmeli sesi tercih et</string>
     <string name="settings_description_low_latency_audio">Desteklenen cihazlarda ses gecikmesini azaltın. Ses aksaklıkları artabilir.</string>
+    <string name="settings_title_direct_game_load">Direkt oyun yükle</string>
+    <string name="settings_description_direct_game_load">(Deneyimsel) Desteklenen konsollarda yükleme zamanını ve önbellek kullanımını azalt.</string>
     <string name="reset_settings_warning_message_title">Emin misin?</string>
     <string name="reset_settings_warning_message_description">Bu Lemuroid\'i fabrika ayarlarına sıfırlayacak. Kayıtlar ve Durumlar korunacak.</string>
     <string name="settings_title_save_sync">Bulut kayıtlar</string>
@@ -85,17 +92,17 @@
     <string name="game_running_notification_title_alternative">Oyun çalışıyor</string>
     <string name="game_running_notification_message">Oyunu kaydettiğinizden emin olun</string>
     <string name="game_loader_error_gl_incompatible">Bu çekirdek cihazınız tarafından desteklenmeyen bir OpenGL ES versiyonunu gerektiriyor.</string>
-    <string name="game_loader_error_load_core">Görünüşe göre Libreto çekirdeği yüklenmedi. Cihazınızın internete bağlı olduğundan emin olun ve kütüphanenizi yeniden taramayı deneyin. Eğer sorun devam ediyorsa çekirdek cihazınız tarafından desteklenmiyor olabilir.</string>
-    <string name="game_loader_error_load_game">Oyununuzu yüklerken kötü birşey oldu. ROM\'un Lemuroid tarafından desteklendiğinden emin olun ve oyunlarınızı yeniden tarayın.</string>
-    <string name="game_loader_error_save">Kayıt dosyası ile kötü birşey oldu. Eğer sorun devam ediyorsa, otomatik kayıtı devre dışı bırakmayı deneyin.</string>
-    <string name="game_loader_error_generic">Kötü birşey oldu. Aşağıdakileri deneyin:\n
+    <string name="game_loader_error_load_game">Oyununuzu yüklerken kötü bir şey oldu. ROM\'un Lemuroid tarafından desteklendiğinden emin olun ve oyunlarınızı yeniden tarayın.</string>
+    <string name="game_loader_error_save">Kayıt dosyası ile kötü bir şey oldu. Eğer sorun devam ediyorsa, otomatik kayıtı devre dışı bırakmayı deneyin.</string>
+    <string name="game_loader_error_unsupported_architecture">Bu Çekirdek cihazınız tarafından desteklenmiyor.</string>
+    <string name="game_loader_error_generic">Kötü bir şey oldu. Aşağıdakileri deneyin:\n
         \n\u2022 Otomatik kayıtı devre dışı bırakın ve oyunu yeniden çalıştırın
         \n\u2022 Android ayarlarına gidin ve uygulama önbelleğini temizleyin
         \n\u2022 Lemuroid ayarlarına gidin ve fabrika ayarı sıfırlaması yapın
-        \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu oyun/çekirdek bu cihazın desteklenmiyor olabilir.
+        \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklenmiyor olabilir.
     </string>
     <string name="game_loader_error_missing_bios">Görünüşe göre gerekli olan BIOS\'unuz eksik. ROM\'unuza ekleyin ve yeniden tarayın. Gerekli dosyalar: %1$s</string>
-    <string name="game_shortcut_error">Oyununuzu yüklerken kötü birşey oldu. Bu oyunun kitaplıkta olduğundan emin olun.</string>
+    <string name="game_shortcut_error">Oyununuzu yüklerken kötü bir şey oldu. Bu oyunun kitaplığınızda olduğundan emin olun.</string>
     <string name="dialog_saf_not_found">Bu cihaz StorageAccessFramework dosya seçicisini desteklemiyor. Lütfen sıkıştırılmamış ROM dosyalarını %1$s a koyun ve Yeniden taraya dokunun.</string>
     <string name="system_grid_details">%1$s oyunlar</string>
     <string name="tv_folder_picker_title">ROMların konumunu seç</string>
@@ -126,4 +133,6 @@
         \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklemiyor olabilir.
     </string>
     <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
+    <string name="haptic_feedback_mode_names_press">Bas</string>
+    <string name="haptic_feedback_mode_names_press_release">Bas &amp; bırak</string>
 </resources>

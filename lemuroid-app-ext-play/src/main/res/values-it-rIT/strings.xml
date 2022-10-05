@@ -26,4 +26,10 @@
     <string name="gdrive_connected_none_summary">Non configurato</string>
     <string name="gdrive_last_sync_completed">Ultima sincronizzazione: %s</string>
     <string name="game_loading_download_core">Scaricamento core…</string>
+    <string name="installing_core_notification_title">Aggiornamento core da Play</string>
+    <string name="installing_core_notification_message">Controlla l\'applicazione Google Play Store per conoscere lo stato attuale</string>
+    <string name="game_loader_error_load_core">Il core Libretro non è stato caricato. Prova quanto segue:\n
+        \n\u2022 Attiva la connessione internet e riscansiona i tuoi giochi
+        \n\u2022 Assicurati che Google Play Store sia installato ed in esecuzione
+        \n\u2022 Attendi che le operazioni in sospeso nell\'app di Google Play Store siano completate</string>
 </resources>

@@ -17,4 +17,6 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<resources></resources>
+<resources>
+    <string name="gdrive_sign_in_failed">Google innlogging mislyktes: %s (%s)</string>
+</resources>

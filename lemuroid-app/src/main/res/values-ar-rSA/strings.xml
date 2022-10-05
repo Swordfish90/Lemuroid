@@ -101,7 +101,6 @@
     <string name="game_running_notification_title_alternative">اللعبة قيد التشغيل</string>
     <string name="game_running_notification_message">تأكد من حفظ التقدم الخاص بك</string>
     <string name="game_loader_error_gl_incompatible">تتطلب هذا النواة إصدار OpenGL ES الذي لا يدعمه جهازك.</string>
-    <string name="game_loader_error_load_core">يبدو أن نواة ليبرترو لم يتم تحميلها. تأكد من أن جهازك متصل بالإنترنت ومحاولة إعادة فحص مكتبتك. إذا استمرت المشكلة، قد لا يتم دعم هذا النواة على جهازك.</string>
     <string name="game_loader_error_load_game">حدث شيء سيئ أثناء تحميل لعبتك. تأكد من أن الروم مدعوم من Lemuroid وإعادة فحص ألعابك.</string>
     <string name="game_loader_error_save">حدث شيء سيئ مع حفظ الملف الخاص بك. إذا استمرت المشكلة، حاول تعطيل الحفظ التلقائي.</string>
     <string name="game_loader_error_unsupported_architecture">هذا النواة غير مدعومة من قبل جهازك.</string>

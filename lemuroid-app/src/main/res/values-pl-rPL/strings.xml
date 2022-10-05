@@ -83,7 +83,6 @@
     <string name="game_running_notification_title_alternative">Gra jest uruchomiona</string>
     <string name="game_running_notification_message">Upewnij się, że zapisałeś swój postęp</string>
     <string name="game_loader_error_gl_incompatible">Te jądro wymaga wersji OpenGL ES, która nie jest obsługiwana przez twoje urządzenie.</string>
-    <string name="game_loader_error_load_core">Wygląda na to, że rdzeń Libretro nie został załadowany. Upewnij się, że urządzenie jest podłączone do Internetu i spróbuj ponownie zeskanować bibliotekę. Jeśli problem utrzymuje się, te jądro może nie być obsługiwany na twoim urządzeniu.</string>
     <string name="game_loader_error_load_game">Coś złego stało się podczas ładowania Twojej gry. Upewnij się, że ROM jest obsługiwany przez Lemuroid i ponownie przeskanuj swoje gry.</string>
     <string name="game_loader_error_save">Coś złego stało się z plikiem zapisu. Jeśli problem będzie się powtarzał, spróbuj wyłączyć automatyczne zapisywanie.</string>
     <string name="game_loader_error_generic">Coś złego się stało. Wypróbuj co następuje:\n

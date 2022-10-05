@@ -101,7 +101,6 @@
     <string name="game_running_notification_title_alternative">Game is actief</string>
     <string name="game_running_notification_message">Zorg ervoor dat je je voortgang opslaat</string>
     <string name="game_loader_error_gl_incompatible">Deze Core heeft een OpenGL ES versie nodig die je apparaat niet ondersteund.</string>
-    <string name="game_loader_error_load_core">Het lijkt erop dat de Libretro core niet is geladen. Zorg ervoor dat uw apparaat is verbonden met internet en probeer uw bibliotheek opnieuw te scannen. Als het probleem aanhoudt, wordt deze core mogelijk niet ondersteund op uw apparaat.</string>
     <string name="game_loader_error_load_game">Er is iets misgegaan tijdens het laden van je spel. Zorg ervoor dat de ROM wordt ondersteund door Lemuroid en rescan je games.</string>
     <string name="game_loader_error_save">Er is iets misgegaan met je opslagbestand. Als het probleem zich blijft voordoen, probeer dan auto-save uit te schakelen.</string>
     <string name="game_loader_error_generic">Er is iets misgegaan. Probeer het volgende:\n

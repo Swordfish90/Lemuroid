@@ -101,7 +101,6 @@
     <string name="game_running_notification_title_alternative">遊戲運行中</string>
     <string name="game_running_notification_message">請記得儲存您的遊戲進度。</string>
     <string name="game_loader_error_gl_incompatible">此核心需要 OpenGL ES ，您的設備不支援。</string>
-    <string name="game_loader_error_load_core">Libretro 核心沒有加載。 確保您的設備已連接到網路並嘗試重新掃描您的檔案庫。 如果問題仍然存在，您的設備可能不支援此核心。</string>
     <string name="game_loader_error_load_game">載入遊戲時出現問題。請確定 Lemuroid 支援該 ROM，然後重新掃描您的遊戲。</string>
     <string name="game_loader_error_save">您的遊戲存檔出了點問題。如果問題仍然存在，請嘗試關閉自動儲存。</string>
     <string name="game_loader_error_unsupported_architecture">您的設備不支援此核心。</string>

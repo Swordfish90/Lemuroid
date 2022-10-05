@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="game_loading_download_core">Laster ned kjerne…</string>
+    <string name="installing_core_notification_title">Oppdaterer kjerner</string>
+    <string name="installing_core_notification_message">Dette kan ta noen minutter</string>
+</resources>

@@ -18,12 +18,14 @@
   ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="gdrive_sign_in_failed">Error al iniciar sesión de Google: %s (%s)</string>
+    <string name="gdrive_sign_in_failed">Error al iniciar sesión en Google: %s (%s)</string>
     <string name="gdrive_sign_in_success">Sesión iniciada en Google como %s</string>
-    <string name="gdrive_sign_out_success">Sesión cerrada de Google</string>
-    <string name="gdrive_missing_play_services">Google Drive requiere Servicios de Google Play que no son compatibles con tu dispositivo</string>
+    <string name="gdrive_sign_out_success">Sesión de Google cerrada</string>
+    <string name="gdrive_missing_play_services">Google Drive requiere Servicios de Google Play que no son soportados en tu dispositivo</string>
     <string name="gdrive_connected_summary">Conectado a %s</string>
     <string name="gdrive_connected_none_summary">Sin configurar</string>
     <string name="gdrive_last_sync_completed">Última sincronización: %s</string>
-    <string name="game_loading_download_core">Descargando core…</string>
+    <string name="game_loading_download_core">Descargando núcleo…</string>
+    <string name="installing_core_notification_title">Actualizando Núcleos desde Play</string>
+    <string name="installing_core_notification_message">Revisa la aplicación Google Play Store para ver el estado actual</string>
 </resources>

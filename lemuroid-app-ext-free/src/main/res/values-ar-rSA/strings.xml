@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="game_loading_download_core">جاري تحميل النواة…</string>
+    <string name="installing_core_notification_title">تحديث النواة</string>
+    <string name="installing_core_notification_message">يمكن أن يستغرق ذلك بضع دقائق</string>
 </resources>

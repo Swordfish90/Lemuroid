@@ -26,4 +26,6 @@
     <string name="gdrive_connected_none_summary">لم يتم تكوينه</string>
     <string name="gdrive_last_sync_completed">آخر مزامنة: %s</string>
     <string name="game_loading_download_core">جاري تحميل النواة…</string>
+    <string name="installing_core_notification_title">تحديث النواة من Play</string>
+    <string name="installing_core_notification_message">تحقق من تطبيق متجر Google Play لرؤية الحالة الحالية</string>
 </resources>
