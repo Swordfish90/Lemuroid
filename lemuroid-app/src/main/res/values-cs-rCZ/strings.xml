@@ -1,2 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">Domovská stránka</string>
+    <string name="title_search">Hledat</string>
+    <string name="title_games">Hry</string>
+    <string name="title_settings">Nastavení</string>
+    <string name="recent">Nedávné</string>
+    <string name="favorites">Oblíbené</string>
+    <string name="rescan">Znovu prohledat</string>
+    <string name="stop">Zastavit</string>
+    <string name="none">Žádný</string>
+    <string name="directory">Složka</string>
+    <string name="display_filter">Filtr obrazovky</string>
+    <string name="roms">ROMky</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Zrušit</string>
+    <string name="settings">Nastavení</string>
+    <string name="show_all">Zobrazit vše</string>
+    <string name="settings_category_general">Obecné</string>
+    <string name="settings_category_input">Vstup</string>
+    <string name="settings_category_misc">Ostatní</string>
+    <string name="settings_title_enable_touch_feedback">Vibrace při dotyku</string>
+    <string name="settings_title_maximum_cache_usage">Limit velikosti cache</string>
+    <string name="settings_title_gamepad_settings">Externí zařízení</string>
+    <string name="settings_description_gamepad_settings">Konfigurovat externí gamepady a klávesnice</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">Povolená zařízení</string>
+    <string name="settings_gamepad_category_general">Obecné</string>
+</resources>
