@@ -31,6 +31,7 @@
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_gamepad_category_enabled">Povolená zařízení</string>
     <string name="settings_gamepad_category_general">Obecné</string>
+    <string name="settings_gamepad_title_reset_bindings">Rezetovat nastavení kláves</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
     <string name="settings_title_open_cores_selection">Změnit jádra</string>
     <string name="settings_description_open_cores_selection">Vyberte, které jádro je přiřazeno k systému</string>
@@ -107,7 +108,7 @@
         \n\u2022 Vypněte automatické ukládání a znovu spusťte hru
         \n\u2022 Přejděte do nastavení Androidu a vyčistěte mezipaměť aplikace
         \n\u2022 Přejděte do nastavení Lemuroid a proveďte reset do továrního nastavení
-        \n\nPokud nic z výše uvedeného nepomůžue, je možné, že tato hra/jádro není podporována vaším zařízením.
+        \n\nPokud nic z výše uvedeného nepomůže, je možné, že tato hra/jádro není podporováno vaším zařízením.
     </string>
     <string name="game_loader_error_missing_bios">Vypadá to, že vám chybí požadované BIOS soubory. Vložte je do složky s ROMkami a znovu naskenujte. Vyžadouvané soubory: %1$s</string>
     <string name="game_shortcut_error">Nastala chyba při načítání vaší hry. Prosím, zkontrolujte, zda tato hra existuje ve vaší knihovně.</string>
@@ -136,6 +137,12 @@
         <b>&#8226;Proč to nenašlo žádné hry?</b><br/>
         Pokud jsou vaše ROMky komprimované, zkuste je rozbalit. Pokud to nepomůže, zkuste vložit ROMky každé do složek zvlášť podle systému. Názvy systémů jsou: $SYSTEMS.
     ]]></string>
+    <string name="lemuroid_crash_disclamer">Vypadá to, že jádro od Libretro narazylo na nečekaný problém. Pokud přetrvává zkuste následující:\n
+        \n\u2022 Vypněte automatické ukládání a znovu spusťte hru
+        \n\u2022 Přejděte do nastavení Androidu a vyčistěte mezipaměť aplikace
+        \n\u2022 Přejděte do nastavení Lemuroidu a proveďte reset do továrního nastavení
+        \n\u2022Pokud niz z výše uvedeného nepomůže, je možné, že tato hra/jádro není podporováno vaším zařízením.    </string>
+    <string name="error_message_incompatible_state">Tento save state není kompatibilní se současnou verzí jádra. Prosím načtěte nejnovější save nebo použijte předchozí verzi Lemuroidu.</string>
     <string name="shader_filter_names_auto">Automatický</string>
     <string name="shader_filter_names_sharp">Ostrý</string>
     <string name="shader_filter_names_smooth">Hladký</string>
