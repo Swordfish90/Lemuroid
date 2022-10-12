@@ -28,4 +28,8 @@
     <string name="game_loading_download_core">正在下载核心…</string>
     <string name="installing_core_notification_title">正在从 Play 更新核心</string>
     <string name="installing_core_notification_message">请在 Google Play 商店 App 中查看当前状态</string>
+    <string name="game_loader_error_load_core">Libretro 核心未加载。 请尝试以下操作：\n
+        \n\u2022 启用互联网连接并重新扫描您的游戏
+        \n\u2022 确保 Google Play 商店已安装并运行
+        \n\u2022 等待 Google Play 商店 App 中的未完成操作完成</string>
 </resources>
