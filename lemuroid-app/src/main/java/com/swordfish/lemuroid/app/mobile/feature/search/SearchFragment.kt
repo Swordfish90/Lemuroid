@@ -92,12 +92,12 @@ class SearchFragment : RecyclerViewFragment() {
 
     private fun setupSearchMenuItem(searchItem: MenuItem) {
         val onExpandListener = object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
                 activity?.onBackPressed()
                 return true
             }
 
-            override fun onMenuItemActionExpand(item: MenuItem?) = true
+            override fun onMenuItemActionExpand(item: MenuItem) = true
         }
         searchItem.setOnActionExpandListener(onExpandListener)
 

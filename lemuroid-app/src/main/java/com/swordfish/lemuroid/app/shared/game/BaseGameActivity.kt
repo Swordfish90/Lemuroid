@@ -97,7 +97,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.asFlow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -240,7 +239,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeRetroGameViewErrorsFlow() {
-        retroGameViewFlow().getGLRetroErrors().asFlow()
+        retroGameViewFlow().getGLRetroErrors()
             .catch { Timber.e(it, "Exception in GLRetroErrors. Ironic.") }
             .collect { handleRetroViewError(it) }
     }
@@ -281,7 +280,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private suspend inline fun <reified T> waitGLEvent() {
         val retroView = retroGameViewFlow()
-        retroView.getGLRetroEvents().asFlow()
+        retroView.getGLRetroEvents()
             .filterIsInstance<T>()
             .first()
     }
@@ -292,7 +291,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private suspend fun initializeRumbleFlow() {
         val retroGameView = retroGameViewFlow()
-        val rumbleEvents = retroGameView.getRumbleEvents().asFlow()
+        val rumbleEvents = retroGameView.getRumbleEvents()
         rumbleManager.collectAndProcessRumbleEvents(systemCoreConfig, rumbleEvents)
     }
 
