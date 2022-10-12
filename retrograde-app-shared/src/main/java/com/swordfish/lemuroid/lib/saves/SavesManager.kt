@@ -54,10 +54,10 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
 
     private fun getSavegameFilename(type: String, game: Game) : String {
         val gamename = game.fileName.substringBeforeLast(".")
-        return when(type) {
+        return when(type.lowercase()) {
             /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
             "gba" -> "$gamename.srm"
-            "nds" -> "$gamename.dsv"
+            "nds" -> "$gamename.sav"
             else -> {
                 Timber.e("Error syncing savegamedata: the proper fileending for ${game.title} with the $type-core is not configured.")
                 ""
