@@ -28,4 +28,8 @@
     <string name="game_loading_download_core">Descargando núcleo…</string>
     <string name="installing_core_notification_title">Actualizando Núcleos desde Play</string>
     <string name="installing_core_notification_message">Revisa la aplicación Google Play Store para ver el estado actual</string>
+    <string name="game_loader_error_load_core">El núcleo de Libretro no se cargó. Prueba lo siguiente:\n
+         \n\u2022 Activa la conexión al Internet y vuelve a escanear tus juegos
+         \n\u2022 Asegúrate de que la Google Play Store esté instalado y funcionando.
+         \n\u2022 Espere a que se completen las operaciones pendientes en la Google Play Store</string>
 </resources>
