@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="game_loading_download_core">Çekirdek indiriliyor…</string>
+    <string name="installing_core_notification_title">Çekirdekler Güncelleniyor</string>
+    <string name="installing_core_notification_message">Bu birkaç dakika sürebilir</string>
+    <string name="game_loader_error_load_core">Libretro çekirdeği yüklenemedi. Cihazınızın internete bağlı olduğundan emin olun ve kütüphanenizi yeniden taramayı deneyin. Sorun devam ediyorsa çekirdek cihazınız tarafından desteklenmiyor olabilir.</string>
+</resources>
