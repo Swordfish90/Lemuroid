@@ -25,4 +25,5 @@
     <string name="gdrive_connected_summary">%s\'e bağlanıldı</string>
     <string name="gdrive_connected_none_summary">Ayarlanmamış</string>
     <string name="gdrive_last_sync_completed">Son senkronize: %s</string>
+    <string name="game_loading_download_core">Çekirdek İndiriliyor…</string>
 </resources>
