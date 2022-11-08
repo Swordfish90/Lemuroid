@@ -45,6 +45,7 @@
     <string name="setting_melonds_jit_enable">Dinamik yeniden derleyici</string>
     <string name="setting_wswan_rotate_display">Döndürme</string>
     <string name="setting_wswan_mono_palette">Renklendirme</string>
+    <string name="setting_citra_resolution_factor">Çözünürlük ölçekleme</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Devre dışı</string>
     <string name="value_gambatte_mix_frames_mix">Basit</string>
@@ -70,6 +71,8 @@
     <string name="value_genesis_plus_gx_overscan_leftright">Sol/Sağ</string>
     <string name="value_genesis_plus_gx_overscan_full">Tam</string>
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Dinamik yeniden derleyici</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_rumble">Titreşim</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Yok</string>
     <string name="value_melonds_screen_layout_topbottom">Üst - Alt</string>
     <string name="value_melonds_screen_layout_leftright">Sol - Sağ</string>
     <string name="value_melonds_screen_layout_hybridtop">Hibrit Üst</string>
