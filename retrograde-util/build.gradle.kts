@@ -21,7 +21,6 @@ dependencies {
     implementation(deps.libs.androidx.lifecycle.runtime)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
     implementation(deps.libs.okHttp3)
-    implementation(deps.libs.rxJava2)
 
     implementation(deps.libs.androidx.paging.common)
     implementation(deps.libs.androidx.paging.runtime)

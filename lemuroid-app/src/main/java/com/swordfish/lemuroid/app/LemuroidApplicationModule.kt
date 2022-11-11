@@ -81,7 +81,6 @@ import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 @Module
 abstract class LemuroidApplicationModule {
@@ -187,7 +186,6 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun retrofit(): Retrofit = Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
             .baseUrl("https://example.com")
             .addConverterFactory(
                 object : Converter.Factory() {
