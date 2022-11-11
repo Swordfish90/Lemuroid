@@ -67,6 +67,7 @@ import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LE
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
 import com.swordfish.libretrodroid.GLRetroViewData
+import com.swordfish.libretrodroid.ShaderConfig
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.libretrodroid.VirtualFile
 import com.swordfish.radialgamepad.library.math.MathUtils
@@ -465,48 +466,78 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected abstract fun getDialogClass(): Class<out Activity>
 
-    private fun getShaderForSystem(screenFiter: String, system: GameSystem): Int {
+    private fun getShaderForSystem(screenFiter: String, system: GameSystem): ShaderConfig {
         return when (screenFiter) {
-            "crt" -> GLRetroView.SHADER_CRT
-            "lcd" -> GLRetroView.SHADER_LCD
-            "smooth" -> GLRetroView.SHADER_DEFAULT
-            "sharp" -> GLRetroView.SHADER_SHARP
-            "hd" -> when (system.id) {
-                SystemID.PSP -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
-                SystemID.NDS -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
-                SystemID.NINTENDO_3DS -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
-                SystemID.DOS -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
-                SystemID.N64 -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
-                SystemID.PSX -> GLRetroView.SHADER_UPSCALE_CUT_SMOOTH
-                else -> GLRetroView.SHADER_UPSCALE_CUT_SHARP
-            }
-            else -> when (system.id) {
-                SystemID.GBA -> GLRetroView.SHADER_LCD
-                SystemID.GBC -> GLRetroView.SHADER_LCD
-                SystemID.GB -> GLRetroView.SHADER_LCD
-                SystemID.N64 -> GLRetroView.SHADER_CRT
-                SystemID.GENESIS -> GLRetroView.SHADER_CRT
-                SystemID.SEGACD -> GLRetroView.SHADER_CRT
-                SystemID.NES -> GLRetroView.SHADER_CRT
-                SystemID.SNES -> GLRetroView.SHADER_CRT
-                SystemID.FBNEO -> GLRetroView.SHADER_CRT
-                SystemID.SMS -> GLRetroView.SHADER_CRT
-                SystemID.PSP -> GLRetroView.SHADER_LCD
-                SystemID.NDS -> GLRetroView.SHADER_LCD
-                SystemID.GG -> GLRetroView.SHADER_LCD
-                SystemID.ATARI2600 -> GLRetroView.SHADER_CRT
-                SystemID.PSX -> GLRetroView.SHADER_CRT
-                SystemID.MAME2003PLUS -> GLRetroView.SHADER_CRT
-                SystemID.ATARI7800 -> GLRetroView.SHADER_CRT
-                SystemID.PC_ENGINE -> GLRetroView.SHADER_CRT
-                SystemID.LYNX -> GLRetroView.SHADER_LCD
-                SystemID.DOS -> GLRetroView.SHADER_CRT
-                SystemID.NGP -> GLRetroView.SHADER_LCD
-                SystemID.NGC -> GLRetroView.SHADER_LCD
-                SystemID.WS -> GLRetroView.SHADER_LCD
-                SystemID.WSC -> GLRetroView.SHADER_LCD
-                SystemID.NINTENDO_3DS -> GLRetroView.SHADER_LCD
-            }
+            "crt" -> ShaderConfig.CRT
+            "lcd" -> ShaderConfig.LCD
+            "smooth" -> ShaderConfig.Default
+            "sharp" -> ShaderConfig.Sharp
+            "hd" -> getHDShaderForSystem(system)
+            else -> getDefaultShaderForSystem(system)
+        }
+    }
+
+    private fun getDefaultShaderForSystem(system: GameSystem) =
+        when (system.id) {
+            SystemID.GBA -> ShaderConfig.LCD
+            SystemID.GBC -> ShaderConfig.LCD
+            SystemID.GB -> ShaderConfig.LCD
+            SystemID.N64 -> ShaderConfig.CRT
+            SystemID.GENESIS -> ShaderConfig.CRT
+            SystemID.SEGACD -> ShaderConfig.CRT
+            SystemID.NES -> ShaderConfig.CRT
+            SystemID.SNES -> ShaderConfig.CRT
+            SystemID.FBNEO -> ShaderConfig.CRT
+            SystemID.SMS -> ShaderConfig.CRT
+            SystemID.PSP -> ShaderConfig.LCD
+            SystemID.NDS -> ShaderConfig.LCD
+            SystemID.GG -> ShaderConfig.LCD
+            SystemID.ATARI2600 -> ShaderConfig.CRT
+            SystemID.PSX -> ShaderConfig.CRT
+            SystemID.MAME2003PLUS -> ShaderConfig.CRT
+            SystemID.ATARI7800 -> ShaderConfig.CRT
+            SystemID.PC_ENGINE -> ShaderConfig.CRT
+            SystemID.LYNX -> ShaderConfig.LCD
+            SystemID.DOS -> ShaderConfig.CRT
+            SystemID.NGP -> ShaderConfig.LCD
+            SystemID.NGC -> ShaderConfig.LCD
+            SystemID.WS -> ShaderConfig.LCD
+            SystemID.WSC -> ShaderConfig.LCD
+            SystemID.NINTENDO_3DS -> ShaderConfig.LCD
+        }
+
+    private fun getHDShaderForSystem(system: GameSystem): ShaderConfig {
+        val upscale8Bits = ShaderConfig.CUT2(2.0f, 0.8f)
+        val upscale16Bits = ShaderConfig.CUT2(1.5f, 0.8f)
+        val upscale32Bits = ShaderConfig.CUT2(1.0f, 0.8f)
+        val default = ShaderConfig.CUT2(0.5f, 0.8f)
+
+        return when (system.id) {
+            SystemID.GBA -> upscale16Bits
+            SystemID.GBC -> upscale8Bits
+            SystemID.GB -> upscale8Bits
+            SystemID.N64 -> upscale32Bits
+            SystemID.GENESIS -> upscale16Bits
+            SystemID.SEGACD -> upscale16Bits
+            SystemID.NES -> upscale8Bits
+            SystemID.SNES -> upscale16Bits
+            SystemID.FBNEO -> upscale32Bits
+            SystemID.SMS -> upscale8Bits
+            SystemID.PSP -> default
+            SystemID.NDS -> upscale16Bits
+            SystemID.GG -> upscale8Bits
+            SystemID.ATARI2600 -> upscale8Bits
+            SystemID.PSX -> upscale32Bits
+            SystemID.MAME2003PLUS -> upscale32Bits
+            SystemID.ATARI7800 -> upscale8Bits
+            SystemID.PC_ENGINE -> upscale16Bits
+            SystemID.LYNX -> upscale8Bits
+            SystemID.DOS -> upscale32Bits
+            SystemID.NGP -> upscale8Bits
+            SystemID.NGC -> upscale8Bits
+            SystemID.WS -> upscale16Bits
+            SystemID.WSC -> upscale16Bits
+            SystemID.NINTENDO_3DS -> default
         }
     }
 
