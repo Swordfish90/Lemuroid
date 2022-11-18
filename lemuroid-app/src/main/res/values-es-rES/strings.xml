@@ -17,7 +17,7 @@
     <string name="ok">Aceptar</string>
     <string name="cancel">Cancelar</string>
     <string name="settings">Configuración</string>
-    <string name="save_sync">Guardar Sincronización</string>
+    <string name="save_sync">Guardar sincronización</string>
     <string name="show_all">Mostrar todo</string>
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Entrada</string>
