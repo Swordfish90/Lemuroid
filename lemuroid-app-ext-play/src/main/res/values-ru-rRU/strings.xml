@@ -28,4 +28,8 @@
     <string name="game_loading_download_core">Загрузка ядра…</string>
     <string name="installing_core_notification_title">Обновление ядер из Play</string>
     <string name="installing_core_notification_message">Проверьте приложение Google Play Store, чтобы увидеть текущее состояние</string>
+    <string name="game_loader_error_load_core">Ядро Libretro не было загружено. Попробуйте сделать следующее:n
+        \n\u2022 Включите интернет-соединение и повторно просканируйте ваши игры
+        \n\u2022 Убедитесь, что магазин Google Play установлен и запущен
+        \n\u2022 Дождитесь завершения выполнения операций в приложении Google Play</string>
 </resources>
