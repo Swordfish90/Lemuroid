@@ -24,8 +24,8 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.5.1"
-        const val libretrodroid   = "d74108e"
-        const val radialgamepad   = "08d1dd952"
+        const val libretrodroid   = "0.9.0"
+        const val radialgamepad   = "2.0.0"
     }
 
     object libs {
