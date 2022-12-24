@@ -8,8 +8,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 193
-        versionName = "1.14.3" // Always remember to update Cores Tag!
+        versionCode = 197
+        versionName = "1.14.4" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -147,19 +147,14 @@ dependencies {
     implementation(deps.libs.androidx.paging.runtime)
     implementation(deps.libs.androidx.room.common)
     implementation(deps.libs.androidx.room.runtime)
-    implementation(deps.libs.androidx.room.rxjava2)
     implementation(deps.libs.androidx.room.ktx)
     implementation(deps.libs.dagger.android.core)
     implementation(deps.libs.dagger.android.support)
     implementation(deps.libs.dagger.core)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
-    implementation(deps.libs.kotlinxCoroutinesRxJava2)
     implementation(deps.libs.okHttp3)
     implementation(deps.libs.okio)
     implementation(deps.libs.retrofit)
-    implementation(deps.libs.retrofitRxJava2)
-    implementation(deps.libs.rxAndroid2)
-    implementation(deps.libs.rxJava2)
     implementation(deps.libs.flowPreferences)
     implementation(deps.libs.guava)
     implementation(deps.libs.androidx.documentfile)

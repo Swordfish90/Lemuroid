@@ -1,8 +1,8 @@
 /* ktlint-disable no-multi-spaces max-line-length */
 object deps {
     object android {
-        const val targetSdkVersion  = 31
-        const val compileSdkVersion = 31
+        const val targetSdkVersion  = 33
+        const val compileSdkVersion = 33
         const val minSdkVersion     = 23
         const val buildToolsVersion = "30.0.2"
     }
@@ -24,8 +24,8 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.5.1"
-        const val libretrodroid   = "0.8.1"
-        const val radialgamepad   = "1.1.0"
+        const val libretrodroid   = "0.9.0"
+        const val radialgamepad   = "2.0.0"
     }
 
     object libs {
@@ -67,7 +67,6 @@ object deps {
                 const val common = "androidx.room:room-common:${versions.room}"
                 const val compiler = "androidx.room:room-compiler:${versions.room}"
                 const val runtime = "androidx.room:room-runtime:${versions.room}"
-                const val rxjava2 = "androidx.room:room-rxjava2:${versions.room}"
                 const val paging = "androidx.room:room-paging:${versions.room}"
                 const val ktx = "androidx.room:room-ktx:${versions.room}"
             }
@@ -121,15 +120,11 @@ object deps {
         }
 
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
-        const val kotlinxCoroutinesRxJava2 = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.6.4"
         const val ktlint                   = "com.github.shyiko:ktlint:0.29.0"
         const val okio                     = "com.squareup.okio:okio:2.10.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"
         const val coil                     = "io.coil-kt:coil:1.4.0"
         const val retrofit                 = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-        const val retrofitRxJava2          = "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-        const val rxAndroid2               = "io.reactivex.rxjava2:rxandroid:2.1.1"
-        const val rxJava2                  = "io.reactivex.rxjava2:rxjava:2.2.21"
         const val flowPreferences          = "com.fredporciuncula:flow-preferences:1.8.0"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
         const val material                 = "com.google.android.material:material:1.6.1"

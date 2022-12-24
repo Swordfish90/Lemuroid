@@ -15,12 +15,10 @@ dependencies {
     implementation(project(":retrograde-app-shared"))
 
     implementation(deps.libs.retrofit)
-    implementation(deps.libs.retrofitRxJava2)
     implementation(deps.libs.play.featureDelivery)
     implementation(deps.libs.play.featureDeliveryKtx)
     implementation(deps.libs.play.review)
     implementation(deps.libs.play.reviewKtx)
-    implementation(deps.libs.rxJava2)
 
     implementation(deps.libs.gdrive.apiClient)
     implementation(deps.libs.gdrive.apiClientAndroid)

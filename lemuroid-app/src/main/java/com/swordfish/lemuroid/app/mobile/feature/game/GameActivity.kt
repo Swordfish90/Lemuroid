@@ -82,7 +82,6 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.asFlow
 import kotlinx.coroutines.withContext
 
 class GameActivity : BaseGameActivity() {
@@ -262,7 +261,7 @@ class GameActivity : BaseGameActivity() {
         val rightPad = RadialGamePad(rightConfig, DEFAULT_MARGINS_DP, this)
         rightGamePadContainer.addView(rightPad)
 
-        val touchControllerEvents = merge(leftPad.events().asFlow(), rightPad.events().asFlow())
+        val touchControllerEvents = merge(leftPad.events(), rightPad.events())
             .shareIn(lifecycleScope, SharingStarted.Lazily)
 
         setupDefaultActions(touchControllerEvents)
