@@ -27,4 +27,15 @@
     <string name="settings_title_tilt_sensitivity">Döntés-szenzor érzékenység</string>
     <string name="settings_title_maximum_cache_usage">Cache méret</string>
     <string name="settings_title_gamepad_settings">Külső eszközök</string>
+    <string name="settings_description_gamepad_settings">Külső eszközök konfigurálása</string>
+    <string name="settings_retropad_button_name">RetroPad</string>
+    <string name="settings_gamepad_category_enabled">Eszközök engedélyezése</string>
+    <string name="settings_gamepad_category_general">Általános</string>
+    <string name="settings_gamepad_title_reset_bindings">Alaphelyzetbe állítás</string>
+    <string name="settings_gamepad_title_game_menu">Menü</string>
+    <string name="settings_title_open_cores_selection">Váltás a Core-ok között</string>
+    <string name="settings_description_open_cores_selection">Core társítása egyes konzolokhoz</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="haptic_feedback_mode_names_none">Semmi</string>
+    <string name="haptic_feedback_mode_names_press">Nyomd</string>
 </resources>
