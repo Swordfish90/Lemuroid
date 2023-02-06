@@ -39,4 +39,118 @@
     <string name="settings_description_display_bios_info">Vis registrerede og understøttede BIOS-filer</string>
     <string name="settings_bios_category_detected">Registreret</string>
     <string name="settings_bios_category_not_detected">Understøttet</string>
+    <string name="settings_title_reset_settings">Gendan fabriksindstillinger</string>
+    <string name="settings_description_reset_settings">Nulstil Lemuroid til fabriksindstillinger</string>
+    <string name="settings_title_advanced_settings">Avancerede Indstillinger</string>
+    <string name="settings_description_advanced_settings">Vis avancerede indstillinger</string>
+    <string name="settings_title_low_latency_audio">Foretræk low-latency lyd</string>
+    <string name="settings_description_low_latency_audio">Reducer latency på understøttede enheder. Kan øge antallet af lydfejl.</string>
+    <string name="settings_title_direct_game_load">Direkte spil indlæsning</string>
+    <string name="settings_description_direct_game_load">(Eksperimentel) Reducer indlæsningstiden og cacheforbruget på understøttede konsoller.</string>
+    <string name="settings_title_enable_rumble">Rumble</string>
+    <string name="settings_description_enable_rumble">Aktiver rumble i understøttede spil og controllere</string>
+    <string name="settings_title_enable_device_rumble">Enhedens rumble</string>
+    <string name="settings_description_enable_device_rumble">Når ingen controller er tilsluttet, vibrer enheden i stedet</string>
+    <string name="reset_settings_warning_message_title">Er du sikker?</string>
+    <string name="reset_settings_warning_message_description">Dette vil nulstille Lemuroid til fabriksindstillingerne. Gemte spil og nivauer vil blive bevaret.</string>
+    <string name="settings_title_save_sync">Cloud-lagring</string>
+    <string name="settings_description_save_sync">Sikkerhedskopier og synkroniserer dine gemte spil i Cloud</string>
+    <string name="settings_save_sync_refresh">Manuel synkronisering</string>
+    <string name="settings_save_sync_refresh_description">Udfør en manuel synkronisering nu.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Auto-Synkronisering</string>
+    <string name="settings_save_sync_enable_auto_description">Udfør automatisk en synkronisering før og efter en spilsession, når den er tilsluttet Wifi</string>
+    <string name="settings_save_sync_configure">Konfigurer %1$s</string>
+    <string name="settings_save_sync_include_saves">Synkronisering når der gemmes i spil</string>
+    <string name="settings_save_sync_include_saves_description">%1$s på enhed</string>
+    <string name="settings_save_sync_include_states">Synkroniserings tilstande</string>
+    <string name="settings_save_sync_include_states_description">Mere bekvemt, men tungere og mindre pålidelige. Vælg hvilke kerner/systemer, du vil synkronisere</string>
+    <string name="game_context_menu_add_to_favorites">Tilføj til favoritter</string>
+    <string name="game_context_menu_remove_from_favorites">Fjern fra Favoritter</string>
+    <string name="game_context_menu_resume">Fortsæt</string>
+    <string name="game_context_menu_restart">Genstart</string>
+    <string name="game_context_menu_create_shortcut">Føj til Startskærm</string>
+    <string name="home_empty_title">Vælg ROMs-mappe</string>
+    <string name="home_empty_message">Lemuroid skanner mappen med ROM-filer.\nDette kan tage op til et par minutter.</string>
+    <string name="home_empty_action">Vælg mappe</string>
+    <string name="game_menu_save">Gem</string>
+    <string name="game_menu_load">Indlæs</string>
+    <string name="game_menu_restart">Genstart</string>
+    <string name="game_menu_quit">Afslut</string>
+    <string name="game_menu_settings">Indstillinger</string>
+    <string name="game_menu_state">Status %1$s</string>
+    <string name="game_menu_change_disk_button">Skift Disk</string>
+    <string name="game_menu_edit_touch_controls">Rediger kontrol</string>
+    <string name="game_menu_mute_audio">Slå lyden fra</string>
+    <string name="game_menu_fast_forward">Spol frem</string>
+    <string name="game_menu_change_disk_disk">Disk %1$s</string>
+    <string name="game_loading_preparing_game">Forbereder spillet…</string>
+    <string name="game_toast_settings_button_using_gamepad">Gamepad registreret. Ændre indstillingerne med %1$s.</string>
+    <string name="game_toast_load_state_failed">Kan ikke indlæse denne status</string>
+    <string name="empty_view_default">Ingen filer</string>
+    <string name="core_settings_title">System Indstillinger</string>
+    <string name="core_settings_category_preferences">Indstillinger</string>
+    <string name="core_settings_category_controllers">Controllere</string>
+    <string name="core_settings_controller">Controller %1$s</string>
+    <string name="game_menu_title">Spilmenu</string>
+    <string name="notification_channel_name">Alle notifikationer</string>
+    <string name="library_index_notification_title">ROMs skanning i gang</string>
+    <string name="library_index_notification_message">Dette kan tage nogle minutter</string>
+    <string name="save_sync_notification_title">Cloud synkronisering i gang</string>
+    <string name="save_sync_notification_message">Dette kan tage nogle minutter</string>
+    <string name="game_running_notification_title">%1$s kører</string>
+    <string name="game_running_notification_title_alternative">Spillet kører</string>
+    <string name="game_running_notification_message">Sørg for at gemme dine fremskridt</string>
+    <string name="game_loader_error_gl_incompatible">Denne system kræver en OpenGL ES version, som ikke understøttes af din enhed.</string>
+    <string name="game_loader_error_load_game">Der skete en fejl under indlæsning af dit spil. Sørg for, at din ROM understøttes af Lemuroid og genskab dine spil.</string>
+    <string name="game_loader_error_save">Der skete en fejl med dit gemte spil. Hvis problemet fortsætter, så prøv at deaktivere auto-save.</string>
+    <string name="game_loader_error_unsupported_architecture">Dette system er ikke understøttet af din enhed.</string>
+    <string name="game_loader_error_generic">Det ser ud som om Libretro Systemet har oplevet et uventet problem. Hvis det er gentagende skal du prøve følgende:\n
+        \n\u2022 Deaktivér auto-save og genstart spillet
+        \n\u2022 Gå ind i Android-indstillinger og ryd app-cachen
+        \n\u2022 Gå ind i Lemuroid-indstillinger og udfør en fabriksindstilling
+        \n\n Hvis ingen af ovenstående virker, kan det være muligt, at dette spil/system ikke understøttes af denne enhed.
+    </string>
+    <string name="game_loader_error_missing_bios">Det ser ud til, at du mangler de nødvendige BIOS, gem dem i din ROMS-mappe og skan igen. Krævede filer: %1$s</string>
+    <string name="game_shortcut_error">Der skete en fejl under indlæsning af dit spil. Sørg for, at dette spil stadig findes i dit bibliotek.</string>
+    <string name="dialog_saf_not_found">Denne enhed understøtter ikke StorageAccessFramework filvælgeren. Kopiér venligst ukomprimerede ROM-filer til %1$s manuelt og tryk på Skan igen.</string>
+    <string name="system_grid_details">%1$s spil</string>
+    <string name="tv_folder_picker_title">Vælg ROMs-mappe</string>
+    <string name="tv_folder_picker_action_choose">Vælg</string>
+    <string name="tv_folder_picker_action_cancel">Annullér</string>
+    <string name="tv_folder_storage_primary">Primær lagerplads</string>
+    <string name="tv_folder_storage_secondary">Sekundær lagerplads %1$s</string>
+    <string name="tv_folder_storage_title">Vælg lagerplads</string>
+    <string name="tv_home_section_favorites">Favoritter</string>
+    <string name="tv_home_section_recents">Seneste</string>
+    <string name="tv_home_section_systems">Systemer</string>
+    <string name="tv_home_section_settings">Indstillinger</string>
+    <string name="gamepad_binding_update_title">Forbind til \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Tryk på en knap på din \"%1$s\"</string>
+    <string name="tv_search_results">Spil</string>
+    <string name="tv_game_message_missing_gamepad">Gamepads er påkrævet for at spille. Tilslut venligst en.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Afbryd forbindelsen til din Gamepad for at redigere din touch-kontroller</string>
+    <string name="game_interactory_busy">Vent til processen er afsluttet</string>
+    <string name="mobile_settings_help">Hjælp</string>
+    <string name="mobile_settings_support">Support</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hvordan bruger jeg Lemuroid?</b><br/>
+        Kopier alle dine ROMS-filer til en mappe på din enhed og vælg denne i Lemuroid. Denne mappe har tilladelse til at have undermapper. Efter scanningen er færdig, skulle du se dine spil.<br/><br/>
+        <b>&#8226;Hvorfor blev mine spil ikke opdaget?</b><br/>
+        Hvis dine spil er komprimeret, så prøv at pakke demud. Hvis dette ikke virker, så prøv at sætte ROM'er i separate mapper, et for hvert system med følgende navne: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Det ser ud som om Libretro kernen har oplevet et uventet problem. Hvis det er vedvarende skal du prøve følgende:\n
+        \n\u2022 Deaktivér auto-save og genstart spillet
+        \n\u2022 Gå ind i Android-indstillinger og ryd app-cachen
+        \n\u2022 Gå ind i Lemuroid-indstillinger og udfør en fabriksindstilling
+        \n\n Hvis ingen af ovenstående virker, det kan være muligt, at dette spil/kerne ikke understøttes af denne enhed.
+    </string>
+    <string name="error_message_incompatible_state">Dette gemte spil er ikke kompatibel med den aktuelle Systemversion. Indlæs venligst den seneste gemte in-game-version eller brug en tidligere Lemuroid-version.</string>
+    <string name="shader_filter_names_auto">Auto</string>
+    <string name="shader_filter_names_sharp">Skarp</string>
+    <string name="shader_filter_names_smooth">Afrundet</string>
+    <string name="shader_filter_names_crt">Billedrør</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="shader_filter_names_hd">HD</string>
+    <string name="haptic_feedback_mode_names_none">Ingen</string>
+    <string name="haptic_feedback_mode_names_press">Tryk</string>
+    <string name="haptic_feedback_mode_names_press_release">Tryk &amp; slip</string>
 </resources>
