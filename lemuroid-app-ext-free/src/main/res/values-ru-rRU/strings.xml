@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="game_loading_download_core">Загрузка ядра…</string>
+    <string name="game_loading_download_core">Скачивание ядра…</string>
     <string name="installing_core_notification_title">Обновление ядер</string>
     <string name="installing_core_notification_message">Это может занять несколько минут</string>
     <string name="game_loader_error_load_core">Ядро Libretro не было загружено. Убедитесь, что ваше устройство подключено к Интернету, и попробуйте повторно просканировать библиотеку. Если проблема сохраняется, возможно, это ядро не поддерживается на вашем устройстве.</string>
