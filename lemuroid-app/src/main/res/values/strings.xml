@@ -27,6 +27,9 @@
     <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
     <string name="settings_title_maximum_cache_usage">Cache size limit</string>
 
+    <string name="settings_title_hd_mode">HD mode</string>
+    <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
+
     <string name="settings_title_gamepad_settings">External devices</string>
     <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
 
@@ -52,6 +55,9 @@
     <string name="settings_description_advanced_settings">Display advanced settings</string>
     <string name="settings_title_low_latency_audio">Prefer low-latency audio</string>
     <string name="settings_description_low_latency_audio">Reduce audio latency on supported devices. Might increase audio glitches.</string>
+
+    <string name="settings_title_legacy_hd_mode">Prefer legacy HD mode</string>
+    <string name="settings_description_legacy_hd_mode">Always use legacy HD mode. Trades some quality for performances.</string>
 
     <string name="settings_title_direct_game_load">Direct game load</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>
@@ -189,7 +195,6 @@
     <string name="shader_filter_names_smooth">Smooth</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
-    <string name="shader_filter_names_hd">HD</string>
 
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>
