@@ -149,7 +149,6 @@
     <string name="shader_filter_names_smooth">Мягкий</string>
     <string name="shader_filter_names_crt">ЭЛТ</string>
     <string name="shader_filter_names_lcd">ЖК</string>
-    <string name="shader_filter_names_hd">HD</string>
     <string name="haptic_feedback_mode_names_none">Отсутствует</string>
     <string name="haptic_feedback_mode_names_press">Нажать</string>
     <string name="haptic_feedback_mode_names_press_release">Нажать и отпустить</string>
