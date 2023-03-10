@@ -53,6 +53,13 @@
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
 
+        <SwitchPreferenceCompat
+            android:key="@string/pref_key_legacy_hd_mode"
+            android:title="@string/settings_title_legacy_hd_mode"
+            android:summary="@string/settings_description_legacy_hd_mode"
+            app:iconSpaceReserved="false"
+            android:defaultValue="false"/>
+
         <Preference
             android:key="@string/pref_key_reset_settings"
             android:title="@string/settings_title_reset_settings"

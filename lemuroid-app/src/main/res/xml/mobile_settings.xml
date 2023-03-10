@@ -32,20 +32,29 @@
         android:title="@string/settings_category_general"
         app:iconSpaceReserved="false">
 
-        <ListPreference
-            android:key="@string/pref_key_shader_filter"
-            android:title="@string/display_filter"
-            android:entries="@array/pref_key_shader_filter_display_names"
-            android:entryValues="@array/pref_key_shader_filter_values"
-            app:iconSpaceReserved="false"
-            app:useSimpleSummaryProvider="true"
-            android:defaultValue="auto"/>
-
         <SwitchPreferenceCompat
             android:key="@string/pref_key_autosave"
             android:title="@string/settings_title_enable_autosave"
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
+
+        <SwitchPreferenceCompat
+            android:key="@string/pref_key_hd_mode"
+            android:title="@string/settings_title_hd_mode"
+            android:summary="@string/settings_description_hd_mode"
+            app:iconSpaceReserved="false"
+            app:disableDependentsState="true"
+            android:defaultValue="false"/>
+
+        <ListPreference
+            android:key="@string/pref_key_shader_filter"
+            android:title="@string/display_filter"
+            android:entries="@array/pref_key_shader_filter_display_names"
+            android:entryValues="@array/pref_key_shader_filter_values"
+            android:dependency="@string/pref_key_hd_mode"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true"
+            android:defaultValue="auto"/>
 
     </PreferenceCategory>
 
