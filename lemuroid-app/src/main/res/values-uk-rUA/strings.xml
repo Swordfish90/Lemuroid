@@ -148,7 +148,6 @@
     <string name="shader_filter_names_smooth">Згладжений</string>
     <string name="shader_filter_names_crt">Ефект \"старого\" телевізора</string>
     <string name="shader_filter_names_lcd">LCD дисплей</string>
-    <string name="shader_filter_names_hd">HD</string>
     <string name="haptic_feedback_mode_names_none">Відсутньо</string>
     <string name="haptic_feedback_mode_names_press">Натисніть</string>
     <string name="haptic_feedback_mode_names_press_release">Натисніть &amp; відпустіть</string>
