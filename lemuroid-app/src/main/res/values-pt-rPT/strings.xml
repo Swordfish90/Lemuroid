@@ -26,6 +26,8 @@
     <string name="settings_title_enable_touch_feedback">Vibrar ao toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
     <string name="settings_title_maximum_cache_usage">Tamanho máximo da cache</string>
+    <string name="settings_title_hd_mode">Modo HD</string>
+    <string name="settings_description_hd_mode">Aplicar filtro pós-processamento de upscaling</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
     <string name="settings_description_gamepad_settings">Configurar comandos externos e teclados</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -45,6 +47,8 @@
     <string name="settings_description_advanced_settings">Exibir configurações avançadas</string>
     <string name="settings_title_low_latency_audio">Preferir áudio de baixa latência</string>
     <string name="settings_description_low_latency_audio">Reduzir a latência de áudio nos dispositivos suportados. Pode aumentar as falhas de áudio.</string>
+    <string name="settings_title_legacy_hd_mode">Preferir modo HD antigo</string>
+    <string name="settings_description_legacy_hd_mode">Usar sempre o modo HD antigo. Troca alguma qualidade por desempenho.</string>
     <string name="settings_title_direct_game_load">Carregamento direto do jogo</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduzir o tempo de carregamento e o uso de cache em consolas suportadas.</string>
     <string name="settings_title_enable_rumble">Vibração</string>
