@@ -149,7 +149,6 @@
     <string name="shader_filter_names_smooth">Suavização</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
-    <string name="shader_filter_names_hd">HD</string>
     <string name="haptic_feedback_mode_names_none">Nenhuma</string>
     <string name="haptic_feedback_mode_names_press">Pressione</string>
     <string name="haptic_feedback_mode_names_press_release">Pressione &amp; liberar</string>
