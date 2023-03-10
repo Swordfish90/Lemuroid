@@ -145,7 +145,6 @@
     <string name="shader_filter_names_auto">Automatisch</string>
     <string name="shader_filter_names_sharp">Scherp</string>
     <string name="shader_filter_names_smooth">Vloeiend</string>
-    <string name="shader_filter_names_hd">HD</string>
     <string name="haptic_feedback_mode_names_press">Druk</string>
     <string name="haptic_feedback_mode_names_press_release">Druk &amp; loslaten</string>
 </resources>
