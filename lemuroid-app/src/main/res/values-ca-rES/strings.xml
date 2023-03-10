@@ -24,6 +24,8 @@
     <string name="settings_category_misc">Altres</string>
     <string name="settings_title_enable_autosave">Estat de desat automàtic</string>
     <string name="settings_title_enable_touch_feedback">Vibrar en tocar</string>
+    <string name="settings_title_hd_mode">Modo HD</string>
+    <string name="settings_description_hd_mode">Aplicar filtro de mejora de posprocesamiento</string>
     <string name="settings_title_gamepad_settings">Dispositius externs</string>
     <string name="settings_description_gamepad_settings">Configura gamepads i teclats externs</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -37,6 +39,7 @@
     <string name="settings_title_reset_settings">Restabliment de fàbrica</string>
     <string name="settings_title_advanced_settings">Configuració avançada</string>
     <string name="settings_description_advanced_settings">Mostra la configuració avançada</string>
+    <string name="settings_title_legacy_hd_mode">Preferir el modo HD heredado</string>
     <string name="settings_title_enable_rumble">Vibració</string>
     <string name="settings_title_enable_device_rumble">Vibració del dispositiu</string>
     <string name="reset_settings_warning_message_title">Estàs segur?</string>
