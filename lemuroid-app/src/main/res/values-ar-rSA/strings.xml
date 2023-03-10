@@ -148,7 +148,6 @@
     <string name="shader_filter_names_smooth">ناعم</string>
     <string name="shader_filter_names_crt">تأثير CRT</string>
     <string name="shader_filter_names_lcd">شاشة كريستالية</string>
-    <string name="shader_filter_names_hd">عالي الجودة</string>
     <string name="haptic_feedback_mode_names_none">لا شيء</string>
     <string name="haptic_feedback_mode_names_press">اضغط</string>
     <string name="haptic_feedback_mode_names_press_release">اضغط &amp; الإصدار</string>
