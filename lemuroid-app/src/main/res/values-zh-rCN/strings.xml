@@ -27,6 +27,7 @@
     <string name="settings_title_tilt_sensitivity">倾斜灵敏度</string>
     <string name="settings_title_maximum_cache_usage">缓存大小限制</string>
     <string name="settings_title_hd_mode">高清模式</string>
+    <string name="settings_description_hd_mode">应用后处理升级过滤器</string>
     <string name="settings_title_gamepad_settings">外接设备</string>
     <string name="settings_description_gamepad_settings">配置外接手柄和键盘</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -46,6 +47,8 @@
     <string name="settings_description_advanced_settings">显示高级设置</string>
     <string name="settings_title_low_latency_audio">偏好低延迟音频</string>
     <string name="settings_description_low_latency_audio">在支持的设备上减少音频延迟。可能会增加音频闪烁。</string>
+    <string name="settings_title_legacy_hd_mode">倾向于传统的高清模式</string>
+    <string name="settings_description_legacy_hd_mode">总是使用传统的高清模式。用一些质量换取性能。</string>
     <string name="settings_title_direct_game_load">直接加载游戏</string>
     <string name="settings_description_direct_game_load">(实验性) 在支持的平台上减少加载时间和缓存使用量。</string>
     <string name="settings_title_enable_rumble">振动</string>
