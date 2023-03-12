@@ -26,7 +26,7 @@
     <string name="settings_title_enable_touch_feedback">Вибрация при нажатии</string>
     <string name="settings_title_tilt_sensitivity">Чувствительность датчика наклона</string>
     <string name="settings_title_maximum_cache_usage">Максимальный размер кэша</string>
-    <string name="settings_title_hd_mode">HD мод</string>
+    <string name="settings_title_hd_mode">HD режим</string>
     <string name="settings_description_hd_mode">Применить фильтр постобработки масштабирования</string>
     <string name="settings_title_gamepad_settings">Внешние устройства</string>
     <string name="settings_description_gamepad_settings">Настройка внешних геймпадов и клавиатур</string>
@@ -48,6 +48,7 @@
     <string name="settings_title_low_latency_audio">Звук с низкой задержкой</string>
     <string name="settings_description_low_latency_audio">Сократить задержку звука на поддерживаемых устройствах. Могут быть увеличены звуковые неполадки.</string>
     <string name="settings_title_legacy_hd_mode">Предпочитать старый HD режим</string>
+    <string name="settings_description_legacy_hd_mode">Всегда используйте старый HD режим. Теряет немного качества ради производительности.</string>
     <string name="settings_title_direct_game_load">Прямая загрузка игры</string>
     <string name="settings_description_direct_game_load">(Экспериментально) Сократить время загрузки и использование кэша на поддерживаемых консолях.</string>
     <string name="settings_title_enable_rumble">Вибрация</string>
