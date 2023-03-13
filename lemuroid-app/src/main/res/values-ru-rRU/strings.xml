@@ -32,31 +32,31 @@
     <string name="settings_description_gamepad_settings">Настройка внешних геймпадов и клавиатур</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_gamepad_category_enabled">Подключаемые устройства</string>
-    <string name="settings_gamepad_category_general">Общее</string>
+    <string name="settings_gamepad_category_general">Общие</string>
     <string name="settings_gamepad_title_reset_bindings">Сбросить привязки</string>
     <string name="settings_gamepad_title_game_menu">Меню</string>
     <string name="settings_title_open_cores_selection">Сменить ядра</string>
-    <string name="settings_description_open_cores_selection">Выберите, какое ядро ​​связано с системой</string>
+    <string name="settings_description_open_cores_selection">Выберите связанное с системой ядро</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Список найденных и поддерживаемых файлов BIOS</string>
     <string name="settings_bios_category_detected">Обнаружено</string>
     <string name="settings_bios_category_not_detected">Поддерживаемые</string>
     <string name="settings_title_reset_settings">Сбросить настройки</string>
-    <string name="settings_description_reset_settings">Сбросить настройки Lemuroid</string>
+    <string name="settings_description_reset_settings">Сброс настроек Lemuroid к начальным значениям</string>
     <string name="settings_title_advanced_settings">Дополнительные настройки</string>
     <string name="settings_description_advanced_settings">Показать дополнительные параметры</string>
     <string name="settings_title_low_latency_audio">Звук с низкой задержкой</string>
-    <string name="settings_description_low_latency_audio">Сократить задержку звука на поддерживаемых устройствах. Могут быть увеличены звуковые неполадки.</string>
+    <string name="settings_description_low_latency_audio">Снижает задержку звука на поддерживаемых устройствах. Может увеличить искажения звука.</string>
     <string name="settings_title_legacy_hd_mode">Предпочитать старый HD режим</string>
-    <string name="settings_description_legacy_hd_mode">Всегда используйте старый HD режим. Теряет немного качества ради производительности.</string>
+    <string name="settings_description_legacy_hd_mode">Всегда использовать старый HD-режим. Обеспечивает прирост скорости за счёт небольшой потери качества.</string>
     <string name="settings_title_direct_game_load">Прямая загрузка игры</string>
-    <string name="settings_description_direct_game_load">(Экспериментально) Сократить время загрузки и использование кэша на поддерживаемых консолях.</string>
+    <string name="settings_description_direct_game_load">(Экспериментально) Сокращает время загрузки и использование кэша на поддерживаемых консолях.</string>
     <string name="settings_title_enable_rumble">Вибрация</string>
     <string name="settings_description_enable_rumble">Включить вибрацию в поддерживаемых играх и контроллерах</string>
     <string name="settings_title_enable_device_rumble">Вибрация устройства</string>
     <string name="settings_description_enable_device_rumble">Когда контроллер не подключен, вибрировать устройство</string>
     <string name="reset_settings_warning_message_title">Вы уверены?</string>
-    <string name="reset_settings_warning_message_description">Это сбросит настройки Lemuroid. Сохранения и Состояния будут сохранены.</string>
+    <string name="reset_settings_warning_message_description">Данное действие сбросит настройки Lemuroid к начальным значениям. Файлы сохранений и состояний не будут затронуты.</string>
     <string name="settings_title_save_sync">Облачные сохранения</string>
     <string name="settings_description_save_sync">Резервное копирование и синхронизация ваших сохранений в облаке</string>
     <string name="settings_save_sync_refresh">Ручная синхронизация</string>
@@ -78,18 +78,18 @@
     <string name="home_empty_action">Выберите каталог</string>
     <string name="game_menu_save">Сохранить</string>
     <string name="game_menu_load">Загрузить</string>
-    <string name="game_menu_restart">Перезагрузить</string>
-    <string name="game_menu_quit">Выйти</string>
+    <string name="game_menu_restart">Перезагрузка</string>
+    <string name="game_menu_quit">Выход</string>
     <string name="game_menu_settings">Настройки</string>
     <string name="game_menu_state">Состояние %1$s</string>
     <string name="game_menu_change_disk_button">Сменить диск</string>
     <string name="game_menu_edit_touch_controls">Изменить управление</string>
     <string name="game_menu_mute_audio">Отключить звук</string>
-    <string name="game_menu_fast_forward">Перемотка</string>
+    <string name="game_menu_fast_forward">Ускорение</string>
     <string name="game_menu_change_disk_disk">Диск %1$s</string>
     <string name="game_loading_preparing_game">Подготовка игры…</string>
     <string name="game_toast_settings_button_using_gamepad">Обнаружен геймпад. Войдите в меню настроек с помощью %1$s.</string>
-    <string name="game_toast_load_state_failed">Не удается загрузить это состояние</string>
+    <string name="game_toast_load_state_failed">Не удалось загрузить состояние</string>
     <string name="empty_view_default">Нет элементов</string>
     <string name="core_settings_title">Настройки ядра</string>
     <string name="core_settings_category_preferences">Предпочтения</string>
@@ -105,7 +105,7 @@
     <string name="game_running_notification_title_alternative">Игра запущена</string>
     <string name="game_running_notification_message">Обязательно сохраните свой прогресс</string>
     <string name="game_loader_error_gl_incompatible">Это ядро требует версию OpenGL ES, которая не поддерживается вашим устройством.</string>
-    <string name="game_loader_error_load_game">Произошла ошибка при загрузке вашей игры. Убедитесь, что ROM-файл поддерживается Lemuroid и пересканируйте ваши игры.</string>
+    <string name="game_loader_error_load_game">При загрузке игры произошла ошибка. Убедитесь, что ROM поддерживается Lemuroid и запустите повторное сканирование игр.</string>
     <string name="game_loader_error_save">Произошла ошибка с вашим файлом сохранения. Если проблема не исчезает, попробуйте отключить автосохранение.</string>
     <string name="game_loader_error_unsupported_architecture">Это ядро не поддерживается вашим устройством.</string>
     <string name="game_loader_error_generic">Произошла ошибка. Попробуйте следующее:\n
@@ -115,7 +115,7 @@
         \n\nЕсли ничего из вышеперечисленного не сработало, возможно, эта игра/ядро не поддерживается вашим устройством.
     </string>
     <string name="game_loader_error_missing_bios">Отсутствуют требуемые файлы BIOS, поместите их в каталог с ROM-файлами и пересканируйте. Требуемые файлы: %1$s</string>
-    <string name="game_shortcut_error">При загрузке вашей игры произошла ошибка. Пожалуйста, убедитесь, что эта игра по-прежнему существует в вашей библиотеке.</string>
+    <string name="game_shortcut_error">Произошла ошибка при загрузке игры. Пожалуйста, убедитесь, что игра присутствует в вашей библиотеке.</string>
     <string name="dialog_saf_not_found">Это устройство не поддерживает выбор файлов через StorageAccessFramework. Пожалуйста, скопируйте распакованные ROM-файлы вручную в %1$s и нажмите Повторное сканирование.</string>
     <string name="system_grid_details">%1$s игр</string>
     <string name="tv_folder_picker_title">Выберите каталог ROM-файлов</string>
@@ -132,14 +132,14 @@
     <string name="gamepad_binding_update_description">Нажмите кнопку на вашем \"%1$s\"</string>
     <string name="tv_search_results">Игры</string>
     <string name="tv_game_message_missing_gamepad">Для игры необходимы контроллеры. Пожалуйста, подключите один.</string>
-    <string name="game_edit_touch_controls_error_not_visible">Отключите контроллер, чтобы редактировать сенсорное управление</string>
+    <string name="game_edit_touch_controls_error_not_visible">Отключите геймпад, чтобы изменить экранное управление</string>
     <string name="game_interactory_busy">Дождитесь завершения текущих операций</string>
     <string name="mobile_settings_help">Помощь</string>
     <string name="mobile_settings_support">Поддержка</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Как использовать Lemuroid?</b><br/>
-        Скопируйте все ваши ROM-файлы в каталог на вашем устройстве и выберите его в Lemuroid. Этот каталог имеет доступ к подкаталогам. После завершения сканирования вы должны увидеть ваши игры.<br/><br/>
-        <b>&#8226;Почему мои игры не были обнаружены?</b><br/>
-        Если ваши игры сжаты, попробуйте распаковать их. Если это не сработало, попробуйте поместить ROM-файлы в отдельные каталоги, по одному для каждой системы со следующими именами: $SYSTEMS.
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Как пользоваться Lemuroid?</b><br/>
+        Скопируйте ROM-файлы в каталог на вашем устройстве и укажите его в Lemuroid. Данный каталог может содержать подкаталоги. После завершения сканирования вы увидите список всех ваших игр.<br/><br/>
+        <b>&#8226;Почему мои игры не определяются?</b><br/>
+        Если игры сжаты, попробуйте извлечь их из архивов. Если это не помогло, попробуйте поместить ROM'ы в отдельные каталоги для каждой системы, присвоив следующие имена: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Похоже, что ядро Libretro столкнулось с неожиданной проблемой. Если проблема не исчезает, пожалуйста, попробуйте следующее:\n
         \n\u2022 Отключите автосохранение и перезапустите игру
@@ -148,12 +148,12 @@
         \n\n Если ничего из вышеперечисленного не работает, возможно, эта игра/ядро не поддерживается вашим устройством.
     </string>
     <string name="error_message_incompatible_state">Это сохранение не совместимо с текущей версией ядра. Пожалуйста, загрузите последнюю версию сохранения в игре или воспользуйтесь предыдущей версией Lemuroid.</string>
-    <string name="shader_filter_names_auto">Автоматически</string>
+    <string name="shader_filter_names_auto">Авто</string>
     <string name="shader_filter_names_sharp">Резкий</string>
     <string name="shader_filter_names_smooth">Мягкий</string>
     <string name="shader_filter_names_crt">ЭЛТ</string>
     <string name="shader_filter_names_lcd">ЖК</string>
-    <string name="haptic_feedback_mode_names_none">Отсутствует</string>
+    <string name="haptic_feedback_mode_names_none">Нет</string>
     <string name="haptic_feedback_mode_names_press">Нажать</string>
     <string name="haptic_feedback_mode_names_press_release">Нажать и отпустить</string>
 </resources>
