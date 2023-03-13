@@ -10,7 +10,7 @@
     <string name="controller_standard">Стандартный</string>
     <string name="controller_landscape">Горизонтальный</string>
     <string name="controller_portrait">Вертикальный</string>
-    <string name="controller_dos_auto">Автоматически</string>
+    <string name="controller_dos_auto">Авто</string>
     <string name="controller_dos_mouse_left">Мышь с левым стиком</string>
     <string name="controller_dos_mouse_right">Мышь с правым стиком</string>
     <!-- Core settings titles -->
@@ -28,7 +28,7 @@
     <string name="setting_gambatte_mix_frames">ЖК-двоение</string>
     <string name="setting_gambatte_dark_filter_level">Затемнить экран</string>
     <string name="setting_gambatte_gbc_color_correction">Коррекция цвета</string>
-    <string name="setting_mgba_solar_sensor_level">Уровень солнечного датчика</string>
+    <string name="setting_mgba_solar_sensor_level">Уровень датчика освещения</string>
     <string name="setting_mgba_interframe_blending">ЖК-двоение</string>
     <string name="setting_mgba_frameskip">Пропуск кадров</string>
     <string name="setting_mgba_color_correction">Коррекция цвета</string>
@@ -55,7 +55,7 @@
     <string name="setting_melonds_jit_enable">Динамический рекомпилятор</string>
     <string name="setting_wswan_rotate_display">Ориентация</string>
     <string name="setting_wswan_mono_palette">Окрашивание</string>
-    <string name="setting_handy_rot">Ориентация экрана</string>
+    <string name="setting_handy_rot">Поворот экрана</string>
     <string name="setting_citra_layout_option">Расположение экранов</string>
     <string name="setting_citra_resolution_factor">Масштабирование разрешения</string>
     <string name="setting_citra_use_acc_mul">Точное умножение шейдеров</string>
@@ -93,16 +93,16 @@
     <string name="value_mupen64plus_cpucore_pureinterpreter">Чистый интерпретатор</string>
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Кэшированный интерпретатор</string>
     <string name="value_mupen64plus_bilinearmode_standard">Стандартный</string>
-    <string name="value_mupen64plus_bilinearmode_3point">3 точки</string>
+    <string name="value_mupen64plus_bilinearmode_3point">По 3 точкам</string>
     <string name="value_mupen64plus_mupen64plus_pak1_memory">Память</string>
     <string name="value_mupen64plus_mupen64plus_pak1_rumble">Вибрация</string>
-    <string name="value_mupen64plus_mupen64plus_pak1_none">Отсутствует</string>
-    <string name="value_mupen64plus_mupen64plus_pak2_none">Отсутствует</string>
+    <string name="value_mupen64plus_mupen64plus_pak1_none">Нет</string>
+    <string name="value_mupen64plus_mupen64plus_pak2_none">Нет</string>
     <string name="value_mupen64plus_mupen64plus_pak2_rumble">Вибрация</string>
-    <string name="value_melonds_screen_layout_topbottom">Сверху/Снизу</string>
-    <string name="value_melonds_screen_layout_leftright">Слева/Справа</string>
-    <string name="value_melonds_screen_layout_hybridtop">Гибридно сверху</string>
-    <string name="value_melonds_screen_layout_hybridbottom">Гибридно снизу</string>
+    <string name="value_melonds_screen_layout_topbottom">Верхний - нижний</string>
+    <string name="value_melonds_screen_layout_leftright">Слева - справа</string>
+    <string name="value_melonds_screen_layout_hybridtop">Гибридно верхний</string>
+    <string name="value_melonds_screen_layout_hybridbottom">Гибридно нижний</string>
     <string name="value_citra_layout_option_topbottom">Сверху/Снизу</string>
     <string name="value_citra_layout_option_sidebyside">Слева/Справа</string>
     <string name="value_desmume_screens_layout_topbottom">Сверху/Снизу</string>
