@@ -87,13 +87,13 @@
     <string name="game_menu_fast_forward">Acelerar</string>
     <string name="game_menu_change_disk_disk">Disco %1$s</string>
     <string name="game_loading_preparing_game">Preparando o jogo…</string>
-    <string name="game_toast_settings_button_using_gamepad">Gamepad detectado. Acesse o menu de configurações com %1$s.</string>
+    <string name="game_toast_settings_button_using_gamepad">Controle detectado. Acesse o menu de configurações com %1$s.</string>
     <string name="game_toast_load_state_failed">Não é possível carregar este estado</string>
     <string name="empty_view_default">Nenhum item</string>
     <string name="core_settings_title">Configurações do Núcleo</string>
     <string name="core_settings_category_preferences">Preferências</string>
-    <string name="core_settings_category_controllers">Controladores</string>
-    <string name="core_settings_controller">Controlador %1$s</string>
+    <string name="core_settings_category_controllers">Controles</string>
+    <string name="core_settings_controller">Controle %1$s</string>
     <string name="game_menu_title">Menu do jogo</string>
     <string name="notification_channel_name">Todas as notificações</string>
     <string name="library_index_notification_title">Verificação de ROMs em andamento</string>
