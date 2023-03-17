@@ -56,7 +56,7 @@
     <string name="settings_title_enable_device_rumble">Vibração do dispositivo</string>
     <string name="settings_description_enable_device_rumble">Quando nenhum controle estiver conectado vibrar o dispositivo</string>
     <string name="reset_settings_warning_message_title">Você tem certeza?</string>
-    <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Saves e Estados serão preservados.</string>
+    <string name="reset_settings_warning_message_description">Isso redefinirá o Lemuroid às suas configurações de fábrica. Saves e Estados serão preservados.</string>
     <string name="settings_title_save_sync">Saves na nuvem</string>
     <string name="settings_description_save_sync">Faça backup e sincronize seus saves na nuvem</string>
     <string name="settings_save_sync_refresh">Sincronização Manual</string>
