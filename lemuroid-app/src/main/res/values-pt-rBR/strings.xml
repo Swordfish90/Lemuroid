@@ -27,6 +27,7 @@
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
     <string name="settings_title_maximum_cache_usage">Limite de tamanho do cache</string>
     <string name="settings_title_hd_mode">Modo HD</string>
+    <string name="settings_description_hd_mode">Aplicar filtro de upscaling pós-processado</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
     <string name="settings_description_gamepad_settings">Configurar controles e teclados externos</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -55,8 +56,8 @@
     <string name="settings_title_enable_device_rumble">Vibração do dispositivo</string>
     <string name="settings_description_enable_device_rumble">Quando nenhum controle estiver conectado vibrar o dispositivo</string>
     <string name="reset_settings_warning_message_title">Você tem certeza?</string>
-    <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Salvas e Estados serão preservados.</string>
-    <string name="settings_title_save_sync">Salva na nuvem</string>
+    <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Saves e Estados serão preservados.</string>
+    <string name="settings_title_save_sync">Saves na nuvem</string>
     <string name="settings_description_save_sync">Faça backup e sincronize seus saves na nuvem</string>
     <string name="settings_save_sync_refresh">Sincronização Manual</string>
     <string name="settings_save_sync_refresh_description">Execute uma Sincronização manual agora.\n%1$s</string>
@@ -88,7 +89,7 @@
     <string name="game_menu_change_disk_disk">Disco %1$s</string>
     <string name="game_loading_preparing_game">Preparando o jogo…</string>
     <string name="game_toast_settings_button_using_gamepad">Controle detectado. Acesse o menu de configurações com %1$s.</string>
-    <string name="game_toast_load_state_failed">Não é possível carregar este estado</string>
+    <string name="game_toast_load_state_failed">Não é possível carregar esse estado</string>
     <string name="empty_view_default">Nenhum item</string>
     <string name="core_settings_title">Configurações do Núcleo</string>
     <string name="core_settings_category_preferences">Preferências</string>
@@ -96,26 +97,26 @@
     <string name="core_settings_controller">Controle %1$s</string>
     <string name="game_menu_title">Menu do jogo</string>
     <string name="notification_channel_name">Todas as notificações</string>
-    <string name="library_index_notification_title">Verificação de ROMs em andamento</string>
-    <string name="library_index_notification_message">Isto pode levar alguns minutos</string>
+    <string name="library_index_notification_title">Verificação das ROMs em andamento</string>
+    <string name="library_index_notification_message">Isso pode levar alguns minutos</string>
     <string name="save_sync_notification_title">Sincronização em andamento para salvar na nuvem</string>
-    <string name="save_sync_notification_message">Isto pode levar alguns minutos</string>
+    <string name="save_sync_notification_message">Isso pode levar alguns minutos</string>
     <string name="game_running_notification_title">%1$s está em execução</string>
     <string name="game_running_notification_title_alternative">O jogo está em execução</string>
     <string name="game_running_notification_message">Certifique-se de salvar o seu progresso</string>
-    <string name="game_loader_error_gl_incompatible">Este Núcleo requer uma versão OpenGL ES que não é suportada pelo seu dispositivo.</string>
+    <string name="game_loader_error_gl_incompatible">Esse Núcleo requer uma versão OpenGL ES que não é suportada pelo seu dispositivo.</string>
     <string name="game_loader_error_load_game">Algo ruim aconteceu durante o carregamento da sua partida. Certifique-se de que a ROM é suportada pelo Lemuroid e reescaneie seus jogos.</string>
     <string name="game_loader_error_save">Algo ruim aconteceu com o seu arquivo salvo. Se o problema persistir, tente desativar o salvamento automático.</string>
-    <string name="game_loader_error_unsupported_architecture">Este Núcleo não é suportado pelo seu dispositivo.</string>
+    <string name="game_loader_error_unsupported_architecture">Esse Núcleo não é suportado pelo seu dispositivo.</string>
     <string name="game_loader_error_generic">Parece que o núcleo do Libretro teve um problema inesperado. Se for persistente, tente o seguinte:\n
         \n\u2022 Desative o salvamento automático e execute o jogo novamente
         \n\u2022 Vá nas configurações do Android e limpe o cache do app
         \n\u2022 Vá nas configurações do Lemuroid e execute a formatação de fábrica
-        \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
+        \n\n Se nenhuma das opções acima funcionar, pode ser possível que esse jogo/núcleo não seja compatível com esse dispositivo.
     </string>
-    <string name="game_loader_error_missing_bios">Parece que você está faltando o BIOS necessário, coloque-o no diretório das suas ROMs e tente novamente. Arquivos necessários: %1$s</string>
-    <string name="game_shortcut_error">Algo ruim aconteceu durante o carregamento do seu jogo. Por favor, certifique-se de que este jogo ainda existe na sua biblioteca.</string>
-    <string name="dialog_saf_not_found">Este dispositivo não suporta o selecionador de arquivo StorageAccessFramework. Por favor copie manualmente arquivos da ROM descomprimida para %1$s e aperte o reescanear.</string>
+    <string name="game_loader_error_missing_bios">Parece que você está faltando a BIOS necessária, coloque-a no diretório das suas ROMs e tente novamente. Arquivos necessários: %1$s</string>
+    <string name="game_shortcut_error">Algo ruim aconteceu durante o carregamento do seu jogo. Por favor, certifique-se de que esse jogo ainda existe na sua biblioteca.</string>
+    <string name="dialog_saf_not_found">Esse dispositivo não suporta o selecionador de arquivo StorageAccessFramework. Por favor copie manualmente arquivos da ROM descomprimida para %1$s e aperte o reescanear.</string>
     <string name="system_grid_details">%1$s Jogos</string>
     <string name="tv_folder_picker_title">Selecionar diretório das ROMs</string>
     <string name="tv_folder_picker_action_choose">Selecionar</string>
@@ -130,7 +131,7 @@
     <string name="gamepad_binding_update_title">Associe \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Pressione um botão em seu\"%1$s\"</string>
     <string name="tv_search_results">Jogos</string>
-    <string name="tv_game_message_missing_gamepad">Gamepads são necessários para jogar. Por favor, conecte um.</string>
+    <string name="tv_game_message_missing_gamepad">Controles são necessários para jogar. Por favor, conecte um.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecte seu controle para editar seus controles de toque</string>
     <string name="game_interactory_busy">Aguarde a conclusão das operações pendentes</string>
     <string name="mobile_settings_help">Ajuda</string>
@@ -144,9 +145,9 @@
         \n\u2022 Desative o salvamento automático e execute o jogo novamente
         \n\u2022 Vá nas configurações do Android e limpe o cache do app
         \n\u2022 Vá nas configurações do Lemuroid e execute a formatação de fábrica
-        \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
+        \n\n Se nenhuma das opções acima funcionar, pode ser possível que esse jogo/núcleo não seja compatível com esse dispositivo.
     </string>
-    <string name="error_message_incompatible_state">Este estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
+    <string name="error_message_incompatible_state">Esse estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
     <string name="shader_filter_names_auto">Automático</string>
     <string name="shader_filter_names_sharp">Nítido</string>
     <string name="shader_filter_names_smooth">Suavização</string>
