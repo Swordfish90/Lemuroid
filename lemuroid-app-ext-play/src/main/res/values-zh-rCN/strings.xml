@@ -20,8 +20,8 @@
 <resources>
     <string name="gdrive_sign_in_failed">Google 登录失败：%s (%s)</string>
     <string name="gdrive_sign_in_success">以 %s 身份登录 Google</string>
-    <string name="gdrive_sign_out_success">登出 Google</string>
-    <string name="gdrive_missing_play_services">您的设备不支持 Google 云端硬盘所需要的 Google Play 服务</string>
+    <string name="gdrive_sign_out_success">已从 Google 登出</string>
+    <string name="gdrive_missing_play_services">您的设备不支持 Google 网盘所需要的 Google Play 服务</string>
     <string name="gdrive_connected_summary">已关联到 %s</string>
     <string name="gdrive_connected_none_summary">未配置</string>
     <string name="gdrive_last_sync_completed">最后一次同步：%s</string>
