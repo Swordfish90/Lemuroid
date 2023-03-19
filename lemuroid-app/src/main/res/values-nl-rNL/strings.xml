@@ -12,7 +12,7 @@
     <string name="stop">Stop</string>
     <string name="none">Geen</string>
     <string name="directory">Map</string>
-    <string name="display_filter">Scherm filters</string>
+    <string name="display_filter">Schermfilter</string>
     <string name="roms">ROMs</string>
     <string name="ok">OK</string>
     <string name="cancel">Annuleren</string>
@@ -22,10 +22,10 @@
     <string name="settings_category_general">Algemene instellingen</string>
     <string name="settings_category_input">Besturing</string>
     <string name="settings_category_misc">Overige Instellingen</string>
-    <string name="settings_title_enable_autosave">Automatisch state opslaan</string>
+    <string name="settings_title_enable_autosave">Staat automatisch opslaan</string>
     <string name="settings_title_enable_touch_feedback">Trillen bij aanraking</string>
-    <string name="settings_title_tilt_sensitivity">Kantel sensitiviteit</string>
-    <string name="settings_title_maximum_cache_usage">Cache grootte limiet</string>
+    <string name="settings_title_tilt_sensitivity">Sensitiviteit van kantelsensor</string>
+    <string name="settings_title_maximum_cache_usage">Limiet van cachegrootte</string>
     <string name="settings_title_gamepad_settings">Externe apparaten</string>
     <string name="settings_description_gamepad_settings">Configureer externe gamepads en toetsenborden</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -39,13 +39,13 @@
     <string name="settings_description_display_bios_info">Toon gedetecteerde en ondersteunde BIOS-bestanden</string>
     <string name="settings_bios_category_detected">Gedetecteerd</string>
     <string name="settings_bios_category_not_detected">Ondersteund</string>
-    <string name="settings_title_reset_settings">Reset naar fabrieksinstellingen</string>
+    <string name="settings_title_reset_settings">Fabrieksinstellingen herstellen</string>
     <string name="settings_description_reset_settings">Lemuroid terugzetten naar fabrieksinstellingen</string>
     <string name="settings_title_advanced_settings">Geavanceerde instellingen</string>
     <string name="settings_description_advanced_settings">Geavanceerde instellingen weergeven</string>
     <string name="settings_title_low_latency_audio">Bij voorkeur audio met lage latentie</string>
     <string name="settings_description_low_latency_audio">Verminder audiolatentie op ondersteunde apparaten. Kan zorgen voor audio glitches.</string>
-    <string name="settings_title_direct_game_load">Directe spel lading</string>
+    <string name="settings_title_direct_game_load">Spel direct laden</string>
     <string name="settings_description_direct_game_load">(Experimenteel) Verminder laadtijd en cache-gebruik op ondersteunde consoles.</string>
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Rumble inschakelen in ondersteunde games en controllers</string>
@@ -53,7 +53,7 @@
     <string name="settings_description_enable_device_rumble">Vibreer als er geen controller is aangesloten</string>
     <string name="reset_settings_warning_message_title">Weet je het zeker?</string>
     <string name="reset_settings_warning_message_description">Dit zal Lemuroid resetten naar zijn fabrieksinstellingen. Saves en States zullen behouden blijven.</string>
-    <string name="settings_title_save_sync">Cloud saves</string>
+    <string name="settings_title_save_sync">Cloud-saves</string>
     <string name="settings_description_save_sync">Maak een back-up en synchroniseer uw saves in de cloud</string>
     <string name="settings_save_sync_refresh">Handmatig synchroniseren</string>
     <string name="settings_save_sync_refresh_description">Voer nu een handmatige synchronisatie uit.\n%1$s</string>
@@ -69,8 +69,8 @@
     <string name="game_context_menu_resume">Hervatten</string>
     <string name="game_context_menu_restart">Herstarten</string>
     <string name="game_context_menu_create_shortcut">Vastzetten aan launcher</string>
-    <string name="home_empty_title">Selecteer ROMs map</string>
-    <string name="home_empty_message">Lemuroid moet een map met ROM bestanden scannen.\nDit kan enkele minuten duren.</string>
+    <string name="home_empty_title">Selecteer ROM-map</string>
+    <string name="home_empty_message">Lemuroid moet een map met ROM-bestanden scannen.\nDit kan enkele minuten duren.</string>
     <string name="home_empty_action">Selecteer map</string>
     <string name="game_menu_save">Opslaan</string>
     <string name="game_menu_load">Laden</string>
@@ -109,11 +109,11 @@
         \n\u2022 Ga naar Lemuroid instellingen en voer een reset uit
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
-    <string name="game_loader_error_missing_bios">Het lijkt erop dat u de vereiste BIOS mist, plaats deze in uw ROMs map en rescan. Vereiste bestanden: %1$s</string>
+    <string name="game_loader_error_missing_bios">Het lijkt erop dat u de vereiste BIOS mist, plaats deze in uw ROM-map en herscan. Vereiste bestanden: %1$s</string>
     <string name="game_shortcut_error">Er is iets misgegaan tijdens het laden van je spel. Zorg ervoor dat dit spel nog steeds bestaat in je bibliotheek.</string>
     <string name="dialog_saf_not_found">Dit apparaat ondersteunt de StorageAccessFramework bestandskiezer niet. Kopieer handmatig ongecomprimeerde ROM bestanden in %1$s en druk op Rescan.</string>
     <string name="system_grid_details">%1$s games</string>
-    <string name="tv_folder_picker_title">Selecteer ROMs map</string>
+    <string name="tv_folder_picker_title">Selecteer ROM-map</string>
     <string name="tv_folder_picker_action_choose">Selecteer</string>
     <string name="tv_folder_picker_action_cancel">Annuleren</string>
     <string name="tv_folder_storage_primary">Primaire opslag</string>
@@ -145,6 +145,7 @@
     <string name="shader_filter_names_auto">Automatisch</string>
     <string name="shader_filter_names_sharp">Scherp</string>
     <string name="shader_filter_names_smooth">Vloeiend</string>
-    <string name="haptic_feedback_mode_names_press">Druk</string>
-    <string name="haptic_feedback_mode_names_press_release">Druk &amp; loslaten</string>
+    <string name="haptic_feedback_mode_names_none">Geen</string>
+    <string name="haptic_feedback_mode_names_press">Drukken</string>
+    <string name="haptic_feedback_mode_names_press_release">Drukken en loslaten</string>
 </resources>
