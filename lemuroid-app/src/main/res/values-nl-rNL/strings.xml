@@ -17,23 +17,24 @@
     <string name="ok">OK</string>
     <string name="cancel">Annuleren</string>
     <string name="settings">Instellingen</string>
-    <string name="save_sync">Synchronisatie opslaan</string>
-    <string name="show_all">Alles weergeven</string>
-    <string name="settings_category_general">Algemene instellingen</string>
+    <string name="save_sync">Save-synchronisatie</string>
+    <string name="show_all">Alles tonen</string>
+    <string name="settings_category_general">Algemeen</string>
     <string name="settings_category_input">Besturing</string>
-    <string name="settings_category_misc">Overige Instellingen</string>
-    <string name="settings_title_enable_autosave">Staat automatisch opslaan</string>
+    <string name="settings_category_misc">Overig</string>
+    <string name="settings_title_enable_autosave">State automatisch opslaan</string>
     <string name="settings_title_enable_touch_feedback">Trillen bij aanraking</string>
     <string name="settings_title_tilt_sensitivity">Sensitiviteit van kantelsensor</string>
     <string name="settings_title_maximum_cache_usage">Limiet van cachegrootte</string>
+    <string name="settings_title_hd_mode">HD-modus</string>
     <string name="settings_title_gamepad_settings">Externe apparaten</string>
     <string name="settings_description_gamepad_settings">Configureer externe gamepads en toetsenborden</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_gamepad_category_enabled">Ingeschakelde apparaten</string>
     <string name="settings_gamepad_category_general">Algemeen</string>
-    <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
+    <string name="settings_gamepad_title_reset_bindings">Bindingen resetten</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
-    <string name="settings_title_open_cores_selection">Verander Cores</string>
+    <string name="settings_title_open_cores_selection">Cores wisselen</string>
     <string name="settings_description_open_cores_selection">Selecteer welke core gekoppeld is aan een systeem</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Toon gedetecteerde en ondersteunde BIOS-bestanden</string>
@@ -42,27 +43,28 @@
     <string name="settings_title_reset_settings">Fabrieksinstellingen herstellen</string>
     <string name="settings_description_reset_settings">Lemuroid terugzetten naar fabrieksinstellingen</string>
     <string name="settings_title_advanced_settings">Geavanceerde instellingen</string>
-    <string name="settings_description_advanced_settings">Geavanceerde instellingen weergeven</string>
-    <string name="settings_title_low_latency_audio">Bij voorkeur audio met lage latentie</string>
+    <string name="settings_description_advanced_settings">Geavanceerde instellingen tonen</string>
+    <string name="settings_title_low_latency_audio">Audio met lage latentie</string>
     <string name="settings_description_low_latency_audio">Verminder audiolatentie op ondersteunde apparaten. Kan zorgen voor audio glitches.</string>
+    <string name="settings_title_legacy_hd_mode">Oude HD-modus</string>
     <string name="settings_title_direct_game_load">Spel direct laden</string>
     <string name="settings_description_direct_game_load">(Experimenteel) Verminder laadtijd en cache-gebruik op ondersteunde consoles.</string>
-    <string name="settings_title_enable_rumble">Rumble</string>
-    <string name="settings_description_enable_rumble">Rumble inschakelen in ondersteunde games en controllers</string>
-    <string name="settings_title_enable_device_rumble">Apparaat rumble</string>
-    <string name="settings_description_enable_device_rumble">Vibreer als er geen controller is aangesloten</string>
-    <string name="reset_settings_warning_message_title">Weet je het zeker?</string>
-    <string name="reset_settings_warning_message_description">Dit zal Lemuroid resetten naar zijn fabrieksinstellingen. Saves en States zullen behouden blijven.</string>
+    <string name="settings_title_enable_rumble">Trilling</string>
+    <string name="settings_description_enable_rumble">Trilling inschakelen in ondersteunde games en controllers</string>
+    <string name="settings_title_enable_device_rumble">Trilling van apparaat</string>
+    <string name="settings_description_enable_device_rumble">Gebruik apparaattrilling indien er geen controller is aangesloten</string>
+    <string name="reset_settings_warning_message_title">Weet u het zeker?</string>
+    <string name="reset_settings_warning_message_description">Dit zal Lemuroid terugzetten naar de fabrieksinstellingen. Saves en states zullen behouden blijven.</string>
     <string name="settings_title_save_sync">Cloud-saves</string>
     <string name="settings_description_save_sync">Maak een back-up en synchroniseer uw saves in de cloud</string>
     <string name="settings_save_sync_refresh">Handmatig synchroniseren</string>
     <string name="settings_save_sync_refresh_description">Voer nu een handmatige synchronisatie uit.\n%1$s</string>
-    <string name="settings_save_sync_enable_auto">Auto Sync</string>
-    <string name="settings_save_sync_enable_auto_description">Automatisch een Sync uitvoeren voor en na een spelsessie wanneer verbonden met Wifi</string>
+    <string name="settings_save_sync_enable_auto">Auto-sync</string>
+    <string name="settings_save_sync_enable_auto_description">Automatisch een synchronisatie uitvoeren voor en na een spelsessie wanneer verbonden met Wifi</string>
     <string name="settings_save_sync_configure">Configureer %1$s</string>
     <string name="settings_save_sync_include_saves">Synchroniseer in-game saves</string>
     <string name="settings_save_sync_include_saves_description">%1$s op apparaat</string>
-    <string name="settings_save_sync_include_states">Sync staat</string>
+    <string name="settings_save_sync_include_states">States synchroniseren</string>
     <string name="settings_save_sync_include_states_description">Handiger, maar zwaarder en minder stabiel. Kies welke cores/systemen je wil synchroniseren</string>
     <string name="game_context_menu_add_to_favorites">Toevoegen aan favorieten</string>
     <string name="game_context_menu_remove_from_favorites">Verwijderen uit favorieten</string>
@@ -77,21 +79,21 @@
     <string name="game_menu_restart">Herstarten</string>
     <string name="game_menu_quit">Afsluiten</string>
     <string name="game_menu_settings">Instellingen</string>
-    <string name="game_menu_state">Staat %1$s</string>
-    <string name="game_menu_change_disk_button">Verander schijf</string>
+    <string name="game_menu_state">State %1$s</string>
+    <string name="game_menu_change_disk_button">Schijf wisselen</string>
     <string name="game_menu_edit_touch_controls">Bediening bewerken</string>
     <string name="game_menu_mute_audio">Dempen</string>
     <string name="game_menu_fast_forward">Vooruitspoelen</string>
     <string name="game_menu_change_disk_disk">Schijf %1$s</string>
     <string name="game_loading_preparing_game">Spel voorbereiden…</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad gedetecteerd. Open instellingenmenu met %1$s.</string>
-    <string name="game_toast_load_state_failed">Kan deze staat niet laden</string>
+    <string name="game_toast_load_state_failed">Kan deze state niet laden</string>
     <string name="empty_view_default">Geen Items</string>
-    <string name="core_settings_title">Core instellingen</string>
-    <string name="core_settings_category_preferences">Instellingen</string>
+    <string name="core_settings_title">Core-instellingen</string>
+    <string name="core_settings_category_preferences">Voorkeuren</string>
     <string name="core_settings_category_controllers">Controllers</string>
     <string name="core_settings_controller">Controller %1$s</string>
-    <string name="game_menu_title">Spel menu</string>
+    <string name="game_menu_title">Spelmenu</string>
     <string name="notification_channel_name">Alle notificaties</string>
     <string name="library_index_notification_title">Bezig met scannen van ROMs</string>
     <string name="library_index_notification_message">Dit kan een paar minuten duren</string>
@@ -103,6 +105,7 @@
     <string name="game_loader_error_gl_incompatible">Deze Core heeft een OpenGL ES versie nodig die je apparaat niet ondersteund.</string>
     <string name="game_loader_error_load_game">Er is iets misgegaan tijdens het laden van je spel. Zorg ervoor dat de ROM wordt ondersteund door Lemuroid en rescan je games.</string>
     <string name="game_loader_error_save">Er is iets misgegaan met je opslagbestand. Als het probleem zich blijft voordoen, probeer dan auto-save uit te schakelen.</string>
+    <string name="game_loader_error_unsupported_architecture">Deze core wordt niet ondersteund door uw apparaat.</string>
     <string name="game_loader_error_generic">Er is iets misgegaan. Probeer het volgende:\n
         \n\u2022 Schakel automatisch opslaan uit en herstart het spel
         \n\u2022 Ga naar Android instellingen en wis de app cache
@@ -110,7 +113,7 @@
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
     <string name="game_loader_error_missing_bios">Het lijkt erop dat u de vereiste BIOS mist, plaats deze in uw ROM-map en herscan. Vereiste bestanden: %1$s</string>
-    <string name="game_shortcut_error">Er is iets misgegaan tijdens het laden van je spel. Zorg ervoor dat dit spel nog steeds bestaat in je bibliotheek.</string>
+    <string name="game_shortcut_error">Er is iets misgegaan tijdens het laden van het spel. Zorg ervoor dat dit spel zich nog steeds in uw bibliotheek bevindt.</string>
     <string name="dialog_saf_not_found">Dit apparaat ondersteunt de StorageAccessFramework bestandskiezer niet. Kopieer handmatig ongecomprimeerde ROM bestanden in %1$s en druk op Rescan.</string>
     <string name="system_grid_details">%1$s games</string>
     <string name="tv_folder_picker_title">Selecteer ROM-map</string>
@@ -141,7 +144,7 @@
         \n\u2022 Ga naar Lemuroid instellingen en voer een reset uit
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
-    <string name="error_message_incompatible_state">Deze opslagstaat is niet compatibel met de huidige core versie. Laad de laatste versie van het spel of gebruik een eerdere Lemuroid versie.</string>
+    <string name="error_message_incompatible_state">Deze save state is niet compatibel met de huidige core-versie. Laad de laatste versie van het spel of gebruik een eerdere versie van Lemuroid.</string>
     <string name="shader_filter_names_auto">Automatisch</string>
     <string name="shader_filter_names_sharp">Scherp</string>
     <string name="shader_filter_names_smooth">Vloeiend</string>
