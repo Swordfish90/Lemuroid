@@ -112,4 +112,7 @@
     <string name="value_ppsspp_cpu_core_interpreter">Interpretatie</string>
     <string name="value_wswan_rotate_display_landscape">Landschap</string>
     <string name="value_wswan_rotate_display_portrait">Portret</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">90</string>
+    <string name="value_handy_rot_270">270</string>
 </resources>

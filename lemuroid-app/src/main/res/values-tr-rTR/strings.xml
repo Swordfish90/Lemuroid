@@ -14,6 +14,7 @@
     <string name="directory">Dizin</string>
     <string name="display_filter">Görüntü filtresi</string>
     <string name="roms">ROMlar</string>
+    <string name="ok">Tamam</string>
     <string name="cancel">İptal</string>
     <string name="settings">Ayarlar</string>
     <string name="show_all">Hepsini Göster</string>
@@ -43,6 +44,10 @@
     <string name="settings_description_low_latency_audio">Desteklenen cihazlarda ses gecikmesini azaltın. Ses aksaklıkları artabilir.</string>
     <string name="settings_title_direct_game_load">Direkt oyun yükle</string>
     <string name="settings_description_direct_game_load">(Deneyimsel) Desteklenen konsollarda yükleme zamanını ve önbellek kullanımını azalt.</string>
+    <string name="settings_title_enable_rumble">Titreşim</string>
+    <string name="settings_description_enable_rumble">Destekleyen oyunlar ve kontrolcülerde titreşimi aç</string>
+    <string name="settings_title_enable_device_rumble">Cihaz titreşimi</string>
+    <string name="settings_description_enable_device_rumble">Kontrolcü bağlı değilken cihazı titreştir</string>
     <string name="reset_settings_warning_message_title">Emin misin?</string>
     <string name="reset_settings_warning_message_description">Bu Lemuroid\'i fabrika ayarlarına sıfırlayacak. Kayıtlar ve Durumlar korunacak.</string>
     <string name="settings_title_save_sync">Bulut kayıtlar</string>
@@ -74,6 +79,7 @@
     <string name="game_menu_edit_touch_controls">Kontrolleri düzenle</string>
     <string name="game_menu_mute_audio">Sesi kapat</string>
     <string name="game_menu_fast_forward">Hızlı-İleri</string>
+    <string name="game_menu_change_disk_disk">%1$s Diski</string>
     <string name="game_loading_preparing_game">Oyun hazırlanıyor…</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad tespit edildi. %1$s ile ayarlar menüsüne erişin.</string>
     <string name="game_toast_load_state_failed">Bu durum yüklenemiyor</string>
@@ -115,6 +121,7 @@
     <string name="tv_home_section_recents">En son</string>
     <string name="tv_home_section_systems">Sistemler</string>
     <string name="tv_home_section_settings">Ayarlar</string>
+    <string name="gamepad_binding_update_description">\"%1$s\" üzerinde bir tuşa basın</string>
     <string name="tv_search_results">Oyunlar</string>
     <string name="tv_game_message_missing_gamepad">Gamepad\'ler oynamak için gerekli. Lütfen birini bağlayın.</string>
     <string name="game_edit_touch_controls_error_not_visible">Dokunma kontrollerinizi düzenlemek için pad\'in bağlantısını kesin</string>
@@ -133,6 +140,10 @@
         \n\n Eğer yukarıdakilerin hiçbiri çalışmıyorsa, bu Oyun/Çekirdek bu cihazı desteklemiyor olabilir.
     </string>
     <string name="error_message_incompatible_state">Bu kayıt durumu mevcut çekirdek sürümüyle mevcut değil. Lütfen en son oyun içi kayıtı yükleyin veya önceki Lemuroid versiyonunu kullanın.</string>
+    <string name="shader_filter_names_auto">Otomatik</string>
+    <string name="shader_filter_names_sharp">Keskin</string>
+    <string name="shader_filter_names_smooth">Yumuşak</string>
+    <string name="haptic_feedback_mode_names_none">Yok</string>
     <string name="haptic_feedback_mode_names_press">Bas</string>
     <string name="haptic_feedback_mode_names_press_release">Bas &amp; bırak</string>
 </resources>

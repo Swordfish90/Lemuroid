@@ -26,6 +26,8 @@
     <string name="settings_title_enable_touch_feedback">Vibra al tocco</string>
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
     <string name="settings_title_maximum_cache_usage">Limite dimensione cache</string>
+    <string name="settings_title_hd_mode">Modalità HD</string>
+    <string name="settings_description_hd_mode">Applica il post-processing upscaling filter</string>
     <string name="settings_title_gamepad_settings">Dispositivi esterni</string>
     <string name="settings_description_gamepad_settings">Configura controller e tastiere collegati</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -45,6 +47,8 @@
     <string name="settings_description_advanced_settings">Mostra impostazioni avanzate</string>
     <string name="settings_title_low_latency_audio">Preferisci audio a bassa latenza</string>
     <string name="settings_description_low_latency_audio">Riduce la latenza audio sui dispositivi supportati. Potrebbe causare piccoli glitch sonori.</string>
+    <string name="settings_title_legacy_hd_mode">Preferisci modalità HD legacy</string>
+    <string name="settings_description_legacy_hd_mode">Usa sempre la modalità HD legacy. Minore qualità per aumentare la performance.</string>
     <string name="settings_title_direct_game_load">Caricamento diretto del gioco</string>
     <string name="settings_description_direct_game_load">(Sperimentale) Riduce il tempo di caricamento e l\'utilizzo della cache sulle console supportate.</string>
     <string name="settings_title_enable_rumble">Vibrazione</string>
@@ -149,7 +153,6 @@
     <string name="shader_filter_names_smooth">Lineare</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
-    <string name="shader_filter_names_hd">HD</string>
     <string name="haptic_feedback_mode_names_none">Nessuno</string>
     <string name="haptic_feedback_mode_names_press">Pressione</string>
     <string name="haptic_feedback_mode_names_press_release">Pressione &amp; rilascio</string>

@@ -3,4 +3,5 @@
     <string name="game_loading_download_core">Descargando núcleo…</string>
     <string name="installing_core_notification_title">Actualizando núcleos</string>
     <string name="installing_core_notification_message">Esto puede tardar unos minutos</string>
+    <string name="game_loader_error_load_core">El núcleo de Libretro no se cargó. Asegúrese de que su dispositivo esté conectado al Internet e intente volver a escanear su biblioteca. Si el problema persiste, es posible que este núcleo no sea compatible con tu dispositivo.</string>
 </resources>

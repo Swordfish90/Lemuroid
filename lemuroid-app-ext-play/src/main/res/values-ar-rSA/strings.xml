@@ -28,4 +28,8 @@
     <string name="game_loading_download_core">جاري تحميل النواة…</string>
     <string name="installing_core_notification_title">تحديث النواة من Play</string>
     <string name="installing_core_notification_message">تحقق من تطبيق متجر Google Play لرؤية الحالة الحالية</string>
+    <string name="game_loader_error_load_core">لم يتم تحميل نواة ليبرترو. جرب ما يلي:\n
+        \n\u2022 تمكين الاتصال بالإنترنت وإعادة فحص الألعاب الخاصة بك
+        \n\u2022 تأكد من تثبيت متجر Google Play وتشغيله
+        \n\u2022 انتظر العمليات المعلقة في تطبيق متجر Google Play لتنتهي</string>
 </resources>
