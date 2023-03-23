@@ -24,7 +24,9 @@
     <string name="pref_key_save_sync_configure" translatable="false">save_sync_configure</string>
     <string name="pref_key_save_sync_cores" translatable="false">save_sync_cores</string>
 
-    <string name="pref_key_shader_filter" translatable="false">shader_filter</string>
+    <string name="pref_key_shader_filter" translatable="false">shader_filter_0</string>
+    <string name="pref_key_hd_mode" translatable="false">hd_mode</string>
+    <string name="pref_key_legacy_hd_mode" translatable="false">legacy_hd_mode</string>
 
     <string-array translatable="false" name="pref_key_haptic_feedback_mode_values">
         <item>none</item>
@@ -44,7 +46,6 @@
         <item>smooth</item>
         <item>crt</item>
         <item>lcd</item>
-        <item>hd</item>
     </string-array>
 
     <string-array translatable="false" name="pref_key_shader_filter_display_names">
@@ -53,6 +54,5 @@
         <item>@string/shader_filter_names_smooth</item>
         <item>@string/shader_filter_names_crt</item>
         <item>@string/shader_filter_names_lcd</item>
-        <item>@string/shader_filter_names_hd</item>
     </string-array>
 </resources>
