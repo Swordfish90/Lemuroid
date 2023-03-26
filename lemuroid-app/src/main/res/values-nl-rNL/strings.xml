@@ -43,14 +43,14 @@
     <string name="settings_title_reset_settings">Fabrieksinstellingen herstellen</string>
     <string name="settings_description_reset_settings">Lemuroid terugzetten naar fabrieksinstellingen</string>
     <string name="settings_title_advanced_settings">Geavanceerde instellingen</string>
-    <string name="settings_description_advanced_settings">Geavanceerde instellingen tonen</string>
+    <string name="settings_description_advanced_settings">Toont geavanceerde instellingen</string>
     <string name="settings_title_low_latency_audio">Audio met lage latentie</string>
-    <string name="settings_description_low_latency_audio">Verminder audiolatentie op ondersteunde apparaten. Kan zorgen voor audio glitches.</string>
+    <string name="settings_description_low_latency_audio">Vermindert audiovertraging op ondersteunde apparaten, maar kan zorgen voor audio-glitches</string>
     <string name="settings_title_legacy_hd_mode">Oude HD-modus</string>
     <string name="settings_title_direct_game_load">Spel direct laden</string>
     <string name="settings_description_direct_game_load">(Experimenteel) Verminder laadtijd en cache-gebruik op ondersteunde consoles.</string>
     <string name="settings_title_enable_rumble">Trilling</string>
-    <string name="settings_description_enable_rumble">Trilling inschakelen in ondersteunde games en controllers</string>
+    <string name="settings_description_enable_rumble">Schakel trilling in bij ondersteunde games en controllers</string>
     <string name="settings_title_enable_device_rumble">Trilling van apparaat</string>
     <string name="settings_description_enable_device_rumble">Gebruik apparaattrilling indien er geen controller is aangesloten</string>
     <string name="reset_settings_warning_message_title">Weet u het zeker?</string>
