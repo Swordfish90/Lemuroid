@@ -27,4 +27,5 @@
     <string name="gdrive_last_sync_completed">Laatst gesynchroniseerd op: %s</string>
     <string name="game_loading_download_core">Core downloaden…</string>
     <string name="installing_core_notification_title">Cores bijwerken vanuit Google Play</string>
+    <string name="installing_core_notification_message">Kijk in de Google Play Store app voor de huidige status</string>
 </resources>
