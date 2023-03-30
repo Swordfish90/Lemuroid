@@ -1,2 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">Hem</string>
+    <string name="title_search">Sök</string>
+    <string name="title_systems">System</string>
+    <string name="title_games">Spel</string>
+    <string name="title_settings">Inställningar</string>
+    <string name="recent">Senast använda</string>
+    <string name="favorites">Favoriter</string>
+    <string name="discover">Upptäck</string>
+    <string name="rescan">Sök på nytt</string>
+    <string name="stop">Stopp</string>
+    <string name="none">Ingen</string>
+    <string name="directory">Katalog</string>
+    <string name="display_filter">Skärmfilter</string>
+    <string name="roms">ROMs</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Avbryt</string>
+    <string name="settings">Inställningar</string>
+    <string name="save_sync">Spara synkronisering</string>
+    <string name="show_all">Visa alla</string>
+    <string name="settings_category_general">Allmänt</string>
+    <string name="settings_category_input">Inmatning</string>
+    <string name="settings_category_misc">Övrigt</string>
+    <string name="settings_title_enable_autosave">Automatisk lägessparning</string>
+    <string name="settings_title_enable_touch_feedback">Vibrera vid tryck</string>
+</resources>
