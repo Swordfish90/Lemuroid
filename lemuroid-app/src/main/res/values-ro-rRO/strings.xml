@@ -8,11 +8,11 @@
     <string name="recent">Recente</string>
     <string name="favorites">Favorite</string>
     <string name="discover">Descoperă</string>
-    <string name="rescan">Rescan</string>
+    <string name="rescan">Rescanează</string>
     <string name="stop">Oprire</string>
-    <string name="none">Nimic</string>
+    <string name="none">Niciunul</string>
     <string name="directory">Dosar</string>
-    <string name="display_filter">Afișare filtru</string>
+    <string name="display_filter">Filtru ecran</string>
     <string name="roms">ROM-uri</string>
     <string name="ok">OK</string>
     <string name="cancel">Anulare</string>
