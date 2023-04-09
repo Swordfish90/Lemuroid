@@ -145,6 +145,7 @@ class SaveSyncManagerImpl(
     }
     private fun getInternalSaveFile(filename: String): File? {
         val saves = File(appContext.getExternalFilesDir(null), "saves")
+        saves.mkdirs()
         if(saves != null) {
             for(i in saves.listFiles()!!){
                 if(i.name.equals(filename)) {
