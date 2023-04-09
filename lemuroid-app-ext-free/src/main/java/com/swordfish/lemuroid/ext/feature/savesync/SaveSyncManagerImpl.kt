@@ -160,13 +160,17 @@ class SaveSyncManagerImpl(
         val output: OutputStream = FileOutputStream(internal)
         val input: InputStream? = appContext.contentResolver.openInputStream(saf.uri)
         copyFile(input, output)
-
+        // update last modified timestamp to match (this one backdates the file)
+        internal.setLastModified(saf.lastModified())
     }
 
     private fun copyFromInternalToSaf(saf: DocumentFile, internal: File) {
         val output: OutputStream? = appContext.contentResolver.openOutputStream(saf.uri)
         val input: InputStream = FileInputStream(internal)
         copyFile(input, output)
+
+        // update last modified timestamp to match
+        internal.setLastModified(saf.lastModified())
     }
 
     private fun copyFile(input: InputStream?, output: OutputStream?) {
