@@ -93,6 +93,7 @@ class SaveSyncManagerImpl(
                                         .e("SAF: ${saveFile.name} - ${saveFile.lastModified()}; Internal: ${internalTarget.lastModified()}")
                                     if (internalTarget.lastModified() < saveFile.lastModified()) {
                                         Timber.tag("SAF to Internal").e("SAF is newer")
+                                        copyFromSafToInternal(saveFile, internalTarget)
                                     } else {
                                         Timber.tag("SAF to Internal").e("Internal is newer")
                                     }
@@ -121,6 +122,7 @@ class SaveSyncManagerImpl(
                                     .e("Internal: ${i.name} - ${i.lastModified()}; SAF: ${safTarget.lastModified()}")
                                 if (safTarget.lastModified() < i.lastModified()) {
                                     Timber.tag("Internal to SAF").e("Internal is newer")
+                                    copyFromInternalToSaf(safTarget, i)
                                 } else {
                                     Timber.tag("Internal to SAF").e("SAF is newer")
                                 }
