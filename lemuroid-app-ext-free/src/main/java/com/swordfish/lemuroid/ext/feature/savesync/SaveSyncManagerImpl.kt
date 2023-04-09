@@ -73,15 +73,12 @@ class SaveSyncManagerImpl(
         synchronized(SYNC_LOCK) {
             val saveSyncResult = runCatching {
                 val safProviderUri = Uri.parse(storageUri)
-                val safDirectory = DocumentFile.fromTreeUri(appContext, safProviderUri)
-
+                val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
 
                 if (safDirectory != null) {
-                    val safSaves = safDirectory.findFile("saves")
-                    val saveFiles = safSaves?.listFiles()
+                    val saveFiles = safDirectory.listFiles()
 
                     if (saveFiles != null) {
-
                         // copy from saf to internal
 
                         for(saveFile in saveFiles) {
@@ -95,7 +92,7 @@ class SaveSyncManagerImpl(
                                         Timber.tag("SAF to Internal").e("SAF is newer")
                                         copyFromSafToInternal(saveFile, internalTarget)
                                     } else {
-                                        Timber.tag("SAF to Internal").e("Internal is newer")
+                                        //Timber.tag("SAF to Internal").e("Internal is newer")
                                     }
                                 } else {
                                     Log.e("SAF to Internal", "test: ${saveFile.name} does not exist in internal storage")
@@ -113,28 +110,29 @@ class SaveSyncManagerImpl(
 
                         // now copy from internal to saf
 
-                        val savesInternal = File(appContext.getExternalFilesDir(null), "saves")
+                        val savesInternal = File(appContext.getExternalFilesDir(null), "saves").listFiles()
 
-                        for(i in savesInternal.listFiles()){
-                            val safTarget = safSaves.findFile(i.name)
-                            if(safTarget != null) {
-                                Timber.tag("Internal to SAF")
-                                    .e("Internal: ${i.name} - ${i.lastModified()}; SAF: ${safTarget.lastModified()}")
-                                if (safTarget.lastModified() < i.lastModified()) {
-                                    Timber.tag("Internal to SAF").e("Internal is newer")
-                                    copyFromInternalToSaf(safTarget, i)
+                        if(savesInternal != null) {
+                            for(i in savesInternal){
+                                val safTarget = safDirectory.findFile(i.name)
+                                if(safTarget != null) {
+                                    Timber.tag("Internal to SAF")
+                                        .e("Internal: ${i.name} - ${i.lastModified()}; SAF: ${safTarget.lastModified()}")
+                                    if (safTarget.lastModified() < i.lastModified()) {
+                                        Timber.tag("Internal to SAF").e("Internal is newer")
+                                        copyFromInternalToSaf(safTarget, i)
+                                    } else {
+                                        //Timber.tag("Internal to SAF").e("SAF is newer")
+                                    }
                                 } else {
-                                    Timber.tag("Internal to SAF").e("SAF is newer")
+                                    val newTarget = safDirectory.createFile("application/octet-stream", i.name)
+                                    if (newTarget != null) {
+                                        copyFromInternalToSaf(newTarget, i)
+                                    }
                                 }
-                            } else {
-                                val newTarget = safSaves.createFile("application/octet-stream", i.name)
-                                if (newTarget != null) {
-                                    copyFromInternalToSaf(newTarget, i)
-                                }
+
                             }
-
                         }
-
                     }
                 }
                 lastSyncTimestamp = System.currentTimeMillis()
