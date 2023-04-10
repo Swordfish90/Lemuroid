@@ -76,7 +76,6 @@ class SaveSyncManagerImpl(
 
                     // now copy from internal to saf
                     checkLocalStorage(safDirectory)
-
                 }
                 lastSyncTimestamp = System.currentTimeMillis()
             }
@@ -86,20 +85,6 @@ class SaveSyncManagerImpl(
             }
         }
     }
-
-    private fun getInternalSaveFile(filename: String): File? {
-        val saves = File(appContext.getExternalFilesDir(null), "saves")
-        saves.mkdirs()
-        if(saves != null) {
-            for(i in saves.listFiles()!!){
-                if(i.name.equals(filename)) {
-                    return File(saves, i.name)
-                }
-            }
-        }
-        return null
-    }
-
 
     private fun checkRemoteStorage(safDirectory: DocumentFile) {
         val saveFiles = safDirectory.listFiles()
@@ -157,6 +142,23 @@ class SaveSyncManagerImpl(
         }
     }
 
+    private fun getInternalSaveFile(filename: String): File? {
+        val saves = File(appContext.getExternalFilesDir(null), "saves")
+        saves.mkdirs()
+        for(i in saves.listFiles()!!){
+            if(i.name.equals(filename)) {
+                return File(saves, i.name)
+            }
+        }
+        return null
+    }
+
+    /**
+     * Copy a file from the provided DocumentFile to File via copyFile().
+     * File will get an updated timestamp, matching the older DocumentFile.
+     * File will have a backdated timestamp. This is so that the sync-client will
+     * not "backsync" the "newer" file in Internal Storage back to SAF even if both are identical.
+     */
     private fun copyFromSafToInternal(saf: DocumentFile, internal: File) {
         val output: OutputStream = FileOutputStream(internal)
         val input: InputStream? = appContext.contentResolver.openInputStream(saf.uri)
@@ -165,6 +167,11 @@ class SaveSyncManagerImpl(
         internal.setLastModified(saf.lastModified())
     }
 
+    /**
+     * Copy a file from the provided File to DocumentFile via copyFile().
+     * File will get an updated timestamp, matching the (new) DocumentFile.
+     * For the reasoning, see copyFromSafToInternal()
+     */
     private fun copyFromInternalToSaf(saf: DocumentFile, internal: File) {
         val output: OutputStream? = appContext.contentResolver.openOutputStream(saf.uri)
         val input: InputStream = FileInputStream(internal)
@@ -174,29 +181,30 @@ class SaveSyncManagerImpl(
         internal.setLastModified(saf.lastModified())
     }
 
-    private fun copyFile(input: InputStream?, output: OutputStream?) {
-        if(input == null) {
-            Timber.e("Could not read source file!")
+
+    /**
+     * This function writes from input to output.
+     * Null-checks are performed and caught.
+     */
+    private fun copyFile(inputStream: InputStream?, outputStream: OutputStream?) {
+        if(inputStream == null) {
+            Timber.d("SaveSyncManagerImpl: copyFile: Could not read source file!")
             return
         }
-        if(output == null) {
-            Timber.e("Could not read target file!")
+        if(outputStream == null) {
+            Timber.d("SaveSyncManagerImpl: copyFile: Could not read target file!")
             return
         }
 
-        try {
-            try {
-                // Transfer bytes from in to out
-                val buf = ByteArray(1024)
+        inputStream.use { input ->
+            outputStream.use { output ->
+                // use 8k buffer for better performance
+                val buf = ByteArray(8192)
                 var len: Int
                 while (input.read(buf).also { len = it } > 0) {
                     output.write(buf, 0, len)
                 }
-            } finally {
-                output.close()
             }
-        } finally {
-            input.close()
         }
     }
 
