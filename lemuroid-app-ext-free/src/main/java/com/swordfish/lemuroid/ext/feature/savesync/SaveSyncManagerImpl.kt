@@ -40,19 +40,14 @@ class SaveSyncManagerImpl(
 
     override fun getProvider(): String = appContext.getString(R.string.saf_save_sync_providername)
 
-    // done
     override fun getSettingsActivity(): Class<out Activity>? = ActivateSAFActivity::class.java
 
-    // done
     override fun isSupported(): Boolean = true
 
-
-    // todo, check if pref has been set
     override fun isConfigured(): Boolean {
         return storageUri != ActivateSAFActivity.PREF_KEY_STORAGE_URI_NONE
     }
 
-    // done
     override fun getLastSyncInfo(): String {
         val dateString = if (lastSyncTimestamp > 0) {
             SimpleDateFormat.getDateTimeInstance().format(lastSyncTimestamp)
@@ -75,64 +70,13 @@ class SaveSyncManagerImpl(
                 val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
 
                 if (safDirectory != null) {
-                    val saveFiles = safDirectory.listFiles()
 
-                    if (saveFiles != null) {
-                        // copy from saf to internal
+                    // copy from saf to internal
+                    checkRemoteStorage(safDirectory)
 
-                        for(saveFile in saveFiles) {
-                            if(!saveFile.name.isNullOrEmpty()) {
+                    // now copy from internal to saf
+                    checkLocalStorage(safDirectory)
 
-                                val internalTarget = getInternalSaveFile(saveFile.name!!)
-                                if(internalTarget != null) {
-                                    Timber.tag("SAF to Internal")
-                                        .e("SAF: ${saveFile.name} - ${saveFile.lastModified()}; Internal: ${internalTarget.lastModified()}")
-                                    if (internalTarget.lastModified() < saveFile.lastModified()) {
-                                        Timber.tag("SAF to Internal").e("SAF is newer")
-                                        copyFromSafToInternal(saveFile, internalTarget)
-                                    } else {
-                                        //Timber.tag("SAF to Internal").e("Internal is newer")
-                                    }
-                                } else {
-                                    Log.e("SAF to Internal", "test: ${saveFile.name} does not exist in internal storage")
-                                    val internalDir = File(appContext.getExternalFilesDir(null), "saves");
-                                    val newTarget = File(internalDir, saveFile.name)
-                                    if (newTarget.createNewFile()) {
-                                        copyFromSafToInternal(saveFile, newTarget)
-                                    } else {
-                                        Timber.e("Could not create new file in internal storage")
-                                    }
-                                }
-
-                            }
-                        }
-
-                        // now copy from internal to saf
-
-                        val savesInternal = File(appContext.getExternalFilesDir(null), "saves").listFiles()
-
-                        if(savesInternal != null) {
-                            for(i in savesInternal){
-                                val safTarget = safDirectory.findFile(i.name)
-                                if(safTarget != null) {
-                                    Timber.tag("Internal to SAF")
-                                        .e("Internal: ${i.name} - ${i.lastModified()}; SAF: ${safTarget.lastModified()}")
-                                    if (safTarget.lastModified() < i.lastModified()) {
-                                        Timber.tag("Internal to SAF").e("Internal is newer")
-                                        copyFromInternalToSaf(safTarget, i)
-                                    } else {
-                                        //Timber.tag("Internal to SAF").e("SAF is newer")
-                                    }
-                                } else {
-                                    val newTarget = safDirectory.createFile("application/octet-stream", i.name)
-                                    if (newTarget != null) {
-                                        copyFromInternalToSaf(newTarget, i)
-                                    }
-                                }
-
-                            }
-                        }
-                    }
                 }
                 lastSyncTimestamp = System.currentTimeMillis()
             }
@@ -142,6 +86,7 @@ class SaveSyncManagerImpl(
             }
         }
     }
+
     private fun getInternalSaveFile(filename: String): File? {
         val saves = File(appContext.getExternalFilesDir(null), "saves")
         saves.mkdirs()
@@ -153,6 +98,63 @@ class SaveSyncManagerImpl(
             }
         }
         return null
+    }
+
+
+    private fun checkRemoteStorage(safDirectory: DocumentFile) {
+        val saveFiles = safDirectory.listFiles()
+
+        for(saveFile in saveFiles) {
+            if(!saveFile.name.isNullOrEmpty()) {
+                val internalTarget = getInternalSaveFile(saveFile.name!!)
+                if(internalTarget != null) {
+                    Timber.tag("SAF to Internal")
+                        .e("SAF: ${saveFile.name} - ${saveFile.lastModified()}; Internal: ${internalTarget.lastModified()}")
+                    if (internalTarget.lastModified() < saveFile.lastModified()) {
+                        Timber.tag("SAF to Internal").e("SAF is newer")
+                        copyFromSafToInternal(saveFile, internalTarget)
+                    } else {
+                        //Timber.tag("SAF to Internal").e("Internal is newer")
+                    }
+                } else {
+                    Log.e("SAF to Internal", "test: ${saveFile.name} does not exist in internal storage")
+                    val internalDir = File(appContext.getExternalFilesDir(null), "saves");
+                    val newTarget = File(internalDir, saveFile.name)
+                    if (newTarget.createNewFile()) {
+                        copyFromSafToInternal(saveFile, newTarget)
+                    } else {
+                        Timber.e("Could not create new file in internal storage")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkLocalStorage(safDirectory: DocumentFile) {
+        // todo: check if there is a "saves"-constant
+        val internalSavefiles = File(appContext.getExternalFilesDir(null), "saves").listFiles()
+
+        if(internalSavefiles != null) {
+            for(internalFile in internalSavefiles){
+                val safTarget = safDirectory.findFile(internalFile.name)
+                if(safTarget != null) {
+                    Timber.tag("Internal to SAF")
+                        .e("Internal: ${internalFile.name} - ${internalFile.lastModified()}; SAF: ${safTarget.lastModified()}")
+                    if (safTarget.lastModified() < internalFile.lastModified()) {
+                        Timber.tag("Internal to SAF").e("Internal is newer")
+                        copyFromInternalToSaf(safTarget, internalFile)
+                    } else {
+                        //Timber.tag("Internal to SAF").e("SAF is newer")
+                    }
+                } else {
+                    val newTarget = safDirectory.createFile("application/octet-stream", internalFile.name)
+                    if (newTarget != null) {
+                        copyFromInternalToSaf(newTarget, internalFile)
+                    }
+                }
+
+            }
+        }
     }
 
     private fun copyFromSafToInternal(saf: DocumentFile, internal: File) {
