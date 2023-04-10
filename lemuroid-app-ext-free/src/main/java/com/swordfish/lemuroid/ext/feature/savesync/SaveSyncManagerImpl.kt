@@ -3,7 +3,7 @@ package com.swordfish.lemuroid.ext.feature.savesync
 import android.app.Activity
 import android.content.Context
 import android.net.Uri
-import android.util.Log
+import android.text.format.Formatter
 import androidx.documentfile.provider.DocumentFile
 import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
 import com.swordfish.lemuroid.ext.R
@@ -12,11 +12,7 @@ import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import timber.log.Timber
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 
 
@@ -201,15 +197,29 @@ class SaveSyncManagerImpl(
         }
     }
 
+    override fun computeSavesSpace(): String {
+        var size = 0L
+        val safProviderUri = Uri.parse(storageUri)
+        val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
 
-    override fun computeSavesSpace() = ""
+        if (safDirectory != null) {
 
-    override fun computeStatesSpace(coreID: CoreID) = ""
+            val saveFiles = safDirectory.listFiles()
+
+            for (saveFile in saveFiles) {
+                size += saveFile.length()
+            }
+        }
+        return Formatter.formatShortFileSize(appContext, size)
+    }
+
+    override fun computeStatesSpace(coreID: CoreID): String {
+        return "0"
+    }
 
 
     companion object {
         const val GDRIVE_PROPERTY_LOCAL_PATH = "localPath"
         private val SYNC_LOCK = Object()
     }
-
 }
