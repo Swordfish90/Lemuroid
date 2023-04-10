@@ -56,7 +56,7 @@
     <string name="settings_title_enable_device_rumble">Vibração do dispositivo</string>
     <string name="settings_description_enable_device_rumble">Quando nenhum controle estiver conectado vibrar o dispositivo</string>
     <string name="reset_settings_warning_message_title">Você tem certeza?</string>
-    <string name="reset_settings_warning_message_description">Isso redefinirá o Lemuroid às suas configurações de fábrica. Saves e Estados serão preservados.</string>
+    <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Saves e Estados serão preservados.</string>
     <string name="settings_title_save_sync">Saves na nuvem</string>
     <string name="settings_description_save_sync">Faça backup e sincronize seus saves na nuvem</string>
     <string name="settings_save_sync_refresh">Sincronização Manual</string>
@@ -89,7 +89,7 @@
     <string name="game_menu_change_disk_disk">Disco %1$s</string>
     <string name="game_loading_preparing_game">Preparando o jogo…</string>
     <string name="game_toast_settings_button_using_gamepad">Controle detectado. Acesse o menu de configurações com %1$s.</string>
-    <string name="game_toast_load_state_failed">Não é possível carregar esse estado</string>
+    <string name="game_toast_load_state_failed">Não é possível carregar este estado</string>
     <string name="empty_view_default">Nenhum item</string>
     <string name="core_settings_title">Configurações do Núcleo</string>
     <string name="core_settings_category_preferences">Preferências</string>
@@ -98,13 +98,13 @@
     <string name="game_menu_title">Menu do jogo</string>
     <string name="notification_channel_name">Todas as notificações</string>
     <string name="library_index_notification_title">Verificação das ROMs em andamento</string>
-    <string name="library_index_notification_message">Isso pode levar alguns minutos</string>
+    <string name="library_index_notification_message">Isto pode levar alguns minutos</string>
     <string name="save_sync_notification_title">Sincronização em andamento para salvar na nuvem</string>
-    <string name="save_sync_notification_message">Isso pode levar alguns minutos</string>
+    <string name="save_sync_notification_message">Isto pode levar alguns minutos</string>
     <string name="game_running_notification_title">%1$s está em execução</string>
     <string name="game_running_notification_title_alternative">O jogo está em execução</string>
     <string name="game_running_notification_message">Certifique-se de salvar o seu progresso</string>
-    <string name="game_loader_error_gl_incompatible">Esse Núcleo requer uma versão OpenGL ES que não é suportada pelo seu dispositivo.</string>
+    <string name="game_loader_error_gl_incompatible">Este Núcleo requer uma versão OpenGL ES que não é suportada pelo seu dispositivo.</string>
     <string name="game_loader_error_load_game">Algo ruim aconteceu durante o carregamento da sua partida. Certifique-se de que a ROM é suportada pelo Lemuroid e reescaneie seus jogos.</string>
     <string name="game_loader_error_save">Algo ruim aconteceu com o seu arquivo salvo. Se o problema persistir, tente desativar o salvamento automático.</string>
     <string name="game_loader_error_unsupported_architecture">Esse Núcleo não é suportado pelo seu dispositivo.</string>
