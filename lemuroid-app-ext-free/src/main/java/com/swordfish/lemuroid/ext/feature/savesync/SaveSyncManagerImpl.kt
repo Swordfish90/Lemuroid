@@ -38,8 +38,7 @@ class SaveSyncManagerImpl(
     )
 
 
-    // done
-    override fun getProvider(): String = "SAF"
+    override fun getProvider(): String = appContext.getString(R.string.saf_save_sync_providername)
 
     // done
     override fun getSettingsActivity(): Class<out Activity>? = ActivateSAFActivity::class.java

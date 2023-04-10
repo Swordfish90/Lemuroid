@@ -7,4 +7,6 @@
 
     <string name="game_loader_error_load_core">The Libretro core was not loaded. Make sure your device is connected to internet and try to rescan your library. If the issue persist this core might not be supported on your device.</string>
     <string name="saf_last_sync_completed">Last sync: %s</string>
+    <string name="saf_save_sync_providername">SAF</string>
+    <string name="saf_save_sync_no_uri_selected">You have not selected a folder. Sync unavailable!</string>
 </resources>

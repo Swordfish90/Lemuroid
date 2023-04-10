@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.swordfish.lemuroid.ext.R
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -36,6 +37,11 @@ class ActivateSAFActivity : AppCompatActivity() {
                         )
                         setStorageUri(targetUri.toString())
                     }
+                    finish()
+                }
+                else -> {
+                    Toast.makeText(this, getString(R.string.saf_save_sync_no_uri_selected), Toast.LENGTH_LONG).show()
+                    setStorageUri(PREF_KEY_STORAGE_URI_NONE)
                     finish()
                 }
             }
