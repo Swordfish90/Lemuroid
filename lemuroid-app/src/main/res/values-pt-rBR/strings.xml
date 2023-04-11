@@ -107,16 +107,16 @@
     <string name="game_loader_error_gl_incompatible">Este Núcleo requer uma versão OpenGL ES que não é suportada pelo seu dispositivo.</string>
     <string name="game_loader_error_load_game">Algo ruim aconteceu durante o carregamento da sua partida. Certifique-se de que a ROM é suportada pelo Lemuroid e reescaneie seus jogos.</string>
     <string name="game_loader_error_save">Algo ruim aconteceu com o seu arquivo salvo. Se o problema persistir, tente desativar o salvamento automático.</string>
-    <string name="game_loader_error_unsupported_architecture">Esse Núcleo não é suportado pelo seu dispositivo.</string>
+    <string name="game_loader_error_unsupported_architecture">Este Núcleo não é suportado pelo seu dispositivo.</string>
     <string name="game_loader_error_generic">Parece que o núcleo do Libretro teve um problema inesperado. Se for persistente, tente o seguinte:\n
         \n\u2022 Desative o salvamento automático e execute o jogo novamente
         \n\u2022 Vá nas configurações do Android e limpe o cache do app
         \n\u2022 Vá nas configurações do Lemuroid e execute a formatação de fábrica
-        \n\n Se nenhuma das opções acima funcionar, pode ser possível que esse jogo/núcleo não seja compatível com esse dispositivo.
+        \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
     </string>
     <string name="game_loader_error_missing_bios">Parece que você está faltando a BIOS necessária, coloque-a no diretório das suas ROMs e tente novamente. Arquivos necessários: %1$s</string>
-    <string name="game_shortcut_error">Algo ruim aconteceu durante o carregamento do seu jogo. Por favor, certifique-se de que esse jogo ainda existe na sua biblioteca.</string>
-    <string name="dialog_saf_not_found">Esse dispositivo não suporta o selecionador de arquivo StorageAccessFramework. Por favor copie manualmente arquivos da ROM descomprimida para %1$s e aperte o reescanear.</string>
+    <string name="game_shortcut_error">Algo ruim aconteceu durante o carregamento do seu jogo. Por favor, certifique-se de que este jogo ainda existe na sua biblioteca.</string>
+    <string name="dialog_saf_not_found">Este dispositivo não suporta o selecionador de arquivo StorageAccessFramework. Por favor copie manualmente arquivos da ROM descomprimida para %1$s e aperte o reescanear.</string>
     <string name="system_grid_details">%1$s Jogos</string>
     <string name="tv_folder_picker_title">Selecionar diretório das ROMs</string>
     <string name="tv_folder_picker_action_choose">Selecionar</string>
@@ -145,9 +145,9 @@
         \n\u2022 Desative o salvamento automático e execute o jogo novamente
         \n\u2022 Vá nas configurações do Android e limpe o cache do app
         \n\u2022 Vá nas configurações do Lemuroid e execute a formatação de fábrica
-        \n\n Se nenhuma das opções acima funcionar, pode ser possível que esse jogo/núcleo não seja compatível com esse dispositivo.
+        \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
     </string>
-    <string name="error_message_incompatible_state">Esse estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
+    <string name="error_message_incompatible_state">Este estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
     <string name="shader_filter_names_auto">Automático</string>
     <string name="shader_filter_names_sharp">Nítido</string>
     <string name="shader_filter_names_smooth">Suavização</string>
