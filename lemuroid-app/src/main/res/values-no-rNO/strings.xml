@@ -50,6 +50,10 @@
     <string name="settings_title_legacy_hd_mode">Foretrekk eldre HD-modus</string>
     <string name="settings_description_legacy_hd_mode">Bruk alltid eldre HD-modus. Gir noe lavere kvalitet for bedre ytelse.</string>
     <string name="settings_title_direct_game_load">Direkte spillinnlasting</string>
+    <string name="settings_description_direct_game_load">(Eksperimentell) Reduser lastetiden og bruk av bufferminne på støttede konsoller.</string>
+    <string name="settings_title_enable_rumble">Vibrasjon</string>
+    <string name="settings_description_enable_rumble">Aktiver vibrasjon på støttede spill og kontrollere</string>
+    <string name="settings_title_enable_device_rumble">Enhets vibrasjon</string>
     <string name="save_sync_notification_message">Dette kan ta opp til flere minutter</string>
     <string name="game_running_notification_title">%1$s kjører</string>
     <string name="game_running_notification_title_alternative">Spillet kjører</string>
