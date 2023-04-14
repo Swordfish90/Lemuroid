@@ -101,6 +101,14 @@
     <string name="value_mupen64plus_mupen64plus_pak2_rumble">Vibrasjon</string>
     <string name="value_melonds_screen_layout_topbottom">Topp - Bunn</string>
     <string name="value_melonds_screen_layout_leftright">Venstre - Høyre</string>
+    <string name="value_melonds_screen_layout_hybridtop">Hybrid øverst</string>
+    <string name="value_melonds_screen_layout_hybridbottom">Hybrid nederst</string>
+    <string name="value_citra_layout_option_topbottom">Topp - Bunn</string>
+    <string name="value_citra_layout_option_sidebyside">Venstre - Høyre</string>
+    <string name="value_desmume_screens_layout_topbottom">Topp - Bunn</string>
+    <string name="value_desmume_screens_layout_leftright">Venstre - Høyre</string>
+    <string name="value_ppsspp_cpu_core_jit">JIT</string>
+    <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Tolk</string>
     <string name="value_wswan_rotate_display_landscape">Liggende</string>
     <string name="value_wswan_rotate_display_portrait">Stående</string>
