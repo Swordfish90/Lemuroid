@@ -48,12 +48,18 @@
     <string name="setting_ppsspp_texture_filtering">Texturfilterung</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">CPU Geschwindigkeit</string>
+    <string name="setting_desmume_screens_layout">Bildschirmanordnung</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
     <string name="setting_melonds_screen_layout">Bildschirmlayout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamischer Neukompilierer</string>
     <string name="setting_wswan_rotate_display">Bildschirmausrichtung</string>
     <string name="setting_wswan_mono_palette">Färbung</string>
+    <string name="setting_handy_rot">Bildschirmrotation</string>
+    <string name="setting_citra_layout_option">Bildschirmanordnung</string>
+    <string name="setting_citra_resolution_factor">Auflösungsskalierung</string>
+    <string name="setting_citra_use_acc_mul">Genaue Shader Multiplikation</string>
+    <string name="setting_citra_use_acc_geo_shaders">Genaue Geometry-Shader</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Deaktiviert</string>
     <string name="value_gambatte_mix_frames_mix">Einfach</string>
@@ -97,9 +103,16 @@
     <string name="value_melonds_screen_layout_leftright">Links - Rechts</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybrid oben</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybrid unten</string>
+    <string name="value_citra_layout_option_topbottom">Oben - Unten</string>
+    <string name="value_citra_layout_option_sidebyside">Links - Rechts</string>
+    <string name="value_desmume_screens_layout_topbottom">Oben - Unten</string>
+    <string name="value_desmume_screens_layout_leftright">Links - Rechts</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpreter</string>
     <string name="value_wswan_rotate_display_landscape">Querformat</string>
     <string name="value_wswan_rotate_display_portrait">Hochformat</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">90</string>
+    <string name="value_handy_rot_270">270</string>
 </resources>
