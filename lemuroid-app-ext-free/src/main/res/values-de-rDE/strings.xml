@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="game_loading_download_core">Lade Core herunter…</string>
+    <string name="installing_core_notification_message">Dies kann einige Minuten dauern</string>
 </resources>
