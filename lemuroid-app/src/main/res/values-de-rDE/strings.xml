@@ -26,6 +26,8 @@
     <string name="settings_title_enable_touch_feedback">Vibrieren bei Berührung</string>
     <string name="settings_title_tilt_sensitivity">Neigungssensor Empfindlichkeit</string>
     <string name="settings_title_maximum_cache_usage">Cache-Größenlimit</string>
+    <string name="settings_title_hd_mode">HD-Modus</string>
+    <string name="settings_description_hd_mode">Verwende post-processing Upscaling-Filter</string>
     <string name="settings_title_gamepad_settings">Externe Geräte</string>
     <string name="settings_description_gamepad_settings">Konfiguriere externe Gamepads und Tastaturen</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -45,6 +47,8 @@
     <string name="settings_description_advanced_settings">Erweiterte Einstellungen anzeigen</string>
     <string name="settings_title_low_latency_audio">Bevorzuge latenzarmen Ton</string>
     <string name="settings_description_low_latency_audio">Reduziert die Audio-Latenz auf unterstützten Geräten. Erhöht möglicherweise Audiofehler.</string>
+    <string name="settings_title_legacy_hd_mode">Verwende alten HD-Modus</string>
+    <string name="settings_description_legacy_hd_mode">Alten HD-Modus immer verwenden. Verschlechtert Qualität leicht, dafür etwas bessere Leistung.</string>
     <string name="settings_title_direct_game_load">Spiele sofort laden</string>
     <string name="settings_description_direct_game_load">(Experimentell) Reduziert Ladezeit und Cache-Nutzung auf unterstützten Konsolen.</string>
     <string name="settings_title_enable_rumble">Rumble</string>
@@ -103,6 +107,7 @@
     <string name="game_loader_error_gl_incompatible">Dieser Core benötigt eine OpenGL ES Version, die von Ihrem Gerät nicht unterstützt wird.</string>
     <string name="game_loader_error_load_game">Beim Laden deines Spiels ist etwas schief gelaufen. Bitte stell sicher, dass der ROM von Lemuroid unterstützt wird und scanne deine Spiele erneut.</string>
     <string name="game_loader_error_save">Mit deinem Speicherstand ist etwas schief gelaufen. Wenn das Problem weiterhin besteht, versuche das automatische Speichern zu deaktivieren.</string>
+    <string name="game_loader_error_unsupported_architecture">Dieser Kern wird von deinem Gerät nicht unterstützt.</string>
     <string name="game_loader_error_generic">Etwas ist schief gelaufen. Versuche Folgendes:\n
         \n\u2022 Auto-Speichern deaktivieren und das Spiel erneut starten
         \n\u2022 Gehe in die Android Einstellungen und lösche den App-Cache
@@ -123,6 +128,8 @@
     <string name="tv_home_section_recents">Zuletzt benutzt</string>
     <string name="tv_home_section_systems">Systeme</string>
     <string name="tv_home_section_settings">Einstellungen</string>
+    <string name="gamepad_binding_update_title">Ordne \"RetroPad %1$s\" zu</string>
+    <string name="gamepad_binding_update_description">Drücke eine Taste auf deinem \"%1$s\"</string>
     <string name="tv_search_results">Spiele</string>
     <string name="tv_game_message_missing_gamepad">Gamepads sind zum Spielen erforderlich. Bitte eines verbinden.</string>
     <string name="game_edit_touch_controls_error_not_visible">Trenne dein Pad um deine Touchsteuerungen zu bearbeiten</string>
@@ -141,4 +148,7 @@
         \n\n Wenn keine der oben genannten Möglichkeiten funktioniert, ist es möglich, dass dieses Game/Core von diesem Gerät nicht unterstützt wird.
     </string>
     <string name="error_message_incompatible_state">Dieser Speicherstatus ist nicht mit der aktuellen Core-Version kompatibel. Bitte laden Sie den aktuellen Spielspeicher oder verwenden Sie eine vorherige Lemuroid-Version.</string>
+    <string name="shader_filter_names_auto">Automatisch</string>
+    <string name="shader_filter_names_sharp">Scharf</string>
+    <string name="shader_filter_names_smooth">Weichzeichnen</string>
 </resources>
