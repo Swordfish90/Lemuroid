@@ -14,6 +14,9 @@ import timber.log.Timber
 
 class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     GameMetadataProvider {
+    companion object {
+        private val THUMB_REPLACE = Regex("[&*/:`<>?\\\\|]")
+    }
 
     private val sortedSystemIds: List<String> by lazy {
         SystemID.values()
@@ -155,7 +158,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
 
         val imageType = "Named_Boxarts"
 
-        val thumbGameName = name.replace("&", "_")
+        val thumbGameName = name.replace(THUMB_REPLACE, "_")
 
         return "http://thumbnails.libretro.com/$systemName/$imageType/$thumbGameName.png"
     }
