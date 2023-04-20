@@ -16,7 +16,7 @@ dependencies {
 
     implementation(deps.libs.retrofit)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(deps.libs.androidx.appcompat.appcompat)
+    implementation(deps.libs.androidx.appcompat.constraintLayout)
+    implementation(deps.libs.material)
 }
