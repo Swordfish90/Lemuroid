@@ -29,6 +29,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
         context.resources.getStringArray(R.array.pref_key_shader_filter_values).first()
     )
 
+    suspend fun screenAutorotate() = booleanPreference(R.string.pref_key_autorotate,false)
+
     suspend fun hdMode() = booleanPreference(R.string.pref_key_hd_mode, false)
 
     suspend fun forceLegacyHdMode() = booleanPreference(R.string.pref_key_legacy_hd_mode, false)

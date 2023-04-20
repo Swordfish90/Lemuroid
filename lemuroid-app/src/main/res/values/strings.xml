@@ -199,5 +199,7 @@
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>
     <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
+    <string name="settings_title_autorotate">Screen Autorotation</string>
+    <string name="settings_description_autorotate">Follow Device-Orientation regardless of Orientationlock.</string>
 
 </resources>

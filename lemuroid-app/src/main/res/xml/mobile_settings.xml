@@ -56,6 +56,13 @@
             app:useSimpleSummaryProvider="true"
             android:defaultValue="auto"/>
 
+        <SwitchPreferenceCompat
+            android:key="@string/pref_key_autorotate"
+            android:title="@string/settings_title_autorotate"
+            android:summary="@string/settings_description_autorotate"
+            app:iconSpaceReserved="false"
+            android:defaultValue="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
