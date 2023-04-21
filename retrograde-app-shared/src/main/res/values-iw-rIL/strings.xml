@@ -12,5 +12,8 @@
     <string name="controller_portrait">לאורך</string>
     <string name="controller_dos_auto">אוטומטי</string>
     <!-- Core settings titles -->
+    <string name="setting_mgba_color_correction">תיקון צבעים</string>
+    <string name="setting_mupen64plus_43screensize">גודל מסך 4:3</string>
+    <string name="setting_ppsspp_internal_resolution">רזולוציה</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
 </resources>
