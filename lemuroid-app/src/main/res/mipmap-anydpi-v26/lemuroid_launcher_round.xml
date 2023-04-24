@@ -2,4 +2,5 @@
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
     <background android:drawable="@color/lemuroid_launcher_background"/>
     <foreground android:drawable="@drawable/lemuroid_launcher_foreground"/>
+    <monochrome android:drawable="@drawable/lemuroid_launcher_monochrome"/>
 </adaptive-icon>
