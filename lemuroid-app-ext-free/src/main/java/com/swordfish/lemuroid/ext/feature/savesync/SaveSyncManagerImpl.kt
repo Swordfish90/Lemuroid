@@ -72,7 +72,7 @@ class SaveSyncManagerImpl(
                 if (safDirectory != null) {
 
                     // copy from saf to internal
-                    //updateInternalStorage(safDirectory)
+                    updateInternalStorage(safDirectory)
 
                     // now copy from internal to saf
                     updateRemoteStorage(safDirectory)
@@ -87,26 +87,38 @@ class SaveSyncManagerImpl(
     }
 
     private fun updateInternalStorage(safDirectory: DocumentFile) {
-        val saveFiles = safDirectory.listFiles()
+        val internalSaves = File(appContext.getExternalFilesDir(null), "saves")
+        updateInternalStorageFolder(safDirectory, internalSaves)
+    }
 
-        for (saveFile in saveFiles) {
-            if (!saveFile.name.isNullOrEmpty()) {
-                val internalTarget = getInternalSaveFile(saveFile.name!!)
-                if (internalTarget != null) {
-                    if (internalTarget.lastModified() < saveFile.lastModified()) {
-                        copyFromSafToInternal(saveFile, internalTarget)
+    private fun updateInternalStorageFolder(currentSafTarget: DocumentFile, currentInternalFolder: File) {
+        for (saveFile in currentSafTarget.listFiles()) {
+            if(saveFile.isFile) {
+                if (!saveFile.name.isNullOrEmpty()) {
+                    val internalTarget = getFileFromFolder(currentInternalFolder, saveFile.name.toString())
+                    if(internalTarget != null){
+                        if (internalTarget.lastModified() < saveFile.lastModified()) {
+                            copyFromSafToInternal(saveFile, internalTarget)
+                        }
+                    } else {
+                        val newTarget = File(currentInternalFolder, saveFile.name)
+                        if (newTarget.createNewFile()) {
+                            copyFromSafToInternal(saveFile, newTarget)
+                        } else {
+                            Timber.e("Could not create new file in internal storage")
+                        }
                     }
                 } else {
-                    val internalDir = File(appContext.getExternalFilesDir(null), "saves");
-                    val newTarget = File(internalDir, saveFile.name)
-                    if (newTarget.createNewFile()) {
-                        copyFromSafToInternal(saveFile, newTarget)
-                    } else {
-                        Timber.e("Could not create new file in internal storage")
-                    }
+                    Timber.tag("SAF to Internal").d("Error: Remote file does not have a name!")
                 }
             } else {
-                Timber.tag("SAF to Internal").d("Error: Remote file does not have a name!")
+                var internalFolder = getFileFromFolder(currentInternalFolder, saveFile.name.toString())
+                if(internalFolder == null) {
+                    internalFolder = File(currentInternalFolder.absolutePath+"/"+saveFile.name)
+                    internalFolder.mkdirs()
+                }
+
+                updateInternalStorageFolder(saveFile, internalFolder)
             }
         }
     }
@@ -134,14 +146,13 @@ class SaveSyncManagerImpl(
                     }
                 }
             } else {
-
                 var targetFolder = currentSafTarget.findFile(internalFile.name)
                 if(targetFolder == null || !targetFolder.exists()){
                     targetFolder = currentSafTarget.createDirectory(internalFile.name)
                 }
 
                 if (targetFolder == null) {
-                    Log.e("SaveSync", "Target is null. Skipping.")
+                    Timber.e("SaveSync", "Target is null. Skipping.")
                     return
                 }
                 updateRemoteStorageFolder( internalFile, targetFolder)
@@ -149,12 +160,14 @@ class SaveSyncManagerImpl(
         }
     }
 
-    private fun getInternalSaveFile(filename: String): File? {
-        val saves = File(appContext.getExternalFilesDir(null), "saves")
-        saves.mkdirs()
-        for (i in saves.listFiles()!!) {
+    private fun getFileFromFolder(folder: File, filename: String): File? {
+        if(!folder.isDirectory){
+            return null
+        }
+
+        for (i in folder.listFiles()) {
             if (i.name.equals(filename)) {
-                return File(saves, i.name)
+                return i
             }
         }
         return null
@@ -167,6 +180,9 @@ class SaveSyncManagerImpl(
      * not "backsync" the "newer" file in Internal Storage back to SAF even if both are identical.
      */
     private fun copyFromSafToInternal(saf: DocumentFile, internal: File) {
+        Log.e("SaveSync", "To: "+internal.name)
+        Log.e("SaveSync", "From: "+saf.name)
+
         val output: OutputStream = FileOutputStream(internal)
         val input: InputStream? = appContext.contentResolver.openInputStream(saf.uri)
         copyFile(input, output)

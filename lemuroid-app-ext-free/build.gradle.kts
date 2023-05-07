@@ -19,4 +19,5 @@ dependencies {
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.material)
+    implementation("androidx.documentfile:documentfile:1.0.1")
 }
