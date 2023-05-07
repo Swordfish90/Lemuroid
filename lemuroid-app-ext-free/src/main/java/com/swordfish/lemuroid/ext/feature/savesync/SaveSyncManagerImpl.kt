@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.text.format.Formatter
+import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import com.swordfish.lemuroid.common.kotlin.SharedPreferencesDelegates
 import com.swordfish.lemuroid.ext.R
@@ -71,7 +72,7 @@ class SaveSyncManagerImpl(
                 if (safDirectory != null) {
 
                     // copy from saf to internal
-                    updateInternalStorage(safDirectory)
+                    //updateInternalStorage(safDirectory)
 
                     // now copy from internal to saf
                     updateRemoteStorage(safDirectory)
@@ -112,21 +113,38 @@ class SaveSyncManagerImpl(
 
     private fun updateRemoteStorage(safDirectory: DocumentFile) {
         // todo: check if there is a "saves"-constant
-        val internalSavefiles = File(appContext.getExternalFilesDir(null), "saves").listFiles()
+        val internalSavefiles = File(appContext.getExternalFilesDir(null), "saves")
+        updateRemoteStorageFolder(internalSavefiles, safDirectory)
+    }
 
-        if (internalSavefiles != null) {
-            for (internalFile in internalSavefiles) {
-                val safTarget = safDirectory.findFile(internalFile.name)
+    private fun updateRemoteStorageFolder(currentInternalFolder: File, currentSafTarget: DocumentFile) {
+        val recursiveFiles = currentInternalFolder.listFiles()
+
+        for (internalFile in recursiveFiles) {
+            if(internalFile.isFile) {
+                val safTarget = currentSafTarget.findFile(internalFile.name)
                 if (safTarget != null) {
                     if (safTarget.lastModified() < internalFile.lastModified()) {
                         copyFromInternalToSaf(safTarget, internalFile)
                     }
                 } else {
-                    val newTarget = safDirectory.createFile("application/octet-stream", internalFile.name)
+                    val newTarget = currentSafTarget.createFile("application/octet-stream", internalFile.name)
                     if (newTarget != null) {
                         copyFromInternalToSaf(newTarget, internalFile)
                     }
                 }
+            } else {
+
+                var targetFolder = currentSafTarget.findFile(internalFile.name)
+                if(targetFolder == null || !targetFolder.exists()){
+                    targetFolder = currentSafTarget.createDirectory(internalFile.name)
+                }
+
+                if (targetFolder == null) {
+                    Log.e("SaveSync", "Target is null. Skipping.")
+                    return
+                }
+                updateRemoteStorageFolder( internalFile, targetFolder)
             }
         }
     }
@@ -162,8 +180,11 @@ class SaveSyncManagerImpl(
      * For the reasoning, see copyFromSafToInternal()
      */
     private fun copyFromInternalToSaf(saf: DocumentFile, internal: File) {
+        Log.e("SaveSync", "Copy to: "+saf.name)
         val output: OutputStream? = appContext.contentResolver.openOutputStream(saf.uri)
         val input: InputStream = FileInputStream(internal)
+
+
         copyFile(input, output)
 
         // update last modified timestamp to match
@@ -199,16 +220,20 @@ class SaveSyncManagerImpl(
 
     override fun computeSavesSpace(): String {
         var size = 0L
-        val safProviderUri = Uri.parse(storageUri)
-        val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
+        try {
+            val safProviderUri = Uri.parse(storageUri)
+            val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
 
-        if (safDirectory != null) {
+            if (safDirectory != null) {
 
-            val saveFiles = safDirectory.listFiles()
+                val saveFiles = safDirectory.listFiles()
 
-            for (saveFile in saveFiles) {
-                size += saveFile.length()
+                for (saveFile in saveFiles) {
+                    size += saveFile.length()
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         return Formatter.formatShortFileSize(appContext, size)
     }
