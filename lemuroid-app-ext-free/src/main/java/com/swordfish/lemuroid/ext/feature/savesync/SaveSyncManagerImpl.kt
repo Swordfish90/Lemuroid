@@ -72,10 +72,14 @@ class SaveSyncManagerImpl(
                 if (safDirectory != null) {
 
                     // copy from saf to internal
-                    updateInternalStorage(safDirectory)
+                    updateInternalStorage(safDirectory, "saves")
 
                     // now copy from internal to saf
-                    updateRemoteStorage(safDirectory)
+                    updateRemoteStorage(safDirectory, "saves")
+
+                    //repeat for states
+                    updateInternalStorage(safDirectory, "states")
+                    updateRemoteStorage(safDirectory, "states")
                 }
                 lastSyncTimestamp = System.currentTimeMillis()
             }
@@ -86,9 +90,16 @@ class SaveSyncManagerImpl(
         }
     }
 
-    private fun updateInternalStorage(safDirectory: DocumentFile) {
-        val internalSaves = File(appContext.getExternalFilesDir(null), "saves")
-        updateInternalStorageFolder(safDirectory, internalSaves)
+    private fun updateInternalStorage(safDirectory: DocumentFile, subdir: String) {
+        val internalSaves = File(appContext.getExternalFilesDir(null), subdir)
+        var safSubdir = safDirectory.findFile(subdir)
+        if(safSubdir == null) {
+            safSubdir = safDirectory.createDirectory(subdir)
+        }
+
+        if (safSubdir != null) {
+            updateInternalStorageFolder(safSubdir, internalSaves)
+        }
     }
 
     private fun updateInternalStorageFolder(currentSafTarget: DocumentFile, currentInternalFolder: File) {
@@ -123,10 +134,18 @@ class SaveSyncManagerImpl(
         }
     }
 
-    private fun updateRemoteStorage(safDirectory: DocumentFile) {
+    private fun updateRemoteStorage(safDirectory: DocumentFile, subdir: String) {
         // todo: check if there is a "saves"-constant
-        val internalSavefiles = File(appContext.getExternalFilesDir(null), "saves")
-        updateRemoteStorageFolder(internalSavefiles, safDirectory)
+        val internalSavefiles = File(appContext.getExternalFilesDir(null), subdir)
+
+        var safSubdir = safDirectory.findFile(subdir)
+        if(safSubdir == null) {
+            safSubdir = safDirectory.createDirectory(subdir)
+        }
+
+        if (safSubdir != null) {
+            updateRemoteStorageFolder(internalSavefiles, safSubdir)
+        }
     }
 
     private fun updateRemoteStorageFolder(currentInternalFolder: File, currentSafTarget: DocumentFile) {
