@@ -2,4 +2,5 @@
 <resources>
     <string name="touch_customize_button_done">Gotowe</string>
     <string name="touch_customize_button_reset">Resetuj</string>
+    <string name="touch_customize_info">Przeciągnij i uszczypnij, aby zmienić pozycję i rozmiar</string>
 </resources>
