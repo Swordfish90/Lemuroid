@@ -46,6 +46,15 @@
     <string name="settings_title_advanced_settings">Ustawienia zaawansowane</string>
     <string name="settings_description_advanced_settings">Wyświetl ustawienia zaawansowane</string>
     <string name="settings_title_low_latency_audio">Preferuj dźwięk o niskim opóźnieniu</string>
+    <string name="settings_description_low_latency_audio">Zmniejsz opóźnienie dźwięku na obsługiwanych urządzeniach. Może zwiększyć błędy dźwięku.</string>
+    <string name="settings_title_legacy_hd_mode">Preferuj stary tryb HD</string>
+    <string name="settings_description_legacy_hd_mode">Zawsze używaj starszego trybu HD. Polepsza wydajność względem jakości.</string>
+    <string name="settings_title_direct_game_load">Bezpośrednie ładowanie gry</string>
+    <string name="settings_description_direct_game_load">(Eksperymentalne) Zmniejsz czas ładowania i użycie pamięci podręcznej na obsługiwanych konsolach.</string>
+    <string name="settings_title_enable_rumble">Wibracje</string>
+    <string name="settings_description_enable_rumble">Włącz wibracje w obsługiwanych grach i kontrolerach</string>
+    <string name="settings_title_enable_device_rumble">Wibracje urządzenia</string>
+    <string name="settings_description_enable_device_rumble">Wibracja urządzenia, gdy żaden kontroler nie jest podłączony</string>
     <string name="reset_settings_warning_message_title">Jesteś pewien?</string>
     <string name="reset_settings_warning_message_description">To zresetuje Lemuroid do ustawień fabrycznych. Save\'y i Stany zostaną zachowane.</string>
     <string name="settings_title_save_sync">Zapisy w Chmurze</string>
@@ -98,6 +107,7 @@
     <string name="game_loader_error_gl_incompatible">Te jądro wymaga wersji OpenGL ES, która nie jest obsługiwana przez twoje urządzenie.</string>
     <string name="game_loader_error_load_game">Coś złego stało się podczas ładowania Twojej gry. Upewnij się, że ROM jest obsługiwany przez Lemuroid i ponownie przeskanuj swoje gry.</string>
     <string name="game_loader_error_save">Coś złego stało się z plikiem zapisu. Jeśli problem będzie się powtarzał, spróbuj wyłączyć automatyczne zapisywanie.</string>
+    <string name="game_loader_error_unsupported_architecture">Twoje urządzenie nie obsługuje tego rdzenia.</string>
     <string name="game_loader_error_generic">Coś złego się stało. Wypróbuj co następuje:\n
         \n\u2022 Wyłącz automatyczne zapisywanie i uruchom ponownie grę
         \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji
@@ -106,18 +116,44 @@
     </string>
     <string name="game_loader_error_missing_bios">Wygląda na to, że brakuje ci wymaganego BIOS-u, umieść go w katalogu ROM-ów i użyj skanowania plików. Wymagane pliki: %1$s</string>
     <string name="game_shortcut_error">Coś złego stało się podczas ładowania gry. Upewnij się, że ta gra nadal istnieje w twojej bibliotece.</string>
+    <string name="dialog_saf_not_found">To urządzenie nie obsługuje selektora plików StorageAccessFramework. Proszę ręcznie skopiować nieskompresowane pliki ROM do %1$s i nacisnąć Skanuj.</string>
     <string name="system_grid_details">%1$s gry</string>
     <string name="tv_folder_picker_title">Wybierz katalog ROM-ów</string>
     <string name="tv_folder_picker_action_choose">Wybierz</string>
     <string name="tv_folder_picker_action_cancel">Anuluj</string>
     <string name="tv_folder_storage_primary">Pamięć wewnętrzna</string>
+    <string name="tv_folder_storage_secondary">Druga pamięć %1$s</string>
     <string name="tv_folder_storage_title">Wybierz pamięć</string>
     <string name="tv_home_section_favorites">Ulubione</string>
     <string name="tv_home_section_recents">Ostatnie</string>
     <string name="tv_home_section_systems">Systemy</string>
     <string name="tv_home_section_settings">Ustawienia</string>
+    <string name="gamepad_binding_update_title">Połącz \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Naciśnij przycisk na \"%1$s\"</string>
     <string name="tv_search_results">Gry</string>
+    <string name="tv_game_message_missing_gamepad">Do gry wymagany jest gamepad. Proszę podłączyć jeden.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Odłącz gamepada, aby edytować sterowanie dotykiem</string>
+    <string name="game_interactory_busy">Poczekaj na zakończenie trwających operacji</string>
     <string name="mobile_settings_help">Pomoc</string>
     <string name="mobile_settings_support">Wsparcie</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Jak używać Lemuroid?</b><br/>
+        Skopiuj wszystkie pliki ROM-ów do katalogu na swoim urządzeniu i wybierz je w Lemuroidzie. Ten katalog może mieć podkatalogi. Po zakończeniu skanowania powinieneś zobaczyć swoje gry.<br/><br/>
+        <b>&#8226;Dlaczego nie wykryto moich gier?</b><br/>
+        Jeśli twoje gry są skompresowane, spróbuj je rozpakować. Jeśli ten sposób nie działa, spróbuj umieścić ROMy w oddzielnych katalogach, jeden dla każdego systemu o następujących nazwach: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Wygląda na to, że rdzeń Libretro doświadczył nieoczekiwanego problemu. Jeśli problem nie ustąpi, spróbuj następujących rozwiązań:\n
+        \n\u2022 Wyłącz automatyczne zapisywanie i uruchom ponownie grę
+        \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji
+        \n\u2022 Przejdź do ustawień Lemuroid i wykonaj reset do ustawień fabrycznych
+        \n\n Jeśli żadne z powyższych rozwiązań nie dziala, możliwe że Gra/Rdzeń jest nieobsługiwany przez to urządzenie.
+    </string>
     <string name="error_message_incompatible_state">Ten stan zapisu nie jest kompatybilny z aktualną wersją jądra. Proszę załadować najnowszy zapis w grze lub użyć poprzedniej wersji Lemuroid.</string>
+    <string name="shader_filter_names_auto">Automatyczny</string>
+    <string name="shader_filter_names_sharp">Ostrość</string>
+    <string name="shader_filter_names_smooth">Wygładzone</string>
+    <string name="shader_filter_names_crt">Kineskop</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">Brak</string>
+    <string name="haptic_feedback_mode_names_press">Naciśnij</string>
+    <string name="haptic_feedback_mode_names_press_release">Przytrzymaj &amp; puść</string>
 </resources>
