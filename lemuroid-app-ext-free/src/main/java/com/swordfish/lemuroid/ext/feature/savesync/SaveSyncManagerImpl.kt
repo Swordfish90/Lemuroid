@@ -255,31 +255,53 @@ class SaveSyncManagerImpl(
 
     override fun computeSavesSpace(): String {
         var size = 0L
-        try {
-            val safProviderUri = Uri.parse(storageUri)
-            val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
+        val safProviderUri = Uri.parse(storageUri)
+        val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
+        val saves = safDirectory?.findFile("saves")
 
-            if (safDirectory != null) {
-
-                val saveFiles = safDirectory.listFiles()
-
-                for (saveFile in saveFiles) {
-                    size += saveFile.length()
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (safDirectory != null) {
+            size = saves?.let { getSpaceForDirectory(it) } ?: 0L
         }
+
         return Formatter.formatShortFileSize(appContext, size)
     }
 
     override fun computeStatesSpace(coreID: CoreID): String {
-        return "0"
+        var size = 0L
+
+        val safProviderUri = Uri.parse(storageUri)
+        val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
+        val states = safDirectory?.findFile("states")
+        val core = states?.findFile(coreID.coreName)
+
+        if (safDirectory != null) {
+            size = core?.let { getSpaceForDirectory(it) } ?: 0L
+        }
+
+        return Formatter.formatShortFileSize(appContext, size)
+    }
+
+    /**
+     * Calculate the size for a given folder, and its subdirectories.
+     * Only respects files, folders are not counted.
+     */
+    private fun getSpaceForDirectory(safDirectory: DocumentFile): Long {
+        val files = safDirectory.listFiles()
+        var size = 0L
+
+        for (file in files) {
+            if(file.isFile) {
+                size += file.length()
+            } else {
+                size += getSpaceForDirectory(file)
+            }
+        }
+
+        return size
     }
 
 
     companion object {
-        const val GDRIVE_PROPERTY_LOCAL_PATH = "localPath"
         private val SYNC_LOCK = Object()
     }
 }
