@@ -83,6 +83,7 @@
     <string name="value_genesis_plus_gx_overscan_topbottom">Πάνω-κάτω</string>
     <string name="value_genesis_plus_gx_overscan_leftright">Αριστερά/Δεξιά</string>
     <string name="value_genesis_plus_gx_overscan_full">Πλήρης</string>
+    <string name="value_mupen64plus_cpucore_cachedinterpreter">Cached Διερμηνέας</string>
     <string name="value_mupen64plus_bilinearmode_standard">Τυπικό</string>
     <string name="value_mupen64plus_bilinearmode_3point">3 Σημείων</string>
     <string name="value_mupen64plus_mupen64plus_pak1_memory">Μνήμη</string>
