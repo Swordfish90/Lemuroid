@@ -53,11 +53,20 @@
     <string name="settings_description_direct_game_load">(Πειραματικό) Μειώστε το χρόνο φόρτωσης και τη χρήση cache σε υποστηριζόμενες κονσόλες.</string>
     <string name="settings_title_enable_rumble">Δόνηση</string>
     <string name="settings_description_enable_rumble">Ενεργοποίηση δόνησης σε υποστηριζόμενα παιχνίδια και χειριστήρια</string>
+    <string name="settings_description_enable_device_rumble">Όταν κανένας controller δεν είναι συνδεδεμένος, δονείται η συσκευή</string>
+    <string name="reset_settings_warning_message_title">Είστε σίγουρος/η;</string>
+    <string name="reset_settings_warning_message_description">Αυτό θα επαναφέρει το Lemuroid στις εργοστασιακές του ρυθμίσεις. Τα saves και τα states θα διατηρηθούν.</string>
+    <string name="settings_title_save_sync">Αποθηκευμένα στο Cloud</string>
+    <string name="settings_description_save_sync">Δημιουργία αντίγραφου ασφαλείας και συγχρονισμός των saves στο cloud</string>
+    <string name="settings_save_sync_refresh">Χειροκίνητος συγχρονισμός</string>
+    <string name="settings_save_sync_refresh_description">Εκτέλεση χειροκίνητου συγχρονισμού τώρα.\n%1$s</string>
     <string name="settings_save_sync_enable_auto">Αυτόματος Συγχρονισμός</string>
+    <string name="settings_save_sync_enable_auto_description">Αυτόματη εκτέλεση συγχρονισμού πριν και μετά από μια συνεδρία κατά τη σύνδεση με το Wifi</string>
     <string name="settings_save_sync_configure">Διαμόρφωση %1$s</string>
     <string name="settings_save_sync_include_saves">Συγχρονισμός των saves εντός του παιχνιδιού</string>
     <string name="settings_save_sync_include_saves_description">%1$s στη συσκευή</string>
     <string name="settings_save_sync_include_states">Συγχρονισμός καταστάσεων</string>
+    <string name="settings_save_sync_include_states_description">Πιο βολικό, αλλά βαρύτερο και λιγότερο αξιόπιστο. Επιλέξτε ποιό πυρήνα/συστήματα θέλετε να συγχρονίσετε</string>
     <string name="game_context_menu_add_to_favorites">Προσθήκη στα αγαπημένα</string>
     <string name="game_context_menu_remove_from_favorites">Αφαίρεση από τα αγαπημένα</string>
     <string name="game_context_menu_resume">Συνέχεια</string>
@@ -131,6 +140,7 @@
         <b>&#8226;Γιατί δεν έχουν εντοπιστεί τα παιχνίδια μου?</b><br/>
         Αν τα παιχνίδια σας είναι συμπιεσμένα, δοκιμάστε να τα αποσυμπιέσετε. Αν αυτό δεν λειτουργήσει, δοκιμάστε να βάλετε τα ROMs σε ξεχωριστούς καταλόγους, ένα για κάθε σύστημα με τα ακόλουθα ονόματα: $SYSTEMS.
     ]]></string>
+    <string name="error_message_incompatible_state">Αυτό το save state δεν είναι συμβατό με την τρέχουσα έκδοση του πυρήνα. Παρακαλώ φορτώστε προηγούμενο save του παιχνιδιού ή χρησιμοποιήστε μια προηγούμενη έκδοση Lemuroid.</string>
     <string name="shader_filter_names_auto">Αυτόματο</string>
     <string name="shader_filter_names_smooth">Ομαλό</string>
     <string name="shader_filter_names_crt">CRT</string>
