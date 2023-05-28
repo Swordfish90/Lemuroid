@@ -53,6 +53,7 @@
     <string name="settings_description_direct_game_load">(Πειραματικό) Μειώστε το χρόνο φόρτωσης και τη χρήση cache σε υποστηριζόμενες κονσόλες.</string>
     <string name="settings_title_enable_rumble">Δόνηση</string>
     <string name="settings_description_enable_rumble">Ενεργοποίηση δόνησης σε υποστηριζόμενα παιχνίδια και χειριστήρια</string>
+    <string name="settings_title_enable_device_rumble">Δόνηση συσκευής</string>
     <string name="settings_description_enable_device_rumble">Όταν κανένας controller δεν είναι συνδεδεμένος, δονείται η συσκευή</string>
     <string name="reset_settings_warning_message_title">Είστε σίγουρος/η;</string>
     <string name="reset_settings_warning_message_description">Αυτό θα επαναφέρει το Lemuroid στις εργοστασιακές του ρυθμίσεις. Τα saves και τα states θα διατηρηθούν.</string>
@@ -140,11 +141,19 @@
         <b>&#8226;Γιατί δεν έχουν εντοπιστεί τα παιχνίδια μου?</b><br/>
         Αν τα παιχνίδια σας είναι συμπιεσμένα, δοκιμάστε να τα αποσυμπιέσετε. Αν αυτό δεν λειτουργήσει, δοκιμάστε να βάλετε τα ROMs σε ξεχωριστούς καταλόγους, ένα για κάθε σύστημα με τα ακόλουθα ονόματα: $SYSTEMS.
     ]]></string>
+    <string name="lemuroid_crash_disclamer">Φαίνεται ότι ο πυρήνας του Libretro αντιμετωπίζει ένα απροσδόκητο πρόβλημα. Αν το πρόβλημα παραμείνει, δοκιμάστε τα εξής:\n
+        \n\u2022 Απενεργοποιήστε την αυτόματη αποθήκευση και εκτελέστε ξανά το παιχνίδι
+        \n\u2022 Πηγαίνετε στις ρυθμίσεις Android και καθαρίστε την μνήμη cache της εφαρμογής
+        \n\u2022 Πηγαίνετε στις ρυθμίσεις Lemuroid και εκτελέστε την Επαναφορά Εργοστασίων Ρυθμίσεων 
+        \n\n Αν καμία από τις παραπάνω λειτουργίες δεν λειτουργήσει, τότε ενδεχομένως το παιχνίδι/πυρήνας δεν υποστηρίζεται από αυτήν τη συσκευή.
+    </string>
     <string name="error_message_incompatible_state">Αυτό το save state δεν είναι συμβατό με την τρέχουσα έκδοση του πυρήνα. Παρακαλώ φορτώστε προηγούμενο save του παιχνιδιού ή χρησιμοποιήστε μια προηγούμενη έκδοση Lemuroid.</string>
     <string name="shader_filter_names_auto">Αυτόματο</string>
+    <string name="shader_filter_names_sharp">Sharp</string>
     <string name="shader_filter_names_smooth">Ομαλό</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
     <string name="haptic_feedback_mode_names_none">Κανένα</string>
     <string name="haptic_feedback_mode_names_press">Πιέστε</string>
+    <string name="haptic_feedback_mode_names_press_release">Πίεστε &amp; αφήστε</string>
 </resources>
