@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="local_storage">Armazenamento local</string>
+    <string name="local_storage">Dados Locais</string>
     <string name="controller_arcade_4">Padrão (4 botões)</string>
     <string name="controller_arcade_6">Padrão (6 botões)</string>
     <string name="controller_genesis_3">Padrão (3 botões)</string>
