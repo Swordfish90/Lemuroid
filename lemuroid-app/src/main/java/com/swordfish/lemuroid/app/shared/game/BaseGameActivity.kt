@@ -155,6 +155,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private val loadingMessageStateFlow = MutableStateFlow("")
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
 
+    private var joinStickAndDPADifSupported = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -663,7 +665,23 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
-                if (controllerConfigsState.value[port]?.mergeDPADAndLeftStickEvents == true) {
+
+                var allowJoypad = controllerConfigsState.value[port]?.mergeDPADAndLeftStickEvents ?: false
+
+                if(joinStickAndDPADifSupported) {
+                    when(system.id) {
+                        SystemID.NES -> allowJoypad = true
+                        SystemID.SNES -> allowJoypad = true
+                        SystemID.GENESIS -> allowJoypad = true
+                        SystemID.GB -> allowJoypad = true
+                        SystemID.GBC -> allowJoypad = true
+                        SystemID.GBA -> allowJoypad = true
+                        SystemID.NDS -> allowJoypad = true
+                    }
+                }
+
+
+                if (allowJoypad) {
                     sendMergedMotionEvents(event, port)
                 } else {
                     sendSeparateMotionEvents(event, port)
@@ -1002,6 +1020,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val lowLatencyAudio = settingsManager.lowLatencyAudio()
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
+        joinStickAndDPADifSupported = settingsManager.joinStickDpad()
 
         val loadingStatesFlow = gameLoader.load(
             applicationContext,
