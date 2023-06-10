@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_home">Home</string>
+    <string name="title_home">首页</string>
     <string name="title_search">搜索</string>
     <string name="title_systems">系统</string>
     <string name="title_games">游戏</string>
