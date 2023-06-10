@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.ext.feature.savesync
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -24,19 +25,22 @@ class ActivateSAFActivity : AppCompatActivity() {
 
     private fun openPicker() {
 
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION and Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+            this.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            this.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            this.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+            this.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
+        }
+
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             when (result.resultCode) {
                 Activity.RESULT_OK -> {
                     val targetUri = result?.data?.data
 
                     if (targetUri != null ) {
-                        contentResolver.takePersistableUriPermission(
-                            targetUri,
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION and Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        )
                         setStorageUri(targetUri.toString())
+                        updatePersistableUris(targetUri)
                     }
                     finish()
                 }
@@ -57,4 +61,16 @@ class ActivateSAFActivity : AppCompatActivity() {
         sharedPreferences.putString(preferenceKey, uri)
         sharedPreferences.apply()
     }
+
+    private fun updatePersistableUris(uri: Uri) {
+        val contentResolver = applicationContext.contentResolver
+
+        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+        contentResolver.takePersistableUriPermission(uri, takeFlags)
+    }
+
 }
+
+
