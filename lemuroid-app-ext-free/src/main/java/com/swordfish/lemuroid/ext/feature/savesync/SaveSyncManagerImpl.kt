@@ -255,13 +255,15 @@ class SaveSyncManagerImpl(
 
     override fun computeSavesSpace(): String {
         var size = 0L
-        val safProviderUri = Uri.parse(storageUri)
-        val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
-        val saves = safDirectory?.findFile("saves")
+        try {
+            val safProviderUri = Uri.parse(storageUri)
+            val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
+            val saves = safDirectory?.findFile("saves")
 
-        if (safDirectory != null) {
-            size = saves?.let { getSpaceForDirectory(it) } ?: 0L
-        }
+            if (safDirectory != null) {
+                size = saves?.let { getSpaceForDirectory(it) } ?: 0L
+            }
+        } catch (e: Exception){}
 
         return Formatter.formatShortFileSize(appContext, size)
     }
@@ -269,14 +271,16 @@ class SaveSyncManagerImpl(
     override fun computeStatesSpace(coreID: CoreID): String {
         var size = 0L
 
-        val safProviderUri = Uri.parse(storageUri)
-        val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
-        val states = safDirectory?.findFile("states")
-        val core = states?.findFile(coreID.coreName)
+        try {
+            val safProviderUri = Uri.parse(storageUri)
+            val safDirectory = DocumentFile.fromTreeUri(appContext.applicationContext, safProviderUri)
+            val states = safDirectory?.findFile("states")
+            val core = states?.findFile(coreID.coreName)
 
-        if (safDirectory != null) {
-            size = core?.let { getSpaceForDirectory(it) } ?: 0L
-        }
+            if (safDirectory != null) {
+                size = core?.let { getSpaceForDirectory(it) } ?: 0L
+            }
+        } catch (e: Exception){}
 
         return Formatter.formatShortFileSize(appContext, size)
     }
