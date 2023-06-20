@@ -82,4 +82,15 @@
     <string name="game_menu_edit_touch_controls">Editați comenzile</string>
     <string name="game_menu_mute_audio">Mut</string>
     <string name="game_menu_fast_forward">Derulați rapid înainte</string>
+    <string name="tv_folder_picker_action_choose">Selectați</string>
+    <string name="tv_folder_picker_action_cancel">Anulați</string>
+    <string name="tv_folder_storage_primary">Stocare principală</string>
+    <string name="tv_folder_storage_secondary">Stocare secundară %1$s</string>
+    <string name="tv_home_section_settings">Setări</string>
+    <string name="gamepad_binding_update_title">Asociați „RetroPad %1$s”</string>
+    <string name="gamepad_binding_update_description">Apăsați un buton pe „%1$s”</string>
+    <string name="tv_search_results">Jocuri</string>
+    <string name="mobile_settings_help">Ajutor</string>
+    <string name="mobile_settings_support">Asistență</string>
+    <string name="shader_filter_names_auto">Auto</string>
 </resources>
