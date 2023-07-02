@@ -103,6 +103,14 @@ android {
         disable += setOf("MissingTranslation", "ExtraTranslation", "EnsureInitializerMetadata")
     }
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.6"
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -122,7 +130,8 @@ dependencies {
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)
     implementation(deps.libs.material)
-    implementation(deps.libs.coil)
+    implementation(deps.libs.coil.coil)
+    implementation(deps.libs.coil.coilCompose)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.activity.activity)
     implementation(deps.libs.androidx.activity.activityKtx)
@@ -163,6 +172,11 @@ dependencies {
     implementation(deps.libs.startup)
     implementation(deps.libs.kotlin.serialization)
     implementation(deps.libs.kotlin.serializationJson)
+
+    implementation(platform(deps.libs.androidx.compose.composeBom))
+    implementation(deps.libs.androidx.compose.material3)
+    implementation(deps.libs.androidx.paging.compose)
+    implementation(deps.libs.androidx.lifecycle.viewModelCompose)
 
     implementation(deps.libs.libretrodroid)
 

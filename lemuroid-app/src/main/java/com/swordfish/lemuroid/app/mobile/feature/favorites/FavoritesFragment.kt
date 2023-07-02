@@ -1,17 +1,16 @@
 package com.swordfish.lemuroid.app.mobile.feature.favorites
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.DynamicGridLayoutManager
-import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
-import com.swordfish.lemuroid.app.mobile.shared.GridSpaceDecoration
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.viewModels
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
-import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import javax.inject.Inject
 
@@ -26,33 +25,24 @@ class FavoritesFragment : RecyclerViewFragment() {
     @Inject
     lateinit var coverLoader: CoverLoader
 
-    private lateinit var favoritesViewModel: FavoritesViewModel
+    private val favoritesViewModel: FavoritesViewModel by viewModels {
+        FavoritesViewModel.Factory(retrogradeDb)
+    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val factory = FavoritesViewModel.Factory(retrogradeDb)
-        favoritesViewModel = ViewModelProvider(this, factory)[FavoritesViewModel::class.java]
-
-        val gamesAdapter = GamesAdapter(R.layout.layout_game_grid, gameInteractor, coverLoader)
-
-        launchOnState(Lifecycle.State.RESUMED) {
-            favoritesViewModel.favorites
-                .collect {
-                    gamesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-                }
-        }
-
-        gamesAdapter.addLoadStateListener { loadState ->
-            updateEmptyViewVisibility(loadState, gamesAdapter.itemCount)
-        }
-
-        recyclerView?.apply {
-            this.adapter = gamesAdapter
-            this.layoutManager = DynamicGridLayoutManager(context)
-
-            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
-            GridSpaceDecoration.setSingleGridSpaceDecoration(this, spacingInPixels)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                val favorites = favoritesViewModel.favorites.collectAsLazyPagingItems()
+                FavoritesScreen(
+                    games = favorites,
+                    onGameClicked = { gameInteractor.onGamePlay(it) }
+                )
+            }
         }
     }
 

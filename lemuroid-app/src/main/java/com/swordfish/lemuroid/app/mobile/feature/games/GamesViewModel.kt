@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.swordfish.lemuroid.common.paging.buildFlowPaging
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -26,8 +27,8 @@ class GamesViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel()
     val games: Flow<PagingData<Game>> = systemIds.flatMapLatest {
         when (it.size) {
             0 -> emptyFlow()
-            1 -> buildFlowPaging(20) { retrogradeDb.gameDao().selectBySystem(it.first()) }
-            else -> buildFlowPaging(20) { retrogradeDb.gameDao().selectBySystems(it) }
+            1 -> buildFlowPaging(20, viewModelScope) { retrogradeDb.gameDao().selectBySystem(it.first()) }
+            else -> buildFlowPaging(20, viewModelScope) { retrogradeDb.gameDao().selectBySystems(it) }
         }
     }
 }

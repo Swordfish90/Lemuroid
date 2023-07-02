@@ -10,21 +10,22 @@ object deps {
     object versions {
         const val dagger          = "2.19"
         const val gms             = "17.0.0"
-        const val kotlin          = "1.6.21"
+        const val kotlin          = "1.8.20"
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
         const val work            = "2.7.1"
         const val navigation      = "2.3.5"
-        const val lifecycle       = "2.5.1"
+        const val lifecycle       = "2.6.1"
         const val leanback        = "1.1.0-rc01"
         const val googleApiClient = "1.32.1"
         const val paging          = "3.1.1"
-        const val room            = "2.4.2"
+        const val room            = "2.5.2"
         const val epoxy           = "4.6.3-vinay-compose"
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.5.1"
         const val libretrodroid   = "0.10.0"
+        const val compose         = ""
         const val radialgamepad   = "2.0.0"
     }
 
@@ -51,6 +52,7 @@ object deps {
                 const val processor = "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
                 const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}"
                 const val reactiveStreams = "android.arch.lifecycle:reactivestreams:1.1.1"
+                const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1";
             }
             object preferences {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.1"
@@ -58,6 +60,7 @@ object deps {
             object paging {
                 const val common = "androidx.paging:paging-common:${versions.paging}"
                 const val runtime = "androidx.paging:paging-runtime:${versions.paging}"
+                const val compose = "androidx.paging:paging-compose:3.2.0-rc01"
             }
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
@@ -78,6 +81,10 @@ object deps {
             object activity {
                 const val activity = "androidx.activity:activity:${versions.activity}"
                 const val activityKtx = "androidx.activity:activity-ktx:${versions.activity}"
+            }
+            object compose {
+                const val composeBom = "androidx.compose:compose-bom:2023.05.01";
+                const val material3 = "androidx.compose.material3:material3"
             }
         }
         object arch {
@@ -118,12 +125,16 @@ object deps {
             const val apiClientAndroid     = "com.google.api-client:google-api-client-android:${versions.googleApiClient}"
             const val apiServicesDrive     = "com.google.apis:google-api-services-drive:v3-rev20210725-${versions.googleApiClient}"
         }
+        object coil {
+            // TODO Migrate to coil 2.x
+            const val coil = "io.coil-kt:coil:1.4.0";
+            const val coilCompose = "io.coil-kt:coil-compose:1.4.0";
+        }
 
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
         const val ktlint                   = "com.github.shyiko:ktlint:0.29.0"
         const val okio                     = "com.squareup.okio:okio:2.10.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"
-        const val coil                     = "io.coil-kt:coil:1.4.0"
         const val retrofit                 = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
         const val flowPreferences          = "com.fredporciuncula:flow-preferences:1.8.0"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
