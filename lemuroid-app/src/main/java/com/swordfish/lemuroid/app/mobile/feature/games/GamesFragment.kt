@@ -1,17 +1,17 @@
 package com.swordfish.lemuroid.app.mobile.feature.games
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
-import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import javax.inject.Inject
 
@@ -28,29 +28,29 @@ class GamesFragment : RecyclerViewFragment() {
 
     private val args: GamesFragmentArgs by navArgs()
 
-    private lateinit var gamesViewModel: GamesViewModel
+    private val gamesViewModel: GamesViewModel by viewModels {
+        GamesViewModel.Factory(retrogradeDb)
+    }
 
-    private var gamesAdapter: GamesAdapter? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor, coverLoader)
-
-        val factory = GamesViewModel.Factory(retrogradeDb)
-        gamesViewModel = ViewModelProvider(this, factory)[GamesViewModel::class.java]
-
-        recyclerView?.apply {
-            adapter = gamesAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        launchOnState(Lifecycle.State.RESUMED) {
-            gamesViewModel.games
-                .collect { gamesAdapter?.submitData(lifecycle, it) }
-        }
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         gamesViewModel.systemIds.value = (listOf(*args.systemIds))
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                val games = gamesViewModel.games.collectAsLazyPagingItems()
+                GamesScreen(
+                    games = games,
+                    onGameClicked = { gameInteractor.onGamePlay(it) },
+                    onFavoriteToggle = { game, isFavorite ->
+                        gameInteractor.onFavoriteToggle(game, isFavorite)
+                    }
+                )
+            }
+        }
     }
 
     @dagger.Module

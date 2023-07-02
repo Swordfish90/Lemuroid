@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.mobile.feature.favorites
+package com.swordfish.lemuroid.app.mobile.feature.systems
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -7,22 +7,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.GameCard
-import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.SystemCard
+import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 
 @Composable
-fun FavoritesScreen(
-    games: LazyPagingItems<Game>,
-    onGameClicked: (Game) -> Unit
+fun MetaSystemsScreen(
+    metaSystems: List<MetaSystemInfo>,
+    onSystemClicked: (MetaSystemInfo) -> Unit
 ) {
     AppTheme {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(144.dp),
             contentPadding = PaddingValues(8.dp),
         ) {
-            items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
-                val game = games[index] ?: return@items
-                GameCard(game) { onGameClicked(game) }
+            items(metaSystems.size, key = { metaSystems[it].metaSystem }) { index ->
+                val system = metaSystems[index]
+                SystemCard(system) { onSystemClicked(system) }
             }
         }
     }

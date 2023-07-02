@@ -1,21 +1,24 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.GamesAdapter
+import com.swordfish.lemuroid.app.mobile.feature.games.GamesScreen
 import com.swordfish.lemuroid.app.mobile.shared.RecyclerViewFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import javax.inject.Inject
@@ -31,41 +34,41 @@ class SearchFragment : RecyclerViewFragment() {
     @Inject
     lateinit var gameInteractor: GameInteractor
 
-    @Inject
-    lateinit var coverLoader: CoverLoader
-
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModels {
+        SearchViewModel.Factory(retrogradeDb)
+    }
 
     private val searchDebounce = MutableStateFlow("")
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                val games = searchViewModel.searchResults.collectAsLazyPagingItems()
+                GamesScreen(
+                    games = games,
+                    onGameClicked = { gameInteractor.onGamePlay(it) },
+                    onFavoriteToggle = { game, isFavorite ->
+                        gameInteractor.onFavoriteToggle(game, isFavorite)
+                    }
+                )
+            }
+        }
+    }
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = SearchViewModel.Factory(retrogradeDb)
-        searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
-
         initializeMenuProvider()
-
-        val gamesAdapter = GamesAdapter(R.layout.layout_game_list, gameInteractor, coverLoader)
-
-        launchOnState(Lifecycle.State.RESUMED) {
-            searchViewModel.searchResults
-                .collect { gamesAdapter.submitData(viewLifecycleOwner.lifecycle, it) }
-        }
 
         launchOnState(Lifecycle.State.RESUMED) {
             searchDebounce.debounce(1000)
                 .collect { searchViewModel.queryString.value = it }
-        }
-
-        gamesAdapter.addLoadStateListener { loadState ->
-            updateEmptyViewVisibility(loadState, gamesAdapter.itemCount)
-        }
-
-        recyclerView?.apply {
-            adapter = gamesAdapter
-            layoutManager = LinearLayoutManager(context)
         }
     }
 
