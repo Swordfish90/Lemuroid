@@ -114,7 +114,7 @@
         \n\u2022 Ve a las opciones de Lemuroid y realiza un restablecimiento de fábrica
         \n\nSi nada de esto funciona, es posible que este juego/núcleo no sea compatible con este dispositivo.
     </string>
-    <string name="game_loader_error_missing_bios">Parece que te faltan las BIOS requeridas, colóquelas en tu directorio de ROMs y vuelve a escanear. Archivos requeridos: %1$s</string>
+    <string name="game_loader_error_missing_bios">Parece que te faltan las BIOS requeridas, colócalas en tu directorio de ROMs y vuelve a escanear. Archivos requeridos: %1$s</string>
     <string name="game_shortcut_error">Ha ocurrido algo malo mientras cargabas tu juego. Por favor, asegúrate de que el juego que intentas cargar existe y está en tu librería.</string>
     <string name="dialog_saf_not_found">Este dispositivo no es compatible con el selector de archivos StorageAccessFramework. Por favor, copia manualmente los archivos ROM sin comprimir en %1$s y pulsa Reescanear.</string>
     <string name="system_grid_details">Juegos de %1$s</string>
@@ -131,20 +131,20 @@
     <string name="gamepad_binding_update_title">Asociar «RetroPad %1$s»</string>
     <string name="gamepad_binding_update_description">Presiona un botón en tu «%1$s»</string>
     <string name="tv_search_results">Juegos</string>
-    <string name="tv_game_message_missing_gamepad">Se requiere un mando para jugar. Por favor conecta uno.</string>
+    <string name="tv_game_message_missing_gamepad">Se requiere un mando para jugar. Por favor, conecta uno.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecta el mando para editar los controles táctiles</string>
     <string name="game_interactory_busy">Espera a que se completen las operaciones pendientes</string>
     <string name="mobile_settings_help">Ayuda</string>
     <string name="mobile_settings_support">Soporte</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;¿Cómo usar Lemuroid?</b><br/>
-        Copia todas tus ROMs en un directorio de tu dispositivo y selecciónalo en Lemuroid. Este directorio puede tener subdirectorios. Después de que se complete el escaneo deberías ver tus juegos.<br/><br/>
+        Copia todas tus ROM en un directorio de tu dispositivo y selecciónalo en Lemuroid. Este directorio puede tener subdirectorios. Después de que se complete el escaneo deberías ver tus juegos.<br/><br/>
         <b>&#8226;¿Por qué no se detectan mis juegos?</b><br/>
-        Si tus juegos están comprimidos, prueba a descomprimirlos. Si esto no funciona, prueba poniendo las ROMs en directorios separados, uno por cada sistema con los siguientes nombres: $SYSTEMS.
+        Si tus juegos están comprimidos, prueba a descomprimirlos. Si esto no funciona, prueba poniendo las ROM en directorios separados, uno por cada sistema con los siguientes nombres: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Parece que el núcleo de Libretro ha experimentado un problema inesperado. Si esto persiste, por favor, intenta lo siguiente:\n
         \n\u2022 Desactiva el guardado automático y reinicia el juego
         \n\u2022 Ve a los ajustes de Android y limpia el caché de la aplicación
-        \n\u2022 Ve a los ajustes de Lemuroid y realiza un restablecimientode fábrica
+        \n\u2022 Ve a los ajustes de Lemuroid y realiza un restablecimiento de fábrica
         \n\n Si nada de lo anterior funciona, es posible que este juego/núcleo no sea compatible con este dispositivo.
     </string>
     <string name="error_message_incompatible_state">Este estado guardado no es compatible con la versión actual del núcleo. Por favor carga el último guardado hecho en el juego o usa una versión anterior de Lemuroid.</string>
