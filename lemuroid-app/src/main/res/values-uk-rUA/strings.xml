@@ -42,22 +42,22 @@
     <string name="settings_bios_category_detected">Знайдено</string>
     <string name="settings_bios_category_not_detected">Підтримується</string>
     <string name="settings_title_reset_settings">Відновлення заводських налаштувань</string>
-    <string name="settings_description_reset_settings">Скинути Lemuroid до заводських налаштувань</string>
+    <string name="settings_description_reset_settings">Скинути Лемуроїд до заводських налаштувань</string>
     <string name="settings_title_advanced_settings">Додаткові параметри</string>
-    <string name="settings_description_advanced_settings">Відобразити додаткові налаштування</string>
-    <string name="settings_title_low_latency_audio">Звук з низькою затримкою</string>
-    <string name="settings_description_low_latency_audio">Зменшення затримки аудіо на підтримуваних пристроях. Може збільшити аудіо відламки.</string>
+    <string name="settings_description_advanced_settings">Показати додаткові налаштування</string>
+    <string name="settings_title_low_latency_audio">Надавати перевагу звуку з низькою затримкою</string>
+    <string name="settings_description_low_latency_audio">Зменшення затримки аудіо на підтримуваних пристроях. Може збільшити збої аудіо.</string>
     <string name="settings_title_legacy_hd_mode">Надавати перевагу класичному HD режиму</string>
     <string name="settings_description_legacy_hd_mode">Завжди використовувати застарілий HD режим. Жертвує певну якість задля швидкодії.</string>
     <string name="settings_title_direct_game_load">Пряме завантаження гри</string>
     <string name="settings_description_direct_game_load">(Експериментальне) Зменшує час завантаження та використання кеша на підтримуваних консолях.</string>
     <string name="settings_title_enable_rumble">Вібрація</string>
-    <string name="settings_description_enable_rumble">Увімкнення сумісних ігор та контролерів</string>
+    <string name="settings_description_enable_rumble">Увімкнення вібрації для сумісних ігор та контролерів</string>
     <string name="settings_title_enable_device_rumble">Вібрація пристрою</string>
-    <string name="settings_description_enable_device_rumble">Якщо контроллер не підключений, замість нього вибрує пристрій</string>
+    <string name="settings_description_enable_device_rumble">Якщо контроллер не підключений, замість нього вібрує пристрій</string>
     <string name="reset_settings_warning_message_title">Ви впевнені?</string>
-    <string name="reset_settings_warning_message_description">Це скине Lemuroid до заводських налаштувань. Збереження та Стани будуть збережені.</string>
-    <string name="settings_title_save_sync">Зберігати в хмарці</string>
+    <string name="reset_settings_warning_message_description">Це скине Лемуроїд до заводських налаштувань. Збереження та Стани будуть збережені.</string>
+    <string name="settings_title_save_sync">Зберігати в хмарі</string>
     <string name="settings_description_save_sync">Резервне копіювання і синхронізація збереження в хмарі</string>
     <string name="settings_save_sync_refresh">Ручна синхронізація</string>
     <string name="settings_save_sync_refresh_description">Виконати ручну синхронізацію зараз.\n%1$s</string>
@@ -73,8 +73,11 @@
     <string name="game_context_menu_resume">Поновити</string>
     <string name="game_context_menu_restart">Перезапуск</string>
     <string name="game_context_menu_create_shortcut">Закріпити у лаунчері</string>
+    <string name="home_notification_title">Увімкнути сповіщення</string>
+    <string name="home_notification_message">Lemuroid використовує сповіщення, щоб повідомити, коли гра або операція працює у фоновому режимі.</string>
+    <string name="home_notification_action">Увімкнути</string>
     <string name="home_empty_title">Виберіть каталог ROM</string>
-    <string name="home_empty_message">Lemuroid повинен сканувати каталог, що містить ROM файли.\nЦе може зайняти до декількох хвилин.</string>
+    <string name="home_empty_message">Лемуроїд повинен сканувати каталог, що містить ROM файли.\nЦе може зайняти до декількох хвилин.</string>
     <string name="home_empty_action">Виберіть каталог</string>
     <string name="game_menu_save">Зберегти</string>
     <string name="game_menu_load">Завантажити</string>
@@ -99,19 +102,19 @@
     <string name="notification_channel_name">Усі сповіщення</string>
     <string name="library_index_notification_title">Виконується сканування прошивок</string>
     <string name="library_index_notification_message">Це може зайняти кілька хвилин</string>
-    <string name="save_sync_notification_title">Виконується збереження в Cloud</string>
+    <string name="save_sync_notification_title">Виконується збереження в хмару</string>
     <string name="save_sync_notification_message">Це може зайняти кілька хвилин</string>
     <string name="game_running_notification_title">%1$s працює</string>
     <string name="game_running_notification_title_alternative">Гра працює</string>
     <string name="game_running_notification_message">Переконайтеся, що ви зберегли свій прогрес</string>
     <string name="game_loader_error_gl_incompatible">Це ядро потребує версію OpenGL ES яка не підтримується вашим пристроєм.</string>
-    <string name="game_loader_error_load_game">Трапилось щось погане під час завантаження вашої гри. Переконайтеся, що прошивка підтримується Lemuroid і перескануйте ваші ігри.</string>
+    <string name="game_loader_error_load_game">Трапилось щось погане під час завантаження вашої гри. Переконайтеся, що прошивка підтримується Лемуроїд і перескануйте ваші ігри.</string>
     <string name="game_loader_error_save">Щось пішло не так при збереженні файлу. Якщо проблема не зникне, спробуйте вимкнути автозбереження.</string>
     <string name="game_loader_error_unsupported_architecture">Це ядро не підтримується вашим пристроєм.</string>
     <string name="game_loader_error_generic">Щось погане трапилося. Спробуйте наступне:\n
         \n\u2022 Вимкнути автозбереження і повторно запустити гру
         \n\u2022 В налаштуваннях Android очистити кеш програми
-        \n\u2022 В налаштуваннях Lemuroid виконати Factory Reset
+        \n\u2022 В налаштуваннях Лемуроїд виконати Скидання до заводських налаштувань
         \n\nЯкщо нічого з переліченого не допомогло, може бути що ця гра/ядро не підтримується на вашому приладі.
     </string>
     <string name="game_loader_error_missing_bios">Схоже, що у вас відсутній необхідний BIOS, помістіть його у папку з вашими ROM-ами і повторно проскануйте. Необхідні файли: %1$s</string>
@@ -143,10 +146,10 @@
     <string name="lemuroid_crash_disclamer">Схоже що ядро Libretro отримала неочікувану помилку. Якщо помилка залишається, спробуйте зробити наступне:\n
         \n\u2022 Вимкнути автозбереження і повторно запустити гру
         \n\u2022 В налаштуваннях Android очистити кеш програми
-        \n\u2022 В налаштуваннях Lemuroid виконати Factory Reset
+        \n\u2022 В налаштуваннях Лемуроїд виконати Скидання до заводських налаштувань
         \n\nЯкщо нічого з переліченого не допомогло, може бути що ця гра/ядро не підтримується на вашому приладі.
     </string>
-    <string name="error_message_incompatible_state">Цей стан збереження несумісний з поточною версією ядра. Будь ласка, завантажте останню версію в грі, або використовуйте попередню версію Lemuroid.</string>
+    <string name="error_message_incompatible_state">Цей стан збереження несумісний з поточною версією ядра. Будь ласка, завантажте останню версію в грі, або використовуйте попередню версію Лемуроїд.</string>
     <string name="shader_filter_names_auto">Автоматично</string>
     <string name="shader_filter_names_sharp">Різко</string>
     <string name="shader_filter_names_smooth">Згладжений</string>
