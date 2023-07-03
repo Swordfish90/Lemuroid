@@ -39,22 +39,36 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
         val recentGames: List<Game> = emptyList(),
         val discoveryGames: List<Game> = emptyList(),
         val indexInProgress: Boolean = false,
-        val loading: Boolean = true
+        val loading: Boolean = true,
+        val notificationsEnabled: Boolean = true
     )
 
+    private val notificationsEnabledState = MutableStateFlow(true)
     private val uiStates = MutableStateFlow(UIState())
 
     fun getViewStates(): Flow<UIState> {
         return uiStates
     }
 
+    fun updateNotificationPermission(isEnabled: Boolean) {
+        notificationsEnabledState.value = isEnabled
+    }
+
     private fun buildViewState(
         favoritesGames: List<Game>,
         recentGames: List<Game>,
         discoveryGames: List<Game>,
-        indexInProgress: Boolean
+        indexInProgress: Boolean,
+        notificationsEnabled: Boolean
     ): UIState {
-        return UIState(favoritesGames, recentGames, discoveryGames, indexInProgress, false)
+        return UIState(
+            favoritesGames,
+            recentGames,
+            discoveryGames,
+            indexInProgress,
+            false,
+            notificationsEnabled
+        )
     }
 
     init {
@@ -64,6 +78,7 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
                 recentGames(retrogradeDb),
                 discoveryGames(retrogradeDb),
                 indexingInProgress(appContext),
+                notificationsEnabledState,
                 ::buildViewState
             )
 
