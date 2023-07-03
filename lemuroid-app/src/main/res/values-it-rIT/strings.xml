@@ -73,6 +73,9 @@
     <string name="game_context_menu_resume">Riprendi</string>
     <string name="game_context_menu_restart">Riavvia</string>
     <string name="game_context_menu_create_shortcut">Aggiungi al launcher</string>
+    <string name="home_notification_title">Attiva notifiche</string>
+    <string name="home_notification_message">Lemuroid utilizza le notifiche per farti sapere quando una gioco o un\'operazione sono in esecuzione in background.</string>
+    <string name="home_notification_action">Attiva</string>
     <string name="home_empty_title">Seleziona directory ROM</string>
     <string name="home_empty_message">Lemuroid deve scansionare una directory contenente ROM.\nQuesto potrebbe richiedere alcuni minuti.</string>
     <string name="home_empty_action">Seleziona Cartella</string>
