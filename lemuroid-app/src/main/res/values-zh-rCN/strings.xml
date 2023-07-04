@@ -73,6 +73,8 @@
     <string name="game_context_menu_resume">继续</string>
     <string name="game_context_menu_restart">重新开始</string>
     <string name="game_context_menu_create_shortcut">添加到桌面</string>
+    <string name="home_notification_title">开启推送</string>
+    <string name="home_notification_message">Lemuroid 使用通知让您知道游戏或操作正在后台运行。</string>
     <string name="home_empty_title">选择 ROM 目录</string>
     <string name="home_empty_message">Lemuroid 需要扫描一个包含 ROM 文件的目录。\n这可能需要几分钟的时间。</string>
     <string name="home_empty_action">选择目录</string>
