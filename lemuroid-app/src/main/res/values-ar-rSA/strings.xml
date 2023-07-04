@@ -73,6 +73,9 @@
     <string name="game_context_menu_resume">استئناف</string>
     <string name="game_context_menu_restart">إعادة التشغيل</string>
     <string name="game_context_menu_create_shortcut">تثبيت على الشاشة الرئيسية</string>
+    <string name="home_notification_title">تمكين الإشعارات</string>
+    <string name="home_notification_message">يستخدم Lemuroid الإشعارات لإعلامك عندما تكون اللعبة أو العملية قيد التشغيل في الخلفية.</string>
+    <string name="home_notification_action">تمكين</string>
     <string name="home_empty_title">حدد مجلد ROM</string>
     <string name="home_empty_message">يحتاج Lemuroid إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
     <string name="home_empty_action">حدد المجلد</string>
