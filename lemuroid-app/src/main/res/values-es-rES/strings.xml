@@ -73,7 +73,9 @@
     <string name="game_context_menu_resume">Continuar</string>
     <string name="game_context_menu_restart">Reiniciar</string>
     <string name="game_context_menu_create_shortcut">Fijar al lanzador</string>
+    <string name="home_notification_title">Habilitar notificaciones</string>
     <string name="home_notification_message">Lemuroid utiliza notificaciones para informarte cuando un juego u operación se está ejecutando en segundo plano.</string>
+    <string name="home_notification_action">Habilitar</string>
     <string name="home_empty_title">Seleccionar directorio de ROMs</string>
     <string name="home_empty_message">Lemuroid necesita escanear un directorio que contiene archivos ROM.\nEsto puede tardar unos minutos.</string>
     <string name="home_empty_action">Seleccionar directorio</string>
@@ -106,7 +108,7 @@
     <string name="game_running_notification_title_alternative">El juego se está ejecutando</string>
     <string name="game_running_notification_message">Asegúrate de guardar tu progreso</string>
     <string name="game_loader_error_gl_incompatible">Este núcleo requiere una versión de OpenGL ES que no es compatible con tu dispositivo.</string>
-    <string name="game_loader_error_load_game">Ha ocurrido algo malo mientras cargabas tu juego. Asegúrate de que la ROM sea compatible con Lemuroid y vuelve a escanear tus juegos.</string>
+    <string name="game_loader_error_load_game">Ha ocurrido un error al cargar el juego. Asegúrate de que la ROM sea compatible con Lemuroid y vuelve a escanear tus juegos.</string>
     <string name="game_loader_error_save">Ha ocurrido algo malo con tu archivo guardado. Si el problema persiste, intenta deshabilitar el guardado automático.</string>
     <string name="game_loader_error_unsupported_architecture">Este núcleo no es compatible con tu dispositivo.</string>
     <string name="game_loader_error_generic">Se produjo un error. Intenta lo siguiente:\n
@@ -118,7 +120,7 @@
     <string name="game_loader_error_missing_bios">Parece que te faltan las BIOS requeridas, colócalas en tu directorio de ROMs y vuelve a escanear. Archivos requeridos: %1$s</string>
     <string name="game_shortcut_error">Ha ocurrido algo malo mientras cargabas tu juego. Por favor, asegúrate de que el juego que intentas cargar existe y está en tu librería.</string>
     <string name="dialog_saf_not_found">Este dispositivo no es compatible con el selector de archivos StorageAccessFramework. Por favor, copia manualmente los archivos ROM sin comprimir en %1$s y pulsa Reescanear.</string>
-    <string name="system_grid_details">Juegos de %1$s</string>
+    <string name="system_grid_details">%1$s juegos</string>
     <string name="tv_folder_picker_title">Selecciona un directorio de ROMs</string>
     <string name="tv_folder_picker_action_choose">Seleccionar</string>
     <string name="tv_folder_picker_action_cancel">Cancelar</string>
