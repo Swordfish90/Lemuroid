@@ -28,6 +28,14 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
 
             val saveFile = getSystemSaveFile(game.systemId, getSaveRAMFileName(game))
             saveFile.writeBytes(data)
+
+            //clean up the legacy file. But only if the byteArrays match!
+            if(saveFile.readBytes().contentEquals(data)) {
+                val legacySaveFile = getLegacySaveFile(getSaveRAMFileName(game))
+                if(legacySaveFile.exists()) {
+                    legacySaveFile.delete()
+                }
+            }
         }
         result.getOrNull()
     }
