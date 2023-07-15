@@ -11,7 +11,7 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
 
     suspend fun getSaveRAM(game: Game): ByteArray? = withContext(Dispatchers.IO) {
         val result = runCatchingWithRetry(FILE_ACCESS_RETRIES) {
-            val saveFile = getSaveFile(getSaveRAMFileName(game))
+            val saveFile = getSaveFile(game.systemId, getSaveRAMFileName(game))
             if (saveFile.exists() && saveFile.length() > 0) {
                 saveFile.readBytes()
             } else {
@@ -26,21 +26,38 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
             if (data.isEmpty())
                 return@runCatchingWithRetry
 
-            val saveFile = getSaveFile(getSaveRAMFileName(game))
+            val saveFile = getSystemSaveFile(game.systemId, getSaveRAMFileName(game))
             saveFile.writeBytes(data)
         }
         result.getOrNull()
     }
 
     suspend fun getSaveRAMInfo(game: Game): SaveInfo = withContext(Dispatchers.IO) {
-        val saveFile = getSaveFile(getSaveRAMFileName(game))
+        val saveFile = getSaveFile(game.systemId, getSaveRAMFileName(game))
         val fileExists = saveFile.exists() && saveFile.length() > 0
         SaveInfo(fileExists, saveFile.lastModified())
     }
 
-    private suspend fun getSaveFile(fileName: String): File = withContext(Dispatchers.IO) {
+    private suspend fun getLegacySaveFile(fileName: String): File = withContext(Dispatchers.IO) {
         val savesDirectory = directoriesManager.getSavesDirectory()
         File(savesDirectory, fileName)
+    }
+
+    private suspend fun getSystemSaveFile(system: String, fileName: String): File = withContext(Dispatchers.IO) {
+        val savesDirectory = directoriesManager.getSavesDirectory()
+        val systemDir = File(savesDirectory, system)
+
+        if(!systemDir.exists()) {
+            systemDir.mkdir()
+        }
+        File(systemDir, fileName)
+    }
+    private suspend fun getSaveFile(system: String, fileName: String): File = withContext(Dispatchers.IO) {
+        val save = getSystemSaveFile(system, fileName)
+        if(save.exists()){
+            return@withContext save
+        }
+        getLegacySaveFile(fileName)
     }
 
     /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
