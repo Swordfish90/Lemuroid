@@ -65,7 +65,7 @@
         <SwitchPreferenceCompat
             android:key="@string/pref_key_join_stick_dpad"
             android:title="@string/settings_title_join_stick_dpad"
-            android:summary="@string/settings_title_join_stick_dpad"
+            android:summary="@string/settings_summary_join_stick_dpad"
             app:iconSpaceReserved="false"
             android:defaultValue="false"/>
 
