@@ -73,6 +73,9 @@
     <string name="game_context_menu_resume">Wznów</string>
     <string name="game_context_menu_restart">Zrestartuj</string>
     <string name="game_context_menu_create_shortcut">Dodaj do Launcher-a</string>
+    <string name="home_notification_title">Włącz powiadomienia</string>
+    <string name="home_notification_message">Lemuroid używa powiadomień, aby poinformować Cię, kiedy gra lub operacja działa w tle.</string>
+    <string name="home_notification_action">Włącz</string>
     <string name="home_empty_title">Wybierz katalog ROMów</string>
     <string name="home_empty_message">Lemuroid musi zeskanować katalog zawierający pliki ROM.\nMoże to potrwać do kilku minut.</string>
     <string name="home_empty_action">Wybierz katalog</string>
