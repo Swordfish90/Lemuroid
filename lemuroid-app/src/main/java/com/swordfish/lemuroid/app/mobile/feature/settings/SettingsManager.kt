@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.common.math.Fraction
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Lazy
-import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -33,7 +33,7 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
 
     suspend fun forceLegacyHdMode() = booleanPreference(R.string.pref_key_legacy_hd_mode, false)
 
-    suspend fun tiltSensitivity() = floatPreference(R.string.pref_key_tilt_sensitivity_index, 10, 0.6f)
+    suspend fun tiltSensitivity() = floatPreference(R.string.pref_key_tilt_sensitivity_index, 10, 6)
 
     suspend fun autoSaveSync() = booleanPreference(R.string.pref_key_save_sync_auto, false)
 
@@ -81,16 +81,12 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
 
     private suspend fun floatPreference(
         keyId: Int,
-        ticks: Int,
-        default: Float
+        denominator: Int,
+        defaultNumerator: Int
     ): Float = withContext(Dispatchers.IO) {
-        sharedPreferences.getInt(getString(keyId), floatToIndex(default, ticks))
+        sharedPreferences.getInt(getString(keyId), defaultNumerator)
             .asFlow()
-            .map { indexToFloat(it, ticks) }
+            .map { Fraction(it, denominator).floatValue }
             .first()
     }
-
-    private fun indexToFloat(index: Int, ticks: Int): Float = index.toFloat() / ticks.toFloat()
-
-    private fun floatToIndex(value: Float, ticks: Int): Int = (value * ticks).roundToInt()
 }

@@ -10,6 +10,8 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import java.io.File
 import java.io.InputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class BiosManager(private val directoriesManager: DirectoriesManager) {
@@ -49,12 +51,17 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
             }
     }
 
+    @Deprecated("Use the suspend variant")
     fun getBiosInfo(): BiosInfo {
         val bios = SUPPORTED_BIOS.groupBy {
             File(directoriesManager.getSystemDirectory(), it.libretroFileName).exists()
         }.withDefault { listOf() }
 
         return BiosInfo(bios.getValue(true), bios.getValue(false))
+    }
+
+    suspend fun getBiosInfoAsync(): BiosInfo = withContext(Dispatchers.IO) {
+        getBiosInfo()
     }
 
     fun tryAddBiosAfter(

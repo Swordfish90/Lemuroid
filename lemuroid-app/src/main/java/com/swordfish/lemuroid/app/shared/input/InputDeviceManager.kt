@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onSubscription
@@ -37,8 +38,13 @@ class InputDeviceManager(
 
     fun getInputBindingsObservable(): Flow<(InputDevice?) -> Map<InputKey, RetroKey>> {
         return getEnabledInputsObservable()
-            .map { inputDevices ->
-                inputDevices.associateWith { getBindings(it) }
+            .flatMapLatest { devices ->
+                val allDeviceBindingsFlows = devices.map { device ->
+                    getBindingsFlow(device).map { device to it }
+                }
+                combine(allDeviceBindingsFlows) { allDeviceBindings ->
+                    allDeviceBindings.associate { (inputKey, retroKey) -> inputKey to retroKey }
+                }
             }
             .map { bindings -> { bindings[it] ?: mapOf() } }
     }
@@ -67,13 +73,34 @@ class InputDeviceManager(
         }
     }
 
-    suspend fun getBindings(inputDevice: InputDevice): Map<InputKey, RetroKey> = withContext(Dispatchers.IO) {
-        val sharedPreferencesResult = runCatching {
-            val string = sharedPreferences.getString(computeKeyBindingGamePadPreference(inputDevice), null)!!
-            Json.decodeFromString(bindingsMapSerializer, string)
+    private fun getBindingsFlow(inputDevice: InputDevice): Flow<Map<InputKey, RetroKey>> {
+        return flowSharedPreferences.getString(computeKeyBindingGamePadPreference(inputDevice))
+            .asFlow()
+            .map { parseBindingsPreference(it, inputDevice) }
+            .flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getCurrentBindings(inputDevice: InputDevice): Map<InputKey, RetroKey> {
+        return withContext(Dispatchers.IO) {
+            val preference = sharedPreferences.getString(
+                computeKeyBindingGamePadPreference(inputDevice),
+                ""
+            )
+            parseBindingsPreference(preference, inputDevice)
+        }
+    }
+
+    private fun parseBindingsPreference(
+        preference: String?,
+        inputDevice: InputDevice
+    ): Map<InputKey, RetroKey> {
+        val defaultBindings = getDefaultBinding(inputDevice)
+        if (preference.isNullOrEmpty()) {
+            return defaultBindings
         }
 
-        sharedPreferencesResult.getOrDefault(getDefaultBinding(inputDevice))
+        val decoded = runCatching { Json.decodeFromString(bindingsMapSerializer, preference) }
+        return decoded.getOrDefault(defaultBindings)
     }
 
     suspend fun updateBinding(
@@ -82,7 +109,7 @@ class InputDeviceManager(
         inputKey: InputKey
     ) = withContext(Dispatchers.IO) {
 
-        val prevBindings = getBindings(inputDevice).entries
+        val prevBindings = getCurrentBindings(inputDevice).entries
             .map { it.key to it.value }
             .filter { (_, value) -> value != retroKey }
 
@@ -123,6 +150,11 @@ class InputDeviceManager(
         return result
             .onSubscription { inputManager.registerInputDeviceListener(listener, null) }
             .onCompletion { inputManager.unregisterInputDeviceListener(listener) }
+    }
+
+    fun getDistinctGamePadsObservable(): Flow<List<InputDevice>> {
+        return getGamePadsObservable()
+            .map { device -> device.distinctBy { it.descriptor } }
     }
 
     fun getEnabledInputsObservable(): Flow<List<InputDevice>> {

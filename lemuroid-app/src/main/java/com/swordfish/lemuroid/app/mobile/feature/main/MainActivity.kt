@@ -21,12 +21,12 @@ import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesFragment
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesFragment
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeFragment
 import com.swordfish.lemuroid.app.mobile.feature.search.SearchFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.AdvancedSettingsFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.SaveSyncFragment
-import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.advanced.AdvancedSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.bios.BiosSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.coreselection.CoresSelectionFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.inputdevices.InputDevicesSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.savesync.SaveSyncSettingsFragment
+import com.swordfish.lemuroid.app.mobile.feature.settings.general.SettingsFragment
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsFragment
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -186,8 +186,8 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         abstract fun favoritesFragment(): FavoritesFragment
 
         @PerFragment
-        @ContributesAndroidInjector(modules = [GamepadSettingsFragment.Module::class])
-        abstract fun gamepadSettings(): GamepadSettingsFragment
+        @ContributesAndroidInjector(modules = [InputDevicesSettingsFragment.Module::class])
+        abstract fun gamepadSettings(): InputDevicesSettingsFragment
 
         @PerFragment
         @ContributesAndroidInjector(modules = [BiosSettingsFragment.Module::class])
@@ -198,8 +198,8 @@ class MainActivity : RetrogradeAppCompatActivity(), BusyActivity {
         abstract fun advancedSettingsFragment(): AdvancedSettingsFragment
 
         @PerFragment
-        @ContributesAndroidInjector(modules = [SaveSyncFragment.Module::class])
-        abstract fun saveSyncFragment(): SaveSyncFragment
+        @ContributesAndroidInjector(modules = [SaveSyncSettingsFragment.Module::class])
+        abstract fun saveSyncFragment(): SaveSyncSettingsFragment
 
         @PerFragment
         @ContributesAndroidInjector(modules = [CoresSelectionFragment.Module::class])

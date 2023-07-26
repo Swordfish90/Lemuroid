@@ -34,7 +34,7 @@ allprojects {
 
     kotlinter {
         // We are currently disabling tests for import ordering.
-        // TODO FILIPPO... We need to fix the linter. It doesn't work with compose
+        // TODO COMPOSE... We need to fix the linter. It doesn't work with compose
         disabledRules = arrayOf("import-ordering")
     }
 

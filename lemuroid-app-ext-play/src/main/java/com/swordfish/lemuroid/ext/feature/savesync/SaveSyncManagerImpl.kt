@@ -22,7 +22,7 @@ import timber.log.Timber
 class SaveSyncManagerImpl(
     private val appContext: Context,
     private val directoriesManager: DirectoriesManager
-) : SaveSyncManager {
+) : SaveSyncManager() {
     private var lastSyncTimestamp: Long by SharedPreferencesDelegates.LongDelegate(
         SharedPreferencesHelper.getSharedPreferences(appContext),
         appContext.getString(R.string.pref_key_last_save_sync),

@@ -44,32 +44,32 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.SettingsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.general.SettingsFragment"
         android:label="@string/title_settings" />
 
     <fragment
         android:id="@+id/navigation_settings_gamepad"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.GamepadSettingsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.inputdevices.InputDevicesSettingsFragment"
         android:label="@string/settings_title_gamepad_settings" />
 
     <fragment
         android:id="@+id/navigation_settings_bios_info"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.BiosSettingsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.bios.BiosSettingsFragment"
         android:label="@string/settings_title_display_bios_info" />
 
     <fragment
         android:id="@+id/navigation_settings_advanced"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.AdvancedSettingsFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.advanced.AdvancedSettingsFragment"
         android:label="@string/settings_title_advanced_settings" />
 
     <fragment
         android:id="@+id/navigation_settings_save_sync"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.SaveSyncFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.savesync.SaveSyncSettingsFragment"
         android:label="@string/settings_title_save_sync" />
 
     <fragment
         android:id="@+id/navigation_settings_cores_selection"
-        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.CoresSelectionFragment"
+        android:name="com.swordfish.lemuroid.app.mobile.feature.settings.coreselection.CoresSelectionFragment"
         android:label="@string/settings_title_open_cores_selection" />
 
 </navigation>

@@ -96,7 +96,7 @@ fun AppTheme(
         dynamicDarkColorScheme(context)
     }
 
-    // TODO FILIPPO... Does this belong here?
+    // TODO COMPOSE... Does this belong here?
     val imageLoader = remember {
         ImageLoader.Builder(context)
             .crossfade(true)

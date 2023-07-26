@@ -18,7 +18,7 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
     val extras = parseExtras(intent)
 
     fun getTitle(context: Context): String {
-        val keyName = GamePadPreferencesHelper.displayNameForKeyCode(extras.retroKey)
+        val keyName = InputKey(extras.retroKey).displayName()
         return context.getString(R.string.gamepad_binding_update_title, keyName)
     }
 

@@ -61,11 +61,11 @@ class GameMenuFragment : PreferenceFragmentCompat() {
         GameMenuHelper.setupSettingsOption(preferenceScreen, systemCoreConfig)
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (GameMenuHelper.onPreferenceTreeClicked(activity, preference))
             return true
 
-        when (preference?.key) {
+        when (preference.key) {
             "pref_game_section_save" -> {
                 findNavController().navigate(R.id.game_menu_save)
             }

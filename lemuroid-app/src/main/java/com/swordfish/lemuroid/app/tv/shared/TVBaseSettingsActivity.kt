@@ -23,7 +23,7 @@ abstract class TVBaseSettingsActivity : ImmersiveActivity() {
             val args = pref.extras
             val f = childFragmentManager.fragmentFactory.instantiate(
                 requireActivity().classLoader,
-                pref.fragment
+                pref.fragment!!
             )
             f.arguments = args
             f.setTargetFragment(caller, 0)

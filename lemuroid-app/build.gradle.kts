@@ -175,8 +175,12 @@ dependencies {
 
     implementation(platform(deps.libs.androidx.compose.composeBom))
     implementation(deps.libs.androidx.compose.material3)
+    implementation(deps.libs.androidx.compose.liveData)
     implementation(deps.libs.androidx.paging.compose)
     implementation(deps.libs.androidx.lifecycle.viewModelCompose)
+
+    implementation(deps.libs.composeSettings.uiM3)
+    implementation(deps.libs.composeSettings.preferences)
 
     implementation(deps.libs.libretrodroid)
 

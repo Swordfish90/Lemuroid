@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+// TODO COMPOSE... We should expose the popup menu as a bottom sheet
 class GameInteractor(
     private val activity: BusyActivity,
     private val retrogradeDb: RetrogradeDatabase,

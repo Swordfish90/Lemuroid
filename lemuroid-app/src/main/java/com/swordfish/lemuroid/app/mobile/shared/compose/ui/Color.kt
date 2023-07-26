@@ -2,7 +2,7 @@ package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
 import androidx.compose.ui.graphics.Color
 
-// TODO FILIPPO... Double check themes and split them for debug/release
+// TODO COMPOSE... Double check themes and split them for debug/release
 val md_theme_light_primary = Color(0xFFBB1614)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFFFDAD5)

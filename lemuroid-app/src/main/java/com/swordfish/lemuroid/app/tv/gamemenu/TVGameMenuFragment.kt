@@ -114,7 +114,7 @@ class TVGameMenuFragment(
         }
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (GameMenuHelper.onPreferenceTreeClicked(activity, preference))
             return true
         return super.onPreferenceTreeClick(preference)

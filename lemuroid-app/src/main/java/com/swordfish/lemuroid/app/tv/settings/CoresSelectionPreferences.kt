@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.shared.settings
+package com.swordfish.lemuroid.app.tv.settings
 
 import android.content.Context
 import androidx.preference.ListPreference

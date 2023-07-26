@@ -74,7 +74,7 @@ class GameMenuSaveFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
         return GameMenuHelper.onPreferenceTreeClicked(activity, preference)
     }
 

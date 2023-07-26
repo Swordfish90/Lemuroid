@@ -25,7 +25,6 @@ object deps {
         const val fragment        = "1.5.1"
         const val activity        = "1.5.1"
         const val libretrodroid   = "0.10.0"
-        const val compose         = ""
         const val radialgamepad   = "2.0.0"
     }
 
@@ -52,7 +51,7 @@ object deps {
                 const val processor = "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
                 const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}"
                 const val reactiveStreams = "android.arch.lifecycle:reactivestreams:1.1.1"
-                const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1";
+                const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
             }
             object preferences {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.1"
@@ -83,8 +82,9 @@ object deps {
                 const val activityKtx = "androidx.activity:activity-ktx:${versions.activity}"
             }
             object compose {
-                const val composeBom = "androidx.compose:compose-bom:2023.05.01";
+                const val composeBom = "androidx.compose:compose-bom:2023.05.01"
                 const val material3 = "androidx.compose.material3:material3"
+                const val liveData = "androidx.compose.runtime:runtime-livedata"
             }
         }
         object arch {
@@ -127,8 +127,13 @@ object deps {
         }
         object coil {
             // TODO Migrate to coil 2.x
-            const val coil = "io.coil-kt:coil:1.4.0";
-            const val coilCompose = "io.coil-kt:coil-compose:1.4.0";
+            const val coil = "io.coil-kt:coil:1.4.0"
+            const val coilCompose = "io.coil-kt:coil-compose:1.4.0"
+        }
+
+        object composeSettings {
+            const val uiM3 = "com.github.alorma:compose-settings-ui-m3:0.27.0"
+            const val preferences = "com.github.alorma:compose-settings-storage-preferences:0.27.0"
         }
 
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"

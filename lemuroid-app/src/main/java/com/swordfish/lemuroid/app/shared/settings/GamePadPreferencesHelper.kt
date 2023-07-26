@@ -17,7 +17,6 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.tv.input.TVGamePadBindingActivity
-import java.util.Locale
 
 class GamePadPreferencesHelper(
     private val inputDeviceManager: InputDeviceManager,
@@ -120,7 +119,7 @@ class GamePadPreferencesHelper(
         preferenceScreen: PreferenceScreen,
         inputDevice: InputDevice
     ) {
-        val inverseBindings: Map<RetroKey, InputKey> = inputDeviceManager.getBindings(inputDevice)
+        val inverseBindings: Map<RetroKey, InputKey> = inputDeviceManager.getCurrentBindings(inputDevice)
             .map { it.value to it.key }
             .toMap()
 
@@ -130,7 +129,7 @@ class GamePadPreferencesHelper(
                 val preferenceKey = InputDeviceManager.computeKeyBindingRetroKeyPreference(inputDevice, retroKey)
                 val preference = preferenceScreen.findPreference<Preference>(preferenceKey)
                 preference?.summaryProvider = Preference.SummaryProvider<Preference> {
-                    displayNameForKeyCode(boundKey)
+                    InputKey(boundKey).displayName()
                 }
             }
     }
@@ -154,7 +153,7 @@ class GamePadPreferencesHelper(
     ): Preference {
         val preference = Preference(context)
         preference.key = InputDeviceManager.computeKeyBindingRetroKeyPreference(inputDevice, retroKey)
-        preference.title = getRetroPadKeyName(context, retroKey.keyCode)
+        preference.title = retroKey.displayName(context)
         preference.setOnPreferenceClickListener {
             displayChangeDialog(context, inputDevice, retroKey.keyCode)
             true
@@ -194,30 +193,6 @@ class GamePadPreferencesHelper(
         preference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         preference.isIconSpaceReserved = false
         return preference
-    }
-
-    private fun getRetroPadKeyName(context: Context, key: Int): String {
-        return context.resources.getString(
-            R.string.settings_retropad_button_name,
-            displayNameForKeyCode(key)
-        )
-    }
-
-    companion object {
-        fun displayNameForKeyCode(keyCode: Int): String {
-            return when (keyCode) {
-                KeyEvent.KEYCODE_BUTTON_THUMBL -> "L3"
-                KeyEvent.KEYCODE_BUTTON_THUMBR -> "R3"
-                KeyEvent.KEYCODE_BUTTON_MODE -> "Options"
-                KeyEvent.KEYCODE_UNKNOWN -> " - "
-                else ->
-                    KeyEvent.keyCodeToString(keyCode)
-                        .split("_")
-                        .last()
-                        .lowercase()
-                        .replaceFirstChar { it.titlecase(Locale.ENGLISH) }
-            }
-        }
     }
 
     @dagger.Module
