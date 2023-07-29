@@ -7,56 +7,74 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.withModelsFrom
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
-import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.kotlin.lazySequenceOf
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 class EpoxyHomeController(
     private val gameInteractor: GameInteractor,
-    private val settingsInteractor: SettingsInteractor,
     private val coverLoader: CoverLoader
 ) : AsyncEpoxyController() {
 
-    private var uiState = HomeViewModel.UIState()
+    enum class HomeAction {
+        CHANGE_STORAGE_FOLDER,
+        ENABLE_NOTIFICATION_PERMISSION
+    }
 
-    fun update(viewState: HomeViewModel.UIState) {
-        uiState = viewState
+    private var currentUIState = HomeViewModel.UIState()
+    private val actionsFlow = MutableSharedFlow<HomeAction>()
+
+    fun getActions(): Flow<HomeAction> {
+        return actionsFlow
+    }
+
+    fun updateState(viewState: HomeViewModel.UIState) {
+        currentUIState = viewState
         requestModelBuild()
     }
 
     override fun buildModels() {
-        if (displayFavorites()) {
-            addCarousel("favorites", R.string.favorites, uiState.favoritesGames)
-        }
-
-        if (displayRecents()) {
-            addCarousel("recent", R.string.recent, uiState.recentGames)
-        }
-
-        if (displayDiscovery()) {
-            addCarousel("discover", R.string.discover, uiState.discoveryGames)
-        }
-
         if (displayEmptyView()) {
             addEmptyView()
         }
+
+        if (displayEnableNotifications()) {
+            addNotificationsView()
+        }
+
+        if (displayFavorites()) {
+            addCarousel("favorites", R.string.favorites, currentUIState.favoritesGames)
+        }
+
+        if (displayRecents()) {
+            addCarousel("recent", R.string.recent, currentUIState.recentGames)
+        }
+
+        if (displayDiscovery()) {
+            addCarousel("discover", R.string.discover, currentUIState.discoveryGames)
+        }
     }
 
-    private fun displayDiscovery() = uiState.discoveryGames.isNotEmpty()
+    private fun displayDiscovery() = currentUIState.discoveryGames.isNotEmpty()
 
-    private fun displayRecents() = uiState.recentGames.isNotEmpty()
+    private fun displayRecents() = currentUIState.recentGames.isNotEmpty()
 
-    private fun displayFavorites() = uiState.favoritesGames.isNotEmpty()
+    private fun displayFavorites() = currentUIState.favoritesGames.isNotEmpty()
 
     private fun displayEmptyView(): Boolean {
         val conditions = lazySequenceOf(
-            { uiState.loading.not() },
-            { uiState.recentGames.isEmpty() },
-            { uiState.favoritesGames.isEmpty() },
-            { uiState.discoveryGames.isEmpty() },
+            { currentUIState.loading.not() },
+            { currentUIState.recentGames.isEmpty() },
+            { currentUIState.favoritesGames.isEmpty() },
+            { currentUIState.discoveryGames.isEmpty() },
         )
         return conditions.all { it }
     }
+
+    private fun displayEnableNotifications() = currentUIState.notificationsEnabled.not()
 
     private fun addCarousel(id: String, titleId: Int, games: List<Game>) {
         epoxyHomeSection {
@@ -76,14 +94,31 @@ class EpoxyHomeController(
         }
     }
 
+    private fun addNotificationsView() {
+        epoxyHomeNotification {
+            id("notifications")
+                .title(R.string.home_notification_title)
+                .message(R.string.home_notification_message)
+                .action(R.string.home_notification_action)
+                .actionEnabled(true)
+                .onClick { this@EpoxyHomeController.launchAction(HomeAction.ENABLE_NOTIFICATION_PERMISSION) }
+        }
+    }
+
     private fun addEmptyView() {
-        epoxyEmptyViewAction {
-            id("empty_home")
+        epoxyHomeNotification {
+            id("notification_empty")
                 .title(R.string.home_empty_title)
                 .message(R.string.home_empty_message)
                 .action(R.string.home_empty_action)
-                .actionEnabled(!this@EpoxyHomeController.uiState.indexInProgress)
-                .onClick { this@EpoxyHomeController.settingsInteractor.changeLocalStorageFolder() }
+                .actionEnabled(!this@EpoxyHomeController.currentUIState.indexInProgress)
+                .onClick { this@EpoxyHomeController.launchAction(HomeAction.CHANGE_STORAGE_FOLDER) }
+        }
+    }
+
+    private fun launchAction(homeAction: HomeAction) {
+        GlobalScope.launch {
+            actionsFlow.emit(homeAction)
         }
     }
 

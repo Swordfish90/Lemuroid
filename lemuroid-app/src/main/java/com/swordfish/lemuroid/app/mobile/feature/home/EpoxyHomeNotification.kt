@@ -9,8 +9,8 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.swordfish.lemuroid.R
 
-@EpoxyModelClass(layout = R.layout.layout_empty_action)
-abstract class EpoxyEmptyViewAction : EpoxyModelWithHolder<EpoxyEmptyViewAction.Holder>() {
+@EpoxyModelClass(layout = R.layout.layout_home_notification)
+abstract class EpoxyHomeNotification : EpoxyModelWithHolder<EpoxyHomeNotification.Holder>() {
 
     @EpoxyAttribute
     var title: Int? = null
