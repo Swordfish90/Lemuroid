@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
+import com.swordfish.lemuroid.common.kotlin.lazySequenceOf
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.Dispatchers
@@ -38,14 +39,15 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
         val favoritesGames: List<Game> = emptyList(),
         val recentGames: List<Game> = emptyList(),
         val discoveryGames: List<Game> = emptyList(),
-        val indexInProgress: Boolean = false,
-        val loading: Boolean = true,
-        val notificationsEnabled: Boolean = true
+        val indexInProgress: Boolean = true,
+        val showNoPermissionNotification: Boolean = false,
+        val showNoGamesNotification: Boolean = false,
     )
 
     private val notificationsEnabledState = MutableStateFlow(true)
     private val uiStates = MutableStateFlow(UIState())
 
+    // TODO COMPOSE... These should actually be throttled nicely
     fun getViewStates(): Flow<UIState> {
         return uiStates
     }
@@ -61,13 +63,14 @@ class HomeViewModel(appContext: Context, retrogradeDb: RetrogradeDatabase) : Vie
         indexInProgress: Boolean,
         notificationsEnabled: Boolean
     ): UIState {
+        val noGames = recentGames.isEmpty() && favoritesGames.isEmpty() && discoveryGames.isEmpty()
         return UIState(
             favoritesGames,
             recentGames,
             discoveryGames,
             indexInProgress,
-            false,
-            notificationsEnabled
+            !notificationsEnabled,
+            noGames
         )
     }
 

@@ -20,7 +20,6 @@ object deps {
         const val googleApiClient = "1.32.1"
         const val paging          = "3.1.1"
         const val room            = "2.5.2"
-        const val epoxy           = "4.6.3-vinay-compose"
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.5.1"
@@ -106,11 +105,6 @@ object deps {
             const val stdlib = "stdlib"
             const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${versions.serialization}"
             const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.serialization}"
-        }
-        object epoxy {
-            const val expoxy = "com.airbnb.android:epoxy:${versions.epoxy}"
-            const val paging = "com.airbnb.android:epoxy-paging:${versions.epoxy}"
-            const val processor = "com.airbnb.android:epoxy-processor:${versions.epoxy}"
         }
         object play {
             const val review = "com.google.android.play:review:2.0.0"

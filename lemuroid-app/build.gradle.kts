@@ -141,10 +141,7 @@ dependencies {
     implementation(deps.libs.arch.work.runtimeKtx)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.reactiveStreams)
-    implementation(deps.libs.epoxy.expoxy)
-    implementation(deps.libs.epoxy.paging)
 
-    kapt(deps.libs.epoxy.processor)
     kapt(deps.libs.androidx.lifecycle.processor)
 
     implementation(deps.libs.androidx.leanback.leanback)

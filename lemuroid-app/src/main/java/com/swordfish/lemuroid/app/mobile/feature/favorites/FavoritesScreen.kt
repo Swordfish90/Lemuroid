@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.favorites
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -18,11 +19,15 @@ fun FavoritesScreen(
     AppTheme {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(144.dp),
-            contentPadding = PaddingValues(8.dp),
+            contentPadding = PaddingValues(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
                 val game = games[index] ?: return@items
-                GameCard(game) { onGameClicked(game) }
+                GameCard(
+                    game = game
+                ) { onGameClicked(game) }
             }
         }
     }

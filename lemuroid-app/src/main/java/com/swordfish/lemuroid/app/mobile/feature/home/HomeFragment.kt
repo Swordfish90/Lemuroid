@@ -9,23 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.epoxy.Carousel
-import com.swordfish.lemuroid.R
+import androidx.fragment.app.viewModels
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
-import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
-import timber.log.Timber
 
 class HomeFragment : Fragment() {
 
@@ -41,7 +37,9 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var settingsInteractor: SettingsInteractor
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModels {
+        HomeViewModel.Factory(requireContext(), retrogradeDb)
+    }
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -58,45 +56,18 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val factory = HomeViewModel.Factory(requireContext().applicationContext, retrogradeDb)
-        homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
-
-        // Disable snapping in carousel view
-        Carousel.setDefaultGlobalSnapHelperFactory(null)
-
-        val pagingController = EpoxyHomeController(gameInteractor, coverLoader)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.home_recyclerview)
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = pagingController.adapter
-
-        launchOnState(Lifecycle.State.RESUMED) {
-            pagingController.getActions().collect {
-                Timber.d("Received home view model action + $it")
-                handleEpoxyAction(it)
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                val state = homeViewModel.getViewStates().collectAsState(HomeViewModel.UIState())
+                HomeScreen(
+                    state = state.value,
+                    onGameClicked = { gameInteractor.onGamePlay(it) },
+                    onEnableNotificationsClicked = { handleNotificationPermissionRequest() },
+                    onSetDirectoryClicked = { handleChangeStorageFolder() }
+                )
             }
-        }
-
-        launchOnState(Lifecycle.State.RESUMED) {
-            homeViewModel.getViewStates().collect {
-                pagingController.updateState(it)
-            }
-        }
-    }
-
-    private fun handleEpoxyAction(homeAction: EpoxyHomeController.HomeAction) {
-        when (homeAction) {
-            EpoxyHomeController.HomeAction.CHANGE_STORAGE_FOLDER -> handleChangeStorageFolder()
-            EpoxyHomeController.HomeAction.ENABLE_NOTIFICATION_PERMISSION -> handleNotificationPermissionRequest()
         }
     }
 
