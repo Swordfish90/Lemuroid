@@ -27,4 +27,5 @@
     <string name="gdrive_last_sync_completed">Dernière synchro: %s</string>
     <string name="game_loading_download_core">Téléchargement du module…</string>
     <string name="installing_core_notification_title">Mise à jour des noyaux depuis le Play</string>
+    <string name="installing_core_notification_message">Check the Google Play Store app to see the current status</string>
 </resources>
