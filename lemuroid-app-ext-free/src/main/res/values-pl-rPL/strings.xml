@@ -3,5 +3,5 @@
     <string name="game_loading_download_core">Pobieranie rdzenia…</string>
     <string name="installing_core_notification_title">Aktualizowanie rdzeni</string>
     <string name="installing_core_notification_message">Może to potrwać kilka minut</string>
-    <string name="game_loader_error_load_core">Rdzeń Libretro nie został załadowany. Upewnij się, że urządzenie jest podłączone do Internetu i spróbuj ponownie zeskanować bibliotekę. Jeśli problem utrzymuje się, rdzeń może nie być obsługiwany na twoim urządzeniu.</string>
+    <string name="game_loader_error_load_core">Rdzeń Libretro nie został załadowany. Upewnij się, że urządzenie jest połączone z Internetem i spróbuj ponownie przeskanować bibliotekę. Jeśli problem będzie się powtarzał, ten rdzeń może nie być obsługiwany na Twoim urządzeniu.</string>
 </resources>
