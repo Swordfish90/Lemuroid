@@ -2,6 +2,10 @@
 
 package com.swordfish.lemuroid.app.mobile.feature.home
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,17 +22,63 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.GameCard
+import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
+import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
+    gameInteractor: GameInteractor
+) {
+    val context = LocalContext.current
+    val applicationContext = context.applicationContext
+
+    ComposableLifecycle { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_RESUME -> {
+                viewModel.updateNotificationPermission(applicationContext)
+            }
+            else -> { }
+        }
+    }
+
+    val permissionsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (!isGranted) {
+            context.displayDetailsSettingsScreen()
+        }
+    }
+
+    val state = viewModel.getViewStates().collectAsState(HomeViewModel.UIState())
+    HomeScreen(
+        state.value,
+        { gameInteractor.onGamePlay(it) },
+        {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                return@HomeScreen
+            }
+
+            permissionsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        },
+        { viewModel.changeLocalStorageFolder(context) }
+    ) // TODO COMPOSE We need to understand what's going to happen here.
+}
+
+@Composable
+private fun HomeScreen(
     state: HomeViewModel.UIState,
     onGameClicked: (Game) -> Unit,
     onEnableNotificationsClicked: () -> Unit,

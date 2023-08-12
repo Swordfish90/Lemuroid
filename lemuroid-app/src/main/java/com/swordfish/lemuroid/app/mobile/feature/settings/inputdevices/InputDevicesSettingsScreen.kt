@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.inputdevices
 
+import android.content.Intent
 import android.view.InputDevice
 import android.view.KeyEvent
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -16,7 +18,8 @@ import com.alorma.compose.settings.ui.SettingsList
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
+import com.swordfish.lemuroid.app.shared.input.InputBindingUpdater
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
@@ -26,22 +29,32 @@ import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
 
 @Composable
-fun InputDevicesSettingsScreen(
-    state: InputDevicesSettingsViewModel.State,
-    onBindingClicked: (InputDevice, RetroKey) -> Unit
-) {
-    AppTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-        ) {
-            EnabledDevice(state)
-            state.bindings.forEach { (device, bindings) ->
-                SettingsSmallGroup(title = { Text(text = device.name) }) {
-                    DeviceBinding(device, bindings.keys, onBindingClicked)
-                    DeviceMenuShortcut(device, bindings.menuShortcuts, bindings.defaultShortcut)
-                }
+fun InputDevicesSettingsScreen(viewModel: InputDevicesSettingsViewModel) {
+    val context = LocalContext.current.applicationContext
+    val state = viewModel.uiState
+        .collectAsState(InputDevicesSettingsViewModel.State())
+        .value
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+    ) {
+        EnabledDevice(state)
+        state.bindings.forEach { (device, bindings) ->
+            SettingsSmallGroup(title = { Text(text = device.name) }) {
+                DeviceBinding(
+                    device = device,
+                    bindings = bindings.keys,
+                    onBindingClicked = { device, retroKey ->
+                        val intent = Intent(context, GamePadBindingActivity::class.java).apply {
+                            putExtra(InputBindingUpdater.REQUEST_DEVICE, device)
+                            putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey.keyCode)
+                        }
+                        context.startActivity(intent)
+                    }
+                )
+                DeviceMenuShortcut(device, bindings.menuShortcuts, bindings.defaultShortcut)
             }
         }
     }

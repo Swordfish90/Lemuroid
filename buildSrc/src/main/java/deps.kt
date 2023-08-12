@@ -14,7 +14,7 @@ object deps {
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
         const val work            = "2.7.1"
-        const val navigation      = "2.3.5"
+        const val navigation      = "2.5.2"
         const val lifecycle       = "2.6.1"
         const val leanback        = "1.1.0-rc01"
         const val googleApiClient = "1.32.1"
@@ -22,7 +22,7 @@ object deps {
         const val room            = "2.5.2"
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
-        const val activity        = "1.5.1"
+        const val activity        = "1.7.2"
         const val libretrodroid   = "0.10.0"
         const val radialgamepad   = "2.0.0"
     }
@@ -63,6 +63,7 @@ object deps {
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
                 const val navigationUi = "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+                const val compose = "androidx.navigation:navigation-compose:${versions.navigation}"
             }
             object room {
                 const val common = "androidx.room:room-common:${versions.room}"
@@ -79,6 +80,7 @@ object deps {
             object activity {
                 const val activity = "androidx.activity:activity:${versions.activity}"
                 const val activityKtx = "androidx.activity:activity-ktx:${versions.activity}"
+                const val compose = "androidx.activity:activity-compose:${versions.activity}"
             }
             object compose {
                 const val composeBom = "androidx.compose:compose-bom:2023.05.01"

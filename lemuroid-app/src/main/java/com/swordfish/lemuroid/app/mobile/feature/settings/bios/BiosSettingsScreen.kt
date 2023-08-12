@@ -6,29 +6,30 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
 import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
 import com.swordfish.lemuroid.lib.bios.Bios
-import com.swordfish.lemuroid.lib.bios.BiosManager
 
 @Composable
-fun BiosScreen(biosInfo: BiosManager.BiosInfo) {
-    AppTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-        ) {
-            if (biosInfo.detected.isNotEmpty()) {
-                DetectedEntries(biosInfo.detected)
-            }
-            if (biosInfo.notDetected.isNotEmpty()) {
-                SupportedEntries(biosInfo.notDetected)
-            }
+fun BiosScreen(viewModel: BiosSettingsViewModel) {
+    val uiState = viewModel.uiState
+        .collectAsState()
+        .value
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+    ) {
+        if (uiState.detected.isNotEmpty()) {
+            DetectedEntries(uiState.detected)
+        }
+        if (uiState.notDetected.isNotEmpty()) {
+            SupportedEntries(uiState.notDetected)
         }
     }
 }

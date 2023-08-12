@@ -5,18 +5,25 @@ import android.text.format.Formatter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
-class AdvancedSettingsViewModel(appContext: Context) : ViewModel() {
+class AdvancedSettingsViewModel(
+    appContext: Context,
+    private val settingsInteractor: SettingsInteractor
+) : ViewModel() {
 
-    class Factory(private val appContext: Context) : ViewModelProvider.Factory {
+    class Factory(
+        private val appContext: Context,
+        private val settingsInteractor: SettingsInteractor
+    ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AdvancedSettingsViewModel(appContext) as T
+            return AdvancedSettingsViewModel(appContext, settingsInteractor) as T
         }
     }
 
@@ -47,5 +54,9 @@ class AdvancedSettingsViewModel(appContext: Context) : ViewModel() {
 
     private fun getSizeLabel(appContext: Context, size: Long): String {
         return Formatter.formatShortFileSize(appContext, size)
+    }
+
+    fun resetAllSettings() {
+        settingsInteractor.resetAllSettings()
     }
 }

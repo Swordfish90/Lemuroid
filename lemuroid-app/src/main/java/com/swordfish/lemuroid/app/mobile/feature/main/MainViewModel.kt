@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 
+// TODO COMPOSE... Show icon when save syncs are enabled and configured
 class MainViewModel(appContext: Context) : ViewModel() {
 
     class Factory(private val appContext: Context) : ViewModelProvider.Factory {

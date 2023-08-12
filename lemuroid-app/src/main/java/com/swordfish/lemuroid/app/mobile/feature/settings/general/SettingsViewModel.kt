@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
+import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,12 +17,14 @@ import kotlinx.coroutines.flow.stateIn
 
 class SettingsViewModel(
     context: Context,
+    private val settingsInteractor: SettingsInteractor,
     saveSyncManager: SaveSyncManager,
     sharedPreferences: FlowSharedPreferences
 ) : ViewModel() {
 
     class Factory(
         private val context: Context,
+        private val settingsInteractor: SettingsInteractor,
         private val saveSyncManager: SaveSyncManager,
         private val sharedPreferences: FlowSharedPreferences
     ) : ViewModelProvider.Factory {
@@ -29,6 +32,7 @@ class SettingsViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return SettingsViewModel(
                 context,
+                settingsInteractor,
                 saveSyncManager,
                 sharedPreferences
             ) as T
@@ -49,4 +53,8 @@ class SettingsViewModel(
         .flowOn(Dispatchers.IO)
         .stateIn(viewModelScope, SharingStarted.Lazily, "")
         .map { State(it, saveSyncManager.isSupported()) }
+
+    fun changeLocalStorageFolder() {
+        settingsInteractor.changeLocalStorageFolder()
+    }
 }

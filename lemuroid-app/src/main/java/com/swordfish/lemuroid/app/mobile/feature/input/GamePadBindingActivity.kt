@@ -20,6 +20,7 @@ class GamePadBindingActivity : RetrogradeActivity() {
 
         inputBindingUpdater = InputBindingUpdater(inputDeviceManager, intent)
 
+        // TODO COMPOSE... Use Material dialog builder on mobile
         if (savedInstanceState == null) {
             AlertDialog.Builder(this)
                 .setTitle(inputBindingUpdater.getTitle(applicationContext))

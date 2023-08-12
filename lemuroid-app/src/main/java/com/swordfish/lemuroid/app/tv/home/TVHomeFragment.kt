@@ -64,11 +64,9 @@ class TVHomeFragment : BrowseSupportFragment() {
             when (item) {
                 is Game -> gameInteractor.onGamePlay(item)
                 is MetaSystemInfo -> {
-                    val systemIds = item.metaSystem.systemIDs
-                        .map { it.dbname }
-                        .toTypedArray()
-
-                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(systemIds)
+                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(
+                        item.metaSystem.name
+                    )
                     findNavController().navigate(action)
                 }
                 is TVSetting -> {

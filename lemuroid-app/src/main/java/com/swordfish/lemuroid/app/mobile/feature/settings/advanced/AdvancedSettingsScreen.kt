@@ -6,37 +6,41 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.alorma.compose.settings.ui.SettingsList
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSlider
 import com.alorma.compose.settings.ui.SettingsSwitch
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
 import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.fractionPreferenceState
 import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
 
 @Composable
-fun AdvancedSettingsScreen(
-    cacheState: AdvancedSettingsViewModel.CacheState?,
-    onResetSettings: () -> Unit
-) {
-    AppTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-        ) {
-            if (cacheState == null) {
-                return@Column
-            }
+fun AdvancedSettingsScreen(viewModel: AdvancedSettingsViewModel, navController: NavHostController) {
+    val uiState = viewModel.uiState
+        .collectAsState()
+        .value
 
-            InputSettings()
-            GeneralSettings(cacheState, onResetSettings)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+    ) {
+        if (uiState?.cache == null) {
+            return@Column
         }
+
+        InputSettings()
+        GeneralSettings(uiState.cache, viewModel, navController)
     }
 }
 
@@ -69,8 +73,11 @@ private fun InputSettings() {
 @Composable
 private fun GeneralSettings(
     cacheState: AdvancedSettingsViewModel.CacheState,
-    onResetSettings: () -> Unit
+    viewModel: AdvancedSettingsViewModel,
+    navController: NavController
 ) {
+    val context = LocalContext.current.applicationContext
+
     SettingsSmallGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_general)) }
     ) {
@@ -109,7 +116,17 @@ private fun GeneralSettings(
         SettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_reset_settings)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_reset_settings)) },
-            onClick = { onResetSettings() }
+            onClick = {
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.reset_settings_warning_message_title)
+                    .setMessage(R.string.reset_settings_warning_message_description)
+                    .setPositiveButton(R.string.ok) { _, _ ->
+                        viewModel.resetAllSettings()
+                        navController.popBackStack(MainRoute.SETTINGS.route, false)
+                    }
+                    .setNegativeButton(R.string.cancel) { _, _ -> }
+                    .show()
+            }
         )
     }
 }

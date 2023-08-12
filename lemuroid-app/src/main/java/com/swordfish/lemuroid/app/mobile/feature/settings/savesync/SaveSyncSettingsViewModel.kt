@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.savesync
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -35,6 +36,7 @@ class SaveSyncSettingsViewModel(
         val lastSyncInfo: String = "",
         val coreNames: List<String> = emptyList(),
         val provider: String = "",
+        val settingsActivity: Class<out Activity>? = null
     )
 
     val uiState = flow { emit(buildState()) }
@@ -51,7 +53,8 @@ class SaveSyncSettingsViewModel(
             saveSyncManager.computeSavesSpace(),
             saveSyncManager.getLastSyncInfo(),
             computeCoreNames(),
-            saveSyncManager.getProvider()
+            saveSyncManager.getProvider(),
+            saveSyncManager.getSettingsActivity()
         )
     }
 
