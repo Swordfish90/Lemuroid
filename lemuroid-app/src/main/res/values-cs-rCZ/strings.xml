@@ -26,6 +26,8 @@
     <string name="settings_title_enable_touch_feedback">Vibrace při dotyku</string>
     <string name="settings_title_tilt_sensitivity">Citlivost senzoru naklánění</string>
     <string name="settings_title_maximum_cache_usage">Limit velikosti cache</string>
+    <string name="settings_title_hd_mode">HD režim</string>
+    <string name="settings_description_hd_mode">Použít filtr zvětšení rozlišení obrazu</string>
     <string name="settings_title_gamepad_settings">Externí zařízení</string>
     <string name="settings_description_gamepad_settings">Konfigurovat externí gamepady a klávesnice</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -45,6 +47,8 @@
     <string name="settings_description_advanced_settings">Zobrazit pokročilé nastavení</string>
     <string name="settings_title_low_latency_audio">Preferovat zvuk s nízkou latencí</string>
     <string name="settings_description_low_latency_audio">Snížit latenci zvuku na podporovaných zařízeních. Může způsobit nepříjemné zvuky.</string>
+    <string name="settings_title_legacy_hd_mode">Preferovat předchozí HD režim</string>
+    <string name="settings_description_legacy_hd_mode">Vždy používat předchozí HD režim. Výsledkem bude ztráta kvality výměnou za rychlost.</string>
     <string name="settings_title_direct_game_load">Přímé načtení hry</string>
     <string name="settings_description_direct_game_load">(Experimentální) Sníží čas načítání a využití cache na podporovaných konzolích.</string>
     <string name="settings_title_enable_rumble">Vibrace</string>
@@ -69,6 +73,9 @@
     <string name="game_context_menu_resume">Pokračovat</string>
     <string name="game_context_menu_restart">Restartovat</string>
     <string name="game_context_menu_create_shortcut">Připnout do launcheru</string>
+    <string name="home_notification_title">Povolit oznámení</string>
+    <string name="home_notification_message">Lemuroid používá oznámení, aby informoval, zda hra nebo operace běží v pozadí.</string>
+    <string name="home_notification_action">Povolit</string>
     <string name="home_empty_title">Zvolit složku s ROMkami</string>
     <string name="home_empty_message">Lemuroid potřebuje naskenovat složku obsahující ROM soubory.\nTo může trvat až několik minut.</string>
     <string name="home_empty_action">Vybrat adresář</string>
