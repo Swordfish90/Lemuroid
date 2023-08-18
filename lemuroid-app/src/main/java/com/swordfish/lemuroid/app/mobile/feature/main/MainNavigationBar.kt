@@ -5,7 +5,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -22,16 +21,18 @@ fun MainNavigationBar(
 
     NavigationBar {
         MainNavigationRoutes.values().forEach { destination ->
+            val isSelected = currentRoute?.root == destination.route.startDestination
+            val iconDrawable = if (isSelected) destination.selectedIcon else destination.unselectedIcon
+
             NavigationBarItem(
                 icon = {
                     Icon(
-                        painter = painterResource(destination.iconId),
+                        imageVector = iconDrawable,
                         contentDescription = stringResource(destination.titleId)
                     )
                 },
                 label = { Text(stringResource(destination.titleId)) },
-                selected = (currentRoute?.parent
-                    ?: currentRoute) == destination.route.startDestination,
+                selected = isSelected,
                 onClick = {
                     navController.navigate(destination.route.route) {
                         // Pop up to the start destination of the graph to

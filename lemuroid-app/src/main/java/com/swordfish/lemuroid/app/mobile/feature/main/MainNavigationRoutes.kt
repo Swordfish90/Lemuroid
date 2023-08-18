@@ -1,8 +1,17 @@
 package com.swordfish.lemuroid.app.mobile.feature.main
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.VideogameAsset
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.VideogameAsset
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -94,6 +103,12 @@ enum class MainRoute(
         showBottomNavigation = false
     );
 
+    val root = root()
+
+    private fun root(): MainRoute {
+        return parent?.root() ?: this
+    }
+
     companion object {
         fun findByRoute(route: String): MainRoute {
             return values().first { it.route == route }
@@ -109,14 +124,14 @@ enum class MainGraph(val route: String, val startDestination: MainRoute) {
     SETTINGS("settings", MainRoute.SETTINGS),
 }
 
-// TODO COMPOSE... Split the selected and selectable icons
 enum class MainNavigationRoutes(
     val route: MainGraph,
     @StringRes val titleId: Int,
-    @DrawableRes val iconId: Int
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
 ) {
-    HOME(MainGraph.HOME, R.string.title_home, R.drawable.ic_home_black_24dp),
-    FAVORITES(MainGraph.FAVORITES, R.string.favorites, R.drawable.ic_favorite_black_24dp),
-    SYSTEMS(MainGraph.SYSTEMS, R.string.title_systems, R.drawable.ic_videogame_asset_black_24dp),
-    SEARCH(MainGraph.SEARCH, R.string.title_search, R.drawable.ic_search_black_24dp),
+    HOME(MainGraph.HOME, R.string.title_home, Icons.Filled.Home, Icons.Outlined.Home),
+    FAVORITES(MainGraph.FAVORITES, R.string.favorites, Icons.Filled.Favorite, Icons.Filled.FavoriteBorder),
+    SYSTEMS(MainGraph.SYSTEMS, R.string.title_systems, Icons.Filled.VideogameAsset, Icons.Outlined.VideogameAsset),
+    SEARCH(MainGraph.SEARCH, R.string.title_search, Icons.Filled.Search, Icons.Outlined.Search),
 }
