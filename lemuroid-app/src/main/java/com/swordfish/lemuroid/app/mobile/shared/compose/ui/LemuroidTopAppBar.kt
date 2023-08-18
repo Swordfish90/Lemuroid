@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +28,8 @@ import androidx.navigation.NavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
+import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
+import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.lib.library.SystemID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,10 +37,10 @@ import com.swordfish.lemuroid.lib.library.SystemID
 fun LemuroidTopAppBar(
     route: MainRoute,
     navController: NavController,
-    displayProgress: Boolean,
+    mainUIState: MainViewModel.UiState,
 ) {
     val context = LocalContext.current
-    LemuroidTopAppBarContainer(displayProgress) {
+    LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
         TopAppBar(
             title = { Text(text = stringResource(route.titleId)) },
             navigationIcon = {
@@ -55,14 +58,19 @@ fun LemuroidTopAppBar(
                 }
             },
             actions = {
-                LemuroidTopBarActions(route, navController, context)
+                LemuroidTopBarActions(route, navController, context, mainUIState.saveSyncEnabled)
             },
         )
     }
 }
 
 @Composable
-fun LemuroidTopBarActions(route: MainRoute, navController: NavController, context: Context) {
+fun LemuroidTopBarActions(
+    route: MainRoute,
+    navController: NavController,
+    context: Context,
+    saveSyncEnabled: Boolean
+) {
     IconButton(
         onClick = { displayLemuroidHelp(context) }
     ) {
@@ -70,6 +78,16 @@ fun LemuroidTopBarActions(route: MainRoute, navController: NavController, contex
             Icons.Outlined.Info,
             "Back"
         ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+    }
+    if (saveSyncEnabled) {
+        IconButton(
+            onClick = { SaveSyncWork.enqueueManualWork(context.applicationContext) }
+        ) {
+            Icon(
+                Icons.Outlined.CloudSync,
+                "Cloud Sync"
+            ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+        }
     }
     if (route.showBottomNavigation) {
         IconButton(

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
+import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopAppBarContainer
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopBarActions
@@ -30,7 +31,7 @@ fun SearchScreen(
     navController: NavController,
     viewModel: SearchViewModel,
     gameInteractor: GameInteractor,
-    displayProgress: Boolean
+    mainUIState: MainViewModel.UiState
 ) {
     val context = LocalContext.current
     val query = viewModel.queryString.collectAsState()
@@ -38,7 +39,7 @@ fun SearchScreen(
 
     Scaffold(
         topBar = {
-            LemuroidTopAppBarContainer(displayProgress) {
+            LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -55,7 +56,12 @@ fun SearchScreen(
                         onActiveChange = { },
                     ) { }
 
-                    LemuroidTopBarActions(MainRoute.SEARCH, navController, context = context)
+                    LemuroidTopBarActions(
+                        MainRoute.SEARCH,
+                        navController,
+                        context = context,
+                        saveSyncEnabled = mainUIState.saveSyncEnabled
+                    )
                 }
             }
         }

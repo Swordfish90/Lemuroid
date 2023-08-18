@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -95,7 +96,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     private val reviewManager = ReviewManager()
 
     private val mainViewModel: MainViewModel by viewModels {
-        MainViewModel.Factory(applicationContext)
+        MainViewModel.Factory(applicationContext, saveSyncManager)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,23 +109,28 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         setContent {
             val navController = rememberNavController()
 
-            val displayProgress = mainViewModel.displayProgress.observeAsState(false)
+            val uiState = mainViewModel.state
+                .observeAsState(MainViewModel.UiState())
                 .value
 
-            MainScreen(navController, displayProgress)
+            MainScreen(navController, uiState)
         }
     }
 
     @Composable
     private fun MainScreen(
         navController: NavHostController,
-        displayProgress: Boolean
+        mainUIState: MainViewModel.UiState
     ) {
         AppTheme {
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry.value?.destination
             val currentRoute = currentDestination?.route
                 ?.let { MainRoute.findByRoute(it) }
+
+            LaunchedEffect(currentRoute) {
+                mainViewModel.update()
+            }
 
             Scaffold(
                 bottomBar = { MainNavigationBar(currentRoute, navController) }
@@ -135,7 +141,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     modifier = Modifier.padding(padding)
                 ) {
                     composable(MainRoute.HOME) {
-                        LemuroidScaffold(MainRoute.HOME, navController, displayProgress) {
+                        LemuroidScaffold(MainRoute.HOME, navController, mainUIState) {
                             HomeScreen(
                                 viewModel(
                                     factory = HomeViewModel.Factory(
@@ -149,7 +155,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         }
                     }
                     composable(MainRoute.FAVORITES) {
-                        LemuroidScaffold(MainRoute.FAVORITES, navController, displayProgress) {
+                        LemuroidScaffold(MainRoute.FAVORITES, navController, mainUIState) {
                             FavoritesScreen(
                                 viewModel(
                                     factory = FavoritesViewModel.Factory(retrogradeDb)
@@ -165,7 +171,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 factory = SearchViewModel.Factory(retrogradeDb)
                             ),
                             gameInteractor = gameInteractor,
-                            displayProgress = displayProgress
+                            mainUIState = mainUIState
                         )
                     }
                     navigation(MainGraph.SYSTEMS) {
@@ -173,7 +179,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SYSTEMS,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 MetaSystemsScreen(
                                     navController,
@@ -190,7 +196,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SYSTEM_GAMES,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 val metaSystemId = entry.arguments?.getString("metaSystemId")
                                 GamesScreen(
@@ -210,7 +216,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 SettingsScreen(
                                     viewModel = viewModel(
@@ -233,7 +239,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_ADVANCED,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 AdvancedSettingsScreen(
                                     viewModel = viewModel(
@@ -250,7 +256,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_BIOS,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 BiosScreen(
                                     viewModel = viewModel(
@@ -263,7 +269,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_CORES_SELECTION,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 CoresSelectionScreen(
                                     viewModel = viewModel(
@@ -279,7 +285,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_INPUT_DEVICES,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 InputDevicesSettingsScreen(
                                     viewModel = viewModel(
@@ -295,7 +301,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_SAVE_SYNC,
                                 navController,
-                                displayProgress
+                                mainUIState
                             ) {
                                 SaveSyncSettingsScreen(
                                     viewModel = viewModel(
@@ -314,7 +320,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     }
 
     override fun activity(): Activity = this
-    override fun isBusy(): Boolean = mainViewModel.displayProgress.value ?: false
+    override fun isBusy(): Boolean = mainViewModel.state.value?.operationInProgress ?: false
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

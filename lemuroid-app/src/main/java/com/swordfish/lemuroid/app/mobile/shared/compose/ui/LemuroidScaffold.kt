@@ -7,16 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
+import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
 
 @Composable
 fun LemuroidScaffold(
     route: MainRoute,
     navController: NavController,
-    displayProgress: Boolean,
+    mainUIState: MainViewModel.UiState,
     content: @Composable () -> Unit
 ) {
     Scaffold(
-        topBar = { LemuroidTopAppBar(route, navController, displayProgress) },
+        topBar = { LemuroidTopAppBar(route, navController, mainUIState) },
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             content()

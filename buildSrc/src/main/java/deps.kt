@@ -85,6 +85,7 @@ object deps {
             object compose {
                 const val composeBom = "androidx.compose:compose-bom:2023.05.01"
                 const val material3 = "androidx.compose.material3:material3"
+                const val extendedIcons = "androidx.compose.material:material-icons-extended"
                 const val liveData = "androidx.compose.runtime:runtime-livedata"
             }
         }
