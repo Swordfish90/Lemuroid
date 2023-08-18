@@ -13,7 +13,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun GameCard(modifier: Modifier = Modifier, game: Game, onClick: () -> Unit = { }) {
+fun LemuroidGameCard(modifier: Modifier = Modifier, game: Game, onClick: () -> Unit = { }) {
     val context = LocalContext.current
     val subtitle = remember(game.id) {
         GameUtils.getGameSubtitle(context, game)
@@ -26,8 +26,8 @@ fun GameCard(modifier: Modifier = Modifier, game: Game, onClick: () -> Unit = { 
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            GameImage(game)
-            GameTexts(game.title, subtitle)
+            LemuroidGameImage(game)
+            LemuroidGameTexts(game.title, subtitle)
         }
     }
 }

@@ -7,8 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.SystemCard
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSystemCard
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 
 @Composable
@@ -23,21 +22,18 @@ fun MetaSystemsScreen(
     )
 }
 
-// TODO COMPOSE... Get rid of all the nested AppThemes
 @Composable
 fun MetaSystemsScreen(
     metaSystems: List<MetaSystemInfo>,
     onSystemClicked: (MetaSystemInfo) -> Unit
 ) {
-    AppTheme {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(144.dp),
-            contentPadding = PaddingValues(8.dp),
-        ) {
-            items(metaSystems.size, key = { metaSystems[it].metaSystem }) { index ->
-                val system = metaSystems[index]
-                SystemCard(system) { onSystemClicked(system) }
-            }
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(144.dp),
+        contentPadding = PaddingValues(8.dp),
+    ) {
+        items(metaSystems.size, key = { metaSystems[it].metaSystem }) { index ->
+            val system = metaSystems[index]
+            LemuroidSystemCard(system) { onSystemClicked(system) }
         }
     }
 }

@@ -19,7 +19,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,8 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.GameCard
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
@@ -84,47 +82,43 @@ private fun HomeScreen(
     onEnableNotificationsClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
 ) {
-    AppTheme {
-        Surface {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(top = 16.dp, bottom = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                if (state.showNoPermissionNotification) {
-                    HomeNotification(
-                        titleId = R.string.home_notification_title,
-                        messageId = R.string.home_notification_message,
-                        actionId = R.string.home_notification_action,
-                        onAction = onEnableNotificationsClicked
-                    )
-                }
-                if (state.showNoGamesNotification) {
-                    HomeNotification(
-                        titleId = R.string.home_empty_title,
-                        messageId = R.string.home_empty_message,
-                        actionId = R.string.home_empty_action,
-                        onAction = onSetDirectoryClicked
-                    )
-                }
-                HomeRow(
-                    stringResource(id = R.string.recent),
-                    state.recentGames,
-                    onGameClicked
-                )
-                HomeRow(
-                    stringResource(id = R.string.favorites),
-                    state.favoritesGames,
-                    onGameClicked
-                )
-                HomeRow(
-                    stringResource(id = R.string.discover),
-                    state.discoveryGames,
-                    onGameClicked
-                )
-            }
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(top = 16.dp, bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        if (state.showNoPermissionNotification) {
+            HomeNotification(
+                titleId = R.string.home_notification_title,
+                messageId = R.string.home_notification_message,
+                actionId = R.string.home_notification_action,
+                onAction = onEnableNotificationsClicked
+            )
         }
+        if (state.showNoGamesNotification) {
+            HomeNotification(
+                titleId = R.string.home_empty_title,
+                messageId = R.string.home_empty_message,
+                actionId = R.string.home_empty_action,
+                onAction = onSetDirectoryClicked
+            )
+        }
+        HomeRow(
+            stringResource(id = R.string.recent),
+            state.recentGames,
+            onGameClicked
+        )
+        HomeRow(
+            stringResource(id = R.string.favorites),
+            state.favoritesGames,
+            onGameClicked
+        )
+        HomeRow(
+            stringResource(id = R.string.discover),
+            state.discoveryGames,
+            onGameClicked
+        )
     }
 }
 
@@ -146,7 +140,7 @@ private fun HomeRow(title: String, games: List<Game>, onGameClicked: (Game) -> U
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         games.forEach {
-            GameCard(
+            LemuroidGameCard(
                 modifier = Modifier.widthIn(0.dp, 144.dp),
                 game = it,
                 onClick = { onGameClicked(it) }

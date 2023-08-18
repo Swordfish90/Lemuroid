@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.GameCard
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.app.shared.GameInteractor
 
 // TODO COMPOSE... Get rid of GameInteractor leveraging activity
@@ -23,7 +23,7 @@ fun FavoritesScreen(viewModel: FavoritesViewModel, gameInteractor: GameInteracto
     ) {
         items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
             val game = games[index] ?: return@items
-            GameCard(
+            LemuroidGameCard(
                 game = game
             ) { gameInteractor.onGamePlay(game) }
         }

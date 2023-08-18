@@ -3,44 +3,19 @@ package com.swordfish.lemuroid.app.mobile.feature.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesScreen
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesViewModel
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesScreen
@@ -65,6 +40,7 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsScreen
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidScaffold
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
@@ -80,7 +56,6 @@ import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.library.MetaSystemID
-import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
@@ -89,7 +64,6 @@ import dagger.Provides
 import javax.inject.Inject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import timber.log.Timber
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : RetrogradeComponentActivity(), BusyActivity {
@@ -124,7 +98,6 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         MainViewModel.Factory(applicationContext)
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -136,99 +109,33 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
             val navController = rememberNavController()
 
             val displayProgress = mainViewModel.displayProgress.observeAsState(false)
+                .value
 
-            AppTheme {
-                val navBackStackEntry = navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry.value?.destination
-                val currentRoute = currentDestination?.route
-                    ?.let { MainRoute.findByRoute(it) }
+            MainScreen(navController, displayProgress)
+        }
+    }
 
-                LaunchedEffect(key1 = currentDestination) {
-                    Timber.d("FILIPPO ${currentDestination?.displayName} ${currentDestination?.hierarchy?.map { it.route }?.toList()}")
-                }
+    @Composable
+    private fun MainScreen(
+        navController: NavHostController,
+        displayProgress: Boolean
+    ) {
+        AppTheme {
+            val navBackStackEntry = navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry.value?.destination
+            val currentRoute = currentDestination?.route
+                ?.let { MainRoute.findByRoute(it) }
 
-                Scaffold(
-                    topBar = {
-                        Surface(shadowElevation = 4.dp, tonalElevation = 4.dp) {
-                            Column(Modifier.fillMaxWidth()) {
-                                CenterAlignedTopAppBar(
-                                    title = {
-                                        Text(
-                                            text = stringResource(
-                                                currentRoute?.titleId ?: R.string.lemuroid_name
-                                            )
-                                        )
-                                    },
-                                    scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
-                                    navigationIcon = {
-                                        AnimatedVisibility(
-                                            visible = currentRoute?.parent != null,
-                                            enter = fadeIn(),
-                                            exit = fadeOut()
-                                        ) {
-                                            IconButton(onClick = { navController.popBackStack() }) {
-                                                Icon(
-                                                    Icons.Filled.ArrowBack,
-                                                    "Back"
-                                                ) // TODO COMPOSE FIX CONTENT DESCRIPTION
-                                            }
-                                        }
-                                    },
-                                    actions = {
-                                        IconButton(onClick = { displayLemuroidHelp() }) {
-                                            Icon(
-                                                Icons.Outlined.Info,
-                                                "Back"
-                                            ) // TODO COMPOSE FIX CONTENT DESCRIPTION
-                                        }
-                                    },
-
-                                    )
-                                AnimatedVisibility(displayProgress.value) {
-                                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                                }
-                            }
-                        }
-                    },
-                    bottomBar = {
-                        NavigationBar {
-                            MainNavigationRoutes.values().forEach { destination ->
-                                NavigationBarItem(
-                                    icon = {
-                                        Icon(
-                                            painter = painterResource(destination.iconId),
-                                            contentDescription = stringResource(destination.titleId)
-                                        )
-                                    },
-                                    label = { Text(stringResource(destination.titleId)) },
-                                    selected = (currentRoute?.parent
-                                        ?: currentRoute) == destination.route.startDestination,
-                                    onClick = {
-                                        navController.navigate(destination.route.route) {
-                                            // Pop up to the start destination of the graph to
-                                            // avoid building up a large stack of destinations
-                                            // on the back stack as users select items
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = false
-                                            }
-                                            // Avoid multiple copies of the same destination when
-                                            // reselecting the same item
-                                            launchSingleTop = true
-                                            // Restore state when reselecting a previously selected item
-                                            restoreState = false
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                    }
-                ) { padding ->
-                    NavHost(
-                        navController,
-                        startDestination = MainRoute.HOME.route,
-                        Modifier.padding(padding)
-                    ) {
-                        composable(MainRoute.HOME) {
+            Scaffold(
+                bottomBar = { MainNavigationBar(currentRoute, navController) }
+            ) { padding ->
+                NavHost(
+                    navController = navController,
+                    startDestination = MainRoute.HOME.route,
+                    modifier = Modifier.padding(padding)
+                ) {
+                    composable(MainRoute.HOME) {
+                        LemuroidScaffold(MainRoute.HOME, navController, displayProgress) {
                             HomeScreen(
                                 viewModel(
                                     factory = HomeViewModel.Factory(
@@ -240,7 +147,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 gameInteractor
                             )
                         }
-                        composable(MainRoute.FAVORITES) {
+                    }
+                    composable(MainRoute.FAVORITES) {
+                        LemuroidScaffold(MainRoute.FAVORITES, navController, displayProgress) {
                             FavoritesScreen(
                                 viewModel(
                                     factory = FavoritesViewModel.Factory(retrogradeDb)
@@ -248,16 +157,24 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 gameInteractor = gameInteractor
                             )
                         }
-                        composable(MainRoute.SEARCH) {
-                            SearchScreen(
-                                viewModel(
-                                    factory = SearchViewModel.Factory(retrogradeDb)
-                                ),
-                                gameInteractor = gameInteractor
-                            )
-                        }
-                        navigation(MainGraph.SYSTEMS) {
-                            composable(MainRoute.SYSTEMS) {
+                    }
+                    composable(MainRoute.SEARCH) {
+                        SearchScreen(
+                            navController,
+                            viewModel(
+                                factory = SearchViewModel.Factory(retrogradeDb)
+                            ),
+                            gameInteractor = gameInteractor,
+                            displayProgress = displayProgress
+                        )
+                    }
+                    navigation(MainGraph.SYSTEMS) {
+                        composable(MainRoute.SYSTEMS) {
+                            LemuroidScaffold(
+                                MainRoute.SYSTEMS,
+                                navController,
+                                displayProgress
+                            ) {
                                 MetaSystemsScreen(
                                     navController,
                                     viewModel(
@@ -268,7 +185,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                     )
                                 )
                             }
-                            composable(MainRoute.SYSTEM_GAMES) { entry ->
+                        }
+                        composable(MainRoute.SYSTEM_GAMES) { entry ->
+                            LemuroidScaffold(
+                                MainRoute.SYSTEM_GAMES,
+                                navController,
+                                displayProgress
+                            ) {
                                 val metaSystemId = entry.arguments?.getString("metaSystemId")
                                 GamesScreen(
                                     viewModel = viewModel(
@@ -281,8 +204,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 )
                             }
                         }
-                        navigation(MainGraph.SETTINGS) {
-                            composable(MainRoute.SETTINGS) {
+                    }
+                    navigation(MainGraph.SETTINGS) {
+                        composable(MainRoute.SETTINGS) {
+                            LemuroidScaffold(
+                                MainRoute.SETTINGS,
+                                navController,
+                                displayProgress
+                            ) {
                                 SettingsScreen(
                                     viewModel = viewModel(
                                         factory = SettingsViewModel.Factory(
@@ -299,7 +228,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                     navController = navController
                                 )
                             }
-                            composable(MainRoute.SETTINGS_ADVANCED) {
+                        }
+                        composable(MainRoute.SETTINGS_ADVANCED) {
+                            LemuroidScaffold(
+                                MainRoute.SETTINGS_ADVANCED,
+                                navController,
+                                displayProgress
+                            ) {
                                 AdvancedSettingsScreen(
                                     viewModel = viewModel(
                                         factory = AdvancedSettingsViewModel.Factory(
@@ -310,14 +245,26 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                     navController
                                 )
                             }
-                            composable(MainRoute.SETTINGS_BIOS) {
+                        }
+                        composable(MainRoute.SETTINGS_BIOS) {
+                            LemuroidScaffold(
+                                MainRoute.SETTINGS_BIOS,
+                                navController,
+                                displayProgress
+                            ) {
                                 BiosScreen(
                                     viewModel = viewModel(
                                         factory = BiosSettingsViewModel.Factory(biosManager)
                                     )
                                 )
                             }
-                            composable(MainRoute.SETTINGS_CORES_SELECTION) {
+                        }
+                        composable(MainRoute.SETTINGS_CORES_SELECTION) {
+                            LemuroidScaffold(
+                                MainRoute.SETTINGS_CORES_SELECTION,
+                                navController,
+                                displayProgress
+                            ) {
                                 CoresSelectionScreen(
                                     viewModel = viewModel(
                                         factory = CoresSelectionViewModel.Factory(
@@ -327,7 +274,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                     )
                                 )
                             }
-                            composable(MainRoute.SETTINGS_INPUT_DEVICES) {
+                        }
+                        composable(MainRoute.SETTINGS_INPUT_DEVICES) {
+                            LemuroidScaffold(
+                                MainRoute.SETTINGS_INPUT_DEVICES,
+                                navController,
+                                displayProgress
+                            ) {
                                 InputDevicesSettingsScreen(
                                     viewModel = viewModel(
                                         factory = InputDevicesSettingsViewModel.Factory(
@@ -337,7 +290,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                     )
                                 )
                             }
-                            composable(MainRoute.SETTINGS_SAVE_SYNC) {
+                        }
+                        composable(MainRoute.SETTINGS_SAVE_SYNC) {
+                            LemuroidScaffold(
+                                MainRoute.SETTINGS_SAVE_SYNC,
+                                navController,
+                                displayProgress
+                            ) {
                                 SaveSyncSettingsScreen(
                                     viewModel = viewModel(
                                         factory = SaveSyncSettingsViewModel.Factory(
@@ -372,16 +331,6 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 }
             }
         }
-    }
-
-    private fun displayLemuroidHelp() {
-        val systemFolders = SystemID.values()
-            .joinToString(", ") { "<i>${it.dbname}</i>" }
-
-        val message = getString(R.string.lemuroid_help_content).replace("\$SYSTEMS", systemFolders)
-        MaterialAlertDialogBuilder(this)
-            .setMessage(Html.fromHtml(message))
-            .show()
     }
 
     @dagger.Module

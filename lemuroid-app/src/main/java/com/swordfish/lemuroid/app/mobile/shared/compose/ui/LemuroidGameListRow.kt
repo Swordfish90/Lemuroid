@@ -17,7 +17,7 @@ import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
-fun GameListEntry(game: Game, onClick: () -> Unit, onFavoriteToggle: (Boolean) -> Unit) {
+fun LemuroidGameListRow(game: Game, onClick: () -> Unit, onFavoriteToggle: (Boolean) -> Unit) {
     val context = LocalContext.current
     val subtitle = remember(game.id) {
         GameUtils.getGameSubtitle(context, game)
@@ -36,20 +36,21 @@ fun GameListEntry(game: Game, onClick: () -> Unit, onFavoriteToggle: (Boolean) -
                 end = 16.dp
             )
         ) {
-            Box(
+            Surface(
+                tonalElevation = 2.dp,
                 modifier = Modifier
                     .width(40.dp)
                     .height(40.dp)
                     .align(Alignment.CenterVertically)
             ) {
-                GameImage(game)
+                LemuroidSmallGameImage(game)
             }
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp)
             ) {
-                GameTexts(
+                LemuroidGameTexts(
                     title = game.title,
                     subtitle = subtitle
                 )

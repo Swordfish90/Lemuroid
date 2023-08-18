@@ -12,12 +12,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
-import com.swordfish.lemuroid.app.utils.games.GameUtils
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun SystemCard(system: MetaSystemInfo, onClick: () -> Unit) {
+fun LemuroidSystemCard(system: MetaSystemInfo, onClick: () -> Unit) {
     val context = LocalContext.current
 
     val title = remember(system.metaSystem.titleResId) {
@@ -39,8 +37,8 @@ fun SystemCard(system: MetaSystemInfo, onClick: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth(),
         ) {
-            SystemImage(system)
-            GameTexts(title, subtitle)
+            LemuroidSystemImage(system)
+            LemuroidGameTexts(title, subtitle)
         }
     }
 }
