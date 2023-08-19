@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
-import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -38,7 +37,8 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    gameInteractor: GameInteractor
+    onGameClick: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit
 ) {
     val context = LocalContext.current
     val applicationContext = context.applicationContext
@@ -63,7 +63,8 @@ fun HomeScreen(
     val state = viewModel.getViewStates().collectAsState(HomeViewModel.UIState())
     HomeScreen(
         state.value,
-        { gameInteractor.onGamePlay(it) },
+        onGameClick,
+        onGameLongClick,
         {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 return@HomeScreen
@@ -79,6 +80,7 @@ fun HomeScreen(
 private fun HomeScreen(
     state: HomeViewModel.UIState,
     onGameClicked: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit,
     onEnableNotificationsClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
 ) {
@@ -107,23 +109,31 @@ private fun HomeScreen(
         HomeRow(
             stringResource(id = R.string.recent),
             state.recentGames,
-            onGameClicked
+            onGameClicked,
+            onGameLongClick
         )
         HomeRow(
             stringResource(id = R.string.favorites),
             state.favoritesGames,
-            onGameClicked
+            onGameClicked,
+            onGameLongClick
         )
         HomeRow(
             stringResource(id = R.string.discover),
             state.discoveryGames,
-            onGameClicked
+            onGameClicked,
+            onGameLongClick
         )
     }
 }
 
 @Composable
-private fun HomeRow(title: String, games: List<Game>, onGameClicked: (Game) -> Unit) {
+private fun HomeRow(
+    title: String,
+    games: List<Game>,
+    onGameClicked: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit
+) {
     if (games.isEmpty()) {
         return
     }
@@ -143,7 +153,8 @@ private fun HomeRow(title: String, games: List<Game>, onGameClicked: (Game) -> U
             LemuroidGameCard(
                 modifier = Modifier.widthIn(0.dp, 144.dp),
                 game = it,
-                onClick = { onGameClicked(it) }
+                onClick = { onGameClicked(it) },
+                onLongClick = { onGameLongClick(it) }
             )
         }
     }

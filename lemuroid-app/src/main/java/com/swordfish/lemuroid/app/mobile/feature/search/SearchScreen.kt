@@ -29,14 +29,16 @@ import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopAppBarContainer
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopBarActions
-import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 fun SearchScreen(
     navController: NavController,
     viewModel: SearchViewModel,
-    gameInteractor: GameInteractor,
-    mainUIState: MainViewModel.UiState
+    mainUIState: MainViewModel.UiState,
+    onGameClick: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit,
+    onGameFavoriteToggle: (Game, Boolean) -> Unit
 ) {
     val context = LocalContext.current
     val query = viewModel.queryString.collectAsState()
@@ -95,9 +97,10 @@ fun SearchScreen(
 
                 LemuroidGameListRow(
                     game = game,
-                    onClick = { gameInteractor.onGamePlay(game) },
+                    onClick = { onGameClick(game) },
+                    onLongClick = { onGameLongClick(game) },
                     onFavoriteToggle = { isFavorite ->
-                        gameInteractor.onFavoriteToggle(game, isFavorite)
+                        onGameFavoriteToggle(game, isFavorite)
                     }
                 )
             }

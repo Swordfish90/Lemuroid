@@ -38,7 +38,7 @@ fun LemuroidSystemCard(system: MetaSystemInfo, onClick: () -> Unit) {
                 .fillMaxWidth(),
         ) {
             LemuroidSystemImage(system)
-            LemuroidGameTexts(title, subtitle)
+            LemuroidTexts(title = title, subtitle = subtitle)
         }
     }
 }

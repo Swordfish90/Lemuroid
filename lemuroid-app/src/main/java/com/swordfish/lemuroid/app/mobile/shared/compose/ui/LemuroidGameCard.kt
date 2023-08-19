@@ -1,33 +1,35 @@
 package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun LemuroidGameCard(modifier: Modifier = Modifier, game: Game, onClick: () -> Unit = { }) {
-    val context = LocalContext.current
-    val subtitle = remember(game.id) {
-        GameUtils.getGameSubtitle(context, game)
-    }
-
+@OptIn(ExperimentalFoundationApi::class)
+fun LemuroidGameCard(
+    modifier: Modifier = Modifier,
+    game: Game,
+    onClick: () -> Unit = { },
+    onLongClick: () -> Unit = { },
+) {
     ElevatedCard(
-        modifier = modifier,
-        onClick = onClick,
+        modifier = modifier
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                ),
         ) {
             LemuroidGameImage(game)
-            LemuroidGameTexts(game.title, subtitle)
+            LemuroidGameTexts(game = game)
         }
     }
 }

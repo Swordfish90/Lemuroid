@@ -4,12 +4,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
-import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 fun GamesScreen(
     viewModel: GamesViewModel,
-    gameInteractor: GameInteractor
+    onGameClick: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit,
+    onGameFavoriteToggle: (Game, Boolean) -> Unit
 ) {
     val games = viewModel.games.collectAsLazyPagingItems()
 
@@ -19,8 +21,9 @@ fun GamesScreen(
 
             LemuroidGameListRow(
                 game = game,
-                onClick = { gameInteractor.onGamePlay(game) },
-                onFavoriteToggle = { isFavorite -> gameInteractor.onFavoriteToggle(game, isFavorite) }
+                onClick = { onGameClick(game) },
+                onLongClick = { onGameLongClick(game) },
+                onFavoriteToggle = { isFavorite -> onGameFavoriteToggle(game, isFavorite) }
             )
         }
     }

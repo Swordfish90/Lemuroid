@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -58,6 +61,7 @@ import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
@@ -66,7 +70,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 
-@OptIn(DelicateCoroutinesApi::class)
+@OptIn(DelicateCoroutinesApi::class, ExperimentalMaterial3Api::class)
 class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     @Inject
@@ -120,7 +124,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     @Composable
     private fun MainScreen(
         navController: NavHostController,
-        mainUIState: MainViewModel.UiState
+        mainUIState: MainViewModel.UiState,
     ) {
         AppTheme {
             val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -131,6 +135,33 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
             LaunchedEffect(currentRoute) {
                 mainViewModel.update()
             }
+
+            val selectedGameState = remember {
+                mutableStateOf<Game?>(null)
+            }
+
+            val onGameLongClick = { game: Game ->
+                selectedGameState.value = game
+            }
+
+            val onGameClick = { game: Game ->
+                gameInteractor.onGamePlay(game)
+            }
+
+            val onGameFavoriteToggle = { game: Game, isFavorite: Boolean ->
+                gameInteractor.onFavoriteToggle(game, isFavorite)
+            }
+
+            MainModalBottomSheet(
+                selectedGameState = selectedGameState,
+                shortcutSupported = gameInteractor.supportShortcuts(),
+                onGamePlay = { gameInteractor.onGamePlay(it) },
+                onGameRestart = { gameInteractor.onGameRestart(it) },
+                onFavoriteToggle = { game: Game, isFavorite: Boolean ->
+                    gameInteractor.onFavoriteToggle(game, isFavorite)
+                },
+                onCreateShortcut = { gameInteractor.onCreateShortcut(it) }
+            )
 
             Scaffold(
                 bottomBar = { MainNavigationBar(currentRoute, navController) }
@@ -150,7 +181,8 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                         settingsInteractor
                                     )
                                 ),
-                                gameInteractor
+                                onGameClick = onGameClick,
+                                onGameLongClick = onGameLongClick
                             )
                         }
                     }
@@ -160,7 +192,8 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 viewModel(
                                     factory = FavoritesViewModel.Factory(retrogradeDb)
                                 ),
-                                gameInteractor = gameInteractor
+                                onGameClick = onGameClick,
+                                onGameLongClick = onGameLongClick
                             )
                         }
                     }
@@ -170,8 +203,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             viewModel(
                                 factory = SearchViewModel.Factory(retrogradeDb)
                             ),
-                            gameInteractor = gameInteractor,
-                            mainUIState = mainUIState
+                            mainUIState = mainUIState,
+                            onGameClick = onGameClick,
+                            onGameLongClick = onGameLongClick,
+                            onGameFavoriteToggle = onGameFavoriteToggle
                         )
                     }
                     navigation(MainGraph.SYSTEMS) {
@@ -206,7 +241,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                             MetaSystemID.valueOf(metaSystemId!!)
                                         )
                                     ),
-                                    gameInteractor
+                                    onGameClick = onGameClick,
+                                    onGameLongClick = onGameLongClick,
+                                    onGameFavoriteToggle = onGameFavoriteToggle
                                 )
                             }
                         }
