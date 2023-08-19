@@ -174,6 +174,8 @@ dependencies {
 
     implementation(platform(deps.libs.androidx.compose.composeBom))
     implementation(deps.libs.androidx.compose.material3)
+    debugImplementation(deps.libs.androidx.compose.tooling)
+    implementation(deps.libs.androidx.compose.toolingPreview)
     implementation(deps.libs.androidx.compose.extendedIcons)
     implementation(deps.libs.androidx.compose.liveData)
     implementation(deps.libs.androidx.paging.compose)

@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -19,6 +20,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -71,32 +73,34 @@ fun LemuroidTopBarActions(
     context: Context,
     saveSyncEnabled: Boolean
 ) {
-    IconButton(
-        onClick = { displayLemuroidHelp(context) }
-    ) {
-        Icon(
-            Icons.Outlined.Info,
-            "Back"
-        ) // TODO COMPOSE FIX CONTENT DESCRIPTION
-    }
-    if (saveSyncEnabled) {
+    Row {
         IconButton(
-            onClick = { SaveSyncWork.enqueueManualWork(context.applicationContext) }
+            onClick = { displayLemuroidHelp(context) }
         ) {
             Icon(
-                Icons.Outlined.CloudSync,
-                "Cloud Sync"
+                Icons.Outlined.Info,
+                "Back"
             ) // TODO COMPOSE FIX CONTENT DESCRIPTION
         }
-    }
-    if (route.showBottomNavigation) {
-        IconButton(
-            onClick = { navController.navigate(MainRoute.SETTINGS.route) }
-        ) {
-            Icon(
-                Icons.Outlined.Settings,
-                "Settings"
-            ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+        if (saveSyncEnabled) {
+            IconButton(
+                onClick = { SaveSyncWork.enqueueManualWork(context.applicationContext) }
+            ) {
+                Icon(
+                    Icons.Outlined.CloudSync,
+                    "Cloud Sync"
+                ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+            }
+        }
+        if (route.showBottomNavigation) {
+            IconButton(
+                onClick = { navController.navigate(MainRoute.SETTINGS.route) }
+            ) {
+                Icon(
+                    Icons.Outlined.Settings,
+                    "Settings"
+                ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+            }
         }
     }
 }
@@ -104,7 +108,7 @@ fun LemuroidTopBarActions(
 @Composable
 fun LemuroidTopAppBarContainer(displayProgress: Boolean, content: @Composable () -> Unit) {
     Column {
-        Surface(tonalElevation = 2.dp, shadowElevation = 2.dp) {
+        Surface(tonalElevation = 3.dp) {
             content()
         }
 

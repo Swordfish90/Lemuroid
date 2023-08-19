@@ -1,19 +1,25 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -25,7 +31,6 @@ import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopAppBarCont
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopBarActions
 import com.swordfish.lemuroid.app.shared.GameInteractor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     navController: NavController,
@@ -41,27 +46,45 @@ fun SearchScreen(
         topBar = {
             LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(64.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    SearchBar(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                        query = query.value,
-                        onQueryChange = { viewModel.queryString.value = it },
-                        onSearch = { },
-                        active = false,
-                        onActiveChange = { },
-                    ) { }
+                    Box(
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        // Standard TextField has huge margins that can't be customized.
+                        // We set the background to invisible and draw a surface behind
+                        Surface(
+                            modifier = Modifier.fillMaxSize().padding(8.dp),
+                            shape = RoundedCornerShape(100),
+                            tonalElevation = 16.dp
+                        ) { }
+                        TextField(
+                            value = query.value,
+                            modifier = Modifier.fillMaxSize().padding(start = 8.dp, end = 8.dp),
+                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                            onValueChange = { viewModel.queryString.value = it },
+                            singleLine = true,
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
+                            )
+                        )
+                    }
 
-                    LemuroidTopBarActions(
-                        MainRoute.SEARCH,
-                        navController,
-                        context = context,
-                        saveSyncEnabled = mainUIState.saveSyncEnabled
-                    )
+                    // TODO COMPOSE. Action have a slightly different color.
+                    Box(modifier = Modifier.padding(4.dp)) {
+                        LemuroidTopBarActions(
+                            MainRoute.SEARCH,
+                            navController,
+                            context = context,
+                            saveSyncEnabled = mainUIState.saveSyncEnabled
+                        )
+                    }
                 }
             }
         }

@@ -87,6 +87,8 @@ object deps {
                 const val material3 = "androidx.compose.material3:material3"
                 const val extendedIcons = "androidx.compose.material:material-icons-extended"
                 const val liveData = "androidx.compose.runtime:runtime-livedata"
+                const val tooling = "androidx.compose.ui:ui-tooling"
+                const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
             }
         }
         object arch {
