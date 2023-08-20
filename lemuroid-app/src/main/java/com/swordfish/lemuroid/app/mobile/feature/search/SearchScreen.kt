@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -121,6 +122,7 @@ fun SearchScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchResultsView(
     padding: PaddingValues,
@@ -134,6 +136,7 @@ private fun SearchResultsView(
             val game = games[index] ?: return@items
 
             LemuroidGameListRow(
+                modifier = Modifier.animateItemPlacement(),
                 game = game,
                 onClick = { onGameClick(game) },
                 onLongClick = { onGameLongClick(game) },

@@ -6,13 +6,14 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedCard
@@ -88,7 +89,6 @@ private fun HomeScreen(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(top = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         if (state.showNoPermissionNotification) {
             HomeNotification(
@@ -127,6 +127,7 @@ private fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeRow(
     title: String,
@@ -142,19 +143,21 @@ private fun HomeRow(
         style = MaterialTheme.typography.labelMedium,
         modifier = Modifier.padding(start = 16.dp, end = 16.dp)
     )
-    Row(
+    LazyRow(
         modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
-            .padding(start = 16.dp, end = 16.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(16.dp)
     ) {
-        games.forEach {
+        items(games.size, key = { games[it].id }) { index ->
+            val game = games[index]
             LemuroidGameCard(
-                modifier = Modifier.widthIn(0.dp, 144.dp),
-                game = it,
-                onClick = { onGameClicked(it) },
-                onLongClick = { onGameLongClick(it) }
+                modifier = Modifier
+                    .widthIn(0.dp, 144.dp)
+                    .animateItemPlacement(),
+                game = game,
+                onClick = { onGameClicked(game) },
+                onLongClick = { onGameLongClick(game) }
             )
         }
     }

@@ -1,16 +1,19 @@
 package com.swordfish.lemuroid.app.mobile.feature.favorites
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
@@ -33,6 +36,7 @@ fun FavoritesScreen(
         items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
             val game = games[index] ?: return@items
             LemuroidGameCard(
+                modifier = Modifier.animateItemPlacement(),
                 game = game,
                 onClick = { onGameClick(game) },
                 onLongClick = { onGameLongClick(game) }

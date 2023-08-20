@@ -15,7 +15,11 @@ import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LemuroidSystemCard(system: MetaSystemInfo, onClick: () -> Unit) {
+fun LemuroidSystemCard(
+    modifier: Modifier = Modifier,
+    system: MetaSystemInfo,
+    onClick: () -> Unit
+) {
     val context = LocalContext.current
 
     val title = remember(system.metaSystem.titleResId) {
@@ -30,7 +34,7 @@ fun LemuroidSystemCard(system: MetaSystemInfo, onClick: () -> Unit) {
     }
 
     ElevatedCard(
-        modifier = Modifier.padding(8.dp),
+        modifier = modifier.padding(8.dp),
         onClick = onClick,
     ) {
         Column(

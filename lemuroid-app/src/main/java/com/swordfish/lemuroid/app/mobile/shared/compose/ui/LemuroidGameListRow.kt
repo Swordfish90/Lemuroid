@@ -18,13 +18,14 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LemuroidGameListRow(
+    modifier: Modifier = Modifier,
     game: Game,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onFavoriteToggle: (Boolean) -> Unit
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentHeight()
             .combinedClickable(
                 onClick = onClick,

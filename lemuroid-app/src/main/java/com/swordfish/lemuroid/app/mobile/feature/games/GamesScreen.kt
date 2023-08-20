@@ -1,12 +1,15 @@
 package com.swordfish.lemuroid.app.mobile.feature.games
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GamesScreen(
     viewModel: GamesViewModel,
@@ -26,6 +29,7 @@ fun GamesScreen(
             val game = games[index] ?: return@items
 
             LemuroidGameListRow(
+                modifier = Modifier.animateItemPlacement(),
                 game = game,
                 onClick = { onGameClick(game) },
                 onLongClick = { onGameLongClick(game) },

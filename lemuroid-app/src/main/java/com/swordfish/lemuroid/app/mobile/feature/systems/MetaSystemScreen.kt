@@ -1,10 +1,12 @@
 package com.swordfish.lemuroid.app.mobile.feature.systems
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
@@ -23,6 +25,7 @@ fun MetaSystemsScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MetaSystemsScreen(
     metaSystems: List<MetaSystemInfo>,
@@ -39,7 +42,11 @@ fun MetaSystemsScreen(
     ) {
         items(metaSystems.size, key = { metaSystems[it].metaSystem }) { index ->
             val system = metaSystems[index]
-            LemuroidSystemCard(system) { onSystemClicked(system) }
+            LemuroidSystemCard(
+                modifier = Modifier.animateItemPlacement(),
+                system = system,
+                onClick = { onSystemClicked(system) }
+            )
         }
     }
 }
