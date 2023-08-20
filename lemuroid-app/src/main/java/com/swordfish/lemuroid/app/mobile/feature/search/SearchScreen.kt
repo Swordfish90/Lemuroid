@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -23,9 +25,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopAppBarContainer
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopBarActions
@@ -42,7 +46,8 @@ fun SearchScreen(
 ) {
     val context = LocalContext.current
     val query = viewModel.queryString.collectAsState()
-    val games = viewModel.searchResults.collectAsLazyPagingItems()
+    val searchState = viewModel.searchState.collectAsState(SearchViewModel.UIState.Idle)
+    val searchGames = viewModel.searchResults.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
@@ -59,13 +64,17 @@ fun SearchScreen(
                         // Standard TextField has huge margins that can't be customized.
                         // We set the background to invisible and draw a surface behind
                         Surface(
-                            modifier = Modifier.fillMaxSize().padding(8.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(8.dp),
                             shape = RoundedCornerShape(100),
                             tonalElevation = 16.dp
                         ) { }
                         TextField(
                             value = query.value,
-                            modifier = Modifier.fillMaxSize().padding(start = 8.dp, end = 8.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(start = 8.dp, end = 8.dp),
                             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                             onValueChange = { viewModel.queryString.value = it },
                             singleLine = true,
@@ -91,19 +100,64 @@ fun SearchScreen(
             }
         }
     ) { padding ->
-        LazyColumn(modifier = Modifier.padding(padding)) {
-            items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
-                val game = games[index] ?: return@items
-
-                LemuroidGameListRow(
-                    game = game,
-                    onClick = { onGameClick(game) },
-                    onLongClick = { onGameLongClick(game) },
-                    onFavoriteToggle = { isFavorite ->
-                        onGameFavoriteToggle(game, isFavorite)
-                    }
+        when {
+            searchState.value == SearchViewModel.UIState.Idle -> { }
+            searchState.value == SearchViewModel.UIState.Loading -> {
+                SearchLoadingView(padding)
+            }
+            searchState.value == SearchViewModel.UIState.Ready && searchGames.itemCount == 0 -> {
+                SearchEmptyView(padding)
+            }
+            else -> {
+                SearchResultsView(
+                    padding,
+                    searchGames,
+                    onGameClick,
+                    onGameLongClick,
+                    onGameFavoriteToggle
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun SearchResultsView(
+    padding: PaddingValues,
+    games: LazyPagingItems<Game>,
+    onGameClick: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit,
+    onGameFavoriteToggle: (Game, Boolean) -> Unit
+) {
+    LazyColumn(modifier = Modifier.padding(padding)) {
+        items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
+            val game = games[index] ?: return@items
+
+            LemuroidGameListRow(
+                game = game,
+                onClick = { onGameClick(game) },
+                onLongClick = { onGameLongClick(game) },
+                onFavoriteToggle = { isFavorite ->
+                    onGameFavoriteToggle(game, isFavorite)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchEmptyView(padding: PaddingValues) {
+    LemuroidEmptyView(modifier = Modifier.padding(padding))
+}
+
+@Composable
+private fun SearchLoadingView(padding: PaddingValues) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }

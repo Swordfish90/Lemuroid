@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSystemCard
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 
@@ -27,6 +28,11 @@ fun MetaSystemsScreen(
     metaSystems: List<MetaSystemInfo>,
     onSystemClicked: (MetaSystemInfo) -> Unit
 ) {
+    if (metaSystems.isEmpty()) {
+        LemuroidEmptyView()
+        return
+    }
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(144.dp),
         contentPadding = PaddingValues(8.dp),

@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.games
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -14,6 +15,11 @@ fun GamesScreen(
     onGameFavoriteToggle: (Game, Boolean) -> Unit
 ) {
     val games = viewModel.games.collectAsLazyPagingItems()
+
+    if (games.itemCount == 0) {
+        LemuroidEmptyView()
+        return
+    }
 
     LazyColumn {
         items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
