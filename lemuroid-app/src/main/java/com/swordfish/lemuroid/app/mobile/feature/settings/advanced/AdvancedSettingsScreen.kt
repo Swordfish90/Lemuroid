@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.advanced
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -21,11 +22,16 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
 import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.fractionPreferenceState
 import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
 
 @Composable
-fun AdvancedSettingsScreen(viewModel: AdvancedSettingsViewModel, navController: NavHostController) {
+fun AdvancedSettingsScreen(
+    padding: MergedPaddingValues,
+    viewModel: AdvancedSettingsViewModel,
+    navController: NavHostController
+) {
     val uiState = viewModel.uiState
         .collectAsState()
         .value
@@ -33,7 +39,8 @@ fun AdvancedSettingsScreen(viewModel: AdvancedSettingsViewModel, navController: 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(padding.asPaddingValues()),
     ) {
         if (uiState?.cache == null) {
             return@Column

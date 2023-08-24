@@ -34,10 +34,13 @@ import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopAppBarContainer
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopBarActions
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
+import com.swordfish.lemuroid.app.utils.android.compose.plus
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 fun SearchScreen(
+    outerPadding: PaddingValues,
     navController: NavController,
     viewModel: SearchViewModel,
     mainUIState: MainViewModel.UiState,
@@ -100,7 +103,8 @@ fun SearchScreen(
                 }
             }
         }
-    ) { padding ->
+    ) { innerPadding ->
+        val padding = outerPadding + innerPadding
         when {
             searchState.value == SearchViewModel.UIState.Idle -> { }
             searchState.value == SearchViewModel.UIState.Loading -> {
@@ -125,13 +129,13 @@ fun SearchScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchResultsView(
-    padding: PaddingValues,
+    padding: MergedPaddingValues,
     games: LazyPagingItems<Game>,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onGameFavoriteToggle: (Game, Boolean) -> Unit
 ) {
-    LazyColumn(modifier = Modifier.padding(padding)) {
+    LazyColumn(contentPadding = padding.asPaddingValues()) {
         items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
             val game = games[index] ?: return@items
 
@@ -149,16 +153,16 @@ private fun SearchResultsView(
 }
 
 @Composable
-private fun SearchEmptyView(padding: PaddingValues) {
-    LemuroidEmptyView(modifier = Modifier.padding(padding))
+private fun SearchEmptyView(padding: MergedPaddingValues) {
+    LemuroidEmptyView(modifier = Modifier.padding(padding.asPaddingValues()))
 }
 
 @Composable
-private fun SearchLoadingView(padding: PaddingValues) {
+private fun SearchLoadingView(padding: MergedPaddingValues) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(padding.asPaddingValues()),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()

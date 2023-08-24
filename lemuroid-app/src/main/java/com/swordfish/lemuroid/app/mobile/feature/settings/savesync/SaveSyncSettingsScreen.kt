@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.savesync
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -18,11 +19,12 @@ import com.alorma.compose.settings.ui.SettingsSwitch
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.indexSetPreferenceState
 import com.swordfish.lemuroid.lib.library.CoreID
 
 @Composable
-fun SaveSyncSettingsScreen(viewModel: SaveSyncSettingsViewModel) {
+fun SaveSyncSettingsScreen(padding: MergedPaddingValues, viewModel: SaveSyncSettingsViewModel) {
     val context = LocalContext.current.applicationContext
 
     val saveSyncState = viewModel.uiState
@@ -36,7 +38,8 @@ fun SaveSyncSettingsScreen(viewModel: SaveSyncSettingsViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(padding.asPaddingValues()),
     ) {
         SettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_save_sync_configure, saveSyncState.provider)) },

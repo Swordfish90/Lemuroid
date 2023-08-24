@@ -7,11 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GamesScreen(
+    padding: MergedPaddingValues,
     viewModel: GamesViewModel,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
@@ -24,7 +26,9 @@ fun GamesScreen(
         return
     }
 
-    LazyColumn {
+    LazyColumn(
+        contentPadding = padding.asPaddingValues()
+    ) {
         items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
             val game = games[index] ?: return@items
 

@@ -190,6 +190,7 @@ class InputDeviceManager(
         return runCatching {
             InputDevice.getDeviceIds()
                 .map { InputDevice.getDevice(it) }
+                .filterNotNull()
                 .filter { it.getLemuroidInputDevice().isSupported() }
                 .filter { it.name !in BLACKLISTED_DEVICES }
                 .sortedBy { it.controllerNumber }

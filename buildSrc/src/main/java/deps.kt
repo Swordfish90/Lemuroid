@@ -2,7 +2,7 @@
 object deps {
     object android {
         const val targetSdkVersion  = 33
-        const val compileSdkVersion = 33
+        const val compileSdkVersion = 34
         const val minSdkVersion     = 23
         const val buildToolsVersion = "30.0.2"
     }
@@ -25,6 +25,11 @@ object deps {
         const val activity        = "1.7.2"
         const val libretrodroid   = "0.10.0"
         const val radialgamepad   = "2.0.0"
+        const val composeBom      = "2023.08.00"
+
+        // Make sure this is compatible with current bom versions:
+        // https://developer.android.com/jetpack/compose/bom/bom-mapping
+        const val accompanist     = "0.32.0"
     }
 
     object libs {
@@ -83,12 +88,16 @@ object deps {
                 const val compose = "androidx.activity:activity-compose:${versions.activity}"
             }
             object compose {
-                const val composeBom = "androidx.compose:compose-bom:2023.05.01"
+                const val composeBom = "androidx.compose:compose-bom:${versions.composeBom}"
                 const val material3 = "androidx.compose.material3:material3"
                 const val extendedIcons = "androidx.compose.material:material-icons-extended"
                 const val liveData = "androidx.compose.runtime:runtime-livedata"
                 const val tooling = "androidx.compose.ui:ui-tooling"
                 const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
+
+                object accompanist {
+                    const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
+                }
             }
         }
         object arch {

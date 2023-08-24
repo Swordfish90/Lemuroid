@@ -5,6 +5,7 @@ import android.view.InputDevice
 import android.view.KeyEvent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -26,10 +27,11 @@ import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
 import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
 
 @Composable
-fun InputDevicesSettingsScreen(viewModel: InputDevicesSettingsViewModel) {
+fun InputDevicesSettingsScreen(padding: MergedPaddingValues, viewModel: InputDevicesSettingsViewModel) {
     val context = LocalContext.current.applicationContext
     val state = viewModel.uiState
         .collectAsState(InputDevicesSettingsViewModel.State())
@@ -39,6 +41,7 @@ fun InputDevicesSettingsScreen(viewModel: InputDevicesSettingsViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
+            .padding(padding.asPaddingValues())
     ) {
         EnabledDevice(state)
         state.bindings.forEach { (device, bindings) ->

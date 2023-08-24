@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.coreselection
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -13,9 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.alorma.compose.settings.storage.base.rememberIntSettingState
 import com.alorma.compose.settings.ui.SettingsList
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 
 @Composable
-fun CoresSelectionScreen(viewModel: CoresSelectionViewModel) {
+fun CoresSelectionScreen(padding: MergedPaddingValues, viewModel: CoresSelectionViewModel) {
     val applicationContext = LocalContext.current.applicationContext
 
     val cores = viewModel.getSelectedCores()
@@ -30,6 +32,7 @@ fun CoresSelectionScreen(viewModel: CoresSelectionViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
+            .padding(padding.asPaddingValues())
     ) {
         cores.forEach { (system, core) ->
             val state = rememberIntSettingState()

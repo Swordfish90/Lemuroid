@@ -152,7 +152,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 gameInteractor.onFavoriteToggle(game, isFavorite)
             }
 
-            MainModalBottomSheet(
+            MainGameContextActions(
                 selectedGameState = selectedGameState,
                 shortcutSupported = gameInteractor.supportShortcuts(),
                 onGamePlay = { gameInteractor.onGamePlay(it) },
@@ -165,15 +165,20 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
             Scaffold(
                 bottomBar = { MainNavigationBar(currentRoute, navController) }
-            ) { padding ->
+            ) { outerPadding ->
                 NavHost(
                     navController = navController,
                     startDestination = MainRoute.HOME.route,
-                    modifier = Modifier.padding(padding)
                 ) {
                     composable(MainRoute.HOME) {
-                        LemuroidScaffold(MainRoute.HOME, navController, mainUIState) {
+                        LemuroidScaffold(
+                            MainRoute.HOME,
+                            navController,
+                            mainUIState,
+                            outerPadding
+                        ) { padding ->
                             HomeScreen(
+                                padding,
                                 viewModel(
                                     factory = HomeViewModel.Factory(
                                         applicationContext,
@@ -187,8 +192,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         }
                     }
                     composable(MainRoute.FAVORITES) {
-                        LemuroidScaffold(MainRoute.FAVORITES, navController, mainUIState) {
+                        LemuroidScaffold(
+                            MainRoute.FAVORITES,
+                            navController,
+                            mainUIState,
+                            outerPadding
+                        ) { padding ->
                             FavoritesScreen(
+                                padding,
                                 viewModel(
                                     factory = FavoritesViewModel.Factory(retrogradeDb)
                                 ),
@@ -199,6 +210,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     }
                     composable(MainRoute.SEARCH) {
                         SearchScreen(
+                            outerPadding,
                             navController,
                             viewModel(
                                 factory = SearchViewModel.Factory(retrogradeDb)
@@ -214,9 +226,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SYSTEMS,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 MetaSystemsScreen(
+                                    padding,
                                     navController,
                                     viewModel(
                                         factory = MetaSystemsViewModel.Factory(
@@ -231,10 +245,12 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SYSTEM_GAMES,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 val metaSystemId = entry.arguments?.getString("metaSystemId")
                                 GamesScreen(
+                                    padding,
                                     viewModel = viewModel(
                                         factory = GamesViewModel.Factory(
                                             retrogradeDb,
@@ -253,9 +269,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 SettingsScreen(
+                                    padding,
                                     viewModel = viewModel(
                                         factory = SettingsViewModel.Factory(
                                             applicationContext,
@@ -276,9 +294,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_ADVANCED,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 AdvancedSettingsScreen(
+                                    padding,
                                     viewModel = viewModel(
                                         factory = AdvancedSettingsViewModel.Factory(
                                             applicationContext,
@@ -293,9 +313,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_BIOS,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 BiosScreen(
+                                    padding,
                                     viewModel = viewModel(
                                         factory = BiosSettingsViewModel.Factory(biosManager)
                                     )
@@ -306,9 +328,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_CORES_SELECTION,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 CoresSelectionScreen(
+                                    padding,
                                     viewModel = viewModel(
                                         factory = CoresSelectionViewModel.Factory(
                                             applicationContext,
@@ -322,9 +346,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_INPUT_DEVICES,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 InputDevicesSettingsScreen(
+                                    padding,
                                     viewModel = viewModel(
                                         factory = InputDevicesSettingsViewModel.Factory(
                                             applicationContext,
@@ -338,9 +364,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             LemuroidScaffold(
                                 MainRoute.SETTINGS_SAVE_SYNC,
                                 navController,
-                                mainUIState
-                            ) {
+                                mainUIState,
+                                outerPadding
+                            ) { padding ->
                                 SaveSyncSettingsScreen(
+                                    padding,
                                     viewModel = viewModel(
                                         factory = SaveSyncSettingsViewModel.Factory(
                                             application,

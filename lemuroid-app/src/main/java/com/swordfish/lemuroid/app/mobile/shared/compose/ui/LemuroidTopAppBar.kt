@@ -13,19 +13,22 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swordfish.lemuroid.R
@@ -40,11 +43,21 @@ fun LemuroidTopAppBar(
     route: MainRoute,
     navController: NavController,
     mainUIState: MainViewModel.UiState,
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
     val context = LocalContext.current
     LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
+        val topBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
+            BottomAppBarDefaults.ContainerElevation
+        )
+
         TopAppBar(
             title = { Text(text = stringResource(route.titleId)) },
+            scrollBehavior = scrollBehavior,
+            colors = TopAppBarDefaults.topAppBarColors(
+                scrolledContainerColor = topBarColor,
+                containerColor = topBarColor
+            ),
             navigationIcon = {
                 AnimatedVisibility(
                     visible = route.parent != null,
@@ -108,7 +121,7 @@ fun LemuroidTopBarActions(
 @Composable
 fun LemuroidTopAppBarContainer(displayProgress: Boolean, content: @Composable () -> Unit) {
     Column {
-        Surface(tonalElevation = 3.dp) {
+        Surface(tonalElevation = BottomAppBarDefaults.ContainerElevation) {
             content()
         }
 

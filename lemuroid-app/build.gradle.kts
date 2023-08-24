@@ -178,6 +178,7 @@ dependencies {
     implementation(deps.libs.androidx.compose.toolingPreview)
     implementation(deps.libs.androidx.compose.extendedIcons)
     implementation(deps.libs.androidx.compose.liveData)
+    implementation(deps.libs.androidx.compose.accompanist.systemUiController)
     implementation(deps.libs.androidx.paging.compose)
     implementation(deps.libs.androidx.lifecycle.viewModelCompose)
 

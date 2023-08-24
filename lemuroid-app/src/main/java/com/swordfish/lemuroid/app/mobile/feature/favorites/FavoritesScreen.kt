@@ -11,11 +11,13 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavoritesScreen(
+    paddingValues: MergedPaddingValues,
     viewModel: FavoritesViewModel,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit
@@ -29,8 +31,8 @@ fun FavoritesScreen(
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(144.dp),
-        contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = (paddingValues + PaddingValues(16.dp)).asPaddingValues(),
+        horizontalArrangement = Arrangement. spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->

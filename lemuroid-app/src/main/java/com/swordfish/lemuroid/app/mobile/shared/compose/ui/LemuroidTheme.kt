@@ -1,17 +1,21 @@
 package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import coil.ImageLoader
 import coil.compose.LocalImageLoader
 import coil.util.CoilUtils
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.swordfish.lemuroid.app.shared.covers.ThrottleFailedThumbnailsInterceptor
 import okhttp3.OkHttpClient
 
@@ -82,7 +86,7 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
 //    val colors = if (!useDarkTheme) {
 //        LightColors
@@ -94,7 +98,10 @@ fun AppTheme(
     val context = LocalContext.current.applicationContext
     val colors = remember {
         dynamicDarkColorScheme(context)
+//        dynamicLightColorScheme(context)
     }
+
+    val systemUiController = rememberSystemUiController()
 
     // TODO COMPOSE... Does this belong here?
     val imageLoader = remember {
@@ -111,8 +118,18 @@ fun AppTheme(
 
     CompositionLocalProvider(LocalImageLoader provides imageLoader) {
         MaterialTheme(
-            colorScheme = colors,
-            content = content
-        )
+            colorScheme = colors
+        ) {
+            val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
+                BottomAppBarDefaults.ContainerElevation
+            )
+
+            SideEffect {
+                systemUiController.setSystemBarsColor(statusBarColor, false)
+                systemUiController.systemBarsDarkContentEnabled = false
+            }
+
+            content()
+        }
     }
 }

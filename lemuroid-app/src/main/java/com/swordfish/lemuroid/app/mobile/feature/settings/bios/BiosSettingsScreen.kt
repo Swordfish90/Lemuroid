@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.bios
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -12,10 +13,11 @@ import androidx.compose.ui.res.stringResource
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.lib.bios.Bios
 
 @Composable
-fun BiosScreen(viewModel: BiosSettingsViewModel) {
+fun BiosScreen(padding: MergedPaddingValues, viewModel: BiosSettingsViewModel) {
     val uiState = viewModel.uiState
         .collectAsState()
         .value
@@ -24,6 +26,7 @@ fun BiosScreen(viewModel: BiosSettingsViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
+            .padding(padding.asPaddingValues())
     ) {
         if (uiState.detected.isNotEmpty()) {
             DetectedEntries(uiState.detected)

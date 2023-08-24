@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.general
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -24,11 +25,16 @@ import com.swordfish.lemuroid.app.mobile.feature.main.navigateToRoute
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
 import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
 import com.swordfish.lemuroid.app.utils.android.stringListResource
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel, navController: NavController) {
+fun SettingsScreen(
+    padding: MergedPaddingValues,
+    viewModel: SettingsViewModel,
+    navController: NavController
+) {
     val state = viewModel.uiState
         .collectAsState(SettingsViewModel.State())
         .value
@@ -44,7 +50,8 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(padding.asPaddingValues()),
     ) {
         RomsSettings(
             state = state,
