@@ -19,9 +19,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -53,6 +56,12 @@ fun SearchScreen(
     val searchState = viewModel.searchState.collectAsState(SearchViewModel.UIState.Idle)
     val searchGames = viewModel.searchResults.collectAsLazyPagingItems()
 
+    val focusRequester = FocusRequester()
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     Scaffold(
         topBar = {
             LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
@@ -78,7 +87,8 @@ fun SearchScreen(
                             value = query.value,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(start = 8.dp, end = 8.dp),
+                                .padding(start = 8.dp, end = 8.dp)
+                                .focusRequester(focusRequester),
                             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                             onValueChange = { viewModel.queryString.value = it },
                             singleLine = true,
