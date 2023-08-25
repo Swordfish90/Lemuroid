@@ -23,7 +23,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,7 +42,6 @@ fun LemuroidTopAppBar(
     route: MainRoute,
     navController: NavController,
     mainUIState: MainViewModel.UiState,
-    scrollBehavior: TopAppBarScrollBehavior
 ) {
     val context = LocalContext.current
     LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
@@ -53,7 +51,6 @@ fun LemuroidTopAppBar(
 
         TopAppBar(
             title = { Text(text = stringResource(route.titleId)) },
-            scrollBehavior = scrollBehavior,
             colors = TopAppBarDefaults.topAppBarColors(
                 scrolledContainerColor = topBarColor,
                 containerColor = topBarColor
