@@ -190,9 +190,9 @@ abstract class LemuroidApplicationModule {
             .addConverterFactory(
                 object : Converter.Factory() {
                     override fun responseBodyConverter(
-                        type: Type?,
-                        annotations: Array<out Annotation>?,
-                        retrofit: Retrofit?
+                        type: Type,
+                        annotations: Array<out Annotation>,
+                        retrofit: Retrofit
                     ): Converter<ResponseBody, *>? {
                         if (type == ZipInputStream::class.java) {
                             return Converter<ResponseBody, ZipInputStream> { responseBody ->
