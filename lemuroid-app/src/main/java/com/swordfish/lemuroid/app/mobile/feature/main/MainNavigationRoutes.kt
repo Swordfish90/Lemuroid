@@ -19,7 +19,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.swordfish.lemuroid.R
 
 fun NavGraphBuilder.composable(
@@ -27,10 +26,6 @@ fun NavGraphBuilder.composable(
     content: @Composable (NavBackStackEntry) -> Unit
 ) {
     this.composable(route = route.route, arguments = route.arguments, content = content)
-}
-
-fun NavGraphBuilder.navigation(route: MainGraph, builder: NavGraphBuilder.() -> Unit) {
-    this.navigation(route.startDestination.route, route.route, builder)
 }
 
 fun NavController.navigateToRoute(route: MainRoute) {
@@ -116,22 +111,14 @@ enum class MainRoute(
     }
 }
 
-enum class MainGraph(val route: String, val startDestination: MainRoute) {
-    HOME("home", MainRoute.HOME),
-    FAVORITES("favorites", MainRoute.FAVORITES),
-    SEARCH("search", MainRoute.SEARCH),
-    SYSTEMS("systems", MainRoute.SYSTEMS),
-    SETTINGS("settings", MainRoute.SETTINGS),
-}
-
 enum class MainNavigationRoutes(
-    val route: MainGraph,
+    val route: MainRoute,
     @StringRes val titleId: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
-    HOME(MainGraph.HOME, R.string.title_home, Icons.Filled.Home, Icons.Outlined.Home),
-    FAVORITES(MainGraph.FAVORITES, R.string.favorites, Icons.Filled.Favorite, Icons.Filled.FavoriteBorder),
-    SYSTEMS(MainGraph.SYSTEMS, R.string.title_systems, Icons.Filled.VideogameAsset, Icons.Outlined.VideogameAsset),
-    SEARCH(MainGraph.SEARCH, R.string.title_search, Icons.Filled.Search, Icons.Outlined.Search),
+    HOME(MainRoute.HOME, R.string.title_home, Icons.Filled.Home, Icons.Outlined.Home),
+    FAVORITES(MainRoute.FAVORITES, R.string.favorites, Icons.Filled.Favorite, Icons.Filled.FavoriteBorder),
+    SYSTEMS(MainRoute.SYSTEMS, R.string.title_systems, Icons.Filled.VideogameAsset, Icons.Outlined.VideogameAsset),
+    SEARCH(MainRoute.SEARCH, R.string.title_search, Icons.Filled.Search, Icons.Outlined.Search),
 }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -53,6 +51,7 @@ import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
+import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.android.RetrogradeComponentActivity
@@ -70,7 +69,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 
-@OptIn(DelicateCoroutinesApi::class, ExperimentalMaterial3Api::class)
+@OptIn(DelicateCoroutinesApi::class)
 class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     @Inject
@@ -166,17 +165,24 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
             Scaffold(
                 bottomBar = { MainNavigationBar(currentRoute, navController) }
             ) { outerPadding ->
+
+                @Composable
+                fun Page(mainRoute: MainRoute, content: @Composable (MergedPaddingValues) -> Unit) {
+                    LemuroidScaffold(
+                        mainRoute,
+                        navController,
+                        mainUIState,
+                        outerPadding,
+                        content
+                    )
+                }
+
                 NavHost(
                     navController = navController,
                     startDestination = MainRoute.HOME.route,
                 ) {
                     composable(MainRoute.HOME) {
-                        LemuroidScaffold(
-                            MainRoute.HOME,
-                            navController,
-                            mainUIState,
-                            outerPadding
-                        ) { padding ->
+                        Page(MainRoute.HOME) { padding ->
                             HomeScreen(
                                 padding,
                                 viewModel(
@@ -192,12 +198,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         }
                     }
                     composable(MainRoute.FAVORITES) {
-                        LemuroidScaffold(
-                            MainRoute.FAVORITES,
-                            navController,
-                            mainUIState,
-                            outerPadding
-                        ) { padding ->
+                        Page(MainRoute.FAVORITES) { padding ->
                             FavoritesScreen(
                                 padding,
                                 viewModel(
@@ -221,162 +222,118 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             onGameFavoriteToggle = onGameFavoriteToggle
                         )
                     }
-                    navigation(MainGraph.SYSTEMS) {
-                        composable(MainRoute.SYSTEMS) {
-                            LemuroidScaffold(
-                                MainRoute.SYSTEMS,
+                    composable(MainRoute.SYSTEMS) {
+                        Page(MainRoute.SYSTEMS) { padding ->
+                            MetaSystemsScreen(
+                                padding,
                                 navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                MetaSystemsScreen(
-                                    padding,
-                                    navController,
-                                    viewModel(
-                                        factory = MetaSystemsViewModel.Factory(
-                                            retrogradeDb,
-                                            applicationContext
-                                        )
+                                viewModel(
+                                    factory = MetaSystemsViewModel.Factory(
+                                        retrogradeDb,
+                                        applicationContext
                                     )
                                 )
-                            }
-                        }
-                        composable(MainRoute.SYSTEM_GAMES) { entry ->
-                            LemuroidScaffold(
-                                MainRoute.SYSTEM_GAMES,
-                                navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                val metaSystemId = entry.arguments?.getString("metaSystemId")
-                                GamesScreen(
-                                    padding,
-                                    viewModel = viewModel(
-                                        factory = GamesViewModel.Factory(
-                                            retrogradeDb,
-                                            MetaSystemID.valueOf(metaSystemId!!)
-                                        )
-                                    ),
-                                    onGameClick = onGameClick,
-                                    onGameLongClick = onGameLongClick,
-                                    onGameFavoriteToggle = onGameFavoriteToggle
-                                )
-                            }
+                            )
                         }
                     }
-                    navigation(MainGraph.SETTINGS) {
-                        composable(MainRoute.SETTINGS) {
-                            LemuroidScaffold(
-                                MainRoute.SETTINGS,
-                                navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                SettingsScreen(
-                                    padding,
-                                    viewModel = viewModel(
-                                        factory = SettingsViewModel.Factory(
-                                            applicationContext,
-                                            settingsInteractor,
-                                            saveSyncManager,
-                                            FlowSharedPreferences(
-                                                SharedPreferencesHelper.getLegacySharedPreferences(
-                                                    applicationContext
-                                                )
+                    composable(MainRoute.SYSTEM_GAMES) { entry ->
+                        Page(MainRoute.SYSTEM_GAMES) { padding ->
+                            val metaSystemId = entry.arguments?.getString("metaSystemId")
+                            GamesScreen(
+                                padding,
+                                viewModel = viewModel(
+                                    factory = GamesViewModel.Factory(
+                                        retrogradeDb,
+                                        MetaSystemID.valueOf(metaSystemId!!)
+                                    )
+                                ),
+                                onGameClick = onGameClick,
+                                onGameLongClick = onGameLongClick,
+                                onGameFavoriteToggle = onGameFavoriteToggle
+                            )
+                        }
+                    }
+                    composable(MainRoute.SETTINGS) {
+                        Page(MainRoute.SETTINGS) { padding ->
+                            SettingsScreen(
+                                padding,
+                                viewModel = viewModel(
+                                    factory = SettingsViewModel.Factory(
+                                        applicationContext,
+                                        settingsInteractor,
+                                        saveSyncManager,
+                                        FlowSharedPreferences(
+                                            SharedPreferencesHelper.getLegacySharedPreferences(
+                                                applicationContext
                                             )
                                         )
-                                    ),
-                                    navController = navController
-                                )
-                            }
+                                    )
+                                ),
+                                navController = navController
+                            )
                         }
-                        composable(MainRoute.SETTINGS_ADVANCED) {
-                            LemuroidScaffold(
-                                MainRoute.SETTINGS_ADVANCED,
-                                navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                AdvancedSettingsScreen(
-                                    padding,
-                                    viewModel = viewModel(
-                                        factory = AdvancedSettingsViewModel.Factory(
-                                            applicationContext,
-                                            settingsInteractor
-                                        )
-                                    ),
-                                    navController
-                                )
-                            }
+                    }
+                    composable(MainRoute.SETTINGS_ADVANCED) {
+                        Page(MainRoute.SETTINGS_ADVANCED) { padding ->
+                            AdvancedSettingsScreen(
+                                padding,
+                                viewModel = viewModel(
+                                    factory = AdvancedSettingsViewModel.Factory(
+                                        applicationContext,
+                                        settingsInteractor
+                                    )
+                                ),
+                                navController
+                            )
                         }
-                        composable(MainRoute.SETTINGS_BIOS) {
-                            LemuroidScaffold(
-                                MainRoute.SETTINGS_BIOS,
-                                navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                BiosScreen(
-                                    padding,
-                                    viewModel = viewModel(
-                                        factory = BiosSettingsViewModel.Factory(biosManager)
+                    }
+                    composable(MainRoute.SETTINGS_BIOS) {
+                        Page(MainRoute.SETTINGS_BIOS) { padding ->
+                            BiosScreen(
+                                padding,
+                                viewModel = viewModel(
+                                    factory = BiosSettingsViewModel.Factory(biosManager)
+                                )
+                            )
+                        }
+                    }
+                    composable(MainRoute.SETTINGS_CORES_SELECTION) {
+                        Page(MainRoute.SETTINGS_CORES_SELECTION) { padding ->
+                            CoresSelectionScreen(
+                                padding,
+                                viewModel = viewModel(
+                                    factory = CoresSelectionViewModel.Factory(
+                                        applicationContext,
+                                        coresSelection
                                     )
                                 )
-                            }
+                            )
                         }
-                        composable(MainRoute.SETTINGS_CORES_SELECTION) {
-                            LemuroidScaffold(
-                                MainRoute.SETTINGS_CORES_SELECTION,
-                                navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                CoresSelectionScreen(
-                                    padding,
-                                    viewModel = viewModel(
-                                        factory = CoresSelectionViewModel.Factory(
-                                            applicationContext,
-                                            coresSelection
-                                        )
+                    }
+                    composable(MainRoute.SETTINGS_INPUT_DEVICES) {
+                        Page(MainRoute.SETTINGS_INPUT_DEVICES) { padding ->
+                            InputDevicesSettingsScreen(
+                                padding,
+                                viewModel = viewModel(
+                                    factory = InputDevicesSettingsViewModel.Factory(
+                                        applicationContext,
+                                        inputDeviceManager
                                     )
                                 )
-                            }
+                            )
                         }
-                        composable(MainRoute.SETTINGS_INPUT_DEVICES) {
-                            LemuroidScaffold(
-                                MainRoute.SETTINGS_INPUT_DEVICES,
-                                navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                InputDevicesSettingsScreen(
-                                    padding,
-                                    viewModel = viewModel(
-                                        factory = InputDevicesSettingsViewModel.Factory(
-                                            applicationContext,
-                                            inputDeviceManager
-                                        )
+                    }
+                    composable(MainRoute.SETTINGS_SAVE_SYNC) {
+                        Page(MainRoute.SETTINGS_SAVE_SYNC) { padding ->
+                            SaveSyncSettingsScreen(
+                                padding,
+                                viewModel = viewModel(
+                                    factory = SaveSyncSettingsViewModel.Factory(
+                                        application,
+                                        saveSyncManager
                                     )
                                 )
-                            }
-                        }
-                        composable(MainRoute.SETTINGS_SAVE_SYNC) {
-                            LemuroidScaffold(
-                                MainRoute.SETTINGS_SAVE_SYNC,
-                                navController,
-                                mainUIState,
-                                outerPadding
-                            ) { padding ->
-                                SaveSyncSettingsScreen(
-                                    padding,
-                                    viewModel = viewModel(
-                                        factory = SaveSyncSettingsViewModel.Factory(
-                                            application,
-                                            saveSyncManager
-                                        )
-                                    )
-                                )
-                            }
+                            )
                         }
                     }
                 }

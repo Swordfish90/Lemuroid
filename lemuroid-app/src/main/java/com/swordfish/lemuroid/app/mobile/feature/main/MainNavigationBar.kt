@@ -1,9 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.main
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOut
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -11,7 +9,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
@@ -27,7 +24,7 @@ fun MainNavigationBar(
     ) {
         NavigationBar {
             MainNavigationRoutes.values().forEach { destination ->
-                val isSelected = currentRoute?.root == destination.route.startDestination
+                val isSelected = currentRoute?.root == destination.route
                 val iconDrawable = if (isSelected) destination.selectedIcon else destination.unselectedIcon
 
                 NavigationBarItem(
