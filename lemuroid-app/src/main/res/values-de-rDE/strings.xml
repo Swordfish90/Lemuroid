@@ -73,6 +73,9 @@
     <string name="game_context_menu_resume">Fortsetzen</string>
     <string name="game_context_menu_restart">Neustart</string>
     <string name="game_context_menu_create_shortcut">Zum Startbildschirm hinzufügen</string>
+    <string name="home_notification_title">Alle Benachrichtigungen aktivieren</string>
+    <string name="home_notification_message">Lemuroid verwendet Benachrichtigungen, um dich darüber zu informieren, wenn ein Spiel oder eine Operation im Hintergrund läuft.</string>
+    <string name="home_notification_action">Aktivieren</string>
     <string name="home_empty_title">ROMs Verzeichnis wählen</string>
     <string name="home_empty_message">Lemuroid muss ein Verzeichnis mit ROM Dateien scannen.\nDies kann einige Minuten dauern.</string>
     <string name="home_empty_action">Verzeichnis wählen</string>
