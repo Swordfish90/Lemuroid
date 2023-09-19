@@ -28,4 +28,8 @@
     <string name="game_loading_download_core">Téléchargement du module…</string>
     <string name="installing_core_notification_title">Mise à jour des noyaux depuis le Play</string>
     <string name="installing_core_notification_message">Check the Google Play Store app to see the current status</string>
+    <string name="game_loader_error_load_core">Le cœur Libretro n\'a pas été chargé. Essayez ce qui suit :\n
+        \n\u2022 Activez la connexion internet et rescannez vos jeux
+        \n\u2022 Assurez-vous que Google Play Store est installé et fonctionne
+        \n\u2022 Attendez la fin des opérations en cours dans l\'application Google Play Store</string>
 </resources>
