@@ -73,6 +73,9 @@
     <string name="game_context_menu_resume">Hervatten</string>
     <string name="game_context_menu_restart">Herstarten</string>
     <string name="game_context_menu_create_shortcut">Vastzetten aan launcher</string>
+    <string name="home_notification_title">Meldingen inschakelen</string>
+    <string name="home_notification_message">Lemuroid gebruikt meldingen om je te laten weten wanneer een spel of bewerking op de achtergrond draait.</string>
+    <string name="home_notification_action">Inschakelen</string>
     <string name="home_empty_title">Selecteer ROM-map</string>
     <string name="home_empty_message">Lemuroid moet een map met ROM-bestanden scannen.\nDit kan enkele minuten duren.</string>
     <string name="home_empty_action">Selecteer map</string>
