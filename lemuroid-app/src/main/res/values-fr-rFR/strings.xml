@@ -93,7 +93,7 @@
     <string name="game_toast_settings_button_using_gamepad">La manette a été détectée. Accédez au menu des paramètres avec %1$s.</string>
     <string name="game_toast_load_state_failed">Impossible de charger cet état de sauvegarde</string>
     <string name="empty_view_default">Aucun élément</string>
-    <string name="core_settings_title">Paramètres du coeur</string>
+    <string name="core_settings_title">Paramètres du noyau</string>
     <string name="core_settings_category_preferences">Paramètres</string>
     <string name="core_settings_category_controllers">Manettes</string>
     <string name="core_settings_controller">Manette %1$s</string>
