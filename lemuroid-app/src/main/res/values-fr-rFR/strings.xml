@@ -67,7 +67,7 @@
     <string name="settings_save_sync_include_saves">Synchroniser les sauvegardes du jeu</string>
     <string name="settings_save_sync_include_saves_description">%1$s sur l\'appareil</string>
     <string name="settings_save_sync_include_states">Synchroniser les sauvegardes automatique</string>
-    <string name="settings_save_sync_include_states_description">Plus pratique, mais plus lourd et moins fiable. Choisissez les cœurs/systèmes que vous souhaitez synchroniser.</string>
+    <string name="settings_save_sync_include_states_description">Plus pratique, mais plus lourd et moins fiable. Choisissez-les cœurs/systèmes que vous souhaitez synchroniser</string>
     <string name="game_context_menu_add_to_favorites">Ajouter aux favoris</string>
     <string name="game_context_menu_remove_from_favorites">Supprimer des favoris</string>
     <string name="game_context_menu_resume">Reprendre</string>
