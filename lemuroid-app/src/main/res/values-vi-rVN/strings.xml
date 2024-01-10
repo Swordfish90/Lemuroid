@@ -142,4 +142,7 @@
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
     <string name="error_message_incompatible_state">Trạng thái lưu này không tương thích với phiên bản lõi hiện tại. Vui lòng tải bản lưu trong trò chơi mới nhất hoặc sử dụng phiên bản Lemuroid trước đó.</string>
+    <string name="haptic_feedback_mode_names_none">Không</string>
+    <string name="haptic_feedback_mode_names_press">Nhấn</string>
+    <string name="haptic_feedback_mode_names_press_release">Nhấn &amp; thả</string>
 </resources>
