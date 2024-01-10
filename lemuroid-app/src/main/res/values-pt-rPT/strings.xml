@@ -73,6 +73,9 @@
     <string name="game_context_menu_resume">Retomar</string>
     <string name="game_context_menu_restart">Reiniciar</string>
     <string name="game_context_menu_create_shortcut">Fixar no launcher</string>
+    <string name="home_notification_title">Permitir notificações</string>
+    <string name="home_notification_message">Lemuroid usa notificações para alertar quando um jogo ou operação está em execução em segundo plano.</string>
+    <string name="home_notification_action">Habilitar</string>
     <string name="home_empty_title">Seleccionar directório de ROMs</string>
     <string name="home_empty_message">O Lemuroid precisa de verificar um directório contendo arquivos de ROM.\nIsto pode levar alguns minutos.</string>
     <string name="home_empty_action">Seleccionar Directório</string>
