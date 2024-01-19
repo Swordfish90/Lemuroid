@@ -149,7 +149,7 @@
     </string>
     <string name="error_message_incompatible_state">Αυτό το save state δεν είναι συμβατό με την τρέχουσα έκδοση του πυρήνα. Παρακαλώ φορτώστε προηγούμενο save του παιχνιδιού ή χρησιμοποιήστε μια προηγούμενη έκδοση Lemuroid.</string>
     <string name="shader_filter_names_auto">Αυτόματο</string>
-    <string name="shader_filter_names_sharp">Sharp</string>
+    <string name="shader_filter_names_sharp">Κοφτερό</string>
     <string name="shader_filter_names_smooth">Ομαλό</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
