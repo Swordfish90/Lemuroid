@@ -131,11 +131,11 @@
     <string name="tv_home_section_recents">Недавние</string>
     <string name="tv_home_section_systems">Системы</string>
     <string name="tv_home_section_settings">Настройки</string>
-    <string name="gamepad_binding_update_title">Связать «RetroPad %1$s»</string>
+    <string name="gamepad_binding_update_title">Привязка «RetroPad %1$s»</string>
     <string name="gamepad_binding_update_description">Нажмите кнопку на вашем \"%1$s\"</string>
     <string name="tv_search_results">Игры</string>
     <string name="tv_game_message_missing_gamepad">Для игры необходимы контроллеры. Пожалуйста, подключите один.</string>
-    <string name="game_edit_touch_controls_error_not_visible">Отключите геймпад, чтобы изменить экранное управление</string>
+    <string name="game_edit_touch_controls_error_not_visible">Отключите геймпад для настройки экранного управления</string>
     <string name="game_interactory_busy">Дождитесь завершения текущих операций</string>
     <string name="mobile_settings_help">Помощь</string>
     <string name="mobile_settings_support">Поддержка</string>
@@ -151,7 +151,7 @@
         \n\n Если ничего из вышеперечисленного не работает, возможно, эта игра/ядро не поддерживается вашим устройством.
     </string>
     <string name="error_message_incompatible_state">Это сохранение не совместимо с текущей версией ядра. Пожалуйста, загрузите последнюю версию сохранения в игре или воспользуйтесь предыдущей версией Lemuroid.</string>
-    <string name="shader_filter_names_auto">Авто</string>
+    <string name="shader_filter_names_auto">Автоматически</string>
     <string name="shader_filter_names_sharp">Резкий</string>
     <string name="shader_filter_names_smooth">Мягкий</string>
     <string name="shader_filter_names_crt">ЭЛТ</string>
