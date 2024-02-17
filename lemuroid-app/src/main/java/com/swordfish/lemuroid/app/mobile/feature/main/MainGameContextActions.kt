@@ -1,39 +1,56 @@
 package com.swordfish.lemuroid.app.mobile.feature.main
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AppShortcut
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RestartAlt
-import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameTexts
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSmallGameImage
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import timber.log.Timber
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainGameContextActions(
     selectedGameState: MutableState<Game?>,
@@ -43,6 +60,7 @@ fun MainGameContextActions(
     onFavoriteToggle: (Game, Boolean) -> Unit,
     onCreateShortcut: (Game) -> Unit
 ) {
+    val modalSheetState = rememberModalBottomSheetState(true)
     val haptic = LocalHapticFeedback.current
 
     val selectedGame = selectedGameState.value
@@ -50,26 +68,30 @@ fun MainGameContextActions(
     LaunchedEffect(selectedGame) {
         if (selectedGame != null) {
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            modalSheetState.show()
+        } else {
+            modalSheetState.hide()
         }
     }
 
+    // ModalBottomSheet currently has some issues. We set the scrim color to be transparent and add a fake one.
+    FakeScrim(modalSheetState)
+
     if (selectedGame != null) {
-        Dialog(onDismissRequest = { selectedGameState.value = null }) {
-            Surface(
-                modifier = Modifier.padding(16.dp),
-                shape = AlertDialogDefaults.shape,
-                tonalElevation = AlertDialogDefaults.TonalElevation
-            ) {
-                ContextActionContent(
-                    selectedGame,
-                    onGamePlay,
-                    selectedGameState,
-                    onGameRestart,
-                    onFavoriteToggle,
-                    shortcutSupported,
-                    onCreateShortcut
-                )
-            }
+        ModalBottomSheet(
+            sheetState = modalSheetState,
+            onDismissRequest = { selectedGameState.value = null },
+            scrimColor = Color.Transparent
+        ) {
+            ContextActionContent(
+                selectedGame = selectedGame,
+                onGamePlay = onGamePlay,
+                selectedGameState = selectedGameState,
+                onGameRestart = onGameRestart,
+                onFavoriteToggle = onFavoriteToggle,
+                shortcutSupported = shortcutSupported,
+                onCreateShortcut = onCreateShortcut
+            )
         }
     }
 }
@@ -84,7 +106,11 @@ private fun ContextActionContent(
     shortcutSupported: Boolean,
     onCreateShortcut: (Game) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom))
+    ) {
         ContextActionHeader(game = selectedGame)
         Divider()
         ContextActionEntry(
@@ -185,6 +211,22 @@ private fun ContextActionEntry(
         Text(
             modifier = Modifier.padding(start = 16.dp),
             text = label
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun FakeScrim(modalSheetState: SheetState) {
+    AnimatedVisibility(
+        visible = modalSheetState.targetValue != SheetValue.Hidden,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BottomSheetDefaults.ScrimColor)
         )
     }
 }

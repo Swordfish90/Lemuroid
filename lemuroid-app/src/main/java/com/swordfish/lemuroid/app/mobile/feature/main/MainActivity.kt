@@ -151,17 +151,6 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 gameInteractor.onFavoriteToggle(game, isFavorite)
             }
 
-            MainGameContextActions(
-                selectedGameState = selectedGameState,
-                shortcutSupported = gameInteractor.supportShortcuts(),
-                onGamePlay = { gameInteractor.onGamePlay(it) },
-                onGameRestart = { gameInteractor.onGameRestart(it) },
-                onFavoriteToggle = { game: Game, isFavorite: Boolean ->
-                    gameInteractor.onFavoriteToggle(game, isFavorite)
-                },
-                onCreateShortcut = { gameInteractor.onCreateShortcut(it) }
-            )
-
             Scaffold(
                 bottomBar = { MainNavigationBar(currentRoute, navController) }
             ) { outerPadding ->
@@ -338,6 +327,17 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     }
                 }
             }
+
+            MainGameContextActions(
+                selectedGameState = selectedGameState,
+                shortcutSupported = gameInteractor.supportShortcuts(),
+                onGamePlay = { gameInteractor.onGamePlay(it) },
+                onGameRestart = { gameInteractor.onGameRestart(it) },
+                onFavoriteToggle = { game: Game, isFavorite: Boolean ->
+                    gameInteractor.onFavoriteToggle(game, isFavorite)
+                },
+                onCreateShortcut = { gameInteractor.onCreateShortcut(it) }
+            )
         }
     }
 

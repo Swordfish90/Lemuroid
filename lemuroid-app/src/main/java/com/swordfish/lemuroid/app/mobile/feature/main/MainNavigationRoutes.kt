@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.main
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -23,7 +24,7 @@ import com.swordfish.lemuroid.R
 
 fun NavGraphBuilder.composable(
     route: MainRoute,
-    content: @Composable (NavBackStackEntry) -> Unit
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
 ) {
     this.composable(route = route.route, arguments = route.arguments, content = content)
 }

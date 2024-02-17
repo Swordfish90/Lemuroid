@@ -23,9 +23,9 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
-        const val libretrodroid   = "0.10.0"
+        const val libretrodroid   = "5be043ca2"
         const val radialgamepad   = "2.0.0"
-        const val composeBom      = "2023.08.00"
+        const val composeBom      = "2023.10.01"
 
         // Make sure this is compatible with current bom versions:
         // https://developer.android.com/jetpack/compose/bom/bom-mapping
@@ -97,6 +97,7 @@ object deps {
 
                 object accompanist {
                     const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
+                    const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:${versions.accompanist}"
                 }
             }
         }

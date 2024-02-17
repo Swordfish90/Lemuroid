@@ -85,6 +85,7 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun AppTheme(
+    themeSystemUi: Boolean = true,
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -100,8 +101,6 @@ fun AppTheme(
         dynamicDarkColorScheme(context)
 //        dynamicLightColorScheme(context)
     }
-
-    val systemUiController = rememberSystemUiController()
 
     // TODO COMPOSE... Does this belong here?
     val imageLoader = remember {
@@ -124,9 +123,13 @@ fun AppTheme(
                 BottomAppBarDefaults.ContainerElevation
             )
 
-            SideEffect {
-                systemUiController.setSystemBarsColor(statusBarColor, false)
-                systemUiController.systemBarsDarkContentEnabled = false
+            if (themeSystemUi) {
+                val systemUiController = rememberSystemUiController()
+
+                SideEffect {
+                    systemUiController.setSystemBarsColor(statusBarColor, false)
+                    systemUiController.systemBarsDarkContentEnabled = false
+                }
             }
 
             content()
