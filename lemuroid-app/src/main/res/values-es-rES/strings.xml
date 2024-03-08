@@ -35,7 +35,7 @@
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Restablecer asociaciones</string>
     <string name="settings_gamepad_title_game_menu">Menú</string>
-    <string name="settings_title_open_cores_selection">Cambiar núcleos</string>
+    <string name="settings_title_open_cores_selection">Cambiar Núcleos</string>
     <string name="settings_description_open_cores_selection">Selecciona qué núcleo está asociado a un sistema</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Mostrar archivos de BIOS detectados y admitidos</string>
