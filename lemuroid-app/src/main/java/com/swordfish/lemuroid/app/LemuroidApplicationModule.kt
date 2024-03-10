@@ -34,7 +34,7 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
-import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
+import com.swordfish.lemuroid.app.tv.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.tv.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher

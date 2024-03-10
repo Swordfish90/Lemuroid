@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.app.shared.settings
+package com.swordfish.lemuroid.app.tv.settings
 
 import android.content.Context
 import android.content.Intent
@@ -10,18 +10,15 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
 import com.swordfish.lemuroid.app.shared.input.InputBindingUpdater
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
+import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 import com.swordfish.lemuroid.app.tv.input.TVGamePadBindingActivity
 
-class GamePadPreferencesHelper(
-    private val inputDeviceManager: InputDeviceManager,
-    private val isLeanback: Boolean
-) {
+class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManager) {
     suspend fun addGamePadsPreferencesToScreen(
         context: Context,
         preferenceScreen: PreferenceScreen,
@@ -163,13 +160,7 @@ class GamePadPreferencesHelper(
     }
 
     private fun displayChangeDialog(context: Context, inputDevice: InputDevice, retroKey: Int) {
-        val activity = if (isLeanback) {
-            TVGamePadBindingActivity::class.java
-        } else {
-            GamePadBindingActivity::class.java
-        }
-
-        val intent = Intent(context, activity).apply {
+        val intent = Intent(context, TVGamePadBindingActivity::class.java).apply {
             putExtra(InputBindingUpdater.REQUEST_DEVICE, inputDevice)
             putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey)
         }

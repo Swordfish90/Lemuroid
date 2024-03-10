@@ -112,14 +112,6 @@ private fun GeneralSettings(
             title = { Text(text = stringResource(id = R.string.settings_title_legacy_hd_mode)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_legacy_hd_mode)) },
         )
-        SettingsSlider(
-            state = fractionPreferenceState(
-                key = stringResource(id = R.string.pref_key_tilt_sensitivity_index),
-                denominator = 10,
-                defaultNumerator = 6
-            ),
-            title = { Text(text = stringResource(R.string.settings_title_tilt_sensitivity)) }
-        )
         SettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_reset_settings)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_reset_settings)) },

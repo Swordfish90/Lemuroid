@@ -10,7 +10,6 @@ import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.lib.library.CoreID
-import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 
 class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {

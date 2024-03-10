@@ -14,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsList
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
@@ -23,7 +22,6 @@ import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
 import com.swordfish.lemuroid.app.shared.input.InputBindingUpdater
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
-import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
 import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
@@ -32,7 +30,6 @@ import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
 
 @Composable
 fun InputDevicesSettingsScreen(padding: MergedPaddingValues, viewModel: InputDevicesSettingsViewModel) {
-    val context = LocalContext.current.applicationContext
     val state = viewModel.uiState
         .collectAsState(InputDevicesSettingsViewModel.State())
         .value
@@ -43,42 +40,40 @@ fun InputDevicesSettingsScreen(padding: MergedPaddingValues, viewModel: InputDev
             .verticalScroll(rememberScrollState())
             .padding(padding.asPaddingValues())
     ) {
-        EnabledDevice(state)
+        EnabledDeviceCategory(state)
         state.bindings.forEach { (device, bindings) ->
-            SettingsSmallGroup(title = { Text(text = device.name) }) {
-                DeviceBinding(
-                    device = device,
-                    bindings = bindings.keys,
-                    onBindingClicked = { device, retroKey ->
-                        val intent = Intent(context, GamePadBindingActivity::class.java).apply {
-                            putExtra(InputBindingUpdater.REQUEST_DEVICE, device)
-                            putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey.keyCode)
-                        }
-                        context.startActivity(intent)
-                    }
-                )
-                DeviceMenuShortcut(device, bindings.menuShortcuts, bindings.defaultShortcut)
-            }
+            DeviceBindingCategory(device, bindings)
         }
+        GeneralOptionsCategory(viewModel)
     }
 }
 
 @Composable
-private fun DeviceBinding(
+private fun DeviceBindingCategory(
     device: InputDevice,
-    bindings: Map<RetroKey, InputKey>,
-    onBindingClicked: (InputDevice, RetroKey) -> Unit
+    bindings: InputDevicesSettingsViewModel.BindingsView,
 ) {
+    val context = LocalContext.current
     val customizableKeys = device.getLemuroidInputDevice().getCustomizableKeys()
 
-    customizableKeys.forEach { retroKey ->
-        val inputKey = bindings[retroKey] ?: InputKey(KeyEvent.KEYCODE_UNKNOWN)
+    SettingsSmallGroup(title = { Text(text = device.name) }) {
+        customizableKeys.forEach { retroKey ->
+            val inputKey = bindings.keys[retroKey] ?: InputKey(KeyEvent.KEYCODE_UNKNOWN)
 
-        SettingsMenuLink(
-            title = { Text(text = retroKey.displayName(LocalContext.current)) },
-            subtitle = { Text(text = inputKey.displayName()) },
-            onClick = { onBindingClicked(device, retroKey) }
-        )
+            SettingsMenuLink(
+                title = { Text(text = retroKey.displayName(LocalContext.current)) },
+                subtitle = { Text(text = inputKey.displayName()) },
+                onClick = {
+                    val intent = Intent(context, GamePadBindingActivity::class.java).apply {
+                        putExtra(InputBindingUpdater.REQUEST_DEVICE, device)
+                        putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey.keyCode)
+                    }
+                    context.startActivity(intent)
+                }
+            )
+        }
+
+        DeviceMenuShortcut(device, bindings.menuShortcuts, bindings.defaultShortcut)
     }
 }
 
@@ -102,13 +97,23 @@ private fun DeviceMenuShortcut(device: InputDevice, values: List<String>, defaul
 }
 
 @Composable
-private fun EnabledDevice(state: InputDevicesSettingsViewModel.State) {
-    SettingsGroup {
+private fun EnabledDeviceCategory(state: InputDevicesSettingsViewModel.State) {
+    SettingsSmallGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_enabled)) }) {
         state.devices.forEach { device ->
             SettingsSwitch(
                 state = booleanPreferenceState(key = device.key, default = device.enabledByDefault),
                 title = { Text(text = device.name) },
             )
         }
+    }
+}
+
+@Composable
+private fun GeneralOptionsCategory(viewModel: InputDevicesSettingsViewModel) {
+    SettingsSmallGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_general)) }) {
+        SettingsMenuLink(
+            title = { Text(text = stringResource(R.string.settings_gamepad_title_reset_bindings)) },
+            onClick = { viewModel.resetAllBindings() }
+        )
     }
 }

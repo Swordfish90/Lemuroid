@@ -12,9 +12,6 @@ import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
-import com.swordfish.lemuroid.app.shared.settings.AdvancedSettingsPreferences
-import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.coroutines.launchOnState

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class InputDevicesSettingsViewModel(
     appContext: Context,
@@ -50,6 +51,12 @@ class InputDevicesSettingsViewModel(
 
     val uiState = initializeState(appContext)
         .stateIn(viewModelScope, started = SharingStarted.Lazily, State())
+
+    fun resetAllBindings() {
+        viewModelScope.launch {
+            inputDeviceManager.resetAllBindings()
+        }
+    }
 
     private fun initializeState(context: Context): Flow<State> {
         val devicesViews = getEnabledDevicesViews(context)

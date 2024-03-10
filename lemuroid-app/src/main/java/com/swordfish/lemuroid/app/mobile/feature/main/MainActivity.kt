@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +48,6 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
-import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
@@ -372,12 +370,6 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
             @JvmStatic
             fun settingsInteractor(activity: MainActivity, directoriesManager: DirectoriesManager) =
                 SettingsInteractor(activity, directoriesManager)
-
-            @Provides
-            @PerActivity
-            @JvmStatic
-            fun gamePadPreferencesHelper(inputDeviceManager: InputDeviceManager) =
-                GamePadPreferencesHelper(inputDeviceManager, false)
 
             @Provides
             @PerActivity
