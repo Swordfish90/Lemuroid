@@ -21,6 +21,8 @@
     <string name="back">Back</string>
     <string name="close">Close</string>
 
+    <string name="game_page_search_suggestion">Search games</string>
+
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Input</string>
     <string name="settings_category_misc">Miscellaneous</string>

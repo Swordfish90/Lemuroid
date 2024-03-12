@@ -1,6 +1,9 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -136,11 +139,12 @@ fun SearchScreen(
         val padding = outerPadding + innerPadding
         AnimatedContent(
             targetState = searchState.value,
-            label = "SearchContent"
+            label = "SearchContent",
+            transitionSpec = { fadeIn() togetherWith fadeOut() }
         ) { state ->
             when {
                 state == SearchViewModel.UIState.Idle -> {
-                    SearchEmptyView(padding, "Search something")
+                    SearchEmptyView(padding, stringResource(R.string.game_page_search_suggestion))
                 }
                 state == SearchViewModel.UIState.Loading -> {
                     SearchLoadingView(padding)
