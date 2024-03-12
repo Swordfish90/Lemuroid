@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.swordfish.lemuroid.common.paging.buildFlowPaging
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class SearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel() {

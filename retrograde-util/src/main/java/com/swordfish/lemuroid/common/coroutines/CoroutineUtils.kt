@@ -1,13 +1,13 @@
 package com.swordfish.lemuroid.common.coroutines
 
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.time.Duration
-import kotlin.time.times
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.time.Duration
+import kotlin.time.times
 
 fun CoroutineScope.safeLaunch(
     context: CoroutineContext = EmptyCoroutineContext,

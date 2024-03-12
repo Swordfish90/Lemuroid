@@ -12,7 +12,6 @@ import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
-import com.swordfish.lemuroid.common.kotlin.lazySequenceOf
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.Dispatchers

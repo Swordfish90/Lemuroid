@@ -8,11 +8,11 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageFile
-import java.io.File
-import java.io.InputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
+import java.io.InputStream
 
 class BiosManager(private val directoriesManager: DirectoriesManager) {
 

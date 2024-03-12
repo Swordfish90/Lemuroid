@@ -13,7 +13,6 @@ import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.view.animateProgress
 import com.swordfish.lemuroid.common.view.animateVisibleOrGone
 import com.swordfish.touchinput.radial.LemuroidTouchOverlayThemes
-import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +21,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 object VirtualLongPressHandler {
 

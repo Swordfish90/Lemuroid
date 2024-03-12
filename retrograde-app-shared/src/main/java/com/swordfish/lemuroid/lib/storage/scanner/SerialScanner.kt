@@ -6,11 +6,11 @@ import com.swordfish.lemuroid.common.kotlin.kiloBytes
 import com.swordfish.lemuroid.common.kotlin.megaBytes
 import com.swordfish.lemuroid.common.kotlin.startsWithAny
 import com.swordfish.lemuroid.lib.library.SystemID
+import timber.log.Timber
 import java.io.InputStream
 import java.nio.charset.Charset
 import kotlin.math.ceil
 import kotlin.math.roundToInt
-import timber.log.Timber
 
 object SerialScanner {
     private val READ_BUFFER_SIZE = 64.kiloBytes()

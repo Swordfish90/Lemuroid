@@ -1,8 +1,8 @@
 package com.swordfish.lemuroid.app.shared.input
 
 import android.view.KeyEvent
-import java.util.Locale
 import kotlinx.serialization.Serializable
+import java.util.Locale
 
 @Serializable
 @JvmInline

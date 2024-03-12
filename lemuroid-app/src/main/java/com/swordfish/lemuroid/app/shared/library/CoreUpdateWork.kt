@@ -15,11 +15,11 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
-import javax.inject.Inject
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
+import javax.inject.Inject
 
 class CoreUpdateWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {

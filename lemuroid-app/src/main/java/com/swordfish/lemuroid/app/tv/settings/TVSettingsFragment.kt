@@ -19,11 +19,11 @@ import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 

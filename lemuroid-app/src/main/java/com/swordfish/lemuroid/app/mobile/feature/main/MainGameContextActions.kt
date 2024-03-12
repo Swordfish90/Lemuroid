@@ -48,7 +48,6 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameTexts
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSmallGameImage
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

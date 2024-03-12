@@ -1,8 +1,8 @@
 package com.swordfish.lemuroid.common.coroutines
 
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class MutableStateProperty<T>(
     private val mutableState: MutableStateFlow<T>

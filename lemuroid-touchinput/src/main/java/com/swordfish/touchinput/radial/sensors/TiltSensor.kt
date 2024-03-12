@@ -9,12 +9,12 @@ import android.view.Surface
 import android.view.WindowManager
 import com.swordfish.lemuroid.common.kotlin.CustomDelegates
 import com.swordfish.lemuroid.common.math.linearInterpolation
-import kotlin.math.abs
-import kotlin.math.sign
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import timber.log.Timber
+import kotlin.math.abs
+import kotlin.math.sign
 
 class TiltSensor(context: Context) : SensorEventListener {
 

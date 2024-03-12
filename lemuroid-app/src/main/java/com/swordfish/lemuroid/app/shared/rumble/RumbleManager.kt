@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.libretrodroid.RumbleEvent
-import kotlin.math.roundToInt
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.newSingleThreadContext
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
 class RumbleManager(
