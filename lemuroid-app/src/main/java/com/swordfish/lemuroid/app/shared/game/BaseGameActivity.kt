@@ -69,10 +69,6 @@ import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.libretrodroid.VirtualFile
 import com.swordfish.radialgamepad.library.math.MathUtils
-import javax.inject.Inject
-import kotlin.math.abs
-import kotlin.math.roundToInt
-import kotlin.system.exitProcess
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -98,6 +94,10 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
+import kotlin.math.abs
+import kotlin.math.roundToInt
+import kotlin.system.exitProcess
 
 @OptIn(FlowPreview::class, DelicateCoroutinesApi::class)
 abstract class BaseGameActivity : ImmersiveActivity() {

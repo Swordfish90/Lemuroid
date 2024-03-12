@@ -28,7 +28,7 @@ fun LemuroidGameCard(
                     onLongClick = onLongClick,
                 ),
         ) {
-            LemuroidGameImage(game)
+            LemuroidGameImage(game = game)
             LemuroidGameTexts(game = game)
         }
     }

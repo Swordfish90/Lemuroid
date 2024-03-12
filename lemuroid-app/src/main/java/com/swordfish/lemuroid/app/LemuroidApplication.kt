@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.startup.AppInitializer
 import androidx.work.ListenableWorker
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 import com.google.android.material.color.DynamicColors
+import com.swordfish.lemuroid.app.shared.covers.CoverUtils
 import com.swordfish.lemuroid.app.shared.startup.GameProcessInitializer
 import com.swordfish.lemuroid.app.shared.startup.MainProcessInitializer
 import com.swordfish.lemuroid.app.utils.android.isMainProcess
@@ -15,7 +18,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerApplication
 import javax.inject.Inject
 
-class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
+class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderFactory {
 
     @Inject
     lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
@@ -45,4 +48,8 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector {
     }
 
     override fun workerInjector(): AndroidInjector<ListenableWorker> = workerInjector
+
+    override fun newImageLoader(): ImageLoader {
+        return CoverUtils.buildImageLoader(applicationContext)
+    }
 }

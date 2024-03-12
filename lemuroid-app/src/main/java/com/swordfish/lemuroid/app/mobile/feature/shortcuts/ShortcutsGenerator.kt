@@ -8,12 +8,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Icon
 import android.os.Build
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
+import com.swordfish.lemuroid.app.shared.covers.CoverUtils
 import com.swordfish.lemuroid.app.shared.deeplink.DeepLink
 import com.swordfish.lemuroid.common.bitmap.cropToSquare
 import com.swordfish.lemuroid.common.bitmap.toBitmap
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import java.io.InputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -21,6 +20,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
+import java.io.InputStream
 
 class ShortcutsGenerator(
     private val appContext: Context,
@@ -56,7 +56,7 @@ class ShortcutsGenerator(
 
     private fun retrieveFallbackBitmap(game: Game): Bitmap {
         val desiredIconSize = getDesiredIconSize()
-        return CoverLoader.getFallbackDrawable(game).toBitmap(desiredIconSize, desiredIconSize)
+        return CoverUtils.getFallbackDrawable(game).toBitmap(desiredIconSize, desiredIconSize)
     }
 
     private fun getDesiredIconSize(): Int {

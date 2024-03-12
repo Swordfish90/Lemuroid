@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,12 +15,16 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -29,10 +34,12 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
@@ -43,6 +50,7 @@ import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.compose.plus
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     outerPadding: PaddingValues,
@@ -107,36 +115,48 @@ fun SearchScreen(
                         )
                     }
 
-                    // TODO COMPOSE. Action have a slightly different color.
-                    Box(modifier = Modifier.padding(4.dp)) {
-                        LemuroidTopBarActions(
-                            MainRoute.SEARCH,
-                            navController,
-                            context = context,
-                            saveSyncEnabled = mainUIState.saveSyncEnabled
-                        )
-                    }
+                    val colors = TopAppBarDefaults.topAppBarColors()
+                    CompositionLocalProvider(
+                        LocalContentColor provides colors.actionIconContentColor,
+                        content = {
+                            Box(modifier = Modifier.padding(4.dp)) {
+                                LemuroidTopBarActions(
+                                    MainRoute.SEARCH,
+                                    navController,
+                                    context = context,
+                                    saveSyncEnabled = mainUIState.saveSyncEnabled
+                                )
+                            }
+                        }
+                    )
                 }
             }
         }
     ) { innerPadding ->
         val padding = outerPadding + innerPadding
-        when {
-            searchState.value == SearchViewModel.UIState.Idle -> { }
-            searchState.value == SearchViewModel.UIState.Loading -> {
-                SearchLoadingView(padding)
-            }
-            searchState.value == SearchViewModel.UIState.Ready && searchGames.itemCount == 0 -> {
-                SearchEmptyView(padding)
-            }
-            else -> {
-                SearchResultsView(
-                    padding,
-                    searchGames,
-                    onGameClick,
-                    onGameLongClick,
-                    onGameFavoriteToggle
-                )
+        AnimatedContent(
+            targetState = searchState.value,
+            label = "SearchContent"
+        ) { state ->
+            when {
+                state == SearchViewModel.UIState.Idle -> {
+                    SearchEmptyView(padding, "Search something")
+                }
+                state == SearchViewModel.UIState.Loading -> {
+                    SearchLoadingView(padding)
+                }
+                state == SearchViewModel.UIState.Ready && searchGames.itemCount == 0 -> {
+                    SearchEmptyView(padding, stringResource(id = R.string.empty_view_default))
+                }
+                else -> {
+                    SearchResultsView(
+                        padding,
+                        searchGames,
+                        onGameClick,
+                        onGameLongClick,
+                        onGameFavoriteToggle
+                    )
+                }
             }
         }
     }
@@ -152,7 +172,7 @@ private fun SearchResultsView(
     onGameFavoriteToggle: (Game, Boolean) -> Unit
 ) {
     LazyColumn(contentPadding = padding.asPaddingValues()) {
-        items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
+        items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
             val game = games[index] ?: return@items
 
             LemuroidGameListRow(
@@ -169,8 +189,11 @@ private fun SearchResultsView(
 }
 
 @Composable
-private fun SearchEmptyView(padding: MergedPaddingValues) {
-    LemuroidEmptyView(modifier = Modifier.padding(padding.asPaddingValues()))
+private fun SearchEmptyView(padding: MergedPaddingValues, text: String) {
+    LemuroidEmptyView(
+        modifier = Modifier.padding(padding.asPaddingValues()),
+        text = text
+    )
 }
 
 @Composable

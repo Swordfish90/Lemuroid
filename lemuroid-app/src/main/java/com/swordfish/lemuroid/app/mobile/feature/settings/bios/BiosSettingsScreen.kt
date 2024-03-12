@@ -1,19 +1,16 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.bios
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsPage
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.lib.bios.Bios
 
 @Composable
@@ -22,12 +19,7 @@ fun BiosScreen(padding: MergedPaddingValues, viewModel: BiosSettingsViewModel) {
         .collectAsState()
         .value
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(padding.asPaddingValues())
-    ) {
+    LemuroidElevatedSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
         if (uiState.detected.isNotEmpty()) {
             DetectedEntries(uiState.detected)
         }
@@ -39,7 +31,7 @@ fun BiosScreen(padding: MergedPaddingValues, viewModel: BiosSettingsViewModel) {
 
 @Composable
 private fun DetectedEntries(detected: List<Bios>) {
-    SettingsSmallGroup(
+    LemuroidElevatedSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_bios_category_detected)) }
     ) {
         detected.forEach {
@@ -50,7 +42,7 @@ private fun DetectedEntries(detected: List<Bios>) {
 
 @Composable
 private fun SupportedEntries(supported: List<Bios>) {
-    SettingsSmallGroup(
+    LemuroidElevatedSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_bios_category_not_detected)) }
     ) {
         supported.forEach {
@@ -61,7 +53,7 @@ private fun SupportedEntries(supported: List<Bios>) {
 
 @Composable
 fun BiosEntry(bios: Bios, detected: Boolean) {
-    SettingsMenuLink(
+    LemuroidSettingsMenuLink(
         title = { Text(text = bios.description) },
         subtitle = { Text(text = bios.displayName()) },
         enabled = detected,

@@ -13,14 +13,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.alorma.compose.settings.ui.SettingsListMultiSelect
-import com.alorma.compose.settings.ui.SettingsMenuLink
-import com.alorma.compose.settings.ui.SettingsSwitch
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
-import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.indexSetPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsListMultiSelect
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.lib.library.CoreID
 
 @Composable
@@ -41,19 +41,19 @@ fun SaveSyncSettingsScreen(padding: MergedPaddingValues, viewModel: SaveSyncSett
             .verticalScroll(rememberScrollState())
             .padding(padding.asPaddingValues()),
     ) {
-        SettingsMenuLink(
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_save_sync_configure, saveSyncState.provider)) },
             subtitle = { Text(text = saveSyncState.configInfo) },
             enabled = !isSyncInProgress,
             onClick = { context.startActivity(Intent(context, saveSyncState.settingsActivity)) }
         )
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_save_sync_enable, default = false),
             title = { Text(text = stringResource(id = R.string.settings_save_sync_include_saves)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_save_sync_include_saves_description, saveSyncState.savesSpace)) },
             enabled = saveSyncState.isConfigured && !isSyncInProgress
         )
-        SettingsListMultiSelect(
+        LemuroidSettingsListMultiSelect(
             state = indexSetPreferenceState(
                 stringResource(R.string.pref_key_save_sync_cores),
                 emptySet(),
@@ -66,13 +66,13 @@ fun SaveSyncSettingsScreen(padding: MergedPaddingValues, viewModel: SaveSyncSett
             enabled = saveSyncState.isConfigured && !isSyncInProgress,
             confirmButton = stringResource(id = R.string.ok)
         )
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_save_sync_auto, default = false),
             title = { Text(text = stringResource(id = R.string.settings_save_sync_enable_auto)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_save_sync_enable_auto_description)) },
             enabled = saveSyncState.isConfigured && !isSyncInProgress
         )
-        SettingsMenuLink(
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_save_sync_refresh)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_save_sync_refresh_description, saveSyncState.lastSyncInfo)) },
             enabled = saveSyncState.isConfigured && !isSyncInProgress,

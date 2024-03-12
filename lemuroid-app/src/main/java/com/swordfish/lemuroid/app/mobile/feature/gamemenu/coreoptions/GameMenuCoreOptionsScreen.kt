@@ -12,13 +12,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.alorma.compose.settings.ui.SettingsList
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
-import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
-import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
+import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 
 @Composable
@@ -51,7 +51,7 @@ private fun CoreOptions(
     }
 
     for (coreOption in coreOptions) {
-        SettingsList(
+        LemuroidSettingsList(
             title = { Text(text = coreOption.getDisplayName(context)) },
             items = coreOption.getEntries(context),
             state = indexPreferenceState(
@@ -79,11 +79,11 @@ private fun ControllersOptions(
         return
     }
 
-    SettingsSmallGroup(
+    LemuroidSettingsGroup(
         title = { Text(text = stringResource(R.string.core_settings_category_controllers)) }
     ) {
         visibleControllers.forEach { (port, controllerConfigs) ->
-            SettingsList(
+            LemuroidSettingsList(
                 title = { Text(text = context.getString(R.string.core_settings_controller, (port + 1).toString())) },
                 items = controllerConfigs!!.map { stringResource(id = it.displayName) },
                 state = indexPreferenceState(

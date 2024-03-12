@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
@@ -63,9 +63,9 @@ fun LemuroidTopAppBar(
                 ) {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            Icons.Filled.ArrowBack,
-                            "Back"
-                        ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            stringResource(id = R.string.back)
+                        )
                     }
                 }
             },
@@ -89,8 +89,8 @@ fun LemuroidTopBarActions(
         ) {
             Icon(
                 Icons.Outlined.Info,
-                "Back"
-            ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+                stringResource(R.string.mobile_settings_help)
+            )
         }
         if (saveSyncEnabled) {
             IconButton(
@@ -98,8 +98,8 @@ fun LemuroidTopBarActions(
             ) {
                 Icon(
                     Icons.Outlined.CloudSync,
-                    "Cloud Sync"
-                ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+                    stringResource(R.string.save_sync)
+                )
             }
         }
         if (route.showBottomNavigation) {
@@ -108,8 +108,8 @@ fun LemuroidTopBarActions(
             ) {
                 Icon(
                     Icons.Outlined.Settings,
-                    "Settings"
-                ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+                    stringResource(R.string.settings)
+                )
             }
         }
     }

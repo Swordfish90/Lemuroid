@@ -29,7 +29,7 @@ fun GamesScreen(
     LazyColumn(
         contentPadding = padding.asPaddingValues()
     ) {
-        items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
+        items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
             val game = games[index] ?: return@items
 
             LemuroidGameListRow(

@@ -1,10 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.advanced
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,18 +9,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.alorma.compose.settings.ui.SettingsList
-import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSlider
-import com.alorma.compose.settings.ui.SettingsSwitch
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
-import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
-import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
-import com.swordfish.lemuroid.app.utils.android.fractionPreferenceState
-import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsPage
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.fractionPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 
 @Composable
 fun AdvancedSettingsScreen(
@@ -36,14 +33,12 @@ fun AdvancedSettingsScreen(
         .collectAsState()
         .value
 
-    Column(
+    LemuroidElevatedSettingsPage(
         modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(padding.asPaddingValues()),
+            .padding(padding.asPaddingValues())
     ) {
         if (uiState?.cache == null) {
-            return@Column
+            return@LemuroidElevatedSettingsPage
         }
 
         InputSettings()
@@ -53,15 +48,17 @@ fun AdvancedSettingsScreen(
 
 @Composable
 private fun InputSettings() {
-    SettingsSmallGroup(
+    LemuroidElevatedSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_input)) }
     ) {
-        SettingsSwitch(
-            state = booleanPreferenceState(R.string.pref_key_enable_rumble, false),
+        val rumbleEnabled = booleanPreferenceState(R.string.pref_key_enable_rumble, false)
+        LemuroidSettingsSwitch(
+            state = rumbleEnabled,
             title = { Text(text = stringResource(id = R.string.settings_title_enable_rumble)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_rumble)) },
         )
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
+            enabled = rumbleEnabled.value,
             state = booleanPreferenceState(R.string.pref_key_enable_device_rumble, false),
             title = { Text(text = stringResource(id = R.string.settings_title_enable_device_rumble)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_device_rumble)) },
@@ -85,15 +82,15 @@ private fun GeneralSettings(
 ) {
     val context = LocalContext.current.applicationContext
 
-    SettingsSmallGroup(
+    LemuroidElevatedSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_general)) }
     ) {
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_low_latency_audio, false),
             title = { Text(text = stringResource(id = R.string.settings_title_low_latency_audio)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_low_latency_audio)) },
         )
-        SettingsList(
+        LemuroidSettingsList(
             title = { Text(text = stringResource(R.string.settings_title_maximum_cache_usage)) },
             items = cacheState.displayNames,
             state = indexPreferenceState(
@@ -102,17 +99,17 @@ private fun GeneralSettings(
                 cacheState.values
             )
         )
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_allow_direct_game_load, true),
             title = { Text(text = stringResource(id = R.string.settings_title_direct_game_load)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_direct_game_load)) },
         )
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_legacy_hd_mode, false),
             title = { Text(text = stringResource(id = R.string.settings_title_legacy_hd_mode)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_legacy_hd_mode)) },
         )
-        SettingsMenuLink(
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_reset_settings)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_reset_settings)) },
             onClick = {

@@ -6,6 +6,7 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -95,8 +96,9 @@ private fun HomeScreen(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(finalPadding.asPaddingValues()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        if (state.showNoPermissionNotification) {
+        AnimatedVisibility(state.showNoPermissionNotification) {
             HomeNotification(
                 titleId = R.string.home_notification_title,
                 messageId = R.string.home_notification_message,
@@ -104,7 +106,7 @@ private fun HomeScreen(
                 onAction = onEnableNotificationsClicked
             )
         }
-        if (state.showNoGamesNotification) {
+        AnimatedVisibility(state.showNoGamesNotification) {
             HomeNotification(
                 titleId = R.string.home_empty_title,
                 messageId = R.string.home_empty_message,
@@ -144,27 +146,30 @@ private fun HomeRow(
     if (games.isEmpty()) {
         return
     }
-    Text(
-        text = title,
-        style = MaterialTheme.typography.labelMedium,
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-    )
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(games.size, key = { games[it].id }) { index ->
-            val game = games[index]
-            LemuroidGameCard(
-                modifier = Modifier
-                    .widthIn(0.dp, 144.dp)
-                    .animateItemPlacement(),
-                game = game,
-                onClick = { onGameClicked(game) },
-                onLongClick = { onGameLongClick(game) }
-            )
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelMedium,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+        )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(games.size, key = { games[it].id }) { index ->
+                val game = games[index]
+                LemuroidGameCard(
+                    modifier = Modifier
+                        .widthIn(0.dp, 144.dp)
+                        .animateItemPlacement(),
+                    game = game,
+                    onClick = { onGameClicked(game) },
+                    onLongClick = { onGameLongClick(game) }
+                )
+            }
         }
     }
 }

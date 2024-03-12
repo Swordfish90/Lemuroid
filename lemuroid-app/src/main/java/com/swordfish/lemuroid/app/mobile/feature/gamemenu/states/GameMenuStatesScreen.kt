@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.alorma.compose.settings.ui.SettingsMenuLink
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 
 @Composable
 fun GameMenuStatesScreen(
@@ -23,7 +23,7 @@ fun GameMenuStatesScreen(
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         state.value.entries.forEachIndexed { index, entry ->
-            SettingsMenuLink(
+            LemuroidSettingsMenuLink(
                 title = { Text(text = entry.title) },
                 subtitle = { Text(text = entry.description) },
                 enabled = entry.enabled,

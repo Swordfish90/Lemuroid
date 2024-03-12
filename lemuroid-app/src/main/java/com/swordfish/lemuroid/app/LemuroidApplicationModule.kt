@@ -28,17 +28,16 @@ import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
-import com.swordfish.lemuroid.app.tv.settings.BiosPreferences
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
-import com.swordfish.lemuroid.app.tv.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
+import com.swordfish.lemuroid.app.tv.settings.BiosPreferences
+import com.swordfish.lemuroid.app.tv.settings.CoresSelectionPreferences
 import com.swordfish.lemuroid.ext.feature.core.CoreUpdaterImpl
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManagerImpl
@@ -73,14 +72,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoSet
-import java.io.InputStream
-import java.lang.reflect.Type
-import java.util.concurrent.TimeUnit
-import java.util.zip.ZipInputStream
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
+import java.io.InputStream
+import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
+import java.util.zip.ZipInputStream
 
 @Module
 abstract class LemuroidApplicationModule {
@@ -367,12 +366,5 @@ abstract class LemuroidApplicationModule {
             inputDeviceManager: InputDeviceManager
         ) =
             RumbleManager(context, settingsManager, inputDeviceManager)
-
-        @Provides
-        @PerApp
-        @JvmStatic
-        fun coverLoader(
-            context: Context
-        ) = CoverLoader(context)
     }
 }

@@ -18,6 +18,8 @@
     <string name="settings">Settings</string>
     <string name="save_sync">Save Sync</string>
     <string name="show_all">Show All</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
 
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Input</string>

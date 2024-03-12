@@ -1,25 +1,19 @@
 package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import android.os.Build
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import coil.ImageLoader
-import coil.compose.LocalImageLoader
-import coil.util.CoilUtils
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.swordfish.lemuroid.app.shared.covers.ThrottleFailedThumbnailsInterceptor
-import okhttp3.OkHttpClient
 
-private val LightColors = lightColorScheme(
+private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -51,7 +45,7 @@ private val LightColors = lightColorScheme(
     scrim = md_theme_light_scrim,
 )
 
-private val DarkColors = darkColorScheme(
+private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -86,53 +80,32 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun AppTheme(
     themeSystemUi: Boolean = true,
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    // Let's currently force the dark theme
+    darkTheme: Boolean = true, //isSystemInDarkTheme()
     content: @Composable () -> Unit
 ) {
-//    val colors = if (!useDarkTheme) {
-//        LightColors
-//    } else {
-//        DarkColors
-//    }
-
-//    val colors = DarkColors
-    val context = LocalContext.current.applicationContext
-    val colors = remember {
-        dynamicDarkColorScheme(context)
-//        dynamicLightColorScheme(context)
+    val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val colors = when {
+        dynamicColor && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
+        dynamicColor && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
     }
 
-    // TODO COMPOSE... Does this belong here?
-    val imageLoader = remember {
-        ImageLoader.Builder(context)
-            .crossfade(true)
-            .okHttpClient {
-                OkHttpClient.Builder()
-                    .cache(CoilUtils.createDefaultCache(context))
-                    .addNetworkInterceptor(ThrottleFailedThumbnailsInterceptor)
-                    .build()
+    MaterialTheme(colorScheme = colors) {
+        val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
+            BottomAppBarDefaults.ContainerElevation
+        )
+
+        if (themeSystemUi) {
+            val systemUiController = rememberSystemUiController()
+
+            SideEffect {
+                systemUiController.setSystemBarsColor(statusBarColor, !darkTheme)
+                systemUiController.systemBarsDarkContentEnabled = !darkTheme
             }
-            .build()
-    }
-
-    CompositionLocalProvider(LocalImageLoader provides imageLoader) {
-        MaterialTheme(
-            colorScheme = colors
-        ) {
-            val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                BottomAppBarDefaults.ContainerElevation
-            )
-
-            if (themeSystemUi) {
-                val systemUiController = rememberSystemUiController()
-
-                SideEffect {
-                    systemUiController.setSystemBarsColor(statusBarColor, false)
-                    systemUiController.systemBarsDarkContentEnabled = false
-                }
-            }
-
-            content()
         }
+
+        content()
     }
 }

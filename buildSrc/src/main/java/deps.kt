@@ -18,18 +18,19 @@ object deps {
         const val lifecycle       = "2.6.1"
         const val leanback        = "1.1.0-rc01"
         const val googleApiClient = "1.32.1"
-        const val paging          = "3.1.1"
+        const val paging          = "3.2.1"
         const val room            = "2.5.2"
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
+        const val settings        = "1.0.3"
         const val libretrodroid   = "5be043ca2"
         const val radialgamepad   = "2.0.0"
-        const val composeBom      = "2023.10.01"
+        const val composeBom      = "2024.02.02"
 
         // Make sure this is compatible with current bom versions:
         // https://developer.android.com/jetpack/compose/bom/bom-mapping
-        const val accompanist     = "0.32.0"
+        const val accompanist     = "0.34.0"
     }
 
     object libs {
@@ -63,7 +64,7 @@ object deps {
             object paging {
                 const val common = "androidx.paging:paging-common:${versions.paging}"
                 const val runtime = "androidx.paging:paging-runtime:${versions.paging}"
-                const val compose = "androidx.paging:paging-compose:3.2.0-rc01"
+                const val compose = "androidx.paging:paging-compose:${versions.paging}"
             }
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
@@ -98,6 +99,7 @@ object deps {
                 object accompanist {
                     const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
                     const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:${versions.accompanist}"
+                    const val drawablePainter = "com.google.accompanist:accompanist-drawablepainter:${versions.accompanist}"
                 }
             }
         }
@@ -135,14 +137,13 @@ object deps {
             const val apiServicesDrive     = "com.google.apis:google-api-services-drive:v3-rev20210725-${versions.googleApiClient}"
         }
         object coil {
-            // TODO Migrate to coil 2.x
-            const val coil = "io.coil-kt:coil:1.4.0"
-            const val coilCompose = "io.coil-kt:coil-compose:1.4.0"
+            const val coil = "io.coil-kt:coil:2.6.0"
+            const val coilCompose = "io.coil-kt:coil-compose:2.6.0"
         }
 
         object composeSettings {
-            const val uiM3 = "com.github.alorma:compose-settings-ui-m3:0.27.0"
-            const val preferences = "com.github.alorma:compose-settings-storage-preferences:0.27.0"
+            const val uiM3 = "com.github.alorma:compose-settings-ui-m3:${versions.settings}"
+            const val preferences = "com.github.alorma:compose-settings-storage-preferences:${versions.settings}"
         }
 
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"

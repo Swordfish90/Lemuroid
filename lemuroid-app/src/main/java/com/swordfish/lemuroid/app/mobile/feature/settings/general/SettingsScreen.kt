@@ -1,11 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.general
 
 import android.net.Uri
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,17 +12,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavController
-import com.alorma.compose.settings.ui.SettingsList
-import com.alorma.compose.settings.ui.SettingsMenuLink
-import com.alorma.compose.settings.ui.SettingsSwitch
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.navigateToRoute
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
-import com.swordfish.lemuroid.app.utils.android.SettingsSmallGroup
-import com.swordfish.lemuroid.app.utils.android.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
-import com.swordfish.lemuroid.app.utils.android.indexPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsPage
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 import com.swordfish.lemuroid.app.utils.android.stringListResource
 
 @Composable
@@ -47,12 +44,7 @@ fun SettingsScreen(
         .observeAsState(false)
         .value
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(padding.asPaddingValues()),
-    ) {
+    LemuroidElevatedSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
         RomsSettings(
             state = state,
             onChangeFolder = { viewModel.changeLocalStorageFolder() },
@@ -75,11 +67,11 @@ private fun MiscSettings(
     isSaveSyncSupported: Boolean,
     navController: NavController,
 ) {
-    SettingsSmallGroup(
+    LemuroidElevatedSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_misc)) }
     ) {
         if (isSaveSyncSupported) {
-            SettingsMenuLink(
+            LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.settings_title_save_sync)) },
                 subtitle = {
                     Text(text = stringResource(id = R.string.settings_description_save_sync))
@@ -87,14 +79,14 @@ private fun MiscSettings(
                 onClick = { navController.navigateToRoute(MainRoute.SETTINGS_SAVE_SYNC) }
             )
         }
-        SettingsMenuLink(
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_open_cores_selection)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_open_cores_selection))
             },
             onClick = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) }
         )
-        SettingsMenuLink(
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_display_bios_info)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_display_bios_info))
@@ -102,7 +94,7 @@ private fun MiscSettings(
             enabled = !indexingInProgress,
             onClick = { navController.navigateToRoute(MainRoute.SETTINGS_BIOS) }
         )
-        SettingsMenuLink(
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_advanced_settings)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_advanced_settings))
@@ -114,10 +106,10 @@ private fun MiscSettings(
 
 @Composable
 private fun InputSettings(navController: NavController) {
-    SettingsSmallGroup(
+    LemuroidElevatedSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_input)) }
     ) {
-        SettingsList(
+        LemuroidSettingsList(
             state = indexPreferenceState(
                 R.string.pref_key_haptic_feedback_mode,
                 "press",
@@ -128,7 +120,7 @@ private fun InputSettings(navController: NavController) {
             },
             items = stringListResource(R.array.pref_key_haptic_feedback_mode_display_names)
         )
-        SettingsMenuLink(title = { Text(text = stringResource(id = R.string.settings_title_gamepad_settings)) },
+        LemuroidSettingsMenuLink(title = { Text(text = stringResource(id = R.string.settings_title_gamepad_settings)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_gamepad_settings))
             },
@@ -140,19 +132,19 @@ private fun InputSettings(navController: NavController) {
 private fun GeneralSettings() {
     val hdMode = booleanPreferenceState(R.string.pref_key_hd_mode, false)
 
-    SettingsSmallGroup(
+    LemuroidElevatedSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_general)) }
     ) {
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_autosave, true),
             title = { Text(text = stringResource(id = R.string.settings_title_enable_autosave)) },
         )
-        SettingsSwitch(
+        LemuroidSettingsSwitch(
             state = hdMode,
             title = { Text(text = stringResource(id = R.string.settings_title_hd_mode)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_hd_mode)) },
         )
-        SettingsList(
+        LemuroidSettingsList(
             enabled = !hdMode.value,
             state = indexPreferenceState(
                 R.string.pref_key_shader_filter,
@@ -183,18 +175,18 @@ private fun RomsSettings(
         }.getOrNull() ?: emptyDirectory
     }
 
-    SettingsSmallGroup(title = { Text(text = stringResource(id = R.string.roms)) }) {
-        SettingsMenuLink(
+    LemuroidElevatedSettingsGroup(title = { Text(text = stringResource(id = R.string.roms)) }) {
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.directory)) },
             subtitle = { Text(text = currentDirectoryName) },
             onClick = { onChangeFolder() },
             enabled = !indexingInProgress
         )
         if (scanInProgress) {
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.stop)) },
+            LemuroidSettingsMenuLink(title = { Text(text = stringResource(id = R.string.stop)) },
                 onClick = { LibraryIndexScheduler.cancelLibrarySync(context) })
         } else {
-            SettingsMenuLink(
+            LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.rescan)) },
                 onClick = { LibraryIndexScheduler.scheduleLibrarySync(context) },
                 enabled = !indexingInProgress

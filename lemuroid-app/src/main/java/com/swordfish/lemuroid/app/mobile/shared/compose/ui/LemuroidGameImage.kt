@@ -1,32 +1,38 @@
 package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import coil.compose.rememberImagePainter
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import com.swordfish.lemuroid.app.shared.covers.CoverUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
-fun LemuroidGameImage(game: Game) {
-    val painter = rememberImagePainter(data = game.coverFrontUrl) {
-        val fallbackDrawable = CoverLoader.getFallbackDrawable(game)
-        fallback(fallbackDrawable)
-        error(fallbackDrawable)
+fun LemuroidGameImage(modifier: Modifier = Modifier, game: Game) {
+    val fallbackDrawable = remember(game) {
+        CoverUtils.getFallbackDrawable(game)
     }
 
-    Image(
-        painter,
-        game.title,
-        modifier = Modifier
+    val fallbackPainter = rememberDrawablePainter(drawable = fallbackDrawable)
+
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(game.coverFrontUrl)
+            .build(),
+        contentDescription = game.title,
+        modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1.0f)
-            .clip(MaterialTheme.shapes.medium),
+            .aspectRatio(1.0f),
+        fallback = fallbackPainter,
+        error = fallbackPainter,
         contentScale = ContentScale.Crop
     )
 }

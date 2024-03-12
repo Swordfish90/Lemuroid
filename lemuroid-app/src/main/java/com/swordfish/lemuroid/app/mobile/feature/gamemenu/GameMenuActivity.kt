@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Divider
@@ -39,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.coreoptions.GameMenuCoreOptionsScreen
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.coreoptions.GameMenuCoreOptionsViewModel
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.states.GameMenuStatesScreen
@@ -129,16 +131,16 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                             if (canGoBack) {
                                 IconButton(onClick = { navController.popBackStack() }) {
                                     Icon(
-                                        Icons.Filled.ArrowBack,
-                                        "Back"
-                                    ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+                                        Icons.AutoMirrored.Filled.ArrowBack,
+                                        stringResource(R.string.back)
+                                    )
                                 }
                             } else {
                                 IconButton(onClick = { onResult { } }) {
                                     Icon(
                                         Icons.Filled.Close,
-                                        "Close"
-                                    ) // TODO COMPOSE FIX CONTENT DESCRIPTION
+                                        stringResource(R.string.close)
+                                    )
                                 }
                             }
                         }

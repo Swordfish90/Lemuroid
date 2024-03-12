@@ -13,6 +13,7 @@ fun <T : Any> buildFlowPaging(
     coroutineScope: CoroutineScope,
     source: () -> PagingSource<Int, T>
 ): Flow<PagingData<T>> {
-    return Pager(PagingConfig(pageSize), pagingSourceFactory = source).flow
+    return Pager(PagingConfig(pageSize), pagingSourceFactory = source)
+        .flow
         .cachedIn(coroutineScope)
 }

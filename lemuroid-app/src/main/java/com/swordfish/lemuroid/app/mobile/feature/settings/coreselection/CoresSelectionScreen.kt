@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.alorma.compose.settings.storage.base.rememberIntSettingState
-import com.alorma.compose.settings.ui.SettingsList
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 
 @Composable
 fun CoresSelectionScreen(padding: MergedPaddingValues, viewModel: CoresSelectionViewModel) {
@@ -38,7 +38,7 @@ fun CoresSelectionScreen(padding: MergedPaddingValues, viewModel: CoresSelection
             val state = rememberIntSettingState()
             state.value = system.systemCoreConfigs.indexOf(core)
 
-            SettingsList(
+            LemuroidSettingsList(
                 state = state,
                 title = { Text(text = stringResource(system.titleResId)) },
                 items = system.systemCoreConfigs.map { it.coreID.coreDisplayName },

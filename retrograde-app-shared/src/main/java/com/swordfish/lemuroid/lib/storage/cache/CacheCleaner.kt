@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+// TODO COMPOSE... Exclude coil form cache computation
 object CacheCleaner {
 
     private val MIN_CACHE_LIMIT = 64L.megaBytes()

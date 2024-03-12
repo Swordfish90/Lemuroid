@@ -35,7 +35,7 @@ fun FavoritesScreen(
         horizontalArrangement = Arrangement. spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(games.itemCount, key = { games[it]?.id ?: -1 }) { index ->
+        items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
             val game = games[index] ?: return@items
             LemuroidGameCard(
                 modifier = Modifier.animateItemPlacement(),

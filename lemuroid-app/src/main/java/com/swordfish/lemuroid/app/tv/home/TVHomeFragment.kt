@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
@@ -43,9 +42,6 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     @Inject
     lateinit var gameInteractor: GameInteractor
-
-    @Inject
-    lateinit var coverLoader: CoverLoader
 
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
@@ -172,7 +168,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
         if (includeFavorites) {
             val presenter = ClassPresenterSelector()
-            presenter.addClassPresenter(Game::class.java, GamePresenter(cardSize, gameInteractor, coverLoader))
+            presenter.addClassPresenter(Game::class.java, GamePresenter(cardSize, gameInteractor))
             presenter.addClassPresenter(TVSetting::class.java, SettingPresenter(cardSize, cardPadding))
             val favouritesItems = ArrayObjectAdapter(presenter)
             val title = resources.getString(R.string.tv_home_section_favorites)
@@ -180,7 +176,7 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         if (includeRecentGames) {
-            val recentItems = ArrayObjectAdapter(GamePresenter(cardSize, gameInteractor, coverLoader))
+            val recentItems = ArrayObjectAdapter(GamePresenter(cardSize, gameInteractor))
             val title = resources.getString(R.string.tv_home_section_recents)
             result.add(ListRow(HeaderItem(RECENTS_ADAPTER, title), recentItems))
         }
