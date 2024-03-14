@@ -164,12 +164,13 @@ class TVHomeFragment : BrowseSupportFragment() {
     ) {
         val result = ArrayObjectAdapter(ListRowPresenter())
         val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
-        val cardPadding = resources.getDimensionPixelSize(R.dimen.card_padding)
+        val systemsCardPadding = resources.getDimensionPixelSize(R.dimen.systems_card_padding)
+        val settingsCardPadding = resources.getDimensionPixelSize(R.dimen.settings_card_padding)
 
         if (includeFavorites) {
             val presenter = ClassPresenterSelector()
             presenter.addClassPresenter(Game::class.java, GamePresenter(cardSize, gameInteractor))
-            presenter.addClassPresenter(TVSetting::class.java, SettingPresenter(cardSize, cardPadding))
+            presenter.addClassPresenter(TVSetting::class.java, SettingPresenter(cardSize, settingsCardPadding))
             val favouritesItems = ArrayObjectAdapter(presenter)
             val title = resources.getString(R.string.tv_home_section_favorites)
             result.add(ListRow(HeaderItem(FAVORITES_ADAPTER, title), favouritesItems))
@@ -182,12 +183,12 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
 
         if (includeSystems) {
-            val systemItems = ArrayObjectAdapter(SystemPresenter(cardSize, cardPadding))
+            val systemItems = ArrayObjectAdapter(SystemPresenter(cardSize, systemsCardPadding))
             val title = resources.getString(R.string.tv_home_section_systems)
             result.add(ListRow(HeaderItem(SYSTEM_ADAPTER, title), systemItems))
         }
 
-        val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, cardPadding))
+        val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, settingsCardPadding))
         settingsItems.setItems(
             buildSettingsRowItems(indexInProgress = false, scanInProgress = false),
             LEANBACK_SETTING_DIFF_CALLBACK
