@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
 import android.content.Context
-import android.text.Html
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -29,12 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
-import com.swordfish.lemuroid.lib.library.SystemID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +39,7 @@ fun LemuroidTopAppBar(
     route: MainRoute,
     navController: NavController,
     mainUIState: MainViewModel.UiState,
+    onHelpPressed: () -> Unit
 ) {
     val context = LocalContext.current
     LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
@@ -70,7 +68,7 @@ fun LemuroidTopAppBar(
                 }
             },
             actions = {
-                LemuroidTopBarActions(route, navController, context, mainUIState.saveSyncEnabled)
+                LemuroidTopBarActions(route, navController, context, mainUIState.saveSyncEnabled, onHelpPressed)
             },
         )
     }
@@ -81,11 +79,12 @@ fun LemuroidTopBarActions(
     route: MainRoute,
     navController: NavController,
     context: Context,
-    saveSyncEnabled: Boolean
+    saveSyncEnabled: Boolean,
+    onHelpPressed: () -> Unit
 ) {
     Row {
         IconButton(
-            onClick = { displayLemuroidHelp(context) }
+            onClick = { onHelpPressed() }
         ) {
             Icon(
                 Icons.Outlined.Info,
@@ -126,14 +125,4 @@ fun LemuroidTopAppBarContainer(displayProgress: Boolean, content: @Composable ()
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
     }
-}
-
-private fun displayLemuroidHelp(context: Context) {
-    val systemFolders = SystemID.values()
-        .joinToString(", ") { "<i>${it.dbname}</i>" }
-
-    val message = context.getString(R.string.lemuroid_help_content).replace("\$SYSTEMS", systemFolders)
-    MaterialAlertDialogBuilder(context)
-        .setMessage(Html.fromHtml(message))
-        .show()
 }

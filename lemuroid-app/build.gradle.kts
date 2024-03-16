@@ -183,6 +183,7 @@ dependencies {
     implementation(deps.libs.androidx.compose.accompanist.drawablePainter)
     implementation(deps.libs.androidx.paging.compose)
     implementation(deps.libs.androidx.lifecycle.viewModelCompose)
+    implementation(deps.libs.composeHtmlText)
 
     implementation(deps.libs.composeSettings.uiM3)
     implementation(deps.libs.composeSettings.preferences)

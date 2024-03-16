@@ -62,7 +62,8 @@ fun SearchScreen(
     mainUIState: MainViewModel.UiState,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
-    onGameFavoriteToggle: (Game, Boolean) -> Unit
+    onGameFavoriteToggle: (Game, Boolean) -> Unit,
+    onHelpPressed: () -> Unit
 ) {
     val context = LocalContext.current
     val query = viewModel.queryString.collectAsState()
@@ -126,6 +127,7 @@ fun SearchScreen(
                                 LemuroidTopBarActions(
                                     MainRoute.SEARCH,
                                     navController,
+                                    onHelpPressed = onHelpPressed,
                                     context = context,
                                     saveSyncEnabled = mainUIState.saveSyncEnabled
                                 )

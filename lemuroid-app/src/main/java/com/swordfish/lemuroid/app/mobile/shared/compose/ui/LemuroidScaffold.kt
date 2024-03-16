@@ -14,10 +14,11 @@ fun LemuroidScaffold(
     navController: NavController,
     mainUIState: MainViewModel.UiState,
     outerPadding: PaddingValues,
-    content: @Composable (MergedPaddingValues) -> Unit
+    content: @Composable (MergedPaddingValues) -> Unit,
+    onHelpPressed: () -> Unit
 ) {
     Scaffold(
-        topBar = { LemuroidTopAppBar(route, navController, mainUIState) },
+        topBar = { LemuroidTopAppBar(route, navController, mainUIState, onHelpPressed) },
     ) { innerPadding ->
 
         val paddings = mutableListOf<PaddingValues>().apply {
