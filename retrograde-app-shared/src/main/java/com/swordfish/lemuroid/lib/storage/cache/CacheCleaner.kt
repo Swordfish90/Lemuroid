@@ -16,7 +16,6 @@ import java.io.File
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
-// TODO COMPOSE... Exclude coil form cache computation
 object CacheCleaner {
 
     private val MIN_CACHE_LIMIT = 64L.megaBytes()
