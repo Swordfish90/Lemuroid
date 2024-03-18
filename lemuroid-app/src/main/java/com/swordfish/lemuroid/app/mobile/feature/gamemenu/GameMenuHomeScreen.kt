@@ -27,17 +27,29 @@ fun GameMenuHomeScreen(
     onResult: KFunction1<Intent.() -> Unit, Unit>
 ) {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        LemuroidSettingsMenuLink(
-            title = { Text(text = stringResource(id = R.string.game_menu_save)) },
-            icon = { Icon(painterResource(R.drawable.ic_menu_save), contentDescription = stringResource(id = R.string.game_menu_save)) },
-            onClick = { navController.navigateToRoute(GameMenuRoute.SAVE) }
-        )
+        if (gameMenuRequest.coreConfig.statesSupported) {
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.game_menu_save)) },
+                icon = {
+                    Icon(
+                        painterResource(R.drawable.ic_menu_save),
+                        contentDescription = stringResource(id = R.string.game_menu_save)
+                    )
+                },
+                onClick = { navController.navigateToRoute(GameMenuRoute.SAVE) }
+            )
 
-        LemuroidSettingsMenuLink(
-            title = { Text(text = stringResource(id = R.string.game_menu_load)) },
-            icon = { Icon(painterResource(R.drawable.ic_menu_load), contentDescription = stringResource(id = R.string.game_menu_load)) },
-            onClick = { navController.navigateToRoute(GameMenuRoute.LOAD) }
-        )
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.game_menu_load)) },
+                icon = {
+                    Icon(
+                        painterResource(R.drawable.ic_menu_load),
+                        contentDescription = stringResource(id = R.string.game_menu_load)
+                    )
+                },
+                onClick = { navController.navigateToRoute(GameMenuRoute.LOAD) }
+            )
+        }
 
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.game_menu_quit)) },
