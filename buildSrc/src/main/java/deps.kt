@@ -24,7 +24,7 @@ object deps {
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
         const val settings        = "1.0.3"
-        const val libretrodroid   = "5be043ca2"
+        const val libretrodroid   = "0.11.0"
         const val radialgamepad   = "2.0.0"
         const val composeBom      = "2024.02.02"
 

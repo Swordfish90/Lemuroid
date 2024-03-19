@@ -763,6 +763,9 @@ data class GameSystem(
                 listOf(
                     SystemCoreConfig(
                         CoreID.PPSSPP,
+                        defaultSettings = listOf(
+                            CoreVariable("ppsspp_frame_duplication", "enabled")
+                        ),
                         exposedSettings = listOf(
                             ExposedSetting(
                                 "ppsspp_auto_frameskip",
@@ -811,7 +814,6 @@ data class GameSystem(
                     scanByUniqueExtension = false,
                     scanByPathAndSupportedExtensions = true
                 ),
-                fastForwardSupport = false
             ),
             GameSystem(
                 SystemID.FBNEO,
@@ -912,24 +914,16 @@ data class GameSystem(
                         CoreID.MELONDS,
                         exposedSettings = listOf(
                             ExposedSetting(
-                                "melonds_screen_layout",
+                                "melonds_screen_layout1",
                                 R.string.setting_melonds_screen_layout,
                                 arrayListOf(
                                     ExposedSetting.Value(
-                                        "Top/Bottom",
+                                        "top-bottom",
                                         R.string.value_melonds_screen_layout_topbottom
                                     ),
                                     ExposedSetting.Value(
-                                        "Left/Right",
+                                        "left-right",
                                         R.string.value_melonds_screen_layout_leftright
-                                    ),
-                                    ExposedSetting.Value(
-                                        "Hybrid Top",
-                                        R.string.value_melonds_screen_layout_hybridtop
-                                    ),
-                                    ExposedSetting.Value(
-                                        "Hybrid Bottom",
-                                        R.string.value_melonds_screen_layout_hybridbottom
                                     ),
                                 )
                             )
@@ -945,6 +939,7 @@ data class GameSystem(
                             ),
                         ),
                         defaultSettings = listOf(
+                            CoreVariable("melonds_number_of_screen_layouts", "1"),
                             CoreVariable("melonds_touch_mode", "Touch"),
                             CoreVariable("melonds_threaded_renderer", "enabled")
                         ),
