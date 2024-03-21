@@ -69,10 +69,6 @@ import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.libretrodroid.VirtualFile
 import com.swordfish.radialgamepad.library.math.MathUtils
-import javax.inject.Inject
-import kotlin.math.abs
-import kotlin.math.roundToInt
-import kotlin.system.exitProcess
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -98,6 +94,11 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
+import kotlin.math.abs
+import kotlin.math.roundToInt
+import kotlin.system.exitProcess
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class, DelicateCoroutinesApi::class)
 abstract class BaseGameActivity : ImmersiveActivity() {
@@ -386,15 +387,21 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
 
         if (BuildConfig.DEBUG) {
-            printRetroVariables(retroGameView)
+            runCatching {
+                printRetroVariables(retroGameView)
+            }
         }
 
         return retroGameView
     }
 
     private fun printRetroVariables(retroGameView: GLRetroView) {
-        retroGameView.getVariables().forEach {
-            Timber.i("Libretro variable: $it")
+        lifecycleScope.launch {
+            // Some cores do not immediately call SET_VARIABLES so we might need to wait a little bit
+            delay(1.seconds)
+            retroGameView.getVariables().forEach {
+                Timber.i("Libretro variable: $it")
+            }
         }
     }
 

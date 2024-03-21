@@ -15,7 +15,6 @@ import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -25,6 +24,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import retrofit2.Retrofit
+import kotlin.time.Duration.Companion.seconds
 
 class CoreUpdaterImpl(
     private val directoriesManager: DirectoriesManager,

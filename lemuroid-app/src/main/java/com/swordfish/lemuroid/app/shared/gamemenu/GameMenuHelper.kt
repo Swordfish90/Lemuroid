@@ -100,7 +100,7 @@ object GameMenuHelper {
         screen.addPreference(
             Preference(screen.context).apply {
                 this.key = "pref_game_save_$index"
-                this.summary = getDateString(saveStateInfo)
+                this.summary = getSaveStateDescription(saveStateInfo)
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
                 this.icon = BitmapDrawable(screen.context.resources, bitmap)
             }
@@ -116,7 +116,7 @@ object GameMenuHelper {
         screen.addPreference(
             Preference(screen.context, null).apply {
                 this.key = "pref_game_load_$index"
-                this.summary = getDateString(saveStateInfo)
+                this.summary = getSaveStateDescription(saveStateInfo)
                 this.isEnabled = saveStateInfo.exists
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
                 this.icon = BitmapDrawable(screen.context.resources, bitmap)
@@ -196,7 +196,7 @@ object GameMenuHelper {
         activity?.finish()
     }
 
-    private fun getDateString(saveInfo: SaveInfo): String {
+    fun getSaveStateDescription(saveInfo: SaveInfo): String {
         val formatter = SimpleDateFormat.getDateTimeInstance()
         return if (saveInfo.exists) {
             formatter.format(saveInfo.date)

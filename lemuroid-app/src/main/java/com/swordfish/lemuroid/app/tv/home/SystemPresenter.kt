@@ -22,6 +22,7 @@ class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) :
         viewHolder.mCardView.mainImageView.setImageResource(systemInfo.metaSystem.imageResId)
         viewHolder.mCardView.mainImageView.setPadding(cardPadding, cardPadding, cardPadding, cardPadding)
         viewHolder.mCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
+        viewHolder.mCardView.mainImageView.setBackgroundColor(systemInfo.metaSystem.color())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {

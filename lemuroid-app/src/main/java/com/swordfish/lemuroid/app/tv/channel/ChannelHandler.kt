@@ -14,7 +14,7 @@ import androidx.tvprovider.media.tv.ChannelLogoUtils
 import androidx.tvprovider.media.tv.PreviewProgram
 import androidx.tvprovider.media.tv.TvContractCompat
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
+import com.swordfish.lemuroid.app.shared.covers.CoverUtils
 import com.swordfish.lemuroid.app.shared.deeplink.DeepLink
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -146,7 +146,7 @@ class ChannelHandler(
         if (game.coverFrontUrl != null && thumbnailExists) {
             preview.setPosterArtUri(Uri.parse(game.coverFrontUrl))
         } else {
-            preview.setPosterArtUri(Uri.parse(CoverLoader.getFallbackRemoteUrl(game)))
+            preview.setPosterArtUri(Uri.parse(CoverUtils.getFallbackRemoteUrl(game)))
         }
 
         return preview.build()

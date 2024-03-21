@@ -13,16 +13,16 @@ import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import java.io.File
-import java.text.SimpleDateFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
+import java.text.SimpleDateFormat
 
 class SaveSyncManagerImpl(
     private val appContext: Context,
     private val directoriesManager: DirectoriesManager
-) : SaveSyncManager {
+) : SaveSyncManager() {
     private var lastSyncTimestamp: Long by SharedPreferencesDelegates.LongDelegate(
         SharedPreferencesHelper.getSharedPreferences(appContext),
         appContext.getString(R.string.pref_key_last_save_sync),

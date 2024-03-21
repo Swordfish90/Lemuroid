@@ -4,9 +4,9 @@ import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
 import dagger.Lazy
-import java.security.InvalidParameterException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.security.InvalidParameterException
 
 class CoreVariablesManager(private val sharedPreferences: Lazy<SharedPreferences>) {
 

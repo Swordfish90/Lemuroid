@@ -9,8 +9,8 @@ import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDatabase
 import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
-import java.util.Locale
 import timber.log.Timber
+import java.util.Locale
 
 class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     GameMetadataProvider {

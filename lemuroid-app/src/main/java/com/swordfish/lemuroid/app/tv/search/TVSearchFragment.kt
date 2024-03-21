@@ -14,16 +14,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
+import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
@@ -32,8 +31,6 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
     lateinit var retrogradeDb: RetrogradeDatabase
     @Inject
     lateinit var gameInteractor: GameInteractor
-    @Inject
-    lateinit var coverLoader: CoverLoader
 
     private val searchDebounce = MutableStateFlow("")
 
@@ -80,8 +77,7 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
 
         val gamePresenter = GamePresenter(
             resources.getDimensionPixelSize(R.dimen.card_size),
-            gameInteractor,
-            coverLoader
+            gameInteractor
         )
 
         val gamesAdapter = PagingDataAdapter(gamePresenter, Game.DIFF_CALLBACK)

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.InputDevice
 import android.view.KeyEvent
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -18,7 +17,7 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
     val extras = parseExtras(intent)
 
     fun getTitle(context: Context): String {
-        val keyName = GamePadPreferencesHelper.displayNameForKeyCode(extras.retroKey)
+        val keyName = InputKey(extras.retroKey).displayName()
         return context.getString(R.string.gamepad_binding_update_title, keyName)
     }
 

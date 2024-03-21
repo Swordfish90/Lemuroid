@@ -4,12 +4,12 @@ import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
 import android.view.PixelCopy
 import com.swordfish.lemuroid.common.kotlin.runCatchingWithRetry
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.roundToInt
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 suspend fun GLSurfaceView.takeScreenshot(
     maxResolution: Int,

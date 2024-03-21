@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.tv.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.swordfish.lemuroid.common.paging.buildFlowPaging
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -24,6 +25,6 @@ class TVSearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewMode
     @OptIn(ExperimentalCoroutinesApi::class)
     val searchResults: Flow<PagingData<Game>> = queryString
         .flatMapLatest {
-            buildFlowPaging(20) { retrogradeDb.gameSearchDao().search(it) }
+            buildFlowPaging(20, viewModelScope) { retrogradeDb.gameSearchDao().search(it) }
         }
 }

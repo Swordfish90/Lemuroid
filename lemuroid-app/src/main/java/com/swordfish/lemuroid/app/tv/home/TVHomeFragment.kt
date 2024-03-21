@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
@@ -45,9 +44,6 @@ class TVHomeFragment : BrowseSupportFragment() {
     lateinit var gameInteractor: GameInteractor
 
     @Inject
-    lateinit var coverLoader: CoverLoader
-
-    @Inject
     lateinit var saveSyncManager: SaveSyncManager
 
     override fun onAttach(context: Context) {
@@ -64,11 +60,9 @@ class TVHomeFragment : BrowseSupportFragment() {
             when (item) {
                 is Game -> gameInteractor.onGamePlay(item)
                 is MetaSystemInfo -> {
-                    val systemIds = item.metaSystem.systemIDs
-                        .map { it.dbname }
-                        .toTypedArray()
-
-                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(systemIds)
+                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(
+                        item.metaSystem.name
+                    )
                     findNavController().navigate(action)
                 }
                 is TVSetting -> {
@@ -170,30 +164,31 @@ class TVHomeFragment : BrowseSupportFragment() {
     ) {
         val result = ArrayObjectAdapter(ListRowPresenter())
         val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
-        val cardPadding = resources.getDimensionPixelSize(R.dimen.card_padding)
+        val systemsCardPadding = resources.getDimensionPixelSize(R.dimen.systems_card_padding)
+        val settingsCardPadding = resources.getDimensionPixelSize(R.dimen.settings_card_padding)
 
         if (includeFavorites) {
             val presenter = ClassPresenterSelector()
-            presenter.addClassPresenter(Game::class.java, GamePresenter(cardSize, gameInteractor, coverLoader))
-            presenter.addClassPresenter(TVSetting::class.java, SettingPresenter(cardSize, cardPadding))
+            presenter.addClassPresenter(Game::class.java, GamePresenter(cardSize, gameInteractor))
+            presenter.addClassPresenter(TVSetting::class.java, SettingPresenter(cardSize, settingsCardPadding))
             val favouritesItems = ArrayObjectAdapter(presenter)
             val title = resources.getString(R.string.tv_home_section_favorites)
             result.add(ListRow(HeaderItem(FAVORITES_ADAPTER, title), favouritesItems))
         }
 
         if (includeRecentGames) {
-            val recentItems = ArrayObjectAdapter(GamePresenter(cardSize, gameInteractor, coverLoader))
+            val recentItems = ArrayObjectAdapter(GamePresenter(cardSize, gameInteractor))
             val title = resources.getString(R.string.tv_home_section_recents)
             result.add(ListRow(HeaderItem(RECENTS_ADAPTER, title), recentItems))
         }
 
         if (includeSystems) {
-            val systemItems = ArrayObjectAdapter(SystemPresenter(cardSize, cardPadding))
+            val systemItems = ArrayObjectAdapter(SystemPresenter(cardSize, systemsCardPadding))
             val title = resources.getString(R.string.tv_home_section_systems)
             result.add(ListRow(HeaderItem(SYSTEM_ADAPTER, title), systemItems))
         }
 
-        val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, cardPadding))
+        val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, settingsCardPadding))
         settingsItems.setItems(
             buildSettingsRowItems(indexInProgress = false, scanInProgress = false),
             LEANBACK_SETTING_DIFF_CALLBACK

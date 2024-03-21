@@ -10,7 +10,6 @@ import androidx.preference.SwitchPreference
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 import com.swordfish.lemuroid.lib.library.CoreID
-import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 
 class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
@@ -93,27 +92,12 @@ class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
             summary = context.getString(R.string.settings_save_sync_include_states_description)
             dependency = keySyncEnabled(context)
             isEnabled = saveSyncManager.isConfigured() && !syncInProgress
-            entries = CoreID.values().map { getDisplayNameForCore(context, it) }.toTypedArray()
+            entries = CoreID.values()
+                .map { saveSyncManager.getDisplayNameForCore(context, it) }
+                .toTypedArray()
             entryValues = CoreID.values().map { it.coreName }.toTypedArray()
             isIconSpaceReserved = false
         }
-    }
-
-    private fun getDisplayNameForCore(context: Context, coreID: CoreID): String {
-        val systems = GameSystem.findSystemForCore(coreID)
-        val systemHasMultipleCores = systems.any { it.systemCoreConfigs.size > 1 }
-
-        val chunks = mutableListOf<String>().apply {
-            add(systems.joinToString(", ") { context.getString(it.shortTitleResId) })
-
-            if (systemHasMultipleCores) {
-                add(coreID.coreDisplayName)
-            }
-
-            add(saveSyncManager.computeStatesSpace(coreID))
-        }
-
-        return chunks.joinToString(" - ")
     }
 
     fun onPreferenceTreeClick(activity: Activity?, preference: Preference): Boolean {

@@ -12,10 +12,6 @@ import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
-import com.swordfish.lemuroid.app.shared.settings.AdvancedSettingsPreferences
-import com.swordfish.lemuroid.app.shared.settings.BiosPreferences
-import com.swordfish.lemuroid.app.shared.settings.CoresSelectionPreferences
-import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.coroutines.launchOnState
@@ -23,11 +19,11 @@ import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 

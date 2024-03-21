@@ -29,7 +29,6 @@ import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
@@ -37,6 +36,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import timber.log.Timber
+import java.io.File
 
 class CoreUpdaterImpl(
     private val directoriesManager: DirectoriesManager,
@@ -45,7 +45,7 @@ class CoreUpdaterImpl(
 
     // This is the last tagged versions of cores.
     companion object {
-        private const val CORES_VERSION = "1.15"
+        private const val CORES_VERSION = "1.16"
     }
 
     private val baseUri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")

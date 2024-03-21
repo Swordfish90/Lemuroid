@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.swordfish.touchinput.controller.R
 import dagger.Lazy
-import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 class TouchControllerSettingsManager(
     private val context: Context,

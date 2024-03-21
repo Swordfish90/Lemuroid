@@ -6,9 +6,9 @@ import com.swordfish.lemuroid.common.kotlin.toStringCRC32
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.StorageFile
 import com.swordfish.lemuroid.lib.storage.scanner.SerialScanner
+import timber.log.Timber
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
-import timber.log.Timber
 
 object DocumentFileParser {
 

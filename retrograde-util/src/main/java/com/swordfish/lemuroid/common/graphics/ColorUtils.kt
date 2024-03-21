@@ -13,4 +13,12 @@ object ColorUtils {
         val hue = abs(seed.hashCode() % paletteSize) / paletteSize.toFloat() * 360f
         return ColorUtils.HSLToColor(floatArrayOf(hue, saturation, lightness))
     }
+
+    fun color(
+        hue: Float,
+        saturation: Float = 0.5f,
+        lightness: Float = 0.5f
+    ): Int {
+        return ColorUtils.HSLToColor(floatArrayOf(hue * 360f, saturation, lightness))
+    }
 }

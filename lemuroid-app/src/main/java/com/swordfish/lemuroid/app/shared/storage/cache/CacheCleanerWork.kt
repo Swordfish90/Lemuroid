@@ -16,8 +16,8 @@ import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class CacheCleanerWork(
     context: Context,

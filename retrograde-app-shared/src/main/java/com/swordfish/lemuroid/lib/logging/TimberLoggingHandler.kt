@@ -1,10 +1,10 @@
 package com.swordfish.lemuroid.lib.logging
 
 import android.util.Log
+import timber.log.Timber
 import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.LogRecord
-import timber.log.Timber
 
 class TimberLoggingHandler : Handler() {
     @Throws(SecurityException::class)

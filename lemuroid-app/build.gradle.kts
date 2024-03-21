@@ -103,6 +103,14 @@ android {
         disable += setOf("MissingTranslation", "ExtraTranslation", "EnsureInitializerMetadata")
     }
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.6"
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -121,21 +129,21 @@ dependencies {
 
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)
+    implementation(deps.libs.androidx.navigation.compose)
     implementation(deps.libs.material)
-    implementation(deps.libs.coil)
+    implementation(deps.libs.coil.coil)
+    implementation(deps.libs.coil.coilCompose)
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.activity.activity)
     implementation(deps.libs.androidx.activity.activityKtx)
+    implementation(deps.libs.androidx.activity.compose)
     implementation(deps.libs.androidx.appcompat.appcompat)
     implementation(deps.libs.androidx.preferences.preferencesKtx)
     implementation(deps.libs.arch.work.runtime)
     implementation(deps.libs.arch.work.runtimeKtx)
     implementation(deps.libs.androidx.lifecycle.commonJava8)
     implementation(deps.libs.androidx.lifecycle.reactiveStreams)
-    implementation(deps.libs.epoxy.expoxy)
-    implementation(deps.libs.epoxy.paging)
 
-    kapt(deps.libs.epoxy.processor)
     kapt(deps.libs.androidx.lifecycle.processor)
 
     implementation(deps.libs.androidx.leanback.leanback)
@@ -163,6 +171,22 @@ dependencies {
     implementation(deps.libs.startup)
     implementation(deps.libs.kotlin.serialization)
     implementation(deps.libs.kotlin.serializationJson)
+
+    implementation(platform(deps.libs.androidx.compose.composeBom))
+    implementation(deps.libs.androidx.compose.material3)
+    debugImplementation(deps.libs.androidx.compose.tooling)
+    implementation(deps.libs.androidx.compose.toolingPreview)
+    implementation(deps.libs.androidx.compose.extendedIcons)
+    implementation(deps.libs.androidx.compose.liveData)
+    implementation(deps.libs.androidx.compose.accompanist.systemUiController)
+    implementation(deps.libs.androidx.compose.accompanist.navigationMaterial)
+    implementation(deps.libs.androidx.compose.accompanist.drawablePainter)
+    implementation(deps.libs.androidx.paging.compose)
+    implementation(deps.libs.androidx.lifecycle.viewModelCompose)
+    implementation(deps.libs.composeHtmlText)
+
+    implementation(deps.libs.composeSettings.uiM3)
+    implementation(deps.libs.composeSettings.preferences)
 
     implementation(deps.libs.libretrodroid)
 

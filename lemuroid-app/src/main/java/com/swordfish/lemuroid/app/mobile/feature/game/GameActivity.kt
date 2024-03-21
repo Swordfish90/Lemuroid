@@ -61,8 +61,6 @@ import com.swordfish.touchinput.radial.LemuroidTouchConfigs
 import com.swordfish.touchinput.radial.LemuroidTouchOverlayThemes
 import com.swordfish.touchinput.radial.sensors.TiltSensor
 import dagger.Lazy
-import javax.inject.Inject
-import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -83,6 +81,8 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class GameActivity : BaseGameActivity() {
     @Inject
