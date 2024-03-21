@@ -92,8 +92,16 @@ class NotificationsManager(private val applicationContext: Context) {
         val builder =
             NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_lemuroid_tiny)
-                .setContentTitle(applicationContext.getString(R.string.installing_core_notification_title))
-                .setContentText(applicationContext.getString(R.string.installing_core_notification_message))
+                .setContentTitle(
+                    applicationContext.getString(
+                        com.swordfish.lemuroid.ext.R.string.installing_core_notification_title,
+                    ),
+                )
+                .setContentText(
+                    applicationContext.getString(
+                        com.swordfish.lemuroid.ext.R.string.installing_core_notification_message,
+                    ),
+                )
                 .setProgress(100, 0, true)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .addAction(

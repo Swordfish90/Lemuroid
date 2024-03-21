@@ -31,7 +31,7 @@ class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) :
         val cardView = ImageCardView(parent.context)
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
-        (cardView.findViewById<View>(R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
+        (cardView.findViewById<View>(androidx.leanback.R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
         return ViewHolder(cardView)
     }
 

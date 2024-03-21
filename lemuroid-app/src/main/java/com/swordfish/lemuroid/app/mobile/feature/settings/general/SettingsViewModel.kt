@@ -47,7 +47,7 @@ class SettingsViewModel(
     val directoryScanInProgress = PendingOperationsMonitor(context).isDirectoryScanInProgress()
 
     val uiState =
-        sharedPreferences.getString(context.getString(R.string.pref_key_extenral_folder))
+        sharedPreferences.getString(context.getString(com.swordfish.lemuroid.lib.R.string.pref_key_extenral_folder))
             .asFlow()
             .flowOn(Dispatchers.IO)
             .stateIn(viewModelScope, SharingStarted.Lazily, "")

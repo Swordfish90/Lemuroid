@@ -40,7 +40,7 @@ class TVFavoritesFragment : VerticalGridSupportFragment() {
         val factory = TVFavoritesViewModel.Factory(retrogradeDb)
         val favoritesViewModel = ViewModelProvider(this, factory)[TVFavoritesViewModel::class.java]
 
-        val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
+        val cardSize = resources.getDimensionPixelSize(com.swordfish.lemuroid.lib.R.dimen.card_size)
         val pagingAdapter =
             PagingDataAdapter(
                 GamePresenter(cardSize, gameInteractor),

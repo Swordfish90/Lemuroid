@@ -12,6 +12,7 @@ android {
         versionName = "1.15.0" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
+    flavorDimensions += listOf("opensource", "cores")
 
     if (usePlayDynamicFeatures()) {
         println("Building Google Play version. Bundling dynamic features.")
@@ -42,7 +43,6 @@ android {
     }
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
-    flavorDimensions("opensource", "cores")
 
     productFlavors {
 
@@ -65,11 +65,15 @@ android {
         }
     }
 
-    // Stripping created some issues with some libretro cores such as ppsspp
     packagingOptions {
-        doNotStrip("*/*/*_libretro_android.so")
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/library_release.kotlin_module")
+        jniLibs {
+            // Stripping created some issues with some libretro cores such as ppsspp
+            keepDebugSymbols += setOf("*/*/*_libretro_android.so")
+            useLegacyPackaging = true
+        }
+        resources {
+            excludes += setOf("META-INF/DEPENDENCIES", "META-INF/library_release.kotlin_module")
+        }
     }
 
     signingConfigs {
@@ -105,6 +109,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -112,8 +117,9 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+    namespace = "com.swordfish.lemuroid"
 }
 
 dependencies {

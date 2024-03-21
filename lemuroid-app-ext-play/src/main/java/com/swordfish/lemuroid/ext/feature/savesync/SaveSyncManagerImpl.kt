@@ -25,7 +25,7 @@ class SaveSyncManagerImpl(
 ) : SaveSyncManager() {
     private var lastSyncTimestamp: Long by SharedPreferencesDelegates.LongDelegate(
         SharedPreferencesHelper.getSharedPreferences(appContext),
-        appContext.getString(R.string.pref_key_last_save_sync),
+        appContext.getString(com.swordfish.lemuroid.lib.R.string.pref_key_last_save_sync),
         0L,
     )
 

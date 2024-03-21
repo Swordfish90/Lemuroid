@@ -171,9 +171,15 @@ class TVHomeFragment : BrowseSupportFragment() {
         includeSystems: Boolean,
     ) {
         val result = ArrayObjectAdapter(ListRowPresenter())
-        val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
-        val systemsCardPadding = resources.getDimensionPixelSize(R.dimen.systems_card_padding)
-        val settingsCardPadding = resources.getDimensionPixelSize(R.dimen.settings_card_padding)
+        val cardSize = resources.getDimensionPixelSize(com.swordfish.lemuroid.lib.R.dimen.card_size)
+        val systemsCardPadding =
+            resources.getDimensionPixelSize(
+                com.swordfish.lemuroid.lib.R.dimen.systems_card_padding,
+            )
+        val settingsCardPadding =
+            resources.getDimensionPixelSize(
+                com.swordfish.lemuroid.lib.R.dimen.settings_card_padding,
+            )
 
         if (includeFavorites) {
             val presenter = ClassPresenterSelector()

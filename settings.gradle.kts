@@ -1,4 +1,4 @@
-@Suppress("ktlint:standard:max-line-length")
+@file:Suppress("ktlint")
 
 include(
     ":retrograde-util",
