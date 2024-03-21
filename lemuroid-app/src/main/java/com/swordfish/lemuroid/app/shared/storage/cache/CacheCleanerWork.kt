@@ -21,9 +21,8 @@ import javax.inject.Inject
 
 class CacheCleanerWork(
     context: Context,
-    workerParams: WorkerParameters
+    workerParams: WorkerParameters,
 ) : CoroutineWorker(context, workerParams) {
-
     @Inject
     lateinit var settingsManager: SettingsManager
 
@@ -65,7 +64,7 @@ class CacheCleanerWork(
             WorkManager.getInstance(applicationContext).enqueueUniqueWork(
                 UNIQUE_WORK_ID,
                 ExistingWorkPolicy.APPEND,
-                OneTimeWorkRequestBuilder<CacheCleanerWork>().build()
+                OneTimeWorkRequestBuilder<CacheCleanerWork>().build(),
             )
         }
 
@@ -81,7 +80,7 @@ class CacheCleanerWork(
                 ExistingWorkPolicy.APPEND,
                 OneTimeWorkRequestBuilder<CacheCleanerWork>()
                     .setInputData(inputData)
-                    .build()
+                    .build(),
             )
         }
     }

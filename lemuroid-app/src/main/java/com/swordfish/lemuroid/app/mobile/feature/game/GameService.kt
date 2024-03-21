@@ -12,7 +12,6 @@ import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class GameService : Service() {
-
     private val binder = NotificationServiceBinder()
 
     inner class NotificationServiceBinder : Binder() {
@@ -23,7 +22,7 @@ class GameService : Service() {
 
     class GameServiceController(
         private val intent: Intent,
-        private val connection: ServiceConnection
+        private val connection: ServiceConnection,
     ) {
         fun stopService(context: Context) {
             context.unbindService(connection)
@@ -35,10 +34,15 @@ class GameService : Service() {
         return binder
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val game = kotlin.runCatching {
-            intent.extras?.getSerializable(EXTRA_GAME) as Game?
-        }.getOrNull()
+    override fun onStartCommand(
+        intent: Intent,
+        flags: Int,
+        startId: Int,
+    ): Int {
+        val game =
+            kotlin.runCatching {
+                intent.extras?.getSerializable(EXTRA_GAME) as Game?
+            }.getOrNull()
 
         displayNotification(game)
         return START_NOT_STICKY
@@ -60,20 +64,28 @@ class GameService : Service() {
     companion object {
         private val EXTRA_GAME = "EXTRA_GAME"
 
-        fun startService(context: Context, game: Game): GameServiceController {
-            val intent = Intent(context, GameService::class.java).apply {
-                putExtra(EXTRA_GAME, game)
-            }
-
-            val connection = object : ServiceConnection {
-                override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                    // Do nothing
+        fun startService(
+            context: Context,
+            game: Game,
+        ): GameServiceController {
+            val intent =
+                Intent(context, GameService::class.java).apply {
+                    putExtra(EXTRA_GAME, game)
                 }
 
-                override fun onServiceDisconnected(name: ComponentName?) {
-                    // Do nothing
+            val connection =
+                object : ServiceConnection {
+                    override fun onServiceConnected(
+                        name: ComponentName?,
+                        service: IBinder?,
+                    ) {
+                        // Do nothing
+                    }
+
+                    override fun onServiceDisconnected(name: ComponentName?) {
+                        // Do nothing
+                    }
                 }
-            }
 
             context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
             context.startService(intent)
@@ -83,7 +95,7 @@ class GameService : Service() {
 
         fun stopService(
             context: Context,
-            serviceController: GameServiceController?
+            serviceController: GameServiceController?,
         ): GameServiceController? {
             serviceController?.stopService(context)
             return null

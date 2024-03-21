@@ -22,46 +22,51 @@ fun LemuroidGameListRow(
     game: Game,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
-    onFavoriteToggle: (Boolean) -> Unit
+    onFavoriteToggle: (Boolean) -> Unit,
 ) {
     Surface(
-        modifier = modifier
-            .wrapContentHeight()
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            ),
+        modifier =
+            modifier
+                .wrapContentHeight()
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                ),
     ) {
         Row(
-            modifier = Modifier.padding(
-                start = 16.dp,
-                top = 8.dp,
-                bottom = 8.dp,
-                end = 16.dp
-            )
+            modifier =
+                Modifier.padding(
+                    start = 16.dp,
+                    top = 8.dp,
+                    bottom = 8.dp,
+                    end = 16.dp,
+                ),
         ) {
             LemuroidSmallGameImage(
-                modifier = Modifier
-                    .width(40.dp)
-                    .height(40.dp)
-                    .align(Alignment.CenterVertically),
-                game = game
+                modifier =
+                    Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                        .align(Alignment.CenterVertically),
+                game = game,
             )
             LemuroidGameTexts(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp),
-                game = game
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .padding(start = 8.dp),
+                game = game,
             )
             Box(
-                modifier = Modifier
-                    .width(40.dp)
-                    .height(40.dp)
-                    .align(Alignment.CenterVertically)
+                modifier =
+                    Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                        .align(Alignment.CenterVertically),
             ) {
                 FavoriteToggle(
                     isToggled = game.isFavorite,
-                    onFavoriteToggle = onFavoriteToggle
+                    onFavoriteToggle = onFavoriteToggle,
                 )
             }
         }

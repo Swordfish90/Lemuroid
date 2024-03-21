@@ -15,12 +15,12 @@ import androidx.navigation.NavHostController
 @Composable
 fun MainNavigationBar(
     currentRoute: MainRoute?,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     AnimatedVisibility(
         visible = currentRoute?.showBottomNavigation != false,
         enter = slideInVertically { it },
-        exit = slideOutVertically { it }
+        exit = slideOutVertically { it },
     ) {
         NavigationBar {
             MainNavigationRoutes.values().forEach { destination ->
@@ -31,7 +31,7 @@ fun MainNavigationBar(
                     icon = {
                         Icon(
                             imageVector = iconDrawable,
-                            contentDescription = stringResource(destination.titleId)
+                            contentDescription = stringResource(destination.titleId),
                         )
                     },
                     label = { Text(stringResource(destination.titleId)) },
@@ -50,7 +50,7 @@ fun MainNavigationBar(
                             // Restore state when reselecting a previously selected item
                             restoreState = false
                         }
-                    }
+                    },
                 )
             }
         }

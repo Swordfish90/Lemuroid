@@ -11,7 +11,7 @@ import kotlin.time.times
 
 fun CoroutineScope.safeLaunch(
     context: CoroutineContext = EmptyCoroutineContext,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ) {
     launch(context) {
         try {
@@ -22,7 +22,11 @@ fun CoroutineScope.safeLaunch(
     }
 }
 
-suspend fun <T> retry(attempts: Int, delay: Duration, block: suspend (Int) -> T): Result<T> {
+suspend fun <T> retry(
+    attempts: Int,
+    delay: Duration,
+    block: suspend (Int) -> T,
+): Result<T> {
     assert(attempts >= 1)
 
     val lastAttempt = attempts - 1

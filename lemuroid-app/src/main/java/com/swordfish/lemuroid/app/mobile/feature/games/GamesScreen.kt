@@ -17,7 +17,7 @@ fun GamesScreen(
     viewModel: GamesViewModel,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
-    onGameFavoriteToggle: (Game, Boolean) -> Unit
+    onGameFavoriteToggle: (Game, Boolean) -> Unit,
 ) {
     val games = viewModel.games.collectAsLazyPagingItems()
 
@@ -27,7 +27,7 @@ fun GamesScreen(
     }
 
     LazyColumn(
-        contentPadding = padding.asPaddingValues()
+        contentPadding = padding.asPaddingValues(),
     ) {
         items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
             val game = games[index] ?: return@items
@@ -37,7 +37,7 @@ fun GamesScreen(
                 game = game,
                 onClick = { onGameClick(game) },
                 onLongClick = { onGameLongClick(game) },
-                onFavoriteToggle = { isFavorite -> onGameFavoriteToggle(game, isFavorite) }
+                onFavoriteToggle = { isFavorite -> onGameFavoriteToggle(game, isFavorite) },
             )
         }
     }

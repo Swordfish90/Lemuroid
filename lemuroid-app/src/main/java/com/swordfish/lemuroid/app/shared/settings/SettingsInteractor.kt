@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 
 class SettingsInteractor(
     private val context: Context,
-    private val directoriesManager: DirectoriesManager
+    private val directoriesManager: DirectoriesManager,
 ) {
     fun changeLocalStorageFolder() {
         StorageFrameworkPickerLauncher.pickFolder(context)

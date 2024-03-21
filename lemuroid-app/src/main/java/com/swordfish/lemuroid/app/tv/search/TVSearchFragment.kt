@@ -26,9 +26,9 @@ import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
-
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
+
     @Inject
     lateinit var gameInteractor: GameInteractor
 
@@ -42,7 +42,10 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         super.onAttach(context)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         setOnItemViewClickedListener { _, item, _, _ ->
@@ -75,17 +78,18 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
     private fun createAdapter(): ArrayObjectAdapter {
         val searchAdapter = ArrayObjectAdapter(ListRowPresenter())
 
-        val gamePresenter = GamePresenter(
-            resources.getDimensionPixelSize(R.dimen.card_size),
-            gameInteractor
-        )
+        val gamePresenter =
+            GamePresenter(
+                resources.getDimensionPixelSize(R.dimen.card_size),
+                gameInteractor,
+            )
 
         val gamesAdapter = PagingDataAdapter(gamePresenter, Game.DIFF_CALLBACK)
         searchAdapter.add(
             ListRow(
                 HeaderItem(resources.getString(R.string.tv_search_results)),
-                gamesAdapter
-            )
+                gamesAdapter,
+            ),
         )
 
         return searchAdapter

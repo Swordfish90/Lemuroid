@@ -23,7 +23,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         context: Context,
         preferenceScreen: PreferenceScreen,
         gamePads: List<InputDevice>,
-        enabledGamePads: List<InputDevice>
+        enabledGamePads: List<InputDevice>,
     ) {
         val distinctGamePads = getDistinctGamePads(gamePads)
         val distinctEnabledGamePads = getDistinctGamePads(enabledGamePads)
@@ -42,7 +42,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
 
     suspend fun refreshGamePadsPreferencesToScreen(
         preferenceScreen: PreferenceScreen,
-        enabledGamePads: List<InputDevice>
+        enabledGamePads: List<InputDevice>,
     ) {
         getDistinctGamePads(enabledGamePads)
             .forEach { refreshPreferenceCategoryForInputDevice(preferenceScreen, it) }
@@ -55,10 +55,11 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
     private fun addEnabledCategory(
         context: Context,
         preferenceScreen: PreferenceScreen,
-        gamePads: List<InputDevice>
+        gamePads: List<InputDevice>,
     ) {
-        if (gamePads.isEmpty())
+        if (gamePads.isEmpty()) {
             return
+        }
 
         val categoryTitle = context.resources.getString(R.string.settings_gamepad_category_enabled)
         val category = createCategory(context, preferenceScreen, categoryTitle)
@@ -69,7 +70,10 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         }
     }
 
-    private fun addExtraCategory(context: Context, preferenceScreen: PreferenceScreen) {
+    private fun addExtraCategory(
+        context: Context,
+        preferenceScreen: PreferenceScreen,
+    ) {
         val categoryTitle = context.resources.getString(R.string.settings_gamepad_category_general)
         val category = createCategory(context, preferenceScreen, categoryTitle)
 
@@ -84,7 +88,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
     private fun createCategory(
         context: Context,
         preferenceScreen: PreferenceScreen,
-        title: String
+        title: String,
     ): PreferenceCategory {
         val category = PreferenceCategory(context)
         preferenceScreen.addPreference(category)
@@ -96,7 +100,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
     private fun addPreferenceCategoryForInputDevice(
         context: Context,
         preferenceScreen: PreferenceScreen,
-        inputDevice: InputDevice
+        inputDevice: InputDevice,
     ) {
         val category = createCategory(context, preferenceScreen, inputDevice.name)
         preferenceScreen.addPreference(category)
@@ -114,26 +118,28 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
 
     private suspend fun refreshPreferenceCategoryForInputDevice(
         preferenceScreen: PreferenceScreen,
-        inputDevice: InputDevice
+        inputDevice: InputDevice,
     ) {
-        val inverseBindings: Map<RetroKey, InputKey> = inputDeviceManager.getCurrentBindings(inputDevice)
-            .map { it.value to it.key }
-            .toMap()
+        val inverseBindings: Map<RetroKey, InputKey> =
+            inputDeviceManager.getCurrentBindings(inputDevice)
+                .map { it.value to it.key }
+                .toMap()
 
         inputDevice.getLemuroidInputDevice().getCustomizableKeys()
             .forEach { retroKey ->
                 val boundKey = inverseBindings[retroKey]?.keyCode ?: KeyEvent.KEYCODE_UNKNOWN
                 val preferenceKey = InputDeviceManager.computeKeyBindingRetroKeyPreference(inputDevice, retroKey)
                 val preference = preferenceScreen.findPreference<Preference>(preferenceKey)
-                preference?.summaryProvider = Preference.SummaryProvider<Preference> {
-                    InputKey(boundKey).displayName()
-                }
+                preference?.summaryProvider =
+                    Preference.SummaryProvider<Preference> {
+                        InputKey(boundKey).displayName()
+                    }
             }
     }
 
     private fun buildGamePadEnabledPreference(
         context: Context,
-        inputDevice: InputDevice
+        inputDevice: InputDevice,
     ): Preference {
         val preference = SwitchPreference(context)
         preference.key = InputDeviceManager.computeEnabledGamePadPreference(inputDevice)
@@ -146,7 +152,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
     private fun buildKeyBindingPreference(
         context: Context,
         inputDevice: InputDevice,
-        retroKey: RetroKey
+        retroKey: RetroKey,
     ): Preference {
         val preference = Preference(context)
         preference.key = InputDeviceManager.computeKeyBindingRetroKeyPreference(inputDevice, retroKey)
@@ -159,17 +165,22 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         return preference
     }
 
-    private fun displayChangeDialog(context: Context, inputDevice: InputDevice, retroKey: Int) {
-        val intent = Intent(context, TVGamePadBindingActivity::class.java).apply {
-            putExtra(InputBindingUpdater.REQUEST_DEVICE, inputDevice)
-            putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey)
-        }
+    private fun displayChangeDialog(
+        context: Context,
+        inputDevice: InputDevice,
+        retroKey: Int,
+    ) {
+        val intent =
+            Intent(context, TVGamePadBindingActivity::class.java).apply {
+                putExtra(InputBindingUpdater.REQUEST_DEVICE, inputDevice)
+                putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey)
+            }
         context.startActivity(intent)
     }
 
     private fun buildGameMenuShortcutPreference(
         context: Context,
-        inputDevice: InputDevice
+        inputDevice: InputDevice,
     ): Preference? {
         val default = GameMenuShortcut.getDefault(inputDevice) ?: return null
         val supportedShortcuts = inputDevice.getLemuroidInputDevice().getSupportedShortcuts()

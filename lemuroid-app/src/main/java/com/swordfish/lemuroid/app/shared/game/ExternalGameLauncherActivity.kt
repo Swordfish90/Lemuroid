@@ -38,7 +38,6 @@ import javax.inject.Inject
  */
 @OptIn(FlowPreview::class)
 class ExternalGameLauncherActivity : ImmersiveActivity() {
-
     @Inject
     lateinit var retrogradeDatabase: RetrogradeDatabase
 
@@ -58,7 +57,6 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
-
             val gameId = intent.data?.pathSegments?.let { it[it.size - 1].toInt() }!!
 
             lifecycleScope.launch {
@@ -88,8 +86,9 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
     private suspend fun loadGame(gameId: Int) {
         waitPendingOperations()
 
-        val game = retrogradeDatabase.gameDao().selectById(gameId)
-            ?: throw IllegalArgumentException("Game not found: $gameId")
+        val game =
+            retrogradeDatabase.gameDao().selectById(gameId)
+                ?: throw IllegalArgumentException("Game not found: $gameId")
 
         delay(animationDuration().toLong())
 
@@ -97,7 +96,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
             this,
             game,
             true,
-            TVHelper.isTV(applicationContext)
+            TVHelper.isTV(applicationContext),
         )
     }
 
@@ -116,7 +115,11 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
         return PendingOperationsMonitor(applicationContext).anyOperationInProgress()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {

@@ -24,59 +24,82 @@ import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.lib.library.CoreID
 
 @Composable
-fun SaveSyncSettingsScreen(padding: MergedPaddingValues, viewModel: SaveSyncSettingsViewModel) {
+fun SaveSyncSettingsScreen(
+    padding: MergedPaddingValues,
+    viewModel: SaveSyncSettingsViewModel,
+) {
     val context = LocalContext.current.applicationContext
 
-    val saveSyncState = viewModel.uiState
-        .collectAsState()
-        .value
+    val saveSyncState =
+        viewModel.uiState
+            .collectAsState()
+            .value
 
-    val isSyncInProgress = viewModel.indexingInProgress
-        .observeAsState(true)
-        .value
+    val isSyncInProgress =
+        viewModel.indexingInProgress
+            .observeAsState(true)
+            .value
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(padding.asPaddingValues()),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(padding.asPaddingValues()),
     ) {
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_save_sync_configure, saveSyncState.provider)) },
             subtitle = { Text(text = saveSyncState.configInfo) },
             enabled = !isSyncInProgress,
-            onClick = { context.startActivity(Intent(context, saveSyncState.settingsActivity)) }
+            onClick = { context.startActivity(Intent(context, saveSyncState.settingsActivity)) },
         )
         LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_save_sync_enable, default = false),
             title = { Text(text = stringResource(id = R.string.settings_save_sync_include_saves)) },
-            subtitle = { Text(text = stringResource(id = R.string.settings_save_sync_include_saves_description, saveSyncState.savesSpace)) },
-            enabled = saveSyncState.isConfigured && !isSyncInProgress
+            subtitle = {
+                Text(
+                    text =
+                        stringResource(
+                            id = R.string.settings_save_sync_include_saves_description,
+                            saveSyncState.savesSpace,
+                        ),
+                )
+            },
+            enabled = saveSyncState.isConfigured && !isSyncInProgress,
         )
         LemuroidSettingsListMultiSelect(
-            state = indexSetPreferenceState(
-                stringResource(R.string.pref_key_save_sync_cores),
-                emptySet(),
-                CoreID.values().map { it.coreName }
-            ),
+            state =
+                indexSetPreferenceState(
+                    stringResource(R.string.pref_key_save_sync_cores),
+                    emptySet(),
+                    CoreID.values().map { it.coreName },
+                ),
             title = { Text(text = stringResource(id = R.string.settings_save_sync_include_states)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_save_sync_include_states_description)) },
             useSelectedValuesAsSubtitle = false,
             items = saveSyncState.coreNames,
             enabled = saveSyncState.isConfigured && !isSyncInProgress,
-            confirmButton = stringResource(id = R.string.ok)
+            confirmButton = stringResource(id = R.string.ok),
         )
         LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_save_sync_auto, default = false),
             title = { Text(text = stringResource(id = R.string.settings_save_sync_enable_auto)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_save_sync_enable_auto_description)) },
-            enabled = saveSyncState.isConfigured && !isSyncInProgress
+            enabled = saveSyncState.isConfigured && !isSyncInProgress,
         )
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_save_sync_refresh)) },
-            subtitle = { Text(text = stringResource(id = R.string.settings_save_sync_refresh_description, saveSyncState.lastSyncInfo)) },
+            subtitle = {
+                Text(
+                    text =
+                        stringResource(
+                            id = R.string.settings_save_sync_refresh_description,
+                            saveSyncState.lastSyncInfo,
+                        ),
+                )
+            },
             enabled = saveSyncState.isConfigured && !isSyncInProgress,
-            onClick = { SaveSyncWork.enqueueManualWork(context) }
+            onClick = { SaveSyncWork.enqueueManualWork(context) },
         )
     }
 }

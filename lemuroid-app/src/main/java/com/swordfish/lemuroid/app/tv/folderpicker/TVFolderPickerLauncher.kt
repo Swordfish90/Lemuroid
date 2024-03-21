@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 
 class TVFolderPickerLauncher : ImmersiveActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,7 +18,11 @@ class TVFolderPickerLauncher : ImmersiveActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        resultData: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, resultData)
 
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {

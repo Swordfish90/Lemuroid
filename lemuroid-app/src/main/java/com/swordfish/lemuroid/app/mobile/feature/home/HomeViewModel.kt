@@ -27,9 +27,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     appContext: Context,
     retrogradeDb: RetrogradeDatabase,
-    private val settingsInteractor: SettingsInteractor
+    private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
-
     companion object {
         const val CAROUSEL_MAX_ITEMS = 10
         const val DEBOUNCE_TIME = 100L
@@ -38,7 +37,7 @@ class HomeViewModel(
     class Factory(
         val appContext: Context,
         val retrogradeDb: RetrogradeDatabase,
-        val settingsInteractor: SettingsInteractor
+        val settingsInteractor: SettingsInteractor,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return HomeViewModel(appContext, retrogradeDb, settingsInteractor) as T
@@ -74,10 +73,11 @@ class HomeViewModel(
             return true
         }
 
-        val permissionResult = ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.POST_NOTIFICATIONS
-        )
+        val permissionResult =
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS,
+            )
 
         return permissionResult == PackageManager.PERMISSION_GRANTED
     }
@@ -87,7 +87,7 @@ class HomeViewModel(
         recentGames: List<Game>,
         discoveryGames: List<Game>,
         indexInProgress: Boolean,
-        notificationsEnabled: Boolean
+        notificationsEnabled: Boolean,
     ): UIState {
         val noGames = recentGames.isEmpty() && favoritesGames.isEmpty() && discoveryGames.isEmpty()
         return UIState(
@@ -96,20 +96,21 @@ class HomeViewModel(
             discoveryGames,
             indexInProgress,
             !notificationsEnabled,
-            noGames
+            noGames,
         )
     }
 
     init {
         viewModelScope.launch {
-            val uiStatesFlow = combine(
-                favoritesGames(retrogradeDb),
-                recentGames(retrogradeDb),
-                discoveryGames(retrogradeDb),
-                indexingInProgress(appContext),
-                notificationsEnabledState,
-                ::buildViewState
-            )
+            val uiStatesFlow =
+                combine(
+                    favoritesGames(retrogradeDb),
+                    recentGames(retrogradeDb),
+                    discoveryGames(retrogradeDb),
+                    indexingInProgress(appContext),
+                    notificationsEnabledState,
+                    ::buildViewState,
+                )
 
             uiStatesFlow
                 .debounce(DEBOUNCE_TIME)

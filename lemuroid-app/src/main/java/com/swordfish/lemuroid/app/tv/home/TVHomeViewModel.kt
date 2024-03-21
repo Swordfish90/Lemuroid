@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : ViewModel() {
-
     companion object {
         const val CAROUSEL_MAX_ITEMS = 10
         const val DEBOUNCE_TIME = 100L
@@ -31,7 +30,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
 
     class Factory(
         val retrogradeDb: RetrogradeDatabase,
-        val appContext: Context
+        val appContext: Context,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return TVHomeViewModel(retrogradeDb, appContext) as T
@@ -43,7 +42,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         val recentGames: List<Game> = emptyList(),
         val metaSystems: List<MetaSystemInfo> = emptyList(),
         val indexInProgress: Boolean = false,
-        val scanInProgress: Boolean = false
+        val scanInProgress: Boolean = false,
     )
 
     private val viewStates = MutableStateFlow(HomeViewState())
@@ -57,27 +56,28 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         recentGames: List<Game>,
         metaSystems: List<MetaSystemInfo>,
         indexInProgress: Boolean,
-        scanInProgress: Boolean
+        scanInProgress: Boolean,
     ): HomeViewState {
         return HomeViewState(
             favoritesGames,
             recentGames,
             metaSystems,
             indexInProgress,
-            scanInProgress
+            scanInProgress,
         )
     }
 
     init {
         viewModelScope.launch {
-            val uiStatesFlow = combine(
-                favoriteGames(retrogradeDb),
-                recentGames(retrogradeDb),
-                availableSystems(retrogradeDb, appContext),
-                indexingInProgress(appContext),
-                directoryScanInProgress(appContext),
-                ::buildViewState
-            )
+            val uiStatesFlow =
+                combine(
+                    favoriteGames(retrogradeDb),
+                    recentGames(retrogradeDb),
+                    availableSystems(retrogradeDb, appContext),
+                    indexingInProgress(appContext),
+                    directoryScanInProgress(appContext),
+                    ::buildViewState,
+                )
 
             uiStatesFlow
                 .debounce(DEBOUNCE_TIME)
@@ -94,7 +94,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
 
     private fun availableSystems(
         retrogradeDb: RetrogradeDatabase,
-        appContext: Context
+        appContext: Context,
     ) = retrogradeDb.gameDao()
         .selectSystemsWithCount()
         .map { systemCounts ->

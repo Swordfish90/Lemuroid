@@ -27,15 +27,17 @@ import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 fun AdvancedSettingsScreen(
     padding: MergedPaddingValues,
     viewModel: AdvancedSettingsViewModel,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
-    val uiState = viewModel.uiState
-        .collectAsState()
-        .value
+    val uiState =
+        viewModel.uiState
+            .collectAsState()
+            .value
 
     LemuroidElevatedSettingsPage(
-        modifier = Modifier
-            .padding(padding.asPaddingValues())
+        modifier =
+            Modifier
+                .padding(padding.asPaddingValues()),
     ) {
         if (uiState?.cache == null) {
             return@LemuroidElevatedSettingsPage
@@ -49,7 +51,7 @@ fun AdvancedSettingsScreen(
 @Composable
 private fun InputSettings() {
     LemuroidElevatedSettingsGroup(
-        title = { Text(text = stringResource(id = R.string.settings_category_input)) }
+        title = { Text(text = stringResource(id = R.string.settings_category_input)) },
     ) {
         val rumbleEnabled = booleanPreferenceState(R.string.pref_key_enable_rumble, false)
         LemuroidSettingsSwitch(
@@ -64,12 +66,13 @@ private fun InputSettings() {
             subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_device_rumble)) },
         )
         SettingsSlider(
-            state = fractionPreferenceState(
-                key = stringResource(id = R.string.pref_key_tilt_sensitivity_index),
-                denominator = 10,
-                defaultNumerator = 6
-            ),
-            title = { Text(text = stringResource(R.string.settings_title_tilt_sensitivity)) }
+            state =
+                fractionPreferenceState(
+                    key = stringResource(id = R.string.pref_key_tilt_sensitivity_index),
+                    denominator = 10,
+                    defaultNumerator = 6,
+                ),
+            title = { Text(text = stringResource(R.string.settings_title_tilt_sensitivity)) },
         )
     }
 }
@@ -78,12 +81,12 @@ private fun InputSettings() {
 private fun GeneralSettings(
     cacheState: AdvancedSettingsViewModel.CacheState,
     viewModel: AdvancedSettingsViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
     val context = LocalContext.current.applicationContext
 
     LemuroidElevatedSettingsGroup(
-        title = { Text(text = stringResource(id = R.string.settings_category_general)) }
+        title = { Text(text = stringResource(id = R.string.settings_category_general)) },
     ) {
         LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_low_latency_audio, false),
@@ -93,11 +96,12 @@ private fun GeneralSettings(
         LemuroidSettingsList(
             title = { Text(text = stringResource(R.string.settings_title_maximum_cache_usage)) },
             items = cacheState.displayNames,
-            state = indexPreferenceState(
-                R.string.pref_key_max_cache_size,
-                cacheState.default,
-                cacheState.values
-            )
+            state =
+                indexPreferenceState(
+                    R.string.pref_key_max_cache_size,
+                    cacheState.default,
+                    cacheState.values,
+                ),
         )
         LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_allow_direct_game_load, true),
@@ -122,7 +126,7 @@ private fun GeneralSettings(
                     }
                     .setNegativeButton(R.string.cancel) { _, _ -> }
                     .show()
-            }
+            },
         )
     }
 }

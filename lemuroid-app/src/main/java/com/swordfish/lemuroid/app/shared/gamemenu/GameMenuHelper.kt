@@ -21,8 +21,10 @@ import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
 object GameMenuHelper {
-
-    fun setupAudioOption(screen: PreferenceScreen, audioEnabled: Boolean) {
+    fun setupAudioOption(
+        screen: PreferenceScreen,
+        audioEnabled: Boolean,
+    ) {
         val preference = screen.findPreference<SwitchPreference>(MUTE)
         preference?.isChecked = !audioEnabled
     }
@@ -30,7 +32,7 @@ object GameMenuHelper {
     fun setupFastForwardOption(
         screen: PreferenceScreen,
         fastForwardEnabled: Boolean,
-        fastForwardSupported: Boolean
+        fastForwardSupported: Boolean,
     ) {
         val preference = screen.findPreference<SwitchPreference>(FAST_FORWARD)
         preference?.isChecked = fastForwardEnabled
@@ -39,7 +41,7 @@ object GameMenuHelper {
 
     fun setupSaveOption(
         screen: PreferenceScreen,
-        systemCoreConfig: SystemCoreConfig
+        systemCoreConfig: SystemCoreConfig,
     ) {
         val savesOption = screen.findPreference<Preference>(SECTION_SAVE_GAME)
         savesOption?.isVisible = systemCoreConfig.statesSupported
@@ -50,42 +52,46 @@ object GameMenuHelper {
 
     fun setupSettingsOption(
         screen: PreferenceScreen,
-        systemCoreConfig: SystemCoreConfig
+        systemCoreConfig: SystemCoreConfig,
     ) {
-        screen.findPreference<Preference>(SECTION_CORE_OPTIONS)?.isVisible = sequenceOf(
-            systemCoreConfig.exposedSettings.isNotEmpty(),
-            systemCoreConfig.exposedAdvancedSettings.isNotEmpty(),
-            systemCoreConfig.controllerConfigs.values.any { it.size > 1 }
-        ).any { it }
+        screen.findPreference<Preference>(SECTION_CORE_OPTIONS)?.isVisible =
+            sequenceOf(
+                systemCoreConfig.exposedSettings.isNotEmpty(),
+                systemCoreConfig.exposedAdvancedSettings.isNotEmpty(),
+                systemCoreConfig.controllerConfigs.values.any { it.size > 1 },
+            ).any { it }
     }
 
     fun setupChangeDiskOption(
         activity: Activity?,
         screen: PreferenceScreen,
         currentDisk: Int,
-        numDisks: Int
+        numDisks: Int,
     ) {
         val changeDiskPreference = screen.findPreference<ListPreference>(SECTION_CHANGE_DISK)
         changeDiskPreference?.isVisible = numDisks > 1
 
-        changeDiskPreference?.entries = (0 until numDisks)
-            .map {
-                screen.context.resources.getString(
-                    R.string.game_menu_change_disk_disk,
-                    (it + 1).toString()
-                )
-            }
-            .toTypedArray()
+        changeDiskPreference?.entries =
+            (0 until numDisks)
+                .map {
+                    screen.context.resources.getString(
+                        R.string.game_menu_change_disk_disk,
+                        (it + 1).toString(),
+                    )
+                }
+                .toTypedArray()
 
-        changeDiskPreference?.entryValues = (0 until numDisks)
-            .map { it.toString() }
-            .toTypedArray()
+        changeDiskPreference?.entryValues =
+            (0 until numDisks)
+                .map { it.toString() }
+                .toTypedArray()
 
         changeDiskPreference?.setValueIndex(currentDisk)
         changeDiskPreference?.setOnPreferenceChangeListener { _, newValue ->
-            val resultIntent = Intent().apply {
-                putExtra(GameMenuContract.RESULT_CHANGE_DISK, (newValue as String).toInt())
-            }
+            val resultIntent =
+                Intent().apply {
+                    putExtra(GameMenuContract.RESULT_CHANGE_DISK, (newValue as String).toInt())
+                }
             setResultAndFinish(activity, resultIntent)
             true
         }
@@ -95,7 +101,7 @@ object GameMenuHelper {
         screen: PreferenceScreen,
         index: Int,
         saveStateInfo: SaveInfo,
-        bitmap: Bitmap?
+        bitmap: Bitmap?,
     ) {
         screen.addPreference(
             Preference(screen.context).apply {
@@ -103,7 +109,7 @@ object GameMenuHelper {
                 this.summary = getSaveStateDescription(saveStateInfo)
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
                 this.icon = BitmapDrawable(screen.context.resources, bitmap)
-            }
+            },
         )
     }
 
@@ -111,7 +117,7 @@ object GameMenuHelper {
         screen: PreferenceScreen,
         index: Int,
         saveStateInfo: SaveInfo,
-        bitmap: Bitmap?
+        bitmap: Bitmap?,
     ) {
         screen.addPreference(
             Preference(screen.context, null).apply {
@@ -120,11 +126,14 @@ object GameMenuHelper {
                 this.isEnabled = saveStateInfo.exists
                 this.title = context.getString(R.string.game_menu_state, (index + 1).toString())
                 this.icon = BitmapDrawable(screen.context.resources, bitmap)
-            }
+            },
         )
     }
 
-    fun onPreferenceTreeClicked(activity: Activity?, preference: Preference?): Boolean {
+    fun onPreferenceTreeClicked(
+        activity: Activity?,
+        preference: Preference?,
+    ): Boolean {
         return when (preference?.key) {
             "pref_game_save_0" -> handleSaveAction(activity, 0)
             "pref_game_save_1" -> handleSaveAction(activity, 1)
@@ -136,38 +145,43 @@ object GameMenuHelper {
             "pref_game_load_3" -> handleLoadAction(activity, 3)
             "pref_game_mute" -> {
                 val currentValue = (preference as SwitchPreference).isChecked
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_ENABLE_AUDIO, !currentValue)
-                }
+                val resultIntent =
+                    Intent().apply {
+                        putExtra(GameMenuContract.RESULT_ENABLE_AUDIO, !currentValue)
+                    }
                 setResultAndFinish(activity, resultIntent)
                 true
             }
             "pref_game_fast_forward" -> {
                 val currentValue = (preference as SwitchPreference).isChecked
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, currentValue)
-                }
+                val resultIntent =
+                    Intent().apply {
+                        putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, currentValue)
+                    }
                 setResultAndFinish(activity, resultIntent)
                 true
             }
             "pref_game_reset" -> {
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_RESET, true)
-                }
+                val resultIntent =
+                    Intent().apply {
+                        putExtra(GameMenuContract.RESULT_RESET, true)
+                    }
                 setResultAndFinish(activity, resultIntent)
                 true
             }
             "pref_game_quit" -> {
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_QUIT, true)
-                }
+                val resultIntent =
+                    Intent().apply {
+                        putExtra(GameMenuContract.RESULT_QUIT, true)
+                    }
                 setResultAndFinish(activity, resultIntent)
                 true
             }
             "pref_game_edit_touch_controls" -> {
-                val resultIntent = Intent().apply {
-                    putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true)
-                }
+                val resultIntent =
+                    Intent().apply {
+                        putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true)
+                    }
                 setResultAndFinish(activity, resultIntent)
                 true
             }
@@ -175,23 +189,34 @@ object GameMenuHelper {
         }
     }
 
-    private fun handleSaveAction(activity: Activity?, index: Int): Boolean {
-        val resultIntent = Intent().apply {
-            putExtra(GameMenuContract.RESULT_SAVE, index)
-        }
+    private fun handleSaveAction(
+        activity: Activity?,
+        index: Int,
+    ): Boolean {
+        val resultIntent =
+            Intent().apply {
+                putExtra(GameMenuContract.RESULT_SAVE, index)
+            }
         setResultAndFinish(activity, resultIntent)
         return true
     }
 
-    private fun handleLoadAction(activity: Activity?, index: Int): Boolean {
-        val resultIntent = Intent().apply {
-            putExtra(GameMenuContract.RESULT_LOAD, index)
-        }
+    private fun handleLoadAction(
+        activity: Activity?,
+        index: Int,
+    ): Boolean {
+        val resultIntent =
+            Intent().apply {
+                putExtra(GameMenuContract.RESULT_LOAD, index)
+            }
         setResultAndFinish(activity, resultIntent)
         return true
     }
 
-    private fun setResultAndFinish(activity: Activity?, resultIntent: Intent) {
+    private fun setResultAndFinish(
+        activity: Activity?,
+        resultIntent: Intent,
+    ) {
         activity?.setResult(Activity.RESULT_OK, resultIntent)
         activity?.finish()
     }
@@ -211,7 +236,7 @@ object GameMenuHelper {
         saveStateInfo: SaveInfo,
         game: Game,
         coreID: CoreID,
-        index: Int
+        index: Int,
     ): Bitmap? {
         if (!saveStateInfo.exists) return null
         val imageSize = GraphicsUtils.convertDpToPixel(96f, context).roundToInt()

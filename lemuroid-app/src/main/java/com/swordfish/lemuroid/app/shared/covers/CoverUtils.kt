@@ -15,8 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 
 object CoverUtils {
-
-    fun loadCover(game: Game, imageView: ImageView?) {
+    fun loadCover(
+        game: Game,
+        imageView: ImageView?,
+    ) {
         if (imageView == null) return
 
         imageView.load(game.coverFrontUrl, imageView.context.imageLoader) {
@@ -32,7 +34,7 @@ object CoverUtils {
                 DiskCache.Builder()
                     .directory(applicationContext.cacheDir.resolve("image_cache"))
                     .maxSizePercent(0.20)
-                    .build()
+                    .build(),
             )
             .memoryCache {
                 MemoryCache.Builder(applicationContext)
@@ -52,8 +54,7 @@ object CoverUtils {
             .build()
     }
 
-    fun getFallbackDrawable(game: Game) =
-        TextDrawable(computeTitle(game), computeColor(game))
+    fun getFallbackDrawable(game: Game) = TextDrawable(computeTitle(game), computeColor(game))
 
     fun getFallbackRemoteUrl(game: Game): String {
         val color = Integer.toHexString(computeColor(game)).substring(2)
@@ -62,8 +63,9 @@ object CoverUtils {
     }
 
     private fun computeTitle(game: Game): String {
-        val sanitizedName = game.title
-            .replace(Regex("\\(.*\\)"), "")
+        val sanitizedName =
+            game.title
+                .replace(Regex("\\(.*\\)"), "")
 
         return sanitizedName.asSequence()
             .filter { it.isDigit() or it.isUpperCase() or (it == '&') }

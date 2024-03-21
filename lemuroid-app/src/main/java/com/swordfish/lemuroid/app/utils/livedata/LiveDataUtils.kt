@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 
 fun <T, K, S> LiveData<T>.combineLatest(
     other: LiveData<K>,
-    combine: (data1: T, data2: K) -> S
+    combine: (data1: T, data2: K) -> S,
 ): LiveData<S> {
     return CombinedLiveData(this, other, combine)
 }

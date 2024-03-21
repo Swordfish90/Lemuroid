@@ -20,12 +20,11 @@ import kotlinx.coroutines.launch
 
 class InputDevicesSettingsViewModel(
     appContext: Context,
-    private val inputDeviceManager: InputDeviceManager
+    private val inputDeviceManager: InputDeviceManager,
 ) : ViewModel() {
-
     class Factory(
         val appContext: Context,
-        val inputDeviceManager: InputDeviceManager
+        val inputDeviceManager: InputDeviceManager,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return InputDevicesSettingsViewModel(appContext, inputDeviceManager) as T
@@ -41,7 +40,7 @@ class InputDevicesSettingsViewModel(
     data class BindingsView(
         val keys: Map<RetroKey, InputKey> = emptyMap(),
         val menuShortcuts: List<String> = emptyList(),
-        val defaultShortcut: String? = null
+        val defaultShortcut: String? = null,
     )
 
     data class State(
@@ -49,8 +48,9 @@ class InputDevicesSettingsViewModel(
         val bindings: Map<InputDevice, BindingsView> = emptyMap(),
     )
 
-    val uiState = initializeState(appContext)
-        .stateIn(viewModelScope, started = SharingStarted.Lazily, State())
+    val uiState =
+        initializeState(appContext)
+            .stateIn(viewModelScope, started = SharingStarted.Lazily, State())
 
     fun resetAllBindings() {
         viewModelScope.launch {
@@ -69,11 +69,14 @@ class InputDevicesSettingsViewModel(
             .map { devices -> devices.map { buildDeviceView(context, it) } }
     }
 
-    private fun buildDeviceView(context: Context, device: InputDevice): DeviceView {
+    private fun buildDeviceView(
+        context: Context,
+        device: InputDevice,
+    ): DeviceView {
         return DeviceView(
             device.name,
             InputDeviceManager.computeEnabledGamePadPreference(device),
-            device.getLemuroidInputDevice().isEnabledByDefault(context)
+            device.getLemuroidInputDevice().isEnabledByDefault(context),
         )
     }
 
@@ -85,9 +88,10 @@ class InputDevicesSettingsViewModel(
             devices.associateWith { device ->
                 val keys = allBindings(device).reverseLookup()
                 val defaultShortcut = GameMenuShortcut.getDefault(device)?.name
-                val shortcuts = device.getLemuroidInputDevice()
-                    .getSupportedShortcuts()
-                    .map { it.name }
+                val shortcuts =
+                    device.getLemuroidInputDevice()
+                        .getSupportedShortcuts()
+                        .map { it.name }
 
                 BindingsView(keys, shortcuts, defaultShortcut)
             }

@@ -14,10 +14,14 @@ import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLin
 import com.swordfish.lemuroid.lib.bios.Bios
 
 @Composable
-fun BiosScreen(padding: MergedPaddingValues, viewModel: BiosSettingsViewModel) {
-    val uiState = viewModel.uiState
-        .collectAsState()
-        .value
+fun BiosScreen(
+    padding: MergedPaddingValues,
+    viewModel: BiosSettingsViewModel,
+) {
+    val uiState =
+        viewModel.uiState
+            .collectAsState()
+            .value
 
     LemuroidElevatedSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
         if (uiState.detected.isNotEmpty()) {
@@ -32,7 +36,7 @@ fun BiosScreen(padding: MergedPaddingValues, viewModel: BiosSettingsViewModel) {
 @Composable
 private fun DetectedEntries(detected: List<Bios>) {
     LemuroidElevatedSettingsGroup(
-        title = { Text(text = stringResource(id = R.string.settings_bios_category_detected)) }
+        title = { Text(text = stringResource(id = R.string.settings_bios_category_detected)) },
     ) {
         detected.forEach {
             BiosEntry(it, true)
@@ -43,7 +47,7 @@ private fun DetectedEntries(detected: List<Bios>) {
 @Composable
 private fun SupportedEntries(supported: List<Bios>) {
     LemuroidElevatedSettingsGroup(
-        title = { Text(text = stringResource(id = R.string.settings_bios_category_not_detected)) }
+        title = { Text(text = stringResource(id = R.string.settings_bios_category_not_detected)) },
     ) {
         supported.forEach {
             BiosEntry(it, false)
@@ -52,11 +56,14 @@ private fun SupportedEntries(supported: List<Bios>) {
 }
 
 @Composable
-fun BiosEntry(bios: Bios, detected: Boolean) {
+fun BiosEntry(
+    bios: Bios,
+    detected: Boolean,
+) {
     LemuroidSettingsMenuLink(
         title = { Text(text = bios.description) },
         subtitle = { Text(text = bios.displayName()) },
         enabled = detected,
-        onClick = { }
+        onClick = { },
     )
 }

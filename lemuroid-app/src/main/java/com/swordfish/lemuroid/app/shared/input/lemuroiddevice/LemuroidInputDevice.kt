@@ -7,7 +7,6 @@ import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
 
 interface LemuroidInputDevice {
-
     fun getCustomizableKeys(): List<RetroKey>
 
     fun getDefaultBindings(): Map<InputKey, RetroKey>

@@ -21,7 +21,6 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class TVGamesFragment : VerticalGridSupportFragment() {
-
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
 
@@ -36,17 +35,21 @@ class TVGamesFragment : VerticalGridSupportFragment() {
         setGridPresenter(gridPresenter)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         val factory = TVGamesViewModel.Factory(retrogradeDb)
         val gamesViewModel = ViewModelProvider(this, factory)[TVGamesViewModel::class.java]
 
         val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
-        val pagingAdapter = PagingDataAdapter(
-            GamePresenter(cardSize, gameInteractor),
-            Game.DIFF_CALLBACK
-        )
+        val pagingAdapter =
+            PagingDataAdapter(
+                GamePresenter(cardSize, gameInteractor),
+                Game.DIFF_CALLBACK,
+            )
 
         this.adapter = pagingAdapter
 
@@ -59,11 +62,12 @@ class TVGamesFragment : VerticalGridSupportFragment() {
             gamesViewModel.metaSystemId.value = MetaSystemID.valueOf(it)
         }
 
-        onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
-            when (item) {
-                is Game -> gameInteractor.onGamePlay(item)
+        onItemViewClickedListener =
+            OnItemViewClickedListener { _, item, _, _ ->
+                when (item) {
+                    is Game -> gameInteractor.onGamePlay(item)
+                }
             }
-        }
     }
 
     override fun onAttach(context: Context) {

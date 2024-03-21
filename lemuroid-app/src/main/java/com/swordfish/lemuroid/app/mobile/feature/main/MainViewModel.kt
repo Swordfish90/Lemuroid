@@ -9,10 +9,9 @@ import com.swordfish.lemuroid.app.utils.livedata.CombinedLiveData
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 
 class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncManager) : ViewModel() {
-
     class Factory(
         private val appContext: Context,
-        private val saveSyncManager: SaveSyncManager
+        private val saveSyncManager: SaveSyncManager,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MainViewModel(appContext, saveSyncManager) as T
@@ -21,25 +20,30 @@ class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncMa
 
     data class UiState(
         val operationInProgress: Boolean = false,
-        val saveSyncEnabled: Boolean = false
+        val saveSyncEnabled: Boolean = false,
     )
 
     private val saveSyncEnabledLiveData = MutableLiveData(false)
-    private val operationInProgressLiveData = PendingOperationsMonitor(appContext)
-        .anyOperationInProgress()
+    private val operationInProgressLiveData =
+        PendingOperationsMonitor(appContext)
+            .anyOperationInProgress()
 
-    val state = CombinedLiveData(
-        saveSyncEnabledLiveData,
-        operationInProgressLiveData,
-        this::buildState
-    )
+    val state =
+        CombinedLiveData(
+            saveSyncEnabledLiveData,
+            operationInProgressLiveData,
+            this::buildState,
+        )
 
     fun update() {
         val current = saveSyncManager.isSupported() && saveSyncManager.isConfigured()
         saveSyncEnabledLiveData.postValue(current)
     }
 
-    private fun buildState(saveSyncEnabled: Boolean, operationInProgress: Boolean): UiState {
+    private fun buildState(
+        saveSyncEnabled: Boolean,
+        operationInProgress: Boolean,
+    ): UiState {
         return UiState(operationInProgress, saveSyncEnabled)
     }
 }

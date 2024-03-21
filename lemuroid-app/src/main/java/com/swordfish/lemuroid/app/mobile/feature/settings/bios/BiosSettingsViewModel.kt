@@ -10,17 +10,19 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class BiosSettingsViewModel(private val biosManager: BiosManager) : ViewModel() {
-
-    class Factory @Inject constructor(private val biosManager: BiosManager) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return BiosSettingsViewModel(biosManager) as T
+    class Factory
+        @Inject
+        constructor(private val biosManager: BiosManager) : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return BiosSettingsViewModel(biosManager) as T
+            }
         }
-    }
 
-    val uiState = flow { emit(biosManager.getBiosInfoAsync()) }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            BiosManager.BiosInfo(emptyList(), emptyList())
-        )
+    val uiState =
+        flow { emit(biosManager.getBiosInfoAsync()) }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                BiosManager.BiosInfo(emptyList(), emptyList()),
+            )
 }

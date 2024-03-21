@@ -3,8 +3,11 @@ package com.swordfish.lemuroid.app.mobile.feature.tilt
 import com.swordfish.radialgamepad.library.RadialGamePad
 
 class TwoButtonsTiltTracker(private val leftId: Int, private val rightId: Int) : TiltTracker {
-
-    override fun updateTracking(xTilt: Float, yTilt: Float, pads: Sequence<RadialGamePad>) {
+    override fun updateTracking(
+        xTilt: Float,
+        yTilt: Float,
+        pads: Sequence<RadialGamePad>,
+    ) {
         val leftPressed = xTilt < 0.25
         val rightPressed = xTilt > 0.75
         val bothPressed = !leftPressed && !rightPressed && yTilt < 0.1

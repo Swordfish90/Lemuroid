@@ -41,12 +41,11 @@ import dagger.android.support.AndroidSupportInjectionModule
         ChannelUpdateWork.Module::class,
         CoreUpdateWork.Module::class,
         CacheCleanerWork.Module::class,
-        LemuroidTVApplicationModule::class
-    ]
+        LemuroidTVApplicationModule::class,
+    ],
 )
 @PerApp
 interface LemuroidApplicationComponent : AndroidInjector<LemuroidApplication> {
-
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<LemuroidApplication>()
 }

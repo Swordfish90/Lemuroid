@@ -7,9 +7,8 @@ import androidx.lifecycle.Observer
 class CombinedLiveData<T, K, S>(
     source1: LiveData<T>,
     source2: LiveData<K>,
-    private val combine: (data1: T, data2: K) -> S
+    private val combine: (data1: T, data2: K) -> S,
 ) : MediatorLiveData<S>() {
-
     private var data1: T? = null
     private var data2: K? = null
 
@@ -32,7 +31,10 @@ class CombinedLiveData<T, K, S>(
         }
     }
 
-    override fun <S : Any?> addSource(source: LiveData<S>, onChanged: Observer<in S>) {
+    override fun <S : Any?> addSource(
+        source: LiveData<S>,
+        onChanged: Observer<in S>,
+    ) {
         throw UnsupportedOperationException()
     }
 

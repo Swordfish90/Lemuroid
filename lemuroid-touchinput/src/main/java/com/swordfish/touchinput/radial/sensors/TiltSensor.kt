@@ -17,7 +17,6 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 class TiltSensor(context: Context) : SensorEventListener {
-
     private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val primaryDisplay = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
 
@@ -79,7 +78,10 @@ class TiltSensor(context: Context) : SensorEventListener {
         return sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR) != null
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    override fun onAccuracyChanged(
+        sensor: Sensor?,
+        accuracy: Int,
+    ) {
         // Do nothing here
     }
 
@@ -104,10 +106,11 @@ class TiltSensor(context: Context) : SensorEventListener {
             restOrientationsBuffer.add(floatArrayOf(yRotation, xRotation))
         } else if (restOrientation == null && restOrientationsBuffer.size >= MEASUREMENTS_BUFFER_SIZE) {
             val restMeasurements = restOrientationsBuffer.drop(1)
-            restOrientation = floatArrayOf(
-                restMeasurements.map { it[0] }.sum() / restMeasurements.size,
-                restMeasurements.map { it[1] }.sum() / restMeasurements.size
-            )
+            restOrientation =
+                floatArrayOf(
+                    restMeasurements.map { it[0] }.sum() / restMeasurements.size,
+                    restMeasurements.map { it[1] }.sum() / restMeasurements.size,
+                )
         } else {
             val x = clamp(applyDeadZone(yRotation - restOrientation!![0], deadZone) / (maxRotation))
             val y = clamp(-applyDeadZone(xRotation - restOrientation!![1], deadZone) / (maxRotation))
@@ -125,12 +128,22 @@ class TiltSensor(context: Context) : SensorEventListener {
         }
     }
 
-    private fun chooseBestAngleRepresentation(x: Float, offset: Float): Float {
+    private fun chooseBestAngleRepresentation(
+        x: Float,
+        offset: Float,
+    ): Float {
         return sequenceOf(x, x + offset, x - offset).minByOrNull { abs(it) }!!
     }
 
-    private fun applyDeadZone(x: Float, deadzone: Float): Float {
-        return if (abs(x) < deadzone) { 0f } else x - sign(x) * deadzone
+    private fun applyDeadZone(
+        x: Float,
+        deadzone: Float,
+    ): Float {
+        return if (abs(x) < deadzone) {
+            0f
+        } else {
+            x - sign(x) * deadzone
+        }
     }
 
     private fun clamp(x: Float): Float {

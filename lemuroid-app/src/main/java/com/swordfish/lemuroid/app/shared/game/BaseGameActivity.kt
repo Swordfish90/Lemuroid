@@ -102,7 +102,6 @@ import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class, DelicateCoroutinesApi::class)
 abstract class BaseGameActivity : ImmersiveActivity() {
-
     protected lateinit var game: Game
     private lateinit var system: GameSystem
     protected lateinit var systemCoreConfig: SystemCoreConfig
@@ -306,7 +305,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return controllerConfigsState
     }
 
-    /* On some cores unserialize fails with no reason. So we need to try multiple times. */
+    // On some cores unserialize fails with no reason. So we need to try multiple times.
     private suspend fun restoreAutoSaveAsync(saveState: SaveState) {
         // PPSSPP and Mupen64 initialize some state while rendering the first frame, so we have to wait before restoring
         // the autosave. Do not change thread here. Stick to the GL one to avoid issues with PPSSPP.
@@ -335,36 +334,39 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         forceLegacyHdMode: Boolean,
         screenFilter: String,
         lowLatencyAudio: Boolean,
-        enableRumble: Boolean
+        enableRumble: Boolean,
     ): GLRetroView {
-        val data = GLRetroViewData(this).apply {
-            coreFilePath = gameData.coreLibrary
+        val data =
+            GLRetroViewData(this).apply {
+                coreFilePath = gameData.coreLibrary
 
-            when (val gameFiles = gameData.gameFiles) {
-                is RomFiles.Standard -> {
-                    gameFilePath = gameFiles.files.first().absolutePath
+                when (val gameFiles = gameData.gameFiles) {
+                    is RomFiles.Standard -> {
+                        gameFilePath = gameFiles.files.first().absolutePath
+                    }
+                    is RomFiles.Virtual -> {
+                        gameVirtualFiles =
+                            gameFiles.files
+                                .map { VirtualFile(it.filePath, it.fd) }
+                    }
                 }
-                is RomFiles.Virtual -> {
-                    gameVirtualFiles = gameFiles.files
-                        .map { VirtualFile(it.filePath, it.fd) }
-                }
+
+                systemDirectory = gameData.systemDirectory.absolutePath
+                savesDirectory = gameData.savesDirectory.absolutePath
+                variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
+                saveRAMState = gameData.saveRAMData
+                shader =
+                    ShaderChooser.getShaderForSystem(
+                        applicationContext,
+                        hdMode,
+                        forceLegacyHdMode,
+                        screenFilter,
+                        system,
+                    )
+                preferLowLatencyAudio = lowLatencyAudio
+                rumbleEventsEnabled = enableRumble
+                skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
             }
-
-            systemDirectory = gameData.systemDirectory.absolutePath
-            savesDirectory = gameData.savesDirectory.absolutePath
-            variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
-            saveRAMState = gameData.saveRAMData
-            shader = ShaderChooser.getShaderForSystem(
-                applicationContext,
-                hdMode,
-                forceLegacyHdMode,
-                screenFilter,
-                system
-            )
-            preferLowLatencyAudio = lowLatencyAudio
-            rumbleEventsEnabled = enableRumble
-            skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
-        }
 
         val retroGameView = GLRetroView(this, data)
         retroGameView.isFocusable = false
@@ -373,10 +375,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         lifecycle.addObserver(retroGameView)
         gameContainerLayout.addView(retroGameView)
 
-        val layoutParams = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
-        )
+        val layoutParams =
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+            )
         layoutParams.gravity = Gravity.CENTER
         retroGameView.layoutParams = layoutParams
 
@@ -418,33 +421,34 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun findControllerId(
         supported: Array<Controller>,
-        controllerConfig: ControllerConfig
+        controllerConfig: ControllerConfig,
     ): Int? {
         return supported
             .firstOrNull { controller ->
                 sequenceOf(
                     controller.id == controllerConfig.libretroId,
-                    controller.description == controllerConfig.libretroDescriptor
+                    controller.description == controllerConfig.libretroDescriptor,
                 ).any { it }
             }?.id
     }
 
     private fun handleRetroViewError(errorCode: Int) {
         Timber.e("Error in GLRetroView $errorCode")
-        val gameLoaderError = when (errorCode) {
-            GLRetroView.ERROR_GL_NOT_COMPATIBLE -> GameLoaderError.GLIncompatible
-            GLRetroView.ERROR_LOAD_GAME -> GameLoaderError.LoadGame
-            GLRetroView.ERROR_LOAD_LIBRARY -> GameLoaderError.LoadCore
-            GLRetroView.ERROR_SERIALIZATION -> GameLoaderError.Saves
-            else -> GameLoaderError.Generic
-        }
+        val gameLoaderError =
+            when (errorCode) {
+                GLRetroView.ERROR_GL_NOT_COMPATIBLE -> GameLoaderError.GLIncompatible
+                GLRetroView.ERROR_LOAD_GAME -> GameLoaderError.LoadGame
+                GLRetroView.ERROR_LOAD_LIBRARY -> GameLoaderError.LoadCore
+                GLRetroView.ERROR_SERIALIZATION -> GameLoaderError.Saves
+                else -> GameLoaderError.Generic
+            }
         retroGameView = null
         displayGameLoaderError(gameLoaderError, systemCoreConfig)
     }
 
     private fun transformExposedSetting(
         exposedSetting: ExposedSetting,
-        coreOptions: List<CoreOption>
+        coreOptions: List<CoreOption>,
     ): LemuroidCoreOption? {
         return coreOptions
             .firstOrNull { it.variable.key == exposedSetting.key }
@@ -456,23 +460,26 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         val coreOptions = getCoreOptions()
 
-        val options = systemCoreConfig.exposedSettings
-            .mapNotNull { transformExposedSetting(it, coreOptions) }
+        val options =
+            systemCoreConfig.exposedSettings
+                .mapNotNull { transformExposedSetting(it, coreOptions) }
 
-        val advancedOptions = systemCoreConfig.exposedAdvancedSettings
-            .mapNotNull { transformExposedSetting(it, coreOptions) }
+        val advancedOptions =
+            systemCoreConfig.exposedAdvancedSettings
+                .mapNotNull { transformExposedSetting(it, coreOptions) }
 
-        val intent = Intent(this, getDialogClass()).apply {
-            this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
-            this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
-            this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
-            this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
-            this.putExtra(GameMenuContract.EXTRA_GAME, game)
-            this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
-            this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
-            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
-            this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, (retroGameView?.frameSpeed ?: 1) > 1)
-        }
+        val intent =
+            Intent(this, getDialogClass()).apply {
+                this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
+                this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
+                this.putExtra(GameMenuContract.EXTRA_CURRENT_DISK, retroGameView?.getCurrentDisk() ?: 0)
+                this.putExtra(GameMenuContract.EXTRA_DISKS, retroGameView?.getAvailableDisks() ?: 0)
+                this.putExtra(GameMenuContract.EXTRA_GAME, game)
+                this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
+                this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
+                this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
+                this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, (retroGameView?.frameSpeed ?: 1) > 1)
+            }
         startActivityForResult(intent, DIALOG_REQUEST)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
@@ -489,8 +496,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun updateCoreVariables(options: List<CoreVariable>) {
-        val updatedVariables = options.map { Variable(it.key, it.value) }
-            .toTypedArray()
+        val updatedVariables =
+            options.map { Variable(it.key, it.value) }
+                .toTypedArray()
 
         updatedVariables.forEach {
             Timber.i("Updating core variable: ${it.key} ${it.value}")
@@ -515,7 +523,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .safeCollect { shortcut ->
                 shortcut?.let {
                     displayToast(
-                        resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name)
+                        resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name),
                     )
                 }
             }
@@ -524,11 +532,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     data class SingleAxisEvent(val axis: Int, val action: Int, val keyCode: Int, val port: Int)
 
     private suspend fun initializeVirtualGamePadMotionsFlow() {
-        val events = combine(
-            inputDeviceManager.getGamePadsPortMapperObservable(),
-            motionEventsFlow,
-            ::NTuple2
-        )
+        val events =
+            combine(
+                inputDeviceManager.getGamePadsPortMapperObservable(),
+                motionEventsFlow,
+                ::NTuple2,
+            )
 
         events
             .mapNotNull { (ports, event) ->
@@ -538,11 +547,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 val axes = event.device.getInputClass().getAxesMap().entries
 
                 axes.map { (axis, button) ->
-                    val action = if (event.getAxisValue(axis) > 0.5) {
-                        KeyEvent.ACTION_DOWN
-                    } else {
-                        KeyEvent.ACTION_UP
-                    }
+                    val action =
+                        if (event.getAxisValue(axis) > 0.5) {
+                            KeyEvent.ACTION_DOWN
+                        } else {
+                            KeyEvent.ACTION_UP
+                        }
                     SingleAxisEvent(axis, action, button, port)
                 }.toSet()
             }
@@ -556,11 +566,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeGamePadMotionsFlow() {
-        val events = combine(
-            inputDeviceManager.getGamePadsPortMapperObservable(),
-            motionEventsFlow,
-            ::NTuple2
-        )
+        val events =
+            combine(
+                inputDeviceManager.getGamePadsPortMapperObservable(),
+                motionEventsFlow,
+                ::NTuple2,
+            )
 
         events
             .safeCollect { (ports, event) ->
@@ -573,22 +584,25 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private suspend fun initializeGamePadKeysFlow() {
         val pressedKeys = mutableSetOf<Int>()
 
-        val filteredKeyEvents = keyEventsFlow
-            .filterNotNull()
-            .filter { it.repeatCount == 0 }
-            .map { Triple(it.device, it.action, it.keyCode) }
-            .distinctUntilChanged()
+        val filteredKeyEvents =
+            keyEventsFlow
+                .filterNotNull()
+                .filter { it.repeatCount == 0 }
+                .map { Triple(it.device, it.action, it.keyCode) }
+                .distinctUntilChanged()
 
-        val shortcutKeys = inputDeviceManager.getInputMenuShortCutObservable()
-            .map { it?.keys ?: setOf() }
+        val shortcutKeys =
+            inputDeviceManager.getInputMenuShortCutObservable()
+                .map { it?.keys ?: setOf() }
 
-        val combinedObservable = combine(
-            shortcutKeys,
-            inputDeviceManager.getGamePadsPortMapperObservable(),
-            inputDeviceManager.getInputBindingsObservable(),
-            filteredKeyEvents,
-            ::NTuple4
-        )
+        val combinedObservable =
+            combine(
+                shortcutKeys,
+                inputDeviceManager.getGamePadsPortMapperObservable(),
+                inputDeviceManager.getInputBindingsObservable(),
+                filteredKeyEvents,
+                ::NTuple4,
+            )
 
         combinedObservable
             .onStart { pressedKeys.clear() }
@@ -627,7 +641,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
     }
 
-    private fun sendStickMotions(event: MotionEvent, port: Int) {
+    private fun sendStickMotions(
+        event: MotionEvent,
+        port: Int,
+    ) {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
@@ -640,11 +657,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun sendMergedMotionEvents(event: MotionEvent, port: Int) {
-        val events = listOf(
-            retrieveCoordinates(event, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y),
-            retrieveCoordinates(event, MotionEvent.AXIS_X, MotionEvent.AXIS_Y)
-        )
+    private fun sendMergedMotionEvents(
+        event: MotionEvent,
+        port: Int,
+    ) {
+        val events =
+            listOf(
+                retrieveCoordinates(event, MotionEvent.AXIS_HAT_X, MotionEvent.AXIS_HAT_Y),
+                retrieveCoordinates(event, MotionEvent.AXIS_X, MotionEvent.AXIS_Y),
+            )
 
         val xVal = events.maxByOrNull { abs(it.x) }?.x ?: 0f
         val yVal = events.maxByOrNull { abs(it.y) }?.y ?: 0f
@@ -657,31 +678,34 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             MOTION_SOURCE_ANALOG_RIGHT,
             MotionEvent.AXIS_Z,
             MotionEvent.AXIS_RZ,
-            port
+            port,
         )
     }
 
-    private fun sendSeparateMotionEvents(event: MotionEvent, port: Int) {
+    private fun sendSeparateMotionEvents(
+        event: MotionEvent,
+        port: Int,
+    ) {
         sendDPADMotion(
             event,
             MOTION_SOURCE_DPAD,
             MotionEvent.AXIS_HAT_X,
             MotionEvent.AXIS_HAT_Y,
-            port
+            port,
         )
         sendStickMotion(
             event,
             MOTION_SOURCE_ANALOG_LEFT,
             MotionEvent.AXIS_X,
             MotionEvent.AXIS_Y,
-            port
+            port,
         )
         sendStickMotion(
             event,
             MOTION_SOURCE_ANALOG_RIGHT,
             MotionEvent.AXIS_Z,
             MotionEvent.AXIS_RZ,
-            port
+            port,
         )
     }
 
@@ -690,7 +714,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         source: Int,
         xAxis: Int,
         yAxis: Int,
-        port: Int
+        port: Int,
     ) {
         val coords = retrieveCoordinates(event, xAxis, yAxis)
         retroGameView?.sendMotionEvent(source, coords.x, coords.y, port)
@@ -701,13 +725,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         source: Int,
         xAxis: Int,
         yAxis: Int,
-        port: Int
+        port: Int,
     ) {
         retroGameView?.sendMotionEvent(source, event.getAxisValue(xAxis), event.getAxisValue(yAxis), port)
     }
 
     @Deprecated("This sadly creates some issues with certain controllers and input lag on very slow devices.")
-    private fun retrieveNormalizedCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
+    private fun retrieveNormalizedCoordinates(
+        event: MotionEvent,
+        xAxis: Int,
+        yAxis: Int,
+    ): PointF {
         val rawX = event.getAxisValue(xAxis)
         val rawY = -event.getAxisValue(yAxis)
 
@@ -717,7 +745,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return MathUtils.convertPolarCoordinatesToSquares(angle, distance)
     }
 
-    private fun retrieveCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
+    private fun retrieveCoordinates(
+        event: MotionEvent,
+        xAxis: Int,
+        yAxis: Int,
+    ): PointF {
         return PointF(event.getAxisValue(xAxis), event.getAxisValue(yAxis))
     }
 
@@ -730,7 +762,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return super.onGenericMotionEvent(event)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(
+        keyCode: Int,
+        event: KeyEvent?,
+    ): Boolean {
         if (event != null && InputKey(keyCode) in event.device.getInputClass().getInputKeys()) {
             lifecycleScope.launch {
                 keyEventsFlow.emit(event)
@@ -740,7 +775,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyUp(
+        keyCode: Int,
+        event: KeyEvent?,
+    ): Boolean {
         if (event != null && InputKey(keyCode) in event.device.getInputClass().getInputKeys()) {
             lifecycleScope.launch {
                 keyEventsFlow.emit(event)
@@ -757,18 +795,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private suspend fun autoSaveAndFinish() = withLoading {
-        saveSRAM(game)
-        saveAutoSave(game)
-        performSuccessfulActivityFinish()
-    }
+    private suspend fun autoSaveAndFinish() =
+        withLoading {
+            saveSRAM(game)
+            saveAutoSave(game)
+            performSuccessfulActivityFinish()
+        }
 
     private fun performSuccessfulActivityFinish() {
-        val resultIntent = Intent().apply {
-            putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
-            putExtra(PLAY_GAME_RESULT_GAME, intent.getSerializableExtra(EXTRA_GAME))
-            putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
-        }
+        val resultIntent =
+            Intent().apply {
+                putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
+                putExtra(PLAY_GAME_RESULT_GAME, intent.getSerializableExtra(EXTRA_GAME))
+                putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
+            }
 
         setResult(Activity.RESULT_OK, resultIntent)
 
@@ -783,18 +823,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun performUnexpectedErrorFinish(exception: Throwable) {
         Timber.e(exception, "Handling java exception in BaseGameActivity")
-        val resultIntent = Intent().apply {
-            putExtra(PLAY_GAME_RESULT_ERROR, exception.message)
-        }
+        val resultIntent =
+            Intent().apply {
+                putExtra(PLAY_GAME_RESULT_ERROR, exception.message)
+            }
 
         setResult(RESULT_UNEXPECTED_ERROR, resultIntent)
         finishAndExitProcess()
     }
 
     private fun performErrorFinish(message: String) {
-        val resultIntent = Intent().apply {
-            putExtra(PLAY_GAME_RESULT_ERROR, message)
-        }
+        val resultIntent =
+            Intent().apply {
+                putExtra(PLAY_GAME_RESULT_ERROR, message)
+            }
 
         setResult(RESULT_ERROR, resultIntent)
         finishAndExitProcess()
@@ -846,9 +888,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         withLoading {
             try {
                 statesManager.getSlotSave(game, systemCoreConfig.coreID, index)?.let {
-                    val loaded = withContext(Dispatchers.IO) {
-                        loadSaveState(it)
-                    }
+                    val loaded =
+                        withContext(Dispatchers.IO) {
+                            loadSaveState(it)
+                        }
                     withContext(Dispatchers.Main) {
                         if (!loaded) displayToast(R.string.game_toast_load_state_failed)
                     }
@@ -861,14 +904,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun getCurrentSaveState(): SaveState? {
         val retroGameView = retroGameView ?: return null
-        val currentDisk = if (system.hasMultiDiskSupport) {
-            retroGameView.getCurrentDisk()
-        } else {
-            0
-        }
+        val currentDisk =
+            if (system.hasMultiDiskSupport) {
+                retroGameView.getCurrentDisk()
+            } else {
+                0
+            }
         return SaveState(
             retroGameView.serializeState(),
-            SaveState.Metadata(currentDisk, systemCoreConfig.statesVersion)
+            SaveState.Metadata(currentDisk, systemCoreConfig.statesVersion),
         )
     }
 
@@ -889,25 +933,31 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return retroGameView.unserializeState(saveState.state)
     }
 
-    private suspend fun displayLoadStateErrorMessage(throwable: Throwable) = withContext(Dispatchers.Main) {
-        when (throwable) {
-            is IncompatibleStateException ->
-                displayToast(R.string.error_message_incompatible_state, Toast.LENGTH_LONG)
+    private suspend fun displayLoadStateErrorMessage(throwable: Throwable) =
+        withContext(Dispatchers.Main) {
+            when (throwable) {
+                is IncompatibleStateException ->
+                    displayToast(R.string.error_message_incompatible_state, Toast.LENGTH_LONG)
 
-            else -> displayToast(R.string.game_toast_load_state_failed)
+                else -> displayToast(R.string.game_toast_load_state_failed)
+            }
         }
-    }
 
-    private suspend fun reset() = withLoading {
-        try {
-            delay(longAnimationDuration().toLong())
-            retroGameViewFlow().reset()
-        } catch (e: Throwable) {
-            Timber.e(e, "Error in reset")
+    private suspend fun reset() =
+        withLoading {
+            try {
+                delay(longAnimationDuration().toLong())
+                retroGameViewFlow().reset()
+            } catch (e: Throwable) {
+                Timber.e(e, "Error in reset")
+            }
         }
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == DIALOG_REQUEST) {
             Timber.i("Game menu dialog response: ${data?.extras.dump()}")
@@ -937,18 +987,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_AUDIO) == true) {
                 retroGameView?.apply {
-                    this.audioEnabled = data.getBooleanExtra(
-                        GameMenuContract.RESULT_ENABLE_AUDIO,
-                        true
-                    )
+                    this.audioEnabled =
+                        data.getBooleanExtra(
+                            GameMenuContract.RESULT_ENABLE_AUDIO,
+                            true,
+                        )
                 }
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
                 retroGameView?.apply {
-                    val fastForwardEnabled = data.getBooleanExtra(
-                        GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
-                        false
-                    )
+                    val fastForwardEnabled =
+                        data.getBooleanExtra(
+                            GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
+                            false,
+                        )
                     this.frameSpeed = if (fastForwardEnabled) 2 else 1
                 }
             }
@@ -966,13 +1018,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
 
-        val loadingStatesFlow = gameLoader.load(
-            applicationContext,
-            game,
-            requestLoadSave && autoSaveEnabled,
-            systemCoreConfig,
-            directLoad
-        )
+        val loadingStatesFlow =
+            gameLoader.load(
+                applicationContext,
+                game,
+                requestLoadSave && autoSaveEnabled,
+                systemCoreConfig,
+                directLoad,
+            )
 
         loadingStatesFlow
             .flowOn(Dispatchers.IO)
@@ -982,14 +1035,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .collect { loadingState ->
                 displayLoadingState(loadingState)
                 if (loadingState is GameLoader.LoadingState.Ready) {
-                    retroGameView = initializeRetroGameView(
-                        loadingState.gameData,
-                        hdMode,
-                        forceLegacyHdMode,
-                        filter,
-                        lowLatencyAudio,
-                        systemCoreConfig.rumbleSupported && enableRumble
-                    )
+                    retroGameView =
+                        initializeRetroGameView(
+                            loadingState.gameData,
+                            hdMode,
+                            forceLegacyHdMode,
+                            filter,
+                            lowLatencyAudio,
+                            systemCoreConfig.rumbleSupported && enableRumble,
+                        )
                 }
             }
     }
@@ -1003,27 +1057,35 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private suspend fun retroGameViewFlow() = retroGameViewFlow.filterNotNull().first()
 
     private fun displayLoadingState(loadingState: GameLoader.LoadingState) {
-        loadingMessageStateFlow.value = when (loadingState) {
-            is GameLoader.LoadingState.LoadingCore -> getString(R.string.game_loading_download_core)
-            is GameLoader.LoadingState.LoadingGame -> getString(R.string.game_loading_preparing_game)
-            else -> ""
-        }
+        loadingMessageStateFlow.value =
+            when (loadingState) {
+                is GameLoader.LoadingState.LoadingCore -> getString(R.string.game_loading_download_core)
+                is GameLoader.LoadingState.LoadingGame -> getString(R.string.game_loading_preparing_game)
+                else -> ""
+            }
     }
 
-    private fun displayGameLoaderError(gameError: GameLoaderError, coreConfig: SystemCoreConfig) {
-
-        val messageId = when (gameError) {
-            is GameLoaderError.GLIncompatible -> getString(R.string.game_loader_error_gl_incompatible)
-            is GameLoaderError.Generic -> getString(R.string.game_loader_error_generic)
-            is GameLoaderError.LoadCore -> getString(R.string.game_loader_error_load_core)
-            is GameLoaderError.LoadGame -> getString(R.string.game_loader_error_load_game)
-            is GameLoaderError.Saves -> getString(R.string.game_loader_error_save)
-            is GameLoaderError.UnsupportedArchitecture -> getString(R.string.game_loader_error_unsupported_architecture)
-            is GameLoaderError.MissingBiosFiles -> getString(
-                R.string.game_loader_error_missing_bios,
-                gameError.missingFiles
-            )
-        }
+    private fun displayGameLoaderError(
+        gameError: GameLoaderError,
+        coreConfig: SystemCoreConfig,
+    ) {
+        val messageId =
+            when (gameError) {
+                is GameLoaderError.GLIncompatible -> getString(R.string.game_loader_error_gl_incompatible)
+                is GameLoaderError.Generic -> getString(R.string.game_loader_error_generic)
+                is GameLoaderError.LoadCore -> getString(R.string.game_loader_error_load_core)
+                is GameLoaderError.LoadGame -> getString(R.string.game_loader_error_load_game)
+                is GameLoaderError.Saves -> getString(R.string.game_loader_error_save)
+                is GameLoaderError.UnsupportedArchitecture ->
+                    getString(
+                        R.string.game_loader_error_unsupported_architecture,
+                    )
+                is GameLoaderError.MissingBiosFiles ->
+                    getString(
+                        R.string.game_loader_error_missing_bios,
+                        gameError.missingFiles,
+                    )
+            }
 
         performErrorFinish(messageId)
     }
@@ -1050,13 +1112,14 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             systemCoreConfig: SystemCoreConfig,
             game: Game,
             loadSave: Boolean,
-            useLeanback: Boolean
+            useLeanback: Boolean,
         ) {
-            val gameActivity = if (useLeanback) {
-                TVGameActivity::class.java
-            } else {
-                GameActivity::class.java
-            }
+            val gameActivity =
+                if (useLeanback) {
+                    TVGameActivity::class.java
+                } else {
+                    GameActivity::class.java
+                }
             activity.startActivityForResult(
                 Intent(activity, gameActivity).apply {
                     putExtra(EXTRA_GAME, game)
@@ -1064,7 +1127,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     putExtra(EXTRA_LEANBACK, useLeanback)
                     putExtra(EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
                 },
-                REQUEST_PLAY_GAME
+                REQUEST_PLAY_GAME,
             )
             activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }

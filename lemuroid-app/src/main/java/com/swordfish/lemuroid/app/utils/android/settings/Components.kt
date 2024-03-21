@@ -35,14 +35,15 @@ private val FIXED_COMPONENT_HEIGHT = 88.dp
 @Composable
 fun LemuroidElevatedSettingsPage(
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(top = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(top = 16.dp, bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         content()
     }
@@ -118,9 +119,10 @@ fun LemuroidElevatedSettingsGroup(
 ) {
     Surface {
         Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
         ) {
             ElevatedCard {
                 if (title != null) {
@@ -193,11 +195,12 @@ fun LemuroidSettingsList(
 @Composable
 private fun SettingsGroupTitleSmall(title: @Composable () -> Unit) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(16.dp),
-        contentAlignment = Alignment.CenterStart
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(16.dp),
+        contentAlignment = Alignment.CenterStart,
     ) {
         val primary = MaterialTheme.colorScheme.primary
         val titleStyle = MaterialTheme.typography.labelLarge.copy(color = primary)

@@ -13,7 +13,7 @@ fun InputStream.readLines(charset: Charset = Charsets.UTF_8): List<String> {
 
 private fun InputStream.forEachLine(
     charset: Charset = Charsets.UTF_8,
-    action: (line: String) -> Unit
+    action: (line: String) -> Unit,
 ) {
     BufferedReader(InputStreamReader(this, charset)).use { it.forEachLine(action) }
 }

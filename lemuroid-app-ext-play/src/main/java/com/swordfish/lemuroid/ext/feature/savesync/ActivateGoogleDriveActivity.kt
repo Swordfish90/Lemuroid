@@ -16,7 +16,6 @@ import com.swordfish.lemuroid.ext.R
 import timber.log.Timber
 
 class ActivateGoogleDriveActivity : Activity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,7 +30,11 @@ class ActivateGoogleDriveActivity : Activity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_GOOGLE_SIGN_IN) {
             val completedTask = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -41,11 +44,12 @@ class ActivateGoogleDriveActivity : Activity() {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 finish()
             } catch (e: ApiException) {
-                val message = getString(
-                    R.string.gdrive_sign_in_failed,
-                    e.message,
-                    e.statusCode.toString()
-                )
+                val message =
+                    getString(
+                        R.string.gdrive_sign_in_failed,
+                        e.message,
+                        e.statusCode.toString(),
+                    )
                 Timber.e(e, message)
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 finish()
@@ -75,11 +79,12 @@ class ActivateGoogleDriveActivity : Activity() {
     }
 
     private fun googleSignInClient(): GoogleSignInClient {
-        val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestId()
-            .requestEmail()
-            .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
-            .build()
+        val signInOptions =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestId()
+                .requestEmail()
+                .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
+                .build()
         return GoogleSignIn.getClient(this, signInOptions)
     }
 

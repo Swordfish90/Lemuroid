@@ -17,22 +17,28 @@ import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 
 @Composable
-fun CoresSelectionScreen(padding: MergedPaddingValues, viewModel: CoresSelectionViewModel) {
+fun CoresSelectionScreen(
+    padding: MergedPaddingValues,
+    viewModel: CoresSelectionViewModel,
+) {
     val applicationContext = LocalContext.current.applicationContext
 
-    val cores = viewModel.getSelectedCores()
-        .collectAsState(emptyList())
-        .value
+    val cores =
+        viewModel.getSelectedCores()
+            .collectAsState(emptyList())
+            .value
 
-    val indexingInProgress = viewModel.indexingInProgress
-        .observeAsState(false)
-        .value
+    val indexingInProgress =
+        viewModel.indexingInProgress
+            .observeAsState(false)
+            .value
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(padding.asPaddingValues())
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(padding.asPaddingValues()),
     ) {
         cores.forEach { (system, core) ->
             val state = rememberIntSettingState()
@@ -45,7 +51,7 @@ fun CoresSelectionScreen(padding: MergedPaddingValues, viewModel: CoresSelection
                 enabled = !indexingInProgress,
                 onItemSelected = { index, _ ->
                     viewModel.changeCore(system, system.systemCoreConfigs[index], applicationContext)
-                }
+                },
             )
         }
     }

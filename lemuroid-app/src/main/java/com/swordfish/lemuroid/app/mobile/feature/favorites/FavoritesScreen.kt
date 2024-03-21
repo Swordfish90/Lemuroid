@@ -20,7 +20,7 @@ fun FavoritesScreen(
     paddingValues: MergedPaddingValues,
     viewModel: FavoritesViewModel,
     onGameClick: (Game) -> Unit,
-    onGameLongClick: (Game) -> Unit
+    onGameLongClick: (Game) -> Unit,
 ) {
     val games = viewModel.favorites.collectAsLazyPagingItems()
 
@@ -32,8 +32,8 @@ fun FavoritesScreen(
     LazyVerticalGrid(
         columns = GridCells.Adaptive(144.dp),
         contentPadding = (paddingValues + PaddingValues(16.dp)).asPaddingValues(),
-        horizontalArrangement = Arrangement. spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
             val game = games[index] ?: return@items
@@ -41,7 +41,7 @@ fun FavoritesScreen(
                 modifier = Modifier.animateItemPlacement(),
                 game = game,
                 onClick = { onGameClick(game) },
-                onLongClick = { onGameLongClick(game) }
+                onLongClick = { onGameLongClick(game) },
             )
         }
     }

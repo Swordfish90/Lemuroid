@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.Flow
 import java.io.InputStream
 
 interface StorageProvider {
-
     val id: String
 
     val name: String
@@ -47,6 +46,6 @@ interface StorageProvider {
     fun getGameRomFiles(
         game: Game,
         dataFiles: List<DataFile>,
-        allowVirtualFiles: Boolean
+        allowVirtualFiles: Boolean,
     ): RomFiles
 }

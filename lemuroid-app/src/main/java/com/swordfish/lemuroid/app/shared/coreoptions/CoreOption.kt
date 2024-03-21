@@ -7,9 +7,8 @@ import java.io.Serializable
 data class CoreOption(
     val variable: CoreVariable,
     val name: String,
-    val optionValues: List<String>
+    val optionValues: List<String>,
 ) : Serializable {
-
     companion object {
         fun fromLibretroDroidVariable(variable: Variable): CoreOption {
             val name = variable.description?.split(";")?.get(0)!!

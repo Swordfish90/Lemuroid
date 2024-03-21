@@ -34,8 +34,8 @@ import java.io.Serializable
         Index("systemId"),
         Index("lastIndexedAt"),
         Index("lastPlayedAt"),
-        Index("isFavorite")
-    ]
+        Index("isFavorite"),
+    ],
 )
 data class Game(
     @PrimaryKey(autoGenerate = true)
@@ -48,17 +48,24 @@ data class Game(
     val coverFrontUrl: String?,
     val lastIndexedAt: Long,
     val lastPlayedAt: Long? = null,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
 ) : Serializable {
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Game>() {
-            override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
-                return oldItem.id == newItem.id
-            }
+        val DIFF_CALLBACK =
+            object : DiffUtil.ItemCallback<Game>() {
+                override fun areItemsTheSame(
+                    oldItem: Game,
+                    newItem: Game,
+                ): Boolean {
+                    return oldItem.id == newItem.id
+                }
 
-            override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: Game,
+                    newItem: Game,
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

@@ -17,6 +17,6 @@ abstract class ImmersiveActivity : RetrogradeActivity() {
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN
-            )
+        )
     }
 }

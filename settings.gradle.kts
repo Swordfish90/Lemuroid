@@ -1,3 +1,5 @@
+@Suppress("ktlint:standard:max-line-length")
+
 include(
     ":retrograde-util",
     ":retrograde-app-shared",

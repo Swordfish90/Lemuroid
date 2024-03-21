@@ -29,48 +29,62 @@ import retrofit2.http.Url
 class ChannelHandler(
     private val appContext: Context,
     private val retrogradeDatabase: RetrogradeDatabase,
-    retrofit: Retrofit
+    retrofit: Retrofit,
 ) {
     private val thumbnailsApi = retrofit.create(ThumbnailsApi::class.java)
 
     private val appName = appContext.getString(R.string.lemuroid_name)
 
+    private val channelsProjection =
+        arrayOf(
+            TvContractCompat.Channels._ID,
+            TvContract.Channels.COLUMN_DISPLAY_NAME,
+            TvContractCompat.Channels.COLUMN_BROWSABLE,
+        )
+
     private fun getOrCreateChannelId(): Long? {
         var channelId = findChannel()
 
-        if (channelId != null)
+        if (channelId != null) {
             return channelId
+        }
 
-        val builder = Channel.Builder()
-            .setType(TvContractCompat.Channels.TYPE_PREVIEW)
-            .setDisplayName(appName)
-            .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
+        val builder =
+            Channel.Builder()
+                .setType(TvContractCompat.Channels.TYPE_PREVIEW)
+                .setDisplayName(appName)
+                .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
 
-        val channelUri = appContext.contentResolver.insert(
-            TvContractCompat.Channels.CONTENT_URI,
-            builder.build().toContentValues()
-        ) ?: return null
+        val channelUri =
+            appContext.contentResolver.insert(
+                TvContractCompat.Channels.CONTENT_URI,
+                builder.build().toContentValues(),
+            ) ?: return null
 
         channelId = ContentUris.parseId(channelUri)
 
         ChannelLogoUtils.storeChannelLogo(
             appContext,
             channelId,
-            convertToBitmap(appContext, R.mipmap.lemuroid_tv_channel)!!
+            convertToBitmap(appContext, R.mipmap.lemuroid_tv_channel)!!,
         )
 
         TvContractCompat.requestChannelBrowsable(appContext, channelId)
         return channelId
     }
 
-    private fun convertToBitmap(context: Context, resourceId: Int): Bitmap? {
+    private fun convertToBitmap(
+        context: Context,
+        resourceId: Int,
+    ): Bitmap? {
         val drawable = context.getDrawable(resourceId)
         if (drawable is VectorDrawable) {
-            val bitmap: Bitmap = Bitmap.createBitmap(
-                drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(),
-                Bitmap.Config.ARGB_8888
-            )
+            val bitmap: Bitmap =
+                Bitmap.createBitmap(
+                    drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(),
+                    Bitmap.Config.ARGB_8888,
+                )
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
             drawable.draw(canvas)
@@ -82,9 +96,10 @@ class ChannelHandler(
     suspend fun update() {
         val recentGames = retrogradeDatabase.gameDao().asyncSelectFirstRecents(10)
 
-        val channelEntries = recentGames.asFlow()
-            .map { getChannelEntry(it) }
-            .toList()
+        val channelEntries =
+            recentGames.asFlow()
+                .map { getChannelEntry(it) }
+                .toList()
 
         val channelId = getOrCreateChannelId() ?: return
 
@@ -97,32 +112,34 @@ class ChannelHandler(
         appContext.contentResolver.delete(
             TvContractCompat.buildPreviewProgramsUriForChannel(channelId),
             null,
-            null
+            null,
         )
 
         appContext.contentResolver.update(
             TvContractCompat.buildChannelUri(channelId),
             channel.build().toContentValues(),
             null,
-            null
+            null,
         )
 
-        val contentValues = channelEntries.map { (game, thumbnail) ->
-            getGameProgram(channelId, game, thumbnail).toContentValues()
-        }
+        val contentValues =
+            channelEntries.map { (game, thumbnail) ->
+                getGameProgram(channelId, game, thumbnail).toContentValues()
+            }
 
         if (contentValues.isNotEmpty()) {
             appContext.contentResolver.bulkInsert(
                 Uri.parse("content://android.media.tv/preview_program"),
-                contentValues.toTypedArray()
+                contentValues.toTypedArray(),
             )
         }
     }
 
     private suspend fun getChannelEntry(game: Game): ChannelEntry {
-        val hasThumbnail = game.coverFrontUrl
-            ?.let { thumbnailsApi.thumbnailExists(it).isSuccessful }
-            ?: false
+        val hasThumbnail =
+            game.coverFrontUrl
+                ?.let { thumbnailsApi.thumbnailExists(it).isSuccessful }
+                ?: false
         return ChannelEntry(game, hasThumbnail)
     }
 
@@ -130,18 +147,19 @@ class ChannelHandler(
     private fun getGameProgram(
         channelId: Long,
         game: Game,
-        thumbnailExists: Boolean
+        thumbnailExists: Boolean,
     ): PreviewProgram {
         val intent = DeepLink.launchIntentForGame(appContext, game)
 
-        val preview = PreviewProgram.Builder()
-            .setChannelId(channelId)
-            .setTitle(game.title)
-            .setDescription(game.developer)
-            .setIntent(intent)
-            .setStartTimeUtcMillis(game.lastPlayedAt ?: 0)
-            .setType(TvContractCompat.PreviewPrograms.TYPE_GAME)
-            .setPosterArtAspectRatio(TvContractCompat.PreviewProgramColumns.ASPECT_RATIO_1_1)
+        val preview =
+            PreviewProgram.Builder()
+                .setChannelId(channelId)
+                .setTitle(game.title)
+                .setDescription(game.developer)
+                .setIntent(intent)
+                .setStartTimeUtcMillis(game.lastPlayedAt ?: 0)
+                .setType(TvContractCompat.PreviewPrograms.TYPE_GAME)
+                .setPosterArtAspectRatio(TvContractCompat.PreviewProgramColumns.ASPECT_RATIO_1_1)
 
         if (game.coverFrontUrl != null && thumbnailExists) {
             preview.setPosterArtUri(Uri.parse(game.coverFrontUrl))
@@ -152,31 +170,27 @@ class ChannelHandler(
         return preview.build()
     }
 
-    private val CHANNELS_PROJECTION = arrayOf(
-        TvContractCompat.Channels._ID,
-        TvContract.Channels.COLUMN_DISPLAY_NAME,
-        TvContractCompat.Channels.COLUMN_BROWSABLE
-    )
-
     private fun findChannel(): Long? {
-        val channels = appContext.contentResolver.query(
-            TvContractCompat.Channels.CONTENT_URI,
-            CHANNELS_PROJECTION,
-            null,
-            null,
-            null
-        )
+        val channels =
+            appContext.contentResolver.query(
+                TvContractCompat.Channels.CONTENT_URI,
+                channelsProjection,
+                null,
+                null,
+                null,
+            )
 
         appContext.getString(R.string.app_name)
 
         channels?.use {
-            if (it.moveToFirst())
+            if (it.moveToFirst()) {
                 do {
                     val channel = Channel.fromCursor(it)
                     if (appName == channel.displayName) {
                         return channel.id
                     }
                 } while (it.moveToNext())
+            }
         }
         return null
     }
@@ -185,6 +199,8 @@ class ChannelHandler(
 
     interface ThumbnailsApi {
         @HEAD
-        suspend fun thumbnailExists(@Url url: String): Response<Void>
+        suspend fun thumbnailExists(
+            @Url url: String,
+        ): Response<Void>
     }
 }

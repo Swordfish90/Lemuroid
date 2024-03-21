@@ -6,8 +6,10 @@ import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 
 class SettingPresenter(private val cardSize: Int, private val cardPadding: Int) : Presenter() {
-
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any) {
+    override fun onBindViewHolder(
+        viewHolder: Presenter.ViewHolder?,
+        item: Any,
+    ) {
         val setting = item as TVSetting
         (viewHolder as ViewHolder).mCardView.titleText = viewHolder.view.context.resources.getString(setting.type.text)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)

@@ -30,9 +30,8 @@ class FractionPreferenceSettingValueState(
     private val denominator: Int,
     private val defaultNumerator: Int,
 ) : SettingValueState<Float> {
-
     private var _value by mutableStateOf(
-        Fraction(preferences.getInt(key, defaultNumerator), denominator)
+        Fraction(preferences.getInt(key, defaultNumerator), denominator),
     )
 
     override var value: Float

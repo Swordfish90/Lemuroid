@@ -11,7 +11,6 @@ import com.swordfish.lemuroid.common.displayToast
 import kotlinx.coroutines.flow.filter
 
 class TVGameActivity : BaseGameActivity() {
-
     override fun getDialogClass() = TVGameMenuActivity::class.java
 
     override fun onCreate(savedInstanceState: Bundle?) {

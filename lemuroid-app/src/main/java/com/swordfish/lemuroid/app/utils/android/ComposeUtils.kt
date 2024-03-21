@@ -14,7 +14,9 @@ import androidx.lifecycle.LifecycleOwner
 
 @Composable
 @ReadOnlyComposable
-fun stringListResource(@ArrayRes id: Int): List<String> {
+fun stringListResource(
+    @ArrayRes id: Int,
+): List<String> {
     return LocalContext.current.resources
         .getStringArray(id)
         .toList()
@@ -23,13 +25,13 @@ fun stringListResource(@ArrayRes id: Int): List<String> {
 @Composable
 fun ComposableLifecycle(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onEvent: (LifecycleOwner, Lifecycle.Event) -> Unit
+    onEvent: (LifecycleOwner, Lifecycle.Event) -> Unit,
 ) {
-
     DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { source, event ->
-            onEvent(source, event)
-        }
+        val observer =
+            LifecycleEventObserver { source, event ->
+                onEvent(source, event)
+            }
         lifecycleOwner.lifecycle.addObserver(observer)
 
         onDispose {
@@ -40,7 +42,6 @@ fun ComposableLifecycle(
 
 @Composable
 fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
-
 
 @Composable
 fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }

@@ -30,19 +30,22 @@ import com.swordfish.lemuroid.app.utils.android.stringListResource
 fun SettingsScreen(
     padding: MergedPaddingValues,
     viewModel: SettingsViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
-    val state = viewModel.uiState
-        .collectAsState(SettingsViewModel.State())
-        .value
+    val state =
+        viewModel.uiState
+            .collectAsState(SettingsViewModel.State())
+            .value
 
-    val scanInProgress = viewModel.directoryScanInProgress
-        .observeAsState(false)
-        .value
+    val scanInProgress =
+        viewModel.directoryScanInProgress
+            .observeAsState(false)
+            .value
 
-    val indexingInProgress = viewModel.indexingInProgress
-        .observeAsState(false)
-        .value
+    val indexingInProgress =
+        viewModel.indexingInProgress
+            .observeAsState(false)
+            .value
 
     LemuroidElevatedSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
         RomsSettings(
@@ -68,7 +71,7 @@ private fun MiscSettings(
     navController: NavController,
 ) {
     LemuroidElevatedSettingsGroup(
-        title = { Text(text = stringResource(id = R.string.settings_category_misc)) }
+        title = { Text(text = stringResource(id = R.string.settings_category_misc)) },
     ) {
         if (isSaveSyncSupported) {
             LemuroidSettingsMenuLink(
@@ -76,7 +79,7 @@ private fun MiscSettings(
                 subtitle = {
                     Text(text = stringResource(id = R.string.settings_description_save_sync))
                 },
-                onClick = { navController.navigateToRoute(MainRoute.SETTINGS_SAVE_SYNC) }
+                onClick = { navController.navigateToRoute(MainRoute.SETTINGS_SAVE_SYNC) },
             )
         }
         LemuroidSettingsMenuLink(
@@ -84,7 +87,7 @@ private fun MiscSettings(
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_open_cores_selection))
             },
-            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) }
+            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) },
         )
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_display_bios_info)) },
@@ -92,14 +95,14 @@ private fun MiscSettings(
                 Text(text = stringResource(id = R.string.settings_description_display_bios_info))
             },
             enabled = !indexingInProgress,
-            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_BIOS) }
+            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_BIOS) },
         )
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_advanced_settings)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_advanced_settings))
             },
-            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_ADVANCED) }
+            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_ADVANCED) },
         )
     }
 }
@@ -107,24 +110,27 @@ private fun MiscSettings(
 @Composable
 private fun InputSettings(navController: NavController) {
     LemuroidElevatedSettingsGroup(
-        title = { Text(text = stringResource(id = R.string.settings_category_input)) }
+        title = { Text(text = stringResource(id = R.string.settings_category_input)) },
     ) {
         LemuroidSettingsList(
-            state = indexPreferenceState(
-                R.string.pref_key_haptic_feedback_mode,
-                "press",
-                stringListResource(R.array.pref_key_haptic_feedback_mode_values)
-            ),
+            state =
+                indexPreferenceState(
+                    R.string.pref_key_haptic_feedback_mode,
+                    "press",
+                    stringListResource(R.array.pref_key_haptic_feedback_mode_values),
+                ),
             title = {
                 Text(text = stringResource(id = R.string.settings_title_enable_touch_feedback))
             },
-            items = stringListResource(R.array.pref_key_haptic_feedback_mode_display_names)
+            items = stringListResource(R.array.pref_key_haptic_feedback_mode_display_names),
         )
-        LemuroidSettingsMenuLink(title = { Text(text = stringResource(id = R.string.settings_title_gamepad_settings)) },
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.settings_title_gamepad_settings)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_gamepad_settings))
             },
-            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_INPUT_DEVICES) })
+            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_INPUT_DEVICES) },
+        )
     }
 }
 
@@ -133,7 +139,7 @@ private fun GeneralSettings() {
     val hdMode = booleanPreferenceState(R.string.pref_key_hd_mode, false)
 
     LemuroidElevatedSettingsGroup(
-        title = { Text(text = stringResource(id = R.string.settings_category_general)) }
+        title = { Text(text = stringResource(id = R.string.settings_category_general)) },
     ) {
         LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_autosave, true),
@@ -146,13 +152,14 @@ private fun GeneralSettings() {
         )
         LemuroidSettingsList(
             enabled = !hdMode.value,
-            state = indexPreferenceState(
-                R.string.pref_key_shader_filter,
-                "auto",
-                stringListResource(R.array.pref_key_shader_filter_values).toList()
-            ),
+            state =
+                indexPreferenceState(
+                    R.string.pref_key_shader_filter,
+                    "auto",
+                    stringListResource(R.array.pref_key_shader_filter_values).toList(),
+                ),
             title = { Text(text = stringResource(id = R.string.display_filter)) },
-            items = stringListResource(R.array.pref_key_shader_filter_display_names)
+            items = stringListResource(R.array.pref_key_shader_filter_display_names),
         )
     }
 }
@@ -169,27 +176,30 @@ private fun RomsSettings(
     val currentDirectory = state.currentDirectory
     val emptyDirectory = stringResource(R.string.none)
 
-    val currentDirectoryName = remember(state.currentDirectory) {
-        runCatching {
-            DocumentFile.fromTreeUri(context, Uri.parse(currentDirectory))?.name
-        }.getOrNull() ?: emptyDirectory
-    }
+    val currentDirectoryName =
+        remember(state.currentDirectory) {
+            runCatching {
+                DocumentFile.fromTreeUri(context, Uri.parse(currentDirectory))?.name
+            }.getOrNull() ?: emptyDirectory
+        }
 
     LemuroidElevatedSettingsGroup(title = { Text(text = stringResource(id = R.string.roms)) }) {
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.directory)) },
             subtitle = { Text(text = currentDirectoryName) },
             onClick = { onChangeFolder() },
-            enabled = !indexingInProgress
+            enabled = !indexingInProgress,
         )
         if (scanInProgress) {
-            LemuroidSettingsMenuLink(title = { Text(text = stringResource(id = R.string.stop)) },
-                onClick = { LibraryIndexScheduler.cancelLibrarySync(context) })
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.stop)) },
+                onClick = { LibraryIndexScheduler.cancelLibrarySync(context) },
+            )
         } else {
             LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.rescan)) },
                 onClick = { LibraryIndexScheduler.scheduleLibrarySync(context) },
-                enabled = !indexingInProgress
+                enabled = !indexingInProgress,
             )
         }
     }

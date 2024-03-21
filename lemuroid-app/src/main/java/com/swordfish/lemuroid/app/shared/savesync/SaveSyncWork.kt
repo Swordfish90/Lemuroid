@@ -31,7 +31,6 @@ import javax.inject.Inject
 
 class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
-
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
 
@@ -47,9 +46,10 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
 
         displayNotification()
 
-        val coresToSync = settingsManager.syncStatesCores()
-            .mapNotNull { findByName(it) }
-            .toSet()
+        val coresToSync =
+            settingsManager.syncStatesCores()
+                .mapNotNull { findByName(it) }
+                .toSet()
 
         try {
             saveSyncManager.sync(coresToSync)
@@ -61,12 +61,13 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
     }
 
     private suspend fun shouldPerformSaveSync(): Boolean {
-        val conditionsToRunThisWork = flow {
-            emit(saveSyncManager.isSupported())
-            emit(saveSyncManager.isConfigured())
-            emit(settingsManager.syncSaves())
-            emit(shouldScheduleThisSync())
-        }
+        val conditionsToRunThisWork =
+            flow {
+                emit(saveSyncManager.isSupported())
+                emit(saveSyncManager.isConfigured())
+                emit(settingsManager.syncSaves())
+                emit(shouldScheduleThisSync())
+            }
 
         return conditionsToRunThisWork.firstOrNull { !it } ?: true
     }
@@ -80,10 +81,11 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
     private fun displayNotification() {
         val notificationsManager = NotificationsManager(applicationContext)
 
-        val foregroundInfo = ForegroundInfo(
-            NotificationsManager.SAVE_SYNC_NOTIFICATION_ID,
-            notificationsManager.saveSyncNotification()
-        )
+        val foregroundInfo =
+            ForegroundInfo(
+                NotificationsManager.SAVE_SYNC_NOTIFICATION_ID,
+                notificationsManager.saveSyncNotification(),
+            )
         setForegroundAsync(foregroundInfo)
     }
 
@@ -100,11 +102,14 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
                 ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequestBuilder<SaveSyncWork>()
                     .setInputData(inputData)
-                    .build()
+                    .build(),
             )
         }
 
-        fun enqueueAutoWork(applicationContext: Context, delayMinutes: Long = 0) {
+        fun enqueueAutoWork(
+            applicationContext: Context,
+            delayMinutes: Long = 0,
+        ) {
             val inputData: Data = workDataOf(IS_AUTO to true)
 
             WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
@@ -115,11 +120,11 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
                         Constraints.Builder()
                             .setRequiredNetworkType(NetworkType.UNMETERED)
                             .setRequiresBatteryNotLow(true)
-                            .build()
+                            .build(),
                     )
                     .setInputData(inputData)
                     .setInitialDelay(delayMinutes, TimeUnit.MINUTES)
-                    .build()
+                    .build(),
             )
         }
 

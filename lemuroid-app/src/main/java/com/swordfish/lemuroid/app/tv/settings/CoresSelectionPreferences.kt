@@ -9,7 +9,6 @@ import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.GameSystem
 
 class CoresSelectionPreferences {
-
     fun addCoresSelectionPreferences(preferenceScreen: PreferenceScreen) {
         val context = preferenceScreen.context
 
@@ -20,7 +19,10 @@ class CoresSelectionPreferences {
             }
     }
 
-    private fun createPreference(context: Context, system: GameSystem): Preference {
+    private fun createPreference(
+        context: Context,
+        system: GameSystem,
+    ): Preference {
         val preference = ListPreference(context)
         preference.key = CoresSelection.computeSystemPreferenceKey(system.id)
         preference.title = context.getString(system.titleResId)
@@ -29,13 +31,15 @@ class CoresSelectionPreferences {
         preference.setDefaultValue(system.systemCoreConfigs.map { it.coreID.coreName }.first())
         preference.isEnabled = system.systemCoreConfigs.size > 1
 
-        preference.entries = system.systemCoreConfigs
-            .map { it.coreID.coreDisplayName }
-            .toTypedArray()
+        preference.entries =
+            system.systemCoreConfigs
+                .map { it.coreID.coreDisplayName }
+                .toTypedArray()
 
-        preference.entryValues = system.systemCoreConfigs
-            .map { it.coreID.coreName }
-            .toTypedArray()
+        preference.entryValues =
+            system.systemCoreConfigs
+                .map { it.coreID.coreName }
+                .toTypedArray()
 
         preference.setOnPreferenceChangeListener { _, _ ->
             LibraryIndexScheduler.scheduleCoreUpdate(context.applicationContext)

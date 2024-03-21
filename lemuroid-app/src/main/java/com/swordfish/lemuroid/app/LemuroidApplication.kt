@@ -19,7 +19,6 @@ import dagger.android.support.DaggerApplication
 import javax.inject.Inject
 
 class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderFactory {
-
     @Inject
     lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
 
@@ -27,11 +26,12 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderF
     override fun onCreate() {
         super.onCreate()
 
-        val initializeComponent = if (isMainProcess()) {
-            MainProcessInitializer::class.java
-        } else {
-            GameProcessInitializer::class.java
-        }
+        val initializeComponent =
+            if (isMainProcess()) {
+                MainProcessInitializer::class.java
+            } else {
+                GameProcessInitializer::class.java
+            }
 
         AppInitializer.getInstance(this).initializeComponent(initializeComponent)
 

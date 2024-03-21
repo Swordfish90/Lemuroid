@@ -36,8 +36,8 @@ android {
                 ":lemuroid_core_prosystem",
                 ":lemuroid_core_snes9x",
                 ":lemuroid_core_stella",
-                ":lemuroid_core_citra"
-            )
+                ":lemuroid_core_citra",
+            ),
         )
     }
 
@@ -191,7 +191,7 @@ dependencies {
     implementation(deps.libs.libretrodroid)
 
     // Uncomment this when using a local aar file.
-    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+    // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)

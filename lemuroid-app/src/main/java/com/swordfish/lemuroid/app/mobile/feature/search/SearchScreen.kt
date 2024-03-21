@@ -63,7 +63,7 @@ fun SearchScreen(
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onGameFavoriteToggle: (Game, Boolean) -> Unit,
-    onHelpPressed: () -> Unit
+    onHelpPressed: () -> Unit,
 ) {
     val context = LocalContext.current
     val query = viewModel.queryString.collectAsState()
@@ -81,10 +81,11 @@ fun SearchScreen(
         topBar = {
             LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(64.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(64.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Box(
                         modifier = Modifier.weight(1f),
@@ -92,30 +93,34 @@ fun SearchScreen(
                         // Standard TextField has huge margins that can't be customized.
                         // We set the background to invisible and draw a surface behind
                         Surface(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(8.dp),
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp),
                             shape = RoundedCornerShape(100),
-                            tonalElevation = 16.dp
+                            tonalElevation = 16.dp,
                         ) { }
                         TextField(
                             value = query.value,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(start = 8.dp, end = 8.dp)
-                                .focusRequester(focusRequester),
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(start = 8.dp, end = 8.dp)
+                                    .focusRequester(focusRequester),
                             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                             onValueChange = { viewModel.queryString.value = it },
                             singleLine = true,
-                            keyboardActions = KeyboardActions(
-                                onDone = { focusManager.clearFocus(true) }
-                            ),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            )
+                            keyboardActions =
+                                KeyboardActions(
+                                    onDone = { focusManager.clearFocus(true) },
+                                ),
+                            colors =
+                                TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                ),
                         )
                     }
 
@@ -129,20 +134,20 @@ fun SearchScreen(
                                     navController,
                                     onHelpPressed = onHelpPressed,
                                     context = context,
-                                    saveSyncEnabled = mainUIState.saveSyncEnabled
+                                    saveSyncEnabled = mainUIState.saveSyncEnabled,
                                 )
                             }
-                        }
+                        },
                     )
                 }
             }
-        }
+        },
     ) { innerPadding ->
         val padding = outerPadding + innerPadding
         AnimatedContent(
             targetState = searchState.value,
             label = "SearchContent",
-            transitionSpec = { fadeIn() togetherWith fadeOut() }
+            transitionSpec = { fadeIn() togetherWith fadeOut() },
         ) { state ->
             when {
                 state == SearchViewModel.UIState.Idle -> {
@@ -160,7 +165,7 @@ fun SearchScreen(
                         searchGames,
                         onGameClick,
                         onGameLongClick,
-                        onGameFavoriteToggle
+                        onGameFavoriteToggle,
                     )
                 }
             }
@@ -175,7 +180,7 @@ private fun SearchResultsView(
     games: LazyPagingItems<Game>,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
-    onGameFavoriteToggle: (Game, Boolean) -> Unit
+    onGameFavoriteToggle: (Game, Boolean) -> Unit,
 ) {
     LazyColumn(contentPadding = padding.asPaddingValues()) {
         items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
@@ -188,27 +193,31 @@ private fun SearchResultsView(
                 onLongClick = { onGameLongClick(game) },
                 onFavoriteToggle = { isFavorite ->
                     onGameFavoriteToggle(game, isFavorite)
-                }
+                },
             )
         }
     }
 }
 
 @Composable
-private fun SearchEmptyView(padding: MergedPaddingValues, text: String) {
+private fun SearchEmptyView(
+    padding: MergedPaddingValues,
+    text: String,
+) {
     LemuroidEmptyView(
         modifier = Modifier.padding(padding.asPaddingValues()),
-        text = text
+        text = text,
     )
 }
 
 @Composable
 private fun SearchLoadingView(padding: MergedPaddingValues) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding.asPaddingValues()),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(padding.asPaddingValues()),
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }

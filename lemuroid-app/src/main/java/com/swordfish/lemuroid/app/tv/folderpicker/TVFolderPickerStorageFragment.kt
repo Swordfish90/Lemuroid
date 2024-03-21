@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.R
 import java.io.File
 
 class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
-
     @NonNull
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
         val title = resources.getString(R.string.tv_folder_storage_title)
@@ -20,29 +19,34 @@ class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
 
     override fun onCreateButtonActions(
         actions: MutableList<GuidedAction>,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) {
         super.onCreateButtonActions(actions, savedInstanceState)
         addAction(
             actions,
             ACTION_CANCEL,
             resources.getString(R.string.tv_folder_picker_action_cancel),
-            ""
+            "",
         )
     }
 
-    override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
+    override fun onCreateActions(
+        actions: MutableList<GuidedAction>,
+        savedInstanceState: Bundle?,
+    ) {
         super.onCreateActions(actions, savedInstanceState)
-        val storageRoots = runCatching { retrieveStorageRoots() }.getOrNull()
-            ?: listOf(Environment.getExternalStorageDirectory())
+        val storageRoots =
+            runCatching { retrieveStorageRoots() }.getOrNull()
+                ?: listOf(Environment.getExternalStorageDirectory())
 
         storageRoots
             .forEachIndexed { index, file ->
-                val storageName = if (index == 0) {
-                    resources.getString(R.string.tv_folder_storage_primary)
-                } else {
-                    resources.getString(R.string.tv_folder_storage_secondary, index.toString())
-                }
+                val storageName =
+                    if (index == 0) {
+                        resources.getString(R.string.tv_folder_storage_primary)
+                    } else {
+                        resources.getString(R.string.tv_folder_storage_secondary, index.toString())
+                    }
                 addAction(actions, ACTION_NAVIGATE, storageName, file.absolutePath)
             }
     }
@@ -66,14 +70,14 @@ class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
         actions: MutableList<GuidedAction>,
         id: Long,
         title: String,
-        desc: String
+        desc: String,
     ) {
         actions.add(
             GuidedAction.Builder(activity)
                 .id(id)
                 .title(title)
                 .description(desc)
-                .build()
+                .build(),
         )
     }
 

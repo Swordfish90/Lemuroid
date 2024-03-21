@@ -11,50 +11,50 @@ import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 @Composable
 fun booleanPreferenceState(
     id: Int,
-    default: Boolean
+    default: Boolean,
 ) = rememberPreferenceBooleanSettingState(
     key = stringResource(id = id),
     defaultValue = default,
-    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current)
+    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
 )
 
 @Composable
 fun booleanPreferenceState(
     key: String,
-    default: Boolean
+    default: Boolean,
 ) = rememberPreferenceBooleanSettingState(
     key = key,
     defaultValue = default,
-    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current)
+    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
 )
 
 @Composable
 fun indexPreferenceState(
     id: Int,
     default: String,
-    values: List<String>
+    values: List<String>,
 ) = indexPreferenceState(stringResource(id), default, values)
 
 @Composable
 fun indexPreferenceState(
     key: String,
     default: String,
-    values: List<String>
+    values: List<String>,
 ) = rememberPreferenceIndexSettingState(
     key = key,
     values = values,
     defaultValue = default,
-    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current)
+    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
 )
 
 @Composable
 fun fractionPreferenceState(
     key: String,
     denominator: Int,
-    defaultNumerator: Int
+    defaultNumerator: Int,
 ) = rememberFractionPreferenceSettingState(
     key = key,
     denominator = denominator,
     defaultNumerator = defaultNumerator,
-    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current)
+    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
 )

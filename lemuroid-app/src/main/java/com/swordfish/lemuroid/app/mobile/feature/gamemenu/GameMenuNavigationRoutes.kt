@@ -10,7 +10,7 @@ import com.swordfish.lemuroid.R
 
 fun NavGraphBuilder.composable(
     route: GameMenuRoute,
-    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
     this.composable(route = route.route, content = content)
 }
@@ -22,29 +22,29 @@ fun NavController.navigateToRoute(route: GameMenuRoute) {
 enum class GameMenuRoute(
     val route: String,
     val titleId: Int,
-    val parent: GameMenuRoute?
+    val parent: GameMenuRoute?,
 ) {
-
     HOME(
         route = "home",
         titleId = R.string.game_menu_title,
-        parent = null
+        parent = null,
     ),
     SAVE(
         route = "save",
         titleId = R.string.game_menu_save,
-        parent = HOME
+        parent = HOME,
     ),
     LOAD(
         route = "load",
         titleId = R.string.game_menu_load,
-        parent = HOME
+        parent = HOME,
     ),
     OPTIONS(
         route = "options",
         titleId = R.string.game_menu_settings,
-        parent = HOME
-    );
+        parent = HOME,
+    ),
+    ;
 
     fun canGoBack(): Boolean {
         return parent != null

@@ -24,7 +24,6 @@ import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 object VirtualLongPressHandler {
-
     private val APPEAR_ANIMATION = (ViewConfiguration.getLongPressTimeout() * 0.1f).toLong()
     private val DISAPPEAR_ANIMATION = (ViewConfiguration.getLongPressTimeout() * 2f).toLong()
     private val LONG_PRESS_TIMEOUT = ViewConfiguration.getLongPressTimeout().toLong()
@@ -33,25 +32,27 @@ object VirtualLongPressHandler {
         val palette = LemuroidTouchOverlayThemes.getGamePadTheme(longPressView(gameActivity))
         longPressIconView(gameActivity).setColorFilter(palette.textColor)
         longPressProgressBar(gameActivity).setIndicatorColor(palette.textColor)
-        longPressView(gameActivity).background = buildCircleDrawable(
-            gameActivity,
-            palette.backgroundColor,
-            palette.backgroundStrokeColor,
-            palette.strokeWidthDp
-        )
-        longPressForegroundView(gameActivity).background = buildCircleDrawable(
-            gameActivity,
-            palette.normalColor,
-            palette.normalStrokeColor,
-            palette.strokeWidthDp
-        )
+        longPressView(gameActivity).background =
+            buildCircleDrawable(
+                gameActivity,
+                palette.backgroundColor,
+                palette.backgroundStrokeColor,
+                palette.strokeWidthDp,
+            )
+        longPressForegroundView(gameActivity).background =
+            buildCircleDrawable(
+                gameActivity,
+                palette.normalColor,
+                palette.normalStrokeColor,
+                palette.strokeWidthDp,
+            )
     }
 
     private fun buildCircleDrawable(
         context: Context,
         fillColor: Int,
         strokeColor: Int,
-        strokeSize: Float
+        strokeSize: Float,
     ): Drawable {
         return GradientDrawable().apply {
             shape = GradientDrawable.OVAL
@@ -63,7 +64,7 @@ object VirtualLongPressHandler {
     suspend fun displayLoading(
         activity: GameActivity,
         iconId: Int,
-        cancellation: Flow<Unit>
+        cancellation: Flow<Unit>,
     ): Boolean {
         withContext(Dispatchers.Main) {
             longPressView(activity).alpha = 0f
@@ -71,15 +72,17 @@ object VirtualLongPressHandler {
             displayLongPressView(activity)
         }
 
-        val successFlow = flow {
-            delay(LONG_PRESS_TIMEOUT)
-            emit(true)
-        }
+        val successFlow =
+            flow {
+                delay(LONG_PRESS_TIMEOUT)
+                emit(true)
+            }
 
         val cancellationFlow = cancellation.map { false }
 
-        val isSuccessful = merge(successFlow, cancellationFlow)
-            .first()
+        val isSuccessful =
+            merge(successFlow, cancellationFlow)
+                .first()
 
         withContext(Dispatchers.Main) {
             if (isSuccessful) {
@@ -91,14 +94,12 @@ object VirtualLongPressHandler {
         return isSuccessful
     }
 
-    private fun longPressIconView(activity: GameActivity) =
-        activity.findViewById<ImageView>(R.id.settings_loading_icon)
+    private fun longPressIconView(activity: GameActivity) = activity.findViewById<ImageView>(R.id.settings_loading_icon)
 
     private fun longPressProgressBar(activity: GameActivity) =
         activity.findViewById<CircularProgressIndicator>(R.id.settings_loading_progress)
 
-    private fun longPressView(activity: GameActivity) =
-        activity.findViewById<View>(R.id.settings_loading)
+    private fun longPressView(activity: GameActivity) = activity.findViewById<View>(R.id.settings_loading)
 
     private fun longPressForegroundView(activity: GameActivity) =
         activity.findViewById<View>(R.id.long_press_foreground)
