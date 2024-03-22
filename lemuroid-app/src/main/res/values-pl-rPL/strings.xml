@@ -19,6 +19,9 @@
     <string name="settings">Ustawienia</string>
     <string name="save_sync">Synchronizacja zapisów</string>
     <string name="show_all">Pokaż wszystko</string>
+    <string name="back">Wróć</string>
+    <string name="close">Zamknij</string>
+    <string name="game_page_search_suggestion">Szukaj gry</string>
     <string name="settings_category_general">Ogólne</string>
     <string name="settings_category_input">Wejście</string>
     <string name="settings_category_misc">Inne</string>
@@ -35,8 +38,8 @@
     <string name="settings_gamepad_category_general">Ogólne</string>
     <string name="settings_gamepad_title_reset_bindings">Zresetuj powiązania klawiszy</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
-    <string name="settings_title_open_cores_selection">Zmień Rdzenie</string>
-    <string name="settings_description_open_cores_selection">Wybierz, który Rdzeń jest przypisany do systemu</string>
+    <string name="settings_title_open_cores_selection">Zmień rdzenie</string>
+    <string name="settings_description_open_cores_selection">Wybierz, który rdzeń jest przypisany do systemu</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Wyświetl wykryte i obsługiwane pliki BIOS</string>
     <string name="settings_bios_category_detected">Wykryte</string>
@@ -57,8 +60,8 @@
     <string name="settings_description_enable_device_rumble">Jeśli kontroler nie jest podłączony, wibruj urządzeniem</string>
     <string name="reset_settings_warning_message_title">Jesteś pewien?</string>
     <string name="reset_settings_warning_message_description">To zresetuje Lemuroid do ustawień fabrycznych. Zapisy i stany zostaną zachowane.</string>
-    <string name="settings_title_save_sync">Zapisy w Chmurze</string>
-    <string name="settings_description_save_sync">Utwórz kopię zapasową i zsynchronizuj swoje zapisy w Chmurze</string>
+    <string name="settings_title_save_sync">Zapisy w chmurze</string>
+    <string name="settings_description_save_sync">Utwórz kopię zapasową i zsynchronizuj swoje zapisy w chmurze</string>
     <string name="settings_save_sync_refresh">Ręczna synchronizacja</string>
     <string name="settings_save_sync_refresh_description">Wykonaj ręczną synchronizację teraz.\n%1$s</string>
     <string name="settings_save_sync_enable_auto">Auto-synchronizacja</string>
