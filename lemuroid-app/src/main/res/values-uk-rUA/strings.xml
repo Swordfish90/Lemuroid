@@ -19,6 +19,9 @@
     <string name="settings">Налаштування</string>
     <string name="save_sync">Зберегти синхронізацію</string>
     <string name="show_all">Показати все</string>
+    <string name="back">Назад</string>
+    <string name="close">Закрити</string>
+    <string name="game_page_search_suggestion">Пошук ігор</string>
     <string name="settings_category_general">Загальне</string>
     <string name="settings_category_input">Введення</string>
     <string name="settings_category_misc">Інші налаштування</string>
