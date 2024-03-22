@@ -20,6 +20,8 @@
     <string name="save_sync">Save-synchronisatie</string>
     <string name="show_all">Alles tonen</string>
     <string name="back">Terug</string>
+    <string name="close">Sluiten</string>
+    <string name="game_page_search_suggestion">Spellen zoeken</string>
     <string name="settings_category_general">Algemeen</string>
     <string name="settings_category_input">Besturing</string>
     <string name="settings_category_misc">Overig</string>
