@@ -19,6 +19,9 @@
     <string name="settings">설정</string>
     <string name="save_sync">세이브 동기화</string>
     <string name="show_all">모두 표시</string>
+    <string name="back">뒤로</string>
+    <string name="close">닫기</string>
+    <string name="game_page_search_suggestion">게임 검색</string>
     <string name="settings_category_general">일반</string>
     <string name="settings_category_input">입력</string>
     <string name="settings_category_misc">기타</string>
