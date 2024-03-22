@@ -70,7 +70,7 @@
     <string name="settings_save_sync_include_saves">Synchronizuj zapisy w grze</string>
     <string name="settings_save_sync_include_saves_description">%1$s na urządzeniu</string>
     <string name="settings_save_sync_include_states">Synchronizuj stany</string>
-    <string name="settings_save_sync_include_states_description">Wygodniejsze, ale cięższe i bardziej podatne na błędy. Wybierz Rdzenie/systemy, które chcesz zsynchronizować</string>
+    <string name="settings_save_sync_include_states_description">Wygodniejsze, ale cięższe i bardziej podatne na błędy. Wybierz rdzenie/systemy, które chcesz zsynchronizować</string>
     <string name="game_context_menu_add_to_favorites">Dodaj do ulubionych</string>
     <string name="game_context_menu_remove_from_favorites">Usuń z ulubionych</string>
     <string name="game_context_menu_resume">Wznów</string>
@@ -97,7 +97,7 @@
     <string name="game_toast_settings_button_using_gamepad">Wykryto gamepada. Uzyskaj dostęp do menu ustawień za pomocą %1$s.</string>
     <string name="game_toast_load_state_failed">Nie można załadować tego stanu</string>
     <string name="empty_view_default">Brak elementów</string>
-    <string name="core_settings_title">Ustawienia Rdzenia</string>
+    <string name="core_settings_title">Ustawienia rdzenia</string>
     <string name="core_settings_category_preferences">Preferencje</string>
     <string name="core_settings_category_controllers">Kontrolery</string>
     <string name="core_settings_controller">Kontroler %1$s</string>
@@ -110,10 +110,10 @@
     <string name="game_running_notification_title">%1$s jest uruchomione</string>
     <string name="game_running_notification_title_alternative">Gra jest uruchomiona</string>
     <string name="game_running_notification_message">Upewnij się, że zapisałeś swoje postępy</string>
-    <string name="game_loader_error_gl_incompatible">Ten Rdzeń wymaga wersji OpenGL ES, która nie jest obsługiwana przez Twoje urządzenie.</string>
+    <string name="game_loader_error_gl_incompatible">Ten rdzeń wymaga wersji OpenGL ES, która nie jest obsługiwana przez Twoje urządzenie.</string>
     <string name="game_loader_error_load_game">Podczas ładowania gry stało się coś złego. Upewnij się, że plik ROM jest obsługiwany przez Lemuroid i przeskanuj ponownie swoje gry.</string>
     <string name="game_loader_error_save">Z plikiem zapisu stało się coś złego. Jeśli problem nadal występuje, spróbuj wyłączyć auto-zapis.</string>
-    <string name="game_loader_error_unsupported_architecture">Twoje urządzenie nie obsługuje tego Rdzenia.</string>
+    <string name="game_loader_error_unsupported_architecture">Twoje urządzenie nie obsługuje tego rdzenia.</string>
     <string name="game_loader_error_generic">Stało się coś złego. Spróbuj wykonać następujące czynności:\n
         \n\u2022 Wyłącz auto-zapis i uruchom grę ponownie.
         \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji.
@@ -147,13 +147,13 @@
         <b>&#8226;Dlaczego moje gry nie są wykrywane?</b><br/>
         Jeśli gry są skompresowane, spróbuj je rozpakować. Jeśli to nie zadziała, spróbuj umieścić pliki ROM w oddzielnych katalogach, po jednym dla każdego systemu, o następujących nazwach: $SYSTEMS.
     ]]></string>
-    <string name="lemuroid_crash_disclamer">Wygląda na to, że Rdzeń Libretro napotkał nieoczekiwany problem. Jeśli nie ustąpi, spróbuj wykonać następujące czynności:\n
+    <string name="lemuroid_crash_disclamer">Wygląda na to, że rdzeń Libretro napotkał nieoczekiwany problem. Jeśli nie ustąpi, spróbuj wykonać następujące czynności:\n
         \n\u2022 Wyłącz auto-zapis i uruchom grę ponownie.
         \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji.
         \n\u2022 Przejdź do ustawień Lemuroid i przywróć ustawienia fabryczne.
-        \n\n Jeśli żaden z powyższych sposobów nie zadziała, możliwe, że ta gra/Rdzeń nie jest obsługiwany przez to urządzenie.
+        \n\n Jeśli żaden z powyższych sposobów nie zadziała, możliwe, że ta gra/rdzeń nie jest obsługiwany przez to urządzenie.
     </string>
-    <string name="error_message_incompatible_state">Ten stan zapisu nie jest kompatybilny z aktualną wersją Rdzenia. Załaduj najnowszy zapis w grze lub użyj poprzedniej wersji Lemuroid.</string>
+    <string name="error_message_incompatible_state">Ten stan zapisu nie jest kompatybilny z aktualną wersją rdzenia. Załaduj najnowszy zapis w grze lub użyj poprzedniej wersji Lemuroid.</string>
     <string name="shader_filter_names_auto">Automatyczny</string>
     <string name="shader_filter_names_sharp">Ostry</string>
     <string name="shader_filter_names_smooth">Gładki</string>
