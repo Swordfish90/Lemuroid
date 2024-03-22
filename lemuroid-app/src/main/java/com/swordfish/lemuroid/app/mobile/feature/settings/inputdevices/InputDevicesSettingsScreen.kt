@@ -26,10 +26,14 @@ import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 
 @Composable
-fun InputDevicesSettingsScreen(padding: MergedPaddingValues, viewModel: InputDevicesSettingsViewModel) {
-    val state = viewModel.uiState
-        .collectAsState(InputDevicesSettingsViewModel.State())
-        .value
+fun InputDevicesSettingsScreen(
+    padding: MergedPaddingValues,
+    viewModel: InputDevicesSettingsViewModel,
+) {
+    val state =
+        viewModel.uiState
+            .collectAsState(InputDevicesSettingsViewModel.State())
+            .value
 
     LemuroidElevatedSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
         EnabledDeviceCategory(state)
@@ -56,12 +60,13 @@ private fun DeviceBindingCategory(
                 title = { Text(text = retroKey.displayName(LocalContext.current)) },
                 subtitle = { Text(text = inputKey.displayName()) },
                 onClick = {
-                    val intent = Intent(context, GamePadBindingActivity::class.java).apply {
-                        putExtra(InputBindingUpdater.REQUEST_DEVICE, device)
-                        putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey.keyCode)
-                    }
+                    val intent =
+                        Intent(context, GamePadBindingActivity::class.java).apply {
+                            putExtra(InputBindingUpdater.REQUEST_DEVICE, device)
+                            putExtra(InputBindingUpdater.REQUEST_RETRO_KEY, retroKey.keyCode)
+                        }
                     context.startActivity(intent)
-                }
+                },
             )
         }
 
@@ -70,21 +75,26 @@ private fun DeviceBindingCategory(
 }
 
 @Composable
-private fun DeviceMenuShortcut(device: InputDevice, values: List<String>, defaultShortcut: String?) {
+private fun DeviceMenuShortcut(
+    device: InputDevice,
+    values: List<String>,
+    defaultShortcut: String?,
+) {
     if (values.isEmpty() || defaultShortcut == null) {
         return
     }
 
-    val state = indexPreferenceState(
-        InputDeviceManager.computeGameMenuShortcutPreference(device),
-        defaultShortcut,
-        values
-    )
+    val state =
+        indexPreferenceState(
+            InputDeviceManager.computeGameMenuShortcutPreference(device),
+            defaultShortcut,
+            values,
+        )
 
     LemuroidSettingsList(
         state = state,
         title = { Text(text = stringResource(R.string.settings_gamepad_title_game_menu)) },
-        items = values
+        items = values,
     )
 }
 
@@ -105,7 +115,7 @@ private fun GeneralOptionsCategory(viewModel: InputDevicesSettingsViewModel) {
     LemuroidElevatedSettingsGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_general)) }) {
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(R.string.settings_gamepad_title_reset_bindings)) },
-            onClick = { viewModel.resetAllBindings() }
+            onClick = { viewModel.resetAllBindings() },
         )
     }
 }

@@ -27,9 +27,8 @@ class IndexSetPreferenceSettingValueState(
     private val preferences: SharedPreferences,
     val key: String,
     private val values: List<String>,
-    private val defaultValue: Set<String>
+    private val defaultValue: Set<String>,
 ) : SettingValueState<Set<Int>> {
-
     private var _value by mutableStateOf(preferences.getStringSet(key, defaultValue)!!)
 
     override var value: Set<Int>
@@ -37,13 +36,15 @@ class IndexSetPreferenceSettingValueState(
             _value = index.map { values[it] }.toSet()
             preferences.edit { putStringSet(key, _value) }
         }
-        get() = _value
-            .map { values.indexOf(it) }
-            .toSet()
+        get() =
+            _value
+                .map { values.indexOf(it) }
+                .toSet()
 
     override fun reset() {
-        value = defaultValue
-            .map { values.indexOf(it) }
-            .toSet()
+        value =
+            defaultValue
+                .map { values.indexOf(it) }
+                .toSet()
     }
 }

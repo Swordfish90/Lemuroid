@@ -13,12 +13,11 @@ import kotlinx.coroutines.launch
 
 class CoresSelectionViewModel(
     context: Context,
-    private val coresSelection: CoresSelection
+    private val coresSelection: CoresSelection,
 ) : ViewModel() {
-
     class Factory(
         val context: Context,
-        val coresSelection: CoresSelection
+        val coresSelection: CoresSelection,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return CoresSelectionViewModel(context, coresSelection) as T
@@ -29,7 +28,11 @@ class CoresSelectionViewModel(
 
     fun getSelectedCores() = coresSelection.getSelectedCores()
 
-    fun changeCore(system: GameSystem, coreConfig: SystemCoreConfig, context: Context) {
+    fun changeCore(
+        system: GameSystem,
+        coreConfig: SystemCoreConfig,
+        context: Context,
+    ) {
         viewModelScope.launch {
             coresSelection.updateCoreConfigForSystem(system, coreConfig.coreID)
             LibraryIndexScheduler.scheduleCoreUpdate(context)

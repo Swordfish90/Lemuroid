@@ -12,24 +12,24 @@ import java.io.File
 import java.io.FileOutputStream
 
 class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
-
     suspend fun getPreviewForSlot(
         game: Game,
         coreID: CoreID,
         index: Int,
-        size: Int
-    ): Bitmap? = withContext(Dispatchers.IO) {
-        val screenshotName = getSlotScreenshotName(game, index)
-        val file = getPreviewFile(screenshotName, coreID.coreName)
-        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-        ThumbnailUtils.extractThumbnail(bitmap, size, size)
-    }
+        size: Int,
+    ): Bitmap? =
+        withContext(Dispatchers.IO) {
+            val screenshotName = getSlotScreenshotName(game, index)
+            val file = getPreviewFile(screenshotName, coreID.coreName)
+            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+            ThumbnailUtils.extractThumbnail(bitmap, size, size)
+        }
 
     suspend fun setPreviewForSlot(
         game: Game,
         bitmap: Bitmap,
         coreID: CoreID,
-        index: Int
+        index: Int,
     ) = withContext(Dispatchers.IO) {
         val screenshotName = getSlotScreenshotName(game, index)
         val file = getPreviewFile(screenshotName, coreID.coreName)
@@ -38,7 +38,10 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
         }
     }
 
-    private fun getPreviewFile(fileName: String, coreName: String): File {
+    private fun getPreviewFile(
+        fileName: String,
+        coreName: String,
+    ): File {
         val statesDirectories = File(directoriesManager.getStatesPreviewDirectory(), coreName)
         statesDirectories.mkdirs()
         return File(statesDirectories, fileName)
@@ -46,7 +49,7 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
 
     private fun getSlotScreenshotName(
         game: Game,
-        index: Int
+        index: Int,
     ) = "${game.fileName}.slot${index + 1}.jpg"
 
     companion object {

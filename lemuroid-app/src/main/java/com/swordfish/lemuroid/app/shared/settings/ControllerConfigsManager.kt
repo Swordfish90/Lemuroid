@@ -10,27 +10,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ControllerConfigsManager(private val sharedPreferences: Lazy<SharedPreferences>) {
-
     suspend fun getControllerConfigs(
         systemId: SystemID,
-        systemCoreConfig: SystemCoreConfig
-    ): Map<Int, ControllerConfig> = withContext(Dispatchers.IO) {
-        systemCoreConfig.controllerConfigs.entries
-            .associate { (port, controllers) ->
-                val currentName = sharedPreferences.get().getString(
-                    getSharedPreferencesId(systemId.dbname, systemCoreConfig.coreID, port),
-                    null
-                )
+        systemCoreConfig: SystemCoreConfig,
+    ): Map<Int, ControllerConfig> =
+        withContext(Dispatchers.IO) {
+            systemCoreConfig.controllerConfigs.entries
+                .associate { (port, controllers) ->
+                    val currentName =
+                        sharedPreferences.get().getString(
+                            getSharedPreferencesId(systemId.dbname, systemCoreConfig.coreID, port),
+                            null,
+                        )
 
-                val currentController = controllers
-                    .firstOrNull { it.name == currentName } ?: controllers.first()
+                    val currentController =
+                        controllers
+                            .firstOrNull { it.name == currentName } ?: controllers.first()
 
-                port to currentController
-            }
-    }
+                    port to currentController
+                }
+        }
 
     companion object {
-        fun getSharedPreferencesId(systemId: String, coreID: CoreID, port: Int) =
-            "pref_key_controller_type_${systemId}_${coreID.coreName}_$port"
+        fun getSharedPreferencesId(
+            systemId: String,
+            coreID: CoreID,
+            port: Int,
+        ) = "pref_key_controller_type_${systemId}_${coreID.coreName}_$port"
     }
 }

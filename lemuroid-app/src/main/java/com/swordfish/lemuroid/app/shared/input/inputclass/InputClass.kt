@@ -4,7 +4,6 @@ import android.view.InputDevice
 import com.swordfish.lemuroid.app.shared.input.InputKey
 
 interface InputClass {
-
     fun getInputKeys(): Set<InputKey>
 
     fun getAxesMap(): Map<Int, Int>

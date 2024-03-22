@@ -12,70 +12,76 @@ class TouchControllerSettingsManager(
     private val context: Context,
     private val controllerID: TouchControllerID,
     private val sharedPreferences: Lazy<SharedPreferences>,
-    private val orientation: Orientation
+    private val orientation: Orientation,
 ) {
     enum class Orientation {
         PORTRAIT,
-        LANDSCAPE
+        LANDSCAPE,
     }
 
     data class Settings(
         val scale: Float = DEFAULT_SCALE,
         val rotation: Float = DEFAULT_ROTATION,
         val marginX: Float = DEFAULT_MARGIN_X,
-        val marginY: Float = DEFAULT_MARGIN_Y
+        val marginY: Float = DEFAULT_MARGIN_Y,
     )
 
-    suspend fun retrieveSettings(): Settings = withContext(Dispatchers.IO) {
-        val sharedPreferences = sharedPreferences.get()
-        Settings(
-            scale = indexToFloat(
-                sharedPreferences.getInt(
-                    getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
-                    floatToIndex(DEFAULT_SCALE)
-                )
-            ),
-            rotation = indexToFloat(
-                sharedPreferences.getInt(
-                    getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
-                    floatToIndex(DEFAULT_ROTATION)
-                )
-            ),
-            marginX = indexToFloat(
-                sharedPreferences.getInt(
-                    getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
-                    floatToIndex(DEFAULT_MARGIN_X)
-                )
-            ),
-            marginY = indexToFloat(
-                sharedPreferences.getInt(
-                    getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
-                    floatToIndex(DEFAULT_MARGIN_Y)
-                )
+    suspend fun retrieveSettings(): Settings =
+        withContext(Dispatchers.IO) {
+            val sharedPreferences = sharedPreferences.get()
+            Settings(
+                scale =
+                    indexToFloat(
+                        sharedPreferences.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
+                            floatToIndex(DEFAULT_SCALE),
+                        ),
+                    ),
+                rotation =
+                    indexToFloat(
+                        sharedPreferences.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
+                            floatToIndex(DEFAULT_ROTATION),
+                        ),
+                    ),
+                marginX =
+                    indexToFloat(
+                        sharedPreferences.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
+                            floatToIndex(DEFAULT_MARGIN_X),
+                        ),
+                    ),
+                marginY =
+                    indexToFloat(
+                        sharedPreferences.getInt(
+                            getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
+                            floatToIndex(DEFAULT_MARGIN_Y),
+                        ),
+                    ),
             )
-        )
-    }
-
-    suspend fun storeSettings(settings: Settings): Unit = withContext(Dispatchers.IO) {
-        sharedPreferences.get().edit().apply {
-            putInt(
-                getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
-                floatToIndex(settings.scale)
-            ).apply()
-            putInt(
-                getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
-                floatToIndex(settings.rotation)
-            ).apply()
-            putInt(
-                getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
-                floatToIndex(settings.marginX)
-            ).apply()
-            putInt(
-                getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
-                floatToIndex(settings.marginY)
-            ).apply()
         }
-    }
+
+    suspend fun storeSettings(settings: Settings): Unit =
+        withContext(Dispatchers.IO) {
+            sharedPreferences.get().edit().apply {
+                putInt(
+                    getPreferenceString(R.string.pref_key_virtual_pad_scale, orientation),
+                    floatToIndex(settings.scale),
+                ).apply()
+                putInt(
+                    getPreferenceString(R.string.pref_key_virtual_pad_rotation, orientation),
+                    floatToIndex(settings.rotation),
+                ).apply()
+                putInt(
+                    getPreferenceString(R.string.pref_key_virtual_pad_margin_x, orientation),
+                    floatToIndex(settings.marginX),
+                ).apply()
+                putInt(
+                    getPreferenceString(R.string.pref_key_virtual_pad_margin_y, orientation),
+                    floatToIndex(settings.marginY),
+                ).apply()
+            }
+        }
 
     private fun indexToFloat(index: Int): Float = index / 100f
 
@@ -94,7 +100,10 @@ class TouchControllerSettingsManager(
         const val MAX_MARGINS = 96f
     }
 
-    private fun getPreferenceString(preferenceStringId: Int, orientation: Orientation): String {
+    private fun getPreferenceString(
+        preferenceStringId: Int,
+        orientation: Orientation,
+    ): String {
         return "${context.getString(preferenceStringId)}_${controllerID}_${orientation.ordinal}"
     }
 }

@@ -9,7 +9,6 @@ import com.swordfish.lemuroid.lib.bios.Bios
 import com.swordfish.lemuroid.lib.bios.BiosManager
 
 class BiosPreferences(private val biosManager: BiosManager) {
-
     fun addBiosPreferences(preferenceScreen: PreferenceScreen) {
         val context = preferenceScreen.context
         val (installedBios, notInstalledBios) = biosManager.getBiosInfo()
@@ -35,7 +34,10 @@ class BiosPreferences(private val biosManager: BiosManager) {
         }
     }
 
-    private fun createBiosPreference(context: Context, bios: Bios): Preference {
+    private fun createBiosPreference(
+        context: Context,
+        bios: Bios,
+    ): Preference {
         val preference = Preference(context)
         preference.title = bios.description
         preference.summary = bios.displayName()
@@ -43,7 +45,10 @@ class BiosPreferences(private val biosManager: BiosManager) {
         return preference
     }
 
-    private fun createCategory(context: Context, title: String): PreferenceCategory {
+    private fun createCategory(
+        context: Context,
+        title: String,
+    ): PreferenceCategory {
         val category = PreferenceCategory(context)
         category.title = title
         category.isIconSpaceReserved = false

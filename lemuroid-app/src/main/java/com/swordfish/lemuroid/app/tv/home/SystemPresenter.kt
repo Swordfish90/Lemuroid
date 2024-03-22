@@ -11,8 +11,10 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 
 class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) : Presenter() {
-
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any) {
+    override fun onBindViewHolder(
+        viewHolder: Presenter.ViewHolder?,
+        item: Any,
+    ) {
         val systemInfo = item as MetaSystemInfo
         val context = (viewHolder as ViewHolder).view.context
 
@@ -29,7 +31,7 @@ class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) :
         val cardView = ImageCardView(parent.context)
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
-        (cardView.findViewById<View>(R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
+        (cardView.findViewById<View>(androidx.leanback.R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
         return ViewHolder(cardView)
     }
 

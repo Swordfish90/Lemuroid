@@ -30,11 +30,16 @@ class GameCrashActivity : Activity() {
         private const val EXTRA_MESSAGE = "EXTRA_MESSAGE"
         private const val EXTRA_MESSAGE_DETAIL = "EXTRA_MESSAGE_DETAIL"
 
-        fun launch(activity: Activity, message: String, messageDetail: String?) {
-            val intent = Intent(activity, GameCrashActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, message)
-                putExtra(EXTRA_MESSAGE_DETAIL, messageDetail)
-            }
+        fun launch(
+            activity: Activity,
+            message: String,
+            messageDetail: String?,
+        ) {
+            val intent =
+                Intent(activity, GameCrashActivity::class.java).apply {
+                    putExtra(EXTRA_MESSAGE, message)
+                    putExtra(EXTRA_MESSAGE_DETAIL, messageDetail)
+                }
             activity.startActivity(intent)
         }
     }

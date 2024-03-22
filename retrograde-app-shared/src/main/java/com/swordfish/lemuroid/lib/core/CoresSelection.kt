@@ -16,38 +16,42 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class CoresSelection(private val sharedPreferencesFactory: Lazy<SharedPreferences>) {
-
     private val sharedPreferences by lazy { sharedPreferencesFactory.get() }
 
     private val flowSharedPreferences by lazy { FlowSharedPreferences(sharedPreferences) }
 
     data class SelectedCore(
         val system: GameSystem,
-        val coreConfig: SystemCoreConfig
+        val coreConfig: SystemCoreConfig,
     )
 
     fun getSelectedCores(): Flow<List<SelectedCore>> {
-        val configurableSystems = GameSystem.all()
-            .filter { it.systemCoreConfigs.size > 1 }
+        val configurableSystems =
+            GameSystem.all()
+                .filter { it.systemCoreConfigs.size > 1 }
 
-        val configurationFlows = configurableSystems.map { system ->
-            getSelectedCoreConfigForSystem(system)
-                .map { SelectedCore(system, it) }
-        }
+        val configurationFlows =
+            configurableSystems.map { system ->
+                getSelectedCoreConfigForSystem(system)
+                    .map { SelectedCore(system, it) }
+            }
 
         return combine(configurationFlows) { it.toList() }
     }
 
-    suspend fun updateCoreConfigForSystem(system: GameSystem, coreID: CoreID) =
-        withContext(Dispatchers.IO) {
-            sharedPreferences.edit()
-                .putString(computeSystemPreferenceKey(system.id), coreID.coreName)
-                .commit()
-        }
+    suspend fun updateCoreConfigForSystem(
+        system: GameSystem,
+        coreID: CoreID,
+    ) = withContext(Dispatchers.IO) {
+        sharedPreferences.edit()
+            .putString(computeSystemPreferenceKey(system.id), coreID.coreName)
+            .commit()
+    }
 
     suspend fun getCoreConfigForSystem(system: GameSystem): SystemCoreConfig {
         return getSelectedCoreConfigForSystem(system).first()
     }
+
     private fun getSelectedCoreConfigForSystem(system: GameSystem): Flow<SystemCoreConfig> {
         return getSelectedCoreNameForSystem(system)
             .map { coreName ->
@@ -56,10 +60,11 @@ class CoresSelection(private val sharedPreferencesFactory: Lazy<SharedPreference
     }
 
     private fun getSelectedCoreNameForSystem(system: GameSystem): Flow<String> {
-        val preference = flowSharedPreferences.getString(
-            computeSystemPreferenceKey(system.id),
-            system.systemCoreConfigs.first().coreID.coreName
-        )
+        val preference =
+            flowSharedPreferences.getString(
+                computeSystemPreferenceKey(system.id),
+                system.systemCoreConfigs.first().coreID.coreName,
+            )
         return preference.asFlow()
             .flowOn(Dispatchers.IO)
     }

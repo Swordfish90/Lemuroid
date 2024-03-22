@@ -5,7 +5,6 @@ import androidx.leanback.app.GuidedStepSupportFragment
 import com.swordfish.lemuroid.app.tv.shared.BaseTVActivity
 
 class TVFolderPickerActivity : BaseTVActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (null == savedInstanceState) {
@@ -21,9 +20,10 @@ class TVFolderPickerActivity : BaseTVActivity() {
 
     private fun buildFolderFragment(folder: String): TVFolderPickerFolderFragment {
         val folderFragment = TVFolderPickerFolderFragment()
-        folderFragment.arguments = Bundle().apply {
-            putString(TVFolderPickerFolderFragment.EXTRA_FOLDER, folder)
-        }
+        folderFragment.arguments =
+            Bundle().apply {
+                putString(TVFolderPickerFolderFragment.EXTRA_FOLDER, folder)
+            }
         return folderFragment
     }
 

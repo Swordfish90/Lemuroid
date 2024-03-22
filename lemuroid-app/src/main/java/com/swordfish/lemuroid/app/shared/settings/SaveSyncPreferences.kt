@@ -13,7 +13,6 @@ import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 
 class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
-
     fun addSaveSyncPreferences(preferenceScreen: PreferenceScreen) {
         val context = preferenceScreen.context
 
@@ -45,14 +44,18 @@ class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
         updatePreferences(preferenceScreen, false)
     }
 
-    fun updatePreferences(preferenceScreen: PreferenceScreen, syncInProgress: Boolean) {
+    fun updatePreferences(
+        preferenceScreen: PreferenceScreen,
+        syncInProgress: Boolean,
+    ) {
         val context = preferenceScreen.context
 
         preferenceScreen.findPreference<Preference>(keyConfigure(context))?.apply {
-            title = context.getString(
-                R.string.settings_save_sync_configure,
-                saveSyncManager.getProvider()
-            )
+            title =
+                context.getString(
+                    R.string.settings_save_sync_configure,
+                    saveSyncManager.getProvider(),
+                )
             isIconSpaceReserved = false
             isEnabled = !syncInProgress
             summary = saveSyncManager.getConfigInfo()
@@ -60,10 +63,11 @@ class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
 
         preferenceScreen.findPreference<Preference>(keySyncEnabled(context))?.apply {
             title = context.getString(R.string.settings_save_sync_include_saves)
-            summary = context.getString(
-                R.string.settings_save_sync_include_saves_description,
-                saveSyncManager.computeSavesSpace()
-            )
+            summary =
+                context.getString(
+                    R.string.settings_save_sync_include_saves_description,
+                    saveSyncManager.computeSavesSpace(),
+                )
             isEnabled = saveSyncManager.isConfigured() && !syncInProgress
             isIconSpaceReserved = false
         }
@@ -79,10 +83,11 @@ class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
         preferenceScreen.findPreference<Preference>(keyForceSync(context))?.apply {
             title = context.getString(R.string.settings_save_sync_refresh)
             isEnabled = saveSyncManager.isConfigured() && !syncInProgress
-            summary = context.getString(
-                R.string.settings_save_sync_refresh_description,
-                saveSyncManager.getLastSyncInfo()
-            )
+            summary =
+                context.getString(
+                    R.string.settings_save_sync_refresh_description,
+                    saveSyncManager.getLastSyncInfo(),
+                )
             dependency = keySyncEnabled(context)
             isIconSpaceReserved = false
         }
@@ -92,15 +97,19 @@ class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
             summary = context.getString(R.string.settings_save_sync_include_states_description)
             dependency = keySyncEnabled(context)
             isEnabled = saveSyncManager.isConfigured() && !syncInProgress
-            entries = CoreID.values()
-                .map { saveSyncManager.getDisplayNameForCore(context, it) }
-                .toTypedArray()
+            entries =
+                CoreID.values()
+                    .map { saveSyncManager.getDisplayNameForCore(context, it) }
+                    .toTypedArray()
             entryValues = CoreID.values().map { it.coreName }.toTypedArray()
             isIconSpaceReserved = false
         }
     }
 
-    fun onPreferenceTreeClick(activity: Activity?, preference: Preference): Boolean {
+    fun onPreferenceTreeClick(
+        activity: Activity?,
+        preference: Preference,
+    ): Boolean {
         val context = preference.context
         return when (preference.key) {
             keyConfigure(context) -> {
@@ -115,24 +124,19 @@ class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
         }
     }
 
-    private fun keySyncEnabled(context: Context) =
-        context.getString(R.string.pref_key_save_sync_enable)
+    private fun keySyncEnabled(context: Context) = context.getString(R.string.pref_key_save_sync_enable)
 
-    private fun keyForceSync(context: Context) =
-        context.getString(R.string.pref_key_save_sync_force_refresh)
+    private fun keyForceSync(context: Context) = context.getString(R.string.pref_key_save_sync_force_refresh)
 
-    private fun keyConfigure(context: Context) =
-        context.getString(R.string.pref_key_save_sync_configure)
+    private fun keyConfigure(context: Context) = context.getString(R.string.pref_key_save_sync_configure)
 
-    private fun keyAutoSync(context: Context) =
-        context.getString(R.string.pref_key_save_sync_auto)
+    private fun keyAutoSync(context: Context) = context.getString(R.string.pref_key_save_sync_auto)
 
-    private fun keySyncCores(context: Context) =
-        context.getString(R.string.pref_key_save_sync_cores)
+    private fun keySyncCores(context: Context) = context.getString(R.string.pref_key_save_sync_cores)
 
     private fun handleSaveSyncConfigure(activity: Activity?) {
         activity?.startActivity(
-            Intent(activity, saveSyncManager.getSettingsActivity())
+            Intent(activity, saveSyncManager.getSettingsActivity()),
         )
     }
 

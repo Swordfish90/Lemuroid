@@ -36,13 +36,13 @@ import javax.inject.Inject
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainTVActivity : BaseTVActivity(), BusyActivity {
-
     @Inject
     lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
 
     var mainViewModel: MainTVViewModel? = null
 
     override fun activity(): Activity = this
+
     override fun isBusy(): Boolean = mainViewModel?.inProgress?.value ?: false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +59,11 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
         ensureLegacyStoragePermissionsIfNeeded()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
@@ -78,11 +82,12 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
         }
 
         val requestPermission = ActivityResultContracts.RequestPermission()
-        val requestPermissionLauncher = registerForActivityResult(requestPermission) { isGranted ->
-            if (!isGranted) {
-                finish()
+        val requestPermissionLauncher =
+            registerForActivityResult(requestPermission) { isGranted ->
+                if (!isGranted) {
+                    finish()
+                }
             }
-        }
         requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
@@ -93,7 +98,6 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
 
     @dagger.Module
     abstract class Module {
-
         @PerFragment
         @ContributesAndroidInjector(modules = [TVHomeFragment.Module::class])
         abstract fun tvHomeFragment(): TVHomeFragment
@@ -119,9 +123,8 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
                 activity: MainTVActivity,
                 retrogradeDb: RetrogradeDatabase,
                 shortcutsGenerator: ShortcutsGenerator,
-                gameLauncher: GameLauncher
-            ) =
-                GameInteractor(activity, retrogradeDb, true, shortcutsGenerator, gameLauncher)
+                gameLauncher: GameLauncher,
+            ) = GameInteractor(activity, retrogradeDb, true, shortcutsGenerator, gameLauncher)
         }
     }
 }

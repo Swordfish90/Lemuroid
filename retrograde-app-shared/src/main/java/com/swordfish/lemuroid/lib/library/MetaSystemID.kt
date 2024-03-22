@@ -11,108 +11,109 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
     NES(
         R.string.game_system_title_nes,
         R.drawable.game_system_nes,
-        listOf(SystemID.NES)
+        listOf(SystemID.NES),
     ),
     SNES(
         R.string.game_system_title_snes,
         R.drawable.game_system_snes,
-        listOf(SystemID.SNES)
+        listOf(SystemID.SNES),
     ),
     GENESIS(
         R.string.game_system_title_genesis,
         R.drawable.game_system_genesis,
-        listOf(SystemID.GENESIS, SystemID.SEGACD)
+        listOf(SystemID.GENESIS, SystemID.SEGACD),
     ),
     GB(
         R.string.game_system_title_gb,
         R.drawable.game_system_gb,
-        listOf(SystemID.GB)
+        listOf(SystemID.GB),
     ),
     GBC(
         R.string.game_system_title_gbc,
         R.drawable.game_system_gbc,
-        listOf(SystemID.GBC)
+        listOf(SystemID.GBC),
     ),
     GBA(
         R.string.game_system_title_gba,
         R.drawable.game_system_gba,
-        listOf(SystemID.GBA)
+        listOf(SystemID.GBA),
     ),
     N64(
         R.string.game_system_title_n64,
         R.drawable.game_system_n64,
-        listOf(SystemID.N64)
+        listOf(SystemID.N64),
     ),
     SMS(
         R.string.game_system_title_sms,
         R.drawable.game_system_sms,
-        listOf(SystemID.SMS)
+        listOf(SystemID.SMS),
     ),
     PSP(
         R.string.game_system_title_psp,
         R.drawable.game_system_psp,
-        listOf(SystemID.PSP)
+        listOf(SystemID.PSP),
     ),
     NDS(
         R.string.game_system_title_nds,
         R.drawable.game_system_ds,
-        listOf(SystemID.NDS)
+        listOf(SystemID.NDS),
     ),
     GG(
         R.string.game_system_title_gg,
         R.drawable.game_system_gg,
-        listOf(SystemID.GG)
+        listOf(SystemID.GG),
     ),
     ATARI2600(
         R.string.game_system_title_atari2600,
         R.drawable.game_system_atari2600,
-        listOf(SystemID.ATARI2600)
+        listOf(SystemID.ATARI2600),
     ),
     PSX(
         R.string.game_system_title_psx,
         R.drawable.game_system_psx,
-        listOf(SystemID.PSX)
+        listOf(SystemID.PSX),
     ),
     ARCADE(
         R.string.game_system_title_arcade,
         R.drawable.game_system_arcade,
-        listOf(SystemID.FBNEO, SystemID.MAME2003PLUS)
+        listOf(SystemID.FBNEO, SystemID.MAME2003PLUS),
     ),
     ATARI7800(
         R.string.game_system_title_atari7800,
         R.drawable.game_system_atari7800,
-        listOf(SystemID.ATARI7800)
+        listOf(SystemID.ATARI7800),
     ),
     LYNX(
         R.string.game_system_title_lynx,
         R.drawable.game_system_lynx,
-        listOf(SystemID.LYNX)
+        listOf(SystemID.LYNX),
     ),
     PC_ENGINE(
         R.string.game_system_title_pce,
         R.drawable.game_system_pce,
-        listOf(SystemID.PC_ENGINE)
+        listOf(SystemID.PC_ENGINE),
     ),
     NGP(
         R.string.game_system_title_ngp,
         R.drawable.game_system_ngp,
-        listOf(SystemID.NGP, SystemID.NGC)
+        listOf(SystemID.NGP, SystemID.NGC),
     ),
     WS(
         R.string.game_system_title_ws,
         R.drawable.game_system_ws,
-        listOf(SystemID.WS, SystemID.WSC)
+        listOf(SystemID.WS, SystemID.WSC),
     ),
     DOS(
         R.string.game_system_title_dos,
         R.drawable.game_system_dos,
-        listOf(SystemID.DOS)
+        listOf(SystemID.DOS),
     ),
     NINTENDO_3DS(
         R.string.game_system_title_3ds,
         R.drawable.game_system_3ds,
-        listOf(SystemID.NINTENDO_3DS)
-    );
+        listOf(SystemID.NINTENDO_3DS),
+    ),
+    ;
 
     fun color(): Int {
         return ColorUtils.color(ordinal.toFloat() / values().size)

@@ -8,19 +8,20 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 
 object AdvancedSettingsPreferences {
-
     fun updateCachePreferences(preferenceScreen: PreferenceScreen) {
         val cacheKey = preferenceScreen.context.getString(R.string.pref_key_max_cache_size)
         preferenceScreen.findPreference<ListPreference>(cacheKey)?.apply {
             val supportedCacheValues = CacheCleaner.getSupportedCacheLimits()
 
-            entries = supportedCacheValues
-                .map { getSizeLabel(preferenceScreen.context, it) }
-                .toTypedArray()
+            entries =
+                supportedCacheValues
+                    .map { getSizeLabel(preferenceScreen.context, it) }
+                    .toTypedArray()
 
-            entryValues = supportedCacheValues
-                .map { it.toString() }
-                .toTypedArray()
+            entryValues =
+                supportedCacheValues
+                    .map { it.toString() }
+                    .toTypedArray()
 
             if (value == null) {
                 setValueIndex(supportedCacheValues.indexOf(CacheCleaner.getDefaultCacheLimit()))
@@ -30,7 +31,10 @@ object AdvancedSettingsPreferences {
         }
     }
 
-    private fun getSizeLabel(appContext: Context, size: Long): String {
+    private fun getSizeLabel(
+        appContext: Context,
+        size: Long,
+    ): String {
         return Formatter.formatShortFileSize(appContext, size)
     }
 }

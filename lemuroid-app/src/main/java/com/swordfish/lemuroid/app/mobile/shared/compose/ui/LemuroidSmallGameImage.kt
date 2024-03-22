@@ -18,24 +18,30 @@ import com.swordfish.lemuroid.app.shared.covers.CoverUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
-fun LemuroidSmallGameImage(modifier: Modifier = Modifier, game: Game) {
-    val fallbackDrawable = remember(game) {
-        CoverUtils.getFallbackDrawable(game)
-    }
+fun LemuroidSmallGameImage(
+    modifier: Modifier = Modifier,
+    game: Game,
+) {
+    val fallbackDrawable =
+        remember(game) {
+            CoverUtils.getFallbackDrawable(game)
+        }
 
     val fallbackPainter = rememberDrawablePainter(fallbackDrawable)
 
     AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(game.coverFrontUrl)
-            .build(),
+        model =
+            ImageRequest.Builder(LocalContext.current)
+                .data(game.coverFrontUrl)
+                .build(),
         contentDescription = game.title,
-        modifier = modifier
-            .fillMaxWidth()
-            .aspectRatio(1.0f)
-            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .aspectRatio(1.0f)
+                .background(MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)),
         fallback = fallbackPainter,
         error = fallbackPainter,
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
     )
 }

@@ -15,10 +15,12 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class GamePresenter(
     private val cardSize: Int,
-    private val gameInteractor: GameInteractor
+    private val gameInteractor: GameInteractor,
 ) : Presenter() {
-
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any?) {
+    override fun onBindViewHolder(
+        viewHolder: Presenter.ViewHolder?,
+        item: Any?,
+    ) {
         if (item == null || viewHolder !is ViewHolder) return
         val game = item as Game
         viewHolder.mCardView.titleText = game.title
@@ -32,7 +34,7 @@ class GamePresenter(
         val cardView = ImageCardView(parent.context)
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
-        (cardView.findViewById<View>(R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
+        (cardView.findViewById<View>(androidx.leanback.R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
         return ViewHolder(cardView)
     }
 

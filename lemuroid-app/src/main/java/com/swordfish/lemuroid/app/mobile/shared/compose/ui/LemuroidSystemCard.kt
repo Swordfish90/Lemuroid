@@ -18,28 +18,31 @@ import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 fun LemuroidSystemCard(
     modifier: Modifier = Modifier,
     system: MetaSystemInfo,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val context = LocalContext.current
 
-    val title = remember(system.metaSystem.titleResId) {
-        system.getName(context)
-    }
+    val title =
+        remember(system.metaSystem.titleResId) {
+            system.getName(context)
+        }
 
-    val subtitle = remember(system.metaSystem.titleResId) {
-        context.getString(
-            R.string.system_grid_details,
-            system.count.toString()
-        )
-    }
+    val subtitle =
+        remember(system.metaSystem.titleResId) {
+            context.getString(
+                R.string.system_grid_details,
+                system.count.toString(),
+            )
+        }
 
     ElevatedCard(
         modifier = modifier.padding(8.dp),
         onClick = onClick,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
         ) {
             LemuroidSystemImage(system)
             LemuroidTexts(title = title, subtitle = subtitle)

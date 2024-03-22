@@ -9,14 +9,20 @@ class SharedPreferencesDelegates {
     class BooleanDelegate(
         private val sharedPreferences: SharedPreferences,
         private val key: String,
-        private val defaultValue: Boolean
+        private val defaultValue: Boolean,
     ) : ReadWriteProperty<Any, Boolean> {
-
-        override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
+        override fun getValue(
+            thisRef: Any,
+            property: KProperty<*>,
+        ): Boolean {
             return sharedPreferences.getBoolean(key, defaultValue)
         }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
+        override fun setValue(
+            thisRef: Any,
+            property: KProperty<*>,
+            value: Boolean,
+        ) {
             sharedPreferences.edit().putBoolean(key, value).apply()
         }
     }
@@ -25,14 +31,20 @@ class SharedPreferencesDelegates {
         private val sharedPreferences: SharedPreferences,
         private val key: String,
         private val defaultIndex: Int,
-        private val max: Int = 10
+        private val max: Int = 10,
     ) : ReadWriteProperty<Any, Float> {
-
-        override fun getValue(thisRef: Any, property: KProperty<*>): Float {
+        override fun getValue(
+            thisRef: Any,
+            property: KProperty<*>,
+        ): Float {
             return indexToPercentage(sharedPreferences.getInt(key, defaultIndex))
         }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Float) {
+        override fun setValue(
+            thisRef: Any,
+            property: KProperty<*>,
+            value: Float,
+        ) {
             sharedPreferences.edit().putInt(key, percentageToIndex(value)).apply()
         }
 
@@ -44,14 +56,20 @@ class SharedPreferencesDelegates {
     class StringDelegate(
         private val sharedPreferences: SharedPreferences,
         private val key: String,
-        private val defaultValue: String
+        private val defaultValue: String,
     ) : ReadWriteProperty<Any, String> {
-
-        override fun getValue(thisRef: Any, property: KProperty<*>): String {
+        override fun getValue(
+            thisRef: Any,
+            property: KProperty<*>,
+        ): String {
             return sharedPreferences.getString(key, defaultValue) ?: defaultValue
         }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
+        override fun setValue(
+            thisRef: Any,
+            property: KProperty<*>,
+            value: String,
+        ) {
             sharedPreferences.edit().putString(key, value).apply()
         }
     }
@@ -59,14 +77,20 @@ class SharedPreferencesDelegates {
     class LongDelegate(
         private val sharedPreferences: SharedPreferences,
         private val key: String,
-        private val defaultValue: Long
+        private val defaultValue: Long,
     ) : ReadWriteProperty<Any, Long> {
-
-        override fun getValue(thisRef: Any, property: KProperty<*>): Long {
+        override fun getValue(
+            thisRef: Any,
+            property: KProperty<*>,
+        ): Long {
             return sharedPreferences.getLong(key, defaultValue)
         }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Long) {
+        override fun setValue(
+            thisRef: Any,
+            property: KProperty<*>,
+            value: Long,
+        ) {
             sharedPreferences.edit().putLong(key, value).apply()
         }
     }
@@ -74,14 +98,20 @@ class SharedPreferencesDelegates {
     class StringSetDelegate(
         private val sharedPreferences: SharedPreferences,
         private val key: String,
-        private val defaultValue: Set<String>
+        private val defaultValue: Set<String>,
     ) : ReadWriteProperty<Any, Set<String>> {
-
-        override fun getValue(thisRef: Any, property: KProperty<*>): Set<String> {
+        override fun getValue(
+            thisRef: Any,
+            property: KProperty<*>,
+        ): Set<String> {
             return sharedPreferences.getStringSet(key, defaultValue) ?: defaultValue
         }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Set<String>) {
+        override fun setValue(
+            thisRef: Any,
+            property: KProperty<*>,
+            value: Set<String>,
+        ) {
             sharedPreferences.edit().putStringSet(key, value).apply()
         }
     }

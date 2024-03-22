@@ -15,22 +15,26 @@ import androidx.compose.ui.unit.dp
 import com.swordfish.lemuroid.R
 
 @Composable
-fun FavoriteToggle(isToggled: Boolean, onFavoriteToggle: (Boolean) -> Unit) {
+fun FavoriteToggle(
+    isToggled: Boolean,
+    onFavoriteToggle: (Boolean) -> Unit,
+) {
     IconToggleButton(
         checked = isToggled,
         onCheckedChange = onFavoriteToggle,
         modifier = Modifier.fillMaxSize(),
     ) {
-        val image = if (isToggled) {
-            Icons.Default.Favorite
-        } else {
-            Icons.Default.FavoriteBorder
-        }
+        val image =
+            if (isToggled) {
+                Icons.Default.Favorite
+            } else {
+                Icons.Default.FavoriteBorder
+            }
         Icon(
             image,
             contentDescription = stringResource(R.string.favorites),
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
     }
 }

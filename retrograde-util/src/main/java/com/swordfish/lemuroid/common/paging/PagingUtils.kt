@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 fun <T : Any> buildFlowPaging(
     pageSize: Int,
     coroutineScope: CoroutineScope,
-    source: () -> PagingSource<Int, T>
+    source: () -> PagingSource<Int, T>,
 ): Flow<PagingData<T>> {
     return Pager(PagingConfig(pageSize), pagingSourceFactory = source)
         .flow

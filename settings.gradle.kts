@@ -1,3 +1,5 @@
+@file:Suppress("ktlint")
+
 include(
     ":retrograde-util",
     ":retrograde-app-shared",

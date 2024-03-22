@@ -52,6 +52,8 @@ class ThrottledLiveData<T>(source: LiveData<T>, delayMs: Long) : MediatorLiveDat
             delayedValue = null
             isValueDelayed = false
             true
-        } else false
+        } else {
+            false
+        }
     }
 }

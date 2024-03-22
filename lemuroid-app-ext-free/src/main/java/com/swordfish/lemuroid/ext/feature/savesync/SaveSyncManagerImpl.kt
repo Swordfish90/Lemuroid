@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 
 class SaveSyncManagerImpl(
     private val appContext: Context,
-    private val directoriesManager: DirectoriesManager
+    private val directoriesManager: DirectoriesManager,
 ) : SaveSyncManager() {
     override fun getProvider(): String = ""
 

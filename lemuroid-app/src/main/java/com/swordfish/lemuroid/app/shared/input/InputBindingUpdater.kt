@@ -13,7 +13,6 @@ import timber.log.Timber
 
 @OptIn(DelicateCoroutinesApi::class)
 class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, intent: Intent) {
-
     val extras = parseExtras(intent)
 
     fun getTitle(context: Context): String {
@@ -55,11 +54,13 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
     }
 
     private fun parseExtras(intent: Intent): IntentExtras {
-        val device = intent.extras?.getParcelable<InputDevice>(REQUEST_DEVICE)
-            ?: throw IllegalArgumentException("REQUEST_DEVICE has not been passed")
+        val device =
+            intent.extras?.getParcelable<InputDevice>(REQUEST_DEVICE)
+                ?: throw IllegalArgumentException("REQUEST_DEVICE has not been passed")
 
-        val retroKey = intent.extras?.getInt(REQUEST_RETRO_KEY)
-            ?: throw IllegalArgumentException("REQUEST_RETRO_KEY has not been passed")
+        val retroKey =
+            intent.extras?.getInt(REQUEST_RETRO_KEY)
+                ?: throw IllegalArgumentException("REQUEST_RETRO_KEY has not been passed")
 
         return IntentExtras(device, retroKey)
     }

@@ -19,40 +19,39 @@ class SettingsViewModel(
     context: Context,
     private val settingsInteractor: SettingsInteractor,
     saveSyncManager: SaveSyncManager,
-    sharedPreferences: FlowSharedPreferences
+    sharedPreferences: FlowSharedPreferences,
 ) : ViewModel() {
-
     class Factory(
         private val context: Context,
         private val settingsInteractor: SettingsInteractor,
         private val saveSyncManager: SaveSyncManager,
-        private val sharedPreferences: FlowSharedPreferences
+        private val sharedPreferences: FlowSharedPreferences,
     ) : ViewModelProvider.Factory {
-
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return SettingsViewModel(
                 context,
                 settingsInteractor,
                 saveSyncManager,
-                sharedPreferences
+                sharedPreferences,
             ) as T
         }
     }
 
     data class State(
         val currentDirectory: String = "",
-        val isSaveSyncSupported: Boolean = false
+        val isSaveSyncSupported: Boolean = false,
     )
 
     val indexingInProgress = PendingOperationsMonitor(context).anyLibraryOperationInProgress()
 
     val directoryScanInProgress = PendingOperationsMonitor(context).isDirectoryScanInProgress()
 
-    val uiState = sharedPreferences.getString(context.getString(R.string.pref_key_extenral_folder))
-        .asFlow()
-        .flowOn(Dispatchers.IO)
-        .stateIn(viewModelScope, SharingStarted.Lazily, "")
-        .map { State(it, saveSyncManager.isSupported()) }
+    val uiState =
+        sharedPreferences.getString(context.getString(com.swordfish.lemuroid.lib.R.string.pref_key_extenral_folder))
+            .asFlow()
+            .flowOn(Dispatchers.IO)
+            .stateIn(viewModelScope, SharingStarted.Lazily, "")
+            .map { State(it, saveSyncManager.isSupported()) }
 
     fun changeLocalStorageFolder() {
         settingsInteractor.changeLocalStorageFolder()

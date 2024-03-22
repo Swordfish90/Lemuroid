@@ -19,7 +19,6 @@ import javax.inject.Inject
 
 class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
-
     @Inject
     lateinit var lemuroidLibrary: LemuroidLibrary
 
@@ -28,18 +27,20 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
 
         val notificationsManager = NotificationsManager(applicationContext)
 
-        val foregroundInfo = ForegroundInfo(
-            NotificationsManager.LIBRARY_INDEXING_NOTIFICATION_ID,
-            notificationsManager.libraryIndexingNotification()
-        )
+        val foregroundInfo =
+            ForegroundInfo(
+                NotificationsManager.LIBRARY_INDEXING_NOTIFICATION_ID,
+                notificationsManager.libraryIndexingNotification(),
+            )
 
         setForegroundAsync(foregroundInfo)
 
-        val result = withContext(Dispatchers.IO) {
-            kotlin.runCatching {
-                lemuroidLibrary.indexLibrary()
+        val result =
+            withContext(Dispatchers.IO) {
+                kotlin.runCatching {
+                    lemuroidLibrary.indexLibrary()
+                }
             }
-        }
 
         result.exceptionOrNull()?.let {
             Timber.e("Library indexing work terminated with an exception:", it)

@@ -14,7 +14,7 @@ object LibraryIndexScheduler {
             .beginUniqueWork(
                 LIBRARY_INDEX_WORK_ID,
                 ExistingWorkPolicy.APPEND_OR_REPLACE,
-                OneTimeWorkRequestBuilder<LibraryIndexWork>().build()
+                OneTimeWorkRequestBuilder<LibraryIndexWork>().build(),
             )
             .enqueue()
     }
@@ -24,7 +24,7 @@ object LibraryIndexScheduler {
             .beginUniqueWork(
                 CORE_UPDATE_WORK_ID,
                 ExistingWorkPolicy.APPEND_OR_REPLACE,
-                OneTimeWorkRequestBuilder<CoreUpdateWork>().build()
+                OneTimeWorkRequestBuilder<CoreUpdateWork>().build(),
             )
             .enqueue()
     }

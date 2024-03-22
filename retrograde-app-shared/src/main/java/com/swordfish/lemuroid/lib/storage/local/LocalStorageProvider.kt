@@ -42,9 +42,8 @@ import java.util.zip.ZipInputStream
 
 class LocalStorageProvider(
     private val context: Context,
-    private val directoriesManager: DirectoriesManager
+    private val directoriesManager: DirectoriesManager,
 ) : StorageProvider {
-
     override val id: String = "local"
 
     override val name: String = context.getString(R.string.local_storage)
@@ -68,22 +67,24 @@ class LocalStorageProvider(
         return preferenceManager.getString(prefString, null)?.let { File(it) }
     }
 
-    private fun walkDirectory(rootDirectory: File): Flow<List<BaseStorageFile>> = flow {
-        val directories = mutableListOf(rootDirectory)
+    private fun walkDirectory(rootDirectory: File): Flow<List<BaseStorageFile>> =
+        flow {
+            val directories = mutableListOf(rootDirectory)
 
-        while (directories.isNotEmpty()) {
-            val directory = directories.removeAt(0)
-            val groups = directory.listFiles()
-                ?.filterNot { it.name.startsWith(".") }
-                ?.groupBy { it.isDirectory } ?: mapOf()
+            while (directories.isNotEmpty()) {
+                val directory = directories.removeAt(0)
+                val groups =
+                    directory.listFiles()
+                        ?.filterNot { it.name.startsWith(".") }
+                        ?.groupBy { it.isDirectory } ?: mapOf()
 
-            val newDirectories = groups[true] ?: listOf()
-            val newFiles = groups[false] ?: listOf()
+                val newDirectories = groups[true] ?: listOf()
+                val newFiles = groups[false] ?: listOf()
 
-            directories.addAll(newDirectories)
-            emit((newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) }))
+                directories.addAll(newDirectories)
+                emit((newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) }))
+            }
         }
-    }
 
     // There is no need to handle anything. Data file have to be in the same directory for detection we expect them
     // to still be there.
@@ -115,7 +116,7 @@ class LocalStorageProvider(
     override fun getGameRomFiles(
         game: Game,
         dataFiles: List<DataFile>,
-        allowVirtualFiles: Boolean
+        allowVirtualFiles: Boolean,
     ): RomFiles {
         return RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
     }

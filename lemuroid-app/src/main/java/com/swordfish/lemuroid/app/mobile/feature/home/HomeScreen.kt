@@ -39,7 +39,7 @@ fun HomeScreen(
     padding: MergedPaddingValues,
     viewModel: HomeViewModel,
     onGameClick: (Game) -> Unit,
-    onGameLongClick: (Game) -> Unit
+    onGameLongClick: (Game) -> Unit,
 ) {
     val context = LocalContext.current
     val applicationContext = context.applicationContext
@@ -53,13 +53,14 @@ fun HomeScreen(
         }
     }
 
-    val permissionsLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (!isGranted) {
-            context.displayDetailsSettingsScreen()
+    val permissionsLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { isGranted: Boolean ->
+            if (!isGranted) {
+                context.displayDetailsSettingsScreen()
+            }
         }
-    }
 
     val state = viewModel.getViewStates().collectAsState(HomeViewModel.UIState())
     HomeScreen(
@@ -74,7 +75,7 @@ fun HomeScreen(
 
             permissionsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         },
-        { viewModel.changeLocalStorageFolder(context) }
+        { viewModel.changeLocalStorageFolder(context) },
     ) // TODO COMPOSE We need to understand what's going to happen here.
 }
 
@@ -90,17 +91,18 @@ private fun HomeScreen(
     val finalPadding = paddings + PaddingValues(vertical = 16.dp)
 
     Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(finalPadding.asPaddingValues()),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(finalPadding.asPaddingValues()),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AnimatedVisibility(state.showNoPermissionNotification) {
             HomeNotification(
                 titleId = R.string.home_notification_title,
                 messageId = R.string.home_notification_message,
                 actionId = R.string.home_notification_action,
-                onAction = onEnableNotificationsClicked
+                onAction = onEnableNotificationsClicked,
             )
         }
         AnimatedVisibility(state.showNoGamesNotification) {
@@ -108,26 +110,26 @@ private fun HomeScreen(
                 titleId = R.string.home_empty_title,
                 messageId = R.string.home_empty_message,
                 actionId = R.string.home_empty_action,
-                onAction = onSetDirectoryClicked
+                onAction = onSetDirectoryClicked,
             )
         }
         HomeRow(
             stringResource(id = R.string.recent),
             state.recentGames,
             onGameClicked,
-            onGameLongClick
+            onGameLongClick,
         )
         HomeRow(
             stringResource(id = R.string.favorites),
             state.favoritesGames,
             onGameClicked,
-            onGameLongClick
+            onGameLongClick,
         )
         HomeRow(
             stringResource(id = R.string.discover),
             state.discoveryGames,
             onGameClicked,
-            onGameLongClick
+            onGameLongClick,
         )
     }
 }
@@ -138,7 +140,7 @@ private fun HomeRow(
     title: String,
     games: List<Game>,
     onGameClicked: (Game) -> Unit,
-    onGameLongClick: (Game) -> Unit
+    onGameLongClick: (Game) -> Unit,
 ) {
     if (games.isEmpty()) {
         return
@@ -148,23 +150,25 @@ private fun HomeRow(
         Text(
             text = title,
             style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
         )
         LazyRow(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(16.dp),
         ) {
             items(games.size, key = { games[it].id }) { index ->
                 val game = games[index]
                 LemuroidGameCard(
-                    modifier = Modifier
-                        .widthIn(0.dp, 144.dp)
-                        .animateItemPlacement(),
+                    modifier =
+                        Modifier
+                            .widthIn(0.dp, 144.dp)
+                            .animateItemPlacement(),
                     game = game,
                     onClick = { onGameClicked(game) },
-                    onLongClick = { onGameLongClick(game) }
+                    onLongClick = { onGameLongClick(game) },
                 )
             }
         }
@@ -172,29 +176,36 @@ private fun HomeRow(
 }
 
 @Composable
-private fun HomeNotification(titleId: Int, messageId: Int, actionId: Int, onAction: () -> Unit) {
+private fun HomeNotification(
+    titleId: Int,
+    messageId: Int,
+    actionId: Int,
+    onAction: () -> Unit,
+) {
     ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
                 text = stringResource(titleId),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
             )
             Text(
                 text = stringResource(messageId),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
             OutlinedButton(
                 modifier = Modifier.align(Alignment.End),
-                onClick = onAction
+                onClick = onAction,
             ) {
                 Text(stringResource(id = actionId))
             }

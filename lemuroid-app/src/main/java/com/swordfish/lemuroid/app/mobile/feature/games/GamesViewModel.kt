@@ -17,12 +17,11 @@ import kotlinx.coroutines.flow.map
 
 class GamesViewModel(
     private val retrogradeDb: RetrogradeDatabase,
-    initialMetaSystem: MetaSystemID
+    initialMetaSystem: MetaSystemID,
 ) : ViewModel() {
-
     class Factory(
         private val retrogradeDb: RetrogradeDatabase,
-        private val initialMetaSystem: MetaSystemID
+        private val initialMetaSystem: MetaSystemID,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return GamesViewModel(retrogradeDb, initialMetaSystem) as T
@@ -32,14 +31,15 @@ class GamesViewModel(
     private val metaSystemId = MutableStateFlow(initialMetaSystem)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val games: Flow<PagingData<Game>> = metaSystemId
-        .map { metaSystem -> metaSystem.systemIDs }
-        .map { systemIds -> systemIds.map { it.dbname }}
-        .flatMapLatest {
-            when (it.size) {
-                0 -> emptyFlow()
-                1 -> buildFlowPaging(20, viewModelScope) { retrogradeDb.gameDao().selectBySystem(it.first()) }
-                else -> buildFlowPaging(20, viewModelScope) { retrogradeDb.gameDao().selectBySystems(it) }
+    val games: Flow<PagingData<Game>> =
+        metaSystemId
+            .map { metaSystem -> metaSystem.systemIDs }
+            .map { systemIds -> systemIds.map { it.dbname } }
+            .flatMapLatest {
+                when (it.size) {
+                    0 -> emptyFlow()
+                    1 -> buildFlowPaging(20, viewModelScope) { retrogradeDb.gameDao().selectBySystem(it.first()) }
+                    else -> buildFlowPaging(20, viewModelScope) { retrogradeDb.gameDao().selectBySystems(it) }
+                }
             }
-        }
 }

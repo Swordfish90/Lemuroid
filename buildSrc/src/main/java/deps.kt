@@ -4,7 +4,7 @@ object deps {
         const val targetSdkVersion  = 33
         const val compileSdkVersion = 34
         const val minSdkVersion     = 23
-        const val buildToolsVersion = "30.0.2"
+        const val buildToolsVersion = "34.0.0"
     }
 
     object versions {
@@ -147,7 +147,6 @@ object deps {
         }
 
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
-        const val ktlint                   = "com.github.shyiko:ktlint:0.29.0"
         const val okio                     = "com.squareup.okio:okio:2.10.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"
         const val retrofit                 = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
@@ -164,7 +163,7 @@ object deps {
     }
 
     object plugins {
-        const val android = "com.android.tools.build:gradle:7.1.3"
+        const val android = "com.android.tools.build:gradle:8.2.2"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     }
 }

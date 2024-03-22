@@ -12,6 +12,7 @@ android {
         versionName = "1.15.0" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
+    flavorDimensions += listOf("opensource", "cores")
 
     if (usePlayDynamicFeatures()) {
         println("Building Google Play version. Bundling dynamic features.")
@@ -36,13 +37,12 @@ android {
                 ":lemuroid_core_prosystem",
                 ":lemuroid_core_snes9x",
                 ":lemuroid_core_stella",
-                ":lemuroid_core_citra"
-            )
+                ":lemuroid_core_citra",
+            ),
         )
     }
 
     // Since some dependencies are closed source we make a completely free as in free speech variant.
-    flavorDimensions("opensource", "cores")
 
     productFlavors {
 
@@ -65,11 +65,15 @@ android {
         }
     }
 
-    // Stripping created some issues with some libretro cores such as ppsspp
     packagingOptions {
-        doNotStrip("*/*/*_libretro_android.so")
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/library_release.kotlin_module")
+        jniLibs {
+            // Stripping created some issues with some libretro cores such as ppsspp
+            keepDebugSymbols += setOf("*/*/*_libretro_android.so")
+            useLegacyPackaging = true
+        }
+        resources {
+            excludes += setOf("META-INF/DEPENDENCIES", "META-INF/library_release.kotlin_module")
+        }
     }
 
     signingConfigs {
@@ -105,6 +109,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -112,8 +117,9 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+    namespace = "com.swordfish.lemuroid"
 }
 
 dependencies {
@@ -191,7 +197,7 @@ dependencies {
     implementation(deps.libs.libretrodroid)
 
     // Uncomment this when using a local aar file.
-    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+    // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     kapt(deps.libs.dagger.android.processor)
     kapt(deps.libs.dagger.compiler)

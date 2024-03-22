@@ -16,14 +16,14 @@ jobs:
       with:
         submodules: recursive
 
-    - name: set up JDK 11
+    - name: set up JDK 17
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'adopt'
         cache: gradle
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Run checkstyle tests
-      run: ./gradlew assembleDebug checkstyle lintDebug lintKotlin check
+    - name: Run ktlint tests
+      run: ./gradlew assembleDebug ktlintCheck

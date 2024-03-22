@@ -18,15 +18,16 @@ fun LemuroidGameCard(
     onLongClick: () -> Unit = { },
 ) {
     ElevatedCard(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .combinedClickable(
-                    onClick = onClick,
-                    onLongClick = onLongClick,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .combinedClickable(
+                        onClick = onClick,
+                        onLongClick = onLongClick,
+                    ),
         ) {
             LemuroidGameImage(game = game)
             LemuroidGameTexts(game = game)

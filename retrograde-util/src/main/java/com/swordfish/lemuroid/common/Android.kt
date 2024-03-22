@@ -20,11 +20,17 @@ fun Bundle?.dump(): String {
     return builder.toString()
 }
 
-fun Activity.displayToast(string: String, length: Int = Toast.LENGTH_SHORT) {
+fun Activity.displayToast(
+    string: String,
+    length: Int = Toast.LENGTH_SHORT,
+) {
     Toast.makeText(this, string, length).show()
 }
 
-fun Activity.displayToast(stringId: Int, length: Int = Toast.LENGTH_SHORT) {
+fun Activity.displayToast(
+    stringId: Int,
+    length: Int = Toast.LENGTH_SHORT,
+) {
     Toast.makeText(this, stringId, length).show()
 }
 

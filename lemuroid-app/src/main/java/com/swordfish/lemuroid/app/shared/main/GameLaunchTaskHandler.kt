@@ -15,9 +15,8 @@ import kotlinx.coroutines.delay
 
 class GameLaunchTaskHandler(
     private val reviewManager: ReviewManager,
-    private val retrogradeDb: RetrogradeDatabase
+    private val retrogradeDb: RetrogradeDatabase,
 ) {
-
     fun handleGameStart(context: Context) {
         cancelBackgroundWork(context)
     }
@@ -26,21 +25,23 @@ class GameLaunchTaskHandler(
         enableRatingFlow: Boolean,
         activity: Activity,
         resultCode: Int,
-        data: Intent?
+        data: Intent?,
     ) {
         rescheduleBackgroundWork(activity.applicationContext)
         when (resultCode) {
             Activity.RESULT_OK -> handleSuccessfulGameFinish(activity, enableRatingFlow, data)
-            BaseGameActivity.RESULT_ERROR -> handleUnsuccessfulGameFinish(
-                activity,
-                data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR)!!,
-                null
-            )
-            BaseGameActivity.RESULT_UNEXPECTED_ERROR -> handleUnsuccessfulGameFinish(
-                activity,
-                activity.getString(R.string.lemuroid_crash_disclamer),
-                data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR)
-            )
+            BaseGameActivity.RESULT_ERROR ->
+                handleUnsuccessfulGameFinish(
+                    activity,
+                    data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR)!!,
+                    null,
+                )
+            BaseGameActivity.RESULT_UNEXPECTED_ERROR ->
+                handleUnsuccessfulGameFinish(
+                    activity,
+                    activity.getString(R.string.lemuroid_crash_disclamer),
+                    data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR),
+                )
         }
     }
 
@@ -59,7 +60,7 @@ class GameLaunchTaskHandler(
     private fun handleUnsuccessfulGameFinish(
         activity: Activity,
         message: String,
-        messageDetail: String?
+        messageDetail: String?,
     ) {
         GameCrashActivity.launch(activity, message, messageDetail)
     }
@@ -67,10 +68,11 @@ class GameLaunchTaskHandler(
     private suspend fun handleSuccessfulGameFinish(
         activity: Activity,
         enableRatingFlow: Boolean,
-        data: Intent?
+        data: Intent?,
     ) {
-        val duration = data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
-            ?: 0L
+        val duration =
+            data?.extras?.getLong(BaseGameActivity.PLAY_GAME_RESULT_SESSION_DURATION)
+                ?: 0L
         val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
 
         updateGamePlayedTimestamp(game)
@@ -79,7 +81,10 @@ class GameLaunchTaskHandler(
         }
     }
 
-    private suspend fun displayReviewRequest(activity: Activity, durationMillis: Long) {
+    private suspend fun displayReviewRequest(
+        activity: Activity,
+        durationMillis: Long,
+    ) {
         delay(500)
         reviewManager.launchReviewFlow(activity, durationMillis)
     }

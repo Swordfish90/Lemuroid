@@ -17,7 +17,7 @@ import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLin
 @Composable
 fun GameMenuStatesScreen(
     viewModel: GameMenuStatesViewModel,
-    onStateClicked: (Int) -> Unit
+    onStateClicked: (Int) -> Unit,
 ) {
     val state = viewModel.uiStates.collectAsState(initial = GameMenuStatesViewModel.State())
 
@@ -33,11 +33,11 @@ fun GameMenuStatesScreen(
                             modifier = Modifier.size(48.dp),
                             bitmap = entry.preview.asImageBitmap(),
                             contentScale = ContentScale.Crop,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 },
-                onClick = { onStateClicked(index) }
+                onClick = { onStateClicked(index) },
             )
         }
     }

@@ -57,7 +57,7 @@ fun MainGameContextActions(
     onGamePlay: (Game) -> Unit,
     onGameRestart: (Game) -> Unit,
     onFavoriteToggle: (Game, Boolean) -> Unit,
-    onCreateShortcut: (Game) -> Unit
+    onCreateShortcut: (Game) -> Unit,
 ) {
     val modalSheetState = rememberModalBottomSheetState(true)
     val haptic = LocalHapticFeedback.current
@@ -80,7 +80,7 @@ fun MainGameContextActions(
         ModalBottomSheet(
             sheetState = modalSheetState,
             onDismissRequest = { selectedGameState.value = null },
-            scrimColor = Color.Transparent
+            scrimColor = Color.Transparent,
         ) {
             ContextActionContent(
                 selectedGame = selectedGame,
@@ -89,7 +89,7 @@ fun MainGameContextActions(
                 onGameRestart = onGameRestart,
                 onFavoriteToggle = onFavoriteToggle,
                 shortcutSupported = shortcutSupported,
-                onCreateShortcut = onCreateShortcut
+                onCreateShortcut = onCreateShortcut,
             )
         }
     }
@@ -103,12 +103,13 @@ private fun ContextActionContent(
     onGameRestart: (Game) -> Unit,
     onFavoriteToggle: (Game, Boolean) -> Unit,
     shortcutSupported: Boolean,
-    onCreateShortcut: (Game) -> Unit
+    onCreateShortcut: (Game) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom))
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom)),
     ) {
         ContextActionHeader(game = selectedGame)
         Divider()
@@ -118,7 +119,7 @@ private fun ContextActionContent(
             onClick = {
                 onGamePlay(selectedGame)
                 selectedGameState.value = null
-            }
+            },
         )
         ContextActionEntry(
             label = stringResource(id = R.string.game_context_menu_restart),
@@ -126,7 +127,7 @@ private fun ContextActionContent(
             onClick = {
                 onGameRestart(selectedGame)
                 selectedGameState.value = null
-            }
+            },
         )
 
         if (selectedGame.isFavorite) {
@@ -136,7 +137,7 @@ private fun ContextActionContent(
                 onClick = {
                     onFavoriteToggle(selectedGame, false)
                     selectedGameState.value = null
-                }
+                },
             )
         } else {
             ContextActionEntry(
@@ -145,7 +146,7 @@ private fun ContextActionContent(
                 onClick = {
                     onFavoriteToggle(selectedGame, true)
                     selectedGameState.value = null
-                }
+                },
             )
         }
 
@@ -156,7 +157,7 @@ private fun ContextActionContent(
                 onClick = {
                     onCreateShortcut(selectedGame)
                     selectedGameState.value = null
-                }
+                },
             )
         }
     }
@@ -165,25 +166,28 @@ private fun ContextActionContent(
 @Composable
 private fun ContextActionHeader(game: Game) {
     Row(
-        modifier = Modifier.padding(
-            start = 16.dp,
-            top = 8.dp,
-            bottom = 8.dp,
-            end = 16.dp
-        )
+        modifier =
+            Modifier.padding(
+                start = 16.dp,
+                top = 8.dp,
+                bottom = 8.dp,
+                end = 16.dp,
+            ),
     ) {
         LemuroidSmallGameImage(
-            modifier = Modifier
-                .width(40.dp)
-                .height(40.dp)
-                .align(Alignment.CenterVertically),
-            game = game
+            modifier =
+                Modifier
+                    .width(40.dp)
+                    .height(40.dp)
+                    .align(Alignment.CenterVertically),
+            game = game,
         )
         LemuroidGameTexts(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp),
-            game = game
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp),
+            game = game,
         )
     }
 }
@@ -193,23 +197,24 @@ private fun ContextActionEntry(
     modifier: Modifier = Modifier,
     label: String,
     icon: ImageVector,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .height(56.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .height(56.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier.padding(start = 16.dp),
             imageVector = icon,
-            contentDescription = label
+            contentDescription = label,
         )
         Text(
             modifier = Modifier.padding(start = 16.dp),
-            text = label
+            text = label,
         )
     }
 }
@@ -220,12 +225,13 @@ private fun FakeScrim(modalSheetState: SheetState) {
     AnimatedVisibility(
         visible = modalSheetState.targetValue != SheetValue.Hidden,
         enter = fadeIn(),
-        exit = fadeOut()
+        exit = fadeOut(),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(BottomSheetDefaults.ScrimColor)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(BottomSheetDefaults.ScrimColor),
         )
     }
 }

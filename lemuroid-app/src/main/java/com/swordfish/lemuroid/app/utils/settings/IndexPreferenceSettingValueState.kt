@@ -27,9 +27,8 @@ class IndexPreferenceSettingValueState(
     private val preferences: SharedPreferences,
     val key: String,
     private val values: List<String>,
-    private val defaultValue: String
+    private val defaultValue: String,
 ) : SettingValueState<Int> {
-
     private var _value by mutableStateOf(preferences.getString(key, defaultValue))
 
     override var value: Int

@@ -13,8 +13,10 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
    If we detect a more recent SRAM file, we basically avoid loading the state. This is also handy,
    if different cores share the same SRAM file. */
 class SavesCoherencyEngine(val savesManager: SavesManager, val statesManager: StatesManager) {
-
-    suspend fun shouldDiscardAutoSaveState(game: Game, coreID: CoreID): Boolean {
+    suspend fun shouldDiscardAutoSaveState(
+        game: Game,
+        coreID: CoreID,
+    ): Boolean {
         val autoSRAM = savesManager.getSaveRAMInfo(game)
         val autoSave = statesManager.getAutoSaveInfo(game, coreID)
         return autoSRAM.exists && autoSave.exists && autoSRAM.date > autoSave.date + TOLERANCE

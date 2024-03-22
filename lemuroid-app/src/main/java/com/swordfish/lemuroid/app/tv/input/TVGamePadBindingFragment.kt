@@ -8,7 +8,6 @@ import androidx.leanback.widget.GuidedAction
 import com.swordfish.lemuroid.R
 
 class TVGamePadBindingFragment : GuidedStepSupportFragment() {
-
     @NonNull
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
         val title = requireArguments().getString(EXTRA_TITLE)
@@ -24,7 +23,7 @@ class TVGamePadBindingFragment : GuidedStepSupportFragment() {
 
     override fun onCreateActions(
         actions: MutableList<GuidedAction>,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) {
         super.onCreateButtonActions(actions, savedInstanceState)
         addAction(actions, ACTION_CANCEL, resources.getString(R.string.tv_folder_picker_action_cancel), "")
@@ -34,14 +33,14 @@ class TVGamePadBindingFragment : GuidedStepSupportFragment() {
         actions: MutableList<GuidedAction>,
         id: Long,
         title: String,
-        desc: String
+        desc: String,
     ) {
         actions.add(
             GuidedAction.Builder(activity)
                 .id(id)
                 .title(title)
                 .description(desc)
-                .build()
+                .build(),
         )
     }
 
@@ -50,12 +49,16 @@ class TVGamePadBindingFragment : GuidedStepSupportFragment() {
         private const val EXTRA_MESSAGE = "MESSAGE"
         private const val ACTION_CANCEL = 0L
 
-        fun create(title: String, message: String): TVGamePadBindingFragment {
+        fun create(
+            title: String,
+            message: String,
+        ): TVGamePadBindingFragment {
             return TVGamePadBindingFragment().apply {
-                arguments = Bundle(2).apply {
-                    putString(EXTRA_TITLE, title)
-                    putString(EXTRA_MESSAGE, message)
-                }
+                arguments =
+                    Bundle(2).apply {
+                        putString(EXTRA_TITLE, title)
+                        putString(EXTRA_MESSAGE, message)
+                    }
             }
         }
     }

@@ -83,7 +83,6 @@ import java.util.zip.ZipInputStream
 
 @Module
 abstract class LemuroidApplicationModule {
-
     @Binds
     abstract fun context(app: LemuroidApplication): Context
 
@@ -141,8 +140,7 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @IntoSet
         @JvmStatic
-        fun localSAFStorageProvider(context: Context): StorageProvider =
-            StorageAccessFrameworkProvider(context)
+        fun localSAFStorageProvider(context: Context): StorageProvider = StorageAccessFrameworkProvider(context)
 
         @Provides
         @PerApp
@@ -150,18 +148,16 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun localGameStorageProvider(
             context: Context,
-            directoriesManager: DirectoriesManager
-        ): StorageProvider =
-            LocalStorageProvider(context, directoriesManager)
+            directoriesManager: DirectoriesManager,
+        ): StorageProvider = LocalStorageProvider(context, directoriesManager)
 
         @Provides
         @PerApp
         @JvmStatic
         fun gameStorageProviderRegistry(
             context: Context,
-            providers: Set<@JvmSuppressWildcards StorageProvider>
-        ) =
-            StorageProviderRegistry(context, providers)
+            providers: Set<@JvmSuppressWildcards StorageProvider>,
+        ) = StorageProviderRegistry(context, providers)
 
         @Provides
         @PerApp
@@ -170,44 +166,46 @@ abstract class LemuroidApplicationModule {
             db: RetrogradeDatabase,
             storageProviderRegistry: Lazy<StorageProviderRegistry>,
             gameMetadataProvider: Lazy<GameMetadataProvider>,
-            biosManager: BiosManager
+            biosManager: BiosManager,
         ) = LemuroidLibrary(db, storageProviderRegistry, gameMetadataProvider, biosManager)
 
         @Provides
         @PerApp
         @JvmStatic
-        fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(1, TimeUnit.MINUTES)
-            .build()
+        fun okHttpClient(): OkHttpClient =
+            OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build()
 
         @Provides
         @PerApp
         @JvmStatic
-        fun retrofit(): Retrofit = Retrofit.Builder()
-            .baseUrl("https://example.com")
-            .addConverterFactory(
-                object : Converter.Factory() {
-                    override fun responseBodyConverter(
-                        type: Type,
-                        annotations: Array<out Annotation>,
-                        retrofit: Retrofit
-                    ): Converter<ResponseBody, *>? {
-                        if (type == ZipInputStream::class.java) {
-                            return Converter<ResponseBody, ZipInputStream> { responseBody ->
-                                ZipInputStream(responseBody.byteStream())
+        fun retrofit(): Retrofit =
+            Retrofit.Builder()
+                .baseUrl("https://example.com")
+                .addConverterFactory(
+                    object : Converter.Factory() {
+                        override fun responseBodyConverter(
+                            type: Type,
+                            annotations: Array<out Annotation>,
+                            retrofit: Retrofit,
+                        ): Converter<ResponseBody, *>? {
+                            if (type == ZipInputStream::class.java) {
+                                return Converter<ResponseBody, ZipInputStream> { responseBody ->
+                                    ZipInputStream(responseBody.byteStream())
+                                }
                             }
-                        }
-                        if (type == InputStream::class.java) {
-                            return Converter<ResponseBody, InputStream> { responseBody ->
-                                responseBody.byteStream()
+                            if (type == InputStream::class.java) {
+                                return Converter<ResponseBody, InputStream> { responseBody ->
+                                    responseBody.byteStream()
+                                }
                             }
+                            return null
                         }
-                        return null
-                    }
-                }
-            )
-            .build()
+                    },
+                )
+                .build()
 
         @Provides
         @PerApp
@@ -227,22 +225,20 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun statesPreviewManager(directoriesManager: DirectoriesManager) =
-            StatesPreviewManager(directoriesManager)
+        fun statesPreviewManager(directoriesManager: DirectoriesManager) = StatesPreviewManager(directoriesManager)
 
         @Provides
         @PerApp
         @JvmStatic
         fun coreManager(
             directoriesManager: DirectoriesManager,
-            retrofit: Retrofit
+            retrofit: Retrofit,
         ): CoreUpdater = CoreUpdaterImpl(directoriesManager, retrofit)
 
         @Provides
         @PerApp
         @JvmStatic
-        fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) =
-            CoreVariablesManager(sharedPreferences)
+        fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) = CoreVariablesManager(sharedPreferences)
 
         @Provides
         @PerApp
@@ -255,7 +251,7 @@ abstract class LemuroidApplicationModule {
             retrogradeDatabase: RetrogradeDatabase,
             savesCoherencyEngine: SavesCoherencyEngine,
             directoriesManager: DirectoriesManager,
-            biosManager: BiosManager
+            biosManager: BiosManager,
         ) = GameLoader(
             lemuroidLibrary,
             statesManager,
@@ -264,14 +260,16 @@ abstract class LemuroidApplicationModule {
             retrogradeDatabase,
             savesCoherencyEngine,
             directoriesManager,
-            biosManager
+            biosManager,
         )
 
         @Provides
         @PerApp
         @JvmStatic
-        fun inputDeviceManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            InputDeviceManager(context, sharedPreferences)
+        fun inputDeviceManager(
+            context: Context,
+            sharedPreferences: Lazy<SharedPreferences>,
+        ) = InputDeviceManager(context, sharedPreferences)
 
         @Provides
         @PerApp
@@ -286,8 +284,7 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) =
-            CoresSelection(sharedPreferences)
+        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) = CoresSelection(sharedPreferences)
 
         @Provides
         @PerApp
@@ -297,15 +294,17 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun savesCoherencyEngine(savesManager: SavesManager, statesManager: StatesManager) =
-            SavesCoherencyEngine(savesManager, statesManager)
+        fun savesCoherencyEngine(
+            savesManager: SavesManager,
+            statesManager: StatesManager,
+        ) = SavesCoherencyEngine(savesManager, statesManager)
 
         @Provides
         @PerApp
         @JvmStatic
         fun saveSyncManagerImpl(
             context: Context,
-            directoriesManager: DirectoriesManager
+            directoriesManager: DirectoriesManager,
         ) = SaveSyncManagerImpl(context, directoriesManager)
 
         @Provides
@@ -317,8 +316,10 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun shortcutsGenerator(context: Context, retrofit: Retrofit) =
-            ShortcutsGenerator(context, retrofit)
+        fun shortcutsGenerator(
+            context: Context,
+            retrofit: Retrofit,
+        ) = ShortcutsGenerator(context, retrofit)
 
         @Provides
         @PerApp
@@ -326,9 +327,8 @@ abstract class LemuroidApplicationModule {
         fun channelHandler(
             context: Context,
             retrogradeDatabase: RetrogradeDatabase,
-            retrofit: Retrofit
-        ) =
-            ChannelHandler(context, retrogradeDatabase, retrofit)
+            retrofit: Retrofit,
+        ) = ChannelHandler(context, retrogradeDatabase, retrofit)
 
         @Provides
         @PerApp
@@ -339,23 +339,23 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun settingsManager(context: Context, sharedPreferences: Lazy<SharedPreferences>) =
-            SettingsManager(context, sharedPreferences)
+        fun settingsManager(
+            context: Context,
+            sharedPreferences: Lazy<SharedPreferences>,
+        ) = SettingsManager(context, sharedPreferences)
 
         @Provides
         @PerApp
         @JvmStatic
-        fun sharedPreferences(context: Context) =
-            SharedPreferencesHelper.getSharedPreferences(context)
+        fun sharedPreferences(context: Context) = SharedPreferencesHelper.getSharedPreferences(context)
 
         @Provides
         @PerApp
         @JvmStatic
         fun gameLauncher(
             coresSelection: CoresSelection,
-            gameLaunchTaskHandler: GameLaunchTaskHandler
-        ) =
-            GameLauncher(coresSelection, gameLaunchTaskHandler)
+            gameLaunchTaskHandler: GameLaunchTaskHandler,
+        ) = GameLauncher(coresSelection, gameLaunchTaskHandler)
 
         @Provides
         @PerApp
@@ -363,8 +363,7 @@ abstract class LemuroidApplicationModule {
         fun rumbleManager(
             context: Context,
             settingsManager: SettingsManager,
-            inputDeviceManager: InputDeviceManager
-        ) =
-            RumbleManager(context, settingsManager, inputDeviceManager)
+            inputDeviceManager: InputDeviceManager,
+        ) = RumbleManager(context, settingsManager, inputDeviceManager)
     }
 }

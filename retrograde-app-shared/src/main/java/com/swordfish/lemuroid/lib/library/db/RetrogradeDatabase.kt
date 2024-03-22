@@ -30,10 +30,9 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 @Database(
     entities = [Game::class, DataFile::class],
     version = 9,
-    exportSchema = true
+    exportSchema = true,
 )
 abstract class RetrogradeDatabase : RoomDatabase() {
-
     companion object {
         const val DB_NAME = "retrograde"
     }

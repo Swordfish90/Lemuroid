@@ -9,10 +9,10 @@ import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 fun indexSetPreferenceState(
     key: String,
     default: Set<String>,
-    values: List<String>
+    values: List<String>,
 ) = rememberPreferenceSetSettingState(
     key = key,
     values = values,
     defaultValue = default,
-    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current)
+    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
 )

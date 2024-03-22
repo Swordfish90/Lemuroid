@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GameDao {
-
     @Query("SELECT * FROM games WHERE id = :id")
     suspend fun selectById(id: Int): Game?
 
@@ -46,7 +45,7 @@ interface GameDao {
     @Query(
         """
         SELECT * FROM games WHERE lastPlayedAt IS NOT NULL AND isFavorite = 0 ORDER BY lastPlayedAt DESC LIMIT :limit
-        """
+        """,
     )
     fun selectFirstUnfavoriteRecents(limit: Int): Flow<List<Game>>
 

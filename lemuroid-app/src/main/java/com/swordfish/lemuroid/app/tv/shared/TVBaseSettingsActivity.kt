@@ -11,20 +11,20 @@ import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 
 abstract class TVBaseSettingsActivity : ImmersiveActivity() {
     abstract class BaseSettingsFragmentWrapper : LeanbackSettingsFragmentCompat() {
-
         override fun onPreferenceStartInitialScreen() {
             startPreferenceFragment(createFragment())
         }
 
         override fun onPreferenceStartFragment(
             caller: PreferenceFragmentCompat,
-            pref: Preference
+            pref: Preference,
         ): Boolean {
             val args = pref.extras
-            val f = childFragmentManager.fragmentFactory.instantiate(
-                requireActivity().classLoader,
-                pref.fragment!!
-            )
+            val f =
+                childFragmentManager.fragmentFactory.instantiate(
+                    requireActivity().classLoader,
+                    pref.fragment!!,
+                )
             f.arguments = args
             f.setTargetFragment(caller, 0)
             if (f is PreferenceFragmentCompat || f is PreferenceDialogFragmentCompat) {
@@ -37,7 +37,7 @@ abstract class TVBaseSettingsActivity : ImmersiveActivity() {
 
         override fun onPreferenceStartScreen(
             caller: PreferenceFragmentCompat,
-            pref: PreferenceScreen
+            pref: PreferenceScreen,
         ): Boolean {
             val fragment = createFragment()
             val args = Bundle(1)

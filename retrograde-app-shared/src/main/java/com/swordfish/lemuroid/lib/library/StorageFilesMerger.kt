@@ -7,15 +7,15 @@ import com.swordfish.lemuroid.lib.storage.GroupedStorageFiles
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 
 object StorageFilesMerger {
-
     /** Merge files which belong to the same game. This includes bin/cue files and m3u playlists.*/
     fun mergeDataFiles(
         storageProvider: StorageProvider,
-        files: List<BaseStorageFile>
+        files: List<BaseStorageFile>,
     ): List<GroupedStorageFiles> {
-        val allFiles = files
-            .associateWith { listOf<BaseStorageFile>() }
-            .toMutableMap()
+        val allFiles =
+            files
+                .associateWith { listOf<BaseStorageFile>() }
+                .toMutableMap()
 
         mergeBinCueFiles(allFiles, storageProvider)
         removeInvalidBinCuePairs(allFiles, storageProvider)
@@ -27,7 +27,7 @@ object StorageFilesMerger {
 
     private fun removeInvalidM3UPlaylists(
         allFiles: MutableMap<BaseStorageFile, List<BaseStorageFile>>,
-        storageProvider: StorageProvider
+        storageProvider: StorageProvider,
     ) {
         val toBeRemoved = mutableListOf<BaseStorageFile>()
 
@@ -35,9 +35,10 @@ object StorageFilesMerger {
             .asSequence()
             .filter { it.extension == "m3u" }
             .forEach { m3uFile ->
-                val m3uFiles: List<String> = runCatching {
-                    storageProvider.getInputStream(m3uFile.uri)?.readLines()
-                }.getOrNull() ?: listOf()
+                val m3uFiles: List<String> =
+                    runCatching {
+                        storageProvider.getInputStream(m3uFile.uri)?.readLines()
+                    }.getOrNull() ?: listOf()
 
                 val filesNames = allFiles[m3uFile]?.map { it.name } ?: listOf()
 
@@ -51,7 +52,7 @@ object StorageFilesMerger {
 
     private fun mergeM3UPlaylists(
         allFiles: MutableMap<BaseStorageFile, List<BaseStorageFile>>,
-        storageProvider: StorageProvider
+        storageProvider: StorageProvider,
     ) {
         val toBeRemoved = mutableListOf<BaseStorageFile>()
 
@@ -59,15 +60,17 @@ object StorageFilesMerger {
             .asSequence()
             .filter { it.extension == "m3u" }
             .forEach { m3uFile ->
-                val m3uFiles = runCatching {
-                    storageProvider.getInputStream(m3uFile.uri)?.readLines()
-                }.getOrNull() ?: listOf()
+                val m3uFiles =
+                    runCatching {
+                        storageProvider.getInputStream(m3uFile.uri)?.readLines()
+                    }.getOrNull() ?: listOf()
 
                 val dataFiles = allFiles.filter { it.key.name in m3uFiles }
 
-                allFiles[m3uFile] = allFiles[m3uFile]!! + dataFiles.flatMap {
-                    listOf(it.key) + it.value
-                }
+                allFiles[m3uFile] = allFiles[m3uFile]!! +
+                    dataFiles.flatMap {
+                        listOf(it.key) + it.value
+                    }
                 toBeRemoved.addAll(dataFiles.keys)
             }
 
@@ -76,7 +79,7 @@ object StorageFilesMerger {
 
     private fun removeInvalidBinCuePairs(
         allFiles: MutableMap<BaseStorageFile, List<BaseStorageFile>>,
-        storageProvider: StorageProvider
+        storageProvider: StorageProvider,
     ) {
         val toBeRemoved = mutableListOf<BaseStorageFile>()
 
@@ -95,7 +98,7 @@ object StorageFilesMerger {
 
     private fun mergeBinCueFiles(
         allFiles: MutableMap<BaseStorageFile, List<BaseStorageFile>>,
-        storageProvider: StorageProvider
+        storageProvider: StorageProvider,
     ) {
         val toBeRemoved = mutableListOf<BaseStorageFile>()
 
@@ -105,19 +108,24 @@ object StorageFilesMerger {
             .forEach { cueFile ->
                 val requestedBinFiles = extractBinFiles(storageProvider, cueFile.uri)
 
-                val binFiles = allFiles
-                    .filter { it.key.name in requestedBinFiles }
+                val binFiles =
+                    allFiles
+                        .filter { it.key.name in requestedBinFiles }
 
-                allFiles[cueFile] = (allFiles[cueFile] ?: listOf()) + binFiles.flatMap {
-                    listOf(it.key) + it.value
-                }
+                allFiles[cueFile] = (allFiles[cueFile] ?: listOf()) +
+                    binFiles.flatMap {
+                        listOf(it.key) + it.value
+                    }
                 toBeRemoved.addAll(binFiles.keys)
             }
 
         toBeRemoved.forEach { allFiles.remove(it) }
     }
 
-    private fun extractBinFiles(storageProvider: StorageProvider, uri: Uri): List<String> {
+    private fun extractBinFiles(
+        storageProvider: StorageProvider,
+        uri: Uri,
+    ): List<String> {
         return runCatching {
             storageProvider.getInputStream(uri)?.readLines()
                 ?.mapNotNull { Regex("FILE \"(.*)\"").find(it)?.groupValues?.get(1) }

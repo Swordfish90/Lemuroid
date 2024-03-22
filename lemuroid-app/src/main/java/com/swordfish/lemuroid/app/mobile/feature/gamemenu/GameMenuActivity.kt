@@ -48,6 +48,7 @@ import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.common.kotlin.serializable
 import com.swordfish.lemuroid.lib.android.RetrogradeComponentActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -57,7 +58,6 @@ import java.security.InvalidParameterException
 import javax.inject.Inject
 
 class GameMenuActivity : RetrogradeComponentActivity() {
-
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
 
@@ -76,7 +76,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
         val fastForwardSupported: Boolean,
         val fastForwardEnabled: Boolean,
         val numDisks: Int,
-        val currentDisk: Int
+        val currentDisk: Int,
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,23 +86,33 @@ class GameMenuActivity : RetrogradeComponentActivity() {
 
         val extras = intent.extras
 
-        val gameMenuRequest = GameMenuRequest(
-            coreOptions = (extras?.getSerializable(GameMenuContract.EXTRA_CORE_OPTIONS) as Array<LemuroidCoreOption>?)
-                ?.toList()
-                ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS"),
-            advancedCoreOptions = (extras?.getSerializable(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS) as Array<LemuroidCoreOption>?)
-                ?.toList()
-                ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS"),
-            game = extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
-                ?: throw InvalidParameterException("Missing EXTRA_GAME"),
-            coreConfig = extras?.getSerializable(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig?
-                ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG"),
-            audioEnabled = extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED, false) ?: false,
-            fastForwardSupported = extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, false) ?: false,
-            fastForwardEnabled = extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false,
-            numDisks = extras?.getInt(GameMenuContract.EXTRA_DISKS, 0) ?: 0,
-            currentDisk = extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0,
-        )
+        val gameMenuRequest =
+            GameMenuRequest(
+                coreOptions =
+                    intent.serializable<Array<LemuroidCoreOption>>(GameMenuContract.EXTRA_CORE_OPTIONS)
+                        ?.toList()
+                        ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS"),
+                advancedCoreOptions =
+                    intent.serializable<Array<LemuroidCoreOption>>(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS)
+                        ?.toList()
+                        ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS"),
+                game =
+                    intent.serializable<Game>(GameMenuContract.EXTRA_GAME)
+                        ?: throw InvalidParameterException("Missing EXTRA_GAME"),
+                coreConfig =
+                    intent.serializable<SystemCoreConfig>(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG)
+                        ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG"),
+                audioEnabled =
+                    extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED, false) ?: false,
+                fastForwardSupported =
+                    extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, false) ?: false,
+                fastForwardEnabled =
+                    extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false,
+                numDisks =
+                    extras?.getInt(GameMenuContract.EXTRA_DISKS, 0) ?: 0,
+                currentDisk =
+                    extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0,
+            )
 
         setContent {
             GameMenuScreen(gameMenuRequest)
@@ -117,9 +127,10 @@ class GameMenuActivity : RetrogradeComponentActivity() {
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry.value?.destination
 
-            val currentRoute = currentDestination?.route
-                ?.let { GameMenuRoute.findByRoute(it) }
-                ?: GameMenuRoute.HOME
+            val currentRoute =
+                currentDestination?.route
+                    ?.let { GameMenuRoute.findByRoute(it) }
+                    ?: GameMenuRoute.HOME
 
             SideMenu {
                 TopAppBar(
@@ -131,14 +142,14 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                                 IconButton(onClick = { navController.popBackStack() }) {
                                     Icon(
                                         Icons.AutoMirrored.Filled.ArrowBack,
-                                        stringResource(R.string.back)
+                                        stringResource(R.string.back),
                                     )
                                 }
                             } else {
                                 IconButton(onClick = { onResult { } }) {
                                     Icon(
                                         Icons.Filled.Close,
-                                        stringResource(R.string.close)
+                                        stringResource(R.string.close),
                                     )
                                 }
                             }
@@ -147,12 +158,13 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                 )
                 Divider(modifier = Modifier.fillMaxWidth())
                 NavHost(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .fillMaxSize(),
                     navController = navController,
                     startDestination = GameMenuRoute.HOME.route,
                     enterTransition = { fadeIn() },
-                    exitTransition = { fadeOut() }
+                    exitTransition = { fadeOut() },
                 ) {
                     composable(GameMenuRoute.HOME) {
                         GameMenuHomeScreen(navController, gameMenuRequest, ::onResult)
@@ -160,41 +172,43 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                     composable(GameMenuRoute.SAVE) {
                         GameMenuStatesScreen(
                             viewModel(
-                                factory = GameMenuStatesViewModel.Factory(
-                                    application,
-                                    gameMenuRequest,
-                                    statesManager,
-                                    false,
-                                    statesPreviewManager
-                                )
+                                factory =
+                                    GameMenuStatesViewModel.Factory(
+                                        application,
+                                        gameMenuRequest,
+                                        statesManager,
+                                        false,
+                                        statesPreviewManager,
+                                    ),
                             ),
                             onStateClicked = {
                                 onResult { putExtra(GameMenuContract.RESULT_SAVE, it) }
-                            }
+                            },
                         )
                     }
                     composable(GameMenuRoute.LOAD) {
                         GameMenuStatesScreen(
                             viewModel(
-                                factory = GameMenuStatesViewModel.Factory(
-                                    application,
-                                    gameMenuRequest,
-                                    statesManager,
-                                    true,
-                                    statesPreviewManager
-                                )
+                                factory =
+                                    GameMenuStatesViewModel.Factory(
+                                        application,
+                                        gameMenuRequest,
+                                        statesManager,
+                                        true,
+                                        statesPreviewManager,
+                                    ),
                             ),
                             onStateClicked = {
                                 onResult { putExtra(GameMenuContract.RESULT_LOAD, it) }
-                            }
+                            },
                         )
                     }
                     composable(GameMenuRoute.OPTIONS) {
                         GameMenuCoreOptionsScreen(
                             viewModel(
-                                factory = GameMenuCoreOptionsViewModel.Factory(inputDeviceManager)
+                                factory = GameMenuCoreOptionsViewModel.Factory(inputDeviceManager),
                             ),
-                            gameMenuRequest
+                            gameMenuRequest,
                         )
                     }
                 }
@@ -206,19 +220,20 @@ class GameMenuActivity : RetrogradeComponentActivity() {
     private fun SideMenu(content: @Composable () -> Unit) {
         BoxWithConstraints(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.CenterEnd
+            contentAlignment = Alignment.CenterEnd,
         ) {
-
-            val panelWidth = remember(maxWidth) {
-                minOf(maxWidth * 0.8f, 400f.dp)
-            }
+            val panelWidth =
+                remember(maxWidth) {
+                    minOf(maxWidth * 0.8f, 400f.dp)
+                }
 
             Surface(
-                modifier = Modifier
-                    .padding()
-                    .fillMaxHeight()
-                    .width(panelWidth)
-                    .clip(MaterialTheme.shapes.large)
+                modifier =
+                    Modifier
+                        .padding()
+                        .fillMaxHeight()
+                        .width(panelWidth)
+                        .clip(MaterialTheme.shapes.large),
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     content()

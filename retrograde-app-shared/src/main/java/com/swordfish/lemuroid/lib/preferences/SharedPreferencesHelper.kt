@@ -8,7 +8,6 @@ import com.swordfish.lemuroid.common.preferences.SharedPreferencesDataStore
 import com.swordfish.lemuroid.lib.R
 
 object SharedPreferencesHelper {
-
     fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getHarmonySharedPreferences(context.getString(R.string.pref_file_harmony_options))
     }

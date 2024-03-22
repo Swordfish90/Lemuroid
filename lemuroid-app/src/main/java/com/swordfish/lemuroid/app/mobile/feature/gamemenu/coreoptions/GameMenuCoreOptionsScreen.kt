@@ -24,15 +24,16 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 @Composable
 fun GameMenuCoreOptionsScreen(
     viewModel: GameMenuCoreOptionsViewModel,
-    gameMenuRequest: GameMenuActivity.GameMenuRequest
+    gameMenuRequest: GameMenuActivity.GameMenuRequest,
 ) {
     val context = LocalContext.current
 
     val connectedGamePads by viewModel.connectedGamePads.collectAsState(0)
 
-    val allOptions = remember(gameMenuRequest) {
-        gameMenuRequest.coreOptions + gameMenuRequest.advancedCoreOptions
-    }
+    val allOptions =
+        remember(gameMenuRequest) {
+            gameMenuRequest.coreOptions + gameMenuRequest.advancedCoreOptions
+        }
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         CoreOptions(gameMenuRequest.game.systemId, allOptions, context)
@@ -44,7 +45,7 @@ fun GameMenuCoreOptionsScreen(
 private fun CoreOptions(
     systemID: String,
     coreOptions: List<LemuroidCoreOption>,
-    context: Context
+    context: Context,
 ) {
     if (coreOptions.isEmpty()) {
         return
@@ -54,11 +55,12 @@ private fun CoreOptions(
         LemuroidSettingsList(
             title = { Text(text = coreOption.getDisplayName(context)) },
             items = coreOption.getEntries(context),
-            state = indexPreferenceState(
-                CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
-                coreOption.getEntriesValues().first(),
-                coreOption.getEntriesValues()
-            )
+            state =
+                indexPreferenceState(
+                    CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
+                    coreOption.getEntriesValues().first(),
+                    coreOption.getEntriesValues(),
+                ),
         )
     }
 }
@@ -67,34 +69,36 @@ private fun CoreOptions(
 private fun ControllersOptions(
     gameMenuRequest: GameMenuActivity.GameMenuRequest,
     connectedGamePads: Int,
-    context: Context
+    context: Context,
 ) {
     val controllers = gameMenuRequest.coreConfig.controllerConfigs
 
-    val visibleControllers = (0 until connectedGamePads)
-        .map { it to controllers[it] }
-        .filter { (_, controllers) -> controllers != null && controllers.size >= 2 }
+    val visibleControllers =
+        (0 until connectedGamePads)
+            .map { it to controllers[it] }
+            .filter { (_, controllers) -> controllers != null && controllers.size >= 2 }
 
     if (visibleControllers.isEmpty()) {
         return
     }
 
     LemuroidSettingsGroup(
-        title = { Text(text = stringResource(R.string.core_settings_category_controllers)) }
+        title = { Text(text = stringResource(R.string.core_settings_category_controllers)) },
     ) {
         visibleControllers.forEach { (port, controllerConfigs) ->
             LemuroidSettingsList(
                 title = { Text(text = context.getString(R.string.core_settings_controller, (port + 1).toString())) },
                 items = controllerConfigs!!.map { stringResource(id = it.displayName) },
-                state = indexPreferenceState(
-                    ControllerConfigsManager.getSharedPreferencesId(
-                        gameMenuRequest.game.systemId,
-                        gameMenuRequest.coreConfig.coreID,
-                        port
+                state =
+                    indexPreferenceState(
+                        ControllerConfigsManager.getSharedPreferencesId(
+                            gameMenuRequest.game.systemId,
+                            gameMenuRequest.coreConfig.coreID,
+                            port,
+                        ),
+                        controllerConfigs.map { it.name }.first(),
+                        controllerConfigs.map { it.name },
                     ),
-                    controllerConfigs.map { it.name }.first(),
-                    controllerConfigs.map { it.name }
-                )
             )
         }
     }

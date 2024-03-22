@@ -7,8 +7,7 @@ fun File.safeDelete() = exists() && delete()
 
 class FileUtils {
     companion object {
-        fun extractExtension(fileName: String): String =
-            fileName.substringAfterLast(".", "").toLowerCase(Locale.US)
+        fun extractExtension(fileName: String): String = fileName.substringAfterLast(".", "").toLowerCase(Locale.US)
 
         fun discardExtension(fileName: String): String = fileName.substringBeforeLast(".")
     }

@@ -6,7 +6,10 @@ import android.widget.ProgressBar
 import androidx.core.animation.addListener
 import androidx.core.view.isVisible
 
-fun View.animateVisibleOrGone(visible: Boolean, durationInMs: Long) {
+fun View.animateVisibleOrGone(
+    visible: Boolean,
+    durationInMs: Long,
+) {
     val alpha = if (visible) 1.0f else 0.0f
     ObjectAnimator.ofFloat(this, "alpha", alpha).apply {
         duration = durationInMs
@@ -17,13 +20,16 @@ fun View.animateVisibleOrGone(visible: Boolean, durationInMs: Long) {
             },
             onEnd = {
                 if (!visible) isVisible = false
-            }
+            },
         )
         start()
     }
 }
 
-fun ProgressBar.animateProgress(progress: Int, durationInMs: Long) {
+fun ProgressBar.animateProgress(
+    progress: Int,
+    durationInMs: Long,
+) {
     ObjectAnimator.ofInt(this, "progress", progress).apply {
         duration = durationInMs
         setAutoCancel(true)

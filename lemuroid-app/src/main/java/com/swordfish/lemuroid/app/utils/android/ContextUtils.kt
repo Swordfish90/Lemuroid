@@ -24,5 +24,9 @@ private fun retrieveProcessName(context: Context): String? {
 
 fun Context.getGLSLVersion(): Int {
     val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    return if (activityManager.deviceConfigurationInfo.reqGlEsVersion >= 0x30000) { 3 } else { 2 }
+    return if (activityManager.deviceConfigurationInfo.reqGlEsVersion >= 0x30000) {
+        3
+    } else {
+        2
+    }
 }

@@ -18,67 +18,68 @@ object SerialScanner {
     data class DiskInfo(val serial: String?, val systemID: SystemID?)
 
     @ExperimentalUnsignedTypes
-    private val MAGIC_NUMBERS = listOf(
-        MagicNumber(
-            0x0010,
-            ubyteArrayOf(
-                0x53U,
-                0x45U,
-                0x47U,
-                0x41U,
-                0x44U,
-                0x49U,
-                0x53U,
-                0x43U,
-                0x53U,
-                0x59U,
-                0x53U,
-                0x54U,
-                0x45U,
-                0x4dU
-            ).toByteArray(),
-            SystemID.SEGACD
-        ),
-        MagicNumber(
-            0x8008,
-            ubyteArrayOf(
-                0x50U,
-                0x4cU,
-                0x41U,
-                0x59U,
-                0x53U,
-                0x54U,
-                0x41U,
-                0x54U,
-                0x49U,
-                0x4fU,
-                0x4eU
-            ).toByteArray(),
-            SystemID.PSX
-        ),
-        MagicNumber(
-            0x9320,
-            ubyteArrayOf(
-                0x50U,
-                0x4cU,
-                0x41U,
-                0x59U,
-                0x53U,
-                0x54U,
-                0x41U,
-                0x54U,
-                0x49U,
-                0x4fU,
-                0x4eU
-            ).toByteArray(),
-            SystemID.PSX
-        ),
-        MagicNumber(
-            0x8008,
-            ubyteArrayOf(0x50U, 0x53U, 0x50U, 0x20U, 0x47U, 0x41U, 0x4dU, 0x45U).toByteArray(),
-            SystemID.PSP
-        ),
-    )
+    private val MAGIC_NUMBERS =
+        listOf(
+            MagicNumber(
+                0x0010,
+                ubyteArrayOf(
+                    0x53U,
+                    0x45U,
+                    0x47U,
+                    0x41U,
+                    0x44U,
+                    0x49U,
+                    0x53U,
+                    0x43U,
+                    0x53U,
+                    0x59U,
+                    0x53U,
+                    0x54U,
+                    0x45U,
+                    0x4dU,
+                ).toByteArray(),
+                SystemID.SEGACD,
+            ),
+            MagicNumber(
+                0x8008,
+                ubyteArrayOf(
+                    0x50U,
+                    0x4cU,
+                    0x41U,
+                    0x59U,
+                    0x53U,
+                    0x54U,
+                    0x41U,
+                    0x54U,
+                    0x49U,
+                    0x4fU,
+                    0x4eU,
+                ).toByteArray(),
+                SystemID.PSX,
+            ),
+            MagicNumber(
+                0x9320,
+                ubyteArrayOf(
+                    0x50U,
+                    0x4cU,
+                    0x41U,
+                    0x59U,
+                    0x53U,
+                    0x54U,
+                    0x41U,
+                    0x54U,
+                    0x49U,
+                    0x4fU,
+                    0x4eU,
+                ).toByteArray(),
+                SystemID.PSX,
+            ),
+            MagicNumber(
+                0x8008,
+                ubyteArrayOf(0x50U, 0x53U, 0x50U, 0x20U, 0x47U, 0x41U, 0x4dU, 0x45U).toByteArray(),
+                SystemID.PSP,
+            ),
+        )
 
     private val SEGA_CD_REGEX = Regex("([A-Z]+)?-?([0-9]+) ?-?([0-9]*)")
 
@@ -87,58 +88,63 @@ object SerialScanner {
 
     private const val PS_SERIAL_MAX_SIZE = 12
 
-    private val PSX_BASE_SERIALS = listOf(
-        "CPCS",
-        "SCES",
-        "SIPS",
-        "SLKA",
-        "SLPS",
-        "SLUS",
-        "ESPM",
-        "SLED",
-        "SCPS",
-        "SCAJ",
-        "PAPX",
-        "SLES",
-        "HPS",
-        "LSP",
-        "SLPM",
-        "SCUS",
-        "SCED"
-    )
+    private val PSX_BASE_SERIALS =
+        listOf(
+            "CPCS",
+            "SCES",
+            "SIPS",
+            "SLKA",
+            "SLPS",
+            "SLUS",
+            "ESPM",
+            "SLED",
+            "SCPS",
+            "SCAJ",
+            "PAPX",
+            "SLES",
+            "HPS",
+            "LSP",
+            "SLPM",
+            "SCUS",
+            "SCED",
+        )
 
-    private val PSP_BASE_SERIALS = listOf(
-        "ULES",
-        "ULUS",
-        "ULJS",
-        "ULEM",
-        "ULUM",
-        "ULJM",
-        "ULKS",
-        "ULAS",
-        "UCES",
-        "UCUS",
-        "UCJS",
-        "UCAS",
-        "NPEH",
-        "NPUH",
-        "NPJH",
-        "NPEG",
-        "NPEX",
-        "NPUG",
-        "NPJG",
-        "NPJJ",
-        "NPHG",
-        "NPEZ",
-        "NPUZ",
-        "NPJZ",
-        "NPUF",
-        "NPUZ",
-        "NPUG",
-        "NPUX"
-    )
+    private val PSP_BASE_SERIALS =
+        listOf(
+            "ULES",
+            "ULUS",
+            "ULJS",
+            "ULEM",
+            "ULUM",
+            "ULJM",
+            "ULKS",
+            "ULAS",
+            "UCES",
+            "UCUS",
+            "UCJS",
+            "UCAS",
+            "NPEH",
+            "NPUH",
+            "NPJH",
+            "NPEG",
+            "NPEX",
+            "NPUG",
+            "NPJG",
+            "NPJJ",
+            "NPHG",
+            "NPEZ",
+            "NPUZ",
+            "NPJZ",
+            "NPUF",
+            "NPUZ",
+            "NPUG",
+            "NPUX",
+        )
 
-    fun extractInfo(fileName: String, inputStream: InputStream): DiskInfo {
+    fun extractInfo(
+        fileName: String,
+        inputStream: InputStream,
+    ): DiskInfo {
         Timber.d("Extracting disk info for $fileName")
         inputStream.buffered(READ_BUFFER_SIZE).use {
             return when (FileUtils.extractExtension(fileName)) {
@@ -154,11 +160,12 @@ object SerialScanner {
         openedStream.mark(READ_BUFFER_SIZE)
         val header = readByteArray(openedStream, ByteArray(READ_BUFFER_SIZE))
 
-        val detectedSystem = MAGIC_NUMBERS
-            .firstOrNull {
-                header.copyOfRange(it.offset, it.offset + it.numbers.size).contentEquals(it.numbers)
-            }
-            ?.systemID
+        val detectedSystem =
+            MAGIC_NUMBERS
+                .firstOrNull {
+                    header.copyOfRange(it.offset, it.offset + it.numbers.size).contentEquals(it.numbers)
+                }
+                ?.systemID
 
         Timber.d("SystemID detected via magic numbers: $detectedSystem")
 
@@ -218,16 +225,19 @@ object SerialScanner {
         val num = groups?.get(2)
         var postfix = groups?.get(3)
 
-        if (regionID == "E")
+        if (regionID == "E") {
             postfix = "50"
+        }
 
-        if (postfix == "00")
+        if (postfix == "00") {
             postfix = null
+        }
 
-        val finalSerial = sequenceOf(prefix, num, postfix)
-            .filterNotNull()
-            .filter { it.isNotBlank() }
-            .joinToString("-") { it.trim() }
+        val finalSerial =
+            sequenceOf(prefix, num, postfix)
+                .filterNotNull()
+                .filter { it.isNotBlank() }
+                .joinToString("-") { it.trim() }
 
         Timber.i("SegaCD final serial: $finalSerial")
         return DiskInfo(finalSerial, SystemID.SEGACD)
@@ -292,7 +302,7 @@ object SerialScanner {
         streamSize: Int,
         windowSize: Int = 8.kiloBytes(),
         skipSize: Int = windowSize - resultSize,
-        charset: Charset = Charsets.US_ASCII
+        charset: Charset = Charsets.US_ASCII,
     ): Sequence<String> {
         val byteQueries = queries.map { it.toByteArray(charset) }
         return movingWidnowSequence(openedStream, windowSize, (skipSize).toLong())
@@ -313,7 +323,7 @@ object SerialScanner {
     private fun movingWidnowSequence(
         inputStream: InputStream,
         windowSize: Int,
-        windowSkip: Long
+        windowSkip: Long,
     ) = sequence {
         val buffer = ByteArray(windowSize)
         do {
@@ -323,7 +333,10 @@ object SerialScanner {
         } while (inputStream.skip(windowSkip) != 0L)
     }
 
-    private fun readByteArray(inputStream: InputStream, byteArray: ByteArray): ByteArray {
+    private fun readByteArray(
+        inputStream: InputStream,
+        byteArray: ByteArray,
+    ): ByteArray {
         val readBytes = inputStream.read(byteArray)
         return if (readBytes < byteArray.size) {
             byteArray.copyOf(readBytes)

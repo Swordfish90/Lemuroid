@@ -39,30 +39,32 @@ fun LemuroidTopAppBar(
     route: MainRoute,
     navController: NavController,
     mainUIState: MainViewModel.UiState,
-    onHelpPressed: () -> Unit
+    onHelpPressed: () -> Unit,
 ) {
     val context = LocalContext.current
     LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
-        val topBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-            BottomAppBarDefaults.ContainerElevation
-        )
+        val topBarColor =
+            MaterialTheme.colorScheme.surfaceColorAtElevation(
+                BottomAppBarDefaults.ContainerElevation,
+            )
 
         TopAppBar(
             title = { Text(text = stringResource(route.titleId)) },
-            colors = TopAppBarDefaults.topAppBarColors(
-                scrolledContainerColor = topBarColor,
-                containerColor = topBarColor
-            ),
+            colors =
+                TopAppBarDefaults.topAppBarColors(
+                    scrolledContainerColor = topBarColor,
+                    containerColor = topBarColor,
+                ),
             navigationIcon = {
                 AnimatedVisibility(
                     visible = route.parent != null,
                     enter = fadeIn(),
-                    exit = fadeOut()
+                    exit = fadeOut(),
                 ) {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(id = R.string.back)
+                            stringResource(id = R.string.back),
                         )
                     }
                 }
@@ -80,34 +82,34 @@ fun LemuroidTopBarActions(
     navController: NavController,
     context: Context,
     saveSyncEnabled: Boolean,
-    onHelpPressed: () -> Unit
+    onHelpPressed: () -> Unit,
 ) {
     Row {
         IconButton(
-            onClick = { onHelpPressed() }
+            onClick = { onHelpPressed() },
         ) {
             Icon(
                 Icons.Outlined.Info,
-                stringResource(R.string.mobile_settings_help)
+                stringResource(R.string.mobile_settings_help),
             )
         }
         if (saveSyncEnabled) {
             IconButton(
-                onClick = { SaveSyncWork.enqueueManualWork(context.applicationContext) }
+                onClick = { SaveSyncWork.enqueueManualWork(context.applicationContext) },
             ) {
                 Icon(
                     Icons.Outlined.CloudSync,
-                    stringResource(R.string.save_sync)
+                    stringResource(R.string.save_sync),
                 )
             }
         }
         if (route.showBottomNavigation) {
             IconButton(
-                onClick = { navController.navigate(MainRoute.SETTINGS.route) }
+                onClick = { navController.navigate(MainRoute.SETTINGS.route) },
             ) {
                 Icon(
                     Icons.Outlined.Settings,
-                    stringResource(R.string.settings)
+                    stringResource(R.string.settings),
                 )
             }
         }
@@ -115,7 +117,10 @@ fun LemuroidTopBarActions(
 }
 
 @Composable
-fun LemuroidTopAppBarContainer(displayProgress: Boolean, content: @Composable () -> Unit) {
+fun LemuroidTopAppBarContainer(
+    displayProgress: Boolean,
+    content: @Composable () -> Unit,
+) {
     Column {
         Surface(tonalElevation = BottomAppBarDefaults.ContainerElevation) {
             content()

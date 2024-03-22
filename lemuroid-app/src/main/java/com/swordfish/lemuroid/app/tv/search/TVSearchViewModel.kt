@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 
 class TVSearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel() {
-
     class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return TVSearchViewModel(retrogradeDb) as T
@@ -23,8 +22,9 @@ class TVSearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewMode
     val queryString = MutableStateFlow("")
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchResults: Flow<PagingData<Game>> = queryString
-        .flatMapLatest {
-            buildFlowPaging(20, viewModelScope) { retrogradeDb.gameSearchDao().search(it) }
-        }
+    val searchResults: Flow<PagingData<Game>> =
+        queryString
+            .flatMapLatest {
+                buildFlowPaging(20, viewModelScope) { retrogradeDb.gameSearchDao().search(it) }
+            }
 }

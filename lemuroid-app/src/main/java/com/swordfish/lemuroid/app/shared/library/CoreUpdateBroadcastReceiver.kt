@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 
 class CoreUpdateBroadcastReceiver : BroadcastReceiver() {
-
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(
+        context: Context?,
+        intent: Intent?,
+    ) {
         LibraryIndexScheduler.cancelCoreUpdate(context!!.applicationContext)
     }
 }

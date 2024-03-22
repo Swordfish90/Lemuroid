@@ -26,14 +26,14 @@ import kotlin.math.roundToInt
 class RumbleManager(
     applicationContext: Context,
     private val settingsManager: SettingsManager,
-    private val inputDeviceManager: InputDeviceManager
+    private val inputDeviceManager: InputDeviceManager,
 ) {
     private val deviceVibrator = applicationContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     private val rumbleContext = newSingleThreadContext("Rumble")
 
     suspend fun collectAndProcessRumbleEvents(
         systemCoreConfig: SystemCoreConfig,
-        rumbleEventsObservable: Flow<RumbleEvent>
+        rumbleEventsObservable: Flow<RumbleEvent>,
     ) {
         val enableRumble = settingsManager.enableRumble()
         val rumbleSupported = systemCoreConfig.rumbleSupported
@@ -70,7 +70,10 @@ class RumbleManager(
         }
     }
 
-    private fun vibrate(vibrator: Vibrator?, rumbleEvent: RumbleEvent) {
+    private fun vibrate(
+        vibrator: Vibrator?,
+        rumbleEvent: RumbleEvent,
+    ) {
         if (vibrator == null) return
 
         vibrator.cancel()

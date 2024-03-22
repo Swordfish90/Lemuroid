@@ -20,7 +20,10 @@ class ReviewManager {
         }
     }
 
-    suspend fun launchReviewFlow(activity: Activity, sessionTimeMillis: Long) {
+    suspend fun launchReviewFlow(
+        activity: Activity,
+        sessionTimeMillis: Long,
+    ) {
         // Only sessions which lasted more than 10 minutes considered good sessions
         if (sessionTimeMillis < MIN_GAME_SESSION_LENGTH) {
             return

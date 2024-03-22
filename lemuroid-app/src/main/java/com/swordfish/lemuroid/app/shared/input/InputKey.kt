@@ -7,7 +7,6 @@ import java.util.Locale
 @Serializable
 @JvmInline
 value class InputKey(val keyCode: Int) {
-
     fun displayName(): String {
         return when (keyCode) {
             KeyEvent.KEYCODE_BUTTON_THUMBL -> "L3"

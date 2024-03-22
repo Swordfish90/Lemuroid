@@ -24,35 +24,38 @@ import java.io.InputStream
 
 class ShortcutsGenerator(
     private val appContext: Context,
-    retrofit: Retrofit
+    retrofit: Retrofit,
 ) {
-
     private val thumbnailsApi = retrofit.create(ThumbnailsApi::class.java)
 
     suspend fun pinShortcutForGame(game: Game) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
+        }
 
         val shortcutManager = appContext.getSystemService(ShortcutManager::class.java)!!
         val bitmap = retrieveBitmap(game)
 
-        val shortcutInfo = ShortcutInfo.Builder(appContext, "game_${game.id}")
-            .setShortLabel(game.title)
-            .setLongLabel(game.title)
-            .setIntent(DeepLink.launchIntentForGame(appContext, game))
-            .setIcon(Icon.createWithBitmap(bitmap))
-            .build()
+        val shortcutInfo =
+            ShortcutInfo.Builder(appContext, "game_${game.id}")
+                .setShortLabel(game.title)
+                .setLongLabel(game.title)
+                .setIntent(DeepLink.launchIntentForGame(appContext, game))
+                .setIcon(Icon.createWithBitmap(bitmap))
+                .build()
 
         shortcutManager.requestPinShortcut(shortcutInfo, null)
     }
 
-    private suspend fun retrieveBitmap(game: Game): Bitmap = withContext(Dispatchers.IO) {
-        val result = runCatching {
-            val response = thumbnailsApi.downloadThumbnail(game.coverFrontUrl!!)
-            BitmapFactory.decodeStream(response.body()).cropToSquare()
+    private suspend fun retrieveBitmap(game: Game): Bitmap =
+        withContext(Dispatchers.IO) {
+            val result =
+                runCatching {
+                    val response = thumbnailsApi.downloadThumbnail(game.coverFrontUrl!!)
+                    BitmapFactory.decodeStream(response.body()).cropToSquare()
+                }
+            result.getOrElse { retrieveFallbackBitmap(game) }
         }
-        result.getOrElse { retrieveFallbackBitmap(game) }
-    }
 
     private fun retrieveFallbackBitmap(game: Game): Bitmap {
         val desiredIconSize = getDesiredIconSize()
@@ -65,8 +68,9 @@ class ShortcutsGenerator(
     }
 
     fun supportShortcuts(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return false
+        }
 
         val shortcutManager = appContext.getSystemService(ShortcutManager::class.java)!!
         return shortcutManager.isRequestPinShortcutSupported
@@ -75,6 +79,8 @@ class ShortcutsGenerator(
     interface ThumbnailsApi {
         @GET
         @Streaming
-        suspend fun downloadThumbnail(@Url url: String): Response<InputStream>
+        suspend fun downloadThumbnail(
+            @Url url: String,
+        ): Response<InputStream>
     }
 }

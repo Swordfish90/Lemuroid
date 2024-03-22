@@ -15,12 +15,11 @@ import kotlinx.coroutines.flow.stateIn
 
 class SaveSyncSettingsViewModel(
     private val application: Application,
-    private val saveSyncManager: SaveSyncManager
+    private val saveSyncManager: SaveSyncManager,
 ) : ViewModel() {
-
     class Factory(
         private val application: Application,
-        private val saveSyncManager: SaveSyncManager
+        private val saveSyncManager: SaveSyncManager,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return SaveSyncSettingsViewModel(application, saveSyncManager) as T
@@ -36,15 +35,16 @@ class SaveSyncSettingsViewModel(
         val lastSyncInfo: String = "",
         val coreNames: List<String> = emptyList(),
         val provider: String = "",
-        val settingsActivity: Class<out Activity>? = null
+        val settingsActivity: Class<out Activity>? = null,
     )
 
-    val uiState = flow { emit(buildState()) }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            State()
-        )
+    val uiState =
+        flow { emit(buildState()) }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                State(),
+            )
 
     private fun buildState(): State {
         return State(
@@ -54,7 +54,7 @@ class SaveSyncSettingsViewModel(
             saveSyncManager.getLastSyncInfo(),
             computeCoreNames(),
             saveSyncManager.getProvider(),
-            saveSyncManager.getSettingsActivity()
+            saveSyncManager.getSettingsActivity(),
         )
     }
 

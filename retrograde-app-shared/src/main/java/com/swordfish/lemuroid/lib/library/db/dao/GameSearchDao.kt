@@ -26,40 +26,40 @@ class GameSearchDao(private val internalDao: Internal) {
                   tokenize=unicode61 "remove_diacritics=1",
                   content="games",
                   title);
-                """
+                """,
             )
             database.execSQL(
                 """
                 CREATE TRIGGER games_bu BEFORE UPDATE ON games BEGIN
                   DELETE FROM fts_games WHERE docid=old.id;
                 END;
-                """
+                """,
             )
             database.execSQL(
                 """
                 CREATE TRIGGER games_bd BEFORE DELETE ON games BEGIN
                   DELETE FROM fts_games WHERE docid=old.id;
                 END;
-                """
+                """,
             )
             database.execSQL(
                 """
                 CREATE TRIGGER games_au AFTER UPDATE ON games BEGIN
                   INSERT INTO fts_games(docid, title) VALUES(new.id, new.title);
                 END;
-                """
+                """,
             )
             database.execSQL(
                 """
                 CREATE TRIGGER games_ai AFTER INSERT ON games BEGIN
                   INSERT INTO fts_games(docid, title) VALUES(new.id, new.title);
                 END;
-                """
+                """,
             )
             database.execSQL(
                 """
                 INSERT INTO fts_games(docid, title) SELECT id, title FROM games;
-                """
+                """,
             )
         }
     }
@@ -73,8 +73,8 @@ class GameSearchDao(private val internalDao: Internal) {
                     JOIN games ON games.id = fts_games.docid
                     WHERE fts_games MATCH ?
                 """,
-                arrayOf(query)
-            )
+                arrayOf(query),
+            ),
         )
 
     @Dao

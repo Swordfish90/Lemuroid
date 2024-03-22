@@ -35,20 +35,22 @@ import java.util.zip.ZipInputStream
 private const val CRC32_BYTE_ARRAY_SIZE = 16 * 1024
 private const val GZIP_INPUT_STREAM_BUFFER_SIZE = 8 * 1024
 
-fun InputStream.calculateCrc32(): String = this.use { fileStream ->
-    val buffer = ByteArray(CRC32_BYTE_ARRAY_SIZE)
-    return CheckedInputStream(fileStream, CRC32()).use { crcStream ->
-        while (crcStream.read(buffer) != -1) {
-            // Read file in completely
+fun InputStream.calculateCrc32(): String =
+    this.use { fileStream ->
+        val buffer = ByteArray(CRC32_BYTE_ARRAY_SIZE)
+        return CheckedInputStream(fileStream, CRC32()).use { crcStream ->
+            while (crcStream.read(buffer) != -1) {
+                // Read file in completely
+            }
+            crcStream.checksum.value.toStringCRC32()
         }
-        crcStream.checksum.value.toStringCRC32()
     }
-}
 
 fun File.calculateMd5(): String {
-    val bytes = MessageDigest
-        .getInstance("MD5")
-        .digest(this.readBytes())
+    val bytes =
+        MessageDigest
+            .getInstance("MD5")
+            .digest(this.readBytes())
     return bytes.toHexString()
 }
 
@@ -60,7 +62,10 @@ fun InputStream.writeToFile(file: File) {
     }
 }
 
-fun ZipInputStream.extractEntryToFile(entryName: String, gameFile: File) {
+fun ZipInputStream.extractEntryToFile(
+    entryName: String,
+    gameFile: File,
+) {
     this.use { inputStream ->
         while (true) {
             val entry = inputStream.nextEntry
@@ -80,8 +85,11 @@ private fun File.uncompressedInputStream(): InputStream {
     val signature = ByteArray(2)
     val len = pb.read(signature)
     pb.unread(signature, 0, len)
-    return if (signature[0] == 0x1f.toByte() && signature[1] == 0x8b.toByte())
-        GZIPInputStream(pb, GZIP_INPUT_STREAM_BUFFER_SIZE) else pb
+    return if (signature[0] == 0x1f.toByte() && signature[1] == 0x8b.toByte()) {
+        GZIPInputStream(pb, GZIP_INPUT_STREAM_BUFFER_SIZE)
+    } else {
+        pb
+    }
 }
 
 /** Write bytes to file using GZIP compression. */
@@ -96,14 +104,15 @@ fun File.writeBytesCompressed(array: ByteArray) {
 }
 
 /** Read bytes from file. If the file is compressed with GZIP the uncompressed data is returned.*/
-fun File.readBytesUncompressed(): ByteArray = uncompressedInputStream().use { input ->
-    val b = ByteArray(GZIP_INPUT_STREAM_BUFFER_SIZE)
-    val os = ByteArrayOutputStream()
-    os.use { usedOutputStream ->
-        var c: Int
-        while (input.read(b).also { c = it } != -1) {
-            usedOutputStream.write(b, 0, c)
+fun File.readBytesUncompressed(): ByteArray =
+    uncompressedInputStream().use { input ->
+        val b = ByteArray(GZIP_INPUT_STREAM_BUFFER_SIZE)
+        val os = ByteArrayOutputStream()
+        os.use { usedOutputStream ->
+            var c: Int
+            while (input.read(b).also { c = it } != -1) {
+                usedOutputStream.write(b, 0, c)
+            }
         }
+        return os.toByteArray()
     }
-    return os.toByteArray()
-}

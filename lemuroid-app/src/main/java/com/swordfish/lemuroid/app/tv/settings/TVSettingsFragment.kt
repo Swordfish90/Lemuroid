@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
-
     @Inject
     lateinit var settingsInteractor: SettingsInteractor
 
@@ -55,15 +54,19 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         super.onAttach(context)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         launchOnState(Lifecycle.State.CREATED) {
-            val gamePadStatus = combine(
-                inputDeviceManager.getGamePadsObservable(),
-                inputDeviceManager.getEnabledInputsObservable(),
-                ::NTuple2
-            )
+            val gamePadStatus =
+                combine(
+                    inputDeviceManager.getGamePadsObservable(),
+                    inputDeviceManager.getEnabledInputsObservable(),
+                    ::NTuple2,
+                )
 
             gamePadStatus
                 .distinctUntilChanged()
@@ -77,7 +80,10 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         }
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         preferenceManager.preferenceDataStore =
             SharedPreferencesHelper.getSharedPreferencesDataStore(requireContext())
         setPreferencesFromResource(R.xml.tv_settings, rootKey)
@@ -138,7 +144,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     private fun addGamePadBindingsScreen(
         gamePads: List<InputDevice>,
-        enabledGamePads: List<InputDevice>
+        enabledGamePads: List<InputDevice>,
     ) {
         lifecycleScope.launch {
             getGamePadPreferenceScreen()?.let {
@@ -147,7 +153,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
                     requireActivity(),
                     it,
                     gamePads,
-                    enabledGamePads
+                    enabledGamePads,
                 )
             }
         }
@@ -173,9 +179,10 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         }
 
         when (preference.key) {
-            getString(R.string.pref_key_reset_gamepad_bindings) -> lifecycleScope.launch {
-                handleResetGamePadBindings()
-            }
+            getString(R.string.pref_key_reset_gamepad_bindings) ->
+                lifecycleScope.launch {
+                    handleResetGamePadBindings()
+                }
             getString(R.string.pref_key_reset_settings) -> handleResetSettings()
         }
         return super.onPreferenceTreeClick(preference)

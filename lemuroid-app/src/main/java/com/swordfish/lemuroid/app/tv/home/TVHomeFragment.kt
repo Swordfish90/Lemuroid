@@ -36,7 +36,6 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class TVHomeFragment : BrowseSupportFragment() {
-
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
 
@@ -54,46 +53,54 @@ class TVHomeFragment : BrowseSupportFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
-            when (item) {
-                is Game -> gameInteractor.onGamePlay(item)
-                is MetaSystemInfo -> {
-                    val action = TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(
-                        item.metaSystem.name
-                    )
-                    findNavController().navigate(action)
-                }
-                is TVSetting -> {
-                    when (item.type) {
-                        TVSettingType.STOP_RESCAN -> LibraryIndexScheduler.cancelLibrarySync(
-                            requireContext().applicationContext
-                        )
-                        TVSettingType.RESCAN -> LibraryIndexScheduler.scheduleLibrarySync(
-                            requireContext().applicationContext
-                        )
-                        TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
-                        TVSettingType.SETTINGS -> launchTVSettings()
-                        TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
-                        TVSettingType.SAVE_SYNC -> SaveSyncWork.enqueueManualWork(
-                            requireContext().applicationContext
-                        )
+        onItemViewClickedListener =
+            OnItemViewClickedListener { _, item, _, _ ->
+                when (item) {
+                    is Game -> gameInteractor.onGamePlay(item)
+                    is MetaSystemInfo -> {
+                        val action =
+                            TVHomeFragmentDirections.actionNavigationSystemsToNavigationGames(
+                                item.metaSystem.name,
+                            )
+                        findNavController().navigate(action)
+                    }
+                    is TVSetting -> {
+                        when (item.type) {
+                            TVSettingType.STOP_RESCAN ->
+                                LibraryIndexScheduler.cancelLibrarySync(
+                                    requireContext().applicationContext,
+                                )
+                            TVSettingType.RESCAN ->
+                                LibraryIndexScheduler.scheduleLibrarySync(
+                                    requireContext().applicationContext,
+                                )
+                            TVSettingType.CHOOSE_DIRECTORY -> launchFolderPicker()
+                            TVSettingType.SETTINGS -> launchTVSettings()
+                            TVSettingType.SHOW_ALL_FAVORITES -> launchFavorites()
+                            TVSettingType.SAVE_SYNC ->
+                                SaveSyncWork.enqueueManualWork(
+                                    requireContext().applicationContext,
+                                )
+                        }
                     }
                 }
             }
-        }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         recreateAdapter(
             includeFavorites = false,
             includeRecentGames = false,
-            includeSystems = false
+            includeSystems = false,
         )
         setOnSearchClickedListener {
             findNavController().navigate(R.id.navigation_search)
@@ -121,7 +128,7 @@ class TVHomeFragment : BrowseSupportFragment() {
             recreateAdapter(
                 viewState.favoritesGames.isNotEmpty(),
                 viewState.recentGames.isNotEmpty(),
-                viewState.metaSystems.isNotEmpty()
+                viewState.metaSystems.isNotEmpty(),
             )
         }
 
@@ -129,8 +136,9 @@ class TVHomeFragment : BrowseSupportFragment() {
             if (viewState.favoritesGames.size <= TVHomeViewModel.CAROUSEL_MAX_ITEMS) {
                 setItems(viewState.favoritesGames, LEANBACK_MULTI_DIFF_CALLBACK)
             } else {
-                val allItems = viewState.favoritesGames.subList(0, TVHomeViewModel.CAROUSEL_MAX_ITEMS) +
-                    listOf(TVSetting(TVSettingType.SHOW_ALL_FAVORITES))
+                val allItems =
+                    viewState.favoritesGames.subList(0, TVHomeViewModel.CAROUSEL_MAX_ITEMS) +
+                        listOf(TVSetting(TVSettingType.SHOW_ALL_FAVORITES))
                 setItems(allItems, LEANBACK_MULTI_DIFF_CALLBACK)
             }
         }
@@ -143,7 +151,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
         findAdapterById<ArrayObjectAdapter>(SETTINGS_ADAPTER)?.setItems(
             buildSettingsRowItems(viewState.indexInProgress, viewState.scanInProgress),
-            LEANBACK_SETTING_DIFF_CALLBACK
+            LEANBACK_SETTING_DIFF_CALLBACK,
         )
     }
 
@@ -160,12 +168,18 @@ class TVHomeFragment : BrowseSupportFragment() {
     private fun recreateAdapter(
         includeFavorites: Boolean,
         includeRecentGames: Boolean,
-        includeSystems: Boolean
+        includeSystems: Boolean,
     ) {
         val result = ArrayObjectAdapter(ListRowPresenter())
-        val cardSize = resources.getDimensionPixelSize(R.dimen.card_size)
-        val systemsCardPadding = resources.getDimensionPixelSize(R.dimen.systems_card_padding)
-        val settingsCardPadding = resources.getDimensionPixelSize(R.dimen.settings_card_padding)
+        val cardSize = resources.getDimensionPixelSize(com.swordfish.lemuroid.lib.R.dimen.card_size)
+        val systemsCardPadding =
+            resources.getDimensionPixelSize(
+                com.swordfish.lemuroid.lib.R.dimen.systems_card_padding,
+            )
+        val settingsCardPadding =
+            resources.getDimensionPixelSize(
+                com.swordfish.lemuroid.lib.R.dimen.settings_card_padding,
+            )
 
         if (includeFavorites) {
             val presenter = ClassPresenterSelector()
@@ -191,7 +205,7 @@ class TVHomeFragment : BrowseSupportFragment() {
         val settingsItems = ArrayObjectAdapter(SettingPresenter(cardSize, settingsCardPadding))
         settingsItems.setItems(
             buildSettingsRowItems(indexInProgress = false, scanInProgress = false),
-            LEANBACK_SETTING_DIFF_CALLBACK
+            LEANBACK_SETTING_DIFF_CALLBACK,
         )
         val settingsTitle = resources.getString(R.string.tv_home_section_settings)
         result.add(ListRow(HeaderItem(SETTINGS_ADAPTER, settingsTitle), settingsItems))
@@ -201,7 +215,7 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     private fun buildSettingsRowItems(
         indexInProgress: Boolean,
-        scanInProgress: Boolean
+        scanInProgress: Boolean,
     ): List<TVSetting> {
         return mutableListOf<TVSetting>().apply {
             if (saveSyncManager.isSupported() && saveSyncManager.isConfigured()) {
@@ -240,67 +254,89 @@ class TVHomeFragment : BrowseSupportFragment() {
         const val SETTINGS_ADAPTER = 3L
         const val FAVORITES_ADAPTER = 4L
 
-        val LEANBACK_MULTI_DIFF_CALLBACK = object : DiffCallback<Any>() {
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    (oldItem is Game && newItem is Game) -> {
-                        LEANBACK_GAME_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+        val LEANBACK_MULTI_DIFF_CALLBACK =
+            object : DiffCallback<Any>() {
+                override fun areContentsTheSame(
+                    oldItem: Any,
+                    newItem: Any,
+                ): Boolean {
+                    return when {
+                        (oldItem is Game && newItem is Game) -> {
+                            LEANBACK_GAME_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+                        }
+                        (oldItem is TVSetting && newItem is TVSetting) -> {
+                            LEANBACK_SETTING_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+                        }
+                        else -> false
                     }
-                    (oldItem is TVSetting && newItem is TVSetting) -> {
-                        LEANBACK_SETTING_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
+                }
+
+                override fun areItemsTheSame(
+                    oldItem: Any,
+                    newItem: Any,
+                ): Boolean {
+                    return when {
+                        (oldItem is Game && newItem is Game) -> {
+                            LEANBACK_GAME_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
+                        }
+                        (oldItem is TVSetting && newItem is TVSetting) -> {
+                            LEANBACK_SETTING_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
+                        }
+                        else -> false
                     }
-                    else -> false
                 }
             }
 
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    (oldItem is Game && newItem is Game) -> {
-                        LEANBACK_GAME_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
-                    }
-                    (oldItem is TVSetting && newItem is TVSetting) -> {
-                        LEANBACK_SETTING_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
-                    }
-                    else -> false
+        val LEANBACK_GAME_DIFF_CALLBACK =
+            object : DiffCallback<Game>() {
+                override fun areContentsTheSame(
+                    oldItem: Game,
+                    newItem: Game,
+                ): Boolean {
+                    return oldItem == newItem
+                }
+
+                override fun areItemsTheSame(
+                    oldItem: Game,
+                    newItem: Game,
+                ): Boolean {
+                    return oldItem.id == newItem.id
                 }
             }
-        }
 
-        val LEANBACK_GAME_DIFF_CALLBACK = object : DiffCallback<Game>() {
-            override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
-                return oldItem == newItem
+        val LEANBACK_SYSTEM_DIFF_CALLBACK =
+            object : DiffCallback<MetaSystemInfo>() {
+                override fun areContentsTheSame(
+                    oldInfo: MetaSystemInfo,
+                    newInfo: MetaSystemInfo,
+                ): Boolean {
+                    return oldInfo == newInfo
+                }
+
+                override fun areItemsTheSame(
+                    oldInfo: MetaSystemInfo,
+                    newInfo: MetaSystemInfo,
+                ): Boolean {
+                    return oldInfo.metaSystem.name == newInfo.metaSystem.name
+                }
             }
 
-            override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
-                return oldItem.id == newItem.id
-            }
-        }
+        val LEANBACK_SETTING_DIFF_CALLBACK =
+            object : DiffCallback<TVSetting>() {
+                override fun areContentsTheSame(
+                    oldItem: TVSetting,
+                    newItem: TVSetting,
+                ): Boolean {
+                    return oldItem == newItem
+                }
 
-        val LEANBACK_SYSTEM_DIFF_CALLBACK = object : DiffCallback<MetaSystemInfo>() {
-            override fun areContentsTheSame(
-                oldInfo: MetaSystemInfo,
-                newInfo: MetaSystemInfo
-            ): Boolean {
-                return oldInfo == newInfo
+                override fun areItemsTheSame(
+                    oldItem: TVSetting,
+                    newItem: TVSetting,
+                ): Boolean {
+                    return oldItem.type == newItem.type
+                }
             }
-
-            override fun areItemsTheSame(
-                oldInfo: MetaSystemInfo,
-                newInfo: MetaSystemInfo
-            ): Boolean {
-                return oldInfo.metaSystem.name == newInfo.metaSystem.name
-            }
-        }
-
-        val LEANBACK_SETTING_DIFF_CALLBACK = object : DiffCallback<TVSetting>() {
-            override fun areContentsTheSame(oldItem: TVSetting, newItem: TVSetting): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areItemsTheSame(oldItem: TVSetting, newItem: TVSetting): Boolean {
-                return oldItem.type == newItem.type
-            }
-        }
     }
 
     @dagger.Module

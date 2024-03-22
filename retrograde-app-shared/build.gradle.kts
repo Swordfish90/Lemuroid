@@ -9,7 +9,7 @@ plugins {
 
 android {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -61,8 +61,9 @@ android {
             }
         }
     }
+    namespace = "com.swordfish.lemuroid.lib"
     kotlinOptions {
         this as KotlinJvmOptions
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }

@@ -20,7 +20,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class GamePadBindingActivity : RetrogradeActivity() {
-
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
 
@@ -36,15 +35,16 @@ class GamePadBindingActivity : RetrogradeActivity() {
                 val focusRequester = remember { FocusRequester() }
 
                 AlertDialog(
-                    modifier = Modifier
-                        .focusRequester(focusRequester)
-                        .focusable()
-                        .onKeyEvent { handleKeyEvent(it.nativeKeyEvent) }
-                        .onGloballyPositioned { focusRequester.requestFocus() },
+                    modifier =
+                        Modifier
+                            .focusRequester(focusRequester)
+                            .focusable()
+                            .onKeyEvent { handleKeyEvent(it.nativeKeyEvent) }
+                            .onGloballyPositioned { focusRequester.requestFocus() },
                     title = { Text(text = inputBindingUpdater.getTitle(applicationContext)) },
                     text = { Text(text = inputBindingUpdater.getMessage(applicationContext)) },
                     onDismissRequest = { finish() },
-                    confirmButton = {}
+                    confirmButton = {},
                 )
             }
         }

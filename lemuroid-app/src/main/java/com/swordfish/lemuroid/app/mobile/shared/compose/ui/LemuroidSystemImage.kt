@@ -18,17 +18,18 @@ import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
 @Composable
 fun LemuroidSystemImage(system: MetaSystemInfo) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1.0f)
-            .background(Color(system.metaSystem.color())),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(1.0f)
+                .background(Color(system.metaSystem.color())),
+        contentAlignment = Alignment.Center,
     ) {
         Image(
             modifier = Modifier.fillMaxSize(0.75f),
             painter = painterResource(id = system.metaSystem.imageResId),
             contentDescription = stringResource(id = system.metaSystem.titleResId),
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.FillBounds,
         )
     }
 }

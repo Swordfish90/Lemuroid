@@ -24,7 +24,7 @@ fun MetaSystemsScreen(
     MetaSystemsScreen(
         paddings = paddings,
         metaSystems = metaSystems.value,
-        onSystemClicked = { navController.navigate("systems/${it.metaSystem.name}") }
+        onSystemClicked = { navController.navigate("systems/${it.metaSystem.name}") },
     )
 }
 
@@ -33,7 +33,7 @@ fun MetaSystemsScreen(
 fun MetaSystemsScreen(
     metaSystems: List<MetaSystemInfo>,
     onSystemClicked: (MetaSystemInfo) -> Unit,
-    paddings: MergedPaddingValues
+    paddings: MergedPaddingValues,
 ) {
     if (metaSystems.isEmpty()) {
         LemuroidEmptyView()
@@ -49,7 +49,7 @@ fun MetaSystemsScreen(
             LemuroidSystemCard(
                 modifier = Modifier.animateItemPlacement(),
                 system = system,
-                onClick = { onSystemClicked(system) }
+                onClick = { onSystemClicked(system) },
             )
         }
     }
