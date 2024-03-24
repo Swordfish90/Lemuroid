@@ -19,6 +19,9 @@
     <string name="settings">设置</string>
     <string name="save_sync">保存同步</string>
     <string name="show_all">全部显示</string>
+    <string name="back">返回</string>
+    <string name="close">关闭</string>
+    <string name="game_page_search_suggestion">搜索游戏</string>
     <string name="settings_category_general">常规</string>
     <string name="settings_category_input">输入</string>
     <string name="settings_category_misc">其它</string>
