@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Error al iniciar sesión en Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Sesión iniciada en Google como %s</string>
+    <string name="gdrive_sign_out_success">Sesión de Google cerrada</string>
+    <string name="gdrive_missing_play_services">Google Drive requiere Servicios de Google Play que no son compatibles con tu dispositivo</string>
+    <string name="gdrive_connected_summary">Conectado a %s</string>
+    <string name="gdrive_connected_none_summary">Sin configurar</string>
+    <string name="gdrive_last_sync_completed">Última sincronización: %s</string>
+    <string name="game_loading_download_core">Descargando núcleo…</string>
+    <string name="installing_core_notification_title">Actualizando núcleos desde Play</string>
+    <string name="installing_core_notification_message">Revisa la aplicación Google Play Store para ver el estado actual</string>
+    <string name="game_loader_error_load_core">El núcleo de Libretro no se cargó. Prueba lo siguiente:\n
+         \n\u2022 Activa la conexión a Internet y vuelve a escanear tus juegos
+         \n\u2022 Asegúrate de que Google Play Store esté instalado y funcionando.
+         \n\u2022 Espera a que se completen las operaciones pendientes en la aplicación Google Play Store</string>
+</resources>
