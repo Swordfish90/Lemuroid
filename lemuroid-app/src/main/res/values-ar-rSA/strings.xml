@@ -19,6 +19,9 @@
     <string name="settings">الإعدادات</string>
     <string name="save_sync">حفظ المزامنة</string>
     <string name="show_all">عرض الكل</string>
+    <string name="back">رجوع</string>
+    <string name="close">إغلاق</string>
+    <string name="game_page_search_suggestion">البحث عن الألعاب</string>
     <string name="settings_category_general">عام</string>
     <string name="settings_category_input">إدخال</string>
     <string name="settings_category_misc">متفرقات</string>
