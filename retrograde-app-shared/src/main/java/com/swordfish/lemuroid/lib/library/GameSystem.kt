@@ -776,7 +776,6 @@ data class GameSystem(
                             defaultSettings =
                                 listOf(
                                     CoreVariable("pcsx_rearmed_drc", "disabled"),
-                                    CoreVariable("pcsx_rearmed_duping_enable", "enabled"),
                                 ),
                             rumbleSupported = true,
                             supportsLibretroVFS = true,
