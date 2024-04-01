@@ -17,10 +17,10 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsGroup
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsPage
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
 import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
@@ -35,7 +35,7 @@ fun InputDevicesSettingsScreen(
             .collectAsState(InputDevicesSettingsViewModel.State())
             .value
 
-    LemuroidElevatedSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
+    LemuroidSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
         EnabledDeviceCategory(state)
         state.bindings.forEach { (device, bindings) ->
             DeviceBindingCategory(device, bindings)
@@ -52,7 +52,7 @@ private fun DeviceBindingCategory(
     val context = LocalContext.current
     val customizableKeys = device.getLemuroidInputDevice().getCustomizableKeys()
 
-    LemuroidElevatedSettingsGroup(title = { Text(text = device.name) }) {
+    LemuroidCardSettingsGroup(title = { Text(text = device.name) }) {
         customizableKeys.forEach { retroKey ->
             val inputKey = bindings.keys[retroKey] ?: InputKey(KeyEvent.KEYCODE_UNKNOWN)
 
@@ -100,7 +100,7 @@ private fun DeviceMenuShortcut(
 
 @Composable
 private fun EnabledDeviceCategory(state: InputDevicesSettingsViewModel.State) {
-    LemuroidElevatedSettingsGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_enabled)) }) {
+    LemuroidCardSettingsGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_enabled)) }) {
         state.devices.forEach { device ->
             LemuroidSettingsSwitch(
                 state = booleanPreferenceState(key = device.key, default = device.enabledByDefault),
@@ -112,7 +112,7 @@ private fun EnabledDeviceCategory(state: InputDevicesSettingsViewModel.State) {
 
 @Composable
 private fun GeneralOptionsCategory(viewModel: InputDevicesSettingsViewModel) {
-    LemuroidElevatedSettingsGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_general)) }) {
+    LemuroidCardSettingsGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_general)) }) {
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(R.string.settings_gamepad_title_reset_bindings)) },
             onClick = { viewModel.resetAllBindings() },

@@ -191,8 +191,10 @@ dependencies {
     implementation(deps.libs.androidx.lifecycle.viewModelCompose)
     implementation(deps.libs.composeHtmlText)
 
-    implementation(deps.libs.composeSettings.uiM3)
-    implementation(deps.libs.composeSettings.preferences)
+    implementation(deps.libs.composeSettings.uiTiles)
+    implementation(deps.libs.composeSettings.uiTilesExtended)
+    implementation(deps.libs.composeSettings.diskStorage)
+    implementation(deps.libs.composeSettings.memoryStorage)
 
     implementation(deps.libs.libretrodroid)
 

@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsGroup
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidElevatedSettingsPage
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
 import com.swordfish.lemuroid.lib.bios.Bios
 
 @Composable
@@ -23,7 +23,7 @@ fun BiosScreen(
             .collectAsState()
             .value
 
-    LemuroidElevatedSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
+    LemuroidSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
         if (uiState.detected.isNotEmpty()) {
             DetectedEntries(uiState.detected)
         }
@@ -35,7 +35,7 @@ fun BiosScreen(
 
 @Composable
 private fun DetectedEntries(detected: List<Bios>) {
-    LemuroidElevatedSettingsGroup(
+    LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_bios_category_detected)) },
     ) {
         detected.forEach {
@@ -46,7 +46,7 @@ private fun DetectedEntries(detected: List<Bios>) {
 
 @Composable
 private fun SupportedEntries(supported: List<Bios>) {
-    LemuroidElevatedSettingsGroup(
+    LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_bios_category_not_detected)) },
     ) {
         supported.forEach {

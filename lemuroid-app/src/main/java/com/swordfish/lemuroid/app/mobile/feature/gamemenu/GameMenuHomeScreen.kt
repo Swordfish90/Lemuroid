@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
-import com.alorma.compose.settings.storage.base.rememberIntSettingState
+import com.alorma.compose.settings.storage.memory.rememberMemoryBooleanSettingState
+import com.alorma.compose.settings.storage.memory.rememberMemoryIntSettingState
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
@@ -85,7 +85,7 @@ fun GameMenuHomeScreen(
                     contentDescription = stringResource(id = R.string.game_menu_mute_audio),
                 )
             },
-            state = rememberBooleanSettingState(!gameMenuRequest.audioEnabled),
+            state = rememberMemoryBooleanSettingState(!gameMenuRequest.audioEnabled),
             onCheckedChange = {
                 onResult { putExtra(GameMenuContract.RESULT_ENABLE_AUDIO, !it) }
             },
@@ -100,7 +100,7 @@ fun GameMenuHomeScreen(
                         contentDescription = stringResource(id = R.string.game_menu_fast_forward),
                     )
                 },
-                state = rememberBooleanSettingState(gameMenuRequest.fastForwardEnabled),
+                state = rememberMemoryBooleanSettingState(gameMenuRequest.fastForwardEnabled),
                 onCheckedChange = {
                     onResult { putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, it) }
                 },
@@ -118,7 +118,7 @@ fun GameMenuHomeScreen(
                         contentDescription = stringResource(id = R.string.game_menu_change_disk_button),
                     )
                 },
-                state = rememberIntSettingState(gameMenuRequest.currentDisk),
+                state = rememberMemoryIntSettingState(gameMenuRequest.currentDisk),
                 onItemSelected = { index, _ ->
                     onResult { putExtra(GameMenuContract.RESULT_CHANGE_DISK, index) }
                 },

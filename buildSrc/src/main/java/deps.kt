@@ -23,8 +23,7 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
-        const val settings        = "1.0.3"
-        const val libretrodroid   = "0.11.0"
+        const val libretrodroid   = "e18bdb67d"
         const val radialgamepad   = "2.0.0"
         const val composeBom      = "2024.02.02"
 
@@ -142,8 +141,10 @@ object deps {
         }
 
         object composeSettings {
-            const val uiM3 = "com.github.alorma:compose-settings-ui-m3:${versions.settings}"
-            const val preferences = "com.github.alorma:compose-settings-storage-preferences:${versions.settings}"
+            const val uiTiles = "com.github.alorma.compose-settings:ui-tiles:2.1.0"
+            const val uiTilesExtended = "com.github.alorma.compose-settings:ui-tiles-extended:2.1.0"
+            const val diskStorage = "com.github.alorma:compose-settings-storage-disk:2.0.0"
+            const val memoryStorage = "com.github.alorma:compose-settings-storage-memory:2.0.0"
         }
 
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
