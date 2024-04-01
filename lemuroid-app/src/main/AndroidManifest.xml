@@ -41,7 +41,7 @@
 
         <activity
             android:name="com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
             android:exported="true"
             android:theme="@style/LemuroidMaterialTheme.Game">
             <intent-filter>
@@ -56,7 +56,7 @@
 
         <activity
             android:name="com.swordfish.lemuroid.app.mobile.feature.game.GameActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
             android:launchMode="singleInstance"
             android:process=":game"
             android:theme="@style/LemuroidMaterialTheme.Game" />
