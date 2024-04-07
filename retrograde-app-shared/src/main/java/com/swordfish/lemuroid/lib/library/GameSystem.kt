@@ -1001,7 +1001,7 @@ data class GameSystem(
                                 hashMapOf(
                                     0 to arrayListOf(ControllerConfigs.MELONDS),
                                 ),
-                            statesVersion = 1,
+                            statesVersion = 2,
                         ),
                     ),
                     uniqueExtensions = listOf("nds"),
