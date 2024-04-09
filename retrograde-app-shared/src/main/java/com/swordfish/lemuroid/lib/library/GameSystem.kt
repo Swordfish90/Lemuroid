@@ -996,6 +996,8 @@ data class GameSystem(
                                     CoreVariable("melonds_number_of_screen_layouts", "1"),
                                     CoreVariable("melonds_touch_mode", "Touch"),
                                     CoreVariable("melonds_threaded_renderer", "enabled"),
+                                    // TODO... As soon as libretrodroid supports the microphone we can remove this.
+                                    CoreVariable("melonds_mic_input", "blow"),
                                 ),
                             controllerConfigs =
                                 hashMapOf(

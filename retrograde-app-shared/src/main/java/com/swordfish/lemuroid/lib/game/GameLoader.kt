@@ -43,9 +43,9 @@ import java.io.File
 
 class GameLoader(
     private val lemuroidLibrary: LemuroidLibrary,
-    private val legacyStatesManager: StatesManager,
-    private val legacySavesManager: SavesManager,
-    private val legacyCoreVariablesManager: CoreVariablesManager,
+    private val statesManager: StatesManager,
+    private val savesManager: SavesManager,
+    private val coreVariablesManager: CoreVariablesManager,
     private val retrogradeDatabase: RetrogradeDatabase,
     private val savesCoherencyEngine: SavesCoherencyEngine,
     private val directoriesManager: DirectoriesManager,
@@ -97,7 +97,7 @@ class GameLoader(
 
                 val saveRAMData =
                     runCatching {
-                        legacySavesManager.getSaveRAM(game)
+                        savesManager.getSaveRAM(game, systemCoreConfig)
                     }.getOrElse { throw GameLoaderException(GameLoaderError.Saves) }
 
                 val quickSaveData =
@@ -106,14 +106,14 @@ class GameLoader(
                             !savesCoherencyEngine.shouldDiscardAutoSaveState(game, systemCoreConfig.coreID)
 
                         if (systemCoreConfig.statesSupported && loadSave && shouldDiscardSave) {
-                            legacyStatesManager.getAutoSave(game, systemCoreConfig.coreID)
+                            statesManager.getAutoSave(game, systemCoreConfig.coreID)
                         } else {
                             null
                         }
                     }.getOrElse { throw GameLoaderException(GameLoaderError.Saves) }
 
                 val coreVariables =
-                    legacyCoreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
+                    coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
                         .toTypedArray()
 
                 val systemDirectory = directoriesManager.getSystemDirectory()
