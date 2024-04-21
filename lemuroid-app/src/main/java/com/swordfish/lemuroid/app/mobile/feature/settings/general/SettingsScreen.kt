@@ -171,7 +171,7 @@ private fun RomsSettings(
     indexingInProgress: Boolean,
     scanInProgress: Boolean,
 ) {
-    val context = LocalContext.current.applicationContext
+    val context = LocalContext.current
 
     val currentDirectory = state.currentDirectory
     val emptyDirectory = stringResource(R.string.none)

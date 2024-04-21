@@ -135,6 +135,7 @@ fun SearchScreen(
                                     onHelpPressed = onHelpPressed,
                                     context = context,
                                     saveSyncEnabled = mainUIState.saveSyncEnabled,
+                                    operationsInProgress = mainUIState.operationInProgress,
                                 )
                             }
                         },
