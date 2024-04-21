@@ -30,41 +30,28 @@ import com.alorma.compose.settings.storage.base.SettingValueState
 fun LemuroidSettingsListMultiSelect(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    state: SettingValueState<Set<Int>>,
+    state: SettingValueState<Set<String>>,
     title: @Composable () -> Unit,
-    items: List<String>,
+    entryValues: List<String>,
+    entries: List<String>,
     icon: @Composable (() -> Unit)? = null,
     confirmButton: String,
-    useSelectedValuesAsSubtitle: Boolean = true,
     subtitle: @Composable (() -> Unit)? = null,
     onItemsSelected: ((List<String>) -> Unit)? = null,
     action: @Composable (() -> Unit)? = null,
 ) {
-    if (state.value.any { index -> index >= items.size }) {
-        throw IndexOutOfBoundsException("Current indexes for $title list setting cannot be grater than items size")
+    if (entryValues.size != entries.size) {
+        throw IllegalArgumentException("entries and entryValues need to have the same size")
     }
 
     var showDialog by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
-    val safeSubtitle =
-        if (useSelectedValuesAsSubtitle) {
-            {
-                Text(
-                    text =
-                        state.value.map { index -> items[index] }
-                            .joinToString(separator = ", ") { it },
-                )
-            }
-        } else {
-            subtitle
-        }
-
     LemuroidSettingsMenuLink(
         enabled = enabled,
         icon = icon,
         title = title,
-        subtitle = safeSubtitle,
+        subtitle = subtitle,
         action = action,
         onClick = { showDialog = true },
     )
@@ -73,12 +60,12 @@ fun LemuroidSettingsListMultiSelect(
 
     val onAdd: (Int) -> Unit = { selectedIndex ->
         val mutable = state.value.toMutableSet()
-        mutable.add(selectedIndex)
+        mutable.add(entryValues[selectedIndex])
         state.value = mutable
     }
     val onRemove: (Int) -> Unit = { selectedIndex ->
         val mutable = state.value.toMutableSet()
-        mutable.remove(selectedIndex)
+        mutable.remove(entryValues[selectedIndex])
         state.value = mutable
     }
 
@@ -93,8 +80,8 @@ fun LemuroidSettingsListMultiSelect(
                     Spacer(modifier = Modifier.size(8.dp))
                 }
 
-                items.forEachIndexed { index, item ->
-                    val isSelected by rememberUpdatedState(newValue = state.value.contains(index))
+                entryValues.forEachIndexed { index, item ->
+                    val isSelected by rememberUpdatedState(newValue = state.value.contains(item))
                     Row(
                         modifier =
                             Modifier
@@ -114,7 +101,7 @@ fun LemuroidSettingsListMultiSelect(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = item,
+                            text = entries[index],
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.weight(1f),
                         )
@@ -131,7 +118,7 @@ fun LemuroidSettingsListMultiSelect(
             TextButton(
                 onClick = {
                     showDialog = false
-                    onItemsSelected?.invoke(state.value.map { index -> items[index] })
+                    onItemsSelected?.invoke(entryValues.filter { state.value.contains(it) })
                 },
             ) {
                 Text(text = confirmButton)

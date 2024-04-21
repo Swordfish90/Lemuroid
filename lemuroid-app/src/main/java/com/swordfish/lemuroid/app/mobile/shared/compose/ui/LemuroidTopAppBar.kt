@@ -70,7 +70,14 @@ fun LemuroidTopAppBar(
                 }
             },
             actions = {
-                LemuroidTopBarActions(route, navController, context, mainUIState.saveSyncEnabled, onHelpPressed)
+                LemuroidTopBarActions(
+                    route = route,
+                    navController = navController,
+                    context = context,
+                    saveSyncEnabled = mainUIState.saveSyncEnabled,
+                    onHelpPressed = onHelpPressed,
+                    operationsInProgress = mainUIState.operationInProgress,
+                )
             },
         )
     }
@@ -82,6 +89,7 @@ fun LemuroidTopBarActions(
     navController: NavController,
     context: Context,
     saveSyncEnabled: Boolean,
+    operationsInProgress: Boolean,
     onHelpPressed: () -> Unit,
 ) {
     Row {
@@ -96,6 +104,7 @@ fun LemuroidTopBarActions(
         if (saveSyncEnabled) {
             IconButton(
                 onClick = { SaveSyncWork.enqueueManualWork(context.applicationContext) },
+                enabled = !operationsInProgress,
             ) {
                 Icon(
                     Icons.Outlined.CloudSync,

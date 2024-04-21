@@ -112,21 +112,12 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
         setContent {
             val navController = rememberNavController()
-
-            val uiState =
-                mainViewModel.state
-                    .observeAsState(MainViewModel.UiState())
-                    .value
-
-            MainScreen(navController, uiState)
+            MainScreen(navController)
         }
     }
 
     @Composable
-    private fun MainScreen(
-        navController: NavHostController,
-        mainUIState: MainViewModel.UiState,
-    ) {
+    private fun MainScreen(navController: NavHostController) {
         AppTheme {
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry.value?.destination
@@ -164,6 +155,12 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 infoDialogDisplayed.value = true
             }
 
+            val mainUIState =
+                mainViewModel.state
+                    .observeAsState(MainViewModel.UiState())
+                    .value
+
+            // TODO COMPOSE Get rid of this double scaffold.
             Scaffold(
                 bottomBar = { MainNavigationBar(currentRoute, navController) },
             ) { outerPadding ->
