@@ -30,7 +30,7 @@
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
     <string name="settings_title_maximum_cache_usage">Limite de tamanho do cache</string>
     <string name="settings_title_hd_mode">Modo HD</string>
-    <string name="settings_description_hd_mode">Aplicar filtro de upscaling pós-processado</string>
+    <string name="settings_description_hd_mode">Aplicar filtro no aumento de escala pós-processado</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
     <string name="settings_description_gamepad_settings">Configurar controles e teclados externos</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -77,7 +77,7 @@
     <string name="game_context_menu_restart">Reiniciar</string>
     <string name="game_context_menu_create_shortcut">Fixar na tela inicial</string>
     <string name="home_notification_title">Ativar notificações</string>
-    <string name="home_notification_message">Lemuroid usa notificações para que você saiba quando um jogo ou operação está rodando em segundo plano.</string>
+    <string name="home_notification_message">O Lemuroid usa notificações para informar quando um jogo ou uma operação está rodando em segundo plano.</string>
     <string name="home_notification_action">Ativar</string>
     <string name="home_empty_title">Selecionar diretório das ROMs</string>
     <string name="home_empty_message">Lemuroid precisa verificar um diretório contendo arquivos da ROM.\nIsto pode levar alguns minutos.</string>
@@ -116,13 +116,13 @@
     <string name="game_loader_error_unsupported_architecture">Este Núcleo não é suportado pelo seu dispositivo.</string>
     <string name="game_loader_error_generic">Parece que o núcleo do Libretro teve um problema inesperado. Se for persistente, tente o seguinte:\n
         \n\u2022 Desative o salvamento automático e execute o jogo novamente
-        \n\u2022 Vá nas configurações do Android e limpe o cache do app
+        \n\u2022 Vá nas configurações do Android e limpe o cache do Lemuroid
         \n\u2022 Vá nas configurações do Lemuroid e execute a formatação de fábrica
         \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
     </string>
     <string name="game_loader_error_missing_bios">Parece que você está faltando a BIOS necessária, coloque-a no diretório das suas ROMs e tente novamente. Arquivos necessários: %1$s</string>
     <string name="game_shortcut_error">Algo ruim aconteceu durante o carregamento do seu jogo. Por favor, certifique-se de que este jogo ainda existe na sua biblioteca.</string>
-    <string name="dialog_saf_not_found">Este dispositivo não suporta o selecionador de arquivo StorageAccessFramework. Por favor copie manualmente arquivos da ROM descomprimida para %1$s e aperte o reescanear.</string>
+    <string name="dialog_saf_not_found">Este dispositivo não suporta o selecionador de arquivo \"StorageAccessFramework\". Por favor, copie manualmente arquivos da ROM descomprimida para %1$s e aperte em verificar novamente.</string>
     <string name="system_grid_details">%1$s Jogos</string>
     <string name="tv_folder_picker_title">Selecionar diretório das ROMs</string>
     <string name="tv_folder_picker_action_choose">Selecionar</string>
@@ -149,11 +149,11 @@
     ]]></string>
     <string name="lemuroid_crash_disclamer">Parece que o núcleo do Libretro teve um problema inesperado. Se for persistente, tente o seguinte:\n
         \n\u2022 Desative o salvamento automático e execute o jogo novamente
-        \n\u2022 Vá nas configurações do Android e limpe o cache do app
+        \n\u2022 Vá nas configurações do Android e limpe o cache do Lemuroid
         \n\u2022 Vá nas configurações do Lemuroid e execute a formatação de fábrica
         \n\n Se nenhuma das opções acima funcionar, pode ser possível que este jogo/núcleo não seja compatível com este dispositivo.
     </string>
-    <string name="error_message_incompatible_state">Este estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último save dentro do jogo ou use uma versão anterior do Lemuroid.</string>
+    <string name="error_message_incompatible_state">Este estado de salvamento não é compatível com a versão principal atual. Por favor, carregue o último salvamento no jogo ou use uma versão anterior do Lemuroid.</string>
     <string name="shader_filter_names_auto">Automático</string>
     <string name="shader_filter_names_sharp">Nítido</string>
     <string name="shader_filter_names_smooth">Suavização</string>
