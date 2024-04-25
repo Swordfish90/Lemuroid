@@ -8,7 +8,7 @@
     <string name="recent">Recentes</string>
     <string name="favorites">Favoritos</string>
     <string name="discover">Descubra</string>
-    <string name="rescan">Reescanear</string>
+    <string name="rescan">Verificar novamente</string>
     <string name="stop">Parar</string>
     <string name="none">Nenhuma</string>
     <string name="directory">Diretório</string>
@@ -19,10 +19,13 @@
     <string name="settings">Configurações</string>
     <string name="save_sync">Salvar Sincronização</string>
     <string name="show_all">Mostrar todos</string>
+    <string name="back">Voltar</string>
+    <string name="close">Fechar</string>
+    <string name="game_page_search_suggestion">Pesquisar jogos</string>
     <string name="settings_category_general">Geral</string>
     <string name="settings_category_input">Entrada</string>
     <string name="settings_category_misc">Outras configurações</string>
-    <string name="settings_title_enable_autosave">Auto-Salvar Estado</string>
+    <string name="settings_title_enable_autosave">Estado de salvamento automático</string>
     <string name="settings_title_enable_touch_feedback">Vibrar no toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
     <string name="settings_title_maximum_cache_usage">Limite de tamanho do cache</string>
@@ -56,9 +59,9 @@
     <string name="settings_title_enable_device_rumble">Vibração do dispositivo</string>
     <string name="settings_description_enable_device_rumble">Quando nenhum controle estiver conectado vibrar o dispositivo</string>
     <string name="reset_settings_warning_message_title">Você tem certeza?</string>
-    <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Saves e Estados serão preservados.</string>
-    <string name="settings_title_save_sync">Saves na nuvem</string>
-    <string name="settings_description_save_sync">Faça backup e sincronize seus saves na nuvem</string>
+    <string name="reset_settings_warning_message_description">Isto redefinirá o Lemuroid às suas configurações de fábrica. Salvamentos e Estados serão preservados.</string>
+    <string name="settings_title_save_sync">Salvamento em Nuvem</string>
+    <string name="settings_description_save_sync">Faça \'backup\' e sincronize seus salvamentos na nuvem</string>
     <string name="settings_save_sync_refresh">Sincronização Manual</string>
     <string name="settings_save_sync_refresh_description">Execute uma Sincronização manual agora.\n%1$s</string>
     <string name="settings_save_sync_enable_auto">Auto Sincronizar</string>
@@ -108,7 +111,7 @@
     <string name="game_running_notification_title_alternative">O jogo está em execução</string>
     <string name="game_running_notification_message">Certifique-se de salvar o seu progresso</string>
     <string name="game_loader_error_gl_incompatible">Este Núcleo requer uma versão OpenGL ES que não é suportada pelo seu dispositivo.</string>
-    <string name="game_loader_error_load_game">Algo ruim aconteceu durante o carregamento da sua partida. Certifique-se de que a ROM é suportada pelo Lemuroid e reescaneie seus jogos.</string>
+    <string name="game_loader_error_load_game">Algo ruim aconteceu durante o carregamento da sua partida. Certifique-se de que a ROM é suportada pelo Lemuroid e escaneie seus jogos.</string>
     <string name="game_loader_error_save">Algo ruim aconteceu com o seu arquivo salvo. Se o problema persistir, tente desativar o salvamento automático.</string>
     <string name="game_loader_error_unsupported_architecture">Este Núcleo não é suportado pelo seu dispositivo.</string>
     <string name="game_loader_error_generic">Parece que o núcleo do Libretro teve um problema inesperado. Se for persistente, tente o seguinte:\n
