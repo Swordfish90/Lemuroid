@@ -103,10 +103,10 @@
     <string name="value_melonds_screen_layout_leftright">Esquerda - Direita</string>
     <string name="value_melonds_screen_layout_hybridtop">Topo híbrido</string>
     <string name="value_melonds_screen_layout_hybridbottom">Híbrido Inferior</string>
-    <string name="value_citra_layout_option_topbottom">Superior - inferior</string>
-    <string name="value_citra_layout_option_sidebyside">Esquerda - direita</string>
-    <string name="value_desmume_screens_layout_topbottom">Superior - inferior</string>
-    <string name="value_desmume_screens_layout_leftright">Esquerda - direita</string>
+    <string name="value_citra_layout_option_topbottom">Superior — inferior</string>
+    <string name="value_citra_layout_option_sidebyside">Esquerda — direita</string>
+    <string name="value_desmume_screens_layout_topbottom">Superior — inferior</string>
+    <string name="value_desmume_screens_layout_leftright">Esquerda — direita</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpretador</string>
