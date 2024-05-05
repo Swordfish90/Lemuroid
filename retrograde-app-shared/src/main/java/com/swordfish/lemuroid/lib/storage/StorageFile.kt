@@ -24,22 +24,14 @@ import com.swordfish.lemuroid.common.files.FileUtils
 import com.swordfish.lemuroid.lib.library.SystemID
 
 data class StorageFile(
-
     val name: String,
-
     val size: Long,
-
     val crc: String? = null,
-
     val serial: String? = null,
-
     val uri: Uri,
-
     val path: String? = null,
-
-    val systemID: SystemID? = null
+    val systemID: SystemID? = null,
 ) {
-
     val extension: String
         get() = FileUtils.extractExtension(name)
 

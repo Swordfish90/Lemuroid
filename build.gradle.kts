@@ -15,10 +15,8 @@ buildscript {
 plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
     id("com.github.ben-manes.versions") version "0.39.0"
-    id("org.jmailen.kotlinter") version "3.0.2"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.4.0"
-    id("name.remal.check-dependency-updates") version "1.5.0"
-    checkstyle
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
 }
 
 allprojects {
@@ -28,13 +26,6 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
-    }
-
-    apply(plugin = "org.jmailen.kotlinter")
-
-    kotlinter {
-        // We are currently disabling tests for import ordering.
-        disabledRules = arrayOf("import-ordering")
     }
 
     configurations.all {
@@ -55,27 +46,11 @@ allprojects {
 }
 
 subprojects {
-    apply {
-        plugin("checkstyle")
-    }
-
     afterEvaluate {
-        tasks {
-            val checkstyle by creating(Checkstyle::class) {
-                configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
-                classpath = files()
-                source("src")
-            }
-            findByName("check")?.dependsOn(checkstyle)
-        }
-
-        extensions.configure(CheckstyleExtension::class.java) {
-            isIgnoreFailures = false
-            toolVersion = "8.8"
-        }
-
         if (hasProperty("android")) {
             // BaseExtension is common parent for application, library and test modules
+            apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
             extensions.configure(BaseExtension::class.java) {
                 compileSdkVersion(deps.android.compileSdkVersion)
                 buildToolsVersion(deps.android.buildToolsVersion)
@@ -91,12 +66,9 @@ subprojects {
                     disable("VectorPath")
                     disable("TrustAllX509TrustManager")
                 }
-                dexOptions {
-                    dexInProcess = true
-                }
                 compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_1_8
-                    targetCompatibility = JavaVersion.VERSION_1_8
+                    sourceCompatibility = JavaVersion.VERSION_17
+                    targetCompatibility = JavaVersion.VERSION_17
                 }
             }
         }
@@ -118,7 +90,8 @@ tasks {
         resolutionStrategy {
             componentSelection {
                 all {
-                    val rejected = listOf("alpha", "beta", "rc", "cr", "m")
+                    val rejected =
+                        listOf("alpha", "beta", "rc", "cr", "m")
                             .map { qualifier -> Regex("(?i).*[.-]$qualifier[.\\d-]*") }
                             .any { it.matches(candidate.version) }
                     if (rejected) {

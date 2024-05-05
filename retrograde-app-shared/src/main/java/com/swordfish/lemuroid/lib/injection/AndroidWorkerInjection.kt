@@ -9,7 +9,7 @@ object AndroidWorkerInjection {
         if (application !is HasWorkerInjector) {
             throw RuntimeException(
                 "${application.javaClass.canonicalName} does not " +
-                    "implement ${HasWorkerInjector::class.java.canonicalName}"
+                    "implement ${HasWorkerInjector::class.java.canonicalName}",
             )
         }
         val workerInjector = (application as HasWorkerInjector).workerInjector()

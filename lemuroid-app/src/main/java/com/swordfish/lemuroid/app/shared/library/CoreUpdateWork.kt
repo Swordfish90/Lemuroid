@@ -15,19 +15,20 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import dagger.Binds
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
-import javax.inject.Inject
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
+import javax.inject.Inject
 
 class CoreUpdateWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
-
     @Inject
     lateinit var retrogradeDatabase: RetrogradeDatabase
+
     @Inject
     lateinit var coreUpdater: CoreUpdater
+
     @Inject
     lateinit var coresSelection: CoresSelection
 
@@ -38,20 +39,22 @@ class CoreUpdateWork(context: Context, workerParams: WorkerParameters) :
 
         val notificationsManager = NotificationsManager(applicationContext)
 
-        val foregroundInfo = ForegroundInfo(
-            NotificationsManager.CORE_INSTALL_NOTIFICATION_ID,
-            notificationsManager.installingCoresNotification()
-        )
+        val foregroundInfo =
+            ForegroundInfo(
+                NotificationsManager.CORE_INSTALL_NOTIFICATION_ID,
+                notificationsManager.installingCoresNotification(),
+            )
 
         setForegroundAsync(foregroundInfo)
 
         try {
-            val cores = retrogradeDatabase.gameDao().selectSystems()
-                .asFlow()
-                .map { GameSystem.findById(it) }
-                .map { coresSelection.getCoreConfigForSystem(it) }
-                .map { it.coreID }
-                .toList()
+            val cores =
+                retrogradeDatabase.gameDao().selectSystems()
+                    .asFlow()
+                    .map { GameSystem.findById(it) }
+                    .map { coresSelection.getCoreConfigForSystem(it) }
+                    .map { it.coreID }
+                    .toList()
 
             coreUpdater.downloadCores(applicationContext, cores)
         } catch (e: Throwable) {

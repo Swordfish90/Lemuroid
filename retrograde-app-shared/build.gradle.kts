@@ -9,7 +9,7 @@ plugins {
 
 android {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -48,6 +48,7 @@ dependencies {
     implementation(deps.libs.multitouchGestures)
     implementation(deps.libs.material)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
+    implementation(deps.libs.flowPreferences)
 
     kapt(deps.libs.androidx.room.compiler)
 }
@@ -60,8 +61,9 @@ android {
             }
         }
     }
+    namespace = "com.swordfish.lemuroid.lib"
     kotlinOptions {
         this as KotlinJvmOptions
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }

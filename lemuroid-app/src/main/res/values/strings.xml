@@ -18,6 +18,10 @@
     <string name="settings">Settings</string>
     <string name="save_sync">Save Sync</string>
     <string name="show_all">Show All</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+
+    <string name="game_page_search_suggestion">Search games</string>
 
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Input</string>
@@ -88,6 +92,10 @@
     <string name="game_context_menu_resume">Resume</string>
     <string name="game_context_menu_restart">Restart</string>
     <string name="game_context_menu_create_shortcut">Pin to launcher</string>
+
+    <string name="home_notification_title">Enable notifications</string>
+    <string name="home_notification_message">Lemuroid uses notifications to let you know when a game or operation is running in background.</string>
+    <string name="home_notification_action">Enable</string>
 
     <string name="home_empty_title">Select ROMs directory</string>
     <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>

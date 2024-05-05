@@ -23,11 +23,10 @@ import android.net.Uri
 import androidx.leanback.preference.LeanbackPreferenceFragment
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import java.io.InputStream
 import kotlinx.coroutines.flow.Flow
+import java.io.InputStream
 
 interface StorageProvider {
-
     val id: String
 
     val name: String
@@ -47,6 +46,6 @@ interface StorageProvider {
     fun getGameRomFiles(
         game: Game,
         dataFiles: List<DataFile>,
-        allowVirtualFiles: Boolean
+        allowVirtualFiles: Boolean,
     ): RomFiles
 }

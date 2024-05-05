@@ -7,5 +7,8 @@ import android.content.Context
 class ReviewManager {
     suspend fun initialize(context: Context) {}
 
-    suspend fun launchReviewFlow(activity: Activity, sessionTimeMillis: Long) {}
+    suspend fun launchReviewFlow(
+        activity: Activity,
+        sessionTimeMillis: Long,
+    ) {}
 }

@@ -13,15 +13,15 @@ import java.io.Serializable
             entity = Game::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("gameId"),
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
     indices = [
         Index("id", unique = true),
         Index("fileUri"),
         Index("gameId"),
-        Index("lastIndexedAt")
-    ]
+        Index("lastIndexedAt"),
+    ],
 )
 data class DataFile(
     @PrimaryKey(autoGenerate = true)
@@ -30,5 +30,5 @@ data class DataFile(
     val fileName: String,
     val fileUri: String,
     val lastIndexedAt: Long,
-    val path: String?
+    val path: String?,
 ) : Serializable

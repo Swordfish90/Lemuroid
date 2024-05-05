@@ -11,11 +11,15 @@ import kotlinx.coroutines.launch
 
 class GameLauncher(
     private val coresSelection: CoresSelection,
-    private val gameLaunchTaskHandler: GameLaunchTaskHandler
+    private val gameLaunchTaskHandler: GameLaunchTaskHandler,
 ) {
-
     @OptIn(DelicateCoroutinesApi::class)
-    fun launchGameAsync(activity: Activity, game: Game, loadSave: Boolean, leanback: Boolean) {
+    fun launchGameAsync(
+        activity: Activity,
+        game: Game,
+        loadSave: Boolean,
+        leanback: Boolean,
+    ) {
         GlobalScope.launch {
             val system = GameSystem.findById(game.systemId)
             val coreConfig = coresSelection.getCoreConfigForSystem(system)

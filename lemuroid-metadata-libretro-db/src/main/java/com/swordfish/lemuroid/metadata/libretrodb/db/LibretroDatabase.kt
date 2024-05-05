@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
 @Database(
     entities = [LibretroRom::class],
     version = 8,
-    exportSchema = false
+    exportSchema = false,
 )
 abstract class LibretroDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao

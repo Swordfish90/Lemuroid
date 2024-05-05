@@ -4,11 +4,10 @@ import com.swordfish.lemuroid.common.math.MathUtils
 import com.swordfish.radialgamepad.library.RadialGamePad
 
 class CrossTiltTracker(val id: Int) : TiltTracker {
-
     override fun updateTracking(
         xTilt: Float,
         yTilt: Float,
-        pads: Sequence<RadialGamePad>
+        pads: Sequence<RadialGamePad>,
     ) {
         if (MathUtils.distance(xTilt, 0.5f, yTilt, 0.5f) > ACTIVATION_THRESHOLD) {
             pads.forEach { it.simulateMotionEvent(id, xTilt, yTilt) }

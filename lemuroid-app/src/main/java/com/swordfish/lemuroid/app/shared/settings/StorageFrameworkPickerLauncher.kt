@@ -14,7 +14,6 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import javax.inject.Inject
 
 class StorageFrameworkPickerLauncher : RetrogradeActivity() {
-
     @Inject
     lateinit var directoriesManager: DirectoriesManager
 
@@ -22,12 +21,13 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
-                this.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                this.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                this.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-                this.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-            }
+            val intent =
+                Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+                    this.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    this.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                    this.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
+                    this.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                }
             try {
                 startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
             } catch (e: Exception) {
@@ -42,12 +42,16 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
         displayErrorDialog(message, actionLabel) { finish() }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        resultData: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, resultData)
 
         if (requestCode == REQUEST_CODE_PICK_FOLDER && resultCode == Activity.RESULT_OK) {
             val sharedPreferences = SharedPreferencesHelper.getLegacySharedPreferences(this)
-            val preferenceKey = getString(R.string.pref_key_extenral_folder)
+            val preferenceKey = getString(com.swordfish.lemuroid.lib.R.string.pref_key_extenral_folder)
 
             val currentValue: String? = sharedPreferences.getString(preferenceKey, null)
             val newValue = resultData?.data
@@ -73,7 +77,7 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
             .forEach {
                 contentResolver.releasePersistableUriPermission(
                     it.uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION,
                 )
             }
 

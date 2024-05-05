@@ -2,30 +2,34 @@
 object deps {
     object android {
         const val targetSdkVersion  = 33
-        const val compileSdkVersion = 33
+        const val compileSdkVersion = 34
         const val minSdkVersion     = 23
-        const val buildToolsVersion = "30.0.2"
+        const val buildToolsVersion = "34.0.0"
     }
 
     object versions {
         const val dagger          = "2.19"
         const val gms             = "17.0.0"
-        const val kotlin          = "1.6.21"
+        const val kotlin          = "1.8.20"
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
         const val work            = "2.7.1"
-        const val navigation      = "2.3.5"
-        const val lifecycle       = "2.5.1"
+        const val navigation      = "2.5.2"
+        const val lifecycle       = "2.6.1"
         const val leanback        = "1.1.0-rc01"
         const val googleApiClient = "1.32.1"
-        const val paging          = "3.1.1"
-        const val room            = "2.4.2"
-        const val epoxy           = "4.6.3-vinay-compose"
+        const val paging          = "3.2.1"
+        const val room            = "2.5.2"
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
-        const val activity        = "1.5.1"
-        const val libretrodroid   = "0.10.0"
+        const val activity        = "1.7.2"
+        const val libretrodroid   = "e18bdb67d"
         const val radialgamepad   = "2.0.0"
+        const val composeBom      = "2024.02.02"
+
+        // Make sure this is compatible with current bom versions:
+        // https://developer.android.com/jetpack/compose/bom/bom-mapping
+        const val accompanist     = "0.34.0"
     }
 
     object libs {
@@ -51,6 +55,7 @@ object deps {
                 const val processor = "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
                 const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}"
                 const val reactiveStreams = "android.arch.lifecycle:reactivestreams:1.1.1"
+                const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
             }
             object preferences {
                 const val preferencesKtx = "androidx.preference:preference-ktx:1.1.1"
@@ -58,10 +63,12 @@ object deps {
             object paging {
                 const val common = "androidx.paging:paging-common:${versions.paging}"
                 const val runtime = "androidx.paging:paging-runtime:${versions.paging}"
+                const val compose = "androidx.paging:paging-compose:${versions.paging}"
             }
             object navigation {
                 const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
                 const val navigationUi = "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+                const val compose = "androidx.navigation:navigation-compose:${versions.navigation}"
             }
             object room {
                 const val common = "androidx.room:room-common:${versions.room}"
@@ -78,6 +85,21 @@ object deps {
             object activity {
                 const val activity = "androidx.activity:activity:${versions.activity}"
                 const val activityKtx = "androidx.activity:activity-ktx:${versions.activity}"
+                const val compose = "androidx.activity:activity-compose:${versions.activity}"
+            }
+            object compose {
+                const val composeBom = "androidx.compose:compose-bom:${versions.composeBom}"
+                const val material3 = "androidx.compose.material3:material3"
+                const val extendedIcons = "androidx.compose.material:material-icons-extended"
+                const val liveData = "androidx.compose.runtime:runtime-livedata"
+                const val tooling = "androidx.compose.ui:ui-tooling"
+                const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
+
+                object accompanist {
+                    const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
+                    const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:${versions.accompanist}"
+                    const val drawablePainter = "com.google.accompanist:accompanist-drawablepainter:${versions.accompanist}"
+                }
             }
         }
         object arch {
@@ -100,11 +122,6 @@ object deps {
             const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${versions.serialization}"
             const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.serialization}"
         }
-        object epoxy {
-            const val expoxy = "com.airbnb.android:epoxy:${versions.epoxy}"
-            const val paging = "com.airbnb.android:epoxy-paging:${versions.epoxy}"
-            const val processor = "com.airbnb.android:epoxy-processor:${versions.epoxy}"
-        }
         object play {
             const val review = "com.google.android.play:review:2.0.0"
             const val reviewKtx = "com.google.android.play:review-ktx:2.0.0"
@@ -118,12 +135,21 @@ object deps {
             const val apiClientAndroid     = "com.google.api-client:google-api-client-android:${versions.googleApiClient}"
             const val apiServicesDrive     = "com.google.apis:google-api-services-drive:v3-rev20210725-${versions.googleApiClient}"
         }
+        object coil {
+            const val coil = "io.coil-kt:coil:2.6.0"
+            const val coilCompose = "io.coil-kt:coil-compose:2.6.0"
+        }
+
+        object composeSettings {
+            const val uiTiles = "com.github.alorma.compose-settings:ui-tiles:2.1.0"
+            const val uiTilesExtended = "com.github.alorma.compose-settings:ui-tiles-extended:2.1.0"
+            const val diskStorage = "com.github.alorma:compose-settings-storage-disk:2.0.0"
+            const val memoryStorage = "com.github.alorma:compose-settings-storage-memory:2.0.0"
+        }
 
         const val kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
-        const val ktlint                   = "com.github.shyiko:ktlint:0.29.0"
         const val okio                     = "com.squareup.okio:okio:2.10.0"
         const val okHttp3                  = "com.squareup.okhttp3:okhttp:${versions.okHttp}"
-        const val coil                     = "io.coil-kt:coil:1.4.0"
         const val retrofit                 = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
         const val flowPreferences          = "com.fredporciuncula:flow-preferences:1.8.0"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
@@ -132,12 +158,13 @@ object deps {
         const val guava                    = "com.google.guava:guava:30.1.1-android"
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"
+        const val composeHtmlText          = "de.charlex.compose.material3:material3-html-text:2.0.0-beta01"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
     }
 
     object plugins {
-        const val android = "com.android.tools.build:gradle:7.1.3"
+        const val android = "com.android.tools.build:gradle:8.2.2"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     }
 }

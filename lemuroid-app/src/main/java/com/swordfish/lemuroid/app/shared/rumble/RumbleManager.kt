@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.libretrodroid.RumbleEvent
-import kotlin.math.roundToInt
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -21,19 +20,20 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.newSingleThreadContext
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
 class RumbleManager(
     applicationContext: Context,
     private val settingsManager: SettingsManager,
-    private val inputDeviceManager: InputDeviceManager
+    private val inputDeviceManager: InputDeviceManager,
 ) {
     private val deviceVibrator = applicationContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     private val rumbleContext = newSingleThreadContext("Rumble")
 
     suspend fun collectAndProcessRumbleEvents(
         systemCoreConfig: SystemCoreConfig,
-        rumbleEventsObservable: Flow<RumbleEvent>
+        rumbleEventsObservable: Flow<RumbleEvent>,
     ) {
         val enableRumble = settingsManager.enableRumble()
         val rumbleSupported = systemCoreConfig.rumbleSupported
@@ -70,7 +70,10 @@ class RumbleManager(
         }
     }
 
-    private fun vibrate(vibrator: Vibrator?, rumbleEvent: RumbleEvent) {
+    private fun vibrate(
+        vibrator: Vibrator?,
+        rumbleEvent: RumbleEvent,
+    ) {
         if (vibrator == null) return
 
         vibrator.cancel()

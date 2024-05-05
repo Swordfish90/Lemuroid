@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.InputDevice
 import android.view.KeyEvent
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.shared.settings.GamePadPreferencesHelper
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -14,11 +13,10 @@ import timber.log.Timber
 
 @OptIn(DelicateCoroutinesApi::class)
 class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, intent: Intent) {
-
     val extras = parseExtras(intent)
 
     fun getTitle(context: Context): String {
-        val keyName = GamePadPreferencesHelper.displayNameForKeyCode(extras.retroKey)
+        val keyName = InputKey(extras.retroKey).displayName()
         return context.getString(R.string.gamepad_binding_update_title, keyName)
     }
 
@@ -56,11 +54,13 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
     }
 
     private fun parseExtras(intent: Intent): IntentExtras {
-        val device = intent.extras?.getParcelable<InputDevice>(REQUEST_DEVICE)
-            ?: throw IllegalArgumentException("REQUEST_DEVICE has not been passed")
+        val device =
+            intent.extras?.getParcelable<InputDevice>(REQUEST_DEVICE)
+                ?: throw IllegalArgumentException("REQUEST_DEVICE has not been passed")
 
-        val retroKey = intent.extras?.getInt(REQUEST_RETRO_KEY)
-            ?: throw IllegalArgumentException("REQUEST_RETRO_KEY has not been passed")
+        val retroKey =
+            intent.extras?.getInt(REQUEST_RETRO_KEY)
+                ?: throw IllegalArgumentException("REQUEST_RETRO_KEY has not been passed")
 
         return IntentExtras(device, retroKey)
     }

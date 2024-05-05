@@ -29,7 +29,10 @@ fun <K, V> Map<K, V?>.filterNotNullValues(): Map<K, V> {
     return destination
 }
 
-inline fun <X, Y, Z, H> Map<X, Y>.zipOnKeys(other: Map<X, Z>, f: (Y, Z) -> H): Map<X, H> {
+inline fun <X, Y, Z, H> Map<X, Y>.zipOnKeys(
+    other: Map<X, Z>,
+    f: (Y, Z) -> H,
+): Map<X, H> {
     return this.keys.intersect(other.keys)
         .map { key ->
             key to f(this[key]!!, other[key]!!)
@@ -37,9 +40,10 @@ inline fun <X, Y, Z, H> Map<X, Y>.zipOnKeys(other: Map<X, Z>, f: (Y, Z) -> H): M
         .toMap()
 }
 
-fun <E> Array<E>.toIndexedMap(): Map<Int, E> = this
-    .mapIndexed { index, e -> index to e }
-    .toMap()
+fun <E> Array<E>.toIndexedMap(): Map<Int, E> =
+    this
+        .mapIndexed { index, e -> index to e }
+        .toMap()
 
 inline fun <T, K> Iterable<T>.associateByNotNull(keySelector: (T) -> K?): Map<K, T> {
     return this.map { keySelector(it) to it }

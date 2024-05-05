@@ -7,25 +7,25 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.libretrodroid.ShaderConfig
 
 object ShaderChooser {
-
     fun getShaderForSystem(
         context: Context,
         hdMode: Boolean,
         forceLegacyHdMode: Boolean,
         screenFilter: String,
-        system: GameSystem
+        system: GameSystem,
     ): ShaderConfig {
         val useNewHdMode = context.getGLSLVersion() >= 3 && hdMode && !forceLegacyHdMode
         return when {
             useNewHdMode -> getHDShaderForSystem(system)
             hdMode -> getLegacyHDShaderForSystem(system)
-            else -> when (screenFilter) {
-                "crt" -> ShaderConfig.CRT
-                "lcd" -> ShaderConfig.LCD
-                "smooth" -> ShaderConfig.Default
-                "sharp" -> ShaderConfig.Sharp
-                else -> getDefaultShaderForSystem(system)
-            }
+            else ->
+                when (screenFilter) {
+                    "crt" -> ShaderConfig.CRT
+                    "lcd" -> ShaderConfig.LCD
+                    "smooth" -> ShaderConfig.Default
+                    "sharp" -> ShaderConfig.Sharp
+                    else -> getDefaultShaderForSystem(system)
+                }
         }
     }
 
@@ -60,41 +60,47 @@ object ShaderChooser {
     }
 
     private fun getLegacyHDShaderForSystem(system: GameSystem): ShaderConfig.CUT {
-        val upscale8BitsMobile = ShaderConfig.CUT(
-            blendMinContrastEdge = 0.00f,
-            blendMaxContrastEdge = 0.50f,
-            blendMaxSharpness = 0.85f,
-        )
+        val upscale8BitsMobile =
+            ShaderConfig.CUT(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.50f,
+                blendMaxSharpness = 0.85f,
+            )
 
-        val upscale8Bits = ShaderConfig.CUT(
-            blendMinContrastEdge = 0.00f,
-            blendMaxContrastEdge = 0.50f,
-            blendMaxSharpness = 0.75f,
-        )
+        val upscale8Bits =
+            ShaderConfig.CUT(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.50f,
+                blendMaxSharpness = 0.75f,
+            )
 
-        val upscale16BitsMobile = ShaderConfig.CUT(
-            blendMinContrastEdge = 0.10f,
-            blendMaxContrastEdge = 0.60f,
-            blendMaxSharpness = 0.85f,
-        )
+        val upscale16BitsMobile =
+            ShaderConfig.CUT(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.60f,
+                blendMaxSharpness = 0.85f,
+            )
 
-        val upscale16Bits = ShaderConfig.CUT(
-            blendMinContrastEdge = 0.10f,
-            blendMaxContrastEdge = 0.60f,
-            blendMaxSharpness = 0.75f,
-        )
+        val upscale16Bits =
+            ShaderConfig.CUT(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.60f,
+                blendMaxSharpness = 0.75f,
+            )
 
-        val upscale32Bits = ShaderConfig.CUT(
-            blendMinContrastEdge = 0.25f,
-            blendMaxContrastEdge = 0.75f,
-            blendMaxSharpness = 0.75f,
-        )
+        val upscale32Bits =
+            ShaderConfig.CUT(
+                blendMinContrastEdge = 0.25f,
+                blendMaxContrastEdge = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
 
-        val modern = ShaderConfig.CUT(
-            blendMinContrastEdge = 0.25f,
-            blendMaxContrastEdge = 0.75f,
-            blendMaxSharpness = 0.50f,
-        )
+        val modern =
+            ShaderConfig.CUT(
+                blendMinContrastEdge = 0.25f,
+                blendMaxContrastEdge = 0.75f,
+                blendMaxSharpness = 0.50f,
+            )
 
         return when (system.id) {
             SystemID.GBA -> upscale16BitsMobile
@@ -126,41 +132,47 @@ object ShaderChooser {
     }
 
     private fun getHDShaderForSystem(system: GameSystem): ShaderConfig.CUT2 {
-        val upscale8BitsMobile = ShaderConfig.CUT2(
-            blendMinContrastEdge = 0.00f,
-            blendMaxContrastEdge = 0.50f,
-            blendMaxSharpness = 0.85f,
-        )
+        val upscale8BitsMobile =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.50f,
+                blendMaxSharpness = 0.85f,
+            )
 
-        val upscale8Bits = ShaderConfig.CUT2(
-            blendMinContrastEdge = 0.00f,
-            blendMaxContrastEdge = 0.50f,
-            blendMaxSharpness = 0.75f,
-        )
+        val upscale8Bits =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.50f,
+                blendMaxSharpness = 0.75f,
+            )
 
-        val upscale16BitsMobile = ShaderConfig.CUT2(
-            blendMinContrastEdge = 0.10f,
-            blendMaxContrastEdge = 0.60f,
-            blendMaxSharpness = 0.85f,
-        )
+        val upscale16BitsMobile =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.60f,
+                blendMaxSharpness = 0.85f,
+            )
 
-        val upscale16Bits = ShaderConfig.CUT2(
-            blendMinContrastEdge = 0.10f,
-            blendMaxContrastEdge = 0.60f,
-            blendMaxSharpness = 0.75f,
-        )
+        val upscale16Bits =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.60f,
+                blendMaxSharpness = 0.75f,
+            )
 
-        val upscale32Bits = ShaderConfig.CUT2(
-            blendMinContrastEdge = 0.25f,
-            blendMaxContrastEdge = 0.75f,
-            blendMaxSharpness = 0.75f,
-        )
+        val upscale32Bits =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.25f,
+                blendMaxContrastEdge = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
 
-        val modern = ShaderConfig.CUT2(
-            blendMinContrastEdge = 0.25f,
-            blendMaxContrastEdge = 0.75f,
-            blendMaxSharpness = 0.50f,
-        )
+        val modern =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.25f,
+                blendMaxContrastEdge = 0.75f,
+                blendMaxSharpness = 0.50f,
+            )
 
         return when (system.id) {
             SystemID.GBA -> upscale16BitsMobile

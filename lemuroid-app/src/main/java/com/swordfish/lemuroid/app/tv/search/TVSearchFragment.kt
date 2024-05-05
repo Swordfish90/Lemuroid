@@ -14,26 +14,23 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
+import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
-
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
+
     @Inject
     lateinit var gameInteractor: GameInteractor
-    @Inject
-    lateinit var coverLoader: CoverLoader
 
     private val searchDebounce = MutableStateFlow("")
 
@@ -45,7 +42,10 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         super.onAttach(context)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         setOnItemViewClickedListener { _, item, _, _ ->
@@ -78,18 +78,18 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
     private fun createAdapter(): ArrayObjectAdapter {
         val searchAdapter = ArrayObjectAdapter(ListRowPresenter())
 
-        val gamePresenter = GamePresenter(
-            resources.getDimensionPixelSize(R.dimen.card_size),
-            gameInteractor,
-            coverLoader
-        )
+        val gamePresenter =
+            GamePresenter(
+                resources.getDimensionPixelSize(com.swordfish.lemuroid.lib.R.dimen.card_size),
+                gameInteractor,
+            )
 
         val gamesAdapter = PagingDataAdapter(gamePresenter, Game.DIFF_CALLBACK)
         searchAdapter.add(
             ListRow(
                 HeaderItem(resources.getString(R.string.tv_search_results)),
-                gamesAdapter
-            )
+                gamesAdapter,
+            ),
         )
 
         return searchAdapter

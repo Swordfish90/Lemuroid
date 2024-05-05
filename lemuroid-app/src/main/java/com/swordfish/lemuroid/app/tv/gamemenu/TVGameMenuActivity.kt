@@ -14,64 +14,75 @@ import java.security.InvalidParameterException
 import javax.inject.Inject
 
 class TVGameMenuActivity : TVBaseSettingsActivity() {
-
     @Inject
     lateinit var statesManager: StatesManager
+
     @Inject
     lateinit var statesPreviewManager: StatesPreviewManager
+
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            val game = intent.extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
-                ?: throw InvalidParameterException("Missing EXTRA_GAME")
+            val game =
+                intent.extras?.getSerializable(GameMenuContract.EXTRA_GAME) as Game?
+                    ?: throw InvalidParameterException("Missing EXTRA_GAME")
 
-            val core = intent.extras?.getSerializable(
-                GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG
-            ) as SystemCoreConfig?
-                ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
+            val core =
+                intent.extras?.getSerializable(
+                    GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG,
+                ) as SystemCoreConfig?
+                    ?: throw InvalidParameterException("Missing EXTRA_SYSTEM_CORE_CONFIG")
 
-            val options = intent.extras?.getSerializable(
-                GameMenuContract.EXTRA_CORE_OPTIONS
-            ) as Array<LemuroidCoreOption>?
-                ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
+            val options =
+                intent.extras?.getSerializable(
+                    GameMenuContract.EXTRA_CORE_OPTIONS,
+                ) as Array<LemuroidCoreOption>?
+                    ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS")
 
-            val advancedOptions = intent.extras?.getSerializable(
-                GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS
-            ) as Array<LemuroidCoreOption>?
-                ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
+            val advancedOptions =
+                intent.extras?.getSerializable(
+                    GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS,
+                ) as Array<LemuroidCoreOption>?
+                    ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS")
 
-            val numDisks = intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
-                ?: throw InvalidParameterException("Missing EXTRA_DISKS")
+            val numDisks =
+                intent.extras?.getInt(GameMenuContract.EXTRA_DISKS)
+                    ?: throw InvalidParameterException("Missing EXTRA_DISKS")
 
-            val currentDisk = intent.extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK)
-                ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
+            val currentDisk =
+                intent.extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK)
+                    ?: throw InvalidParameterException("Missing EXTRA_CURRENT_DISK")
 
-            val audioEnabled = intent.extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED)
-                ?: throw InvalidParameterException("Missing EXTRA_AUDIO_ENABLED")
+            val audioEnabled =
+                intent.extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED)
+                    ?: throw InvalidParameterException("Missing EXTRA_AUDIO_ENABLED")
 
-            val fastForwardEnabled = intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD)
-                ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD")
+            val fastForwardEnabled =
+                intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD)
+                    ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD")
 
-            val fastForwardSupported = intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED)
-                ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD_SUPPORTED")
+            val fastForwardSupported =
+                intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED)
+                    ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD_SUPPORTED")
 
-            val fragment = TVGameMenuFragmentWrapper(
-                statesManager,
-                statesPreviewManager,
-                inputDeviceManager,
-                game,
-                core,
-                options,
-                advancedOptions,
-                numDisks,
-                currentDisk,
-                audioEnabled,
-                fastForwardEnabled,
-                fastForwardSupported
-            )
+            val fragment =
+                TVGameMenuFragmentWrapper(
+                    statesManager,
+                    statesPreviewManager,
+                    inputDeviceManager,
+                    game,
+                    core,
+                    options,
+                    advancedOptions,
+                    numDisks,
+                    currentDisk,
+                    audioEnabled,
+                    fastForwardEnabled,
+                    fastForwardSupported,
+                )
             supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment)
                 .commit()
         }
@@ -94,9 +105,8 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         private val currentDisk: Int,
         private val audioEnabled: Boolean,
         private val fastForwardEnabled: Boolean,
-        private val fastForwardSupported: Boolean
+        private val fastForwardSupported: Boolean,
     ) : BaseSettingsFragmentWrapper() {
-
         override fun createFragment(): Fragment {
             return TVGameMenuFragment(
                 statesManager,
@@ -110,7 +120,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 currentDisk,
                 audioEnabled,
                 fastForwardEnabled,
-                fastForwardSupported
+                fastForwardSupported,
             )
         }
     }

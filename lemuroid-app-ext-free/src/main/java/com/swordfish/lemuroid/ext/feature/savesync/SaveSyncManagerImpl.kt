@@ -8,8 +8,8 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 
 class SaveSyncManagerImpl(
     private val appContext: Context,
-    private val directoriesManager: DirectoriesManager
-) : SaveSyncManager {
+    private val directoriesManager: DirectoriesManager,
+) : SaveSyncManager() {
     override fun getProvider(): String = ""
 
     override fun getSettingsActivity(): Class<out Activity>? = null

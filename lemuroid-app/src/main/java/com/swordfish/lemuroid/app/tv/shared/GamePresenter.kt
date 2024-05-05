@@ -9,23 +9,24 @@ import androidx.leanback.widget.Presenter
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
-import com.swordfish.lemuroid.app.shared.covers.CoverLoader
+import com.swordfish.lemuroid.app.shared.covers.CoverUtils
 import com.swordfish.lemuroid.app.utils.games.GameUtils
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class GamePresenter(
     private val cardSize: Int,
     private val gameInteractor: GameInteractor,
-    private val coverLoader: CoverLoader
 ) : Presenter() {
-
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder?, item: Any?) {
+    override fun onBindViewHolder(
+        viewHolder: Presenter.ViewHolder?,
+        item: Any?,
+    ) {
         if (item == null || viewHolder !is ViewHolder) return
         val game = item as Game
         viewHolder.mCardView.titleText = game.title
         viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
-        viewHolder.updateCardViewImage(game, coverLoader)
+        viewHolder.updateCardViewImage(game)
         viewHolder.view.setOnCreateContextMenuListener(GameContextMenuListener(gameInteractor, game))
     }
 
@@ -33,22 +34,21 @@ class GamePresenter(
         val cardView = ImageCardView(parent.context)
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
-        (cardView.findViewById<View>(R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
+        (cardView.findViewById<View>(androidx.leanback.R.id.content_text) as TextView).setTextColor(Color.LTGRAY)
         return ViewHolder(cardView)
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder?) {
         val viewHolder = viewHolder as ViewHolder
         viewHolder.mCardView.mainImage = null
-        coverLoader.cancelRequest(viewHolder.mCardView.mainImageView)
         viewHolder.view.setOnCreateContextMenuListener(null)
     }
 
     class ViewHolder(view: ImageCardView) : Presenter.ViewHolder(view) {
         val mCardView: ImageCardView = view
 
-        fun updateCardViewImage(game: Game, coverLoader: CoverLoader) {
-            coverLoader.loadCover(game, mCardView.mainImageView)
+        fun updateCardViewImage(game: Game) {
+            CoverUtils.loadCover(game, mCardView.mainImageView)
         }
     }
 }

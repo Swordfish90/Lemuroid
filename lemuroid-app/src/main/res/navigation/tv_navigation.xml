@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/tv_navigation"
     app:startDestination="@+id/navigation_home">
 
     <fragment
@@ -26,8 +26,8 @@
         android:label="@string/title_games">
 
         <argument
-            android:name="system_ids"
-            app:argType="string[]"
+            android:name="meta_system_id"
+            app:argType="string"
             app:nullable="false" />
 
     </fragment>

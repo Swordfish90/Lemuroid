@@ -5,15 +5,14 @@ import android.net.Uri
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import java.io.File
-import java.util.zip.ZipInputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import timber.log.Timber
+import java.io.File
+import java.util.zip.ZipInputStream
 
 class PPSSPPAssetsManager : CoreID.AssetsManager {
-
     override suspend fun clearAssets(directoriesManager: DirectoriesManager) {
         getAssetsDirectory(directoriesManager).deleteRecursively()
     }
@@ -21,7 +20,7 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
     override suspend fun retrieveAssetsIfNeeded(
         coreUpdaterApi: CoreUpdater.CoreManagerApi,
         directoriesManager: DirectoriesManager,
-        sharedPreferences: SharedPreferences
+        sharedPreferences: SharedPreferences,
     ) {
         if (!updatedRequested(directoriesManager, sharedPreferences)) {
             return
@@ -38,7 +37,7 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
     private suspend fun handleSuccess(
         directoriesManager: DirectoriesManager,
         response: Response<ZipInputStream>,
-        sharedPreferences: SharedPreferences
+        sharedPreferences: SharedPreferences,
     ) {
         val coreAssetsDirectory = getAssetsDirectory(directoriesManager)
         coreAssetsDirectory.deleteRecursively()
@@ -48,10 +47,11 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
             while (true) {
                 val entry = zipInputStream.nextEntry ?: break
                 Timber.d("Writing file: ${entry.name}")
-                val destFile = File(
-                    coreAssetsDirectory,
-                    entry.name
-                )
+                val destFile =
+                    File(
+                        coreAssetsDirectory,
+                        entry.name,
+                    )
                 if (entry.isDirectory) {
                     destFile.mkdirs()
                 } else {
@@ -67,15 +67,16 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
 
     private suspend fun updatedRequested(
         directoriesManager: DirectoriesManager,
-        sharedPreferences: SharedPreferences
-    ): Boolean = withContext(Dispatchers.IO) {
-        val directoryExists = getAssetsDirectory(directoriesManager).exists()
+        sharedPreferences: SharedPreferences,
+    ): Boolean =
+        withContext(Dispatchers.IO) {
+            val directoryExists = getAssetsDirectory(directoriesManager).exists()
 
-        val currentVersion = sharedPreferences.getString(PPSSPP_ASSETS_VERSION_KEY, "none")
-        val hasCurrentVersion = currentVersion == PPSSPP_ASSETS_VERSION
+            val currentVersion = sharedPreferences.getString(PPSSPP_ASSETS_VERSION_KEY, "none")
+            val hasCurrentVersion = currentVersion == PPSSPP_ASSETS_VERSION
 
-        !directoryExists || !hasCurrentVersion
-    }
+            !directoryExists || !hasCurrentVersion
+        }
 
     private suspend fun getAssetsDirectory(directoriesManager: DirectoriesManager): File {
         return withContext(Dispatchers.IO) {
@@ -86,10 +87,11 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
     companion object {
         const val PPSSPP_ASSETS_VERSION = "1.15"
 
-        val PPSSPP_ASSETS_URL: Uri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
-            .buildUpon()
-            .appendEncodedPath("raw/$PPSSPP_ASSETS_VERSION/assets/ppsspp.zip")
-            .build()
+        val PPSSPP_ASSETS_URL: Uri =
+            Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
+                .buildUpon()
+                .appendEncodedPath("raw/$PPSSPP_ASSETS_VERSION/assets/ppsspp.zip")
+                .build()
 
         const val PPSSPP_ASSETS_VERSION_KEY = "ppsspp_assets_version_key"
 

@@ -8,7 +8,6 @@ import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 
 @Dao
 interface DataFileDao {
-
     @Query("SELECT * FROM datafiles where gameId = :gameId")
     fun selectDataFilesForGame(gameId: Int): List<DataFile>
 

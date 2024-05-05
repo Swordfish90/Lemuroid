@@ -9,7 +9,6 @@ import com.swordfish.touchinput.controller.R
 import com.google.android.material.R as MaterialR
 
 object LemuroidTouchOverlayThemes {
-
     private const val ALPHA_FILL_LIGHT = 0.2f
     private const val ALPHA_FILL_STRONG = 0.2f
     private const val ALPHA_FILL_SIMULATED = 0.4f
@@ -42,11 +41,14 @@ object LemuroidTouchOverlayThemes {
             simulatedColor = withAlpha(colorSecondary, ALPHA_FILL_SIMULATED),
             lightColor = withAlpha(BACKGROUND_COLOR, ALPHA_FILL_STRONG),
             lightStrokeColor = withAlpha(colorOnSurface, ALPHA_STROKE_LIGHT),
-            strokeWidthDp = strokeSize
+            strokeWidthDp = strokeSize,
         )
     }
 
-    private fun withAlpha(color: Int, alpha: Float): Int {
+    private fun withAlpha(
+        color: Int,
+        alpha: Float,
+    ): Int {
         val alphaInt = (alpha * 255).toInt()
         return MaterialColors.compositeARGBWithAlpha(color, alphaInt)
     }

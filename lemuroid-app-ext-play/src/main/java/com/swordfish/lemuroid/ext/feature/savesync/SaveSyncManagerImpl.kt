@@ -13,20 +13,20 @@ import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
-import java.io.File
-import java.text.SimpleDateFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
+import java.text.SimpleDateFormat
 
 class SaveSyncManagerImpl(
     private val appContext: Context,
-    private val directoriesManager: DirectoriesManager
-) : SaveSyncManager {
+    private val directoriesManager: DirectoriesManager,
+) : SaveSyncManager() {
     private var lastSyncTimestamp: Long by SharedPreferencesDelegates.LongDelegate(
         SharedPreferencesHelper.getSharedPreferences(appContext),
-        appContext.getString(R.string.pref_key_last_save_sync),
-        0L
+        appContext.getString(com.swordfish.lemuroid.lib.R.string.pref_key_last_save_sync),
+        0L,
     )
 
     override fun getProvider(): String = "Google Drive"
@@ -38,11 +38,12 @@ class SaveSyncManagerImpl(
     override fun isConfigured(): Boolean = GoogleSignIn.getLastSignedInAccount(appContext) != null
 
     override fun getLastSyncInfo(): String {
-        val dateString = if (lastSyncTimestamp > 0) {
-            SimpleDateFormat.getDateTimeInstance().format(lastSyncTimestamp)
-        } else {
-            "-"
-        }
+        val dateString =
+            if (lastSyncTimestamp > 0) {
+                SimpleDateFormat.getDateTimeInstance().format(lastSyncTimestamp)
+            } else {
+                "-"
+            }
         return appContext.getString(R.string.gdrive_last_sync_completed, dateString)
     }
 
@@ -55,17 +56,19 @@ class SaveSyncManagerImpl(
         }
     }
 
-    override suspend fun sync(cores: Set<CoreID>): Unit = withContext(Dispatchers.IO) {
-        synchronized(SYNC_LOCK) {
-            val saveSyncResult = runCatching {
-                performSaveSyncForCores(cores)
-            }
+    override suspend fun sync(cores: Set<CoreID>): Unit =
+        withContext(Dispatchers.IO) {
+            synchronized(SYNC_LOCK) {
+                val saveSyncResult =
+                    runCatching {
+                        performSaveSyncForCores(cores)
+                    }
 
-            saveSyncResult.onFailure {
-                Timber.e(it, "Error while performing save sync.")
+                saveSyncResult.onFailure {
+                    Timber.e(it, "Error while performing save sync.")
+                }
             }
         }
-    }
 
     private fun performSaveSyncForCores(cores: Set<CoreID>) {
         val drive = DriveFactory(appContext).create() ?: return
@@ -74,7 +77,7 @@ class SaveSyncManagerImpl(
             drive,
             getOrCreateAppDataFolder("saves"),
             directoriesManager.getSavesDirectory(),
-            null
+            null,
         )
 
         if (cores.isNotEmpty()) {
@@ -82,13 +85,13 @@ class SaveSyncManagerImpl(
                 drive,
                 getOrCreateAppDataFolder("states"),
                 directoriesManager.getStatesDirectory(),
-                cores.map { it.coreName }.toSet()
+                cores.map { it.coreName }.toSet(),
             )
             syncLocalAndRemoteFolder(
                 drive,
                 getOrCreateAppDataFolder("state-previews"),
                 directoriesManager.getStatesPreviewDirectory(),
-                cores.map { it.coreName }.toSet()
+                cores.map { it.coreName }.toSet(),
             )
         }
 
@@ -101,8 +104,9 @@ class SaveSyncManagerImpl(
         getSizeHumanReadable(File(directoriesManager.getStatesDirectory(), core.coreName))
 
     private fun getSizeHumanReadable(directory: File): String {
-        val size = directory.walkBottomUp()
-            .fold(0L) { acc, file -> acc + file.length() }
+        val size =
+            directory.walkBottomUp()
+                .fold(0L) { acc, file -> acc + file.length() }
         return android.text.format.Formatter.formatShortFileSize(appContext, size)
     }
 
@@ -110,7 +114,7 @@ class SaveSyncManagerImpl(
         drive: Drive,
         remoteFolderId: String,
         localFolder: File,
-        prefixes: Set<String>?
+        prefixes: Set<String>?,
     ) {
         val remoteFiles = getRemoteFiles(drive, remoteFolderId)
         val remoteFilesMap = buildRemoteFileMap(remoteFiles)
@@ -121,7 +125,10 @@ class SaveSyncManagerImpl(
         }
     }
 
-    private fun getFilteredKeys(keys: Set<String>, prefixes: Set<String>?): Set<String> {
+    private fun getFilteredKeys(
+        keys: Set<String>,
+        prefixes: Set<String>?,
+    ): Set<String> {
         if (prefixes == null) return keys
         return keys.filter { key -> prefixes.any { key.startsWith(it) } }.toSet()
     }
@@ -131,7 +138,7 @@ class SaveSyncManagerImpl(
         remoteParentFolderId: String,
         localParentFolder: File,
         remoteFile: com.google.api.services.drive.model.File?,
-        localFile: File?
+        localFile: File?,
     ) {
         Timber.i("Handling file pair: $localFile $remoteFile")
 
@@ -154,13 +161,15 @@ class SaveSyncManagerImpl(
 
     private fun areFileDifferent(
         remoteFile: com.google.api.services.drive.model.File,
-        localFile: File
+        localFile: File,
     ): Boolean {
-        if (remoteFile.modifiedTime.value == localFile.lastModified())
+        if (remoteFile.modifiedTime.value == localFile.lastModified()) {
             return false
+        }
 
-        if (remoteFile.size.toLong() != localFile.length())
+        if (remoteFile.size.toLong() != localFile.length()) {
             return true
+        }
 
         return remoteFile.md5Checksum != localFile.calculateMd5()
     }
@@ -168,7 +177,7 @@ class SaveSyncManagerImpl(
     private fun onLocalUpdated(
         localFile: File,
         drive: Drive,
-        remoteFile: com.google.api.services.drive.model.File
+        remoteFile: com.google.api.services.drive.model.File,
     ) {
         Timber.i("Local file updated $localFile")
 
@@ -183,18 +192,20 @@ class SaveSyncManagerImpl(
         remoteParentFolderId: String,
         localFile: File,
         localParentFolder: File,
-        drive: Drive
+        drive: Drive,
     ) {
         Timber.i("Local-only file detected $localFile")
 
         val metadata = com.google.api.services.drive.model.File()
         metadata.parents = listOf(remoteParentFolderId)
         metadata.name = localFile.name
-        metadata.appProperties = mapOf(
-            GDRIVE_PROPERTY_LOCAL_PATH to localFile.toRelativeString(
-                localParentFolder
+        metadata.appProperties =
+            mapOf(
+                GDRIVE_PROPERTY_LOCAL_PATH to
+                    localFile.toRelativeString(
+                        localParentFolder,
+                    ),
             )
-        )
         metadata.modifiedTime = DateTime(localFile.lastModified())
         val mediaContent = FileContent("application/x-binary", localFile)
         drive.files().create(metadata, mediaContent)
@@ -205,22 +216,23 @@ class SaveSyncManagerImpl(
     private fun onRemoteOnly(
         localParentFolder: File,
         remoteFile: com.google.api.services.drive.model.File,
-        drive: Drive
+        drive: Drive,
     ) {
         Timber.i("Remote only file detected $remoteFile")
-        val outputFile = File(
-            localParentFolder,
-            remoteFile.appProperties[GDRIVE_PROPERTY_LOCAL_PATH]!!
-        ).apply {
-            parentFile?.mkdirs()
-        }
+        val outputFile =
+            File(
+                localParentFolder,
+                remoteFile.appProperties[GDRIVE_PROPERTY_LOCAL_PATH]!!,
+            ).apply {
+                parentFile?.mkdirs()
+            }
         downloadToLocal(drive, remoteFile, outputFile)
     }
 
     private fun onRemoteUpdated(
         drive: Drive,
         remoteFile: com.google.api.services.drive.model.File,
-        localFile: File
+        localFile: File,
     ) {
         Timber.i("Remote file updated $remoteFile")
         downloadToLocal(drive, remoteFile, localFile)
@@ -229,7 +241,7 @@ class SaveSyncManagerImpl(
     private fun downloadToLocal(
         drive: Drive,
         remoteFile: com.google.api.services.drive.model.File,
-        localFile: File
+        localFile: File,
     ) {
         if (remoteFile.size == 0) return
         Timber.i("Downloading file to $localFile")
@@ -240,7 +252,7 @@ class SaveSyncManagerImpl(
     }
 
     private fun buildRemoteFileMap(
-        remoteFiles: Sequence<com.google.api.services.drive.model.File>
+        remoteFiles: Sequence<com.google.api.services.drive.model.File>,
     ): Map<String, com.google.api.services.drive.model.File> {
         return remoteFiles
             .filter { it.appProperties?.get(GDRIVE_PROPERTY_LOCAL_PATH) != null }
@@ -257,14 +269,16 @@ class SaveSyncManagerImpl(
     }
 
     private fun getOrCreateAppDataFolder(folderName: String): String {
-        val drive = DriveFactory(appContext).create()
-            ?: throw UnsupportedOperationException()
+        val drive =
+            DriveFactory(appContext).create()
+                ?: throw UnsupportedOperationException()
 
-        val query = drive.files().list()
-            .setSpaces("appDataFolder")
-            .setQ("name = '$folderName' and mimeType = 'application/vnd.google-apps.folder'")
-            .setFields("files(id)")
-            .execute()
+        val query =
+            drive.files().list()
+                .setSpaces("appDataFolder")
+                .setQ("name = '$folderName' and mimeType = 'application/vnd.google-apps.folder'")
+                .setFields("files(id)")
+                .execute()
 
         if (query.files.size > 0) {
             return query.files[0].id
@@ -275,16 +289,17 @@ class SaveSyncManagerImpl(
         metadata.name = folderName
         metadata.mimeType = "application/vnd.google-apps.folder"
 
-        val file = drive.files().create(metadata)
-            .setFields("id")
-            .execute()
+        val file =
+            drive.files().create(metadata)
+                .setFields("id")
+                .execute()
 
         return file.id
     }
 
     private fun getRemoteFiles(
         drive: Drive,
-        folderId: String
+        folderId: String,
     ): Sequence<com.google.api.services.drive.model.File> {
         var pageToken: String? = null
         return sequence {
@@ -296,13 +311,14 @@ class SaveSyncManagerImpl(
                     "nextPageToken, " +
                         "files(id, name, size, appProperties, modifiedTime, parents, md5Checksum)"
 
-                val result = drive.files().list()
-                    .setPageSize(500)
-                    .setSpaces("appDataFolder")
-                    .setQ(query)
-                    .setFields(fields)
-                    .setPageToken(pageToken)
-                    .execute()
+                val result =
+                    drive.files().list()
+                        .setPageSize(500)
+                        .setSpaces("appDataFolder")
+                        .setQ(query)
+                        .setFields(fields)
+                        .setPageToken(pageToken)
+                        .execute()
 
                 yieldAll(result.files)
                 pageToken = result.nextPageToken

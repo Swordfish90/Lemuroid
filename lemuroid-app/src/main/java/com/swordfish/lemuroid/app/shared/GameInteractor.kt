@@ -15,7 +15,7 @@ class GameInteractor(
     private val retrogradeDb: RetrogradeDatabase,
     private val useLeanback: Boolean,
     private val shortcutsGenerator: ShortcutsGenerator,
-    private val gameLauncher: GameLauncher
+    private val gameLauncher: GameLauncher,
 ) {
     fun onGamePlay(game: Game) {
         if (activity.isBusy()) {
@@ -33,7 +33,10 @@ class GameInteractor(
         gameLauncher.launchGameAsync(activity.activity(), game, false, useLeanback)
     }
 
-    fun onFavoriteToggle(game: Game, isFavorite: Boolean) {
+    fun onFavoriteToggle(
+        game: Game,
+        isFavorite: Boolean,
+    ) {
         GlobalScope.launch {
             retrogradeDb.gameDao().update(game.copy(isFavorite = isFavorite))
         }
