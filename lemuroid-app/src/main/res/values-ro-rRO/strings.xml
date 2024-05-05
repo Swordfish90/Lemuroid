@@ -8,11 +8,11 @@
     <string name="recent">Recente</string>
     <string name="favorites">Favorite</string>
     <string name="discover">Descoperă</string>
-    <string name="rescan">Rescan</string>
+    <string name="rescan">Rescanează</string>
     <string name="stop">Oprire</string>
-    <string name="none">Nimic</string>
+    <string name="none">Niciunul</string>
     <string name="directory">Dosar</string>
-    <string name="display_filter">Afișare filtru</string>
+    <string name="display_filter">Filtru ecran</string>
     <string name="roms">ROM-uri</string>
     <string name="ok">OK</string>
     <string name="cancel">Anulare</string>
@@ -82,4 +82,15 @@
     <string name="game_menu_edit_touch_controls">Editați comenzile</string>
     <string name="game_menu_mute_audio">Mut</string>
     <string name="game_menu_fast_forward">Derulați rapid înainte</string>
+    <string name="tv_folder_picker_action_choose">Selectați</string>
+    <string name="tv_folder_picker_action_cancel">Anulați</string>
+    <string name="tv_folder_storage_primary">Stocare principală</string>
+    <string name="tv_folder_storage_secondary">Stocare secundară %1$s</string>
+    <string name="tv_home_section_settings">Setări</string>
+    <string name="gamepad_binding_update_title">Asociați „RetroPad %1$s”</string>
+    <string name="gamepad_binding_update_description">Apăsați un buton pe „%1$s”</string>
+    <string name="tv_search_results">Jocuri</string>
+    <string name="mobile_settings_help">Ajutor</string>
+    <string name="mobile_settings_support">Asistență</string>
+    <string name="shader_filter_names_auto">Auto</string>
 </resources>

@@ -17,7 +17,7 @@
     <string name="setting_stella_filter">Efecto de TV</string>
     <string name="setting_stella_crop_hoverscan">Recortar excedente horizontal</string>
     <string name="setting_fceumm_overscan_h">Recortar excedente horizontal</string>
-    <string name="setting_fceumm_overscan_v">Recortar excedente horizontal</string>
+    <string name="setting_fceumm_overscan_v">Recortar excedente vertical</string>
     <string name="setting_fceumm_nospritelimit">Sin límite de imagen</string>
     <string name="setting_genesis_plus_gx_blargg_ntsc_filter">Efecto de TV</string>
     <string name="setting_genesis_plus_gx_overscan">Bordes</string>

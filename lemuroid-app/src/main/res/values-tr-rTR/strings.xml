@@ -27,6 +27,7 @@
     <string name="settings_title_maximum_cache_usage">Önbellek boyut sınırı</string>
     <string name="settings_title_gamepad_settings">Harici cihazlar</string>
     <string name="settings_description_gamepad_settings">Harici gamepadleri ve klavyeleri yönet</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_gamepad_category_enabled">Etkin cihazlar</string>
     <string name="settings_gamepad_category_general">Genel</string>
     <string name="settings_gamepad_title_reset_bindings">Bağları sıfırla</string>
@@ -66,6 +67,9 @@
     <string name="game_context_menu_resume">Devam et</string>
     <string name="game_context_menu_restart">Yeniden başlat</string>
     <string name="game_context_menu_create_shortcut">Başlatıcıya sabitle</string>
+    <string name="home_notification_title">Bildirimleri Aç</string>
+    <string name="home_notification_message">Lemuroid, bir oyun veya işlemin arka planda çalıştığını size bildirmek için bildirimleri kullanır.</string>
+    <string name="home_notification_action">Aç</string>
     <string name="home_empty_title">ROMların konumunu seç</string>
     <string name="home_empty_message">Lemuroid\'in ROM dosyalarını içeren bir dizini taraması gerekiyor.\n Bu birkaç dakika sürebilir.</string>
     <string name="home_empty_action">Konum seç</string>
@@ -143,6 +147,8 @@
     <string name="shader_filter_names_auto">Otomatik</string>
     <string name="shader_filter_names_sharp">Keskin</string>
     <string name="shader_filter_names_smooth">Yumuşak</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
     <string name="haptic_feedback_mode_names_none">Yok</string>
     <string name="haptic_feedback_mode_names_press">Bas</string>
     <string name="haptic_feedback_mode_names_press_release">Bas &amp; bırak</string>

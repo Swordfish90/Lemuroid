@@ -26,6 +26,8 @@
     <string name="settings_title_enable_touch_feedback">Vibrer au toucher</string>
     <string name="settings_title_tilt_sensitivity">Sensibilité du capteur d\'inclinaison</string>
     <string name="settings_title_maximum_cache_usage">Limite de taille de cache</string>
+    <string name="settings_title_hd_mode">HD mode</string>
+    <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
     <string name="settings_title_gamepad_settings">Périphériques externes</string>
     <string name="settings_description_gamepad_settings">Configurer les manettes et claviers externes</string>
     <string name="settings_retropad_button_name">RétroPad %1$s</string>
@@ -45,6 +47,8 @@
     <string name="settings_description_advanced_settings">Afficher les paramètres avancés</string>
     <string name="settings_title_low_latency_audio">Préférer l\'audio à faible latence</string>
     <string name="settings_description_low_latency_audio">Réduire la latence audio sur les périphériques supportés. Cela peut augmenter les bugs audio.</string>
+    <string name="settings_title_legacy_hd_mode">Préférer le mode HD existant</string>
+    <string name="settings_description_legacy_hd_mode">Toujours utiliser le mode HD. Meilleure qualité, moins bonnes performances.</string>
     <string name="settings_title_direct_game_load">Chargement direct du jeu</string>
     <string name="settings_description_direct_game_load">(Expérimental) Réduire le temps de chargement et l\'utilisation du cache sur les consoles supportées.</string>
     <string name="settings_title_enable_rumble">Vibrations</string>
@@ -63,12 +67,15 @@
     <string name="settings_save_sync_include_saves">Synchroniser les sauvegardes du jeu</string>
     <string name="settings_save_sync_include_saves_description">%1$s sur l\'appareil</string>
     <string name="settings_save_sync_include_states">Synchroniser les sauvegardes automatique</string>
-    <string name="settings_save_sync_include_states_description">Plus pratique, mais plus lourd et moins fiable. Choisissez les cœurs/systèmes que vous souhaitez synchroniser.</string>
+    <string name="settings_save_sync_include_states_description">Plus pratique, mais plus lourd et moins fiable. Choisissez-les cœurs/systèmes que vous souhaitez synchroniser</string>
     <string name="game_context_menu_add_to_favorites">Ajouter aux favoris</string>
     <string name="game_context_menu_remove_from_favorites">Supprimer des favoris</string>
     <string name="game_context_menu_resume">Reprendre</string>
     <string name="game_context_menu_restart">Redémarrer</string>
     <string name="game_context_menu_create_shortcut">Épingler à l\'accueil</string>
+    <string name="home_notification_title">Activer les notifications</string>
+    <string name="home_notification_message">Lemuroid utilise des notifications pour vous informer lorsqu\'un jeu ou une opération est en cours d\'exécution en arrière-plan.</string>
+    <string name="home_notification_action">Activer</string>
     <string name="home_empty_title">Sélectionnez le dossier contenant les ROMs</string>
     <string name="home_empty_message">Lemuroid a besoin de scanner un répertoire contenant des ROMs.\nCela peut prendre quelques minutes.</string>
     <string name="home_empty_action">Sélectionner un dossier</string>
@@ -87,7 +94,7 @@
     <string name="game_toast_settings_button_using_gamepad">La manette a été détectée. Accédez au menu des paramètres avec %1$s.</string>
     <string name="game_toast_load_state_failed">Impossible de charger cet état de sauvegarde</string>
     <string name="empty_view_default">Aucun élément</string>
-    <string name="core_settings_title">Paramètres du coeur</string>
+    <string name="core_settings_title">Paramètres du noyau</string>
     <string name="core_settings_category_preferences">Paramètres</string>
     <string name="core_settings_category_controllers">Manettes</string>
     <string name="core_settings_controller">Manette %1$s</string>
@@ -103,6 +110,7 @@
     <string name="game_loader_error_gl_incompatible">Ce Cœur nécessite une version d\'OpenGL ES qui n\'est pas prise en charge par votre appareil.</string>
     <string name="game_loader_error_load_game">Un problème est survenu lors du chargement de votre jeu. Assurez-vous que la ROM est compatible avec Lemuroid et réanalysez vos jeux.</string>
     <string name="game_loader_error_save">Quelque chose s\'est mal passé avec votre fichier de sauvegarde. Si le problème persiste, essayez de désactiver la sauvegarde automatique.</string>
+    <string name="game_loader_error_unsupported_architecture">Ce noyau n\'est pas supporté par votre appareil.</string>
     <string name="game_loader_error_generic">Il semble que le cœur de Libretro ait connu un problème inattendu. Si le problème persiste, essayez ce qui suit :\n
         \n\u2022 Désactivez la sauvegarde automatique et relancez le jeu
         \n\u2022 Allez dans les paramètres Android et videz le cache de l\'application
@@ -123,6 +131,8 @@
     <string name="tv_home_section_recents">Récent</string>
     <string name="tv_home_section_systems">Consoles</string>
     <string name="tv_home_section_settings">Paramètres</string>
+    <string name="gamepad_binding_update_title">Associer \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Appuyez sur un bouton sur votre \"%1$s\"</string>
     <string name="tv_search_results">Jeux</string>
     <string name="tv_game_message_missing_gamepad">Les manettes sont nécessaires pour jouer. Veuillez en connecter une.</string>
     <string name="game_edit_touch_controls_error_not_visible">Déconnectez votre manette pour modifier vos commandes tactiles</string>
@@ -141,4 +151,12 @@
         \n\n Si aucun des éléments ci-dessus ne fonctionne, Il est possible que ce jeu/cœur n\'est pas pris en charge par votre appareil.
     </string>
     <string name="error_message_incompatible_state">Cet état de mémoire n\'est pas compatible avec la version actuelle du noyau. Veuillez charger la dernière sauvegarde en jeu ou utiliser une version de Lemuroid antérieure.</string>
+    <string name="shader_filter_names_auto">Auto</string>
+    <string name="shader_filter_names_sharp">Netteté</string>
+    <string name="shader_filter_names_smooth">Adoucir</string>
+    <string name="shader_filter_names_crt">Tube cathodique</string>
+    <string name="shader_filter_names_lcd">Écran LCD</string>
+    <string name="haptic_feedback_mode_names_none">Aucun élément</string>
+    <string name="haptic_feedback_mode_names_press">Appuyer</string>
+    <string name="haptic_feedback_mode_names_press_release">Appuyer et Relâcher</string>
 </resources>

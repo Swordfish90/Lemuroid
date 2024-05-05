@@ -27,4 +27,9 @@
     <string name="gdrive_last_sync_completed">Laatst gesynchroniseerd op: %s</string>
     <string name="game_loading_download_core">Core downloaden…</string>
     <string name="installing_core_notification_title">Cores bijwerken vanuit Google Play</string>
+    <string name="installing_core_notification_message">Kijk in de Google Play Store app voor de huidige status</string>
+    <string name="game_loader_error_load_core">Libretro core niet geladen, probeer het volgende:\n
+        \n\u2022 Zorg dat je verbonden bent met het internet en voer een herscan uit op je bibliotheek
+        \n\u2022 Zorg dat Google Play Store is geïnstalleerd en op de achtergrond draait
+        \n\u2022 Wacht tot lopende opdrachten in de Google Play Store app zijn voltooid</string>
 </resources>

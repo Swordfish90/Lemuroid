@@ -19,6 +19,9 @@
     <string name="settings">Impostazioni</string>
     <string name="save_sync">Sincronizza Salvataggi</string>
     <string name="show_all">Mostra Tutto</string>
+    <string name="back">Indietro</string>
+    <string name="close">Chiudi</string>
+    <string name="game_page_search_suggestion">Cerca giochi</string>
     <string name="settings_category_general">Generale</string>
     <string name="settings_category_input">Input</string>
     <string name="settings_category_misc">Altro</string>
@@ -27,7 +30,7 @@
     <string name="settings_title_tilt_sensitivity">Sensibilità sensore inclinazione</string>
     <string name="settings_title_maximum_cache_usage">Limite dimensione cache</string>
     <string name="settings_title_hd_mode">Modalità HD</string>
-    <string name="settings_description_hd_mode">Applica il post-processing upscaling filter</string>
+    <string name="settings_description_hd_mode">Applica filtro di upscaling post-elaborazione</string>
     <string name="settings_title_gamepad_settings">Dispositivi esterni</string>
     <string name="settings_description_gamepad_settings">Configura controller e tastiere collegati</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -73,6 +76,9 @@
     <string name="game_context_menu_resume">Riprendi</string>
     <string name="game_context_menu_restart">Riavvia</string>
     <string name="game_context_menu_create_shortcut">Aggiungi al launcher</string>
+    <string name="home_notification_title">Attiva notifiche</string>
+    <string name="home_notification_message">Lemuroid utilizza le notifiche per farti sapere quando una gioco o un\'operazione sono in esecuzione in background.</string>
+    <string name="home_notification_action">Attiva</string>
     <string name="home_empty_title">Seleziona directory ROM</string>
     <string name="home_empty_message">Lemuroid deve scansionare una directory contenente ROM.\nQuesto potrebbe richiedere alcuni minuti.</string>
     <string name="home_empty_action">Seleziona Cartella</string>

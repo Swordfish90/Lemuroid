@@ -48,12 +48,16 @@
     <string name="setting_ppsspp_texture_filtering">Filtrage des textures</string>
     <string name="setting_fbneo_frameskip">Saut d\'images</string>
     <string name="setting_fbneo_cpu_speed_adjust">Vitesse du processeur</string>
+    <string name="setting_desmume_screens_layout">Disposition des écrans</string>
     <string name="setting_desmume_frameskip">Saut d\'images</string>
     <string name="setting_melonds_screen_layout">Disposition des écrans</string>
     <string name="setting_melonds_threaded_renderer">Moteur de rendu Threaded</string>
     <string name="setting_melonds_jit_enable">Recompilateur dynamique</string>
     <string name="setting_wswan_rotate_display">Orientation</string>
     <string name="setting_wswan_mono_palette">Colorisation</string>
+    <string name="setting_handy_rot">Rotation d\'écran</string>
+    <string name="setting_citra_layout_option">Disposition des écrans</string>
+    <string name="setting_citra_resolution_factor">Mise à l\'échelle de la résolution</string>
     <string name="setting_citra_use_acc_mul">Multiplication précise des shaders</string>
     <string name="setting_citra_use_acc_geo_shaders">Géométrie précise des shaders</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
@@ -99,9 +103,16 @@
     <string name="value_melonds_screen_layout_leftright">Gauche - Droite</string>
     <string name="value_melonds_screen_layout_hybridtop">Haut hybride</string>
     <string name="value_melonds_screen_layout_hybridbottom">Bas hybride</string>
+    <string name="value_citra_layout_option_topbottom">Haut - Bas</string>
+    <string name="value_citra_layout_option_sidebyside">Gauche - Droite</string>
+    <string name="value_desmume_screens_layout_topbottom">Haut - Bas</string>
+    <string name="value_desmume_screens_layout_leftright">Gauche - Droite</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
     <string name="value_ppsspp_cpu_core_interpreter">Interpréteur</string>
     <string name="value_wswan_rotate_display_landscape">Paysage</string>
     <string name="value_wswan_rotate_display_portrait">Portrait</string>
+    <string name="value_handy_rot_none">0</string>
+    <string name="value_handy_rot_90">90</string>
+    <string name="value_handy_rot_270">270</string>
 </resources>

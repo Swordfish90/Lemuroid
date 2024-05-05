@@ -26,6 +26,7 @@
     <string name="settings_title_enable_touch_feedback">Rung khi chạm</string>
     <string name="settings_title_tilt_sensitivity">Độ nhạy cảm biến nghiêng</string>
     <string name="settings_title_maximum_cache_usage">Giới hạn kích thước bộ nhớ đệm</string>
+    <string name="settings_title_hd_mode">Chế độ HD</string>
     <string name="settings_title_gamepad_settings">Thiết bị bên ngoài</string>
     <string name="settings_description_gamepad_settings">Thiết lập gamepad và bàn phím bên ngoài</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -141,4 +142,7 @@
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
     <string name="error_message_incompatible_state">Trạng thái lưu này không tương thích với phiên bản lõi hiện tại. Vui lòng tải bản lưu trong trò chơi mới nhất hoặc sử dụng phiên bản Lemuroid trước đó.</string>
+    <string name="haptic_feedback_mode_names_none">Không</string>
+    <string name="haptic_feedback_mode_names_press">Nhấn</string>
+    <string name="haptic_feedback_mode_names_press_release">Nhấn &amp; thả</string>
 </resources>

@@ -6,6 +6,7 @@
     <string name="controller_genesis_3">Varsayılan (3 düğme)</string>
     <string name="controller_genesis_6">Varsayılan (6 düğme)</string>
     <string name="controller_default">Varsayılan</string>
+    <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standart</string>
     <string name="controller_landscape">Yatay</string>
     <string name="controller_portrait">Dikey</string>
@@ -71,6 +72,7 @@
     <string name="value_genesis_plus_gx_overscan_leftright">Sol/Sağ</string>
     <string name="value_genesis_plus_gx_overscan_full">Tam</string>
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Dinamik yeniden derleyici</string>
+    <string name="value_mupen64plus_bilinearmode_standard">Standart</string>
     <string name="value_mupen64plus_mupen64plus_pak1_memory">Bellek</string>
     <string name="value_mupen64plus_mupen64plus_pak1_rumble">Titreşim</string>
     <string name="value_mupen64plus_mupen64plus_pak1_none">Yok</string>
