@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
@@ -27,7 +26,6 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     appContext: Context,
     retrogradeDb: RetrogradeDatabase,
-    private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
     companion object {
         const val CAROUSEL_MAX_ITEMS = 10
@@ -37,10 +35,9 @@ class HomeViewModel(
     class Factory(
         val appContext: Context,
         val retrogradeDb: RetrogradeDatabase,
-        val settingsInteractor: SettingsInteractor,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return HomeViewModel(appContext, retrogradeDb, settingsInteractor) as T
+            return HomeViewModel(appContext, retrogradeDb) as T
         }
     }
 
@@ -120,7 +117,7 @@ class HomeViewModel(
     }
 
     private fun indexingInProgress(appContext: Context) =
-        PendingOperationsMonitor(appContext).anyLibraryOperationInProgress().asFlow()
+        PendingOperationsMonitor(appContext).anyLibraryOperationInProgress()
 
     private fun discoveryGames(retrogradeDb: RetrogradeDatabase) =
         retrogradeDb.gameDao().selectFirstNotPlayed(CAROUSEL_MAX_ITEMS)

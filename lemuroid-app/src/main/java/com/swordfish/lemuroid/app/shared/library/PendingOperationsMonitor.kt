@@ -1,13 +1,14 @@
 package com.swordfish.lemuroid.app.shared.library
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
-import com.swordfish.lemuroid.app.utils.livedata.combineLatest
-import com.swordfish.lemuroid.app.utils.livedata.throttle
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.map
 
 class PendingOperationsMonitor(private val appContext: Context) {
     enum class Operation(val uniqueId: String, val isPeriodic: Boolean) {
@@ -17,32 +18,34 @@ class PendingOperationsMonitor(private val appContext: Context) {
         SAVES_SYNC_ONE_SHOT(SaveSyncWork.UNIQUE_WORK_ID, false),
     }
 
-    fun anyOperationInProgress(): LiveData<Boolean> {
+    fun anyOperationInProgress(): Flow<Boolean> {
         return operationsInProgress(*Operation.values())
     }
 
-    fun anySaveOperationInProgress(): LiveData<Boolean> {
+    fun anySaveOperationInProgress(): Flow<Boolean> {
         return operationsInProgress(Operation.SAVES_SYNC_ONE_SHOT, Operation.SAVES_SYNC_PERIODIC)
     }
 
-    fun anyLibraryOperationInProgress(): LiveData<Boolean> {
+    fun anyLibraryOperationInProgress(): Flow<Boolean> {
         return operationsInProgress(Operation.LIBRARY_INDEX, Operation.CORE_UPDATE)
     }
 
-    fun isDirectoryScanInProgress(): LiveData<Boolean> {
+    fun isDirectoryScanInProgress(): Flow<Boolean> {
         return operationsInProgress(Operation.LIBRARY_INDEX)
     }
 
-    private fun operationsInProgress(vararg operations: Operation): LiveData<Boolean> {
-        return operations
-            .map { operationInProgress(it) }
-            .reduce { first, second -> first.combineLatest(second) { b1, b2 -> b1 || b2 } }
-            .throttle(100)
+    @OptIn(FlowPreview::class)
+    private fun operationsInProgress(vararg operations: Operation): Flow<Boolean> {
+        val operationFlows = operations.map { operationInProgress(it) }
+        val result = combine(operationFlows) { operationInProgress ->
+            operationInProgress.any { it }
+        }
+        return result.debounce(100)
     }
 
-    private fun operationInProgress(operation: Operation): LiveData<Boolean> {
+    private fun operationInProgress(operation: Operation): Flow<Boolean> {
         return WorkManager.getInstance(appContext)
-            .getWorkInfosForUniqueWorkLiveData(operation.uniqueId)
+            .getWorkInfosForUniqueWorkFlow(operation.uniqueId)
             .map { if (operation.isPeriodic) isPeriodicJobRunning(it) else isJobRunning(it) }
     }
 

@@ -3,7 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.inputdevices
 import android.content.Intent
 import android.view.InputDevice
 import android.view.KeyEvent
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,7 +16,6 @@ import com.swordfish.lemuroid.app.shared.input.InputBindingUpdater
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -27,15 +26,15 @@ import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 
 @Composable
 fun InputDevicesSettingsScreen(
-    padding: MergedPaddingValues,
-    viewModel: InputDevicesSettingsViewModel,
+    modifier: Modifier = Modifier,
+    viewModel: InputDevicesSettingsViewModel
 ) {
     val state =
         viewModel.uiState
             .collectAsState(InputDevicesSettingsViewModel.State())
             .value
 
-    LemuroidSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
+    LemuroidSettingsPage(modifier = modifier.fillMaxSize()) {
         EnabledDeviceCategory(state)
         state.bindings.forEach { (device, bindings) ->
             DeviceBindingCategory(device, bindings)

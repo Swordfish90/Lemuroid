@@ -1,7 +1,8 @@
-package com.swordfish.lemuroid.app.mobile.shared.compose.ui
+package com.swordfish.lemuroid.app.mobile.feature.main
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
@@ -28,10 +29,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
-import com.swordfish.lemuroid.app.mobile.feature.main.MainViewModel
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
+
+@Composable
+fun MainTopBar(
+    currentRoute: MainRoute,
+    navController: NavHostController,
+    onHelpPressed: () -> Unit,
+    onUpdateQueryString: (String) -> Unit,
+    mainUIState: MainViewModel.UiState,
+) {
+    Column {
+        Surface(tonalElevation = BottomAppBarDefaults.ContainerElevation) {
+            Crossfade(
+                targetState = currentRoute,
+                label = "MainTopBar"
+            ) { route ->
+                when (route) {
+                    MainRoute.SEARCH -> SearchTopBar(
+                        navController = navController,
+                        onHelpPressed = onHelpPressed,
+                        mainUIState = mainUIState,
+                        onUpdateQueryString = onUpdateQueryString,
+                    )
+                    else -> LemuroidTopAppBar(route, navController, mainUIState, onHelpPressed)
+                }
+            }
+        }
+
+        AnimatedVisibility(mainUIState.operationInProgress) {
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,45 +74,43 @@ fun LemuroidTopAppBar(
     onHelpPressed: () -> Unit,
 ) {
     val context = LocalContext.current
-    LemuroidTopAppBarContainer(mainUIState.operationInProgress) {
-        val topBarColor =
-            MaterialTheme.colorScheme.surfaceColorAtElevation(
-                BottomAppBarDefaults.ContainerElevation,
-            )
-
-        TopAppBar(
-            title = { Text(text = stringResource(route.titleId)) },
-            colors =
-                TopAppBarDefaults.topAppBarColors(
-                    scrolledContainerColor = topBarColor,
-                    containerColor = topBarColor,
-                ),
-            navigationIcon = {
-                AnimatedVisibility(
-                    visible = route.parent != null,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(id = R.string.back),
-                        )
-                    }
-                }
-            },
-            actions = {
-                LemuroidTopBarActions(
-                    route = route,
-                    navController = navController,
-                    context = context,
-                    saveSyncEnabled = mainUIState.saveSyncEnabled,
-                    onHelpPressed = onHelpPressed,
-                    operationsInProgress = mainUIState.operationInProgress,
-                )
-            },
+    val topBarColor =
+        MaterialTheme.colorScheme.surfaceColorAtElevation(
+            BottomAppBarDefaults.ContainerElevation,
         )
-    }
+
+    TopAppBar(
+        title = { Text(text = stringResource(route.titleId)) },
+        colors =
+        TopAppBarDefaults.topAppBarColors(
+            scrolledContainerColor = topBarColor,
+            containerColor = topBarColor,
+        ),
+        navigationIcon = {
+            AnimatedVisibility(
+                visible = route?.parent != null,
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        stringResource(id = R.string.back),
+                    )
+                }
+            }
+        },
+        actions = {
+            LemuroidTopBarActions(
+                route = route,
+                navController = navController,
+                context = context,
+                saveSyncEnabled = mainUIState.saveSyncEnabled,
+                onHelpPressed = onHelpPressed,
+                operationsInProgress = mainUIState.operationInProgress,
+            )
+        },
+    )
 }
 
 @Composable
@@ -121,22 +151,6 @@ fun LemuroidTopBarActions(
                     stringResource(R.string.settings),
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun LemuroidTopAppBarContainer(
-    displayProgress: Boolean,
-    content: @Composable () -> Unit,
-) {
-    Column {
-        Surface(tonalElevation = BottomAppBarDefaults.ContainerElevation) {
-            content()
-        }
-
-        AnimatedVisibility(displayProgress) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
     }
 }

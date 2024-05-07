@@ -1,6 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.advanced
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -16,7 +16,6 @@ import androidx.navigation.NavHostController
 import com.alorma.compose.settings.storage.disk.rememberPreferenceIntSettingState
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -28,7 +27,7 @@ import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 
 @Composable
 fun AdvancedSettingsScreen(
-    padding: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: AdvancedSettingsViewModel,
     navController: NavHostController,
 ) {
@@ -38,9 +37,7 @@ fun AdvancedSettingsScreen(
             .value
 
     LemuroidSettingsPage(
-        modifier =
-            Modifier
-                .padding(padding.asPaddingValues()),
+        modifier = modifier.fillMaxSize(),
     ) {
         if (uiState?.cache == null) {
             return@LemuroidSettingsPage
