@@ -15,6 +15,7 @@ import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.coroutines.launchOnState
+import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
@@ -78,6 +79,16 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
                 .distinctUntilChanged()
                 .collect { refreshGamePadBindingsScreen(it) }
         }
+
+        launchOnState(Lifecycle.State.RESUMED) {
+            getSaveSyncScreen()?.let { screen ->
+                PendingOperationsMonitor(requireContext())
+                    .anySaveOperationInProgress()
+                    .safeCollect { syncInProgress ->
+                        saveSyncPreferences.updatePreferences(screen, syncInProgress)
+                    }
+            }
+        }
     }
 
     override fun onCreatePreferences(
@@ -110,16 +121,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-
         refreshSaveSyncScreen()
-
-        getSaveSyncScreen()?.let { screen ->
-            PendingOperationsMonitor(requireContext())
-                .anySaveOperationInProgress()
-                .observe(this) { syncInProgress ->
-                    saveSyncPreferences.updatePreferences(screen, syncInProgress)
-                }
-        }
     }
 
     private fun getGamePadPreferenceScreen(): PreferenceScreen? {

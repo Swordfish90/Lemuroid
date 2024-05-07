@@ -13,7 +13,7 @@ object deps {
         const val kotlin          = "1.8.20"
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
-        const val work            = "2.7.1"
+        const val work            = "2.9.0"
         const val navigation      = "2.5.2"
         const val lifecycle       = "2.6.1"
         const val leanback        = "1.1.0-rc01"
@@ -91,7 +91,6 @@ object deps {
                 const val composeBom = "androidx.compose:compose-bom:${versions.composeBom}"
                 const val material3 = "androidx.compose.material3:material3"
                 const val extendedIcons = "androidx.compose.material:material-icons-extended"
-                const val liveData = "androidx.compose.runtime:runtime-livedata"
                 const val tooling = "androidx.compose.ui:ui-tooling"
                 const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
 

@@ -1,11 +1,10 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.general
 
 import android.net.Uri
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,7 +15,6 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.navigateToRoute
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -28,7 +26,7 @@ import com.swordfish.lemuroid.app.utils.android.stringListResource
 
 @Composable
 fun SettingsScreen(
-    padding: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: SettingsViewModel,
     navController: NavController,
 ) {
@@ -39,15 +37,15 @@ fun SettingsScreen(
 
     val scanInProgress =
         viewModel.directoryScanInProgress
-            .observeAsState(false)
+            .collectAsState(false)
             .value
 
     val indexingInProgress =
         viewModel.indexingInProgress
-            .observeAsState(false)
+            .collectAsState(false)
             .value
 
-    LemuroidSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
+    LemuroidSettingsPage(modifier = modifier) {
         RomsSettings(
             state = state,
             onChangeFolder = { viewModel.changeLocalStorageFolder() },

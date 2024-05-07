@@ -30,13 +30,12 @@ import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 fun HomeScreen(
-    padding: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: HomeViewModel,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
@@ -64,7 +63,7 @@ fun HomeScreen(
 
     val state = viewModel.getViewStates().collectAsState(HomeViewModel.UIState())
     HomeScreen(
-        padding,
+        modifier,
         state.value,
         onGameClick,
         onGameLongClick,
@@ -81,20 +80,18 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreen(
-    paddings: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     state: HomeViewModel.UIState,
     onGameClicked: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onEnableNotificationsClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
 ) {
-    val finalPadding = paddings + PaddingValues(vertical = 16.dp)
-
     Column(
         modifier =
-            Modifier
+            modifier
                 .verticalScroll(rememberScrollState())
-                .padding(finalPadding.asPaddingValues()),
+                .padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AnimatedVisibility(state.showNoPermissionNotification) {
@@ -163,9 +160,9 @@ private fun HomeRow(
                 val game = games[index]
                 LemuroidGameCard(
                     modifier =
-                        Modifier
-                            .widthIn(0.dp, 144.dp)
-                            .animateItemPlacement(),
+                    Modifier
+                        .widthIn(0.dp, 144.dp)
+                        .animateItemPlacement(),
                     game = game,
                     onClick = { onGameClicked(game) },
                     onLongClick = { onGameLongClick(game) },
@@ -184,15 +181,15 @@ private fun HomeNotification(
 ) {
     ElevatedCard(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp),
     ) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(

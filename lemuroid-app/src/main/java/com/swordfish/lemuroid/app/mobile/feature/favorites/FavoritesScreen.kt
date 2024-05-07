@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.mobile.feature.favorites
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -11,13 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavoritesScreen(
-    paddingValues: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: FavoritesViewModel,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
@@ -30,8 +30,9 @@ fun FavoritesScreen(
     }
 
     LazyVerticalGrid(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
         columns = GridCells.Adaptive(144.dp),
-        contentPadding = (paddingValues + PaddingValues(16.dp)).asPaddingValues(),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
