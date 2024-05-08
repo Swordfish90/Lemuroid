@@ -1,13 +1,12 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.bios
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
@@ -15,7 +14,7 @@ import com.swordfish.lemuroid.lib.bios.Bios
 
 @Composable
 fun BiosScreen(
-    padding: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: BiosSettingsViewModel,
 ) {
     val uiState =
@@ -23,7 +22,7 @@ fun BiosScreen(
             .collectAsState()
             .value
 
-    LemuroidSettingsPage(modifier = Modifier.padding(padding.asPaddingValues())) {
+    LemuroidSettingsPage(modifier = modifier.fillMaxSize()) {
         if (uiState.detected.isNotEmpty()) {
             DetectedEntries(uiState.detected)
         }

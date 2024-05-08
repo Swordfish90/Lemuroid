@@ -30,13 +30,12 @@ import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
 fun HomeScreen(
-    padding: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: HomeViewModel,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
@@ -64,7 +63,7 @@ fun HomeScreen(
 
     val state = viewModel.getViewStates().collectAsState(HomeViewModel.UIState())
     HomeScreen(
-        padding,
+        modifier,
         state.value,
         onGameClick,
         onGameLongClick,
@@ -81,20 +80,18 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreen(
-    paddings: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     state: HomeViewModel.UIState,
     onGameClicked: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onEnableNotificationsClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
 ) {
-    val finalPadding = paddings + PaddingValues(vertical = 16.dp)
-
     Column(
         modifier =
-            Modifier
+            modifier
                 .verticalScroll(rememberScrollState())
-                .padding(finalPadding.asPaddingValues()),
+                .padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AnimatedVisibility(state.showNoPermissionNotification) {

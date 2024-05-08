@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
@@ -24,6 +22,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
@@ -102,7 +101,6 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
     private suspend fun waitPendingOperations() {
         getLoadingLiveData()
-            .asFlow()
             .filter { !it }
             .first()
     }
@@ -111,7 +109,7 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
         displayErrorDialog(R.string.game_loader_error_load_game, R.string.ok) { finish() }
     }
 
-    private fun getLoadingLiveData(): LiveData<Boolean> {
+    private fun getLoadingLiveData(): Flow<Boolean> {
         return PendingOperationsMonitor(applicationContext).anyOperationInProgress()
     }
 

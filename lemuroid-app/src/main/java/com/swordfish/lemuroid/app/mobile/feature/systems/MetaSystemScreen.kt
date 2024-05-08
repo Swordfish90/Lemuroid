@@ -1,7 +1,9 @@
 package com.swordfish.lemuroid.app.mobile.feature.systems
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -12,17 +14,16 @@ import androidx.navigation.NavController
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSystemCard
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
-import com.swordfish.lemuroid.app.utils.android.compose.MergedPaddingValues
 
 @Composable
 fun MetaSystemsScreen(
-    paddings: MergedPaddingValues,
+    modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: MetaSystemsViewModel,
 ) {
     val metaSystems = viewModel.availableMetaSystems.collectAsState(emptyList())
     MetaSystemsScreen(
-        paddings = paddings,
+        modifier = modifier,
         metaSystems = metaSystems.value,
         onSystemClicked = { navController.navigate("systems/${it.metaSystem.name}") },
     )
@@ -30,10 +31,10 @@ fun MetaSystemsScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MetaSystemsScreen(
+private fun MetaSystemsScreen(
+    modifier: Modifier = Modifier,
     metaSystems: List<MetaSystemInfo>,
     onSystemClicked: (MetaSystemInfo) -> Unit,
-    paddings: MergedPaddingValues,
 ) {
     if (metaSystems.isEmpty()) {
         LemuroidEmptyView()
@@ -41,8 +42,11 @@ fun MetaSystemsScreen(
     }
 
     LazyVerticalGrid(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
         columns = GridCells.Adaptive(144.dp),
-        contentPadding = (paddings + PaddingValues(8.dp)).asPaddingValues(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(metaSystems.size, key = { metaSystems[it].metaSystem }) { index ->
             val system = metaSystems[index]

@@ -3,7 +3,6 @@ package com.swordfish.lemuroid.app.tv.home
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.systems.MetaSystemInfo
@@ -87,10 +86,10 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
     }
 
     private fun directoryScanInProgress(appContext: Context) =
-        PendingOperationsMonitor(appContext).isDirectoryScanInProgress().asFlow()
+        PendingOperationsMonitor(appContext).isDirectoryScanInProgress()
 
     private fun indexingInProgress(appContext: Context) =
-        PendingOperationsMonitor(appContext).anyLibraryOperationInProgress().asFlow()
+        PendingOperationsMonitor(appContext).anyLibraryOperationInProgress()
 
     private fun availableSystems(
         retrogradeDb: RetrogradeDatabase,
