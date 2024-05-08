@@ -30,9 +30,14 @@ fun SearchScreen(
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onGameFavoriteToggle: (Game, Boolean) -> Unit,
+    onResetSearchQuery: () -> Unit,
 ) {
     val searchState = viewModel.searchState.collectAsState(SearchViewModel.UIState.Idle)
     val searchGames = viewModel.searchResults.collectAsLazyPagingItems()
+
+    LaunchedEffect(Unit) {
+        onResetSearchQuery()
+    }
 
     LaunchedEffect(key1 = searchQuery) {
         viewModel.queryString.value = searchQuery

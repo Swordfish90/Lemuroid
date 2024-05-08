@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -117,6 +118,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MainScreen(navController: NavHostController) {
         AppTheme {
@@ -182,13 +184,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     composable(MainRoute.HOME) {
                         HomeScreen(
                             modifier = Modifier.padding(padding),
-                            viewModel = viewModel(
-                                factory =
-                                HomeViewModel.Factory(
-                                    applicationContext,
-                                    retrogradeDb,
+                            viewModel =
+                                viewModel(
+                                    factory =
+                                        HomeViewModel.Factory(
+                                            applicationContext,
+                                            retrogradeDb,
+                                        ),
                                 ),
-                            ),
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
                         )
@@ -196,9 +199,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     composable(MainRoute.FAVORITES) {
                         FavoritesScreen(
                             modifier = Modifier.padding(padding),
-                            viewModel = viewModel(
-                                factory = FavoritesViewModel.Factory(retrogradeDb),
-                            ),
+                            viewModel =
+                                viewModel(
+                                    factory = FavoritesViewModel.Factory(retrogradeDb),
+                                ),
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
                         )
@@ -206,26 +210,29 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     composable(MainRoute.SEARCH) {
                         SearchScreen(
                             modifier = Modifier.padding(padding),
-                            viewModel = viewModel(
-                                factory = SearchViewModel.Factory(retrogradeDb),
-                            ),
+                            viewModel =
+                                viewModel(
+                                    factory = SearchViewModel.Factory(retrogradeDb),
+                                ),
                             searchQuery = mainUIState.searchQuery,
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
                             onGameFavoriteToggle = onGameFavoriteToggle,
+                            onResetSearchQuery = { mainViewModel.changeQueryString("") },
                         )
                     }
                     composable(MainRoute.SYSTEMS) {
                         MetaSystemsScreen(
                             modifier = Modifier.padding(padding),
                             navController = navController,
-                            viewModel = viewModel(
-                                factory =
-                                    MetaSystemsViewModel.Factory(
-                                        retrogradeDb,
-                                        applicationContext,
-                                    ),
-                            ),
+                            viewModel =
+                                viewModel(
+                                    factory =
+                                        MetaSystemsViewModel.Factory(
+                                            retrogradeDb,
+                                            applicationContext,
+                                        ),
+                                ),
                         )
                     }
                     composable(MainRoute.SYSTEM_GAMES) { entry ->
@@ -251,16 +258,16 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             viewModel =
                                 viewModel(
                                     factory =
-                                    SettingsViewModel.Factory(
-                                        applicationContext,
-                                        settingsInteractor,
-                                        saveSyncManager,
-                                        FlowSharedPreferences(
-                                            SharedPreferencesHelper.getLegacySharedPreferences(
-                                                applicationContext,
+                                        SettingsViewModel.Factory(
+                                            applicationContext,
+                                            settingsInteractor,
+                                            saveSyncManager,
+                                            FlowSharedPreferences(
+                                                SharedPreferencesHelper.getLegacySharedPreferences(
+                                                    applicationContext,
+                                                ),
                                             ),
                                         ),
-                                    ),
                                 ),
                             navController = navController,
                         )
@@ -271,10 +278,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             viewModel =
                                 viewModel(
                                     factory =
-                                    AdvancedSettingsViewModel.Factory(
-                                        applicationContext,
-                                        settingsInteractor,
-                                    ),
+                                        AdvancedSettingsViewModel.Factory(
+                                            applicationContext,
+                                            settingsInteractor,
+                                        ),
                                 ),
                             navController = navController,
                         )
@@ -294,10 +301,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             viewModel =
                                 viewModel(
                                     factory =
-                                    CoresSelectionViewModel.Factory(
-                                        applicationContext,
-                                        coresSelection,
-                                    ),
+                                        CoresSelectionViewModel.Factory(
+                                            applicationContext,
+                                            coresSelection,
+                                        ),
                                 ),
                         )
                     }
@@ -320,10 +327,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             viewModel =
                                 viewModel(
                                     factory =
-                                    SaveSyncSettingsViewModel.Factory(
-                                        application,
-                                        saveSyncManager,
-                                    ),
+                                        SaveSyncSettingsViewModel.Factory(
+                                            application,
+                                            saveSyncManager,
+                                        ),
                                 ),
                         )
                     }

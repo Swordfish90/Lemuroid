@@ -2,14 +2,20 @@ package com.swordfish.lemuroid.app.mobile.feature.main
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
@@ -21,13 +27,22 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.swordfish.lemuroid.R
@@ -42,22 +57,13 @@ fun MainTopBar(
     mainUIState: MainViewModel.UiState,
 ) {
     Column {
-        Surface(tonalElevation = BottomAppBarDefaults.ContainerElevation) {
-            Crossfade(
-                targetState = currentRoute,
-                label = "MainTopBar"
-            ) { route ->
-                when (route) {
-                    MainRoute.SEARCH -> SearchTopBar(
-                        navController = navController,
-                        onHelpPressed = onHelpPressed,
-                        mainUIState = mainUIState,
-                        onUpdateQueryString = onUpdateQueryString,
-                    )
-                    else -> LemuroidTopAppBar(route, navController, mainUIState, onHelpPressed)
-                }
-            }
-        }
+        LemuroidTopAppBar(
+            route = currentRoute,
+            navController = navController,
+            mainUIState = mainUIState,
+            onHelpPressed = onHelpPressed,
+            onUpdateQueryString = onUpdateQueryString,
+        )
 
         AnimatedVisibility(mainUIState.operationInProgress) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -72,6 +78,7 @@ fun LemuroidTopAppBar(
     navController: NavController,
     mainUIState: MainViewModel.UiState,
     onHelpPressed: () -> Unit,
+    onUpdateQueryString: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val topBarColor =
@@ -80,15 +87,24 @@ fun LemuroidTopAppBar(
         )
 
     TopAppBar(
-        title = { Text(text = stringResource(route.titleId)) },
+        title = {
+            if (route == MainRoute.SEARCH) {
+                LemuroidSearchView(
+                    mainUIState = mainUIState,
+                    onUpdateQueryString = onUpdateQueryString,
+                )
+            } else {
+                Text(text = stringResource(route.titleId))
+            }
+        },
         colors =
-        TopAppBarDefaults.topAppBarColors(
-            scrolledContainerColor = topBarColor,
-            containerColor = topBarColor,
-        ),
+            TopAppBarDefaults.topAppBarColors(
+                scrolledContainerColor = topBarColor,
+                containerColor = topBarColor,
+            ),
         navigationIcon = {
             AnimatedVisibility(
-                visible = route?.parent != null,
+                visible = route.parent != null,
                 enter = fadeIn(),
                 exit = fadeOut(),
             ) {
@@ -152,5 +168,57 @@ fun LemuroidTopBarActions(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun LemuroidSearchView(
+    mainUIState: MainViewModel.UiState,
+    onUpdateQueryString: (String) -> Unit,
+) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
+    Box(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+    ) {
+        Surface(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
+            shape = RoundedCornerShape(100),
+            tonalElevation = 16.dp,
+        ) { }
+
+        TextField(
+            value = mainUIState.searchQuery,
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .focusRequester(focusRequester),
+            textStyle = MaterialTheme.typography.bodyMedium,
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            onValueChange = { onUpdateQueryString(it) },
+            singleLine = true,
+            keyboardActions =
+                KeyboardActions(
+                    onDone = { focusManager.clearFocus(true) },
+                ),
+            colors =
+                TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
+        )
     }
 }

@@ -21,7 +21,7 @@ import com.swordfish.lemuroid.app.utils.android.stringsSetPreferenceState
 @Composable
 fun SaveSyncSettingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: SaveSyncSettingsViewModel
+    viewModel: SaveSyncSettingsViewModel,
 ) {
     val context = LocalContext.current
 

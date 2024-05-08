@@ -27,7 +27,7 @@ import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 @Composable
 fun InputDevicesSettingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: InputDevicesSettingsViewModel
+    viewModel: InputDevicesSettingsViewModel,
 ) {
     val state =
         viewModel.uiState
