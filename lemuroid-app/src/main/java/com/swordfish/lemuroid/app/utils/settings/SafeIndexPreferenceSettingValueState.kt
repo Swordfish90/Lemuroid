@@ -12,31 +12,33 @@ import androidx.preference.PreferenceManager
 import com.alorma.compose.settings.storage.base.SettingValueState
 
 @Composable
-fun rememberPreferenceStringsSetSettingState(
+fun rememberSafePreferenceIndexSettingState(
     key: String,
-    defaultValue: Set<String>,
+    values: List<String>,
+    defaultValue: String,
     preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current),
-): StringsSetPreferenceSettingValueState {
+): SafeIndexPreferenceSettingValueState {
     return remember {
-        StringsSetPreferenceSettingValueState(preferences, key, defaultValue)
+        SafeIndexPreferenceSettingValueState(preferences, key, values, defaultValue)
     }
 }
 
-class StringsSetPreferenceSettingValueState(
+class SafeIndexPreferenceSettingValueState(
     private val preferences: SharedPreferences,
     val key: String,
-    private val defaultValue: Set<String>,
-) : SettingValueState<Set<String>> {
-    private var _value by mutableStateOf(preferences.getStringSet(key, defaultValue)!!)
+    private val values: List<String>,
+    private val defaultValue: String,
+) : SettingValueState<Int> {
+    private var _value by mutableStateOf(preferences.safeGetString(key, defaultValue))
 
-    override var value: Set<String>
+    override var value: Int
         set(index) {
-            _value = index
-            preferences.edit { putStringSet(key, _value) }
+            _value = values[index]
+            preferences.edit { putString(key, _value) }
         }
-        get() = _value.toSet()
+        get() = values.indexOf(_value)
 
     override fun reset() {
-        value = defaultValue
+        value = values.indexOf(defaultValue)
     }
 }
