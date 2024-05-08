@@ -16,7 +16,7 @@ import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLin
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
 import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
-import com.swordfish.lemuroid.app.utils.android.stringsSetPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.stringsSetPreferenceState
 
 @Composable
 fun SaveSyncSettingsScreen(
