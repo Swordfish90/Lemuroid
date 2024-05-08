@@ -160,9 +160,9 @@ private fun HomeRow(
                 val game = games[index]
                 LemuroidGameCard(
                     modifier =
-                    Modifier
-                        .widthIn(0.dp, 144.dp)
-                        .animateItemPlacement(),
+                        Modifier
+                            .widthIn(0.dp, 144.dp)
+                            .animateItemPlacement(),
                     game = game,
                     onClick = { onGameClicked(game) },
                     onLongClick = { onGameLongClick(game) },
@@ -181,15 +181,15 @@ private fun HomeNotification(
 ) {
     ElevatedCard(
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp),
     ) {
         Column(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(

@@ -37,9 +37,10 @@ class PendingOperationsMonitor(private val appContext: Context) {
     @OptIn(FlowPreview::class)
     private fun operationsInProgress(vararg operations: Operation): Flow<Boolean> {
         val operationFlows = operations.map { operationInProgress(it) }
-        val result = combine(operationFlows) { operationInProgress ->
-            operationInProgress.any { it }
-        }
+        val result =
+            combine(operationFlows) { operationInProgress ->
+                operationInProgress.any { it }
+            }
         return result.debounce(100)
     }
 

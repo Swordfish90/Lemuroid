@@ -15,7 +15,7 @@ import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
 @Composable
 fun CoresSelectionScreen(
     modifier: Modifier = Modifier,
-    viewModel: CoresSelectionViewModel
+    viewModel: CoresSelectionViewModel,
 ) {
     val applicationContext = LocalContext.current.applicationContext
 

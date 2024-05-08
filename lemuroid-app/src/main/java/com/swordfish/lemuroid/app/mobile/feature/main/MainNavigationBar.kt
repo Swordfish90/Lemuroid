@@ -22,7 +22,7 @@ fun MainNavigationBar(
     AnimatedVisibility(
         visible = currentRoute?.showBottomNavigation != false,
         enter = expandVertically(),
-        exit = shrinkVertically()
+        exit = shrinkVertically(),
     ) {
         LemuroidNavigationBar(currentRoute, navController)
     }
@@ -31,7 +31,7 @@ fun MainNavigationBar(
 @Composable
 private fun LemuroidNavigationBar(
     currentRoute: MainRoute?,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
         MainNavigationRoutes.values().forEach { destination ->

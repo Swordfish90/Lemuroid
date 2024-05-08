@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.general
 
 import android.net.Uri
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

@@ -15,7 +15,7 @@ import com.swordfish.lemuroid.lib.bios.Bios
 @Composable
 fun BiosScreen(
     modifier: Modifier = Modifier,
-    viewModel: BiosSettingsViewModel
+    viewModel: BiosSettingsViewModel,
 ) {
     val uiState =
         viewModel.uiState

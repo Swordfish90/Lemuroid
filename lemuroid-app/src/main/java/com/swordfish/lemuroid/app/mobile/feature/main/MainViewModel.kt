@@ -26,7 +26,7 @@ class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncMa
         val operationInProgress: Boolean = false,
         val saveSyncEnabled: Boolean = false,
         val displaySearch: Boolean = false,
-        val searchQuery: String = ""
+        val searchQuery: String = "",
     )
 
     private val currentRouteFlow = MutableStateFlow(MainRoute.HOME)
@@ -37,25 +37,26 @@ class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncMa
     val state = buildStateFlow()
 
     private fun buildStateFlow(): StateFlow<UiState> {
-        val combinedFlows = combine(
-            currentRouteFlow,
-            saveSyncEnabledFlow,
-            operationInProgressFlow,
-            searchQueryFlow
-        ) { currentRoute, saveSyncEnabled, operationInProgress, searchQuery ->
-            UiState(
-                operationInProgress = operationInProgress,
-                saveSyncEnabled = saveSyncEnabled,
-                displaySearch = currentRoute == MainRoute.SEARCH,
-                searchQuery = searchQuery
-            )
-        }
+        val combinedFlows =
+            combine(
+                currentRouteFlow,
+                saveSyncEnabledFlow,
+                operationInProgressFlow,
+                searchQueryFlow,
+            ) { currentRoute, saveSyncEnabled, operationInProgress, searchQuery ->
+                UiState(
+                    operationInProgress = operationInProgress,
+                    saveSyncEnabled = saveSyncEnabled,
+                    displaySearch = currentRoute == MainRoute.SEARCH,
+                    searchQuery = searchQuery,
+                )
+            }
 
         return combinedFlows
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Lazily,
-                initialValue = UiState()
+                initialValue = UiState(),
             )
     }
 

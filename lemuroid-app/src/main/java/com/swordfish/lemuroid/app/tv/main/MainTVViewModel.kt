@@ -21,6 +21,6 @@ class MainTVViewModel(appContext: Context) : ViewModel() {
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Lazily,
-                initialValue = false
+                initialValue = false,
             )
 }
