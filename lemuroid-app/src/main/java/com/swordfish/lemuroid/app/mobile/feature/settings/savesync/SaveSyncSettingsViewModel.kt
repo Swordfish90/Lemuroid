@@ -26,7 +26,7 @@ class SaveSyncSettingsViewModel(
         }
     }
 
-    val indexingInProgress = PendingOperationsMonitor(getContext()).anyLibraryOperationInProgress()
+    val saveSyncInProgress = PendingOperationsMonitor(getContext()).anySaveOperationInProgress()
 
     data class State(
         val isConfigured: Boolean = false,

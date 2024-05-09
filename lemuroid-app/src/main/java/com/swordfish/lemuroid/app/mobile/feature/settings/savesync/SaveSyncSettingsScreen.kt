@@ -31,7 +31,7 @@ fun SaveSyncSettingsScreen(
             .value
 
     val isSyncInProgress =
-        viewModel.indexingInProgress
+        viewModel.saveSyncInProgress
             .collectAsState(true)
             .value
 
