@@ -100,6 +100,7 @@ object deps {
                     const val drawablePainter = "com.google.accompanist:accompanist-drawablepainter:${versions.accompanist}"
                 }
             }
+            const val profileInstaller = "androidx.profileinstaller:profileinstaller:1.3.1"
         }
         object arch {
             object work {
@@ -163,7 +164,8 @@ object deps {
     }
 
     object plugins {
-        const val android = "com.android.tools.build:gradle:8.2.2"
+        const val android = "com.android.tools.build:gradle:8.4.0"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
+        const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
 }

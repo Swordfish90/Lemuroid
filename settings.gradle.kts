@@ -1,5 +1,13 @@
 @file:Suppress("ktlint")
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
 include(
     ":retrograde-util",
     ":retrograde-app-shared",
@@ -8,7 +16,8 @@ include(
     ":lemuroid-metadata-libretro-db",
     ":lemuroid-app-ext-free",
     ":lemuroid-app-ext-play",
-    ":bundled-cores"
+    ":bundled-cores",
+    ":baselineprofile"
 )
 
 project(":bundled-cores").projectDir = File("lemuroid-cores/bundled-cores")
