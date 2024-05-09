@@ -3,25 +3,22 @@ package com.swordfish.lemuroid.app.utils.android.settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.alorma.compose.settings.storage.disk.rememberPreferenceBooleanSettingState
-import com.swordfish.lemuroid.app.utils.settings.rememberPreferenceIndexSettingState
+import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceBooleanSettingState
+import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceIndexSettingState
+import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceStringsSetSettingState
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 
 @Composable
 fun booleanPreferenceState(
     id: Int,
     default: Boolean,
-) = rememberPreferenceBooleanSettingState(
-    key = stringResource(id = id),
-    defaultValue = default,
-    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
-)
+) = booleanPreferenceState(stringResource(id = id), default)
 
 @Composable
 fun booleanPreferenceState(
     key: String,
     default: Boolean,
-) = rememberPreferenceBooleanSettingState(
+) = rememberSafePreferenceBooleanSettingState(
     key = key,
     defaultValue = default,
     preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
@@ -39,9 +36,19 @@ fun indexPreferenceState(
     key: String,
     default: String,
     values: List<String>,
-) = rememberPreferenceIndexSettingState(
+) = rememberSafePreferenceIndexSettingState(
     key = key,
     values = values,
+    defaultValue = default,
+    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
+)
+
+@Composable
+fun stringsSetPreferenceState(
+    key: String,
+    default: Set<String>,
+) = rememberSafePreferenceStringsSetSettingState(
+    key = key,
     defaultValue = default,
     preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
 )

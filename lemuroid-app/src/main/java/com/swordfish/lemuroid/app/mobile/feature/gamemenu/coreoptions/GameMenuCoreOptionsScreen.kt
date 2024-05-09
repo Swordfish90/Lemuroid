@@ -14,10 +14,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.shared.coreoptions.CoreOptionsPreferenceHelper
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 
@@ -52,16 +55,23 @@ private fun CoreOptions(
     }
 
     for (coreOption in coreOptions) {
-        LemuroidSettingsList(
-            title = { Text(text = coreOption.getDisplayName(context)) },
-            items = coreOption.getEntries(context),
-            state =
-                indexPreferenceState(
-                    CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
-                    coreOption.getEntriesValues().first(),
-                    coreOption.getEntriesValues(),
-                ),
-        )
+        if (coreOption.getEntriesValues().toSet() == CoreOptionsPreferenceHelper.BOOLEAN_SET) {
+            LemuroidSettingsSwitch(
+                state = booleanPreferenceState(coreOption.getKey(), coreOption.getCurrentValue() == "enabled"),
+                title = { Text(text = coreOption.getDisplayName(context)) },
+            )
+        } else {
+            LemuroidSettingsList(
+                title = { Text(text = coreOption.getDisplayName(context)) },
+                items = coreOption.getEntries(context),
+                state =
+                    indexPreferenceState(
+                        CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
+                        coreOption.getEntriesValues().first(),
+                        coreOption.getEntriesValues(),
+                    ),
+            )
+        }
     }
 }
 

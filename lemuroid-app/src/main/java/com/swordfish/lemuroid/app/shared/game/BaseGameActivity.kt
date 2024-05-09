@@ -492,7 +492,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun getCoreOptions(): List<CoreOption> {
         return retroGameView?.getVariables()
-            ?.map { CoreOption.fromLibretroDroidVariable(it) } ?: listOf()
+            ?.mapNotNull {
+                val coreOptionResult =
+                    runCatching {
+                        CoreOption.fromLibretroDroidVariable(it)
+                    }
+                coreOptionResult.getOrNull()
+            } ?: listOf()
     }
 
     private fun updateCoreVariables(options: List<CoreVariable>) {

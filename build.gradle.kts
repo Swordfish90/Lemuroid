@@ -1,30 +1,35 @@
 import com.android.build.gradle.BaseExtension
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath(deps.plugins.android)
         classpath(deps.plugins.navigationSafeArgs)
+        classpath(deps.plugins.kotlinGradlePlugin)
     }
 }
 
-plugins {
+ plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
     id("com.github.ben-manes.versions") version "0.39.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.4.0"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+    id("com.android.test") version "8.4.0" apply false
+    id("org.jetbrains.kotlin.android") version deps.versions.kotlin apply false
+    id("androidx.baselineprofile") version "1.2.3" apply false
+    id("com.android.application") version "8.4.0" apply false
 }
 
 allprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
         mavenLocal()
-        mavenCentral()
         maven { setUrl("https://jitpack.io") }
     }
 
@@ -84,21 +89,5 @@ subprojects {
 tasks {
     "clean"(Delete::class) {
         delete(buildDir)
-    }
-
-    "dependencyUpdates"(DependencyUpdatesTask::class) {
-        resolutionStrategy {
-            componentSelection {
-                all {
-                    val rejected =
-                        listOf("alpha", "beta", "rc", "cr", "m")
-                            .map { qualifier -> Regex("(?i).*[.-]$qualifier[.\\d-]*") }
-                            .any { it.matches(candidate.version) }
-                    if (rejected) {
-                        reject("Release candidate")
-                    }
-                }
-            }
-        }
     }
 }

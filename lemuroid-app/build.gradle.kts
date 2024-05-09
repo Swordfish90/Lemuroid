@@ -4,12 +4,13 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlinx-serialization")
+    id("androidx.baselineprofile")
 }
 
 android {
     defaultConfig {
-        versionCode = 206
-        versionName = "1.16.0-beta1" // Always remember to update Cores Tag!
+        versionCode = 207
+        versionName = "1.16.0-beta2" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
     flavorDimensions += listOf("opensource", "cores")
@@ -127,6 +128,9 @@ dependencies {
     implementation(project(":retrograde-app-shared"))
     implementation(project(":lemuroid-metadata-libretro-db"))
     implementation(project(":lemuroid-touchinput"))
+
+    "baselineProfile"(project(":baselineprofile"))
+    implementation(deps.libs.androidx.profileInstaller)
 
     "bundleImplementation"(project(":bundled-cores"))
 

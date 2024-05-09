@@ -14,7 +14,7 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.library.CoreID
 
 object CoreOptionsPreferenceHelper {
-    private val BOOLEAN_SET = setOf("enabled", "disabled")
+    val BOOLEAN_SET = setOf("enabled", "disabled")
 
     fun addPreferences(
         preferenceScreen: PreferenceScreen,
