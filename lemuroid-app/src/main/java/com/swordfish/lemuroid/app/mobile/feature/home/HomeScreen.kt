@@ -108,6 +108,7 @@ private fun HomeScreen(
                 messageId = R.string.home_empty_message,
                 actionId = R.string.home_empty_action,
                 onAction = onSetDirectoryClicked,
+                enabled = !state.indexInProgress
             )
         }
         HomeRow(
@@ -177,7 +178,8 @@ private fun HomeNotification(
     titleId: Int,
     messageId: Int,
     actionId: Int,
-    onAction: () -> Unit,
+    enabled: Boolean = true,
+    onAction: () -> Unit = { },
 ) {
     ElevatedCard(
         modifier =
@@ -203,6 +205,7 @@ private fun HomeNotification(
             OutlinedButton(
                 modifier = Modifier.align(Alignment.End),
                 onClick = onAction,
+                enabled = enabled
             ) {
                 Text(stringResource(id = actionId))
             }
