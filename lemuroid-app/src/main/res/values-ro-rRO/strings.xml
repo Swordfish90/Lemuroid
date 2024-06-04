@@ -19,6 +19,9 @@
     <string name="settings">Setări</string>
     <string name="save_sync">Salvează sincronizarea</string>
     <string name="show_all">Afișare toate</string>
+    <string name="back">Înapoi</string>
+    <string name="close">Închide</string>
+    <string name="game_page_search_suggestion">Caută jocuri</string>
     <string name="settings_category_general">Setări generale</string>
     <string name="settings_category_input">Intrări</string>
     <string name="settings_category_misc">Diverse</string>
@@ -26,6 +29,8 @@
     <string name="settings_title_enable_touch_feedback">Vibrează la atingere</string>
     <string name="settings_title_tilt_sensitivity">Sensibilitate senzor înclinare</string>
     <string name="settings_title_maximum_cache_usage">Dimensiune limita cache</string>
+    <string name="settings_title_hd_mode">Modul HD</string>
+    <string name="settings_description_hd_mode">Aplică filtrul de upscaling post-processing</string>
     <string name="settings_title_gamepad_settings">Dispozitive externe</string>
     <string name="settings_description_gamepad_settings">Configurați gamepad-urile externe și tastaturile</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -45,6 +50,7 @@
     <string name="settings_description_advanced_settings">Afișează setările avansate</string>
     <string name="settings_title_low_latency_audio">Preferă audio cu latență mică</string>
     <string name="settings_description_low_latency_audio">Reduceți latența audio pe dispozitivele acceptate. Poate crește numărul de glitch-uri.</string>
+    <string name="settings_title_legacy_hd_mode">Prefer Vechiul Mod HD</string>
     <string name="settings_title_direct_game_load">Încărcare directă a jocului</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduce timpul de încărcare şi utilizarea cache-ului pe consolele suportate.</string>
     <string name="settings_title_enable_rumble">Vibrație de Controler</string>
@@ -69,6 +75,9 @@
     <string name="game_context_menu_resume">Reluaţi</string>
     <string name="game_context_menu_restart">Reporniţi</string>
     <string name="game_context_menu_create_shortcut">Fixează în lansator</string>
+    <string name="home_notification_title">Activați notificările</string>
+    <string name="home_notification_message">Lemuroid folosește notificări pentru a te anunța când un joc sau o activitate rulează în fundal.</string>
+    <string name="home_notification_action">Activați</string>
     <string name="home_empty_title">Alege directorul de ROM-uri</string>
     <string name="home_empty_message">Lemuroid trebuie să scaneze un director care conține fișiere ROM.\nAcest lucru ar putea dura până la câteva minute.</string>
     <string name="home_empty_action">Selectare director</string>
@@ -82,6 +91,8 @@
     <string name="game_menu_edit_touch_controls">Editați comenzile</string>
     <string name="game_menu_mute_audio">Mut</string>
     <string name="game_menu_fast_forward">Derulați rapid înainte</string>
+    <string name="game_menu_change_disk_disk">Discul %1$s</string>
+    <string name="game_loading_preparing_game">Se pregătește jocul…</string>
     <string name="tv_folder_picker_action_choose">Selectați</string>
     <string name="tv_folder_picker_action_cancel">Anulați</string>
     <string name="tv_folder_storage_primary">Stocare principală</string>
