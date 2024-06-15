@@ -30,6 +30,8 @@
     <string name="setting_mgba_color_correction">Renk düzeltme</string>
     <string name="setting_mupen64plus_43screensize">Ekran boyutu 4:3</string>
     <string name="setting_mupen64plus_cpucore">Dinamik yeniden derleyici</string>
+    <string name="setting_mupen64plus_pak1">Pak Oyuncu 1</string>
+    <string name="setting_mupen64plus_pak2">Pak Oyuncu 2</string>
     <string name="setting_pcsx_rearmed_frameskip">Kare atlama</string>
     <string name="setting_pcsx_rearmed_drc">Dinamik yeniden derleyici</string>
     <string name="setting_ppsspp_auto_frameskip">Otomatik kare atlama</string>
@@ -41,12 +43,16 @@
     <string name="setting_ppsspp_texture_filtering">Doku filtreleme</string>
     <string name="setting_fbneo_frameskip">Kare atlama</string>
     <string name="setting_fbneo_cpu_speed_adjust">CPU hızı</string>
+    <string name="setting_desmume_screens_layout">Ekran  düzeni</string>
     <string name="setting_desmume_frameskip">Kare atlama</string>
     <string name="setting_melonds_screen_layout">Ekran düzeni</string>
     <string name="setting_melonds_jit_enable">Dinamik yeniden derleyici</string>
     <string name="setting_wswan_rotate_display">Döndürme</string>
     <string name="setting_wswan_mono_palette">Renklendirme</string>
+    <string name="setting_handy_rot">Ekran Yönü</string>
+    <string name="setting_citra_layout_option">Doğru ekran düzeni</string>
     <string name="setting_citra_resolution_factor">Çözünürlük ölçekleme</string>
+    <string name="setting_citra_use_acc_geo_shaders">Doğru Geometrik Grafikler</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Devre dışı</string>
     <string name="value_gambatte_mix_frames_mix">Basit</string>
@@ -64,15 +70,23 @@
     <string name="value_mgba_color_correction_gba">Etkin</string>
     <string name="value_stella_filter_disabled">Devre dışı</string>
     <string name="value_stella_filter_composite">Birleşik</string>
+    <string name="value_stella_filter_svideo">S-Video</string>
+    <string name="value_stella_filter_rgb">RGB</string>
+    <string name="value_stella_filter_badlyadjusted">Kötü bir şekilde düzenlenmiş</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">Devre dışı</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_monochrome">Monokrom</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">Birleşik</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_svideo">S-Video</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_rgb">RGB</string>
     <string name="value_genesis_plus_gx_overscan_disabled">Devre dışı</string>
     <string name="value_genesis_plus_gx_overscan_topbottom">Üst/Alt</string>
     <string name="value_genesis_plus_gx_overscan_leftright">Sol/Sağ</string>
     <string name="value_genesis_plus_gx_overscan_full">Tam</string>
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Dinamik yeniden derleyici</string>
+    <string name="value_mupen64plus_cpucore_pureinterpreter">Saf tercüman</string>
+    <string name="value_mupen64plus_cpucore_cachedinterpreter">Önbelleğe alınmış tercüman</string>
     <string name="value_mupen64plus_bilinearmode_standard">Standart</string>
+    <string name="value_mupen64plus_bilinearmode_3point">3-Nokta</string>
     <string name="value_mupen64plus_mupen64plus_pak1_memory">Bellek</string>
     <string name="value_mupen64plus_mupen64plus_pak1_rumble">Titreşim</string>
     <string name="value_mupen64plus_mupen64plus_pak1_none">Yok</string>
@@ -88,6 +102,7 @@
     <string name="value_desmume_screens_layout_leftright">Sol - Sağ</string>
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
+    <string name="value_ppsspp_cpu_core_interpreter">Tercüman</string>
     <string name="value_wswan_rotate_display_landscape">Yatay</string>
     <string name="value_wswan_rotate_display_portrait">Dikey</string>
     <string name="value_handy_rot_none">0</string>
