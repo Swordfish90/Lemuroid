@@ -23,7 +23,7 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
-        const val libretrodroid   = "e18bdb67d"
+        const val libretrodroid   = "0.11.1"
         const val radialgamepad   = "2.0.0"
         const val composeBom      = "2024.02.02"
 
@@ -125,8 +125,8 @@ object deps {
         object play {
             const val review = "com.google.android.play:review:2.0.0"
             const val reviewKtx = "com.google.android.play:review-ktx:2.0.0"
-            const val featureDelivery = "com.google.android.play:feature-delivery:2.0.0"
-            const val featureDeliveryKtx = "com.google.android.play:feature-delivery-ktx:2.0.0"
+            const val featureDelivery = "com.google.android.play:feature-delivery:2.1.0"
+            const val featureDeliveryKtx = "com.google.android.play:feature-delivery-ktx:2.1.0"
             const val playServices = "com.google.android.gms:play-services-auth:17.0.0"
             const val coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
         }
