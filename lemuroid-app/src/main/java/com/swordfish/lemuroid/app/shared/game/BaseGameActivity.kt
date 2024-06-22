@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.shared.game
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.PointF
 import android.os.Bundle
 import android.view.Gravity
@@ -172,6 +173,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         lifecycleScope.launch {
             loadGame()
+            if(settingsManager.screenAutorotate()) {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+            }
         }
 
         initialiseFlows()
