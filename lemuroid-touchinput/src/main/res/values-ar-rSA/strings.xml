@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">مُنجز</string>
+    <string name="touch_customize_button_reset">إعادة ضبط</string>
+    <string name="touch_customize_info">سحب و تثبيت عناصر التحكم لتغيير الموقع والحجم</string>
+</resources>

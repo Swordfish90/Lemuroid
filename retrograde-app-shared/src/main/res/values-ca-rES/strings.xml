@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="local_storage">Emmagatzematge local</string>
+    <string name="controller_default">Predeterminat</string>
+    <string name="controller_dualshock">DualShock</string>
+    <string name="controller_standard">Estàndard</string>
+    <string name="controller_dos_auto">Automàtic</string>
+    <!-- Core settings titles -->
+    <string name="setting_genesis_plus_gx_overscan">Vores</string>
+    <string name="setting_mgba_color_correction">Correcció de color</string>
+    <string name="setting_ppsspp_internal_resolution">Resolució</string>
+    <string name="setting_melonds_screen_layout">Disposició de pantalla</string>
+    <!-- Core settings values. Duplicated here to ease the translation process. -->
+    <string name="value_gambatte_mix_frames_disabled">Deshabilitat</string>
+    <string name="value_gambatte_mix_frames_mix">Simple</string>
+    <string name="value_stella_filter_rgb">RGB</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">Deshabilitat</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">Composició</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_rgb">RGB</string>
+    <string name="value_genesis_plus_gx_overscan_disabled">Deshabilitat</string>
+    <string name="value_genesis_plus_gx_overscan_leftright">Esquerra / dreta</string>
+    <string name="value_mupen64plus_bilinearmode_standard">Estàndard</string>
+    <string name="value_melonds_screen_layout_leftright">Esquerra-dreta</string>
+    <string name="value_ppsspp_cpu_core_jit">JIT</string>
+</resources>

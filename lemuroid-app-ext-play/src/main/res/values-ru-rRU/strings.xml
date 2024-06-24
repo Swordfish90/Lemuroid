@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Ошибка входа через Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Выполнен вход в Google как %s</string>
+    <string name="gdrive_sign_out_success">Выполнен выход из Google</string>
+    <string name="gdrive_missing_play_services">Для Google Диска требуются сервисы Google Play, которые не поддерживаются на вашем устройстве</string>
+    <string name="gdrive_connected_summary">Связано с %s</string>
+    <string name="gdrive_connected_none_summary">Не настроено</string>
+    <string name="gdrive_last_sync_completed">Последняя синхронизация: %s</string>
+    <string name="game_loading_download_core">Скачивание ядра…</string>
+    <string name="installing_core_notification_title">Обновление ядер из Play</string>
+    <string name="installing_core_notification_message">Проверьте приложение Google Play Store, чтобы увидеть текущее состояние</string>
+    <string name="game_loader_error_load_core">Ядро Libretro не было загружено. Попробуйте сделать следующее:\n
+        \n\u2022 Включите интернет-соединение и повторно просканируйте ваши игры
+        \n\u2022 Убедитесь, что Google Play Store установлен и запущен
+        \n\u2022 Дождитесь завершения выполнения операций в приложении Google Play</string>
+</resources>

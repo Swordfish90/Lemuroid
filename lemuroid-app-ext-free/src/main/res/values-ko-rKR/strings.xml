@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">코어 다운로드 중…</string>
+    <string name="installing_core_notification_title">코어 업데이트 중</string>
+    <string name="installing_core_notification_message">몇 분 정도 걸립니다</string>
+    <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않았습니다. 장치가 인터넷에 연결되어있는지 확인하고 라이브러리를 다시 한 번 검색해주세요. 문제가 지속될 경우 이 장치가 해당 코어를 지원하지 않는 것일 수도 있습니다.</string>
+</resources>
