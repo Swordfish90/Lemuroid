@@ -19,6 +19,9 @@
     <string name="settings">Paramètres</string>
     <string name="save_sync">Synchroniser la sauvegarde</string>
     <string name="show_all">Tout afficher</string>
+    <string name="back">Retour</string>
+    <string name="close">Fermer</string>
+    <string name="game_page_search_suggestion">Rechercher des jeux</string>
     <string name="settings_category_general">Général</string>
     <string name="settings_category_input">Systèmes d\'interaction</string>
     <string name="settings_category_misc">Autre</string>
