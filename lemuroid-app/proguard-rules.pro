@@ -19,6 +19,7 @@
 -keep class kotlin.Metadata { *; }
 -keep class android.arch.lifecycle.**
 -dontwarn kotlinx.coroutines.flow.**
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
 ## Okio
 -dontwarn okio.**
@@ -34,6 +35,8 @@
 
 ## Retrofit
 -dontwarn retrofit2.Platform$Java8
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
 
 ## Moshi
 -dontnote sun.misc.Unsafe
