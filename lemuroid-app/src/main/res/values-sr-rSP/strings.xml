@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">Почетак</string>
+    <string name="title_search">Претрага</string>
+    <string name="title_systems">Системи</string>
+    <string name="title_games">Игре</string>
+    <string name="title_settings">Подешавања</string>
+    <string name="recent">Скорашње</string>
+    <string name="favorites">Омиљено</string>
+    <string name="discover">Откријте</string>
+    <string name="rescan">Поново скенирај</string>
+    <string name="stop">Стани</string>
+    <string name="none">Ништа</string>
+    <string name="directory">Директоријум</string>
+    <string name="display_filter">Филтер приказа</string>
+    <string name="roms">ROM-ови</string>
+    <string name="ok">У реду</string>
+    <string name="cancel">Откажи</string>
+</resources>
