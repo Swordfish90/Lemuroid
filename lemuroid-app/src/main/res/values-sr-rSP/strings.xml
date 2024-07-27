@@ -88,10 +88,10 @@
     <string name="game_menu_quit">Изађи</string>
     <string name="game_menu_settings">Подешавања</string>
     <string name="game_menu_state">Стање %1$s</string>
-    <string name="game_menu_change_disk_button">Промени дискету</string>
+    <string name="game_menu_change_disk_button">Промените дискету</string>
     <string name="game_menu_edit_touch_controls">Измени контроле</string>
     <string name="game_menu_mute_audio">Нечујно</string>
-    <string name="game_menu_fast_forward">Убрзај</string>
+    <string name="game_menu_fast_forward">Убрзано</string>
     <string name="game_menu_change_disk_disk">Дискета %1$s</string>
     <string name="game_loading_preparing_game">Припрема игре…</string>
     <string name="game_toast_settings_button_using_gamepad">Гејмпад детектован. Приступите менију са подешавањима са %1$s.</string>
@@ -109,7 +109,7 @@
     <string name="save_sync_notification_message">Ово може потрајати до неколико минута</string>
     <string name="game_running_notification_title">%1$s је у току</string>
     <string name="game_running_notification_title_alternative">Игра је у току</string>
-    <string name="game_running_notification_message">Обавезно сачувајте свој напредак!</string>
+    <string name="game_running_notification_message">Обавезно сачувајте свој напредак</string>
     <string name="game_loader_error_gl_incompatible">Ово језгро захтева OpenGL ES верзију која није подржана на Вашем уређају.</string>
     <string name="game_loader_error_load_game">Нешто се лоше догодило за време учитавања игре. Проверите да ли је ROM подржан од стране Lemuroid-а и поново скенирајте Ваше игре.</string>
     <string name="game_loader_error_save">Нешто лоше се догодило са Вашом датотеком чувања. Ако се овај проблем понaвља, покушајте да онемогућите ауто-чување.</string>
@@ -154,7 +154,7 @@
         \n\nАко ништа од овога не проради, постоји могућност да ова игра/језгро није подржана од стране овог уређаја.
     </string>
     <string name="error_message_incompatible_state">Ово стање чувања није компатибилно са тренутном верзијом језгра. Молимо Вас да учитате последње чување унутар игре или да користите старију Lemuroid верзију.</string>
-    <string name="shader_filter_names_auto">Аутоматски</string>
+    <string name="shader_filter_names_auto">Аутоматско</string>
     <string name="shader_filter_names_sharp">Оштро</string>
     <string name="shader_filter_names_smooth">Глатко</string>
     <string name="shader_filter_names_crt">CRT</string>
