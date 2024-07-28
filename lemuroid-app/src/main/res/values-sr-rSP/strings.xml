@@ -88,11 +88,11 @@
     <string name="game_menu_quit">Изађи</string>
     <string name="game_menu_settings">Подешавања</string>
     <string name="game_menu_state">Стање %1$s</string>
-    <string name="game_menu_change_disk_button">Промените дискету</string>
+    <string name="game_menu_change_disk_button">Промените диск</string>
     <string name="game_menu_edit_touch_controls">Измени контроле</string>
     <string name="game_menu_mute_audio">Нечујно</string>
     <string name="game_menu_fast_forward">Убрзано</string>
-    <string name="game_menu_change_disk_disk">Дискета %1$s</string>
+    <string name="game_menu_change_disk_disk">Диск %1$s</string>
     <string name="game_loading_preparing_game">Припрема игре…</string>
     <string name="game_toast_settings_button_using_gamepad">Гејмпад детектован. Приступите менију са подешавањима са %1$s.</string>
     <string name="game_toast_load_state_failed">Не могу да учитам ово стање</string>
