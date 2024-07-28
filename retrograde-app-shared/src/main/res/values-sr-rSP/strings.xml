@@ -33,15 +33,15 @@
     <string name="setting_mgba_frameskip">Прескакање фрејмова</string>
     <string name="setting_mgba_color_correction">Корекција боје</string>
     <string name="setting_mupen64plus_43screensize">Величина екрана 4:3</string>
-    <string name="setting_mupen64plus_cpucore">Динамички рекомпајлер</string>
+    <string name="setting_mupen64plus_cpucore">Динамични рекомпајлер</string>
     <string name="setting_mupen64plus_BilinearMode">Билинеарни режим</string>
     <string name="setting_mupen64plus_pak1">Плејер 1 Pak</string>
     <string name="setting_mupen64plus_pak2">Плејер 2 Pak</string>
     <string name="setting_pcsx_rearmed_frameskip">Прескакање фрејмова</string>
-    <string name="setting_pcsx_rearmed_drc">Динамички рекомпајлер</string>
+    <string name="setting_pcsx_rearmed_drc">Динамични рекомпајлер</string>
     <string name="setting_ppsspp_auto_frameskip">Аутоматско прескакање фрејмова</string>
     <string name="setting_ppsspp_frameskip">Прескакање фрејмова</string>
-    <string name="setting_ppsspp_cpu_core">Динамички рекомпајлер</string>
+    <string name="setting_ppsspp_cpu_core">Динамични рекомпајлер</string>
     <string name="setting_ppsspp_internal_resolution">Резолуција</string>
     <string name="setting_ppsspp_texture_scaling_level">Ниво скалирања текстуре</string>
     <string name="setting_ppsspp_texture_scaling_type">Тип скалирања текстуре</string>
@@ -51,8 +51,8 @@
     <string name="setting_desmume_screens_layout">Распоред екрана</string>
     <string name="setting_desmume_frameskip">Прескакање фрејмова</string>
     <string name="setting_melonds_screen_layout">Распоред екрана</string>
-    <string name="setting_melonds_threaded_renderer">Навојни радник</string>
-    <string name="setting_melonds_jit_enable">Динамички рекомпајлер</string>
+    <string name="setting_melonds_threaded_renderer">Навојни цртач</string>
+    <string name="setting_melonds_jit_enable">Динамични рекомпајлер</string>
     <string name="setting_wswan_rotate_display">Оријентација</string>
     <string name="setting_wswan_mono_palette">Колоризација</string>
     <string name="setting_handy_rot">Ротација дисплеја</string>
@@ -81,7 +81,7 @@
     <string name="value_stella_filter_rgb">RGB</string>
     <string name="value_stella_filter_badlyadjusted">Лоше подешено</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">Онемогућено</string>
-    <string name="value_genesis_plus_gx_blargg_ntsc_filter_monochrome">Црно-бела</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_monochrome">Монохромно</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">Композитно</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_svideo">S-Video</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_rgb">RGB</string>
@@ -89,7 +89,7 @@
     <string name="value_genesis_plus_gx_overscan_topbottom">Горе/доле</string>
     <string name="value_genesis_plus_gx_overscan_leftright">Лево/десно</string>
     <string name="value_genesis_plus_gx_overscan_full">Пуно</string>
-    <string name="value_mupen64plus_cpucore_dynamicrecompiler">Динамички рекомпајлер</string>
+    <string name="value_mupen64plus_cpucore_dynamicrecompiler">Динамични рекомпајлер</string>
     <string name="value_mupen64plus_cpucore_pureinterpreter">Чист интерпретер</string>
     <string name="value_mupen64plus_cpucore_cachedinterpreter">Кеширани интерпретер</string>
     <string name="value_mupen64plus_bilinearmode_standard">Стандардно</string>
