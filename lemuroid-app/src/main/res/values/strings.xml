@@ -27,12 +27,15 @@
     <string name="settings_category_input">Input</string>
     <string name="settings_category_misc">Miscellaneous</string>
     <string name="settings_title_enable_autosave">Autosave state</string>
+    <string name="settings_description_enable_autosave">Save state when exiting via game menu</string>
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
+    <string name="settings_title_hd_quality">HD mode quality</string>
     <string name="settings_title_maximum_cache_usage">Cache size limit</string>
 
     <string name="settings_title_hd_mode">HD mode</string>
     <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
+    <string name="settings_description_hd_quality">Adjust the quality of HD mode</string>
 
     <string name="settings_title_gamepad_settings">External devices</string>
     <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
@@ -59,9 +62,6 @@
     <string name="settings_description_advanced_settings">Display advanced settings</string>
     <string name="settings_title_low_latency_audio">Prefer low-latency audio</string>
     <string name="settings_description_low_latency_audio">Reduce audio latency on supported devices. Might increase audio glitches.</string>
-
-    <string name="settings_title_legacy_hd_mode">Prefer legacy HD mode</string>
-    <string name="settings_description_legacy_hd_mode">Always use legacy HD mode. Trades some quality for performances.</string>
 
     <string name="settings_title_direct_game_load">Direct game load</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>

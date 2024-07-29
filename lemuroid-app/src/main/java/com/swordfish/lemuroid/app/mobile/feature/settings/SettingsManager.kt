@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.common.math.Fraction
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Lazy
@@ -31,7 +32,7 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
 
     suspend fun hdMode() = booleanPreference(R.string.pref_key_hd_mode, false)
 
-    suspend fun forceLegacyHdMode() = booleanPreference(R.string.pref_key_legacy_hd_mode, false)
+    suspend fun hdModeQuality() = HDModeQuality.parse(intPreference(R.string.pref_key_hd_mode_quality, 1))
 
     suspend fun tiltSensitivity() = floatPreference(R.string.pref_key_tilt_sensitivity_index, 10, 6)
 
@@ -92,6 +93,16 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
             sharedPreferences.getInt(getString(keyId), defaultNumerator)
                 .asFlow()
                 .map { Fraction(it, denominator).floatValue }
+                .first()
+        }
+
+    private suspend fun intPreference(
+        keyId: Int,
+        default: Int,
+    ): Int =
+        withContext(Dispatchers.IO) {
+            sharedPreferences.getInt(getString(keyId), default)
+                .asFlow()
                 .first()
         }
 }

@@ -18,9 +18,11 @@ import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGro
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSlider
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
 import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.intPreferenceState
 import com.swordfish.lemuroid.app.utils.android.stringListResource
 
 @Composable
@@ -141,11 +143,24 @@ private fun GeneralSettings() {
         LemuroidSettingsSwitch(
             state = booleanPreferenceState(R.string.pref_key_autosave, true),
             title = { Text(text = stringResource(id = R.string.settings_title_enable_autosave)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_autosave)) },
         )
         LemuroidSettingsSwitch(
             state = hdMode,
             title = { Text(text = stringResource(id = R.string.settings_title_hd_mode)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_hd_mode)) },
+        )
+        LemuroidSettingsSlider(
+            enabled = hdMode.value,
+            state =
+            intPreferenceState(
+                key = stringResource(id = R.string.pref_key_hd_mode_quality),
+                default = 1,
+            ),
+            steps = 1,
+            valueRange = 0f..2f,
+            title = { Text(text = stringResource(R.string.settings_title_hd_quality)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_hd_quality)) }
         )
         LemuroidSettingsList(
             enabled = !hdMode.value,

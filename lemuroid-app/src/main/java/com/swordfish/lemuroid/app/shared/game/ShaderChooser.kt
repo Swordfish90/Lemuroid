@@ -1,23 +1,29 @@
 package com.swordfish.lemuroid.app.shared.game
 
 import android.content.Context
+import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.app.utils.android.getGLSLVersion
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.libretrodroid.ShaderConfig
+import timber.log.Timber
 
 object ShaderChooser {
     fun getShaderForSystem(
         context: Context,
         hdMode: Boolean,
-        forceLegacyHdMode: Boolean,
+        requestedHdModeQuality: HDModeQuality,
         screenFilter: String,
         system: GameSystem,
     ): ShaderConfig {
-        val useNewHdMode = context.getGLSLVersion() >= 3 && hdMode && !forceLegacyHdMode
+        Timber.i("Choosing shader for this config: screenFilter= $screenFilter hdMode=$hdMode hdModeQuality=$requestedHdModeQuality")
+        val hdModeQuality = if (context.getGLSLVersion() >= 3) {
+            requestedHdModeQuality
+        } else {
+            HDModeQuality.LOW
+        }
         return when {
-            useNewHdMode -> getHDShaderForSystem(system)
-            hdMode -> getLegacyHDShaderForSystem(system)
+            hdMode -> getHDShaderForSystem(system, hdModeQuality)
             else ->
                 when (screenFilter) {
                     "crt" -> ShaderConfig.CRT
@@ -59,121 +65,197 @@ object ShaderChooser {
         }
     }
 
-    private fun getLegacyHDShaderForSystem(system: GameSystem): ShaderConfig.CUT {
-        val upscale8BitsMobile =
-            ShaderConfig.CUT(
-                blendMinContrastEdge = 0.00f,
-                blendMaxContrastEdge = 0.50f,
-                blendMaxSharpness = 0.85f,
-            )
-
-        val upscale8Bits =
-            ShaderConfig.CUT(
-                blendMinContrastEdge = 0.00f,
-                blendMaxContrastEdge = 0.50f,
-                blendMaxSharpness = 0.75f,
-            )
-
-        val upscale16BitsMobile =
-            ShaderConfig.CUT(
-                blendMinContrastEdge = 0.10f,
-                blendMaxContrastEdge = 0.60f,
-                blendMaxSharpness = 0.85f,
-            )
-
-        val upscale16Bits =
-            ShaderConfig.CUT(
-                blendMinContrastEdge = 0.10f,
-                blendMaxContrastEdge = 0.60f,
-                blendMaxSharpness = 0.75f,
-            )
-
-        val upscale32Bits =
-            ShaderConfig.CUT(
-                blendMinContrastEdge = 0.25f,
-                blendMaxContrastEdge = 0.75f,
-                blendMaxSharpness = 0.75f,
-            )
-
-        val modern =
-            ShaderConfig.CUT(
-                blendMinContrastEdge = 0.25f,
-                blendMaxContrastEdge = 0.75f,
-                blendMaxSharpness = 0.50f,
-            )
-
-        return when (system.id) {
-            SystemID.GBA -> upscale16BitsMobile
-            SystemID.GBC -> upscale8BitsMobile
-            SystemID.GB -> upscale8BitsMobile
-            SystemID.N64 -> upscale32Bits
-            SystemID.GENESIS -> upscale16Bits
-            SystemID.SEGACD -> upscale16Bits
-            SystemID.NES -> upscale8Bits
-            SystemID.SNES -> upscale16Bits
-            SystemID.FBNEO -> upscale32Bits
-            SystemID.SMS -> upscale8Bits
-            SystemID.PSP -> modern
-            SystemID.NDS -> upscale32Bits
-            SystemID.GG -> upscale8BitsMobile
-            SystemID.ATARI2600 -> upscale8Bits
-            SystemID.PSX -> upscale32Bits
-            SystemID.MAME2003PLUS -> upscale32Bits
-            SystemID.ATARI7800 -> upscale8Bits
-            SystemID.PC_ENGINE -> upscale16Bits
-            SystemID.LYNX -> upscale8BitsMobile
-            SystemID.DOS -> upscale32Bits
-            SystemID.NGP -> upscale8BitsMobile
-            SystemID.NGC -> upscale8BitsMobile
-            SystemID.WS -> upscale16BitsMobile
-            SystemID.WSC -> upscale16BitsMobile
-            SystemID.NINTENDO_3DS -> modern
+    private fun getHDShaderForSystem(system: GameSystem, hdModeQuality: HDModeQuality): ShaderConfig {
+        return when (hdModeQuality) {
+            HDModeQuality.LOW -> getLowQualityHdMode(system)
+            HDModeQuality.MEDIUM -> getMediumQualityHdMode(system)
+            HDModeQuality.HIGH -> getHighQualityHdMode(system)
         }
     }
 
-    private fun getHDShaderForSystem(system: GameSystem): ShaderConfig.CUT2 {
+    private fun getLowQualityHdMode(system: GameSystem): ShaderConfig {
         val upscale8BitsMobile =
-            ShaderConfig.CUT2(
+            ShaderConfig.CUT(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.85f,
             )
 
         val upscale8Bits =
-            ShaderConfig.CUT2(
+            ShaderConfig.CUT(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
             )
 
         val upscale16BitsMobile =
-            ShaderConfig.CUT2(
+            ShaderConfig.CUT(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.60f,
                 blendMaxSharpness = 0.85f,
             )
 
         val upscale16Bits =
-            ShaderConfig.CUT2(
+            ShaderConfig.CUT(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.60f,
                 blendMaxSharpness = 0.75f,
             )
 
         val upscale32Bits =
-            ShaderConfig.CUT2(
+            ShaderConfig.CUT(
                 blendMinContrastEdge = 0.25f,
                 blendMaxContrastEdge = 0.75f,
                 blendMaxSharpness = 0.75f,
             )
 
         val modern =
-            ShaderConfig.CUT2(
+            ShaderConfig.CUT(
                 blendMinContrastEdge = 0.25f,
                 blendMaxContrastEdge = 0.75f,
                 blendMaxSharpness = 0.50f,
             )
 
+        return getConfigForSystem(
+            system,
+            upscale16BitsMobile,
+            upscale8BitsMobile,
+            upscale32Bits,
+            upscale16Bits,
+            upscale8Bits,
+            modern
+        )
+    }
+
+    private fun getMediumQualityHdMode(system: GameSystem): ShaderConfig {
+        val upscale8BitsMobile =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.30f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale8Bits =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.30f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale16BitsMobile =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale16Bits =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale32Bits =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val modern =
+            ShaderConfig.CUT2(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.50f,
+            )
+
+        return getConfigForSystem(
+            system,
+            upscale16BitsMobile,
+            upscale8BitsMobile,
+            upscale32Bits,
+            upscale16Bits,
+            upscale8Bits,
+            modern
+        )
+    }
+
+    private fun getHighQualityHdMode(system: GameSystem): ShaderConfig {
+        val upscale8BitsMobile =
+            ShaderConfig.CUT3(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.30f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale8Bits =
+            ShaderConfig.CUT3(
+                blendMinContrastEdge = 0.00f,
+                blendMaxContrastEdge = 0.30f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale16BitsMobile =
+            ShaderConfig.CUT3(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale16Bits =
+            ShaderConfig.CUT3(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val upscale32Bits =
+            ShaderConfig.CUT3(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.75f,
+            )
+
+        val modern =
+            ShaderConfig.CUT3(
+                blendMinContrastEdge = 0.10f,
+                blendMaxContrastEdge = 0.40f,
+                softEdgesSharpeningAmount = 0.75f,
+                blendMaxSharpness = 0.50f,
+            )
+
+        return getConfigForSystem(
+            system,
+            upscale16BitsMobile,
+            upscale8BitsMobile,
+            upscale32Bits,
+            upscale16Bits,
+            upscale8Bits,
+            modern
+        )
+    }
+
+    private fun getConfigForSystem(
+        system: GameSystem,
+        upscale16BitsMobile: ShaderConfig,
+        upscale8BitsMobile: ShaderConfig,
+        upscale32Bits: ShaderConfig,
+        upscale16Bits: ShaderConfig,
+        upscale8Bits: ShaderConfig,
+        modern: ShaderConfig
+    ): ShaderConfig {
         return when (system.id) {
             SystemID.GBA -> upscale16BitsMobile
             SystemID.GBC -> upscale8BitsMobile
