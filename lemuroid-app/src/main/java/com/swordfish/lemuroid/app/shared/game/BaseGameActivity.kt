@@ -29,6 +29,7 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
+import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
@@ -331,7 +332,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun initializeRetroGameView(
         gameData: GameLoader.GameData,
         hdMode: Boolean,
-        forceLegacyHdMode: Boolean,
+        hdModeQuality: HDModeQuality,
         screenFilter: String,
         lowLatencyAudio: Boolean,
         enableRumble: Boolean,
@@ -359,7 +360,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     ShaderChooser.getShaderForSystem(
                         applicationContext,
                         hdMode,
-                        forceLegacyHdMode,
+                        hdModeQuality,
                         screenFilter,
                         system,
                     )
@@ -1019,7 +1020,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val autoSaveEnabled = settingsManager.autoSave()
         val filter = settingsManager.screenFilter()
         val hdMode = settingsManager.hdMode()
-        val forceLegacyHdMode = settingsManager.forceLegacyHdMode()
+        val hdModeQuality = settingsManager.hdModeQuality()
         val lowLatencyAudio = settingsManager.lowLatencyAudio()
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
@@ -1045,7 +1046,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         initializeRetroGameView(
                             loadingState.gameData,
                             hdMode,
-                            forceLegacyHdMode,
+                            hdModeQuality,
                             filter,
                             lowLatencyAudio,
                             systemCoreConfig.rumbleSupported && enableRumble,

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.alorma.compose.settings.storage.disk.rememberPreferenceIntSettingState
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
@@ -24,6 +23,7 @@ import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSlider
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
 import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
+import com.swordfish.lemuroid.app.utils.android.settings.intPreferenceState
 
 @Composable
 fun AdvancedSettingsScreen(
@@ -67,12 +67,13 @@ private fun InputSettings() {
         )
         LemuroidSettingsSlider(
             state =
-                rememberPreferenceIntSettingState(
+                intPreferenceState(
                     key = stringResource(id = R.string.pref_key_tilt_sensitivity_index),
-                    defaultValue = 6,
+                    default = 6,
                 ),
             steps = 10,
             valueRange = 0f..10f,
+            enabled = true,
             title = { Text(text = stringResource(R.string.settings_title_tilt_sensitivity)) },
         )
     }
@@ -108,11 +109,6 @@ private fun GeneralSettings(
             state = booleanPreferenceState(R.string.pref_key_allow_direct_game_load, true),
             title = { Text(text = stringResource(id = R.string.settings_title_direct_game_load)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_direct_game_load)) },
-        )
-        LemuroidSettingsSwitch(
-            state = booleanPreferenceState(R.string.pref_key_legacy_hd_mode, false),
-            title = { Text(text = stringResource(id = R.string.settings_title_legacy_hd_mode)) },
-            subtitle = { Text(text = stringResource(id = R.string.settings_description_legacy_hd_mode)) },
         )
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_reset_settings)) },

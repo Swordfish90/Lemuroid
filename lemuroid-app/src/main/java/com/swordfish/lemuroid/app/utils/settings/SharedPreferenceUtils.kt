@@ -2,6 +2,14 @@ package com.swordfish.lemuroid.app.utils.settings
 
 import android.content.SharedPreferences
 
+fun SharedPreferences.safeGetInt(
+    key: String,
+    defValue: Int,
+): Int {
+    val result = runCatching { getInt(key, defValue) }
+    return result.getOrDefault(defValue)
+}
+
 fun SharedPreferences.safeGetString(
     key: String,
     defValue: String?,
