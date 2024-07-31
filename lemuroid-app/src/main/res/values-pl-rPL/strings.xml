@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">Wyświetl ustawienia zaawansowane</string>
     <string name="settings_title_low_latency_audio">Preferuj dźwięk o niskim opóźnieniu</string>
     <string name="settings_description_low_latency_audio">Zmniejsza opóźnienie dźwięku na obsługiwanych urządzeniach. Może zwiększyć występowanie błędów dźwięku.</string>
-    <string name="settings_title_legacy_hd_mode">Preferuj tryb HD starszego typu</string>
-    <string name="settings_description_legacy_hd_mode">Zawsze używaj trybu HD starszego typu. Poprawia wydajność kosztem jakości.</string>
     <string name="settings_title_direct_game_load">Bezpośrednie ładowanie gry</string>
     <string name="settings_description_direct_game_load">(Eksperymentalne) Skraca czasy ładowania i zmniejsza zużycie pamięci cache na obsługiwanych konsolach.</string>
     <string name="settings_title_enable_rumble">Wibracje</string>
