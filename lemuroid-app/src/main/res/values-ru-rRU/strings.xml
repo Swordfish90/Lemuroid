@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">Показать дополнительные параметры</string>
     <string name="settings_title_low_latency_audio">Звук с низкой задержкой</string>
     <string name="settings_description_low_latency_audio">Снижает задержку звука на поддерживаемых устройствах. Может увеличить искажения звука.</string>
-    <string name="settings_title_legacy_hd_mode">Предпочитать старый HD режим</string>
-    <string name="settings_description_legacy_hd_mode">Всегда использовать старый HD-режим. Обеспечивает прирост скорости за счёт небольшой потери качества.</string>
     <string name="settings_title_direct_game_load">Прямая загрузка игры</string>
     <string name="settings_description_direct_game_load">(Экспериментально) Сокращает время загрузки и использование кэша на поддерживаемых консолях.</string>
     <string name="settings_title_enable_rumble">Вибрация</string>
