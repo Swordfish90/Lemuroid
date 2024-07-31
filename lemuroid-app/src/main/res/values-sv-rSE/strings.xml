@@ -47,8 +47,6 @@
     <string name="settings_description_advanced_settings">Visa avancerade inställningar</string>
     <string name="settings_title_low_latency_audio">Föredra ljud med låg fördröjning</string>
     <string name="settings_description_low_latency_audio">Minska ljudets fördröjning på enheter som stödjer detta. Kan öka ljudbuggar.</string>
-    <string name="settings_title_legacy_hd_mode">Föredrar äldre HD-läge</string>
-    <string name="settings_description_legacy_hd_mode">Använd alltid äldre HD-läge. Utbyter viss kvalitet mot prestanda.</string>
     <string name="settings_title_direct_game_load">Direkt spelinläsning</string>
     <string name="settings_description_direct_game_load">(Experimentellt) Minska inläsningstiden och cacheanvändningen på konsoler som stöds.</string>
     <string name="settings_title_enable_rumble">Vibration</string>
