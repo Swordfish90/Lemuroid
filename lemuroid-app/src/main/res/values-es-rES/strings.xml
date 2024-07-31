@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">Muestra la configuración avanzada</string>
     <string name="settings_title_low_latency_audio">Preferir audio de baja latencia</string>
     <string name="settings_description_low_latency_audio">Reduce la latencia de audio en los dispositivos compatibles. Puede aumentar los fallos de audio.</string>
-    <string name="settings_title_legacy_hd_mode">Preferir el modo HD heredado</string>
-    <string name="settings_description_legacy_hd_mode">Usar siempre el modo HD heredado. Cambia algo de calidad por rendimiento.</string>
     <string name="settings_title_direct_game_load">Carga directa del juego</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduce el tiempo de carga y el uso de la caché en consolas soportadas.</string>
     <string name="settings_title_enable_rumble">Vibración</string>
