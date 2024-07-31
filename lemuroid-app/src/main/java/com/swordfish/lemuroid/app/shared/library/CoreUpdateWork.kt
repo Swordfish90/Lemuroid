@@ -6,6 +6,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
+import com.swordfish.lemuroid.app.utils.android.createSyncForegroundInfo
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
@@ -40,7 +41,7 @@ class CoreUpdateWork(context: Context, workerParams: WorkerParameters) :
         val notificationsManager = NotificationsManager(applicationContext)
 
         val foregroundInfo =
-            ForegroundInfo(
+            createSyncForegroundInfo(
                 NotificationsManager.CORE_INSTALL_NOTIFICATION_ID,
                 notificationsManager.installingCoresNotification(),
             )

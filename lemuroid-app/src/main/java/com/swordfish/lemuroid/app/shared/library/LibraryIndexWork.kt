@@ -2,10 +2,10 @@ package com.swordfish.lemuroid.app.shared.library
 
 import android.content.Context
 import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
+import com.swordfish.lemuroid.app.utils.android.createSyncForegroundInfo
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
 import com.swordfish.lemuroid.lib.injection.WorkerKey
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
@@ -28,9 +28,9 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
         val notificationsManager = NotificationsManager(applicationContext)
 
         val foregroundInfo =
-            ForegroundInfo(
+            createSyncForegroundInfo(
                 NotificationsManager.LIBRARY_INDEXING_NOTIFICATION_ID,
-                notificationsManager.libraryIndexingNotification(),
+                notificationsManager.libraryIndexingNotification()
             )
 
         setForegroundAsync(foregroundInfo)
