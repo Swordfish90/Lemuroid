@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">Прикажи напредна подешавања</string>
     <string name="settings_title_low_latency_audio">Преферирај звук ниске латенције</string>
     <string name="settings_description_low_latency_audio">Смањи звучну латенцију на подржаним уређајима. Може повећати звучне кварове.</string>
-    <string name="settings_title_legacy_hd_mode">Преферирај застарели HD режим</string>
-    <string name="settings_description_legacy_hd_mode">Увек користи застарели HD режим. Мења нешто квалитета за боље перформансе.</string>
     <string name="settings_title_direct_game_load">Директно учитавање игре</string>
     <string name="settings_description_direct_game_load">(Експериментално) Смањи време учитавања и употребу кеш меморије на подржаним конзолама</string>
     <string name="settings_title_enable_rumble">Тутњава</string>
