@@ -50,7 +50,6 @@
     <string name="settings_description_advanced_settings">Afișează setările avansate</string>
     <string name="settings_title_low_latency_audio">Preferă audio cu latență mică</string>
     <string name="settings_description_low_latency_audio">Reduceți latența audio pe dispozitivele acceptate. Poate crește numărul de glitch-uri.</string>
-    <string name="settings_title_legacy_hd_mode">Prefer Vechiul Mod HD</string>
     <string name="settings_title_direct_game_load">Încărcare directă a jocului</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduce timpul de încărcare şi utilizarea cache-ului pe consolele suportate.</string>
     <string name="settings_title_enable_rumble">Vibrație de Controler</string>
