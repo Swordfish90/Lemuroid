@@ -47,8 +47,6 @@
     <string name="settings_description_advanced_settings">Vis avanserte innstillinger</string>
     <string name="settings_title_low_latency_audio">Foretrekk lyd med lav forsinkelse</string>
     <string name="settings_description_low_latency_audio">Reduser lydforsinkelse på støttede enheter. Kan øke lydfeil.</string>
-    <string name="settings_title_legacy_hd_mode">Foretrekk eldre HD-modus</string>
-    <string name="settings_description_legacy_hd_mode">Bruk alltid eldre HD-modus. Gir noe lavere kvalitet for bedre ytelse.</string>
     <string name="settings_title_direct_game_load">Direkte spillinnlasting</string>
     <string name="settings_description_direct_game_load">(Eksperimentell) Reduser lastetiden og bruk av bufferminne på støttede konsoller.</string>
     <string name="settings_title_enable_rumble">Vibrasjon</string>
