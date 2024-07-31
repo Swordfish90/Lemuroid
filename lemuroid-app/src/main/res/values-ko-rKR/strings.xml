@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">고급 설정 표시</string>
     <string name="settings_title_low_latency_audio">저지연 오디오 선호</string>
     <string name="settings_description_low_latency_audio">지원되는 기기에서 오디오 레이턴시를 줄입니다. 오디오 문제가 발생할 수 있습니다.</string>
-    <string name="settings_title_legacy_hd_mode">이전 HD 모드 선호</string>
-    <string name="settings_description_legacy_hd_mode">항상 이전 HD 모드를 사용합니다. 품질이 낮아지지만 성능이 향상됩니다.</string>
     <string name="settings_title_direct_game_load">게임 직접 불러오기</string>
     <string name="settings_description_direct_game_load">(실험적 기능) 지원되는 콘솔에 대해 로딩 시간과 캐시 사용량을 감소시킵니다.</string>
     <string name="settings_title_enable_rumble">진동</string>
