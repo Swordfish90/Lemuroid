@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">Gelişmiş ayarları göster</string>
     <string name="settings_title_low_latency_audio">Düşük gecikmeli sesi tercih et</string>
     <string name="settings_description_low_latency_audio">Desteklenen cihazlarda ses gecikmesini azaltın. Ses aksaklıkları artabilir.</string>
-    <string name="settings_title_legacy_hd_mode">Eski HD Modunu Tercih Et</string>
-    <string name="settings_description_legacy_hd_mode">Eski HD Modu</string>
     <string name="settings_title_direct_game_load">Direkt oyun yükle</string>
     <string name="settings_description_direct_game_load">(Deneyimsel) Desteklenen konsollarda yükleme zamanını ve önbellek kullanımını azalt.</string>
     <string name="settings_title_enable_rumble">Titreşim</string>
