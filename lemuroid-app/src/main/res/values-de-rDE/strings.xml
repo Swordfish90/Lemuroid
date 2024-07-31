@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">Erweiterte Einstellungen anzeigen</string>
     <string name="settings_title_low_latency_audio">Bevorzuge latenzarmen Ton</string>
     <string name="settings_description_low_latency_audio">Reduziert die Audio-Latenz auf unterstützten Geräten. Erhöht möglicherweise Audiofehler.</string>
-    <string name="settings_title_legacy_hd_mode">Verwende alten HD-Modus</string>
-    <string name="settings_description_legacy_hd_mode">Alten HD-Modus immer verwenden. Verschlechtert Qualität leicht, dafür etwas bessere Leistung.</string>
     <string name="settings_title_direct_game_load">Spiele sofort laden</string>
     <string name="settings_description_direct_game_load">(Experimentell) Reduziert Ladezeit und Cache-Nutzung auf unterstützten Konsolen.</string>
     <string name="settings_title_enable_rumble">Rumble</string>
