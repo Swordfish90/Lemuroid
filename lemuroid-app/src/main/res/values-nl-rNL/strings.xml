@@ -50,8 +50,6 @@
     <string name="settings_description_advanced_settings">Geavanceerde en experimentele instellingen</string>
     <string name="settings_title_low_latency_audio">Audio met lage latentie</string>
     <string name="settings_description_low_latency_audio">Vermindert audiovertraging op ondersteunde apparaten, maar kan zorgen voor audio-glitches</string>
-    <string name="settings_title_legacy_hd_mode">Oude HD-modus</string>
-    <string name="settings_description_legacy_hd_mode">Betere prestaties ten koste van kwaliteit</string>
     <string name="settings_title_direct_game_load">Spel direct laden</string>
     <string name="settings_description_direct_game_load">Verminder laadtijd en cache-gebruik op ondersteunde consoles (experimenteel)</string>
     <string name="settings_title_enable_rumble">Trilling</string>
