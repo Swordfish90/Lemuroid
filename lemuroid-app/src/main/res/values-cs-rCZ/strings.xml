@@ -47,8 +47,6 @@
     <string name="settings_description_advanced_settings">Zobrazit pokročilé nastavení</string>
     <string name="settings_title_low_latency_audio">Preferovat zvuk s nízkou latencí</string>
     <string name="settings_description_low_latency_audio">Snížit latenci zvuku na podporovaných zařízeních. Může způsobit nepříjemné zvuky.</string>
-    <string name="settings_title_legacy_hd_mode">Preferovat předchozí HD režim</string>
-    <string name="settings_description_legacy_hd_mode">Vždy používat předchozí HD režim. Výsledkem bude ztráta kvality výměnou za rychlost.</string>
     <string name="settings_title_direct_game_load">Přímé načtení hry</string>
     <string name="settings_description_direct_game_load">(Experimentální) Sníží čas načítání a využití cache na podporovaných konzolích.</string>
     <string name="settings_title_enable_rumble">Vibrace</string>
