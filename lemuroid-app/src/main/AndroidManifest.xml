@@ -17,6 +17,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
 
     <application
         android:name="com.swordfish.lemuroid.app.LemuroidApplication"
@@ -63,7 +65,13 @@
 
         <service
             android:name=".app.mobile.feature.game.GameService"
+            android:foregroundServiceType="dataSync"
             android:process=":game" />
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
 
         <activity
             android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity"
