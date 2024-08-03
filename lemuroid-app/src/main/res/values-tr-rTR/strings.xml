@@ -26,11 +26,14 @@
     <string name="settings_category_input">Giriş</string>
     <string name="settings_category_misc">Diğer</string>
     <string name="settings_title_enable_autosave">Durumu otomatik kaydet</string>
+    <string name="settings_description_enable_autosave">Oyun menüsü aracılığıyla çıkıldığında durumu kaydet</string>
     <string name="settings_title_enable_touch_feedback">Dokunurken titret</string>
     <string name="settings_title_tilt_sensitivity">Tilt sensör hassasiyeti</string>
+    <string name="settings_title_hd_quality">HD mod kalitesi</string>
     <string name="settings_title_maximum_cache_usage">Önbellek boyut sınırı</string>
     <string name="settings_title_hd_mode">HD modu</string>
     <string name="settings_description_hd_mode">HD Görüntü</string>
+    <string name="settings_description_hd_quality">HD modun kalitesini ayarla</string>
     <string name="settings_title_gamepad_settings">Harici cihazlar</string>
     <string name="settings_description_gamepad_settings">Harici gamepadleri ve klavyeleri yönet</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
