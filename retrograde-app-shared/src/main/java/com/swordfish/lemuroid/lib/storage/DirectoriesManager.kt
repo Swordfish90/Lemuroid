@@ -39,4 +39,9 @@ class DirectoriesManager(private val appContext: Context) {
         File(appContext.getExternalFilesDir(null), "roms").apply {
             mkdirs()
         }
+
+    // why is getExternalFilesDir not nullsafe, while the others are?
+    fun getBaseDir(): File {
+        return appContext.getExternalFilesDir(null)!!
+    }
 }
