@@ -26,11 +26,14 @@
     <string name="settings_category_input">Wejście</string>
     <string name="settings_category_misc">Inne</string>
     <string name="settings_title_enable_autosave">Auto-zapis stanu</string>
+    <string name="settings_description_enable_autosave">Zapisz stan podczas zamykania przez menu gry</string>
     <string name="settings_title_enable_touch_feedback">Wibruj przy dotknięciu</string>
     <string name="settings_title_tilt_sensitivity">Czułość czujnika nachylenia</string>
+    <string name="settings_title_hd_quality">Jakość trybu HD</string>
     <string name="settings_title_maximum_cache_usage">Limit rozmiaru pamięci cache</string>
     <string name="settings_title_hd_mode">Tryb HD</string>
     <string name="settings_description_hd_mode">Zastosuj filtr skalowania po przetworzeniu obrazu</string>
+    <string name="settings_description_hd_quality">Dostosuj jakość trybu HD</string>
     <string name="settings_title_gamepad_settings">Urządzenia zewnętrzne</string>
     <string name="settings_description_gamepad_settings">Konfiguruj zewnętrzne gamepady i klawiatury</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
