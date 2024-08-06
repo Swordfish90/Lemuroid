@@ -140,6 +140,16 @@
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
 
+        <provider
+            android:name=".app.shared.savesync.SavegameProvider"
+            android:authorities="${applicationId}.savegameprovider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
     </application>
 
 </manifest>
