@@ -17,6 +17,7 @@
     <string name="pref_key_low_latency_audio" translatable="false">low_latency_audio</string>
     <string name="pref_key_enable_rumble" translatable="false">enable_rumble</string>
     <string name="pref_key_enable_device_rumble" translatable="false">enable_device_rumble</string>
+    <string name="pref_key_join_stick_dpad" translatable="false">pref_key_join_stick_dpad</string>
     <string name="pref_key_max_cache_size" translatable="false">max_cache_size_bytes</string>
     <string name="pref_key_allow_direct_game_load" translatable="false">allow_direct_game_load</string>
 
