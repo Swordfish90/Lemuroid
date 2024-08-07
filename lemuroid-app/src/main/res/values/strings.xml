@@ -37,6 +37,8 @@
     <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
     <string name="settings_description_hd_quality">Adjust the quality of HD mode</string>
 
+    <string name="settings_title_screen_orientation">Screen Orientation</string>
+
     <string name="settings_title_gamepad_settings">External devices</string>
     <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
 
@@ -207,5 +209,10 @@
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>
     <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
+
+    <string name="screen_rotation_display_system">Follow Device Settings</string>
+    <string name="screen_rotation_display_landscape">Landscape</string>
+    <string name="screen_rotation_display_portrait">Portrait</string>
+    <string name="screen_rotation_display_auto">Auto</string>
 
 </resources>

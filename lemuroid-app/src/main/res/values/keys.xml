@@ -27,6 +27,7 @@
 
     <string name="pref_key_shader_filter" translatable="false">shader_filter_0</string>
     <string name="pref_key_hd_mode" translatable="false">hd_mode</string>
+    <string name="pref_key_screen_rotation" translatable="false">screen_rotation</string>
 
     <string-array translatable="false" name="pref_key_haptic_feedback_mode_values">
         <item>none</item>
@@ -54,5 +55,20 @@
         <item>@string/shader_filter_names_smooth</item>
         <item>@string/shader_filter_names_crt</item>
         <item>@string/shader_filter_names_lcd</item>
+    </string-array>
+
+
+    <string-array translatable="false" name="pref_key_screen_rotation_values">
+        <item>system</item>
+        <item>landscape</item>
+        <item>portrait</item>
+        <item>auto</item>
+    </string-array>
+
+    <string-array translatable="false" name="pref_key_screen_rotation_display_names">
+        <item>@string/screen_rotation_display_system</item>
+        <item>@string/screen_rotation_display_landscape</item>
+        <item>@string/screen_rotation_display_portrait</item>
+        <item>@string/screen_rotation_display_auto</item>
     </string-array>
 </resources>
