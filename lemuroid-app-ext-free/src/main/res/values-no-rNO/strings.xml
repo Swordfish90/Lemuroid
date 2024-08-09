@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Laster ned kjerne…</string>
+    <string name="installing_core_notification_title">Oppdaterer kjerner</string>
+    <string name="installing_core_notification_message">Dette kan ta noen minutter</string>
+    <string name="game_loader_error_load_core">Libretro-kjernen ble ikke lastet inn. Sørg for at enheten din er koblet til internett og prøv å skanne biblioteket på nytt. Hvis problemet vedvarer, støttes kanskje ikke denne kjernen på enheten din.</string>
+</resources>
