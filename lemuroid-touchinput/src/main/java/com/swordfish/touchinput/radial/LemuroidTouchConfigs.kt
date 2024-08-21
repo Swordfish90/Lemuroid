@@ -399,6 +399,16 @@ object LemuroidTouchConfigs {
                 listOf(
                     SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_R),
                     SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
+                    SecondaryDialConfig.SingleButton(
+                        8,
+                        1f,
+                        0f,
+                        ButtonConfig(
+                            id = KeyEvent.KEYCODE_BUTTON_THUMBR,
+                            iconId = R.drawable.edit_reset,
+                            contentDescription = "Swap screen",
+                        ),
+                    ),
                     buildMenuButtonConfig(10, theme),
                 ),
         )
@@ -465,6 +475,16 @@ object LemuroidTouchConfigs {
                 listOf(
                     SecondaryDialConfig.SingleButton(2, 1f, 0f, BUTTON_CONFIG_R),
                     SecondaryDialConfig.SingleButton(4, 1f, 0f, BUTTON_CONFIG_START),
+                    SecondaryDialConfig.SingleButton(
+                        8,
+                        1f,
+                        0f,
+                        ButtonConfig(
+                            id = KeyEvent.KEYCODE_BUTTON_R2,
+                            iconId = R.drawable.edit_reset,
+                            contentDescription = "Cycle screens layout",
+                        ),
+                    ),
                     buildMenuButtonConfig(10, theme),
                 ),
         )
