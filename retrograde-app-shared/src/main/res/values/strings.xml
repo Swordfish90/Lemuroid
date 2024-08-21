@@ -55,7 +55,8 @@
     <string name="setting_fbneo_cpu_speed_adjust">CPU speed</string>
     <string name="setting_desmume_screens_layout">Screens layout</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
-    <string name="setting_melonds_screen_layout">Screens layout</string>
+    <string name="setting_melonds_screen_layout_1">Screens layout 1</string>
+    <string name="setting_melonds_screen_layout_2">Screens layout 2</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamic recompiler</string>
     <string name="setting_wswan_rotate_display">Orientation</string>
@@ -117,9 +118,13 @@
     <string name="value_mupen64plus_mupen64plus_pak2_rumble">Rumble</string>
 
     <string name="value_melonds_screen_layout_topbottom">Top - Bottom</string>
+    <string name="value_melonds_screen_layout_bottomtop">Bottom - Top</string>
     <string name="value_melonds_screen_layout_leftright">Left - Right</string>
+    <string name="value_melonds_screen_layout_rightleft">Right - Left</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybrid Top</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybrid Bottom</string>
+    <string name="value_melonds_screen_layout_top">Top only</string>
+    <string name="value_melonds_screen_layout_bottom">Bottom only</string>
 
     <string name="value_citra_layout_option_topbottom">Top - Bottom</string>
     <string name="value_citra_layout_option_sidebyside">Left - Right</string>
