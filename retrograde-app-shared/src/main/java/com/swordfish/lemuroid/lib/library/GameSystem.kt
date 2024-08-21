@@ -944,20 +944,12 @@ data class GameSystem(
                                                 R.string.value_desmume_screens_layout_leftright,
                                             ),
                                             ExposedSetting.Value(
-                                                "hybrid/top",
-                                                R.string.value_desmume_screens_layout_hybridtop,
-                                            ),
-                                            ExposedSetting.Value(
                                                 "hybrid/bottom",
-                                                R.string.value_desmume_screens_layout_hybridbottom,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "top only",
-                                                R.string.value_desmume_screens_layout_toponly,
+                                                R.string.value_desmume_screens_layout_hybrid,
                                             ),
                                             ExposedSetting.Value(
                                                 "bottom only",
-                                                R.string.value_desmume_screens_layout_bottomonly,
+                                                R.string.value_desmume_screens_layout_single,
                                             ),
                                         ),
                                     ),

@@ -131,10 +131,8 @@
 
     <string name="value_desmume_screens_layout_topbottom">Top - Bottom</string>
     <string name="value_desmume_screens_layout_leftright">Left - Right</string>
-    <string name="value_desmume_screens_layout_hybridtop">Hybrid Top</string>
-    <string name="value_desmume_screens_layout_hybridbottom">Hybrid Bottom</string>
-    <string name="value_desmume_screens_layout_toponly">Top only</string>
-    <string name="value_desmume_screens_layout_bottomonly">Bottom only</string>
+    <string name="value_desmume_screens_layout_hybrid">Hybrid</string>
+    <string name="value_desmume_screens_layout_single">Single</string>
 
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
