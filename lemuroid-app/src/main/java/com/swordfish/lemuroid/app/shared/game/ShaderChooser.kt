@@ -132,7 +132,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -141,7 +140,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -150,7 +148,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -159,7 +156,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -168,7 +164,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -177,7 +172,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.50f,
                 edgeMinValue = 0.025f
             )
@@ -198,7 +192,6 @@ object ShaderChooser {
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -207,7 +200,6 @@ object ShaderChooser {
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -216,7 +208,6 @@ object ShaderChooser {
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -225,7 +216,6 @@ object ShaderChooser {
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -234,7 +224,6 @@ object ShaderChooser {
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -243,7 +232,6 @@ object ShaderChooser {
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
