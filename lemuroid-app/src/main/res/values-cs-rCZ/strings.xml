@@ -19,6 +19,7 @@
     <string name="settings">Nastavení</string>
     <string name="save_sync">Uložit synchronizaci</string>
     <string name="show_all">Zobrazit vše</string>
+    <string name="close">Zavřít</string>
     <string name="settings_category_general">Obecné</string>
     <string name="settings_category_input">Vstup</string>
     <string name="settings_category_misc">Ostatní</string>
@@ -28,6 +29,7 @@
     <string name="settings_title_maximum_cache_usage">Limit velikosti cache</string>
     <string name="settings_title_hd_mode">HD režim</string>
     <string name="settings_description_hd_mode">Použít filtr zvětšení rozlišení obrazu</string>
+    <string name="settings_description_hd_quality">Uprav kvalitu režimu HD</string>
     <string name="settings_title_gamepad_settings">Externí zařízení</string>
     <string name="settings_description_gamepad_settings">Konfigurovat externí gamepady a klávesnice</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
