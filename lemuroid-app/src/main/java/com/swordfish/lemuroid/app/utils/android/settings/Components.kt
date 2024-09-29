@@ -141,6 +141,7 @@ fun LemuroidSettingsSlider(
         headlineColor = defaultColors.disabledHeadlineColor,
         leadingIconColor = defaultColors.disabledLeadingIconColor,
         trailingIconColor = defaultColors.disabledTrailingIconColor,
+        supportingColor = defaultColors.supportingTextColor.copy(alpha = 0.3f)
     )
 
     SettingsSlider(

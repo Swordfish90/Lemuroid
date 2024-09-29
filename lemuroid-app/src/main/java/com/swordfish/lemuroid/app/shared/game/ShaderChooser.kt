@@ -132,7 +132,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -141,7 +140,6 @@ object ShaderChooser {
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -149,8 +147,7 @@ object ShaderChooser {
         val upscale16BitsMobile =
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
-                blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
+                blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -158,8 +155,7 @@ object ShaderChooser {
         val upscale16Bits =
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
-                blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
+                blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -167,8 +163,7 @@ object ShaderChooser {
         val upscale32Bits =
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
-                blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
+                blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f
             )
@@ -176,8 +171,7 @@ object ShaderChooser {
         val modern =
             ShaderConfig.CUT2(
                 blendMinContrastEdge = 0.10f,
-                blendMaxContrastEdge = 0.40f,
-                softEdgesSharpeningAmount = 0.75f,
+                blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.50f,
                 edgeMinValue = 0.025f
             )
@@ -198,54 +192,54 @@ object ShaderChooser {
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                edgeMinValue = 0.025f,
+                searchMinContrast = 0.75f,
             )
 
         val upscale8Bits =
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                edgeMinValue = 0.025f,
+                searchMinContrast = 0.75f,
             )
 
         val upscale16BitsMobile =
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                edgeMinValue = 0.025f,
+                searchMinContrast = 0.75f,
             )
 
         val upscale16Bits =
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                edgeMinValue = 0.025f,
+                searchMinContrast = 0.75f,
             )
 
         val upscale32Bits =
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                edgeMinValue = 0.025f,
+                searchMinContrast = 0.75f,
             )
 
         val modern =
             ShaderConfig.CUT3(
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
-                softEdgesSharpeningAmount = 0.75f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                edgeMinValue = 0.025f,
+                searchMinContrast = 0.75f,
             )
 
         return getConfigForSystem(
