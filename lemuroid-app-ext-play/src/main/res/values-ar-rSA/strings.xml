@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">فشل تسجيل الدخول إلى جوجل: %s (%s)</string>
+    <string name="gdrive_sign_in_success">تسجيل الدخول إلى جوجل كـ %s</string>
+    <string name="gdrive_sign_out_success">تم تسجيل الخروج من Google</string>
+    <string name="gdrive_missing_play_services">يتطلب Google Drive خدمات Google Play غير المدعومة على جهازك</string>
+    <string name="gdrive_connected_summary">مرتبط بـ %s</string>
+    <string name="gdrive_connected_none_summary">لم يتم تكوينه</string>
+    <string name="gdrive_last_sync_completed">آخر مزامنة: %s</string>
+    <string name="game_loading_download_core">جاري تحميل النواة…</string>
+    <string name="installing_core_notification_title">تحديث النواة من Play</string>
+    <string name="installing_core_notification_message">تحقق من تطبيق متجر Google Play لرؤية الحالة الحالية</string>
+    <string name="game_loader_error_load_core">لم يتم تحميل نواة ليبرترو. جرب ما يلي:\n
+        \n\u2022 تمكين الاتصال بالإنترنت وإعادة فحص الألعاب الخاصة بك
+        \n\u2022 تأكد من تثبيت متجر Google Play وتشغيله
+        \n\u2022 انتظر العمليات المعلقة في تطبيق متجر Google Play لتنتهي</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Se descarcă nucleu…</string>
+    <string name="installing_core_notification_title">Actualizarea emulatoarelor</string>
+    <string name="installing_core_notification_message">Acest lucru poate dura câteva minute</string>
+    <string name="game_loader_error_load_core">Emulatorul de la Libretro nu a putut fi încărcat. Asiguraţi-vă că dispozitivul este conectat la internet şi încercaţi să re-scanaţi biblioteca. Dacă problema persistă, este posibil ca acest emulator să nu fie acceptat pe dispozitivul dvs.</string>
+</resources>
