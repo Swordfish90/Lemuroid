@@ -47,8 +47,6 @@
     <string name="settings_description_advanced_settings">Εμφάνιση σύνθετων ρυθμίσεων</string>
     <string name="settings_title_low_latency_audio">Προτιμήστε low-latency ήχο</string>
     <string name="settings_description_low_latency_audio">Μείωση καθυστέρησης ήχου σε υποστηριζόμενες συσκευές. Μπορεί να αυξήσει τα glitches στον ήχο.</string>
-    <string name="settings_title_legacy_hd_mode">Προτιμήστε την παλαιού τύπου λειτουργία HD</string>
-    <string name="settings_description_legacy_hd_mode">Χρήση παλαιού τύπου HD mode. Θυσιάζει μέρος της ποιότητας για καλύτερη απόδοση.</string>
     <string name="settings_title_direct_game_load">Άμεση φόρτωση παιχνιδιού</string>
     <string name="settings_description_direct_game_load">(Πειραματικό) Μειώστε το χρόνο φόρτωσης και τη χρήση cache σε υποστηριζόμενες κονσόλες.</string>
     <string name="settings_title_enable_rumble">Δόνηση</string>

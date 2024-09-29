@@ -26,11 +26,14 @@
     <string name="settings_category_input">إدخال</string>
     <string name="settings_category_misc">متفرقات</string>
     <string name="settings_title_enable_autosave">حفظ تلقائي للحالة</string>
+    <string name="settings_description_enable_autosave">حفظ الحالة عند الخروج من قائمة اللعبة</string>
     <string name="settings_title_enable_touch_feedback">اهتزاز عند اللمس</string>
     <string name="settings_title_tilt_sensitivity">حساسية مستشعر الميل</string>
+    <string name="settings_title_hd_quality">وضع الجودة عالي الدقة</string>
     <string name="settings_title_maximum_cache_usage">حد حجم الذاكرة المؤقتة</string>
     <string name="settings_title_hd_mode">وضع HD</string>
     <string name="settings_description_hd_mode">تطبيق عامل التصفية بعد المعالجة</string>
+    <string name="settings_description_hd_quality">ضبط جودة الوضع العالي الدقة</string>
     <string name="settings_title_gamepad_settings">أجهزة خارجية</string>
     <string name="settings_description_gamepad_settings">تهيئة أجهزة التحكم ولوحات المفاتيح</string>
     <string name="settings_retropad_button_name">لوحة قديمة %1$s</string>
@@ -50,8 +53,6 @@
     <string name="settings_description_advanced_settings">عرض الإعدادات المتقدمة</string>
     <string name="settings_title_low_latency_audio">تفضيل صوت مباشر</string>
     <string name="settings_description_low_latency_audio">تقليل تأخير الصوت على الأجهزة المدعومة. قد يؤدي ذلك إلى زيادة اخطاء في الصوت.</string>
-    <string name="settings_title_legacy_hd_mode">تفضيل الوضع القديم عالي الدقة</string>
-    <string name="settings_description_legacy_hd_mode">استخدم دائما وضع HD القديم. يدير بعض الجودة للأداء.</string>
     <string name="settings_title_direct_game_load">Direct game load</string>
     <string name="settings_description_direct_game_load">(تجريبي) تقليل وقت التحميل واستخدام ذاكرة التخزين المؤقت على وحدات التحكم المدعومة.</string>
     <string name="settings_title_enable_rumble">الاهتزاز</string>
