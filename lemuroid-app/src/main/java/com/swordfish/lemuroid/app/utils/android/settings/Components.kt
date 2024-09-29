@@ -32,10 +32,10 @@ fun LemuroidSettingsPage(
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(top = 16.dp, bottom = 16.dp),
+        modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(top = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         content()
@@ -112,9 +112,9 @@ fun LemuroidCardSettingsGroup(
     Surface {
         Column(
             modifier =
-                modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp),
+            modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp),
         ) {
             OutlinedCard {
                 if (title != null) {
@@ -131,9 +131,19 @@ fun LemuroidSettingsSlider(
     modifier: Modifier = Modifier,
     state: SettingValueState<Int>,
     steps: Int,
+    enabled: Boolean,
     valueRange: ClosedFloatingPointRange<Float>,
     title: @Composable () -> Unit,
+    subtitle: @Composable () -> Unit = { },
 ) {
+    val defaultColors = ListItemDefaults.colors()
+    val disabledColors = ListItemDefaults.colors(
+        headlineColor = defaultColors.disabledHeadlineColor,
+        leadingIconColor = defaultColors.disabledLeadingIconColor,
+        trailingIconColor = defaultColors.disabledTrailingIconColor,
+        supportingColor = defaultColors.supportingTextColor.copy(alpha = 0.3f)
+    )
+
     SettingsSlider(
         modifier = modifier,
         steps = steps,
@@ -141,6 +151,9 @@ fun LemuroidSettingsSlider(
         onValueChange = { state.value = it.roundToInt() },
         valueRange = valueRange,
         title = title,
+        subtitle = subtitle,
+        enabled = enabled,
+        colors = if (enabled) defaultColors else disabledColors
     )
 }
 

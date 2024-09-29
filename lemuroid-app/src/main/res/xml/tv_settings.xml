@@ -10,6 +10,7 @@
         <SwitchPreference
             android:key="@string/pref_key_autosave"
             android:title="@string/settings_title_enable_autosave"
+            android:summary="@string/settings_description_enable_autosave"
             app:iconSpaceReserved="false"
             android:defaultValue="true"/>
 
@@ -20,6 +21,17 @@
             app:iconSpaceReserved="false"
             app:disableDependentsState="true"
             android:defaultValue="false"/>
+
+        <SeekBarPreference
+            android:key="@string/pref_key_hd_mode_quality"
+            android:title="@string/settings_title_hd_quality"
+            android:summary="@string/settings_description_hd_quality"
+            app:min="0"
+            android:max="2"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="false"
+            app:iconSpaceReserved="false"
+            android:defaultValue="1"/>
 
         <ListPreference
             android:key="@string/pref_key_shader_filter"
@@ -108,13 +120,6 @@
                     android:summary="@string/settings_description_direct_game_load"
                     app:iconSpaceReserved="false"
                     android:defaultValue="true"/>
-
-                <SwitchPreference
-                    android:key="@string/pref_key_legacy_hd_mode"
-                    android:title="@string/settings_title_legacy_hd_mode"
-                    android:summary="@string/settings_description_legacy_hd_mode"
-                    app:iconSpaceReserved="false"
-                    android:defaultValue="false"/>
 
                 <Preference
                     android:key="@string/pref_key_reset_settings"
