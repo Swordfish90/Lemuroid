@@ -15,6 +15,9 @@
     <string name="controller_dos_mouse_right">Sağ Çubuklu Fare</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">TV efekti</string>
+    <string name="setting_stella_crop_hoverscan">Yatay taramayı bırak</string>
+    <string name="setting_fceumm_overscan_h">Yatay taramayı bırak</string>
+    <string name="setting_fceumm_overscan_v">Dikey aramayı bırak</string>
     <string name="setting_fceumm_nospritelimit">Hareket limiti yok</string>
     <string name="setting_genesis_plus_gx_blargg_ntsc_filter">TV efekti</string>
     <string name="setting_genesis_plus_gx_overscan">Sınırlar</string>
@@ -25,11 +28,13 @@
     <string name="setting_gambatte_mix_frames">LCD gölgeleme</string>
     <string name="setting_gambatte_dark_filter_level">Ekranı karart</string>
     <string name="setting_gambatte_gbc_color_correction">Renk düzeltme</string>
+    <string name="setting_mgba_solar_sensor_level">Güneş sensörü seviyesi</string>
     <string name="setting_mgba_interframe_blending">LCD gölgeleme</string>
     <string name="setting_mgba_frameskip">Kare atlama</string>
     <string name="setting_mgba_color_correction">Renk düzeltme</string>
     <string name="setting_mupen64plus_43screensize">Ekran boyutu 4:3</string>
     <string name="setting_mupen64plus_cpucore">Dinamik yeniden derleyici</string>
+    <string name="setting_mupen64plus_BilinearMode">Çift doğrusal modu</string>
     <string name="setting_mupen64plus_pak1">Pak Oyuncu 1</string>
     <string name="setting_mupen64plus_pak2">Pak Oyuncu 2</string>
     <string name="setting_pcsx_rearmed_frameskip">Kare atlama</string>
@@ -52,6 +57,7 @@
     <string name="setting_handy_rot">Ekran Yönü</string>
     <string name="setting_citra_layout_option">Doğru ekran düzeni</string>
     <string name="setting_citra_resolution_factor">Çözünürlük ölçekleme</string>
+    <string name="setting_citra_use_acc_mul">Doğru gölge çoğaltımı</string>
     <string name="setting_citra_use_acc_geo_shaders">Doğru Geometrik Grafikler</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Devre dışı</string>
