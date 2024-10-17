@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google Anmeldung fehlgeschlagen: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Bei Google angemeldet als %s</string>
+    <string name="gdrive_sign_out_success">Von Google abgemeldet</string>
+    <string name="gdrive_missing_play_services">Google Drive benötigt Google Play Services, die auf Ihrem Gerät nicht unterstützt werden</string>
+    <string name="gdrive_connected_summary">Verknüpft mit %s</string>
+    <string name="gdrive_connected_none_summary">Nicht konfiguriert</string>
+    <string name="gdrive_last_sync_completed">Letzte Synchronisierung: %s</string>
+    <string name="game_loading_download_core">Lade Kern herunter…</string>
+    <string name="installing_core_notification_title">Aktualisiere Kerne mit Google Play</string>
+    <string name="installing_core_notification_message">Betrachte die Google Play Store-App, um den aktuellen Status zu sehen</string>
+    <string name="game_loader_error_load_core">Der Libretro-Kern wurde nicht geladen. Versuche Folgendes:\n
+        \n\u2022 Internetverbindung aktivieren und Spieleverzeichnis erneut scannen
+        \n\u2022 Stelle sicher, dass der Google Play Store installiert ist und ausgeführt wird
+        \n\u2022 Warte bis ausstehende Aktionen im Google Play Store vollendet sind</string>
+</resources>
