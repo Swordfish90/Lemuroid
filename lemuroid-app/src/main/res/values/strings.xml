@@ -208,4 +208,8 @@
     <string name="haptic_feedback_mode_names_press">Press</string>
     <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
 
+    <string name="documentprovider_folder_override_saves">Saves</string>
+    <string name="documentprovider_folder_override_states">States</string>
+    <string name="documentprovider_folder_override_roms">Roms</string>
+    <string name="documentprovider_folder_override_previews">Previews</string>
 </resources>
