@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Αποτυχία σύνδεσης στην Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Συνδέθηκε στην Google ως %s</string>
+    <string name="gdrive_sign_out_success">Αποσυνδεμένο από Google</string>
+    <string name="gdrive_missing_play_services">Το Google Drive απαιτεί τα Google Play Services τα οποία δεν υποστηρίζονται στη συσκευή σας</string>
+    <string name="gdrive_connected_summary">Συνδεδεμένο με %s</string>
+    <string name="gdrive_connected_none_summary">Δεν έχει ρυθμιστεί</string>
+    <string name="gdrive_last_sync_completed">Τελευταίος συγχρονισμός: %s</string>
+    <string name="game_loading_download_core">Λήψη πυρήνα…</string>
+    <string name="installing_core_notification_title">Ενημέρωση Πυρήνων από το παιχνίδι</string>
+    <string name="installing_core_notification_message">Δείτε στο Google Play Store την τρέχουσα κατάσταση</string>
+    <string name="game_loader_error_load_core">Ο πυρήνας του Libretro δεν φορτώθηκε. Δοκιμάστε τα παρακάτω:\n
+        \n\u2022 Ενεργοποίηση του διαδίκτυου και επανασάρωση των παιχνιδιών σας
+        \n\u2022 Βεβαιωθείτε ότι το Google Play Store είναι εγκατεστημένο και λειτουργεί
+        \n\u2022 Περιμένετε για εκκρεμείς λειτουργίες στην εφαρμογή Google Play Store ώστε να ολοκληρωθούν</string>
+</resources>
