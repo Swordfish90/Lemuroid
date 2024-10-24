@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.mobile.feature.settings
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
@@ -29,6 +30,16 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
             R.string.pref_key_shader_filter,
             context.resources.getStringArray(R.array.pref_key_shader_filter_values).first(),
         )
+
+    suspend fun screenOrientation(): Int {
+        val key = stringPreference(R.string.pref_key_screen_rotation, "system")
+        return when(key) {
+            "portrait" -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            "landscape" -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            "auto" -> ActivityInfo.SCREEN_ORIENTATION_SENSOR
+            else -> ActivityInfo.SCREEN_ORIENTATION_USER // Follow system
+        }
+    }
 
     suspend fun hdMode() = booleanPreference(R.string.pref_key_hd_mode, false)
 

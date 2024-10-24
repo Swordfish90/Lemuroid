@@ -173,6 +173,16 @@ private fun GeneralSettings() {
             title = { Text(text = stringResource(id = R.string.display_filter)) },
             items = stringListResource(R.array.pref_key_shader_filter_display_names),
         )
+        LemuroidSettingsList(
+            state =
+            indexPreferenceState(
+                R.string.pref_key_screen_rotation,
+                "portrait",
+                stringListResource(R.array.pref_key_screen_rotation_values).toList(),
+            ),
+            title = { Text(text = stringResource(id = R.string.settings_title_screen_orientation)) },
+            items = stringListResource(R.array.pref_key_screen_rotation_display_names),
+        )
     }
 }
 
