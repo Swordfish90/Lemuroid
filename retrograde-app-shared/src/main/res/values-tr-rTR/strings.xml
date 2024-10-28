@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_storage">Yerel Depolama</string>
-    <string name="controller_arcade_4">Varsayılan (4 düğme)</string>
-    <string name="controller_arcade_6">Varsayılan (6 düğme)</string>
+    <string name="controller_arcade_4">Varsayılan (4 Tuş)</string>
+    <string name="controller_arcade_6">Varsayılan (6 Tuş)</string>
     <string name="controller_genesis_3">Varsayılan (3 düğme)</string>
-    <string name="controller_genesis_6">Varsayılan (6 düğme)</string>
+    <string name="controller_genesis_6">Varsayılan (6 Tuş)</string>
     <string name="controller_default">Varsayılan</string>
     <string name="controller_dualshock">DualShock</string>
     <string name="controller_standard">Standart</string>
