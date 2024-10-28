@@ -59,7 +59,7 @@
     <string name="settings_description_enable_rumble">Destekleyen oyunlar ve kontrolcülerde titreşimi aç</string>
     <string name="settings_title_enable_device_rumble">Cihaz titreşimi</string>
     <string name="settings_description_enable_device_rumble">Kontrolcü bağlı değilken cihazı titreştir</string>
-    <string name="reset_settings_warning_message_title">Emin misin?</string>
+    <string name="reset_settings_warning_message_title">emin misiniz?</string>
     <string name="reset_settings_warning_message_description">Bu Lemuroid\'i fabrika ayarlarına sıfırlayacak. Kayıtlar ve Durumlar korunacak.</string>
     <string name="settings_title_save_sync">Bulut Depolama</string>
     <string name="settings_description_save_sync">Bulutta kayıtlarınızı yedekleyin ve senkronize edin</string>
@@ -94,10 +94,10 @@
     <string name="game_menu_mute_audio">Sesi Kapat</string>
     <string name="game_menu_fast_forward">Hızlı-İleri</string>
     <string name="game_menu_change_disk_disk">%1$s Diski</string>
-    <string name="game_loading_preparing_game">Oyun hazırlanıyor…</string>
+    <string name="game_loading_preparing_game">oyun hazırlanıyor …</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad tespit edildi. %1$s ile ayarlar menüsüne erişin.</string>
-    <string name="game_toast_load_state_failed">Bu durum yüklenemiyor</string>
-    <string name="empty_view_default">Eşya yok</string>
+    <string name="game_toast_load_state_failed">bu kayıt yüklenemiyor </string>
+    <string name="empty_view_default">öğe bulunamadı</string>
     <string name="core_settings_title">Çekirdek Yazılım Ayarları</string>
     <string name="core_settings_category_preferences">Tercihler</string>
     <string name="core_settings_category_controllers">Kontroller</string>
@@ -127,7 +127,7 @@
     <string name="system_grid_details">%1$s oyunlar</string>
     <string name="tv_folder_picker_title">ROMların konumunu seç</string>
     <string name="tv_folder_picker_action_choose">Seç</string>
-    <string name="tv_folder_picker_action_cancel">İptal</string>
+    <string name="tv_folder_picker_action_cancel">Vazgeç</string>
     <string name="tv_folder_storage_primary">Ana Depolama</string>
     <string name="tv_folder_storage_secondary">Yedek Depolama %1$s</string>
     <string name="tv_folder_storage_title">Depolama Alanını Seçin</string>
