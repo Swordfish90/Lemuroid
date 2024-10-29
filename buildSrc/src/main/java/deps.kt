@@ -159,8 +159,8 @@ object deps {
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"
         const val composeHtmlText          = "de.charlex.compose.material3:material3-html-text:2.0.0-beta01"
-        const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
-        const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
+        const val radialgamepad            = "com.github.swordfish90:radialgamepad:${versions.radialgamepad}"
+        const val libretrodroid            = "com.github.swordfish90:libretrodroid:${versions.libretrodroid}"
     }
 
     object plugins {

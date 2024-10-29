@@ -3,7 +3,6 @@ import com.android.build.gradle.BaseExtension
 buildscript {
     repositories {
         google()
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -13,9 +12,9 @@ buildscript {
     }
 }
 
- plugins {
+plugins {
     id("org.jetbrains.kotlin.jvm") version deps.versions.kotlin
-    id("com.github.ben-manes.versions") version "0.39.0"
+    id("com.github.ben-manes.versions") version "0.51.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.4.0"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
     id("com.android.test") version "8.4.0" apply false
@@ -28,9 +27,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
-        mavenLocal()
+        maven { setUrl("https://repo.huaweicloud.com/repository/maven/") }
         maven { setUrl("https://jitpack.io") }
+        mavenLocal()
     }
 
     configurations.all {
