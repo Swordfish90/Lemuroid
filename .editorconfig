@@ -7,3 +7,5 @@ insert_final_newline=true
 max_line_length=120
 ktlint_function_naming_ignore_when_annotated_with=Composable
 
+[lemuroid-app/src/main/java/com/swordfish/lemuroid/app/shared/game/ShaderChooser.kt]
+max_line_length = off

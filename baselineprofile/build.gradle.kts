@@ -33,7 +33,6 @@ android {
         create("bundle") { dimension = "cores" }
         create("dynamic") { dimension = "cores" }
     }
-
 }
 
 // This is the configuration block for the Baseline Profile plugin.

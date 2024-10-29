@@ -370,7 +370,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     override fun activity(): Activity = this
 
-    override fun isBusy(): Boolean = mainViewModel.state.value?.operationInProgress ?: false
+    override fun isBusy(): Boolean = mainViewModel.state.value.operationInProgress ?: false
 
     override fun onActivityResult(
         requestCode: Int,
