@@ -26,11 +26,14 @@
     <string name="settings_category_input">输入</string>
     <string name="settings_category_misc">其它</string>
     <string name="settings_title_enable_autosave">自动保存</string>
+    <string name="settings_description_enable_autosave">通过游戏菜单退出时保存进度</string>
     <string name="settings_title_enable_touch_feedback">触摸振动</string>
     <string name="settings_title_tilt_sensitivity">倾斜灵敏度</string>
+    <string name="settings_title_hd_quality">高清模式</string>
     <string name="settings_title_maximum_cache_usage">缓存大小限制</string>
     <string name="settings_title_hd_mode">高清模式</string>
     <string name="settings_description_hd_mode">使用\'后处理提升\'滤镜</string>
+    <string name="settings_description_hd_quality">调整高清模式的质量</string>
     <string name="settings_title_gamepad_settings">外部设备</string>
     <string name="settings_description_gamepad_settings">配置外接手柄和键盘</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
