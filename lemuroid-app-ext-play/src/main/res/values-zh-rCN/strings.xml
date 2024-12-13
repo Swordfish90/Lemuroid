@@ -19,7 +19,7 @@
   -->
 <resources>
     <string name="gdrive_sign_in_failed">Google 登录失败：%s (%s)</string>
-    <string name="gdrive_sign_in_success">以 %s 身份登录 Google</string>
+    <string name="gdrive_sign_in_success">Logged in to Google as %s</string>
     <string name="gdrive_sign_out_success">已从 Google 登出</string>
     <string name="gdrive_missing_play_services">您的设备不支持 Google 网盘所需要的 Google Play 服务</string>
     <string name="gdrive_connected_summary">已关联到 %s</string>
