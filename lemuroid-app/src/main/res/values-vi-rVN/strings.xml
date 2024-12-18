@@ -26,11 +26,13 @@
     <string name="settings_category_input">Đầu vào</string>
     <string name="settings_category_misc">Khác</string>
     <string name="settings_title_enable_autosave">Tự động lưu trạng thái</string>
+    <string name="settings_description_enable_autosave">Lưu trạng thái khi thoát bằng menu trò chơi</string>
     <string name="settings_title_enable_touch_feedback">Rung khi chạm</string>
     <string name="settings_title_tilt_sensitivity">Độ nhạy cảm biến nghiêng</string>
     <string name="settings_title_hd_quality">Chất lượng chế độ HD</string>
     <string name="settings_title_maximum_cache_usage">Giới hạn kích thước bộ nhớ đệm</string>
     <string name="settings_title_hd_mode">Chế độ HD</string>
+    <string name="settings_description_hd_mode">Áp dụng bộ lọc xử lý hậu kỳ để nâng cấp chất lượng hình ảnh</string>
     <string name="settings_description_hd_quality">Điều chỉnh chất lượng của chế độ HD</string>
     <string name="settings_title_gamepad_settings">Thiết bị bên ngoài</string>
     <string name="settings_description_gamepad_settings">Thiết lập gamepad và bàn phím bên ngoài</string>
