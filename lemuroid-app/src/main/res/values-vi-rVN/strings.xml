@@ -133,6 +133,7 @@
     <string name="tv_home_section_recents">Gần đây</string>
     <string name="tv_home_section_systems">Hệ thống</string>
     <string name="tv_home_section_settings">Cài đặt</string>
+    <string name="gamepad_binding_update_description">Nhấn một nút trên \"%1$s\" của bạn</string>
     <string name="tv_search_results">Trò chơi</string>
     <string name="tv_game_message_missing_gamepad">Yêu cầu có gamepad để chơi. Vui lòng kết nối một cái.</string>
     <string name="game_edit_touch_controls_error_not_visible">Ngắt kết nối pad của bạn để chỉnh sửa điều khiển bằng cảm ứng</string>
