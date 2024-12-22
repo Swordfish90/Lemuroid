@@ -8,7 +8,7 @@
     <string name="recent">最近</string>
     <string name="favorites">收藏</string>
     <string name="discover">发现</string>
-    <string name="rescan">刷新</string>
+    <string name="rescan">重新扫描</string>
     <string name="stop">停止</string>
     <string name="none">无</string>
     <string name="directory">目录</string>
