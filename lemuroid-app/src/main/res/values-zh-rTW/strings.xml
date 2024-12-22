@@ -19,6 +19,7 @@
     <string name="settings">設定</string>
     <string name="save_sync">同步存檔</string>
     <string name="show_all">全部顯示</string>
+    <string name="back">返回</string>
     <string name="settings_category_general">一般設定</string>
     <string name="settings_category_input">輸入設定</string>
     <string name="settings_category_misc">其他設定</string>
