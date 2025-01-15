@@ -27,6 +27,7 @@
     <string name="gdrive_last_sync_completed">Lần đồng bộ cuối: %s</string>
     <string name="game_loading_download_core">Đang tải lõi xuống…</string>
     <string name="installing_core_notification_title">Đang cập nhật lõi từ Play</string>
+    <string name="installing_core_notification_message">Kiểm tra ứng dụng Cửa hàng Google Play để xem tình trạng hiện tại</string>
     <string name="game_loader_error_load_core">Lõi libretro tải không thành công. Hãy thử những cách sau:\n
         \n\u2022 Bật kết nối internet và quét lại các trò chơi
         \n\u2022 Đảm bảo Cửa hàng Google Play được cài đặt và đang chạy
