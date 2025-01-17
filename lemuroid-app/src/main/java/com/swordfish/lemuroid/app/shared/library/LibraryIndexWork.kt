@@ -30,7 +30,7 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
         val foregroundInfo =
             createSyncForegroundInfo(
                 NotificationsManager.LIBRARY_INDEXING_NOTIFICATION_ID,
-                notificationsManager.libraryIndexingNotification()
+                notificationsManager.libraryIndexingNotification(),
             )
 
         setForegroundAsync(foregroundInfo)

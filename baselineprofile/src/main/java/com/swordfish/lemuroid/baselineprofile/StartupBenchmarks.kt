@@ -7,7 +7,6 @@ import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,17 +34,14 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class StartupBenchmarks {
-
     @get:Rule
     val rule = MacrobenchmarkRule()
 
     @Test
-    fun startupCompilationNone() =
-        benchmark(CompilationMode.None())
+    fun startupCompilationNone() = benchmark(CompilationMode.None())
 
     @Test
-    fun startupCompilationBaselineProfiles() =
-        benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
+    fun startupCompilationBaselineProfiles() = benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
 
     private fun benchmark(compilationMode: CompilationMode) {
         // This example works only with the variant with application id `com.swordfish.lemuroid`."
@@ -69,7 +65,7 @@ class StartupBenchmarks {
                 // Check the UiAutomator documentation for more information on how to
                 // interact with the app.
                 // https://d.android.com/training/testing/other-components/ui-automator
-            }
+            },
         )
     }
 }
