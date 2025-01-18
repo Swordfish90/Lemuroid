@@ -45,7 +45,6 @@ dependencies {
     implementation(deps.libs.kotlin.serialization)
     implementation(deps.libs.kotlin.serializationJson)
     implementation(deps.libs.harmony)
-    implementation(deps.libs.multitouchGestures)
     implementation(deps.libs.material)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
     implementation(deps.libs.flowPreferences)

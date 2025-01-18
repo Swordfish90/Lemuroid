@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
 import androidx.core.math.MathUtils
-import com.dinuscxj.gesture.MultiTouchGestureDetector
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.touchinput.controller.R
 import kotlinx.coroutines.flow.Flow
