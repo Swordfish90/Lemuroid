@@ -18,4 +18,5 @@ data class SystemCoreConfig(
     val supportsLibretroVFS: Boolean = false,
     val skipDuplicateFrames: Boolean = true,
     val supportedOnlyArchitectures: Set<String>? = null,
+    val supportsMicrophone: Boolean = false,
 ) : Serializable

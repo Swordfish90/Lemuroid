@@ -190,6 +190,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                         HomeViewModel.Factory(
                                             applicationContext,
                                             retrogradeDb,
+                                            coresSelection,
                                         ),
                                 ),
                             onGameClick = onGameClick,
