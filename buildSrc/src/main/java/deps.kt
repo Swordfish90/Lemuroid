@@ -154,7 +154,6 @@ object deps {
         const val flowPreferences          = "com.fredporciuncula:flow-preferences:1.8.0"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
         const val material                 = "com.google.android.material:material:1.6.1"
-        const val multitouchGestures       = "com.dinuscxj:multitouchgesturedetector:1.0.0"
         const val guava                    = "com.google.guava:guava:30.1.1-android"
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"

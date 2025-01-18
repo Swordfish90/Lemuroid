@@ -27,7 +27,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { setUrl("https://repo.huaweicloud.com/repository/maven/") }
         maven { setUrl("https://jitpack.io") }
         mavenLocal()
     }
