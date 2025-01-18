@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.shared.game
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.PointF
 import android.os.Bundle
 import android.view.Gravity
@@ -13,6 +14,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -335,7 +337,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         hdModeQuality: HDModeQuality,
         screenFilter: String,
         lowLatencyAudio: Boolean,
-        enableRumble: Boolean,
+        requestRumble: Boolean,
+        requestMicrophone: Boolean,
     ): GLRetroView {
         val data =
             GLRetroViewData(this).apply {
@@ -365,8 +368,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         system,
                     )
                 preferLowLatencyAudio = lowLatencyAudio
-                rumbleEventsEnabled = enableRumble
+                rumbleEventsEnabled = requestRumble
                 skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
+                enableMicrophone = requestMicrophone
             }
 
         val retroGameView = GLRetroView(this, data)
@@ -1025,6 +1029,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
 
+        val hasMicrophonePermission = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.RECORD_AUDIO
+        ) == PackageManager. PERMISSION_GRANTED
+
+        val enableMicrophone = systemCoreConfig.supportsMicrophone && hasMicrophonePermission
+
         val loadingStatesFlow =
             gameLoader.load(
                 applicationContext,
@@ -1050,6 +1061,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                             filter,
                             lowLatencyAudio,
                             systemCoreConfig.rumbleSupported && enableRumble,
+                            enableMicrophone
                         )
                 }
             }

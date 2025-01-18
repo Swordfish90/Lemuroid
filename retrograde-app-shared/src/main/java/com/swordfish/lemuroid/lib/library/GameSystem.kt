@@ -979,6 +979,20 @@ data class GameSystem(
                                             ),
                                         ),
                                     ),
+                                    ExposedSetting(
+                                        "melonds_mic_input",
+                                        R.string.setting_melonds_mic_input,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "microphone",
+                                                R.string.value_melonds_mic_input_microphone,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "blow",
+                                                R.string.value_melonds_mic_input_blow,
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             exposedAdvancedSettings =
                                 listOf(
@@ -996,14 +1010,13 @@ data class GameSystem(
                                     CoreVariable("melonds_number_of_screen_layouts", "1"),
                                     CoreVariable("melonds_touch_mode", "Touch"),
                                     CoreVariable("melonds_threaded_renderer", "enabled"),
-                                    // TODO... As soon as libretrodroid supports the microphone we can remove this.
-                                    CoreVariable("melonds_mic_input", "blow"),
                                 ),
                             controllerConfigs =
                                 hashMapOf(
                                     0 to arrayListOf(ControllerConfigs.MELONDS),
                                 ),
                             statesVersion = 2,
+                            supportsMicrophone = true,
                         ),
                     ),
                     uniqueExtensions = listOf("nds"),

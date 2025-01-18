@@ -23,7 +23,7 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
-        const val libretrodroid   = "0.12.1"
+        const val libretrodroid   = "4937b4c6"
         const val radialgamepad   = "2.0.0"
         const val composeBom      = "2024.02.02"
 
@@ -158,8 +158,8 @@ object deps {
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"
         const val composeHtmlText          = "de.charlex.compose.material3:material3-html-text:2.0.0-beta01"
-        const val radialgamepad            = "com.github.swordfish90:radialgamepad:${versions.radialgamepad}"
-        const val libretrodroid            = "com.github.swordfish90:libretrodroid:${versions.libretrodroid}"
+        const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
+        const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
     }
 
     object plugins {
