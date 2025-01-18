@@ -31,8 +31,8 @@
     <string name="settings_title_tilt_sensitivity">Sensibilité du capteur d\'inclinaison</string>
     <string name="settings_title_hd_quality">Qualité du mode HD</string>
     <string name="settings_title_maximum_cache_usage">Limite de taille de cache</string>
-    <string name="settings_title_hd_mode">HD mode</string>
-    <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
+    <string name="settings_title_hd_mode">Mode HD</string>
+    <string name="settings_description_hd_mode">Appliquer le filtre d\'haute gamme post-traitement</string>
     <string name="settings_description_hd_quality">Ajuster la qualité du mode HD</string>
     <string name="settings_title_gamepad_settings">Périphériques externes</string>
     <string name="settings_description_gamepad_settings">Configurer les manettes et claviers externes</string>
