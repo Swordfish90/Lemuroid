@@ -24,6 +24,7 @@
     <string name="setting_fceumm_overscan_h">Crop horizontal overscan</string>
     <string name="setting_fceumm_overscan_v">Crop vertical overscan</string>
     <string name="setting_fceumm_nospritelimit">No sprite limit</string>
+    <string name="setting_snes9x_block_invalid_vram_access">Block Invalid VRAM Access</string>
     <string name="setting_genesis_plus_gx_blargg_ntsc_filter">TV effect</string>
     <string name="setting_genesis_plus_gx_overscan">Borders</string>
     <string name="setting_genesis_plus_gx_lcd_filter">LCD ghosting</string>
@@ -90,6 +91,9 @@
     <string name="value_stella_filter_svideo">S-Video</string>
     <string name="value_stella_filter_rgb">RGB</string>
     <string name="value_stella_filter_badlyadjusted">Badly adjusted</string>
+
+    <string name="value_snes9x_block_invalid_vram_access_disabled">Disabled</string>
+    <string name="value_snes9x_block_invalid_vram_access_enabled">Enabled</string>
 
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">Disabled</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_monochrome">Monochrome</string>
