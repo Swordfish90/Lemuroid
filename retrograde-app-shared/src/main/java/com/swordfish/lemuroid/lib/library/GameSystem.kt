@@ -943,6 +943,14 @@ data class GameSystem(
                                                 "left/right",
                                                 R.string.value_desmume_screens_layout_leftright,
                                             ),
+                                            ExposedSetting.Value(
+                                                "hybrid/bottom",
+                                                R.string.value_desmume_screens_layout_hybrid,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "bottom only",
+                                                R.string.value_desmume_screens_layout_single,
+                                            ),
                                         ),
                                     ),
                                     ExposedSetting(
@@ -954,6 +962,8 @@ data class GameSystem(
                                 listOf(
                                     CoreVariable("desmume_pointer_type", "touch"),
                                     CoreVariable("desmume_frameskip", "1"),
+                                    CoreVariable("desmume_hybrid_showboth_screens", "disabled"),
+                                    CoreVariable("desmume_hybrid_layout_scale", "3")
                                 ),
                             controllerConfigs =
                                 hashMapOf(
@@ -967,7 +977,7 @@ data class GameSystem(
                                 listOf(
                                     ExposedSetting(
                                         "melonds_screen_layout1",
-                                        R.string.setting_melonds_screen_layout,
+                                        R.string.setting_melonds_screen_layout_1,
                                         arrayListOf(
                                             ExposedSetting.Value(
                                                 "top-bottom",
@@ -976,6 +986,36 @@ data class GameSystem(
                                             ExposedSetting.Value(
                                                 "left-right",
                                                 R.string.value_melonds_screen_layout_leftright,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "hybrid-top",
+                                                R.string.value_melonds_screen_layout_hybridtop,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "top",
+                                                R.string.value_melonds_screen_layout_top,
+                                            ),
+                                        ),
+                                    ),
+                                    ExposedSetting(
+                                        "melonds_screen_layout2",
+                                        R.string.setting_melonds_screen_layout_2,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "bottom-top",
+                                                R.string.value_melonds_screen_layout_bottomtop,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "right-left",
+                                                R.string.value_melonds_screen_layout_rightleft,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "hybrid-bottom",
+                                                R.string.value_melonds_screen_layout_hybridbottom,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "bottom",
+                                                R.string.value_melonds_screen_layout_bottom,
                                             ),
                                         ),
                                     ),
@@ -993,7 +1033,8 @@ data class GameSystem(
                                 ),
                             defaultSettings =
                                 listOf(
-                                    CoreVariable("melonds_number_of_screen_layouts", "1"),
+                                    CoreVariable("melonds_number_of_screen_layouts", "2"),
+                                    CoreVariable("melonds_hybrid_small_screen", "one"),
                                     CoreVariable("melonds_touch_mode", "Touch"),
                                     CoreVariable("melonds_threaded_renderer", "enabled"),
                                     // TODO... As soon as libretrodroid supports the microphone we can remove this.
