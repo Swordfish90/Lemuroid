@@ -46,6 +46,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
 
     suspend fun enableDeviceRumble() = booleanPreference(R.string.pref_key_enable_device_rumble, false)
 
+    suspend fun joinStickDpad() = booleanPreference(R.string.pref_key_join_stick_dpad, false)
+
     suspend fun cacheSizeBytes() =
         stringPreference(
             R.string.pref_key_max_cache_size,

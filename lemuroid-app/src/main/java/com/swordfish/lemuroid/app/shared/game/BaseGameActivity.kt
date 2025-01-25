@@ -54,6 +54,7 @@ import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.ExposedSetting
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.IncompatibleStateException
 import com.swordfish.lemuroid.lib.saves.SaveState
@@ -154,6 +155,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private val loadingMessageStateFlow = MutableStateFlow("")
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
 
+    private var joinStickAndDPADifSupported = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -172,6 +175,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         system = GameSystem.findById(game.systemId)
 
         lifecycleScope.launch {
+            joinStickAndDPADifSupported = settingsManager.joinStickDpad()
             loadGame()
         }
 
@@ -655,7 +659,22 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (port < 0) return
         when (event.source) {
             InputDevice.SOURCE_JOYSTICK -> {
-                if (controllerConfigsState.value[port]?.mergeDPADAndLeftStickEvents == true) {
+                var allowJoypad = controllerConfigsState.value[port]?.mergeDPADAndLeftStickEvents ?: false
+
+                if(joinStickAndDPADifSupported) {
+                    allowJoypad = when(system.id) {
+                        SystemID.NES -> true
+                        SystemID.SNES -> true
+                        SystemID.GENESIS -> true
+                        SystemID.GB -> true
+                        SystemID.GBC -> true
+                        SystemID.GBA -> true
+                        SystemID.NDS -> true
+                        else -> allowJoypad
+                    }
+                }
+
+                if (allowJoypad) {
                     sendMergedMotionEvents(event, port)
                 } else {
                     sendSeparateMotionEvents(event, port)
