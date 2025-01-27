@@ -173,6 +173,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         lifecycleScope.launch {
             loadGame()
+            requestedOrientation = settingsManager.screenOrientation()
         }
 
         initialiseFlows()
