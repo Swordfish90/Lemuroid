@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Ολοκληρώθηκε</string>
+    <string name="touch_customize_button_reset">Επαναφορά</string>
+    <string name="touch_customize_info">Σύρετε και κλείστε τα δάκτυλα σας στα εικονικά χειριστήρια για να αλλάξετε θέση και μέγεθος</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">正在下载核心…</string>
+    <string name="installing_core_notification_title">正在更新核心</string>
+    <string name="installing_core_notification_message">这可能需要几分钟的时间</string>
+    <string name="game_loader_error_load_core">The Libretro core was not loaded. Make sure your device is connected to internet and try to rescan your library. If the issue persist this core might not be supported on your device.</string>
+</resources>

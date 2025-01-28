@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Преузимање језгра…</string>
+    <string name="installing_core_notification_title">Ажурирање језгара</string>
+    <string name="installing_core_notification_message">Ово може потрајати до неколико минута</string>
+    <string name="game_loader_error_load_core">Libretro језгро није учитано. Проверите да ли је Ваш уређај повезан на Интернет и покушајте да поново скенирате библиотеку. Ако се ова грешка понавља могуће је да ово језгро није подржано на Вашем уређају.</string>
+</resources>
