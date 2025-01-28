@@ -80,6 +80,9 @@
     <string name="home_notification_title">알림 사용</string>
     <string name="home_notification_message">Lemuroid가 게임 또는 배경 작업을 실행 중일 때 알림을 표시합니다.</string>
     <string name="home_notification_action">활성화</string>
+    <string name="home_microphone_title">마이크 활성화</string>
+    <string name="home_microphone_message">Nintendo DS 게임들의 마이크를 활용하는 기능을 사용할 수 있습니다.</string>
+    <string name="home_microphone_action">활성화</string>
     <string name="home_empty_title">ROM 디렉토리 선택</string>
     <string name="home_empty_message">Lemuroid가 검색할 ROM 파일이 담긴 디렉토리가 필요합니다.\n이 과정은 몇 분 정도 걸립니다.</string>
     <string name="home_empty_action">디렉토리 선택</string>
