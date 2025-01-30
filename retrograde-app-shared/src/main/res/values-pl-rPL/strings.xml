@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">Układ ekranów</string>
     <string name="setting_melonds_threaded_renderer">Renderowanie wielowątkowe</string>
     <string name="setting_melonds_jit_enable">Dynamiczny rekompilator</string>
+    <string name="setting_melonds_mic_input">Tryb mikrofonu</string>
     <string name="setting_wswan_rotate_display">Orientacja</string>
     <string name="setting_wswan_mono_palette">Koloryzacja</string>
     <string name="setting_handy_rot">Obrót ekranu</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Lewo - Prawo</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybrydowy górny</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybrydowy dolny</string>
+    <string name="value_melonds_mic_input_microphone">Prawdziwy mikrofon</string>
+    <string name="value_melonds_mic_input_blow">Symuluj odgłosy dmuchania</string>
     <string name="value_citra_layout_option_topbottom">Góra - Dół</string>
     <string name="value_citra_layout_option_sidebyside">Lewo - Prawo</string>
     <string name="value_desmume_screens_layout_topbottom">Góra - Dół</string>
