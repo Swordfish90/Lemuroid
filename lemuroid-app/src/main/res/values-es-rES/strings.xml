@@ -35,7 +35,7 @@
     <string name="settings_description_hd_mode">Aplicar filtro de mejora de posprocesamiento</string>
     <string name="settings_description_hd_quality">Ajustar la calidad del modo HD</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
-    <string name="settings_description_gamepad_settings">Configurar gamepads y teclados externos</string>
+    <string name="settings_description_gamepad_settings">Configurar Controles y teclados externos</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_gamepad_category_enabled">Dispositivos habilitados</string>
     <string name="settings_gamepad_category_general">General</string>
@@ -80,6 +80,9 @@
     <string name="home_notification_title">Habilitar notificaciones</string>
     <string name="home_notification_message">Lemuroid utiliza notificaciones para informarte cuando un juego u operación se está ejecutando en segundo plano.</string>
     <string name="home_notification_action">Habilitar</string>
+    <string name="home_microphone_title">Habilitar micrófono</string>
+    <string name="home_microphone_message">Los juegos de Nintendo DS pueden usar el micrófono para proporcionar algunas funcionalidades.</string>
+    <string name="home_microphone_action">Habilitar</string>
     <string name="home_empty_title">Seleccionar directorio de ROMs</string>
     <string name="home_empty_message">Lemuroid necesita escanear un directorio que contiene archivos ROM.\nEsto puede tardar unos minutos.</string>
     <string name="home_empty_action">Seleccionar directorio</string>
