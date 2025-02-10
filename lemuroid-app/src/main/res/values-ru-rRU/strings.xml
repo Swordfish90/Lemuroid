@@ -8,7 +8,7 @@
     <string name="recent">Недавние</string>
     <string name="favorites">Избранное</string>
     <string name="discover">Найти</string>
-    <string name="rescan">Пересканировать</string>
+    <string name="rescan">Сканировать повторно</string>
     <string name="stop">Остановить</string>
     <string name="none">Нет</string>
     <string name="directory">Каталог</string>
@@ -31,7 +31,7 @@
     <string name="settings_title_tilt_sensitivity">Чувствительность датчика наклона</string>
     <string name="settings_title_hd_quality">Качество HD-режима</string>
     <string name="settings_title_maximum_cache_usage">Максимальный размер кэша</string>
-    <string name="settings_title_hd_mode">HD режим</string>
+    <string name="settings_title_hd_mode">HD-режим</string>
     <string name="settings_description_hd_mode">Применять для постобработки фильтр масштабирования</string>
     <string name="settings_description_hd_quality">Настройка качества HD-режима</string>
     <string name="settings_title_gamepad_settings">Внешние устройства</string>
@@ -54,11 +54,11 @@
     <string name="settings_title_low_latency_audio">Звук с низкой задержкой</string>
     <string name="settings_description_low_latency_audio">Снижает задержку звука на поддерживаемых устройствах. Может увеличить искажения звука.</string>
     <string name="settings_title_direct_game_load">Прямая загрузка игры</string>
-    <string name="settings_description_direct_game_load">(Экспериментально) Сокращает время загрузки и использование кэша на поддерживаемых консолях.</string>
+    <string name="settings_description_direct_game_load">(Экспериментально) Уменьшает время загрузки и использование кэша для поддерживаемых консолей.</string>
     <string name="settings_title_enable_rumble">Вибрация</string>
     <string name="settings_description_enable_rumble">Включить отдачу для поддерживаемых игр и контроллеров</string>
     <string name="settings_title_enable_device_rumble">Вибрация устройства</string>
-    <string name="settings_description_enable_device_rumble">Если не подключены контроллеры передавать вибрацию устройством</string>
+    <string name="settings_description_enable_device_rumble">Если не подключены контроллеры перенаправлять вибрацию на устройство</string>
     <string name="reset_settings_warning_message_title">Вы уверены?</string>
     <string name="reset_settings_warning_message_description">Данное действие сбросит настройки Lemuroid к начальным значениям. Файлы сохранений и состояний не будут затронуты.</string>
     <string name="settings_title_save_sync">Облачные сохранения</string>
@@ -93,8 +93,8 @@
     <string name="game_menu_settings">Настройки</string>
     <string name="game_menu_state">Состояние %1$s</string>
     <string name="game_menu_change_disk_button">Сменить диск</string>
-    <string name="game_menu_edit_touch_controls">Изменить управление</string>
-    <string name="game_menu_mute_audio">Отключить звук</string>
+    <string name="game_menu_edit_touch_controls">Настроить управление</string>
+    <string name="game_menu_mute_audio">Заглушить звук</string>
     <string name="game_menu_fast_forward">Ускорение</string>
     <string name="game_menu_change_disk_disk">Диск %1$s</string>
     <string name="game_loading_preparing_game">Подготовка игры…</string>
@@ -147,9 +147,9 @@
     <string name="mobile_settings_help">Помощь</string>
     <string name="mobile_settings_support">Поддержка</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Как пользоваться Lemuroid?</b><br/>
-        Скопируйте ROM-файлы в каталог на вашем устройстве и укажите его в Lemuroid. Данный каталог может содержать подкаталоги. После завершения сканирования вы увидите список всех ваших игр.<br/><br/>
-        <b>&#8226;Почему мои игры не определяются?</b><br/>
-        Если игры сжаты, попробуйте извлечь их из архивов. Если это не помогло, попробуйте поместить ROM'ы в отдельные каталоги для каждой системы, присвоив следующие имена: $SYSTEMS.
+        Скопируйте ROM'ы в каталог на устройстве и укажите его в Lemuroid. Данный каталог может содержать подкаталоги. После завершения сканирования игры будут представлены в виде списка.<br/><br/>
+        <b>&#8226;Почему игры не определяются?</b><br/>
+        Если игры находятся в архивах, попробуйте их распаковать. Если это не помогло, попробуйте поместить ROM'ы в отдельные каталоги для каждой системы, присвоив следующие имена: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Похоже, что ядро Libretro столкнулось с неожиданной проблемой. Если проблема не исчезает, пожалуйста, попробуйте следующее:\n
         \n\u2022 Отключите автосохранение и перезапустите игру
