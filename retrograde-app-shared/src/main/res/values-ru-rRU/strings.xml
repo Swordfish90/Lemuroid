@@ -14,13 +14,13 @@
     <string name="controller_dos_mouse_left">Мышь с левым стиком</string>
     <string name="controller_dos_mouse_right">Мышь с правым стиком</string>
     <!-- Core settings titles -->
-    <string name="setting_stella_filter">Эффект ТВ</string>
+    <string name="setting_stella_filter">ТВ-эффект</string>
     <string name="setting_stella_crop_hoverscan">Кадрировать горизонт. вылеты развёртки</string>
     <string name="setting_fceumm_overscan_h">Кадрировать горизонт. вылеты развёртки</string>
     <string name="setting_fceumm_overscan_v">Кадрировать вертик. вылеты развёртки</string>
     <string name="setting_fceumm_nospritelimit">Без ограничения спрайтов</string>
     <string name="setting_genesis_plus_gx_blargg_ntsc_filter">Эффект ТВ</string>
-    <string name="setting_genesis_plus_gx_overscan">Рамки</string>
+    <string name="setting_genesis_plus_gx_overscan">Границы</string>
     <string name="setting_genesis_plus_gx_lcd_filter">ЖК-двоение</string>
     <string name="setting_genesis_plus_gx_no_sprite_limit">Без ограничения спрайтов</string>
     <string name="setting_gambatte_gb_colorization">Колоризация</string>
@@ -105,6 +105,7 @@
     <string name="value_melonds_screen_layout_hybridtop">Гибридно верхний</string>
     <string name="value_melonds_screen_layout_hybridbottom">Гибридно нижний</string>
     <string name="value_melonds_mic_input_microphone">Микрофон устройства</string>
+    <string name="value_melonds_mic_input_blow">Имитировать звук</string>
     <string name="value_citra_layout_option_topbottom">Сверху/Снизу</string>
     <string name="value_citra_layout_option_sidebyside">Слева/Справа</string>
     <string name="value_desmume_screens_layout_topbottom">Сверху/Снизу</string>
