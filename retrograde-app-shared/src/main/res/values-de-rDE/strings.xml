@@ -59,7 +59,7 @@
     <string name="setting_citra_layout_option">Bildschirmanordnung</string>
     <string name="setting_citra_resolution_factor">Auflösungsskalierung</string>
     <string name="setting_citra_use_acc_mul">Genaue Shader Multiplikation</string>
-    <string name="setting_citra_use_acc_geo_shaders">Genaue Geometry-Shader</string>
+    <string name="setting_citra_use_acc_geo_shaders">Präzise Geometrie-Shader</string>
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Deaktiviert</string>
     <string name="value_gambatte_mix_frames_mix">Einfach</string>
