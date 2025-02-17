@@ -17,12 +17,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Height
@@ -68,7 +72,6 @@ import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.jam.jampadcompose.JamPad
 import gg.jam.jampadcompose.inputevents.InputEvent
 import kotlinx.coroutines.delay
-import timber.log.Timber
 
 private const val CONSTRAINTS_LEFT_PAD = "leftPad"
 private const val CONSTRAINTS_RIGHT_PAD = "rightPad"
@@ -85,7 +88,12 @@ fun GameScreen(
     val uiState = viewModel.getUiState().collectAsState(GameScreenViewModel.UiState.Loading("")).value
     when (uiState) {
         is GameScreenViewModel.UiState.Loading -> {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
         }
 
         is GameScreenViewModel.UiState.Running -> {
@@ -132,8 +140,6 @@ private fun GameScreenRunning(
             .collectAsState(null)
             .value
 
-        Timber.d("FILIPPO $allowTouchOverlay")
-
         JamPad(
             modifier = Modifier.fillMaxSize(),
             onInputEvents = { events ->
@@ -149,7 +155,8 @@ private fun GameScreenRunning(
                 constraintSet = buildConstraintSet(isLandscape, allowTouchOverlay)
             ) {
                 AndroidView(
-                    modifier = Modifier.layoutId(CONSTRAINTS_GAME_VIEW),
+                    modifier = Modifier.layoutId(CONSTRAINTS_GAME_VIEW)
+                        .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
                     factory = { buildRetroView(state.gameData, state.gameViewData) }
                 )
 
@@ -358,6 +365,7 @@ private fun buildConstraintSetPortrait(): ConstraintSet {
         val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
 
         constrain(gameView) {
+            height = Dimension.fillToConstraints
             top.linkTo(parent.top)
             absoluteLeft.linkTo(parent.absoluteLeft)
             absoluteRight.linkTo(parent.absoluteRight)
