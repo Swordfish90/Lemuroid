@@ -3,7 +3,7 @@ object deps {
     object android {
         const val targetSdkVersion  = 34
         const val compileSdkVersion = 34
-        const val minSdkVersion     = 23
+        const val minSdkVersion     = 24 // TODO PADS. Make this this cannot go back to 23.
         const val buildToolsVersion = "34.0.0"
     }
 
@@ -26,6 +26,7 @@ object deps {
         const val libretrodroid   = "a2d8b3dc74"
         const val radialgamepad   = "2.0.0"
         const val composeBom      = "2024.02.02"
+        const val kotlinExtension = "1.4.6"
 
         // Make sure this is compatible with current bom versions:
         // https://developer.android.com/jetpack/compose/bom/bom-mapping
@@ -93,6 +94,11 @@ object deps {
                 const val extendedIcons = "androidx.compose.material:material-icons-extended"
                 const val tooling = "androidx.compose.ui:ui-tooling"
                 const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
+                const val geometry = "androidx.compose.ui:ui-geometry"
+                const val runtime = "androidx.compose.runtime:runtime"
+                const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.1.0"
+                const val unit = "androidx.compose.ui:ui-unit-android"
+                const val ui = "androidx.compose.ui:ui"
 
                 object accompanist {
                     const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
@@ -158,6 +164,8 @@ object deps {
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"
         const val composeHtmlText          = "de.charlex.compose.material3:material3-html-text:2.0.0-beta01"
+        const val collectionsImmutable     = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
+        const val jampadcompose            = "io.github.piepacker:jampadcompose:0.0.2-alpha1"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
     }

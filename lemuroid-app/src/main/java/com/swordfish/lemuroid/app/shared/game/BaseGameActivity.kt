@@ -1,27 +1,25 @@
 package com.swordfish.lemuroid.app.shared.game
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.SharedPreferences
 import android.graphics.PointF
 import android.os.Bundle
-import android.view.Gravity
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.BuildConfig
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
@@ -31,7 +29,6 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
-import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
@@ -52,7 +49,6 @@ import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderError
-import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.ExposedSetting
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
@@ -62,7 +58,6 @@ import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
-import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.libretrodroid.Controller
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
@@ -70,8 +65,10 @@ import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RI
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
 import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
-import com.swordfish.libretrodroid.VirtualFile
 import com.swordfish.radialgamepad.library.math.MathUtils
+import com.swordfish.touchinput.radial.LemuroidTouchConfigs
+import dagger.Lazy
+import gg.jam.jampadcompose.inputevents.InputEvent
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -82,13 +79,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onCompletion
@@ -108,12 +103,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var game: Game
     private lateinit var system: GameSystem
     protected lateinit var systemCoreConfig: SystemCoreConfig
-    protected lateinit var mainContainerLayout: ConstraintLayout
-    private lateinit var gameContainerLayout: FrameLayout
-    protected lateinit var leftGamePadContainer: FrameLayout
-    protected lateinit var rightGamePadContainer: FrameLayout
-    private lateinit var loadingView: ProgressBar
-    private lateinit var loadingMessageView: TextView
 
     @Inject
     lateinit var settingsManager: SettingsManager
@@ -142,6 +131,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject
     lateinit var rumbleManager: RumbleManager
 
+    @Inject
+    lateinit var sharedPreferences: Lazy<SharedPreferences>
+
+    private val gameScreenViewModel: GameScreenViewModel by viewModels {
+        GameScreenViewModel.Factory(
+            applicationContext,
+            settingsManager,
+            inputDeviceManager,
+            sharedPreferences.get()
+        )
+    }
+
     private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
 
     private val startGameTime = System.currentTimeMillis()
@@ -158,26 +159,123 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game)
-
         setUpExceptionsHandler()
 
-        mainContainerLayout = findViewById(R.id.maincontainer)
-        gameContainerLayout = findViewById(R.id.gamecontainer)
-        loadingView = findViewById(R.id.progress)
-        loadingMessageView = findViewById(R.id.progress_message)
-        leftGamePadContainer = findViewById(R.id.leftgamepad)
-        rightGamePadContainer = findViewById(R.id.rightgamepad)
+        setContent {
+            AppTheme {
+                val gamePadConfig = getTouchControllerType().collectAsState(null)
+
+                GameScreen(
+                    viewModel = gameScreenViewModel,
+                    onVirtualGamePadInputEvents = this::handleVirtualInputEvent,
+                    gamePadConfig = gamePadConfig.value
+                ) { gameData, retroViewData ->
+                    initializeRetroGameView(applicationContext, gameData, retroViewData)
+                }
+            }
+        }
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
         system = GameSystem.findById(game.systemId)
 
         lifecycleScope.launch {
-            loadGame()
+            gameScreenViewModel.loadGame(
+                applicationContext,
+                game,
+                systemCoreConfig,
+                gameLoader,
+                intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
+            )
         }
 
         initialiseFlows()
+    }
+
+    private fun handleVirtualInputEvent(events: List<InputEvent>) {
+        events.forEach { event ->
+            when (event) {
+                is InputEvent.Button -> {
+                    handleVirtualInputButton(event)
+                }
+                is InputEvent.DiscreteDirection -> {
+                    handleVirtualInputDirection(event.id, event.direction.x, -event.direction.y)
+                }
+                is InputEvent.ContinuousDirection -> {
+                    handleVirtualInputDirection(event.id, event.direction.x, -event.direction.y)
+                }
+            }
+        }
+    }
+
+    private fun handleVirtualInputButton(event: InputEvent.Button) {
+        val action = if (event.pressed) KeyEvent.ACTION_DOWN else KeyEvent.ACTION_UP
+        retroGameView?.sendKeyEvent(action, event.id)
+    }
+
+    private fun handleVirtualInputDirection(id: Int, xAxis: Float, yAxis: Float) {
+        when (id) {
+            LemuroidTouchConfigs.MOTION_SOURCE_DPAD -> {
+                retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, xAxis, yAxis)
+            }
+            LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK -> {
+                retroGameView?.sendMotionEvent(
+                    MOTION_SOURCE_ANALOG_LEFT,
+                    xAxis,
+                    yAxis,
+                )
+            }
+            LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK -> {
+                retroGameView?.sendMotionEvent(
+                    MOTION_SOURCE_ANALOG_RIGHT,
+                    xAxis,
+                    yAxis,
+                )
+            }
+            LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK -> {
+                retroGameView?.sendMotionEvent(
+                    MOTION_SOURCE_ANALOG_LEFT,
+                    xAxis,
+                    yAxis,
+                )
+                retroGameView?.sendMotionEvent(MOTION_SOURCE_DPAD, xAxis, yAxis)
+            }
+            LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD -> {
+                retroGameView?.sendMotionEvent(
+                    MOTION_SOURCE_ANALOG_RIGHT,
+                    xAxis,
+                    yAxis,
+                )
+            }
+        }
+    }
+
+    private fun initializeRetroGameView(context: Context, gameData: GameLoader.GameData, data: GLRetroViewData): GLRetroView {
+        val result = GLRetroView(context, data)
+            .apply {
+                isFocusable = false
+                isFocusableInTouchMode = false
+            }
+
+
+        lifecycle.addObserver(result)
+
+        // TODO PADS... Maybe this should be moved somewhere else...
+        lifecycleScope.launch {
+            gameData.quickSaveData?.let {
+                restoreAutoSaveAsync(it)
+            }
+        }
+
+        if (BuildConfig.DEBUG) {
+            runCatching {
+                printRetroVariables(result)
+            }
+        }
+
+        retroGameViewFlow.value = result
+
+        return result
     }
 
     private fun initialiseFlows() {
@@ -209,13 +307,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             initializeGamePadMotionsFlow()
         }
 
-        launchOnState(Lifecycle.State.RESUMED) {
-            initializeLoadingMessageFlow()
+        launchOnState(Lifecycle.State.CREATED) {
+            initializeViewModelsEffectsFlow()
         }
 
-        launchOnState(Lifecycle.State.RESUMED) {
-            initializeLoadingVisibilityFlow()
-        }
+//        launchOnState(Lifecycle.State.RESUMED) {
+//            initializeLoadingMessageFlow()
+//        }
+//
+//        launchOnState(Lifecycle.State.RESUMED) {
+//            initializeLoadingVisibilityFlow()
+//        }
 
         launchOnState(Lifecycle.State.RESUMED) {
             initializeRumbleFlow()
@@ -256,22 +358,22 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private suspend fun initializeLoadingVisibilityFlow() {
-        loadingState
-            .debounce(longAnimationDuration().toLong())
-            .safeCollect {
-                loadingView.isVisible = it
-                loadingMessageView.isVisible = it
-            }
-    }
+//    private suspend fun initializeLoadingVisibilityFlow() {
+//        loadingState
+//            .debounce(longAnimationDuration().toLong())
+//            .safeCollect {
+//                loadingView.isVisible = it
+//                loadingMessageView.isVisible = it
+//            }
+//    }
 
-    private suspend fun initializeLoadingMessageFlow() {
-        loadingMessageStateFlow
-            .debounce(2 * longAnimationDuration().toLong())
-            .safeCollect {
-                loadingMessageView.text = it
-            }
-    }
+//    private suspend fun initializeLoadingMessageFlow() {
+//        loadingMessageStateFlow
+//            .debounce(2 * longAnimationDuration().toLong())
+//            .safeCollect {
+//                loadingMessageView.text = it
+//            }
+//    }
 
     private suspend fun initializeControllerConfigsFlow() {
         waitGLEvent<GLRetroView.GLRetroEvents.FrameRendered>()
@@ -331,78 +433,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun initializeRetroGameView(
-        gameData: GameLoader.GameData,
-        hdMode: Boolean,
-        hdModeQuality: HDModeQuality,
-        screenFilter: String,
-        lowLatencyAudio: Boolean,
-        requestRumble: Boolean,
-        requestMicrophone: Boolean,
-    ): GLRetroView {
-        val data =
-            GLRetroViewData(this).apply {
-                coreFilePath = gameData.coreLibrary
-
-                when (val gameFiles = gameData.gameFiles) {
-                    is RomFiles.Standard -> {
-                        gameFilePath = gameFiles.files.first().absolutePath
-                    }
-                    is RomFiles.Virtual -> {
-                        gameVirtualFiles =
-                            gameFiles.files
-                                .map { VirtualFile(it.filePath, it.fd) }
-                    }
-                }
-
-                systemDirectory = gameData.systemDirectory.absolutePath
-                savesDirectory = gameData.savesDirectory.absolutePath
-                variables = gameData.coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
-                saveRAMState = gameData.saveRAMData
-                shader =
-                    ShaderChooser.getShaderForSystem(
-                        applicationContext,
-                        hdMode,
-                        hdModeQuality,
-                        screenFilter,
-                        system,
-                    )
-                preferLowLatencyAudio = lowLatencyAudio
-                rumbleEventsEnabled = requestRumble
-                skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
-                enableMicrophone = requestMicrophone
-            }
-
-        val retroGameView = GLRetroView(this, data)
-        retroGameView.isFocusable = false
-        retroGameView.isFocusableInTouchMode = false
-
-        lifecycle.addObserver(retroGameView)
-        gameContainerLayout.addView(retroGameView)
-
-        val layoutParams =
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-            )
-        layoutParams.gravity = Gravity.CENTER
-        retroGameView.layoutParams = layoutParams
-
-        lifecycleScope.launch {
-            gameData.quickSaveData?.let {
-                restoreAutoSaveAsync(it)
-            }
-        }
-
-        if (BuildConfig.DEBUG) {
-            runCatching {
-                printRetroVariables(retroGameView)
-            }
-        }
-
-        return retroGameView
-    }
-
     private fun printRetroVariables(retroGameView: GLRetroView) {
         lifecycleScope.launch {
             // Some cores do not immediately call SET_VARIABLES so we might need to wait a little bit
@@ -448,7 +478,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 else -> GameLoaderError.Generic
             }
         retroGameView = null
-        displayGameLoaderError(gameLoaderError, systemCoreConfig)
+        displayGameLoaderError(gameLoaderError)
     }
 
     private fun transformExposedSetting(
@@ -588,6 +618,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             .safeCollect { (ports, event) ->
                 ports(event.device)?.let {
                     sendStickMotions(event, it)
+                }
+            }
+    }
+
+    private suspend fun initializeViewModelsEffectsFlow() {
+        gameScreenViewModel.getUiEffects()
+            .collect {
+                when (it) {
+                    is GameScreenViewModel.UiEffect.ShowMenu -> displayOptionsDialog()
                 }
             }
     }
@@ -1015,56 +1054,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     this.frameSpeed = if (fastForwardEnabled) 2 else 1
                 }
             }
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
+                gameScreenViewModel.showEditControls(true)
+            }
         }
-    }
-
-    private suspend fun loadGame() {
-        val requestLoadSave = intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
-
-        val autoSaveEnabled = settingsManager.autoSave()
-        val filter = settingsManager.screenFilter()
-        val hdMode = settingsManager.hdMode()
-        val hdModeQuality = settingsManager.hdModeQuality()
-        val lowLatencyAudio = settingsManager.lowLatencyAudio()
-        val enableRumble = settingsManager.enableRumble()
-        val directLoad = settingsManager.allowDirectGameLoad()
-
-        val hasMicrophonePermission = ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.RECORD_AUDIO
-        ) == PackageManager. PERMISSION_GRANTED
-
-        val enableMicrophone = systemCoreConfig.supportsMicrophone && hasMicrophonePermission
-
-        val loadingStatesFlow =
-            gameLoader.load(
-                applicationContext,
-                game,
-                requestLoadSave && autoSaveEnabled,
-                systemCoreConfig,
-                directLoad,
-            )
-
-        loadingStatesFlow
-            .flowOn(Dispatchers.IO)
-            .catch {
-                displayGameLoaderError((it as GameLoaderException).error, systemCoreConfig)
-            }
-            .collect { loadingState ->
-                displayLoadingState(loadingState)
-                if (loadingState is GameLoader.LoadingState.Ready) {
-                    retroGameView =
-                        initializeRetroGameView(
-                            loadingState.gameData,
-                            hdMode,
-                            hdModeQuality,
-                            filter,
-                            lowLatencyAudio,
-                            systemCoreConfig.rumbleSupported && enableRumble,
-                            enableMicrophone
-                        )
-                }
-            }
     }
 
     private suspend fun initializeLoadingViewFlow() {
@@ -1087,10 +1080,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
     }
 
-    private fun displayGameLoaderError(
-        gameError: GameLoaderError,
-        coreConfig: SystemCoreConfig,
-    ) {
+    private fun displayGameLoaderError(gameError: GameLoaderError) {
         val messageId =
             when (gameError) {
                 is GameLoaderError.GLIncompatible -> getString(R.string.game_loader_error_gl_incompatible)
@@ -1114,6 +1104,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         performErrorFinish(messageId)
     }
+
+    // TODO PADS... This should be migrated to the viewmodel
+    private fun getTouchControllerType() =
+        getControllerType()
+            .map { it[0] }
+            .filterNotNull()
+            .distinctUntilChanged()
 
     companion object {
         const val DIALOG_REQUEST = 100

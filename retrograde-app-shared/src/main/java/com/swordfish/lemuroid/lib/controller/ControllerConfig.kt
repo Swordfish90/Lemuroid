@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.lib.controller
 
+import com.swordfish.touchinput.radial.settings.TouchControllerID
 import java.io.Serializable
 
 data class ControllerConfig(

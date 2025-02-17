@@ -25,10 +25,10 @@ plugins {
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
-        mavenLocal()
     }
 
     configurations.all {

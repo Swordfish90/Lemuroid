@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.lib.controller
+package com.swordfish.touchinput.radial.settings
 
 import com.swordfish.touchinput.radial.LemuroidTouchConfigs
 
