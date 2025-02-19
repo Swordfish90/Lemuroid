@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -41,6 +40,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -64,14 +64,19 @@ import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.touchinput.controller.R
+import com.swordfish.touchinput.radial.layouts.ComposeTouchLayouts.MOTION_SOURCE_DPAD
 import com.swordfish.touchinput.radial.layouts.LemuroidButtonBackground
 import com.swordfish.touchinput.radial.layouts.LemuroidButtonForeground
 import com.swordfish.touchinput.radial.layouts.PSXDualShockLeft
 import com.swordfish.touchinput.radial.layouts.PSXDualShockRight
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.jam.jampadcompose.JamPad
+import gg.jam.jampadcompose.ids.DiscreteDirectionId
 import gg.jam.jampadcompose.inputevents.InputEvent
+import gg.jam.jampadcompose.inputstate.InputState
 import kotlinx.coroutines.delay
+import timber.log.Timber
 
 private const val CONSTRAINTS_LEFT_PAD = "leftPad"
 private const val CONSTRAINTS_RIGHT_PAD = "rightPad"
@@ -140,6 +145,10 @@ private fun GameScreenRunning(
             .collectAsState(null)
             .value
 
+        val tiltConfiguration = viewModel.getTiltConfiguration().collectAsState(TiltConfiguration.Disabled)
+        val tiltSimulatedStates = viewModel.getSimulatedTiltEvents().collectAsState(InputState())
+        val tiltSimulatedControls = remember { derivedStateOf { tiltConfiguration.value.controlIds() } }
+
         JamPad(
             modifier = Modifier.fillMaxSize(),
             onInputEvents = { events ->
@@ -149,6 +158,8 @@ private fun GameScreenRunning(
                 }
                 onVirtualGamePadInputEvents(events)
             },
+            simulatedState = tiltSimulatedStates,
+            simulatedControlIds = tiltSimulatedControls
         ) {
             ConstraintLayout(
                 modifier = Modifier.fillMaxSize(),

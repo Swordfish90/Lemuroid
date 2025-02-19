@@ -6,13 +6,14 @@ import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.unit.Density
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
-import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderException
@@ -23,12 +24,17 @@ import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.libretrodroid.VirtualFile
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
+import com.swordfish.touchinput.radial.sensors.TiltSensor
 import com.swordfish.touchinput.radial.settings.TouchControllerID
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import gg.jam.jampadcompose.ids.DiscreteDirectionId
+import gg.jam.jampadcompose.inputstate.InputState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,11 +42,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-
+import timber.log.Timber
 
 @OptIn(FlowPreview::class)
 class GameScreenViewModel(
@@ -48,7 +59,7 @@ class GameScreenViewModel(
     private val settingsManager: SettingsManager,
     private val inputDeviceManager: InputDeviceManager,
     sharedPreferences: SharedPreferences,
-) : ViewModel() {
+) : ViewModel(), DefaultLifecycleObserver {
 
     class Factory(
         private val appContext: Context,
@@ -72,10 +83,12 @@ class GameScreenViewModel(
     private val uiEffects = MutableSharedFlow<UiEffect>()
 
     private val touchControlId = MutableStateFlow<TouchControllerID>(TouchControllerID.PSX)
-    private val screenOrientation =
-        MutableStateFlow<TouchControllerSettingsManager.Orientation>(TouchControllerSettingsManager.Orientation.PORTRAIT)
+    private val screenOrientation = MutableStateFlow(TouchControllerSettingsManager.Orientation.PORTRAIT)
 
     private var loadingMenuJob: Job? = null
+
+    private val tiltSensor = TiltSensor(appContext)
+    private val tiltConfiguration = MutableStateFlow<TiltConfiguration>(TiltConfiguration.Disabled)
 
     fun getUiState(): Flow<UiState> {
         return uiState
@@ -83,6 +96,26 @@ class GameScreenViewModel(
 
     fun getUiEffects(): Flow<UiEffect> {
         return uiEffects
+    }
+
+    fun getTiltConfiguration(): Flow<TiltConfiguration> {
+        return tiltConfiguration
+    }
+
+    fun getSimulatedTiltEvents(): Flow<InputState> {
+        return tiltConfiguration
+            .flatMapLatest { config ->
+                if (config is TiltConfiguration.Disabled) {
+                    return@flatMapLatest flow { awaitCancellation() }
+                }
+
+                tiltSensor.setSensitivity(settingsManager.tiltSensitivity())
+                tiltSensor.getTiltEvents()
+                    .onStart { tiltSensor.shouldRun = true }
+                    .onCompletion { tiltSensor.shouldRun = false }
+                    .map { config.process(it) }
+                    .distinctUntilChanged()
+            }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -108,7 +141,7 @@ class GameScreenViewModel(
     }
 
     sealed interface UiEffect {
-        object ShowMenu : UiEffect
+        data class ShowMenu(val tiltConfiguration: TiltConfiguration) : UiEffect
     }
 
     suspend fun loadGame(
@@ -240,7 +273,9 @@ class GameScreenViewModel(
             loadingMenuJob?.cancel()
             loadingMenuJob = viewModelScope.launch {
                 delay(MENU_LOADING_ANIMATION_MILLIS.toLong())
-                uiEffects.emit(UiEffect.ShowMenu)
+                uiEffects.emit(
+                    UiEffect.ShowMenu(tiltConfiguration = tiltConfiguration.value)
+                )
             }
         } else {
             loadingMenuJob?.cancel()
@@ -294,6 +329,20 @@ class GameScreenViewModel(
         return inputDeviceManager
             .getEnabledInputsObservable()
             .map { it.isEmpty() }
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        tiltSensor.isAllowedToRun = true
+    }
+
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
+        tiltSensor.isAllowedToRun = false
+    }
+
+    fun changeTiltConfiguration(tiltConfig: TiltConfiguration) {
+        tiltConfiguration.value = tiltConfig
     }
 
     companion object {

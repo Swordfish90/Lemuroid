@@ -3,6 +3,8 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlinx-serialization")
+    id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {

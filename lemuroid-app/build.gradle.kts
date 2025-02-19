@@ -5,6 +5,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlinx-serialization")
     id("androidx.baselineprofile")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {

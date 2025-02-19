@@ -19,14 +19,10 @@
 
 package com.swordfish.lemuroid.app.mobile.feature.game
 
-import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
@@ -34,19 +30,14 @@ import com.swordfish.lemuroid.app.mobile.feature.tilt.CrossTiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.StickTiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.TiltTracker
 import com.swordfish.lemuroid.app.mobile.feature.tilt.TwoButtonsTiltTracker
-import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.common.coroutines.batchWithTime
-import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
-import com.swordfish.lemuroid.lib.controller.ControllerConfig
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.radialgamepad.library.RadialGamePad
 import com.swordfish.radialgamepad.library.event.Event
 import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.touchinput.radial.LemuroidTouchConfigs
 import com.swordfish.touchinput.radial.sensors.TiltSensor
-import dagger.Lazy
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,9 +50,9 @@ import kotlinx.coroutines.launch
 
 // TODO PADS... The vast majority of this class should be migrated out into the compose part.
 class GameActivity : BaseGameActivity() {
-    private lateinit var horizontalDivider: View
-    private lateinit var leftVerticalDivider: View
-    private lateinit var rightVerticalDivider: View
+//    private lateinit var horizontalDivider: View
+//    private lateinit var leftVerticalDivider: View
+//    private lateinit var rightVerticalDivider: View
 
     private var serviceController: GameService.GameServiceController? = null
 
@@ -71,17 +62,17 @@ class GameActivity : BaseGameActivity() {
     private var leftPad: RadialGamePad? = null
     private var rightPad: RadialGamePad? = null
 
-    private val touchControllerJobs = mutableSetOf<Job>()
+//    private val touchControllerJobs = mutableSetOf<Job>()
 
-    private val touchControllerSettingsState = MutableStateFlow<TouchControllerSettingsManager.Settings?>(null)
-    private val insetsState = MutableStateFlow<Rect?>(null)
+    //    private val touchControllerSettingsState = MutableStateFlow<TouchControllerSettingsManager.Settings?>(null)
+//    private val insetsState = MutableStateFlow<Rect?>(null)
     private val orientationState = MutableStateFlow(Configuration.ORIENTATION_PORTRAIT)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        orientationState.value = getCurrentOrientation()
+//        orientationState.value = getCurrentOrientation()
 
-        tiltSensor = TiltSensor(applicationContext)
+//        tiltSensor = TiltSensor(applicationContext)
 
 //        horizontalDivider = findViewById(R.id.horizontaldividier)
 //        leftVerticalDivider = findViewById(R.id.leftverticaldivider)
@@ -91,7 +82,7 @@ class GameActivity : BaseGameActivity() {
 
         startGameService()
 
-        initializeFlows()
+//        initializeFlows()
     }
 
     private fun initializeFlows() {
@@ -99,17 +90,17 @@ class GameActivity : BaseGameActivity() {
 //            initializeTouchControllerFlow()
 //        }
 
-        launchOnState(Lifecycle.State.CREATED) {
-            initializeTiltSensitivityFlow()
-        }
+//        launchOnState(Lifecycle.State.CREATED) {
+//            initializeTiltSensitivityFlow()
+//        }
 
 //        launchOnState(Lifecycle.State.CREATED) {
 //            initializeTouchControllerVisibilityFlow()
 //        }
 
-        launchOnState(Lifecycle.State.RESUMED) {
-            initializeTiltEventsFlow()
-        }
+//        launchOnState(Lifecycle.State.RESUMED) {
+//            initializeTiltEventsFlow()
+//        }
     }
 
 //    private suspend fun initializeTouchControllerVisibilityFlow() {
@@ -119,17 +110,17 @@ class GameActivity : BaseGameActivity() {
 //                rightGamePadContainer.isVisible = it
 //            }
 //    }
-
-    private suspend fun initializeTiltEventsFlow() {
-        tiltSensor
-            .getTiltEvents()
-            .safeCollect { sendTiltEvent(it) }
-    }
-
-    private suspend fun initializeTiltSensitivityFlow() {
-        val sensitivity = settingsManager.tiltSensitivity()
-        tiltSensor.setSensitivity(sensitivity)
-    }
+//
+//    private suspend fun initializeTiltEventsFlow() {
+//        tiltSensor
+//            .getTiltEvents()
+//            .safeCollect { sendTiltEvent(it) }
+//    }
+//
+//    private suspend fun initializeTiltSensitivityFlow() {
+//        val sensitivity = settingsManager.tiltSensitivity()
+//        tiltSensor.setSensitivity(sensitivity)
+//    }
 
 //    private fun initializeInsetsState() {
 //        mainContainerLayout.setOnApplyWindowInsetsListener { _, windowInsets ->
@@ -179,14 +170,14 @@ class GameActivity : BaseGameActivity() {
 //        loadTouchControllerSettings(controllerConfig, orientation)
 //    }
 
-    private fun getCurrentOrientation() = resources.configuration.orientation
+//    private fun getCurrentOrientation() = resources.configuration.orientation
 
     override fun getDialogClass() = GameMenuActivity::class.java
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        orientationState.value = newConfig.orientation
-    }
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        orientationState.value = newConfig.orientation
+//    }
 
 //    private fun setupTouchViews(
 //        controllerConfig: ControllerConfig,
@@ -261,122 +252,122 @@ class GameActivity : BaseGameActivity() {
 //        touchControllerJobs.add(job)
 //    }
 
-    private fun setupTiltActions(touchControllerEvents: Flow<Event>) {
-        val job1 =
-            lifecycleScope.launch {
-                touchControllerEvents
-                    .filterIsInstance<Event.Gesture>()
-                    .filter { it.type == GestureType.TRIPLE_TAP }
-                    .batchWithTime(500)
-                    .filter { it.isNotEmpty() }
-                    .safeCollect { events ->
-                        handleTripleTaps(events)
-                    }
-            }
+//    private fun setupTiltActions(touchControllerEvents: Flow<Event>) {
+//        val job1 =
+//            lifecycleScope.launch {
+//                touchControllerEvents
+//                    .filterIsInstance<Event.Gesture>()
+//                    .filter { it.type == GestureType.TRIPLE_TAP }
+//                    .batchWithTime(500)
+//                    .filter { it.isNotEmpty() }
+//                    .safeCollect { events ->
+//                        handleTripleTaps(events)
+//                    }
+//            }
+//
+//        val job2 =
+//            lifecycleScope.launch {
+//                touchControllerEvents
+//                    .filterIsInstance<Event.Gesture>()
+//                    .filter { it.type == GestureType.FIRST_TOUCH }
+//                    .safeCollect { event ->
+//                        currentTiltTracker?.let { tracker ->
+//                            if (event.id in tracker.trackedIds()) {
+//                                stopTrackingId(tracker)
+//                            }
+//                        }
+//                    }
+//            }
+//
+//        touchControllerJobs.add(job1)
+//        touchControllerJobs.add(job2)
+//    }
 
-        val job2 =
-            lifecycleScope.launch {
-                touchControllerEvents
-                    .filterIsInstance<Event.Gesture>()
-                    .filter { it.type == GestureType.FIRST_TOUCH }
-                    .safeCollect { event ->
-                        currentTiltTracker?.let { tracker ->
-                            if (event.id in tracker.trackedIds()) {
-                                stopTrackingId(tracker)
-                            }
-                        }
-                    }
-            }
+//    private fun setupTouchMenuActions(touchControllerEvents: Flow<Event>) {
+//        VirtualLongPressHandler.initializeTheme(this)
+//
+//        val allMenuButtonEvents =
+//            touchControllerEvents
+//                .filterIsInstance<Event.Button>()
+//                .filter { it.id == KeyEvent.KEYCODE_BUTTON_MODE }
+//                .shareIn(lifecycleScope, SharingStarted.Lazily)
+//
+//        val cancelMenuButtonEvents =
+//            allMenuButtonEvents
+//                .filter { it.action == KeyEvent.ACTION_UP }
+//                .map { Unit }
+//
+//        val job =
+//            lifecycleScope.launch {
+//                allMenuButtonEvents
+//                    .filter { it.action == KeyEvent.ACTION_DOWN }
+//                    .map {
+//                        VirtualLongPressHandler.displayLoading(
+//                            this@GameActivity,
+//                            R.drawable.ic_menu,
+//                            cancelMenuButtonEvents,
+//                        )
+//                    }
+//                    .filter { it }
+//                    .safeCollect {
+//                        displayOptionsDialog()
+//                        simulateTouchControllerHaptic()
+//                    }
+//            }
+//
+//        touchControllerJobs.add(job)
+//    }
 
-        touchControllerJobs.add(job1)
-        touchControllerJobs.add(job2)
-    }
-
-    private fun setupTouchMenuActions(touchControllerEvents: Flow<Event>) {
-        VirtualLongPressHandler.initializeTheme(this)
-
-        val allMenuButtonEvents =
-            touchControllerEvents
-                .filterIsInstance<Event.Button>()
-                .filter { it.id == KeyEvent.KEYCODE_BUTTON_MODE }
-                .shareIn(lifecycleScope, SharingStarted.Lazily)
-
-        val cancelMenuButtonEvents =
-            allMenuButtonEvents
-                .filter { it.action == KeyEvent.ACTION_UP }
-                .map { Unit }
-
-        val job =
-            lifecycleScope.launch {
-                allMenuButtonEvents
-                    .filter { it.action == KeyEvent.ACTION_DOWN }
-                    .map {
-                        VirtualLongPressHandler.displayLoading(
-                            this@GameActivity,
-                            R.drawable.ic_menu,
-                            cancelMenuButtonEvents,
-                        )
-                    }
-                    .filter { it }
-                    .safeCollect {
-                        displayOptionsDialog()
-                        simulateTouchControllerHaptic()
-                    }
-            }
-
-        touchControllerJobs.add(job)
-    }
-
-    private fun handleTripleTaps(events: List<Event.Gesture>) {
-        val eventsTracker =
-            when (events.map { it.id }.toSet()) {
-                setOf(LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK) ->
-                    StickTiltTracker(
-                        LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK,
-                    )
-                setOf(LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK) ->
-                    StickTiltTracker(
-                        LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK,
-                    )
-                setOf(LemuroidTouchConfigs.MOTION_SOURCE_DPAD) ->
-                    CrossTiltTracker(
-                        LemuroidTouchConfigs.MOTION_SOURCE_DPAD,
-                    )
-                setOf(LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK) ->
-                    CrossTiltTracker(
-                        LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK,
-                    )
-                setOf(LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD) ->
-                    CrossTiltTracker(
-                        LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD,
-                    )
-                setOf(
-                    KeyEvent.KEYCODE_BUTTON_L1,
-                    KeyEvent.KEYCODE_BUTTON_R1,
-                ),
-                ->
-                    TwoButtonsTiltTracker(
-                        KeyEvent.KEYCODE_BUTTON_L1,
-                        KeyEvent.KEYCODE_BUTTON_R1,
-                    )
-                setOf(
-                    KeyEvent.KEYCODE_BUTTON_L2,
-                    KeyEvent.KEYCODE_BUTTON_R2,
-                ),
-                ->
-                    TwoButtonsTiltTracker(
-                        KeyEvent.KEYCODE_BUTTON_L2,
-                        KeyEvent.KEYCODE_BUTTON_R2,
-                    )
-                else -> null
-            }
-
-        eventsTracker?.let { startTrackingId(eventsTracker) }
-    }
+//    private fun handleTripleTaps(events: List<Event.Gesture>) {
+//        val eventsTracker =
+//            when (events.map { it.id }.toSet()) {
+//                setOf(LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK) ->
+//                    StickTiltTracker(
+//                        LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK,
+//                    )
+//                setOf(LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK) ->
+//                    StickTiltTracker(
+//                        LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK,
+//                    )
+//                setOf(LemuroidTouchConfigs.MOTION_SOURCE_DPAD) ->
+//                    CrossTiltTracker(
+//                        LemuroidTouchConfigs.MOTION_SOURCE_DPAD,
+//                    )
+//                setOf(LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK) ->
+//                    CrossTiltTracker(
+//                        LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK,
+//                    )
+//                setOf(LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD) ->
+//                    CrossTiltTracker(
+//                        LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD,
+//                    )
+//                setOf(
+//                    KeyEvent.KEYCODE_BUTTON_L1,
+//                    KeyEvent.KEYCODE_BUTTON_R1,
+//                ),
+//                ->
+//                    TwoButtonsTiltTracker(
+//                        KeyEvent.KEYCODE_BUTTON_L1,
+//                        KeyEvent.KEYCODE_BUTTON_R1,
+//                    )
+//                setOf(
+//                    KeyEvent.KEYCODE_BUTTON_L2,
+//                    KeyEvent.KEYCODE_BUTTON_R2,
+//                ),
+//                ->
+//                    TwoButtonsTiltTracker(
+//                        KeyEvent.KEYCODE_BUTTON_L2,
+//                        KeyEvent.KEYCODE_BUTTON_R2,
+//                    )
+//                else -> null
+//            }
+//
+//        eventsTracker?.let { startTrackingId(eventsTracker) }
+//    }
 
     override fun onDestroy() {
         stopGameService()
-        touchControllerJobs.clear()
+//        touchControllerJobs.clear()
         super.onDestroy()
     }
 
@@ -450,42 +441,42 @@ class GameActivity : BaseGameActivity() {
 //        }
 //    }
 
-    override fun onPause() {
-        super.onPause()
-        tiltSensor.isAllowedToRun = false
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        tiltSensor.isAllowedToRun = false
+//    }
 
-    override fun onResume() {
-        super.onResume()
-        tiltSensor.isAllowedToRun = true
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        tiltSensor.isAllowedToRun = true
+//    }
 
-    private fun sendTiltEvent(sensorValues: FloatArray) {
-        currentTiltTracker?.let {
-            val xTilt = (sensorValues[0] + 1f) / 2f
-            val yTilt = (sensorValues[1] + 1f) / 2f
-            it.updateTracking(xTilt, yTilt, sequenceOf(leftPad, rightPad).filterNotNull())
-        }
-    }
+//    private fun sendTiltEvent(sensorValues: FloatArray) {
+//        currentTiltTracker?.let {
+//            val xTilt = (sensorValues[0] + 1f) / 2f
+//            val yTilt = (sensorValues[1] + 1f) / 2f
+//            it.updateTracking(xTilt, yTilt, sequenceOf(leftPad, rightPad).filterNotNull())
+//        }
+//    }
+//
+//    private fun stopTrackingId(trackedEvent: TiltTracker) {
+//        currentTiltTracker = null
+//        tiltSensor.shouldRun = false
+//        trackedEvent.stopTracking(sequenceOf(leftPad, rightPad).filterNotNull())
+//    }
+//
+//    private fun startTrackingId(trackedEvent: TiltTracker) {
+//        if (currentTiltTracker != trackedEvent) {
+//            currentTiltTracker?.let { stopTrackingId(it) }
+//            currentTiltTracker = trackedEvent
+//            tiltSensor.shouldRun = true
+//            simulateTouchControllerHaptic()
+//        }
+//    }
 
-    private fun stopTrackingId(trackedEvent: TiltTracker) {
-        currentTiltTracker = null
-        tiltSensor.shouldRun = false
-        trackedEvent.stopTracking(sequenceOf(leftPad, rightPad).filterNotNull())
-    }
-
-    private fun startTrackingId(trackedEvent: TiltTracker) {
-        if (currentTiltTracker != trackedEvent) {
-            currentTiltTracker?.let { stopTrackingId(it) }
-            currentTiltTracker = trackedEvent
-            tiltSensor.shouldRun = true
-            simulateTouchControllerHaptic()
-        }
-    }
-
-    private fun simulateTouchControllerHaptic() {
-        leftPad?.performHapticFeedback()
-    }
+//    private fun simulateTouchControllerHaptic() {
+//        leftPad?.performHapticFeedback()
+//    }
 
 //    private suspend fun storeTouchControllerSettings(
 //        controllerConfig: ControllerConfig,

@@ -41,6 +41,7 @@ import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
+import com.swordfish.lemuroid.common.kotlin.serializable
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
 import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.longAnimationDuration
@@ -67,6 +68,7 @@ import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.radialgamepad.library.math.MathUtils
 import com.swordfish.touchinput.radial.LemuroidTouchConfigs
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import dagger.Lazy
 import gg.jam.jampadcompose.inputevents.InputEvent
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -160,6 +162,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpExceptionsHandler()
+        lifecycle.addObserver(gameScreenViewModel)
 
         setContent {
             AppTheme {
@@ -490,7 +493,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             ?.let { LemuroidCoreOption(exposedSetting, it) }
     }
 
-    protected fun displayOptionsDialog() {
+    private fun displayOptionsDialog(tiltConfiguration: TiltConfiguration) {
         if (loadingState.value) return
 
         val coreOptions = getCoreOptions()
@@ -503,6 +506,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             systemCoreConfig.exposedAdvancedSettings
                 .mapNotNull { transformExposedSetting(it, coreOptions) }
 
+        val tiltConfigurations = controllerConfigsState.value[0]
+            ?.tiltConfigurations
+            ?: emptyList()
+
         val intent =
             Intent(this, getDialogClass()).apply {
                 this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
@@ -514,6 +521,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, retroGameView?.audioEnabled)
                 this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
                 this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD, (retroGameView?.frameSpeed ?: 1) > 1)
+                this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, tiltConfiguration)
+                // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
+                this.putExtra(GameMenuContract.EXTRA_TILT_ALL_CONFIGS, tiltConfigurations.toTypedArray())
             }
         startActivityForResult(intent, DIALOG_REQUEST)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -626,7 +636,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         gameScreenViewModel.getUiEffects()
             .collect {
                 when (it) {
-                    is GameScreenViewModel.UiEffect.ShowMenu -> displayOptionsDialog()
+                    is GameScreenViewModel.UiEffect.ShowMenu -> displayOptionsDialog(it.tiltConfiguration)
                 }
             }
     }
@@ -669,7 +679,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
                 if (port == 0) {
                     if (bindKeyCode == KeyEvent.KEYCODE_BUTTON_MODE && action == KeyEvent.ACTION_DOWN) {
-                        displayOptionsDialog()
+                        displayOptionsDialog(TiltConfiguration.Disabled)
                         return@safeCollect
                     }
 
@@ -680,7 +690,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     }
 
                     if (shortcut.isNotEmpty() && pressedKeys.containsAll(shortcut)) {
-                        displayOptionsDialog()
+                        displayOptionsDialog(TiltConfiguration.Disabled)
                         return@safeCollect
                     }
                 }
@@ -1056,6 +1066,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
                 gameScreenViewModel.showEditControls(true)
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_TILT_CONFIG) == true) {
+                val tiltConfig = data.serializable<TiltConfiguration>(GameMenuContract.RESULT_CHANGE_TILT_CONFIG)
+                gameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
             }
         }
     }
