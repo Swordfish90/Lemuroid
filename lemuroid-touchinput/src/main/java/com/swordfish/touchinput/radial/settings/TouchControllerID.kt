@@ -1,6 +1,58 @@
 package com.swordfish.touchinput.radial.settings
 
-import com.swordfish.touchinput.radial.LemuroidTouchConfigs
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.swordfish.touchinput.radial.layouts.Arcade4Left
+import com.swordfish.touchinput.radial.layouts.Arcade4Right
+import com.swordfish.touchinput.radial.layouts.Arcade6Left
+import com.swordfish.touchinput.radial.layouts.Arcade6Right
+import com.swordfish.touchinput.radial.layouts.Atari2600Left
+import com.swordfish.touchinput.radial.layouts.Atari2600Right
+import com.swordfish.touchinput.radial.layouts.Atari7800Left
+import com.swordfish.touchinput.radial.layouts.Atari7800Right
+import com.swordfish.touchinput.radial.layouts.DOSLeft
+import com.swordfish.touchinput.radial.layouts.DOSRight
+import com.swordfish.touchinput.radial.layouts.DesmumeLeft
+import com.swordfish.touchinput.radial.layouts.DesmumeRight
+import com.swordfish.touchinput.radial.layouts.GBALeft
+import com.swordfish.touchinput.radial.layouts.GBARight
+import com.swordfish.touchinput.radial.layouts.GBLeft
+import com.swordfish.touchinput.radial.layouts.GBRight
+import com.swordfish.touchinput.radial.layouts.GGLeft
+import com.swordfish.touchinput.radial.layouts.GGRight
+import com.swordfish.touchinput.radial.layouts.Genesis3Left
+import com.swordfish.touchinput.radial.layouts.Genesis3Right
+import com.swordfish.touchinput.radial.layouts.Genesis6Left
+import com.swordfish.touchinput.radial.layouts.Genesis6Right
+import com.swordfish.touchinput.radial.layouts.LynxLeft
+import com.swordfish.touchinput.radial.layouts.LynxRight
+import com.swordfish.touchinput.radial.layouts.MelonDSLeft
+import com.swordfish.touchinput.radial.layouts.MelonDSRight
+import com.swordfish.touchinput.radial.layouts.N64Left
+import com.swordfish.touchinput.radial.layouts.N64Right
+import com.swordfish.touchinput.radial.layouts.NESLeft
+import com.swordfish.touchinput.radial.layouts.NESRight
+import com.swordfish.touchinput.radial.layouts.NGPLeft
+import com.swordfish.touchinput.radial.layouts.NGPRight
+import com.swordfish.touchinput.radial.layouts.Nintendo3DSLeft
+import com.swordfish.touchinput.radial.layouts.Nintendo3DSRight
+import com.swordfish.touchinput.radial.layouts.PCELeft
+import com.swordfish.touchinput.radial.layouts.PCERight
+import com.swordfish.touchinput.radial.layouts.PSPLeft
+import com.swordfish.touchinput.radial.layouts.PSPRight
+import com.swordfish.touchinput.radial.layouts.PSXDualShockLeft
+import com.swordfish.touchinput.radial.layouts.PSXDualShockRight
+import com.swordfish.touchinput.radial.layouts.PSXLeft
+import com.swordfish.touchinput.radial.layouts.PSXRight
+import com.swordfish.touchinput.radial.layouts.SMSLeft
+import com.swordfish.touchinput.radial.layouts.SMSRight
+import com.swordfish.touchinput.radial.layouts.SNESLeft
+import com.swordfish.touchinput.radial.layouts.SNESRight
+import com.swordfish.touchinput.radial.layouts.WSLandscapeLeft
+import com.swordfish.touchinput.radial.layouts.WSLandscapeRight
+import com.swordfish.touchinput.radial.layouts.WSPortraitLeft
+import com.swordfish.touchinput.radial.layouts.WSPortraitRight
+import gg.jam.jampadcompose.JamPadScope
 
 enum class TouchControllerID {
     GB,
@@ -27,150 +79,140 @@ enum class TouchControllerID {
     DOS,
     WS_LANDSCAPE,
     WS_PORTRAIT,
-    NINTENDO_3DS,
-    ;
+    NINTENDO_3DS;
 
     class Config(
-        val leftConfig: LemuroidTouchConfigs.Kind,
-        val rightConfig: LemuroidTouchConfigs.Kind,
-        val leftScale: Float = 1.0f,
-        val rightScale: Float = 1.0f,
-        val verticalMarginDP: Float = 0f,
+        val leftComposable: @Composable JamPadScope.(modifier: Modifier, settings: TouchControllerSettingsManager.Settings) -> Unit,
+        val rightComposable: @Composable JamPadScope.(modifier: Modifier, settings: TouchControllerSettingsManager.Settings) -> Unit,
     )
 
     companion object {
         fun getConfig(id: TouchControllerID): Config {
             return when (id) {
-                GB ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.GB_LEFT,
-                        LemuroidTouchConfigs.Kind.GB_RIGHT,
-                    )
-                NES ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.NES_LEFT,
-                        LemuroidTouchConfigs.Kind.NES_RIGHT,
-                    )
-                DESMUME ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.DESMUME_LEFT,
-                        LemuroidTouchConfigs.Kind.DESMUME_RIGHT,
-                    )
-                MELONDS ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.MELONDS_NDS_LEFT,
-                        LemuroidTouchConfigs.Kind.MELONDS_NDS_RIGHT,
-                    )
-                PSX ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.PSX_LEFT,
-                        LemuroidTouchConfigs.Kind.PSX_RIGHT,
-                    )
-                PSX_DUALSHOCK ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.PSX_DUALSHOCK_LEFT,
-                        LemuroidTouchConfigs.Kind.PSX_DUALSHOCK_RIGHT,
-                    )
-                N64 ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.N64_LEFT,
-                        LemuroidTouchConfigs.Kind.N64_RIGHT,
-                        verticalMarginDP = 8f,
-                    )
-                PSP ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.PSP_LEFT,
-                        LemuroidTouchConfigs.Kind.PSP_RIGHT,
-                    )
-                SNES ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.SNES_LEFT,
-                        LemuroidTouchConfigs.Kind.SNES_RIGHT,
-                    )
-                GBA ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.GBA_LEFT,
-                        LemuroidTouchConfigs.Kind.GBA_RIGHT,
-                    )
-                GENESIS_3 ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.GENESIS_3_LEFT,
-                        LemuroidTouchConfigs.Kind.GENESIS_3_RIGHT,
-                    )
-                GENESIS_6 ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.GENESIS_6_LEFT,
-                        LemuroidTouchConfigs.Kind.GENESIS_6_RIGHT,
-                        1.0f,
-                        1.2f,
-                    )
-                ATARI2600 ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.ATARI2600_LEFT,
-                        LemuroidTouchConfigs.Kind.ATARI2600_RIGHT,
-                    )
-                SMS ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.SMS_LEFT,
-                        LemuroidTouchConfigs.Kind.SMS_RIGHT,
-                    )
-                GG ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.GG_LEFT,
-                        LemuroidTouchConfigs.Kind.GG_RIGHT,
-                    )
-                ARCADE_4 ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.ARCADE_4_LEFT,
-                        LemuroidTouchConfigs.Kind.ARCADE_4_RIGHT,
-                    )
-                ARCADE_6 ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.ARCADE_6_LEFT,
-                        LemuroidTouchConfigs.Kind.ARCADE_6_RIGHT,
-                        1.0f,
-                        1.2f,
-                    )
-                LYNX ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.LYNX_LEFT,
-                        LemuroidTouchConfigs.Kind.LYNX_RIGHT,
-                    )
-                ATARI7800 ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.ATARI7800_LEFT,
-                        LemuroidTouchConfigs.Kind.ATARI7800_RIGHT,
-                    )
-                PCE ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.PCE_LEFT,
-                        LemuroidTouchConfigs.Kind.PCE_RIGHT,
-                    )
-                NGP ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.NGP_LEFT,
-                        LemuroidTouchConfigs.Kind.NGP_RIGHT,
-                    )
-                DOS ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.DOS_LEFT,
-                        LemuroidTouchConfigs.Kind.DOS_RIGHT,
-                    )
-                WS_LANDSCAPE ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.WS_LANDSCAPE_LEFT,
-                        LemuroidTouchConfigs.Kind.WS_LANDSCAPE_RIGHT,
-                    )
-                WS_PORTRAIT ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.WS_PORTRAIT_LEFT,
-                        LemuroidTouchConfigs.Kind.WS_PORTRAIT_RIGHT,
-                    )
-                NINTENDO_3DS ->
-                    Config(
-                        LemuroidTouchConfigs.Kind.NINTENDO_3DS_LEFT,
-                        LemuroidTouchConfigs.Kind.NINTENDO_3DS_RIGHT,
-                    )
+                GB -> Config(
+                    { modifier, settings -> GBLeft(modifier, settings) },
+                    { modifier, settings -> GBRight(modifier, settings) }
+                )
+
+                NES -> Config(
+                    { modifier, settings -> NESLeft(modifier, settings) },
+                    { modifier, settings -> NESRight(modifier, settings) }
+                )
+
+                DESMUME -> Config(
+                    { modifier, settings -> DesmumeLeft(modifier, settings) },
+                    { modifier, settings -> DesmumeRight(modifier, settings) }
+                )
+
+                MELONDS -> Config(
+                    { modifier, settings -> MelonDSLeft(modifier, settings) },
+                    { modifier, settings -> MelonDSRight(modifier, settings) }
+                )
+
+                PSX -> Config(
+                    { modifier, settings -> PSXLeft(modifier, settings) },
+                    { modifier, settings -> PSXRight(modifier, settings) }
+                )
+
+                PSX_DUALSHOCK -> Config(
+                    { modifier, settings -> PSXDualShockLeft(modifier, settings) },
+                    { modifier, settings -> PSXDualShockRight(modifier, settings) }
+                )
+
+                N64 -> Config(
+                    { modifier, settings -> N64Left(modifier, settings) },
+                    { modifier, settings -> N64Right(modifier, settings) }
+                )
+
+                PSP -> Config(
+                    { modifier, settings -> PSPLeft(modifier, settings) },
+                    { modifier, settings -> PSPRight(modifier, settings) }
+                )
+
+                SNES -> Config(
+                    { modifier, settings -> SNESLeft(modifier, settings) },
+                    { modifier, settings -> SNESRight(modifier, settings) }
+                )
+
+                GBA -> Config(
+                    { modifier, settings -> GBALeft(modifier, settings) },
+                    { modifier, settings -> GBARight(modifier, settings) }
+                )
+
+                GENESIS_3 -> Config(
+                    { modifier, settings -> Genesis3Left(modifier, settings) },
+                    { modifier, settings -> Genesis3Right(modifier, settings) }
+                )
+
+                GENESIS_6 -> Config(
+                    { modifier, settings -> Genesis6Left(modifier, settings) },
+                    { modifier, settings -> Genesis6Right(modifier, settings) }
+                )
+
+                ATARI2600 -> Config(
+                    { modifier, settings -> Atari2600Left(modifier, settings) },
+                    { modifier, settings -> Atari2600Right(modifier, settings) }
+                )
+
+                SMS -> Config(
+                    { modifier, settings -> SMSLeft(modifier, settings) },
+                    { modifier, settings -> SMSRight(modifier, settings) }
+                )
+
+                GG -> Config(
+                    { modifier, settings -> GGLeft(modifier, settings) },
+                    { modifier, settings -> GGRight(modifier, settings) }
+                )
+
+                ARCADE_4 -> Config(
+                    { modifier, settings -> Arcade4Left(modifier, settings) },
+                    { modifier, settings -> Arcade4Right(modifier, settings) }
+                )
+
+                ARCADE_6 -> Config(
+                    { modifier, settings -> Arcade6Left(modifier, settings) },
+                    { modifier, settings -> Arcade6Right(modifier, settings) }
+                )
+
+                LYNX -> Config(
+                    { modifier, settings -> LynxLeft(modifier, settings) },
+                    { modifier, settings -> LynxRight(modifier, settings) }
+                )
+
+                ATARI7800 -> Config(
+                    { modifier, settings -> Atari7800Left(modifier, settings) },
+                    { modifier, settings -> Atari7800Right(modifier, settings) }
+                )
+
+                PCE -> Config(
+                    { modifier, settings -> PCELeft(modifier, settings) },
+                    { modifier, settings -> PCERight(modifier, settings) }
+                )
+
+                NGP -> Config(
+                    { modifier, settings -> NGPLeft(modifier, settings) },
+                    { modifier, settings -> NGPRight(modifier, settings) }
+                )
+
+                DOS -> Config(
+                    { modifier, settings -> DOSLeft(modifier, settings) },
+                    { modifier, settings -> DOSRight(modifier, settings) }
+                )
+
+                WS_LANDSCAPE -> Config(
+                    { modifier, settings -> WSLandscapeLeft(modifier, settings) },
+                    { modifier, settings -> WSLandscapeRight(modifier, settings) }
+                )
+
+                WS_PORTRAIT -> Config(
+                    { modifier, settings -> WSPortraitLeft(modifier, settings) },
+                    { modifier, settings -> WSPortraitRight(modifier, settings) }
+                )
+
+                NINTENDO_3DS -> Config(
+                    { modifier, settings -> Nintendo3DSLeft(modifier, settings) },
+                    { modifier, settings -> Nintendo3DSRight(modifier, settings) }
+                )
             }
         }
     }

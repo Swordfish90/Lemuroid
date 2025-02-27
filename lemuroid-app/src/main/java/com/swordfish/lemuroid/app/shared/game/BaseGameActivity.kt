@@ -12,7 +12,7 @@ import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
+import androidx.compose.material3.MaterialTheme
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.BuildConfig
@@ -45,6 +45,7 @@ import com.swordfish.lemuroid.common.kotlin.serializable
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
 import com.swordfish.lemuroid.common.kotlin.zipOnKeys
 import com.swordfish.lemuroid.common.longAnimationDuration
+import com.swordfish.lemuroid.common.view.disableTouchEvents
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
@@ -76,7 +77,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -136,14 +136,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject
     lateinit var sharedPreferences: Lazy<SharedPreferences>
 
-    private val gameScreenViewModel: GameScreenViewModel by viewModels {
-        GameScreenViewModel.Factory(
-            applicationContext,
-            settingsManager,
-            inputDeviceManager,
-            sharedPreferences.get()
-        )
-    }
+    private lateinit var gameScreenViewModel: GameScreenViewModel
 
     private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
 
@@ -157,30 +150,49 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private val loadingState = MutableStateFlow(false)
     private val loadingMessageStateFlow = MutableStateFlow("")
+
+    // TODO PADS... This was migrated to the viewmodel. It should be centralized there.
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpExceptionsHandler()
-        lifecycle.addObserver(gameScreenViewModel)
-
-        setContent {
-            AppTheme {
-                val gamePadConfig = getTouchControllerType().collectAsState(null)
-
-                GameScreen(
-                    viewModel = gameScreenViewModel,
-                    onVirtualGamePadInputEvents = this::handleVirtualInputEvent,
-                    gamePadConfig = gamePadConfig.value
-                ) { gameData, retroViewData ->
-                    initializeRetroGameView(applicationContext, gameData, retroViewData)
-                }
-            }
-        }
 
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
         system = GameSystem.findById(game.systemId)
+
+        val viewModel by viewModels<GameScreenViewModel> {
+            GameScreenViewModel.Factory(
+                applicationContext,
+                settingsManager,
+                inputDeviceManager,
+                controllerConfigsManager,
+                system,
+                systemCoreConfig,
+                sharedPreferences.get()
+            )
+        }
+
+        gameScreenViewModel = viewModel
+
+        lifecycle.addObserver(gameScreenViewModel)
+
+        setContent {
+            AppTheme {
+                GameScreen(
+                    viewModel = gameScreenViewModel,
+                    onVirtualGamePadInputEvents = this::handleVirtualInputEvent,
+                ) { gameData, retroViewData ->
+                    initializeRetroGameView(
+                        applicationContext,
+                        system,
+                        gameData,
+                        retroViewData,
+                    )
+                }
+            }
+        }
 
         lifecycleScope.launch {
             gameScreenViewModel.loadGame(
@@ -253,13 +265,21 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    private fun initializeRetroGameView(context: Context, gameData: GameLoader.GameData, data: GLRetroViewData): GLRetroView {
+    private fun initializeRetroGameView(
+        context: Context,
+        system: GameSystem,
+        gameData: GameLoader.GameData,
+        data: GLRetroViewData
+    ): GLRetroView {
         val result = GLRetroView(context, data)
             .apply {
                 isFocusable = false
                 isFocusableInTouchMode = false
             }
 
+        if (!system.hasTouchScreen) {
+            result.disableTouchEvents()
+        }
 
         lifecycle.addObserver(result)
 
@@ -340,6 +360,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             waitRetroGameViewInitialized()
             val controllers = controllerConfigsManager.getControllerConfigs(system.id, systemCoreConfig)
             controllerConfigsState.value = controllers
+            gameScreenViewModel.updateControllerConfigState()
         } catch (e: Exception) {
             Timber.e(e)
         }
@@ -409,9 +430,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
-    fun getControllerType(): Flow<Map<Int, ControllerConfig>> {
-        return controllerConfigsState
-    }
+//    fun getControllerType(): Flow<Map<Int, ControllerConfig>> {
+//        return controllerConfigsState
+//    }
 
     // On some cores unserialize fails with no reason. So we need to try multiple times.
     private suspend fun restoreAutoSaveAsync(saveState: SaveState) {
@@ -1118,13 +1139,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         performErrorFinish(messageId)
     }
-
-    // TODO PADS... This should be migrated to the viewmodel
-    private fun getTouchControllerType() =
-        getControllerType()
-            .map { it[0] }
-            .filterNotNull()
-            .distinctUntilChanged()
 
     companion object {
         const val DIALOG_REQUEST = 100

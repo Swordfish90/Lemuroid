@@ -45,10 +45,7 @@ object LemuroidTouchOverlayThemes {
         )
     }
 
-    private fun withAlpha(
-        color: Int,
-        alpha: Float,
-    ): Int {
+    private fun withAlpha(color: Int, alpha: Float): Int {
         val alphaInt = (alpha * 255).toInt()
         return MaterialColors.compositeARGBWithAlpha(color, alphaInt)
     }

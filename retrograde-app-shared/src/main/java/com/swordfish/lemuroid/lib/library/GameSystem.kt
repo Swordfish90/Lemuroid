@@ -37,6 +37,7 @@ data class GameSystem(
     val supportedExtensions: List<String> = uniqueExtensions,
     val hasMultiDiskSupport: Boolean = false,
     val fastForwardSupport: Boolean = true,
+    val hasTouchScreen: Boolean = false,
 ) {
     companion object {
         private val SYSTEMS =
@@ -1020,6 +1021,7 @@ data class GameSystem(
                         ),
                     ),
                     uniqueExtensions = listOf("nds"),
+                    hasTouchScreen = true,
                 ),
                 GameSystem(
                     SystemID.ATARI7800,
@@ -1297,6 +1299,7 @@ data class GameSystem(
                         ),
                     ),
                     uniqueExtensions = listOf("3ds"),
+                    hasTouchScreen = true,
                 ),
             )
 

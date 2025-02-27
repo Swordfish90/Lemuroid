@@ -200,7 +200,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         val upscale8Bits =
@@ -209,7 +209,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         val upscale16BitsMobile =
@@ -218,7 +218,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         val upscale16Bits =
@@ -227,7 +227,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         val upscale32Bits =
@@ -236,7 +236,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         val modern =
@@ -245,7 +245,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         return getConfigForSystem(

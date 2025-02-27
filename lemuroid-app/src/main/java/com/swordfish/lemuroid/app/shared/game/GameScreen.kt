@@ -4,12 +4,6 @@ package com.swordfish.lemuroid.app.shared.game
 
 import android.view.KeyEvent
 import android.view.View
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -23,10 +17,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.OpenInFull
@@ -34,18 +27,16 @@ import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -60,23 +51,19 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
-import com.swordfish.lemuroid.lib.controller.ControllerConfig
+import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.touchinput.controller.R
-import com.swordfish.touchinput.radial.layouts.ComposeTouchLayouts.MOTION_SOURCE_DPAD
-import com.swordfish.touchinput.radial.layouts.LemuroidButtonBackground
-import com.swordfish.touchinput.radial.layouts.LemuroidButtonForeground
-import com.swordfish.touchinput.radial.layouts.PSXDualShockLeft
-import com.swordfish.touchinput.radial.layouts.PSXDualShockRight
+import com.swordfish.touchinput.radial.LemuroidPadTheme
+import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.jam.jampadcompose.JamPad
-import gg.jam.jampadcompose.ids.DiscreteDirectionId
+import gg.jam.jampadcompose.config.HapticFeedbackType
 import gg.jam.jampadcompose.inputevents.InputEvent
 import gg.jam.jampadcompose.inputstate.InputState
-import kotlinx.coroutines.delay
-import timber.log.Timber
 
 private const val CONSTRAINTS_LEFT_PAD = "leftPad"
 private const val CONSTRAINTS_RIGHT_PAD = "rightPad"
@@ -87,7 +74,6 @@ private const val CONSTRAINTS_GAME_CONTAINER = "gameContainer"
 fun GameScreen(
     viewModel: GameScreenViewModel,
     onVirtualGamePadInputEvents: (List<InputEvent>) -> Unit,
-    gamePadConfig: ControllerConfig?,
     buildRetroView: (GameLoader.GameData, GLRetroViewData) -> View,
 ) {
     val uiState = viewModel.getUiState().collectAsState(GameScreenViewModel.UiState.Loading("")).value
@@ -106,7 +92,6 @@ fun GameScreen(
                 viewModel,
                 buildRetroView,
                 onVirtualGamePadInputEvents,
-                gamePadConfig?.allowTouchOverlay ?: true,
                 uiState,
             )
         }
@@ -120,7 +105,6 @@ private fun GameScreenRunning(
     viewModel: GameScreenViewModel,
     buildRetroView: (GameLoader.GameData, GLRetroViewData) -> View,
     onVirtualGamePadInputEvents: (List<InputEvent>) -> Unit,
-    allowTouchOverlay: Boolean,
     state: GameScreenViewModel.UiState.Running,
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -135,8 +119,8 @@ private fun GameScreenRunning(
             viewModel.onScreenOrientationChanged(orientation)
         }
 
+        val touchControllerConfig = viewModel.getTouchControllerConfig().collectAsState(null)
         val isTouchControlsVisible = viewModel.isTouchControllerVisible().collectAsState(false)
-
         val touchControllerSettings = viewModel
             .getTouchControlsSettings(
                 LocalDensity.current,
@@ -149,6 +133,16 @@ private fun GameScreenRunning(
         val tiltSimulatedStates = viewModel.getSimulatedTiltEvents().collectAsState(InputState())
         val tiltSimulatedControls = remember { derivedStateOf { tiltConfiguration.value.controlIds() } }
 
+        val touchGamePads = touchControllerConfig.value?.getTouchControllerConfig()
+        val leftGamePad = touchGamePads?.leftComposable
+        val rightGamePad = touchGamePads?.rightComposable
+
+        val padHapticFeedback = when (state.hapticFeedbackMode) {
+            HapticFeedbackMode.NONE -> HapticFeedbackType.NONE
+            HapticFeedbackMode.PRESS -> HapticFeedbackType.PRESS
+            HapticFeedbackMode.PRESS_RELEASE -> HapticFeedbackType.PRESS_RELEASE
+        }
+
         JamPad(
             modifier = Modifier.fillMaxSize(),
             onInputEvents = { events ->
@@ -158,35 +152,44 @@ private fun GameScreenRunning(
                 }
                 onVirtualGamePadInputEvents(events)
             },
+            hapticFeedbackType = padHapticFeedback,
             simulatedState = tiltSimulatedStates,
             simulatedControlIds = tiltSimulatedControls
         ) {
             ConstraintLayout(
                 modifier = Modifier.fillMaxSize(),
-                constraintSet = buildConstraintSet(isLandscape, allowTouchOverlay)
+                constraintSet = buildConstraintSet(
+                    isLandscape,
+                    touchControllerConfig.value?.allowTouchOverlay ?: true
+                )
             ) {
                 AndroidView(
-                    modifier = Modifier.layoutId(CONSTRAINTS_GAME_VIEW)
+                    modifier = Modifier
+                        .layoutId(CONSTRAINTS_GAME_VIEW)
                         .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
                     factory = { buildRetroView(state.gameData, state.gameViewData) }
                 )
 
                 if (touchControllerSettings != null && isTouchControlsVisible.value) {
-                    PSXDualShockLeft(
-                        modifier = Modifier.layoutId(CONSTRAINTS_LEFT_PAD),
-                        settings = touchControllerSettings
-                    )
-                    PSXDualShockRight(
-                        modifier = Modifier.layoutId(CONSTRAINTS_RIGHT_PAD),
-                        settings = touchControllerSettings
-                    )
+                    CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme(MaterialTheme.colorScheme)) {
+                        leftGamePad?.invoke(
+                            this,
+                            Modifier.layoutId(CONSTRAINTS_LEFT_PAD),
+                            touchControllerSettings,
+                        )
+                        rightGamePad?.invoke(
+                            this,
+                            Modifier.layoutId(CONSTRAINTS_RIGHT_PAD),
+                            touchControllerSettings
+                        )
 
-                    GameScreenRunningCentralMenu(
-                        modifier = Modifier.layoutId(CONSTRAINTS_GAME_CONTAINER),
-                        touchControllerSettings = touchControllerSettings,
-                        viewModel = viewModel,
-                        state = state
-                    )
+                        GameScreenRunningCentralMenu(
+                            modifier = Modifier.layoutId(CONSTRAINTS_GAME_CONTAINER),
+                            touchControllerSettings = touchControllerSettings,
+                            viewModel = viewModel,
+                            state = state
+                        )
+                    }
                 }
             }
         }
@@ -201,55 +204,15 @@ private fun GameScreenRunningCentralMenu(
     state: GameScreenViewModel.UiState.Running,
 ) {
     Box(
-        modifier = modifier
-            .width(200.dp)
-            .wrapContentHeight(),
+        modifier = modifier.wrapContentSize(),
         contentAlignment = Alignment.Center
     ) {
-        MenuPressedFeedback(state)
-        MenuEditTouchControls(viewModel, state, touchControllerSettings)
-    }
-}
-
-@Composable
-private fun MenuPressedFeedback(state: GameScreenViewModel.UiState.Running) {
-    Box(modifier = Modifier.size(64.dp)) {
-        var shouldShow by remember { mutableStateOf(false) }
-        var progress by remember { mutableFloatStateOf(0f) }
-
-        val animatedProgress by animateFloatAsState(
-            targetValue = progress,
-            animationSpec = tween(
-                durationMillis = GameScreenViewModel.MENU_LOADING_ANIMATION_MILLIS,
-                easing = LinearEasing
-            ),
-            label = "progress",
-            finishedListener = {
-                if (progress > 0.5) {
-                    shouldShow = false
-                }
-            }
+        LemuroidButtonPressFeedback(
+            pressed = state.menuPressed,
+            animationDurationMillis = GameScreenViewModel.MENU_LOADING_ANIMATION_MILLIS,
+            icon = R.drawable.button_menu,
         )
-
-        LaunchedEffect(state.menuPressed) {
-            if (state.menuPressed) {
-                shouldShow = true
-                progress = 1f
-            } else {
-                progress = 0f
-                delay(GameScreenViewModel.MENU_LOADING_ANIMATION_MILLIS.toLong())
-                shouldShow = false
-            }
-        }
-
-        AnimatedVisibility(shouldShow, enter = fadeIn(), exit = fadeOut()) {
-            LemuroidButtonBackground()
-            LemuroidButtonForeground(pressed = false, icon = R.drawable.button_menu)
-            CircularProgressIndicator(
-                modifier = Modifier.fillMaxSize(),
-                progress = { animatedProgress }
-            )
-        }
+        MenuEditTouchControls(viewModel, state, touchControllerSettings)
     }
 }
 

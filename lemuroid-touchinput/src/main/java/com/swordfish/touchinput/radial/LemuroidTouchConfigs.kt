@@ -13,6 +13,7 @@ import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.radialgamepad.library.haptics.HapticConfig
 import com.swordfish.touchinput.controller.R
 
+// TODO PADS... This is deprecated and we should get rid of it
 object LemuroidTouchConfigs {
     private const val DEFAULT_STICK_ROTATION = 8f
 

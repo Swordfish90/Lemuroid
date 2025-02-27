@@ -14,11 +14,15 @@ import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
+import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
+import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
+import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.libretrodroid.GLRetroViewData
@@ -43,21 +47,23 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @OptIn(FlowPreview::class)
 class GameScreenViewModel(
     private val appContext: Context,
     private val settingsManager: SettingsManager,
     private val inputDeviceManager: InputDeviceManager,
+    private val controllerConfigsManager: ControllerConfigsManager,
+    private val system: GameSystem,
+    private val systemCoreConfig: SystemCoreConfig,
     sharedPreferences: SharedPreferences,
 ) : ViewModel(), DefaultLifecycleObserver {
 
@@ -65,6 +71,9 @@ class GameScreenViewModel(
         private val appContext: Context,
         private val settingsManager: SettingsManager,
         private val inputDeviceManager: InputDeviceManager,
+        private val controllerConfigsManager: ControllerConfigsManager,
+        private val system: GameSystem,
+        private val systemCoreConfig: SystemCoreConfig,
         private val sharedPreferences: SharedPreferences,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -72,11 +81,15 @@ class GameScreenViewModel(
                 appContext,
                 settingsManager,
                 inputDeviceManager,
+                controllerConfigsManager,
+                system,
+                systemCoreConfig,
                 sharedPreferences,
             ) as T
         }
     }
 
+    private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
     private val touchControllerSettingsManager = TouchControllerSettingsManager(sharedPreferences)
 
     private val uiState = MutableStateFlow(UiState.Loading("") as UiState)
@@ -137,6 +150,7 @@ class GameScreenViewModel(
             val gameViewData: GLRetroViewData,
             val menuPressed: Boolean,
             val showEditControls: Boolean,
+            val hapticFeedbackMode: HapticFeedbackMode,
         ) : UiState
     }
 
@@ -158,6 +172,7 @@ class GameScreenViewModel(
         val lowLatencyAudio = settingsManager.lowLatencyAudio()
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
+        val hapticFeedbackMode = HapticFeedbackMode.parse(settingsManager.hapticFeedbackMode())
 
         val hasMicrophonePermission = ContextCompat.checkSelfPermission(
             applicationContext,
@@ -187,6 +202,7 @@ class GameScreenViewModel(
                     UiState.Running(
                         menuPressed = false,
                         showEditControls = false,
+                        hapticFeedbackMode = hapticFeedbackMode,
                         gameData = loadingState.gameData,
                         gameViewData = buildRetroViewData(
                             systemCoreConfig,
@@ -194,7 +210,9 @@ class GameScreenViewModel(
                             hdMode,
                             hdModeQuality,
                             filter,
-                            lowLatencyAudio, enableRumble, enableMicrophone,
+                            lowLatencyAudio,
+                            enableRumble,
+                            enableMicrophone,
                         )
                     )
                 } else {
@@ -329,6 +347,20 @@ class GameScreenViewModel(
         return inputDeviceManager
             .getEnabledInputsObservable()
             .map { it.isEmpty() }
+    }
+
+    fun getTouchControllerConfig(): Flow<ControllerConfig> {
+        return controllerConfigsState
+            .map { it[0] }
+            .filterNotNull()
+            .distinctUntilChanged()
+    }
+
+    fun updateControllerConfigState() {
+        viewModelScope.launch {
+            val controllers = controllerConfigsManager.getControllerConfigs(system.id, systemCoreConfig)
+            controllerConfigsState.value = controllers
+        }
     }
 
     override fun onResume(owner: LifecycleOwner) {
