@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -27,7 +28,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun LemuroidButtonPressFeedback(pressed: Boolean, animationDurationMillis: Int, icon: Int) {
     Box(
-        modifier = Modifier.size(64.dp),
+        modifier = Modifier.size(96.dp),
         contentAlignment = Alignment.Center,
     ) {
         var shouldShow by remember { mutableStateOf(false) }
@@ -60,20 +61,22 @@ fun LemuroidButtonPressFeedback(pressed: Boolean, animationDurationMillis: Int, 
 
         AnimatedVisibility(shouldShow, enter = fadeIn(), exit = fadeOut()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 LemuroidControlBackground()
                 LemuroidButtonForeground(
                     pressed = false,
                     icon = icon,
-                    iconScale = 0.5f, scale = 1f
                 )
 
                 CircularProgressIndicator(
                     modifier =
                         Modifier
-                            .fillMaxSize(0.75f)
+                            .fillMaxSize(0.625f)
                             .align(Alignment.Center),
                     progress = { animatedProgress },
                     color = LocalLemuroidPadTheme.current.foregroundStroke(false),
