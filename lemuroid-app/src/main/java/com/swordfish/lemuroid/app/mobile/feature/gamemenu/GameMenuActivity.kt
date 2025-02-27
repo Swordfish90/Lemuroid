@@ -138,7 +138,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun GameMenuScreen(gameMenuRequest: GameMenuRequest) {
-        AppTheme(themeSystemUi = false) {
+        AppTheme {
             val navController = rememberNavController()
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry.value?.destination
