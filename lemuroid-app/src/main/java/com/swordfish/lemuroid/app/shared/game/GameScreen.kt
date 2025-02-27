@@ -52,6 +52,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
+import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.touchinput.controller.R
@@ -119,21 +120,20 @@ private fun GameScreenRunning(
             viewModel.onScreenOrientationChanged(orientation)
         }
 
-        val touchControllerConfig = viewModel.getTouchControllerConfig().collectAsState(null)
-        val isTouchControlsVisible = viewModel.isTouchControllerVisible().collectAsState(false)
-        val touchControllerSettings = viewModel
-            .getTouchControlsSettings(
-                LocalDensity.current,
-                WindowInsets.displayCutout
-            )
+        val controllerConfigState = viewModel.getTouchControllerConfig().collectAsState(null)
+        val touchControlsVisibleState = viewModel.isTouchControllerVisible().collectAsState(false)
+        val touchControllerSettingsState = viewModel
+            .getTouchControlsSettings(LocalDensity.current, WindowInsets.displayCutout)
             .collectAsState(null)
-            .value
+
+        val touchControllerSettings = touchControllerSettingsState.value
+        val currentControllerConfig = controllerConfigState.value
 
         val tiltConfiguration = viewModel.getTiltConfiguration().collectAsState(TiltConfiguration.Disabled)
         val tiltSimulatedStates = viewModel.getSimulatedTiltEvents().collectAsState(InputState())
         val tiltSimulatedControls = remember { derivedStateOf { tiltConfiguration.value.controlIds() } }
 
-        val touchGamePads = touchControllerConfig.value?.getTouchControllerConfig()
+        val touchGamePads = currentControllerConfig?.getTouchControllerConfig()
         val leftGamePad = touchGamePads?.leftComposable
         val rightGamePad = touchGamePads?.rightComposable
 
@@ -160,7 +160,7 @@ private fun GameScreenRunning(
                 modifier = Modifier.fillMaxSize(),
                 constraintSet = buildConstraintSet(
                     isLandscape,
-                    touchControllerConfig.value?.allowTouchOverlay ?: true
+                    currentControllerConfig?.allowTouchOverlay ?: true
                 )
             ) {
                 AndroidView(
@@ -170,7 +170,7 @@ private fun GameScreenRunning(
                     factory = { buildRetroView(state.gameData, state.gameViewData) }
                 )
 
-                if (touchControllerSettings != null && isTouchControlsVisible.value) {
+                if (touchControllerSettings != null && currentControllerConfig != null && touchControlsVisibleState.value) {
                     CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme(MaterialTheme.colorScheme)) {
                         leftGamePad?.invoke(
                             this,
@@ -185,6 +185,7 @@ private fun GameScreenRunning(
 
                         GameScreenRunningCentralMenu(
                             modifier = Modifier.layoutId(CONSTRAINTS_GAME_CONTAINER),
+                            controllerConfig = currentControllerConfig,
                             touchControllerSettings = touchControllerSettings,
                             viewModel = viewModel,
                             state = state
@@ -201,6 +202,7 @@ private fun GameScreenRunningCentralMenu(
     modifier: Modifier = Modifier,
     viewModel: GameScreenViewModel,
     touchControllerSettings: TouchControllerSettingsManager.Settings,
+    controllerConfig: ControllerConfig,
     state: GameScreenViewModel.UiState.Running,
 ) {
     Box(
@@ -212,7 +214,7 @@ private fun GameScreenRunningCentralMenu(
             animationDurationMillis = GameScreenViewModel.MENU_LOADING_ANIMATION_MILLIS,
             icon = R.drawable.button_menu,
         )
-        MenuEditTouchControls(viewModel, state, touchControllerSettings)
+        MenuEditTouchControls(viewModel, state, controllerConfig, touchControllerSettings)
     }
 }
 
@@ -220,6 +222,7 @@ private fun GameScreenRunningCentralMenu(
 private fun MenuEditTouchControls(
     viewModel: GameScreenViewModel,
     state: GameScreenViewModel.UiState.Running,
+    controllerConfig: ControllerConfig,
     touchControllerSettings: TouchControllerSettingsManager.Settings
 ) {
     if (!state.showEditControls) return
@@ -268,15 +271,17 @@ private fun MenuEditTouchControls(
                         }
                     )
                 }
-                MenuEditTouchControlRow(Icons.Default.RotateLeft, "Rotate", 0f) {
-                    Slider(
-                        value = touchControllerSettings.rotation,
-                        onValueChange = {
-                            viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(rotation = it)
-                            )
-                        }
-                    )
+                if (controllerConfig.allowTouchRotation) {
+                    MenuEditTouchControlRow(Icons.Default.RotateLeft, "Rotate", 0f) {
+                        Slider(
+                            value = touchControllerSettings.rotation,
+                            onValueChange = {
+                                viewModel.updateTouchControllerSettings(
+                                    touchControllerSettings.copy(rotation = it)
+                                )
+                            }
+                        )
+                    }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
