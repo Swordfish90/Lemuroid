@@ -2,8 +2,6 @@
 
 package com.swordfish.lemuroid.app.shared.game
 
-import android.view.KeyEvent
-import android.view.View
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -42,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -51,10 +50,9 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
-import com.swordfish.lemuroid.lib.game.GameLoader
-import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.radial.LemuroidPadTheme
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
@@ -63,7 +61,6 @@ import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.jam.jampadcompose.JamPad
 import gg.jam.jampadcompose.config.HapticFeedbackType
-import gg.jam.jampadcompose.inputevents.InputEvent
 import gg.jam.jampadcompose.inputstate.InputState
 
 private const val CONSTRAINTS_LEFT_PAD = "leftPad"
@@ -72,42 +69,31 @@ private const val CONSTRAINTS_GAME_VIEW = "gameView"
 private const val CONSTRAINTS_GAME_CONTAINER = "gameContainer"
 
 @Composable
-fun GameScreen(
-    viewModel: GameScreenViewModel,
-    onVirtualGamePadInputEvents: (List<InputEvent>) -> Unit,
-    buildRetroView: (GameLoader.GameData, GLRetroViewData) -> View,
-) {
-    val uiState = viewModel.getUiState().collectAsState(GameScreenViewModel.UiState.Loading("")).value
-    when (uiState) {
-        is GameScreenViewModel.UiState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
-        }
+fun GameScreen(viewModel: GameScreenViewModel) {
+    val isLoading = viewModel.loadingState
+        .collectAsState(true)
+        .value
 
-        is GameScreenViewModel.UiState.Running -> {
-            GameScreenRunning(
-                viewModel,
-                buildRetroView,
-                onVirtualGamePadInputEvents,
-                uiState,
-            )
-        }
+    val uiState = viewModel.getUiState()
+        .collectAsState(GameScreenViewModel.UiState.Loading(""))
+        .value
 
-        else -> {}
+    if (uiState is GameScreenViewModel.UiState.Running) {
+        GameScreenRunning(viewModel, uiState)
+    }
+
+    if (uiState !is GameScreenViewModel.UiState.Running || isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
     }
 }
 
 @Composable
-private fun GameScreenRunning(
-    viewModel: GameScreenViewModel,
-    buildRetroView: (GameLoader.GameData, GLRetroViewData) -> View,
-    onVirtualGamePadInputEvents: (List<InputEvent>) -> Unit,
-    state: GameScreenViewModel.UiState.Running,
-) {
+private fun GameScreenRunning(viewModel: GameScreenViewModel, state: GameScreenViewModel.UiState.Running) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
 
@@ -145,13 +131,7 @@ private fun GameScreenRunning(
 
         JamPad(
             modifier = Modifier.fillMaxSize(),
-            onInputEvents = { events ->
-                val menuEvent = events.firstOrNull { it is InputEvent.Button && it.id == KeyEvent.KEYCODE_BUTTON_MODE }
-                if (menuEvent != null) {
-                    viewModel.onMenuPressed((menuEvent as InputEvent.Button).pressed)
-                }
-                onVirtualGamePadInputEvents(events)
-            },
+            onInputEvents = { viewModel.handleVirtualInputEvent(it) },
             hapticFeedbackType = padHapticFeedback,
             simulatedState = tiltSimulatedStates,
             simulatedControlIds = tiltSimulatedControls
@@ -163,11 +143,16 @@ private fun GameScreenRunning(
                     currentControllerConfig?.allowTouchOverlay ?: true
                 )
             ) {
+                val localContext = LocalContext.current
+                val lifecycle = LocalLifecycleOwner.current
+
                 AndroidView(
                     modifier = Modifier
                         .layoutId(CONSTRAINTS_GAME_VIEW)
                         .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
-                    factory = { buildRetroView(state.gameData, state.gameViewData) }
+                    factory = {
+                        viewModel.createRetroView(localContext, lifecycle, state.retroViewData, state.gameData)
+                    }
                 )
 
                 if (touchControllerSettings != null && currentControllerConfig != null && touchControlsVisibleState.value) {
