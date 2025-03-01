@@ -20,13 +20,20 @@
     <string name="save_sync">同步存檔</string>
     <string name="show_all">全部顯示</string>
     <string name="back">返回</string>
+    <string name="close">關閉</string>
+    <string name="game_page_search_suggestion">搜尋遊戲</string>
     <string name="settings_category_general">一般設定</string>
     <string name="settings_category_input">輸入設定</string>
     <string name="settings_category_misc">其他設定</string>
     <string name="settings_title_enable_autosave">自動儲存</string>
+    <string name="settings_description_enable_autosave">透過遊戲選單退出時保存狀態</string>
     <string name="settings_title_enable_touch_feedback">觸控時震動</string>
     <string name="settings_title_tilt_sensitivity">傾斜感應器敏感度</string>
+    <string name="settings_title_hd_quality">高清質量模式</string>
     <string name="settings_title_maximum_cache_usage">緩存大小限制</string>
+    <string name="settings_title_hd_mode">高清模式</string>
+    <string name="settings_description_hd_mode">應用後處理升頻濾鏡</string>
+    <string name="settings_description_hd_quality">調整高清模式的質量</string>
     <string name="settings_title_gamepad_settings">外部設備</string>
     <string name="settings_description_gamepad_settings">配置外接遊戲手把和鍵盤 </string>
     <string name="settings_retropad_button_name">%1$s 鍵</string>
@@ -70,6 +77,12 @@
     <string name="game_context_menu_resume">繼續遊戲</string>
     <string name="game_context_menu_restart">重新啟動</string>
     <string name="game_context_menu_create_shortcut">新增桌布捷徑</string>
+    <string name="home_notification_title">啟用通知</string>
+    <string name="home_notification_message">Lemuroid 使用通知來讓您知道遊戲或操作在背景中運行時的狀態。</string>
+    <string name="home_notification_action">啟用</string>
+    <string name="home_microphone_title">啟用麥克風</string>
+    <string name="home_microphone_message">Nintendo DS 遊戲可以使用麥克風來提供一些功能。</string>
+    <string name="home_microphone_action">啟用</string>
     <string name="home_empty_title">選擇 ROMs 資料夾</string>
     <string name="home_empty_message">Lemuroid 需要掃描整個 ROM 檔案資料夾。\n這可能需要幾分鐘的時間。</string>
     <string name="home_empty_action">選擇資料夾</string>
@@ -124,6 +137,8 @@
     <string name="tv_home_section_recents">最新的</string>
     <string name="tv_home_section_systems">遊戲機</string>
     <string name="tv_home_section_settings">設定</string>
+    <string name="gamepad_binding_update_title">關聯 \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">按下按鈕 \"%1$s\"</string>
     <string name="tv_search_results">遊戲</string>
     <string name="tv_game_message_missing_gamepad">需要遊戲手柄才能玩，請進行連接。</string>
     <string name="game_edit_touch_controls_error_not_visible">斷開您的鍵盤以編輯您的虛擬按鍵。</string>
@@ -142,6 +157,12 @@
          \n\n 如果上述方法均無效，則該設備可能不支持該遊戲/核心。
     </string>
     <string name="error_message_incompatible_state">此自動存檔與當前核心版本不兼容。請載入最新的遊戲內存檔或使用以前的 Lemuroid 版本。</string>
+    <string name="shader_filter_names_auto">自動</string>
+    <string name="shader_filter_names_sharp">銳利</string>
+    <string name="shader_filter_names_smooth">平滑</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">無</string>
     <string name="haptic_feedback_mode_names_press">按下</string>
     <string name="haptic_feedback_mode_names_press_release">按下並鬆開</string>
 </resources>
