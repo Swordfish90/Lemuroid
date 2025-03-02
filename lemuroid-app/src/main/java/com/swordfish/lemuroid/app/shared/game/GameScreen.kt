@@ -173,7 +173,6 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel, state: GameScreenV
                             controllerConfig = currentControllerConfig,
                             touchControllerSettings = touchControllerSettings,
                             viewModel = viewModel,
-                            state = state
                         )
                     }
                 }
@@ -188,29 +187,29 @@ private fun GameScreenRunningCentralMenu(
     viewModel: GameScreenViewModel,
     touchControllerSettings: TouchControllerSettingsManager.Settings,
     controllerConfig: ControllerConfig,
-    state: GameScreenViewModel.UiState.Running,
 ) {
+    val menuPressed = viewModel.isMenuPressed().collectAsState(false)
     Box(
         modifier = modifier.wrapContentSize(),
         contentAlignment = Alignment.Center
     ) {
         LemuroidButtonPressFeedback(
-            pressed = state.menuPressed,
+            pressed = menuPressed.value,
             animationDurationMillis = GameScreenViewModel.MENU_LOADING_ANIMATION_MILLIS,
             icon = R.drawable.button_menu,
         )
-        MenuEditTouchControls(viewModel, state, controllerConfig, touchControllerSettings)
+        MenuEditTouchControls(viewModel, controllerConfig, touchControllerSettings)
     }
 }
 
 @Composable
 private fun MenuEditTouchControls(
     viewModel: GameScreenViewModel,
-    state: GameScreenViewModel.UiState.Running,
     controllerConfig: ControllerConfig,
     touchControllerSettings: TouchControllerSettingsManager.Settings
 ) {
-    if (!state.showEditControls) return
+    val showEditControls = viewModel.isEditControlShown().collectAsState(false)
+    if (!showEditControls.value) return
 
     Dialog(onDismissRequest = { viewModel.showEditControls(false) }) {
         Card(

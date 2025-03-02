@@ -18,6 +18,7 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
+import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelSideEffects
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
@@ -151,7 +152,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeRetroGameViewErrorsFlow() {
-        gameScreenViewModel.retroGameViewFlow().getGLRetroErrors()
+        gameScreenViewModel.retroGameView.retroGameViewFlow().getGLRetroErrors()
             .catch { Timber.e(it, "Exception in GLRetroErrors. Ironic.") }
             .collect { handleRetroViewError(it) }
     }
@@ -173,7 +174,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 GLRetroView.ERROR_SERIALIZATION -> GameLoaderError.Saves
                 else -> GameLoaderError.Generic
             }
-        gameScreenViewModel.retroGameView = null
+        gameScreenViewModel.retroGameView.retroGameView = null
         displayGameLoaderError(gameLoaderError)
     }
 
@@ -206,16 +207,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
                 this.putExtra(
                     GameMenuContract.EXTRA_CURRENT_DISK,
-                    gameScreenViewModel.retroGameView?.getCurrentDisk() ?: 0
+                    gameScreenViewModel.retroGameView.retroGameView?.getCurrentDisk() ?: 0
                 )
-                this.putExtra(GameMenuContract.EXTRA_DISKS, gameScreenViewModel.retroGameView?.getAvailableDisks() ?: 0)
+                this.putExtra(GameMenuContract.EXTRA_DISKS, gameScreenViewModel.retroGameView.retroGameView?.getAvailableDisks() ?: 0)
                 this.putExtra(GameMenuContract.EXTRA_GAME, game)
                 this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
-                this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, gameScreenViewModel.retroGameView?.audioEnabled)
+                this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, gameScreenViewModel.retroGameView.retroGameView?.audioEnabled)
                 this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
                 this.putExtra(
                     GameMenuContract.EXTRA_FAST_FORWARD,
-                    (gameScreenViewModel.retroGameView?.frameSpeed ?: 1) > 1
+                    (gameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1
                 )
                 this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
                 // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
@@ -228,7 +229,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected abstract fun getDialogClass(): Class<out Activity>
 
     private fun getCoreOptions(): List<CoreOption> {
-        return gameScreenViewModel.retroGameView?.getVariables()
+        return gameScreenViewModel.retroGameView.retroGameView?.getVariables()
             ?.mapNotNull {
                 val coreOptionResult =
                     runCatching {
@@ -242,13 +243,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         gameScreenViewModel.getUiEffects()
             .collect {
                 when (it) {
-                    is GameScreenViewModel.UiEffect.ShowMenu -> displayOptionsDialog(
+                    is GameViewModelSideEffects.UiEffect.ShowMenu -> displayOptionsDialog(
                         it.currentTiltConfiguration,
                         it.tiltConfigurations
                     )
 
-                    is GameScreenViewModel.UiEffect.ShowToast -> displayToast(it.message)
-                    is GameScreenViewModel.UiEffect.Finish -> performSuccessfulActivityFinish()
+                    is GameViewModelSideEffects.UiEffect.ShowToast -> displayToast(it.message)
+                    is GameViewModelSideEffects.UiEffect.Finish -> performSuccessfulActivityFinish()
                 }
             }
     }
@@ -356,10 +357,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
             if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_DISK) == true) {
                 val index = data.getIntExtra(GameMenuContract.RESULT_CHANGE_DISK, 0)
-                gameScreenViewModel.retroGameView?.changeDisk(index)
+                gameScreenViewModel.retroGameView.retroGameView?.changeDisk(index)
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_AUDIO) == true) {
-                gameScreenViewModel.retroGameView?.apply {
+                gameScreenViewModel.retroGameView.retroGameView?.apply {
                     this.audioEnabled =
                         data.getBooleanExtra(
                             GameMenuContract.RESULT_ENABLE_AUDIO,
@@ -368,7 +369,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
-                gameScreenViewModel.retroGameView?.apply {
+                gameScreenViewModel.retroGameView.retroGameView?.apply {
                     val fastForwardEnabled =
                         data.getBooleanExtra(
                             GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
