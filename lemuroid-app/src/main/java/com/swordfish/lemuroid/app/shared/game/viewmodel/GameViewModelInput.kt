@@ -281,7 +281,7 @@ class GameViewModelInput(
                 val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
 
                 if (bindKeyCode == KeyEvent.KEYCODE_BACK && action == KeyEvent.ACTION_DOWN) {
-                    sideEffects.requestFinish()
+                    sideEffects.requestSuccessfulFinish()
                     return@safeCollect
                 }
 

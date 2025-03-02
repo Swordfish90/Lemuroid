@@ -51,6 +51,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.touchinput.controller.R
@@ -74,15 +75,19 @@ fun GameScreen(viewModel: GameScreenViewModel) {
         .collectAsState(true)
         .value
 
-    val uiState = viewModel.getUiState()
-        .collectAsState(GameScreenViewModel.UiState.Loading(""))
+    val gameState = viewModel.getGameState()
+        .collectAsState(GameViewModelRetroGameView.GameState.Uninitialized)
         .value
 
-    if (uiState is GameScreenViewModel.UiState.Running) {
-        GameScreenRunning(viewModel, uiState)
+    val isGameReady =
+        gameState is GameViewModelRetroGameView.GameState.Loaded ||
+        gameState is GameViewModelRetroGameView.GameState.Ready
+
+    if (isGameReady) {
+        GameScreenRunning(viewModel)
     }
 
-    if (uiState !is GameScreenViewModel.UiState.Running || isLoading) {
+    if (!isGameReady || isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -93,7 +98,7 @@ fun GameScreen(viewModel: GameScreenViewModel) {
 }
 
 @Composable
-private fun GameScreenRunning(viewModel: GameScreenViewModel, state: GameScreenViewModel.UiState.Running) {
+private fun GameScreenRunning(viewModel: GameScreenViewModel) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
 
@@ -123,7 +128,11 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel, state: GameScreenV
         val leftGamePad = touchGamePads?.leftComposable
         val rightGamePad = touchGamePads?.rightComposable
 
-        val padHapticFeedback = when (state.hapticFeedbackMode) {
+        val hapticFeedbackMode = viewModel
+            .getTouchHapticFeedbackMode()
+            .collectAsState(HapticFeedbackMode.NONE)
+
+        val padHapticFeedback = when (hapticFeedbackMode.value) {
             HapticFeedbackMode.NONE -> HapticFeedbackType.NONE
             HapticFeedbackMode.PRESS -> HapticFeedbackType.PRESS
             HapticFeedbackMode.PRESS_RELEASE -> HapticFeedbackType.PRESS_RELEASE
@@ -151,7 +160,7 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel, state: GameScreenV
                         .layoutId(CONSTRAINTS_GAME_VIEW)
                         .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
                     factory = {
-                        viewModel.createRetroView(localContext, lifecycle, state.retroViewData, state.gameData)
+                        viewModel.createRetroView(localContext, lifecycle)
                     }
                 )
 

@@ -17,7 +17,8 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
         ) : UiEffect
 
         data class ShowToast(val message: String) : UiEffect
-        data object Finish : UiEffect
+        data object SuccessfulFinish : UiEffect
+        data class FailureFinish(val message: String) : UiEffect
     }
 
     private val uiEffects = MutableSharedFlow<UiEffect>()
@@ -45,10 +46,18 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
         }
     }
 
-    fun requestFinish() {
+    fun requestSuccessfulFinish() {
         scope.launch {
             withContext(Dispatchers.Main) {
-                uiEffects.emit(UiEffect.Finish)
+                uiEffects.emit(UiEffect.SuccessfulFinish)
+            }
+        }
+    }
+
+    fun requestFailureFinish(message: String) {
+        scope.launch {
+            withContext(Dispatchers.Main) {
+                uiEffects.emit(UiEffect.FailureFinish(message))
             }
         }
     }

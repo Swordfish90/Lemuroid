@@ -2,18 +2,15 @@ package com.swordfish.lemuroid.app.shared.game
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.unit.Density
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelInput
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
@@ -29,7 +26,6 @@ import com.swordfish.lemuroid.common.longAnimationDuration
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
-import com.swordfish.lemuroid.lib.game.GameLoaderException
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -37,19 +33,14 @@ import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.libretrodroid.GLRetroView
-import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.jam.jampadcompose.inputevents.InputEvent
 import gg.jam.jampadcompose.inputstate.InputState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -104,9 +95,18 @@ class GameScreenViewModel(
         }
     }
 
-    val retroGameView =
-        GameViewModelRetroGameView(system, systemCoreConfig, coreVariablesManager, rumbleManager, viewModelScope)
     private val sideEffects = GameViewModelSideEffects(viewModelScope)
+    val retroGameView =
+        GameViewModelRetroGameView(
+            appContext,
+            system,
+            systemCoreConfig,
+            settingsManager,
+            coreVariablesManager,
+            sideEffects,
+            rumbleManager,
+            viewModelScope
+        )
     private val tilt = GameViewModelTilt(appContext, settingsManager)
     private val inputs =
         GameViewModelInput(
@@ -122,6 +122,7 @@ class GameScreenViewModel(
         )
     private val touchControls =
         GameViewModelTouchControls(
+            settingsManager,
             TouchControllerSettingsManager(sharedPreferences),
             retroGameView,
             inputs,
@@ -143,7 +144,6 @@ class GameScreenViewModel(
             sideEffects
         )
 
-    private val uiState = MutableStateFlow(UiState.Loading("") as UiState)
     val loadingState = MutableStateFlow(false)
 
     private inline fun withLoading(block: () -> Unit) {
@@ -152,11 +152,11 @@ class GameScreenViewModel(
         loadingState.value = false
     }
 
-    fun getUiState(): Flow<UiState> {
-        return uiState
+    fun getGameState(): Flow<GameViewModelRetroGameView.GameState> {
+        return retroGameView.getGameState()
     }
 
-    fun getUiEffects(): Flow<GameViewModelSideEffects.UiEffect> {
+    fun getSideEffects(): Flow<GameViewModelSideEffects.UiEffect> {
         return sideEffects.getUiEffects()
     }
 
@@ -172,23 +172,15 @@ class GameScreenViewModel(
         return touchControls.getTouchControlsSettings(density, insets)
     }
 
-    sealed interface UiState {
-        data class Loading(val message: String) : UiState
-        data class Error(val throwable: Throwable) : UiState
-        data class Running(
-            val gameData: GameLoader.GameData, // TODO FILIPPO... Get rid of this, lot of useless memory for the state.
-            val retroViewData: GLRetroViewData,
-            val hapticFeedbackMode: HapticFeedbackMode,
-        ) : UiState
+    fun getTouchHapticFeedbackMode(): Flow<HapticFeedbackMode> {
+        return touchControls.getTouchHapticFeedbackMode()
     }
 
     fun createRetroView(
         context: Context,
         lifecycle: LifecycleOwner,
-        data: GLRetroViewData,
-        gameData: GameLoader.GameData,
     ): GLRetroView {
-        val result = retroGameView.createRetroView(context, lifecycle, data)
+        val (gameData, result) = retroGameView.createRetroView(context, lifecycle)
         viewModelScope.launch {
             gameData.quickSaveData?.let {
                 saves.restoreAutoSaveAsync(it)
@@ -204,76 +196,8 @@ class GameScreenViewModel(
         gameLoader: GameLoader,
         requestLoadSave: Boolean
     ) {
-        val autoSaveEnabled = settingsManager.autoSave()
-        val filter = settingsManager.screenFilter()
-        val hdMode = settingsManager.hdMode()
-        val hdModeQuality = settingsManager.hdModeQuality()
-        val lowLatencyAudio = settingsManager.lowLatencyAudio()
-        val enableRumble = settingsManager.enableRumble()
-        val directLoad = settingsManager.allowDirectGameLoad()
-        val hapticFeedbackMode = HapticFeedbackMode.parse(settingsManager.hapticFeedbackMode())
-
-        val hasMicrophonePermission = ContextCompat.checkSelfPermission(
-            applicationContext,
-            android.Manifest.permission.RECORD_AUDIO
-        ) == PackageManager.PERMISSION_GRANTED
-
-        val enableMicrophone = systemCoreConfig.supportsMicrophone && hasMicrophonePermission
-
-        val loadingStatesFlow =
-            gameLoader.load(
-                applicationContext,
-                game,
-                requestLoadSave && autoSaveEnabled,
-                systemCoreConfig,
-                directLoad,
-            )
-
-        // TODO FILIPPO... Maybe it's simpler to return a flow instead of the mutable flow here.
-        loadingStatesFlow
-            .flowOn(Dispatchers.IO)
-            .catch {
-                uiState.value = UiState.Error(it as GameLoaderException)
-            }
-            .debounce(200)
-            .collect { loadingState ->
-                uiState.value = if (loadingState is GameLoader.LoadingState.Ready) {
-                    val retroViewData = retroGameView.buildRetroViewData(
-                        applicationContext,
-                        systemCoreConfig,
-                        loadingState.gameData,
-                        hdMode,
-                        hdModeQuality,
-                        filter,
-                        lowLatencyAudio,
-                        enableRumble,
-                        enableMicrophone,
-                    )
-                    UiState.Running(
-                        gameData = loadingState.gameData,
-                        retroViewData = retroViewData,
-                        hapticFeedbackMode = hapticFeedbackMode,
-                    )
-                } else {
-                    UiState.Loading(getLoadingMessage(loadingState))
-                }
-            }
-    }
-
-    private fun getLoadingMessage(loadingState: GameLoader.LoadingState): String {
-        return when (loadingState) {
-            is GameLoader.LoadingState.LoadingCore ->
-                appContext.getString(
-                    com.swordfish.lemuroid.ext.R.string.game_loading_download_core,
-                )
-
-            is GameLoader.LoadingState.LoadingGame ->
-                appContext.getString(
-                    R.string.game_loading_preparing_game
-                )
-
-            else -> ""
-        }
+        Timber.i("Calling load game: $game")
+        retroGameView.initialize(applicationContext, game, systemCoreConfig, gameLoader, requestLoadSave)
     }
 
     fun showEditControls(show: Boolean) {
@@ -342,7 +266,7 @@ class GameScreenViewModel(
             withLoading {
                 saves.saveSRAM(game)
                 saves.saveAutoSave(game)
-                sideEffects.requestFinish()
+                sideEffects.requestSuccessfulFinish()
             }
         }
     }
@@ -357,6 +281,7 @@ class GameScreenViewModel(
         owner.lifecycle.addObserver(tilt)
         owner.lifecycle.addObserver(inputs)
         owner.lifecycle.addObserver(retroGameView)
+        owner.lifecycle.addObserver(touchControls)
     }
 
     fun sendKeyEvent(keyCode: Int, event: KeyEvent): Boolean {

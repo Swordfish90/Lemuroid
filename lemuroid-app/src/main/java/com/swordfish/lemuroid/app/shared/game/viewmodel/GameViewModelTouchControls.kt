@@ -3,7 +3,13 @@ package com.swordfish.lemuroid.app.shared.game.viewmodel
 import android.view.KeyEvent
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.unit.Density
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.game.GameScreenViewModel.Companion.MENU_LOADING_ANIMATION_MILLIS
+import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
+import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
@@ -14,6 +20,7 @@ import com.swordfish.touchinput.radial.settings.TouchControllerID
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.jam.jampadcompose.inputevents.InputEvent
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -25,22 +32,33 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GameViewModelTouchControls(
-    private val settingsManager: TouchControllerSettingsManager,
+    private val settingsManager: SettingsManager,
+    private val touchControllerSettingsManager: TouchControllerSettingsManager,
     private val retroGameView: GameViewModelRetroGameView,
     private val inputs: GameViewModelInput,
     private val tilt: GameViewModelTilt,
     private val sideEffects: GameViewModelSideEffects,
     private val scope: CoroutineScope
-) {
-    private val touchControlId = MutableStateFlow<TouchControllerID>(TouchControllerID.PSX)
+) : DefaultLifecycleObserver {
+    private val touchControlId = MutableStateFlow(TouchControllerID.GB)
     private val screenOrientation = MutableStateFlow(TouchControllerSettingsManager.Orientation.PORTRAIT)
-    private val menuPressed = MutableStateFlow<Boolean>(false)
-    private val showEditControls = MutableStateFlow<Boolean>(false)
+    private val menuPressed = MutableStateFlow(false)
+    private val showEditControls = MutableStateFlow(false)
+    private val hapticFeedbackMode = MutableStateFlow(HapticFeedbackMode.NONE)
 
     private var loadingMenuJob: Job? = null
+
+    override fun onCreate(owner: LifecycleOwner) {
+        owner.launchOnState(Lifecycle.State.CREATED) {
+            withContext(Dispatchers.IO) {
+                hapticFeedbackMode.value = HapticFeedbackMode.parse(settingsManager.hapticFeedbackMode())
+            }
+        }
+    }
 
     fun getTouchControlsSettings(
         density: Density,
@@ -51,13 +69,17 @@ class GameViewModelTouchControls(
             screenOrientation
         ) { touchControlId, orientation -> touchControlId to orientation }
             .flatMapLatest { (touchControlId, orientation) ->
-                settingsManager.observeSettings(touchControlId, orientation, density, insets)
+                touchControllerSettingsManager.observeSettings(touchControlId, orientation, density, insets)
             }
+    }
+
+    fun getTouchHapticFeedbackMode(): Flow<HapticFeedbackMode> {
+        return hapticFeedbackMode
     }
 
     fun updateTouchControllerSettings(touchControllerSettings: TouchControllerSettingsManager.Settings) {
         scope.launch {
-            settingsManager.storeSettings(
+            touchControllerSettingsManager.storeSettings(
                 touchControlId.value,
                 screenOrientation.value,
                 touchControllerSettings
@@ -67,7 +89,7 @@ class GameViewModelTouchControls(
 
     fun resetTouchControls() {
         scope.launch {
-            settingsManager.resetSettings(
+            touchControllerSettingsManager.resetSettings(
                 touchControlId.value,
                 screenOrientation.value,
             )

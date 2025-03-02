@@ -10,7 +10,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
@@ -30,7 +29,6 @@ import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.kotlin.serializable
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
-import com.swordfish.lemuroid.lib.game.GameLoaderError
 import com.swordfish.lemuroid.lib.library.ExposedSetting
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
@@ -38,13 +36,11 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
-import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import dagger.Lazy
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -142,19 +138,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun initialiseFlows() {
-        launchOnState(Lifecycle.State.STARTED) {
-            initializeRetroGameViewErrorsFlow()
-        }
-
         launchOnState(Lifecycle.State.CREATED) {
             initializeViewModelsEffectsFlow()
         }
-    }
-
-    private suspend fun initializeRetroGameViewErrorsFlow() {
-        gameScreenViewModel.retroGameView.retroGameViewFlow().getGLRetroErrors()
-            .catch { Timber.e(it, "Exception in GLRetroErrors. Ironic.") }
-            .collect { handleRetroViewError(it) }
     }
 
     private fun setUpExceptionsHandler() {
@@ -162,20 +148,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             performUnexpectedErrorFinish(exception)
             defaultExceptionHandler?.uncaughtException(thread, exception)
         }
-    }
-
-    private fun handleRetroViewError(errorCode: Int) {
-        Timber.e("Error in GLRetroView $errorCode")
-        val gameLoaderError =
-            when (errorCode) {
-                GLRetroView.ERROR_GL_NOT_COMPATIBLE -> GameLoaderError.GLIncompatible
-                GLRetroView.ERROR_LOAD_GAME -> GameLoaderError.LoadGame
-                GLRetroView.ERROR_LOAD_LIBRARY -> GameLoaderError.LoadCore
-                GLRetroView.ERROR_SERIALIZATION -> GameLoaderError.Saves
-                else -> GameLoaderError.Generic
-            }
-        gameScreenViewModel.retroGameView.retroGameView = null
-        displayGameLoaderError(gameLoaderError)
     }
 
     private fun transformExposedSetting(
@@ -240,7 +212,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeViewModelsEffectsFlow() {
-        gameScreenViewModel.getUiEffects()
+        gameScreenViewModel.getSideEffects()
             .collect {
                 when (it) {
                     is GameViewModelSideEffects.UiEffect.ShowMenu -> displayOptionsDialog(
@@ -249,7 +221,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     )
 
                     is GameViewModelSideEffects.UiEffect.ShowToast -> displayToast(it.message)
-                    is GameViewModelSideEffects.UiEffect.Finish -> performSuccessfulActivityFinish()
+                    is GameViewModelSideEffects.UiEffect.SuccessfulFinish -> performSuccessfulActivityFinish()
+                    is GameViewModelSideEffects.UiEffect.FailureFinish -> performErrorFinish(it.message)
                 }
             }
     }
@@ -292,7 +265,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
 
         setResult(Activity.RESULT_OK, resultIntent)
-
         finishAndExitProcess()
     }
 
@@ -386,31 +358,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 gameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
             }
         }
-    }
-
-    private fun displayGameLoaderError(gameError: GameLoaderError) {
-        val messageId =
-            when (gameError) {
-                is GameLoaderError.GLIncompatible -> getString(R.string.game_loader_error_gl_incompatible)
-                is GameLoaderError.Generic -> getString(R.string.game_loader_error_generic)
-                is GameLoaderError.LoadCore ->
-                    getString(
-                        com.swordfish.lemuroid.ext.R.string.game_loader_error_load_core,
-                    )
-                is GameLoaderError.LoadGame -> getString(R.string.game_loader_error_load_game)
-                is GameLoaderError.Saves -> getString(R.string.game_loader_error_save)
-                is GameLoaderError.UnsupportedArchitecture ->
-                    getString(
-                        R.string.game_loader_error_unsupported_architecture,
-                    )
-                is GameLoaderError.MissingBiosFiles ->
-                    getString(
-                        R.string.game_loader_error_missing_bios,
-                        gameError.missingFiles,
-                    )
-            }
-
-        performErrorFinish(messageId)
     }
 
     companion object {
