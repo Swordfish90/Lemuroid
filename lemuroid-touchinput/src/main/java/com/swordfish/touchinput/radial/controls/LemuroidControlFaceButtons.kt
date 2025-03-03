@@ -1,7 +1,9 @@
 package com.swordfish.touchinput.radial.controls
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.ui.LemuroidControlBackground
 import com.swordfish.touchinput.radial.ui.LemuroidCompositeForeground
 import gg.jam.jampadcompose.JamPadScope
@@ -19,8 +21,10 @@ fun LemuroidControlFaceButtons(
     background: @Composable () -> Unit = { LemuroidControlBackground() },
     idsForegrounds: Map<KeyId, @Composable (Boolean) -> Unit>
 ) {
+    val theme = LocalLemuroidPadTheme.current
+
     ControlFaceButtons(
-        modifier = modifier,
+        modifier = modifier.padding(theme.padding),
         includeComposite = includeComposite,
         ids = ids,
         rotationInDegrees = rotationInDegrees,
@@ -38,8 +42,10 @@ fun LemuroidControlFaceButtons(
     background: @Composable () -> Unit = { LemuroidControlBackground() },
     idsForegrounds: Map<KeyId, @Composable (Boolean) -> Unit>
 ) {
+    val theme = LocalLemuroidPadTheme.current
+
     ControlFaceButtons(
-        modifier = modifier,
+        modifier = modifier.padding(theme.padding),
         mainButtonAnchors = mainAnchors,
         compositeButtonAnchors = emptyList(),
         foreground = { id, pressed -> (idsForegrounds[id]!!)(pressed) },

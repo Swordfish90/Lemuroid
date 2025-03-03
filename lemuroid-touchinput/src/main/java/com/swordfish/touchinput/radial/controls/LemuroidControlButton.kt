@@ -1,7 +1,9 @@
 package com.swordfish.touchinput.radial.controls
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.ui.LemuroidControlBackground
 import com.swordfish.touchinput.radial.ui.LemuroidButtonForeground
 import gg.jam.jampadcompose.JamPadScope
@@ -17,8 +19,10 @@ fun LemuroidControlButton(
     label: String? = null,
     icon: Int? = null,
 ) {
+    val theme = LocalLemuroidPadTheme.current
+
     ControlButton(
-        modifier = modifier,
+        modifier = modifier.padding(theme.padding),
         id = id,
         foreground = { LemuroidButtonForeground(it, icon = icon, label = label) },
         background = { LemuroidControlBackground() }
