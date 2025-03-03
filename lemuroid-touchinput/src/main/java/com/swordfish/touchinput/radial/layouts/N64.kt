@@ -48,13 +48,13 @@ fun JamPadScope.N64Right(modifier: Modifier = Modifier, settings: TouchControlle
             LemuroidControlFaceButtons(
                 rotationInDegrees = 45f,
                 ids = listOf(
-                    KeyId(KeyEvent.KEYCODE_BUTTON_A),
                     KeyId(KeyEvent.KEYCODE_BUTTON_B),
+                    KeyId(KeyEvent.KEYCODE_BUTTON_Y),
                     KeyId(KeyEvent.KEYCODE_BUTTON_L2),
                 ),
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(it, label = "A") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, label = "B") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, label = "A") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(it, label = "B") }
                     put(KeyId(KeyEvent.KEYCODE_BUTTON_L2)) { LemuroidButtonForeground(it, label = "Z") }
                 },
             )
