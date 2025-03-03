@@ -142,8 +142,6 @@ class GameViewModelTouchControls(
             loadingMenuJob?.cancel()
             loadingMenuJob = scope.launch {
                 delay(MENU_LOADING_ANIMATION_MILLIS.toLong())
-                // TODO FILIPPO... Does it really make sense to check for loading here?
-//                if (loadingState.value) return@launch
                 sideEffects.showMenu(tilt, inputs)
             }
         } else {

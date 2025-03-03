@@ -163,6 +163,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         currentTiltConfiguration: TiltConfiguration,
         tiltConfigurations: List<TiltConfiguration>
     ) {
+        if (gameScreenViewModel.loadingState.value) {
+            return
+        }
+
         val coreOptions = getCoreOptions()
 
         val options =
