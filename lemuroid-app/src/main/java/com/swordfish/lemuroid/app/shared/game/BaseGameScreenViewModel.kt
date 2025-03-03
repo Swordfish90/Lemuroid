@@ -37,18 +37,16 @@ import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.jam.jampadcompose.inputevents.InputEvent
 import gg.jam.jampadcompose.inputstate.InputState
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@OptIn(FlowPreview::class)
-class GameScreenViewModel(
+class BaseGameScreenViewModel(
     private val appContext: Context,
     private val game: Game,
-    private val settingsManager: SettingsManager,
+    settingsManager: SettingsManager,
     inputDeviceManager: InputDeviceManager,
     controllerConfigsManager: ControllerConfigsManager,
     system: GameSystem,
@@ -77,7 +75,7 @@ class GameScreenViewModel(
         private val rumbleManager: RumbleManager,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return GameScreenViewModel(
+            return BaseGameScreenViewModel(
                 appContext,
                 game,
                 settingsManager,
@@ -290,9 +288,5 @@ class GameScreenViewModel(
 
     fun sendMotionEvent(event: MotionEvent): Boolean {
         return inputs.sendMotionEvent(event)
-    }
-
-    companion object {
-        const val MENU_LOADING_ANIMATION_MILLIS = 500
     }
 }

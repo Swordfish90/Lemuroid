@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
@@ -82,7 +83,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject
     lateinit var sharedPreferences: Lazy<SharedPreferences>
 
-    private lateinit var gameScreenViewModel: GameScreenViewModel
+    private lateinit var baseGameScreenViewModel: BaseGameScreenViewModel
 
     private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
 
@@ -96,8 +97,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
         system = GameSystem.findById(game.systemId)
 
-        val viewModel by viewModels<GameScreenViewModel> {
-            GameScreenViewModel.Factory(
+        val viewModel by viewModels<BaseGameScreenViewModel> {
+            BaseGameScreenViewModel.Factory(
                 applicationContext,
                 game,
                 settingsManager,
@@ -114,18 +115,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             )
         }
 
-        gameScreenViewModel = viewModel
+        baseGameScreenViewModel = viewModel
 
-        lifecycle.addObserver(gameScreenViewModel)
+        lifecycle.addObserver(baseGameScreenViewModel)
 
         setContent {
             AppTheme {
-                GameScreen(viewModel = gameScreenViewModel)
+                BaseGameScreen(viewModel = baseGameScreenViewModel) {
+                    GameScreen(viewModel)
+                }
             }
         }
 
         lifecycleScope.launch {
-            gameScreenViewModel.loadGame(
+            baseGameScreenViewModel.loadGame(
                 applicationContext,
                 game,
                 systemCoreConfig,
@@ -136,6 +139,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         initialiseFlows()
     }
+
+    @Composable
+    abstract fun GameScreen(viewModel: BaseGameScreenViewModel)
 
     private fun initialiseFlows() {
         launchOnState(Lifecycle.State.CREATED) {
@@ -163,7 +169,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         currentTiltConfiguration: TiltConfiguration,
         tiltConfigurations: List<TiltConfiguration>
     ) {
-        if (gameScreenViewModel.loadingState.value) {
+        if (baseGameScreenViewModel.loadingState.value) {
             return
         }
 
@@ -183,16 +189,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
                 this.putExtra(
                     GameMenuContract.EXTRA_CURRENT_DISK,
-                    gameScreenViewModel.retroGameView.retroGameView?.getCurrentDisk() ?: 0
+                    baseGameScreenViewModel.retroGameView.retroGameView?.getCurrentDisk() ?: 0
                 )
-                this.putExtra(GameMenuContract.EXTRA_DISKS, gameScreenViewModel.retroGameView.retroGameView?.getAvailableDisks() ?: 0)
+                this.putExtra(GameMenuContract.EXTRA_DISKS, baseGameScreenViewModel.retroGameView.retroGameView?.getAvailableDisks() ?: 0)
                 this.putExtra(GameMenuContract.EXTRA_GAME, game)
                 this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
-                this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, gameScreenViewModel.retroGameView.retroGameView?.audioEnabled)
+                this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, baseGameScreenViewModel.retroGameView.retroGameView?.audioEnabled)
                 this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
                 this.putExtra(
                     GameMenuContract.EXTRA_FAST_FORWARD,
-                    (gameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1
+                    (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1
                 )
                 this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
                 // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
@@ -205,7 +211,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected abstract fun getDialogClass(): Class<out Activity>
 
     private fun getCoreOptions(): List<CoreOption> {
-        return gameScreenViewModel.retroGameView.retroGameView?.getVariables()
+        return baseGameScreenViewModel.retroGameView.retroGameView?.getVariables()
             ?.mapNotNull {
                 val coreOptionResult =
                     runCatching {
@@ -216,7 +222,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeViewModelsEffectsFlow() {
-        gameScreenViewModel.getSideEffects()
+        baseGameScreenViewModel.getSideEffects()
             .collect {
                 when (it) {
                     is GameViewModelSideEffects.UiEffect.ShowMenu -> displayOptionsDialog(
@@ -232,7 +238,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onGenericMotionEvent(event: MotionEvent): Boolean {
-        val handled = gameScreenViewModel.sendMotionEvent(event)
+        val handled = baseGameScreenViewModel.sendMotionEvent(event)
         if (handled) {
             return true
         }
@@ -240,7 +246,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        val handled = gameScreenViewModel.sendKeyEvent(keyCode, event)
+        val handled = baseGameScreenViewModel.sendKeyEvent(keyCode, event)
         if (handled) {
             return true
         }
@@ -248,7 +254,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        val handled = gameScreenViewModel.sendKeyEvent(keyCode, event)
+        val handled = baseGameScreenViewModel.sendKeyEvent(keyCode, event)
         if (handled) {
             return true
         }
@@ -257,7 +263,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        gameScreenViewModel.requestFinish()
+        baseGameScreenViewModel.requestFinish()
     }
 
     private fun performSuccessfulActivityFinish() {
@@ -315,28 +321,28 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             Timber.i("Game menu dialog response: ${data?.extras.dump()}")
             if (data?.getBooleanExtra(GameMenuContract.RESULT_RESET, false) == true) {
                 GlobalScope.launch {
-                    gameScreenViewModel.reset()
+                    baseGameScreenViewModel.reset()
                 }
             }
             if (data?.hasExtra(GameMenuContract.RESULT_SAVE) == true) {
                 GlobalScope.launch {
-                    gameScreenViewModel.saveSlot(data.getIntExtra(GameMenuContract.RESULT_SAVE, 0))
+                    baseGameScreenViewModel.saveSlot(data.getIntExtra(GameMenuContract.RESULT_SAVE, 0))
                 }
             }
             if (data?.hasExtra(GameMenuContract.RESULT_LOAD) == true) {
                 GlobalScope.launch {
-                    gameScreenViewModel.loadSlot(data.getIntExtra(GameMenuContract.RESULT_LOAD, 0))
+                    baseGameScreenViewModel.loadSlot(data.getIntExtra(GameMenuContract.RESULT_LOAD, 0))
                 }
             }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_QUIT, false) == true) {
-                gameScreenViewModel.requestFinish()
+                baseGameScreenViewModel.requestFinish()
             }
             if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_DISK) == true) {
                 val index = data.getIntExtra(GameMenuContract.RESULT_CHANGE_DISK, 0)
-                gameScreenViewModel.retroGameView.retroGameView?.changeDisk(index)
+                baseGameScreenViewModel.retroGameView.retroGameView?.changeDisk(index)
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_AUDIO) == true) {
-                gameScreenViewModel.retroGameView.retroGameView?.apply {
+                baseGameScreenViewModel.retroGameView.retroGameView?.apply {
                     this.audioEnabled =
                         data.getBooleanExtra(
                             GameMenuContract.RESULT_ENABLE_AUDIO,
@@ -345,7 +351,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
             }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
-                gameScreenViewModel.retroGameView.retroGameView?.apply {
+                baseGameScreenViewModel.retroGameView.retroGameView?.apply {
                     val fastForwardEnabled =
                         data.getBooleanExtra(
                             GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
@@ -355,11 +361,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 }
             }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
-                gameScreenViewModel.showEditControls(true)
+                baseGameScreenViewModel.showEditControls(true)
             }
             if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_TILT_CONFIG) == true) {
                 val tiltConfig = data.serializable<TiltConfiguration>(GameMenuContract.RESULT_CHANGE_TILT_CONFIG)
-                gameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
+                baseGameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
             }
         }
     }

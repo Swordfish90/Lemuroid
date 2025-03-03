@@ -7,7 +7,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
-import com.swordfish.lemuroid.app.shared.game.GameScreenViewModel.Companion.MENU_LOADING_ANIMATION_MILLIS
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
@@ -206,5 +205,9 @@ class GameViewModelTouchControls(
                 )
             }
         }
+    }
+
+    companion object {
+        const val MENU_LOADING_ANIMATION_MILLIS = 500
     }
 }

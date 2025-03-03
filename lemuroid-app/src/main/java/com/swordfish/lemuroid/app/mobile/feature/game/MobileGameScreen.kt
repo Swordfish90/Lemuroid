@@ -1,12 +1,9 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
-package com.swordfish.lemuroid.app.shared.game
+package com.swordfish.lemuroid.app.mobile.feature.game
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -48,12 +45,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
-import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
+import com.swordfish.lemuroid.app.shared.game.BaseGameScreenViewModel
+import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelTouchControls.Companion.MENU_LOADING_ANIMATION_MILLIS
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.touchinput.controller.R
@@ -66,44 +61,8 @@ import gg.jam.jampadcompose.JamPad
 import gg.jam.jampadcompose.config.HapticFeedbackType
 import gg.jam.jampadcompose.inputstate.InputState
 
-private const val CONSTRAINTS_TOP_DIVIDER = "topDivider"
-private const val CONSTRAINTS_LEFT_DIVIDER = "leftDivider"
-private const val CONSTRAINTS_RIGHT_DIVIDER = "rightDivider"
-private const val CONSTRAINTS_LEFT_PAD = "leftPad"
-private const val CONSTRAINTS_RIGHT_PAD = "rightPad"
-private const val CONSTRAINTS_GAME_VIEW = "gameView"
-private const val CONSTRAINTS_GAME_CONTAINER = "gameContainer"
-
 @Composable
-fun GameScreen(viewModel: GameScreenViewModel) {
-    val isLoading = viewModel.loadingState
-        .collectAsState(true)
-        .value
-
-    val gameState = viewModel.getGameState()
-        .collectAsState(GameViewModelRetroGameView.GameState.Uninitialized)
-        .value
-
-    val isGameReady =
-        gameState is GameViewModelRetroGameView.GameState.Loaded ||
-        gameState is GameViewModelRetroGameView.GameState.Ready
-
-    if (isGameReady) {
-        GameScreenRunning(viewModel)
-    }
-
-    if (!isGameReady || isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            CircularProgressIndicator()
-        }
-    }
-}
-
-@Composable
-private fun GameScreenRunning(viewModel: GameScreenViewModel) {
+fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
 
@@ -152,7 +111,7 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel) {
         ) {
             ConstraintLayout(
                 modifier = Modifier.fillMaxSize(),
-                constraintSet = buildConstraintSet(
+                constraintSet = GameScreenLayout.buildConstraintSet(
                     isLandscape,
                     currentControllerConfig?.allowTouchOverlay ?: true
                 )
@@ -162,7 +121,7 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel) {
 
                 AndroidView(
                     modifier = Modifier
-                        .layoutId(CONSTRAINTS_GAME_VIEW)
+                        .layoutId(GameScreenLayout.CONSTRAINTS_GAME_VIEW)
                         .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
                     factory = {
                         viewModel.createRetroView(localContext, lifecycle)
@@ -174,33 +133,33 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel) {
                         val theme = LocalLemuroidPadTheme.current
                         if (!isLandscape) {
                             HorizontalDivider(
-                                modifier = Modifier.layoutId(CONSTRAINTS_TOP_DIVIDER),
+                                modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_TOP_DIVIDER),
                                 color = theme.backgroundStroke
                             )
                         } else if (!currentControllerConfig.allowTouchOverlay) {
                             VerticalDivider(
-                                modifier = Modifier.layoutId(CONSTRAINTS_LEFT_DIVIDER),
+                                modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_DIVIDER),
                                 color = theme.backgroundStroke
                             )
                             VerticalDivider(
-                                modifier = Modifier.layoutId(CONSTRAINTS_RIGHT_DIVIDER),
+                                modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_DIVIDER),
                                 color = theme.backgroundStroke
                             )
                         }
 
                         leftGamePad?.invoke(
                             this,
-                            Modifier.layoutId(CONSTRAINTS_LEFT_PAD),
+                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_PAD),
                             touchControllerSettings,
                         )
                         rightGamePad?.invoke(
                             this,
-                            Modifier.layoutId(CONSTRAINTS_RIGHT_PAD),
+                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_PAD),
                             touchControllerSettings
                         )
 
                         GameScreenRunningCentralMenu(
-                            modifier = Modifier.layoutId(CONSTRAINTS_GAME_CONTAINER),
+                            modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_GAME_CONTAINER),
                             controllerConfig = currentControllerConfig,
                             touchControllerSettings = touchControllerSettings,
                             viewModel = viewModel,
@@ -209,13 +168,26 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel) {
                 }
             }
         }
+
+        val isLoading = viewModel.loadingState
+            .collectAsState(true)
+            .value
+
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        }
     }
 }
 
 @Composable
 private fun GameScreenRunningCentralMenu(
     modifier: Modifier = Modifier,
-    viewModel: GameScreenViewModel,
+    viewModel: BaseGameScreenViewModel,
     touchControllerSettings: TouchControllerSettingsManager.Settings,
     controllerConfig: ControllerConfig,
 ) {
@@ -226,7 +198,7 @@ private fun GameScreenRunningCentralMenu(
     ) {
         LemuroidButtonPressFeedback(
             pressed = menuPressed.value,
-            animationDurationMillis = GameScreenViewModel.MENU_LOADING_ANIMATION_MILLIS,
+            animationDurationMillis = MENU_LOADING_ANIMATION_MILLIS,
             icon = R.drawable.button_menu,
         )
         MenuEditTouchControls(viewModel, controllerConfig, touchControllerSettings)
@@ -235,7 +207,7 @@ private fun GameScreenRunningCentralMenu(
 
 @Composable
 private fun MenuEditTouchControls(
-    viewModel: GameScreenViewModel,
+    viewModel: BaseGameScreenViewModel,
     controllerConfig: ControllerConfig,
     touchControllerSettings: TouchControllerSettingsManager.Settings
 ) {
@@ -338,162 +310,5 @@ private fun MenuEditTouchControlRow(
             contentDescription = label
         )
         slider()
-    }
-}
-
-private fun buildConstraintSet(isLandscape: Boolean, allowTouchOverlay: Boolean): ConstraintSet {
-    return when {
-        !isLandscape -> buildConstraintSetPortrait()
-        allowTouchOverlay -> buildConstraintSetLandscape()
-        else -> buildConstraintSetLandscapeNoOverlay()
-    }
-}
-
-private fun buildConstraintSetPortrait(): ConstraintSet {
-    return ConstraintSet {
-        val gameView = createRefFor(CONSTRAINTS_GAME_VIEW)
-        val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
-        val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
-        val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
-        val topDivider = createRefFor(CONSTRAINTS_TOP_DIVIDER)
-
-        val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
-
-        constrain(gameView) {
-            height = Dimension.fillToConstraints
-            top.linkTo(parent.top)
-            absoluteLeft.linkTo(parent.absoluteLeft)
-            absoluteRight.linkTo(parent.absoluteRight)
-            bottom.linkTo(leftPad.top)
-        }
-
-        constrain(topDivider) {
-            width = Dimension.fillToConstraints
-            height = Dimension.wrapContent
-            absoluteLeft.linkTo(parent.absoluteLeft)
-            absoluteRight.linkTo(parent.absoluteRight)
-            bottom.linkTo(leftPad.top)
-        }
-
-        constrain(gamePadChain) {
-            absoluteLeft.linkTo(parent.absoluteLeft)
-            absoluteRight.linkTo(parent.absoluteRight)
-        }
-
-        constrain(rightPad) {
-            width = Dimension.fillToConstraints
-            bottom.linkTo(parent.bottom)
-        }
-
-        constrain(leftPad) {
-            width = Dimension.fillToConstraints
-            bottom.linkTo(parent.bottom)
-        }
-
-        constrain(gameContainer) {
-            absoluteLeft.linkTo(gameView.absoluteLeft)
-            absoluteRight.linkTo(gameView.absoluteRight)
-            top.linkTo(gameView.top)
-            bottom.linkTo(gameView.bottom)
-        }
-    }
-}
-
-private fun buildConstraintSetLandscape(): ConstraintSet {
-    return ConstraintSet {
-        val gameView = createRefFor(CONSTRAINTS_GAME_VIEW)
-        val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
-        val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
-        val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
-
-        val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
-
-        constrain(gameView) {
-            width = Dimension.fillToConstraints
-            top.linkTo(parent.top)
-            absoluteLeft.linkTo(parent.absoluteLeft)
-            absoluteRight.linkTo(parent.absoluteRight)
-            bottom.linkTo(parent.bottom)
-        }
-
-        constrain(gamePadChain) {
-            absoluteLeft.linkTo(parent.absoluteLeft)
-            absoluteRight.linkTo(parent.absoluteRight)
-        }
-
-        constrain(rightPad) {
-            verticalBias = 1.0f
-            bottom.linkTo(parent.bottom)
-            top.linkTo(parent.top)
-        }
-
-        constrain(leftPad) {
-            verticalBias = 1.0f
-            bottom.linkTo(parent.bottom)
-            top.linkTo(parent.top)
-        }
-
-        constrain(gameContainer) {
-            absoluteLeft.linkTo(gameView.absoluteLeft)
-            absoluteRight.linkTo(gameView.absoluteRight)
-            top.linkTo(gameView.top)
-            bottom.linkTo(gameView.bottom)
-        }
-    }
-}
-
-private fun buildConstraintSetLandscapeNoOverlay(): ConstraintSet {
-    return ConstraintSet {
-        val gameView = createRefFor(CONSTRAINTS_GAME_VIEW)
-        val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
-        val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
-        val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
-        val leftDivider = createRefFor(CONSTRAINTS_LEFT_DIVIDER)
-        val rightDivider = createRefFor(CONSTRAINTS_RIGHT_DIVIDER)
-
-        constrain(leftPad) {
-            absoluteLeft.linkTo(parent.absoluteLeft)
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.wrapContent // Takes as much space as needed
-        }
-
-        constrain(gameView) {
-            absoluteLeft.linkTo(leftPad.absoluteRight)
-            absoluteRight.linkTo(rightPad.absoluteLeft)
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.fillToConstraints // Expands between leftPad and rightPad
-        }
-
-        constrain(rightPad) {
-            absoluteRight.linkTo(parent.absoluteRight)
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.wrapContent // Takes as much space as needed
-        }
-
-        constrain(gameContainer) {
-            absoluteLeft.linkTo(gameView.absoluteLeft)
-            absoluteRight.linkTo(gameView.absoluteRight)
-            top.linkTo(gameView.top)
-            bottom.linkTo(gameView.bottom)
-        }
-
-        constrain(leftDivider) {
-            absoluteLeft.linkTo(leftPad.absoluteRight)
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.wrapContent
-            height = Dimension.fillToConstraints
-        }
-
-        constrain(rightDivider) {
-            absoluteRight.linkTo(rightPad.absoluteLeft)
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.wrapContent
-            height = Dimension.fillToConstraints
-        }
     }
 }

@@ -72,7 +72,7 @@ class GameViewModelRetroGameView(
     var retroGameView: GLRetroView? by MutableStateProperty(retroGameViewFlow)
 
     fun getGameState(): Flow<GameState> {
-        return gameState
+        return gameState.debounce(200)
     }
 
     suspend fun initialize(
