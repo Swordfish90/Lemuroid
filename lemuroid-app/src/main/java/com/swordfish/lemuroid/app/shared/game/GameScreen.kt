@@ -24,11 +24,13 @@ import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -64,6 +66,9 @@ import gg.jam.jampadcompose.JamPad
 import gg.jam.jampadcompose.config.HapticFeedbackType
 import gg.jam.jampadcompose.inputstate.InputState
 
+private const val CONSTRAINTS_TOP_DIVIDER = "topDivider"
+private const val CONSTRAINTS_LEFT_DIVIDER = "leftDivider"
+private const val CONSTRAINTS_RIGHT_DIVIDER = "rightDivider"
 private const val CONSTRAINTS_LEFT_PAD = "leftPad"
 private const val CONSTRAINTS_RIGHT_PAD = "rightPad"
 private const val CONSTRAINTS_GAME_VIEW = "gameView"
@@ -166,6 +171,23 @@ private fun GameScreenRunning(viewModel: GameScreenViewModel) {
 
                 if (touchControllerSettings != null && currentControllerConfig != null && touchControlsVisibleState.value) {
                     CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme(MaterialTheme.colorScheme)) {
+                        val theme = LocalLemuroidPadTheme.current
+                        if (!isLandscape) {
+                            HorizontalDivider(
+                                modifier = Modifier.layoutId(CONSTRAINTS_TOP_DIVIDER),
+                                color = theme.backgroundStroke
+                            )
+                        } else if (!currentControllerConfig.allowTouchOverlay) {
+                            VerticalDivider(
+                                modifier = Modifier.layoutId(CONSTRAINTS_LEFT_DIVIDER),
+                                color = theme.backgroundStroke
+                            )
+                            VerticalDivider(
+                                modifier = Modifier.layoutId(CONSTRAINTS_RIGHT_DIVIDER),
+                                color = theme.backgroundStroke
+                            )
+                        }
+
                         leftGamePad?.invoke(
                             this,
                             Modifier.layoutId(CONSTRAINTS_LEFT_PAD),
@@ -320,10 +342,10 @@ private fun MenuEditTouchControlRow(
 }
 
 private fun buildConstraintSet(isLandscape: Boolean, allowTouchOverlay: Boolean): ConstraintSet {
-    return if (isLandscape) {
-        buildConstraintSetLandscape(allowTouchOverlay)
-    } else {
-        buildConstraintSetPortrait()
+    return when {
+        !isLandscape -> buildConstraintSetPortrait()
+        allowTouchOverlay -> buildConstraintSetLandscape()
+        else -> buildConstraintSetLandscapeNoOverlay()
     }
 }
 
@@ -333,12 +355,21 @@ private fun buildConstraintSetPortrait(): ConstraintSet {
         val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
         val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
         val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
+        val topDivider = createRefFor(CONSTRAINTS_TOP_DIVIDER)
 
         val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
 
         constrain(gameView) {
             height = Dimension.fillToConstraints
             top.linkTo(parent.top)
+            absoluteLeft.linkTo(parent.absoluteLeft)
+            absoluteRight.linkTo(parent.absoluteRight)
+            bottom.linkTo(leftPad.top)
+        }
+
+        constrain(topDivider) {
+            width = Dimension.fillToConstraints
+            height = Dimension.wrapContent
             absoluteLeft.linkTo(parent.absoluteLeft)
             absoluteRight.linkTo(parent.absoluteRight)
             bottom.linkTo(leftPad.top)
@@ -368,7 +399,7 @@ private fun buildConstraintSetPortrait(): ConstraintSet {
     }
 }
 
-private fun buildConstraintSetLandscape(allowTouchOverlay: Boolean): ConstraintSet {
+private fun buildConstraintSetLandscape(): ConstraintSet {
     return ConstraintSet {
         val gameView = createRefFor(CONSTRAINTS_GAME_VIEW)
         val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
@@ -380,13 +411,8 @@ private fun buildConstraintSetLandscape(allowTouchOverlay: Boolean): ConstraintS
         constrain(gameView) {
             width = Dimension.fillToConstraints
             top.linkTo(parent.top)
-            if (allowTouchOverlay) {
-                absoluteLeft.linkTo(parent.absoluteLeft)
-                absoluteRight.linkTo(parent.absoluteRight)
-            } else {
-                absoluteLeft.linkTo(leftPad.absoluteRight)
-                absoluteRight.linkTo(rightPad.absoluteLeft)
-            }
+            absoluteLeft.linkTo(parent.absoluteLeft)
+            absoluteRight.linkTo(parent.absoluteRight)
             bottom.linkTo(parent.bottom)
         }
 
@@ -412,6 +438,62 @@ private fun buildConstraintSetLandscape(allowTouchOverlay: Boolean): ConstraintS
             absoluteRight.linkTo(gameView.absoluteRight)
             top.linkTo(gameView.top)
             bottom.linkTo(gameView.bottom)
+        }
+    }
+}
+
+private fun buildConstraintSetLandscapeNoOverlay(): ConstraintSet {
+    return ConstraintSet {
+        val gameView = createRefFor(CONSTRAINTS_GAME_VIEW)
+        val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
+        val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
+        val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
+        val leftDivider = createRefFor(CONSTRAINTS_LEFT_DIVIDER)
+        val rightDivider = createRefFor(CONSTRAINTS_RIGHT_DIVIDER)
+
+        constrain(leftPad) {
+            absoluteLeft.linkTo(parent.absoluteLeft)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            width = Dimension.wrapContent // Takes as much space as needed
+        }
+
+        constrain(gameView) {
+            absoluteLeft.linkTo(leftPad.absoluteRight)
+            absoluteRight.linkTo(rightPad.absoluteLeft)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            width = Dimension.fillToConstraints // Expands between leftPad and rightPad
+        }
+
+        constrain(rightPad) {
+            absoluteRight.linkTo(parent.absoluteRight)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            width = Dimension.wrapContent // Takes as much space as needed
+        }
+
+        constrain(gameContainer) {
+            absoluteLeft.linkTo(gameView.absoluteLeft)
+            absoluteRight.linkTo(gameView.absoluteRight)
+            top.linkTo(gameView.top)
+            bottom.linkTo(gameView.bottom)
+        }
+
+        constrain(leftDivider) {
+            absoluteLeft.linkTo(leftPad.absoluteRight)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            width = Dimension.wrapContent
+            height = Dimension.fillToConstraints
+        }
+
+        constrain(rightDivider) {
+            absoluteRight.linkTo(rightPad.absoluteLeft)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            width = Dimension.wrapContent
+            height = Dimension.fillToConstraints
         }
     }
 }
