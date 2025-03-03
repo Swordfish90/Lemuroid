@@ -200,6 +200,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
+                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
@@ -209,6 +210,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
+                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
@@ -218,6 +220,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
+                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
@@ -227,6 +230,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
+                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
@@ -236,6 +240,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
+                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
@@ -245,6 +250,7 @@ object ShaderChooser {
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
                 edgeMinValue = 0.025f,
+                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
