@@ -69,7 +69,7 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
                 if (it.isBlank()) {
                     defaultSettings
                 } else {
-                    Json.decodeFromString(it)
+                    Json.decodeFromString(Settings.serializer(), it)
                 }
             }
     }
@@ -77,7 +77,10 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
     suspend fun storeSettings(touchControllerID: TouchControllerID, orientation: Orientation, settings: Settings) {
         withContext(Dispatchers.IO) {
             sharedPreferences.edit {
-                putString(getPreferenceString(touchControllerID, orientation), Json.encodeToString(settings))
+                putString(
+                    getPreferenceString(touchControllerID, orientation),
+                    Json.encodeToString(Settings.serializer(), settings)
+                )
             }
         }
     }
