@@ -7,19 +7,16 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.max
 import androidx.core.content.edit
-import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.common.compose.pxToDp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 
-@OptIn(ExperimentalSerializationApi::class)
 class TouchControllerSettingsManager(private val sharedPreferences: SharedPreferences) {
     enum class Orientation {
         PORTRAIT,
@@ -44,7 +41,8 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         return result
     }
 
-    // TODO PADS... This can be optimized by caching the latest settings here to avoid going trough storage and serialization.
+    private val cachedSettings = mutableMapOf<String, MutableStateFlow<Settings?>>()
+
     fun observeSettings(
         touchControllerID: TouchControllerID,
         orientation: Orientation,
@@ -63,18 +61,19 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
             marginX = horizontalPadding.value / MAX_MARGINS,
             marginY = verticalPadding.value / MAX_MARGINS,
         )
-        return FlowSharedPreferences(sharedPreferences).getString(getPreferenceString(touchControllerID, orientation))
-            .asFlow()
-            .map {
-                if (it.isBlank()) {
-                    defaultSettings
-                } else {
-                    Json.decodeFromString(Settings.serializer(), it)
-                }
-            }
+        val settingsKey = getPreferenceString(touchControllerID, orientation)
+        val cachedStateFlow = cachedSettings.getOrPut(settingsKey) {
+            val currentSettings = sharedPreferences.getString(settingsKey, null)
+                ?.let { Json.decodeFromString(Settings.serializer(), it) }
+
+            MutableStateFlow(currentSettings)
+        }
+        return cachedStateFlow.map { it ?: defaultSettings }
     }
 
     suspend fun storeSettings(touchControllerID: TouchControllerID, orientation: Orientation, settings: Settings) {
+        Timber.d("Updating touch settings for $touchControllerID at $orientation to $settings")
+        updateCachedSettings(touchControllerID, orientation, settings)
         withContext(Dispatchers.IO) {
             sharedPreferences.edit {
                 putString(
@@ -85,7 +84,18 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         }
     }
 
+    private fun updateCachedSettings(
+        touchControllerID: TouchControllerID,
+        orientation: Orientation,
+        settings: Settings?
+    ) {
+        val cacheKey = getPreferenceString(touchControllerID, orientation)
+        val cacheFlow = cachedSettings.getOrPut(cacheKey) { MutableStateFlow(settings) }
+        cacheFlow.value = settings
+    }
+
     suspend fun resetSettings(touchControllerID: TouchControllerID, orientation: Orientation) {
+        updateCachedSettings(touchControllerID, orientation, null)
         withContext(Dispatchers.IO) {
             sharedPreferences.edit {
                 remove(getPreferenceString(touchControllerID, orientation))

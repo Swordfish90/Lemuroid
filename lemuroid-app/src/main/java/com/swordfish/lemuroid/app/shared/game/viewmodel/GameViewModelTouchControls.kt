@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.common.coroutines.launchOnState
+import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
@@ -52,6 +53,11 @@ class GameViewModelTouchControls(
     private var loadingMenuJob: Job? = null
 
     override fun onCreate(owner: LifecycleOwner) {
+        owner.launchOnState(Lifecycle.State.CREATED) {
+            getTouchControllerConfig().safeCollect {
+                touchControlId.value = it.touchControllerID
+            }
+        }
         owner.launchOnState(Lifecycle.State.CREATED) {
             withContext(Dispatchers.IO) {
                 hapticFeedbackMode.value = HapticFeedbackMode.parse(settingsManager.hapticFeedbackMode())
