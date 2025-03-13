@@ -53,9 +53,9 @@ fun JamPadScope.N64Right(modifier: Modifier = Modifier, settings: TouchControlle
                     KeyId(KeyEvent.KEYCODE_BUTTON_L2),
                 ),
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, label = "A") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(it, label = "B") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_L2)) { LemuroidButtonForeground(it, label = "Z") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(pressed = it, label = "A") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(pressed = it, label = "B") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_L2)) { LemuroidButtonForeground(pressed = it, label = "Z") }
                 },
             )
         },

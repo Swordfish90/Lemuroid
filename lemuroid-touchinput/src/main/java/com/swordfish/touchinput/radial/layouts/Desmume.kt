@@ -60,10 +60,10 @@ fun JamPadScope.DesmumeRight(modifier: Modifier = Modifier, settings: TouchContr
                     KeyId(KeyEvent.KEYCODE_BUTTON_X),
                 ),
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(it, label = "A") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, label = "B") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(it, label = "Y") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_X)) { LemuroidButtonForeground(it, label = "X") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(pressed = it, label = "A") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(pressed = it, label = "B") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(pressed = it, label = "Y") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_X)) { LemuroidButtonForeground(pressed = it, label = "X") }
                 },
             )
         },

@@ -49,7 +49,7 @@ fun JamPadScope.Atari2600Right(modifier: Modifier = Modifier, settings: TouchCon
                 ids = listOf(KeyId(KeyEvent.KEYCODE_BUTTON_B)),
                 includeComposite = false,
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it) }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(pressed = it) }
                 },
             )
         },

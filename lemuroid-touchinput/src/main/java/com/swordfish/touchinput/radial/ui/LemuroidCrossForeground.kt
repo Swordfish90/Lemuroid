@@ -49,7 +49,7 @@ private fun LemuroidCrossButton(pressed: Boolean, imageVector: ImageVector) {
                 modifier = Modifier.size(maxWidth * 0.5f, maxHeight * 0.5f),
                 imageVector = imageVector,
                 contentDescription = "",
-                tint = LocalLemuroidPadTheme.current.foregroundStroke(pressed),
+                tint = LocalLemuroidPadTheme.current.icons(pressed),
             )
         }
     )

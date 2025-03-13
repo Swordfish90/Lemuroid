@@ -79,7 +79,7 @@ fun LemuroidButtonPressFeedback(pressed: Boolean, animationDurationMillis: Int, 
                             .fillMaxSize(0.625f)
                             .align(Alignment.Center),
                     progress = { animatedProgress },
-                    color = LocalLemuroidPadTheme.current.foregroundStroke(false),
+                    color = LocalLemuroidPadTheme.current.icons(false),
                     trackColor = Color.Transparent,
                 )
             }

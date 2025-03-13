@@ -43,9 +43,9 @@ fun JamPadScope.Genesis3Right(modifier: Modifier = Modifier, settings: TouchCont
                     KeyId(KeyEvent.KEYCODE_BUTTON_B),
                 ),
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(it, label = "C") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, label = "B") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(it, label = "A") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(pressed = it, label = "C") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(pressed = it, label = "B") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(pressed = it, label = "A") }
                 },
             )
         },

@@ -32,6 +32,7 @@ object GameScreenLayout {
             val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
 
             constrain(gameView) {
+                width = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
                 top.linkTo(parent.top)
                 absoluteLeft.linkTo(parent.absoluteLeft)
@@ -82,6 +83,7 @@ object GameScreenLayout {
 
             constrain(gameView) {
                 width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
                 top.linkTo(parent.top)
                 absoluteLeft.linkTo(parent.absoluteLeft)
                 absoluteRight.linkTo(parent.absoluteRight)
@@ -131,6 +133,8 @@ object GameScreenLayout {
             }
 
             constrain(gameView) {
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
                 absoluteLeft.linkTo(leftPad.absoluteRight)
                 absoluteRight.linkTo(rightPad.absoluteLeft)
                 top.linkTo(parent.top)

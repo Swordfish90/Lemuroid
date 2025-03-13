@@ -50,10 +50,30 @@ fun JamPadScope.PSPRight(modifier: Modifier = Modifier, settings: TouchControlle
                     KeyId(KeyEvent.KEYCODE_BUTTON_X),
                 ),
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(it, icon = R.drawable.psx_circle) }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, icon = R.drawable.psx_cross) }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(it, icon = R.drawable.psx_square) }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_X)) { LemuroidButtonForeground(it, icon = R.drawable.psx_triangle) }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) {
+                        LemuroidButtonForeground(
+                            pressed = it,
+                            icon = R.drawable.psx_circle
+                        )
+                    }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) {
+                        LemuroidButtonForeground(
+                            pressed = it,
+                            icon = R.drawable.psx_cross
+                        )
+                    }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) {
+                        LemuroidButtonForeground(
+                            pressed = it,
+                            icon = R.drawable.psx_square
+                        )
+                    }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_X)) {
+                        LemuroidButtonForeground(
+                            pressed = it,
+                            icon = R.drawable.psx_triangle
+                        )
+                    }
                 },
             )
         },
@@ -62,7 +82,7 @@ fun JamPadScope.PSPRight(modifier: Modifier = Modifier, settings: TouchControlle
             SecondaryButtonStart(position = 2)
             Box(
                 modifier = Modifier
-                    .radialPosition(+80f -180f)
+                    .radialPosition(+80f - 180f)
                     .radialScale(2.2f)
             )
             SecondaryButtonMenu(settings)

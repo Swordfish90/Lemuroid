@@ -21,10 +21,8 @@ fun LemuroidControlFaceButtons(
     background: @Composable () -> Unit = { LemuroidControlBackground() },
     idsForegrounds: Map<KeyId, @Composable (Boolean) -> Unit>
 ) {
-    val theme = LocalLemuroidPadTheme.current
-
     ControlFaceButtons(
-        modifier = modifier.padding(theme.padding),
+        modifier = modifier,
         includeComposite = includeComposite,
         ids = ids,
         rotationInDegrees = rotationInDegrees,
@@ -45,7 +43,7 @@ fun LemuroidControlFaceButtons(
     val theme = LocalLemuroidPadTheme.current
 
     ControlFaceButtons(
-        modifier = modifier.padding(theme.padding),
+        modifier = modifier,
         mainButtonAnchors = mainAnchors,
         compositeButtonAnchors = emptyList(),
         foreground = { id, pressed -> (idsForegrounds[id]!!)(pressed) },

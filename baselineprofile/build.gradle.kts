@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.swordfish.lemuroid.baselineprofile"
-    compileSdk = 34
+    compileSdk = deps.android.compileSdkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

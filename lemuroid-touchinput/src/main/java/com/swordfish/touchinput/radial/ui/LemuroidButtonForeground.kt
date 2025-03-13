@@ -1,18 +1,14 @@
 package com.swordfish.touchinput.radial.ui
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,33 +17,21 @@ import gg.jam.jampadcompose.utils.GeometryUtils.textUnit
 
 @Composable
 fun LemuroidButtonForeground(
+    modifier: Modifier = Modifier,
     pressed: Boolean,
     label: (@Composable BoxWithConstraintsScope.() -> Unit),
     icon: (@Composable BoxWithConstraintsScope.() -> Unit),
-    scale: Float = 0.75f,
+    scale: Float = 0.9f,
 ) {
-    BoxWithConstraints(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
+    val theme = LocalLemuroidPadTheme.current
+
+    TranslucentSurface(
+        modifier = modifier.fillMaxSize().padding(theme.backgroundShadowWidth),
+        scale = scale,
+        fillColor = theme.foregroundFill(pressed),
+        shadowWidth = theme.foregroundShadowWidth,
+        shadowColor = theme.foregroundShadow,
     ) {
-        val theme = LocalLemuroidPadTheme.current
-
-        Canvas(modifier = Modifier.size(maxWidth * scale, maxHeight * scale)) {
-            val radius = size.minDimension / 2
-            val borderWidth = theme.foregroundBorderWidth.toPx()
-
-            drawCircle(
-                color = theme.foregroundFill(pressed),
-                radius = radius - borderWidth / 2
-            )
-
-            drawCircle(
-                color = theme.foregroundStroke(pressed),
-                radius = radius,
-                style = Stroke(width = borderWidth)
-            )
-        }
-
         icon()
         label()
     }
@@ -55,13 +39,15 @@ fun LemuroidButtonForeground(
 
 @Composable
 fun LemuroidButtonForeground(
+    modifier: Modifier = Modifier,
     pressed: Boolean,
     label: String? = null,
     icon: Int? = null,
     iconScale: Float = 0.5f,
-    scale: Float = 0.75f,
+    scale: Float = 0.9f,
 ) {
     LemuroidButtonForeground(
+        modifier = modifier,
         scale = scale,
         pressed = pressed,
         label = { LemuroidButtonForegroundLabel(label, pressed) },
@@ -81,7 +67,7 @@ private fun BoxWithConstraintsScope.LemuroidButtonForegroundIcon(
         modifier = Modifier.size(maxWidth * iconScale, maxHeight * iconScale),
         painter = painterResource(icon),
         contentDescription = "",
-        tint = LocalLemuroidPadTheme.current.foregroundStroke(pressed),
+        tint = LocalLemuroidPadTheme.current.icons(pressed),
     )
 }
 
@@ -96,7 +82,7 @@ private fun BoxWithConstraintsScope.LemuroidButtonForegroundLabel(label: String?
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold,
         text = label,
-        color = LocalLemuroidPadTheme.current.foregroundStroke(pressed),
+        color = LocalLemuroidPadTheme.current.icons(pressed),
         fontSize = fontSize.textUnit(),
     )
 }

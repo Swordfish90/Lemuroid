@@ -27,9 +27,8 @@ fun LemuroidControlCross(
     },
     modifier: Modifier = Modifier
 ) {
-    val theme = LocalLemuroidPadTheme.current
     ControlCross(
-        modifier = modifier.padding(theme.padding),
+        modifier = modifier,
         id = id,
         allowDiagonals = allowDiagonals,
         background = background,

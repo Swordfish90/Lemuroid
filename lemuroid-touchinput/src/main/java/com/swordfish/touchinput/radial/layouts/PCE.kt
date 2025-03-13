@@ -41,8 +41,8 @@ fun JamPadScope.PCERight(modifier: Modifier = Modifier, settings: TouchControlle
                     KeyId(KeyEvent.KEYCODE_BUTTON_B),
                 ),
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(it, label = "II") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, label = "I") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(pressed = it, label = "II") }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(pressed = it, label = "I") }
                 },
             )
         },

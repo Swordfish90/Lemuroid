@@ -53,12 +53,27 @@ fun JamPadScope.PSXDualShockRight(modifier: Modifier = Modifier, settings: Touch
                     KeyId(KeyEvent.KEYCODE_BUTTON_X),
                 ),
                 idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(it, icon = R.drawable.psx_circle) }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(it, icon = R.drawable.psx_cross) }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) { LemuroidButtonForeground(it, icon = R.drawable.psx_square) }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) {
+                        LemuroidButtonForeground(
+                            pressed = it,
+                            icon = R.drawable.psx_circle
+                        )
+                    }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) {
+                        LemuroidButtonForeground(
+                            pressed = it,
+                            icon = R.drawable.psx_cross
+                        )
+                    }
+                    put(KeyId(KeyEvent.KEYCODE_BUTTON_Y)) {
+                        LemuroidButtonForeground(
+                            pressed = it,
+                            icon = R.drawable.psx_square
+                        )
+                    }
                     put(KeyId(KeyEvent.KEYCODE_BUTTON_X)) {
                         LemuroidButtonForeground(
-                            it,
+                            pressed = it,
                             icon = R.drawable.psx_triangle
                         )
                     }
