@@ -122,8 +122,8 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             val localContext = LocalContext.current
             val lifecycle = LocalLifecycleOwner.current
 
-            val fullScreenPosition = remember { mutableStateOf(Rect.Zero) }
-            val viewportPosition = remember { mutableStateOf(Rect.Zero) }
+            val fullScreenPosition = remember { mutableStateOf<Rect?>(null) }
+            val viewportPosition = remember { mutableStateOf<Rect?>(null) }
 
 
             AndroidView(
@@ -140,12 +140,14 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
             LaunchedEffect(fullPos, viewPos) {
                 val gameView = viewModel.retroGameView.retroGameViewFlow()
-                gameView.viewport = RectF(
+                if (fullPos == null || viewPos == null) return@LaunchedEffect
+                val viewport = RectF(
                     (viewPos.left - fullPos.left) / fullPos.width,
                     (viewPos.top - fullPos.top) / fullPos.height,
                     (viewPos.right - fullPos.left) / fullPos.width,
                     (viewPos.bottom - fullPos.top) / fullPos.height
                 )
+                gameView.viewport = viewport
             }
 
             ConstraintLayout(

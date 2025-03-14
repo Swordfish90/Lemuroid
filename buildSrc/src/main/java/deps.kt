@@ -23,7 +23,7 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
-        const val libretrodroid   = "7ed9c5744"
+        const val libretrodroid   = "c4874ca5b"
         const val radialgamepad   = "2.0.0"
         const val composeBom      = "2024.02.02"
         const val kotlinExtension = "1.4.6"
