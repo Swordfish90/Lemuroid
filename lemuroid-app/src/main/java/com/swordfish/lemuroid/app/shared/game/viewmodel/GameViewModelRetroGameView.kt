@@ -92,6 +92,7 @@ class GameViewModelRetroGameView(
         val lowLatencyAudio = settingsManager.lowLatencyAudio()
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
+        val enableAmbientMode = settingsManager.enableAmbientMode()
 
         val hasMicrophonePermission = ContextCompat.checkSelfPermission(
             applicationContext,
@@ -133,6 +134,7 @@ class GameViewModelRetroGameView(
                         lowLatencyAudio,
                         enableRumble,
                         enableMicrophone,
+                        enableAmbientMode,
                     )
                     GameState.Loaded(
                         gameData = loadingState.gameData,
@@ -199,7 +201,8 @@ class GameViewModelRetroGameView(
         screenFilter: String,
         lowLatencyAudio: Boolean,
         requestRumble: Boolean,
-        requestMicrophone: Boolean
+        requestMicrophone: Boolean,
+        ambientMode: Boolean,
     ): GLRetroViewData {
         return GLRetroViewData(appContext).apply {
             coreFilePath = gameData.coreLibrary
@@ -230,6 +233,7 @@ class GameViewModelRetroGameView(
             rumbleEventsEnabled = requestRumble
             skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
             enableMicrophone = requestMicrophone
+            enableAmbientMode = ambientMode
         }
     }
 

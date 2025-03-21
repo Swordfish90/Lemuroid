@@ -19,6 +19,7 @@
     <string name="pref_key_enable_device_rumble" translatable="false">enable_device_rumble</string>
     <string name="pref_key_max_cache_size" translatable="false">max_cache_size_bytes</string>
     <string name="pref_key_allow_direct_game_load" translatable="false">allow_direct_game_load</string>
+    <string name="pref_key_enable_ambient_mode" translatable="false">enable_ambient_mode</string>
 
     <string name="pref_key_save_sync_auto" translatable="false">save_sync_auto</string>
     <string name="pref_key_save_sync_enable" translatable="false">save_sync_enable</string>

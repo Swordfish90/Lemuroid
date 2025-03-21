@@ -55,6 +55,7 @@ fun TranslucentSurface(
                     }.toTypedArray()
 
                     val brush = Brush.radialGradient(colorStops = colorStops)
+
                     onDrawWithContent {
                         drawCircle(brush = brush, radius = radius)
                     }

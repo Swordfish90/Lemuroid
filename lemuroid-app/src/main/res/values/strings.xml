@@ -37,6 +37,9 @@
     <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
     <string name="settings_description_hd_quality">Adjust the quality of HD mode</string>
 
+    <string name="settings_title_ambient_mode">Ambient mode</string>
+    <string name="settings_description_ambient_mode">Dynamically colors the background based on game visuals</string>
+
     <string name="settings_title_gamepad_settings">External devices</string>
     <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
 
