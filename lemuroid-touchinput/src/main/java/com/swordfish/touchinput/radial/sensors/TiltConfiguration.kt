@@ -35,7 +35,7 @@ sealed interface TiltConfiguration : Serializable {
 
     data class Cross(val directionId: Int) : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
-            val offset = Offset(values[0], values[1]).round()
+            val offset = Offset(values[0], -values[1]).round()
             return InputState().setDiscreteDirection(DiscreteDirectionId(directionId), offset.toOffset())
         }
 
@@ -46,7 +46,7 @@ sealed interface TiltConfiguration : Serializable {
 
     data class Analog(val directionId: Int) : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
-            val offset = Offset(values[0], values[1])
+            val offset = Offset(values[0], -values[1])
             return InputState().setContinuousDirection(ContinuousDirectionId(directionId), offset)
         }
 
@@ -60,9 +60,9 @@ sealed interface TiltConfiguration : Serializable {
             val xTilt = values[0]
             val yTilt = values[1]
 
-            val leftPressed = xTilt < 0.25
-            val rightPressed = xTilt > 0.75
-            val bothPressed = !leftPressed && !rightPressed && yTilt < 0.1
+            val leftPressed = xTilt < -0.75f
+            val rightPressed = xTilt > 0.75f
+            val bothPressed = !leftPressed && !rightPressed && yTilt < -0.9f
 
             return InputState()
                 .setDigitalKey(KeyId(leftButtonId), leftPressed || bothPressed)
