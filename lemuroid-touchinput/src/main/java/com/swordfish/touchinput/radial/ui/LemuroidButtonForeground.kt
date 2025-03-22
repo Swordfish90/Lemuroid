@@ -31,8 +31,9 @@ fun LemuroidButtonForeground(
         scale = scale,
         fillColor = theme.foregroundFill(pressed),
         strokeColor = theme.foregroundStroke(pressed),
-        shadowWidth = theme.foregroundShadowWidth,
-        shadowColor = theme.foregroundShadow,
+        shadowWidth = theme.level2ShadowWidth,
+        shadowColor = theme.level2Shadow,
+        strokeWidth = theme.level2StrokeWidth
     ) {
         icon()
         label()

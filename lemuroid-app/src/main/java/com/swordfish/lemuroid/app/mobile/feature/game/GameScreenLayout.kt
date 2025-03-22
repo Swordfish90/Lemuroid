@@ -5,9 +5,9 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 
 object GameScreenLayout {
-    const val CONSTRAINTS_TOP_DIVIDER = "topDivider"
-    const val CONSTRAINTS_LEFT_DIVIDER = "leftDivider"
-    const val CONSTRAINTS_RIGHT_DIVIDER = "rightDivider"
+    const val CONSTRAINTS_BOTTOM_CONTAINER = "bottomContainer"
+    const val CONSTRAINTS_LEFT_CONTAINER = "leftContainer"
+    const val CONSTRAINTS_RIGHT_CONTAINER = "rightContainer"
     const val CONSTRAINTS_LEFT_PAD = "leftPad"
     const val CONSTRAINTS_RIGHT_PAD = "rightPad"
     const val CONSTRAINTS_GAME_VIEW = "gameView"
@@ -27,7 +27,7 @@ object GameScreenLayout {
             val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
             val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
             val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
-            val topDivider = createRefFor(CONSTRAINTS_TOP_DIVIDER)
+            val bottomContainer = createRefFor(CONSTRAINTS_BOTTOM_CONTAINER)
 
             val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
 
@@ -40,12 +40,13 @@ object GameScreenLayout {
                 bottom.linkTo(leftPad.top)
             }
 
-            constrain(topDivider) {
+            constrain(bottomContainer) {
                 width = Dimension.fillToConstraints
-                height = Dimension.wrapContent
+                height = Dimension.fillToConstraints
                 absoluteLeft.linkTo(parent.absoluteLeft)
                 absoluteRight.linkTo(parent.absoluteRight)
-                bottom.linkTo(leftPad.top)
+                top.linkTo(leftPad.top)
+                bottom.linkTo(parent.bottom)
             }
 
             constrain(gamePadChain) {
@@ -122,8 +123,8 @@ object GameScreenLayout {
             val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
             val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
             val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
-            val leftDivider = createRefFor(CONSTRAINTS_LEFT_DIVIDER)
-            val rightDivider = createRefFor(CONSTRAINTS_RIGHT_DIVIDER)
+            val leftContainer = createRefFor(CONSTRAINTS_LEFT_CONTAINER)
+            val rightContainer = createRefFor(CONSTRAINTS_RIGHT_CONTAINER)
 
             constrain(leftPad) {
                 absoluteLeft.linkTo(parent.absoluteLeft)
@@ -156,19 +157,21 @@ object GameScreenLayout {
                 bottom.linkTo(gameView.bottom)
             }
 
-            constrain(leftDivider) {
-                absoluteLeft.linkTo(leftPad.absoluteRight)
+            constrain(leftContainer) {
+                absoluteLeft.linkTo(parent.absoluteLeft)
+                absoluteRight.linkTo(leftPad.absoluteRight)
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
-                width = Dimension.wrapContent
+                width = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
             }
 
-            constrain(rightDivider) {
-                absoluteRight.linkTo(rightPad.absoluteLeft)
+            constrain(rightContainer) {
+                absoluteRight.linkTo(parent.absoluteRight)
+                absoluteLeft.linkTo(rightPad.absoluteLeft)
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
-                width = Dimension.wrapContent
+                width = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
             }
         }

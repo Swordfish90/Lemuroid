@@ -12,7 +12,7 @@ fun LemuroidCompositeForeground(pressed: Boolean) {
         modifier = Modifier.fillMaxSize(),
         fillColor = theme.foregroundFill(pressed),
         strokeColor = theme.foregroundStroke(pressed),
-        shadowWidth = theme.foregroundShadowWidth,
-        shadowColor = theme.foregroundShadow,
+        shadowWidth = theme.level2ShadowWidth,
+        shadowColor = theme.level2Shadow,
     )
 }

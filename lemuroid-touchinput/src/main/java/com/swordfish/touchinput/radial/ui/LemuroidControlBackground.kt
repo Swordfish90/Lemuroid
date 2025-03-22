@@ -11,9 +11,10 @@ fun LemuroidControlBackground(modifier: Modifier = Modifier) {
     val theme = LocalLemuroidPadTheme.current
     GlassSurface(
         modifier = modifier.fillMaxSize().padding(theme.padding),
-        fillColor = theme.backgroundFill,
-        strokeColor = theme.backgroundStroke,
-        shadowWidth = theme.backgroundShadowWidth,
-        shadowColor = theme.backgroundShadow,
+        fillColor = theme.level1Fill,
+        strokeColor = theme.level1Stroke,
+        shadowWidth = theme.level1ShadowWidth,
+        shadowColor = theme.level1Shadow,
+        strokeWidth = theme.level1StrokeWidth,
     )
 }

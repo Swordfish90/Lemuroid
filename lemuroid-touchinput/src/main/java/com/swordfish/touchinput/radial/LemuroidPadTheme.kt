@@ -1,47 +1,55 @@
 package com.swordfish.touchinput.radial
 
-import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-class LemuroidPadTheme(colorScheme: ColorScheme) {
-    private fun color(luminosity: Float, opacity: Float): Color {
+class LemuroidPadTheme {
+    private fun gray(luminosity: Float, opacity: Float): Color {
         return Color(luminosity, luminosity, luminosity, opacity)
     }
 
     val padding: Dp = 4.dp
 
-    private val icons = color(0.0f, 0.50f)
-    private val iconsPressed = color(1.0f, 0.50f)
+    private val icons = gray(0.0f, 0.50f)
+    private val iconsPressed = gray(1.0f, 0.50f)
 
-    private val foregroundFill = color(1.0f, 0.50f)
-    private val foregroundFillPressed = color(0.0f, 0.40f)
-    private val foregroundStroke = color(1.0f, 0.20f)
-    private val foregroundStrokePressed = color(0.0f, 0.20f)
-    val foregroundShadow = DefaultShadowColor.copy(0.05f)
-    val foregroundShadowWidth = 4.dp
+    private val level2Fill = gray(1.0f, 0.50f)
+    private val level2FillPressed = gray(0.0f, 0.40f)
+    private val level2Stroke = gray(1.0f, 0.20f)
+    private val level2StrokePressed = gray(0.0f, 0.20f)
+    val level2Shadow = DefaultShadowColor.copy(0.05f)
+    val level2ShadowWidth = 4.dp
+    val level2StrokeWidth = 1.dp
 
-    val backgroundFill = color(1.0f, 0.10f)
-    val backgroundStroke = color(1.0f, 0.10f)
-    val backgroundShadow = DefaultShadowColor.copy(0.10f)
-    val backgroundShadowWidth = 4.dp
+    val level1Fill = gray(1.0f, 0.10f)
+    val level1Stroke = gray(1.0f, 0.10f)
+    val level1Shadow = DefaultShadowColor.copy(0.10f)
+    val level1ShadowWidth = 4.dp
+    val level1StrokeWidth = 1.dp
+
+    val level0CornerRadius = 20.dp
+    val level0Fill = gray(1.0f, 0.05f)
+    val level0Stroke = gray(1.0f, 0.05f)
+    val level0Shadow = DefaultShadowColor.copy(0.10f)
+    val level0ShadowWidth = 2.dp
+    val level0StrokeWidth = 1.dp
 
     fun foregroundFill(pressed: Boolean): Color {
         return if (pressed) {
-            foregroundFillPressed
+            level2FillPressed
         } else {
-            foregroundFill
+            level2Fill
         }
     }
 
     fun foregroundStroke(pressed: Boolean): Color {
         return if (pressed) {
-            foregroundStrokePressed
+            level2StrokePressed
         } else {
-            foregroundStroke
+            level2Stroke
         }
     }
 

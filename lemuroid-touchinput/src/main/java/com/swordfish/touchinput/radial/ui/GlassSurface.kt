@@ -19,6 +19,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+data class DrawPaddingValues(
+    val left: Dp = 0.dp,
+    val top: Dp = 0.dp,
+    val right: Dp = 0.dp,
+    val bottom: Dp = 0.dp
+)
+
 private object ShadowCache {
     private val bitmapCache = mutableMapOf<String, ImageBitmap>()
 
@@ -58,53 +65,66 @@ private object ShadowCache {
 @Composable
 fun GlassSurface(
     modifier: Modifier = Modifier,
-    cornerRadiusFraction: Float = 1f,
+    cornerRadius: Dp = Dp.Infinity,
     fillColor: Color = Color.White.copy(alpha = 0.15f),
     strokeColor: Color = Color.White.copy(alpha = 0.3f),
     shadowColor: Color = Color.Black.copy(alpha = 0.3f),
     strokeWidth: Dp = 1.dp,
     shadowWidth: Dp = 1.dp,
     scale: Float = 1.0f,
+    drawPadding: DrawPaddingValues = DrawPaddingValues(),
     content: @Composable BoxWithConstraintsScope.() -> Unit = { }
 ) {
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
         modifier = modifier.drawWithCache {
             val strokePx = strokeWidth.toPx()
-            val blurRadius = shadowWidth.toPx()
+            val blurRadiusPx = shadowWidth.toPx()
 
-            val actualCornerRadius = (size.minDimension / 2f) * cornerRadiusFraction
+            val paddingStart = drawPadding.left.toPx()
+            val paddingTop = drawPadding.top.toPx()
+            val paddingEnd = drawPadding.right.toPx()
+            val paddingBottom = drawPadding.bottom.toPx()
+
+            val expandedWidth = size.width - paddingStart - paddingEnd
+            val expandedHeight = size.height - paddingTop - paddingBottom
+            val expandedSize = Size(expandedWidth, expandedHeight)
+
+            val cornerRadiusPx = minOf(cornerRadius.toPx(), expandedSize.minDimension / 2f)
 
             val shadowBitmap = ShadowCache.getOrCreate(
-                width = size.width.toInt(),
-                height = size.height.toInt(),
-                cornerRadius = actualCornerRadius,
+                width = expandedSize.width.toInt(),
+                height = expandedSize.height.toInt(),
+                cornerRadius = cornerRadiusPx,
                 shadowColor = shadowColor,
-                blurRadius = blurRadius,
+                blurRadius = blurRadiusPx
             )
 
-            val scaledSize = size * scale
-            val offset = (size - scaledSize) * 0.5f
+            val scaledSize = expandedSize * scale
+            val centerOffset = (expandedSize - scaledSize) * 0.5f
 
             val strokeInset = strokePx / 2f
             val fillSize = scaledSize + Size(strokePx, strokePx)
-            val adjustedRadius = actualCornerRadius + strokeInset
+            val fillOffset = centerOffset - Offset(strokeInset, strokeInset)
+
+            val drawOffset = Offset(paddingStart, paddingTop)
+            val adjustedRadius = cornerRadiusPx + strokeInset
 
             onDrawWithContent {
-                drawImage(shadowBitmap)
+                drawImage(shadowBitmap, topLeft = drawOffset)
 
                 drawRoundRect(
                     color = fillColor,
-                    topLeft = offset,
+                    topLeft = fillOffset + drawOffset,
                     size = fillSize,
                     cornerRadius = CornerRadius(adjustedRadius, adjustedRadius)
                 )
 
                 drawRoundRect(
                     color = strokeColor,
-                    topLeft = offset,
+                    topLeft = centerOffset + drawOffset,
                     size = scaledSize,
-                    cornerRadius = CornerRadius(actualCornerRadius, actualCornerRadius),
+                    cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
                     style = Stroke(width = strokePx)
                 )
 
