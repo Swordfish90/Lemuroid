@@ -1,0 +1,124 @@
+package com.swordfish.touchinput.radial.ui
+
+import android.graphics.BlurMaskFilter
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+
+private object ShadowCache {
+    private val bitmapCache = mutableMapOf<String, ImageBitmap>()
+
+    fun getOrCreate(
+        width: Int,
+        height: Int,
+        cornerRadius: Float,
+        shadowColor: Color,
+        blurRadius: Float,
+    ): ImageBitmap {
+        val key = "$width-$height-$cornerRadius-${shadowColor.toArgb()}-$blurRadius"
+        return bitmapCache.getOrPut(key) {
+            val bitmap = ImageBitmap(width, height)
+            val canvas = Canvas(bitmap)
+
+            val frameworkPaint = android.graphics.Paint().apply {
+                isAntiAlias = true
+                color = shadowColor.toArgb()
+                maskFilter = BlurMaskFilter(blurRadius, BlurMaskFilter.Blur.NORMAL)
+            }
+
+            canvas.nativeCanvas.drawRoundRect(
+                0f,
+                0f,
+                width.toFloat() + 0f,
+                height.toFloat() + 0f,
+                cornerRadius,
+                cornerRadius,
+                frameworkPaint
+            )
+
+            bitmap
+        }
+    }
+}
+
+@Composable
+fun GlassSurface(
+    modifier: Modifier = Modifier,
+    cornerRadiusFraction: Float = 1f,
+    fillColor: Color = Color.White.copy(alpha = 0.15f),
+    strokeColor: Color = Color.White.copy(alpha = 0.3f),
+    shadowColor: Color = Color.Black.copy(alpha = 0.3f),
+    strokeWidth: Dp = 1.dp,
+    shadowWidth: Dp = 1.dp,
+    scale: Float = 1.0f,
+    content: @Composable BoxWithConstraintsScope.() -> Unit = { }
+) {
+    BoxWithConstraints(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.drawWithCache {
+            val strokePx = strokeWidth.toPx()
+            val blurRadius = shadowWidth.toPx()
+
+            val actualCornerRadius = (size.minDimension / 2f) * cornerRadiusFraction
+
+            val shadowBitmap = ShadowCache.getOrCreate(
+                width = size.width.toInt(),
+                height = size.height.toInt(),
+                cornerRadius = actualCornerRadius,
+                shadowColor = shadowColor,
+                blurRadius = blurRadius,
+            )
+
+            val scaledSize = size * scale
+            val offset = (size - scaledSize) * 0.5f
+
+            val strokeInset = strokePx / 2f
+            val fillSize = scaledSize + Size(strokePx, strokePx)
+            val adjustedRadius = actualCornerRadius + strokeInset
+
+            onDrawWithContent {
+                drawImage(shadowBitmap)
+
+                drawRoundRect(
+                    color = fillColor,
+                    topLeft = offset,
+                    size = fillSize,
+                    cornerRadius = CornerRadius(adjustedRadius, adjustedRadius)
+                )
+
+                drawRoundRect(
+                    color = strokeColor,
+                    topLeft = offset,
+                    size = scaledSize,
+                    cornerRadius = CornerRadius(actualCornerRadius, actualCornerRadius),
+                    style = Stroke(width = strokePx)
+                )
+
+                drawContent()
+            }
+        },
+        content = content
+    )
+}
+
+private operator fun Size.minus(scaledSize: Size): Offset {
+    return Offset(this.width - scaledSize.width, this.height - scaledSize.height)
+}
+
+private operator fun Size.plus(scaledSize: Size): Size {
+    return Size(this.width + scaledSize.width, this.height + scaledSize.height)
+}

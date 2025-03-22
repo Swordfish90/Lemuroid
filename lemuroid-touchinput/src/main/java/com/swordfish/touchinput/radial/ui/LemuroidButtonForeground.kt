@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.times
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import gg.jam.jampadcompose.utils.GeometryUtils.textUnit
 
@@ -25,10 +26,11 @@ fun LemuroidButtonForeground(
 ) {
     val theme = LocalLemuroidPadTheme.current
 
-    TranslucentSurface(
-        modifier = modifier.fillMaxSize().padding(theme.backgroundShadowWidth),
+    GlassSurface(
+        modifier = modifier.fillMaxSize().padding(2.0 * theme.padding),
         scale = scale,
         fillColor = theme.foregroundFill(pressed),
+        strokeColor = theme.foregroundStroke(pressed),
         shadowWidth = theme.foregroundShadowWidth,
         shadowColor = theme.foregroundShadow,
     ) {

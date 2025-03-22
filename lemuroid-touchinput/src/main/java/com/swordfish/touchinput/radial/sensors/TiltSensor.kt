@@ -140,10 +140,7 @@ class TiltSensor(context: Context) : SensorEventListener {
         }
     }
 
-    private fun chooseBestAngleRepresentation(
-        x: Float,
-        offset: Float,
-    ): Float {
+    private fun chooseBestAngleRepresentation(x: Float, offset: Float): Float {
         return sequenceOf(x, x + offset, x - offset).minByOrNull { abs(it) }!!
     }
 

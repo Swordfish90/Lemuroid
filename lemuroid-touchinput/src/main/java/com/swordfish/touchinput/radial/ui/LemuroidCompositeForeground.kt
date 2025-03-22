@@ -8,9 +8,10 @@ import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 @Composable
 fun LemuroidCompositeForeground(pressed: Boolean) {
     val theme = LocalLemuroidPadTheme.current
-    TranslucentSurface(
+    GlassSurface(
         modifier = Modifier.fillMaxSize(),
         fillColor = theme.foregroundFill(pressed),
+        strokeColor = theme.foregroundStroke(pressed),
         shadowWidth = theme.foregroundShadowWidth,
         shadowColor = theme.foregroundShadow,
     )

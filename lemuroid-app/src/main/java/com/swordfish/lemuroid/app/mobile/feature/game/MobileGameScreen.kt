@@ -1,13 +1,11 @@
 package com.swordfish.lemuroid.app.mobile.feature.game
 
 import android.graphics.RectF
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
@@ -15,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -24,13 +23,11 @@ import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -45,7 +42,6 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -65,6 +61,7 @@ import com.swordfish.touchinput.radial.LemuroidPadTheme
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import com.swordfish.touchinput.radial.ui.GlassSurface
 import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.jam.jampadcompose.JamPad
 import gg.jam.jampadcompose.config.HapticFeedbackType
@@ -168,19 +165,10 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                     CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme(MaterialTheme.colorScheme)) {
                         val theme = LocalLemuroidPadTheme.current
 //                        if (!isLandscape) {
-//                            HorizontalDivider(
-//                                modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_TOP_DIVIDER),
-//                                color = theme.backgroundStroke
-//                            )
+//                            HorizontalDivider(modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_TOP_DIVIDER))
 //                        } else if (!currentControllerConfig.allowTouchOverlay) {
-//                            VerticalDivider(
-//                                modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_DIVIDER),
-//                                color = theme.backgroundStroke
-//                            )
-//                            VerticalDivider(
-//                                modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_DIVIDER),
-//                                color = theme.backgroundStroke
-//                            )
+//                            VerticalDivider(modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_DIVIDER))
+//                            VerticalDivider(modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_DIVIDER))
 //                        }
 
                         leftGamePad?.invoke(

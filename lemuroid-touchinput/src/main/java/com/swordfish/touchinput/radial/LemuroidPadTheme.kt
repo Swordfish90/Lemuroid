@@ -19,10 +19,13 @@ class LemuroidPadTheme(colorScheme: ColorScheme) {
 
     private val foregroundFill = color(1.0f, 0.50f)
     private val foregroundFillPressed = color(0.0f, 0.40f)
+    private val foregroundStroke = color(1.0f, 0.20f)
+    private val foregroundStrokePressed = color(0.0f, 0.20f)
     val foregroundShadow = DefaultShadowColor.copy(0.05f)
     val foregroundShadowWidth = 4.dp
 
     val backgroundFill = color(1.0f, 0.10f)
+    val backgroundStroke = color(1.0f, 0.10f)
     val backgroundShadow = DefaultShadowColor.copy(0.10f)
     val backgroundShadowWidth = 4.dp
 
@@ -31,6 +34,14 @@ class LemuroidPadTheme(colorScheme: ColorScheme) {
             foregroundFillPressed
         } else {
             foregroundFill
+        }
+    }
+
+    fun foregroundStroke(pressed: Boolean): Color {
+        return if (pressed) {
+            foregroundStrokePressed
+        } else {
+            foregroundStroke
         }
     }
 
