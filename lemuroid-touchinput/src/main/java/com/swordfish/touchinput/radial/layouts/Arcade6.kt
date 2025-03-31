@@ -16,7 +16,7 @@ import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.LemuroidButton
 import com.swordfish.touchinput.radial.utils.buildCentral6ButtonsAnchors
 import gg.jam.jampadcompose.JamPadScope
-import gg.jam.jampadcompose.anchors.ButtonAnchor
+import gg.jam.jampadcompose.anchors.Anchor
 import gg.jam.jampadcompose.ids.DiscreteDirectionId
 import gg.jam.jampadcompose.ids.KeyId
 
@@ -43,7 +43,7 @@ fun JamPadScope.Arcade6Right(modifier: Modifier = Modifier, settings: TouchContr
         modifier = modifier,
         primaryDial = {
             LemuroidControlFaceButtons(
-                mainAnchors = centralAnchors,
+                primaryAnchors = centralAnchors,
                 background = { },
                 idsForegrounds = buildMap {
                     put(KeyId(KeyEvent.KEYCODE_BUTTON_X)) {
@@ -76,7 +76,7 @@ fun JamPadScope.Arcade6Right(modifier: Modifier = Modifier, settings: TouchContr
 }
 
 @Composable
-private fun rememberCentralAnchorsForSixButtons(rotation: Float): List<ButtonAnchor> {
+private fun rememberCentralAnchorsForSixButtons(rotation: Float): List<Anchor<KeyId>> {
     return remember(rotation) {
         buildCentral6ButtonsAnchors(
             rotation,

@@ -10,8 +10,9 @@ fun LemuroidCompositeForeground(pressed: Boolean) {
     val theme = LocalLemuroidPadTheme.current
     GlassSurface(
         modifier = Modifier.fillMaxSize(),
-        fillColor = theme.foregroundFill(pressed),
-        strokeColor = theme.foregroundStroke(pressed),
+        fillColor = theme.compositeFill(pressed),
+        strokeColor = theme.compositeStroke(pressed),
+        strokeWidth = theme.level2StrokeWidth,
         shadowWidth = theme.level2ShadowWidth,
         shadowColor = theme.level2Shadow,
     )

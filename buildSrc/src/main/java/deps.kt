@@ -165,7 +165,7 @@ object deps {
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"
         const val composeHtmlText          = "de.charlex.compose.material3:material3-html-text:2.0.0-beta01"
         const val collectionsImmutable     = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
-        const val jampadcompose            = "io.github.piepacker:jampadcompose:0.0.2-alpha1"
+        const val jampadcompose            = "io.github.piepacker:jampadcompose:0.1.0-alpha4"
         const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
     }

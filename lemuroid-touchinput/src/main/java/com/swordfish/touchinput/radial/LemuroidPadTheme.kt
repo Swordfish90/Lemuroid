@@ -16,10 +16,18 @@ class LemuroidPadTheme {
     private val icons = gray(0.0f, 0.50f)
     private val iconsPressed = gray(1.0f, 0.50f)
 
-    private val level2Fill = gray(1.0f, 0.50f)
-    private val level2FillPressed = gray(0.0f, 0.40f)
-    private val level2Stroke = gray(1.0f, 0.20f)
-    private val level2StrokePressed = gray(0.0f, 0.20f)
+    private val level3Fill = gray(1.0f, 0.50f)
+    private val level3FillPressed = gray(0.0f, 0.50f)
+    private val level3Stroke = gray(1.0f, 0.20f)
+    private val level3StrokePressed = gray(0.0f, 0.20f)
+    val level3Shadow = DefaultShadowColor.copy(0.05f)
+    val level3ShadowWidth = 4.dp
+    val level3StrokeWidth = 1.dp
+
+    private val level2Fill = gray(1.0f, 0.125f)
+    private val level2FillPressed = gray(0.0f, 0.125f)
+    private val level2Stroke = gray(1.0f, 0.10f)
+    private val level2StrokePressed = gray(0.0f, 0.10f)
     val level2Shadow = DefaultShadowColor.copy(0.05f)
     val level2ShadowWidth = 4.dp
     val level2StrokeWidth = 1.dp
@@ -37,7 +45,7 @@ class LemuroidPadTheme {
     val level0ShadowWidth = 2.dp
     val level0StrokeWidth = 1.dp
 
-    fun foregroundFill(pressed: Boolean): Color {
+    fun compositeFill(pressed: Boolean): Color {
         return if (pressed) {
             level2FillPressed
         } else {
@@ -45,11 +53,27 @@ class LemuroidPadTheme {
         }
     }
 
-    fun foregroundStroke(pressed: Boolean): Color {
+    fun compositeStroke(pressed: Boolean): Color {
         return if (pressed) {
             level2StrokePressed
         } else {
             level2Stroke
+        }
+    }
+
+    fun foregroundFill(pressed: Boolean): Color {
+        return if (pressed) {
+            level3FillPressed
+        } else {
+            level3Fill
+        }
+    }
+
+    fun foregroundStroke(pressed: Boolean): Color {
+        return if (pressed) {
+            level3StrokePressed
+        } else {
+            level3Stroke
         }
     }
 
