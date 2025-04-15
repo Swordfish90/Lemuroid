@@ -57,6 +57,7 @@ import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
 import com.swordfish.radialgamepad.library.event.Event
 import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.radialgamepad.library.haptics.HapticConfig
+import com.swordfish.radialgamepad.library.haptics.HapticStrength
 import com.swordfish.touchinput.radial.LemuroidTouchConfigs
 import com.swordfish.touchinput.radial.LemuroidTouchOverlayThemes
 import com.swordfish.touchinput.radial.sensors.TiltSensor
@@ -208,8 +209,9 @@ class GameActivity : BaseGameActivity() {
         orientation: Int,
     ) {
         val hapticFeedbackMode = settingsManager.hapticFeedbackMode()
+        val hapticStrength = settingsManager.hapticFeedbackStrength()
         withContext(Dispatchers.Main) {
-            setupTouchViews(controllerConfig, hapticFeedbackMode, orientation)
+            setupTouchViews(controllerConfig, hapticFeedbackMode, hapticStrength, orientation)
         }
         loadTouchControllerSettings(controllerConfig, orientation)
     }
@@ -232,6 +234,7 @@ class GameActivity : BaseGameActivity() {
     private fun setupTouchViews(
         controllerConfig: ControllerConfig,
         hapticFeedbackType: String,
+        hapticFeedbackStrength: HapticStrength,
         orientation: Int,
     ) {
         touchControllerJobs
@@ -258,6 +261,7 @@ class GameActivity : BaseGameActivity() {
             LemuroidTouchConfigs.getRadialGamePadConfig(
                 touchControllerConfig.leftConfig,
                 hapticConfig,
+                hapticFeedbackStrength,
                 theme,
             )
         val leftPad = RadialGamePad(leftConfig, DEFAULT_MARGINS_DP, this)
@@ -267,6 +271,7 @@ class GameActivity : BaseGameActivity() {
             LemuroidTouchConfigs.getRadialGamePadConfig(
                 touchControllerConfig.rightConfig,
                 hapticConfig,
+                hapticFeedbackStrength,
                 theme,
             )
         val rightPad = RadialGamePad(rightConfig, DEFAULT_MARGINS_DP, this)

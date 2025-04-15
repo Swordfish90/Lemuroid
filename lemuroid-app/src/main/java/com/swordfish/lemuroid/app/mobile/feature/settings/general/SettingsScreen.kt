@@ -108,20 +108,32 @@ private fun MiscSettings(
 
 @Composable
 private fun InputSettings(navController: NavController) {
+    val feedbackPreference = indexPreferenceState(
+        R.string.pref_key_haptic_feedback_mode,
+        "press",
+        stringListResource(R.array.pref_key_haptic_feedback_mode_values),
+    )
+
     LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_input)) },
     ) {
         LemuroidSettingsList(
-            state =
-                indexPreferenceState(
-                    R.string.pref_key_haptic_feedback_mode,
-                    "press",
-                    stringListResource(R.array.pref_key_haptic_feedback_mode_values),
-                ),
+            state = feedbackPreference,
             title = {
                 Text(text = stringResource(id = R.string.settings_title_enable_touch_feedback))
             },
             items = stringListResource(R.array.pref_key_haptic_feedback_mode_display_names),
+        )
+        LemuroidSettingsSlider(
+            enabled = feedbackPreference.value != 0,
+            state = intPreferenceState(
+                key = stringResource(id = R.string.pref_key_haptic_feedback_strength),
+                default = 1,
+            ),
+            steps = 1,
+            valueRange = 0f..2f,
+            title = { Text(text = stringResource(R.string.settings_title_touch_feedback_strength)) },
+            subtitle = { Text(text = stringResource(R.string.settings_description_touch_feedback_strength)) },
         )
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_gamepad_settings)) },

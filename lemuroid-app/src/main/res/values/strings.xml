@@ -28,7 +28,11 @@
     <string name="settings_category_misc">Miscellaneous</string>
     <string name="settings_title_enable_autosave">Autosave state</string>
     <string name="settings_description_enable_autosave">Save state when exiting via game menu</string>
+
     <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
+    <string name="settings_title_touch_feedback_strength">Vibration strength</string>
+    <string name="settings_description_touch_feedback_strength">Adjust the strength of the vibration</string>
+
     <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
     <string name="settings_title_hd_quality">HD mode quality</string>
     <string name="settings_title_maximum_cache_usage">Cache size limit</string>

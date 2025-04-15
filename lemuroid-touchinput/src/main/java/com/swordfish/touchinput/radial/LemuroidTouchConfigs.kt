@@ -11,6 +11,7 @@ import com.swordfish.radialgamepad.library.config.RadialGamePadTheme
 import com.swordfish.radialgamepad.library.config.SecondaryDialConfig
 import com.swordfish.radialgamepad.library.event.GestureType
 import com.swordfish.radialgamepad.library.haptics.HapticConfig
+import com.swordfish.radialgamepad.library.haptics.HapticStrength
 import com.swordfish.touchinput.controller.R
 
 object LemuroidTouchConfigs {
@@ -72,6 +73,7 @@ object LemuroidTouchConfigs {
     fun getRadialGamePadConfig(
         kind: Kind,
         haptic: HapticConfig,
+        strength: HapticStrength,
         theme: RadialGamePadTheme,
     ): RadialGamePadConfig {
         val radialGamePadConfig =
@@ -135,6 +137,7 @@ object LemuroidTouchConfigs {
         return radialGamePadConfig.copy(
             haptic = haptic,
             preferScreenTouchCoordinates = useRawTouchCoordinates,
+            strength = strength
         )
     }
 
