@@ -17,4 +17,9 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<resources></resources>
+<resources>
+    <string name="gdrive_sign_in_failed">Google サインインに失敗しました: %s (%s)</string>
+    <string name="gdrive_sign_in_success">%s としてGoogleにログインしました</string>
+    <string name="gdrive_sign_out_success">Googleからログアウトしました</string>
+    <string name="gdrive_missing_play_services">Googleドライブには、お使いの端末でサポートされていないGoogle Playサービスが必要です</string>
+</resources>
