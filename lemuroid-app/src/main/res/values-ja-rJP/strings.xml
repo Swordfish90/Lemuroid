@@ -3,16 +3,86 @@
     <string name="title_home">ホーム</string>
     <string name="title_search">検索</string>
     <string name="title_systems">システム</string>
+    <string name="title_settings">設定</string>
     <string name="recent">最近使用した項目</string>
+    <string name="favorites">お気に入り</string>
     <string name="rescan">再読み込み</string>
+    <string name="stop">停止</string>
+    <string name="none">なし</string>
     <string name="directory">ディレクトリ</string>
+    <string name="display_filter">表示フィルター</string>
+    <string name="roms">ROM</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="settings">設定</string>
+    <string name="save_sync">セーブデータを同期</string>
     <string name="show_all">すべて表示</string>
+    <string name="back">戻る</string>
+    <string name="close">閉じる</string>
+    <string name="game_page_search_suggestion">ゲームを検索</string>
+    <string name="settings_category_general">全般</string>
+    <string name="settings_category_input">入力</string>
+    <string name="settings_category_misc">その他</string>
+    <string name="settings_title_enable_autosave">状態の自動保存</string>
+    <string name="settings_description_enable_autosave">ゲームメニューから終了する際にプレイ中の状態を保存する</string>
+    <string name="settings_title_tilt_sensitivity">傾きセンサーの感度</string>
+    <string name="settings_gamepad_category_general">全般</string>
+    <string name="settings_title_reset_settings">初期化</string>
+    <string name="settings_description_reset_settings">Lemuroidを初期状態にリセットします</string>
+    <string name="settings_title_advanced_settings">詳細設定</string>
+    <string name="settings_description_advanced_settings">詳細設定を表示します</string>
+    <string name="settings_title_low_latency_audio">低遅延音声を優先</string>
+    <string name="settings_description_low_latency_audio">対応デバイスで音声の遅延を軽減します。音声の乱れが発生する場合があります。</string>
+    <string name="settings_title_direct_game_load">ゲームの直接ロード</string>
+    <string name="settings_description_direct_game_load">（実験的機能）対応しているコンソールで読み込み時間とキャッシュ使用量を削減します。</string>
+    <string name="settings_title_enable_rumble">振動</string>
+    <string name="settings_description_enable_rumble">対応しているゲームおよびコントローラーで振動機能を有効にする</string>
+    <string name="settings_title_enable_device_rumble">デバイスの振動</string>
+    <string name="settings_description_enable_device_rumble">コントローラーが接続されていない場合は、代わりにデバイスを振動させます</string>
+    <string name="reset_settings_warning_message_title">本当によろしいですか？</string>
+    <string name="reset_settings_warning_message_description">これを実行するとLemuroidが初期状態(ダウンロード時)の設定にリセットされます。セーブデータと一時保存データは保持されます。</string>
+    <string name="settings_title_save_sync">クラウドセーブ</string>
+    <string name="settings_description_save_sync">セーブデータをクラウドにバックアップして同期する</string>
+    <string name="settings_save_sync_refresh">手動同期</string>
+    <string name="settings_save_sync_refresh_description">手動同期を実行します。\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">自動同期</string>
+    <string name="settings_save_sync_enable_auto_description">Wi-Fi接続時に、ゲームプレイの前後に自動的に同期を実行します</string>
+    <string name="settings_save_sync_configure">%1$s を設定</string>
+    <string name="settings_save_sync_include_saves">ゲーム内セーブデータを同期</string>
+    <string name="settings_save_sync_include_saves_description">デバイス上の%1$s</string>
+    <string name="settings_save_sync_include_states">一時保存データを同期</string>
+    <string name="settings_save_sync_include_states_description">より便利ですが、負荷が大きく信頼性は低くなります。同期したいコアやシステムを選択してください</string>
+    <string name="home_empty_title">ROMディレクトリを選択</string>
+    <string name="home_empty_message">LemuroidはROMファイルが入ったディレクトリをスキャンする必要があります。
+\nこれには数分かかる場合があります。</string>
+    <string name="home_empty_action">ディレクトリを選択</string>
+    <string name="game_menu_state">一時保存 %1$s</string>
+    <string name="game_toast_load_state_failed">この一時保存データを読み込めません</string>
+    <string name="save_sync_notification_title">クラウドセーブ同期中</string>
+    <string name="save_sync_notification_message">これは数分かかることがあります</string>
+    <string name="game_loader_error_generic">何か問題が発生しました。以下の対処をお試しください：\n
+        \n\u2022 オートセーブを無効にして、ゲームを再実行する
+        \n\u2022 Androidの設定からアプリのキャッシュを削除する
+        \n\u2022 Lemuroidの設定で「工場出荷時にリセット」を実行する
+        \n\n上記を試しても解決しない場合、このゲームやコアがこの端末でサポートされていない可能性があります。
+    </string>
+    <string name="game_loader_error_missing_bios">必要なBIOSファイルが見つかりません。ROMディレクトリにBIOSを入れて、再スキャンしてください。
+\n必要なファイル：%1$s</string>
+    <string name="tv_folder_picker_title">ROMディレクトリを選択</string>
     <string name="tv_home_section_favorites">お気に入り</string>
     <string name="tv_home_section_systems">システム</string>
     <string name="tv_home_section_settings">設定</string>
+    <string name="tv_game_message_missing_gamepad">ゲームパッドが必要です。接続してください。</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroidの使い方は？</b><br/>
         すべてのROMファイルをお使いのデバイス内のディレクトリにコピーし、Lemuroidでそのディレクトリを選択してください。このディレクトリ内にサブディレクトリがあっても問題ありません。スキャンが完了すると、ゲームが表示されるはずです。<br/><br/>
         <b>&#8226;・ゲームが認識されないのはなぜ？</b><br/>
       ゲームが圧縮されている場合は、まず解凍してみてください。それでも認識されない場合は、各システムごとにROMを別々のディレクトリに分けて配置してみてください。ディレクトリ名は次のようにしてください: $SYSTEMS.
     ]]></string>
+    <string name="lemuroid_crash_disclamer">Libretroコアで予期しない問題が発生したようです。問題が続く場合は、以下をお試しください：\n
+        \n\u2022 オートセーブを無効にしてゲームを再起動する
+        \n\u2022 Androidの設定からアプリのキャッシュを削除する
+        \n\u2022 Lemuroidの設定で初期化を実行する
+        \n\n 上記を試しても改善しない場合、このゲームやコアはお使いの端末でサポートされていない可能性があります。
+    </string>
+    <string name="error_message_incompatible_state">この一時保存データは現在のコアバージョンと互換性がありません。最新のゲーム内セーブを読み込むか、以前のLemuroidバージョンを使用してください。</string>
 </resources>
