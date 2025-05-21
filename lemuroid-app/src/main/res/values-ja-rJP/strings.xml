@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_home">ホーム</string>
+    <string name="tv_home_section_favorites">お気に入り</string>
+    <string name="tv_home_section_systems">システム</string>
+    <string name="tv_home_section_settings">設定</string>
+</resources>
