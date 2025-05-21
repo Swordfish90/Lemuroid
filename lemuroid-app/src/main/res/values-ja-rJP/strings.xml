@@ -27,6 +27,10 @@
     <string name="settings_description_enable_autosave">ゲームメニューから終了する際にプレイ中の状態を保存する</string>
     <string name="settings_title_tilt_sensitivity">傾きセンサーの感度</string>
     <string name="settings_gamepad_category_general">全般</string>
+    <string name="settings_gamepad_title_game_menu">メニュー</string>
+    <string name="settings_title_open_cores_selection">コアを変更</string>
+    <string name="settings_description_open_cores_selection">システムに関連付けられているコアを選択してください</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_title_reset_settings">初期化</string>
     <string name="settings_description_reset_settings">Lemuroidを初期状態にリセットします</string>
     <string name="settings_title_advanced_settings">詳細設定</string>
@@ -52,6 +56,11 @@
     <string name="settings_save_sync_include_saves_description">デバイス上の%1$s</string>
     <string name="settings_save_sync_include_states">一時保存データを同期</string>
     <string name="settings_save_sync_include_states_description">より便利ですが、負荷が大きく信頼性は低くなります。同期したいコアやシステムを選択してください</string>
+    <string name="game_context_menu_add_to_favorites">お気に入りに追加</string>
+    <string name="game_context_menu_remove_from_favorites">お気に入りから削除</string>
+    <string name="game_context_menu_resume">再開</string>
+    <string name="game_context_menu_restart">再起動</string>
+    <string name="game_context_menu_create_shortcut">ランチャーに追加</string>
     <string name="home_empty_title">ROMディレクトリを選択</string>
     <string name="home_empty_message">LemuroidはROMファイルが入ったディレクトリをスキャンする必要があります。
 \nこれには数分かかる場合があります。</string>
