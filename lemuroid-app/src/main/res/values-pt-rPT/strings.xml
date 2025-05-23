@@ -11,7 +11,7 @@
     <string name="rescan">Reanalisar</string>
     <string name="stop">Parar</string>
     <string name="none">Nenhum</string>
-    <string name="directory">Directoria</string>
+    <string name="directory">Pasta</string>
     <string name="display_filter">Filtro de exibição</string>
     <string name="roms">ROMs</string>
     <string name="ok">OK</string>
@@ -26,7 +26,7 @@
     <string name="settings_category_input">Entrada</string>
     <string name="settings_category_misc">Diversos</string>
     <string name="settings_title_enable_autosave">Auto-gravar estado</string>
-    <string name="settings_description_enable_autosave">Salvar o estado do jogo quando sai pelo menu</string>
+    <string name="settings_description_enable_autosave">Guardar o estado do jogo quando sair para o menu</string>
     <string name="settings_title_enable_touch_feedback">Vibrar ao toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
     <string name="settings_title_hd_quality">Qualidade HD</string>
@@ -66,7 +66,7 @@
     <string name="settings_save_sync_refresh">Sincronização Manual</string>
     <string name="settings_save_sync_refresh_description">Executar uma sincronização manual agora.\n%1$s</string>
     <string name="settings_save_sync_enable_auto">Auto-Sincronização</string>
-    <string name="settings_save_sync_enable_auto_description">Executar uma sincronização automaticamente antes e depois uma sessão de jogo quando conectado a Wifi</string>
+    <string name="settings_save_sync_enable_auto_description">Executar uma sincronização automaticamente antes e depois uma sessão de jogo quando conectado a WiFi</string>
     <string name="settings_save_sync_configure">Configurar %1$s</string>
     <string name="settings_save_sync_include_saves">Sincronizar gravações dos jogos</string>
     <string name="settings_save_sync_include_saves_description">%1$s no dispositivo</string>
@@ -80,6 +80,7 @@
     <string name="home_notification_title">Permitir notificações</string>
     <string name="home_notification_message">Lemuroid usa notificações para alertar quando um jogo ou operação está em execução em segundo plano.</string>
     <string name="home_notification_action">Habilitar</string>
+    <string name="home_microphone_title">Ativar microfone</string>
     <string name="home_microphone_message">Os jogos de Nintendo DS podem usar o microfone para fornecer algumas funcionalidades.</string>
     <string name="home_microphone_action">Ativar</string>
     <string name="home_empty_title">Seleccionar directório de ROMs</string>
