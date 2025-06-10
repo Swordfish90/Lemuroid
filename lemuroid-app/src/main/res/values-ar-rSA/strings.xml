@@ -80,6 +80,9 @@
     <string name="home_notification_title">تمكين الإشعارات</string>
     <string name="home_notification_message">يستخدم Lemuroid الإشعارات لإعلامك عندما تكون اللعبة أو العملية قيد التشغيل في الخلفية.</string>
     <string name="home_notification_action">تمكين</string>
+    <string name="home_microphone_title">تفعيل لاقط الصوت </string>
+    <string name="home_microphone_message">العاب Nintendo DS يمكنها إستعمال لاقط الصوت لتوفير بعض الوظائف.</string>
+    <string name="home_microphone_action">تفعيل</string>
     <string name="home_empty_title">حدد مجلد ROM</string>
     <string name="home_empty_message">يحتاج Lemuroid إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
     <string name="home_empty_action">حدد المجلد</string>
