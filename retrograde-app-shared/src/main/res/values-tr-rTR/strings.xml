@@ -52,6 +52,7 @@
     <string name="setting_desmume_frameskip">Kare atlama</string>
     <string name="setting_melonds_screen_layout">Ekran Düzeni</string>
     <string name="setting_melonds_jit_enable">Dinamik yeniden derleyici</string>
+    <string name="setting_melonds_mic_input">Mikrofon modu</string>
     <string name="setting_wswan_rotate_display">Döndürme</string>
     <string name="setting_wswan_mono_palette">Renklendirme</string>
     <string name="setting_handy_rot">Ekran Yönü</string>
