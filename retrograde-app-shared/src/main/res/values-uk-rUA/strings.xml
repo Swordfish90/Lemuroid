@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">Компонування екрана</string>
     <string name="setting_melonds_threaded_renderer">Розпаралелений рендер</string>
     <string name="setting_melonds_jit_enable">Динамічний рекомпілятор</string>
+    <string name="setting_melonds_mic_input">Режим мікрофона</string>
     <string name="setting_wswan_rotate_display">Орієнтація</string>
     <string name="setting_wswan_mono_palette">Колоризація</string>
     <string name="setting_handy_rot">Поворот екрана</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Ліво - Право</string>
     <string name="value_melonds_screen_layout_hybridtop">Гібридний верх</string>
     <string name="value_melonds_screen_layout_hybridbottom">Гібридний низ</string>
+    <string name="value_melonds_mic_input_microphone">Справжній мікрофон</string>
+    <string name="value_melonds_mic_input_blow">Симулювати звуки дмухання</string>
     <string name="value_citra_layout_option_topbottom">Верх - Низ</string>
     <string name="value_citra_layout_option_sidebyside">Ліво - Право</string>
     <string name="value_desmume_screens_layout_topbottom">Верх - Низ</string>
