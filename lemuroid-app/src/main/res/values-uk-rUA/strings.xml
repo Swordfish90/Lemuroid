@@ -80,6 +80,9 @@
     <string name="home_notification_title">Увімкнути сповіщення</string>
     <string name="home_notification_message">Lemuroid використовує сповіщення, щоб повідомити, коли гра або операція працює у фоновому режимі.</string>
     <string name="home_notification_action">Увімкнути</string>
+    <string name="home_microphone_title">Увімкнути мікрофон</string>
+    <string name="home_microphone_message">Ігри для Nintendo DS можуть використовувати мікрофон для надання деяких функцій.</string>
+    <string name="home_microphone_action">Увімкнути</string>
     <string name="home_empty_title">Виберіть каталог ROM</string>
     <string name="home_empty_message">Лемуроїд повинен сканувати каталог, що містить ROM файли.\nЦе може зайняти до декількох хвилин.</string>
     <string name="home_empty_action">Виберіть каталог</string>
