@@ -46,7 +46,7 @@
     <string name="setting_ppsspp_texture_scaling_level">Nível de dimensionamento da textura</string>
     <string name="setting_ppsspp_texture_scaling_type">Tipo de dimensionamento da textura</string>
     <string name="setting_ppsspp_texture_filtering">Filtragem de texturas</string>
-    <string name="setting_fbneo_frameskip">Frameskip</string>
+    <string name="setting_fbneo_frameskip">Pular Quadro</string>
     <string name="setting_fbneo_cpu_speed_adjust">Velocidade da CPU</string>
     <string name="setting_desmume_screens_layout">Disposição dos ecrãs</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
