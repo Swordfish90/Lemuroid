@@ -40,7 +40,7 @@
     <string name="setting_pcsx_rearmed_frameskip">Frameskip</string>
     <string name="setting_pcsx_rearmed_drc">Re-compilador dinâmico</string>
     <string name="setting_ppsspp_auto_frameskip">Auto frameskip</string>
-    <string name="setting_ppsspp_frameskip">Frameskip</string>
+    <string name="setting_ppsspp_frameskip">Pular Quadro</string>
     <string name="setting_ppsspp_cpu_core">Re-compilador dinâmico</string>
     <string name="setting_ppsspp_internal_resolution">Resolução</string>
     <string name="setting_ppsspp_texture_scaling_level">Nível de dimensionamento da textura</string>
@@ -48,8 +48,8 @@
     <string name="setting_ppsspp_texture_filtering">Filtragem de texturas</string>
     <string name="setting_fbneo_frameskip">Pular Quadro</string>
     <string name="setting_fbneo_cpu_speed_adjust">Velocidade da CPU</string>
-    <string name="setting_desmume_screens_layout">Disposição dos ecrãs</string>
-    <string name="setting_desmume_frameskip">Frameskip</string>
+    <string name="setting_desmume_screens_layout">Layout das telas</string>
+    <string name="setting_desmume_frameskip">Pular Quadro</string>
     <string name="setting_melonds_screen_layout">Layout das telas</string>
     <string name="setting_melonds_threaded_renderer">Renderizador Threaded</string>
     <string name="setting_melonds_jit_enable">Re-compilador dinâmico</string>
