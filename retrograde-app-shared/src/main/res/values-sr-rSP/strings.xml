@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">Распоред екрана</string>
     <string name="setting_melonds_threaded_renderer">Навојни цртач</string>
     <string name="setting_melonds_jit_enable">Динамични рекомпајлер</string>
+    <string name="setting_melonds_mic_input">Режим микрофона</string>
     <string name="setting_wswan_rotate_display">Оријентација</string>
     <string name="setting_wswan_mono_palette">Колоризација</string>
     <string name="setting_handy_rot">Ротација дисплеја</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Лево - Десно</string>
     <string name="value_melonds_screen_layout_hybridtop">Хибридно горе</string>
     <string name="value_melonds_screen_layout_hybridbottom">Хибридно доле</string>
+    <string name="value_melonds_mic_input_microphone">Прави микрофон</string>
+    <string name="value_melonds_mic_input_blow">Симулирај звукове удараца</string>
     <string name="value_citra_layout_option_topbottom">Горе - Доле</string>
     <string name="value_citra_layout_option_sidebyside">Лево - Десно</string>
     <string name="value_desmume_screens_layout_topbottom">Горе - Доле</string>
