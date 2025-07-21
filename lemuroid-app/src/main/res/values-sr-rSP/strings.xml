@@ -83,9 +83,9 @@
     <string name="home_microphone_title">Омогући микрофон</string>
     <string name="home_microphone_message">Nintendo DS игре могу користити микрофон да би пружиле одређене функционалности.</string>
     <string name="home_microphone_action">Омогући</string>
-    <string name="home_empty_title">Изабери директоријум са ROM-овима</string>
+    <string name="home_empty_title">Изаберите директоријум са ROM-овима</string>
     <string name="home_empty_message">Lemuroid мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
-    <string name="home_empty_action">Изабери директоријум</string>
+    <string name="home_empty_action">Изаберите директоријум</string>
     <string name="game_menu_save">Сачувај</string>
     <string name="game_menu_load">Учитај</string>
     <string name="game_menu_restart">Рестартуј</string>
@@ -116,10 +116,10 @@
     <string name="game_running_notification_message">Обавезно сачувајте свој напредак</string>
     <string name="game_loader_error_gl_incompatible">Ово језгро захтева OpenGL ES верзију која није подржана на Вашем уређају.</string>
     <string name="game_loader_error_load_game">Нешто се лоше догодило за време учитавања игре. Проверите да ли је ROM подржан од стране Lemuroid-а и поново скенирајте Ваше игре.</string>
-    <string name="game_loader_error_save">Нешто лоше се догодило са Вашом датотеком чувања. Ако се овај проблем понaвља, покушајте да онемогућите ауто-чување.</string>
+    <string name="game_loader_error_save">Нешто лоше се догодило са Вашом датотеком чувања. Ако се овај проблем понaвља, покушајте да онемогућите аутоматско чување.</string>
     <string name="game_loader_error_unsupported_architecture">Ово језгро није подржано од стране Вашег уређаја.</string>
     <string name="game_loader_error_generic">Нешто лоше се догодило. Покушајте следеће:\n
-        \n\u2022 Онемогућите ауто-чување и поново покрените игру
+        \n\u2022 Онемогућите аутоматско чување и поново покрените игру
         \n\u2022 Идите у Android подешавања и очистите кеш меморију апликације
         \n\u2022 Идите у Lemuroid подешавања и извршите фабричко ресетовањe
         \n\nАко ништа од овога не проради, постоји могућност да ова игра/језгро није подржана од стране овог уређаја.
@@ -128,12 +128,12 @@
     <string name="game_shortcut_error">Нешто лоше се догодило док се Ваша игра учитавала. Молимо Вас да проверите да ли ова игра и даље постоји у библиотеци.</string>
     <string name="dialog_saf_not_found">Овај уређај не подржава StorageAccessFramework бирач датотека. Молимо Вас да ручно копирате некомпримоване ROM датотеке у %1$s и притиснете Поново скенирај.</string>
     <string name="system_grid_details">%1$s игара</string>
-    <string name="tv_folder_picker_title">Изабери ROM директоријум</string>
-    <string name="tv_folder_picker_action_choose">Изабери</string>
+    <string name="tv_folder_picker_title">Изаберите директоријум са ROM-овима</string>
+    <string name="tv_folder_picker_action_choose">Изаберите</string>
     <string name="tv_folder_picker_action_cancel">Откажи</string>
     <string name="tv_folder_storage_primary">Примарно складиште</string>
     <string name="tv_folder_storage_secondary">Секундарно складиште %1$s</string>
-    <string name="tv_folder_storage_title">Изабери складиште</string>
+    <string name="tv_folder_storage_title">Изаберите складиште</string>
     <string name="tv_home_section_favorites">Омиљено</string>
     <string name="tv_home_section_recents">Скорашње</string>
     <string name="tv_home_section_systems">Системи</string>
@@ -152,7 +152,7 @@
         Ако су ваше игре компримоване, покушајте да их декомпримујете. Ако ово не проради покушајте да ставите ROM-ове у одвојене директоријуме, по једну за сваки систем са следећим именима: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Нешто лоше се догодило. Покушајте следеће:\n
-        \n\u2022 Онемогућите ауто-чување и поново покрените игру
+        \n\u2022 Онемогућите аутоматско чување и поново покрените игру
         \n\u2022 Идите у Android подешавања и очистите кеш меморију апликације
         \n\u2022 Идите у Lemuroid подешавања и извршите фабричко ресетовање
         \n\nАко ништа од овога не проради, постоји могућност да ова игра/језгро није подржана од стране овог уређаја.
