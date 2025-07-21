@@ -25,12 +25,15 @@
     <string name="settings_category_general">Опште</string>
     <string name="settings_category_input">Улаз</string>
     <string name="settings_category_misc">Разно</string>
-    <string name="settings_title_enable_autosave">Стање ауто-чувања</string>
+    <string name="settings_title_enable_autosave">Стање аутоматског чувања</string>
+    <string name="settings_description_enable_autosave">Сачувај стање када излазим преко менија игре</string>
     <string name="settings_title_enable_touch_feedback">Вибрирај на додир</string>
     <string name="settings_title_tilt_sensitivity">Сензитивност сензора нагиба</string>
+    <string name="settings_title_hd_quality">Квалитет HD режима</string>
     <string name="settings_title_maximum_cache_usage">Дозвољена величина кеш меморије</string>
     <string name="settings_title_hd_mode">HD режим</string>
     <string name="settings_description_hd_mode">Примени пост-процесирајући филтер за увећано скалирање</string>
+    <string name="settings_description_hd_quality">Прилагодите квалитет HD режима</string>
     <string name="settings_title_gamepad_settings">Спољни уређаји</string>
     <string name="settings_description_gamepad_settings">Подесите спољне гејмпаде и тастатуре</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -62,7 +65,7 @@
     <string name="settings_description_save_sync">Прави и синхронизуј резервне копије чувања на облаку</string>
     <string name="settings_save_sync_refresh">Ручна синхронизација</string>
     <string name="settings_save_sync_refresh_description">Уради ручну синхронизацију сада.\n%1$s</string>
-    <string name="settings_save_sync_enable_auto">Ауто-синхронизација</string>
+    <string name="settings_save_sync_enable_auto">Аутоматска синхронизација</string>
     <string name="settings_save_sync_enable_auto_description">Аутоматски уради синхронизацију пре и после играчке сесије када си повезан на Wi-Fi</string>
     <string name="settings_save_sync_configure">Подеси %1$s</string>
     <string name="settings_save_sync_include_saves">Синхронизуј чувања унутар игре</string>
@@ -77,6 +80,9 @@
     <string name="home_notification_title">Омогући обавештења</string>
     <string name="home_notification_message">Lemuroid користи обавештења да бисте знали када игра или операције ради у позадини.</string>
     <string name="home_notification_action">Омогући</string>
+    <string name="home_microphone_title">Омогући микрофон</string>
+    <string name="home_microphone_message">Nintendo DS игре могу користити микрофон да би пружиле одређене функционалности.</string>
+    <string name="home_microphone_action">Омогући</string>
     <string name="home_empty_title">Изабери директоријум са ROM-овима</string>
     <string name="home_empty_message">Lemuroid мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
     <string name="home_empty_action">Изабери директоријум</string>
