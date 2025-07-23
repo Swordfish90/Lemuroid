@@ -19,6 +19,9 @@
     <string name="settings">Inställningar</string>
     <string name="save_sync">Spara synkronisering</string>
     <string name="show_all">Visa alla</string>
+    <string name="back">Bakåt</string>
+    <string name="close">Stäng</string>
+    <string name="game_page_search_suggestion">Sök efter spel</string>
     <string name="settings_category_general">Allmänt</string>
     <string name="settings_category_input">Inmatning</string>
     <string name="settings_category_misc">Övrigt</string>
@@ -71,6 +74,9 @@
     <string name="game_context_menu_resume">Återuppta</string>
     <string name="game_context_menu_restart">Starta om</string>
     <string name="game_context_menu_create_shortcut">Fäst på startskärmen</string>
+    <string name="home_notification_action">Aktivera</string>
+    <string name="home_microphone_title">Aktivera mikrofon</string>
+    <string name="home_microphone_action">Aktivera</string>
     <string name="home_empty_title">Välj ROM-katalog</string>
     <string name="home_empty_action">Välj katalog</string>
     <string name="game_menu_save">Spara</string>
