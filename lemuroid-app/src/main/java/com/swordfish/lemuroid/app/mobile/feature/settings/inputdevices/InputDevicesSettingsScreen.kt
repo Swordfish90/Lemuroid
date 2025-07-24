@@ -16,6 +16,7 @@ import com.swordfish.lemuroid.app.shared.input.InputBindingUpdater
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -69,13 +70,16 @@ private fun DeviceBindingCategory(
             )
         }
 
-        DeviceMenuShortcut(device, bindings.menuShortcuts, bindings.defaultShortcut)
+        bindings.shortcuts.forEach {
+            DeviceShortcut(device, it.key, it.value, bindings.defaultShortcuts[it.key])
+        }
     }
 }
 
 @Composable
-private fun DeviceMenuShortcut(
+private fun DeviceShortcut(
     device: InputDevice,
+    type: GameShortcutType,
     values: List<String>,
     defaultShortcut: String?,
 ) {
@@ -85,14 +89,14 @@ private fun DeviceMenuShortcut(
 
     val state =
         indexPreferenceState(
-            InputDeviceManager.computeGameMenuShortcutPreference(device),
+            InputDeviceManager.computeGameShortcutPreference(device, type),
             defaultShortcut,
             values,
         )
 
     LemuroidSettingsList(
         state = state,
-        title = { Text(text = stringResource(R.string.settings_gamepad_title_game_menu)) },
+        title = { Text(text = stringResource(type.getStringResource())) },
         items = values,
     )
 }

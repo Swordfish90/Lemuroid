@@ -32,6 +32,7 @@ import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
@@ -531,8 +532,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private suspend fun initializeGamePadShortcutsFlow() {
         inputDeviceManager.getInputMenuShortCutObservable()
             .distinctUntilChanged()
-            .safeCollect { shortcut ->
-                shortcut?.let {
+            .safeCollect { shortcuts ->
+                shortcuts.firstOrNull { it.type == GameShortcutType.MENU }?.let {
                     displayToast(
                         resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name),
                     )
@@ -602,13 +603,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 .map { Triple(it.device, it.action, it.keyCode) }
                 .distinctUntilChanged()
 
-        val shortcutKeys =
-            inputDeviceManager.getInputMenuShortCutObservable()
-                .map { it?.keys ?: setOf() }
 
         val combinedObservable =
             combine(
-                shortcutKeys,
+                inputDeviceManager.getInputMenuShortCutObservable(),
                 inputDeviceManager.getGamePadsPortMapperObservable(),
                 inputDeviceManager.getInputBindingsObservable(),
                 filteredKeyEvents,
@@ -618,7 +616,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         combinedObservable
             .onStart { pressedKeys.clear() }
             .onCompletion { pressedKeys.clear() }
-            .safeCollect { (shortcut, ports, bindings, event) ->
+            .safeCollect { (shortcuts, ports, bindings, event) ->
                 val (device, action, keyCode) = event
                 val port = ports(device)
                 val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
@@ -640,9 +638,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         pressedKeys.remove(keyCode)
                     }
 
-                    if (shortcut.isNotEmpty() && pressedKeys.containsAll(shortcut)) {
-                        displayOptionsDialog()
-                        return@safeCollect
+                    shortcuts.forEach { shortcut ->
+                        if (shortcut.keys.isNotEmpty() && pressedKeys.containsAll(shortcut.keys)) {
+                            when (shortcut.type) {
+                                GameShortcutType.MENU -> displayOptionsDialog()
+                                GameShortcutType.QUICK_SAVE -> saveQuickSave()
+                                GameShortcutType.QUICK_LOAD -> loadQuickSave()
+                            }
+                            return@safeCollect
+                        }
                     }
                 }
 
@@ -905,6 +909,38 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         }
                     withContext(Dispatchers.Main) {
                         if (!loaded) displayToast(R.string.game_toast_load_state_failed)
+                    }
+                }
+            } catch (e: Throwable) {
+                displayLoadStateErrorMessage(e)
+            }
+        }
+    }
+
+    private suspend fun saveQuickSave() {
+        if (loadingState.value) return
+        withLoading {
+            getCurrentSaveState()?.let {
+                statesManager.setQuickSave(game, systemCoreConfig.coreID, it)
+                withContext(Dispatchers.Main) {
+                    displayToast(R.string.game_toast_quick_save_saved)
+                }
+            }
+        }
+    }
+
+    private suspend fun loadQuickSave() {
+        if (loadingState.value) return
+        withLoading {
+            try {
+                statesManager.getQuickSave(game, systemCoreConfig.coreID)?.let {
+                    val loaded = withContext(Dispatchers.IO) { loadSaveState(it) }
+                    withContext(Dispatchers.Main) {
+                        if (loaded) {
+                            displayToast(R.string.game_toast_quick_save_loaded)
+                        } else {
+                            displayToast(R.string.game_toast_load_state_failed)
+                        }
                     }
                 }
             } catch (e: Throwable) {

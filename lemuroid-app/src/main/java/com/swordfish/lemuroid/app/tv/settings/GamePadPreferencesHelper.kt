@@ -15,7 +15,8 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
-import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.app.tv.input.TVGamePadBindingActivity
 
 class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManager) {
@@ -107,13 +108,11 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
 
         inputDevice.getLemuroidInputDevice().getCustomizableKeys()
             .map { buildKeyBindingPreference(context, inputDevice, it) }
-            .forEach {
-                category.addPreference(it)
-            }
+            .forEach { category.addPreference(it) }
 
-        buildGameMenuShortcutPreference(context, inputDevice)?.let {
-            category.addPreference(it)
-        }
+        GameShortcutType.values()
+            .mapNotNull { buildShortcutPreference(context, inputDevice, it) }
+            .forEach { category.addPreference(it) }
     }
 
     private suspend fun refreshPreferenceCategoryForInputDevice(
@@ -178,16 +177,17 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         context.startActivity(intent)
     }
 
-    private fun buildGameMenuShortcutPreference(
+    private fun buildShortcutPreference(
         context: Context,
         inputDevice: InputDevice,
+        type: GameShortcutType
     ): Preference? {
-        val default = GameMenuShortcut.getDefault(inputDevice) ?: return null
-        val supportedShortcuts = inputDevice.getLemuroidInputDevice().getSupportedShortcuts()
+        val default = GameShortcut.getDefault(inputDevice, type) ?: return null
+        val supportedShortcuts = inputDevice.getLemuroidInputDevice().getSupportedShortcuts().filter { it.type == type }
 
         val preference = ListPreference(context)
-        preference.key = InputDeviceManager.computeGameMenuShortcutPreference(inputDevice)
-        preference.title = context.getString(R.string.settings_gamepad_title_game_menu)
+        preference.key = InputDeviceManager.computeGameShortcutPreference(inputDevice, type)
+        preference.title = context.getString(type.getStringResource())
         preference.entries = supportedShortcuts.map { it.name }.toTypedArray()
         preference.entryValues = supportedShortcuts.map { it.name }.toTypedArray()
         preference.setValueIndex(supportedShortcuts.indexOf(default))

@@ -7,7 +7,8 @@ import android.view.InputDevice
 import android.view.KeyEvent
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
-import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,18 +50,16 @@ class InputDeviceManager(
             .map { bindings -> { bindings[it] ?: mapOf() } }
     }
 
-    fun getInputMenuShortCutObservable(): Flow<GameMenuShortcut?> {
+    fun getInputMenuShortCutObservable(): Flow<List<GameShortcut>> {
         return getEnabledInputsObservable()
             .map { devices ->
-                val device = devices.firstOrNull()
-                device
-                    ?.let {
-                        sharedPreferences.getString(
-                            computeGameMenuShortcutPreference(it),
-                            GameMenuShortcut.getDefault(it)?.name,
-                        )
-                    }
-                    ?.let { GameMenuShortcut.findByName(device, it) }
+                val device = devices.firstOrNull() ?: return@map listOf()
+                GameShortcutType.values().mapNotNull { type ->
+                    sharedPreferences.getString(
+                        computeGameShortcutPreference(device, type),
+                        GameShortcut.getDefault(device, type)?.name
+                    )?.let { GameShortcut.findByName(device, it) }
+                }
             }
     }
 
@@ -221,8 +220,8 @@ class InputDeviceManager(
         fun computeEnabledGamePadPreference(inputDevice: InputDevice) =
             "${GAME_PAD_ENABLED_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}"
 
-        fun computeGameMenuShortcutPreference(inputDevice: InputDevice) =
-            "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_gamemenu"
+        fun computeGameShortcutPreference(inputDevice: InputDevice, type: GameShortcutType) =
+            "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_shortcut_$type."
 
         fun computeKeyBindingGamePadPreference(inputDevice: InputDevice) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}"

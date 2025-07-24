@@ -9,7 +9,8 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
-import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.common.kotlin.reverseLookup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,8 +40,8 @@ class InputDevicesSettingsViewModel(
 
     data class BindingsView(
         val keys: Map<RetroKey, InputKey> = emptyMap(),
-        val menuShortcuts: List<String> = emptyList(),
-        val defaultShortcut: String? = null,
+        val shortcuts: Map<GameShortcutType, List<String>> = emptyMap(),
+        val defaultShortcuts: Map<GameShortcutType, String?> = emptyMap(),
     )
 
     data class State(
@@ -86,14 +87,15 @@ class InputDevicesSettingsViewModel(
 
         return combine(devicesFlow, bindingsFlow) { devices, allBindings ->
             devices.associateWith { device ->
+                val shortcuts = GameShortcutType.values().associateWith { type ->
+                    device.getLemuroidInputDevice().getSupportedShortcuts().filter { it.type == type }.map { it.name }
+                }
+                val defaultShortcuts = GameShortcutType.values().associateWith {
+                    GameShortcut.getDefault(device, it)?.name
+                }
                 val keys = allBindings(device).reverseLookup()
-                val defaultShortcut = GameMenuShortcut.getDefault(device)?.name
-                val shortcuts =
-                    device.getLemuroidInputDevice()
-                        .getSupportedShortcuts()
-                        .map { it.name }
 
-                BindingsView(keys, shortcuts, defaultShortcut)
+                BindingsView(keys, shortcuts, defaultShortcuts)
             }
         }
     }
