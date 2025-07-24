@@ -54,7 +54,7 @@
     <string name="settings_title_low_latency_audio">Преферирај звук ниске латенције</string>
     <string name="settings_description_low_latency_audio">Смањи звучну латенцију на подржаним уређајима. Може повећати звучне кварове.</string>
     <string name="settings_title_direct_game_load">Директно учитавање игре</string>
-    <string name="settings_description_direct_game_load">(Експериментално) Смањи време учитавања и употребу кеш меморије на подржаним конзолама</string>
+    <string name="settings_description_direct_game_load">(Експериментално) Смањи време учитавања и употребу кеш меморије на подржаним конзолама.</string>
     <string name="settings_title_enable_rumble">Тутњава</string>
     <string name="settings_description_enable_rumble">Омогући тутњаву на подржаним играма и контролерима</string>
     <string name="settings_title_enable_device_rumble">Тутњава уређаја</string>
