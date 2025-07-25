@@ -46,8 +46,6 @@
     <string name="settings_gamepad_category_general">General</string>
     <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
     <string name="settings_gamepad_title_game_menu">Menu</string>
-    <string name="settings_gamepad_title_quick_save">Quick save</string>
-    <string name="settings_gamepad_title_quick_load">Quick load</string>
 
     <string name="settings_title_open_cores_selection">Change Cores</string>
     <string name="settings_description_open_cores_selection">Select which core is associated to a system</string>
@@ -180,6 +178,8 @@
 
     <string name="gamepad_binding_update_title">Associate \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Press a button on your \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Associate \"Shortcut %1$s\"</string>
+    <string name="shortcut_binding_update_description">Press first then second button to bind a combo, or press the same button twice to bind it individually.</string>
 
     <string name="tv_search_results">Games</string>
     <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>

@@ -8,7 +8,7 @@ import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.bindingsOf
 import com.swordfish.lemuroid.app.shared.input.inputKeysOf
 import com.swordfish.lemuroid.app.shared.input.supportsAllKeys
-import com.swordfish.lemuroid.app.shared.settings.GameShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 
 class LemuroidInputDeviceKeyboard(private val device: InputDevice) : LemuroidInputDevice {
     override fun getCustomizableKeys(): List<RetroKey> = InputDeviceManager.OUTPUT_KEYS
@@ -19,7 +19,7 @@ class LemuroidInputDeviceKeyboard(private val device: InputDevice) : LemuroidInp
         return !appContext.packageManager.hasSystemFeature("android.hardware.touchscreen")
     }
 
-    override fun getSupportedShortcuts(): List<GameShortcut> = emptyList()
+    override fun getSupportedShortcuts(): List<GameShortcutType> = emptyList()
 
     override fun isSupported(): Boolean {
         return sequenceOf(

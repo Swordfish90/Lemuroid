@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.shared.settings.GameShortcut
-import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.common.kotlin.reverseLookup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,8 +39,7 @@ class InputDevicesSettingsViewModel(
 
     data class BindingsView(
         val keys: Map<RetroKey, InputKey> = emptyMap(),
-        val shortcuts: Map<GameShortcutType, List<String>> = emptyMap(),
-        val defaultShortcuts: Map<GameShortcutType, String?> = emptyMap(),
+        val shortcuts: List<GameShortcut> = emptyList()
     )
 
     data class State(
@@ -84,18 +82,16 @@ class InputDevicesSettingsViewModel(
     private fun getDevicesBindingViews(): Flow<Map<InputDevice, BindingsView>> {
         val devicesFlow = inputDeviceManager.getEnabledInputsObservable()
         val bindingsFlow = inputDeviceManager.getInputBindingsObservable()
+        val shortcutsFlow = inputDeviceManager.getGameShortcutsObservable()
 
-        return combine(devicesFlow, bindingsFlow) { devices, allBindings ->
+        return combine(devicesFlow, bindingsFlow, shortcutsFlow) { devices, allBindings, allShortcuts ->
             devices.associateWith { device ->
-                val shortcuts = GameShortcutType.values().associateWith { type ->
-                    device.getLemuroidInputDevice().getSupportedShortcuts().filter { it.type == type }.map { it.name }
-                }
-                val defaultShortcuts = GameShortcutType.values().associateWith {
-                    GameShortcut.getDefault(device, it)?.name
-                }
+                val shortcuts = allShortcuts[device]?.filter {
+                    it.type in device.getLemuroidInputDevice().getSupportedShortcuts()
+                } ?: emptyList()
                 val keys = allBindings(device).reverseLookup()
 
-                BindingsView(keys, shortcuts, defaultShortcuts)
+                BindingsView(keys, shortcuts)
             }
         }
     }

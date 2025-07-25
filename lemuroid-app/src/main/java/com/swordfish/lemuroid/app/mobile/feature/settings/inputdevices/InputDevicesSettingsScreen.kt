@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.inputdevices
 
+import android.content.Context
 import android.content.Intent
 import android.view.InputDevice
 import android.view.KeyEvent
@@ -12,18 +13,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
+import com.swordfish.lemuroid.app.mobile.feature.input.GamePadShortcutBindingActivity
 import com.swordfish.lemuroid.app.shared.input.InputBindingUpdater
-import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
+import com.swordfish.lemuroid.app.shared.input.ShortcutBindingUpdater
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
-import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
+import com.swordfish.lemuroid.app.shared.settings.GameShortcut
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
 import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
-import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 
 @Composable
 fun InputDevicesSettingsScreen(
@@ -71,33 +71,28 @@ private fun DeviceBindingCategory(
         }
 
         bindings.shortcuts.forEach {
-            DeviceShortcut(device, it.key, it.value, bindings.defaultShortcuts[it.key])
+            DeviceShortcutBinding(context, device, it)
         }
     }
 }
 
 @Composable
-private fun DeviceShortcut(
+private fun DeviceShortcutBinding(
+    context: Context,
     device: InputDevice,
-    type: GameShortcutType,
-    values: List<String>,
-    defaultShortcut: String?,
+    shortcut: GameShortcut
 ) {
-    if (values.isEmpty() || defaultShortcut == null) {
-        return
-    }
-
-    val state =
-        indexPreferenceState(
-            InputDeviceManager.computeGameShortcutPreference(device, type),
-            defaultShortcut,
-            values,
-        )
-
-    LemuroidSettingsList(
-        state = state,
-        title = { Text(text = stringResource(type.getStringResource())) },
-        items = values,
+    LemuroidSettingsMenuLink(
+        title = { Text(text = shortcut.type.displayName()) },
+        subtitle = { Text(text = shortcut.name) },
+        onClick = {
+            val intent =
+                Intent(context, GamePadShortcutBindingActivity::class.java).apply {
+                    putExtra(ShortcutBindingUpdater.REQUEST_DEVICE, device)
+                    putExtra(ShortcutBindingUpdater.REQUEST_SHORTCUT_TYPE, shortcut.type.name)
+                }
+            context.startActivity(intent)
+        },
     )
 }
 

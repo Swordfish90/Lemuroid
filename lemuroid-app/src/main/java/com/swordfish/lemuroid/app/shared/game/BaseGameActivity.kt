@@ -31,8 +31,8 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
-import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
+import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.coroutines.MutableStateProperty
@@ -530,14 +530,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeGamePadShortcutsFlow() {
-        inputDeviceManager.getInputMenuShortCutObservable()
+        inputDeviceManager.getGameShortcutsObservable()
             .distinctUntilChanged()
-            .safeCollect { shortcuts ->
-                shortcuts.firstOrNull { it.type == GameShortcutType.MENU }?.let {
-                    displayToast(
-                        resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name),
-                    )
-                }
+            .safeCollect { allShortcuts ->
+                allShortcuts.values
+                    .firstNotNullOfOrNull { shortcuts ->
+                        shortcuts.firstOrNull { it.type == GameShortcutType.MENU }
+                    }
+                    ?.let {
+                        displayToast( resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name))
+                    }
             }
     }
 
@@ -606,7 +608,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         val combinedObservable =
             combine(
-                inputDeviceManager.getInputMenuShortCutObservable(),
+                inputDeviceManager.getGameShortcutsObservable(),
                 inputDeviceManager.getGamePadsPortMapperObservable(),
                 inputDeviceManager.getInputBindingsObservable(),
                 filteredKeyEvents,
@@ -638,7 +640,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         pressedKeys.remove(keyCode)
                     }
 
-                    shortcuts.forEach { shortcut ->
+                    shortcuts[device]?.forEach { shortcut ->
                         if (shortcut.keys.isNotEmpty() && pressedKeys.containsAll(shortcut.keys)) {
                             when (shortcut.type) {
                                 GameShortcutType.MENU -> displayOptionsDialog()

@@ -50,39 +50,7 @@ class LemuroidInputDeviceGamePad(private val device: InputDevice) : LemuroidInpu
         return device.supportsAllKeys(MINIMAL_KEYS_DEFAULT_ENABLED)
     }
 
-    override fun getSupportedShortcuts(): List<GameShortcut> =
-        listOf(
-            GameShortcut(
-                "L3 + R3",
-                setOf(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR),
-                GameShortcutType.MENU,
-            ),
-            GameShortcut(
-                "Select + Start",
-                setOf(KeyEvent.KEYCODE_BUTTON_START, KeyEvent.KEYCODE_BUTTON_SELECT),
-                GameShortcutType.MENU,
-            ),
-            GameShortcut(
-                "L1 + L2",
-                setOf(KeyEvent.KEYCODE_BUTTON_L1, KeyEvent.KEYCODE_BUTTON_L2),
-                GameShortcutType.QUICK_LOAD,
-            ),
-            GameShortcut(
-                "R1 + R2",
-                setOf(KeyEvent.KEYCODE_BUTTON_R1, KeyEvent.KEYCODE_BUTTON_R2),
-                GameShortcutType.QUICK_SAVE,
-            ),
-            GameShortcut(
-                "L1 + L3",
-                setOf(KeyEvent.KEYCODE_BUTTON_L1, KeyEvent.KEYCODE_BUTTON_THUMBL),
-                GameShortcutType.QUICK_LOAD,
-            ),
-            GameShortcut(
-                "R1 + R3",
-                setOf(KeyEvent.KEYCODE_BUTTON_R1, KeyEvent.KEYCODE_BUTTON_THUMBR),
-                GameShortcutType.QUICK_SAVE,
-            ),
-        )
+    override fun getSupportedShortcuts(): List<GameShortcutType> = GameShortcutType.values().toList()
 
     override fun isSupported(): Boolean {
         return sequenceOf(
