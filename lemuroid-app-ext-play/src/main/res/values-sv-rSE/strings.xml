@@ -28,4 +28,8 @@
     <string name="game_loading_download_core">Hämtar ner kärna…</string>
     <string name="installing_core_notification_title">Uppdaterar kärnor från Play</string>
     <string name="installing_core_notification_message">Kontrollera Google Play Store-appen för att se aktuell status</string>
+    <string name="game_loader_error_load_core">Libretro kärnan var inte laddad. Prova följande:\n
+        \n\u2022 Aktivera internetanslutning och omprogrammera dina spel
+        \n\u2022 Se till att Google Play Store är installerat och kör
+        \n\u2022 Vänta på pågående operationer i Google Play Store för att slutföra</string>
 </resources>
