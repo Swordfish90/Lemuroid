@@ -104,6 +104,7 @@
     <string name="value_melonds_screen_layout_leftright">Sinistra - Destra</string>
     <string name="value_melonds_screen_layout_hybridtop">Ibrido Superiore</string>
     <string name="value_melonds_screen_layout_hybridbottom">Ibrido Inferiore</string>
+    <string name="value_melonds_mic_input_microphone">Microfono reale</string>
     <string name="value_melonds_mic_input_blow">Simulare i suoni di soffio</string>
     <string name="value_citra_layout_option_topbottom">Superiore - Inferiore</string>
     <string name="value_citra_layout_option_sidebyside">Sinistra - Destra</string>
