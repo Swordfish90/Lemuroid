@@ -118,8 +118,15 @@
     <string name="game_loader_error_load_game">Något hände vid inläsningen av ditt spel. Säkerställ att ROMen är supporterad av Lemuroid och utför en ny sökning efter spel.</string>
     <string name="game_loader_error_save">Något gick fel med din sparning. Om problemet kvarstår, försök inaktivera automatisk sparning.</string>
     <string name="game_loader_error_unsupported_architecture">Den här kärna stöds inte av din enhet.</string>
+    <string name="game_loader_error_generic">Något dåligt hände. Prova följande:\n
+        \n\u2022 Inaktivera automatisk sparning och köra om spelet
+        \n\u2022 Gå till Android-inställningarna och rensa app-cachen
+        \n\u2022 Gå in i Lemuroid-inställningarna och utför en fabriksåterställning
+        \n\nOm inget av ovanstående fungerar, det kan vara möjligt att detta spel/kärna inte stöds av den här enheten.
+    </string>
     <string name="game_loader_error_missing_bios">Det verkar som om du saknar de nödvändiga BIOS, lägg dem i din ROM-katalog och sök igenom igen. Nödvändiga filer: %1$s</string>
     <string name="game_shortcut_error">Något hände vid inläsningen av ditt spel. Se till att spelet fortfarande finns i ditt bibliotek.</string>
+    <string name="dialog_saf_not_found">Den här enheten stöder inte väljaren för StorageAccessFramework-filväljaren. Kopiera manuellt okomprimerade ROM-filer till %1$s och tryck på Sök på nytt.</string>
     <string name="system_grid_details">%1$s spel</string>
     <string name="tv_folder_picker_title">Välj ROM-katalog</string>
     <string name="tv_folder_picker_action_choose">Välj</string>
@@ -144,6 +151,12 @@
         <b>&#8226;Varför hittas inte mina spel?</b><br/>
         Om dina spel är komprimerade, prova att packa upp dem. Om detta inte fungerar så prova att lägga ROM-filer i separata kataloger, en för varje system med följande namn: $SYSTEMS.
     ]]></string>
+    <string name="lemuroid_crash_disclamer">Det ser ut som om Libretro kärnan har upplevt ett oväntat problem. Om det är ihållande, vänligen prova följande:\n
+        \n\u2022 Inaktivera automatisk sparning och åter köra spelet
+        \n\u2022 Gå till Android-inställningar och rensa app-cachen
+        \n\u2022 Gå till Lemuroid-inställningarna och utför en fabriksåterställning
+        \n\n Om inget av ovanstående fungerar, det kan vara möjligt att detta spel/kärna inte stöds av den här enheten.
+    </string>
     <string name="error_message_incompatible_state">Detta sparläge är inte kompatibelt med den aktuella kärnversionen. Ladda in den senaste sparningen i spelet eller använd en tidigare Lemuroidversion.</string>
     <string name="shader_filter_names_auto">Automatisk</string>
     <string name="shader_filter_names_sharp">Skarp</string>
