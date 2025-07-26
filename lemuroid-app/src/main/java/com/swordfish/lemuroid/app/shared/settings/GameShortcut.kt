@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.app.shared.settings
 
 import android.view.InputDevice
 import android.view.KeyEvent
-import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.input.InputKey
 
 data class GameShortcut(
@@ -17,6 +16,7 @@ data class GameShortcut(
                 GameShortcutType.MENU -> KeyEvent.KEYCODE_BUTTON_START to KeyEvent.KEYCODE_BUTTON_SELECT
                 GameShortcutType.QUICK_SAVE -> KeyEvent.KEYCODE_BUTTON_R1 to KeyEvent.KEYCODE_BUTTON_R2
                 GameShortcutType.QUICK_LOAD -> KeyEvent.KEYCODE_BUTTON_L1 to KeyEvent.KEYCODE_BUTTON_L2
+                GameShortcutType.TOGGLE_FAST_FORWARD -> KeyEvent.KEYCODE_BUTTON_START to KeyEvent.KEYCODE_BUTTON_R1
             }
             if (inputDevice.hasKeys(combo.first, combo.second).all { it }) {
                 return GameShortcut(keys = setOf(combo.first, combo.second), type = type )
@@ -29,8 +29,10 @@ data class GameShortcut(
 enum class GameShortcutType {
     MENU,
     QUICK_SAVE,
-    QUICK_LOAD;
+    QUICK_LOAD,
+    TOGGLE_FAST_FORWARD;
 
-    fun displayName() = name.replace('_', ' ').lowercase().replaceFirstChar { it.uppercase() }
+    fun displayName() =
+        name .split('_').joinToString(" ") { it.lowercase().replaceFirstChar { it.uppercase() } }
 }
 

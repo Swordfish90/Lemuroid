@@ -646,6 +646,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                                 GameShortcutType.MENU -> displayOptionsDialog()
                                 GameShortcutType.QUICK_SAVE -> saveQuickSave()
                                 GameShortcutType.QUICK_LOAD -> loadQuickSave()
+                                GameShortcutType.TOGGLE_FAST_FORWARD -> toggleFastForward()
                             }
                             return@safeCollect
                         }
@@ -1053,6 +1054,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     this.frameSpeed = if (fastForwardEnabled) 2 else 1
                 }
             }
+        }
+    }
+
+    private fun toggleFastForward() {
+        retroGameView?.apply {
+            frameSpeed = if (frameSpeed == 1) 2 else 1
         }
     }
 
