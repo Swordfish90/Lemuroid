@@ -173,7 +173,7 @@ private fun HomeRow(
                     modifier =
                         Modifier
                             .widthIn(0.dp, 144.dp)
-                            .animateItemPlacement(),
+                            .animateItem(),
                     game = game,
                     onClick = { onGameClicked(game) },
                     onLongClick = { onGameLongClick(game) },

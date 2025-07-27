@@ -4,11 +4,8 @@ import android.view.KeyEvent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.round
 import androidx.compose.ui.unit.toOffset
-import gg.jam.jampadcompose.ids.ContinuousDirectionId
-import gg.jam.jampadcompose.ids.ControlId
-import gg.jam.jampadcompose.ids.DiscreteDirectionId
-import gg.jam.jampadcompose.ids.KeyId
-import gg.jam.jampadcompose.inputstate.InputState
+import gg.padkit.ids.Id
+import gg.padkit.inputstate.InputState
 import java.io.Serializable
 
 val TILT_CONFIGURATION_DISABLED = TiltConfiguration.Disabled
@@ -21,14 +18,14 @@ val TILT_CONFIGURATION_L2_R2 = TiltConfiguration.ButtonPair(KeyEvent.KEYCODE_BUT
 
 sealed interface TiltConfiguration : Serializable {
     fun process(values: FloatArray): InputState
-    fun controlIds(): Set<ControlId>
+    fun controlIds(): Set<Id>
 
     data object Disabled : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
             return InputState()
         }
 
-        override fun controlIds(): Set<ControlId> {
+        override fun controlIds(): Set<Id> {
             return emptySet()
         }
     }
@@ -36,22 +33,22 @@ sealed interface TiltConfiguration : Serializable {
     data class Cross(val directionId: Int) : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
             val offset = Offset(values[0], -values[1]).round()
-            return InputState().setDiscreteDirection(DiscreteDirectionId(directionId), offset.toOffset())
+            return InputState().setDiscreteDirection(Id.DiscreteDirection(directionId), offset.toOffset())
         }
 
-        override fun controlIds(): Set<ControlId> {
-            return setOf(DiscreteDirectionId(directionId))
+        override fun controlIds(): Set<Id> {
+            return setOf(Id.DiscreteDirection(directionId))
         }
     }
 
     data class Analog(val directionId: Int) : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
             val offset = Offset(values[0], -values[1])
-            return InputState().setContinuousDirection(ContinuousDirectionId(directionId), offset)
+            return InputState().setContinuousDirection(Id.ContinuousDirection(directionId), offset)
         }
 
-        override fun controlIds(): Set<ControlId> {
-            return setOf(ContinuousDirectionId(directionId))
+        override fun controlIds(): Set<Id> {
+            return setOf(Id.ContinuousDirection(directionId))
         }
     }
 
@@ -65,12 +62,12 @@ sealed interface TiltConfiguration : Serializable {
             val bothPressed = !leftPressed && !rightPressed && yTilt < -0.9f
 
             return InputState()
-                .setDigitalKey(KeyId(leftButtonId), leftPressed || bothPressed)
-                .setDigitalKey(KeyId(rightButtonId), rightPressed || bothPressed)
+                .setDigitalKey(Id.Key(leftButtonId), leftPressed || bothPressed)
+                .setDigitalKey(Id.Key(rightButtonId), rightPressed || bothPressed)
         }
 
-        override fun controlIds(): Set<ControlId> {
-            return setOf(KeyId(leftButtonId), KeyId(rightButtonId))
+        override fun controlIds(): Set<Id> {
+            return setOf(Id.Key(leftButtonId), Id.Key(rightButtonId))
         }
     }
 }

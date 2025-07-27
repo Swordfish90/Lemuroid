@@ -2,6 +2,7 @@ package com.swordfish.touchinput.radial.layouts
 
 import android.view.KeyEvent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
 import com.swordfish.touchinput.radial.ui.LemuroidButtonForeground
@@ -12,16 +13,17 @@ import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenuPlaceho
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonSelect
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonStart
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
-import gg.jam.jampadcompose.JamPadScope
-import gg.jam.jampadcompose.ids.DiscreteDirectionId
-import gg.jam.jampadcompose.ids.KeyId
+import gg.padkit.PadKitScope
+import gg.padkit.ids.Id
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 
 @Composable
-fun JamPadScope.PCELeft(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.PCELeft(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
-        primaryDial = { LemuroidControlCross(DiscreteDirectionId(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
+        primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
         secondaryDials = {
             SecondaryButtonSelect()
             SecondaryButtonMenuPlaceholder(settings)
@@ -30,20 +32,20 @@ fun JamPadScope.PCELeft(modifier: Modifier = Modifier, settings: TouchController
 }
 
 @Composable
-fun JamPadScope.PCERight(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.PCERight(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
     BaseLayoutRight(
         settings = settings,
         modifier = modifier,
         primaryDial = {
             LemuroidControlFaceButtons(
-                ids = listOf(
-                    KeyId(KeyEvent.KEYCODE_BUTTON_A),
-                    KeyId(KeyEvent.KEYCODE_BUTTON_B),
+                ids = persistentListOf(
+                    Id.Key(KeyEvent.KEYCODE_BUTTON_A),
+                    Id.Key(KeyEvent.KEYCODE_BUTTON_B),
                 ),
-                idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_A)) { LemuroidButtonForeground(pressed = it, label = "II") }
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(pressed = it, label = "I") }
-                },
+                idsForegrounds = persistentMapOf<Id.Key, @Composable (State<Boolean>) -> Unit>(
+                    Id.Key(KeyEvent.KEYCODE_BUTTON_A) to { LemuroidButtonForeground(pressed = it, label = "II") },
+                    Id.Key(KeyEvent.KEYCODE_BUTTON_B) to { LemuroidButtonForeground(pressed = it, label = "I") },
+                ),
             )
         },
         secondaryDials = {

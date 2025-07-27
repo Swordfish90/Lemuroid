@@ -1,6 +1,5 @@
 package com.swordfish.touchinput.radial.layouts
 
-import LayoutRadial
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -9,10 +8,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
-import gg.jam.jampadcompose.JamPadScope
-import gg.jam.jampadcompose.layouts.radial.secondarydials.LayoutRadialSecondaryDialsScope
+import gg.padkit.PadKitScope
+import gg.padkit.layouts.radial.LayoutRadial
+import gg.padkit.layouts.radial.secondarydials.LayoutRadialSecondaryDialsScope
 
-context(JamPadScope)
+context(PadKitScope)
 @Composable
 fun BaseLayoutLeft(
     modifier: Modifier = Modifier,
@@ -35,7 +35,7 @@ fun BaseLayoutLeft(
     )
 }
 
-context(JamPadScope)
+context(PadKitScope)
 @Composable
 fun BaseLayoutRight(
     modifier: Modifier = Modifier,

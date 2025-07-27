@@ -69,7 +69,7 @@ fun LemuroidButtonPressFeedback(pressed: Boolean, animationDurationMillis: Int, 
             ) {
                 LemuroidControlBackground()
                 LemuroidButtonForeground(
-                    pressed = false,
+                    pressed = remember { mutableStateOf(false) },
                     icon = icon,
                 )
 

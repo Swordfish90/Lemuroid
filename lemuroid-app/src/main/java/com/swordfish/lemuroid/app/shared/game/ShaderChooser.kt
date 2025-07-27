@@ -139,7 +139,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
+                hardEdgesSearchMinContrast = 0.50f,
             )
 
         val upscale8Bits =
@@ -147,7 +147,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
+                hardEdgesSearchMinContrast = 0.50f,
             )
 
         val upscale16BitsMobile =
@@ -155,7 +155,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         val upscale16Bits =
@@ -163,7 +163,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
+                hardEdgesSearchMinContrast = 0.75f,
             )
 
         val upscale32Bits =
@@ -171,7 +171,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
+                hardEdgesSearchMinContrast = 0.85f,
             )
 
         val modern =
@@ -179,7 +179,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.50f,
-                edgeMinValue = 0.025f,
+                hardEdgesSearchMinContrast = 0.85f,
             )
 
         return getConfigForSystem(
@@ -199,9 +199,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                hardEdgesThreshold = 0.15f,
-                hardEdgesSearchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.50f,
             )
 
         val upscale8Bits =
@@ -209,9 +207,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                hardEdgesThreshold = 0.15f,
-                hardEdgesSearchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.50f,
             )
 
         val upscale16BitsMobile =
@@ -219,8 +215,6 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
@@ -229,8 +223,6 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                hardEdgesThreshold = 0.15f,
                 hardEdgesSearchMinContrast = 0.75f,
             )
 
@@ -239,9 +231,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                hardEdgesThreshold = 0.15f,
-                hardEdgesSearchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.85f,
             )
 
         val modern =
@@ -249,9 +239,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                hardEdgesThreshold = 0.15f,
-                hardEdgesSearchMinContrast = 0.75f,
+                hardEdgesSearchMinContrast = 0.85f,
             )
 
         return getConfigForSystem(

@@ -61,9 +61,9 @@ import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.DrawPaddingValues
 import com.swordfish.touchinput.radial.ui.GlassSurface
 import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
-import gg.jam.jampadcompose.JamPad
-import gg.jam.jampadcompose.config.HapticFeedbackType
-import gg.jam.jampadcompose.inputstate.InputState
+import gg.padkit.PadKit
+import gg.padkit.config.HapticFeedbackType
+import gg.padkit.inputstate.InputState
 
 @Composable
 fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
@@ -106,7 +106,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             HapticFeedbackMode.PRESS_RELEASE -> HapticFeedbackType.PRESS_RELEASE
         }
 
-        JamPad(
+        PadKit(
             modifier = Modifier.fillMaxSize(),
             onInputEvents = { viewModel.handleVirtualInputEvent(it) },
             hapticFeedbackType = padHapticFeedback,

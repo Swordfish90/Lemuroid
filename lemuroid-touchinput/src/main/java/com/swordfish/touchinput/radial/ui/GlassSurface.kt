@@ -71,7 +71,6 @@ fun GlassSurface(
     shadowColor: Color = Color.Black.copy(alpha = 0.3f),
     strokeWidth: Dp = 1.dp,
     shadowWidth: Dp = 1.dp,
-    scale: Float = 1.0f,
     drawPadding: DrawPaddingValues = DrawPaddingValues(),
     content: @Composable BoxWithConstraintsScope.() -> Unit = { }
 ) {
@@ -100,12 +99,9 @@ fun GlassSurface(
                 blurRadius = blurRadiusPx
             )
 
-            val scaledSize = expandedSize * scale
-            val centerOffset = (expandedSize - scaledSize) * 0.5f
-
             val strokeInset = strokePx / 2f
-            val fillSize = scaledSize + Size(strokePx, strokePx)
-            val fillOffset = centerOffset - Offset(strokeInset, strokeInset)
+            val fillSize = expandedSize + Size(strokePx, strokePx)
+            val fillOffset = -Offset(strokeInset, strokeInset)
 
             val drawOffset = Offset(paddingStart, paddingTop)
             val adjustedRadius = cornerRadiusPx + strokeInset
@@ -122,8 +118,8 @@ fun GlassSurface(
 
                 drawRoundRect(
                     color = strokeColor,
-                    topLeft = centerOffset + drawOffset,
-                    size = scaledSize,
+                    topLeft = drawOffset,
+                    size = expandedSize,
                     cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
                     style = Stroke(width = strokePx)
                 )

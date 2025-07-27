@@ -52,7 +52,7 @@ import com.swordfish.touchinput.radial.layouts.WSLandscapeLeft
 import com.swordfish.touchinput.radial.layouts.WSLandscapeRight
 import com.swordfish.touchinput.radial.layouts.WSPortraitLeft
 import com.swordfish.touchinput.radial.layouts.WSPortraitRight
-import gg.jam.jampadcompose.JamPadScope
+import gg.padkit.PadKitScope
 
 enum class TouchControllerID {
     GB,
@@ -82,8 +82,8 @@ enum class TouchControllerID {
     NINTENDO_3DS;
 
     class Config(
-        val leftComposable: @Composable JamPadScope.(modifier: Modifier, settings: TouchControllerSettingsManager.Settings) -> Unit,
-        val rightComposable: @Composable JamPadScope.(modifier: Modifier, settings: TouchControllerSettingsManager.Settings) -> Unit,
+        val leftComposable: @Composable PadKitScope.(modifier: Modifier, settings: TouchControllerSettingsManager.Settings) -> Unit,
+        val rightComposable: @Composable PadKitScope.(modifier: Modifier, settings: TouchControllerSettingsManager.Settings) -> Unit,
     )
 
     companion object {

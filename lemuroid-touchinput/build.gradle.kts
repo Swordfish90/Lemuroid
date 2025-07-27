@@ -42,9 +42,8 @@ dependencies {
     implementation(deps.libs.kotlin.serialization)
     implementation(deps.libs.kotlin.serializationJson)
 
-    api(deps.libs.jampadcompose)
+    api(deps.libs.padkit)
     api(deps.libs.collectionsImmutable)
-    api(deps.libs.radialgamepad)
 
     implementation(kotlin(deps.libs.kotlin.stdlib))
 

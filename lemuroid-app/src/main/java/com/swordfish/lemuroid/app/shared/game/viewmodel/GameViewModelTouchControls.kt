@@ -15,10 +15,10 @@ import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
-import com.swordfish.touchinput.radial.LemuroidTouchConfigs
+import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
 import com.swordfish.touchinput.radial.settings.TouchControllerID
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
-import gg.jam.jampadcompose.inputevents.InputEvent
+import gg.padkit.inputevents.InputEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -174,11 +174,11 @@ class GameViewModelTouchControls(
 
     private fun handleVirtualInputDirection(id: Int, xAxis: Float, yAxis: Float) {
         when (id) {
-            LemuroidTouchConfigs.MOTION_SOURCE_DPAD -> {
+            ComposeTouchLayouts.MOTION_SOURCE_DPAD -> {
                 retroGameView.retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, xAxis, yAxis)
             }
 
-            LemuroidTouchConfigs.MOTION_SOURCE_LEFT_STICK -> {
+            ComposeTouchLayouts.MOTION_SOURCE_LEFT_STICK -> {
                 retroGameView.retroGameView?.sendMotionEvent(
                     MOTION_SOURCE_ANALOG_LEFT,
                     xAxis,
@@ -186,7 +186,7 @@ class GameViewModelTouchControls(
                 )
             }
 
-            LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_STICK -> {
+            ComposeTouchLayouts.MOTION_SOURCE_RIGHT_STICK -> {
                 retroGameView.retroGameView?.sendMotionEvent(
                     MOTION_SOURCE_ANALOG_RIGHT,
                     xAxis,
@@ -194,7 +194,7 @@ class GameViewModelTouchControls(
                 )
             }
 
-            LemuroidTouchConfigs.MOTION_SOURCE_DPAD_AND_LEFT_STICK -> {
+            ComposeTouchLayouts.MOTION_SOURCE_DPAD_AND_LEFT_STICK -> {
                 retroGameView.retroGameView?.sendMotionEvent(
                     MOTION_SOURCE_ANALOG_LEFT,
                     xAxis,
@@ -203,7 +203,7 @@ class GameViewModelTouchControls(
                 retroGameView.retroGameView?.sendMotionEvent(MOTION_SOURCE_DPAD, xAxis, yAxis)
             }
 
-            LemuroidTouchConfigs.MOTION_SOURCE_RIGHT_DPAD -> {
+            ComposeTouchLayouts.MOTION_SOURCE_RIGHT_DPAD -> {
                 retroGameView.retroGameView?.sendMotionEvent(
                     MOTION_SOURCE_ANALOG_RIGHT,
                     xAxis,

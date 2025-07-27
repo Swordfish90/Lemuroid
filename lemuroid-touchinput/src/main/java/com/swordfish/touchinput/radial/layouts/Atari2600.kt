@@ -4,6 +4,7 @@ import android.view.KeyEvent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
 import com.swordfish.touchinput.radial.ui.LemuroidButtonForeground
@@ -13,25 +14,26 @@ import com.swordfish.touchinput.radial.controls.LemuroidControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenuPlaceholder
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
-import gg.jam.jampadcompose.JamPadScope
-import gg.jam.jampadcompose.ids.DiscreteDirectionId
-import gg.jam.jampadcompose.ids.KeyId
+import gg.padkit.PadKitScope
+import gg.padkit.ids.Id
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 
 @Composable
-fun JamPadScope.Atari2600Left(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.Atari2600Left(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
-        primaryDial = { LemuroidControlCross(DiscreteDirectionId(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
+        primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
         secondaryDials = {
             LemuroidControlButton(
                 modifier = Modifier.radialPosition(120f),
-                id = KeyId(KeyEvent.KEYCODE_BUTTON_L1),
+                id = Id.Key(KeyEvent.KEYCODE_BUTTON_L1),
                 label = "DIFF.A",
             )
             LemuroidControlButton(
                 modifier = Modifier.radialPosition(60f),
-                id = KeyId(KeyEvent.KEYCODE_BUTTON_L2),
+                id = Id.Key(KeyEvent.KEYCODE_BUTTON_L2),
                 label = "DIFF.B",
             )
             SecondaryButtonMenuPlaceholder(settings)
@@ -40,28 +42,28 @@ fun JamPadScope.Atari2600Left(modifier: Modifier = Modifier, settings: TouchCont
 }
 
 @Composable
-fun JamPadScope.Atari2600Right(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.Atari2600Right(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
     BaseLayoutRight(
         settings = settings,
         modifier = modifier,
         primaryDial = {
             LemuroidControlFaceButtons(
-                ids = listOf(KeyId(KeyEvent.KEYCODE_BUTTON_B)),
+                ids = persistentListOf(Id.Key(KeyEvent.KEYCODE_BUTTON_B)),
                 includeComposite = false,
-                idsForegrounds = buildMap {
-                    put(KeyId(KeyEvent.KEYCODE_BUTTON_B)) { LemuroidButtonForeground(pressed = it) }
-                },
+                idsForegrounds = persistentMapOf<Id.Key, @Composable (State<Boolean>) -> Unit>(
+                    Id.Key(KeyEvent.KEYCODE_BUTTON_B) to { LemuroidButtonForeground(pressed = it) },
+                ),
             )
         },
         secondaryDials = {
             LemuroidControlButton(
                 modifier = Modifier.radialPosition(60f),
-                id = KeyId(KeyEvent.KEYCODE_BUTTON_START),
+                id = Id.Key(KeyEvent.KEYCODE_BUTTON_START),
                 label = "RESET",
             )
             LemuroidControlButton(
                 modifier = Modifier.radialPosition(120f),
-                id = KeyId(KeyEvent.KEYCODE_BUTTON_SELECT),
+                id = Id.Key(KeyEvent.KEYCODE_BUTTON_SELECT),
                 label = "SELECT",
             )
             SecondaryButtonMenu(settings)

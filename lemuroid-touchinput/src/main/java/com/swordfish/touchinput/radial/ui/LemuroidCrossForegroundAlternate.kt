@@ -2,16 +2,17 @@ package com.swordfish.touchinput.radial.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import com.swordfish.touchinput.controller.R
-import gg.jam.jampadcompose.ui.DefaultCrossForeground
+import gg.padkit.ui.DefaultCrossForeground
 
 @Composable
-fun LemuroidCrossForegroundAlternate(direction: Offset) {
+fun LemuroidCrossForegroundAlternate(directionState: State<Offset>) {
     DefaultCrossForeground(
         modifier = Modifier.fillMaxSize(),
-        direction = direction,
+        directionState = directionState,
         allowDiagonals = false,
         leftDial = {
             LemuroidButtonForeground(

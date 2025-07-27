@@ -11,6 +11,7 @@ class LemuroidPadTheme {
         return Color(luminosity, luminosity, luminosity, opacity)
     }
 
+    val foregroundPadding: Dp = 8.dp
     val padding: Dp = 4.dp
 
     private val icons = gray(0.0f, 0.50f)

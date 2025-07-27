@@ -2,8 +2,8 @@
 object deps {
     object android {
         const val targetSdkVersion  = 34
-        const val compileSdkVersion = 34
-        const val minSdkVersion     = 24 // TODO PADS. Make this this cannot go back to 23.
+        const val compileSdkVersion = 35
+        const val minSdkVersion     = 23
         const val buildToolsVersion = "34.0.0"
     }
 
@@ -23,10 +23,10 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
-        const val libretrodroid   = "c4874ca5b"
-        const val radialgamepad   = "2.0.0"
+        const val libretrodroid   = "0.13.0"
         const val composeBom      = "2024.02.02"
         const val kotlinExtension = "1.4.6"
+        const val padkit          = "1.0.0-beta1"
 
         // Make sure this is compatible with current bom versions:
         // https://developer.android.com/jetpack/compose/bom/bom-mapping
@@ -165,8 +165,7 @@ object deps {
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"
         const val composeHtmlText          = "de.charlex.compose.material3:material3-html-text:2.0.0-beta01"
         const val collectionsImmutable     = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
-        const val jampadcompose            = "io.github.piepacker:jampadcompose:0.1.0-alpha4"
-        const val radialgamepad            = "com.github.Swordfish90:RadialGamePad:${versions.radialgamepad}"
+        const val padkit                   = "io.github.swordfish90:padkit:${versions.padkit}"
         const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
     }
 
