@@ -532,7 +532,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private suspend fun initializeGamePadShortcutsFlow() {
         inputDeviceManager.getGameShortcutsObservable()
             .distinctUntilChanged()
-            .safeCollect { }
+            .safeCollect { allShortcuts ->
+                allShortcuts.values
+                    .firstNotNullOfOrNull { shortcuts ->
+                        shortcuts.firstOrNull { it.type == GameShortcutType.MENU }
+                    }
+                    ?.let {
+                        displayToast( resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name))
+                    }
+            }
     }
 
     data class SingleAxisEvent(val axis: Int, val action: Int, val keyCode: Int, val port: Int)
@@ -929,8 +937,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         withLoading {
             try {
                 statesManager.getQuickSave(game, systemCoreConfig.coreID)?.let {
-                    withContext(Dispatchers.IO) {
-                        loadSaveState(it)
+                    val loaded = withContext(Dispatchers.IO) { loadSaveState(it) }
+                    withContext(Dispatchers.Main) {
+                        if (loaded) {
+                            displayToast(R.string.game_toast_quick_save_loaded)
+                        } else {
+                            displayToast(R.string.game_toast_load_state_failed)
+                        }
                     }
                 }
             } catch (e: Throwable) {
