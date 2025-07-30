@@ -606,7 +606,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 .map { Triple(it.device, it.action, it.keyCode) }
                 .distinctUntilChanged()
 
-
         val combinedObservable =
             combine(
                 inputDeviceManager.getGameShortcutsObservable(),

@@ -60,11 +60,13 @@ class ShortcutBindingUpdater(private val inputDeviceManager: InputDeviceManager,
     }
 
     private fun parseExtras(intent: Intent): IntentExtras {
-        val device = intent.extras?.getParcelable<InputDevice>(REQUEST_DEVICE)
-            ?: throw IllegalArgumentException("REQUEST_DEVICE has not been passed")
+        val device =
+            intent.extras?.getParcelable<InputDevice>(REQUEST_DEVICE)
+                ?: throw IllegalArgumentException("REQUEST_DEVICE has not been passed")
 
-        val shortcutType = intent.extras?.getString(REQUEST_SHORTCUT_TYPE)
-            ?: throw IllegalArgumentException("REQUEST_SHORTCUT_TYPE has not been passed")
+        val shortcutType =
+            intent.extras?.getString(REQUEST_SHORTCUT_TYPE)
+                ?: throw IllegalArgumentException("REQUEST_SHORTCUT_TYPE has not been passed")
 
         return IntentExtras(device, GameShortcutType.valueOf(shortcutType))
     }

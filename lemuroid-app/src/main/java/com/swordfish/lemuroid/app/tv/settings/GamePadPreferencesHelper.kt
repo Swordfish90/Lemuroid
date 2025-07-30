@@ -181,7 +181,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
     private fun buildShortcutPreference(
         context: Context,
         inputDevice: InputDevice,
-        type: GameShortcutType
+        type: GameShortcutType,
     ): Preference? {
         GameShortcut.getDefault(inputDevice, type) ?: return null
         val preference = Preference(context)
@@ -198,7 +198,7 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
     private fun displayShortcutChangeDialog(
         context: Context,
         inputDevice: InputDevice,
-        type: GameShortcutType
+        type: GameShortcutType,
     ) {
         val intent =
             Intent(context, TVGamePadShortcutBindingActivity::class.java).apply {

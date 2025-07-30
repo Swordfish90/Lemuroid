@@ -11,7 +11,6 @@ import com.swordfish.lemuroid.app.shared.input.inputKeysOf
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.input.retroKeysOf
 import com.swordfish.lemuroid.app.shared.input.supportsAllKeys
-import com.swordfish.lemuroid.app.shared.settings.GameShortcut
 import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 
 class LemuroidInputDeviceGamePad(private val device: InputDevice) : LemuroidInputDevice {

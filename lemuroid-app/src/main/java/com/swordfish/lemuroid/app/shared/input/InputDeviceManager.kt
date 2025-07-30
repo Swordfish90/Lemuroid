@@ -74,16 +74,17 @@ class InputDeviceManager(
     }
 
     private fun getShortcutBindingsFlow(device: InputDevice): Flow<List<GameShortcut>> {
-        val flows = GameShortcutType.values().map { type ->
-            flowSharedPreferences.getString(computeGameShortcutPreference(device, type))
-                .asFlow()
-                .mapNotNull { preference ->
-                    if (preference.isEmpty()) return@mapNotNull GameShortcut.getDefault(device, type)
-                    val decoded = runCatching { Json.decodeFromString(bindingsComboSerializer, preference) }
-                    val combo = decoded.getOrNull() ?: return@mapNotNull GameShortcut.getDefault(device, type)
-                    GameShortcut(type = type, keys = setOf(combo.first.keyCode, combo.second.keyCode))
-                }
-        }
+        val flows =
+            GameShortcutType.values().map { type ->
+                flowSharedPreferences.getString(computeGameShortcutPreference(device, type))
+                    .asFlow()
+                    .mapNotNull { preference ->
+                        if (preference.isEmpty()) return@mapNotNull GameShortcut.getDefault(device, type)
+                        val decoded = runCatching { Json.decodeFromString(bindingsComboSerializer, preference) }
+                        val combo = decoded.getOrNull() ?: return@mapNotNull GameShortcut.getDefault(device, type)
+                        GameShortcut(type = type, keys = setOf(combo.first.keyCode, combo.second.keyCode))
+                    }
+            }
         return if (flows.isEmpty()) {
             flowOf(emptyList())
         } else {
@@ -244,8 +245,10 @@ class InputDeviceManager(
         fun computeEnabledGamePadPreference(inputDevice: InputDevice) =
             "${GAME_PAD_ENABLED_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}"
 
-        fun computeGameShortcutPreference(inputDevice: InputDevice, type: GameShortcutType) =
-            "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_shortcut_$type."
+        fun computeGameShortcutPreference(
+            inputDevice: InputDevice,
+            type: GameShortcutType,
+        ) = "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_shortcut_$type."
 
         fun computeKeyBindingGamePadPreference(inputDevice: InputDevice) =
             "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}"

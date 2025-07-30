@@ -80,7 +80,7 @@ private fun DeviceBindingCategory(
 private fun DeviceShortcutBinding(
     context: Context,
     device: InputDevice,
-    shortcut: GameShortcut
+    shortcut: GameShortcut,
 ) {
     LemuroidSettingsMenuLink(
         title = { Text(text = shortcut.type.displayName()) },
