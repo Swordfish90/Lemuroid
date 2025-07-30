@@ -11,17 +11,22 @@ data class GameShortcut(
     val name : String = keys.joinToString(" + ") { InputKey(it).displayName() }
 
     companion object {
-        fun getDefault( inputDevice: InputDevice, type: GameShortcutType ): GameShortcut? {
+        fun getDefault(inputDevice: InputDevice, type: GameShortcutType): GameShortcut? {
             val combo = when (type) {
-                GameShortcutType.MENU -> KeyEvent.KEYCODE_BUTTON_START to KeyEvent.KEYCODE_BUTTON_SELECT
-                GameShortcutType.QUICK_SAVE -> KeyEvent.KEYCODE_BUTTON_R1 to KeyEvent.KEYCODE_BUTTON_R2
-                GameShortcutType.QUICK_LOAD -> KeyEvent.KEYCODE_BUTTON_L1 to KeyEvent.KEYCODE_BUTTON_L2
-                GameShortcutType.TOGGLE_FAST_FORWARD -> KeyEvent.KEYCODE_BUTTON_START to KeyEvent.KEYCODE_BUTTON_R1
+                GameShortcutType.MENU ->
+                    KeyEvent.KEYCODE_BUTTON_START to KeyEvent.KEYCODE_BUTTON_SELECT
+                GameShortcutType.QUICK_SAVE ->
+                    KeyEvent.KEYCODE_BUTTON_R1 to KeyEvent.KEYCODE_BUTTON_R2
+                GameShortcutType.QUICK_LOAD ->
+                    KeyEvent.KEYCODE_BUTTON_L1 to KeyEvent.KEYCODE_BUTTON_L2
+                GameShortcutType.TOGGLE_FAST_FORWARD ->
+                    KeyEvent.KEYCODE_BUTTON_SELECT to KeyEvent.KEYCODE_BUTTON_R1
             }
-            if (inputDevice.hasKeys(combo.first, combo.second).all { it }) {
-                return GameShortcut(keys = setOf(combo.first, combo.second), type = type )
+            return if (inputDevice.hasKeys(combo.first, combo.second).all { it }) {
+                GameShortcut(keys = setOf(combo.first, combo.second), type = type )
+            } else {
+                null
             }
-            return null
         }
     }
 }
@@ -33,6 +38,6 @@ enum class GameShortcutType {
     TOGGLE_FAST_FORWARD;
 
     fun displayName() =
-        name .split('_').joinToString(" ") { it.lowercase().replaceFirstChar { it.uppercase() } }
+        name.split('_').joinToString(" ") { it.lowercase().replaceFirstChar { it.uppercase() } }
 }
 

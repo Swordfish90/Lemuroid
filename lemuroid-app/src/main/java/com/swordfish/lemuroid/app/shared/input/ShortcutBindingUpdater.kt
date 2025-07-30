@@ -22,7 +22,7 @@ class ShortcutBindingUpdater(private val inputDeviceManager: InputDeviceManager,
     }
 
     fun getMessage(context: Context): String {
-        return context.getString(R.string.shortcut_binding_update_description)
+        return context.getString(R.string.shortcut_binding_update_description, extras.device.name)
     }
 
     fun handleKeyEvent(event: KeyEvent): Boolean {
@@ -44,6 +44,7 @@ class ShortcutBindingUpdater(private val inputDeviceManager: InputDeviceManager,
             firstKeyCodeInCombo = event.keyCode
             return false // wait for second key
         } else {
+            if (firstKeyCodeInCombo == event.keyCode) return false // ignore same key press
             val combo = Pair(InputKey(firstKeyCodeInCombo!!), InputKey(event.keyCode))
             runBlocking {
                 GlobalScope.async {

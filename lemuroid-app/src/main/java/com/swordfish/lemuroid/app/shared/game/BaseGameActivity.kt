@@ -154,6 +154,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected var retroGameView: GLRetroView? by MutableStateProperty(retroGameViewFlow)
 
     private val loadingState = MutableStateFlow(false)
+    private val hasUsedQuickSaveState = MutableStateFlow(false)
     private val loadingMessageStateFlow = MutableStateFlow("")
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
 
@@ -538,7 +539,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         shortcuts.firstOrNull { it.type == GameShortcutType.MENU }
                     }
                     ?.let {
-                        displayToast( resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name))
+                        displayToast(resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name))
                     }
             }
     }
@@ -924,7 +925,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (loadingState.value) return
         withLoading {
             getCurrentSaveState()?.let {
-                statesManager.setQuickSave(game, systemCoreConfig.coreID, it)
+                statesManager.setAutoSave(game, systemCoreConfig.coreID, it)
+                hasUsedQuickSaveState.value = true
                 withContext(Dispatchers.Main) {
                     displayToast(R.string.game_toast_quick_save_saved)
                 }
@@ -933,10 +935,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun loadQuickSave() {
-        if (loadingState.value) return
+        if (loadingState.value || !hasUsedQuickSaveState.value) return
         withLoading {
             try {
-                statesManager.getQuickSave(game, systemCoreConfig.coreID)?.let {
+                statesManager.getAutoSave(game, systemCoreConfig.coreID)?.let {
                     val loaded = withContext(Dispatchers.IO) { loadSaveState(it) }
                     withContext(Dispatchers.Main) {
                         if (loaded) {
