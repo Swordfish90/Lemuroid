@@ -31,6 +31,7 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.common.animationDuration
@@ -153,6 +154,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected var retroGameView: GLRetroView? by MutableStateProperty(retroGameViewFlow)
 
     private val loadingState = MutableStateFlow(false)
+    private val hasUsedQuickSaveState = MutableStateFlow(false)
     private val loadingMessageStateFlow = MutableStateFlow("")
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
 
@@ -529,14 +531,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private suspend fun initializeGamePadShortcutsFlow() {
-        inputDeviceManager.getInputMenuShortCutObservable()
+        inputDeviceManager.getGameShortcutsObservable()
             .distinctUntilChanged()
-            .safeCollect { shortcut ->
-                shortcut?.let {
-                    displayToast(
-                        resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name),
-                    )
-                }
+            .safeCollect { allShortcuts ->
+                allShortcuts.values
+                    .firstNotNullOfOrNull { shortcuts ->
+                        shortcuts.firstOrNull { it.type == GameShortcutType.MENU }
+                    }
+                    ?.let {
+                        displayToast(resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name))
+                    }
             }
     }
 
@@ -602,13 +606,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 .map { Triple(it.device, it.action, it.keyCode) }
                 .distinctUntilChanged()
 
-        val shortcutKeys =
-            inputDeviceManager.getInputMenuShortCutObservable()
-                .map { it?.keys ?: setOf() }
-
         val combinedObservable =
             combine(
-                shortcutKeys,
+                inputDeviceManager.getGameShortcutsObservable(),
                 inputDeviceManager.getGamePadsPortMapperObservable(),
                 inputDeviceManager.getInputBindingsObservable(),
                 filteredKeyEvents,
@@ -618,7 +618,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         combinedObservable
             .onStart { pressedKeys.clear() }
             .onCompletion { pressedKeys.clear() }
-            .safeCollect { (shortcut, ports, bindings, event) ->
+            .safeCollect { (shortcuts, ports, bindings, event) ->
                 val (device, action, keyCode) = event
                 val port = ports(device)
                 val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
@@ -640,9 +640,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         pressedKeys.remove(keyCode)
                     }
 
-                    if (shortcut.isNotEmpty() && pressedKeys.containsAll(shortcut)) {
-                        displayOptionsDialog()
-                        return@safeCollect
+                    shortcuts[device]?.forEach { shortcut ->
+                        if (shortcut.keys.isNotEmpty() && pressedKeys.containsAll(shortcut.keys)) {
+                            when (shortcut.type) {
+                                GameShortcutType.MENU -> displayOptionsDialog()
+                                GameShortcutType.QUICK_LOAD -> loadQuickSave()
+                                GameShortcutType.QUICK_SAVE -> saveQuickSave()
+                                GameShortcutType.TOGGLE_FAST_FORWARD -> toggleFastForward()
+                            }
+                            return@safeCollect
+                        }
                     }
                 }
 
@@ -913,6 +920,39 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         }
     }
 
+    private suspend fun saveQuickSave() {
+        if (loadingState.value) return
+        withLoading {
+            getCurrentSaveState()?.let {
+                statesManager.setAutoSave(game, systemCoreConfig.coreID, it)
+                hasUsedQuickSaveState.value = true
+                withContext(Dispatchers.Main) {
+                    displayToast(R.string.game_toast_quick_save_saved)
+                }
+            }
+        }
+    }
+
+    private suspend fun loadQuickSave() {
+        if (loadingState.value || !hasUsedQuickSaveState.value) return
+        withLoading {
+            try {
+                statesManager.getAutoSave(game, systemCoreConfig.coreID)?.let {
+                    val loaded = withContext(Dispatchers.IO) { loadSaveState(it) }
+                    withContext(Dispatchers.Main) {
+                        if (loaded) {
+                            displayToast(R.string.game_toast_quick_save_loaded)
+                        } else {
+                            displayToast(R.string.game_toast_load_state_failed)
+                        }
+                    }
+                }
+            } catch (e: Throwable) {
+                displayLoadStateErrorMessage(e)
+            }
+        }
+    }
+
     private fun getCurrentSaveState(): SaveState? {
         val retroGameView = retroGameView ?: return null
         val currentDisk =
@@ -1015,6 +1055,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     this.frameSpeed = if (fastForwardEnabled) 2 else 1
                 }
             }
+        }
+    }
+
+    private fun toggleFastForward() {
+        retroGameView?.apply {
+            frameSpeed = if (frameSpeed == 1) 2 else 1
         }
     }
 

@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.InputDevice
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
-import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 
 interface LemuroidInputDevice {
     fun getCustomizableKeys(): List<RetroKey>
@@ -15,7 +15,7 @@ interface LemuroidInputDevice {
 
     fun isEnabledByDefault(appContext: Context): Boolean
 
-    fun getSupportedShortcuts(): List<GameMenuShortcut>
+    fun getSupportedShortcuts(): List<GameShortcutType>
 }
 
 fun InputDevice?.getLemuroidInputDevice(): LemuroidInputDevice {
