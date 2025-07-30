@@ -19,10 +19,10 @@ data class GameShortcut(
                 when (type) {
                     GameShortcutType.MENU ->
                         KeyEvent.KEYCODE_BUTTON_START to KeyEvent.KEYCODE_BUTTON_SELECT
-                    GameShortcutType.QUICK_SAVE ->
-                        KeyEvent.KEYCODE_BUTTON_R1 to KeyEvent.KEYCODE_BUTTON_R2
                     GameShortcutType.QUICK_LOAD ->
                         KeyEvent.KEYCODE_BUTTON_L1 to KeyEvent.KEYCODE_BUTTON_L2
+                    GameShortcutType.QUICK_SAVE ->
+                        KeyEvent.KEYCODE_BUTTON_R1 to KeyEvent.KEYCODE_BUTTON_R2
                     GameShortcutType.TOGGLE_FAST_FORWARD ->
                         KeyEvent.KEYCODE_BUTTON_SELECT to KeyEvent.KEYCODE_BUTTON_R1
                 }
@@ -37,8 +37,8 @@ data class GameShortcut(
 
 enum class GameShortcutType {
     MENU,
-    QUICK_SAVE,
     QUICK_LOAD,
+    QUICK_SAVE,
     TOGGLE_FAST_FORWARD,
     ;
 

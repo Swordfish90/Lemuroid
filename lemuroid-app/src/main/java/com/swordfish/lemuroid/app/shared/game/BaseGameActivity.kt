@@ -644,8 +644,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         if (shortcut.keys.isNotEmpty() && pressedKeys.containsAll(shortcut.keys)) {
                             when (shortcut.type) {
                                 GameShortcutType.MENU -> displayOptionsDialog()
-                                GameShortcutType.QUICK_SAVE -> saveQuickSave()
                                 GameShortcutType.QUICK_LOAD -> loadQuickSave()
+                                GameShortcutType.QUICK_SAVE -> saveQuickSave()
                                 GameShortcutType.TOGGLE_FAST_FORWARD -> toggleFastForward()
                             }
                             return@safeCollect
