@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     appContext: Context,
     retrogradeDb: RetrogradeDatabase,
-    private val coresSelection: CoresSelection
+    private val coresSelection: CoresSelection,
 ) : ViewModel() {
     companion object {
         const val CAROUSEL_MAX_ITEMS = 10
@@ -105,8 +105,9 @@ class HomeViewModel(
         selectedCores: List<SelectedCore>,
     ): UIState {
         val noGames = recentGames.isEmpty() && favoritesGames.isEmpty() && discoveryGames.isEmpty()
-        val coreCanUseMicrophone = selectedCores
-            .any { it.coreConfig.supportsMicrophone }
+        val coreCanUseMicrophone =
+            selectedCores
+                .any { it.coreConfig.supportsMicrophone }
 
         return UIState(
             favoritesGames = favoritesGames,
