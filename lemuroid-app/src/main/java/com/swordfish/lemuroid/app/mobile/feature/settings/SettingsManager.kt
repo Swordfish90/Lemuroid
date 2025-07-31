@@ -7,6 +7,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.common.math.Fraction
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
+import com.swordfish.radialgamepad.library.haptics.HapticStrength
 import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -21,6 +22,11 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
     suspend fun autoSave() = booleanPreference(R.string.pref_key_autosave, true)
 
     suspend fun hapticFeedbackMode() = stringPreference(R.string.pref_key_haptic_feedback_mode, "press")
+
+    suspend fun hapticFeedbackStrength(): HapticStrength {
+        val value = kotlin.runCatching { HapticStrength.values()[intPreference(R.string.pref_key_haptic_feedback_strength, 1)] }
+        return value.getOrDefault(HapticStrength.MEDIUM)
+    }
 
     suspend fun lowLatencyAudio() = booleanPreference(R.string.pref_key_low_latency_audio, false)
 
