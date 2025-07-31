@@ -1075,10 +1075,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
 
-        val hasMicrophonePermission = ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.RECORD_AUDIO
-        ) == PackageManager. PERMISSION_GRANTED
+        val hasMicrophonePermission =
+            ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.RECORD_AUDIO,
+            ) == PackageManager.PERMISSION_GRANTED
 
         val enableMicrophone = systemCoreConfig.supportsMicrophone && hasMicrophonePermission
 
@@ -1107,7 +1108,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                             filter,
                             lowLatencyAudio,
                             systemCoreConfig.rumbleSupported && enableRumble,
-                            enableMicrophone
+                            enableMicrophone,
                         )
                 }
             }
