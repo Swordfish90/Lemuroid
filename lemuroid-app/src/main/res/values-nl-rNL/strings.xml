@@ -97,6 +97,8 @@
     <string name="game_loading_preparing_game">Spel voorbereiden…</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad gedetecteerd. Open instellingenmenu met %1$s.</string>
     <string name="game_toast_load_state_failed">Kan deze state niet laden</string>
+    <string name="game_toast_quick_save_loaded">Snel geladen</string>
+    <string name="game_toast_quick_save_saved">Snel opgeslagen</string>
     <string name="empty_view_default">Geen Items</string>
     <string name="core_settings_title">Core-instellingen</string>
     <string name="core_settings_category_preferences">Voorkeuren</string>
@@ -137,6 +139,8 @@
     <string name="tv_home_section_settings">Instellingen</string>
     <string name="gamepad_binding_update_title">‘RetroPad %1$s’ associëren</string>
     <string name="gamepad_binding_update_description">Druk op een knop op uw \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">‘RetroPad %1$s’ associëren</string>
+    <string name="shortcut_binding_update_description">Druk op de eerste, dan de tweede knop om een combinatie te koppelen aan je \"%1$s\"</string>
     <string name="tv_search_results">Spellen</string>
     <string name="tv_game_message_missing_gamepad">Gamepads zijn vereist om te spelen. Gelieve er een te verbinden.</string>
     <string name="game_edit_touch_controls_error_not_visible">Koppel je pad los om je aanraakbesturingselementen te bewerken</string>
