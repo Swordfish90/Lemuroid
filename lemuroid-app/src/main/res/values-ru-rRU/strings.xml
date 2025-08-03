@@ -100,6 +100,8 @@
     <string name="game_loading_preparing_game">Подготовка игры…</string>
     <string name="game_toast_settings_button_using_gamepad">Обнаружен геймпад. Войдите в меню настроек с помощью %1$s.</string>
     <string name="game_toast_load_state_failed">Не удалось загрузить состояние</string>
+    <string name="game_toast_quick_save_loaded">Быстрая загрузка</string>
+    <string name="game_toast_quick_save_saved">Быстрое сохранение</string>
     <string name="empty_view_default">Нет элементов</string>
     <string name="core_settings_title">Настройки ядра</string>
     <string name="core_settings_category_preferences">Предпочтения</string>
@@ -140,6 +142,8 @@
     <string name="tv_home_section_settings">Настройки</string>
     <string name="gamepad_binding_update_title">Привязка «RetroPad %1$s»</string>
     <string name="gamepad_binding_update_description">Нажмите кнопку на вашем \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Привязка \"Сочетания клавиш %1$s\"</string>
+    <string name="shortcut_binding_update_description">Нажмите первую, затем вторую кнопки, чтобы назначить сочетание клавиш для действия «%1$s»</string>
     <string name="tv_search_results">Игры</string>
     <string name="tv_game_message_missing_gamepad">Для игры необходимы контроллеры. Пожалуйста, подключите один.</string>
     <string name="game_edit_touch_controls_error_not_visible">Отключите геймпад для настройки экранного управления</string>
