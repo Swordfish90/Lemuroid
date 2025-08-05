@@ -87,6 +87,9 @@
     <string name="settings_save_sync_include_states">Sync states</string>
     <string name="settings_save_sync_include_states_description">More convenient, but heavier and less reliable. Choose which cores/systems you want to sync</string>
 
+    <string name="settings_title_join_stick_dpad">D-Pad Emulation</string>
+    <string name="settings_summary_join_stick_dpad">Use joystick as D-Pad for systems that do not use a joystick.</string>
+
     <string name="game_context_menu_add_to_favorites">Add to favorites</string>
     <string name="game_context_menu_remove_from_favorites">Remove from favorites</string>
     <string name="game_context_menu_resume">Resume</string>
