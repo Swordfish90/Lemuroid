@@ -100,6 +100,8 @@
     <string name="game_loading_preparing_game">正在准备游戏…</string>
     <string name="game_toast_settings_button_using_gamepad">检测到游戏手柄。使用 %1$s 访问设置菜单。</string>
     <string name="game_toast_load_state_failed">无法加载此状态</string>
+    <string name="game_toast_quick_save_loaded">快速加载</string>
+    <string name="game_toast_quick_save_saved">快速保存</string>
     <string name="empty_view_default">没有项目</string>
     <string name="core_settings_title">核心设置</string>
     <string name="core_settings_category_preferences">选项</string>
@@ -140,6 +142,8 @@
     <string name="tv_home_section_settings">设置</string>
     <string name="gamepad_binding_update_title">关联 \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">按下你的 \"%1$s\" 上的一个按钮</string>
+    <string name="shortcut_binding_update_title">关联 \"快捷方式 %1$s\"</string>
+    <string name="shortcut_binding_update_description">按第一个按钮，然后按第二个按钮将组合绑定到您的\"%1$s\"</string>
     <string name="tv_search_results">游戏</string>
     <string name="tv_game_message_missing_gamepad">需要手柄才能玩。 请连接手柄。</string>
     <string name="game_edit_touch_controls_error_not_visible">您需要断开手柄来编辑您的触摸控制</string>
