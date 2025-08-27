@@ -81,6 +81,8 @@
     <string name="home_notification_message">O Lemuroid usa notificações para informar quando um jogo ou uma operação está rodando em segundo plano.</string>
     <string name="home_notification_action">Ativar</string>
     <string name="home_microphone_title">Ativar microfone</string>
+    <string name="home_microphone_message">Os jogos de Nintendo DS podem usar o microfone para algumas funções.</string>
+    <string name="home_microphone_action">Ativar</string>
     <string name="home_empty_title">Selecionar diretório das ROMs</string>
     <string name="home_empty_message">Lemuroid precisa verificar um diretório contendo arquivos da ROM.\nIsto pode levar alguns minutos.</string>
     <string name="home_empty_action">Selecione o diretório</string>
@@ -98,6 +100,8 @@
     <string name="game_loading_preparing_game">Preparando o jogo…</string>
     <string name="game_toast_settings_button_using_gamepad">Controle detectado. Acesse o menu de configurações com %1$s.</string>
     <string name="game_toast_load_state_failed">Não é possível carregar este estado</string>
+    <string name="game_toast_quick_save_loaded">Carregamento rápido</string>
+    <string name="game_toast_quick_save_saved">Salvamento rapido</string>
     <string name="empty_view_default">Nenhum item</string>
     <string name="core_settings_title">Configurações do Núcleo</string>
     <string name="core_settings_category_preferences">Preferências</string>
@@ -138,6 +142,8 @@
     <string name="tv_home_section_settings">Configurações</string>
     <string name="gamepad_binding_update_title">Associe \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Pressione um botão em seu\"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Vincular \"Atalho %1$s\"</string>
+    <string name="shortcut_binding_update_description">Pressione o primeiro e depois o segundo botão para configurar um combo no seu \"%1$s\"</string>
     <string name="tv_search_results">Jogos</string>
     <string name="tv_game_message_missing_gamepad">Controles são necessários para jogar. Por favor, conecte um.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecte seu controle para editar seus controles de toque</string>
