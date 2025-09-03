@@ -125,6 +125,8 @@
 
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
     <string name="game_toast_load_state_failed">Cannot load this state</string>
+    <string name="game_toast_quick_save_loaded">Quick loaded</string>
+    <string name="game_toast_quick_save_saved">Quick saved</string>
 
     <string name="empty_view_default">No Items</string>
 
@@ -180,6 +182,8 @@
 
     <string name="gamepad_binding_update_title">Associate \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Press a button on your \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Associate \"Shortcut %1$s\"</string>
+    <string name="shortcut_binding_update_description">Press the first, then second button to bind a combo on your \"%1$s\"</string>
 
     <string name="tv_search_results">Games</string>
     <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>
