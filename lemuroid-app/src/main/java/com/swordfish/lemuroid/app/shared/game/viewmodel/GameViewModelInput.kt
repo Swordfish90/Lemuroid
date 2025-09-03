@@ -13,6 +13,7 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.kotlin.NTuple2
@@ -237,15 +238,17 @@ class GameViewModelInput(
     }
 
     private suspend fun initializeGamePadShortcutsFlow() {
-        inputDeviceManager.getInputMenuShortCutObservable()
+        inputDeviceManager.getGameShortcutsObservable()
             .distinctUntilChanged()
-            .safeCollect { shortcut ->
-                shortcut?.let {
-                    val message = appContext.resources
-                        .getString(R.string.game_toast_settings_button_using_gamepad, it.name)
-
-                    sideEffects.showToast(message)
-                }
+            .safeCollect { allShortcuts ->
+                allShortcuts.values
+                    .firstNotNullOfOrNull { shortcuts ->
+                        shortcuts.firstOrNull { it.type == GameShortcutType.MENU }
+                    }
+                    ?.let {
+                        val message = appContext.resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name)
+                        sideEffects.showToast(message)
+                    }
             }
     }
 
@@ -259,13 +262,9 @@ class GameViewModelInput(
                 .map { Triple(it.device, it.action, it.keyCode) }
                 .distinctUntilChanged()
 
-        val shortcutKeys =
-            inputDeviceManager.getInputMenuShortCutObservable()
-                .map { it?.keys ?: setOf() }
-
         val combinedObservable =
             combine(
-                shortcutKeys,
+                inputDeviceManager.getGameShortcutsObservable(),
                 inputDeviceManager.getGamePadsPortMapperObservable(),
                 inputDeviceManager.getInputBindingsObservable(),
                 filteredKeyEvents,
@@ -275,7 +274,7 @@ class GameViewModelInput(
         combinedObservable
             .onStart { pressedKeys.clear() }
             .onCompletion { pressedKeys.clear() }
-            .safeCollect { (shortcut, ports, bindings, event) ->
+            .safeCollect { (shortcuts, ports, bindings, event) ->
                 val (device, action, keyCode) = event
                 val port = ports(device)
                 val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
@@ -297,9 +296,16 @@ class GameViewModelInput(
                         pressedKeys.remove(keyCode)
                     }
 
-                    if (shortcut.isNotEmpty() && pressedKeys.containsAll(shortcut)) {
-                        sideEffects.showMenu(tilt, this)
-                        return@safeCollect
+                    shortcuts[device]?.forEach { shortcut ->
+                        if (shortcut.keys.isNotEmpty() && pressedKeys.containsAll(shortcut.keys)) {
+                            when (shortcut.type) {
+                                GameShortcutType.MENU -> sideEffects.showMenu(tilt, this)
+                                GameShortcutType.QUICK_LOAD -> sideEffects.loadQuickSave()
+                                GameShortcutType.QUICK_SAVE -> sideEffects.saveQuickSave()
+                                GameShortcutType.TOGGLE_FAST_FORWARD -> sideEffects.toggleFastForward()
+                            }
+                            return@safeCollect
+                        }
                     }
                 }
 

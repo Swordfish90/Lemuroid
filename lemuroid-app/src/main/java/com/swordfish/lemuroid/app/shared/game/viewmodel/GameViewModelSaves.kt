@@ -32,6 +32,8 @@ class GameViewModelSaves(
     private val statesPreviewManager: StatesPreviewManager,
     private val sideEffects: GameViewModelSideEffects,
 ) {
+    private var currentQuickSave: SaveState? = null
+
     suspend fun saveSlot(index: Int) {
         getCurrentSaveState()?.let {
             statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index)
@@ -145,5 +147,15 @@ class GameViewModelSaves(
         }
 
         return retroGameView.unserializeState(saveState.state)
+    }
+
+    fun saveQuickSave() {
+        currentQuickSave = getCurrentSaveState()
+        sideEffects.showToast(appContext.getString(R.string.game_toast_quick_save_saved))
+    }
+
+    fun loadQuickSave() {
+        loadSaveState(currentQuickSave ?: return)
+        sideEffects.showToast(appContext.getString(R.string.game_toast_quick_save_loaded))
     }
 }

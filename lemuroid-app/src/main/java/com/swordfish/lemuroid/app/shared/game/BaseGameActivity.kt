@@ -229,12 +229,26 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         it.currentTiltConfiguration,
                         it.tiltConfigurations
                     )
-
                     is GameViewModelSideEffects.UiEffect.ShowToast -> displayToast(it.message)
                     is GameViewModelSideEffects.UiEffect.SuccessfulFinish -> performSuccessfulActivityFinish()
                     is GameViewModelSideEffects.UiEffect.FailureFinish -> performErrorFinish(it.message)
+                    is GameViewModelSideEffects.UiEffect.SaveQuickSave -> performSaveQuickSave()
+                    is GameViewModelSideEffects.UiEffect.LoadQuickSave -> performLoadQuickSave()
+                    is GameViewModelSideEffects.UiEffect.ToggleFastForward -> performToggleFastForward()
                 }
             }
+    }
+
+    private fun performSaveQuickSave() {
+        baseGameScreenViewModel.saveQuickSave()
+    }
+
+    private fun performLoadQuickSave() {
+        baseGameScreenViewModel.loadQuickSave()
+    }
+
+    private fun performToggleFastForward() {
+        baseGameScreenViewModel.toggleFastForward()
     }
 
     override fun onGenericMotionEvent(event: MotionEvent): Boolean {

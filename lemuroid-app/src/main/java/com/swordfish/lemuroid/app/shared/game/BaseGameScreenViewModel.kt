@@ -248,6 +248,29 @@ class BaseGameScreenViewModel(
         }
     }
 
+    fun saveQuickSave() {
+        Timber.d("Saving quick save")
+        if (loadingState.value) return
+        withLoading {
+            saves.saveQuickSave()
+        }
+    }
+
+    fun loadQuickSave() {
+        Timber.d("Loading quick save")
+        if (loadingState.value) return
+        withLoading {
+            saves.loadQuickSave()
+        }
+    }
+
+    fun toggleFastForward() {
+        Timber.d("Loading quick save")
+        retroGameView.retroGameView?.apply {
+            frameSpeed = if (frameSpeed == 1) 2 else 1
+        }
+    }
+
     suspend fun reset() =
         withLoading {
             try {

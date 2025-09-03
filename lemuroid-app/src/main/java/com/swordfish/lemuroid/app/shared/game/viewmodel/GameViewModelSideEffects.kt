@@ -19,6 +19,9 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
         data class ShowToast(val message: String) : UiEffect
         data object SuccessfulFinish : UiEffect
         data class FailureFinish(val message: String) : UiEffect
+        data object LoadQuickSave : UiEffect
+        data object SaveQuickSave : UiEffect
+        data object ToggleFastForward : UiEffect
     }
 
     private val uiEffects = MutableSharedFlow<UiEffect>()
@@ -46,6 +49,14 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
         }
     }
 
+    fun loadQuickSave() {
+        scope.launch {
+            withContext(Dispatchers.Main) {
+                uiEffects.emit(UiEffect.LoadQuickSave)
+            }
+        }
+    }
+
     fun requestSuccessfulFinish() {
         scope.launch {
             withContext(Dispatchers.Main) {
@@ -58,6 +69,22 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
         scope.launch {
             withContext(Dispatchers.Main) {
                 uiEffects.emit(UiEffect.FailureFinish(message))
+            }
+        }
+    }
+
+    fun saveQuickSave() {
+        scope.launch {
+            withContext(Dispatchers.Main) {
+                uiEffects.emit(UiEffect.SaveQuickSave)
+            }
+        }
+    }
+
+    fun toggleFastForward() {
+        scope.launch {
+            withContext(Dispatchers.Main) {
+                uiEffects.emit(UiEffect.ToggleFastForward)
             }
         }
     }
