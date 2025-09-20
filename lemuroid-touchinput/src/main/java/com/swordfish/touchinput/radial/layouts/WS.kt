@@ -25,7 +25,7 @@ fun PadKitScope.WSPortraitLeft(modifier: Modifier = Modifier, settings: TouchCon
         modifier = modifier,
         primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
         secondaryDials = {
-            Box(modifier = Modifier.radialPosition(-120f))
+            Box(modifier = Modifier.radialPosition(120f))
             SecondaryButtonMenuPlaceholder(settings)
         }
     )
@@ -66,7 +66,7 @@ fun PadKitScope.WSLandscapeLeft(modifier: Modifier = Modifier, settings: TouchCo
         modifier = modifier,
         primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
         secondaryDials = {
-            Box(modifier = Modifier.radialPosition(-120f))
+            Box(modifier = Modifier.radialPosition(120f))
             SecondaryButtonMenuPlaceholder(settings)
         }
     )
