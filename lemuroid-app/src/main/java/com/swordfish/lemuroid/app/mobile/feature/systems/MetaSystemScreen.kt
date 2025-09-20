@@ -1,6 +1,5 @@
 package com.swordfish.lemuroid.app.mobile.feature.systems
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,7 +28,6 @@ fun MetaSystemsScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MetaSystemsScreen(
     modifier: Modifier = Modifier,
@@ -51,7 +49,7 @@ private fun MetaSystemsScreen(
         items(metaSystems.size, key = { metaSystems[it].metaSystem }) { index ->
             val system = metaSystems[index]
             LemuroidSystemCard(
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 system = system,
                 onClick = { onSystemClicked(system) },
             )

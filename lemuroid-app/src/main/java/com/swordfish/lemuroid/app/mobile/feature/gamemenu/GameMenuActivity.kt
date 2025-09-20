@@ -3,8 +3,11 @@
 package com.swordfish.lemuroid.app.mobile.feature.gamemenu
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -54,6 +57,7 @@ import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
@@ -77,12 +81,17 @@ class GameMenuActivity : RetrogradeComponentActivity() {
         val fastForwardEnabled: Boolean,
         val numDisks: Int,
         val currentDisk: Int,
+        val currentTiltConfiguration: TiltConfiguration,
+        val allTiltConfigurations: List<TiltConfiguration>,
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge(
+            SystemBarStyle.dark(Color.TRANSPARENT),
+            SystemBarStyle.dark(Color.TRANSPARENT)
+        )
 
         val extras = intent.extras
 
@@ -112,6 +121,13 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                     extras?.getInt(GameMenuContract.EXTRA_DISKS, 0) ?: 0,
                 currentDisk =
                     extras?.getInt(GameMenuContract.EXTRA_CURRENT_DISK, 0) ?: 0,
+                currentTiltConfiguration =
+                    intent.serializable<TiltConfiguration>(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG)
+                        ?: TiltConfiguration.Disabled,
+                allTiltConfigurations =
+                    intent.serializable<Array<TiltConfiguration>>(GameMenuContract.EXTRA_TILT_ALL_CONFIGS)
+                        ?.toList()
+                        ?: emptyList(),
             )
 
         setContent {
@@ -122,7 +138,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun GameMenuScreen(gameMenuRequest: GameMenuRequest) {
-        AppTheme(themeSystemUi = false) {
+        AppTheme {
             val navController = rememberNavController()
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry.value?.destination
