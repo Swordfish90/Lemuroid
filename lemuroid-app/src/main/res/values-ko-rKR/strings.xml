@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD 모드</string>
     <string name="settings_description_hd_mode">업스케일링 후처리 필터를 적용합니다</string>
     <string name="settings_description_hd_quality">HD 모드의 품질을 설정합니다</string>
+    <string name="settings_title_ambient_mode">앰비언트 모드</string>
+    <string name="settings_description_ambient_mode">게임 화면에 따라 배경 색상을 동적으로 변경합니다</string>
     <string name="settings_title_gamepad_settings">외장 장치</string>
     <string name="settings_description_gamepad_settings">외장 게임패드와 키보드를 설정합니다</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -97,6 +99,7 @@
     <string name="game_menu_mute_audio">음소거</string>
     <string name="game_menu_fast_forward">빨리 감기</string>
     <string name="game_menu_change_disk_disk">디스크 %1$s</string>
+    <string name="game_menu_tilt_sensor">기울기 센서</string>
     <string name="game_loading_preparing_game">게임 준비 중…</string>
     <string name="game_toast_settings_button_using_gamepad">게임패드가 감지되었습니다. %1$s(으)로 설정 메뉴를 열 수 있습니다.</string>
     <string name="game_toast_load_state_failed">이 상태저장을 열 수 없습니다</string>
@@ -170,4 +173,11 @@
     <string name="haptic_feedback_mode_names_none">없음</string>
     <string name="haptic_feedback_mode_names_press">누를 때</string>
     <string name="haptic_feedback_mode_names_press_release">누를 때 &amp; 뗄 때</string>
+    <string name="tilt_configuration_disabled">사용 안 함</string>
+    <string name="tilt_configuration_cross">방향 패드</string>
+    <string name="tilt_configuration_analog_left">왼쪽 아날로그</string>
+    <string name="tilt_configuration_analog_right">오른쪽 아날로그</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
