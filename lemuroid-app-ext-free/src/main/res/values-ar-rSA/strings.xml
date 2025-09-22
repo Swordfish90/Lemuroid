@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">جاري تحميل النواة…</string>
+    <string name="installing_core_notification_title">تحديث النواة</string>
+    <string name="installing_core_notification_message">يمكن أن يستغرق ذلك بضع دقائق</string>
+    <string name="game_loader_error_load_core">لم يتم تحميل نواة ليبرترو. تأكد من أن جهازك متصل بالإنترنت ومحاولة إعادة فحص مكتبتك. إذا استمرت المشكلة، قد لا تكون هذه النواة مدعومة على جهازك.</string>
+</resources>
