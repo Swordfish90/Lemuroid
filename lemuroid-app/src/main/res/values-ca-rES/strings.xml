@@ -19,6 +19,8 @@
     <string name="settings">Configuració</string>
     <string name="save_sync">Desa sincronització</string>
     <string name="show_all">Mostra\'ls tots</string>
+    <string name="back">Torna</string>
+    <string name="close">Tanca</string>
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Entrada</string>
     <string name="settings_category_misc">Altres</string>
