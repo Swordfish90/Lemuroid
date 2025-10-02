@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">コアのダウンロード…</string>
+    <string name="installing_core_notification_title">コアの更新</string>
+    <string name="installing_core_notification_message">これは数分かかることがあります</string>
+    <string name="game_loader_error_load_core">Libretroコアがロードされませんでした。デバイスがインターネットに接続されていることを確認し、ライブラリを再スキャンしてみてください。問題が解決しない場合、このコアがお使いのデバイスでサポートされていない可能性があります。</string>
+</resources>

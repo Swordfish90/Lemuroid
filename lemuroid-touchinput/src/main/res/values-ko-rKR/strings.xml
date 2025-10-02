@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">완료</string>
+    <string name="touch_customize_button_reset">초기화</string>
+    <string name="touch_customize_info">컨트롤을 드래그하고 확대/축소하여 위치와 크기를 변경합니다</string>
+</resources>

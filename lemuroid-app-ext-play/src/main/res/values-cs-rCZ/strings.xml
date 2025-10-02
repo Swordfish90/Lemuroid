@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Přihlášení přes Google selhalo: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Přihlášen přes Google jako %s</string>
+    <string name="gdrive_sign_out_success">Odhlášeno z Google</string>
+    <string name="gdrive_missing_play_services">Google Disk vyžaduje Služby Google Play, které nejsou podporovány na vašem zařízení podporovány</string>
+    <string name="gdrive_connected_summary">Připojeno k %s</string>
+    <string name="gdrive_connected_none_summary">Není konfigurováno</string>
+    <string name="gdrive_last_sync_completed">Poslední synchronizace: %s</string>
+    <string name="game_loading_download_core">Stahuji jádro…</string>
+    <string name="installing_core_notification_title">Aktualizace jader z Play</string>
+    <string name="installing_core_notification_message">Podívejte se na Google Play Store pro zobrazení aktuálního stavu</string>
+    <string name="game_loader_error_load_core">Jádro Libretro nebylo načteno. Vyzkoušejte následující:\n
+        \n\u2022 Zapněte připojení k internetu a znovu naskenujte své hry
+        \n\u2022 Ujistěte se, že Google Play Store je nainstalován a běží
+        \n\u2022 Čekejte na dokončení zbývajících operací v Google Play Store</string>
+</resources>
