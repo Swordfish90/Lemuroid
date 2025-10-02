@@ -140,6 +140,7 @@
     <string name="tv_home_section_settings">Inställningar</string>
     <string name="gamepad_binding_update_title">Koppla \"Retropad %1$s\"</string>
     <string name="gamepad_binding_update_description">Tryck på en knapp på din \"%1$s\"</string>
+    <string name="shortcut_binding_update_description">Tryck på den första, och sedan på den andra knappen för att binda en combo på din \"%1$s\"</string>
     <string name="tv_search_results">Spel</string>
     <string name="tv_game_message_missing_gamepad">En handkontroll krävs för att spela. Vänligen anslut en.</string>
     <string name="game_edit_touch_controls_error_not_visible">Koppla ifrån din handkontroll för att ändra dina touchkontroller</string>
@@ -166,4 +167,10 @@
     <string name="haptic_feedback_mode_names_none">Ingen</string>
     <string name="haptic_feedback_mode_names_press">Tryck</string>
     <string name="haptic_feedback_mode_names_press_release">Tryck &amp; släpp</string>
+    <string name="tilt_configuration_disabled">Inaktiverad</string>
+    <string name="tilt_configuration_analog_left">Vänster analog</string>
+    <string name="tilt_configuration_analog_right">Höger analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
