@@ -85,7 +85,7 @@ fun PadKitScope.PSPRight(modifier: Modifier = Modifier, settings: TouchControlle
             Box(
                 modifier = Modifier
                     .radialPosition(+80f - 180f)
-                    .radialScale(2.2f)
+                    .radialScale(2.0f)
             )
             SecondaryButtonMenu(settings)
         }

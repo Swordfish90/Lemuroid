@@ -67,7 +67,7 @@ fun PadKitScope.N64Right(modifier: Modifier = Modifier, settings: TouchControlle
             LemuroidControlCross(
                 modifier = Modifier
                     .radialPosition(+80f -180f)
-                    .radialScale(2.2f),
+                    .radialScale(2.0f),
                 id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_RIGHT_STICK),
                 allowDiagonals = false,
                 foreground = { LemuroidCrossForegroundAlternate(it) }

@@ -39,7 +39,7 @@ class LemuroidPadTheme {
     val level1ShadowWidth = 4.dp
     val level1StrokeWidth = 1.dp
 
-    val level0CornerRadius = 20.dp
+    val level0CornerRadius = 0.dp
     val level0Fill = gray(1.0f, 0.05f)
     val level0Stroke = gray(1.0f, 0.05f)
     val level0Shadow = DefaultShadowColor.copy(0.10f)
