@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Färdig</string>
+    <string name="touch_customize_button_reset">Starta om</string>
+    <string name="touch_customize_info">Dra och nyp för att ändra position och storlek</string>
+</resources>

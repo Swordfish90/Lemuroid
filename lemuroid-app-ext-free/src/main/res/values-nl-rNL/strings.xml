@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Core downloaden…</string>
+    <string name="installing_core_notification_title">Cores bijwerken</string>
+    <string name="installing_core_notification_message">Dit kan een paar minuten duren</string>
+    <string name="game_loader_error_load_core">De Libretro core is niet geladen. Zorg dat je apparaat verbonden is met het internet en probeer je bibliotheek opnieuw te scannen. Als dit probleem zich voor blijft doen, kan het zijn dat deze core niet ondersteund wordt op je apparaat.</string>
+</resources>

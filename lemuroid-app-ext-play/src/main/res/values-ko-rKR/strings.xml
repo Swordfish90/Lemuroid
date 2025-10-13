@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google 로그인에 실패했습니다: %s (%s)</string>
+    <string name="gdrive_sign_in_success">%s(으)로 Google에 로그인되었습니다</string>
+    <string name="gdrive_sign_out_success">Google에서 로그아웃되었습니다</string>
+    <string name="gdrive_missing_play_services">Google Drive를 사용하기 위해 필요한 Google Play 서비스가 이 장치에서 지원되지 않습니다</string>
+    <string name="gdrive_connected_summary">%s에 연결됨</string>
+    <string name="gdrive_connected_none_summary">설정 안 됨</string>
+    <string name="gdrive_last_sync_completed">마지막 동기화: %s</string>
+    <string name="game_loading_download_core">코어 다운로드 중…</string>
+    <string name="installing_core_notification_title">Google Play에서 코어 업데이트 중</string>
+    <string name="installing_core_notification_message">Google Play 스토어 앱에서 진행 상태를 확인할 수 있습니다</string>
+    <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않았습니다. 다음 조치를 취해보세요:\n
+        \n\u2022 인터넷 연결 상태를 확인하고 게임을 다시 검색
+        \n\u2022 Google Play 스토어가 설치되어 있고 실행 중인지 확인
+        \n\u2022 Google Play 스토어 앱의 진행중인 작업이 끝날 때까지 기다리기</string>
+</resources>

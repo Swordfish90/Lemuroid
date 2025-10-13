@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">מסך הבית</string>
+    <string name="title_search">חיפוש</string>
+    <string name="title_systems">קונסולות</string>
+    <string name="title_games">משחקים</string>
+    <string name="title_settings">הגדרות</string>
+    <string name="recent">אחרונים</string>
+    <string name="favorites">מועדפים</string>
+    <string name="discover">גלה עוד</string>
+    <string name="rescan">סריקה מחדש</string>
+    <string name="stop">עצור</string>
+    <string name="none">כלום</string>
+    <string name="directory">ספריה</string>
+    <string name="display_filter">פילטר תצוגה</string>
+    <string name="roms">קבצי משחק (ROMs)</string>
+    <string name="ok">בסדר</string>
+    <string name="cancel">ביטול</string>
+    <string name="settings">הגדרות</string>
+    <string name="save_sync">שמור סנכרון</string>
+    <string name="show_all">הראה הכל</string>
+    <string name="settings_category_general">כללי</string>
+    <string name="settings_category_input">קלט</string>
+    <string name="settings_category_misc">שונות</string>
+    <string name="settings_title_enable_autosave">מצב שמירה אוטומטית</string>
+    <string name="settings_title_enable_touch_feedback">רטט במגע</string>
+    <string name="settings_title_tilt_sensitivity">רגישות חיישן ההטייה</string>
+    <string name="settings_title_maximum_cache_usage">גודל מקסימלי של המטמון</string>
+    <string name="settings_title_hd_mode">איכות תצוגה גבוהה</string>
+    <string name="settings_title_gamepad_settings">התקן חיצוני</string>
+    <string name="settings_description_gamepad_settings">הגדר מקלדות ובקרים חיצוניים</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">מכשירים מופעלים</string>
+    <string name="settings_gamepad_category_general">כללי</string>
+    <string name="settings_gamepad_title_reset_bindings">אפס את התאמת המקשים בבקר המשחק</string>
+    <string name="settings_gamepad_title_game_menu">תפריט</string>
+    <string name="settings_title_open_cores_selection">שנה ליבה</string>
+    <string name="settings_description_open_cores_selection">הגדר אילו ליבות יקושרו לקונסולות</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">הצג קבצי BIOS שזוהו ונמצאו מתאימים</string>
+    <string name="settings_bios_category_detected">זוהה</string>
+    <string name="settings_bios_category_not_detected">נתמך</string>
+    <string name="settings_title_reset_settings">איפוס להגדרות היצרן</string>
+    <string name="settings_description_reset_settings">אפס את Lemuroid להגדרות היצרן</string>
+    <string name="settings_title_advanced_settings">הגדרות מתקדמות</string>
+    <string name="settings_description_advanced_settings">הצג הגדרות מתקדמות</string>
+    <string name="settings_title_low_latency_audio">תעדף שמע מופחת השהייה (Low-latency)</string>
+    <string name="settings_description_low_latency_audio">הפחת השהיית שמע במכשירים נתמכים. עשוי להגביר את השיבושים בשמע.</string>
+    <string name="settings_title_direct_game_load">טעינת משחק ישירה</string>
+    <string name="settings_description_direct_game_load">(נסיוני) הפחת זמן טעינה וניצול מטמון בקונסולות נתמכות.</string>
+    <string name="settings_title_enable_rumble">רטט</string>
+    <string name="settings_description_enable_rumble">הפעל רטט במשחקים ובקרים המאפשרים זאת</string>
+    <string name="settings_title_enable_device_rumble">רטט מכשיר</string>
+    <string name="settings_description_enable_device_rumble">הפעל רטט ישירות דרך הטלפון כאשר בקר חיצוני אינו מחובר</string>
+    <string name="reset_settings_warning_message_title">האם אתה בטוח?</string>
+    <string name="reset_settings_warning_message_description">פעולה זו תאפס את Lemuroid אל הגדרות היצרן. שמירות ומצבי משחק יישמרו.</string>
+    <string name="settings_title_save_sync">שמירות בענן</string>
+    <string name="settings_description_save_sync">גבה וסנכרן את השמירות שלך אל הענן</string>
+    <string name="settings_save_sync_refresh">סנכרון ידני</string>
+    <string name="settings_save_sync_refresh_description">בצע סנכרון ידני כעת.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">סינכרון אוטומטי</string>
+    <string name="settings_save_sync_enable_auto_description">בצע סנכרון באופן אוטומטי לפני ואחרי משחק כאשר יש חיבור ל-Wifi</string>
+    <string name="settings_save_sync_configure">הגדר את %1$s</string>
+    <string name="settings_save_sync_include_saves">סנכרון שמירות</string>
+    <string name="settings_save_sync_include_saves_description">%1$s במכשיר</string>
+    <string name="settings_save_sync_include_states">סנכרן מצבי משחק</string>
+    <string name="settings_save_sync_include_states_description">נח יותר, אך כבד יותר ופחות אמין. בחר אילו ליבות/קונסולות תרצה לסנכרן</string>
+    <string name="game_context_menu_add_to_favorites">הוסף למועדפים</string>
+    <string name="game_context_menu_remove_from_favorites">הסר מהמועדפים</string>
+    <string name="game_context_menu_resume">המשך</string>
+    <string name="game_context_menu_restart">הפעל מחדש</string>
+    <string name="game_context_menu_create_shortcut">הצמד למסך הבית</string>
+    <string name="home_empty_title">בחר את תיקיית היעד בה נמצאים קבצי ה-ROM</string>
+    <string name="home_empty_message">Lemuroid צריך לסרוק תיקייה המכילה קבצי ROM. \nפעולה זו עשויה לארוך מספר דקות.</string>
+    <string name="home_empty_action">בחירת תיקייה</string>
+    <string name="game_menu_save">שמור</string>
+    <string name="game_menu_load">טען</string>
+    <string name="game_menu_restart">הפעל מחדש</string>
+    <string name="game_menu_quit">צא מהמשחק</string>
+    <string name="game_menu_settings">הגדרות</string>
+    <string name="game_menu_state">מצב משחק%1$s</string>
+    <string name="game_menu_change_disk_button">החלף דיסק</string>
+    <string name="game_menu_edit_touch_controls">שנה מקשים</string>
+    <string name="game_menu_mute_audio">השתק</string>
+    <string name="game_menu_fast_forward">העבר קדימה</string>
+    <string name="game_menu_change_disk_disk">דיסק %1$s</string>
+    <string name="game_loading_preparing_game">מכין את המשחק…</string>
+    <string name="game_toast_settings_button_using_gamepad">זוהה שלט חיצוני. גש למסך ההגדרות עם %1$s.</string>
+    <string name="game_toast_load_state_failed">טעינת מצב משחק זו נכשלה</string>
+    <string name="empty_view_default">אין שום דבר</string>
+    <string name="core_settings_title">הגדרות ליבה</string>
+    <string name="core_settings_category_preferences">העדפות</string>
+    <string name="core_settings_category_controllers">בקרי משחק</string>
+    <string name="core_settings_controller">בקר %1$s</string>
+    <string name="game_menu_title">תפריט משחק</string>
+    <string name="notification_channel_name">כל ההתראות</string>
+    <string name="library_index_notification_message">פעולה זו עשויה להימשך מספר דקות</string>
+    <string name="save_sync_notification_title">סינכרון המשחק עם הענן בתהליך</string>
+    <string name="game_running_notification_title">%1$s פועל כעת</string>
+    <string name="game_running_notification_title_alternative">המשחק פועל כעת</string>
+    <string name="game_running_notification_message">אנא וודא ששמרת את ההתקדמות שלך</string>
+    <string name="game_loader_error_gl_incompatible">ליבה זו דורשת גירסה של OpenGL ES שמכשירך אינו תומך בה.</string>
+    <string name="game_loader_error_load_game">משהו רע התרחש בעת טעינת המשחק. אנא וודא שהקובץ נתמך על ידי למורואיד וסרוק מחדש את המשחקים שלך.</string>
+    <string name="game_loader_error_save">משהו רע התרחש עם קובץ השמירה. אם הבעיה אינה מפסיקה, נסה לבטל את השמירה האוטומטית.</string>
+    <string name="game_shortcut_error">משהו רע התרחש בעת טעינת המשחק. אנא וודא שהמשחק עדיין קיים בספרייה שלך.</string>
+    <string name="system_grid_details">%1$s משחקים</string>
+    <string name="tv_folder_picker_action_choose">בחר</string>
+    <string name="tv_folder_picker_action_cancel">בטל</string>
+    <string name="tv_folder_storage_primary">מקום אחסון ראשי</string>
+    <string name="tv_folder_storage_secondary">מקום אחסון משני %1$s</string>
+    <string name="tv_folder_storage_title">בחר מקום אחסון</string>
+    <string name="tv_home_section_favorites">אהובים</string>
+    <string name="mobile_settings_help">עזרה</string>
+    <string name="mobile_settings_support">תמיכה</string>
+    <string name="lemuroid_help_content"><![CDATA[&#8226;כיצד להשתמש ב-Lemuroid?</b><br/>
+        העתק את כל קבצי ה-ROM שלך אל תיקייה לבחירתך במכשיר ובחר אותה מתוך הגדרות האפליקציה. ניתן ליצור תיקיות משנה (לקונסולות ספציפיות למשל) באותה תיקייה ראשית. לאחר השלמת הסריקה המשחקים אמורים להופיע.<br/><br/>
+        <b>&#8226;למה המשחקים שלי לא מזוהים?</b><br/>
+אם המשחקים כווצו (Compressed), נסה להחזיר אותם למצבם המקורי. אם המשחקים עדיין לא מזוהים נסה לשים את קבצי ה-ROM בתיקיות נפרדות, אחת לכל קונסולה, ושנה את שמן בהתאם: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">נראה שהליבה של Liberto נתקלה בבעיה לא צפויה. אם מצב זה חוזר על עצמו נסה את הפתרונות הבאים:\n
+        \n\u2022 בטל שמירות אוטומטיות והפעל מחדש את המשחק
+        \n\u2022 מחק את מטמון האפליקציה דרך הגדרות ה-Android
+        \n\u2022 כנס אל הגדרות האפליקציה ובצע איפוס להגדרות היצרן
+        \n\n אם אף אחד מהפתרונות לא עזר, ייתכן שהמשחק/הליבה אינם נתמכים במכשיר זה.
+    </string>
+    <string name="error_message_incompatible_state">מצב שמירה זה אינו נתמך על ידי גרסת הליבה הנוכחית. טען את השמירה האחרונה שבוצעה על ידי המשחק (in-game) או לחלופין, התקן גרסה ישנה יותר של Lemuroid.</string>
+</resources>

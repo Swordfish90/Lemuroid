@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Λήψη πυρήνα…</string>
+    <string name="installing_core_notification_title">Ενημέρωση Πυρήνων</string>
+    <string name="installing_core_notification_message">H διαδικασία ίσως διαρκέσει μερικά λεπτά</string>
+    <string name="game_loader_error_load_core">Ο πυρήνας του Libretro δεν φορτώθηκε. Βεβαιωθείτε ότι η συσκευή σας είναι συνδεδεμένη στο διαδίκτυο και προσπαθήστε να σαρώσετε ξανά τη βιβλιοθήκη σας. Εάν το πρόβλημα επιμείνει, αυτός ο πυρήνας μπορεί να μην υποστηρίζεται στη συσκευή σας.</string>
+</resources>
