@@ -140,6 +140,7 @@
     <string name="tv_home_section_settings">Inställningar</string>
     <string name="gamepad_binding_update_title">Koppla \"Retropad %1$s\"</string>
     <string name="gamepad_binding_update_description">Tryck på en knapp på din \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Associera \"Genväg %1$s\"</string>
     <string name="shortcut_binding_update_description">Tryck på den första, och sedan på den andra knappen för att binda en combo på din \"%1$s\"</string>
     <string name="tv_search_results">Spel</string>
     <string name="tv_game_message_missing_gamepad">En handkontroll krävs för att spela. Vänligen anslut en.</string>
