@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">Modo HD</string>
     <string name="settings_description_hd_mode">Aplicar filtro de mejora de posprocesamiento</string>
     <string name="settings_description_hd_quality">Ajustar la calidad del modo HD</string>
+    <string name="settings_title_ambient_mode">Modo Ambiente</string>
+    <string name="settings_description_ambient_mode">Colores del fondo dinámicamente elegidos según la visual del juego</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
     <string name="settings_description_gamepad_settings">Configurar Controles y teclados externos</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -97,9 +99,12 @@
     <string name="game_menu_mute_audio">Silenciar</string>
     <string name="game_menu_fast_forward">Avance rápido</string>
     <string name="game_menu_change_disk_disk">Disco %1$s</string>
+    <string name="game_menu_tilt_sensor">Sensor de Tilt</string>
     <string name="game_loading_preparing_game">Preparando juego…</string>
     <string name="game_toast_settings_button_using_gamepad">Mando detectado. Accede al menú de configuración con %1$s.</string>
     <string name="game_toast_load_state_failed">No es posible cargar este estado</string>
+    <string name="game_toast_quick_save_loaded">Cargado rápido</string>
+    <string name="game_toast_quick_save_saved">Guardado rápido</string>
     <string name="empty_view_default">Sin objetos</string>
     <string name="core_settings_title">Ajustes del núcleo</string>
     <string name="core_settings_category_preferences">Preferencias</string>
@@ -140,6 +145,8 @@
     <string name="tv_home_section_settings">Configuración</string>
     <string name="gamepad_binding_update_title">Asociar «RetroPad %1$s»</string>
     <string name="gamepad_binding_update_description">Presiona un botón en tu «%1$s»</string>
+    <string name="shortcut_binding_update_title">Asociar \"Atajo %1$s\"</string>
+    <string name="shortcut_binding_update_description">Presiona el primero y luego el segundo botón para unir un combo en tú \"%1$s\"</string>
     <string name="tv_search_results">Juegos</string>
     <string name="tv_game_message_missing_gamepad">Se requiere un mando para jugar. Por favor, conecta uno.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecta el mando para editar los controles táctiles</string>
@@ -166,4 +173,11 @@
     <string name="haptic_feedback_mode_names_none">Nada</string>
     <string name="haptic_feedback_mode_names_press">Presionar</string>
     <string name="haptic_feedback_mode_names_press_release">Presiona &amp; liberar</string>
+    <string name="tilt_configuration_disabled">Deshabilitado</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Análogo Izquierdo</string>
+    <string name="tilt_configuration_analog_right">Análogo Derecho</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
