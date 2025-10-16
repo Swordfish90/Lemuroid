@@ -27,6 +27,7 @@ import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.Variable
+import com.swordfish.libretrodroid.ViewportAlignment
 import com.swordfish.libretrodroid.VirtualFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -89,6 +90,7 @@ class GameViewModelRetroGameView(
         val filter = settingsManager.screenFilter()
         val hdMode = settingsManager.hdMode()
         val hdModeQuality = settingsManager.hdModeQuality()
+        val alignment = settingsManager.viewportAlignment()
         val lowLatencyAudio = settingsManager.lowLatencyAudio()
         val enableRumble = settingsManager.enableRumble()
         val directLoad = settingsManager.allowDirectGameLoad()
@@ -131,6 +133,7 @@ class GameViewModelRetroGameView(
                         hdMode,
                         hdModeQuality,
                         filter,
+                        alignment,
                         lowLatencyAudio,
                         enableRumble,
                         enableMicrophone,
@@ -199,6 +202,7 @@ class GameViewModelRetroGameView(
         hdMode: Boolean,
         hdModeQuality: HDModeQuality,
         screenFilter: String,
+        alignment: String,
         lowLatencyAudio: Boolean,
         requestRumble: Boolean,
         requestMicrophone: Boolean,
@@ -229,6 +233,11 @@ class GameViewModelRetroGameView(
                     screenFilter,
                     GameSystem.findById(gameData.game.systemId),
                 )
+            viewportAlignment = when (alignment) {
+                "top" -> ViewportAlignment.TOP
+                "bottom" -> ViewportAlignment.BOTTOM
+                else -> ViewportAlignment.CENTER
+            }
             preferLowLatencyAudio = lowLatencyAudio
             rumbleEventsEnabled = requestRumble
             skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
@@ -275,6 +284,10 @@ class GameViewModelRetroGameView(
         owner.launchOnState(Lifecycle.State.RESUMED) {
             initializeRumbleFlow()
         }
+
+        owner.launchOnState(Lifecycle.State.RESUMED) {
+            initializeViewportAlignment()
+        }
     }
 
     private suspend fun initializeCoreVariablesFlow() {
@@ -291,6 +304,16 @@ class GameViewModelRetroGameView(
         val retroGameView = retroGameViewFlow()
         val rumbleEvents = retroGameView.getRumbleEvents()
         rumbleManager.collectAndProcessRumbleEvents(systemCoreConfig, rumbleEvents)
+    }
+
+    private suspend fun initializeViewportAlignment() {
+        val retroGameView = retroGameViewFlow()
+        val viewportAlignment = settingsManager.viewportAlignment()
+        retroGameView.viewportAlignment = when (viewportAlignment) {
+            "top" -> ViewportAlignment.TOP
+            "bottom" -> ViewportAlignment.BOTTOM
+            else -> ViewportAlignment.CENTER
+        }
     }
 
     private suspend fun initializeRetroGameViewErrorsFlow() {

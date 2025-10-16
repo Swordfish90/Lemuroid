@@ -116,6 +116,7 @@
     <string name="game_menu_state">State %1$s</string>
     <string name="game_menu_change_disk_button">Change Disk</string>
     <string name="game_menu_edit_touch_controls">Edit Controls</string>
+    <string name="game_menu_viewport_alignment">Viewport Alignment</string>
     <string name="game_menu_mute_audio">Mute</string>
     <string name="game_menu_fast_forward">Fast-Forward</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
@@ -215,6 +216,10 @@
     <string name="shader_filter_names_smooth">Smooth</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+
+    <string name="shader_filter_viewport_alignment_center">Center</string>
+    <string name="shader_filter_viewport_alignment_top">Top</string>
+    <string name="shader_filter_viewport_alignment_bottom">Bottom</string>
 
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>
