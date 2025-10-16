@@ -56,6 +56,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
 
     suspend fun allowDirectGameLoad() = booleanPreference(R.string.pref_key_allow_direct_game_load, true)
 
+    suspend fun viewportAlignment() = stringPreference(R.string.pref_key_viewport_alignment, "center")
+
     private suspend fun booleanPreference(
         keyId: Int,
         default: Boolean,

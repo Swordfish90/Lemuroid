@@ -23,7 +23,7 @@ object deps {
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
-        const val libretrodroid   = "0.13.0"
+        const val libretrodroid   = "dev-SNAPSHOT"
         const val composeBom      = "2024.02.02"
         const val kotlinExtension = "1.4.6"
         const val padkit          = "1.0.0-beta1"
@@ -166,7 +166,7 @@ object deps {
         const val composeHtmlText          = "de.charlex.compose.material3:material3-html-text:2.0.0-beta01"
         const val collectionsImmutable     = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
         const val padkit                   = "io.github.swordfish90:padkit:${versions.padkit}"
-        const val libretrodroid            = "com.github.Swordfish90:LibretroDroid:${versions.libretrodroid}"
+        const val libretrodroid            = "com.github.grantland:LibretroDroid:${versions.libretrodroid}"
     }
 
     object plugins {

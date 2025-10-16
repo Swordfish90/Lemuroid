@@ -21,7 +21,8 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
-import timber.log.Timber
+import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
+import com.swordfish.lemuroid.app.utils.android.stringListResource
 import kotlin.reflect.KFunction1
 
 @Composable
@@ -140,6 +141,23 @@ fun GameMenuHomeScreen(
             onClick = {
                 onResult { putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true) }
             },
+        )
+
+        LemuroidSettingsList(
+            state =
+                indexPreferenceState(
+                    R.string.pref_key_viewport_alignment,
+                    "center",
+                    stringListResource(R.array.pref_key_viewport_alignment).toList(),
+                ),
+            title = { Text(text = stringResource(id = R.string.game_menu_viewport_alignment)) },
+            icon = {
+                Icon(
+                    painterResource(R.drawable.ic_menu_image),
+                    contentDescription = stringResource(id = R.string.game_menu_viewport_alignment),
+                )
+            },
+            items = stringListResource(R.array.pref_key_viewport_alignment_display_names),
         )
 
         if (gameMenuRequest.advancedCoreOptions.isNotEmpty() || gameMenuRequest.coreOptions.isNotEmpty()) {
