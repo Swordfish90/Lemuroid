@@ -2,18 +2,18 @@
 <resources>
     <string name="title_home">Start</string>
     <string name="title_search">Szukaj</string>
-    <string name="title_systems">Systemy</string>
+    <string name="title_systems">Konsole</string>
     <string name="title_games">Gry</string>
     <string name="title_settings">Ustawienia</string>
     <string name="recent">Ostatnie</string>
     <string name="favorites">Ulubione</string>
     <string name="discover">Odkrywaj</string>
-    <string name="rescan">Skanuj ponownie</string>
+    <string name="rescan">Zeskanuj</string>
     <string name="stop">Wstrzymaj</string>
     <string name="none">Brak</string>
-    <string name="directory">Katalog</string>
+    <string name="directory">Folder z plikami</string>
     <string name="display_filter">Filtr wyświetlacza</string>
-    <string name="roms">Pliki ROM</string>
+    <string name="roms">ROMy Gier</string>
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
     <string name="settings">Ustawienia</string>
@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">Tryb HD</string>
     <string name="settings_description_hd_mode">Zastosuj filtr skalowania po przetworzeniu obrazu</string>
     <string name="settings_description_hd_quality">Dostosuj jakość trybu HD</string>
+    <string name="settings_title_ambient_mode">Tryb Kinowy</string>
+    <string name="settings_description_ambient_mode">Dynamicznie koloryzuje tło w oparciu o wizualizację gry</string>
     <string name="settings_title_gamepad_settings">Urządzenia zewnętrzne</string>
     <string name="settings_description_gamepad_settings">Konfiguruj zewnętrzne gamepady i klawiatury</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -97,9 +99,12 @@
     <string name="game_menu_mute_audio">Wycisz</string>
     <string name="game_menu_fast_forward">Przyśpiesz</string>
     <string name="game_menu_change_disk_disk">Dysk %1$s</string>
+    <string name="game_menu_tilt_sensor">Czujnik Przechylenia</string>
     <string name="game_loading_preparing_game">Przygotowuję grę…</string>
     <string name="game_toast_settings_button_using_gamepad">Wykryto gamepada. Uzyskaj dostęp do menu ustawień za pomocą %1$s.</string>
     <string name="game_toast_load_state_failed">Nie można załadować tego stanu</string>
+    <string name="game_toast_quick_save_loaded">Prędkie Władowanie</string>
+    <string name="game_toast_quick_save_saved">Prędki Zapis</string>
     <string name="empty_view_default">Brak elementów</string>
     <string name="core_settings_title">Ustawienia rdzenia</string>
     <string name="core_settings_category_preferences">Preferencje</string>
@@ -140,6 +145,8 @@
     <string name="tv_home_section_settings">Ustawienia</string>
     <string name="gamepad_binding_update_title">Powiąż \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Naciśnij przycisk na Twoim \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Powiąż \"RetroPad %1$s\"</string>
+    <string name="shortcut_binding_update_description">Naciśnij pierwszy, a następnie drugi przycisk, aby powiązać kombinację \"%1$s\"</string>
     <string name="tv_search_results">Gry</string>
     <string name="tv_game_message_missing_gamepad">Gamepady są wymagane do gry. Prosimy o podłączenie jednego z nich.</string>
     <string name="game_edit_touch_controls_error_not_visible">Odłącz pad, aby edytować sterowanie dotykowe</string>
@@ -166,4 +173,11 @@
     <string name="haptic_feedback_mode_names_none">Brak</string>
     <string name="haptic_feedback_mode_names_press">Naciśnij</string>
     <string name="haptic_feedback_mode_names_press_release">Naciśnij &amp; puść</string>
+    <string name="tilt_configuration_disabled">Wyłączone</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Lewy Analog</string>
+    <string name="tilt_configuration_analog_right">Prawy Analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1- R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
