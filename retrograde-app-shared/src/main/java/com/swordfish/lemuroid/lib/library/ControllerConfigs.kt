@@ -316,41 +316,6 @@ object ControllerConfigs {
             R.string.controller_dos_auto,
             TouchControllerID.DOS,
             allowTouchRotation = true,
-            libretroId = 1,
-            tiltConfigurations = listOf(
-                TILT_CONFIGURATION_DISABLED,
-                TILT_CONFIGURATION_CROSS,
-                TILT_CONFIGURATION_ANALOG_LEFT,
-                TILT_CONFIGURATION_ANALOG_RIGHT,
-                TILT_CONFIGURATION_L1_R1,
-                TILT_CONFIGURATION_L2_R2,
-            )
-        )
-
-    val DOS_MOUSE_LEFT =
-        ControllerConfig(
-            "mouse_left",
-            R.string.controller_dos_mouse_left,
-            TouchControllerID.DOS,
-            allowTouchRotation = true,
-            libretroId = 513,
-            tiltConfigurations = listOf(
-                TILT_CONFIGURATION_DISABLED,
-                TILT_CONFIGURATION_CROSS,
-                TILT_CONFIGURATION_ANALOG_LEFT,
-                TILT_CONFIGURATION_ANALOG_RIGHT,
-                TILT_CONFIGURATION_L1_R1,
-                TILT_CONFIGURATION_L2_R2,
-            )
-        )
-
-    val DOS_MOUSE_RIGHT =
-        ControllerConfig(
-            "mouse_right",
-            R.string.controller_dos_mouse_right,
-            TouchControllerID.DOS,
-            allowTouchRotation = true,
-            libretroId = 769,
             tiltConfigurations = listOf(
                 TILT_CONFIGURATION_DISABLED,
                 TILT_CONFIGURATION_CROSS,

@@ -1224,12 +1224,7 @@ data class GameSystem(
                             CoreID.DOSBOX_PURE,
                             controllerConfigs =
                                 hashMapOf(
-                                    0 to
-                                        arrayListOf(
-                                            ControllerConfigs.DOS_AUTO,
-                                            ControllerConfigs.DOS_MOUSE_LEFT,
-                                            ControllerConfigs.DOS_MOUSE_RIGHT,
-                                        ),
+                                    0 to arrayListOf(ControllerConfigs.DOS_AUTO),
                                 ),
                             statesSupported = false,
                         ),
