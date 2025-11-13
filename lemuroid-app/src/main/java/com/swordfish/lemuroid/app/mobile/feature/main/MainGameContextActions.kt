@@ -38,10 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.swordfish.lemuroid.R
@@ -60,27 +57,20 @@ fun MainGameContextActions(
     onCreateShortcut: (Game) -> Unit,
 ) {
     val modalSheetState = rememberModalBottomSheetState(true)
-    val haptic = LocalHapticFeedback.current
-
     val selectedGame = selectedGameState.value
 
     LaunchedEffect(selectedGame) {
         if (selectedGame != null) {
-            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             modalSheetState.show()
         } else {
             modalSheetState.hide()
         }
     }
 
-    // ModalBottomSheet currently has some issues. We set the scrim color to be transparent and add a fake one.
-    FakeScrim(modalSheetState)
-
     if (selectedGame != null) {
         ModalBottomSheet(
             sheetState = modalSheetState,
             onDismissRequest = { selectedGameState.value = null },
-            scrimColor = Color.Transparent,
         ) {
             ContextActionContent(
                 selectedGame = selectedGame,
