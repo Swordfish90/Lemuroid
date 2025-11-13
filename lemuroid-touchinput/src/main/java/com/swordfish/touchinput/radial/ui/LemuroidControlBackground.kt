@@ -11,9 +11,7 @@ fun LemuroidControlBackground(modifier: Modifier = Modifier) {
     GlassSurface(
         modifier = modifier.fillMaxSize(),
         fillColor = theme.level1Fill,
-        strokeColor = theme.level1Stroke,
-        shadowWidth = theme.level1ShadowWidth,
         shadowColor = theme.level1Shadow,
-        strokeWidth = theme.level1StrokeWidth,
+        shadowWidth = theme.level1ShadowWidth,
     )
 }

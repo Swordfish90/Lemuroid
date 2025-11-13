@@ -13,18 +13,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-
-data class DrawPaddingValues(
-    val left: Dp = 0.dp,
-    val top: Dp = 0.dp,
-    val right: Dp = 0.dp,
-    val bottom: Dp = 0.dp
-)
+import kotlin.math.ceil
 
 private object ShadowCache {
     private val bitmapCache = mutableMapOf<String, ImageBitmap>()
@@ -35,10 +28,13 @@ private object ShadowCache {
         cornerRadius: Float,
         shadowColor: Color,
         blurRadius: Float,
+        padding: Int,
     ): ImageBitmap {
-        val key = "$width-$height-$cornerRadius-${shadowColor.toArgb()}-$blurRadius"
+        val key = "$width-$height-$cornerRadius-${shadowColor.toArgb()}-$blurRadius-$padding"
         return bitmapCache.getOrPut(key) {
-            val bitmap = ImageBitmap(width, height)
+            val bitmapWidth = width + padding * 2
+            val bitmapHeight = height + padding * 2
+            val bitmap = ImageBitmap(bitmapWidth, bitmapHeight)
             val canvas = Canvas(bitmap)
 
             val frameworkPaint = android.graphics.Paint().apply {
@@ -48,10 +44,10 @@ private object ShadowCache {
             }
 
             canvas.nativeCanvas.drawRoundRect(
-                0f,
-                0f,
-                width.toFloat() + 0f,
-                height.toFloat() + 0f,
+                padding.toFloat(),
+                padding.toFloat(),
+                padding.toFloat() + width.toFloat(),
+                padding.toFloat() + height.toFloat(),
                 cornerRadius,
                 cornerRadius,
                 frameworkPaint
@@ -67,61 +63,56 @@ fun GlassSurface(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = Dp.Infinity,
     fillColor: Color = Color.White.copy(alpha = 0.15f),
-    strokeColor: Color = Color.White.copy(alpha = 0.3f),
     shadowColor: Color = Color.Black.copy(alpha = 0.3f),
-    strokeWidth: Dp = 1.dp,
     shadowWidth: Dp = 1.dp,
-    drawPadding: DrawPaddingValues = DrawPaddingValues(),
     content: @Composable BoxWithConstraintsScope.() -> Unit = { }
 ) {
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
         modifier = modifier.drawWithCache {
-            val strokePx = strokeWidth.toPx()
             val blurRadiusPx = shadowWidth.toPx()
 
-            val paddingStart = drawPadding.left.toPx()
-            val paddingTop = drawPadding.top.toPx()
-            val paddingEnd = drawPadding.right.toPx()
-            val paddingBottom = drawPadding.bottom.toPx()
+            val expandedWidth = size.width
+            val expandedHeight = size.height
 
-            val expandedWidth = size.width - paddingStart - paddingEnd
-            val expandedHeight = size.height - paddingTop - paddingBottom
+            if (expandedWidth <= 0f || expandedHeight <= 0f) {
+                return@drawWithCache onDrawWithContent {
+                    drawContent()
+                }
+            }
+
             val expandedSize = Size(expandedWidth, expandedHeight)
 
             val cornerRadiusPx = minOf(cornerRadius.toPx(), expandedSize.minDimension / 2f)
 
-            val shadowBitmap = ShadowCache.getOrCreate(
-                width = expandedSize.width.toInt(),
-                height = expandedSize.height.toInt(),
-                cornerRadius = cornerRadiusPx,
-                shadowColor = shadowColor,
-                blurRadius = blurRadiusPx
-            )
+            val shouldDrawShadow = shadowColor.alpha > 0f && blurRadiusPx > 0f
+            val shadowPaddingPx = if (shouldDrawShadow) blurRadiusPx else 0f
+            val shadowPadding = ceil(shadowPaddingPx).toInt().coerceAtLeast(0)
 
-            val strokeInset = strokePx / 2f
-            val fillSize = expandedSize + Size(strokePx, strokePx)
-            val fillOffset = -Offset(strokeInset, strokeInset)
-
-            val drawOffset = Offset(paddingStart, paddingTop)
-            val adjustedRadius = cornerRadiusPx + strokeInset
+            val shadowBitmap = if (shouldDrawShadow) {
+                ShadowCache.getOrCreate(
+                    width = expandedSize.width.toInt().coerceAtLeast(1),
+                    height = expandedSize.height.toInt().coerceAtLeast(1),
+                    cornerRadius = cornerRadiusPx,
+                    shadowColor = shadowColor,
+                    blurRadius = blurRadiusPx,
+                    padding = shadowPadding
+                )
+            } else {
+                null
+            }
 
             onDrawWithContent {
-                drawImage(shadowBitmap, topLeft = drawOffset)
+                if (shadowBitmap != null) {
+                    val shadowOffset = -Offset(shadowPadding.toFloat(), shadowPadding.toFloat())
+                    drawImage(shadowBitmap, topLeft = shadowOffset)
+                }
 
                 drawRoundRect(
                     color = fillColor,
-                    topLeft = fillOffset + drawOffset,
-                    size = fillSize,
-                    cornerRadius = CornerRadius(adjustedRadius, adjustedRadius)
-                )
-
-                drawRoundRect(
-                    color = strokeColor,
-                    topLeft = drawOffset,
+                    topLeft = Offset(0f, 0f),
                     size = expandedSize,
                     cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
-                    style = Stroke(width = strokePx)
                 )
 
                 drawContent()
@@ -129,12 +120,4 @@ fun GlassSurface(
         },
         content = content
     )
-}
-
-private operator fun Size.minus(scaledSize: Size): Offset {
-    return Offset(this.width - scaledSize.width, this.height - scaledSize.height)
-}
-
-private operator fun Size.plus(scaledSize: Size): Size {
-    return Size(this.width + scaledSize.width, this.height + scaledSize.height)
 }
