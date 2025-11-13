@@ -12,9 +12,7 @@ fun LemuroidCompositeForeground(pressed: State<Boolean>) {
     GlassSurface(
         modifier = Modifier.fillMaxSize(),
         fillColor = theme.compositeFill(pressed.value),
-        strokeColor = theme.compositeStroke(pressed.value),
-        strokeWidth = theme.level2StrokeWidth,
-        shadowWidth = theme.level2ShadowWidth,
         shadowColor = theme.level2Shadow,
+        shadowWidth = theme.level2ShadowWidth,
     )
 }

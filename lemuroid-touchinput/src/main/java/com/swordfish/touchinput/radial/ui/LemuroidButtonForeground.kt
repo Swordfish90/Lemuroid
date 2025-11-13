@@ -11,9 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import com.swordfish.lemuroid.common.compose.textUnit
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
@@ -30,14 +28,13 @@ fun LemuroidButtonForeground(
     GlassSurface(
         modifier = modifier.fillMaxSize().padding(theme.foregroundPadding),
         fillColor = theme.foregroundFill(pressed.value),
-        strokeColor = theme.foregroundStroke(pressed.value),
-        shadowWidth = theme.level3ShadowWidth,
         shadowColor = theme.level3Shadow,
-        strokeWidth = theme.level3StrokeWidth
-    ) {
-        icon()
-        label()
-    }
+        shadowWidth = theme.level3ShadowWidth,
+        content = {
+            icon()
+            label()
+        },
+    )
 }
 
 @Composable

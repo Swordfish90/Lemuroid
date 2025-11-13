@@ -58,7 +58,6 @@ import com.swordfish.touchinput.radial.LemuroidPadTheme
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
-import com.swordfish.touchinput.radial.ui.DrawPaddingValues
 import com.swordfish.touchinput.radial.ui.GlassSurface
 import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.padkit.PadKit
@@ -160,23 +159,16 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
                 if (touchControllerSettings != null && currentControllerConfig != null && touchControlsVisibleState.value) {
                     CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme()) {
-                        val theme = LocalLemuroidPadTheme.current
-                        val borderPadding = -theme.level0StrokeWidth * 0.5f
-                        val cornerPadding = -theme.level0CornerRadius
-
                         if (!isLandscape) {
                             PadContainer(
                                 modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_BOTTOM_CONTAINER),
-                                DrawPaddingValues(left = borderPadding, right = borderPadding, bottom = cornerPadding),
                             )
                         } else if (!currentControllerConfig.allowTouchOverlay) {
                             PadContainer(
                                 modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_CONTAINER),
-                                DrawPaddingValues(left = cornerPadding, top = borderPadding, bottom = borderPadding),
                             )
                             PadContainer(
                                 modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_CONTAINER),
-                                DrawPaddingValues(right = cornerPadding, top = borderPadding, bottom = borderPadding),
                             )
                         }
 
@@ -218,17 +210,14 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 }
 
 @Composable
-private fun PadContainer(modifier: Modifier = Modifier, drawPaddingValues: DrawPaddingValues) {
+private fun PadContainer(modifier: Modifier = Modifier) {
     val theme = LocalLemuroidPadTheme.current
     GlassSurface(
         modifier = modifier,
         cornerRadius = theme.level0CornerRadius,
         fillColor = theme.level0Fill,
-        strokeColor = theme.level0Stroke,
         shadowColor = theme.level0Shadow,
-        strokeWidth = theme.level0StrokeWidth,
         shadowWidth = theme.level0ShadowWidth,
-        drawPadding = drawPaddingValues,
     )
 }
 
