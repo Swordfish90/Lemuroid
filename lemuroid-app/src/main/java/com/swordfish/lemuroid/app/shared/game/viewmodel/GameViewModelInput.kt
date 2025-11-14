@@ -279,11 +279,6 @@ class GameViewModelInput(
                 val port = ports(device)
                 val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
 
-                if (bindKeyCode == KeyEvent.KEYCODE_BACK && action == KeyEvent.ACTION_DOWN) {
-                    sideEffects.requestSuccessfulFinish()
-                    return@safeCollect
-                }
-
                 if (port == 0) {
                     if (bindKeyCode == KeyEvent.KEYCODE_BUTTON_MODE && action == KeyEvent.ACTION_DOWN) {
                         sideEffects.showMenu(tilt, this)

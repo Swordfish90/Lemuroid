@@ -15,19 +15,11 @@ data class GameShortcut(
             inputDevice: InputDevice,
             type: GameShortcutType,
         ): GameShortcut? {
-            val combo =
-                when (type) {
-                    GameShortcutType.MENU ->
-                        KeyEvent.KEYCODE_BUTTON_START to KeyEvent.KEYCODE_BUTTON_SELECT
-                    GameShortcutType.QUICK_LOAD ->
-                        KeyEvent.KEYCODE_BUTTON_L1 to KeyEvent.KEYCODE_BUTTON_L2
-                    GameShortcutType.QUICK_SAVE ->
-                        KeyEvent.KEYCODE_BUTTON_R1 to KeyEvent.KEYCODE_BUTTON_R2
-                    GameShortcutType.TOGGLE_FAST_FORWARD ->
-                        KeyEvent.KEYCODE_BUTTON_SELECT to KeyEvent.KEYCODE_BUTTON_R1
-                }
-            return if (inputDevice.hasKeys(combo.first, combo.second).all { it }) {
-                GameShortcut(keys = setOf(combo.first, combo.second), type = type)
+            if (type != GameShortcutType.MENU) return null
+            return if (inputDevice.hasKeys(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR).all { it }) {
+                GameShortcut(keys = setOf(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR), type = type)
+            } else if (inputDevice.hasKeys(KeyEvent.KEYCODE_BUTTON_SELECT, KeyEvent.KEYCODE_BUTTON_START).all { it }) {
+                GameShortcut(keys = setOf(KeyEvent.KEYCODE_BUTTON_SELECT, KeyEvent.KEYCODE_BUTTON_START), type = type)
             } else {
                 null
             }
