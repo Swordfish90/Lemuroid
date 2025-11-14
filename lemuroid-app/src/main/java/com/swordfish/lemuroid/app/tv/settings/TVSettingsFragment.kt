@@ -152,7 +152,7 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
             getGamePadPreferenceScreen()?.let {
                 it.removeAll()
                 gamePadPreferencesHelper.addGamePadsPreferencesToScreen(
-                    requireActivity(),
+                    it.context,
                     it,
                     gamePads,
                     enabledGamePads,
