@@ -161,7 +161,7 @@ private fun GeneralSettings() {
             state =
                 intPreferenceState(
                     key = stringResource(id = R.string.pref_key_hd_mode_quality),
-                    default = 1,
+                    default = 2,
                 ),
             steps = 1,
             valueRange = 0f..2f,

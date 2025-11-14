@@ -38,7 +38,7 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="false"
             app:iconSpaceReserved="false"
-            android:defaultValue="1"/>
+            android:defaultValue="2"/>
 
         <ListPreference
             android:key="@string/pref_key_shader_filter"
