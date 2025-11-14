@@ -139,6 +139,11 @@
             android:theme="@style/LemuroidLeanbackPreferencesTheme" />
 
         <activity
+            android:name=".app.tv.input.TVGamePadShortcutBindingActivity"
+            android:process=":game"
+            android:theme="@style/LemuroidLeanbackPreferencesTheme" />
+
+        <activity
             android:name=".app.shared.gamecrash.GameCrashActivity"
             android:theme="@style/LemuroidMaterialTheme.Game" />
 

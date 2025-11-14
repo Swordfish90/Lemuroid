@@ -7,8 +7,6 @@ import android.view.KeyEvent
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -46,10 +44,9 @@ class ShortcutBindingUpdater(private val inputDeviceManager: InputDeviceManager,
         } else {
             if (firstKeyCodeInCombo == event.keyCode) return false // ignore same key press
             val combo = Pair(InputKey(firstKeyCodeInCombo!!), InputKey(event.keyCode))
+            // TODO runBlocking here should go away.
             runBlocking {
-                GlobalScope.async {
-                    inputDeviceManager.updateShortcutBinding(event.device, extras.shortcutType, combo)
-                }
+                inputDeviceManager.updateShortcutBinding(event.device, extras.shortcutType, combo)
             }
             return true
         }
