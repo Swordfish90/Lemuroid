@@ -85,8 +85,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private lateinit var baseGameScreenViewModel: BaseGameScreenViewModel
 
-    private var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
-
     private val startGameTime = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,7 +150,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun setUpExceptionsHandler() {
         Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
             performUnexpectedErrorFinish(exception)
-            defaultExceptionHandler?.uncaughtException(thread, exception)
         }
     }
 
