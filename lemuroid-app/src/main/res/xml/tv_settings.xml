@@ -15,9 +15,9 @@
             android:defaultValue="true"/>
 
         <SwitchPreference
-            android:key="@string/pref_key_enable_ambient_mode"
-            android:title="@string/settings_title_ambient_mode"
-            android:summary="@string/settings_description_ambient_mode"
+            android:key="@string/pref_key_enable_immersive_mode"
+            android:title="@string/settings_title_immersive_mode"
+            android:summary="@string/settings_description_immersive_mode"
             app:iconSpaceReserved="false"
             android:defaultValue="false"/>
 

@@ -46,7 +46,7 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
 
     suspend fun enableDeviceRumble() = booleanPreference(R.string.pref_key_enable_device_rumble, false)
 
-    suspend fun enableAmbientMode() = booleanPreference(R.string.pref_key_enable_ambient_mode, false)
+    suspend fun enableImmersiveMode() = booleanPreference(R.string.pref_key_enable_immersive_mode, false)
 
     suspend fun cacheSizeBytes() =
         stringPreference(
