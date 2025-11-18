@@ -45,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Меню</string>
     <string name="settings_title_open_cores_selection">Сменить ядра</string>
     <string name="settings_description_open_cores_selection">Выберите связанное с системой ядро</string>
+    <string name="settings_core_selection_ds_info">DeSmuME устарел и в ближайшее время будет удалён. Сохранитесь внутри игры и переключитесь на melonDS: внутриигровые сохранения для него будут загружены автоматически, но быстрые сохранения будут работать только с ядром, на котором они были созданы.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Список найденных и поддерживаемых файлов BIOS</string>
     <string name="settings_bios_category_detected">Обнаружено</string>
@@ -88,6 +89,9 @@
     <string name="home_empty_title">Выберите каталог ROM-файлов</string>
     <string name="home_empty_message">Lemuroid необходимо отсканировать каталог, содержащий ROM-файлы.\nЭто может занять несколько минут.</string>
     <string name="home_empty_action">Выберите каталог</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME вскоре будет удалён</string>
+    <string name="home_notification_desmume_deprecated_message">Сохранитесь в игре и переключитесь на melonDS, чтобы перенести прогресс. Быстрые сохранения останутся привязанными к DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Переключиться на melonDS</string>
     <string name="game_menu_save">Сохранить</string>
     <string name="game_menu_load">Загрузить</string>
     <string name="game_menu_restart">Перезагрузка</string>
