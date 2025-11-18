@@ -202,6 +202,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 ),
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
+                            onOpenCoreSelection = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) },
                         )
                     }
                     composable(MainRoute.FAVORITES) {

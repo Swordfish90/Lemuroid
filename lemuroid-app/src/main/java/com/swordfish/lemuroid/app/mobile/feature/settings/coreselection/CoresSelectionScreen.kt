@@ -1,16 +1,21 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.coreselection
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.alorma.compose.settings.storage.memory.rememberMemoryIntSettingState
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
+import com.swordfish.lemuroid.R
 
 @Composable
 fun CoresSelectionScreen(
@@ -24,6 +29,17 @@ fun CoresSelectionScreen(
     val indexingInProgress = viewModel.indexingInProgress.collectAsState(false).value
 
     LemuroidSettingsPage(modifier = modifier.fillMaxWidth()) {
+        ElevatedCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp),
+        ) {
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text = stringResource(R.string.settings_core_selection_ds_info),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
         LemuroidCardSettingsGroup {
             cores.forEach { (system, core) ->
                 val state = rememberMemoryIntSettingState(system.systemCoreConfigs.indexOf(core))
