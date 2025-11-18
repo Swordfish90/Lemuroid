@@ -34,8 +34,6 @@
     <string name="settings_title_hd_mode">Modo HD</string>
     <string name="settings_description_hd_mode">Aplicar filtro de mejora de posprocesamiento</string>
     <string name="settings_description_hd_quality">Ajustar la calidad del modo HD</string>
-    <string name="settings_title_ambient_mode">Modo Ambiente</string>
-    <string name="settings_description_ambient_mode">Colores del fondo dinámicamente elegidos según la visual del juego</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
     <string name="settings_description_gamepad_settings">Configurar Controles y teclados externos</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
