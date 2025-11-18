@@ -34,8 +34,6 @@
     <string name="settings_title_hd_mode">Tryb HD</string>
     <string name="settings_description_hd_mode">Zastosuj filtr skalowania po przetworzeniu obrazu</string>
     <string name="settings_description_hd_quality">Dostosuj jakość trybu HD</string>
-    <string name="settings_title_ambient_mode">Tryb Kinowy</string>
-    <string name="settings_description_ambient_mode">Dynamicznie koloryzuje tło w oparciu o wizualizację gry</string>
     <string name="settings_title_gamepad_settings">Urządzenia zewnętrzne</string>
     <string name="settings_description_gamepad_settings">Konfiguruj zewnętrzne gamepady i klawiatury</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
