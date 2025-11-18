@@ -34,8 +34,6 @@
     <string name="settings_title_hd_mode">HD-режим</string>
     <string name="settings_description_hd_mode">Применять для постобработки фильтр масштабирования</string>
     <string name="settings_description_hd_quality">Настройка качества HD-режима</string>
-    <string name="settings_title_ambient_mode">Ambient-режим</string>
-    <string name="settings_description_ambient_mode">Динамически меняет цвет фона в соответствие с изображением игры</string>
     <string name="settings_title_gamepad_settings">Внешние устройства</string>
     <string name="settings_description_gamepad_settings">Настройка внешних геймпадов и клавиатур</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
