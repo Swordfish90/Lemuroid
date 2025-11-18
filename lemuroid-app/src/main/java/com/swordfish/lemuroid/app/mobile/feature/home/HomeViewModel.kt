@@ -12,22 +12,29 @@ import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.common.coroutines.combine
 import com.swordfish.lemuroid.lib.core.CoresSelection
-import com.swordfish.lemuroid.lib.core.CoresSelection.SelectedCore
+import com.swordfish.lemuroid.lib.library.CoreID
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class HomeViewModel(
     appContext: Context,
     retrogradeDb: RetrogradeDatabase,
-    private val coresSelection: CoresSelection
+    private val coresSelection: CoresSelection,
 ) : ViewModel() {
     companion object {
         const val CAROUSEL_MAX_ITEMS = 10
@@ -52,6 +59,7 @@ class HomeViewModel(
         val showNoNotificationPermissionCard: Boolean = false,
         val showNoMicrophonePermissionCard: Boolean = false,
         val showNoGamesCard: Boolean = false,
+        val showDesmumeDeprecatedCard: Boolean = false,
     )
 
     private val microphonePermissionEnabledState = MutableStateFlow(true)
@@ -101,12 +109,10 @@ class HomeViewModel(
         discoveryGames: List<Game>,
         indexInProgress: Boolean,
         notificationsPermissionEnabled: Boolean,
-        microphonePermissionEnabled: Boolean,
-        selectedCores: List<SelectedCore>,
+        showMicrophoneCard: Boolean,
+        showDesmumeWarning: Boolean,
     ): UIState {
         val noGames = recentGames.isEmpty() && favoritesGames.isEmpty() && discoveryGames.isEmpty()
-        val coreCanUseMicrophone = selectedCores
-            .any { it.coreConfig.supportsMicrophone }
 
         return UIState(
             favoritesGames = favoritesGames,
@@ -114,8 +120,9 @@ class HomeViewModel(
             discoveryGames = discoveryGames,
             indexInProgress = indexInProgress,
             showNoNotificationPermissionCard = !notificationsPermissionEnabled,
-            showNoMicrophonePermissionCard = !microphonePermissionEnabled && coreCanUseMicrophone,
+            showNoMicrophonePermissionCard = showMicrophoneCard,
             showNoGamesCard = noGames,
+            showDesmumeDeprecatedCard = showDesmumeWarning,
         )
     }
 
@@ -128,8 +135,8 @@ class HomeViewModel(
                     discoveryGames(retrogradeDb),
                     indexingInProgress(appContext),
                     notificationsPermissionEnabledState,
-                    microphonePermissionEnabledState,
-                    coresSelection.getSelectedCores(),
+                    microphoneNotification(retrogradeDb),
+                    desmumeWarningNotification(),
                     ::buildViewState,
                 )
 
@@ -151,4 +158,40 @@ class HomeViewModel(
 
     private fun favoritesGames(retrogradeDb: RetrogradeDatabase) =
         retrogradeDb.gameDao().selectFirstFavorites(CAROUSEL_MAX_ITEMS)
+
+    private fun dsGamesCount(retrogradeDb: RetrogradeDatabase): Flow<Int> {
+        return retrogradeDb.gameDao().selectSystemsWithCount()
+            .map { systems ->
+                systems
+                    .firstOrNull { it.systemId == SystemID.NDS.dbname }
+                    ?.count
+                    ?: 0
+            }
+            .distinctUntilChanged()
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun microphoneNotification(db: RetrogradeDatabase): Flow<Boolean> {
+        return microphonePermissionEnabledState
+            .flatMapLatest { isMicrophoneEnabled ->
+                if (isMicrophoneEnabled) {
+                    flowOf(false)
+                } else {
+                    combine(
+                        coresSelection.getSelectedCores(),
+                        dsGamesCount(db)
+                    ) { cores, dsCount ->
+                        cores.any { it.coreConfig.supportsMicrophone } &&
+                        dsCount > 0
+                    }
+                }
+            .distinctUntilChanged()
+        }
+    }
+
+    private fun desmumeWarningNotification(): Flow<Boolean> {
+        return coresSelection.getSelectedCores()
+            .map { cores -> cores.any { it.coreConfig.coreID == CoreID.DESMUME } }
+            .distinctUntilChanged()
+    }
 }

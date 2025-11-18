@@ -52,6 +52,7 @@
 
     <string name="settings_title_open_cores_selection">Change Cores</string>
     <string name="settings_description_open_cores_selection">Select which core is associated to a system</string>
+    <string name="settings_core_selection_ds_info">DeSmuME is deprecated and will be removed soon. Save inside the game, then switch to melonDS: in-game saves load there automatically, but save states stay on the core that created them.</string>
 
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Display detected and supported BIOS files</string>
@@ -107,6 +108,10 @@
     <string name="home_empty_title">Select ROMs directory</string>
     <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
     <string name="home_empty_action">Select Directory</string>
+
+    <string name="home_notification_desmume_deprecated_title">DeSmuME retiring soon</string>
+    <string name="home_notification_desmume_deprecated_message">Save in-game, switch to melonDS, and your progress will carry over. Save states stay tied to DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Switch to melonDS</string>
 
     <string name="game_menu_save">Save</string>
     <string name="game_menu_load">Load</string>
