@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD-läge</string>
     <string name="settings_description_hd_mode">Använd efterbehandlande uppskalningsfilter</string>
     <string name="settings_description_hd_quality">Justera kvaliteten för HD-läget</string>
+    <string name="settings_title_immersive_mode">Omslutande läge</string>
+    <string name="settings_description_immersive_mode">Färgar bakgrunden dynamiskt baserat på spelets grafik</string>
     <string name="settings_title_gamepad_settings">Externa enheter</string>
     <string name="settings_description_gamepad_settings">Konfigurera externa handkontroller och tangentbord</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
