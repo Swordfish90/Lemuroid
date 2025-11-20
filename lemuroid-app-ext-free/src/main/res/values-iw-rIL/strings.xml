@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">מוריד ליבה…</string>
+    <string name="installing_core_notification_title">מעדכן ליבות</string>
+    <string name="installing_core_notification_message">פעולה זו עשויה להימשך כמה דקות</string>
+</resources>
