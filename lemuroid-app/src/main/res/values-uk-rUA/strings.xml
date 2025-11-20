@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD режим</string>
     <string name="settings_description_hd_mode">Застосувати фільтр пост-обробки масштабування</string>
     <string name="settings_description_hd_quality">Налаштування якості HD-режиму</string>
+    <string name="settings_title_immersive_mode">Режим занурення</string>
+    <string name="settings_description_immersive_mode">Інтелектуальний фон на основі візуальних ефектів</string>
     <string name="settings_title_gamepad_settings">Зовнішні пристрої</string>
     <string name="settings_description_gamepad_settings">Налаштування зовнішніх ґеймпадів та клавіатур</string>
     <string name="settings_retropad_button_name">Ретро кнопка %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Меню</string>
     <string name="settings_title_open_cores_selection">Змінити ядра</string>
     <string name="settings_description_open_cores_selection">Виберіть, яке ядро пов’язане з системою</string>
+    <string name="settings_core_selection_ds_info">DeSmuME є застарілим і незабаром буде вилучено. Збережіть всередині гри, а потім перемкніться на мелонДК: всередині гри економить там завантаження автоматично, але зберігайте стани, що залишаються на ядрі, що їх створили.</string>
     <string name="settings_title_display_bios_info">БІОС</string>
     <string name="settings_description_display_bios_info">Відображати знайдені та підтримувані файли BIOS</string>
     <string name="settings_bios_category_detected">Знайдено</string>
@@ -86,6 +89,9 @@
     <string name="home_empty_title">Виберіть каталог ROM</string>
     <string name="home_empty_message">Лемуроїд повинен сканувати каталог, що містить ROM файли.\nЦе може зайняти до декількох хвилин.</string>
     <string name="home_empty_action">Виберіть каталог</string>
+    <string name="home_notification_desmume_deprecated_title">DSmuME незабаром вийшло на пенсію</string>
+    <string name="home_notification_desmume_deprecated_message">Заощаджуйте в грі, перемикайтесь на melonDS, і ваш прогрес буде перенесений. Економна держава, яка залишиться прив\'язаною до DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Перемкнути на динарії</string>
     <string name="game_menu_save">Зберегти</string>
     <string name="game_menu_load">Завантажити</string>
     <string name="game_menu_restart">Перезапуск</string>
@@ -97,9 +103,12 @@
     <string name="game_menu_mute_audio">Вимкнути звук</string>
     <string name="game_menu_fast_forward">Перемотати вперед</string>
     <string name="game_menu_change_disk_disk">Диск %1$s</string>
+    <string name="game_menu_tilt_sensor">Датчик нахилу</string>
     <string name="game_loading_preparing_game">Підготовка гри…</string>
     <string name="game_toast_settings_button_using_gamepad">Виявлено ґеймпад. Доступ до меню налаштувань через %1$s.</string>
     <string name="game_toast_load_state_failed">Не вдається завантажити цей стан</string>
+    <string name="game_toast_quick_save_loaded">Швидко завантажити</string>
+    <string name="game_toast_quick_save_saved">Швидке збереження</string>
     <string name="empty_view_default">Немає елементів</string>
     <string name="core_settings_title">Налаштування ядра</string>
     <string name="core_settings_category_preferences">Налаштування</string>
@@ -140,6 +149,8 @@
     <string name="tv_home_section_settings">Налаштування</string>
     <string name="gamepad_binding_update_title">Пов\'язати \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Натисніть кнопку на \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Пов\'язати \"Shortcut %1$s\"</string>
+    <string name="shortcut_binding_update_description">Натисніть першою, а потім другу кнопку, щоб пов\'язати комбо на вашому \"%1$s\"</string>
     <string name="tv_search_results">Ігри</string>
     <string name="tv_game_message_missing_gamepad">Для гри потрібен ґеймпад. Будь ласка, під\'єднайте його.</string>
     <string name="game_edit_touch_controls_error_not_visible">Від\'єднайте ґеймпад для редагування сенсорних кнопок</string>
@@ -165,4 +176,11 @@
     <string name="haptic_feedback_mode_names_none">Відсутньо</string>
     <string name="haptic_feedback_mode_names_press">Натисніть</string>
     <string name="haptic_feedback_mode_names_press_release">Натисніть &amp; відпустіть</string>
+    <string name="tilt_configuration_disabled">Вимкнено</string>
+    <string name="tilt_configuration_cross">ТПАД</string>
+    <string name="tilt_configuration_analog_left">Лівий аналог</string>
+    <string name="tilt_configuration_analog_right">Правий аналог</string>
+    <string name="tilt_configuration_buttons_l_r">Л - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - Р1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - Р2</string>
 </resources>
