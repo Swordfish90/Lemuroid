@@ -105,6 +105,7 @@
     <string name="value_melonds_screen_layout_hybridtop">الأعلى الهجين</string>
     <string name="value_melonds_screen_layout_hybridbottom">الاسفل الهجين</string>
     <string name="value_melonds_mic_input_microphone">لاقط صوت فعلي</string>
+    <string name="value_melonds_mic_input_blow">محاكاة أصوات الضربة</string>
     <string name="value_citra_layout_option_topbottom">الأعلى - أسفل</string>
     <string name="value_citra_layout_option_sidebyside">اليسار - اليمين</string>
     <string name="value_desmume_screens_layout_topbottom">الأعلى - أسفل</string>
