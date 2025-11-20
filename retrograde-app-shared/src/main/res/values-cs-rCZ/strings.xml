@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">Rozložení obrazovky</string>
     <string name="setting_melonds_threaded_renderer">Vykreslování ve vláknech</string>
     <string name="setting_melonds_jit_enable">Dynamický rekompilátor</string>
+    <string name="setting_melonds_mic_input">Režim mikrofonu</string>
     <string name="setting_wswan_rotate_display">Orientace</string>
     <string name="setting_wswan_mono_palette">Kolorizace</string>
     <string name="setting_handy_rot">Otočení displeje</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Levá - Pravá</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybridní vrch</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybridní spodek</string>
+    <string name="value_melonds_mic_input_microphone">Skutečný mikrofon</string>
+    <string name="value_melonds_mic_input_blow">Simulovat zvuky úderů</string>
     <string name="value_citra_layout_option_topbottom">Vrch - Spodek</string>
     <string name="value_citra_layout_option_sidebyside">Levá - Pravá</string>
     <string name="value_desmume_screens_layout_topbottom">Vrch - Spodek</string>
