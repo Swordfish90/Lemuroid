@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google login mislukt: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Ingelogd bij Google als %s</string>
+    <string name="gdrive_sign_out_success">Uigelogd van Google</string>
+    <string name="gdrive_missing_play_services">Google Drive heeft Google Play Services nodig, wat jouw apparaat niet ondersteund</string>
+    <string name="gdrive_connected_summary">Gekoppeld aan %s</string>
+    <string name="gdrive_connected_none_summary">Niet geconfigureerd</string>
+    <string name="gdrive_last_sync_completed">Laatst gesynchroniseerd op: %s</string>
+    <string name="game_loading_download_core">Core downloaden…</string>
+    <string name="installing_core_notification_title">Cores bijwerken vanuit Google Play</string>
+    <string name="installing_core_notification_message">Kijk in de Google Play Store app voor de huidige status</string>
+    <string name="game_loader_error_load_core">Libretro core niet geladen, probeer het volgende:\n
+        \n\u2022 Zorg dat je verbonden bent met het internet en voer een herscan uit op je bibliotheek
+        \n\u2022 Zorg dat Google Play Store is geïnstalleerd en op de achtergrond draait
+        \n\u2022 Wacht tot lopende opdrachten in de Google Play Store app zijn voltooid</string>
+</resources>
