@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Falha no login do Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Conectado ao Google como %s</string>
+    <string name="gdrive_sign_out_success">Sessão encerrada do Google</string>
+    <string name="gdrive_missing_play_services">O Google Drive exige serviços do Google Play que não são suportados no seu dispositivo</string>
+    <string name="gdrive_connected_summary">Vinculado a %s</string>
+    <string name="gdrive_connected_none_summary">Não configurado</string>
+    <string name="gdrive_last_sync_completed">Última sincronização: %s</string>
+    <string name="game_loading_download_core">Baixando núcleo…</string>
+    <string name="installing_core_notification_title">Atualizando núcleos do Play</string>
+    <string name="installing_core_notification_message">Verifique o aplicativo Google Play Store para ver o estado atual</string>
+    <string name="game_loader_error_load_core">O núcleo Libretro não foi carregado. Tente o seguinte:\n
+        \n\u2022 Ative a conexão com a internet e verifique novamente seus jogos
+        \n\u2022 Certifique-se de que a Google Play Store está instalada e rodando
+        \n\u2022 Aguarde as operações pendentes no aplicativo da Google Play Store para concluir</string>
+</resources>
