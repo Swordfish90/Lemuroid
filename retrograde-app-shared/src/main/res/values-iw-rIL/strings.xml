@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="local_storage">אחסון מקומי</string>
+    <string name="controller_arcade_4">ברירת מחדל (4 מקשים)</string>
+    <string name="controller_arcade_6">ברירת מחדל (6 מקשים)</string>
+    <string name="controller_genesis_3">ברירת מחדל (3 מקשים)</string>
+    <string name="controller_genesis_6">ברירת מחדל (6 מקשים)</string>
+    <string name="controller_default">ברירת המחדל</string>
+    <string name="controller_dualshock">DualShock</string>
+    <string name="controller_standard">רגיל</string>
+    <string name="controller_landscape">לרוחב</string>
+    <string name="controller_portrait">לאורך</string>
+    <string name="controller_dos_auto">אוטומטי</string>
+    <!-- Core settings titles -->
+    <string name="setting_mgba_color_correction">תיקון צבעים</string>
+    <string name="setting_mupen64plus_43screensize">גודל מסך 4:3</string>
+    <string name="setting_ppsspp_internal_resolution">רזולוציה</string>
+    <!-- Core settings values. Duplicated here to ease the translation process. -->
+</resources>
