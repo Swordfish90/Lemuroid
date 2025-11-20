@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google-inloggning misslyckades: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Inloggad på Google som %s</string>
+    <string name="gdrive_sign_out_success">Loggade ut från Google</string>
+    <string name="gdrive_missing_play_services">Google Drive kräver Google Play Services som inte stöds på din enhet</string>
+    <string name="gdrive_connected_summary">Länkad till %s</string>
+    <string name="gdrive_connected_none_summary">Inte konfigurerad</string>
+    <string name="gdrive_last_sync_completed">Senaste synk: %s</string>
+    <string name="game_loading_download_core">Hämtar ner kärna…</string>
+    <string name="installing_core_notification_title">Uppdaterar kärnor från Play</string>
+    <string name="installing_core_notification_message">Kontrollera Google Play Store-appen för att se aktuell status</string>
+    <string name="game_loader_error_load_core">Libretro kärnan var inte laddad. Prova följande:\n
+        \n\u2022 Aktivera internetanslutning och omprogrammera dina spel
+        \n\u2022 Se till att Google Play Store är installerat och kör
+        \n\u2022 Vänta på pågående operationer i Google Play Store för att slutföra</string>
+</resources>
