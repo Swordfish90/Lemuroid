@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Error en iniciar sessió a Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Sessió iniciada a Google com a %s</string>
+    <string name="gdrive_sign_out_success">Sessió de Google tancada</string>
+    <string name="gdrive_missing_play_services">Google Drive requereix els serveis de Google Play que no són compatibles amb el vostre dispositiu</string>
+    <string name="gdrive_connected_summary">Enllaçat a %s</string>
+    <string name="gdrive_connected_none_summary">No configurat</string>
+    <string name="gdrive_last_sync_completed">Última sincronització: %s</string>
+    <string name="game_loading_download_core">Descarregant Nucli…</string>
+    <string name="installing_core_notification_title">Actualització dels nuclis des de Play</string>
+    <string name="installing_core_notification_message">Reviseu l\'aplicació Google Play Store per veure l\'estat actual</string>
+    <string name="game_loader_error_load_core">El nucli de Libretro no s\'ha carregat. Proveu el següent:\n
+        \n\u2022 Activa la connexió a Internet i torna a escanejar els teus jocs
+        \n\u2022 Assegureu-vos que Google Play Store estigui instal·lat i en funcionament
+        \n\u2022 Espereu que les operacions pendents a l\'aplicació Google Play Store es completin</string>
+</resources>
