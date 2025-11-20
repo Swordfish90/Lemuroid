@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD-modus</string>
     <string name="settings_description_hd_mode">Pas achteraf een opschaalfilter toe</string>
     <string name="settings_description_hd_quality">De kwaliteit van HD-modus aanpassen</string>
+    <string name="settings_title_immersive_mode">Meeslepende modus</string>
+    <string name="settings_description_immersive_mode">Dynamisch kleuren van de achtergrond gebaseerd op de spelvisuals</string>
     <string name="settings_title_gamepad_settings">Externe apparaten</string>
     <string name="settings_description_gamepad_settings">Configureer externe gamepads en toetsenborden</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Menu</string>
     <string name="settings_title_open_cores_selection">Cores wisselen</string>
     <string name="settings_description_open_cores_selection">Selecteer welke core gekoppeld is aan een systeem</string>
+    <string name="settings_core_selection_ds_info">DeSmuME is verouderd en zal binnenkort worden verwijderd. Sla binnen het spel op en schakel vervolgens over naar melonDS: in-game bespaart de lading daar automatisch, maar bespaart staten op de kern die ze gemaakt heeft.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Gedetecteerde en ondersteunde BIOS-bestanden</string>
     <string name="settings_bios_category_detected">Gedetecteerd</string>
@@ -80,9 +83,15 @@
     <string name="home_notification_title">Meldingen inschakelen</string>
     <string name="home_notification_message">Lemuroid gebruikt meldingen om je te laten weten wanneer een spel of bewerking op de achtergrond draait.</string>
     <string name="home_notification_action">Inschakelen</string>
+    <string name="home_microphone_title">microfoon inschakelen</string>
+    <string name="home_microphone_message">Nintendo DS spellen kunnen de microfoon gebruiken om enkele functies te bieden.</string>
+    <string name="home_microphone_action">Inschakelen</string>
     <string name="home_empty_title">Selecteer ROM-map</string>
     <string name="home_empty_message">Lemuroid moet een map met ROM-bestanden scannen.\nDit kan enkele minuten duren.</string>
     <string name="home_empty_action">Selecteer map</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME gaat binnenkort met pensioen</string>
+    <string name="home_notification_desmume_deprecated_message">Sla in-game op, schakel over naar melonDS, en jouw voortgang zal overgedragen worden. Bespaar staten blijven gekoppeld aan DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Overschakelen naar melonDS</string>
     <string name="game_menu_save">Opslaan</string>
     <string name="game_menu_load">Laden</string>
     <string name="game_menu_restart">Herstarten</string>
@@ -94,6 +103,7 @@
     <string name="game_menu_mute_audio">Dempen</string>
     <string name="game_menu_fast_forward">Vooruitspoelen</string>
     <string name="game_menu_change_disk_disk">Schijf %1$s</string>
+    <string name="game_menu_tilt_sensor">Kantelen Sensor</string>
     <string name="game_loading_preparing_game">Spel voorbereiden…</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad gedetecteerd. Open instellingenmenu met %1$s.</string>
     <string name="game_toast_load_state_failed">Kan deze state niet laden</string>
@@ -167,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">Geen</string>
     <string name="haptic_feedback_mode_names_press">Drukken</string>
     <string name="haptic_feedback_mode_names_press_release">Drukken en loslaten</string>
+    <string name="tilt_configuration_disabled">Uitgeschakeld</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Linker Analoog</string>
+    <string name="tilt_configuration_analog_right">Rechter Analoog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
