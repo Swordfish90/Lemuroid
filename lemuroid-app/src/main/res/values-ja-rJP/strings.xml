@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">ホーム</string>
+    <string name="title_search">検索</string>
+    <string name="title_systems">システム</string>
+    <string name="title_games">ゲーム</string>
+    <string name="title_settings">設定</string>
+    <string name="recent">最近使用した項目</string>
+    <string name="favorites">お気に入り</string>
+    <string name="discover">Discover</string>
+    <string name="rescan">再読み込み</string>
+    <string name="stop">停止</string>
+    <string name="none">なし</string>
+    <string name="directory">ディレクトリ</string>
+    <string name="display_filter">表示フィルター</string>
+    <string name="roms">ROM</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="settings">設定</string>
+    <string name="save_sync">セーブデータを同期</string>
+    <string name="show_all">すべて表示</string>
+    <string name="back">戻る</string>
+    <string name="close">閉じる</string>
+    <string name="game_page_search_suggestion">ゲームを検索</string>
+    <string name="settings_category_general">全般</string>
+    <string name="settings_category_input">入力</string>
+    <string name="settings_category_misc">その他</string>
+    <string name="settings_title_enable_autosave">状態の自動保存</string>
+    <string name="settings_description_enable_autosave">ゲームメニューから終了する際にプレイ中の状態を保存する</string>
+    <string name="settings_title_enable_touch_feedback">タッチ時に振動</string>
+    <string name="settings_title_tilt_sensitivity">傾きセンサーの感度</string>
+    <string name="settings_title_hd_quality">HDモードの品質</string>
+    <string name="settings_title_maximum_cache_usage">キャッシュサイズ制限</string>
+    <string name="settings_title_hd_mode">HDモード</string>
+    <string name="settings_description_hd_mode">後処理アップスケーリングフィルターを適用する</string>
+    <string name="settings_description_hd_quality">HDモードの画質を調整する</string>
+    <string name="settings_title_immersive_mode">没入モード</string>
+    <string name="settings_description_immersive_mode">ゲームのビジュアルに基づいて背景を動的に色付けします</string>
+    <string name="settings_title_gamepad_settings">外部デバイス</string>
+    <string name="settings_description_gamepad_settings">外部のゲームパッドとキーボードを設定</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">有効なデバイス</string>
+    <string name="settings_gamepad_category_general">全般</string>
+    <string name="settings_gamepad_title_reset_bindings">バインディングをリセット</string>
+    <string name="settings_gamepad_title_game_menu">メニュー</string>
+    <string name="settings_title_open_cores_selection">コアを変更</string>
+    <string name="settings_description_open_cores_selection">システムに関連付けられているコアを選択してください</string>
+    <string name="settings_core_selection_ds_info">DeSmuME は非推奨で、まもなく削除されます。 ゲーム内に保存し、メロンDSに切り替えてください:ゲーム内では自動的にロードが保存されますが、保存状態はそれらを作成したコアに留まります。</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">検出され、サポートされている BIOS ファイルを表示します</string>
+    <string name="settings_bios_category_detected">検出済み</string>
+    <string name="settings_bios_category_not_detected">サポート</string>
+    <string name="settings_title_reset_settings">初期化</string>
+    <string name="settings_description_reset_settings">Lemuroidを初期状態にリセットします</string>
+    <string name="settings_title_advanced_settings">詳細設定</string>
+    <string name="settings_description_advanced_settings">詳細設定を表示します</string>
+    <string name="settings_title_low_latency_audio">低遅延音声を優先</string>
+    <string name="settings_description_low_latency_audio">対応デバイスで音声の遅延を軽減します。音声の乱れが発生する場合があります。</string>
+    <string name="settings_title_direct_game_load">ゲームの直接ロード</string>
+    <string name="settings_description_direct_game_load">（実験的機能）対応しているコンソールで読み込み時間とキャッシュ使用量を削減します。</string>
+    <string name="settings_title_enable_rumble">振動</string>
+    <string name="settings_description_enable_rumble">対応しているゲームおよびコントローラーで振動機能を有効にする</string>
+    <string name="settings_title_enable_device_rumble">デバイスの振動</string>
+    <string name="settings_description_enable_device_rumble">コントローラーが接続されていない場合は、代わりにデバイスを振動させます</string>
+    <string name="reset_settings_warning_message_title">本当によろしいですか？</string>
+    <string name="reset_settings_warning_message_description">これを実行するとLemuroidが初期状態(ダウンロード時)の設定にリセットされます。セーブデータと一時保存データは保持されます。</string>
+    <string name="settings_title_save_sync">クラウドセーブ</string>
+    <string name="settings_description_save_sync">セーブデータをクラウドにバックアップして同期する</string>
+    <string name="settings_save_sync_refresh">手動同期</string>
+    <string name="settings_save_sync_refresh_description">手動同期を実行します。\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">自動同期</string>
+    <string name="settings_save_sync_enable_auto_description">Wi-Fi接続時に、ゲームプレイの前後に自動的に同期を実行します</string>
+    <string name="settings_save_sync_configure">%1$s を設定</string>
+    <string name="settings_save_sync_include_saves">ゲーム内セーブデータを同期</string>
+    <string name="settings_save_sync_include_saves_description">デバイス上の%1$s</string>
+    <string name="settings_save_sync_include_states">一時保存データを同期</string>
+    <string name="settings_save_sync_include_states_description">より便利ですが、負荷が大きく信頼性は低くなります。同期したいコアやシステムを選択してください</string>
+    <string name="game_context_menu_add_to_favorites">お気に入りに追加</string>
+    <string name="game_context_menu_remove_from_favorites">お気に入りから削除</string>
+    <string name="game_context_menu_resume">再開</string>
+    <string name="game_context_menu_restart">再起動</string>
+    <string name="game_context_menu_create_shortcut">ランチャーに追加</string>
+    <string name="home_notification_title">通知を有効化</string>
+    <string name="home_notification_message">Lemuroid は、ゲームや操作がバックグラウンドで実行されているときに通知を使用します。</string>
+    <string name="home_notification_action">有効にする</string>
+    <string name="home_microphone_title">マイクを有効化</string>
+    <string name="home_microphone_message">ニンテンドーDSゲームはマイクを使っていくつかの機能を提供することができます。</string>
+    <string name="home_microphone_action">有効にする</string>
+    <string name="home_empty_title">ROMディレクトリを選択</string>
+    <string name="home_empty_message">LemuroidはROMファイルが入ったディレクトリをスキャンする必要があります。
+\nこれには数分かかる場合があります。</string>
+    <string name="home_empty_action">ディレクトリを選択</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME はすぐに引退します</string>
+    <string name="home_notification_desmume_deprecated_message">ゲーム内で保存し、メロンDSに切り替えると、進行状況が引き継がれます。DeSmuMEに関連した状態を保存します。</string>
+    <string name="home_notification_desmume_deprecated_action">メロンDSに切り替える</string>
+    <string name="game_menu_save">保存</string>
+    <string name="game_menu_load">読み込み</string>
+    <string name="game_menu_restart">再起動</string>
+    <string name="game_menu_quit">終了</string>
+    <string name="game_menu_settings">設定</string>
+    <string name="game_menu_state">一時保存 %1$s</string>
+    <string name="game_menu_change_disk_button">ディスクの変更</string>
+    <string name="game_menu_edit_touch_controls">コントロールを編集</string>
+    <string name="game_menu_mute_audio">ミュート</string>
+    <string name="game_menu_fast_forward">早送り</string>
+    <string name="game_menu_change_disk_disk">ディスク %1$s</string>
+    <string name="game_menu_tilt_sensor">傾斜センサー</string>
+    <string name="game_toast_settings_button_using_gamepad">ゲームパッドが検出されました。 %1$s の設定メニューにアクセスします。</string>
+    <string name="game_toast_load_state_failed">この一時保存データを読み込めません</string>
+    <string name="game_toast_quick_save_loaded">クイック読み込み中</string>
+    <string name="game_toast_quick_save_saved">クイック保存</string>
+    <string name="empty_view_default">アイテムがありません</string>
+    <string name="core_settings_title">コア設定</string>
+    <string name="core_settings_category_preferences">設定</string>
+    <string name="core_settings_category_controllers">コントローラ</string>
+    <string name="core_settings_controller">コントローラ %1$s</string>
+    <string name="game_menu_title">ゲームメニュー</string>
+    <string name="notification_channel_name">すべての通知</string>
+    <string name="library_index_notification_title">ROMのスキャン中</string>
+    <string name="library_index_notification_message">これは数分かかることがあります</string>
+    <string name="save_sync_notification_title">クラウドセーブ同期中</string>
+    <string name="save_sync_notification_message">これは数分かかることがあります</string>
+    <string name="game_running_notification_title">%1$s が実行されています</string>
+    <string name="game_running_notification_title_alternative">ゲームを実行しています</string>
+    <string name="game_running_notification_message">進捗状況を保存してください</string>
+    <string name="game_loader_error_gl_incompatible">このコアはお使いのデバイスでサポートされていないOpenGL ESバージョンが必要です。</string>
+    <string name="game_loader_error_load_game">ゲームの読み込み中に問題が発生しました。ROMがLemuroidでサポートされていることを確認し、ゲームを再スキャンしてください。</string>
+    <string name="game_loader_error_save">セーブファイルに問題が発生しました。問題が解決しない場合は、自動保存を無効にしてください。</string>
+    <string name="game_loader_error_unsupported_architecture">このコアはお使いのデバイスではサポートされていません。</string>
+    <string name="game_loader_error_generic">何か問題が発生しました。以下の対処をお試しください：\n
+        \n\u2022 オートセーブを無効にして、ゲームを再実行する
+        \n\u2022 Androidの設定からアプリのキャッシュを削除する
+        \n\u2022 Lemuroidの設定で「工場出荷時にリセット」を実行する
+        \n\n上記を試しても解決しない場合、このゲームやコアがこの端末でサポートされていない可能性があります。
+    </string>
+    <string name="game_loader_error_missing_bios">必要なBIOSファイルが見つかりません。ROMディレクトリにBIOSを入れて、再スキャンしてください。
+\n必要なファイル：%1$s</string>
+    <string name="game_shortcut_error">ゲームの読み込み中に問題が発生しました。このゲームがまだライブラリに存在していることを確認してください。</string>
+    <string name="dialog_saf_not_found">このデバイスはStorageAccessFrameworkファイルピッカーをサポートしていません。非圧縮ROMファイルを手動で %1$s にコピーし、Rescanを押してください。</string>
+    <string name="system_grid_details">%1$s ゲーム</string>
+    <string name="tv_folder_picker_title">ROMディレクトリを選択</string>
+    <string name="tv_folder_picker_action_choose">選択</string>
+    <string name="tv_folder_picker_action_cancel">キャンセル</string>
+    <string name="tv_folder_storage_primary">プライマリストレージ</string>
+    <string name="tv_folder_storage_secondary">セカンダリストレージ %1$s</string>
+    <string name="tv_folder_storage_title">ストレージを選択</string>
+    <string name="tv_home_section_favorites">お気に入り</string>
+    <string name="tv_home_section_recents">最近のもの</string>
+    <string name="tv_home_section_systems">システム</string>
+    <string name="tv_home_section_settings">設定</string>
+    <string name="gamepad_binding_update_title">アソシエイト\"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">\"%1$s\" のボタンを押してください</string>
+    <string name="shortcut_binding_update_title">\"ショートカット %1$s\" を関連付けます</string>
+    <string name="shortcut_binding_update_description">最初のボタンを押し、次に2番目のボタンを押してコンボ\"%1$s\"をバインドします</string>
+    <string name="tv_search_results">ゲーム</string>
+    <string name="tv_game_message_missing_gamepad">ゲームパッドが必要です。接続してください。</string>
+    <string name="game_edit_touch_controls_error_not_visible">タッチコントロールを編集するにはパッドを取り外してください</string>
+    <string name="game_interactory_busy">保留中の操作が完了するまで待ちます</string>
+    <string name="mobile_settings_help">ヘルプ</string>
+    <string name="mobile_settings_support">サポート</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroidの使い方は？</b><br/>
+        すべてのROMファイルをお使いのデバイス内のディレクトリにコピーし、Lemuroidでそのディレクトリを選択してください。このディレクトリ内にサブディレクトリがあっても問題ありません。スキャンが完了すると、ゲームが表示されるはずです。<br/><br/>
+        <b>&#8226;・ゲームが認識されないのはなぜ？</b><br/>
+      ゲームが圧縮されている場合は、まず解凍してみてください。それでも認識されない場合は、各システムごとにROMを別々のディレクトリに分けて配置してみてください。ディレクトリ名は次のようにしてください: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Libretroコアで予期しない問題が発生したようです。問題が続く場合は、以下をお試しください：\n
+        \n\u2022 オートセーブを無効にしてゲームを再起動する
+        \n\u2022 Androidの設定からアプリのキャッシュを削除する
+        \n\u2022 Lemuroidの設定で初期化を実行する
+        \n\n 上記を試しても改善しない場合、このゲームやコアはお使いの端末でサポートされていない可能性があります。
+    </string>
+    <string name="error_message_incompatible_state">この一時保存データは現在のコアバージョンと互換性がありません。最新のゲーム内セーブを読み込むか、以前のLemuroidバージョンを使用してください。</string>
+    <string name="shader_filter_names_auto">自動</string>
+    <string name="shader_filter_names_sharp">シャープ。</string>
+    <string name="shader_filter_names_smooth">スムース</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">なし</string>
+    <string name="haptic_feedback_mode_names_press">プレス</string>
+    <string name="haptic_feedback_mode_names_press_release">&amp; リリース</string>
+    <string name="tilt_configuration_disabled">無効</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">左アナログコード</string>
+    <string name="tilt_configuration_analog_right">右アナログ</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+</resources>
