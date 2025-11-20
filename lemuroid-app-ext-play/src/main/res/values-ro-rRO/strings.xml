@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Autentificare la Google a eșuat: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Autentificat în Google ca %s</string>
+    <string name="gdrive_sign_out_success">Deconectat de pe Google</string>
+    <string name="gdrive_missing_play_services">Google Drive necesită serviciile Google Play care nu sunt suportate pe dispozitivul dvs</string>
+    <string name="gdrive_connected_summary">Conectat la %s</string>
+    <string name="gdrive_connected_none_summary">Neconfigurat</string>
+    <string name="gdrive_last_sync_completed">Ultima sincronizare: %s</string>
+    <string name="game_loading_download_core">Se descarcă Emulatorul…</string>
+    <string name="installing_core_notification_title">Actualizarea Emulatoarelor din Play</string>
+    <string name="installing_core_notification_message">Verificați aplicația Google Play pentru a vedea starea curentă</string>
+    <string name="game_loader_error_load_core">Emulatorul de la Libretro nu a putut fi încărcat. Încercați următoarele:\n
+\u2022 Asigurăți-va ca aveți o conexiune stabile la internet si încercați din nou
+\u2022 Asigurați-va ca Google Play este instalat si ca funcționează
+\u2022 Așteptați ca operațiunile de pe Google Play sa se finalizeze</string>
+</resources>
