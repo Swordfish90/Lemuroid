@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">高清模式</string>
     <string name="settings_description_hd_mode">使用\'后处理提升\'滤镜</string>
     <string name="settings_description_hd_quality">调整高清模式的质量</string>
+    <string name="settings_title_immersive_mode">沉浸模式</string>
+    <string name="settings_description_immersive_mode">动态颜色基于游戏视觉背景</string>
     <string name="settings_title_gamepad_settings">外部设备</string>
     <string name="settings_description_gamepad_settings">配置外接手柄和键盘</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">菜单</string>
     <string name="settings_title_open_cores_selection">更改核心</string>
     <string name="settings_description_open_cores_selection">选择与系统关联的核心</string>
+    <string name="settings_core_selection_ds_info">Dersmume 已被弃用，不久将被删除。 在游戏中保存，然后切换至熔化后自动保存游戏中的负载，但保存状态保持在创建游戏的核心上。</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">显示检测到的和受支持的 BIOS 文件</string>
     <string name="settings_bios_category_detected">已检测到</string>
@@ -86,6 +89,9 @@
     <string name="home_empty_title">选择 ROM 目录</string>
     <string name="home_empty_message">Lemuroid 需要扫描一个包含 ROM 文件的目录。\n这可能需要几分钟的时间。</string>
     <string name="home_empty_action">选择目录</string>
+    <string name="home_notification_desmume_deprecated_title">Désmume 即将退出</string>
+    <string name="home_notification_desmume_deprecated_message">在游戏中保存，切换到melondDS，进度将会传输。保存状态将保持与 DeSmuME 的绑定。</string>
+    <string name="home_notification_desmume_deprecated_action">切换到熔化</string>
     <string name="game_menu_save">保存</string>
     <string name="game_menu_load">载入</string>
     <string name="game_menu_restart">重新开始</string>
@@ -97,6 +103,7 @@
     <string name="game_menu_mute_audio">静音</string>
     <string name="game_menu_fast_forward">快进</string>
     <string name="game_menu_change_disk_disk">碟片 %1$s</string>
+    <string name="game_menu_tilt_sensor">倾斜传感器</string>
     <string name="game_loading_preparing_game">正在准备游戏…</string>
     <string name="game_toast_settings_button_using_gamepad">检测到游戏手柄。使用 %1$s 访问设置菜单。</string>
     <string name="game_toast_load_state_failed">无法加载此状态</string>
@@ -171,4 +178,10 @@
     <string name="haptic_feedback_mode_names_press">按下</string>
     <string name="haptic_feedback_mode_names_press_release">按下并松开</string>
     <string name="tilt_configuration_disabled"></string>
+    <string name="tilt_configuration_cross">调试器</string>
+    <string name="tilt_configuration_analog_left">左模拟器</string>
+    <string name="tilt_configuration_analog_right">右侧模拟器</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1-R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2-R2</string>
 </resources>
