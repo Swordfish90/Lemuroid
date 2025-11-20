@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Descarregant nucli…</string>
+    <string name="installing_core_notification_title">Actualitzant els nuclis</string>
+    <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
+    <string name="game_loader_error_load_core">El nucli de Libretro no s\'ha carregat. Assegureu-vos que el dispositiu estigui connectat a Internet i intenteu tornar a escanejar la vostra biblioteca. Si el problema persisteix, és possible que aquest nucli no sigui compatible amb el dispositiu.</string>
+</resources>
