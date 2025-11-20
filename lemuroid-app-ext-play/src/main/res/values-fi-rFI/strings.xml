@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google Kirjaudu epäonnistui: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Kirjautuneena Googleen nimellä %s</string>
+    <string name="gdrive_sign_out_success">Kirjauduttu ulos Googlesta</string>
+    <string name="gdrive_missing_play_services">Google Drive vaatii Google Play -palvelut, joita ei tueta laitteessasi</string>
+    <string name="gdrive_connected_summary">Linkitetty %s</string>
+    <string name="gdrive_connected_none_summary">Ei määritetty</string>
+    <string name="gdrive_last_sync_completed">Viimeisin synkronointi: %s</string>
+    <string name="game_loading_download_core">Ladataan Ydin…</string>
+    <string name="installing_core_notification_title">Päivitetään ydintä pelistä</string>
+    <string name="installing_core_notification_message">Tarkista Google Play Store -sovellus nähdäksesi nykyisen tilan</string>
+    <string name="game_loader_error_load_core">Libretron ydintä ei ladattu. Kokeile seuraavia:\n
+        \n\u2022 Ota internet-yhteys käyttöön ja uudelleennimeä pelisi
+        \n\u2022 Varmista, että Google Play on asennettu ja käynnissä
+        \n\u2022 Odota käynnissä olevia toimintoja Google Play Store -sovelluksessa.</string>
+</resources>
