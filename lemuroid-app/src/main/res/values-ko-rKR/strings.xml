@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">홈</string>
+    <string name="title_search">검색</string>
+    <string name="title_systems">시스템</string>
+    <string name="title_games">게임</string>
+    <string name="title_settings">설정</string>
+    <string name="recent">최근 실행</string>
+    <string name="favorites">즐겨찾기</string>
+    <string name="discover">발견하기</string>
+    <string name="rescan">다시 검색</string>
+    <string name="stop">중단</string>
+    <string name="none">없음</string>
+    <string name="directory">디렉토리</string>
+    <string name="display_filter">디스플레이 필터</string>
+    <string name="roms">ROM</string>
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="settings">설정</string>
+    <string name="save_sync">세이브 동기화</string>
+    <string name="show_all">모두 표시</string>
+    <string name="back">뒤로</string>
+    <string name="close">닫기</string>
+    <string name="game_page_search_suggestion">게임 검색</string>
+    <string name="settings_category_general">일반</string>
+    <string name="settings_category_input">입력</string>
+    <string name="settings_category_misc">기타</string>
+    <string name="settings_title_enable_autosave">상태 자동 저장</string>
+    <string name="settings_description_enable_autosave">게임 메뉴를 통해 종료 시 상태저장 생성</string>
+    <string name="settings_title_enable_touch_feedback">터치 시 진동</string>
+    <string name="settings_title_tilt_sensitivity">기울임 센서 감도</string>
+    <string name="settings_title_hd_quality">HD 모드 품질</string>
+    <string name="settings_title_maximum_cache_usage">캐시 크기 제한</string>
+    <string name="settings_title_hd_mode">HD 모드</string>
+    <string name="settings_description_hd_mode">업스케일링 후처리 필터를 적용합니다</string>
+    <string name="settings_description_hd_quality">HD 모드의 품질을 설정합니다</string>
+    <string name="settings_title_gamepad_settings">외장 장치</string>
+    <string name="settings_description_gamepad_settings">외장 게임패드와 키보드를 설정합니다</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">활성화된 장치</string>
+    <string name="settings_gamepad_category_general">일반</string>
+    <string name="settings_gamepad_title_reset_bindings">매핑 초기화</string>
+    <string name="settings_gamepad_title_game_menu">메뉴</string>
+    <string name="settings_title_open_cores_selection">코어 변경</string>
+    <string name="settings_description_open_cores_selection">시스템에 연결된 코어를 변경합니다</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">인식된 BIOS 파일을 표시합니다</string>
+    <string name="settings_bios_category_detected">감지됨</string>
+    <string name="settings_bios_category_not_detected">지원됨</string>
+    <string name="settings_title_reset_settings">설정 초기화</string>
+    <string name="settings_description_reset_settings">Lemuroid를 초기 설정으로 되돌립니다</string>
+    <string name="settings_title_advanced_settings">고급 설정</string>
+    <string name="settings_description_advanced_settings">고급 설정 표시</string>
+    <string name="settings_title_low_latency_audio">저지연 오디오 선호</string>
+    <string name="settings_description_low_latency_audio">지원되는 기기에서 오디오 레이턴시를 줄입니다. 오디오 문제가 발생할 수 있습니다.</string>
+    <string name="settings_title_direct_game_load">게임 직접 불러오기</string>
+    <string name="settings_description_direct_game_load">(실험적 기능) 지원되는 콘솔에 대해 로딩 시간과 캐시 사용량을 감소시킵니다.</string>
+    <string name="settings_title_enable_rumble">진동</string>
+    <string name="settings_description_enable_rumble">지원되는 게임과 컨트롤러에서 진동을 사용합니다</string>
+    <string name="settings_title_enable_device_rumble">장치 진동</string>
+    <string name="settings_description_enable_device_rumble">연결된 컨트롤러가 없을 경우 장치를 진동합니다</string>
+    <string name="reset_settings_warning_message_title">확실한가요?</string>
+    <string name="reset_settings_warning_message_description">Lemuroid 설정을 초기 설정으로 되돌립니다. 게임 세이브와 상태저장은 보존됩니다.</string>
+    <string name="settings_title_save_sync">클라우드 저장</string>
+    <string name="settings_description_save_sync">세이브 데이터를 클라우드에 백업 및 동기화합니다</string>
+    <string name="settings_save_sync_refresh">수동 동기화</string>
+    <string name="settings_save_sync_refresh_description">지금 바로 수동 동기화를 수행합니다.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">자동 동기화</string>
+    <string name="settings_save_sync_enable_auto_description">Wi-Fi에 연결되어 있을 때 게임을 종료하면 자동으로 동기화를 수행합니다</string>
+    <string name="settings_save_sync_configure">%1$s 설정</string>
+    <string name="settings_save_sync_include_saves">게임 세이브 데이터 동기화</string>
+    <string name="settings_save_sync_include_saves_description">%1$s 사용 중</string>
+    <string name="settings_save_sync_include_states">상태저장 동기화</string>
+    <string name="settings_save_sync_include_states_description">더 편리하지만, 더 무겁고 불안정합니다. 동기화할 코어/시스템을 선택합니다</string>
+    <string name="game_context_menu_add_to_favorites">즐겨찾기에 추가</string>
+    <string name="game_context_menu_remove_from_favorites">즐겨찾기에서 제거</string>
+    <string name="game_context_menu_resume">계속하기</string>
+    <string name="game_context_menu_restart">다시 시작</string>
+    <string name="game_context_menu_create_shortcut">런처에 고정</string>
+    <string name="home_notification_title">알림 사용</string>
+    <string name="home_notification_message">Lemuroid가 게임 또는 배경 작업을 실행 중일 때 알림을 표시합니다.</string>
+    <string name="home_notification_action">활성화</string>
+    <string name="home_microphone_title">마이크 활성화</string>
+    <string name="home_microphone_message">Nintendo DS 게임들의 마이크를 활용하는 기능을 사용할 수 있습니다.</string>
+    <string name="home_microphone_action">활성화</string>
+    <string name="home_empty_title">ROM 디렉토리 선택</string>
+    <string name="home_empty_message">Lemuroid가 검색할 ROM 파일이 담긴 디렉토리가 필요합니다.\n이 과정은 몇 분 정도 걸립니다.</string>
+    <string name="home_empty_action">디렉토리 선택</string>
+    <string name="game_menu_save">저장</string>
+    <string name="game_menu_load">불러오기</string>
+    <string name="game_menu_restart">다시 시작</string>
+    <string name="game_menu_quit">종료</string>
+    <string name="game_menu_settings">설정</string>
+    <string name="game_menu_state">상태 %1$s</string>
+    <string name="game_menu_change_disk_button">디스크 변경</string>
+    <string name="game_menu_edit_touch_controls">컨트롤 변경</string>
+    <string name="game_menu_mute_audio">음소거</string>
+    <string name="game_menu_fast_forward">빨리 감기</string>
+    <string name="game_menu_change_disk_disk">디스크 %1$s</string>
+    <string name="game_menu_tilt_sensor">기울기 센서</string>
+    <string name="game_loading_preparing_game">게임 준비 중…</string>
+    <string name="game_toast_settings_button_using_gamepad">게임패드가 감지되었습니다. %1$s(으)로 설정 메뉴를 열 수 있습니다.</string>
+    <string name="game_toast_load_state_failed">이 상태저장을 열 수 없습니다</string>
+    <string name="game_toast_quick_save_loaded">빠른 저장 불러옴</string>
+    <string name="game_toast_quick_save_saved">빠른 저장 생성됨</string>
+    <string name="empty_view_default">항목 없음</string>
+    <string name="core_settings_title">코어 설정</string>
+    <string name="core_settings_category_preferences">설정</string>
+    <string name="core_settings_category_controllers">컨트롤러</string>
+    <string name="core_settings_controller">컨트롤러 %1$s</string>
+    <string name="game_menu_title">게임 메뉴</string>
+    <string name="notification_channel_name">모든 알림</string>
+    <string name="library_index_notification_title">ROM 검색 중</string>
+    <string name="library_index_notification_message">몇 분 정도 걸립니다</string>
+    <string name="save_sync_notification_title">클라우드 동기화 진행 중</string>
+    <string name="save_sync_notification_message">몇 분 정도 걸립니다</string>
+    <string name="game_running_notification_title">%1$s 실행 중</string>
+    <string name="game_running_notification_title_alternative">게임 실행 중</string>
+    <string name="game_running_notification_message">진행 상황 저장을 잊지 마세요</string>
+    <string name="game_loader_error_gl_incompatible">이 장치에서는 이 코어가 요구하는 OpenGL ES 버전이 지원되지 않습니다.</string>
+    <string name="game_loader_error_load_game">게임을 불러오는 도중 문제가 발생했습니다. ROM 파일이 Lemuroid에서 지원되는 파일인지 확인한 뒤 게임을 다시 검색해주세요.</string>
+    <string name="game_loader_error_save">세이브 파일에 문제가 발생했습니다. 문제가 지속될 경우 자동 저장을 비활성화하는 것이 좋습니다.</string>
+    <string name="game_loader_error_unsupported_architecture">이 장치에서 지원되지 않는 코어입니다.</string>
+    <string name="game_loader_error_generic">문제가 발생했습니다. 다음 조치를 취해보세요:\n
+        \n\u2022 자동 저장을 비활성화하고 게임 다시 실행
+        \n\u2022 안드로이드 설정에서 앱 캐시 초기화
+        \n\u2022 Lemuroid 설정에서 설정 초기화
+        \n\n이후에도 계속 문제가 발생할 경우, 이 장치에서 이 게임 또는 코어가 지원되지 않는 것일 수도 있습니다.
+    </string>
+    <string name="game_loader_error_missing_bios">필요한 BIOS 파일이 없는 것 같습니다. ROM 디렉토리에 필요한 파일을 추가한 뒤 게임을 다시 검색해주세요. 필요한 파일: %1$s</string>
+    <string name="game_shortcut_error">게임을 불러오는 중 문제가 발생했습니다. 게임이 아직 라이브러리에 존재하는지 확인해주세요.</string>
+    <string name="dialog_saf_not_found">이 장치에서는 저장소 액세스 프레임워크 파일 선택기가 지원되지 않습니다. 압축되지 않은 ROM 파일을 %1$s에 복사한 뒤 게임을 다시 검색해주세요.</string>
+    <string name="system_grid_details">%1$s개의 게임</string>
+    <string name="tv_folder_picker_title">ROM 디렉토리 선택</string>
+    <string name="tv_folder_picker_action_choose">선택</string>
+    <string name="tv_folder_picker_action_cancel">취소</string>
+    <string name="tv_folder_storage_primary">주 저장소</string>
+    <string name="tv_folder_storage_secondary">보조 저장소 %1$s</string>
+    <string name="tv_folder_storage_title">저장소 선택</string>
+    <string name="tv_home_section_favorites">즐겨찾기</string>
+    <string name="tv_home_section_recents">최근 실행</string>
+    <string name="tv_home_section_systems">시스템</string>
+    <string name="tv_home_section_settings">설정</string>
+    <string name="gamepad_binding_update_title">\"RetroPad %1$s\" 연결하기</string>
+    <string name="gamepad_binding_update_description">\"%1$s\"의 버튼을 눌러주세요</string>
+    <string name="shortcut_binding_update_title">\"단축키 %1$s\" 연결하기</string>
+    <string name="shortcut_binding_update_description">\"%1$s\"에서 첫 번째 버튼을 누른 뒤, 두 번째 버튼을 눌러 단축키를 설정하세요</string>
+    <string name="tv_search_results">게임</string>
+    <string name="tv_game_message_missing_gamepad">게임패드가 필요합니다. 게임패드를 연결해주세요.</string>
+    <string name="game_edit_touch_controls_error_not_visible">터치 컨트롤을 변경하려면 게임패드 연결을 해제해주세요</string>
+    <string name="game_interactory_busy">현재 작업이 완료될 때까지 기다려주세요</string>
+    <string name="mobile_settings_help">도움말</string>
+    <string name="mobile_settings_support">지원</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroid는 어떻게 사용하나요?</b><br/>
+        ROM 파일들을 장치 내 디렉토리에 복사한 뒤 Lemuroid에서 해당 디렉토리를 선택합니다. 디렉토리 안에 디렉토리가 있어도 괜찮습니다. 검색이 끝나면 게임들을 보실 수 있습니다.<br/><br/>
+        <b>&#8226;왜 제 게임이 감지되지 않는건가요?</b><br/>
+        게임 파일이 압축되어 있다면, 압축을 해제해보세요. 그래도 안 된다면 ROM들을 아래와 같은 이름의 디렉토리를 만들어서 시스템별로 따로따로 배치해보세요: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Libretro 코어에서 예기치 못한 문제가 발생했습니다. 문제가 지속된다면 다음 조치를 취해보세요:\n
+        \n\u2022 자동 저장을 비활성화하고 게임 다시 실행
+        \n\u2022 안드로이드 설정에서 앱 캐시 초기화
+        \n\u2022 Lemuroid 설정에서 설정 초기화
+        \n\n 이후에도 계속 문제가 발생할 경우, 이 장치에서 이 게임 또는 코어가 지원되지 않는 것일 수도 있습니다.
+    </string>
+    <string name="error_message_incompatible_state">이 상태저장은 현재 코어 버전과 호환되지 않습니다. 가장 최근의 인게임 세이브 데이터를 사용하거나 이전 버전의 Lemuroid를 사용하세요.</string>
+    <string name="shader_filter_names_auto">자동</string>
+    <string name="shader_filter_names_sharp">선명하게</string>
+    <string name="shader_filter_names_smooth">부드럽게</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">없음</string>
+    <string name="haptic_feedback_mode_names_press">누를 때</string>
+    <string name="haptic_feedback_mode_names_press_release">누를 때 &amp; 뗄 때</string>
+    <string name="tilt_configuration_disabled">사용 안 함</string>
+    <string name="tilt_configuration_cross">방향 패드</string>
+    <string name="tilt_configuration_analog_left">왼쪽 아날로그</string>
+    <string name="tilt_configuration_analog_right">오른쪽 아날로그</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+</resources>
