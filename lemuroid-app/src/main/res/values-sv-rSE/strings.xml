@@ -103,9 +103,12 @@
     <string name="game_menu_mute_audio">Stäng av ljud</string>
     <string name="game_menu_fast_forward">Snabbspola</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_tilt_sensor">Lutnings Sensor</string>
     <string name="game_loading_preparing_game">Förbereder spel…</string>
     <string name="game_toast_settings_button_using_gamepad">Handkontroll upptäckt. Öppna inställningsmenyn med %1$s.</string>
     <string name="game_toast_load_state_failed">Kan inte ladda detta läge</string>
+    <string name="game_toast_quick_save_loaded">Snabb laddad</string>
+    <string name="game_toast_quick_save_saved">Snabb sparad</string>
     <string name="empty_view_default">Inga objekt</string>
     <string name="core_settings_title">Inställningarna för kärnan</string>
     <string name="core_settings_category_preferences">Inställningar</string>
@@ -175,6 +178,7 @@
     <string name="haptic_feedback_mode_names_press">Tryck</string>
     <string name="haptic_feedback_mode_names_press_release">Tryck &amp; släpp</string>
     <string name="tilt_configuration_disabled">Inaktiverad</string>
+    <string name="tilt_configuration_cross">DPAD</string>
     <string name="tilt_configuration_analog_left">Vänster analog</string>
     <string name="tilt_configuration_analog_right">Höger analog</string>
     <string name="tilt_configuration_buttons_l_r">L - R</string>
