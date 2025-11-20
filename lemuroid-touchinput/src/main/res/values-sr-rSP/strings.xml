@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Готово</string>
+    <string name="touch_customize_button_reset">Ресетуј</string>
+    <string name="touch_customize_info">Контроле превлачења и штипања за промену позиције и величине</string>
+</resources>
