@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google ile oturum açma başarısız: %s (%s)</string>
+    <string name="gdrive_sign_in_success">%s olarak Google\'a giriş yapıldı</string>
+    <string name="gdrive_sign_out_success">Google\'dan çıkış yapıldı</string>
+    <string name="gdrive_missing_play_services">Google Drive cihazınız tarafından desteklenmeyen Google Play hizmetleri olmadan çalışmayacaktır</string>
+    <string name="gdrive_connected_summary">%s\'e bağlanıldı</string>
+    <string name="gdrive_connected_none_summary">Ayarlanmamış</string>
+    <string name="gdrive_last_sync_completed">Son senkronize: %s</string>
+    <string name="game_loading_download_core">Çekirdek İndiriliyor…</string>
+    <string name="installing_core_notification_title">Çekirdekler Google Play ile Güncelleniyor</string>
+    <string name="installing_core_notification_message">Şu anki duruma bakmak için Play Store\'a bakın</string>
+    <string name="game_loader_error_load_core">\u2022 Oyunları tekrar taramak için internete bağlanın
+\u2022 Play Store\'un açık ve yüklü olduğunu kontrol edin
+\u2022 Play Store\'daki işlemlerin tamamlanmasını bekleyin</string>
+</resources>
