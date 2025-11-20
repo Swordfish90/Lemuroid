@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Đăng nhập Google thất bại: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Đã đăng nhập Google với tư cách là %s</string>
+    <string name="gdrive_sign_out_success">Đã đăng xuất khỏi Google</string>
+    <string name="gdrive_missing_play_services">Google Drive yêu cầu Dịch vụ Google Play, trong khi thiết bị của bạn không hỗ trợ ứng dụng này</string>
+    <string name="gdrive_connected_summary">Đã liên kết đến %s</string>
+    <string name="gdrive_connected_none_summary">Chưa được thiết lập</string>
+    <string name="gdrive_last_sync_completed">Lần đồng bộ cuối: %s</string>
+    <string name="game_loading_download_core">Đang tải lõi xuống…</string>
+    <string name="installing_core_notification_title">Đang cập nhật lõi từ Play</string>
+    <string name="installing_core_notification_message">Kiểm tra ứng dụng Cửa hàng Google Play để xem tình trạng hiện tại</string>
+    <string name="game_loader_error_load_core">Lõi libretro tải không thành công. Hãy thử những cách sau:\n
+        \n\u2022 Bật kết nối internet và quét lại các trò chơi
+        \n\u2022 Đảm bảo Cửa hàng Google Play được cài đặt và đang chạy
+        \n\u2022 Chờ các hoạt động đang đợi xử lý của Cửa hàng Google Play hoàn tất</string>
+</resources>
