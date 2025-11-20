@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">Scherm lay-out</string>
     <string name="setting_melonds_threaded_renderer">Threaded rendering</string>
     <string name="setting_melonds_jit_enable">Dynamische recompiler</string>
+    <string name="setting_melonds_mic_input">Microfoon modus</string>
     <string name="setting_wswan_rotate_display">Oriëntatie</string>
     <string name="setting_wswan_mono_palette">Kleur</string>
     <string name="setting_handy_rot">Schermrotatie</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Links - Rechts</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybride Bovenzijde</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybride Onderzijde</string>
+    <string name="value_melonds_mic_input_microphone">Echte microfoon</string>
+    <string name="value_melonds_mic_input_blow">Simuleer blaasgeluiden</string>
     <string name="value_citra_layout_option_topbottom">Boven - Onder</string>
     <string name="value_citra_layout_option_sidebyside">Links - Rechts</string>
     <string name="value_desmume_screens_layout_topbottom">Boven - Onder</string>
