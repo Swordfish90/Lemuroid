@@ -160,7 +160,7 @@
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hvordan bruger jeg Lemuroid?</b><br/>
         Kopier alle dine ROMS-filer til en mappe på din enhed og vælg denne i Lemuroid. Denne mappe har tilladelse til at have undermapper. Efter scanningen er færdig, skulle du se dine spil.<br/><br/>
         <b>&#8226;Hvorfor blev mine spil ikke opdaget?</b><br/>
-        Hvis dine spil er komprimeret, så prøv at pakke demud. Hvis dette ikke virker, så prøv at sætte ROM'er i separate mapper, et for hvert system med følgende navne: $SYSTEMS.
+        Hvis dine spil er komprimeret, så prøv at pakke demud. Hvis dette ikke virker, så prøv at sætte ROM\'er i separate mapper, et for hvert system med følgende navne: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Det ser ud som om Libretro kernen har oplevet et uventet problem. Hvis det er vedvarende skal du prøve følgende:\n
         \n\u2022 Deaktivér auto-save og genstart spillet
