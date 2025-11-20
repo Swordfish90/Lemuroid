@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">התחברות דרך גוגל נכשלה: %s (%s)</string>
+    <string name="gdrive_sign_in_success">מחובר דרך גוגל כ%s</string>
+    <string name="gdrive_sign_out_success">התנקת בהצלחה מגוגל</string>
+    <string name="gdrive_missing_play_services">התחברות דרך גוגל דרייב מצריכה את שירותי Google Play שאינם זמינים במכשירך</string>
+    <string name="gdrive_connected_summary">מקושר אל %s</string>
+    <string name="gdrive_connected_none_summary">לא מוגדר</string>
+    <string name="gdrive_last_sync_completed">סנכרון אחרון: %s</string>
+    <string name="game_loading_download_core">מוריד ליבה…</string>
+    <string name="installing_core_notification_message">בדוק את אפליקציית גוגל פליי כדי לראות את המצב הקיים</string>
+</resources>
