@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">Λειτουργία HD</string>
     <string name="settings_description_hd_mode">Εφαρμογή upscaling φίλτρου μετά την επεξεργασία</string>
     <string name="settings_description_hd_quality">Προσαρμογή της ποιότητας της HD λειτουργίας</string>
+    <string name="settings_title_immersive_mode">Immersive λειτουργία</string>
+    <string name="settings_description_immersive_mode">Δυναμικά χρωματίζει το φόντο που βασίζεται σε οπτικά παιχνίδια</string>
     <string name="settings_title_gamepad_settings">Εξωτερικές συσκευές</string>
     <string name="settings_description_gamepad_settings">Ρύθμιση εξωτερικών gamepads και πληκτρολογίων</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Μενού</string>
     <string name="settings_title_open_cores_selection">Αλλαγή Πυρήνων</string>
     <string name="settings_description_open_cores_selection">Επιλέξτε τον πυρήνα που σχετίζεται με ένα σύστημα</string>
+    <string name="settings_core_selection_ds_info">DeSmuME είναι παρωχημένη και θα αφαιρεθεί σύντομα. Αποθηκεύστε μέσα στο παιχνίδι, στη συνέχεια, μεταβείτε σε πεπόνια: εντός του παιχνιδιού αποθηκεύει το φορτίο εκεί αυτόματα, αλλά αποθηκεύστε τα κράτη να παραμείνουν στον πυρήνα που τα δημιούργησε.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Εμφάνιση εντοπισμένων και υποστηριζόμενων αρχείων BIOS</string>
     <string name="settings_bios_category_detected">Ανιχνεύθηκαν</string>
@@ -80,9 +83,15 @@
     <string name="home_notification_title">Ενεργοποίηση ειδοποιήσεων</string>
     <string name="home_notification_message">Το Lemuroid χρησιμοποιεί ειδοποιήσεις για να σας ενημερώνει όταν ένα παιχνίδι ή μια λειτουργία τρέχει στο παρασκήνιο.</string>
     <string name="home_notification_action">Ενεργοποίηση</string>
+    <string name="home_microphone_title">Ενεργοποίηση μικροφώνου</string>
+    <string name="home_microphone_message">Τα παιχνίδια Nintendo DS μπορούν να χρησιμοποιήσουν το μικρόφωνο για να παρέχουν ορισμένες λειτουργίες.</string>
+    <string name="home_microphone_action">Ενεργοποίηση</string>
     <string name="home_empty_title">Επιλέξτε ένα ευρετήριο με ROMs</string>
     <string name="home_empty_message">Το Lemuroid χρειάζεται να σαρώσει έναν φάκελο οπού περιέχει ROMs.\nΑυτό μπορεί να διαρκέσει μερικά λεπτά.</string>
     <string name="home_empty_action">Επιλογή φακέλου</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME αποσύρθηκε σύντομα</string>
+    <string name="home_notification_desmume_deprecated_message">Αποθηκεύστε σε-παιχνίδι, μεταβείτε στο melonDS, και η πρόοδός σας θα φέρει πάνω.</string>
+    <string name="home_notification_desmume_deprecated_action">Εναλλαγή σε melonDS</string>
     <string name="game_menu_save">Αποθήκευση</string>
     <string name="game_menu_load">Φόρτωση</string>
     <string name="game_menu_restart">Επανεκκίνηση</string>
@@ -94,9 +103,12 @@
     <string name="game_menu_mute_audio">Σίγαση</string>
     <string name="game_menu_fast_forward">Γρήγορη κίνηση</string>
     <string name="game_menu_change_disk_disk">Δίσκος %1$s</string>
+    <string name="game_menu_tilt_sensor">Αισθητήρας Κλίσης</string>
     <string name="game_loading_preparing_game">Προετοιμασία παιχνιδιού…</string>
     <string name="game_toast_settings_button_using_gamepad">Εντοπίστηκε Gamepad. Πρόσβαση στο μενού ρυθμίσεων με %1$s.</string>
     <string name="game_toast_load_state_failed">Αδυναμία φόρτωσης αυτού του state</string>
+    <string name="game_toast_quick_save_loaded">Γρήγορη φόρτωση</string>
+    <string name="game_toast_quick_save_saved">Γρήγορη αποθήκευση</string>
     <string name="empty_view_default">Δεν υπάρχουν στοιχεία</string>
     <string name="core_settings_title">Ρυθμίσεις Πυρήνα</string>
     <string name="core_settings_category_preferences">Προτιμήσεις</string>
@@ -137,6 +149,8 @@
     <string name="tv_home_section_settings">Ρυθμίσεις</string>
     <string name="gamepad_binding_update_title">Συσχετισμός \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Πατήστε ένα κουμπί στο \"%1$s \" σας</string>
+    <string name="shortcut_binding_update_title">Συσχετισμός \"Συντόμευση %1$s\"</string>
+    <string name="shortcut_binding_update_description">Πάτησε πρώτα και δεύτερο κουμπί για να συνδέσεις ένα combo στο \"%1$s\"</string>
     <string name="tv_search_results">Παιχνίδια</string>
     <string name="tv_game_message_missing_gamepad">Aπαιτείται σύνδεση με Gamepads απαιτείται για να παίξετε. Παρακαλώ συνδέστε ένα.</string>
     <string name="game_edit_touch_controls_error_not_visible">Αποσυνδέστε το Gamepad σας για να επεξεργαστείτε τα touch controls</string>
@@ -163,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">Κανένα</string>
     <string name="haptic_feedback_mode_names_press">Πιέστε</string>
     <string name="haptic_feedback_mode_names_press_release">Πίεστε &amp; αφήστε</string>
+    <string name="tilt_configuration_disabled">Απενεργοποιημένο</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Αριστερό Αναλογικό</string>
+    <string name="tilt_configuration_analog_right">Δεξί Αναλογικό</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
