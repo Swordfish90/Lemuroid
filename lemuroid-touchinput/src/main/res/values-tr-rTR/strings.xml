@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Bitti</string>
+    <string name="touch_customize_button_reset">Sıfırla</string>
+    <string name="touch_customize_info">konum ve boyutu değiştirmek için kontrolleri sürükleyin ve sıkıştırın</string>
+</resources>
