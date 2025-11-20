@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_search">Tìm kiếm</string>
+    <string name="title_systems">Hệ thống</string>
+    <string name="title_games">Trò chơi</string>
+    <string name="title_settings">Cài đặt</string>
+    <string name="recent">Gần đây</string>
+    <string name="favorites">Yêu thích</string>
+    <string name="discover">Khám phá</string>
+    <string name="rescan">Quét lại</string>
+    <string name="stop">Dừng</string>
+    <string name="none">Không có</string>
+    <string name="directory">Thư mục</string>
+    <string name="display_filter">Bộ lọc hiển thị</string>
+    <string name="roms">ROM</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Hủy</string>
+    <string name="settings">Cài đặt</string>
+    <string name="save_sync">Đồng bộ và lưu lại</string>
+    <string name="show_all">Hiện tất cả</string>
+    <string name="back">Trở lại</string>
+    <string name="close">Đóng</string>
+    <string name="game_page_search_suggestion">Tìm trò chơi</string>
+    <string name="settings_category_general">Cài đặt chung</string>
+    <string name="settings_category_input">Đầu vào</string>
+    <string name="settings_category_misc">Khác</string>
+    <string name="settings_title_enable_autosave">Tự động lưu trạng thái</string>
+    <string name="settings_description_enable_autosave">Lưu trạng thái khi thoát bằng menu trò chơi</string>
+    <string name="settings_title_enable_touch_feedback">Rung khi chạm</string>
+    <string name="settings_title_tilt_sensitivity">Độ nhạy cảm biến nghiêng</string>
+    <string name="settings_title_hd_quality">Chất lượng chế độ HD</string>
+    <string name="settings_title_maximum_cache_usage">Giới hạn kích thước bộ nhớ đệm</string>
+    <string name="settings_title_hd_mode">Chế độ HD</string>
+    <string name="settings_description_hd_mode">Áp dụng bộ lọc xử lý hậu kỳ để nâng cấp chất lượng hình ảnh</string>
+    <string name="settings_description_hd_quality">Điều chỉnh chất lượng của chế độ HD</string>
+    <string name="settings_title_gamepad_settings">Thiết bị bên ngoài</string>
+    <string name="settings_description_gamepad_settings">Thiết lập gamepad và bàn phím bên ngoài</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">Thiết bị đã bật</string>
+    <string name="settings_gamepad_category_general">Cài đặt chung</string>
+    <string name="settings_gamepad_title_reset_bindings">Đặt lại các liên kết</string>
+    <string name="settings_gamepad_title_game_menu">Menu</string>
+    <string name="settings_title_open_cores_selection">Đổi lõi</string>
+    <string name="settings_description_open_cores_selection">Chọn xem lõi nào được liên kết với một hệ thống</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">Hiển thị các tệp BIOS được phát hiện và được hỗ trợ</string>
+    <string name="settings_bios_category_detected">Đã phát hiện</string>
+    <string name="settings_bios_category_not_detected">Được hỗ trợ</string>
+    <string name="settings_title_reset_settings">Đặt lại dữ liệu gốc</string>
+    <string name="settings_description_reset_settings">Đặt lại Lemuroid về cài đặt gốc</string>
+    <string name="settings_title_advanced_settings">Cài đặt nâng cao</string>
+    <string name="settings_description_advanced_settings">Hiển thị cài đặt nâng cao</string>
+    <string name="settings_title_low_latency_audio">Ưu tiên âm thanh độ trễ thấp</string>
+    <string name="settings_description_low_latency_audio">Giảm độ trễ âm thanh ở các thiết bị được hỗ trợ. Có thể làm tăng lỗi âm thanh.</string>
+    <string name="settings_title_direct_game_load">Trực tiếp tải trò chơi</string>
+    <string name="settings_description_direct_game_load">(Thử nghiệm) Giảm thời gian tải và sử dụng bộ nhớ cache trên bảng điều khiển được hỗ trợ.</string>
+    <string name="settings_title_enable_rumble">Rumble</string>
+    <string name="settings_description_enable_rumble">Bật rumble ở các trò chơi và tay cầm điều khiển được hỗ trợ</string>
+    <string name="settings_title_enable_device_rumble">Rumble thiết bị</string>
+    <string name="settings_description_enable_device_rumble">Khi không có tay cầm điều khiển nào được kết nối, thiết bị sẽ rung</string>
+    <string name="reset_settings_warning_message_title">Bạn có chắc không?</string>
+    <string name="reset_settings_warning_message_description">Việc này sẽ đặt lại Lemuroid về cài đặt gốc. Các Bản lưu và Trạng thái sẽ được giữ lại.</string>
+    <string name="settings_title_save_sync">Bản lưu trên đám mây</string>
+    <string name="settings_description_save_sync">Sao lưu và Đồng bộ các bản lưu của bạn trên đám mây</string>
+    <string name="settings_save_sync_refresh">Đồng bộ thủ công</string>
+    <string name="settings_save_sync_refresh_description">Thực hiện đồng bộ thủ công ngay.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Tự động đồng bộ</string>
+    <string name="settings_save_sync_enable_auto_description">Tự động thực hiện đồng bộ trước và sau một phiên chơi game khi có kết nối Wifi</string>
+    <string name="settings_save_sync_configure">Thiết lập %1$s</string>
+    <string name="settings_save_sync_include_saves">Đồng bộ các bản lưu trong trò chơi</string>
+    <string name="settings_save_sync_include_saves_description">%1$s trên thiết bị</string>
+    <string name="settings_save_sync_include_states">Đồng bộ các trạng thái</string>
+    <string name="settings_save_sync_include_states_description">Thuận tiện hơn, nhưng nặng hơn và ít đáng tin cậy hơn. Hãy chọn những lõi/hệ thống mà bạn muốn đồng bộ</string>
+    <string name="game_context_menu_add_to_favorites">Thêm vào mục yêu thích</string>
+    <string name="game_context_menu_remove_from_favorites">Xóa khỏi mục yêu thích</string>
+    <string name="game_context_menu_resume">Tiếp tục</string>
+    <string name="game_context_menu_restart">Bắt đầu lại</string>
+    <string name="game_context_menu_create_shortcut">Ghim vào launcher</string>
+    <string name="home_notification_title">Bật thông báo</string>
+    <string name="home_notification_message">Lemuroid sử dụng thông báo để cho bạn biết khi có trò chơi hoặc hoạt động chạy trong nền.</string>
+    <string name="home_notification_action">Bật</string>
+    <string name="home_empty_title">Chọn thư mục chứa ROM</string>
+    <string name="home_empty_message">Lemuroid cần quét một thư mục chứa các tệp ROM.\nViệc này có thể sẽ mất tối đa một vài phút.</string>
+    <string name="home_empty_action">Chọn thư mục</string>
+    <string name="game_menu_save">Lưu</string>
+    <string name="game_menu_load">Tải</string>
+    <string name="game_menu_restart">Bắt đầu lại</string>
+    <string name="game_menu_quit">Thoát</string>
+    <string name="game_menu_settings">Cài đặt</string>
+    <string name="game_menu_state">Trạng thái %1$s</string>
+    <string name="game_menu_change_disk_button">Đổi ổ đĩa</string>
+    <string name="game_menu_edit_touch_controls">Chỉnh sửa điều khiển</string>
+    <string name="game_menu_mute_audio">Tắt tiếng</string>
+    <string name="game_menu_fast_forward">Tua nhanh</string>
+    <string name="game_menu_change_disk_disk">Ổ đĩa %1$s</string>
+    <string name="game_loading_preparing_game">Đang chuẩn bị trò chơi…</string>
+    <string name="game_toast_settings_button_using_gamepad">Đã phát hiện gamepad. Hãy truy cập menu cài đặt bằng %1$s.</string>
+    <string name="game_toast_load_state_failed">Không thể tải trạng thái này</string>
+    <string name="empty_view_default">Không có mục nào</string>
+    <string name="core_settings_title">Cài đặt của lõi</string>
+    <string name="core_settings_category_preferences">Tuỳ chọn</string>
+    <string name="core_settings_category_controllers">Điều khiển</string>
+    <string name="core_settings_controller">Điều khiển %1$s</string>
+    <string name="game_menu_title">Menu trò chơi</string>
+    <string name="notification_channel_name">Tất cả thông báo</string>
+    <string name="library_index_notification_title">Đang quét các ROM</string>
+    <string name="library_index_notification_message">Việc này có thể mất tối đa vài phút</string>
+    <string name="save_sync_notification_title">Đang đồng bộ bản lưu trên đám mây</string>
+    <string name="save_sync_notification_message">Việc này có thể mất tối đa vài phút</string>
+    <string name="game_running_notification_title">%1$s đang chạy</string>
+    <string name="game_running_notification_title_alternative">Trò chơi đang chạy</string>
+    <string name="game_running_notification_message">Hãy bảo đảm rằng bạn lưu tiến trình của bạn</string>
+    <string name="game_loader_error_gl_incompatible">Lõi này yêu cầu một phiên bản OpenGL ES không được thiết bị của bạn hỗ trợ.</string>
+    <string name="game_loader_error_load_game">Có gì đó tệ đã xảy ra khi đang tải trò chơi của bạn. Hãy đảm bảo rằng ROM này được Lemuroid hỗ trợ và quét lại các trò chơi của bạn.</string>
+    <string name="game_loader_error_save">Có gì đó tệ đã xảy ra với tệp lưu của bạn. Nếu vấn đề này vẫn tiếp diễn, hãy thử tắt tự động lưu.</string>
+    <string name="game_loader_error_unsupported_architecture">Thiết bị của bạn không hỗ trợ lõi này.</string>
+    <string name="game_loader_error_generic">Có gì đó tệ đã xảy ra. Hãy thử những điều sau:\n
+        \n\u2022 Tắt tự động lưu và chạy lại trò chơi
+        \n\u2022 Đi đến cài đặt của Android và xoá bộ nhớ đệm của ứng dụng
+        \n\u2022 Đi đến cài đặt của Lemuroid và thực hiện đặt lại dữ liệu gốc
+        \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
+    </string>
+    <string name="game_loader_error_missing_bios">Có vẻ như bạn thiếu BIOS được yêu cầu, hãy đặt chúng trong thư mục chứa các ROM của bạn và quét lại. Các tệp được yêu cầu: %1$s</string>
+    <string name="game_shortcut_error">Có gì đó tệ đã xảy ra khi đang tải trò chơi của bạn. Vui lòng đảm bảo rằng trò chơi này vẫn tồn tại trong thư viện của bạn.</string>
+    <string name="dialog_saf_not_found">Thiết bị này không hỗ trợ trình chọn tệp StorageAccessFramework. Vui lòng sao chép các tệp ROM đã giải nén vào %1$s theo cách thủ công và nhấn Quét lại.</string>
+    <string name="system_grid_details">%1$s trò chơi</string>
+    <string name="tv_folder_picker_title">Chọn thư mục chứa ROM</string>
+    <string name="tv_folder_picker_action_choose">Chọn</string>
+    <string name="tv_folder_picker_action_cancel">Hủy</string>
+    <string name="tv_folder_storage_primary">Kho lưu trữ chính</string>
+    <string name="tv_folder_storage_secondary">Kho lưu trữ phụ %1$s</string>
+    <string name="tv_folder_storage_title">Chọn kho lưu trữ</string>
+    <string name="tv_home_section_favorites">Yêu thích</string>
+    <string name="tv_home_section_recents">Gần đây</string>
+    <string name="tv_home_section_systems">Hệ thống</string>
+    <string name="tv_home_section_settings">Cài đặt</string>
+    <string name="gamepad_binding_update_description">Nhấn một nút trên \"%1$s\" của bạn</string>
+    <string name="tv_search_results">Trò chơi</string>
+    <string name="tv_game_message_missing_gamepad">Yêu cầu có gamepad để chơi. Vui lòng kết nối một cái.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Ngắt kết nối pad của bạn để chỉnh sửa điều khiển bằng cảm ứng</string>
+    <string name="game_interactory_busy">Hãy đợi các hoạt động đang chờ được hoàn tất</string>
+    <string name="mobile_settings_help">Trợ giúp</string>
+    <string name="mobile_settings_support">Hỗ trợ</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Tôi sử dụng Lemuroid như thế nào?</b><br/>
+        Sao chép tất cả tệp ROM vào một thư mục trên thiết bị và chọn nó từ trong Lemuroid. Thư mục này có thể có các thư mục con. Sau khi việc quét hoàn tất thì bạn sẽ thấy các trò chơi của bạn.<br/><br/>
+        <b>&#8226;Tại sao các trò chơi của tôi không được phát hiện?</b><br/>
+        Nếu các trò chơi của bạn đã được nén, hãy thử giải nén chúng. Nếu việc này không được thì hãy thử đặt các ROM vào các thư mục riêng, mỗi thư mục cho một hệ thống với các tên như sau: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Có vẻ như lõi Libretro đã gặp một vấn đề không mong đợi. Nếu vấn đề vẫn tiếp diễn thì vui lòng thử những điều sau:\n
+        \n\u2022 Tắt tự động lưu và chạy lại trò chơi
+        \n\u2022 Đi đến cài đặt của Android và xoá bộ nhớ đệm của ứng dụng
+        \n\u2022 Đi đến cài đặt của Lemuroid và thực hiện đặt lại dữ liệu gốc
+        \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
+    </string>
+    <string name="error_message_incompatible_state">Trạng thái lưu này không tương thích với phiên bản lõi hiện tại. Vui lòng tải bản lưu trong trò chơi mới nhất hoặc sử dụng phiên bản Lemuroid trước đó.</string>
+    <string name="shader_filter_names_auto">Tự động</string>
+    <string name="shader_filter_names_sharp">Sắc nét</string>
+    <string name="shader_filter_names_smooth">Mịn</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">Không</string>
+    <string name="haptic_feedback_mode_names_press">Nhấn</string>
+    <string name="haptic_feedback_mode_names_press_release">Nhấn &amp; thả</string>
+</resources>
