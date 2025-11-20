@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Téléchargement du cœur…</string>
+    <string name="installing_core_notification_title">Mise à jour des cœurs</string>
+    <string name="installing_core_notification_message">Cela peut prendre quelques minutes</string>
+    <string name="game_loader_error_load_core">Le cœur Libretto n\'a pas été chargé. Assurez-vous que votre appareil est connecté à internet et essayez de rescanner votre bibliothèque. Si le problème persiste, ce noyau pourrait ne pas être pris en charge sur votre appareil.</string>
+</resources>

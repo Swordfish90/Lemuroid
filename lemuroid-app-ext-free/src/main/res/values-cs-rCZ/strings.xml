@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Stahuji jádro…</string>
+    <string name="installing_core_notification_title">Aktualizuji jádra</string>
+    <string name="installing_core_notification_message">Tohle může zabrat až několik minut</string>
+    <string name="game_loader_error_load_core">Jádro Libretro nebylo načteno. Ujistěte se, že je vaše zařízení připojeno k internetu a zkuste znovu naskenovat knihovnu. Pokud problém přetrvává, nemusí být toto jádro podporováno vaším zařízením.</string>
+</resources>

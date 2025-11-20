@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Hjem</string>
+    <string name="title_search">Søk</string>
+    <string name="title_systems">Systemer</string>
+    <string name="title_games">Spill</string>
+    <string name="title_settings">Innstillinger</string>
+    <string name="recent">Nylig</string>
+    <string name="favorites">Favoritter</string>
+    <string name="discover">Utforsk</string>
+    <string name="rescan">Skann</string>
+    <string name="stop">Stopp</string>
+    <string name="none">Ingen</string>
+    <string name="directory">Katalog</string>
+    <string name="display_filter">Vis filter</string>
+    <string name="roms">ROM</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Avbryt</string>
+    <string name="settings">Innstillinger</string>
+    <string name="save_sync">Lagre synkronisering</string>
+    <string name="show_all">Vis alle</string>
+    <string name="back">Tilbake</string>
+    <string name="close">Lukk</string>
+    <string name="game_page_search_suggestion">Søk etter spill</string>
+    <string name="settings_category_general">Generelt</string>
+    <string name="settings_category_input">Inndata</string>
+    <string name="settings_category_misc">Diverse</string>
+    <string name="settings_title_enable_autosave">Automatisk lagring av tilstand</string>
+    <string name="settings_description_enable_autosave">Lagre status når du avslutter via spillmenyen</string>
+    <string name="settings_title_enable_touch_feedback">Vibrer ved berøring</string>
+    <string name="settings_title_tilt_sensitivity">Følsomhet for tilt sensor</string>
+    <string name="settings_title_hd_quality">HD-modus kvalitet</string>
+    <string name="settings_title_maximum_cache_usage">Størrelsesgrense for mellomlager</string>
+    <string name="settings_title_hd_mode">HD modus</string>
+    <string name="settings_description_hd_mode">Bruk oppskaleringsfilter for etterbehandling</string>
+    <string name="settings_description_hd_quality">Juster kvaliteten til HD-modus</string>
+    <string name="settings_title_immersive_mode">Fullskjermsmodus</string>
+    <string name="settings_description_immersive_mode">Dynamisk farger bakgrunnen basert på spillbilder</string>
+    <string name="settings_title_gamepad_settings">Eksterne enheter</string>
+    <string name="settings_description_gamepad_settings">Konfigurer ekstern spillkontroller eller tastatur</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">Aktiverte enheter</string>
+    <string name="settings_gamepad_category_general">Generelt</string>
+    <string name="settings_gamepad_title_reset_bindings">Tilbakestill knappetildelinger</string>
+    <string name="settings_gamepad_title_game_menu">Meny</string>
+    <string name="settings_title_open_cores_selection">Endre kjerner</string>
+    <string name="settings_description_open_cores_selection">Velg hvilken kjerne som er tilknyttet et system</string>
+    <string name="settings_core_selection_ds_info">DeSmuME er foreldet og vil bli fjernet snart. Lagre i spillet, så bytt til melonDS: Under spillet lastes det automatisk, men lagre stater, bli i kjernen som opprettet dem.</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">Vis oppdagede og støttede BIOS-filer</string>
+    <string name="settings_bios_category_detected">Oppdaget</string>
+    <string name="settings_bios_category_not_detected">Supportert</string>
+    <string name="settings_title_reset_settings">Fabrikkgjennoppretting</string>
+    <string name="settings_description_reset_settings">Tilbakestill Lemuroid til fabrikkinnstillinger</string>
+    <string name="settings_title_advanced_settings">Avanserte innstillinger</string>
+    <string name="settings_description_advanced_settings">Vis avanserte innstillinger</string>
+    <string name="settings_title_low_latency_audio">Foretrekk lyd med lav forsinkelse</string>
+    <string name="settings_description_low_latency_audio">Reduser lydforsinkelse på støttede enheter. Kan øke lydfeil.</string>
+    <string name="settings_title_direct_game_load">Direkte spillinnlasting</string>
+    <string name="settings_description_direct_game_load">(Eksperimentell) Reduser lastetiden og bruk av bufferminne på støttede konsoller.</string>
+    <string name="settings_title_enable_rumble">Vibrasjon</string>
+    <string name="settings_description_enable_rumble">Aktiver vibrasjon på støttede spill og kontrollere</string>
+    <string name="settings_title_enable_device_rumble">Enhets vibrasjon</string>
+    <string name="settings_description_enable_device_rumble">Bruk vibrasjon på enheten når ingen kontroller er koblet til</string>
+    <string name="reset_settings_warning_message_title">Er du sikker?</string>
+    <string name="reset_settings_warning_message_description">Dette vil tilbakestille Lemuroid til fabrikkinnstillingene. Lagrede filer og hurtiglagring vil bli bevart.</string>
+    <string name="settings_title_save_sync">Sky lagring</string>
+    <string name="settings_description_save_sync">Sikkerhetskopier og synkroniser lagringer i skyen</string>
+    <string name="settings_save_sync_refresh">Manuell synkronisering</string>
+    <string name="settings_save_sync_refresh_description">Utfør en manuell synkronisering nå.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Automatisk synkronisering</string>
+    <string name="settings_save_sync_enable_auto_description">Automatisk synkronisere før og etter en spillesesjon når wifi er koblet til</string>
+    <string name="settings_save_sync_configure">Konfigurer %1$s</string>
+    <string name="settings_save_sync_include_saves">Synkroniser spillets interne lagring</string>
+    <string name="settings_save_sync_include_saves_description">%1$s på enheten</string>
+    <string name="settings_save_sync_include_states">Synkroniser hurtiglagringer</string>
+    <string name="settings_save_sync_include_states_description">Mer praktisk, men tyngre og mindre pålitelig. Velg hvilke kjerner/systemer du vil synkronisere</string>
+    <string name="game_context_menu_add_to_favorites">Legg til favoritter</string>
+    <string name="game_context_menu_remove_from_favorites">Fjern fra favoritter</string>
+    <string name="game_context_menu_resume">Fortsett</string>
+    <string name="game_context_menu_restart">Start på nytt</string>
+    <string name="game_context_menu_create_shortcut">Fest til hjemskjermen</string>
+    <string name="home_notification_title">Aktiver varsler</string>
+    <string name="home_notification_message">Lemuroid bruker varsler for å fortelle deg når et spill eller en operasjon kjører i bakgrunnen.</string>
+    <string name="home_notification_action">Aktiver</string>
+    <string name="home_microphone_title">Aktiver mikrofon</string>
+    <string name="home_microphone_message">Nintendo DS spill kan bruke mikrofonen til å gi funksjonalitet.</string>
+    <string name="home_microphone_action">Aktiver</string>
+    <string name="home_empty_title">Velg ROM-katalog</string>
+    <string name="home_empty_message">Lemuroid trenger å skanne en mappe som inneholder ROM-filer.\nDette kan ta opptil noen få minutter.</string>
+    <string name="home_empty_action">Velg mappe</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME injeksjonsvæske snart</string>
+    <string name="home_notification_desmume_deprecated_message">Lagre i spillet, bytt til melonDS, og fremgangen din vil fortsette. Lagre stater forblir knyttet til DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Bytt til melonDS</string>
+    <string name="game_menu_save">Lagre</string>
+    <string name="game_menu_load">Last inn</string>
+    <string name="game_menu_restart">Start på nytt</string>
+    <string name="game_menu_quit">Avslutt</string>
+    <string name="game_menu_settings">Innstillinger</string>
+    <string name="game_menu_state">Hurtiglager %1$s</string>
+    <string name="game_menu_change_disk_button">Endre disk</string>
+    <string name="game_menu_edit_touch_controls">Rediger kontroller</string>
+    <string name="game_menu_mute_audio">Lydløs</string>
+    <string name="game_menu_fast_forward">Spol fremover</string>
+    <string name="game_menu_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_tilt_sensor">Vipp sensor</string>
+    <string name="game_loading_preparing_game">Klargjør spill…</string>
+    <string name="game_toast_settings_button_using_gamepad">Spillkontroller oppdaget. Gå til innstillings meny med %1$s.</string>
+    <string name="game_toast_load_state_failed">Kunne ikke laste inn denne hurtiglagringen</string>
+    <string name="game_toast_quick_save_loaded">Hurtig lastet</string>
+    <string name="game_toast_quick_save_saved">Rask lagret</string>
+    <string name="empty_view_default">Ingen elementer</string>
+    <string name="core_settings_title">Kjerne innstillinger</string>
+    <string name="core_settings_category_preferences">Preferanser</string>
+    <string name="core_settings_category_controllers">Kontrollere</string>
+    <string name="core_settings_controller">Kontroller %1$s</string>
+    <string name="game_menu_title">Spill meny</string>
+    <string name="notification_channel_name">Alle varsler</string>
+    <string name="library_index_notification_title">Skanning av ROM-filer pågår</string>
+    <string name="library_index_notification_message">Dette kan ta noen minutter</string>
+    <string name="save_sync_notification_title">Synkronisering av lagringsfiler i skyen pågår</string>
+    <string name="save_sync_notification_message">Dette kan ta opp til flere minutter</string>
+    <string name="game_running_notification_title">%1$s kjører</string>
+    <string name="game_running_notification_title_alternative">Spillet kjører</string>
+    <string name="game_running_notification_message">Husk å lagre fremgangen din</string>
+    <string name="game_loader_error_gl_incompatible">Denne kjernen krever en OpenGL ES-versjon som ikke støttes av enheten din.</string>
+    <string name="game_loader_error_load_game">Noe gikk galt under innlasting av spillet ditt. Sørg for at ROMen støttes av Lemuroid og skann spillene dine på nytt.</string>
+    <string name="game_loader_error_save">Noe gikk galt med lagringsfilen din. Hvis problemet vedvarer, kan du prøve å deaktivere automatisk lagring.</string>
+    <string name="game_loader_error_unsupported_architecture">Denne kjernen støttes ikke av enheten din.</string>
+    <string name="game_loader_error_generic">Noe gikk galt. Prøv følgende:\n
+        \n\u2022 Deaktiver automatisk lagring og start spillet på nytt
+        \n\u2022 Gå inn i Android-innstillinger og tøm appbufferen
+        \n\u2022 Gå inn i Lemuroid-innstillinger og utfør en fabrikkgjenoppretting
+        \n\n Hvis ingen av de ovennevnte alternativene fungerer, kan det være mulig at dette spillet / kjernen ikke støttes av denne enheten.
+    </string>
+    <string name="game_loader_error_missing_bios">Det ser ut som om du mangler nødvendig BIOS. Legg dem i ROM-katalogen din og skann på nytt. Påkrevde filer: %1$s</string>
+    <string name="game_shortcut_error">Noe gikk galt mens spillet ble lastet inn. Sørg for at spillet fortsatt eksisterer i biblioteket ditt.</string>
+    <string name="dialog_saf_not_found">Denne enheten støtter ikke filvelgeren for tilgangsrammeverk for lagring. Kopier ukomprimerte ROM-filer manuelt til %1$s og trykk Skann på nytt.</string>
+    <string name="system_grid_details">%1$s spill</string>
+    <string name="tv_folder_picker_title">Velg ROM katalog</string>
+    <string name="tv_folder_picker_action_choose">Velg</string>
+    <string name="tv_folder_picker_action_cancel">Avbryt</string>
+    <string name="tv_folder_storage_primary">Primærlagring</string>
+    <string name="tv_folder_storage_secondary">Sekundærlagring %1$s</string>
+    <string name="tv_folder_storage_title">Velg lagring</string>
+    <string name="tv_home_section_favorites">Favoritter</string>
+    <string name="tv_home_section_recents">Nylig</string>
+    <string name="tv_home_section_systems">Systemer</string>
+    <string name="tv_home_section_settings">Innstillinger</string>
+    <string name="gamepad_binding_update_title">Tilknytt \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Trykk en knapp på din \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Assosiert \"Snarvei %1$s\"</string>
+    <string name="shortcut_binding_update_description">Trykk først og så andre-knappen for å binde en combo på din \"%1$s\"</string>
+    <string name="tv_search_results">Spill</string>
+    <string name="tv_game_message_missing_gamepad">Spillkontroller er påkrevd for å spille. Vennligst koble til en.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Koble fra kontrolleren for å redigere berøringsskjerm-kontrollene dine</string>
+    <string name="game_interactory_busy">Vent på at pågående operasjoner fullføres</string>
+    <string name="mobile_settings_help">Hjelp</string>
+    <string name="mobile_settings_support">Brukerstøtte</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hvordan bruker jeg Lemuroid?</b><br/>
+        Kopier alle ROM-filene dine til en mappe på enheten din og velg denne mappen i Lemuroid. Undermapper i denne mappen støttes også. Etter at skanningen er fullført, skal du se spillene dine.<br/><br/>
+        <b>&#8226;Hvorfor blir ikke spillene mine oppdaget?</b><br/>
+        Hvis spillene dine er komprimerte, kan du prøve å pakke de ut. Hvis dette ikke fungerer, kan du prøve å legge ROM-filene i separate mapper, en for hvert system, med følgende navn: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Det ser ut til at Libretro-kjernen har støtt på et uventet problem. Hvis dette vedvarer, kan du prøve følgende:\n
+        \n\u2022 Deaktiver automatisk lagring og start spillet på nytt
+        \n\u2022 Gå til Android-innstillinger og tøm appbufferen
+        \n\u2022 Gå til Lemuroid-innstillinger og utfør en fabrikkgjenoppretting
+        \n\n Hvis ingen av disse fungerer, kan det hende at denne spillkjernen ikke støttes av enheten din.
+    </string>
+    <string name="error_message_incompatible_state">Denne lagrede tilstand er ikke kompatibel med gjeldende kjerneversjon. Vennligst last inn den nyeste lagringen inne i spillet, eller bruk en tidligere versjon av Lemuroid.</string>
+    <string name="shader_filter_names_auto">Auto</string>
+    <string name="shader_filter_names_sharp">Skarp</string>
+    <string name="shader_filter_names_smooth">Jevn</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">Ingen</string>
+    <string name="haptic_feedback_mode_names_press">Trykk</string>
+    <string name="haptic_feedback_mode_names_press_release">Trykk &amp; slipp</string>
+    <string name="tilt_configuration_disabled">Deaktivert</string>
+    <string name="tilt_configuration_cross">BESTILT</string>
+    <string name="tilt_configuration_analog_left">Analog til venstre</string>
+    <string name="tilt_configuration_analog_right">Høyre Analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+</resources>

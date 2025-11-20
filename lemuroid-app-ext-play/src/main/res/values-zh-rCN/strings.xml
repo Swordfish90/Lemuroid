@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google 登录失败：%s (%s)</string>
+    <string name="gdrive_sign_in_success">以 %s 账号登录 Google</string>
+    <string name="gdrive_sign_out_success">已从 Google 登出</string>
+    <string name="gdrive_missing_play_services">您的设备不支持 Google 云端硬盘所需要的 Google Play 服务</string>
+    <string name="gdrive_connected_summary">已关联到 %s</string>
+    <string name="gdrive_connected_none_summary">未配置</string>
+    <string name="gdrive_last_sync_completed">最后一次同步：%s</string>
+    <string name="game_loading_download_core">正在下载核心…</string>
+    <string name="installing_core_notification_title">正在从 Play 更新核心</string>
+    <string name="installing_core_notification_message">请检查 Google Play 商店应用以查看当前状态</string>
+    <string name="game_loader_error_load_core">未加载 Libretro 核心。请尝试以下操作：\n
+        \n\u2022 启用互联网连接并重新扫描您的游戏
+        \n\u2022 确保 Google Play 商店已安装并正在运行
+        \n\u2022 等待 Google Play 商店应用中的待处理操作完成</string>
+</resources>

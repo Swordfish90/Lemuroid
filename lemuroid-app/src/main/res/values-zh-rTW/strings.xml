@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">首頁</string>
+    <string name="title_search">搜尋</string>
+    <string name="title_systems">主機</string>
+    <string name="title_games">遊戲</string>
+    <string name="title_settings">設定</string>
+    <string name="recent">最近</string>
+    <string name="favorites">最愛</string>
+    <string name="discover">探索</string>
+    <string name="rescan">重新掃描</string>
+    <string name="stop">停止</string>
+    <string name="none">無</string>
+    <string name="directory">資料夾</string>
+    <string name="display_filter">濾鏡</string>
+    <string name="roms">ROMs</string>
+    <string name="ok">確定</string>
+    <string name="cancel">取消</string>
+    <string name="settings">設定</string>
+    <string name="save_sync">同步存檔</string>
+    <string name="show_all">全部顯示</string>
+    <string name="back">返回</string>
+    <string name="close">關閉</string>
+    <string name="game_page_search_suggestion">搜尋遊戲</string>
+    <string name="settings_category_general">一般設定</string>
+    <string name="settings_category_input">輸入設定</string>
+    <string name="settings_category_misc">其他設定</string>
+    <string name="settings_title_enable_autosave">自動儲存</string>
+    <string name="settings_description_enable_autosave">透過遊戲選單退出時保存狀態</string>
+    <string name="settings_title_enable_touch_feedback">觸控時震動</string>
+    <string name="settings_title_tilt_sensitivity">傾斜感應器敏感度</string>
+    <string name="settings_title_hd_quality">高清質量模式</string>
+    <string name="settings_title_maximum_cache_usage">緩存大小限制</string>
+    <string name="settings_title_hd_mode">高清模式</string>
+    <string name="settings_description_hd_mode">應用後處理升頻濾鏡</string>
+    <string name="settings_description_hd_quality">調整高清模式的質量</string>
+    <string name="settings_title_gamepad_settings">外部設備</string>
+    <string name="settings_description_gamepad_settings">配置外接遊戲手把和鍵盤 </string>
+    <string name="settings_retropad_button_name">%1$s 鍵</string>
+    <string name="settings_gamepad_category_enabled">啟用的設備</string>
+    <string name="settings_gamepad_category_general">一般設定</string>
+    <string name="settings_gamepad_title_reset_bindings">重新綁定</string>
+    <string name="settings_gamepad_title_game_menu">主選單</string>
+    <string name="settings_title_open_cores_selection">模擬器核心</string>
+    <string name="settings_description_open_cores_selection">選擇模擬器所要使用的核心</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">顯示偵測到能支援的 BIOS 檔</string>
+    <string name="settings_bios_category_detected">已偵測到</string>
+    <string name="settings_bios_category_not_detected">支援</string>
+    <string name="settings_title_reset_settings">重設所有資料</string>
+    <string name="settings_description_reset_settings">將 Lemuroid 重置為出廠設置</string>
+    <string name="settings_title_advanced_settings">進階設定</string>
+    <string name="settings_description_advanced_settings">顯示進階設定</string>
+    <string name="settings_title_low_latency_audio">偏好低延遲音頻</string>
+    <string name="settings_description_low_latency_audio">在支持的設備上減少音頻延遲。可能會增加音頻閃爍。</string>
+    <string name="settings_title_direct_game_load">直接加載遊戲</string>
+    <string name="settings_description_direct_game_load">減少支持的控制台上的加載時間和緩存使用。(實驗性質)</string>
+    <string name="settings_title_enable_rumble">震動</string>
+    <string name="settings_description_enable_rumble">在支援的遊戲和控制器中啟用振動</string>
+    <string name="settings_title_enable_device_rumble">設備振動</string>
+    <string name="settings_description_enable_device_rumble">當沒有連接控制器時，請振動設備。</string>
+    <string name="reset_settings_warning_message_title">是否確定？</string>
+    <string name="reset_settings_warning_message_description">將Lemuroid重置為出廠設置，並保留遊戲的存檔。</string>
+    <string name="settings_title_save_sync">雲端存檔</string>
+    <string name="settings_description_save_sync">備份和同步您的遊戲存檔到雲端硬碟</string>
+    <string name="settings_save_sync_refresh">手動同步</string>
+    <string name="settings_save_sync_refresh_description">立即手動執行同步。\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">自動同步</string>
+    <string name="settings_save_sync_enable_auto_description">當連接 Wifi 時在遊戲環節前後自動執行同步</string>
+    <string name="settings_save_sync_configure">設定 %1$s</string>
+    <string name="settings_save_sync_include_saves">同步遊戲存檔</string>
+    <string name="settings_save_sync_include_saves_description">%1$s 在設備上</string>
+    <string name="settings_save_sync_include_states">同步狀態</string>
+    <string name="settings_save_sync_include_states_description">選擇要同步的核心/系統。(更加便利，但很不穩定。)</string>
+    <string name="game_context_menu_add_to_favorites">加入最愛</string>
+    <string name="game_context_menu_remove_from_favorites">移出最愛</string>
+    <string name="game_context_menu_resume">繼續遊戲</string>
+    <string name="game_context_menu_restart">重新啟動</string>
+    <string name="game_context_menu_create_shortcut">新增桌布捷徑</string>
+    <string name="home_notification_title">啟用通知</string>
+    <string name="home_notification_message">Lemuroid 使用通知來讓您知道遊戲或操作在背景中運行時的狀態。</string>
+    <string name="home_notification_action">啟用</string>
+    <string name="home_microphone_title">啟用麥克風</string>
+    <string name="home_microphone_message">Nintendo DS 遊戲可以使用麥克風來提供一些功能。</string>
+    <string name="home_microphone_action">啟用</string>
+    <string name="home_empty_title">選擇 ROMs 資料夾</string>
+    <string name="home_empty_message">Lemuroid 需要掃描整個 ROM 檔案資料夾。\n這可能需要幾分鐘的時間。</string>
+    <string name="home_empty_action">選擇資料夾</string>
+    <string name="game_menu_save">儲存進度</string>
+    <string name="game_menu_load">讀取進度</string>
+    <string name="game_menu_restart">重新啟動</string>
+    <string name="game_menu_quit">離開</string>
+    <string name="game_menu_settings">設定</string>
+    <string name="game_menu_state">儲存格 %1$s</string>
+    <string name="game_menu_change_disk_button">變換磁碟</string>
+    <string name="game_menu_edit_touch_controls">設定版面及虛擬控制器</string>
+    <string name="game_menu_mute_audio">靜音</string>
+    <string name="game_menu_fast_forward">快進</string>
+    <string name="game_menu_change_disk_disk">磁碟 %1$s</string>
+    <string name="game_loading_preparing_game">設置遊戲中…</string>
+    <string name="game_toast_settings_button_using_gamepad">檢測到遊戲控制器。 請至設置選單設定 %1$s</string>
+    <string name="game_toast_load_state_failed">無法讀取這個遊戲存檔</string>
+    <string name="empty_view_default">沒有任何項目</string>
+    <string name="core_settings_title">核心設定</string>
+    <string name="core_settings_category_preferences">偏好設定</string>
+    <string name="core_settings_category_controllers">控制器</string>
+    <string name="core_settings_controller">控制器 %1$s</string>
+    <string name="game_menu_title">遊戲選單</string>
+    <string name="notification_channel_name">所有通知</string>
+    <string name="library_index_notification_title">ROMs 掃描中</string>
+    <string name="library_index_notification_message">這可能需要幾分鐘的時間。</string>
+    <string name="save_sync_notification_title">遊戲存檔雲端同步中</string>
+    <string name="save_sync_notification_message">這可能需要幾分鐘的時間。</string>
+    <string name="game_running_notification_title">%1$s 運行中。</string>
+    <string name="game_running_notification_title_alternative">遊戲運行中</string>
+    <string name="game_running_notification_message">請記得儲存您的遊戲進度。</string>
+    <string name="game_loader_error_gl_incompatible">此核心需要 OpenGL ES ，您的設備不支援。</string>
+    <string name="game_loader_error_load_game">載入遊戲時出現問題。請確定 Lemuroid 支援該 ROM，然後重新掃描您的遊戲。</string>
+    <string name="game_loader_error_save">您的遊戲存檔出了點問題。如果問題仍然存在，請嘗試關閉自動儲存。</string>
+    <string name="game_loader_error_unsupported_architecture">您的設備不支援此核心。</string>
+    <string name="game_loader_error_generic">發生錯誤。請嘗試以下操作：\n
+         \n\u2022 關閉自動儲存並重新運行遊戲
+         \n\u2022 進入安卓系統設定，應用程式清除快取
+          \n\u2022 進入 Lemuroid 設置並執行恢復出廠設置
+         \n\n如果以上方法均無效，則可能是該設備不支持該遊戲/核心。    </string>
+    <string name="game_loader_error_missing_bios">您好像缺少了必要的BIOS，請將它們放在ROMs目錄中並重新掃描。所需文件: %1$s</string>
+    <string name="game_shortcut_error">載入遊戲時發生錯誤。請確認該遊戲仍然存在於您的遊戲庫中。</string>
+    <string name="dialog_saf_not_found">此設備不支援 StorageAccessFramework 文件選擇器。 請手動將未壓縮的 ROM 複製到 %1$s 並點擊重新掃描。</string>
+    <string name="system_grid_details">%1$s 個遊戲</string>
+    <string name="tv_folder_picker_title">選擇 ROMs 目錄</string>
+    <string name="tv_folder_picker_action_choose">選擇</string>
+    <string name="tv_folder_picker_action_cancel">取消</string>
+    <string name="tv_folder_storage_primary">主存儲</string>
+    <string name="tv_folder_storage_secondary">副儲存 %1$s</string>
+    <string name="tv_folder_storage_title">選擇存儲</string>
+    <string name="tv_home_section_favorites">最愛</string>
+    <string name="tv_home_section_recents">最新的</string>
+    <string name="tv_home_section_systems">遊戲機</string>
+    <string name="tv_home_section_settings">設定</string>
+    <string name="gamepad_binding_update_title">關聯 \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">按下按鈕 \"%1$s\"</string>
+    <string name="tv_search_results">遊戲</string>
+    <string name="tv_game_message_missing_gamepad">需要遊戲手柄才能玩，請進行連接。</string>
+    <string name="game_edit_touch_controls_error_not_visible">斷開您的鍵盤以編輯您的虛擬按鍵。</string>
+    <string name="game_interactory_busy">操作處理中，請稍待片刻。</string>
+    <string name="mobile_settings_help">幫助</string>
+    <string name="mobile_settings_support">支援</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;如何使用Lemuroid？</ b> <br/>
+         將所有 ROM 複製到設備上的資料夾中，然後在 Lemuroid 中選擇該資料夾。 這個資料夾允許有子資料夾。 掃描完成後，您應該會看到您的遊戲。<br/><br/>
+         <b>&#8226;為什麼我的遊戲沒有被偵測到？</b><br/>
+         如果您的遊戲已壓縮，請嘗試解壓縮。 如果這不起作用，請嘗試將 ROM 放入單獨的資料夾中，每個遊戲主機對應一個資料夾，其名稱如下：$SYSTEMS。
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Libretro 核心遇到了意外的問題。如果問題持續存在，請嘗試以下操作：\n
+         \n\u2022 關閉自動保存並重新運行遊戲
+         \n\u2022 進入安卓系統設定，應用程式清除快取
+         \n\u2022 進入 Lemuroid 設置並執行恢復出廠設置
+         \n\n 如果上述方法均無效，則該設備可能不支持該遊戲/核心。
+    </string>
+    <string name="error_message_incompatible_state">此自動存檔與當前核心版本不兼容。請載入最新的遊戲內存檔或使用以前的 Lemuroid 版本。</string>
+    <string name="shader_filter_names_auto">自動</string>
+    <string name="shader_filter_names_sharp">銳利</string>
+    <string name="shader_filter_names_smooth">平滑</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">無</string>
+    <string name="haptic_feedback_mode_names_press">按下</string>
+    <string name="haptic_feedback_mode_names_press_release">按下並鬆開</string>
+</resources>

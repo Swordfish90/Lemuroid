@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Lade Core herunter…</string>
+    <string name="installing_core_notification_title">Aktualisiere Kerne</string>
+    <string name="installing_core_notification_message">Dies kann einige Minuten dauern</string>
+    <string name="game_loader_error_load_core">Der Libretro Kern wurde nicht geladen. Stelle sicher, dass dein Gerät mit dem Internet verbunden ist und versuche dein Verzeichnis erneut zu scannen. Wenn das Problem weiterhin besteht, wird dieser Kern möglicherweise nicht auf deinem Gerät unterstützt.</string>
+</resources>

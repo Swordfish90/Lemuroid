@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Ferdig</string>
+    <string name="touch_customize_button_reset">Tilbakestill</string>
+    <string name="touch_customize_info">Dra og klyp kontroller for å endre størrelse og posisjon</string>
+</resources>

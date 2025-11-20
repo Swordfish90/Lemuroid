@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Dokončeno</string>
+    <string name="touch_customize_button_reset">Resetovat</string>
+    <string name="touch_customize_info">Pro změnu polohy a velikosti můžete přesouvat a přibližovat prsty</string>
+</resources>

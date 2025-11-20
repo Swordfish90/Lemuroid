@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Udført</string>
+    <string name="touch_customize_button_reset">Reset</string>
+    <string name="touch_customize_info">Træk og klem kontrol for at ændre position og størrelse</string>
+</resources>

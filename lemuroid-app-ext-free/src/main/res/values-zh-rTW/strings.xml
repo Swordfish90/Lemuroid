@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">正在下載核心…</string>
+    <string name="installing_core_notification_title">正在更新核心</string>
+    <string name="installing_core_notification_message">這可能需要幾分鐘</string>
+    <string name="game_loader_error_load_core">Libretro 核心未加載。請確保您的設備已連接到互聯網，然後重試掃描您的資料庫。如果問題持續存在，則該核心可能不受您的設備支援。</string>
+</resources>

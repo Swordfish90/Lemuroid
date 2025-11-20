@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google пријава неуспешна: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Пријављени на Google као %s</string>
+    <string name="gdrive_sign_out_success">Одјављени са Google-а</string>
+    <string name="gdrive_missing_play_services">Google Drive захтева Google Play Services што није подржано на Вашем уређају</string>
+    <string name="gdrive_connected_summary">Повезани са %s</string>
+    <string name="gdrive_connected_none_summary">Није подешено</string>
+    <string name="gdrive_last_sync_completed">Последња синхронизација: %s</string>
+    <string name="game_loading_download_core">Преузимање језгра…</string>
+    <string name="installing_core_notification_title">Ажурирање језгара са Play-а</string>
+    <string name="installing_core_notification_message">Проверите Google Play Store апликацију за тренутни статус</string>
+    <string name="game_loader_error_load_core">Libretro језгро није учитано. Покушајте следеће:\n
+        \n\u2022 Омогућите Интернет везу и поново скенирајте Ваше игре
+        \n\u2022 Осигурајте да је Google Play Store инсталирана и да ради
+        \n\u2022 Сачекајте да се текуће операције Google Play Store апликације заврше</string>
+</resources>

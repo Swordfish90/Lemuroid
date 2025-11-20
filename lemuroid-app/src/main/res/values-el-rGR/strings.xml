@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Αρχική σελίδα</string>
+    <string name="title_search">Αναζήτηση</string>
+    <string name="title_systems">Συστήματα</string>
+    <string name="title_games">Παιχνίδια</string>
+    <string name="title_settings">Ρυθμίσεις</string>
+    <string name="recent">Πρόσφατα</string>
+    <string name="favorites">Αγαπημένα</string>
+    <string name="discover">Ανακαλύψτε</string>
+    <string name="rescan">Επανασάρωση</string>
+    <string name="stop">Διακοπή</string>
+    <string name="none">Κανένα</string>
+    <string name="directory">Κατάλογος</string>
+    <string name="display_filter">Φίλτρο οθόνης</string>
+    <string name="roms">ROMs</string>
+    <string name="ok">Εντάξει</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="save_sync">Συγχρονισμός αρχείων αποθήκευσης</string>
+    <string name="show_all">Εμφάνιση Όλων</string>
+    <string name="back">Πίσω</string>
+    <string name="close">Κλείσιμο</string>
+    <string name="game_page_search_suggestion">Αναζήτηση παιχνιδιών</string>
+    <string name="settings_category_general">Γενικά</string>
+    <string name="settings_category_input">Είσοδος</string>
+    <string name="settings_category_misc">Διάφορα</string>
+    <string name="settings_title_enable_autosave">Κατάσταση Αυτόματης Αποθήκευσης</string>
+    <string name="settings_description_enable_autosave">Αποθήκευση κατάστασης κατά την έξοδο από το μενού παιχνιδιού</string>
+    <string name="settings_title_enable_touch_feedback">Δόνηση κατά το άγγιγμα</string>
+    <string name="settings_title_tilt_sensitivity">Ευαισθησία αισθητήρα κλίσης</string>
+    <string name="settings_title_hd_quality">HD Ποιότητα λειτουργίας</string>
+    <string name="settings_title_maximum_cache_usage">Περιορισμός μεγέθους της Cache</string>
+    <string name="settings_title_hd_mode">Λειτουργία HD</string>
+    <string name="settings_description_hd_mode">Εφαρμογή upscaling φίλτρου μετά την επεξεργασία</string>
+    <string name="settings_description_hd_quality">Προσαρμογή της ποιότητας της HD λειτουργίας</string>
+    <string name="settings_title_immersive_mode">Immersive λειτουργία</string>
+    <string name="settings_description_immersive_mode">Δυναμικά χρωματίζει το φόντο που βασίζεται σε οπτικά παιχνίδια</string>
+    <string name="settings_title_gamepad_settings">Εξωτερικές συσκευές</string>
+    <string name="settings_description_gamepad_settings">Ρύθμιση εξωτερικών gamepads και πληκτρολογίων</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">Ενεργοποιημένες συσκευές</string>
+    <string name="settings_gamepad_category_general">Γενικά</string>
+    <string name="settings_gamepad_title_reset_bindings">Επαναφορά Συντομεύσεων Πληκτρολογίου</string>
+    <string name="settings_gamepad_title_game_menu">Μενού</string>
+    <string name="settings_title_open_cores_selection">Αλλαγή Πυρήνων</string>
+    <string name="settings_description_open_cores_selection">Επιλέξτε τον πυρήνα που σχετίζεται με ένα σύστημα</string>
+    <string name="settings_core_selection_ds_info">DeSmuME είναι παρωχημένη και θα αφαιρεθεί σύντομα. Αποθηκεύστε μέσα στο παιχνίδι, στη συνέχεια, μεταβείτε σε πεπόνια: εντός του παιχνιδιού αποθηκεύει το φορτίο εκεί αυτόματα, αλλά αποθηκεύστε τα κράτη να παραμείνουν στον πυρήνα που τα δημιούργησε.</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">Εμφάνιση εντοπισμένων και υποστηριζόμενων αρχείων BIOS</string>
+    <string name="settings_bios_category_detected">Ανιχνεύθηκαν</string>
+    <string name="settings_bios_category_not_detected">Υποστηριζόμενο</string>
+    <string name="settings_title_reset_settings">Επαναφορά εργοστασιακών ρυθμίσεων</string>
+    <string name="settings_description_reset_settings">Επαναφορά του Lemuroid στις εργοστασιακές του ρυθμίσεις</string>
+    <string name="settings_title_advanced_settings">Σύνθετες ρυθμίσεις</string>
+    <string name="settings_description_advanced_settings">Εμφάνιση σύνθετων ρυθμίσεων</string>
+    <string name="settings_title_low_latency_audio">Προτιμήστε low-latency ήχο</string>
+    <string name="settings_description_low_latency_audio">Μείωση καθυστέρησης ήχου σε υποστηριζόμενες συσκευές. Μπορεί να αυξήσει τα glitches στον ήχο.</string>
+    <string name="settings_title_direct_game_load">Άμεση φόρτωση παιχνιδιού</string>
+    <string name="settings_description_direct_game_load">(Πειραματικό) Μειώστε το χρόνο φόρτωσης και τη χρήση cache σε υποστηριζόμενες κονσόλες.</string>
+    <string name="settings_title_enable_rumble">Δόνηση</string>
+    <string name="settings_description_enable_rumble">Ενεργοποίηση δόνησης σε υποστηριζόμενα παιχνίδια και χειριστήρια</string>
+    <string name="settings_title_enable_device_rumble">Δόνηση συσκευής</string>
+    <string name="settings_description_enable_device_rumble">Όταν κανένας controller δεν είναι συνδεδεμένος, δονείται η συσκευή</string>
+    <string name="reset_settings_warning_message_title">Είστε σίγουρος/η;</string>
+    <string name="reset_settings_warning_message_description">Αυτό θα επαναφέρει το Lemuroid στις εργοστασιακές του ρυθμίσεις. Τα saves και τα states θα διατηρηθούν.</string>
+    <string name="settings_title_save_sync">Αποθηκευμένα στο Cloud</string>
+    <string name="settings_description_save_sync">Δημιουργία αντίγραφου ασφαλείας και συγχρονισμός των saves στο cloud</string>
+    <string name="settings_save_sync_refresh">Χειροκίνητος συγχρονισμός</string>
+    <string name="settings_save_sync_refresh_description">Εκτέλεση χειροκίνητου συγχρονισμού τώρα.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Αυτόματος Συγχρονισμός</string>
+    <string name="settings_save_sync_enable_auto_description">Αυτόματη εκτέλεση συγχρονισμού πριν και μετά από μια συνεδρία κατά τη σύνδεση με το Wifi</string>
+    <string name="settings_save_sync_configure">Διαμόρφωση %1$s</string>
+    <string name="settings_save_sync_include_saves">Συγχρονισμός των saves εντός του παιχνιδιού</string>
+    <string name="settings_save_sync_include_saves_description">%1$s στη συσκευή</string>
+    <string name="settings_save_sync_include_states">Συγχρονισμός καταστάσεων</string>
+    <string name="settings_save_sync_include_states_description">Πιο βολικό, αλλά βαρύτερο και λιγότερο αξιόπιστο. Επιλέξτε ποιό πυρήνα/συστήματα θέλετε να συγχρονίσετε</string>
+    <string name="game_context_menu_add_to_favorites">Προσθήκη στα αγαπημένα</string>
+    <string name="game_context_menu_remove_from_favorites">Αφαίρεση από τα αγαπημένα</string>
+    <string name="game_context_menu_resume">Συνέχεια</string>
+    <string name="game_context_menu_restart">Επανεκκίνηση</string>
+    <string name="game_context_menu_create_shortcut">Καρφίτσωμα στον launcher</string>
+    <string name="home_notification_title">Ενεργοποίηση ειδοποιήσεων</string>
+    <string name="home_notification_message">Το Lemuroid χρησιμοποιεί ειδοποιήσεις για να σας ενημερώνει όταν ένα παιχνίδι ή μια λειτουργία τρέχει στο παρασκήνιο.</string>
+    <string name="home_notification_action">Ενεργοποίηση</string>
+    <string name="home_microphone_title">Ενεργοποίηση μικροφώνου</string>
+    <string name="home_microphone_message">Τα παιχνίδια Nintendo DS μπορούν να χρησιμοποιήσουν το μικρόφωνο για να παρέχουν ορισμένες λειτουργίες.</string>
+    <string name="home_microphone_action">Ενεργοποίηση</string>
+    <string name="home_empty_title">Επιλέξτε ένα ευρετήριο με ROMs</string>
+    <string name="home_empty_message">Το Lemuroid χρειάζεται να σαρώσει έναν φάκελο οπού περιέχει ROMs.\nΑυτό μπορεί να διαρκέσει μερικά λεπτά.</string>
+    <string name="home_empty_action">Επιλογή φακέλου</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME αποσύρθηκε σύντομα</string>
+    <string name="home_notification_desmume_deprecated_message">Αποθηκεύστε σε-παιχνίδι, μεταβείτε στο melonDS, και η πρόοδός σας θα φέρει πάνω.</string>
+    <string name="home_notification_desmume_deprecated_action">Εναλλαγή σε melonDS</string>
+    <string name="game_menu_save">Αποθήκευση</string>
+    <string name="game_menu_load">Φόρτωση</string>
+    <string name="game_menu_restart">Επανεκκίνηση</string>
+    <string name="game_menu_quit">Έξοδος</string>
+    <string name="game_menu_settings">Ρυθμίσεις</string>
+    <string name="game_menu_state">Κατάσταση: %1$s</string>
+    <string name="game_menu_change_disk_button">Αλλαγή Δίσκου</string>
+    <string name="game_menu_edit_touch_controls">Επεξεργασία Εικονικών Κουμπιών</string>
+    <string name="game_menu_mute_audio">Σίγαση</string>
+    <string name="game_menu_fast_forward">Γρήγορη κίνηση</string>
+    <string name="game_menu_change_disk_disk">Δίσκος %1$s</string>
+    <string name="game_menu_tilt_sensor">Αισθητήρας Κλίσης</string>
+    <string name="game_loading_preparing_game">Προετοιμασία παιχνιδιού…</string>
+    <string name="game_toast_settings_button_using_gamepad">Εντοπίστηκε Gamepad. Πρόσβαση στο μενού ρυθμίσεων με %1$s.</string>
+    <string name="game_toast_load_state_failed">Αδυναμία φόρτωσης αυτού του state</string>
+    <string name="game_toast_quick_save_loaded">Γρήγορη φόρτωση</string>
+    <string name="game_toast_quick_save_saved">Γρήγορη αποθήκευση</string>
+    <string name="empty_view_default">Δεν υπάρχουν στοιχεία</string>
+    <string name="core_settings_title">Ρυθμίσεις Πυρήνα</string>
+    <string name="core_settings_category_preferences">Προτιμήσεις</string>
+    <string name="core_settings_category_controllers">Χειριστήρια</string>
+    <string name="core_settings_controller">Χειριστήριο %1$s</string>
+    <string name="game_menu_title">Μενού παιχνιδιού</string>
+    <string name="notification_channel_name">Όλες οι ειδοποιήσεις</string>
+    <string name="library_index_notification_title">Η Σάρωση των ROMs βρίσκεται σε εξέλιξη</string>
+    <string name="library_index_notification_message">H διαδικασία ίσως διαρκέσει μερικά λεπτά</string>
+    <string name="save_sync_notification_title">Συγχρονισμός αποθήκευσης στο Cloud σε εξέλιξη</string>
+    <string name="save_sync_notification_message">H διαδικασία ίσως διαρκέσει μερικά λεπτά</string>
+    <string name="game_running_notification_title">%1$s εκτελείται</string>
+    <string name="game_running_notification_title_alternative">Το παιχνίδι τρέχει</string>
+    <string name="game_running_notification_message">Βεβαιωθείτε ότι αποθηκεύσατε την πρόοδό σας</string>
+    <string name="game_loader_error_gl_incompatible">Αυτός ο πυρήνας απαιτεί μια έκδοση OpenGL ES η οποία δεν υποστηρίζεται από τη συσκευή σας.</string>
+    <string name="game_loader_error_load_game">Κάτι κακό συνέβη κατά τη φόρτωση του παιχνιδιού σας. Βεβαιωθείτε ότι η ROM υποστηρίζεται από to Lemuroid και κάνετε σάρωση ξανά των παιχνιδιών σας.</string>
+    <string name="game_loader_error_save">Κάτι κακό συνέβη με το αρχείο αποθήκευσης. Αν το πρόβλημα παραμένει, δοκιμάστε να απενεργοποιήσετε την αυτόματη αποθήκευση.</string>
+    <string name="game_loader_error_unsupported_architecture">Αυτός ο πυρήνας δεν υποστηρίζεται από τη συσκευή σας.</string>
+    <string name="game_loader_error_generic">Κάτι άσχημο συνέβη. Δοκιμάστε τα παρακάτω:\n
+        \n\u2022 Απενεργοποιήστε την αυτόματη αποθήκευση και εκτελέστε ξανά το παιχνίδι
+        \n\u2022 Μεταβείτε στις ρυθμίσεις του Android και καθαρίστε την προσωρινή μνήμη της εφαρμογής
+        \n\u2022 Μεταβείτε στις ρυθμίσεις Lemuroid και εκτελέστε Επαναφορά εργοστασιακών ρυθμίσεων
+        \n\nΕάν δεν λειτουργήσει καμία από τις παραπάνω λύσεις, μπορεί να μην υποστηρίζεται αυτό το Παιχνίδι/Πυρήνας από αυτή τη συσκευή.
+    </string>
+    <string name="game_loader_error_missing_bios">Φαίνεται ότι λείπουν τα απαιτούμενα από το BIOS, παρακαλώ προσθέστε τα στον φάκελο με τις ROMs και κάνετε επανασάρωση. Απαιτούμενα αρχεία: %1$s</string>
+    <string name="game_shortcut_error">Κάτι κακό συνέβη κατά τη φόρτωση του παιχνιδιού σας. Βεβαιωθείτε ότι αυτό το παιχνίδι εξακολουθεί να υπάρχει στη βιβλιοθήκη σας.</string>
+    <string name="dialog_saf_not_found">Αυτή η συσκευή δεν υποστηρίζει τον επιλογέα αρχείων StorageAccessframe. Παρακαλώ αντιγράψτε μη συμπιεσμένα αρχεία ROM στο %1$s και πατήστε Επανασάρωση.</string>
+    <string name="system_grid_details">%1$s παιχνίδια</string>
+    <string name="tv_folder_picker_title">Επιλέξτε ένα φάκελο με ROMs</string>
+    <string name="tv_folder_picker_action_choose">Επιλέξτε</string>
+    <string name="tv_folder_picker_action_cancel">Ακύρωση</string>
+    <string name="tv_folder_storage_primary">Κύριος αποθηκευτικός χώρος</string>
+    <string name="tv_folder_storage_secondary">Δευτερεύων χώρος αποθήκευσης %1$s</string>
+    <string name="tv_folder_storage_title">Επιλογή αποθηκευτικού χώρου</string>
+    <string name="tv_home_section_favorites">Αγαπημένα</string>
+    <string name="tv_home_section_recents">Πρόσφατα</string>
+    <string name="tv_home_section_systems">Συστήματα</string>
+    <string name="tv_home_section_settings">Ρυθμίσεις</string>
+    <string name="gamepad_binding_update_title">Συσχετισμός \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Πατήστε ένα κουμπί στο \"%1$s \" σας</string>
+    <string name="shortcut_binding_update_title">Συσχετισμός \"Συντόμευση %1$s\"</string>
+    <string name="shortcut_binding_update_description">Πάτησε πρώτα και δεύτερο κουμπί για να συνδέσεις ένα combo στο \"%1$s\"</string>
+    <string name="tv_search_results">Παιχνίδια</string>
+    <string name="tv_game_message_missing_gamepad">Aπαιτείται σύνδεση με Gamepads απαιτείται για να παίξετε. Παρακαλώ συνδέστε ένα.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Αποσυνδέστε το Gamepad σας για να επεξεργαστείτε τα touch controls</string>
+    <string name="game_interactory_busy">Αναμονή για την ολοκλήρωση των εκκρεμών εργασιών</string>
+    <string name="mobile_settings_help">Βοήθεια</string>
+    <string name="mobile_settings_support">Υποστήριξη</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Πώς μπορώ να χρησιμοποιήσω το Lemuroid?</b><br/>
+        Αντιγράψτε όλα τα αρχεία ROMs σας σε έναν φάκελο στη συσκευή σας και επιλέξτε τον μέσω του Lemuroid. Αυτός ο φάκελος επιτρέπεται να έχει υποφακέλους. Μετά την ολοκλήρωση της σάρωσης θα πρέπει να μποείτε να δείτε τα παιχνίδια σας.<br/><br/>
+        <b>&#8226;Γιατί δεν έχουν εντοπιστεί τα παιχνίδια μου?</b><br/>
+        Αν τα παιχνίδια σας είναι συμπιεσμένα, δοκιμάστε να τα αποσυμπιέσετε. Αν αυτό δεν λειτουργήσει, δοκιμάστε να βάλετε τα ROMs σε ξεχωριστούς καταλόγους, ένα για κάθε σύστημα με τα ακόλουθα ονόματα: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Φαίνεται ότι ο πυρήνας του Libretro αντιμετωπίζει ένα απροσδόκητο πρόβλημα. Αν το πρόβλημα παραμείνει, δοκιμάστε τα εξής:\n
+        \n\u2022 Απενεργοποιήστε την αυτόματη αποθήκευση και εκτελέστε ξανά το παιχνίδι
+        \n\u2022 Πηγαίνετε στις ρυθμίσεις Android και καθαρίστε την μνήμη cache της εφαρμογής
+        \n\u2022 Πηγαίνετε στις ρυθμίσεις Lemuroid και εκτελέστε την Επαναφορά Εργοστασίων Ρυθμίσεων 
+        \n\n Αν καμία από τις παραπάνω λειτουργίες δεν λειτουργήσει, τότε ενδεχομένως το παιχνίδι/πυρήνας δεν υποστηρίζεται από αυτήν τη συσκευή.
+    </string>
+    <string name="error_message_incompatible_state">Αυτό το save state δεν είναι συμβατό με την τρέχουσα έκδοση του πυρήνα. Παρακαλώ φορτώστε προηγούμενο save του παιχνιδιού ή χρησιμοποιήστε μια προηγούμενη έκδοση Lemuroid.</string>
+    <string name="shader_filter_names_auto">Αυτόματο</string>
+    <string name="shader_filter_names_sharp">Κοφτερό</string>
+    <string name="shader_filter_names_smooth">Ομαλό</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">Κανένα</string>
+    <string name="haptic_feedback_mode_names_press">Πιέστε</string>
+    <string name="haptic_feedback_mode_names_press_release">Πίεστε &amp; αφήστε</string>
+    <string name="tilt_configuration_disabled">Απενεργοποιημένο</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Αριστερό Αναλογικό</string>
+    <string name="tilt_configuration_analog_right">Δεξί Αναλογικό</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+</resources>

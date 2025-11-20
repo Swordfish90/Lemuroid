@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">完成</string>
+    <string name="touch_customize_button_reset">重設</string>
+    <string name="touch_customize_info">拖動和縮放以改變按鍵大小和位置</string>
+</resources>

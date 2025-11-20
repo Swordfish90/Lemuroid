@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Scaricamento core…</string>
+    <string name="installing_core_notification_title">Aggiornamento dei Core</string>
+    <string name="installing_core_notification_message">Questo può richiedere fino a qualche minuto</string>
+    <string name="game_loader_error_load_core">Il Core Libretro non è stato caricato. Assicurati che il tuo dispositivo sia connesso a internet e prova a scansionare nuovamente la tua libreria. Se il problema persiste, questo core potrebbe non essere supportato sul tuo dispositivo.</string>
+</resources>

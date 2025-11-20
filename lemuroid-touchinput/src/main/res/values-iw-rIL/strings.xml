@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">בוצע</string>
+    <string name="touch_customize_button_reset">אפס</string>
+    <string name="touch_customize_info">גרור וכווץ/הגדל את המקשים</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Échec de connexion au service Google: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Connecté à Google en tant que %s</string>
+    <string name="gdrive_sign_out_success">Déconnecté de Google</string>
+    <string name="gdrive_missing_play_services">Google Drive nécessite les services Google Play qui ne sont pas pris en charge sur votre appareil</string>
+    <string name="gdrive_connected_summary">Associé à %s</string>
+    <string name="gdrive_connected_none_summary">Pas configuré</string>
+    <string name="gdrive_last_sync_completed">Dernière synchro: %s</string>
+    <string name="game_loading_download_core">Téléchargement du noyau…</string>
+    <string name="installing_core_notification_title">Mise à jour des noyaux depuis le Play</string>
+    <string name="installing_core_notification_message">Consultez l\'application Google Play Store pour l\'état actuel.</string>
+    <string name="game_loader_error_load_core">Le cœur Libretro n\'a pas été chargé. Essayez ce qui suit :\n
+        \n\u2022 Activez la connexion internet et rescannez vos jeux
+        \n\u2022 Assurez-vous que Google Play Store est installé et fonctionne
+        \n\u2022 Attendez la fin des opérations en cours dans l\'application Google Play Store</string>
+</resources>

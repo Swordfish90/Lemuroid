@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google Log ind mislykkedes: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Logget ind på Google som %s</string>
+    <string name="gdrive_sign_out_success">Logget ud fra Google</string>
+    <string name="gdrive_missing_play_services">Google Drev kræver Google Play-tjenester, som ikke understøttes på din enhed</string>
+    <string name="gdrive_connected_summary">Linket til %s</string>
+    <string name="gdrive_connected_none_summary">Ikke konfigureret</string>
+    <string name="gdrive_last_sync_completed">Seneste synkronisering: %s</string>
+    <string name="game_loading_download_core">Downloader Kerne…</string>
+    <string name="installing_core_notification_title">Opdaterer kerner fra Play</string>
+    <string name="installing_core_notification_message">Tjek Google Play Butik appen for at se den aktuelle status</string>
+    <string name="game_loader_error_load_core">Libretro kernen blev ikke indlæst. Prøv følgende:\n
+        \n\u2022 Aktiver internetforbindelse og genskan dine spil
+        \n\u2022 Sørg for, at Google Play Butik er installeret og kører
+        \n\u2022 Vent på afventende operationer i Google Play Butik appen for at fuldføre</string>
+</resources>

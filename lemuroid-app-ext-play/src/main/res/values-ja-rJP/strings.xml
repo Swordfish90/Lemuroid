@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google サインインに失敗しました: %s (%s)</string>
+    <string name="gdrive_sign_in_success">%s としてGoogleにログインしました</string>
+    <string name="gdrive_sign_out_success">Googleからログアウトしました</string>
+    <string name="gdrive_missing_play_services">Googleドライブには、お使いの端末でサポートされていないGoogle Playサービスが必要です</string>
+    <string name="gdrive_connected_summary">%s と連携されています</string>
+    <string name="gdrive_connected_none_summary">未設定</string>
+    <string name="gdrive_last_sync_completed">最終同期: %s</string>
+    <string name="game_loading_download_core">コアのダウンロード…</string>
+    <string name="installing_core_notification_title">Playからコアを更新する</string>
+    <string name="installing_core_notification_message">Google Playストアアプリで現在の状況を確認してください</string>
+    <string name="game_loader_error_load_core">Libretroコアがロードされていません。次の操作をお試しください。:\n
+        \n\u2022 インターネット接続を有効にし、ゲームを再スキャンする
+        \n\u2022 Google Playストアがインストールされ、実行されていることを確認する
+        \n\u2022 Google Playストアアプリの保留中の操作が完了するまで待つ</string>
+</resources>

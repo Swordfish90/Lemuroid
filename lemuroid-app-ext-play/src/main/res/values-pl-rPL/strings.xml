@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Logowanie Google nie powiodło się: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Zalogowano do Google jako %s</string>
+    <string name="gdrive_sign_out_success">Wylogowano z Google</string>
+    <string name="gdrive_missing_play_services">Dysk Google wymaga usług Google Play, które nie są obsługiwane na Twoim urządzeniu</string>
+    <string name="gdrive_connected_summary">Połączono z %s</string>
+    <string name="gdrive_connected_none_summary">Nie skonfigurowano</string>
+    <string name="gdrive_last_sync_completed">Ostatnia synchronizacja: %s</string>
+    <string name="game_loading_download_core">Pobieranie rdzenia…</string>
+    <string name="installing_core_notification_title">Aktualizowanie rdzeni z Play</string>
+    <string name="installing_core_notification_message">Sprawdź aplikację Sklep Google Play, aby zobaczyć bieżący status</string>
+    <string name="game_loader_error_load_core">Rdzeń Libretro nie został załadowany. Spróbuj wykonać następujące czynności:\n
+        \n\u2022 Włącz połączenie internetowe i ponownie przeskanuj gry.
+        \n\u2022 Upewnij się, że Sklep Google Play jest zainstalowany i uruchomiony.
+        \n\u2022 Poczekaj na zakończenie oczekujących operacji w aplikacji Sklep Google Play</string>
+</resources>

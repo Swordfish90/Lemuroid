@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Start</string>
+    <string name="title_search">Szukaj</string>
+    <string name="title_systems">Konsole</string>
+    <string name="title_games">Gry</string>
+    <string name="title_settings">Ustawienia</string>
+    <string name="recent">Ostatnie</string>
+    <string name="favorites">Ulubione</string>
+    <string name="discover">Odkrywaj</string>
+    <string name="rescan">Zeskanuj</string>
+    <string name="stop">Wstrzymaj</string>
+    <string name="none">Brak</string>
+    <string name="directory">Folder z plikami</string>
+    <string name="display_filter">Filtr wyświetlacza</string>
+    <string name="roms">ROMy Gier</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Anuluj</string>
+    <string name="settings">Ustawienia</string>
+    <string name="save_sync">Synchronizacja zapisów</string>
+    <string name="show_all">Pokaż wszystko</string>
+    <string name="back">Wróć</string>
+    <string name="close">Zamknij</string>
+    <string name="game_page_search_suggestion">Szukaj gry</string>
+    <string name="settings_category_general">Ogólne</string>
+    <string name="settings_category_input">Wejście</string>
+    <string name="settings_category_misc">Inne</string>
+    <string name="settings_title_enable_autosave">Auto-zapis stanu</string>
+    <string name="settings_description_enable_autosave">Zapisz stan podczas zamykania przez menu gry</string>
+    <string name="settings_title_enable_touch_feedback">Wibruj przy dotknięciu</string>
+    <string name="settings_title_tilt_sensitivity">Czułość czujnika nachylenia</string>
+    <string name="settings_title_hd_quality">Jakość trybu HD</string>
+    <string name="settings_title_maximum_cache_usage">Limit rozmiaru pamięci cache</string>
+    <string name="settings_title_hd_mode">Tryb HD</string>
+    <string name="settings_description_hd_mode">Zastosuj filtr skalowania po przetworzeniu obrazu</string>
+    <string name="settings_description_hd_quality">Dostosuj jakość trybu HD</string>
+    <string name="settings_title_immersive_mode">Tryb pełnoekranowy</string>
+    <string name="settings_description_immersive_mode">Dynamicznie koloryzuje tło na podstawie wizualizacji gry</string>
+    <string name="settings_title_gamepad_settings">Urządzenia zewnętrzne</string>
+    <string name="settings_description_gamepad_settings">Konfiguruj zewnętrzne gamepady i klawiatury</string>
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+    <string name="settings_gamepad_category_enabled">Aktywne urządzenia</string>
+    <string name="settings_gamepad_category_general">Ogólne</string>
+    <string name="settings_gamepad_title_reset_bindings">Zresetuj powiązania klawiszy</string>
+    <string name="settings_gamepad_title_game_menu">Menu</string>
+    <string name="settings_title_open_cores_selection">Zmień rdzenie</string>
+    <string name="settings_description_open_cores_selection">Wybierz, który rdzeń jest przypisany do systemu</string>
+    <string name="settings_core_selection_ds_info">DeSmuME jest przestarzały i wkrótce zostanie usunięty. Zapisz wewnątrz gry, a następnie przełącz się na melonDS: w grze zaoszczędza ładowanie tam automatycznie, ale zapisuj stany, które je utworzyły.</string>
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">Wyświetl wykryte i obsługiwane pliki BIOS</string>
+    <string name="settings_bios_category_detected">Wykryte</string>
+    <string name="settings_bios_category_not_detected">Obsługiwane</string>
+    <string name="settings_title_reset_settings">Przywróć ustawienia fabryczne</string>
+    <string name="settings_description_reset_settings">Zresetuj Lemuroid do ustawień fabrycznych</string>
+    <string name="settings_title_advanced_settings">Ustawienia zaawansowane</string>
+    <string name="settings_description_advanced_settings">Wyświetl ustawienia zaawansowane</string>
+    <string name="settings_title_low_latency_audio">Preferuj dźwięk o niskim opóźnieniu</string>
+    <string name="settings_description_low_latency_audio">Zmniejsza opóźnienie dźwięku na obsługiwanych urządzeniach. Może zwiększyć występowanie błędów dźwięku.</string>
+    <string name="settings_title_direct_game_load">Bezpośrednie ładowanie gry</string>
+    <string name="settings_description_direct_game_load">(Eksperymentalne) Skraca czasy ładowania i zmniejsza zużycie pamięci cache na obsługiwanych konsolach.</string>
+    <string name="settings_title_enable_rumble">Wibracje</string>
+    <string name="settings_description_enable_rumble">Włącz wibracje w obsługiwanych grach i kontrolerach</string>
+    <string name="settings_title_enable_device_rumble">Wibracje urządzenia</string>
+    <string name="settings_description_enable_device_rumble">Jeśli kontroler nie jest podłączony, wibruj urządzeniem</string>
+    <string name="reset_settings_warning_message_title">Jesteś pewien?</string>
+    <string name="reset_settings_warning_message_description">To zresetuje Lemuroid do ustawień fabrycznych. Zapisy i stany zostaną zachowane.</string>
+    <string name="settings_title_save_sync">Zapisy w chmurze</string>
+    <string name="settings_description_save_sync">Utwórz kopię zapasową i zsynchronizuj swoje zapisy w chmurze</string>
+    <string name="settings_save_sync_refresh">Ręczna synchronizacja</string>
+    <string name="settings_save_sync_refresh_description">Wykonaj ręczną synchronizację teraz.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Auto-synchronizacja</string>
+    <string name="settings_save_sync_enable_auto_description">Automatycznie wykonaj synchronizację przed i po sesji gry po połączeniu z siecią Wi-Fi</string>
+    <string name="settings_save_sync_configure">Konfiguracja %1$s</string>
+    <string name="settings_save_sync_include_saves">Synchronizuj zapisy w grze</string>
+    <string name="settings_save_sync_include_saves_description">%1$s na urządzeniu</string>
+    <string name="settings_save_sync_include_states">Synchronizuj stany</string>
+    <string name="settings_save_sync_include_states_description">Wygodniejsze, ale cięższe i bardziej podatne na błędy. Wybierz rdzenie/systemy, które chcesz zsynchronizować</string>
+    <string name="game_context_menu_add_to_favorites">Dodaj do ulubionych</string>
+    <string name="game_context_menu_remove_from_favorites">Usuń z ulubionych</string>
+    <string name="game_context_menu_resume">Wznów</string>
+    <string name="game_context_menu_restart">Zrestartuj</string>
+    <string name="game_context_menu_create_shortcut">Dodaj do launchera</string>
+    <string name="home_notification_title">Włącz powiadomienia</string>
+    <string name="home_notification_message">Lemuroid używa powiadomień, aby dać Ci znać, gdy gra lub operacja działa w tle.</string>
+    <string name="home_notification_action">Włącz</string>
+    <string name="home_microphone_title">Włącz mikrofon</string>
+    <string name="home_microphone_message">Gry Nintendo DS mogą korzystać z mikrofonu, aby zapewnić niektóre funkcje.</string>
+    <string name="home_microphone_action">Włącz</string>
+    <string name="home_empty_title">Wybierz katalog plików ROM</string>
+    <string name="home_empty_message">Lemuroid musi przeskanować katalog zawierający pliki ROM.\nMoże to potrwać do kilku minut.</string>
+    <string name="home_empty_action">Wybierz katalog</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME wkrótce przechodzi na emeryturę</string>
+    <string name="home_notification_desmume_deprecated_message">Zapisz w grze, przełącz się na melonDS, a Twoje postępy zostaną przeniesione. Zapisz stany są powiązane z DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Przełącz na melonDS</string>
+    <string name="game_menu_save">Zapisz</string>
+    <string name="game_menu_load">Załaduj</string>
+    <string name="game_menu_restart">Zrestartuj</string>
+    <string name="game_menu_quit">Wyjdź</string>
+    <string name="game_menu_settings">Ustawienia</string>
+    <string name="game_menu_state">Stan %1$s</string>
+    <string name="game_menu_change_disk_button">Zmień dysk</string>
+    <string name="game_menu_edit_touch_controls">Edytuj sterowanie</string>
+    <string name="game_menu_mute_audio">Wycisz</string>
+    <string name="game_menu_fast_forward">Przyśpiesz</string>
+    <string name="game_menu_change_disk_disk">Dysk %1$s</string>
+    <string name="game_menu_tilt_sensor">Czujnik Przechylenia</string>
+    <string name="game_loading_preparing_game">Przygotowuję grę…</string>
+    <string name="game_toast_settings_button_using_gamepad">Wykryto gamepada. Uzyskaj dostęp do menu ustawień za pomocą %1$s.</string>
+    <string name="game_toast_load_state_failed">Nie można załadować tego stanu</string>
+    <string name="game_toast_quick_save_loaded">Prędkie Władowanie</string>
+    <string name="game_toast_quick_save_saved">Prędki Zapis</string>
+    <string name="empty_view_default">Brak elementów</string>
+    <string name="core_settings_title">Ustawienia rdzenia</string>
+    <string name="core_settings_category_preferences">Preferencje</string>
+    <string name="core_settings_category_controllers">Kontrolery</string>
+    <string name="core_settings_controller">Kontroler %1$s</string>
+    <string name="game_menu_title">Menu gry</string>
+    <string name="notification_channel_name">Wszystkie powiadomienia</string>
+    <string name="library_index_notification_title">Trwa skanowanie plików ROM</string>
+    <string name="library_index_notification_message">Może to zająć do kilku minut</string>
+    <string name="save_sync_notification_title">Synchronizacja zapisu w Chmurze</string>
+    <string name="save_sync_notification_message">Może to zająć do kilku minut</string>
+    <string name="game_running_notification_title">%1$s jest uruchomione</string>
+    <string name="game_running_notification_title_alternative">Gra jest uruchomiona</string>
+    <string name="game_running_notification_message">Upewnij się, że zapisałeś swoje postępy</string>
+    <string name="game_loader_error_gl_incompatible">Ten rdzeń wymaga wersji OpenGL ES, która nie jest obsługiwana przez Twoje urządzenie.</string>
+    <string name="game_loader_error_load_game">Podczas ładowania gry stało się coś złego. Upewnij się, że plik ROM jest obsługiwany przez Lemuroid i przeskanuj ponownie swoje gry.</string>
+    <string name="game_loader_error_save">Z plikiem zapisu stało się coś złego. Jeśli problem nadal występuje, spróbuj wyłączyć auto-zapis.</string>
+    <string name="game_loader_error_unsupported_architecture">Twoje urządzenie nie obsługuje tego rdzenia.</string>
+    <string name="game_loader_error_generic">Stało się coś złego. Spróbuj wykonać następujące czynności:\n
+        \n\u2022 Wyłącz auto-zapis i uruchom grę ponownie.
+        \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji.
+        \n\u2022 Przejdź do ustawień Lemuroid i przywróć ustawienia fabryczne.
+        \n\nJeśli żaden z powyższych sposobów nie zadziała, możliwe, że ta gra/Rdzeń nie jest obsługiwany przez to urządzenie.
+    </string>
+    <string name="game_loader_error_missing_bios">Wygląda na to, że brakuje Ci wymaganych plików BIOS. Umieść je w katalogu Twoich plików ROM i przeskanuj ponownie. Wymagane pliki: %1$s</string>
+    <string name="game_shortcut_error">Podczas wczytywania gry wydarzyło się coś złego. Upewnij się, że ta gra nadal istnieje w Twojej bibliotece.</string>
+    <string name="dialog_saf_not_found">To urządzenie nie obsługuje selektora plików StorageAccessFramework. Proszę ręcznie skopiować nieskompresowane pliki ROM do %1$s i nacisnąć \"Skanuj ponownie\".</string>
+    <string name="system_grid_details">%1$s gry/gier</string>
+    <string name="tv_folder_picker_title">Wybierz katalog plików ROM</string>
+    <string name="tv_folder_picker_action_choose">Wybierz</string>
+    <string name="tv_folder_picker_action_cancel">Anuluj</string>
+    <string name="tv_folder_storage_primary">Pamięć wewnętrzna</string>
+    <string name="tv_folder_storage_secondary">Druga pamięć %1$s</string>
+    <string name="tv_folder_storage_title">Wybierz pamięć</string>
+    <string name="tv_home_section_favorites">Ulubione</string>
+    <string name="tv_home_section_recents">Ostatnie</string>
+    <string name="tv_home_section_systems">Systemy</string>
+    <string name="tv_home_section_settings">Ustawienia</string>
+    <string name="gamepad_binding_update_title">Powiąż \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Naciśnij przycisk na Twoim \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Powiąż \"RetroPad %1$s\"</string>
+    <string name="shortcut_binding_update_description">Naciśnij pierwszy, a następnie drugi przycisk, aby powiązać kombinację \"%1$s\"</string>
+    <string name="tv_search_results">Gry</string>
+    <string name="tv_game_message_missing_gamepad">Gamepady są wymagane do gry. Prosimy o podłączenie jednego z nich.</string>
+    <string name="game_edit_touch_controls_error_not_visible">Odłącz pad, aby edytować sterowanie dotykowe</string>
+    <string name="game_interactory_busy">Poczekaj na zakończenie trwających operacji</string>
+    <string name="mobile_settings_help">Pomoc</string>
+    <string name="mobile_settings_support">Wsparcie</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Jak korzystać z Lemuroid?</b><br/>
+        Skopiuj wszystkie pliki ROM do katalogu na swoim urządzeniu i wybierz go w Lemuroid. Katalog ten może mieć podkatalogi. Po zakończeniu skanowania powinieneś/powinnaś zobaczyć swoje gry.<br/><br/>
+        <b>&#8226;Dlaczego moje gry nie są wykrywane?</b><br/>
+        Jeśli gry są skompresowane, spróbuj je rozpakować. Jeśli to nie zadziała, spróbuj umieścić pliki ROM w oddzielnych katalogach, po jednym dla każdego systemu, o następujących nazwach: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Wygląda na to, że rdzeń Libretro napotkał nieoczekiwany problem. Jeśli nie ustąpi, spróbuj wykonać następujące czynności:\n
+        \n\u2022 Wyłącz auto-zapis i uruchom grę ponownie.
+        \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji.
+        \n\u2022 Przejdź do ustawień Lemuroid i przywróć ustawienia fabryczne.
+        \n\n Jeśli żaden z powyższych sposobów nie zadziała, możliwe, że ta gra/rdzeń nie jest obsługiwany przez to urządzenie.
+    </string>
+    <string name="error_message_incompatible_state">Ten stan zapisu nie jest kompatybilny z aktualną wersją rdzenia. Załaduj najnowszy zapis w grze lub użyj poprzedniej wersji Lemuroid.</string>
+    <string name="shader_filter_names_auto">Automatyczny</string>
+    <string name="shader_filter_names_sharp">Ostry</string>
+    <string name="shader_filter_names_smooth">Gładki</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+    <string name="haptic_feedback_mode_names_none">Brak</string>
+    <string name="haptic_feedback_mode_names_press">Naciśnij</string>
+    <string name="haptic_feedback_mode_names_press_release">Naciśnij &amp; puść</string>
+    <string name="tilt_configuration_disabled">Wyłączone</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Lewy Analog</string>
+    <string name="tilt_configuration_analog_right">Prawy Analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1- R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+</resources>

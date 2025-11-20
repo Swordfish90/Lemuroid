@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="local_storage">Lưu trữ trên máy</string>
+    <string name="controller_arcade_4">Mặc định (4 nút)</string>
+    <string name="controller_arcade_6">Mặc định (6 nút)</string>
+    <string name="controller_genesis_3">Mặc định (3 nút)</string>
+    <string name="controller_genesis_6">Mặc định (46nút)</string>
+    <string name="controller_default">Mặc định</string>
+    <string name="controller_standard">Tiêu chuẩn</string>
+    <!-- Core settings titles -->
+    <!-- Core settings values. Duplicated here to ease the translation process. -->
+</resources>
