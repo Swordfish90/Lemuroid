@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Đang tải lõi xuống…</string>
+    <string name="installing_core_notification_title">Đang cập nhật lõi</string>
+    <string name="installing_core_notification_message">Việc này có thể mất một vài phút</string>
+    <string name="game_loader_error_load_core">Lõi libretro không tải được. Hãy đảm bảo thiết bị của bạn được kết nối internet và thử quét lại thư viện. Nếu vấn đề này vẫn tiếp diễn, có thể lõi này không được hỗ trợ trên thiết bị của bạn.</string>
+</resources>
