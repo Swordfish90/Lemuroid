@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">وضع HD</string>
     <string name="settings_description_hd_mode">تطبيق عامل التصفية بعد المعالجة</string>
     <string name="settings_description_hd_quality">ضبط جودة الوضع عالي الدِّقَّة</string>
+    <string name="settings_title_immersive_mode">وضع الغمار</string>
+    <string name="settings_description_immersive_mode">تلوين الخلفية بشكل ديناميكي استناداً إلى مرئيات اللعبة</string>
     <string name="settings_title_gamepad_settings">أجهزة خارجية</string>
     <string name="settings_description_gamepad_settings">تهيئة أجهزة التحكم ولوحات المفاتيح</string>
     <string name="settings_retropad_button_name">لوحة قديمة %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">القائمة</string>
     <string name="settings_title_open_cores_selection">تغيير النواة</string>
     <string name="settings_description_open_cores_selection">حدد أي نواة مرتبطة بنظام</string>
+    <string name="settings_core_selection_ds_info">DeSmuME مهمل وسيتم إزالته قريباً. حفظ داخل اللعبة، ثم قم بالتبديل إلى melonDS: في اللعبة يحفظ التحميل هناك تلقائيا، ولكن حفظ الدول تبقى في قلب اللعبة الذي أنشأها.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">عرض ملفات BIOS المكتشفة والمدعومة</string>
     <string name="settings_bios_category_detected">تم الكشف</string>
@@ -86,6 +89,9 @@
     <string name="home_empty_title">حدد مجلد ROM</string>
     <string name="home_empty_message">يحتاج Lemuroid إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
     <string name="home_empty_action">حدد المجلد</string>
+    <string name="home_notification_desmume_deprecated_title">يتقاعد DSmuME قريباً</string>
+    <string name="home_notification_desmume_deprecated_message">حفظ داخل اللعبة، التبديل إلى melonDS، والتقدم الذي أحرزتمونه. حفظ الدول يبقى مرتبطا بـ DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">التبديل إلى melonDS</string>
     <string name="game_menu_save">حفظ</string>
     <string name="game_menu_load">تحميل</string>
     <string name="game_menu_restart">إعادة التشغيل</string>
@@ -97,9 +103,12 @@
     <string name="game_menu_mute_audio">كتم</string>
     <string name="game_menu_fast_forward">التقديم السريع</string>
     <string name="game_menu_change_disk_disk">القرص %1$s</string>
+    <string name="game_menu_tilt_sensor">مستشعر الميل</string>
     <string name="game_loading_preparing_game">جاري إعداد اللعبة…</string>
     <string name="game_toast_settings_button_using_gamepad">تم اكتشاف لوحة التحكم. الوصول إلى قائمة الإعدادات مع %1$s.</string>
     <string name="game_toast_load_state_failed">لا يمكن تحميل هذه الحالة</string>
+    <string name="game_toast_quick_save_loaded">تحميل سريع</string>
+    <string name="game_toast_quick_save_saved">حفظ سريع</string>
     <string name="empty_view_default">لا توجد عناصر</string>
     <string name="core_settings_title">إعدادات النواة</string>
     <string name="core_settings_category_preferences">التفضيلات</string>
@@ -140,6 +149,8 @@
     <string name="tv_home_section_settings">الإعدادات</string>
     <string name="gamepad_binding_update_title">ارتبط بـ \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">اضغط على زر على \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">ربط \"الاختصار %1$s\"</string>
+    <string name="shortcut_binding_update_description">اضغط على الزر الأول، ثم ثانية لربط مجموعة على \"%1$s\"</string>
     <string name="tv_search_results">الأعاب</string>
     <string name="tv_game_message_missing_gamepad">وحدة التحكم مطلوبة للعب. الرجاء توصيل واحدة منها.</string>
     <string name="game_edit_touch_controls_error_not_visible">أقطع الاتصال بلوحة التحكم الخاصة بك لتحرير عناصر التحكم الخاصة بها</string>
@@ -165,4 +176,11 @@
     <string name="haptic_feedback_mode_names_none">لا شيء</string>
     <string name="haptic_feedback_mode_names_press">اضغط</string>
     <string name="haptic_feedback_mode_names_press_release">اضغط &amp; الإصدار</string>
+    <string name="tilt_configuration_disabled">معطل</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">التناظري الأيسر</string>
+    <string name="tilt_configuration_analog_right">تناظري لليمين</string>
+    <string name="tilt_configuration_buttons_l_r">لام - ر</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
