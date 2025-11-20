@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings.xml
+  ~
+  ~ Copyright (C) 2017 Retrograde Project
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <string name="gdrive_sign_in_failed">Google-pålogging mislyktes: %s (%s)</string>
+    <string name="gdrive_sign_in_success">Logget inn med Google som %s</string>
+    <string name="gdrive_sign_out_success">Logget ut fra Google</string>
+    <string name="gdrive_missing_play_services">Google Drive krever Google Play-tjenester, som ikke støttes på enheten din</string>
+    <string name="gdrive_connected_summary">Koblet til %s</string>
+    <string name="gdrive_connected_none_summary">Ikke konfigurert</string>
+    <string name="gdrive_last_sync_completed">Siste synkronisering: %s</string>
+    <string name="game_loading_download_core">Laster ned kjerne…</string>
+    <string name="installing_core_notification_title">Oppdaterer kjerner fra Play</string>
+    <string name="installing_core_notification_message">Sjekk Google Play Store-appen for å se gjeldende status</string>
+    <string name="game_loader_error_load_core">Libretro-kjernen ble ikke lastet inn. Prøv følgende:\n
+        \n\u2022 Aktiver internettilkobling og skann spillene dine på nytt
+        \n\u2022 Sørg for at Google Play Store er installert og kjører
+        \n\u2022 Vent til ventende operasjoner i Google Play Store-appen er fullført</string>
+</resources>
