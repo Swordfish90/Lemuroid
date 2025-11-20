@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="touch_customize_button_done">Concluído</string>
+    <string name="touch_customize_button_reset">Reset</string>
+    <string name="touch_customize_info">Arraste e belisque os controlos para alterar a posição e o tamanho</string>
+</resources>
