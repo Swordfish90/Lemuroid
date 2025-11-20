@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD-Modus</string>
     <string name="settings_description_hd_mode">Hochskalierungsfilter nach Bearbeitung anwenden</string>
     <string name="settings_description_hd_quality">Qualität des HD-Modus anpassen</string>
+    <string name="settings_title_immersive_mode">Immersive-Modus</string>
+    <string name="settings_description_immersive_mode">Dynamische Farben des Hintergrunds basierend auf Spielvisuellen</string>
     <string name="settings_title_gamepad_settings">Externe Geräte</string>
     <string name="settings_description_gamepad_settings">Konfiguriere externe Controller und Tastaturen</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Menü</string>
     <string name="settings_title_open_cores_selection">Kerne ändern</string>
     <string name="settings_description_open_cores_selection">Wähle aus, welcher Kern einem System zugeordnet ist</string>
+    <string name="settings_core_selection_ds_info">DeSmuME ist veraltet und wird bald entfernt. Speichern Sie im Spiel und wechseln Sie dann zu melonDS: Im Spiel spart das Laden dort automatisch, aber der Zustand bleibt auf dem Kern, der sie geschaffen hat.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Zeige erkannte und unterstützte BIOS-Dateien</string>
     <string name="settings_bios_category_detected">Detected</string>
@@ -86,6 +89,9 @@
     <string name="home_empty_title">ROMs Verzeichnis wählen</string>
     <string name="home_empty_message">Lemuroid muss ein Verzeichnis mit ROM Dateien scannen.\nDies kann einige Minuten dauern.</string>
     <string name="home_empty_action">Verzeichnis wählen</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME wird bald ausscheiden</string>
+    <string name="home_notification_desmume_deprecated_message">Sparen Sie im Spiel, wechseln Sie zu MelonDS und Ihr Fortschritt wird übertragen. Spart Staaten bleiben an DeSmuME gebunden.</string>
+    <string name="home_notification_desmume_deprecated_action">Zu MelonDS wechseln</string>
     <string name="game_menu_save">Speichern</string>
     <string name="game_menu_load">Laden</string>
     <string name="game_menu_restart">Neustart</string>
@@ -97,9 +103,12 @@
     <string name="game_menu_mute_audio">Stummschalten</string>
     <string name="game_menu_fast_forward">Vorspulen</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_tilt_sensor">Neigungssensor</string>
     <string name="game_loading_preparing_game">Spiel wird vorbereitet…</string>
     <string name="game_toast_settings_button_using_gamepad">Controller erkannt. Zugriffseinstellungen mit %1$s.</string>
     <string name="game_toast_load_state_failed">Dieser Zustand kann nicht geladen werden</string>
+    <string name="game_toast_quick_save_loaded">Schnell geladen</string>
+    <string name="game_toast_quick_save_saved">Schnell gespeichert</string>
     <string name="empty_view_default">Keine Einträge</string>
     <string name="core_settings_title">Kerneinstellungen</string>
     <string name="core_settings_category_preferences">Einstellungen</string>
@@ -140,6 +149,8 @@
     <string name="tv_home_section_settings">Einstellungen</string>
     <string name="gamepad_binding_update_title">Ordne \"RetroPad %1$s\" zu</string>
     <string name="gamepad_binding_update_description">Drücke eine Taste auf deinem \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Verknüpfen Sie \"Verknüpfung %1$s\"</string>
+    <string name="shortcut_binding_update_description">Drücken Sie die erste, dann die zweite Taste, um eine Kombo auf Ihre \"%1$s \" zu binden</string>
     <string name="tv_search_results">Spiele</string>
     <string name="tv_game_message_missing_gamepad">Controller sind zum Spielen erforderlich. Bitte eines verbinden.</string>
     <string name="game_edit_touch_controls_error_not_visible">Trenne dein Pad, um deine Touchsteuerungen zu bearbeiten</string>
@@ -166,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">Keine Vibration</string>
     <string name="haptic_feedback_mode_names_press">Drücken</string>
     <string name="haptic_feedback_mode_names_press_release">Drücken &amp; Loslassen</string>
+    <string name="tilt_configuration_disabled">Deaktiviert</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Analog links</string>
+    <string name="tilt_configuration_analog_right">Rechter Analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>
