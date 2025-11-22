@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD 모드</string>
     <string name="settings_description_hd_mode">업스케일링 후처리 필터를 적용합니다</string>
     <string name="settings_description_hd_quality">HD 모드의 품질을 설정합니다</string>
+    <string name="settings_title_immersive_mode">몰입형 모드</string>
+    <string name="settings_description_immersive_mode">게임 화면에 따라 배경 색상을 동적으로 변경합니다</string>
     <string name="settings_title_gamepad_settings">외장 장치</string>
     <string name="settings_description_gamepad_settings">외장 게임패드와 키보드를 설정합니다</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
