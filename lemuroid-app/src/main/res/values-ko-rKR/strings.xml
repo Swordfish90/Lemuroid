@@ -45,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">메뉴</string>
     <string name="settings_title_open_cores_selection">코어 변경</string>
     <string name="settings_description_open_cores_selection">시스템에 연결된 코어를 변경합니다</string>
+    <string name="settings_core_selection_ds_info">DeSmuME는 지원이 중단되었으며 이후 업데이트에서 삭제될 예정입니다. 게임 내에서 진행 상황을 저장하고, melonDS로 갈아타세요. 게임 내에서 한 저장은 melonDS에서 불러올 수 있지만, 상태저장은 생성된 코어에서만 사용할 수 있습니다.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">인식된 BIOS 파일을 표시합니다</string>
     <string name="settings_bios_category_detected">감지됨</string>
@@ -88,6 +89,9 @@
     <string name="home_empty_title">ROM 디렉토리 선택</string>
     <string name="home_empty_message">Lemuroid가 검색할 ROM 파일이 담긴 디렉토리가 필요합니다.\n이 과정은 몇 분 정도 걸립니다.</string>
     <string name="home_empty_action">디렉토리 선택</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME의 지원이 중단됩니다</string>
+    <string name="home_notification_desmume_deprecated_message">게임 내에서 저장하고, melonDS로 갈아타 진행 상황을 보존하세요. 상태저장은 다른 코어로 가져갈 수 없으며 DeSmuME에서밖에 사용할 수 없습니다.</string>
+    <string name="home_notification_desmume_deprecated_action">melonDS로 갈아타기</string>
     <string name="game_menu_save">저장</string>
     <string name="game_menu_load">불러오기</string>
     <string name="game_menu_restart">다시 시작</string>
