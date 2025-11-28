@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
@@ -134,6 +135,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
             )
         }
+
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                baseGameScreenViewModel.requestFinish()
+            }
+        })
 
         initialiseFlows()
     }
@@ -270,11 +277,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             return true
         }
         return super.onKeyUp(keyCode, event)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        baseGameScreenViewModel.requestFinish()
     }
 
     private fun performSuccessfulActivityFinish() {
