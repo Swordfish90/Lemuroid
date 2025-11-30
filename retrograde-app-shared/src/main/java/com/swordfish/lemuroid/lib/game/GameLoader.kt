@@ -30,6 +30,7 @@ import com.swordfish.lemuroid.lib.library.LemuroidLibrary
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.migration.DesmumeMigrationHandler
 import com.swordfish.lemuroid.lib.saves.SaveState
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
@@ -50,6 +51,7 @@ class GameLoader(
     private val savesCoherencyEngine: SavesCoherencyEngine,
     private val directoriesManager: DirectoriesManager,
     private val biosManager: BiosManager,
+    private val desmumeMigrationHandler: DesmumeMigrationHandler,
 ) {
     sealed class LoadingState {
         object LoadingCore : LoadingState()
@@ -95,15 +97,21 @@ class GameLoader(
                         lemuroidLibrary.getGameFiles(game, dataFiles, useVFS)
                     }.getOrElse { throw it }
 
-                val saveRAMData =
+                val saveRAM =
                     runCatching {
-                        savesManager.getSaveRAM(game, systemCoreConfig)
+                        val data = savesManager.getSaveRAM(game, systemCoreConfig)
+                        desmumeMigrationHandler.resolveSaveData(game, systemCoreConfig.coreID, data)
                     }.getOrElse { throw GameLoaderException(GameLoaderError.Saves) }
+                val saveRAMData = saveRAM.data
 
                 val quickSaveData =
                     runCatching {
                         val shouldDiscardSave =
-                            !savesCoherencyEngine.shouldDiscardAutoSaveState(game, systemCoreConfig.coreID)
+                            !savesCoherencyEngine.shouldDiscardAutoSaveState(
+                                game,
+                                systemCoreConfig.coreID,
+                                saveRAM.timestampOverride,
+                            )
 
                         if (systemCoreConfig.statesSupported && loadSave && shouldDiscardSave) {
                             statesManager.getAutoSave(game, systemCoreConfig.coreID)

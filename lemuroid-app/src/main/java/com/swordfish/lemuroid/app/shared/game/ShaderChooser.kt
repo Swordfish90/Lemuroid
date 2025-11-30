@@ -16,12 +16,15 @@ object ShaderChooser {
         screenFilter: String,
         system: GameSystem,
     ): ShaderConfig {
-        Timber.i("Choosing shader for this config: screenFilter= $screenFilter hdMode=$hdMode hdModeQuality=$requestedHdModeQuality")
-        val hdModeQuality = if (context.getGLSLVersion() >= 3) {
-            requestedHdModeQuality
-        } else {
-            HDModeQuality.LOW
-        }
+        Timber.i(
+            "Choosing shader for this config: screenFilter= $screenFilter hdMode=$hdMode hdModeQuality=$requestedHdModeQuality",
+        )
+        val hdModeQuality =
+            if (context.getGLSLVersion() >= 3) {
+                requestedHdModeQuality
+            } else {
+                HDModeQuality.LOW
+            }
         return when {
             hdMode -> getHDShaderForSystem(system, hdModeQuality)
             else ->
@@ -65,7 +68,10 @@ object ShaderChooser {
         }
     }
 
-    private fun getHDShaderForSystem(system: GameSystem, hdModeQuality: HDModeQuality): ShaderConfig {
+    private fun getHDShaderForSystem(
+        system: GameSystem,
+        hdModeQuality: HDModeQuality,
+    ): ShaderConfig {
         return when (hdModeQuality) {
             HDModeQuality.LOW -> getLowQualityHdMode(system)
             HDModeQuality.MEDIUM -> getMediumQualityHdMode(system)
@@ -123,7 +129,7 @@ object ShaderChooser {
             upscale32Bits,
             upscale16Bits,
             upscale8Bits,
-            modern
+            modern,
         )
     }
 
@@ -133,7 +139,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                hardEdgesSearchMaxError = 0.50f,
             )
 
         val upscale8Bits =
@@ -141,7 +147,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                hardEdgesSearchMaxError = 0.50f,
             )
 
         val upscale16BitsMobile =
@@ -149,7 +155,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                hardEdgesSearchMaxError = 0.75f,
             )
 
         val upscale16Bits =
@@ -157,7 +163,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                hardEdgesSearchMaxError = 0.25f,
             )
 
         val upscale32Bits =
@@ -165,7 +171,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f
+                hardEdgesSearchMaxError = 0.25f,
             )
 
         val modern =
@@ -173,7 +179,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.50f,
-                edgeMinValue = 0.025f
+                hardEdgesSearchMaxError = 0.25f,
             )
 
         return getConfigForSystem(
@@ -183,7 +189,7 @@ object ShaderChooser {
             upscale32Bits,
             upscale16Bits,
             upscale8Bits,
-            modern
+            modern,
         )
     }
 
@@ -193,8 +199,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMaxError = 0.50f,
             )
 
         val upscale8Bits =
@@ -202,8 +207,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.00f,
                 blendMaxContrastEdge = 0.30f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMaxError = 0.50f,
             )
 
         val upscale16BitsMobile =
@@ -211,8 +215,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMaxError = 0.25f,
             )
 
         val upscale16Bits =
@@ -220,8 +223,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMaxError = 0.25f,
             )
 
         val upscale32Bits =
@@ -229,8 +231,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMaxError = 0.25f,
             )
 
         val modern =
@@ -238,8 +239,7 @@ object ShaderChooser {
                 blendMinContrastEdge = 0.10f,
                 blendMaxContrastEdge = 0.50f,
                 blendMaxSharpness = 0.75f,
-                edgeMinValue = 0.025f,
-                searchMinContrast = 0.75f,
+                hardEdgesSearchMaxError = 0.25f,
             )
 
         return getConfigForSystem(
@@ -249,7 +249,7 @@ object ShaderChooser {
             upscale32Bits,
             upscale16Bits,
             upscale8Bits,
-            modern
+            modern,
         )
     }
 
@@ -260,7 +260,7 @@ object ShaderChooser {
         upscale32Bits: ShaderConfig,
         upscale16Bits: ShaderConfig,
         upscale8Bits: ShaderConfig,
-        modern: ShaderConfig
+        modern: ShaderConfig,
     ): ShaderConfig {
         return when (system.id) {
             SystemID.GBA -> upscale16BitsMobile

@@ -3,5 +3,5 @@
     <string name="game_loading_download_core">Скачивание ядра…</string>
     <string name="installing_core_notification_title">Обновление ядер</string>
     <string name="installing_core_notification_message">Это может занять несколько минут</string>
-    <string name="game_loader_error_load_core">Ядро Libretro не было загружено. Убедитесь, что устройство подключено к Интернет и запустите повторное сканирование библиотеки. Если проблема сохраняется, возможно, что ядро не поддерживается вашим устройством.</string>
+    <string name="game_loader_error_load_core">Ядро Libretro не было загружено. Убедитесь, что устройство подключено к сети Интернет и запустите повторное сканирование библиотеки. Если проблема сохраняется, возможно, что ядро не поддерживается вашим устройством.</string>
 </resources>

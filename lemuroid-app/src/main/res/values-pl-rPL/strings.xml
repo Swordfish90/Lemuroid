@@ -2,18 +2,18 @@
 <resources>
     <string name="title_home">Start</string>
     <string name="title_search">Szukaj</string>
-    <string name="title_systems">Systemy</string>
+    <string name="title_systems">Konsole</string>
     <string name="title_games">Gry</string>
     <string name="title_settings">Ustawienia</string>
     <string name="recent">Ostatnie</string>
     <string name="favorites">Ulubione</string>
     <string name="discover">Odkrywaj</string>
-    <string name="rescan">Skanuj ponownie</string>
+    <string name="rescan">Zeskanuj</string>
     <string name="stop">Wstrzymaj</string>
     <string name="none">Brak</string>
-    <string name="directory">Katalog</string>
+    <string name="directory">Folder z plikami</string>
     <string name="display_filter">Filtr wyświetlacza</string>
-    <string name="roms">Pliki ROM</string>
+    <string name="roms">ROMy Gier</string>
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
     <string name="settings">Ustawienia</string>
@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">Tryb HD</string>
     <string name="settings_description_hd_mode">Zastosuj filtr skalowania po przetworzeniu obrazu</string>
     <string name="settings_description_hd_quality">Dostosuj jakość trybu HD</string>
+    <string name="settings_title_immersive_mode">Tryb pełnoekranowy</string>
+    <string name="settings_description_immersive_mode">Dynamicznie koloryzuje tło na podstawie wizualizacji gry</string>
     <string name="settings_title_gamepad_settings">Urządzenia zewnętrzne</string>
     <string name="settings_description_gamepad_settings">Konfiguruj zewnętrzne gamepady i klawiatury</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Menu</string>
     <string name="settings_title_open_cores_selection">Zmień rdzenie</string>
     <string name="settings_description_open_cores_selection">Wybierz, który rdzeń jest przypisany do systemu</string>
+    <string name="settings_core_selection_ds_info">DeSmuME jest przestarzały i wkrótce zostanie usunięty. Zapisz wewnątrz gry, a następnie przełącz się na melonDS: w grze zaoszczędza ładowanie tam automatycznie, ale zapisuj stany, które je utworzyły.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Wyświetl wykryte i obsługiwane pliki BIOS</string>
     <string name="settings_bios_category_detected">Wykryte</string>
@@ -80,9 +83,15 @@
     <string name="home_notification_title">Włącz powiadomienia</string>
     <string name="home_notification_message">Lemuroid używa powiadomień, aby dać Ci znać, gdy gra lub operacja działa w tle.</string>
     <string name="home_notification_action">Włącz</string>
+    <string name="home_microphone_title">Włącz mikrofon</string>
+    <string name="home_microphone_message">Gry Nintendo DS mogą korzystać z mikrofonu, aby zapewnić niektóre funkcje.</string>
+    <string name="home_microphone_action">Włącz</string>
     <string name="home_empty_title">Wybierz katalog plików ROM</string>
     <string name="home_empty_message">Lemuroid musi przeskanować katalog zawierający pliki ROM.\nMoże to potrwać do kilku minut.</string>
     <string name="home_empty_action">Wybierz katalog</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME wkrótce przechodzi na emeryturę</string>
+    <string name="home_notification_desmume_deprecated_message">Zapisz w grze, przełącz się na melonDS, a Twoje postępy zostaną przeniesione. Zapisz stany są powiązane z DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Przełącz na melonDS</string>
     <string name="game_menu_save">Zapisz</string>
     <string name="game_menu_load">Załaduj</string>
     <string name="game_menu_restart">Zrestartuj</string>
@@ -94,9 +103,12 @@
     <string name="game_menu_mute_audio">Wycisz</string>
     <string name="game_menu_fast_forward">Przyśpiesz</string>
     <string name="game_menu_change_disk_disk">Dysk %1$s</string>
+    <string name="game_menu_tilt_sensor">Czujnik Przechylenia</string>
     <string name="game_loading_preparing_game">Przygotowuję grę…</string>
     <string name="game_toast_settings_button_using_gamepad">Wykryto gamepada. Uzyskaj dostęp do menu ustawień za pomocą %1$s.</string>
     <string name="game_toast_load_state_failed">Nie można załadować tego stanu</string>
+    <string name="game_toast_quick_save_loaded">Prędkie Władowanie</string>
+    <string name="game_toast_quick_save_saved">Prędki Zapis</string>
     <string name="empty_view_default">Brak elementów</string>
     <string name="core_settings_title">Ustawienia rdzenia</string>
     <string name="core_settings_category_preferences">Preferencje</string>
@@ -137,6 +149,8 @@
     <string name="tv_home_section_settings">Ustawienia</string>
     <string name="gamepad_binding_update_title">Powiąż \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Naciśnij przycisk na Twoim \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Powiąż \"RetroPad %1$s\"</string>
+    <string name="shortcut_binding_update_description">Naciśnij pierwszy, a następnie drugi przycisk, aby powiązać kombinację \"%1$s\"</string>
     <string name="tv_search_results">Gry</string>
     <string name="tv_game_message_missing_gamepad">Gamepady są wymagane do gry. Prosimy o podłączenie jednego z nich.</string>
     <string name="game_edit_touch_controls_error_not_visible">Odłącz pad, aby edytować sterowanie dotykowe</string>
@@ -163,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">Brak</string>
     <string name="haptic_feedback_mode_names_press">Naciśnij</string>
     <string name="haptic_feedback_mode_names_press_release">Naciśnij &amp; puść</string>
+    <string name="tilt_configuration_disabled">Wyłączone</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Lewy Analog</string>
+    <string name="tilt_configuration_analog_right">Prawy Analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1- R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>

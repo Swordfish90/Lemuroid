@@ -57,10 +57,11 @@ private fun CoreOptions(
     for (coreOption in coreOptions) {
         if (coreOption.getEntriesValues().toSet() == CoreOptionsPreferenceHelper.BOOLEAN_SET) {
             LemuroidSettingsSwitch(
-                state = booleanPreferenceState(
-                    CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
-                    coreOption.getCurrentValue() == "enabled"
-                ),
+                state =
+                    booleanPreferenceState(
+                        CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
+                        coreOption.getCurrentValue() == "enabled",
+                    ),
                 title = { Text(text = coreOption.getDisplayName(context)) },
             )
         } else {

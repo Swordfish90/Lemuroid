@@ -25,6 +25,7 @@ import androidx.room.Room
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
+import com.swordfish.lemuroid.app.mobile.feature.input.GamePadShortcutBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
@@ -53,6 +54,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
+import com.swordfish.lemuroid.lib.migration.DesmumeMigrationHandler
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesCoherencyEngine
 import com.swordfish.lemuroid.lib.saves.SavesManager
@@ -112,6 +114,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [GamePadBindingActivity.Module::class])
     abstract fun gamepadBindingActivity(): GamePadBindingActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [GamePadShortcutBindingActivity.Module::class])
+    abstract fun gamepadShortcutBindingActivity(): GamePadShortcutBindingActivity
 
     @Module
     companion object {
@@ -252,6 +258,7 @@ abstract class LemuroidApplicationModule {
             savesCoherencyEngine: SavesCoherencyEngine,
             directoriesManager: DirectoriesManager,
             biosManager: BiosManager,
+            desmumeMigrationHandler: DesmumeMigrationHandler,
         ) = GameLoader(
             lemuroidLibrary,
             statesManager,
@@ -261,6 +268,7 @@ abstract class LemuroidApplicationModule {
             savesCoherencyEngine,
             directoriesManager,
             biosManager,
+            desmumeMigrationHandler,
         )
 
         @Provides
@@ -284,7 +292,10 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun coresSelection(sharedPreferences: Lazy<SharedPreferences>) = CoresSelection(sharedPreferences)
+        fun coresSelection(
+            sharedPreferences: Lazy<SharedPreferences>,
+            desmumeMigrationHandler: DesmumeMigrationHandler,
+        ) = CoresSelection(sharedPreferences, desmumeMigrationHandler)
 
         @Provides
         @PerApp
@@ -306,6 +317,12 @@ abstract class LemuroidApplicationModule {
             context: Context,
             directoriesManager: DirectoriesManager,
         ) = SaveSyncManagerImpl(context, directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun desmumeMigrationHandler(directoriesManager: DirectoriesManager) =
+            DesmumeMigrationHandler(directoriesManager)
 
         @Provides
         @PerApp

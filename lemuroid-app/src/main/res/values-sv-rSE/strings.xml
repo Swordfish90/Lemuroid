@@ -19,15 +19,23 @@
     <string name="settings">Inställningar</string>
     <string name="save_sync">Spara synkronisering</string>
     <string name="show_all">Visa alla</string>
+    <string name="back">Bakåt</string>
+    <string name="close">Stäng</string>
+    <string name="game_page_search_suggestion">Sök efter spel</string>
     <string name="settings_category_general">Allmänt</string>
     <string name="settings_category_input">Inmatning</string>
     <string name="settings_category_misc">Övrigt</string>
     <string name="settings_title_enable_autosave">Automatisk lägessparning</string>
+    <string name="settings_description_enable_autosave">Spara tillståndet vid avslutning från spelmenyn</string>
     <string name="settings_title_enable_touch_feedback">Vibrera vid tryck</string>
     <string name="settings_title_tilt_sensitivity">Lutningsgivarens känslighet</string>
+    <string name="settings_title_hd_quality">HD-lägeskvalitet</string>
     <string name="settings_title_maximum_cache_usage">Storleksbegränsning för cache</string>
     <string name="settings_title_hd_mode">HD-läge</string>
     <string name="settings_description_hd_mode">Använd efterbehandlande uppskalningsfilter</string>
+    <string name="settings_description_hd_quality">Justera kvaliteten för HD-läget</string>
+    <string name="settings_title_immersive_mode">Omslutande läge</string>
+    <string name="settings_description_immersive_mode">Färgar bakgrunden dynamiskt baserat på spelets grafik</string>
     <string name="settings_title_gamepad_settings">Externa enheter</string>
     <string name="settings_description_gamepad_settings">Konfigurera externa handkontroller och tangentbord</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -37,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Meny</string>
     <string name="settings_title_open_cores_selection">Ändra kärnor</string>
     <string name="settings_description_open_cores_selection">Välj vilken kärna som är associerad med ett system</string>
+    <string name="settings_core_selection_ds_info">DeSmuME är föråldrat och kommer snart att tas bort. Spara i spelet och byt sedan till melonDS: sparade spel läses in automatiskt där, men sparningstillstånden förblir på den kärna som skapade dem.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Visa upptäckta och supporterade BIOS-filer</string>
     <string name="settings_bios_category_detected">Upptäckta</string>
@@ -71,8 +80,18 @@
     <string name="game_context_menu_resume">Återuppta</string>
     <string name="game_context_menu_restart">Starta om</string>
     <string name="game_context_menu_create_shortcut">Fäst på startskärmen</string>
+    <string name="home_notification_title">Aktivera aviseringar</string>
+    <string name="home_notification_message">Lemuroid använder aviseringar för att informera dig om när ett spel eller åtgärd körs i bakgrunden.</string>
+    <string name="home_notification_action">Aktivera</string>
+    <string name="home_microphone_title">Aktivera mikrofon</string>
+    <string name="home_microphone_message">Nintendo DS-spel kan använda mikrofonen för att tillhandahålla viss funktionalitet.</string>
+    <string name="home_microphone_action">Aktivera</string>
     <string name="home_empty_title">Välj ROM-katalog</string>
+    <string name="home_empty_message">Lemuroid behöver söka igenom en katalog som innehåller ROM-filer.\nDetta kan ta några minuter.</string>
     <string name="home_empty_action">Välj katalog</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME tas snart bort</string>
+    <string name="home_notification_desmume_deprecated_message">Spara i spelet, byt till melonDS, så kommer dina framsteg att överföras. Sparade tillstånd förblir kopplade till DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Byt till melonDS</string>
     <string name="game_menu_save">Spara</string>
     <string name="game_menu_load">Ladda</string>
     <string name="game_menu_restart">Starta om</string>
@@ -84,9 +103,12 @@
     <string name="game_menu_mute_audio">Stäng av ljud</string>
     <string name="game_menu_fast_forward">Snabbspola</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_tilt_sensor">Lutnings Sensor</string>
     <string name="game_loading_preparing_game">Förbereder spel…</string>
     <string name="game_toast_settings_button_using_gamepad">Handkontroll upptäckt. Öppna inställningsmenyn med %1$s.</string>
     <string name="game_toast_load_state_failed">Kan inte ladda detta läge</string>
+    <string name="game_toast_quick_save_loaded">Snabb laddad</string>
+    <string name="game_toast_quick_save_saved">Snabb sparad</string>
     <string name="empty_view_default">Inga objekt</string>
     <string name="core_settings_title">Inställningarna för kärnan</string>
     <string name="core_settings_category_preferences">Inställningar</string>
@@ -105,7 +127,15 @@
     <string name="game_loader_error_load_game">Något hände vid inläsningen av ditt spel. Säkerställ att ROMen är supporterad av Lemuroid och utför en ny sökning efter spel.</string>
     <string name="game_loader_error_save">Något gick fel med din sparning. Om problemet kvarstår, försök inaktivera automatisk sparning.</string>
     <string name="game_loader_error_unsupported_architecture">Den här kärna stöds inte av din enhet.</string>
+    <string name="game_loader_error_generic">Något dåligt hände. Prova följande:\n
+        \n\u2022 Inaktivera automatisk sparning och köra om spelet
+        \n\u2022 Gå till Android-inställningarna och rensa app-cachen
+        \n\u2022 Gå in i Lemuroid-inställningarna och utför en fabriksåterställning
+        \n\nOm inget av ovanstående fungerar, det kan vara möjligt att detta spel/kärna inte stöds av den här enheten.
+    </string>
+    <string name="game_loader_error_missing_bios">Det verkar som om du saknar de nödvändiga BIOS, lägg dem i din ROM-katalog och sök igenom igen. Nödvändiga filer: %1$s</string>
     <string name="game_shortcut_error">Något hände vid inläsningen av ditt spel. Se till att spelet fortfarande finns i ditt bibliotek.</string>
+    <string name="dialog_saf_not_found">Den här enheten stöder inte väljaren för StorageAccessFramework-filväljaren. Kopiera manuellt okomprimerade ROM-filer till %1$s och tryck på Sök på nytt.</string>
     <string name="system_grid_details">%1$s spel</string>
     <string name="tv_folder_picker_title">Välj ROM-katalog</string>
     <string name="tv_folder_picker_action_choose">Välj</string>
@@ -119,12 +149,25 @@
     <string name="tv_home_section_settings">Inställningar</string>
     <string name="gamepad_binding_update_title">Koppla \"Retropad %1$s\"</string>
     <string name="gamepad_binding_update_description">Tryck på en knapp på din \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Associera \"Genväg %1$s\"</string>
+    <string name="shortcut_binding_update_description">Tryck på den första, och sedan på den andra knappen för att binda en combo på din \"%1$s\"</string>
     <string name="tv_search_results">Spel</string>
     <string name="tv_game_message_missing_gamepad">En handkontroll krävs för att spela. Vänligen anslut en.</string>
     <string name="game_edit_touch_controls_error_not_visible">Koppla ifrån din handkontroll för att ändra dina touchkontroller</string>
     <string name="game_interactory_busy">Vänta på att de pågående operationerna slutförs</string>
     <string name="mobile_settings_help">Hjälp</string>
     <string name="mobile_settings_support">Support</string>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hur använder jag Lemuroid?</b><br/>
+        Kopiera alla dina ROM-filer till en katalog på din enhet och välj den i Lemuroid. Denna katalog tillåts att ha underkataloger. Efter genomsökningen är färdig bör du se dina spel.<br/><br/>
+        <b>&#8226;Varför hittas inte mina spel?</b><br/>
+        Om dina spel är komprimerade, prova att packa upp dem. Om detta inte fungerar så prova att lägga ROM-filer i separata kataloger, en för varje system med följande namn: $SYSTEMS.
+    ]]></string>
+    <string name="lemuroid_crash_disclamer">Det ser ut som om Libretro kärnan har upplevt ett oväntat problem. Om det är ihållande, vänligen prova följande:\n
+        \n\u2022 Inaktivera automatisk sparning och åter köra spelet
+        \n\u2022 Gå till Android-inställningar och rensa app-cachen
+        \n\u2022 Gå till Lemuroid-inställningarna och utför en fabriksåterställning
+        \n\n Om inget av ovanstående fungerar, det kan vara möjligt att detta spel/kärna inte stöds av den här enheten.
+    </string>
     <string name="error_message_incompatible_state">Detta sparläge är inte kompatibelt med den aktuella kärnversionen. Ladda in den senaste sparningen i spelet eller använd en tidigare Lemuroidversion.</string>
     <string name="shader_filter_names_auto">Automatisk</string>
     <string name="shader_filter_names_sharp">Skarp</string>
@@ -134,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">Ingen</string>
     <string name="haptic_feedback_mode_names_press">Tryck</string>
     <string name="haptic_feedback_mode_names_press_release">Tryck &amp; släpp</string>
+    <string name="tilt_configuration_disabled">Inaktiverad</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Vänster analog</string>
+    <string name="tilt_configuration_analog_right">Höger analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="game_loading_download_core">正在下载核心…</string>
-    <string name="installing_core_notification_title">正在更新核心</string>
+    <string name="game_loading_download_core">…正在下载核心…</string>
+    <string name="installing_core_notification_title">Updating Cores</string>
     <string name="installing_core_notification_message">这可能需要几分钟的时间</string>
-    <string name="game_loader_error_load_core">Libretro 核心没有被加载。请确保您的设备已经连接到互联网，并尝试重新扫描您的游戏库。如果问题依然存在，则您的设备可能不支持此核心。</string>
+    <string name="game_loader_error_load_core">未加载 Libretro 核心。请确保您的设备已连接到互联网，并尝试重新扫描您的游戏库。如果问题仍然存在，则可能此核心不支持您的设备。</string>
 </resources>

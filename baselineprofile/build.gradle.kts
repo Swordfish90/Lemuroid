@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.swordfish.lemuroid.baselineprofile"
-    compileSdk = 34
+    compileSdk = deps.android.compileSdkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -33,7 +33,6 @@ android {
         create("bundle") { dimension = "cores" }
         create("dynamic") { dimension = "cores" }
     }
-
 }
 
 // This is the configuration block for the Baseline Profile plugin.

@@ -9,7 +9,7 @@
     <string name="favorites">Favoritos</string>
     <string name="discover">Descubrir</string>
     <string name="rescan">Re-escanear</string>
-    <string name="stop">Detener</string>
+    <string name="stop">Parar</string>
     <string name="none">Ninguno</string>
     <string name="directory">Directorio</string>
     <string name="display_filter">Filtro de imagen</string>
@@ -34,8 +34,10 @@
     <string name="settings_title_hd_mode">Modo HD</string>
     <string name="settings_description_hd_mode">Aplicar filtro de mejora de posprocesamiento</string>
     <string name="settings_description_hd_quality">Ajustar la calidad del modo HD</string>
+    <string name="settings_title_immersive_mode">Modo inmersivo</string>
+    <string name="settings_description_immersive_mode">Dinámicamente colorea el fondo basado en visuales del juego</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
-    <string name="settings_description_gamepad_settings">Configurar gamepads y teclados externos</string>
+    <string name="settings_description_gamepad_settings">Configurar Controles y teclados externos</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
     <string name="settings_gamepad_category_enabled">Dispositivos habilitados</string>
     <string name="settings_gamepad_category_general">General</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Menú</string>
     <string name="settings_title_open_cores_selection">Cambiar Núcleos</string>
     <string name="settings_description_open_cores_selection">Selecciona qué núcleo está asociado a un sistema</string>
+    <string name="settings_core_selection_ds_info">DeSmuME está obsoleto y se eliminará pronto. Guardar dentro del juego y luego cambiar a melonDS: en el juego se guarda la carga allí automáticamente, pero los estados guardan en el núcleo que los creó.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Mostrar archivos de BIOS detectados y admitidos</string>
     <string name="settings_bios_category_detected">Detectados</string>
@@ -50,15 +53,15 @@
     <string name="settings_title_reset_settings">Restablecimiento de fábrica</string>
     <string name="settings_description_reset_settings">Restablecer Lemuroid a su configuración de fábrica</string>
     <string name="settings_title_advanced_settings">Configuración avanzada</string>
-    <string name="settings_description_advanced_settings">Muestra la configuración avanzada</string>
+    <string name="settings_description_advanced_settings">Mostrar la configuración avanzada</string>
     <string name="settings_title_low_latency_audio">Preferir audio de baja latencia</string>
     <string name="settings_description_low_latency_audio">Reduce la latencia de audio en los dispositivos compatibles. Puede aumentar los fallos de audio.</string>
     <string name="settings_title_direct_game_load">Carga directa del juego</string>
-    <string name="settings_description_direct_game_load">(Experimental) Reduce el tiempo de carga y el uso de la caché en consolas soportadas.</string>
+    <string name="settings_description_direct_game_load">(Experimental) Reduce el tiempo de carga y el uso de la caché en consolas admitidas.</string>
     <string name="settings_title_enable_rumble">Vibración</string>
     <string name="settings_description_enable_rumble">Habilita la vibración en juegos y controladores compatibles</string>
     <string name="settings_title_enable_device_rumble">Vibración del dispositivo</string>
-    <string name="settings_description_enable_device_rumble">Cuando ningún controlador esté conectado vibrará el dispositivo en su lugar</string>
+    <string name="settings_description_enable_device_rumble">Cuando ningún controlador esté conectado vibrar el dispositivo en su lugar</string>
     <string name="reset_settings_warning_message_title">¿Estás seguro?</string>
     <string name="reset_settings_warning_message_description">Esto restablecerá Lemuroid a su configuración de fábrica. Se conservarán los estados y las partidas guardadas.</string>
     <string name="settings_title_save_sync">Guardados en la nube</string>
@@ -80,9 +83,15 @@
     <string name="home_notification_title">Habilitar notificaciones</string>
     <string name="home_notification_message">Lemuroid utiliza notificaciones para informarte cuando un juego u operación se está ejecutando en segundo plano.</string>
     <string name="home_notification_action">Habilitar</string>
+    <string name="home_microphone_title">Habilitar micrófono</string>
+    <string name="home_microphone_message">Los juegos de Nintendo DS pueden usar el micrófono para proporcionar algunas funcionalidades.</string>
+    <string name="home_microphone_action">Habilitar</string>
     <string name="home_empty_title">Seleccionar directorio de ROMs</string>
     <string name="home_empty_message">Lemuroid necesita escanear un directorio que contiene archivos ROM.\nEsto puede tardar unos minutos.</string>
     <string name="home_empty_action">Seleccionar directorio</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME se retira pronto</string>
+    <string name="home_notification_desmume_deprecated_message">Guarda el juego, cambia a melonDS, y tu progreso se mantendrá. Guarda estados vinculados a DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Cambiar a melonDS</string>
     <string name="game_menu_save">Guardar</string>
     <string name="game_menu_load">Cargar</string>
     <string name="game_menu_restart">Reiniciar</string>
@@ -94,9 +103,12 @@
     <string name="game_menu_mute_audio">Silenciar</string>
     <string name="game_menu_fast_forward">Avance rápido</string>
     <string name="game_menu_change_disk_disk">Disco %1$s</string>
+    <string name="game_menu_tilt_sensor">Sensor de Tilt</string>
     <string name="game_loading_preparing_game">Preparando juego…</string>
     <string name="game_toast_settings_button_using_gamepad">Mando detectado. Accede al menú de configuración con %1$s.</string>
     <string name="game_toast_load_state_failed">No es posible cargar este estado</string>
+    <string name="game_toast_quick_save_loaded">Cargado rápido</string>
+    <string name="game_toast_quick_save_saved">Guardado rápido</string>
     <string name="empty_view_default">Sin objetos</string>
     <string name="core_settings_title">Ajustes del núcleo</string>
     <string name="core_settings_category_preferences">Preferencias</string>
@@ -137,6 +149,8 @@
     <string name="tv_home_section_settings">Configuración</string>
     <string name="gamepad_binding_update_title">Asociar «RetroPad %1$s»</string>
     <string name="gamepad_binding_update_description">Presiona un botón en tu «%1$s»</string>
+    <string name="shortcut_binding_update_title">Asociar \"Atajo %1$s\"</string>
+    <string name="shortcut_binding_update_description">Presiona el primero y luego el segundo botón para unir un combo en tú \"%1$s\"</string>
     <string name="tv_search_results">Juegos</string>
     <string name="tv_game_message_missing_gamepad">Se requiere un mando para jugar. Por favor, conecta uno.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecta el mando para editar los controles táctiles</string>
@@ -163,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">Nada</string>
     <string name="haptic_feedback_mode_names_press">Presionar</string>
     <string name="haptic_feedback_mode_names_press_release">Presiona &amp; liberar</string>
+    <string name="tilt_configuration_disabled">Deshabilitado</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Análogo Izquierdo</string>
+    <string name="tilt_configuration_analog_right">Análogo Derecho</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 </resources>

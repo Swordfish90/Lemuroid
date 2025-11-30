@@ -2,8 +2,16 @@ package com.swordfish.lemuroid.lib.library
 
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
-import com.swordfish.lemuroid.lib.controller.TouchControllerID
+import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_ANALOG_LEFT
+import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_ANALOG_RIGHT
+import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_CROSS
+import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_DISABLED
+import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_L1_R1
+import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_L2_R2
+import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_L_R
+import com.swordfish.touchinput.radial.settings.TouchControllerID
 
+// TODO PADS... Make sure the ids are correct.
 object ControllerConfigs {
     val ATARI_2600 =
         ControllerConfig(
@@ -11,6 +19,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.ATARI2600,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val NES =
@@ -19,6 +32,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.NES,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val SNES =
@@ -27,6 +45,12 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.SNES,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 
     val SMS =
@@ -35,6 +59,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.SMS,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val GENESIS_6 =
@@ -44,6 +73,11 @@ object ControllerConfigs {
             TouchControllerID.GENESIS_6,
             mergeDPADAndLeftStickEvents = true,
             libretroDescriptor = "MD Joypad 6 Button",
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val GENESIS_3 =
@@ -53,6 +87,11 @@ object ControllerConfigs {
             TouchControllerID.GENESIS_3,
             mergeDPADAndLeftStickEvents = true,
             libretroDescriptor = "MD Joypad 3 Button",
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val GG =
@@ -61,6 +100,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.GG,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val GB =
@@ -69,6 +113,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.GB,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val GBA =
@@ -77,6 +126,12 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.GBA,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 
     val N64 =
@@ -85,6 +140,13 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.N64,
             allowTouchRotation = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_ANALOG_LEFT,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 
     val PSX_STANDARD =
@@ -94,6 +156,13 @@ object ControllerConfigs {
             TouchControllerID.PSX,
             mergeDPADAndLeftStickEvents = true,
             libretroDescriptor = "standard",
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_L1_R1,
+                    TILT_CONFIGURATION_L2_R2,
+                ),
         )
 
     val PSX_DUALSHOCK =
@@ -103,6 +172,15 @@ object ControllerConfigs {
             TouchControllerID.PSX_DUALSHOCK,
             allowTouchRotation = true,
             libretroDescriptor = "dualshock",
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_ANALOG_LEFT,
+                    TILT_CONFIGURATION_ANALOG_RIGHT,
+                    TILT_CONFIGURATION_L1_R1,
+                    TILT_CONFIGURATION_L2_R2,
+                ),
         )
 
     val PSP =
@@ -111,6 +189,13 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.PSP,
             allowTouchRotation = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_ANALOG_LEFT,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 
     val FB_NEO_4 =
@@ -119,6 +204,11 @@ object ControllerConfigs {
             R.string.controller_arcade_4,
             TouchControllerID.ARCADE_4,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val FB_NEO_6 =
@@ -127,6 +217,11 @@ object ControllerConfigs {
             R.string.controller_arcade_6,
             TouchControllerID.ARCADE_6,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val MAME_2003_4 =
@@ -135,6 +230,11 @@ object ControllerConfigs {
             R.string.controller_arcade_4,
             TouchControllerID.ARCADE_4,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val MAME_2003_6 =
@@ -143,6 +243,11 @@ object ControllerConfigs {
             R.string.controller_arcade_6,
             TouchControllerID.ARCADE_6,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val DESMUME =
@@ -151,6 +256,12 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.DESMUME,
             allowTouchOverlay = false,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 
     val MELONDS =
@@ -160,6 +271,12 @@ object ControllerConfigs {
             TouchControllerID.MELONDS,
             mergeDPADAndLeftStickEvents = true,
             allowTouchOverlay = false,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 
     val LYNX =
@@ -168,6 +285,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.LYNX,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val ATARI7800 =
@@ -176,6 +298,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.ATARI7800,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val PCE =
@@ -184,6 +311,12 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.PCE,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 
     val NGP =
@@ -192,6 +325,11 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.NGP,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val DOS_AUTO =
@@ -200,25 +338,15 @@ object ControllerConfigs {
             R.string.controller_dos_auto,
             TouchControllerID.DOS,
             allowTouchRotation = true,
-            libretroId = 1,
-        )
-
-    val DOS_MOUSE_LEFT =
-        ControllerConfig(
-            "mouse_left",
-            R.string.controller_dos_mouse_left,
-            TouchControllerID.DOS,
-            allowTouchRotation = true,
-            libretroId = 513,
-        )
-
-    val DOS_MOUSE_RIGHT =
-        ControllerConfig(
-            "mouse_right",
-            R.string.controller_dos_mouse_right,
-            TouchControllerID.DOS,
-            allowTouchRotation = true,
-            libretroId = 769,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_ANALOG_LEFT,
+                    TILT_CONFIGURATION_ANALOG_RIGHT,
+                    TILT_CONFIGURATION_L1_R1,
+                    TILT_CONFIGURATION_L2_R2,
+                ),
         )
 
     val WS_LANDSCAPE =
@@ -227,6 +355,11 @@ object ControllerConfigs {
             R.string.controller_landscape,
             TouchControllerID.WS_LANDSCAPE,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val WS_PORTRAIT =
@@ -235,6 +368,11 @@ object ControllerConfigs {
             R.string.controller_portrait,
             TouchControllerID.WS_PORTRAIT,
             mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
         )
 
     val NINTENDO_3DS =
@@ -243,5 +381,12 @@ object ControllerConfigs {
             R.string.controller_default,
             TouchControllerID.NINTENDO_3DS,
             allowTouchOverlay = false,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                    TILT_CONFIGURATION_ANALOG_LEFT,
+                    TILT_CONFIGURATION_L_R,
+                ),
         )
 }

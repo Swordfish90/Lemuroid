@@ -37,6 +37,9 @@
     <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
     <string name="settings_description_hd_quality">Adjust the quality of HD mode</string>
 
+    <string name="settings_title_immersive_mode">Immersive mode</string>
+    <string name="settings_description_immersive_mode">Dynamically colors the background based on game visuals</string>
+
     <string name="settings_title_gamepad_settings">External devices</string>
     <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
 
@@ -49,6 +52,7 @@
 
     <string name="settings_title_open_cores_selection">Change Cores</string>
     <string name="settings_description_open_cores_selection">Select which core is associated to a system</string>
+    <string name="settings_core_selection_ds_info">DeSmuME is deprecated and will be removed in one of the next updates. Save your progress inside the game, then switch to melonDS. In-game saves will load automatically in melonDS, but save states can only be used with the core that created them.</string>
 
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Display detected and supported BIOS files</string>
@@ -97,9 +101,17 @@
     <string name="home_notification_message">Lemuroid uses notifications to let you know when a game or operation is running in background.</string>
     <string name="home_notification_action">Enable</string>
 
+    <string name="home_microphone_title">Enable microphone</string>
+    <string name="home_microphone_message">Nintendo DS games can use the microphone to provide some functionalities.</string>
+    <string name="home_microphone_action">Enable</string>
+
     <string name="home_empty_title">Select ROMs directory</string>
     <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
     <string name="home_empty_action">Select Directory</string>
+
+    <string name="home_notification_desmume_deprecated_title">DeSmuME is being retired</string>
+    <string name="home_notification_desmume_deprecated_message">Save in-game, then switch to melonDS to keep your progress. Save states won\’t transfer and will remain usable only in DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Switch to melonDS</string>
 
     <string name="game_menu_save">Save</string>
     <string name="game_menu_load">Load</string>
@@ -112,11 +124,14 @@
     <string name="game_menu_mute_audio">Mute</string>
     <string name="game_menu_fast_forward">Fast-Forward</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_tilt_sensor">Tilt Sensor</string>
 
     <string name="game_loading_preparing_game">Preparing game…</string>
 
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
     <string name="game_toast_load_state_failed">Cannot load this state</string>
+    <string name="game_toast_quick_save_loaded">Quick loaded</string>
+    <string name="game_toast_quick_save_saved">Quick saved</string>
 
     <string name="empty_view_default">No Items</string>
 
@@ -172,6 +187,8 @@
 
     <string name="gamepad_binding_update_title">Associate \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Press a button on your \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Associate \"Shortcut %1$s\"</string>
+    <string name="shortcut_binding_update_description">Press the first, then second button to bind a combo on your \"%1$s\"</string>
 
     <string name="tv_search_results">Games</string>
     <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>
@@ -207,5 +224,13 @@
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>
     <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
+
+    <string name="tilt_configuration_disabled">Disabled</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Left Analog</string>
+    <string name="tilt_configuration_analog_right">Right Analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 
 </resources>

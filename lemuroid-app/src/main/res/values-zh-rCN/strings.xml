@@ -8,7 +8,7 @@
     <string name="recent">最近</string>
     <string name="favorites">收藏</string>
     <string name="discover">发现</string>
-    <string name="rescan">刷新</string>
+    <string name="rescan">重新扫描</string>
     <string name="stop">停止</string>
     <string name="none">无</string>
     <string name="directory">目录</string>
@@ -26,11 +26,16 @@
     <string name="settings_category_input">输入</string>
     <string name="settings_category_misc">其它</string>
     <string name="settings_title_enable_autosave">自动保存</string>
+    <string name="settings_description_enable_autosave">通过游戏菜单退出时保存进度</string>
     <string name="settings_title_enable_touch_feedback">触摸振动</string>
     <string name="settings_title_tilt_sensitivity">倾斜灵敏度</string>
+    <string name="settings_title_hd_quality">高清模式</string>
     <string name="settings_title_maximum_cache_usage">缓存大小限制</string>
     <string name="settings_title_hd_mode">高清模式</string>
     <string name="settings_description_hd_mode">使用\'后处理提升\'滤镜</string>
+    <string name="settings_description_hd_quality">调整高清模式的质量</string>
+    <string name="settings_title_immersive_mode">沉浸模式</string>
+    <string name="settings_description_immersive_mode">动态颜色基于游戏视觉背景</string>
     <string name="settings_title_gamepad_settings">外部设备</string>
     <string name="settings_description_gamepad_settings">配置外接手柄和键盘</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -40,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">菜单</string>
     <string name="settings_title_open_cores_selection">更改核心</string>
     <string name="settings_description_open_cores_selection">选择与系统关联的核心</string>
+    <string name="settings_core_selection_ds_info">Dersmume 已被弃用，不久将被删除。 在游戏中保存，然后切换至熔化后自动保存游戏中的负载，但保存状态保持在创建游戏的核心上。</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">显示检测到的和受支持的 BIOS 文件</string>
     <string name="settings_bios_category_detected">已检测到</string>
@@ -77,9 +83,15 @@
     <string name="home_notification_title">开启推送</string>
     <string name="home_notification_message">Lemuroid 使用通知让您知道游戏或操作正在后台运行。</string>
     <string name="home_notification_action">启用</string>
+    <string name="home_microphone_title">启用麦克风</string>
+    <string name="home_microphone_message">Nintendo DS 游戏可以利用麦克风提供一些功能。</string>
+    <string name="home_microphone_action">启用</string>
     <string name="home_empty_title">选择 ROM 目录</string>
     <string name="home_empty_message">Lemuroid 需要扫描一个包含 ROM 文件的目录。\n这可能需要几分钟的时间。</string>
     <string name="home_empty_action">选择目录</string>
+    <string name="home_notification_desmume_deprecated_title">Désmume 即将退出</string>
+    <string name="home_notification_desmume_deprecated_message">在游戏中保存，切换到melondDS，进度将会传输。保存状态将保持与 DeSmuME 的绑定。</string>
+    <string name="home_notification_desmume_deprecated_action">切换到熔化</string>
     <string name="game_menu_save">保存</string>
     <string name="game_menu_load">载入</string>
     <string name="game_menu_restart">重新开始</string>
@@ -91,9 +103,12 @@
     <string name="game_menu_mute_audio">静音</string>
     <string name="game_menu_fast_forward">快进</string>
     <string name="game_menu_change_disk_disk">碟片 %1$s</string>
+    <string name="game_menu_tilt_sensor">倾斜传感器</string>
     <string name="game_loading_preparing_game">正在准备游戏…</string>
     <string name="game_toast_settings_button_using_gamepad">检测到游戏手柄。使用 %1$s 访问设置菜单。</string>
     <string name="game_toast_load_state_failed">无法加载此状态</string>
+    <string name="game_toast_quick_save_loaded">快速加载</string>
+    <string name="game_toast_quick_save_saved">快速保存</string>
     <string name="empty_view_default">没有项目</string>
     <string name="core_settings_title">核心设置</string>
     <string name="core_settings_category_preferences">选项</string>
@@ -134,6 +149,8 @@
     <string name="tv_home_section_settings">设置</string>
     <string name="gamepad_binding_update_title">关联 \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">按下你的 \"%1$s\" 上的一个按钮</string>
+    <string name="shortcut_binding_update_title">关联 \"快捷方式 %1$s\"</string>
+    <string name="shortcut_binding_update_description">按第一个按钮，然后按第二个按钮将组合绑定到您的\"%1$s\"</string>
     <string name="tv_search_results">游戏</string>
     <string name="tv_game_message_missing_gamepad">需要手柄才能玩。 请连接手柄。</string>
     <string name="game_edit_touch_controls_error_not_visible">您需要断开手柄来编辑您的触摸控制</string>
@@ -160,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">无</string>
     <string name="haptic_feedback_mode_names_press">按下</string>
     <string name="haptic_feedback_mode_names_press_release">按下并松开</string>
+    <string name="tilt_configuration_disabled"></string>
+    <string name="tilt_configuration_cross">调试器</string>
+    <string name="tilt_configuration_analog_left">左模拟器</string>
+    <string name="tilt_configuration_analog_right">右侧模拟器</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1-R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2-R2</string>
 </resources>

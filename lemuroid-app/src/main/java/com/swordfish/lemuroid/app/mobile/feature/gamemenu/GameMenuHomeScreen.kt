@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Sensors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +16,7 @@ import androidx.navigation.NavController
 import com.alorma.compose.settings.storage.memory.rememberMemoryBooleanSettingState
 import com.alorma.compose.settings.storage.memory.rememberMemoryIntSettingState
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.tilt.TiltConfigurationMenuEntry
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -148,6 +151,37 @@ fun GameMenuHomeScreen(
                     )
                 },
                 onClick = { navController.navigateToRoute(GameMenuRoute.OPTIONS) },
+            )
+        }
+
+        if (gameMenuRequest.allTiltConfigurations.isNotEmpty()) {
+            val tiltConfigurationEntries =
+                gameMenuRequest.allTiltConfigurations
+                    .map { TiltConfigurationMenuEntry.fromTiltConfiguration(it) }
+
+            val selectedIndex =
+                gameMenuRequest.allTiltConfigurations
+                    .indexOf(gameMenuRequest.currentTiltConfiguration)
+
+            LemuroidSettingsList(
+                title = { Text(text = stringResource(id = R.string.game_menu_tilt_sensor)) },
+                items = tiltConfigurationEntries.map { stringResource(it.descriptionId) },
+                useSelectedValueAsSubtitle = false,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Sensors,
+                        contentDescription = stringResource(id = R.string.game_menu_tilt_sensor),
+                    )
+                },
+                state = rememberMemoryIntSettingState(selectedIndex),
+                onItemSelected = { index, _ ->
+                    onResult {
+                        putExtra(
+                            GameMenuContract.RESULT_CHANGE_TILT_CONFIG,
+                            tiltConfigurationEntries[index].configuration,
+                        )
+                    }
+                },
             )
         }
     }

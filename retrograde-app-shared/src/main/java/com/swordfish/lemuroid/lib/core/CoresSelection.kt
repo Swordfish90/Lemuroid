@@ -1,21 +1,28 @@
 package com.swordfish.lemuroid.lib.core
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.migration.DesmumeMigrationHandler
 import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class CoresSelection(private val sharedPreferencesFactory: Lazy<SharedPreferences>) {
+class CoresSelection(
+    private val sharedPreferencesFactory: Lazy<SharedPreferences>,
+    private val desmumeMigrationHandler: DesmumeMigrationHandler,
+) {
     private val sharedPreferences by lazy { sharedPreferencesFactory.get() }
 
     private val flowSharedPreferences by lazy { FlowSharedPreferences(sharedPreferences) }
@@ -60,13 +67,37 @@ class CoresSelection(private val sharedPreferencesFactory: Lazy<SharedPreference
     }
 
     private fun getSelectedCoreNameForSystem(system: GameSystem): Flow<String> {
-        val preference =
-            flowSharedPreferences.getString(
-                computeSystemPreferenceKey(system.id),
-                system.systemCoreConfigs.first().coreID.coreName,
-            )
-        return preference.asFlow()
-            .flowOn(Dispatchers.IO)
+        return flow {
+            val preferenceKey = computeSystemPreferenceKey(system.id)
+            val currentValue = flowSharedPreferences.sharedPreferences.getString(preferenceKey, null)
+            var defaultValue = currentValue
+
+            if (currentValue == null) {
+                defaultValue = getDefaultCoreForSystem(system)
+                flowSharedPreferences.sharedPreferences.edit(true) {
+                    putString(preferenceKey, defaultValue)
+                }
+            }
+
+            val preference =
+                flowSharedPreferences.getString(
+                    preferenceKey,
+                    defaultValue,
+                )
+            emitAll(preference.asFlow())
+        }.flowOn(Dispatchers.IO)
+    }
+
+    // TODO Also get rid of this when desmume is gone
+    private fun getDefaultCoreForSystem(system: GameSystem): String {
+        if (system.id == SystemID.NDS) {
+            return if (desmumeMigrationHandler.hasPendingDesmumeSaves()) {
+                CoreID.DESMUME.coreName
+            } else {
+                CoreID.MELONDS.coreName
+            }
+        }
+        return system.systemCoreConfigs.first().coreID.coreName
     }
 
     companion object {

@@ -3,7 +3,6 @@ package com.swordfish.lemuroid.baselineprofile
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,7 +33,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class BaselineProfileGenerator {
-
     @get:Rule
     val rule = BaselineProfileRule()
 
@@ -43,9 +41,8 @@ class BaselineProfileGenerator {
         // This example works only with the variant with application id `com.swordfish.lemuroid`."
         rule.collect(
             packageName = "com.swordfish.lemuroid",
-
             // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
-            includeInStartupProfile = true
+            includeInStartupProfile = true,
         ) {
             // This block defines the app's critical user journey. Here we are interested in
             // optimizing for app startup. But you can also navigate and scroll through your most important UI.

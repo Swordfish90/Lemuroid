@@ -31,7 +31,7 @@ fun GamesScreen(
             val game = games[index] ?: return@items
 
             LemuroidGameListRow(
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 game = game,
                 onClick = { onGameClick(game) },
                 onLongClick = { onGameLongClick(game) },

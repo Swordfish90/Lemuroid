@@ -11,7 +11,7 @@ import com.swordfish.lemuroid.app.shared.input.inputKeysOf
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.input.retroKeysOf
 import com.swordfish.lemuroid.app.shared.input.supportsAllKeys
-import com.swordfish.lemuroid.app.shared.settings.GameMenuShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 
 class LemuroidInputDeviceGamePad(private val device: InputDevice) : LemuroidInputDevice {
     override fun getDefaultBindings(): Map<InputKey, RetroKey> {
@@ -49,17 +49,7 @@ class LemuroidInputDeviceGamePad(private val device: InputDevice) : LemuroidInpu
         return device.supportsAllKeys(MINIMAL_KEYS_DEFAULT_ENABLED)
     }
 
-    override fun getSupportedShortcuts(): List<GameMenuShortcut> =
-        listOf(
-            GameMenuShortcut(
-                "L3 + R3",
-                setOf(KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR),
-            ),
-            GameMenuShortcut(
-                "Select + Start",
-                setOf(KeyEvent.KEYCODE_BUTTON_START, KeyEvent.KEYCODE_BUTTON_SELECT),
-            ),
-        )
+    override fun getSupportedShortcuts(): List<GameShortcutType> = GameShortcutType.values().toList()
 
     override fun isSupported(): Boolean {
         return sequenceOf(

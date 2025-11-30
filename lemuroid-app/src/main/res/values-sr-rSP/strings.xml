@@ -25,12 +25,15 @@
     <string name="settings_category_general">Опште</string>
     <string name="settings_category_input">Улаз</string>
     <string name="settings_category_misc">Разно</string>
-    <string name="settings_title_enable_autosave">Стање ауто-чувања</string>
+    <string name="settings_title_enable_autosave">Стање аутоматског чувања</string>
+    <string name="settings_description_enable_autosave">Сачувај стање када излазим преко менија игре</string>
     <string name="settings_title_enable_touch_feedback">Вибрирај на додир</string>
     <string name="settings_title_tilt_sensitivity">Сензитивност сензора нагиба</string>
+    <string name="settings_title_hd_quality">Квалитет HD режима</string>
     <string name="settings_title_maximum_cache_usage">Дозвољена величина кеш меморије</string>
     <string name="settings_title_hd_mode">HD режим</string>
     <string name="settings_description_hd_mode">Примени пост-процесирајући филтер за увећано скалирање</string>
+    <string name="settings_description_hd_quality">Прилагодите квалитет HD режима</string>
     <string name="settings_title_gamepad_settings">Спољни уређаји</string>
     <string name="settings_description_gamepad_settings">Подесите спољне гејмпаде и тастатуре</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -51,7 +54,7 @@
     <string name="settings_title_low_latency_audio">Преферирај звук ниске латенције</string>
     <string name="settings_description_low_latency_audio">Смањи звучну латенцију на подржаним уређајима. Може повећати звучне кварове.</string>
     <string name="settings_title_direct_game_load">Директно учитавање игре</string>
-    <string name="settings_description_direct_game_load">(Експериментално) Смањи време учитавања и употребу кеш меморије на подржаним конзолама</string>
+    <string name="settings_description_direct_game_load">(Експериментално) Смањи време учитавања и употребу кеш меморије на подржаним конзолама.</string>
     <string name="settings_title_enable_rumble">Тутњава</string>
     <string name="settings_description_enable_rumble">Омогући тутњаву на подржаним играма и контролерима</string>
     <string name="settings_title_enable_device_rumble">Тутњава уређаја</string>
@@ -62,7 +65,7 @@
     <string name="settings_description_save_sync">Прави и синхронизуј резервне копије чувања на облаку</string>
     <string name="settings_save_sync_refresh">Ручна синхронизација</string>
     <string name="settings_save_sync_refresh_description">Уради ручну синхронизацију сада.\n%1$s</string>
-    <string name="settings_save_sync_enable_auto">Ауто-синхронизација</string>
+    <string name="settings_save_sync_enable_auto">Аутоматска синхронизација</string>
     <string name="settings_save_sync_enable_auto_description">Аутоматски уради синхронизацију пре и после играчке сесије када си повезан на Wi-Fi</string>
     <string name="settings_save_sync_configure">Подеси %1$s</string>
     <string name="settings_save_sync_include_saves">Синхронизуј чувања унутар игре</string>
@@ -77,17 +80,20 @@
     <string name="home_notification_title">Омогући обавештења</string>
     <string name="home_notification_message">Lemuroid користи обавештења да бисте знали када игра или операције ради у позадини.</string>
     <string name="home_notification_action">Омогући</string>
-    <string name="home_empty_title">Изабери директоријум са ROM-овима</string>
+    <string name="home_microphone_title">Омогући микрофон</string>
+    <string name="home_microphone_message">Nintendo DS игре могу користити микрофон да би пружиле одређене функционалности.</string>
+    <string name="home_microphone_action">Омогући</string>
+    <string name="home_empty_title">Изаберите директоријум са ROM-овима</string>
     <string name="home_empty_message">Lemuroid мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
-    <string name="home_empty_action">Изабери директоријум</string>
+    <string name="home_empty_action">Изаберите директоријум</string>
     <string name="game_menu_save">Сачувај</string>
     <string name="game_menu_load">Учитај</string>
     <string name="game_menu_restart">Рестартуј</string>
     <string name="game_menu_quit">Изађи</string>
     <string name="game_menu_settings">Подешавања</string>
     <string name="game_menu_state">Стање %1$s</string>
-    <string name="game_menu_change_disk_button">Промени диск</string>
-    <string name="game_menu_edit_touch_controls">Измени контроле</string>
+    <string name="game_menu_change_disk_button">Промените диск</string>
+    <string name="game_menu_edit_touch_controls">Измените контроле</string>
     <string name="game_menu_mute_audio">Нечујно</string>
     <string name="game_menu_fast_forward">Убрзано</string>
     <string name="game_menu_change_disk_disk">Диск %1$s</string>
@@ -95,7 +101,7 @@
     <string name="game_toast_settings_button_using_gamepad">Гејмпад детектован. Приступите менију са подешавањима са %1$s.</string>
     <string name="game_toast_load_state_failed">Не могу да учитам ово стање</string>
     <string name="empty_view_default">Нема ставки</string>
-    <string name="core_settings_title">Подешавање језгра</string>
+    <string name="core_settings_title">Подешавања језгра</string>
     <string name="core_settings_category_preferences">Подешавања</string>
     <string name="core_settings_category_controllers">Контролери</string>
     <string name="core_settings_controller">Контролер %1$s</string>
@@ -110,10 +116,10 @@
     <string name="game_running_notification_message">Обавезно сачувајте свој напредак</string>
     <string name="game_loader_error_gl_incompatible">Ово језгро захтева OpenGL ES верзију која није подржана на Вашем уређају.</string>
     <string name="game_loader_error_load_game">Нешто се лоше догодило за време учитавања игре. Проверите да ли је ROM подржан од стране Lemuroid-а и поново скенирајте Ваше игре.</string>
-    <string name="game_loader_error_save">Нешто лоше се догодило са Вашом датотеком чувања. Ако се овај проблем понaвља, покушајте да онемогућите ауто-чување.</string>
+    <string name="game_loader_error_save">Нешто лоше се догодило са Вашом датотеком чувања. Ако се овај проблем понaвља, покушајте да онемогућите аутоматско чување.</string>
     <string name="game_loader_error_unsupported_architecture">Ово језгро није подржано од стране Вашег уређаја.</string>
     <string name="game_loader_error_generic">Нешто лоше се догодило. Покушајте следеће:\n
-        \n\u2022 Онемогућите ауто-чување и поново покрените игру
+        \n\u2022 Онемогућите аутоматско чување и поново покрените игру
         \n\u2022 Идите у Android подешавања и очистите кеш меморију апликације
         \n\u2022 Идите у Lemuroid подешавања и извршите фабричко ресетовањe
         \n\nАко ништа од овога не проради, постоји могућност да ова игра/језгро није подржана од стране овог уређаја.
@@ -122,12 +128,12 @@
     <string name="game_shortcut_error">Нешто лоше се догодило док се Ваша игра учитавала. Молимо Вас да проверите да ли ова игра и даље постоји у библиотеци.</string>
     <string name="dialog_saf_not_found">Овај уређај не подржава StorageAccessFramework бирач датотека. Молимо Вас да ручно копирате некомпримоване ROM датотеке у %1$s и притиснете Поново скенирај.</string>
     <string name="system_grid_details">%1$s игара</string>
-    <string name="tv_folder_picker_title">Изабери ROM директоријум</string>
-    <string name="tv_folder_picker_action_choose">Изабери</string>
+    <string name="tv_folder_picker_title">Изаберите директоријум са ROM-овима</string>
+    <string name="tv_folder_picker_action_choose">Изаберите</string>
     <string name="tv_folder_picker_action_cancel">Откажи</string>
     <string name="tv_folder_storage_primary">Примарно складиште</string>
     <string name="tv_folder_storage_secondary">Секундарно складиште %1$s</string>
-    <string name="tv_folder_storage_title">Изабери складиште</string>
+    <string name="tv_folder_storage_title">Изаберите складиште</string>
     <string name="tv_home_section_favorites">Омиљено</string>
     <string name="tv_home_section_recents">Скорашње</string>
     <string name="tv_home_section_systems">Системи</string>
@@ -136,7 +142,7 @@
     <string name="gamepad_binding_update_description">Притисните тастер на Вашем \"%1$s\"</string>
     <string name="tv_search_results">Игре</string>
     <string name="tv_game_message_missing_gamepad">Гејмпадови су неопходни за игру. Молимо Вас да их повежете.</string>
-    <string name="game_edit_touch_controls_error_not_visible">Прекините Ваш пад да бисте изменили додирне контроле</string>
+    <string name="game_edit_touch_controls_error_not_visible">Отповежите Ваш пад да бисте изменили додирне контроле</string>
     <string name="game_interactory_busy">Сачекајте за текуће операције да се заврше</string>
     <string name="mobile_settings_help">Помоћ</string>
     <string name="mobile_settings_support">Подршка</string>
@@ -145,8 +151,8 @@
         <b>&#8226;Зашто моје игре нису детектоване?</b><br/>
         Ако су ваше игре компримоване, покушајте да их декомпримујете. Ако ово не проради покушајте да ставите ROM-ове у одвојене директоријуме, по једну за сваки систем са следећим именима: $SYSTEMS.
     ]]></string>
-    <string name="lemuroid_crash_disclamer">Нешто лоше се догодило. Покушајте следеће:\n
-        \n\u2022 Онемогућите ауто-чување и поново покрените игру
+    <string name="lemuroid_crash_disclamer">Делује као да је Libretro језгро наишло на неочекивани проблем. Ако се ово понавља покушајте следеће:\n
+        \n\u2022 Онемогућите аутоматско чување и поново покрените игру
         \n\u2022 Идите у Android подешавања и очистите кеш меморију апликације
         \n\u2022 Идите у Lemuroid подешавања и извршите фабричко ресетовање
         \n\nАко ништа од овога не проради, постоји могућност да ова игра/језгро није подржана од стране овог уређаја.

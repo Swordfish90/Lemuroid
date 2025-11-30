@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">Skjermoppsett</string>
     <string name="setting_melonds_threaded_renderer">Tråd-basert renderingsmotor</string>
     <string name="setting_melonds_jit_enable">Dynamisk re-kompilator</string>
+    <string name="setting_melonds_mic_input">Mikrofon modus</string>
     <string name="setting_wswan_rotate_display">Retning</string>
     <string name="setting_wswan_mono_palette">Fargelegging</string>
     <string name="setting_handy_rot">Skjermrotasjon</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Venstre - Høyre</string>
     <string name="value_melonds_screen_layout_hybridtop">Hybrid øverst</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hybrid nederst</string>
+    <string name="value_melonds_mic_input_microphone">Virkelig mikrofon</string>
+    <string name="value_melonds_mic_input_blow">Simuler klyder</string>
     <string name="value_citra_layout_option_topbottom">Topp - Bunn</string>
     <string name="value_citra_layout_option_sidebyside">Venstre - Høyre</string>
     <string name="value_desmume_screens_layout_topbottom">Topp - Bunn</string>

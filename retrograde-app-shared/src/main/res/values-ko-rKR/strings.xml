@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">화면 구성</string>
     <string name="setting_melonds_threaded_renderer">멀티스레드 렌더러</string>
     <string name="setting_melonds_jit_enable">다이내믹 리컴파일러</string>
+    <string name="setting_melonds_mic_input">마이크 모드</string>
     <string name="setting_wswan_rotate_display">방향</string>
     <string name="setting_wswan_mono_palette">색 입히기</string>
     <string name="setting_handy_rot">디스플레이 회전</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">좌 - 우</string>
     <string name="value_melonds_screen_layout_hybridtop">하이브리드 위</string>
     <string name="value_melonds_screen_layout_hybridbottom">하이브리드 아래</string>
+    <string name="value_melonds_mic_input_microphone">실제 마이크 사용</string>
+    <string name="value_melonds_mic_input_blow">바람 소리 시뮬레이션</string>
     <string name="value_citra_layout_option_topbottom">위 - 아래</string>
     <string name="value_citra_layout_option_sidebyside">좌 - 우</string>
     <string name="value_desmume_screens_layout_topbottom">위 - 아래</string>

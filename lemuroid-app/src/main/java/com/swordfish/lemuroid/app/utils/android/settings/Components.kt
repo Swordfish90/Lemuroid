@@ -32,10 +32,10 @@ fun LemuroidSettingsPage(
 ) {
     Column(
         modifier =
-        modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(top = 16.dp, bottom = 16.dp),
+            modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(top = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         content()
@@ -112,9 +112,9 @@ fun LemuroidCardSettingsGroup(
     Surface {
         Column(
             modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+                modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
         ) {
             OutlinedCard {
                 if (title != null) {
@@ -137,12 +137,13 @@ fun LemuroidSettingsSlider(
     subtitle: @Composable () -> Unit = { },
 ) {
     val defaultColors = ListItemDefaults.colors()
-    val disabledColors = ListItemDefaults.colors(
-        headlineColor = defaultColors.disabledHeadlineColor,
-        leadingIconColor = defaultColors.disabledLeadingIconColor,
-        trailingIconColor = defaultColors.disabledTrailingIconColor,
-        supportingColor = defaultColors.supportingTextColor.copy(alpha = 0.3f)
-    )
+    val disabledColors =
+        ListItemDefaults.colors(
+            headlineColor = defaultColors.disabledHeadlineColor,
+            leadingIconColor = defaultColors.disabledLeadingIconColor,
+            trailingIconColor = defaultColors.disabledTrailingIconColor,
+            supportingColor = defaultColors.supportingTextColor.copy(alpha = 0.3f),
+        )
 
     SettingsSlider(
         modifier = modifier,
@@ -153,7 +154,7 @@ fun LemuroidSettingsSlider(
         title = title,
         subtitle = subtitle,
         enabled = enabled,
-        colors = if (enabled) defaultColors else disabledColors
+        colors = if (enabled) defaultColors else disabledColors,
     )
 }
 

@@ -15,6 +15,13 @@
             android:defaultValue="true"/>
 
         <SwitchPreference
+            android:key="@string/pref_key_enable_immersive_mode"
+            android:title="@string/settings_title_immersive_mode"
+            android:summary="@string/settings_description_immersive_mode"
+            app:iconSpaceReserved="false"
+            android:defaultValue="false"/>
+
+        <SwitchPreference
             android:key="@string/pref_key_hd_mode"
             android:title="@string/settings_title_hd_mode"
             android:summary="@string/settings_description_hd_mode"
@@ -31,7 +38,7 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="false"
             app:iconSpaceReserved="false"
-            android:defaultValue="1"/>
+            android:defaultValue="2"/>
 
         <ListPreference
             android:key="@string/pref_key_shader_filter"

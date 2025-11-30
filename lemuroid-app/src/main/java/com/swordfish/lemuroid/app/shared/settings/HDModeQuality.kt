@@ -3,7 +3,8 @@ package com.swordfish.lemuroid.app.shared.settings
 enum class HDModeQuality {
     LOW,
     MEDIUM,
-    HIGH;
+    HIGH,
+    ;
 
     companion object {
         fun parse(value: Int): HDModeQuality {

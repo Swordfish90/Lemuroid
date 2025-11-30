@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature
@@ -12,6 +13,10 @@
         android:name="android.hardware.touchscreen"
         android:required="false" />
 
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -19,6 +24,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:name="com.swordfish.lemuroid.app.LemuroidApplication"
@@ -83,6 +89,10 @@
             android:theme="@style/LemuroidMaterialTheme.Invisible" />
 
         <activity
+            android:name="com.swordfish.lemuroid.app.mobile.feature.input.GamePadShortcutBindingActivity"
+            android:theme="@style/LemuroidMaterialTheme.Invisible" />
+
+        <activity
             android:name="com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher"
             android:theme="@style/LemuroidMaterialTheme.Invisible" />
 
@@ -120,11 +130,17 @@
 
         <activity
             android:name=".app.tv.game.TVGameActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
             android:process=":game"
             android:theme="@style/LemuroidMaterialTheme.Game" />
 
         <activity
             android:name=".app.tv.gamemenu.TVGameMenuActivity"
+            android:process=":game"
+            android:theme="@style/LemuroidLeanbackPreferencesTheme" />
+
+        <activity
+            android:name=".app.tv.input.TVGamePadShortcutBindingActivity"
             android:process=":game"
             android:theme="@style/LemuroidLeanbackPreferencesTheme" />
 

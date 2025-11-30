@@ -2,8 +2,11 @@ package com.swordfish.lemuroid.app.mobile.feature.main
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -106,6 +109,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge(
+            SystemBarStyle.dark(Color.TRANSPARENT),
+            SystemBarStyle.dark(Color.TRANSPARENT),
+        )
         super.onCreate(savedInstanceState)
 
         GlobalScope.safeLaunch {
@@ -190,10 +197,12 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                         HomeViewModel.Factory(
                                             applicationContext,
                                             retrogradeDb,
+                                            coresSelection,
                                         ),
                                 ),
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
+                            onOpenCoreSelection = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) },
                         )
                     }
                     composable(MainRoute.FAVORITES) {
@@ -370,7 +379,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     override fun activity(): Activity = this
 
-    override fun isBusy(): Boolean = mainViewModel.state.value?.operationInProgress ?: false
+    override fun isBusy(): Boolean = mainViewModel.state.value.operationInProgress ?: false
 
     override fun onActivityResult(
         requestCode: Int,

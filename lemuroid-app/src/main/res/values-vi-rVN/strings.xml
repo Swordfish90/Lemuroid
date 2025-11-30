@@ -19,14 +19,21 @@
     <string name="settings">Cài đặt</string>
     <string name="save_sync">Đồng bộ và lưu lại</string>
     <string name="show_all">Hiện tất cả</string>
+    <string name="back">Trở lại</string>
+    <string name="close">Đóng</string>
+    <string name="game_page_search_suggestion">Tìm trò chơi</string>
     <string name="settings_category_general">Cài đặt chung</string>
     <string name="settings_category_input">Đầu vào</string>
     <string name="settings_category_misc">Khác</string>
     <string name="settings_title_enable_autosave">Tự động lưu trạng thái</string>
+    <string name="settings_description_enable_autosave">Lưu trạng thái khi thoát bằng menu trò chơi</string>
     <string name="settings_title_enable_touch_feedback">Rung khi chạm</string>
     <string name="settings_title_tilt_sensitivity">Độ nhạy cảm biến nghiêng</string>
+    <string name="settings_title_hd_quality">Chất lượng chế độ HD</string>
     <string name="settings_title_maximum_cache_usage">Giới hạn kích thước bộ nhớ đệm</string>
     <string name="settings_title_hd_mode">Chế độ HD</string>
+    <string name="settings_description_hd_mode">Áp dụng bộ lọc xử lý hậu kỳ để nâng cấp chất lượng hình ảnh</string>
+    <string name="settings_description_hd_quality">Điều chỉnh chất lượng của chế độ HD</string>
     <string name="settings_title_gamepad_settings">Thiết bị bên ngoài</string>
     <string name="settings_description_gamepad_settings">Thiết lập gamepad và bàn phím bên ngoài</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -70,6 +77,9 @@
     <string name="game_context_menu_resume">Tiếp tục</string>
     <string name="game_context_menu_restart">Bắt đầu lại</string>
     <string name="game_context_menu_create_shortcut">Ghim vào launcher</string>
+    <string name="home_notification_title">Bật thông báo</string>
+    <string name="home_notification_message">Lemuroid sử dụng thông báo để cho bạn biết khi có trò chơi hoặc hoạt động chạy trong nền.</string>
+    <string name="home_notification_action">Bật</string>
     <string name="home_empty_title">Chọn thư mục chứa ROM</string>
     <string name="home_empty_message">Lemuroid cần quét một thư mục chứa các tệp ROM.\nViệc này có thể sẽ mất tối đa một vài phút.</string>
     <string name="home_empty_action">Chọn thư mục</string>
@@ -104,6 +114,7 @@
     <string name="game_loader_error_gl_incompatible">Lõi này yêu cầu một phiên bản OpenGL ES không được thiết bị của bạn hỗ trợ.</string>
     <string name="game_loader_error_load_game">Có gì đó tệ đã xảy ra khi đang tải trò chơi của bạn. Hãy đảm bảo rằng ROM này được Lemuroid hỗ trợ và quét lại các trò chơi của bạn.</string>
     <string name="game_loader_error_save">Có gì đó tệ đã xảy ra với tệp lưu của bạn. Nếu vấn đề này vẫn tiếp diễn, hãy thử tắt tự động lưu.</string>
+    <string name="game_loader_error_unsupported_architecture">Thiết bị của bạn không hỗ trợ lõi này.</string>
     <string name="game_loader_error_generic">Có gì đó tệ đã xảy ra. Hãy thử những điều sau:\n
         \n\u2022 Tắt tự động lưu và chạy lại trò chơi
         \n\u2022 Đi đến cài đặt của Android và xoá bộ nhớ đệm của ứng dụng
@@ -124,6 +135,7 @@
     <string name="tv_home_section_recents">Gần đây</string>
     <string name="tv_home_section_systems">Hệ thống</string>
     <string name="tv_home_section_settings">Cài đặt</string>
+    <string name="gamepad_binding_update_description">Nhấn một nút trên \"%1$s\" của bạn</string>
     <string name="tv_search_results">Trò chơi</string>
     <string name="tv_game_message_missing_gamepad">Yêu cầu có gamepad để chơi. Vui lòng kết nối một cái.</string>
     <string name="game_edit_touch_controls_error_not_visible">Ngắt kết nối pad của bạn để chỉnh sửa điều khiển bằng cảm ứng</string>
@@ -142,6 +154,11 @@
         \n\nNếu tất cả những điều trên không được, thì có thể là Trò chơi/Lõi này không được thiết bị hỗ trợ.
     </string>
     <string name="error_message_incompatible_state">Trạng thái lưu này không tương thích với phiên bản lõi hiện tại. Vui lòng tải bản lưu trong trò chơi mới nhất hoặc sử dụng phiên bản Lemuroid trước đó.</string>
+    <string name="shader_filter_names_auto">Tự động</string>
+    <string name="shader_filter_names_sharp">Sắc nét</string>
+    <string name="shader_filter_names_smooth">Mịn</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
     <string name="haptic_feedback_mode_names_none">Không</string>
     <string name="haptic_feedback_mode_names_press">Nhấn</string>
     <string name="haptic_feedback_mode_names_press_release">Nhấn &amp; thả</string>

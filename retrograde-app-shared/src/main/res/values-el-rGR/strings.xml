@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">Διάταξη οθόνης</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamic recompiler</string>
+    <string name="setting_melonds_mic_input">Λειτουργία μικροφώνου</string>
     <string name="setting_wswan_rotate_display">Προσανατολισμός</string>
     <string name="setting_wswan_mono_palette">Χρωματισμός</string>
     <string name="setting_handy_rot">Περιστροφή οθόνης</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Αριστερά - Δεξιά</string>
     <string name="value_melonds_screen_layout_hybridtop">Υβριδικό Πάνω</string>
     <string name="value_melonds_screen_layout_hybridbottom">Υβριδικό Κάτω</string>
+    <string name="value_melonds_mic_input_microphone">Πραγματικό μικρόφωνο</string>
+    <string name="value_melonds_mic_input_blow">Προσομοίωση ήχων πλήγματος</string>
     <string name="value_citra_layout_option_topbottom">Πάνω-κάτω</string>
     <string name="value_citra_layout_option_sidebyside">Αριστερά - Δεξιά</string>
     <string name="value_desmume_screens_layout_topbottom">Πάνω-κάτω</string>

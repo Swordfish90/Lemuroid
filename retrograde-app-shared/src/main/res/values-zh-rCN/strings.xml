@@ -53,6 +53,7 @@
     <string name="setting_melonds_screen_layout">屏幕布局</string>
     <string name="setting_melonds_threaded_renderer">多线程渲染</string>
     <string name="setting_melonds_jit_enable">动态重编译器</string>
+    <string name="setting_melonds_mic_input">麦克风模式</string>
     <string name="setting_wswan_rotate_display">屏幕方向</string>
     <string name="setting_wswan_mono_palette">着色</string>
     <string name="setting_handy_rot">显示旋转</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">左 - 右</string>
     <string name="value_melonds_screen_layout_hybridtop">顶部混合</string>
     <string name="value_melonds_screen_layout_hybridbottom">底部混合</string>
+    <string name="value_melonds_mic_input_microphone">外接麦克风</string>
+    <string name="value_melonds_mic_input_blow">模拟吹气声</string>
     <string name="value_citra_layout_option_topbottom">上 - 下</string>
     <string name="value_citra_layout_option_sidebyside">左 - 右</string>
     <string name="value_desmume_screens_layout_topbottom">上 - 下</string>
