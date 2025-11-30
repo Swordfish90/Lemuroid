@@ -16,7 +16,8 @@ class SavesCoherencyEngine(val savesManager: SavesManager, val statesManager: St
     suspend fun shouldDiscardAutoSaveState(
         game: Game,
         coreID: CoreID,
-        sramTimestampOverride: Long? = null, // TODO Get rid of it when desmume is removed
+        // TODO Get rid of it when desmume is removed
+        sramTimestampOverride: Long? = null,
     ): Boolean {
         val autoSRAM =
             if (sramTimestampOverride != null) {

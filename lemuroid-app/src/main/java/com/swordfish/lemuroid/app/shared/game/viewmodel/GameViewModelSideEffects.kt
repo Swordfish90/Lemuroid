@@ -13,14 +13,19 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
     sealed interface UiEffect {
         data class ShowMenu(
             val currentTiltConfiguration: TiltConfiguration,
-            val tiltConfigurations: List<TiltConfiguration>
+            val tiltConfigurations: List<TiltConfiguration>,
         ) : UiEffect
 
         data class ShowToast(val message: String) : UiEffect
+
         data object SuccessfulFinish : UiEffect
+
         data class FailureFinish(val message: String) : UiEffect
+
         data object LoadQuickSave : UiEffect
+
         data object SaveQuickSave : UiEffect
+
         data object ToggleFastForward : UiEffect
     }
 
@@ -38,7 +43,10 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
         }
     }
 
-    fun showMenu(tilt: GameViewModelTilt, inputs: GameViewModelInput) {
+    fun showMenu(
+        tilt: GameViewModelTilt,
+        inputs: GameViewModelInput,
+    ) {
         scope.launch {
             val currentTiltConfiguration = tilt.getTiltConfiguration().firstOrNull() ?: return@launch
             val tiltConfigurations = inputs.getAllTiltConfigurations()

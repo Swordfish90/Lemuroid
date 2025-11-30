@@ -58,7 +58,6 @@ class BaseGameScreenViewModel(
     coreVariablesManager: CoreVariablesManager,
     rumbleManager: RumbleManager,
 ) : ViewModel(), DefaultLifecycleObserver {
-
     class Factory(
         private val appContext: Context,
         private val game: Game,
@@ -103,7 +102,7 @@ class BaseGameScreenViewModel(
             coreVariablesManager,
             sideEffects,
             rumbleManager,
-            viewModelScope
+            viewModelScope,
         )
     private val tilt = GameViewModelTilt(appContext, settingsManager)
     private val inputs =
@@ -116,7 +115,7 @@ class BaseGameScreenViewModel(
             retroGameView,
             tilt,
             sideEffects,
-            viewModelScope
+            viewModelScope,
         )
     private val touchControls =
         GameViewModelTouchControls(
@@ -126,7 +125,7 @@ class BaseGameScreenViewModel(
             inputs,
             tilt,
             sideEffects,
-            viewModelScope
+            viewModelScope,
         )
     private val saves =
         GameViewModelSaves(
@@ -139,7 +138,7 @@ class BaseGameScreenViewModel(
             savesManager,
             statesManager,
             statesPreviewManager,
-            sideEffects
+            sideEffects,
         )
 
     val loadingState = MutableStateFlow(false)
@@ -166,7 +165,10 @@ class BaseGameScreenViewModel(
         return tilt.getSimulatedTiltEvents()
     }
 
-    fun getTouchControlsSettings(density: Density, insets: WindowInsets): Flow<TouchControllerSettingsManager.Settings?> {
+    fun getTouchControlsSettings(
+        density: Density,
+        insets: WindowInsets,
+    ): Flow<TouchControllerSettingsManager.Settings?> {
         return touchControls.getTouchControlsSettings(density, insets)
     }
 
@@ -192,7 +194,7 @@ class BaseGameScreenViewModel(
         game: Game,
         systemCoreConfig: SystemCoreConfig,
         gameLoader: GameLoader,
-        requestLoadSave: Boolean
+        requestLoadSave: Boolean,
     ) {
         Timber.i("Calling load game: $game")
         retroGameView.initialize(applicationContext, game, systemCoreConfig, gameLoader, requestLoadSave)
@@ -305,7 +307,10 @@ class BaseGameScreenViewModel(
         owner.lifecycle.addObserver(touchControls)
     }
 
-    fun sendKeyEvent(keyCode: Int, event: KeyEvent): Boolean {
+    fun sendKeyEvent(
+        keyCode: Int,
+        event: KeyEvent,
+    ): Boolean {
         return inputs.sendKeyEvent(keyCode, event)
     }
 

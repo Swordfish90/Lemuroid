@@ -13,7 +13,7 @@ data class ControllerConfig(
     val mergeDPADAndLeftStickEvents: Boolean = false,
     val libretroDescriptor: String? = null,
     val libretroId: Int? = null,
-    val tiltConfigurations: List<TiltConfiguration> = emptyList()
+    val tiltConfigurations: List<TiltConfiguration> = emptyList(),
 ) : Serializable {
     fun getTouchControllerConfig(): TouchControllerID.Config {
         return TouchControllerID.getConfig(touchControllerID)

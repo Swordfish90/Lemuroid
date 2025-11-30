@@ -37,11 +37,12 @@ private object ShadowCache {
             val bitmap = ImageBitmap(bitmapWidth, bitmapHeight)
             val canvas = Canvas(bitmap)
 
-            val frameworkPaint = android.graphics.Paint().apply {
-                isAntiAlias = true
-                color = shadowColor.toArgb()
-                maskFilter = BlurMaskFilter(blurRadius, BlurMaskFilter.Blur.NORMAL)
-            }
+            val frameworkPaint =
+                android.graphics.Paint().apply {
+                    isAntiAlias = true
+                    color = shadowColor.toArgb()
+                    maskFilter = BlurMaskFilter(blurRadius, BlurMaskFilter.Blur.NORMAL)
+                }
 
             canvas.nativeCanvas.drawRoundRect(
                 padding.toFloat(),
@@ -50,7 +51,7 @@ private object ShadowCache {
                 padding.toFloat() + height.toFloat(),
                 cornerRadius,
                 cornerRadius,
-                frameworkPaint
+                frameworkPaint,
             )
 
             bitmap
@@ -65,59 +66,61 @@ fun GlassSurface(
     fillColor: Color = Color.White.copy(alpha = 0.15f),
     shadowColor: Color = Color.Black.copy(alpha = 0.3f),
     shadowWidth: Dp = 1.dp,
-    content: @Composable BoxWithConstraintsScope.() -> Unit = { }
+    content: @Composable BoxWithConstraintsScope.() -> Unit = { },
 ) {
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
-        modifier = modifier.drawWithCache {
-            val blurRadiusPx = shadowWidth.toPx()
+        modifier =
+            modifier.drawWithCache {
+                val blurRadiusPx = shadowWidth.toPx()
 
-            val expandedWidth = size.width
-            val expandedHeight = size.height
+                val expandedWidth = size.width
+                val expandedHeight = size.height
 
-            if (expandedWidth <= 0f || expandedHeight <= 0f) {
-                return@drawWithCache onDrawWithContent {
+                if (expandedWidth <= 0f || expandedHeight <= 0f) {
+                    return@drawWithCache onDrawWithContent {
+                        drawContent()
+                    }
+                }
+
+                val expandedSize = Size(expandedWidth, expandedHeight)
+
+                val cornerRadiusPx = minOf(cornerRadius.toPx(), expandedSize.minDimension / 2f)
+
+                val shouldDrawShadow = shadowColor.alpha > 0f && blurRadiusPx > 0f
+                val shadowPaddingPx = if (shouldDrawShadow) blurRadiusPx else 0f
+                val shadowPadding = ceil(shadowPaddingPx).toInt().coerceAtLeast(0)
+
+                val shadowBitmap =
+                    if (shouldDrawShadow) {
+                        ShadowCache.getOrCreate(
+                            width = expandedSize.width.toInt().coerceAtLeast(1),
+                            height = expandedSize.height.toInt().coerceAtLeast(1),
+                            cornerRadius = cornerRadiusPx,
+                            shadowColor = shadowColor,
+                            blurRadius = blurRadiusPx,
+                            padding = shadowPadding,
+                        )
+                    } else {
+                        null
+                    }
+
+                onDrawWithContent {
+                    if (shadowBitmap != null) {
+                        val shadowOffset = -Offset(shadowPadding.toFloat(), shadowPadding.toFloat())
+                        drawImage(shadowBitmap, topLeft = shadowOffset)
+                    }
+
+                    drawRoundRect(
+                        color = fillColor,
+                        topLeft = Offset(0f, 0f),
+                        size = expandedSize,
+                        cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
+                    )
+
                     drawContent()
                 }
-            }
-
-            val expandedSize = Size(expandedWidth, expandedHeight)
-
-            val cornerRadiusPx = minOf(cornerRadius.toPx(), expandedSize.minDimension / 2f)
-
-            val shouldDrawShadow = shadowColor.alpha > 0f && blurRadiusPx > 0f
-            val shadowPaddingPx = if (shouldDrawShadow) blurRadiusPx else 0f
-            val shadowPadding = ceil(shadowPaddingPx).toInt().coerceAtLeast(0)
-
-            val shadowBitmap = if (shouldDrawShadow) {
-                ShadowCache.getOrCreate(
-                    width = expandedSize.width.toInt().coerceAtLeast(1),
-                    height = expandedSize.height.toInt().coerceAtLeast(1),
-                    cornerRadius = cornerRadiusPx,
-                    shadowColor = shadowColor,
-                    blurRadius = blurRadiusPx,
-                    padding = shadowPadding
-                )
-            } else {
-                null
-            }
-
-            onDrawWithContent {
-                if (shadowBitmap != null) {
-                    val shadowOffset = -Offset(shadowPadding.toFloat(), shadowPadding.toFloat())
-                    drawImage(shadowBitmap, topLeft = shadowOffset)
-                }
-
-                drawRoundRect(
-                    color = fillColor,
-                    topLeft = Offset(0f, 0f),
-                    size = expandedSize,
-                    cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
-                )
-
-                drawContent()
-            }
-        },
-        content = content
+            },
+        content = content,
     )
 }

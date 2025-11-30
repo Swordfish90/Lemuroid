@@ -23,21 +23,29 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentMapOf
 
 @Composable
-fun PadKitScope.Arcade6Left(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.Arcade6Left(
+    modifier: Modifier = Modifier,
+    settings: TouchControllerSettingsManager.Settings,
+) {
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
-        primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD_AND_LEFT_STICK)) },
+        primaryDial = {
+            LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD_AND_LEFT_STICK))
+        },
         secondaryDials = {
             SecondaryButtonCoin()
             SecondaryButtonStart(position = 1)
             SecondaryButtonMenuPlaceholder(settings)
-        }
+        },
     )
 }
 
 @Composable
-fun PadKitScope.Arcade6Right(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.Arcade6Right(
+    modifier: Modifier = Modifier,
+    settings: TouchControllerSettingsManager.Settings,
+) {
     val centralAnchors = rememberCentralAnchorsForSixButtons(settings.rotation)
 
     BaseLayoutRight(
@@ -49,12 +57,13 @@ fun PadKitScope.Arcade6Right(modifier: Modifier = Modifier, settings: TouchContr
                 background = { },
                 applyPadding = false,
                 trackPointers = false,
-                idsForegrounds = persistentMapOf<Id.Key, @Composable (State<Boolean>) -> Unit>(
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_X) to { LemuroidCentralButton(pressedState = it) },
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_A) to { LemuroidCentralButton(pressedState = it) },
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_B) to { LemuroidCentralButton(pressedState = it) },
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_Y) to { LemuroidCentralButton(pressedState = it) },
-                ),
+                idsForegrounds =
+                    persistentMapOf<Id.Key, @Composable (State<Boolean>) -> Unit>(
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_X) to { LemuroidCentralButton(pressedState = it) },
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_A) to { LemuroidCentralButton(pressedState = it) },
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_B) to { LemuroidCentralButton(pressedState = it) },
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_Y) to { LemuroidCentralButton(pressedState = it) },
+                    ),
             )
         },
         secondaryDials = {
@@ -67,7 +76,7 @@ fun PadKitScope.Arcade6Right(modifier: Modifier = Modifier, settings: TouchContr
                 id = Id.Key(KeyEvent.KEYCODE_BUTTON_R1),
             )
             SecondaryButtonMenu(settings)
-        }
+        },
     )
 }
 

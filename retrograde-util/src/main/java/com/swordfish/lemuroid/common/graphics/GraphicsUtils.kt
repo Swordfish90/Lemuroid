@@ -44,7 +44,10 @@ object GraphicsUtils {
         return TypedValue.complexToFloat(value.data)
     }
 
-    fun rotatePoint(offset: Offset, angleInDegrees: Double): Offset {
+    fun rotatePoint(
+        offset: Offset,
+        angleInDegrees: Double,
+    ): Offset {
         val angle = Math.toRadians(angleInDegrees)
         val cosTheta = cos(angle)
         val sinTheta = sin(angle)

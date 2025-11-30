@@ -39,8 +39,8 @@ import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.RomFiles
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.io.File
 import timber.log.Timber
+import java.io.File
 
 class GameLoader(
     private val lemuroidLibrary: LemuroidLibrary,
@@ -181,5 +181,4 @@ class GameLoader(
         val systemDirectory: File,
         val savesDirectory: File,
     )
-
 }

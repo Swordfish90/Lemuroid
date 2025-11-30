@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
-import com.swordfish.touchinput.radial.ui.LemuroidControlBackground
 import com.swordfish.touchinput.radial.ui.LemuroidCompositeForeground
+import com.swordfish.touchinput.radial.ui.LemuroidControlBackground
 import gg.padkit.PadKitScope
 import gg.padkit.anchors.Anchor
 import gg.padkit.controls.ControlFaceButtons
@@ -25,12 +25,13 @@ fun LemuroidControlFaceButtons(
     applyPadding: Boolean = true,
     trackPointers: Boolean = true,
     background: @Composable () -> Unit = { LemuroidControlBackground() },
-    idsForegrounds: PersistentMap<Id.Key, @Composable (State<Boolean>) -> Unit>
+    idsForegrounds: PersistentMap<Id.Key, @Composable (State<Boolean>) -> Unit>,
 ) {
     val theme = LocalLemuroidPadTheme.current
     ControlFaceButtons(
-        modifier = modifier
-            .run { if (applyPadding) padding(theme.padding) else modifier },
+        modifier =
+            modifier
+                .run { if (applyPadding) padding(theme.padding) else modifier },
         includeComposite = includeComposite,
         ids = ids,
         trackPointers = trackPointers,
@@ -53,8 +54,9 @@ fun LemuroidControlFaceButtons(
 ) {
     val theme = LocalLemuroidPadTheme.current
     ControlFaceButtons(
-        modifier = modifier
-            .run { if (applyPadding) padding(theme.padding) else modifier },
+        modifier =
+            modifier
+                .run { if (applyPadding) padding(theme.padding) else modifier },
         primaryAnchors = primaryAnchors,
         compositeAnchors = persistentListOf(),
         trackPointers = trackPointers,

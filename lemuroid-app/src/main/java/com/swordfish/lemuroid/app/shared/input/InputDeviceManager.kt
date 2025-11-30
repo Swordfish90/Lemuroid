@@ -86,7 +86,11 @@ class InputDeviceManager(
         }.flowOn(Dispatchers.IO)
     }
 
-    private fun parseShortcutPreference(preference: String?, device: InputDevice, type: GameShortcutType): GameShortcut? {
+    private fun parseShortcutPreference(
+        preference: String?,
+        device: InputDevice,
+        type: GameShortcutType,
+    ): GameShortcut? {
         return if (preference.isNullOrEmpty()) {
             GameShortcut.getDefault(device, type)
         } else {

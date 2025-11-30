@@ -31,13 +31,17 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         val marginY: Float = DEFAULT_MARGIN_Y,
     )
 
-    private fun computeInsetsPaddings(density: Density, insets: WindowInsets): PaddingValues {
-        val result = PaddingValues(
-            insets.getLeft(density, layoutDirection = LayoutDirection.Ltr).pxToDp(density),
-            insets.getTop(density).pxToDp(density),
-            insets.getRight(density, layoutDirection = LayoutDirection.Ltr).pxToDp(density),
-            insets.getBottom(density).pxToDp(density),
-        )
+    private fun computeInsetsPaddings(
+        density: Density,
+        insets: WindowInsets,
+    ): PaddingValues {
+        val result =
+            PaddingValues(
+                insets.getLeft(density, layoutDirection = LayoutDirection.Ltr).pxToDp(density),
+                insets.getTop(density).pxToDp(density),
+                insets.getRight(density, layoutDirection = LayoutDirection.Ltr).pxToDp(density),
+                insets.getBottom(density).pxToDp(density),
+            )
         return result
     }
 
@@ -47,38 +51,46 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         touchControllerID: TouchControllerID,
         orientation: Orientation,
         density: Density,
-        insets: WindowInsets
+        insets: WindowInsets,
     ): Flow<Settings> {
         val paddings = computeInsetsPaddings(density, insets)
-        val horizontalPadding = max(
-            paddings.calculateLeftPadding(LayoutDirection.Ltr),
-            paddings.calculateRightPadding(LayoutDirection.Ltr)
-        )
+        val horizontalPadding =
+            max(
+                paddings.calculateLeftPadding(LayoutDirection.Ltr),
+                paddings.calculateRightPadding(LayoutDirection.Ltr),
+            )
         val verticalPadding = paddings.calculateBottomPadding()
-        val defaultSettings = Settings(
-            scale = DEFAULT_SCALE,
-            rotation = DEFAULT_ROTATION,
-            marginX = horizontalPadding.value / MAX_MARGINS,
-            marginY = verticalPadding.value / MAX_MARGINS,
-        )
+        val defaultSettings =
+            Settings(
+                scale = DEFAULT_SCALE,
+                rotation = DEFAULT_ROTATION,
+                marginX = horizontalPadding.value / MAX_MARGINS,
+                marginY = verticalPadding.value / MAX_MARGINS,
+            )
         val settingsKey = getPreferenceString(touchControllerID, orientation)
-        val cachedStateFlow = cachedSettings.getOrPut(settingsKey) {
-            val currentSettings = sharedPreferences.getString(settingsKey, null)
-                ?.let { Json.decodeFromString(Settings.serializer(), it) }
+        val cachedStateFlow =
+            cachedSettings.getOrPut(settingsKey) {
+                val currentSettings =
+                    sharedPreferences.getString(settingsKey, null)
+                        ?.let { Json.decodeFromString(Settings.serializer(), it) }
 
-            MutableStateFlow(currentSettings)
-        }
+                MutableStateFlow(currentSettings)
+            }
         return cachedStateFlow.map { it ?: defaultSettings }
     }
 
-    suspend fun storeSettings(touchControllerID: TouchControllerID, orientation: Orientation, settings: Settings) {
+    suspend fun storeSettings(
+        touchControllerID: TouchControllerID,
+        orientation: Orientation,
+        settings: Settings,
+    ) {
         Timber.d("Updating touch settings for $touchControllerID at $orientation to $settings")
         updateCachedSettings(touchControllerID, orientation, settings)
         withContext(Dispatchers.IO) {
             sharedPreferences.edit {
                 putString(
                     getPreferenceString(touchControllerID, orientation),
-                    Json.encodeToString(Settings.serializer(), settings)
+                    Json.encodeToString(Settings.serializer(), settings),
                 )
             }
         }
@@ -87,14 +99,17 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
     private fun updateCachedSettings(
         touchControllerID: TouchControllerID,
         orientation: Orientation,
-        settings: Settings?
+        settings: Settings?,
     ) {
         val cacheKey = getPreferenceString(touchControllerID, orientation)
         val cacheFlow = cachedSettings.getOrPut(cacheKey) { MutableStateFlow(settings) }
         cacheFlow.value = settings
     }
 
-    suspend fun resetSettings(touchControllerID: TouchControllerID, orientation: Orientation) {
+    suspend fun resetSettings(
+        touchControllerID: TouchControllerID,
+        orientation: Orientation,
+    ) {
         updateCachedSettings(touchControllerID, orientation, null)
         withContext(Dispatchers.IO) {
             sharedPreferences.edit {
