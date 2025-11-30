@@ -56,10 +56,11 @@ class GameViewModelSaves(
                 }
             }
         } catch (e: Throwable) {
-            val errorMessageId = when (e) {
-                is IncompatibleStateException -> R.string.error_message_incompatible_state
-                else -> R.string.game_toast_load_state_failed
-            }
+            val errorMessageId =
+                when (e) {
+                    is IncompatibleStateException -> R.string.error_message_incompatible_state
+                    else -> R.string.game_toast_load_state_failed
+                }
             sideEffects.showToast(appContext.getString(errorMessageId))
         }
     }

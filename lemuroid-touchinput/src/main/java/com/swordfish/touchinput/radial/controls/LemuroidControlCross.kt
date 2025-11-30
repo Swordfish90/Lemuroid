@@ -24,9 +24,9 @@ fun LemuroidControlCross(
     foreground: @Composable (State<Offset>) -> Unit = {
         LemuroidCrossForeground(
             allowDiagonals = allowDiagonals,
-            directionState = it
+            directionState = it,
         )
-    }
+    },
 ) {
     val theme = LocalLemuroidPadTheme.current
     ControlCross(
@@ -34,6 +34,6 @@ fun LemuroidControlCross(
         id = id,
         allowDiagonals = allowDiagonals,
         background = background,
-        foreground = foreground
+        foreground = foreground,
     )
 }

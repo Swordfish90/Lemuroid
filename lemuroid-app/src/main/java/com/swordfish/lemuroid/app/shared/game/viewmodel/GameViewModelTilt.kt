@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.onStart
 class GameViewModelTilt(
     appContext: Context,
     private val settingsManager: SettingsManager,
-): DefaultLifecycleObserver {
+) : DefaultLifecycleObserver {
     private val tiltSensor = TiltSensor(appContext)
     private val tiltConfiguration = MutableStateFlow<TiltConfiguration>(TiltConfiguration.Disabled)
 

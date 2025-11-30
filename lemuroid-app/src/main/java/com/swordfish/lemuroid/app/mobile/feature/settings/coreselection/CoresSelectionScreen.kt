@@ -2,7 +2,6 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.coreselection
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -14,10 +13,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alorma.compose.settings.storage.memory.rememberMemoryIntSettingState
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
-import com.swordfish.lemuroid.R
 
 @Composable
 fun CoresSelectionScreen(
@@ -32,12 +31,14 @@ fun CoresSelectionScreen(
 
     LemuroidSettingsPage(modifier = modifier.fillMaxWidth()) {
         ElevatedCard(
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+            colors =
+                CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
         ) {
             Text(
                 modifier = Modifier.padding(16.dp),

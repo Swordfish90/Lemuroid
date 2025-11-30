@@ -79,10 +79,11 @@ class CoresSelection(
                 }
             }
 
-            val preference = flowSharedPreferences.getString(
-                preferenceKey,
-                defaultValue,
-            )
+            val preference =
+                flowSharedPreferences.getString(
+                    preferenceKey,
+                    defaultValue,
+                )
             emitAll(preference.asFlow())
         }.flowOn(Dispatchers.IO)
     }

@@ -17,29 +17,29 @@ fun LemuroidCrossForegroundAlternate(directionState: State<Offset>) {
         leftDial = {
             LemuroidButtonForeground(
                 pressed = it,
-                icon = R.drawable.direction_alt_foreground_left
+                icon = R.drawable.direction_alt_foreground_left,
             )
         },
         rightDial = {
             LemuroidButtonForeground(
                 pressed = it,
-                icon = R.drawable.direction_alt_foreground_right
+                icon = R.drawable.direction_alt_foreground_right,
             )
         },
         topDial = {
             LemuroidButtonForeground(
                 pressed = it,
-                icon = R.drawable.direction_alt_foreground_up
+                icon = R.drawable.direction_alt_foreground_up,
             )
         },
         bottomDial = {
             LemuroidButtonForeground(
                 pressed = it,
-                icon = R.drawable.direction_alt_foreground_down
+                icon = R.drawable.direction_alt_foreground_down,
             )
         },
         foregroundComposite = {
             LemuroidCompositeForeground(it)
-        }
+        },
     )
 }

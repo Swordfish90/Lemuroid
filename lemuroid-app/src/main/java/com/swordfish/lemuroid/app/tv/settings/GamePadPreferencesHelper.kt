@@ -18,7 +18,6 @@ import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDe
 import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.app.tv.input.TVGamePadBindingActivity
 import com.swordfish.lemuroid.app.tv.input.TVGamePadShortcutBindingActivity
-import timber.log.Timber
 
 class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManager) {
     suspend fun addGamePadsPreferencesToScreen(
@@ -136,8 +135,9 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
                     }
             }
 
-        val shortcuts = inputDeviceManager.getCurrentShortcuts(inputDevice)
-            .associateBy { it.type }
+        val shortcuts =
+            inputDeviceManager.getCurrentShortcuts(inputDevice)
+                .associateBy { it.type }
 
         GameShortcutType.entries
             .forEach { type ->

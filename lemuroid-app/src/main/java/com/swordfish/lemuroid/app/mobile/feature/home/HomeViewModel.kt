@@ -179,14 +179,14 @@ class HomeViewModel(
                 } else {
                     combine(
                         coresSelection.getSelectedCores(),
-                        dsGamesCount(db)
+                        dsGamesCount(db),
                     ) { cores, dsCount ->
                         cores.any { it.coreConfig.supportsMicrophone } &&
-                        dsCount > 0
+                            dsCount > 0
                     }
                 }
-            .distinctUntilChanged()
-        }
+                    .distinctUntilChanged()
+            }
     }
 
     private fun desmumeWarningNotification(): Flow<Boolean> {

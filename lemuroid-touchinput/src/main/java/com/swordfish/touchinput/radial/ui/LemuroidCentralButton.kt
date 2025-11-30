@@ -10,7 +10,7 @@ import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 @Composable
 fun LemuroidCentralButton(
     pressedState: State<Boolean>,
-    label: String? = null
+    label: String? = null,
 ) {
     val theme = LocalLemuroidPadTheme.current
     Box(modifier = Modifier.padding(theme.padding)) {

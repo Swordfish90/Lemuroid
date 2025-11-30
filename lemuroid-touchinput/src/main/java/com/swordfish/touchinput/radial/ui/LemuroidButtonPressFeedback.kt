@@ -26,7 +26,11 @@ import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun LemuroidButtonPressFeedback(pressed: Boolean, animationDurationMillis: Int, icon: Int) {
+fun LemuroidButtonPressFeedback(
+    pressed: Boolean,
+    animationDurationMillis: Int,
+    icon: Int,
+) {
     Box(
         modifier = Modifier.size(96.dp),
         contentAlignment = Alignment.Center,
@@ -36,16 +40,17 @@ fun LemuroidButtonPressFeedback(pressed: Boolean, animationDurationMillis: Int, 
 
         val animatedProgress by animateFloatAsState(
             targetValue = progress,
-            animationSpec = tween(
-                durationMillis = animationDurationMillis,
-                easing = LinearEasing
-            ),
+            animationSpec =
+                tween(
+                    durationMillis = animationDurationMillis,
+                    easing = LinearEasing,
+                ),
             label = "progress",
             finishedListener = {
                 if (progress > 0.5) {
                     shouldShow = false
                 }
-            }
+            },
         )
 
         LaunchedEffect(pressed) {
