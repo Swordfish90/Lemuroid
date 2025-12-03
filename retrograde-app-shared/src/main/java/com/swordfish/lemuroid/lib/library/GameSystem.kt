@@ -134,6 +134,23 @@ data class GameSystem(
                                 hashMapOf(
                                     0 to arrayListOf(ControllerConfigs.SNES),
                                 ),
+                            exposedAdvancedSettings =
+                                listOf(
+                                    ExposedSetting(
+                                        "snes9x_block_invalid_vram_access",
+                                        R.string.setting_snes9x_block_invalid_vram_access,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "disabled",
+                                                R.string.value_snes9x_block_invalid_vram_access_disabled,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "enabled",
+                                                R.string.value_snes9x_block_invalid_vram_access_enabled,
+                                            ),
+                                        ),
+                                    ),
+                                ),
                         ),
                     ),
                     uniqueExtensions = listOf("smc", "sfc"),
