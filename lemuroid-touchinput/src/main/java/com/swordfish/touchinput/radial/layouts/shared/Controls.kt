@@ -115,6 +115,16 @@ fun SecondaryButtonMenuPlaceholder(settings: TouchControllerSettingsManager.Sett
 
 context(PadKitScope, LayoutRadialSecondaryDialsScope)
 @Composable
+fun SecondaryButtonFastForward() {
+    LemuroidControlButton(
+        modifier = Modifier.radialPosition(30f),
+        id = Id.Key(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD),
+        label = "FF",
+    )
+}
+
+context(PadKitScope, LayoutRadialSecondaryDialsScope)
+@Composable
 fun SecondaryAnalogLeft() {
     LemuroidControlAnalog(
         modifier =
