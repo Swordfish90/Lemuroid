@@ -21,7 +21,7 @@
     <string name="gdrive_sign_in_failed">Google ile oturum açma başarısız: %s (%s)</string>
     <string name="gdrive_sign_in_success">%s olarak Google\'a giriş yapıldı</string>
     <string name="gdrive_sign_out_success">Google\'dan çıkış yapıldı</string>
-    <string name="gdrive_missing_play_services">Google Drive cihazınız tarafından desteklenmeyen Google Play hizmetleri olmadan çalışmayacaktır</string>
+    <string name="gdrive_missing_play_services">Google Drive, Google Play Hizmetleri\'ne ihtiyaç duyuyor ancak cihazınız bu hizmetleri desteklemiyor. Lütfen Google Play Hizmetleri\'ni yüklemeyi veya güncellemeyi deneyin</string>
     <string name="gdrive_connected_summary">%s bağlanıldı</string>
     <string name="gdrive_connected_none_summary">Ayarlanmamış</string>
     <string name="gdrive_last_sync_completed">Son eşitleme: %s</string>
