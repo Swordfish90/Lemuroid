@@ -55,7 +55,7 @@
     <string name="settings_title_advanced_settings">Gelişmiş Ayarlar</string>
     <string name="settings_description_advanced_settings">Gelişmiş ayarları göster</string>
     <string name="settings_title_low_latency_audio">Düşük gecikmeli sesi tercih et</string>
-    <string name="settings_description_low_latency_audio">Desteklenen cihazlarda ses gecikmesini azaltın. Ses sorunları artabilir.</string>
+    <string name="settings_description_low_latency_audio">Desteklenen cihazlarda ses gecikmesini azaltır ancak ses sorunları artabilir.</string>
     <string name="settings_title_direct_game_load">Oyunları direkt yükle</string>
     <string name="settings_description_direct_game_load">(Deneysel) Desteklenen konsollarda yükleme zamanını ve önbellek kullanımını azalt.</string>
     <string name="settings_title_enable_rumble">Titreşim</string>
@@ -104,7 +104,7 @@
     <string name="game_menu_fast_forward">Hızlı-İleri</string>
     <string name="game_menu_change_disk_disk">%1$s Diski</string>
     <string name="game_menu_tilt_sensor">Hareket Sensörü</string>
-    <string name="game_loading_preparing_game">oyun hazırlanıyor …</string>
+    <string name="game_loading_preparing_game">Oyun hazırlanıyor… </string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad tespit edildi. %1$s ile ayarlar menüsüne erişin.</string>
     <string name="game_toast_load_state_failed">Bu kayıt yüklenemiyor</string>
     <string name="game_toast_quick_save_loaded">Hızlı kayıt yüklendi</string>
@@ -158,9 +158,9 @@
     <string name="mobile_settings_help">Yardım</string>
     <string name="mobile_settings_support">Destek</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroid\'i nasıl kullanırım?</b><br/>
-        Tüm ROMları bir klasör içinde kopyalayın ve Lemuroid içerisinden seçin. Bu klasörün, yanlızca alt klasör olmasına izin verilir. Tarama tamamlandıktan sonra oyunlarınızı görmelisiniz.<br/><br/>
+        Tüm ROMları bir klasör içinde kopyalayın ve Lemuroid içerisinden seçin. Bu klasörün, yalnızca alt klasör olmasına izin verilir. Tarama tamamlandıktan sonra oyunlarınızı görmelisiniz.<br/><br/>
         <b>&#8226; Neden oyunlarım tespit edilmedi?</b><br/>
-        Eğer oyunlarınız sıkıştırılmış ise (zip - rar vb.) sıkıştırılmış dosyadan çıkartmayı deneyin. Eğer bu çalışmıyorsa ROMları farklı bir klasöre taşıyın, aşağıdaki adlara sahip her sistem için bir tane:
+        Eğer oyunlarınız sıkıştırılmış ise (zip - rar - 7z vb.) sıkıştırılmış dosyadan çıkartmayı deneyin. Eğer bu çalışmıyorsa ROMları farklı bir klasöre taşıyın, aşağıdaki adlara sahip her sistem için bir tane:
 $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Görünüşe göre Libretro çekirdeği beklenmedik bir sorunla karşılaştı. Eğer kalıcıysa şunları deneyin:\n
