@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD modu</string>
     <string name="settings_description_hd_mode">HD Görüntü</string>
     <string name="settings_description_hd_quality">HD modun kalitesini ayarla</string>
+    <string name="settings_title_immersive_mode">Sürükleyici mod</string>
+    <string name="settings_description_immersive_mode">Oyun görsellerine göre arka planı dinamik olarak renklendirir</string>
     <string name="settings_title_gamepad_settings">Harici cihazlar</string>
     <string name="settings_description_gamepad_settings">Harici gamepadleri ve klavyeleri yönet</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
