@@ -28,7 +28,7 @@
     <string name="setting_gambatte_mix_frames">LCD gölgeleme</string>
     <string name="setting_gambatte_dark_filter_level">Ekranı karart</string>
     <string name="setting_gambatte_gbc_color_correction">Renk düzeltme</string>
-    <string name="setting_mgba_solar_sensor_level">Güneş sensörü seviyesi</string>
+    <string name="setting_mgba_solar_sensor_level">Işık sensörü seviyesi</string>
     <string name="setting_mgba_interframe_blending">LCD gölgeleme</string>
     <string name="setting_mgba_frameskip">Kare atlama</string>
     <string name="setting_mgba_color_correction">Renk düzeltme</string>
@@ -51,6 +51,7 @@
     <string name="setting_desmume_screens_layout">Ekran Düzeni</string>
     <string name="setting_desmume_frameskip">Kare atlama</string>
     <string name="setting_melonds_screen_layout">Ekran Düzeni</string>
+    <string name="setting_melonds_threaded_renderer">Çoklu iş parçacıklı oluşturucu</string>
     <string name="setting_melonds_jit_enable">Dinamik yeniden derleyici</string>
     <string name="setting_melonds_mic_input">Mikrofon modu</string>
     <string name="setting_wswan_rotate_display">Döndürme</string>
@@ -76,13 +77,13 @@
     <string name="value_mgba_color_correction_off">Kapalı</string>
     <string name="value_mgba_color_correction_gba">Açık</string>
     <string name="value_stella_filter_disabled">Kapalı</string>
-    <string name="value_stella_filter_composite">Birleşik</string>
+    <string name="value_stella_filter_composite">Birleştirilmiş</string>
     <string name="value_stella_filter_svideo">S-Video</string>
     <string name="value_stella_filter_rgb">RGB</string>
     <string name="value_stella_filter_badlyadjusted">Kötü bir şekilde düzenlenmiş</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">Kapalı</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_monochrome">Monokrom</string>
-    <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">Birleşik</string>
+    <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">Birleştirilmiş</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_svideo">S-Video</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_rgb">RGB</string>
     <string name="value_genesis_plus_gx_overscan_disabled">Kapalı</string>
@@ -91,7 +92,7 @@
     <string name="value_genesis_plus_gx_overscan_full">Tam</string>
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Dinamik yeniden derleyici</string>
     <string name="value_mupen64plus_cpucore_pureinterpreter">Saf tercüman</string>
-    <string name="value_mupen64plus_cpucore_cachedinterpreter">Önbelleğe alınmış tercüman</string>
+    <string name="value_mupen64plus_cpucore_cachedinterpreter">Önbellek yorumlayıcı</string>
     <string name="value_mupen64plus_bilinearmode_standard">Standart</string>
     <string name="value_mupen64plus_bilinearmode_3point">3-Nokta</string>
     <string name="value_mupen64plus_mupen64plus_pak1_memory">Bellek</string>
@@ -103,6 +104,8 @@
     <string name="value_melonds_screen_layout_leftright">Sol - Sağ</string>
     <string name="value_melonds_screen_layout_hybridtop">Hibrit Üst</string>
     <string name="value_melonds_screen_layout_hybridbottom">Hibrit Alt</string>
+    <string name="value_melonds_mic_input_microphone">Gerçek mikrofon</string>
+    <string name="value_melonds_mic_input_blow">Üfleme seslerini simüle et</string>
     <string name="value_citra_layout_option_topbottom">Alt - Üst</string>
     <string name="value_citra_layout_option_sidebyside">Sol - Sağ</string>
     <string name="value_desmume_screens_layout_topbottom">Üst - Alt</string>
