@@ -35,7 +35,7 @@
     <string name="settings_description_hd_mode">Примени пост-процесирајући филтер за увећано скалирање</string>
     <string name="settings_description_hd_quality">Прилагодите квалитет HD режима</string>
     <string name="settings_title_immersive_mode">Имерзивни режим</string>
-    <string name="settings_description_immersive_mode">Динамички боји позадину на основу визуала игре</string>
+    <string name="settings_description_immersive_mode">Динамично боји позадину на основу визуала игре</string>
     <string name="settings_title_gamepad_settings">Спољни уређаји</string>
     <string name="settings_description_gamepad_settings">Подесите спољне гејмпаде и тастатуре</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -63,20 +63,20 @@
     <string name="settings_title_enable_device_rumble">Тутњава уређаја</string>
     <string name="settings_description_enable_device_rumble">Када контролер није повезан уместо њега вибрирај уређај</string>
     <string name="reset_settings_warning_message_title">Јесте ли сигурни?</string>
-    <string name="reset_settings_warning_message_description">Ово ће ресетовати Lemuroid на фабричка подешавања. Сачуване игре и стања ће бити очувани.</string>
+    <string name="reset_settings_warning_message_description">Ово ће ресетовати Lemuroid на фабричка подешавања. Сачуване игре и стања ће бити задржани.</string>
     <string name="settings_title_save_sync">Чувања на облаку</string>
     <string name="settings_description_save_sync">Прави и синхронизуј резервне копије чувања на облаку</string>
     <string name="settings_save_sync_refresh">Ручна синхронизација</string>
     <string name="settings_save_sync_refresh_description">Уради ручну синхронизацију сада.\n%1$s</string>
     <string name="settings_save_sync_enable_auto">Аутоматска синхронизација</string>
     <string name="settings_save_sync_enable_auto_description">Аутоматски уради синхронизацију пре и после играчке сесије када си повезан на Wi-Fi</string>
-    <string name="settings_save_sync_configure">Подеси %1$s</string>
+    <string name="settings_save_sync_configure">Подесите %1$s</string>
     <string name="settings_save_sync_include_saves">Синхронизуј чувања унутар игре</string>
     <string name="settings_save_sync_include_saves_description">%1$s на уређају</string>
     <string name="settings_save_sync_include_states">Стања синхронизације</string>
     <string name="settings_save_sync_include_states_description">(Згодније, али ресурсно захтевније и мање поуздано) Изаберите која језгра/системе желите да синхронизујете</string>
-    <string name="game_context_menu_add_to_favorites">Додај у омиљено</string>
-    <string name="game_context_menu_remove_from_favorites">Уклони из омиљених</string>
+    <string name="game_context_menu_add_to_favorites">Додајте у омиљено</string>
+    <string name="game_context_menu_remove_from_favorites">Уклоните из омиљених</string>
     <string name="game_context_menu_resume">Настави</string>
     <string name="game_context_menu_restart">Рестартуј</string>
     <string name="game_context_menu_create_shortcut">Закачи на покретач</string>
@@ -107,6 +107,8 @@
     <string name="game_loading_preparing_game">Припрема игре…</string>
     <string name="game_toast_settings_button_using_gamepad">Гејмпад детектован. Приступите менију са подешавањима са %1$s.</string>
     <string name="game_toast_load_state_failed">Не могу да учитам ово стање</string>
+    <string name="game_toast_quick_save_loaded">Брзо учитано</string>
+    <string name="game_toast_quick_save_saved">Брзо сачувано</string>
     <string name="empty_view_default">Нема ставки</string>
     <string name="core_settings_title">Подешавања језгра</string>
     <string name="core_settings_category_preferences">Подешавања</string>
@@ -147,14 +149,16 @@
     <string name="tv_home_section_settings">Подешавања</string>
     <string name="gamepad_binding_update_title">Асоцирај \"RetroPad %1$s\"</string>
     <string name="gamepad_binding_update_description">Притисните тастер на Вашем \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Асоцирај \"Пречица %1$s\"</string>
+    <string name="shortcut_binding_update_description">Притисните први па онда други тастер да повежете комбо на Вашем \"%1$s\"</string>
     <string name="tv_search_results">Игре</string>
     <string name="tv_game_message_missing_gamepad">Гејмпадови су неопходни за игру. Молимо Вас да их повежете.</string>
     <string name="game_edit_touch_controls_error_not_visible">Отповежите Ваш пад да бисте изменили додирне контроле</string>
     <string name="game_interactory_busy">Сачекајте за текуће операције да се заврше</string>
     <string name="mobile_settings_help">Помоћ</string>
     <string name="mobile_settings_support">Подршка</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Како да користим Lemuroid?</b><br/>
-        Копирајте све Ваше ROM датотеке у директоријум на Вашем уређају и изаберите га унутар Lemuroid-а. Овај директоријум може имати поддиректоријуме. Када се скенирање заврши требало бисте да видите Ваше игре.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[<b>&#8226;Како да користим Lemuroid?</b><br/>
+        Копирајте све Ваше ROM датотеке у директоријум на Вашем уређају и изаберите га унутар Lemuroid-а. Овај директоријум може имати поддиректоријуме. Када се скенирање заврши треба да видите Ваше игре.<br/><br/>
         <b>&#8226;Зашто моје игре нису детектоване?</b><br/>
         Ако су ваше игре компримоване, покушајте да их декомпримујете. Ако ово не проради покушајте да ставите ROM-ове у одвојене директоријуме, по једну за сваки систем са следећим именима: $SYSTEMS.
     ]]></string>
@@ -173,4 +177,11 @@
     <string name="haptic_feedback_mode_names_none">Ништа</string>
     <string name="haptic_feedback_mode_names_press">Притисни</string>
     <string name="haptic_feedback_mode_names_press_release">Притисни и пусти</string>
+    <string name="tilt_configuration_disabled">Онемогућено</string>
+    <string name="tilt_configuration_cross">Управљачки крстић</string>
+    <string name="tilt_configuration_analog_left">Леви аналогни</string>
+    <string name="tilt_configuration_analog_right">Десни аналогни</string>
+    <string name="tilt_configuration_buttons_l_r">Леви тастер - Десни тастер</string>
+    <string name="tilt_configuration_buttons_l1_r1">Леви тастер 1 - Десни тастер 1</string>
+    <string name="tilt_configuration_buttons_l2_r2">Леви тастер 2 - Десни тастер 2</string>
 </resources>
