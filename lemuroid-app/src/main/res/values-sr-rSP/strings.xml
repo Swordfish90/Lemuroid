@@ -34,6 +34,8 @@
     <string name="settings_title_hd_mode">HD режим</string>
     <string name="settings_description_hd_mode">Примени пост-процесирајући филтер за увећано скалирање</string>
     <string name="settings_description_hd_quality">Прилагодите квалитет HD режима</string>
+    <string name="settings_title_immersive_mode">Имерзивни режим</string>
+    <string name="settings_description_immersive_mode">Динамички боји позадину на основу визуала игре</string>
     <string name="settings_title_gamepad_settings">Спољни уређаји</string>
     <string name="settings_description_gamepad_settings">Подесите спољне гејмпаде и тастатуре</string>
     <string name="settings_retropad_button_name">RetroPad %1$s</string>
@@ -43,6 +45,7 @@
     <string name="settings_gamepad_title_game_menu">Мени</string>
     <string name="settings_title_open_cores_selection">Промени језгра</string>
     <string name="settings_description_open_cores_selection">Одаберите које језгро је асоцирано са једним системом</string>
+    <string name="settings_core_selection_ds_info">DeSmuME је застарео и биће уклоњен у једном од следећих ажурирања. Сачувајте свој напредак унутар игре па онда пређите на melonDS. Чувања унутар игара ће се аутоматски учитати у melonDS-у, али стања чувања се могу користити само са језгром који их је створио.</string>
     <string name="settings_title_display_bios_info">BIOS</string>
     <string name="settings_description_display_bios_info">Прикажи детектоване и подржане BIOS датотеке</string>
     <string name="settings_bios_category_detected">Детектовано</string>
@@ -86,6 +89,9 @@
     <string name="home_empty_title">Изаберите директоријум са ROM-овима</string>
     <string name="home_empty_message">Lemuroid мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
     <string name="home_empty_action">Изаберите директоријум</string>
+    <string name="home_notification_desmume_deprecated_title">DeSmuME се пензионише</string>
+    <string name="home_notification_desmume_deprecated_message">Сачувајте унутар игре па онда пређите на melonDS да задржите свој напредак. Стања чувања се неће пребацити и моћи ће да се користе само унутар DeSmuME-а.</string>
+    <string name="home_notification_desmume_deprecated_action">Пређите на melonDS</string>
     <string name="game_menu_save">Сачувај</string>
     <string name="game_menu_load">Учитај</string>
     <string name="game_menu_restart">Рестартуј</string>
@@ -97,6 +103,7 @@
     <string name="game_menu_mute_audio">Нечујно</string>
     <string name="game_menu_fast_forward">Убрзано</string>
     <string name="game_menu_change_disk_disk">Диск %1$s</string>
+    <string name="game_menu_tilt_sensor">Сензор нагиба</string>
     <string name="game_loading_preparing_game">Припрема игре…</string>
     <string name="game_toast_settings_button_using_gamepad">Гејмпад детектован. Приступите менију са подешавањима са %1$s.</string>
     <string name="game_toast_load_state_failed">Не могу да учитам ово стање</string>
