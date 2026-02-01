@@ -19,6 +19,7 @@
 
 package com.swordfish.lemuroid.common.kotlin
 
+import android.util.AtomicFile
 import androidx.documentfile.provider.DocumentFile
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -80,8 +81,8 @@ fun File.isZipped() = extension == "zip"
 fun DocumentFile.isZipped() = type == "application/zip"
 
 /** Returns the uncompressed input stream if gzip compressed. */
-private fun File.uncompressedInputStream(): InputStream {
-    val pb = PushbackInputStream(inputStream(), 2)
+private fun InputStream.uncompressedInputStream(): InputStream {
+    val pb = PushbackInputStream(this, 2)
     val signature = ByteArray(2)
     val len = pb.read(signature)
     pb.unread(signature, 0, len)
@@ -92,20 +93,9 @@ private fun File.uncompressedInputStream(): InputStream {
     }
 }
 
-/** Write bytes to file using GZIP compression. */
-fun File.writeBytesCompressed(array: ByteArray) {
-    val inputStream = ByteArrayInputStream(array)
-    val outputStream = GZIPOutputStream(this.outputStream())
-    inputStream.use { usedInputStream ->
-        outputStream.use { usedOutputStream ->
-            usedInputStream.copyTo(usedOutputStream)
-        }
-    }
-}
-
-/** Read bytes from file. If the file is compressed with GZIP the uncompressed data is returned.*/
-fun File.readBytesUncompressed(): ByteArray =
-    uncompressedInputStream().use { input ->
+/** Read bytes from input stream. If the stream is compressed with GZIP the uncompressed data is returned.*/
+private fun readBytesUncompressedStream(inputStream: InputStream): ByteArray =
+    inputStream.use { input ->
         val b = ByteArray(GZIP_INPUT_STREAM_BUFFER_SIZE)
         val os = ByteArrayOutputStream()
         os.use { usedOutputStream ->
@@ -116,3 +106,60 @@ fun File.readBytesUncompressed(): ByteArray =
         }
         return os.toByteArray()
     }
+
+/** Write bytes to file using AtomicFile to prevent corruption. */
+fun File.writeBytesAtomic(data: ByteArray) {
+    val atomicFile = AtomicFile(this)
+    val outputStream = atomicFile.startWrite()
+    try {
+        outputStream.use { it.write(data) }
+        atomicFile.finishWrite(outputStream)
+    } catch (e: Throwable) {
+        atomicFile.failWrite(outputStream)
+        throw e
+    }
+}
+
+/** Read text from file using AtomicFile. */
+fun File.readTextAtomic(): String {
+    val atomicFile = AtomicFile(this)
+    return atomicFile.openRead().bufferedReader().use { it.readText() }
+}
+
+/** Write text to file using AtomicFile. */
+fun File.writeTextAtomic(text: String) {
+    val atomicFile = AtomicFile(this)
+    val outputStream = atomicFile.startWrite()
+    try {
+        outputStream.writer().use { it.write(text) }
+        atomicFile.finishWrite(outputStream)
+    } catch (e: Throwable) {
+        atomicFile.failWrite(outputStream)
+        throw e
+    }
+}
+
+/** Write bytes to file using GZIP compression via AtomicFile. */
+fun File.writeBytesCompressedAtomic(array: ByteArray) {
+    val atomicFile = AtomicFile(this)
+    val outputStream = atomicFile.startWrite()
+    try {
+        ByteArrayInputStream(array).use { input ->
+            GZIPOutputStream(outputStream).use { usedOutput ->
+                input.copyTo(usedOutput)
+            }
+        }
+        atomicFile.finishWrite(outputStream)
+    } catch (e: Throwable) {
+        atomicFile.failWrite(outputStream)
+        throw e
+    }
+}
+
+/** Read bytes using AtomicFile. If the file is compressed with GZIP the uncompressed data is returned. */
+fun File.readBytesUncompressedAtomic(): ByteArray {
+    val atomicFile = AtomicFile(this)
+    return atomicFile.openRead().use { input ->
+        readBytesUncompressedStream(input.uncompressedInputStream())
+    }
+}
