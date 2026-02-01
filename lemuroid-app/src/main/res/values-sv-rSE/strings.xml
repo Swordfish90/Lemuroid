@@ -155,6 +155,7 @@
     <string name="tv_game_message_missing_gamepad">En handkontroll krävs för att spela. Vänligen anslut en.</string>
     <string name="game_edit_touch_controls_error_not_visible">Koppla ifrån din handkontroll för att ändra dina touchkontroller</string>
     <string name="game_interactory_busy">Vänta på att de pågående operationerna slutförs</string>
+    <string name="game_interactor_notification_permission_required">Aktivera aviseringar från Hem för att fortsätta</string>
     <string name="mobile_settings_help">Hjälp</string>
     <string name="mobile_settings_support">Support</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hur använder jag Lemuroid?</b><br/>
