@@ -155,6 +155,7 @@
     <string name="tv_game_message_missing_gamepad">Для гри потрібен ґеймпад. Будь ласка, під\'єднайте його.</string>
     <string name="game_edit_touch_controls_error_not_visible">Від\'єднайте ґеймпад для редагування сенсорних кнопок</string>
     <string name="game_interactory_busy">Дочекайтеся завершення операції</string>
+    <string name="game_interactor_notification_permission_required">Будь ласка, увімкніть сповіщення з Головної, щоб продовжити</string>
     <string name="mobile_settings_help">Допомога</string>
     <string name="mobile_settings_support">Підтримка</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Як я використовую Лемуроїд?</b><br/>
