@@ -15,17 +15,21 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
+import android.content.SharedPreferences
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
+
 class SettingsViewModel(
     context: Context,
     private val settingsInteractor: SettingsInteractor,
     saveSyncManager: SaveSyncManager,
-    sharedPreferences: FlowSharedPreferences,
+    sharedPreferences: SharedPreferences,
 ) : ViewModel() {
+    private val flowSharedPreferences = FlowSharedPreferences(sharedPreferences)
     class Factory(
         private val context: Context,
         private val settingsInteractor: SettingsInteractor,
         private val saveSyncManager: SaveSyncManager,
-        private val sharedPreferences: FlowSharedPreferences,
+        private val sharedPreferences: SharedPreferences,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return SettingsViewModel(
@@ -39,6 +43,7 @@ class SettingsViewModel(
 
     data class State(
         val currentDirectory: String = "",
+        val saveDirectoryUri: String? = null,
         val isSaveSyncSupported: Boolean = false,
     )
 
@@ -47,11 +52,18 @@ class SettingsViewModel(
     val directoryScanInProgress = PendingOperationsMonitor(context).isDirectoryScanInProgress()
 
     val uiState =
-        sharedPreferences.getString(context.getString(com.swordfish.lemuroid.lib.R.string.pref_key_extenral_folder))
+        flowSharedPreferences.getString(context.getString(com.swordfish.lemuroid.lib.R.string.pref_key_extenral_folder))
             .asFlow()
             .flowOn(Dispatchers.IO)
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
-            .map { State(it, saveSyncManager.isSupported()) }
+            .map {
+                val saveDirectoryUri = flowSharedPreferences.getString("pref_key_save_storage_folder", "").get()
+                State(
+                    currentDirectory = it,
+                    saveDirectoryUri = if (saveDirectoryUri.isEmpty()) null else saveDirectoryUri,
+                    isSaveSyncSupported = saveSyncManager.isSupported()
+                )
+            }
 
     fun changeLocalStorageFolder() {
         settingsInteractor.changeLocalStorageFolder()

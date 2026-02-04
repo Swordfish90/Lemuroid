@@ -64,6 +64,8 @@ import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageProvider
 import com.swordfish.lemuroid.lib.storage.StorageProviderRegistry
+import com.fredporciuncula.flow.preferences.FlowSharedPreferences
+import com.swordfish.lemuroid.lib.storage.SaveStorageManager
 import com.swordfish.lemuroid.lib.storage.local.LocalStorageProvider
 import com.swordfish.lemuroid.lib.storage.local.StorageAccessFrameworkProvider
 import com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
@@ -216,17 +218,23 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun directoriesManager(context: Context) = DirectoriesManager(context)
+        fun flowSharedPreferences(sharedPreferences: SharedPreferences) = FlowSharedPreferences(sharedPreferences)
 
         @Provides
         @PerApp
         @JvmStatic
-        fun statesManager(directoriesManager: DirectoriesManager) = StatesManager(directoriesManager)
+        fun statesManager(
+            directoriesManager: DirectoriesManager,
+            saveStorageManager: Lazy<SaveStorageManager>,
+        ) = StatesManager(directoriesManager, saveStorageManager)
 
         @Provides
         @PerApp
         @JvmStatic
-        fun savesManager(directoriesManager: DirectoriesManager) = SavesManager(directoriesManager)
+        fun savesManager(
+            directoriesManager: DirectoriesManager,
+            saveStorageManager: Lazy<SaveStorageManager>,
+        ) = SavesManager(directoriesManager, saveStorageManager)
 
         @Provides
         @PerApp
@@ -327,8 +335,10 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun postGameHandler(retrogradeDatabase: RetrogradeDatabase) =
-            GameLaunchTaskHandler(ReviewManager(), retrogradeDatabase)
+        fun postGameHandler(
+            retrogradeDatabase: RetrogradeDatabase,
+            saveStorageManager: Lazy<SaveStorageManager>,
+        ) = GameLaunchTaskHandler(ReviewManager(), retrogradeDatabase, saveStorageManager)
 
         @Provides
         @PerApp

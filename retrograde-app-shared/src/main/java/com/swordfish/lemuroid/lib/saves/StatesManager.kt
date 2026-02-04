@@ -6,6 +6,8 @@ import com.swordfish.lemuroid.common.kotlin.writeBytesCompressed
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.lib.storage.SaveStorageManager
+import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -14,13 +16,17 @@ import java.io.File
 // TODO Since states are core related we should not put them in the same folder. This break previous versions states
 // so I decided to manage a transition phase reading also the old directory. We should safely remove it in a few weeks.
 
-class StatesManager(private val directoriesManager: DirectoriesManager) {
+class StatesManager(
+    private val directoriesManager: DirectoriesManager,
+    private val saveStorageManager: Lazy<SaveStorageManager>,
+) {
     suspend fun getSlotSave(
         game: Game,
         coreID: CoreID,
         index: Int,
     ): SaveState? =
         withContext(Dispatchers.IO) {
+            saveStorageManager.get().syncFromCustomDirectory() // Sync before reading
             assert(index in 0 until MAX_STATES)
             getSaveState(getSlotSaveFileName(game, index), coreID.coreName)
         }
@@ -33,6 +39,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
     ) = withContext(Dispatchers.IO) {
         assert(index in 0 until MAX_STATES)
         setSaveState(getSlotSaveFileName(game, index), coreID.coreName, saveState)
+        saveStorageManager.get().syncToCustomDirectory() // Sync after writing
     }
 
     suspend fun getAutoSaveInfo(
@@ -40,6 +47,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         coreID: CoreID,
     ): SaveInfo =
         withContext(Dispatchers.IO) {
+            saveStorageManager.get().syncFromCustomDirectory() // Sync before reading
             val autoSaveFile = getStateFile(getAutoSaveFileName(game), coreID.coreName)
             val autoSaveHasData = autoSaveFile.length() > 0
             SaveInfo(autoSaveFile.exists() && autoSaveHasData, autoSaveFile.lastModified())
@@ -49,6 +57,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         game: Game,
         coreID: CoreID,
     ) = withContext(Dispatchers.IO) {
+        saveStorageManager.get().syncFromCustomDirectory() // Sync before reading
         getSaveState(getAutoSaveFileName(game), coreID.coreName)
     }
 
@@ -58,6 +67,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         saveState: SaveState,
     ) = withContext(Dispatchers.IO) {
         setSaveState(getAutoSaveFileName(game), coreID.coreName, saveState)
+        saveStorageManager.get().syncToCustomDirectory() // Sync after writing
     }
 
     suspend fun getSavedSlotsInfo(
@@ -65,6 +75,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         coreID: CoreID,
     ): List<SaveInfo> =
         withContext(Dispatchers.IO) {
+            saveStorageManager.get().syncFromCustomDirectory() // Sync before reading
             (0 until MAX_STATES)
                 .map { getStateFileOrDeprecated(getSlotSaveFileName(game, it), coreID.coreName) }
                 .map { SaveInfo(it.exists(), it.lastModified()) }

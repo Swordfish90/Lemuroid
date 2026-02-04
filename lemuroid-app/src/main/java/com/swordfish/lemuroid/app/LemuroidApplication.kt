@@ -13,14 +13,22 @@ import com.swordfish.lemuroid.app.shared.startup.MainProcessInitializer
 import com.swordfish.lemuroid.app.utils.android.isMainProcess
 import com.swordfish.lemuroid.ext.feature.context.ContextHandler
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
+import com.swordfish.lemuroid.lib.storage.SaveStorageManager
+import dagger.Lazy
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerApplication
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderFactory {
     @Inject
     lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
+
+    @Inject
+    lateinit var saveStorageManager: Lazy<SaveStorageManager>
 
     @SuppressLint("CheckResult")
     override fun onCreate() {
@@ -28,6 +36,9 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderF
 
         val initializeComponent =
             if (isMainProcess()) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    saveStorageManager.get().syncFromCustomDirectory()
+                }
                 MainProcessInitializer::class.java
             } else {
                 GameProcessInitializer::class.java

@@ -5,11 +5,16 @@ import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.migrators.getSavesMigrator
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
+import com.swordfish.lemuroid.lib.storage.SaveStorageManager
+import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class SavesManager(private val directoriesManager: DirectoriesManager) {
+class SavesManager(
+    private val directoriesManager: DirectoriesManager,
+    private val saveStorageManager: Lazy<SaveStorageManager>,
+) {
     suspend fun getSaveRAM(
         game: Game,
         systemCoreConfig: SystemCoreConfig,
@@ -42,6 +47,7 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
 
                     val saveFile = getSaveFile(getSaveRAMFileName(game))
                     saveFile.writeBytes(data)
+                    saveStorageManager.get().syncToCustomDirectory()
                 }
             result.getOrNull()
         }

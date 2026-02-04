@@ -30,6 +30,7 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel,
     navController: NavController,
+    onChangeSaveStorageFolder: () -> Unit,
 ) {
     val state =
         viewModel.uiState
@@ -59,6 +60,8 @@ fun SettingsScreen(
             indexingInProgress = indexingInProgress,
             isSaveSyncSupported = state.isSaveSyncSupported,
             navController = navController,
+            state = state,
+            onChangeSaveStorageFolder = { onChangeSaveStorageFolder() },
         )
     }
 }
@@ -68,7 +71,25 @@ private fun MiscSettings(
     indexingInProgress: Boolean,
     isSaveSyncSupported: Boolean,
     navController: NavController,
+    state: SettingsViewModel.State,
+    onChangeSaveStorageFolder: () -> Unit,
 ) {
+    val context = LocalContext.current
+
+    val customSavesDirectoryUri = state.saveDirectoryUri
+    val emptyDirectory = stringResource(R.string.none)
+
+    val saveDirectoryName =
+        remember(state.saveDirectoryUri) {
+            runCatching {
+                if (customSavesDirectoryUri != null) {
+                    DocumentFile.fromTreeUri(context, Uri.parse(customSavesDirectoryUri))?.name
+                } else {
+                    null
+                }
+            }.getOrNull() ?: emptyDirectory
+        }
+
     LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_misc)) },
     ) {
@@ -81,6 +102,13 @@ private fun MiscSettings(
                 onClick = { navController.navigateToRoute(MainRoute.SETTINGS_SAVE_SYNC) },
             )
         }
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.settings_title_saves_directory)) },
+            subtitle = { Text(text = saveDirectoryName) },
+            onClick = { onChangeSaveStorageFolder() },
+            enabled = !indexingInProgress,
+        )
+
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_open_cores_selection)) },
             subtitle = {

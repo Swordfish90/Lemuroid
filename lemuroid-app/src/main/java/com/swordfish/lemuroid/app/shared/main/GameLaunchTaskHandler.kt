@@ -11,11 +11,14 @@ import com.swordfish.lemuroid.app.shared.storage.cache.CacheCleanerWork
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.storage.SaveStorageManager
+import dagger.Lazy
 import kotlinx.coroutines.delay
 
 class GameLaunchTaskHandler(
     private val reviewManager: ReviewManager,
     private val retrogradeDb: RetrogradeDatabase,
+    private val saveStorageManager: Lazy<SaveStorageManager>,
 ) {
     fun handleGameStart(context: Context) {
         cancelBackgroundWork(context)
@@ -27,6 +30,7 @@ class GameLaunchTaskHandler(
         resultCode: Int,
         data: Intent?,
     ) {
+        saveStorageManager.get().syncToCustomDirectory() // Sync saves to custom directory on game finish
         rescheduleBackgroundWork(activity.applicationContext)
         when (resultCode) {
             Activity.RESULT_OK -> handleSuccessfulGameFinish(activity, enableRatingFlow, data)
