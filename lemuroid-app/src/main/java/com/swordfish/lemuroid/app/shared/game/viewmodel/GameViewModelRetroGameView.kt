@@ -26,6 +26,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.RomFiles
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroViewData
+import com.swordfish.libretrodroid.ImmersiveMode
 import com.swordfish.libretrodroid.Variable
 import com.swordfish.libretrodroid.VirtualFile
 import kotlinx.coroutines.CoroutineScope
@@ -53,16 +54,18 @@ class GameViewModelRetroGameView(
     private val coreVariablesManager: CoreVariablesManager,
     private val sideEffects: GameViewModelSideEffects,
     private val rumbleManager: RumbleManager,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
 ) : DefaultLifecycleObserver {
-
     sealed interface GameState {
         data object Uninitialized : GameState
+
         data class Loading(val message: String) : GameState
+
         data class Loaded(
             val gameData: GameLoader.GameData,
             val retroViewData: GLRetroViewData,
         ) : GameState
+
         data object Ready : GameState
     }
 
@@ -80,7 +83,7 @@ class GameViewModelRetroGameView(
         game: Game,
         systemCoreConfig: SystemCoreConfig,
         gameLoader: GameLoader,
-        requestLoadSave: Boolean
+        requestLoadSave: Boolean,
     ) {
         val currentState = gameState.value
         if (currentState != GameState.Uninitialized) return
@@ -94,10 +97,11 @@ class GameViewModelRetroGameView(
         val directLoad = settingsManager.allowDirectGameLoad()
         val enableImmersiveMode = settingsManager.enableImmersiveMode()
 
-        val hasMicrophonePermission = ContextCompat.checkSelfPermission(
-            applicationContext,
-            android.Manifest.permission.RECORD_AUDIO
-        ) == PackageManager.PERMISSION_GRANTED
+        val hasMicrophonePermission =
+            ContextCompat.checkSelfPermission(
+                applicationContext,
+                android.Manifest.permission.RECORD_AUDIO,
+            ) == PackageManager.PERMISSION_GRANTED
 
         val enableMicrophone = systemCoreConfig.supportsMicrophone && hasMicrophonePermission
 
@@ -113,36 +117,39 @@ class GameViewModelRetroGameView(
         loadingStatesFlow
             .flowOn(Dispatchers.IO)
             .catch {
-                val message = if (it is GameLoaderException) {
-                    getErrorMessage(it.error)
-                } else {
-                    ""
-                }
+                val message =
+                    if (it is GameLoaderException) {
+                        getErrorMessage(it.error)
+                    } else {
+                        ""
+                    }
                 sideEffects.requestFailureFinish(message)
             }
             .debounce(200)
             .collect { loadingState ->
-                gameState.value = if (loadingState is GameLoader.LoadingState.Ready) {
-                    Timber.i("Setting state to loaded")
-                    val retroViewData = buildRetroViewData(
-                        applicationContext,
-                        systemCoreConfig,
-                        loadingState.gameData,
-                        hdMode,
-                        hdModeQuality,
-                        filter,
-                        lowLatencyAudio,
-                        enableRumble,
-                        enableMicrophone,
-                        enableImmersiveMode,
-                    )
-                    GameState.Loaded(
-                        gameData = loadingState.gameData,
-                        retroViewData = retroViewData,
-                    )
-                } else {
-                    GameState.Loading(getLoadingMessage(loadingState))
-                }
+                gameState.value =
+                    if (loadingState is GameLoader.LoadingState.Ready) {
+                        Timber.i("Setting state to loaded")
+                        val retroViewData =
+                            buildRetroViewData(
+                                applicationContext,
+                                systemCoreConfig,
+                                loadingState.gameData,
+                                hdMode,
+                                hdModeQuality,
+                                filter,
+                                lowLatencyAudio,
+                                enableRumble,
+                                enableMicrophone,
+                                enableImmersiveMode,
+                            )
+                        GameState.Loaded(
+                            gameData = loadingState.gameData,
+                            retroViewData = retroViewData,
+                        )
+                    } else {
+                        GameState.Loading(getLoadingMessage(loadingState))
+                    }
             }
     }
 
@@ -153,11 +160,12 @@ class GameViewModelRetroGameView(
         val currentState = gameState.value
         if (currentState !is GameState.Loaded) throw IllegalStateException("Game is not loaded.")
 
-        val result = GLRetroView(context, currentState.retroViewData)
-            .apply {
-                isFocusable = false
-                isFocusableInTouchMode = false
-            }
+        val result =
+            GLRetroView(context, currentState.retroViewData)
+                .apply {
+                    isFocusable = false
+                    isFocusableInTouchMode = false
+                }
 
         if (!system.hasTouchScreen) {
             result.disableTouchEvents()
@@ -177,9 +185,10 @@ class GameViewModelRetroGameView(
         return currentState.gameData to result
     }
 
-    suspend fun retroGameViewFlow() = retroGameViewFlow
-        .filterNotNull()
-        .first()
+    suspend fun retroGameViewFlow() =
+        retroGameViewFlow
+            .filterNotNull()
+            .first()
 
     suspend fun waitRetroGameViewInitialized() {
         retroGameViewFlow()
@@ -202,7 +211,7 @@ class GameViewModelRetroGameView(
         lowLatencyAudio: Boolean,
         requestRumble: Boolean,
         requestMicrophone: Boolean,
-        immersiveMode: Boolean,
+        enableImmersiveMode: Boolean,
     ): GLRetroViewData {
         return GLRetroViewData(appContext).apply {
             coreFilePath = gameData.coreLibrary
@@ -233,7 +242,15 @@ class GameViewModelRetroGameView(
             rumbleEventsEnabled = requestRumble
             skipDuplicateFrames = systemCoreConfig.skipDuplicateFrames
             enableMicrophone = requestMicrophone
-            enableAmbientMode = immersiveMode
+            immersiveMode = buildImmersiveModeConfiguration(enableImmersiveMode)
+        }
+    }
+
+    private fun buildImmersiveModeConfiguration(enableImmersiveMode: Boolean): ImmersiveMode? {
+        return if (enableImmersiveMode) {
+            ImmersiveMode(blendFactor = 0.05f)
+        } else {
+            null
         }
     }
 

@@ -21,12 +21,13 @@ fun TVGameScreen(viewModel: BaseGameScreenViewModel) {
         modifier = Modifier.fillMaxSize(),
         factory = {
             viewModel.createRetroView(localContext, lifecycle)
-        }
+        },
     )
 
-    val isLoading = viewModel.loadingState
-        .collectAsState(true)
-        .value
+    val isLoading =
+        viewModel.loadingState
+            .collectAsState(true)
+            .value
 
     if (isLoading) {
         Box(

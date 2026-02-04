@@ -17,7 +17,10 @@ import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import gg.padkit.ui.DefaultCrossForeground
 
 @Composable
-fun LemuroidCrossForeground(allowDiagonals: Boolean, directionState: State<Offset>) {
+fun LemuroidCrossForeground(
+    allowDiagonals: Boolean,
+    directionState: State<Offset>,
+) {
     DefaultCrossForeground(
         modifier = Modifier.fillMaxSize(),
         directionState = directionState,
@@ -36,12 +39,15 @@ fun LemuroidCrossForeground(allowDiagonals: Boolean, directionState: State<Offse
         },
         foregroundComposite = {
             LemuroidCompositeForeground(it)
-        }
+        },
     )
 }
 
 @Composable
-private fun LemuroidCrossButton(pressedState: State<Boolean>, imageVector: ImageVector) {
+private fun LemuroidCrossButton(
+    pressedState: State<Boolean>,
+    imageVector: ImageVector,
+) {
     LemuroidButtonForeground(
         pressed = pressedState,
         label = { },
@@ -52,6 +58,6 @@ private fun LemuroidCrossButton(pressedState: State<Boolean>, imageVector: Image
                 contentDescription = "",
                 tint = LocalLemuroidPadTheme.current.icons(pressedState.value),
             )
-        }
+        },
     )
 }

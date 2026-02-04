@@ -111,7 +111,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             SystemBarStyle.dark(Color.TRANSPARENT),
-            SystemBarStyle.dark(Color.TRANSPARENT)
+            SystemBarStyle.dark(Color.TRANSPARENT),
         )
         super.onCreate(savedInstanceState)
 

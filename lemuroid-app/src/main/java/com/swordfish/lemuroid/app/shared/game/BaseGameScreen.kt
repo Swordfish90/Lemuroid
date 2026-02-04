@@ -17,14 +17,18 @@ import androidx.compose.ui.unit.dp
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
 
 @Composable
-fun BaseGameScreen(viewModel: BaseGameScreenViewModel, gameScreen: @Composable (BaseGameScreenViewModel) -> Unit) {
-    val gameState = viewModel.getGameState()
-        .collectAsState(GameViewModelRetroGameView.GameState.Uninitialized)
-        .value
+fun BaseGameScreen(
+    viewModel: BaseGameScreenViewModel,
+    gameScreen: @Composable (BaseGameScreenViewModel) -> Unit,
+) {
+    val gameState =
+        viewModel.getGameState()
+            .collectAsState(GameViewModelRetroGameView.GameState.Uninitialized)
+            .value
 
     val isGameReady =
         gameState is GameViewModelRetroGameView.GameState.Loaded ||
-        gameState is GameViewModelRetroGameView.GameState.Ready
+            gameState is GameViewModelRetroGameView.GameState.Ready
 
     if (isGameReady) {
         gameScreen(viewModel)

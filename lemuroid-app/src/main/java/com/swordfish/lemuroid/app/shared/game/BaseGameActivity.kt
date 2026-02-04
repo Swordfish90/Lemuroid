@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
@@ -131,9 +132,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 game,
                 systemCoreConfig,
                 gameLoader,
-                intent.getBooleanExtra(EXTRA_LOAD_SAVE, false)
+                intent.getBooleanExtra(EXTRA_LOAD_SAVE, false),
             )
         }
+
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    baseGameScreenViewModel.requestFinish()
+                }
+            },
+        )
 
         initialiseFlows()
     }
@@ -164,7 +174,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun displayOptionsDialog(
         currentTiltConfiguration: TiltConfiguration,
-        tiltConfigurations: List<TiltConfiguration>
+        tiltConfigurations: List<TiltConfiguration>,
     ) {
         if (baseGameScreenViewModel.loadingState.value) {
             return
@@ -186,16 +196,22 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
                 this.putExtra(
                     GameMenuContract.EXTRA_CURRENT_DISK,
-                    baseGameScreenViewModel.retroGameView.retroGameView?.getCurrentDisk() ?: 0
+                    baseGameScreenViewModel.retroGameView.retroGameView?.getCurrentDisk() ?: 0,
                 )
-                this.putExtra(GameMenuContract.EXTRA_DISKS, baseGameScreenViewModel.retroGameView.retroGameView?.getAvailableDisks() ?: 0)
+                this.putExtra(
+                    GameMenuContract.EXTRA_DISKS,
+                    baseGameScreenViewModel.retroGameView.retroGameView?.getAvailableDisks() ?: 0,
+                )
                 this.putExtra(GameMenuContract.EXTRA_GAME, game)
                 this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
-                this.putExtra(GameMenuContract.EXTRA_AUDIO_ENABLED, baseGameScreenViewModel.retroGameView.retroGameView?.audioEnabled)
+                this.putExtra(
+                    GameMenuContract.EXTRA_AUDIO_ENABLED,
+                    baseGameScreenViewModel.retroGameView.retroGameView?.audioEnabled,
+                )
                 this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
                 this.putExtra(
                     GameMenuContract.EXTRA_FAST_FORWARD,
-                    (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1
+                    (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1,
                 )
                 this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
                 // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
@@ -222,10 +238,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         baseGameScreenViewModel.getSideEffects()
             .collect {
                 when (it) {
-                    is GameViewModelSideEffects.UiEffect.ShowMenu -> displayOptionsDialog(
-                        it.currentTiltConfiguration,
-                        it.tiltConfigurations
-                    )
+                    is GameViewModelSideEffects.UiEffect.ShowMenu ->
+                        displayOptionsDialog(
+                            it.currentTiltConfiguration,
+                            it.tiltConfigurations,
+                        )
                     is GameViewModelSideEffects.UiEffect.ShowToast -> displayToast(it.message)
                     is GameViewModelSideEffects.UiEffect.SuccessfulFinish -> performSuccessfulActivityFinish()
                     is GameViewModelSideEffects.UiEffect.FailureFinish -> performErrorFinish(it.message)
@@ -256,7 +273,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return super.onGenericMotionEvent(event)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+    override fun onKeyDown(
+        keyCode: Int,
+        event: KeyEvent,
+    ): Boolean {
         val handled = baseGameScreenViewModel.sendKeyEvent(keyCode, event)
         if (handled) {
             return true
@@ -264,17 +284,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+    override fun onKeyUp(
+        keyCode: Int,
+        event: KeyEvent,
+    ): Boolean {
         val handled = baseGameScreenViewModel.sendKeyEvent(keyCode, event)
         if (handled) {
             return true
         }
         return super.onKeyUp(keyCode, event)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        baseGameScreenViewModel.requestFinish()
     }
 
     private fun performSuccessfulActivityFinish() {

@@ -10,9 +10,10 @@ plugins {
 android {
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += listOf(
-            "-Xcontext-receivers"
-        )
+        freeCompilerArgs +=
+            listOf(
+                "-Xcontext-receivers",
+            )
     }
     namespace = "com.swordfish.touchinput.controller"
 

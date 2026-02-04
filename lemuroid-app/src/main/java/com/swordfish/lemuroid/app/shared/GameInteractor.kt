@@ -1,5 +1,9 @@
 package com.swordfish.lemuroid.app.shared
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.content.ContextCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
@@ -18,16 +22,20 @@ class GameInteractor(
     private val gameLauncher: GameLauncher,
 ) {
     fun onGamePlay(game: Game) {
-        if (activity.isBusy()) {
-            activity.activity().displayToast(R.string.game_interactory_busy)
+        if (!ensureNotBusy()) {
+            return
+        }
+        if (!ensureNotificationsPermissionAvailable()) {
             return
         }
         gameLauncher.launchGameAsync(activity.activity(), game, true, useLeanback)
     }
 
     fun onGameRestart(game: Game) {
-        if (activity.isBusy()) {
-            activity.activity().displayToast(R.string.game_interactory_busy)
+        if (!ensureNotBusy()) {
+            return
+        }
+        if (!ensureNotificationsPermissionAvailable()) {
             return
         }
         gameLauncher.launchGameAsync(activity.activity(), game, false, useLeanback)
@@ -50,5 +58,32 @@ class GameInteractor(
 
     fun supportShortcuts(): Boolean {
         return shortcutsGenerator.supportShortcuts()
+    }
+
+    private fun ensureNotificationsPermissionAvailable(): Boolean {
+        if (useLeanback || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return true
+        }
+
+        val permissionResult =
+            ContextCompat.checkSelfPermission(
+                activity.activity(),
+                Manifest.permission.POST_NOTIFICATIONS,
+            )
+
+        if (permissionResult == PackageManager.PERMISSION_GRANTED) {
+            return true
+        }
+
+        activity.activity().displayToast(R.string.game_interactor_notification_permission_required)
+        return false
+    }
+
+    private fun ensureNotBusy(): Boolean {
+        if (activity.isBusy()) {
+            activity.activity().displayToast(R.string.game_interactory_busy)
+            return false
+        }
+        return true
     }
 }

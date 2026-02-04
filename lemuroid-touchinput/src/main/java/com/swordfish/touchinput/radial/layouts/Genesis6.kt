@@ -23,7 +23,10 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentMapOf
 
 @Composable
-fun PadKitScope.Genesis6Left(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.Genesis6Left(
+    modifier: Modifier = Modifier,
+    settings: TouchControllerSettingsManager.Settings,
+) {
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
@@ -32,12 +35,15 @@ fun PadKitScope.Genesis6Left(modifier: Modifier = Modifier, settings: TouchContr
             SecondaryButtonSelect(position = 0)
             SecondaryButtonStart(position = 1)
             SecondaryButtonMenuPlaceholder(settings)
-        }
+        },
     )
 }
 
 @Composable
-fun PadKitScope.Genesis6Right(modifier: Modifier = Modifier, settings: TouchControllerSettingsManager.Settings) {
+fun PadKitScope.Genesis6Right(
+    modifier: Modifier = Modifier,
+    settings: TouchControllerSettingsManager.Settings,
+) {
     val centralAnchors = rememberCentralAnchorsForSixButtons(settings.rotation)
 
     BaseLayoutRight(
@@ -49,27 +55,28 @@ fun PadKitScope.Genesis6Right(modifier: Modifier = Modifier, settings: TouchCont
                 background = { },
                 applyPadding = false,
                 trackPointers = false,
-                idsForegrounds = persistentMapOf<Id.Key, @Composable (State<Boolean>) -> Unit>(
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_X) to { LemuroidCentralButton(pressedState = it, label = "Y") },
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_L1) to { LemuroidCentralButton(pressedState = it, label = "X") },
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_B) to { LemuroidCentralButton(pressedState = it, label = "B") },
-                    Id.Key(KeyEvent.KEYCODE_BUTTON_Y) to { LemuroidCentralButton(pressedState = it, label = "A") },
-                ),
+                idsForegrounds =
+                    persistentMapOf<Id.Key, @Composable (State<Boolean>) -> Unit>(
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_X) to { LemuroidCentralButton(pressedState = it, label = "Y") },
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_L1) to { LemuroidCentralButton(pressedState = it, label = "X") },
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_B) to { LemuroidCentralButton(pressedState = it, label = "B") },
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_Y) to { LemuroidCentralButton(pressedState = it, label = "A") },
+                    ),
             )
         },
         secondaryDials = {
             LemuroidControlButton(
                 modifier = Modifier.radialPosition(60f),
                 id = Id.Key(KeyEvent.KEYCODE_BUTTON_A),
-                label = "C"
+                label = "C",
             )
             LemuroidControlButton(
                 modifier = Modifier.radialPosition(90f),
                 id = Id.Key(KeyEvent.KEYCODE_BUTTON_R1),
-                label = "Z"
+                label = "Z",
             )
             SecondaryButtonMenu(settings)
-        }
+        },
     )
 }
 

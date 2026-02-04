@@ -42,7 +42,7 @@ class GameViewModelTouchControls(
     private val inputs: GameViewModelInput,
     private val tilt: GameViewModelTilt,
     private val sideEffects: GameViewModelSideEffects,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
 ) : DefaultLifecycleObserver {
     private val touchControlId = MutableStateFlow(TouchControllerID.GB)
     private val screenOrientation = MutableStateFlow(TouchControllerSettingsManager.Orientation.PORTRAIT)
@@ -67,11 +67,11 @@ class GameViewModelTouchControls(
 
     fun getTouchControlsSettings(
         density: Density,
-        insets: WindowInsets
+        insets: WindowInsets,
     ): Flow<TouchControllerSettingsManager.Settings?> {
         return combine(
             touchControlId,
-            screenOrientation
+            screenOrientation,
         ) { touchControlId, orientation -> touchControlId to orientation }
             .flatMapLatest { (touchControlId, orientation) ->
                 touchControllerSettingsManager.observeSettings(touchControlId, orientation, density, insets)
@@ -87,7 +87,7 @@ class GameViewModelTouchControls(
             touchControllerSettingsManager.storeSettings(
                 touchControlId.value,
                 screenOrientation.value,
-                touchControllerSettings
+                touchControllerSettings,
             )
         }
     }
@@ -145,10 +145,11 @@ class GameViewModelTouchControls(
 
         if (pressed) {
             loadingMenuJob?.cancel()
-            loadingMenuJob = scope.launch {
-                delay(MENU_LOADING_ANIMATION_MILLIS.toLong())
-                sideEffects.showMenu(tilt, inputs)
-            }
+            loadingMenuJob =
+                scope.launch {
+                    delay(MENU_LOADING_ANIMATION_MILLIS.toLong())
+                    sideEffects.showMenu(tilt, inputs)
+                }
         } else {
             loadingMenuJob?.cancel()
             loadingMenuJob = null
@@ -172,7 +173,11 @@ class GameViewModelTouchControls(
         retroGameView.retroGameView?.sendKeyEvent(action, event.id)
     }
 
-    private fun handleVirtualInputDirection(id: Int, xAxis: Float, yAxis: Float) {
+    private fun handleVirtualInputDirection(
+        id: Int,
+        xAxis: Float,
+        yAxis: Float,
+    ) {
         when (id) {
             ComposeTouchLayouts.MOTION_SOURCE_DPAD -> {
                 retroGameView.retroGameView?.sendMotionEvent(GLRetroView.MOTION_SOURCE_DPAD, xAxis, yAxis)

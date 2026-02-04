@@ -13,7 +13,10 @@ object GameScreenLayout {
     const val CONSTRAINTS_GAME_VIEW = "gameView"
     const val CONSTRAINTS_GAME_CONTAINER = "gameContainer"
 
-    fun buildConstraintSet(isLandscape: Boolean, allowTouchOverlay: Boolean): ConstraintSet {
+    fun buildConstraintSet(
+        isLandscape: Boolean,
+        allowTouchOverlay: Boolean,
+    ): ConstraintSet {
         return when {
             !isLandscape -> buildConstraintSetPortrait()
             allowTouchOverlay -> buildConstraintSetLandscape()

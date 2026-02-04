@@ -196,6 +196,7 @@
     <string name="game_edit_touch_controls_error_not_visible">Disconnect your pad to edit your touch controls</string>
 
     <string name="game_interactory_busy">Wait for the pending operations to complete</string>
+    <string name="game_interactor_notification_permission_required">Please enable notifications from Home to continue</string>
 
     <string name="mobile_settings_help">Help</string>
     <string name="mobile_settings_support">Support</string>
