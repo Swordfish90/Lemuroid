@@ -22,3 +22,5 @@ release.jks
 ../google-services.json
 
 .kotlin/sessions/*.salive
+flurrykey.txt
+googlekey.txt

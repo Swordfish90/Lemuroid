@@ -70,19 +70,21 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
 
         LaunchedEffect(isLandscape) {
-            val orientation = if (isLandscape) {
-                TouchControllerSettingsManager.Orientation.LANDSCAPE
-            } else {
-                TouchControllerSettingsManager.Orientation.PORTRAIT
-            }
+            val orientation =
+                if (isLandscape) {
+                    TouchControllerSettingsManager.Orientation.LANDSCAPE
+                } else {
+                    TouchControllerSettingsManager.Orientation.PORTRAIT
+                }
             viewModel.onScreenOrientationChanged(orientation)
         }
 
         val controllerConfigState = viewModel.getTouchControllerConfig().collectAsState(null)
         val touchControlsVisibleState = viewModel.isTouchControllerVisible().collectAsState(false)
-        val touchControllerSettingsState = viewModel
-            .getTouchControlsSettings(LocalDensity.current, WindowInsets.displayCutout)
-            .collectAsState(null)
+        val touchControllerSettingsState =
+            viewModel
+                .getTouchControlsSettings(LocalDensity.current, WindowInsets.displayCutout)
+                .collectAsState(null)
 
         val touchControllerSettings = touchControllerSettingsState.value
         val currentControllerConfig = controllerConfigState.value
@@ -95,22 +97,24 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
         val leftGamePad = touchGamePads?.leftComposable
         val rightGamePad = touchGamePads?.rightComposable
 
-        val hapticFeedbackMode = viewModel
-            .getTouchHapticFeedbackMode()
-            .collectAsState(HapticFeedbackMode.NONE)
+        val hapticFeedbackMode =
+            viewModel
+                .getTouchHapticFeedbackMode()
+                .collectAsState(HapticFeedbackMode.NONE)
 
-        val padHapticFeedback = when (hapticFeedbackMode.value) {
-            HapticFeedbackMode.NONE -> HapticFeedbackType.NONE
-            HapticFeedbackMode.PRESS -> HapticFeedbackType.PRESS
-            HapticFeedbackMode.PRESS_RELEASE -> HapticFeedbackType.PRESS_RELEASE
-        }
+        val padHapticFeedback =
+            when (hapticFeedbackMode.value) {
+                HapticFeedbackMode.NONE -> HapticFeedbackType.NONE
+                HapticFeedbackMode.PRESS -> HapticFeedbackType.PRESS
+                HapticFeedbackMode.PRESS_RELEASE -> HapticFeedbackType.PRESS_RELEASE
+            }
 
         PadKit(
             modifier = Modifier.fillMaxSize(),
             onInputEvents = { viewModel.handleVirtualInputEvent(it) },
             hapticFeedbackType = padHapticFeedback,
             simulatedState = tiltSimulatedStates,
-            simulatedControlIds = tiltSimulatedControls
+            simulatedControlIds = tiltSimulatedControls,
         ) {
             val localContext = LocalContext.current
             val lifecycle = LocalLifecycleOwner.current
@@ -118,14 +122,14 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             val fullScreenPosition = remember { mutableStateOf<Rect?>(null) }
             val viewportPosition = remember { mutableStateOf<Rect?>(null) }
 
-
             AndroidView(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .onGloballyPositioned { fullScreenPosition.value = it.boundsInRoot() },
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .onGloballyPositioned { fullScreenPosition.value = it.boundsInRoot() },
                 factory = {
                     viewModel.createRetroView(localContext, lifecycle)
-                }
+                },
             )
 
             val fullPos = fullScreenPosition.value
@@ -134,30 +138,38 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             LaunchedEffect(fullPos, viewPos) {
                 val gameView = viewModel.retroGameView.retroGameViewFlow()
                 if (fullPos == null || viewPos == null) return@LaunchedEffect
-                val viewport = RectF(
-                    (viewPos.left - fullPos.left) / fullPos.width,
-                    (viewPos.top - fullPos.top) / fullPos.height,
-                    (viewPos.right - fullPos.left) / fullPos.width,
-                    (viewPos.bottom - fullPos.top) / fullPos.height
-                )
+                val viewport =
+                    RectF(
+                        (viewPos.left - fullPos.left) / fullPos.width,
+                        (viewPos.top - fullPos.top) / fullPos.height,
+                        (viewPos.right - fullPos.left) / fullPos.width,
+                        (viewPos.bottom - fullPos.top) / fullPos.height,
+                    )
                 gameView.viewport = viewport
             }
 
             ConstraintLayout(
                 modifier = Modifier.fillMaxSize(),
-                constraintSet = GameScreenLayout.buildConstraintSet(
-                    isLandscape,
-                    currentControllerConfig?.allowTouchOverlay ?: true
-                )
+                constraintSet =
+                    GameScreenLayout.buildConstraintSet(
+                        isLandscape,
+                        currentControllerConfig?.allowTouchOverlay ?: true,
+                    ),
             ) {
                 Box(
-                    modifier = Modifier
-                        .layoutId(GameScreenLayout.CONSTRAINTS_GAME_VIEW)
-                        .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top))
-                        .onGloballyPositioned { viewportPosition.value = it.boundsInRoot() },
+                    modifier =
+                        Modifier
+                            .layoutId(GameScreenLayout.CONSTRAINTS_GAME_VIEW)
+                            .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top))
+                            .onGloballyPositioned { viewportPosition.value = it.boundsInRoot() },
                 )
 
-                if (touchControllerSettings != null && currentControllerConfig != null && touchControlsVisibleState.value) {
+                val isVisible =
+                    touchControllerSettings != null &&
+                        currentControllerConfig != null &&
+                        touchControlsVisibleState.value
+
+                if (isVisible) {
                     CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme()) {
                         if (!isLandscape) {
                             PadContainer(
@@ -180,7 +192,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                         rightGamePad?.invoke(
                             this,
                             Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_PAD),
-                            touchControllerSettings
+                            touchControllerSettings,
                         )
 
                         GameScreenRunningCentralMenu(
@@ -194,9 +206,10 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             }
         }
 
-        val isLoading = viewModel.loadingState
-            .collectAsState(true)
-            .value
+        val isLoading =
+            viewModel.loadingState
+                .collectAsState(true)
+                .value
 
         if (isLoading) {
             Box(
@@ -231,7 +244,7 @@ private fun GameScreenRunningCentralMenu(
     val menuPressed = viewModel.isMenuPressed().collectAsState(false)
     Box(
         modifier = modifier.wrapContentSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         LemuroidButtonPressFeedback(
             pressed = menuPressed.value,
@@ -246,7 +259,7 @@ private fun GameScreenRunningCentralMenu(
 private fun MenuEditTouchControls(
     viewModel: BaseGameScreenViewModel,
     controllerConfig: ControllerConfig,
-    touchControllerSettings: TouchControllerSettingsManager.Settings
+    touchControllerSettings: TouchControllerSettingsManager.Settings,
 ) {
     val showEditControls = viewModel.isEditControlShown().collectAsState(false)
     if (!showEditControls.value) return
@@ -254,25 +267,26 @@ private fun MenuEditTouchControls(
     Dialog(onDismissRequest = { viewModel.showEditControls(false) }) {
         Card(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 MenuEditTouchControlRow(Icons.Default.OpenInFull, "Scale", 0f) {
                     Slider(
                         value = touchControllerSettings.scale,
                         onValueChange = {
                             viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(scale = it)
+                                touchControllerSettings.copy(scale = it),
                             )
-                        }
+                        },
                     )
                 }
                 MenuEditTouchControlRow(Icons.Default.Height, "Horizontal Margin", 90f) {
@@ -280,9 +294,9 @@ private fun MenuEditTouchControls(
                         value = touchControllerSettings.marginX,
                         onValueChange = {
                             viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(marginX = it)
+                                touchControllerSettings.copy(marginX = it),
                             )
-                        }
+                        },
                     )
                 }
                 MenuEditTouchControlRow(Icons.Default.Height, "Vertical Margin", 0f) {
@@ -290,9 +304,9 @@ private fun MenuEditTouchControls(
                         value = touchControllerSettings.marginY,
                         onValueChange = {
                             viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(marginY = it)
+                                touchControllerSettings.copy(marginY = it),
                             )
-                        }
+                        },
                     )
                 }
                 if (controllerConfig.allowTouchRotation) {
@@ -301,9 +315,9 @@ private fun MenuEditTouchControls(
                             value = touchControllerSettings.rotation,
                             onValueChange = {
                                 viewModel.updateTouchControllerSettings(
-                                    touchControllerSettings.copy(rotation = it)
+                                    touchControllerSettings.copy(rotation = it),
                                 )
-                            }
+                            },
                         )
                     }
                 }
@@ -334,17 +348,17 @@ private fun MenuEditTouchControlRow(
     icon: ImageVector,
     label: String,
     rotation: Float,
-    slider: @Composable () -> Unit
+    slider: @Composable () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Icon(
             modifier = Modifier.rotate(rotation),
             imageVector = icon,
-            contentDescription = label
+            contentDescription = label,
         )
         slider()
     }

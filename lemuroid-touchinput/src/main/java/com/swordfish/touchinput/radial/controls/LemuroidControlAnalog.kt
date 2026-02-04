@@ -23,7 +23,7 @@ fun LemuroidControlAnalog(
     val theme = LocalLemuroidPadTheme.current
     Box(
         modifier = modifier.padding(theme.padding),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         ControlAnalog(
             id = id,
@@ -31,7 +31,7 @@ fun LemuroidControlAnalog(
             background = {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) { LemuroidControlBackground(Modifier.fillMaxSize(0.8f)) }
             },
             foreground = { LemuroidButtonForeground(pressed = it) },

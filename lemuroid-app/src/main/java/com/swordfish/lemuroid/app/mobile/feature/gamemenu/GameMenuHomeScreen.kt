@@ -21,7 +21,6 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
-import timber.log.Timber
 import kotlin.reflect.KFunction1
 
 @Composable
@@ -156,11 +155,13 @@ fun GameMenuHomeScreen(
         }
 
         if (gameMenuRequest.allTiltConfigurations.isNotEmpty()) {
-            val tiltConfigurationEntries = gameMenuRequest.allTiltConfigurations
-                .map { TiltConfigurationMenuEntry.fromTiltConfiguration(it) }
+            val tiltConfigurationEntries =
+                gameMenuRequest.allTiltConfigurations
+                    .map { TiltConfigurationMenuEntry.fromTiltConfiguration(it) }
 
-            val selectedIndex = gameMenuRequest.allTiltConfigurations
-                .indexOf(gameMenuRequest.currentTiltConfiguration)
+            val selectedIndex =
+                gameMenuRequest.allTiltConfigurations
+                    .indexOf(gameMenuRequest.currentTiltConfiguration)
 
             LemuroidSettingsList(
                 title = { Text(text = stringResource(id = R.string.game_menu_tilt_sensor)) },
@@ -177,7 +178,7 @@ fun GameMenuHomeScreen(
                     onResult {
                         putExtra(
                             GameMenuContract.RESULT_CHANGE_TILT_CONFIG,
-                            tiltConfigurationEntries[index].configuration
+                            tiltConfigurationEntries[index].configuration,
                         )
                     }
                 },

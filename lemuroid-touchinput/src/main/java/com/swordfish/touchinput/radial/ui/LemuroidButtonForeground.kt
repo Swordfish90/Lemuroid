@@ -50,7 +50,7 @@ fun LemuroidButtonForeground(
         modifier = modifier,
         pressed = pressed,
         label = { LemuroidButtonForegroundLabel(label, labelScale, pressed) },
-        icon = { LemuroidButtonForegroundIcon(icon, iconScale, pressed) }
+        icon = { LemuroidButtonForegroundIcon(icon, iconScale, pressed) },
     )
 }
 
@@ -58,7 +58,7 @@ fun LemuroidButtonForeground(
 private fun BoxWithConstraintsScope.LemuroidButtonForegroundIcon(
     icon: Int?,
     scale: Float,
-    pressedState: State<Boolean>
+    pressedState: State<Boolean>,
 ) {
     if (icon == null) return
 
@@ -74,7 +74,7 @@ private fun BoxWithConstraintsScope.LemuroidButtonForegroundIcon(
 private fun BoxWithConstraintsScope.LemuroidButtonForegroundLabel(
     label: String?,
     scale: Float,
-    pressedState: State<Boolean>
+    pressedState: State<Boolean>,
 ) {
     if (label == null) return
     val fontSize = minOf(maxHeight * 0.5f * scale, maxWidth / label.length * scale)

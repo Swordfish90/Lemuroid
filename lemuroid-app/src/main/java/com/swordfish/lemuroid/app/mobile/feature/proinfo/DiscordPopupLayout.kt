@@ -41,19 +41,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.swordfish.lemuroid.R
 
 @Composable
 fun DiscordPopupLayout(
+    bottomPadding: Dp,
     onClick: () -> Unit,
     onCloseClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 80.dp)
+            .padding(bottom = bottomPadding)
             .background(Color.Transparent)
     ) {
         Card(

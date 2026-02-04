@@ -18,6 +18,7 @@ val TILT_CONFIGURATION_L2_R2 = TiltConfiguration.ButtonPair(KeyEvent.KEYCODE_BUT
 
 sealed interface TiltConfiguration : Serializable {
     fun process(values: FloatArray): InputState
+
     fun controlIds(): Set<Id>
 
     data object Disabled : TiltConfiguration {

@@ -7,6 +7,18 @@
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.swordfish.lemuroid)
 
+## 🎮 Community & Support
+
+Join our Discord to connect with fellow retro gaming enthusiasts!
+
+**[Join FullDive Discord →](https://discord.gg/FV3ucz5M2S)** - Get help in `🎮 emulator-support`
+
+- 🕹️ **Share game tips** and ROM configurations
+- 🐛 **Report bugs**: [GitHub Issues](https://github.com/fulldiveVR/FulldiveExtension.FullRoid/issues)
+- 🎯 **Controller setup** and performance optimization help
+- ⭐ **Download**: [Pro Emulator](https://play.google.com/store/apps/details?id=com.fulldive.emulator.pro) | [One Emulator](https://play.google.com/store/apps/details?id=com.fulldive.emulator)
+
+
 ## Description
 
 Lemuroid is an open-source emulation project for Android based on Libretro. Its main goal is ease of use, good Android integration and a great user experience.

@@ -22,6 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -172,8 +173,21 @@ class HomeViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun microphoneNotification(db: RetrogradeDatabase): Flow<Boolean> {
-        // Microphone feature disabled - incomplete from merge
-        return flowOf(false)
+        return microphonePermissionEnabledState
+            .flatMapLatest { isMicrophoneEnabled ->
+                if (isMicrophoneEnabled) {
+                    flowOf(false)
+                } else {
+                    combine(
+                        coresSelection.getSelectedCores(isProVersion()),
+                        dsGamesCount(db),
+                    ) { cores, dsCount ->
+                        cores.any { it.coreConfig.supportsMicrophone } &&
+                            dsCount > 0
+                    }
+                }
+                    .distinctUntilChanged()
+            }
     }
 
     private fun desmumeWarningNotification(): Flow<Boolean> {

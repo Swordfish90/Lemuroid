@@ -1,24 +1,5 @@
 package com.swordfish.lemuroid.lib.controller
 
-import android.app.Activity
-import android.content.pm.ActivityInfo
-import android.graphics.Rect
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.PopupWindow
-import androidx.core.math.MathUtils
-import com.swordfish.lemuroid.common.graphics.GraphicsUtils
-import com.swordfish.touchinput.controller.R
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onSubscription
-
 class TouchControllerCustomizer {
 //    private lateinit var touchDetector: MultiTouchGestureDetector
 //    private var editControlsWindow: PopupWindow? = null
