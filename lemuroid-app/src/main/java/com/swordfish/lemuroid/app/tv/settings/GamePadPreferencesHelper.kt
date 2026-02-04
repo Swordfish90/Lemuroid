@@ -135,8 +135,9 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
                     }
             }
 
-        val shortcuts = inputDeviceManager.getCurrentShortcuts(inputDevice)
-            .associateBy { it.type }
+        val shortcuts =
+            inputDeviceManager.getCurrentShortcuts(inputDevice)
+                .associateBy { it.type }
 
         GameShortcutType.entries
             .forEach { type ->

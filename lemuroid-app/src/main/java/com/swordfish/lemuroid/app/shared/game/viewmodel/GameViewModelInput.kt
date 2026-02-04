@@ -57,7 +57,7 @@ class GameViewModelInput(
     private val tilt: GameViewModelTilt,
     private val sideEffects: GameViewModelSideEffects,
     private val scope: CoroutineScope,
-): DefaultLifecycleObserver {
+) : DefaultLifecycleObserver {
     private data class SingleAxisEvent(val axis: Int, val action: Int, val keyCode: Int, val port: Int)
 
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
@@ -115,21 +115,36 @@ class GameViewModelInput(
         )
     }
 
-    private fun sendStickMotion(event: MotionEvent, source: Int, xAxis: Int, yAxis: Int, port: Int) {
+    private fun sendStickMotion(
+        event: MotionEvent,
+        source: Int,
+        xAxis: Int,
+        yAxis: Int,
+        port: Int,
+    ) {
         val coords = retrieveCoordinates(event, xAxis, yAxis)
         retroGameView.retroGameView?.sendMotionEvent(source, coords.x, coords.y, port)
     }
 
-    private fun sendDPADMotion(event: MotionEvent, source: Int, xAxis: Int, yAxis: Int, port: Int) {
+    private fun sendDPADMotion(
+        event: MotionEvent,
+        source: Int,
+        xAxis: Int,
+        yAxis: Int,
+        port: Int,
+    ) {
         retroGameView.retroGameView?.sendMotionEvent(
             source,
             event.getAxisValue(xAxis),
             event.getAxisValue(yAxis),
-            port
+            port,
         )
     }
 
-    private fun sendSeparateMotionEvents(event: MotionEvent, port: Int) {
+    private fun sendSeparateMotionEvents(
+        event: MotionEvent,
+        port: Int,
+    ) {
         sendDPADMotion(
             event,
             MOTION_SOURCE_DPAD,
@@ -153,11 +168,18 @@ class GameViewModelInput(
         )
     }
 
-    private fun retrieveCoordinates(event: MotionEvent, xAxis: Int, yAxis: Int): PointF {
+    private fun retrieveCoordinates(
+        event: MotionEvent,
+        xAxis: Int,
+        yAxis: Int,
+    ): PointF {
         return PointF(event.getAxisValue(xAxis), event.getAxisValue(yAxis))
     }
 
-    fun sendKeyEvent(keyCode: Int, event: KeyEvent): Boolean {
+    fun sendKeyEvent(
+        keyCode: Int,
+        event: KeyEvent,
+    ): Boolean {
         if (InputKey(keyCode) in event.device.getInputClass().getInputKeys()) {
             scope.launch {
                 keyEventsFlow.emit(event)
@@ -246,7 +268,11 @@ class GameViewModelInput(
                         shortcuts.firstOrNull { it.type == GameShortcutType.MENU }
                     }
                     ?.let {
-                        val message = appContext.resources.getString(R.string.game_toast_settings_button_using_gamepad, it.name)
+                        val message =
+                            appContext.resources.getString(
+                                R.string.game_toast_settings_button_using_gamepad,
+                                it.name,
+                            )
                         sideEffects.showToast(message)
                     }
             }

@@ -156,7 +156,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             SystemBarStyle.dark(Color.TRANSPARENT),
-            SystemBarStyle.dark(Color.TRANSPARENT)
+            SystemBarStyle.dark(Color.TRANSPARENT),
         )
         super.onCreate(savedInstanceState)
 
@@ -274,6 +274,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             isProPopupVisible.value -> {
                                 actionTracker.logAction(TrackerConstants.EVENT_PRO_POPUP_SHOWN)
                                 ProPopupLayout(
+                                    bottomPadding = padding.calculateBottomPadding(),
                                     onClick = {
                                         actionTracker.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_PRO_POPUP)
                                         navController.navigateToRoute(MainRoute.PRO_TUTORIAL)
@@ -289,6 +290,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             isDiscordPopupVisible.value  && !isProPopupVisible.value -> {
                                 actionTracker.logAction(TrackerConstants.EVENT_DISCORD_POPUP_SHOWN)
                                 DiscordPopupLayout(
+                                    bottomPadding = padding.calculateBottomPadding(),
                                     onClick = {
                                         actionTracker.logAction(TrackerConstants.EVENT_DISCORD_POPUP_CLICKED)
                                         startActivity(Intent(Intent.ACTION_VIEW).apply {

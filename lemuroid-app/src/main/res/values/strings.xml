@@ -97,7 +97,7 @@
     <string name="home_empty_action">Select Directory</string>
 
     <string name="home_notification_desmume_deprecated_title">DeSmuME is being retired</string>
-    <string name="home_notification_desmume_deprecated_message">Save in-game, then switch to melonDS to keep your progress. Save states won\’t transfer and will remain usable only in DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_message">Save in-game, then switch to melonDS to keep your progress. Save states won\'t transfer and will remain usable only in DeSmuME.</string>
     <string name="home_notification_desmume_deprecated_action">Switch to melonDS</string>
 
     <string name="game_menu_save">Save</string>
@@ -160,6 +160,8 @@
     <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>
     <string name="game_edit_touch_controls_error_not_visible">Disconnect your pad to edit your touch controls</string>
     <string name="game_interactory_busy">Wait for the pending operations to complete</string>
+    <string name="game_interactor_notification_permission_required">Please enable notifications from Home to continue</string>
+
     <string name="mobile_settings_help">Help</string>
     <string name="mobile_settings_support">Support</string>
     <string name="lemuroid_help_content">&lt;b&gt;&amp;#8226;How do I use %s?&lt;/b&gt;&lt;br/&gt; Copy all your ROMs files into a directory on your device and select it within Roid. This directory is allowed to have subdirectories. After the scan completes you should see your games.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;&amp;#8226;Why aren\'t my games detected?&lt;/b&gt;&lt;br/&gt; If your games are compressed, try uncompressing them. If this doesn\'t work try putting ROMs into separate directories, one for each system with the following names: $SYSTEMS.</string>
@@ -170,8 +172,8 @@
     <string name="rate_cancel">Not now</string>
     <string name="maybe_later">Maybe Later</string>
     <string name="rate_us_title">Rate us</string>
-    <string name="install_browser_title">Sync with Wize Browser and get rewards</string>
-    <string name="install_browser_description">Thank you for trying our Full apps, we feature many more great apps such as a browser that rewards you cash when you browse, check it out!</string>
+    <string name="install_browser_title">Try WizeUp - AI News App</string>
+    <string name="install_browser_description">Get fact-checked news with AI analysis. Spot fake news, get AI summaries, and know which sources to trust!</string>
     <string name="rate_us_description">Do you like FullRoid? We would love to hear your feedback and make the app better for you.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Auto</item>

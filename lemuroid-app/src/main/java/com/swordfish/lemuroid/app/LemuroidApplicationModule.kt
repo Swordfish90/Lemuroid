@@ -337,7 +337,8 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun desmumeMigrationHandler(directoriesManager: DirectoriesManager) = DesmumeMigrationHandler(directoriesManager)
+        fun desmumeMigrationHandler(directoriesManager: DirectoriesManager) =
+            DesmumeMigrationHandler(directoriesManager)
 
         @Provides
         @PerApp

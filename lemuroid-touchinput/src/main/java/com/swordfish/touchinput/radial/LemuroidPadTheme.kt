@@ -7,7 +7,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 class LemuroidPadTheme {
-    private fun gray(luminosity: Float, opacity: Float): Color {
+    private fun gray(
+        luminosity: Float,
+        opacity: Float,
+    ): Color {
         return Color(luminosity, luminosity, luminosity, opacity)
     }
 
@@ -61,6 +64,7 @@ class LemuroidPadTheme {
     }
 }
 
-val LocalLemuroidPadTheme = compositionLocalOf<LemuroidPadTheme> {
-    error("LemuroidPadTheme is missing")
-}
+val LocalLemuroidPadTheme =
+    compositionLocalOf<LemuroidPadTheme> {
+        error("LemuroidPadTheme is missing")
+    }
