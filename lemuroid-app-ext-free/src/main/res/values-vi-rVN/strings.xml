@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Đang tải lõi xuống…</string>
-    <string name="installing_core_notification_title">Đang cập nhật lõi</string>
-    <string name="installing_core_notification_message">Việc này có thể mất một vài phút</string>
-    <string name="game_loader_error_load_core">Lõi libretro không tải được. Hãy đảm bảo thiết bị của bạn được kết nối internet và thử quét lại thư viện. Nếu vấn đề này vẫn tiếp diễn, có thể lõi này không được hỗ trợ trên thiết bị của bạn.</string>
+  <string name="game_loading_download_core">Đang tải lõi xuống…</string>
+  <string name="installing_core_notification_title">Đang cập nhật lõi</string>
+  <string name="installing_core_notification_message">Việc này có thể mất một vài phút</string>
+  <string name="game_loader_error_load_core">Lõi libretro không tải được. Hãy đảm bảo thiết bị của bạn được kết nối internet và thử quét lại thư viện. Nếu vấn đề này vẫn tiếp diễn, có thể lõi này không được hỗ trợ trên thiết bị của bạn.</string>
+  <string name="gdrive_connected_none_summary">Chưa cấu hình</string>
+  <string name="gdrive_connected_summary">Đã liên kết với %s</string>
+  <string name="gdrive_last_sync_completed">Đồng bộ cuối: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive yêu cầu Google Play Services, không được hỗ trợ trên thiết bị của bạn</string>
+  <string name="gdrive_sign_in_failed">Đăng nhập Google thất bại: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Đã đăng nhập vào Google với tư cách %s</string>
+  <string name="gdrive_sign_out_success">Đã đăng xuất khỏi Google</string>
 </resources>

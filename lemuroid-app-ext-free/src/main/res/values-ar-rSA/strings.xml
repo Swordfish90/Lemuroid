@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">جاري تحميل النواة…</string>
-    <string name="installing_core_notification_title">تحديث النواة</string>
-    <string name="installing_core_notification_message">يمكن أن يستغرق ذلك بضع دقائق</string>
-    <string name="game_loader_error_load_core">لم يتم تحميل نواة ليبرترو. تأكد من أن جهازك متصل بالإنترنت ومحاولة إعادة فحص مكتبتك. إذا استمرت المشكلة، قد لا تكون هذه النواة مدعومة على جهازك.</string>
+  <string name="game_loading_download_core">جاري تحميل النواة…</string>
+  <string name="installing_core_notification_title">تحديث النواة</string>
+  <string name="installing_core_notification_message">يمكن أن يستغرق ذلك بضع دقائق</string>
+  <string name="game_loader_error_load_core">لم يتم تحميل نواة ليبرترو. تأكد من أن جهازك متصل بالإنترنت ومحاولة إعادة فحص مكتبتك. إذا استمرت المشكلة، قد لا تكون هذه النواة مدعومة على جهازك.</string>
+  <string name="gdrive_connected_none_summary">غير مُكوّن</string>
+  <string name="gdrive_connected_summary">مرتبط بـ %s</string>
+  <string name="gdrive_last_sync_completed">آخر مزامنة: %s</string>
+  <string name="gdrive_missing_play_services">يتطلب Google Drive خدمات Google Play التي لا يدعمها جهازك</string>
+  <string name="gdrive_sign_in_failed">فشل تسجيل الدخول إلى Google: %s (%s)</string>
+  <string name="gdrive_sign_in_success">تم تسجيل الدخول إلى Google كـ %s</string>
+  <string name="gdrive_sign_out_success">تم تسجيل الخروج من Google</string>
 </resources>

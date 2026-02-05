@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Downloader kerne…</string>
-    <string name="installing_core_notification_title">Opdaterer Kerner</string>
-    <string name="installing_core_notification_message">Dette kan tage op til et par minutter</string>
-    <string name="game_loader_error_load_core">Libretro kernen blev ikke indlæst. Sørg for, at din enhed er tilsluttet internettet, og prøv at genskanne dit bibliotek. Hvis problemet fortsætter, understøttes denne kerne muligvis ikke på din enhed.</string>
+  <string name="game_loading_download_core">Downloader kerne…</string>
+  <string name="installing_core_notification_title">Opdaterer Kerner</string>
+  <string name="installing_core_notification_message">Dette kan tage op til et par minutter</string>
+  <string name="game_loader_error_load_core">Libretro kernen blev ikke indlæst. Sørg for, at din enhed er tilsluttet internettet, og prøv at genskanne dit bibliotek. Hvis problemet fortsætter, understøttes denne kerne muligvis ikke på din enhed.</string>
+  <string name="gdrive_connected_none_summary">Ikke konfigureret</string>
+  <string name="gdrive_connected_summary">Forbundet til %s</string>
+  <string name="gdrive_last_sync_completed">Sidste synkronisering: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive kræver Google Play-tjenester, som ikke understøttes på din enhed</string>
+  <string name="gdrive_sign_in_failed">Google-login mislykkedes: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Logget ind på Google som %s</string>
+  <string name="gdrive_sign_out_success">Logget ud fra Google</string>
 </resources>

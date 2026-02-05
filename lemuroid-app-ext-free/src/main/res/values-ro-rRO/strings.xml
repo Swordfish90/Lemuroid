@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Se descarcă nucleu…</string>
-    <string name="installing_core_notification_title">Actualizarea emulatoarelor</string>
-    <string name="installing_core_notification_message">Acest lucru poate dura câteva minute</string>
-    <string name="game_loader_error_load_core">Emulatorul de la Libretro nu a putut fi încărcat. Asiguraţi-vă că dispozitivul este conectat la internet şi încercaţi să re-scanaţi biblioteca. Dacă problema persistă, este posibil ca acest emulator să nu fie acceptat pe dispozitivul dvs.</string>
+  <string name="game_loading_download_core">Se descarcă nucleu…</string>
+  <string name="installing_core_notification_title">Actualizarea emulatoarelor</string>
+  <string name="installing_core_notification_message">Acest lucru poate dura câteva minute</string>
+  <string name="game_loader_error_load_core">Emulatorul de la Libretro nu a putut fi încărcat. Asiguraţi-vă că dispozitivul este conectat la internet şi încercaţi să re-scanaţi biblioteca. Dacă problema persistă, este posibil ca acest emulator să nu fie acceptat pe dispozitivul dvs.</string>
+  <string name="gdrive_connected_none_summary">Neconfigurat</string>
+  <string name="gdrive_connected_summary">Conectat la %s</string>
+  <string name="gdrive_last_sync_completed">Ultima sincronizare: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive necesită serviciile Google Play, care nu sunt acceptate pe dispozitivul dvs.</string>
+  <string name="gdrive_sign_in_failed">Conectarea la Google a eșuat: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Conectat la Google ca %s</string>
+  <string name="gdrive_sign_out_success">Deconectat de la Google</string>
 </resources>

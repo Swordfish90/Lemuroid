@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Преузимање језгра…</string>
-    <string name="installing_core_notification_title">Ажурирање језгара</string>
-    <string name="installing_core_notification_message">Ово може потрајати до неколико минута</string>
-    <string name="game_loader_error_load_core">Libretro језгро није учитано. Проверите да ли је Ваш уређај повезан на Интернет и покушајте да поново скенирате библиотеку. Ако се ова грешка понавља могуће је да ово језгро није подржано на Вашем уређају.</string>
+  <string name="game_loading_download_core">Преузимање језгра…</string>
+  <string name="installing_core_notification_title">Ажурирање језгара</string>
+  <string name="installing_core_notification_message">Ово може потрајати до неколико минута</string>
+  <string name="game_loader_error_load_core">Libretro језгро није учитано. Проверите да ли је Ваш уређај повезан на Интернет и покушајте да поново скенирате библиотеку. Ако се ова грешка понавља могуће је да ово језгро није подржано на Вашем уређају.</string>
+  <string name="gdrive_connected_none_summary">Није конфигурисано</string>
+  <string name="gdrive_connected_summary">Повезано са %s</string>
+  <string name="gdrive_last_sync_completed">Последња синхронизација: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive zahteva Google Play usluge koje nisu podržane na vašem uređaju</string>
+  <string name="gdrive_sign_in_failed">Неуспешно пријављивање на Google: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Пријављени сте на Google као %s</string>
+  <string name="gdrive_sign_out_success">Одјављени сте са Google-а</string>
 </resources>

@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Çekirdek indiriliyor…</string>
-    <string name="installing_core_notification_title">çekirdek yazılımlar güncelleniyor ...</string>
-    <string name="installing_core_notification_message">bu işlem bir kaç dakika sürebilir</string>
-    <string name="game_loader_error_load_core">Libretro çekirdeği yüklenemedi. Cihazınızın internete bağlı olduğundan emin olun ve kütüphanenizi yeniden taramayı deneyin. Sorun devam ediyorsa çekirdek cihazınız tarafından desteklenmiyor olabilir.</string>
+  <string name="game_loading_download_core">Çekirdek indiriliyor…</string>
+  <string name="installing_core_notification_title">çekirdek yazılımlar güncelleniyor ...</string>
+  <string name="installing_core_notification_message">bu işlem bir kaç dakika sürebilir</string>
+  <string name="game_loader_error_load_core">Libretro çekirdeği yüklenemedi. Cihazınızın internete bağlı olduğundan emin olun ve kütüphanenizi yeniden taramayı deneyin. Sorun devam ediyorsa çekirdek cihazınız tarafından desteklenmiyor olabilir.</string>
+  <string name="gdrive_connected_none_summary">Yapılandırılmadı</string>
+  <string name="gdrive_connected_summary">%s ile bağlantılı</string>
+  <string name="gdrive_last_sync_completed">Son senkronizasyon: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive, cihazınızda desteklenmeyen Google Play Hizmetleri gerektirir</string>
+  <string name="gdrive_sign_in_failed">Google Girişi başarısız: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Google\'a %s olarak giriş yapıldı</string>
+  <string name="gdrive_sign_out_success">Google\'dan çıkış yapıldı</string>
 </resources>

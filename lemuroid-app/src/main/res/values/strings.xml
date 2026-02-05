@@ -172,7 +172,7 @@
     <string name="rate_cancel">Not now</string>
     <string name="maybe_later">Maybe Later</string>
     <string name="rate_us_title">Rate us</string>
-    <string name="install_browser_title">Try WizeUp - AI News App</string>
+    <string name="install_browser_title">Try WizeUp News</string>
     <string name="install_browser_description">Get fact-checked news with AI analysis. Spot fake news, get AI summaries, and know which sources to trust!</string>
     <string name="rate_us_description">Do you like FullRoid? We would love to hear your feedback and make the app better for you.</string>
     <string-array name="pref_key_shader_filter_names">
@@ -233,7 +233,7 @@
     <string name="home_notification_title">Enable notifications</string>
     <string name="home_notification_message">Fullroid uses notifications to let you know when a game or operation is running in background.</string>
     <string name="home_notification_action">Enable</string>
-    <string name="flat_pro_tutorial_top_bar_title">Pro Tutorial</string>
+    <string name="flat_pro_offer_top_bar_title">Pro Version</string>
     <string name="flat_pro_popup_title">Don\'t miss out on our SALE!</string>
     <string name="tilt_configuration_disabled">Disabled</string>
     <string name="tilt_configuration_cross">DPAD</string>

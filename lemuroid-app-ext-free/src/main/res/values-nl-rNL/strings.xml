@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Core downloaden…</string>
-    <string name="installing_core_notification_title">Cores bijwerken</string>
-    <string name="installing_core_notification_message">Dit kan een paar minuten duren</string>
-    <string name="game_loader_error_load_core">De Libretro core is niet geladen. Zorg dat je apparaat verbonden is met het internet en probeer je bibliotheek opnieuw te scannen. Als dit probleem zich voor blijft doen, kan het zijn dat deze core niet ondersteund wordt op je apparaat.</string>
+  <string name="game_loading_download_core">Core downloaden…</string>
+  <string name="installing_core_notification_title">Cores bijwerken</string>
+  <string name="installing_core_notification_message">Dit kan een paar minuten duren</string>
+  <string name="game_loader_error_load_core">De Libretro core is niet geladen. Zorg dat je apparaat verbonden is met het internet en probeer je bibliotheek opnieuw te scannen. Als dit probleem zich voor blijft doen, kan het zijn dat deze core niet ondersteund wordt op je apparaat.</string>
+  <string name="gdrive_connected_none_summary">Niet geconfigureerd</string>
+  <string name="gdrive_connected_summary">Gekoppeld aan %s</string>
+  <string name="gdrive_last_sync_completed">Laatste synchronisatie: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive vereist Google Play Services, die niet worden ondersteund op jouw apparaat</string>
+  <string name="gdrive_sign_in_failed">Google-aanmelding mislukt: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Ingelogd bij Google als %s</string>
+  <string name="gdrive_sign_out_success">Uitgelogd bij Google</string>
 </resources>

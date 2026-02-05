@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Завантаження ядра…</string>
-    <string name="installing_core_notification_title">Оновлення ядер</string>
-    <string name="installing_core_notification_message">Це може зайняти кілька хвилин</string>
-    <string name="game_loader_error_load_core">Ядро Libretro не було завантажено. Переконайтеся, що ваш пристрій під\'єднаний до Інтернету й спробуйте пересканувати вашу бібліотеку. У разі, якщо проблема не зникне, можливо використання цього ядра не підтримується вашим пристроєм.</string>
+  <string name="game_loading_download_core">Завантаження ядра…</string>
+  <string name="installing_core_notification_title">Оновлення ядер</string>
+  <string name="installing_core_notification_message">Це може зайняти кілька хвилин</string>
+  <string name="game_loader_error_load_core">Ядро Libretro не було завантажено. Переконайтеся, що ваш пристрій під\'єднаний до Інтернету й спробуйте пересканувати вашу бібліотеку. У разі, якщо проблема не зникне, можливо використання цього ядра не підтримується вашим пристроєм.</string>
+  <string name="gdrive_connected_none_summary">Не налаштовано</string>
+  <string name="gdrive_connected_summary">Підключено до %s</string>
+  <string name="gdrive_last_sync_completed">Остання синхронізація: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive вимагає Google Play Services, які не підтримуються на вашому пристрої</string>
+  <string name="gdrive_sign_in_failed">Не вдалося увійти в Google: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Увійшли в Google як %s</string>
+  <string name="gdrive_sign_out_success">Вийшли з Google</string>
 </resources>

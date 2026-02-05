@@ -28,7 +28,5 @@
     <string name="game_loading_download_core">Çekirdek İndiriliyor…</string>
     <string name="installing_core_notification_title">Çekirdekler Google Play ile Güncelleniyor</string>
     <string name="installing_core_notification_message">Şu anki duruma bakmak için Play Store\'a bakın</string>
-    <string name="game_loader_error_load_core">\u2022 Oyunları tekrar taramak için internete bağlanın
-\u2022 Play Store\'un açık ve yüklü olduğunu kontrol edin
-\u2022 Play Store\'daki işlemlerin tamamlanmasını bekleyin</string>
+    <string name="game_loader_error_load_core">\u2022 Oyunları tekrar taramak için internete bağlanın\n\u2022 Play Store\'un açık ve yüklü olduğunu kontrol edin\n\u2022 Play Store\'daki işlemlerin tamamlanmasını bekleyin</string>
 </resources>

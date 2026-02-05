@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">코어 다운로드 중…</string>
-    <string name="installing_core_notification_title">코어 업데이트 중</string>
-    <string name="installing_core_notification_message">몇 분 정도 걸립니다</string>
-    <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않았습니다. 장치가 인터넷에 연결되어있는지 확인하고 라이브러리를 다시 한 번 검색해주세요. 문제가 지속될 경우 이 장치가 해당 코어를 지원하지 않는 것일 수도 있습니다.</string>
+  <string name="game_loading_download_core">코어 다운로드 중…</string>
+  <string name="installing_core_notification_title">코어 업데이트 중</string>
+  <string name="installing_core_notification_message">몇 분 정도 걸립니다</string>
+  <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않았습니다. 장치가 인터넷에 연결되어있는지 확인하고 라이브러리를 다시 한 번 검색해주세요. 문제가 지속될 경우 이 장치가 해당 코어를 지원하지 않는 것일 수도 있습니다.</string>
+  <string name="gdrive_connected_none_summary">구성되지 않음</string>
+  <string name="gdrive_connected_summary">%s에 연결됨</string>
+  <string name="gdrive_last_sync_completed">마지막 동기화: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive는 귀하의 기기에서 지원되지 않는 Google Play 서비스가 필요합니다</string>
+  <string name="gdrive_sign_in_failed">Google 로그인 실패: %s (%s)</string>
+  <string name="gdrive_sign_in_success">%s로 Google에 로그인했습니다</string>
+  <string name="gdrive_sign_out_success">Google에서 로그아웃되었습니다</string>
 </resources>

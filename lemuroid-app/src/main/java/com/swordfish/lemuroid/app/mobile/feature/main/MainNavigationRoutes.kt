@@ -69,7 +69,7 @@ enum class MainRoute(
     ),
     PRO_TUTORIAL(
         route = "settings/protutorial",
-        titleId = R.string.flat_pro_tutorial_top_bar_title,
+        titleId = R.string.flat_pro_offer_top_bar_title,
         parent = SETTINGS,
         showBottomNavigation = false,
     ),

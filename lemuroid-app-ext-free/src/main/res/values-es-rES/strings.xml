@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Descargando núcleo…</string>
-    <string name="installing_core_notification_title">Actualizando núcleos</string>
-    <string name="installing_core_notification_message">Esto puede tardar unos minutos</string>
-    <string name="game_loader_error_load_core">El núcleo de Libretro no se cargó. Asegúrate de que tu dispositivo esté conectado a Internet e intenta volver a escanear tu biblioteca. Si el problema persiste, es posible que este núcleo no sea compatible con tu dispositivo.</string>
+  <string name="game_loading_download_core">Descargando núcleo…</string>
+  <string name="installing_core_notification_title">Actualizando núcleos</string>
+  <string name="installing_core_notification_message">Esto puede tardar unos minutos</string>
+  <string name="game_loader_error_load_core">El núcleo de Libretro no se cargó. Asegúrate de que tu dispositivo esté conectado a Internet e intenta volver a escanear tu biblioteca. Si el problema persiste, es posible que este núcleo no sea compatible con tu dispositivo.</string>
+  <string name="gdrive_connected_none_summary">No configurado</string>
+  <string name="gdrive_connected_summary">Vinculado a %s</string>
+  <string name="gdrive_last_sync_completed">Última sincronización: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive requiere Google Play Services, que no son compatibles con tu dispositivo</string>
+  <string name="gdrive_sign_in_failed">Error al iniciar sesión en Google: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Conectado a Google como %s</string>
+  <string name="gdrive_sign_out_success">Cerraste sesión en Google</string>
 </resources>

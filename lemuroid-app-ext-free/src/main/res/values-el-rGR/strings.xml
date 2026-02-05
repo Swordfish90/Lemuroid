@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Λήψη πυρήνα…</string>
-    <string name="installing_core_notification_title">Ενημέρωση Πυρήνων</string>
-    <string name="installing_core_notification_message">H διαδικασία ίσως διαρκέσει μερικά λεπτά</string>
-    <string name="game_loader_error_load_core">Ο πυρήνας του Libretro δεν φορτώθηκε. Βεβαιωθείτε ότι η συσκευή σας είναι συνδεδεμένη στο διαδίκτυο και προσπαθήστε να σαρώσετε ξανά τη βιβλιοθήκη σας. Εάν το πρόβλημα επιμείνει, αυτός ο πυρήνας μπορεί να μην υποστηρίζεται στη συσκευή σας.</string>
+  <string name="game_loading_download_core">Λήψη πυρήνα…</string>
+  <string name="installing_core_notification_title">Ενημέρωση Πυρήνων</string>
+  <string name="installing_core_notification_message">H διαδικασία ίσως διαρκέσει μερικά λεπτά</string>
+  <string name="game_loader_error_load_core">Ο πυρήνας του Libretro δεν φορτώθηκε. Βεβαιωθείτε ότι η συσκευή σας είναι συνδεδεμένη στο διαδίκτυο και προσπαθήστε να σαρώσετε ξανά τη βιβλιοθήκη σας. Εάν το πρόβλημα επιμείνει, αυτός ο πυρήνας μπορεί να μην υποστηρίζεται στη συσκευή σας.</string>
+  <string name="gdrive_connected_none_summary">Μη διαμορφωμένο</string>
+  <string name="gdrive_connected_summary">Συνδεδεμένο με %s</string>
+  <string name="gdrive_last_sync_completed">Τελευταίος συγχρονισμός: %s</string>
+  <string name="gdrive_missing_play_services">Το Google Drive απαιτεί τις Υπηρεσίες Google Play, οι οποίες δεν υποστηρίζονται στη συσκευή σας</string>
+  <string name="gdrive_sign_in_failed">Η σύνδεση Google απέτυχε: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Σύνδεση στο Google ως %s</string>
+  <string name="gdrive_sign_out_success">Αποσυνδεθήκατε από το Google</string>
 </resources>

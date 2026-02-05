@@ -1,0 +1,2266 @@
+{
+  "version": "2.0",
+  "last_updated": "2026-02-05T13:26:41.982943",
+  "system_info": {
+    "created_by": "i18n_sync.py v2.0",
+    "python_version": "3.10+",
+    "total_tracked_strings": 361
+  },
+  "flavors": {
+    "app": {
+      "name": "app",
+      "display_name": "Lemuroid App (Main)",
+      "source_path": "lemuroid-app/src/main/res/values/strings.xml",
+      "metadata_file": "data/app.json",
+      "locales_path": "lemuroid-app/src/main/res",
+      "string_count": 223,
+      "last_scan": "2026-02-05T13:26:41.964154",
+      "strings": {
+        "title_home": {
+          "text_hash": "8cf04a9734132302",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "title_search": {
+          "text_hash": "13348442cc6a2703",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "title_systems": {
+          "text_hash": "d685640410801eb0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "title_games": {
+          "text_hash": "251bd8143891238e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "title_settings": {
+          "text_hash": "f4f70727dc34561d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "recent": {
+          "text_hash": "623cddd380d95746",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "favorites": {
+          "text_hash": "d78986947356ddd3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "discover": {
+          "text_hash": "abfc3a65538a6ec8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "rescan": {
+          "text_hash": "cd6ae20e52d83f60",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "none": {
+          "text_hash": "6adf97f83acf6453",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "directory": {
+          "text_hash": "e73cda510e8bb947",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "display_filter": {
+          "text_hash": "2a056e805ac048e2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "roms": {
+          "text_hash": "31449f673b923596",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "ok": {
+          "text_hash": "e0aa021e21dddbd6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "cancel": {
+          "text_hash": "ea4788705e6873b4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings": {
+          "text_hash": "f4f70727dc34561d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "show_all": {
+          "text_hash": "8cd0d0c99b062b3d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "back": {
+          "text_hash": "0557fa923dcee4d0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "close": {
+          "text_hash": "d3d2e617335f08df",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_page_search_suggestion": {
+          "text_hash": "a53884ca30af3820",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_category_general": {
+          "text_hash": "0db377921f4ce762",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_category_input": {
+          "text_hash": "324118a6721dd6b8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_category_advanced": {
+          "text_hash": "9b6545e4cea9b4ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_title_enable_autosave": {
+          "text_hash": "9d1499c630a804fa",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_enable_autosave": {
+          "text_hash": "60e7b1d6da261ef7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_enable_touch_feedback": {
+          "text_hash": "e89b0f0a0262e65f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_tilt_sensitivity": {
+          "text_hash": "8d1299ea6342b318",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_hd_quality": {
+          "text_hash": "e6e739926ff62c32",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_gamepad_settings": {
+          "text_hash": "f0aaebbf2762d69a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_gamepad_button_name": {
+          "text_hash": "03d7292587213477",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_title_ambient_mode": {
+          "text_hash": "0a9254335f00f611",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_description_hd_quality": {
+          "text_hash": "5aa760f7dbd0e8c6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_immersive_mode": {
+          "text_hash": "ac33f31b186b3e69",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_immersive_mode": {
+          "text_hash": "5182dfdc6aaa4ea4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_ambient_mode": {
+          "text_hash": "5182dfdc6aaa4ea4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_retropad_button_name": {
+          "text_hash": "6e6a82244df65f1f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_retropad_button_unassigned": {
+          "text_hash": "3476bf9c3af76619",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_gamepad_category_enabled": {
+          "text_hash": "e76c3d2c8e251bdd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_gamepad_category_general": {
+          "text_hash": "0db377921f4ce762",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_gamepad_title_reset_bindings": {
+          "text_hash": "e3d710b5813404bb",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_gamepad_title_game_menu": {
+          "text_hash": "b61541208db7fa7d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_open_cores_selection": {
+          "text_hash": "775da9303edfd7fe",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_open_cores_selection": {
+          "text_hash": "484538c22a8e14e9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_core_selection_ds_info": {
+          "text_hash": "abf1d050e42e211d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_display_bios_info": {
+          "text_hash": "8cd7f05496118d0b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_display_bios_info": {
+          "text_hash": "f3796693285cb056",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_bios_category_detected": {
+          "text_hash": "495ede3d060199c5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_bios_category_not_detected": {
+          "text_hash": "eaa4dc5078017a5c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_reset_settings": {
+          "text_hash": "5dcd7aaf263cdf5f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_reset_settings": {
+          "text_hash": "0826b98f9c326402",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_advanced_settings": {
+          "text_hash": "fe4c6a5e7bd6793b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_advanced_settings": {
+          "text_hash": "2cd481d2d92ff2aa",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_low_latency_audio": {
+          "text_hash": "d535f1e8ff5245e8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_low_latency_audio": {
+          "text_hash": "0c38dd6416a44bd4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_direct_game_load": {
+          "text_hash": "8778081fea00b3e1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_direct_game_load": {
+          "text_hash": "82089d037a2ef28b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_enable_rumble": {
+          "text_hash": "4cbaa1f4f1e9202f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_enable_rumble": {
+          "text_hash": "8b4ba04a19538c83",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_enable_device_rumble": {
+          "text_hash": "6bfa2232fd801397",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_enable_device_rumble": {
+          "text_hash": "2811af66ecf9ef6b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "reset_settings_warning_message_title": {
+          "text_hash": "729a51874fe901b0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "reset_settings_warning_message_description": {
+          "text_hash": "492787cd9b7aefda",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_save_sync": {
+          "text_hash": "ca5ff11b5708d77a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_save_sync": {
+          "text_hash": "cf14e3479a818da3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_refresh": {
+          "text_hash": "f54161a850340f1b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_refresh_description": {
+          "text_hash": "45592ac4977ad57f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_enable_auto": {
+          "text_hash": "716d5af79e2be6a7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_enable_auto_description": {
+          "text_hash": "2d59c4e3359087f9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_configure": {
+          "text_hash": "59ae3d64e582523b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_include_saves": {
+          "text_hash": "2796e7034517e53d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_include_saves_description": {
+          "text_hash": "c59163ddab326092",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_include_states": {
+          "text_hash": "6fce064ad9770bd4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_save_sync_include_states_description": {
+          "text_hash": "fb3568d0fad10c32",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_context_menu_add_to_favorites": {
+          "text_hash": "910885435dbc44a2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_context_menu_remove_from_favorites": {
+          "text_hash": "7188286e36fc6c18",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_context_menu_resume": {
+          "text_hash": "f1cefec9e2196c67",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_context_menu_restart": {
+          "text_hash": "51cfbcff36da74a9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_context_menu_create_shortcut": {
+          "text_hash": "d622f74607e63ffe",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_empty_title": {
+          "text_hash": "36ef719796d2eb75",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_empty_message": {
+          "text_hash": "65d63b74130c3f8a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_empty_action": {
+          "text_hash": "6cc1e49557f57cc2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_notification_desmume_deprecated_title": {
+          "text_hash": "059b1e65a384a4ac",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_notification_desmume_deprecated_message": {
+          "text_hash": "18a088ef0a846488",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_notification_desmume_deprecated_action": {
+          "text_hash": "ca448f24cd6d8a6b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_save": {
+          "text_hash": "c9cc8cce247e49ba",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_load": {
+          "text_hash": "f19dbf2edb3a0bd7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_restart": {
+          "text_hash": "51cfbcff36da74a9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_quit": {
+          "text_hash": "0d82790b06129359",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_settings": {
+          "text_hash": "f4f70727dc34561d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_state": {
+          "text_hash": "8b24d6e0016d976e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_change_disk_button": {
+          "text_hash": "9999cf9b632794bb",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_edit_touch_controls": {
+          "text_hash": "2bdf092752b74b43",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_mute_audio": {
+          "text_hash": "00cd7be4cb21c591",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_fast_forward": {
+          "text_hash": "b3b552ef981127dd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_change_disk_disk": {
+          "text_hash": "dfc9b6b2fba6db4c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_tilt_sensor": {
+          "text_hash": "fd68ffb249c2f4dc",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_loading_preparing_game": {
+          "text_hash": "d65e9e8a0d081837",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_toast_settings_button_using_gamepad": {
+          "text_hash": "355e562f145fb6f5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_toast_load_state_failed": {
+          "text_hash": "92210c4b0f28d851",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_toast_quick_save_loaded": {
+          "text_hash": "f911043d33751cc2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_toast_quick_save_saved": {
+          "text_hash": "9142719d36c05d1b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "empty_view_default": {
+          "text_hash": "158e64bcd08067d2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "core_settings_title": {
+          "text_hash": "4e3877f12b008209",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "core_settings_category_preferences": {
+          "text_hash": "d0834fcec6337785",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "core_settings_category_controllers": {
+          "text_hash": "cbfb14f470701bf9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "core_settings_controller": {
+          "text_hash": "27dee9bf23b9ee4c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_menu_title": {
+          "text_hash": "249a452ca2613521",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "notification_channel_name": {
+          "text_hash": "8e8adafd36b03a94",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "library_index_notification_title": {
+          "text_hash": "dcad9c7cd34797a2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "library_index_notification_message": {
+          "text_hash": "e9ad8477afea8d32",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "save_sync_notification_title": {
+          "text_hash": "18b2889eed6fe8e7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "save_sync_notification_message": {
+          "text_hash": "e9ad8477afea8d32",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_running_notification_title": {
+          "text_hash": "6dba736985187f70",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_running_notification_title_alternative": {
+          "text_hash": "bb134dcc43f8c6e8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_running_notification_message": {
+          "text_hash": "741e4f989d8fb64f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "installing_core_notification_title": {
+          "text_hash": "413acce8f8f148b9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "installing_core_notification_message": {
+          "text_hash": "e9ad8477afea8d32",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "game_loader_error_gl_incompatible": {
+          "text_hash": "a704251fed392a82",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_loader_error_load_core": {
+          "text_hash": "59ee0aae9dc3267b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "game_loader_error_load_game": {
+          "text_hash": "6da8177e26b56dc1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_loader_error_save": {
+          "text_hash": "24d94827f1c0aa13",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_loader_error_generic": {
+          "text_hash": "99ccb6eb67a2b7f4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_loader_error_missing_bios": {
+          "text_hash": "996ceb3fecebf31f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_shortcut_error": {
+          "text_hash": "af527eb10d04f720",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "dialog_saf_not_found": {
+          "text_hash": "36d73710c603bee1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "system_grid_details": {
+          "text_hash": "1e73db1fccacee0e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_folder_picker_title": {
+          "text_hash": "acd843d6dc3c6d1a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_folder_picker_action_choose": {
+          "text_hash": "e0626222614bdee3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_folder_picker_action_cancel": {
+          "text_hash": "ea4788705e6873b4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_folder_storage_primary": {
+          "text_hash": "86b11f41cdd4202e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_folder_storage_secondary": {
+          "text_hash": "d969012d2cbb8f16",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_folder_storage_title": {
+          "text_hash": "c05993a441e7f5db",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_home_section_favorites": {
+          "text_hash": "d78986947356ddd3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_home_section_recents": {
+          "text_hash": "dae52b80711ee102",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_home_section_systems": {
+          "text_hash": "d685640410801eb0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_home_section_settings": {
+          "text_hash": "f4f70727dc34561d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shortcut_binding_update_title": {
+          "text_hash": "9d7c6da7e45ec2a0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shortcut_binding_update_description": {
+          "text_hash": "7e73e2113fb0c7c3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_search_results": {
+          "text_hash": "251bd8143891238e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tv_game_message_missing_gamepad": {
+          "text_hash": "e49632a77edab010",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_edit_touch_controls_error_not_visible": {
+          "text_hash": "69d468f5ac14168b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_interactory_busy": {
+          "text_hash": "7e82700e62f0ccb1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_interactor_notification_permission_required": {
+          "text_hash": "9d3f66e0452612d2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "mobile_settings_help": {
+          "text_hash": "6a26f548831e6a8c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "mobile_settings_support": {
+          "text_hash": "db5eb84117d06047",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "lemuroid_help_content": {
+          "text_hash": "d3414921c5dca994",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "lemuroid_crash_disclamer": {
+          "text_hash": "7ac64ee724fad7e1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "lemuroid_crash_message": {
+          "text_hash": "f02bada3315e2bb4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "rate_submit": {
+          "text_hash": "dcb66ff6e4a2517a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "install_submit": {
+          "text_hash": "d59048f21fd887ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "rate_cancel": {
+          "text_hash": "3049dacdbd8857b7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "maybe_later": {
+          "text_hash": "91b27835aca194a5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "rate_us_title": {
+          "text_hash": "dfd2b483f919c48d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "install_browser_title": {
+          "text_hash": "c556a24f9c18ba60",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "install_browser_description": {
+          "text_hash": "8d99bafaab5fc7c5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "rate_us_description": {
+          "text_hash": "cd55cc4af2bbf2a6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "string_pro_tutorial_disclamer": {
+          "text_hash": "e5cc983d6e58e25a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "string_pro_limited_deal": {
+          "text_hash": "33b73be6d9f8b768",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "string_pro_price": {
+          "text_hash": "b2721643aa1cf364",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "string_pro_buy_now": {
+          "text_hash": "c1f52fba179ff982",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "string_pro_popup_disclamer": {
+          "text_hash": "fbb3e31cb423cc38",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "string_pro_popup_title": {
+          "text_hash": "95d558acb7c1e797",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_category_misc": {
+          "text_hash": "bcc67fece4e6da4b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_maximum_cache_usage": {
+          "text_hash": "d57c4125b3332501",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_gamepad_settings": {
+          "text_hash": "44fdb4ebbc392764",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_gamepad_settings": {
+          "text_hash": "9d2e93bccf81f1b6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "save_sync": {
+          "text_hash": "a986c48f6cc6687f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "stop": {
+          "text_hash": "11a755d598c0c417",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "library_index_notification_action_cancel": {
+          "text_hash": "ea4788705e6873b4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "error_message_incompatible_state": {
+          "text_hash": "b12150a41e899c09",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_open_pro_tutorial": {
+          "text_hash": "08bd8308f1aba862",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "pref_key_open_pro_tutorial": {
+          "text_hash": "34e73b76a2ced25f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "string_pro_tutorial_title": {
+          "text_hash": "05693ab51ce11022",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "popup_more_games_title": {
+          "text_hash": "fdf05a6d1f3e9d2e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "popup_more_games_description": {
+          "text_hash": "8f028428e8619981",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "haptic_feedback_mode_names_none": {
+          "text_hash": "6adf97f83acf6453",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "haptic_feedback_mode_names_press": {
+          "text_hash": "0610123bdd4ffc19",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "haptic_feedback_mode_names_press_release": {
+          "text_hash": "a93eb958ecc0788d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shader_filter_names_auto": {
+          "text_hash": "06b9281e396db002",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shader_filter_names_sharp": {
+          "text_hash": "60c17eb98355db0f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shader_filter_names_smooth": {
+          "text_hash": "e510cdf33cd49713",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shader_filter_names_crt": {
+          "text_hash": "1512111f92318cab",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shader_filter_names_lcd": {
+          "text_hash": "d48d9783fee1f1e8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "shader_filter_names_hd": {
+          "text_hash": "27178471f2c4019c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "game_loader_error_unsupported_architecture": {
+          "text_hash": "7d5881839bf703af",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gamepad_binding_update_title": {
+          "text_hash": "1a75d14118a55c54",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gamepad_binding_update_description": {
+          "text_hash": "45eb111eba618faa",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_hd_mode": {
+          "text_hash": "a3c68ca15ac92cce",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_description_hd_mode": {
+          "text_hash": "82af6f444aa03c2b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_title_legacy_hd_mode": {
+          "text_hash": "0f21751b3234d944",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_description_legacy_hd_mode": {
+          "text_hash": "e112e8f7e5041eec",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "game_context_menu_share": {
+          "text_hash": "190b2595b7689c1a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "share_discord_text_title_part_1": {
+          "text_hash": "bc7a85471bb6ac8f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "share_discord_dialog_enter_name": {
+          "text_hash": "fd2f820569d83784",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "share_discord_dialog_enter_download_link": {
+          "text_hash": "221a39d2db5b9069",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "share_discord_dialog_enter_feedback": {
+          "text_hash": "5f6fa93dd6211ed2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "share_discord_button_title": {
+          "text_hash": "5a95a425f74314a9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "share_discord_popup_description": {
+          "text_hash": "5e1ae818331029f2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "share_discord_text_title_part_2": {
+          "text_hash": "3c1a9ae472350f99",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "home_notification_title": {
+          "text_hash": "dfa971b178281574",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_notification_message": {
+          "text_hash": "04b5c45a37dc3b19",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "home_notification_action": {
+          "text_hash": "2faec1f9f8cc7f8f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "flat_pro_offer_top_bar_title": {
+          "text_hash": "4e15d4cbc7f5b156",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "flat_pro_popup_title": {
+          "text_hash": "95d558acb7c1e797",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "tilt_configuration_disabled": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tilt_configuration_cross": {
+          "text_hash": "4993415dd538846f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tilt_configuration_analog_left": {
+          "text_hash": "7e46da9aa3aa2a2e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tilt_configuration_analog_right": {
+          "text_hash": "1aade552d2923b39",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tilt_configuration_buttons_l_r": {
+          "text_hash": "76ccc6fed19789dd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tilt_configuration_buttons_l1_r1": {
+          "text_hash": "daff86a88e04f31e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "tilt_configuration_buttons_l2_r2": {
+          "text_hash": "f65ee0882fa4f995",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "settings_category_saves_backup": {
+          "text_hash": "9afbbf2a6ec32d6d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_title_export_saves": {
+          "text_hash": "35b7dbb26e39e96d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_description_export_saves": {
+          "text_hash": "5b27a72b2fc35fae",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_title_import_saves": {
+          "text_hash": "68e78778ade80329",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "settings_description_import_saves": {
+          "text_hash": "91b72e6ca0a071ef",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "saves_backup_import_warning_title": {
+          "text_hash": "482fedd4af6be39f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "saves_backup_import_warning_message": {
+          "text_hash": "05f8b3faca52427f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "saves_backup_export_success": {
+          "text_hash": "f5077a6633d87ed5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "saves_backup_export_error": {
+          "text_hash": "22db6778358472de",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "saves_backup_import_success": {
+          "text_hash": "e4aadb068ce2fb87",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "saves_backup_import_error": {
+          "text_hash": "442418216ae4b03c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "saves_backup_error_no_file_picker": {
+          "text_hash": "e58114755bdfa1bd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        }
+      }
+    },
+    "shared": {
+      "name": "shared",
+      "display_name": "Retrograde App Shared",
+      "source_path": "retrograde-app-shared/src/main/res/values/strings.xml",
+      "metadata_file": "data/shared.json",
+      "locales_path": "retrograde-app-shared/src/main/res",
+      "string_count": 116,
+      "last_scan": "2026-02-05T13:03:38.893206",
+      "strings": {
+        "local_storage": {
+          "text_hash": "6827a85b76e967f6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_arcade_4": {
+          "text_hash": "6cdf673d730de6bf",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_arcade_6": {
+          "text_hash": "6b8dce9c8e865446",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_genesis_3": {
+          "text_hash": "e2d676c456bd53dd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_genesis_6": {
+          "text_hash": "6b8dce9c8e865446",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_default": {
+          "text_hash": "7a1920d61156abc0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_dualshock": {
+          "text_hash": "b53b94195dd24d77",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_standard": {
+          "text_hash": "eb6d8ae6f2028375",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_landscape": {
+          "text_hash": "815dff01257e5ef1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_portrait": {
+          "text_hash": "1c7444be9626d149",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_dos_auto": {
+          "text_hash": "06b9281e396db002",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_dos_mouse_left": {
+          "text_hash": "46ea6961728a6e62",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "controller_dos_mouse_right": {
+          "text_hash": "7ab587b7b2c889e7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_stella_filter": {
+          "text_hash": "d6ff3b4efbb07ab9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_stella_crop_hoverscan": {
+          "text_hash": "d18dfce16f6becc0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_fceumm_overscan_h": {
+          "text_hash": "d18dfce16f6becc0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_fceumm_overscan_v": {
+          "text_hash": "d81ad473f4352a4a",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_fceumm_nospritelimit": {
+          "text_hash": "a2baf9e3cf2b8307",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_genesis_plus_gx_blargg_ntsc_filter": {
+          "text_hash": "d6ff3b4efbb07ab9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_genesis_plus_gx_overscan": {
+          "text_hash": "e313502ef38a5645",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_genesis_plus_gx_lcd_filter": {
+          "text_hash": "0e571d2fdee916c4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_genesis_plus_gx_no_sprite_limit": {
+          "text_hash": "a2baf9e3cf2b8307",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_gambatte_gb_colorization": {
+          "text_hash": "adaf8ca276268a86",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_gambatte_gb_internal_palette": {
+          "text_hash": "1d10154cbdbdcc30",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_gambatte_mix_frames": {
+          "text_hash": "0e571d2fdee916c4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_gambatte_dark_filter_level": {
+          "text_hash": "d3e12c57697a496b",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_gambatte_gbc_color_correction": {
+          "text_hash": "d4ee82d53e1c98fb",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mgba_solar_sensor_level": {
+          "text_hash": "994095e673602050",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mgba_interframe_blending": {
+          "text_hash": "0e571d2fdee916c4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mgba_frameskip": {
+          "text_hash": "9029149cb958386e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mgba_color_correction": {
+          "text_hash": "d4ee82d53e1c98fb",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mupen64plus_43screensize": {
+          "text_hash": "59235fe82ee61fc8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mupen64plus_cpucore": {
+          "text_hash": "c9a0b95542cf2ec3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mupen64plus_BilinearMode": {
+          "text_hash": "f396a505f42f17ae",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mupen64plus_pak1": {
+          "text_hash": "058b7b385150b8c0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_mupen64plus_pak2": {
+          "text_hash": "cf2d68cbb83bf664",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_pcsx_rearmed_frameskip": {
+          "text_hash": "9029149cb958386e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_pcsx_rearmed_drc": {
+          "text_hash": "c9a0b95542cf2ec3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_ppsspp_auto_frameskip": {
+          "text_hash": "eb5fe080bcff299d",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_ppsspp_frameskip": {
+          "text_hash": "9029149cb958386e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_ppsspp_cpu_core": {
+          "text_hash": "c9a0b95542cf2ec3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_ppsspp_internal_resolution": {
+          "text_hash": "b5a4b64b2aa505bd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_ppsspp_texture_scaling_level": {
+          "text_hash": "1762a469c0328a61",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_ppsspp_texture_scaling_type": {
+          "text_hash": "847143184c7c7e92",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_ppsspp_texture_filtering": {
+          "text_hash": "dfa6094dd7628fe4",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_fbneo_frameskip": {
+          "text_hash": "9029149cb958386e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_fbneo_cpu_speed_adjust": {
+          "text_hash": "f6918ec6bed3122e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_desmume_screens_layout": {
+          "text_hash": "d636107540d1a2e7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_desmume_frameskip": {
+          "text_hash": "9029149cb958386e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_melonds_screen_layout": {
+          "text_hash": "d636107540d1a2e7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_melonds_threaded_renderer": {
+          "text_hash": "124b069046498b48",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_melonds_jit_enable": {
+          "text_hash": "c9a0b95542cf2ec3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_melonds_mic_input": {
+          "text_hash": "ea05521523509180",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_wswan_rotate_display": {
+          "text_hash": "abbd64f40c34c537",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_wswan_mono_palette": {
+          "text_hash": "adaf8ca276268a86",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_handy_rot": {
+          "text_hash": "3ba4e6a06ef52600",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_citra_layout_option": {
+          "text_hash": "d636107540d1a2e7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_citra_resolution_factor": {
+          "text_hash": "598e8ba7a97080ae",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_citra_use_acc_mul": {
+          "text_hash": "0fccdb84185ae51e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "setting_citra_use_acc_geo_shaders": {
+          "text_hash": "e18d52c5f6480ac6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_gambatte_mix_frames_disabled": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_gambatte_mix_frames_mix": {
+          "text_hash": "1fbb1e3943c2c6c5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_gambatte_mix_frames_lcd_ghosting": {
+          "text_hash": "248827a483c24295",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_gambatte_mix_frames_lcd_ghosting_fast": {
+          "text_hash": "cbb2137d53658bfe",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_gambatte_gbc_color_correction_always": {
+          "text_hash": "00d23a76e43b46da",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_gambatte_gbc_color_correction_disabled": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_interframe_blending_off": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_interframe_blending_mix": {
+          "text_hash": "1fbb1e3943c2c6c5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_interframe_blending_lcd_ghosting": {
+          "text_hash": "248827a483c24295",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_interframe_blending_lcd_ghosting_fast": {
+          "text_hash": "cbb2137d53658bfe",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_frameskip_disabled": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_frameskip_auto": {
+          "text_hash": "06b9281e396db002",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_color_correction_off": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mgba_color_correction_gba": {
+          "text_hash": "00d23a76e43b46da",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_stella_filter_disabled": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_stella_filter_composite": {
+          "text_hash": "141a5b46e2087dc7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_stella_filter_svideo": {
+          "text_hash": "59bfcd554bcba7c5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_stella_filter_rgb": {
+          "text_hash": "889574aebacda6bf",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_stella_filter_badlyadjusted": {
+          "text_hash": "ffac5126954a75a3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_blargg_ntsc_filter_disabled": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_blargg_ntsc_filter_monochrome": {
+          "text_hash": "7d51f2b8ce7130e9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_blargg_ntsc_filter_composite": {
+          "text_hash": "141a5b46e2087dc7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_blargg_ntsc_filter_svideo": {
+          "text_hash": "59bfcd554bcba7c5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_blargg_ntsc_filter_rgb": {
+          "text_hash": "889574aebacda6bf",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_overscan_disabled": {
+          "text_hash": "b9f5c797ebbf55ad",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_overscan_topbottom": {
+          "text_hash": "e6a54706799e52f6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_overscan_leftright": {
+          "text_hash": "dbe68edfe1f04797",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_genesis_plus_gx_overscan_full": {
+          "text_hash": "bbd47109890259c0",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_cpucore_dynamicrecompiler": {
+          "text_hash": "c9a0b95542cf2ec3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_cpucore_pureinterpreter": {
+          "text_hash": "eb78d45596793a3e",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_cpucore_cachedinterpreter": {
+          "text_hash": "2994fc59ff3fecf6",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_bilinearmode_standard": {
+          "text_hash": "eb6d8ae6f2028375",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_bilinearmode_3point": {
+          "text_hash": "c3c8b52ac2ca7481",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_mupen64plus_pak1_memory": {
+          "text_hash": "4789f23283b3a61f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_mupen64plus_pak1_rumble": {
+          "text_hash": "4cbaa1f4f1e9202f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_mupen64plus_pak1_none": {
+          "text_hash": "6adf97f83acf6453",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_mupen64plus_pak2_none": {
+          "text_hash": "6adf97f83acf6453",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_mupen64plus_mupen64plus_pak2_rumble": {
+          "text_hash": "4cbaa1f4f1e9202f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_melonds_screen_layout_topbottom": {
+          "text_hash": "963f97ef9182a865",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_melonds_screen_layout_leftright": {
+          "text_hash": "d95f245ea59f2cf9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_melonds_screen_layout_hybridtop": {
+          "text_hash": "e1d4d96e6d1dccf2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_melonds_screen_layout_hybridbottom": {
+          "text_hash": "3022a2d14f9afa9c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_melonds_mic_input_microphone": {
+          "text_hash": "48e76d82a8b6d39f",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_melonds_mic_input_blow": {
+          "text_hash": "6af1861380d68335",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_citra_layout_option_topbottom": {
+          "text_hash": "963f97ef9182a865",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_citra_layout_option_sidebyside": {
+          "text_hash": "d95f245ea59f2cf9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_desmume_screens_layout_topbottom": {
+          "text_hash": "963f97ef9182a865",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_desmume_screens_layout_leftright": {
+          "text_hash": "d95f245ea59f2cf9",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_ppsspp_cpu_core_jit": {
+          "text_hash": "f0e5683f5e014926",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_ppsspp_cpu_core_irjit": {
+          "text_hash": "c25d371336ad72f1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_ppsspp_cpu_core_interpreter": {
+          "text_hash": "df608edb53fcc79c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_wswan_rotate_display_landscape": {
+          "text_hash": "815dff01257e5ef1",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_wswan_rotate_display_portrait": {
+          "text_hash": "1c7444be9626d149",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_handy_rot_none": {
+          "text_hash": "cfcd208495d565ef",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_handy_rot_90": {
+          "text_hash": "8613985ec49eb8f7",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "value_handy_rot_270": {
+          "text_hash": "39059724f73a9969",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        }
+      }
+    },
+    "app-free": {
+      "name": "app-free",
+      "display_name": "Lemuroid App Free",
+      "source_path": "lemuroid-app-ext-free/src/main/res/values/strings.xml",
+      "metadata_file": "data/app-free.json",
+      "locales_path": "lemuroid-app-ext-free/src/main/res",
+      "string_count": 8,
+      "last_scan": "2026-02-05T13:03:38.909243",
+      "strings": {
+        "game_loading_download_core": {
+          "text_hash": "48860218462ab703",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gdrive_last_sync_completed": {
+          "text_hash": "cf692df43405a719",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "gdrive_connected_summary": {
+          "text_hash": "afb4ea732ebcf8bd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "gdrive_connected_none_summary": {
+          "text_hash": "db3f921088947d83",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "gdrive_missing_play_services": {
+          "text_hash": "0224503f584ca617",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "gdrive_sign_in_success": {
+          "text_hash": "028077b3ad64fce5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "gdrive_sign_in_failed": {
+          "text_hash": "3ee735bdef4cb0f8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        },
+        "gdrive_sign_out_success": {
+          "text_hash": "85cd427d30060a33",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": true
+        }
+      }
+    },
+    "app-play": {
+      "name": "app-play",
+      "display_name": "Lemuroid App Play",
+      "source_path": "lemuroid-app-ext-play/src/main/res/values/strings.xml",
+      "metadata_file": "data/app-play.json",
+      "locales_path": "lemuroid-app-ext-play/src/main/res",
+      "string_count": 11,
+      "last_scan": "2026-02-05T13:03:38.928852",
+      "strings": {
+        "gdrive_sign_in_failed": {
+          "text_hash": "3ee735bdef4cb0f8",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gdrive_sign_in_success": {
+          "text_hash": "028077b3ad64fce5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gdrive_sign_out_success": {
+          "text_hash": "85cd427d30060a33",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gdrive_missing_play_services": {
+          "text_hash": "0224503f584ca617",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gdrive_connected_summary": {
+          "text_hash": "afb4ea732ebcf8bd",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gdrive_connected_none_summary": {
+          "text_hash": "db3f921088947d83",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "gdrive_last_sync_completed": {
+          "text_hash": "cf692df43405a719",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_loading_download_core": {
+          "text_hash": "18055f1a0c605bec",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "installing_core_notification_title": {
+          "text_hash": "3151257e5a4827f2",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "installing_core_notification_message": {
+          "text_hash": "beaa1ebaeef807a5",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "game_loader_error_load_core": {
+          "text_hash": "e5b4ba9225170027",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        }
+      }
+    },
+    "touchinput": {
+      "name": "touchinput",
+      "display_name": "Lemuroid Touch Input",
+      "source_path": "lemuroid-touchinput/src/main/res/values/strings.xml",
+      "metadata_file": "data/touchinput.json",
+      "locales_path": "lemuroid-touchinput/src/main/res",
+      "string_count": 3,
+      "last_scan": "2026-02-05T13:03:38.936806",
+      "strings": {
+        "touch_customize_button_done": {
+          "text_hash": "f92965e2c8a7afb3",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "touch_customize_button_reset": {
+          "text_hash": "526d688f37a86d3c",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        },
+        "touch_customize_info": {
+          "text_hash": "f362bf8fe1171908",
+          "last_modified": "2026-02-05",
+          "has_metadata": false,
+          "is_translated": false
+        }
+      }
+    }
+  },
+  "supported_languages": [
+    "en",
+    "zh-CN",
+    "zh-TW",
+    "hi",
+    "es",
+    "ar",
+    "pt-BR",
+    "id",
+    "ru",
+    "ja",
+    "de",
+    "fr",
+    "ko",
+    "tr",
+    "vi",
+    "it",
+    "pl",
+    "uk",
+    "cs",
+    "da",
+    "el",
+    "fi",
+    "hu",
+    "he",
+    "nl",
+    "no",
+    "pt-PT",
+    "ro",
+    "sr",
+    "sv",
+    "af",
+    "ca"
+  ]
+}

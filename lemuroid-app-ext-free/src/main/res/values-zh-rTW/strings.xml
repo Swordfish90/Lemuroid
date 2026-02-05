@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">正在下載核心…</string>
-    <string name="installing_core_notification_title">正在更新核心</string>
-    <string name="installing_core_notification_message">這可能需要幾分鐘</string>
-    <string name="game_loader_error_load_core">Libretro 核心未加載。請確保您的設備已連接到互聯網，然後重試掃描您的資料庫。如果問題持續存在，則該核心可能不受您的設備支援。</string>
+  <string name="game_loading_download_core">正在下載核心…</string>
+  <string name="installing_core_notification_title">正在更新核心</string>
+  <string name="installing_core_notification_message">這可能需要幾分鐘</string>
+  <string name="game_loader_error_load_core">Libretro 核心未加載。請確保您的設備已連接到互聯網，然後重試掃描您的資料庫。如果問題持續存在，則該核心可能不受您的設備支援。</string>
+  <string name="gdrive_connected_none_summary">未配置</string>
+  <string name="gdrive_connected_summary">已連結到 %s</string>
+  <string name="gdrive_last_sync_completed">上次同步：%s</string>
+  <string name="gdrive_missing_play_services">Google Drive 需要 Google Play 服務，而您的設備不支援這些服務</string>
+  <string name="gdrive_sign_in_failed">Google 登入失敗：%s（%s）</string>
+  <string name="gdrive_sign_in_success">以 %s 的身份登入 Google</string>
+  <string name="gdrive_sign_out_success">已登出 Google</string>
 </resources>

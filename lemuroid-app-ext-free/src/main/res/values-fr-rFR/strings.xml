@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Téléchargement du cœur…</string>
-    <string name="installing_core_notification_title">Mise à jour des cœurs</string>
-    <string name="installing_core_notification_message">Cela peut prendre quelques minutes</string>
-    <string name="game_loader_error_load_core">Le cœur Libretto n\'a pas été chargé. Assurez-vous que votre appareil est connecté à internet et essayez de rescanner votre bibliothèque. Si le problème persiste, ce noyau pourrait ne pas être pris en charge sur votre appareil.</string>
+  <string name="game_loading_download_core">Téléchargement du cœur…</string>
+  <string name="installing_core_notification_title">Mise à jour des cœurs</string>
+  <string name="installing_core_notification_message">Cela peut prendre quelques minutes</string>
+  <string name="game_loader_error_load_core">Le cœur Libretto n\'a pas été chargé. Assurez-vous que votre appareil est connecté à internet et essayez de rescanner votre bibliothèque. Si le problème persiste, ce noyau pourrait ne pas être pris en charge sur votre appareil.</string>
+  <string name="gdrive_connected_none_summary">Non configuré</string>
+  <string name="gdrive_connected_summary">Lié à %s</string>
+  <string name="gdrive_last_sync_completed">Dernière synchronisation : %s</string>
+  <string name="gdrive_missing_play_services">Google Drive nécessite les services Google Play qui ne sont pas pris en charge sur votre appareil</string>
+  <string name="gdrive_sign_in_failed">Échec de la connexion Google : %s (%s)</string>
+  <string name="gdrive_sign_in_success">Connecté à Google en tant que %s</string>
+  <string name="gdrive_sign_out_success">Déconnecté de Google</string>
 </resources>

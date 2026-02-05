@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Ladataan ydintä…</string>
-    <string name="installing_core_notification_title">Päivitetään Yimiä</string>
-    <string name="installing_core_notification_message">Tämä voi kestää jopa muutaman minuutin</string>
-    <string name="game_loader_error_load_core">Libretro ydin ei ladattu. Varmista, että laitteesi on yhteydessä internetiin ja yritä palauttaa kirjastosi. Jos ongelma jatkuu, tätä ydintä ei ehkä tueta laitteessasi.</string>
+  <string name="game_loading_download_core">Ladataan ydintä…</string>
+  <string name="installing_core_notification_title">Päivitetään Yimiä</string>
+  <string name="installing_core_notification_message">Tämä voi kestää jopa muutaman minuutin</string>
+  <string name="game_loader_error_load_core">Libretro ydin ei ladattu. Varmista, että laitteesi on yhteydessä internetiin ja yritä palauttaa kirjastosi. Jos ongelma jatkuu, tätä ydintä ei ehkä tueta laitteessasi.</string>
+  <string name="gdrive_connected_none_summary">Ei määritetty</string>
+  <string name="gdrive_connected_summary">Yhdistetty %s</string>
+  <string name="gdrive_last_sync_completed">Viimeisin synkronointi: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive vaatii Google Play -palvelut, joita laitteesi ei tue</string>
+  <string name="gdrive_sign_in_failed">Google-kirjautuminen epäonnistui: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Kirjauduttu Googleen nimellä %s</string>
+  <string name="gdrive_sign_out_success">Kirjauduttu ulos Googlesta</string>
 </resources>

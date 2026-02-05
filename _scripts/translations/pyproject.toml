@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "i18n-sync"
+version = "2.0.0"
+description = "Unified localization management system for FullRoid"
+authors = ["Fulldive Team"]
+readme = "README.md"
+packages = [
+    { include = "*.py" },
+    { include = "core" },
+    { include = "translation" },
+    { include = "utils" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^1.0"
+anthropic = "^0.20"
+pyyaml = "^6.0"
+rich = "^13.0"
+click = "^8.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4"
+black = "^23.0"
+mypy = "^1.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+i18n-sync = "i18n_sync:main"

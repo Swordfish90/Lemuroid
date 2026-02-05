@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="game_loading_download_core">Descarregant nucli…</string>
-    <string name="installing_core_notification_title">Actualitzant els nuclis</string>
-    <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
-    <string name="game_loader_error_load_core">El nucli de Libretro no s\'ha carregat. Assegureu-vos que el dispositiu estigui connectat a Internet i intenteu tornar a escanejar la vostra biblioteca. Si el problema persisteix, és possible que aquest nucli no sigui compatible amb el dispositiu.</string>
+  <string name="game_loading_download_core">Descarregant nucli…</string>
+  <string name="installing_core_notification_title">Actualitzant els nuclis</string>
+  <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
+  <string name="game_loader_error_load_core">El nucli de Libretro no s\'ha carregat. Assegureu-vos que el dispositiu estigui connectat a Internet i intenteu tornar a escanejar la vostra biblioteca. Si el problema persisteix, és possible que aquest nucli no sigui compatible amb el dispositiu.</string>
+  <string name="gdrive_connected_none_summary">No configurat</string>
+  <string name="gdrive_connected_summary">Enllaçat a %s</string>
+  <string name="gdrive_last_sync_completed">Darrera sincronització: %s</string>
+  <string name="gdrive_missing_play_services">Google Drive requereix els serveis de Google Play, que no són compatibles amb el teu dispositiu</string>
+  <string name="gdrive_sign_in_failed">Error d\'inici de sessió de Google: %s (%s)</string>
+  <string name="gdrive_sign_in_success">Iniciat sessió a Google com a %s</string>
+  <string name="gdrive_sign_out_success">Tancat la sessió de Google</string>
 </resources>
