@@ -12,7 +12,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.appextension.FulldiveConfigs
 import com.swordfish.lemuroid.app.appextension.discord.ShareDiscordTextGenerator
+import com.swordfish.lemuroid.app.appextension.openAppInGooglePlay
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
@@ -49,6 +51,10 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
     override fun activity(): Activity = this
 
     override fun isBusy(): Boolean = mainViewModel?.inProgress?.value ?: false
+
+    override fun showProUpgradeFor7z() {
+        openAppInGooglePlay(FulldiveConfigs.FULLROID_PRO_PACKAGE_NAME)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

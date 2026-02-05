@@ -38,6 +38,7 @@ data class GameSystem(
     val hasMultiDiskSupport: Boolean = false,
     val fastForwardSupport: Boolean = true,
     val hasTouchScreen: Boolean = false,
+    val proOnly: Boolean = false,
 ) {
     companion object {
         fun getAvailableSystems(isProVersion: Boolean): List<GameSystem> {
@@ -1208,106 +1209,107 @@ data class GameSystem(
                     ),
                 ),
             ).apply {
-                if (isProVersion) {
-                    add(
-                        GameSystem(
-                            SystemID.WSC,
-                            "Bandai - WonderSwan Color",
-                            R.string.game_system_title_wsc,
-                            R.string.game_system_abbr_wsc,
-                            listOf(
-                                SystemCoreConfig(
-                                    CoreID.MEDNAFEN_WSWAN,
-                                    controllerConfigs =
-                                    hashMapOf(
-                                        0 to arrayListOf(ControllerConfigs.WS_LANDSCAPE, ControllerConfigs.WS_PORTRAIT),
-                                    ),
-                                    exposedSettings =
-                                    listOf(
-                                        ExposedSetting(
-                                            "wswan_rotate_display",
-                                            R.string.setting_wswan_rotate_display,
-                                            arrayListOf(
-                                                ExposedSetting.Value(
-                                                    "landscape",
-                                                    R.string.value_wswan_rotate_display_landscape,
-                                                ),
-                                                ExposedSetting.Value(
-                                                    "portrait",
-                                                    R.string.value_wswan_rotate_display_portrait,
-                                                ),
+                // Pro-only systems - visible in all versions, but playable only in Pro
+                add(
+                    GameSystem(
+                        SystemID.WSC,
+                        "Bandai - WonderSwan Color",
+                        R.string.game_system_title_wsc,
+                        R.string.game_system_abbr_wsc,
+                        listOf(
+                            SystemCoreConfig(
+                                CoreID.MEDNAFEN_WSWAN,
+                                controllerConfigs =
+                                hashMapOf(
+                                    0 to arrayListOf(ControllerConfigs.WS_LANDSCAPE, ControllerConfigs.WS_PORTRAIT),
+                                ),
+                                exposedSettings =
+                                listOf(
+                                    ExposedSetting(
+                                        "wswan_rotate_display",
+                                        R.string.setting_wswan_rotate_display,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "landscape",
+                                                R.string.value_wswan_rotate_display_landscape,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "portrait",
+                                                R.string.value_wswan_rotate_display_portrait,
                                             ),
                                         ),
                                     ),
-                                    defaultSettings =
-                                    listOf(
-                                        CoreVariable("wswan_rotate_display", "landscape"),
-                                    ),
+                                ),
+                                defaultSettings =
+                                listOf(
+                                    CoreVariable("wswan_rotate_display", "landscape"),
                                 ),
                             ),
-                            uniqueExtensions = listOf("wsc"),
-                        )
-                    )
-                    add(
-                        GameSystem(
-                            SystemID.NINTENDO_3DS,
-                            "Nintendo - Nintendo 3DS",
-                            R.string.game_system_title_3ds,
-                            R.string.game_system_abbr_3ds,
-                            listOf(
-                                SystemCoreConfig(
-                                    CoreID.CITRA,
-                                    controllerConfigs =
-                                    hashMapOf(
-                                        0 to arrayListOf(ControllerConfigs.NINTENDO_3DS),
-                                    ),
-                                    defaultSettings =
-                                    listOf(
-                                        CoreVariable("citra_use_acc_mul", "disabled"),
-                                        CoreVariable("citra_touch_touchscreen", "enabled"),
-                                        CoreVariable("citra_mouse_touchscreen", "disabled"),
-                                        CoreVariable("citra_render_touchscreen", "disabled"),
-                                        CoreVariable("citra_use_hw_shader_cache", "disabled"),
-                                    ),
-                                    exposedSettings =
-                                    listOf(
-                                        ExposedSetting(
-                                            "citra_layout_option",
-                                            R.string.setting_citra_layout_option,
-                                            arrayListOf(
-                                                ExposedSetting.Value(
-                                                    "Default Top-Bottom Screen",
-                                                    R.string.value_citra_layout_option_topbottom,
-                                                ),
-                                                ExposedSetting.Value(
-                                                    "Side by Side",
-                                                    R.string.value_citra_layout_option_sidebyside,
-                                                ),
-                                            ),
-                                        ),
-                                        ExposedSetting(
-                                            "citra_resolution_factor",
-                                            R.string.setting_citra_resolution_factor,
-                                        ),
-                                        ExposedSetting(
-                                            "citra_use_acc_mul",
-                                            R.string.setting_citra_use_acc_mul,
-                                        ),
-                                        ExposedSetting(
-                                            "citra_use_acc_geo_shaders",
-                                            R.string.setting_citra_use_acc_geo_shaders,
-                                        ),
-                                    ),
-                                    statesSupported = false,
-                                    supportsLibretroVFS = true,
-                                    supportedOnlyArchitectures = setOf("arm64-v8a"),
-                                ),
-                            ),
-                            uniqueExtensions = listOf("3ds"),
-                            hasTouchScreen = true,
                         ),
+                        uniqueExtensions = listOf("wsc"),
+                        proOnly = true,
                     )
-                }
+                )
+                add(
+                    GameSystem(
+                        SystemID.NINTENDO_3DS,
+                        "Nintendo - Nintendo 3DS",
+                        R.string.game_system_title_3ds,
+                        R.string.game_system_abbr_3ds,
+                        listOf(
+                            SystemCoreConfig(
+                                CoreID.CITRA,
+                                controllerConfigs =
+                                hashMapOf(
+                                    0 to arrayListOf(ControllerConfigs.NINTENDO_3DS),
+                                ),
+                                defaultSettings =
+                                listOf(
+                                    CoreVariable("citra_use_acc_mul", "disabled"),
+                                    CoreVariable("citra_touch_touchscreen", "enabled"),
+                                    CoreVariable("citra_mouse_touchscreen", "disabled"),
+                                    CoreVariable("citra_render_touchscreen", "disabled"),
+                                    CoreVariable("citra_use_hw_shader_cache", "disabled"),
+                                ),
+                                exposedSettings =
+                                listOf(
+                                    ExposedSetting(
+                                        "citra_layout_option",
+                                        R.string.setting_citra_layout_option,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "Default Top-Bottom Screen",
+                                                R.string.value_citra_layout_option_topbottom,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "Side by Side",
+                                                R.string.value_citra_layout_option_sidebyside,
+                                            ),
+                                        ),
+                                    ),
+                                    ExposedSetting(
+                                        "citra_resolution_factor",
+                                        R.string.setting_citra_resolution_factor,
+                                    ),
+                                    ExposedSetting(
+                                        "citra_use_acc_mul",
+                                        R.string.setting_citra_use_acc_mul,
+                                    ),
+                                    ExposedSetting(
+                                        "citra_use_acc_geo_shaders",
+                                        R.string.setting_citra_use_acc_geo_shaders,
+                                    ),
+                                ),
+                                statesSupported = false,
+                                supportsLibretroVFS = true,
+                                supportedOnlyArchitectures = setOf("arm64-v8a"),
+                            ),
+                        ),
+                        uniqueExtensions = listOf("3ds"),
+                        hasTouchScreen = true,
+                        proOnly = true,
+                    ),
+                )
             }
         }
 
@@ -1315,6 +1317,11 @@ data class GameSystem(
         fun findById(id: String, isProVersion: Boolean): GameSystem {
             val byIdCache = mapOf(*getAvailableSystems(isProVersion).map { it.id.dbname to it }.toTypedArray())
             return byIdCache.getValue(id)
+        }
+
+        fun isSystemProOnly(systemId: String): Boolean {
+            // Always use true to get full list of systems
+            return getAvailableSystems(true).find { it.id.dbname == systemId }?.proOnly ?: false
         }
 
         fun all(isProVersion: Boolean) = getAvailableSystems(isProVersion)

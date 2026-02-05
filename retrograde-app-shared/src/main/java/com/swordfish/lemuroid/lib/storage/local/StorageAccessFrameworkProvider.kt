@@ -49,7 +49,9 @@ import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import androidx.leanback.preference.LeanbackPreferenceFragment
+import com.swordfish.lemuroid.common.kotlin.extract7zEntryToFile
 import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
+import com.swordfish.lemuroid.common.kotlin.is7Zipped
 import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.R
@@ -178,9 +180,11 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
         val originalDocument = DocumentFile.fromSingleUri(context, originalDocumentUri)!!
 
         val isZipped = originalDocument.isZipped() && originalDocument.name != game.fileName
+        val is7Zipped = originalDocument.is7Zipped() && originalDocument.name != game.fileName
 
         return when {
             isZipped && dataFiles.isEmpty() -> getGameRomFilesZipped(game, originalDocument)
+            is7Zipped && dataFiles.isEmpty() -> getGameRomFiles7z(game, originalDocument)
             allowVirtualFiles -> getGameRomFilesVirtual(game, dataFiles)
             else -> getGameRomFilesStandard(game, dataFiles, originalDocument)
         }
@@ -210,6 +214,31 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
                 context.contentResolver.openInputStream(originalDocument.uri),
             )
         stream.extractEntryToFile(game.fileName, cacheFile)
+        return RomFiles.Standard(listOf(cacheFile))
+    }
+
+    private fun getGameRomFiles7z(
+        game: Game,
+        originalDocument: DocumentFile,
+    ): RomFiles {
+        val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
+        if (cacheFile.exists()) {
+            return RomFiles.Standard(listOf(cacheFile))
+        }
+
+        // SevenZFile requires a File, so copy to temp file first
+        val tempFile = File.createTempFile("7z_", ".7z", context.cacheDir)
+        try {
+            context.contentResolver.openInputStream(originalDocument.uri)?.use { input ->
+                tempFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+            tempFile.extract7zEntryToFile(game.fileName, cacheFile)
+        } finally {
+            tempFile.delete()
+        }
+
         return RomFiles.Standard(listOf(cacheFile))
     }
 

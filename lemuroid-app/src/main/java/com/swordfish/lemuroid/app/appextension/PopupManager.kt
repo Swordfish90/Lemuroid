@@ -65,7 +65,7 @@ class PopupManager(private val context: Context) {
                 }
 
                 StartAppDialog.InstallBrowser -> {
-                    if ((!installBrowserDone) && !isBrowserInstalled()) {
+                    if (!isProVersion() && !installBrowserDone && !isBrowserInstalled()) {
                         showInstallBrowserDialog(activity) {
                             onInstallAppPositiveClicked()
                         }

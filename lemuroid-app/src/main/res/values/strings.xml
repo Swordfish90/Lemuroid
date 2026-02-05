@@ -182,7 +182,7 @@
         <item>CRT</item>
         <item>LCD</item>
     </string-array>
-    <string name="string_pro_tutorial_disclamer">:check_mark: + 6 new emulators, including Nintendo 3DS\n:check_mark: HD mode to efficiently upscale games\n:check_mark: Exclusive access to upcoming features</string>
+    <string name="string_pro_tutorial_disclamer">✓ + 6 new emulators, including Nintendo 3DS\n✓ HD mode to efficiently upscale games\n✓ 7z archive support\n✓ Exclusive access to upcoming features</string>
     <string name="string_pro_limited_deal">Limited deal</string>
     <string name="string_pro_price">%d/ lifetime %d</string>
     <string name="string_pro_buy_now">Buy Now</string>

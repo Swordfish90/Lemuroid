@@ -28,4 +28,6 @@ interface BusyActivity {
     fun activity(): Activity
 
     fun isBusy(): Boolean
+
+    fun showProUpgradeFor7z()
 }

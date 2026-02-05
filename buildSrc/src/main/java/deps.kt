@@ -198,6 +198,7 @@ object deps {
         const val retrofitLogging          = "com.squareup.okhttp3:logging-interceptor:4.6.0"
         const val gsonAnnotations          = "com.google.code.gson:gson:2.9.0"
         const val retrofitGsonConverter    = "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+        const val sevenZipJBinding          = "com.github.omicronapps:7-Zip-JBinding-4Android:Release-16.02-2.03"
     }
 
     object plugins {

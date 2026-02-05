@@ -81,6 +81,7 @@ dependencies {
     implementation(deps.libs.material)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
     implementation(deps.libs.flowPreferences)
+    implementation(deps.libs.sevenZipJBinding)
 
     kapt(deps.libs.androidx.room.compiler)
 }

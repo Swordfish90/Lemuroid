@@ -110,6 +110,8 @@ import dagger.Provides
 import de.charlex.compose.material3.HtmlText
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -148,6 +150,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     lateinit var popupManager: PopupManager
 
     private val reviewManager = ReviewManager()
+
+    private val _navigateToProTutorial = MutableStateFlow(false)
+    private val navigateToProTutorial = _navigateToProTutorial.asStateFlow()
 
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModel.Factory(applicationContext, saveSyncManager)
@@ -208,6 +213,15 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
             LaunchedEffect(currentRoute) {
                 mainViewModel.changeRoute(currentRoute)
+            }
+
+            // Handle navigation to Pro Tutorial for 7z feature
+            val shouldNavigateToProTutorial = navigateToProTutorial.collectAsState()
+            LaunchedEffect(shouldNavigateToProTutorial.value) {
+                if (shouldNavigateToProTutorial.value) {
+                    navController.navigate(MainRoute.PRO_TUTORIAL.route)
+                    _navigateToProTutorial.value = false
+                }
             }
 
             val selectedGameState =
@@ -525,6 +539,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     override fun activity(): Activity = this
 
     override fun isBusy(): Boolean = mainViewModel.state.value.operationInProgress ?: false
+
+    override fun showProUpgradeFor7z() {
+        _navigateToProTutorial.value = true
+    }
 
     override fun onActivityResult(
         requestCode: Int,

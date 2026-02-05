@@ -85,3 +85,8 @@
 
 ## LibretroDroid
 -keep class com.swordfish.libretrodroid.** { *; }
+
+## 7-Zip-JBinding (native JNI library)
+-keep class net.sf.sevenzipjbinding.** { *; }
+-keepclassmembers class net.sf.sevenzipjbinding.** { *; }
+-dontwarn net.sf.sevenzipjbinding.**

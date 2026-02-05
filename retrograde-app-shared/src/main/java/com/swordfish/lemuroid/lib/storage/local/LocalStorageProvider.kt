@@ -23,7 +23,9 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.leanback.preference.LeanbackPreferenceFragment
+import com.swordfish.lemuroid.common.kotlin.extract7zEntryToFile
 import com.swordfish.lemuroid.common.kotlin.extractEntryToFile
+import com.swordfish.lemuroid.common.kotlin.is7Zipped
 import com.swordfish.lemuroid.common.kotlin.isZipped
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
@@ -96,7 +98,9 @@ class LocalStorageProvider(
     private fun getGameRom(game: Game): File {
         val gamePath = Uri.parse(game.fileUri).path
         val originalFile = File(gamePath)
-        if (!originalFile.isZipped() || originalFile.name == game.fileName) {
+
+        val isArchive = originalFile.isZipped() || originalFile.is7Zipped()
+        if (!isArchive || originalFile.name == game.fileName) {
             return originalFile
         }
 
@@ -105,9 +109,14 @@ class LocalStorageProvider(
             return cacheFile
         }
 
-        if (originalFile.isZipped()) {
-            val stream = ZipInputStream(originalFile.inputStream())
-            stream.extractEntryToFile(game.fileName, cacheFile)
+        when {
+            originalFile.isZipped() -> {
+                val stream = ZipInputStream(originalFile.inputStream())
+                stream.extractEntryToFile(game.fileName, cacheFile)
+            }
+            originalFile.is7Zipped() -> {
+                originalFile.extract7zEntryToFile(game.fileName, cacheFile)
+            }
         }
 
         return cacheFile

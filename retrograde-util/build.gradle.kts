@@ -39,4 +39,5 @@ dependencies {
 
     implementation(deps.libs.androidx.paging.common)
     implementation(deps.libs.androidx.paging.runtime)
+    implementation(deps.libs.sevenZipJBinding)
 }

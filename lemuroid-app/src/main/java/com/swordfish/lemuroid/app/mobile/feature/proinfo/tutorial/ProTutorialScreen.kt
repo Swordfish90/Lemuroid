@@ -29,7 +29,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.swordfish.lemuroid.app.appextension.convertSpannedToAnnotatedString
-import com.swordfish.lemuroid.app.utils.ImageSpanTextView
 
 @Composable
 fun ProTutorialScreen(
@@ -73,8 +72,10 @@ fun ProTutorialScreen(
             modifier = Modifier.padding(top = 12.dp)
         )
 
-        ImageSpanTextView(
-            formatString = stringResource(R.string.string_pro_tutorial_disclamer)
+        Text(
+            text = stringResource(R.string.string_pro_tutorial_disclamer),
+            fontSize = 14.sp,
+            modifier = Modifier.padding(top = 12.dp)
         )
 
 //        Text(
