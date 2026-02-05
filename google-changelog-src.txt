@@ -1,0 +1,6 @@
+What's New:
+
+• Save Management: Export and import your game saves - backup your progress or transfer between devices
+• 7z Archive Support: Extract 7z archives directly in the app (Pro version)
+• Emulator Core Updates: Improved performance and stability of emulation cores
+• UI & Translation Improvements: Enhanced interface and updated localizations
