@@ -120,9 +120,12 @@ class AndroidXmlParser:
         """
         self.xml_path = Path(xml_path)
 
-    def parse_strings(self) -> Dict[str, str]:
+    def parse_strings(self, include_non_translatable: bool = False) -> Dict[str, str]:
         """
         Parse strings.xml and extract all string resources.
+
+        Args:
+            include_non_translatable: If False (default), skip strings with translatable="false"
 
         Returns:
             Dictionary mapping string keys to their text values
@@ -147,6 +150,11 @@ class AndroidXmlParser:
         for string_elem in root.findall('.//string'):
             name = string_elem.get('name')
             if name:
+                # Skip non-translatable strings unless explicitly requested
+                if not include_non_translatable:
+                    translatable = string_elem.get('translatable', 'true')
+                    if translatable.lower() == 'false':
+                        continue
                 # Get text, handling None case
                 text = string_elem.text or ''
                 strings[name] = text

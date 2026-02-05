@@ -34,6 +34,7 @@ import androidx.preference.PreferenceScreen
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
+import com.swordfish.lemuroid.app.shared.settings.SavesBackupLauncher
 import com.swordfish.lemuroid.app.shared.settings.SaveSyncPreferences
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.coroutines.launchOnState
@@ -213,6 +214,14 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
                     handleResetGamePadBindings()
                 }
             getString(R.string.pref_key_reset_settings) -> handleResetSettings()
+            getString(R.string.pref_key_export_saves) -> {
+                SavesBackupLauncher.launchExport(requireContext())
+                return true
+            }
+            getString(R.string.pref_key_import_saves) -> {
+                SavesBackupLauncher.launchImport(requireContext())
+                return true
+            }
         }
         return super.onPreferenceTreeClick(preference)
     }

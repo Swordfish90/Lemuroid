@@ -65,6 +65,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/settings_category_saves_backup"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="@string/pref_key_export_saves"
+            android:title="@string/settings_title_export_saves"
+            android:summary="@string/settings_description_export_saves"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
+            android:key="@string/pref_key_import_saves"
+            android:title="@string/settings_title_import_saves"
+            android:summary="@string/settings_description_import_saves"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/settings_category_misc"
         app:iconSpaceReserved="false">
 

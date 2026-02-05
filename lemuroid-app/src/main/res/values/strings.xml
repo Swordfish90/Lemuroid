@@ -244,6 +244,8 @@
     <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 
     <string name="settings_category_saves_backup">Saves Backup</string>
+    <string name="pref_key_export_saves" translatable="false">export_saves</string>
+    <string name="pref_key_import_saves" translatable="false">import_saves</string>
     <string name="settings_title_export_saves">Export saves</string>
     <string name="settings_description_export_saves">Create a backup of all saves and states</string>
     <string name="settings_title_import_saves">Import saves</string>

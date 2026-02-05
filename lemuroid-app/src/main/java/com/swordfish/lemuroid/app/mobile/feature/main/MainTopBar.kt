@@ -58,7 +58,8 @@ fun MainTopBar(
     onHelpPressed: () -> Unit,
     onUpdateQueryString: (String) -> Unit,
     mainUIState: MainViewModel.UiState,
-    isProTutorialNavigationVisible: Boolean
+    isProTutorialNavigationVisible: Boolean,
+    onProButtonClick: () -> Unit = {}
 ) {
     Column {
         LemuroidTopAppBar(
@@ -67,7 +68,8 @@ fun MainTopBar(
             mainUIState = mainUIState,
             onHelpPressed = onHelpPressed,
             onUpdateQueryString = onUpdateQueryString,
-            isProTutorialNavigationVisible = isProTutorialNavigationVisible
+            isProTutorialNavigationVisible = isProTutorialNavigationVisible,
+            onProButtonClick = onProButtonClick
         )
 
         AnimatedVisibility(mainUIState.operationInProgress) {
@@ -85,6 +87,7 @@ fun LemuroidTopAppBar(
     onHelpPressed: () -> Unit,
     onUpdateQueryString: (String) -> Unit,
     isProTutorialNavigationVisible: Boolean,
+    onProButtonClick: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val topBarColor = BottomAppBarDefaults.containerColor
@@ -126,7 +129,8 @@ fun LemuroidTopAppBar(
                 saveSyncEnabled = mainUIState.saveSyncEnabled,
                 onHelpPressed = onHelpPressed,
                 operationsInProgress = mainUIState.operationInProgress,
-                isProTutorialNavigationVisible = isProTutorialNavigationVisible
+                isProTutorialNavigationVisible = isProTutorialNavigationVisible,
+                onProButtonClick = onProButtonClick
             )
         },
     )
@@ -140,7 +144,8 @@ fun LemuroidTopBarActions(
     saveSyncEnabled: Boolean,
     operationsInProgress: Boolean,
     onHelpPressed: () -> Unit,
-    isProTutorialNavigationVisible: Boolean
+    isProTutorialNavigationVisible: Boolean,
+    onProButtonClick: () -> Unit = {}
 ) {
     Row {
         IconButton(
@@ -164,8 +169,7 @@ fun LemuroidTopBarActions(
         }
         if (isProTutorialNavigationVisible) {
             IconButton(
-                //todo -> to pro tutorial
-                onClick = { navController.navigate(MainRoute.PRO_TUTORIAL.route) },
+                onClick = onProButtonClick,
             ) {
                 Image(
                     painterResource(R.drawable.ic_pro),

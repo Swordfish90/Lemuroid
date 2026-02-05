@@ -54,7 +54,9 @@ import com.swordfish.lemuroid.app.appextension.FulldiveConfigs
 import com.swordfish.lemuroid.app.appextension.PopupManager
 import com.swordfish.lemuroid.app.appextension.discord.ShareDiscordTextGenerator
 import com.swordfish.lemuroid.app.appextension.discord.ShowShareDialog
+import com.swordfish.lemuroid.app.appextension.isFullRoidProInstalled
 import com.swordfish.lemuroid.app.appextension.isProVersion
+import com.swordfish.lemuroid.app.appextension.launchApp
 import com.swordfish.lemuroid.app.appextension.openAppInGooglePlay
 import com.swordfish.lemuroid.app.fulldive.analytics.IActionTracker
 import com.swordfish.lemuroid.app.fulldive.analytics.TrackerConstants
@@ -258,7 +260,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         onHelpPressed = onHelpPressed,
                         mainUIState = mainUIState,
                         onUpdateQueryString = { mainViewModel.changeQueryString(it) },
-                        isProTutorialNavigationVisible = currentRoute != MainRoute.PRO_TUTORIAL && !isProVersion()
+                        isProTutorialNavigationVisible = currentRoute != MainRoute.PRO_TUTORIAL && !isProVersion(),
+                        onProButtonClick = {
+                            if (packageManager.isFullRoidProInstalled()) {
+                                launchApp(this@MainActivity, FulldiveConfigs.FULLROID_PRO_PACKAGE_NAME)
+                            } else {
+                                navController.navigate(MainRoute.PRO_TUTORIAL.route)
+                            }
+                        }
                     )
                 },
                 bottomBar = { MainNavigationBar(currentRoute, navController) },
@@ -414,7 +423,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 ),
                             navController = navController,
                             onBuyProClick = {
-                                openAppInGooglePlay(FulldiveConfigs.FULLROID_PRO_PACKAGE_NAME)
+                                if (packageManager.isFullRoidProInstalled()) {
+                                    launchApp(this@MainActivity, FulldiveConfigs.FULLROID_PRO_PACKAGE_NAME)
+                                } else {
+                                    openAppInGooglePlay(FulldiveConfigs.FULLROID_PRO_PACKAGE_NAME)
+                                }
                             }
                         )
                     }
@@ -541,7 +554,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     override fun isBusy(): Boolean = mainViewModel.state.value.operationInProgress ?: false
 
     override fun showProUpgradeFor7z() {
-        _navigateToProTutorial.value = true
+        if (packageManager.isFullRoidProInstalled()) {
+            launchApp(this, FulldiveConfigs.FULLROID_PRO_PACKAGE_NAME)
+        } else {
+            _navigateToProTutorial.value = true
+        }
     }
 
     override fun onActivityResult(
