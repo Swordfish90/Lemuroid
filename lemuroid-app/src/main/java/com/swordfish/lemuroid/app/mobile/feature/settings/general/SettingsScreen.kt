@@ -1,9 +1,13 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.general
 
 import android.net.Uri
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -14,6 +18,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.navigateToRoute
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
+import com.swordfish.lemuroid.app.shared.settings.SavesBackupLauncher
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -55,6 +60,7 @@ fun SettingsScreen(
         )
         GeneralSettings()
         InputSettings(navController = navController)
+        SavesBackupSettings()
         MiscSettings(
             indexingInProgress = indexingInProgress,
             isSaveSyncSupported = state.isSaveSyncSupported,
@@ -221,4 +227,61 @@ private fun RomsSettings(
             )
         }
     }
+}
+
+@Composable
+private fun SavesBackupSettings() {
+    val context = LocalContext.current
+    val importConfirmDialogState = remember { mutableStateOf(false) }
+
+    LemuroidCardSettingsGroup(
+        title = { Text(text = stringResource(id = R.string.settings_category_saves_backup)) },
+    ) {
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.settings_title_export_saves)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_export_saves)) },
+            onClick = { SavesBackupLauncher.launchExport(context) },
+        )
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.settings_title_import_saves)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_import_saves)) },
+            onClick = { importConfirmDialogState.value = true },
+        )
+    }
+
+    if (importConfirmDialogState.value) {
+        ImportConfirmationDialog(
+            dialogState = importConfirmDialogState,
+            onConfirm = { SavesBackupLauncher.launchImport(context) },
+        )
+    }
+}
+
+@Composable
+private fun ImportConfirmationDialog(
+    dialogState: MutableState<Boolean>,
+    onConfirm: () -> Unit,
+) {
+    val onDismiss = { dialogState.value = false }
+
+    AlertDialog(
+        title = { Text(stringResource(id = R.string.saves_backup_import_warning_title)) },
+        text = { Text(stringResource(id = R.string.saves_backup_import_warning_message)) },
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirm()
+                    onDismiss()
+                },
+            ) {
+                Text(text = stringResource(id = R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(id = R.string.cancel))
+            }
+        },
+    )
 }

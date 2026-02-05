@@ -242,4 +242,17 @@
     <string name="tilt_configuration_buttons_l_r">L - R</string>
     <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
     <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+
+    <string name="settings_category_saves_backup">Saves Backup</string>
+    <string name="settings_title_export_saves">Export saves</string>
+    <string name="settings_description_export_saves">Create a backup of all saves and states</string>
+    <string name="settings_title_import_saves">Import saves</string>
+    <string name="settings_description_import_saves">Restore saves and states from backup</string>
+    <string name="saves_backup_import_warning_title">Replace existing saves?</string>
+    <string name="saves_backup_import_warning_message">This will replace all existing saves, states and state previews. This action cannot be undone.</string>
+    <string name="saves_backup_export_success">Saves exported successfully</string>
+    <string name="saves_backup_export_error">Failed to export saves</string>
+    <string name="saves_backup_import_success">Saves imported successfully</string>
+    <string name="saves_backup_import_error">Failed to import saves</string>
+    <string name="saves_backup_error_no_file_picker">File picker not available on this device</string>
 </resources>

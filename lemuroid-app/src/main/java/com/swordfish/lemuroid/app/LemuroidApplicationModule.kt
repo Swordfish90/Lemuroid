@@ -45,6 +45,7 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
+import com.swordfish.lemuroid.app.shared.settings.SavesBackupLauncher
 import com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher
 import com.swordfish.lemuroid.app.tv.channel.ChannelHandler
 import com.swordfish.lemuroid.app.tv.settings.BiosPreferences
@@ -121,6 +122,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector
     abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun savesBackupLauncher(): SavesBackupLauncher
 
     @PerActivity
     @ContributesAndroidInjector(modules = [GamePadBindingActivity.Module::class])
