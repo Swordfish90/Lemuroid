@@ -119,7 +119,6 @@
     <string name="library_index_notification_message">Tämä voi kestää jopa muutaman minuutin</string>
     <string name="save_sync_notification_title">Synkronointi pilven tallennuksessa käynnissä</string>
     <string name="save_sync_notification_message">Tämä voi kestää jopa muutaman minuutin</string>
-    <string name="game_running_notification_title">%1$s on käynnissä</string>
     <string name="game_running_notification_title_alternative">Peli on käynnissä</string>
     <string name="game_running_notification_message">Varmista, että tallennat edistymisesi</string>
     <string name="game_loader_error_gl_incompatible">Tämä ydin vaatii OpenGL ES -version, jota laitteesi ei tue.</string>

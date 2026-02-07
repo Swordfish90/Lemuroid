@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">H διαδικασία ίσως διαρκέσει μερικά λεπτά</string>
     <string name="save_sync_notification_title">Συγχρονισμός αποθήκευσης στο Cloud σε εξέλιξη</string>
     <string name="save_sync_notification_message">H διαδικασία ίσως διαρκέσει μερικά λεπτά</string>
-    <string name="game_running_notification_title">%1$s εκτελείται</string>
     <string name="game_running_notification_title_alternative">Το παιχνίδι τρέχει</string>
     <string name="game_running_notification_message">Βεβαιωθείτε ότι αποθηκεύσατε την πρόοδό σας</string>
     <string name="game_loader_error_gl_incompatible">Αυτός ο πυρήνας απαιτεί μια έκδοση OpenGL ES η οποία δεν υποστηρίζεται από τη συσκευή σας.</string>

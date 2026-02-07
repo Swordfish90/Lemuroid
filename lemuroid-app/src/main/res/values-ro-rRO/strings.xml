@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Aceasta poate dura până la câteva minute</string>
     <string name="save_sync_notification_title">Salvare Cloud în curs de sincronizare</string>
     <string name="save_sync_notification_message">Aceasta poate dura până la câteva minute</string>
-    <string name="game_running_notification_title">%1$s rulează</string>
     <string name="game_running_notification_title_alternative">Jocul rulează</string>
     <string name="game_running_notification_message">Asigură-te că îți salvezi progresul</string>
     <string name="game_loader_error_gl_incompatible">Acest Nucleu necesită o versiune OpenGL ES care nu este suportată de dispozitivul dvs.</string>

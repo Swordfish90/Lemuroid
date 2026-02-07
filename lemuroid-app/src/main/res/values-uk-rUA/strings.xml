@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Це може зайняти кілька хвилин</string>
     <string name="save_sync_notification_title">Виконується збереження в хмару</string>
     <string name="save_sync_notification_message">Це може зайняти кілька хвилин</string>
-    <string name="game_running_notification_title">%1$s працює</string>
     <string name="game_running_notification_title_alternative">Гра працює</string>
     <string name="game_running_notification_message">Переконайтеся, що ви зберегли свій прогрес</string>
     <string name="game_loader_error_gl_incompatible">Це ядро потребує версію OpenGL ES яка не підтримується вашим пристроєм.</string>

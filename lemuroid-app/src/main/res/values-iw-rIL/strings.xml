@@ -96,7 +96,6 @@
     <string name="notification_channel_name">כל ההתראות</string>
     <string name="library_index_notification_message">פעולה זו עשויה להימשך מספר דקות</string>
     <string name="save_sync_notification_title">סינכרון המשחק עם הענן בתהליך</string>
-    <string name="game_running_notification_title">%1$s פועל כעת</string>
     <string name="game_running_notification_title_alternative">המשחק פועל כעת</string>
     <string name="game_running_notification_message">אנא וודא ששמרת את ההתקדמות שלך</string>
     <string name="game_loader_error_gl_incompatible">ליבה זו דורשת גירסה של OpenGL ES שמכשירך אינו תומך בה.</string>

@@ -11,7 +11,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.game.saves.AutoSaveCoordinator
+import com.swordfish.lemuroid.app.shared.game.saves.AutoSavePayload
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelInput
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelSaves
@@ -46,21 +49,22 @@ import timber.log.Timber
 class BaseGameScreenViewModel(
     private val appContext: Context,
     private val game: Game,
+    private val autoSaveCoordinator: AutoSaveCoordinator,
     settingsManager: SettingsManager,
     inputDeviceManager: InputDeviceManager,
     controllerConfigsManager: ControllerConfigsManager,
     system: GameSystem,
-    systemCoreConfig: SystemCoreConfig,
+    private val systemCoreConfig: SystemCoreConfig,
     sharedPreferences: SharedPreferences,
     statesManager: StatesManager,
     statesPreviewManager: StatesPreviewManager,
-    savesManager: SavesManager,
     coreVariablesManager: CoreVariablesManager,
     rumbleManager: RumbleManager,
 ) : ViewModel(), DefaultLifecycleObserver {
     class Factory(
         private val appContext: Context,
         private val game: Game,
+        private val autoSaveCoordinator: AutoSaveCoordinator,
         private val settingsManager: SettingsManager,
         private val inputDeviceManager: InputDeviceManager,
         private val controllerConfigsManager: ControllerConfigsManager,
@@ -69,7 +73,6 @@ class BaseGameScreenViewModel(
         private val sharedPreferences: SharedPreferences,
         private val statesManager: StatesManager,
         private val statesPreviewManager: StatesPreviewManager,
-        private val legacySavesManager: SavesManager,
         private val coreVariablesManager: CoreVariablesManager,
         private val rumbleManager: RumbleManager,
     ) : ViewModelProvider.Factory {
@@ -77,6 +80,7 @@ class BaseGameScreenViewModel(
             return BaseGameScreenViewModel(
                 appContext,
                 game,
+                autoSaveCoordinator,
                 settingsManager,
                 inputDeviceManager,
                 controllerConfigsManager,
@@ -85,7 +89,6 @@ class BaseGameScreenViewModel(
                 sharedPreferences,
                 statesManager,
                 statesPreviewManager,
-                legacySavesManager,
                 coreVariablesManager,
                 rumbleManager,
             ) as T
@@ -135,7 +138,6 @@ class BaseGameScreenViewModel(
             systemCoreConfig,
             retroGameView,
             settingsManager,
-            savesManager,
             statesManager,
             statesPreviewManager,
             sideEffects,
@@ -287,10 +289,33 @@ class BaseGameScreenViewModel(
         if (loadingState.value) return
         viewModelScope.launch {
             withLoading {
-                saves.saveSRAM(game)
-                saves.saveAutoSave(game)
+                val snapshot = saves.captureSaveSnapshot(true) ?: return@launch
+                autoSaveCoordinator.write(
+                    AutoSavePayload(
+                        game = game,
+                        coreID = systemCoreConfig.coreID,
+                        sram = snapshot.sram,
+                        autoSave = snapshot.autoSave,
+                    ),
+                )
                 sideEffects.requestSuccessfulFinish()
             }
+        }
+    }
+
+    fun requestBackgroundSave() {
+        if (loadingState.value) return
+        viewModelScope.launch {
+            val snapshot = saves.captureSaveSnapshot(false) ?: return@launch
+            autoSaveCoordinator.setPending(
+                AutoSavePayload(
+                    game = game,
+                    coreID = systemCoreConfig.coreID,
+                    sram = snapshot.sram,
+                    autoSave = snapshot.autoSave,
+                ),
+            )
+            GameService.startService(appContext)
         }
     }
 

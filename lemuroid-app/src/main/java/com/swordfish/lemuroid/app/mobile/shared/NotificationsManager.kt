@@ -6,20 +6,25 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
+import com.swordfish.lemuroid.app.tv.game.TVGameActivity
 import com.swordfish.lemuroid.app.shared.library.CoreUpdateBroadcastReceiver
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexBroadcastReceiver
-import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 class NotificationsManager(private val applicationContext: Context) {
-    fun gameRunningNotification(game: Game?): Notification {
+    fun gameRunningNotification(): Notification {
         createDefaultNotificationChannel()
 
-        val intent = Intent(applicationContext, GameActivity::class.java)
+        val intent =
+            Intent(
+                applicationContext,
+                if (isTelevision()) TVGameActivity::class.java else GameActivity::class.java,
+            )
         val contentIntent =
             PendingIntent.getActivity(
                 applicationContext,
@@ -28,10 +33,7 @@ class NotificationsManager(private val applicationContext: Context) {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
 
-        val title =
-            game?.let {
-                applicationContext.getString(R.string.game_running_notification_title, game.title)
-            } ?: applicationContext.getString(R.string.game_running_notification_title_alternative)
+        val title = applicationContext.getString(R.string.game_running_notification_title_alternative)
 
         val builder =
             NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
@@ -139,6 +141,11 @@ class NotificationsManager(private val applicationContext: Context) {
 
             notificationManager?.createNotificationChannel(mChannel)
         }
+    }
+
+    private fun isTelevision(): Boolean {
+        val uiMode = applicationContext.resources.configuration.uiMode
+        return (uiMode and Configuration.UI_MODE_TYPE_MASK) == Configuration.UI_MODE_TYPE_TELEVISION
     }
 
     companion object {

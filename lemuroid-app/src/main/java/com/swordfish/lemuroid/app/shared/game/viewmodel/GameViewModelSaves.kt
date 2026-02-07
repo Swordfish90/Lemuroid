@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.IncompatibleStateException
 import com.swordfish.lemuroid.lib.saves.SaveState
-import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.libretrodroid.GLRetroView
@@ -27,12 +26,16 @@ class GameViewModelSaves(
     private val systemCoreConfig: SystemCoreConfig,
     private val retroGameView: GameViewModelRetroGameView,
     private val settingsManager: SettingsManager,
-    private val savesManager: SavesManager,
     private val statesManager: StatesManager,
     private val statesPreviewManager: StatesPreviewManager,
     private val sideEffects: GameViewModelSideEffects,
 ) {
     private var currentQuickSave: SaveState? = null
+
+    data class SaveSnapshot(
+        val sram: ByteArray,
+        val autoSave: SaveState?,
+    )
 
     suspend fun saveSlot(index: Int) {
         getCurrentSaveState()?.let {
@@ -65,21 +68,11 @@ class GameViewModelSaves(
         }
     }
 
-    suspend fun saveSRAM(game: Game) {
-        val retroGameView = retroGameView.retroGameView ?: return
-        val sramState = retroGameView.serializeSRAM()
-        savesManager.setSaveRAM(game, sramState)
-        Timber.i("Stored sram file with size: ${sramState.size}")
-    }
-
-    suspend fun saveAutoSave(game: Game) {
-        if (!isAutoSaveEnabled()) return
-        val state = getCurrentSaveState()
-
-        if (state != null) {
-            statesManager.setAutoSave(game, systemCoreConfig.coreID, state)
-            Timber.i("Stored autosave file with size: ${state?.state?.size}")
-        }
+    suspend fun captureSaveSnapshot(useEmulationThread: Boolean): SaveSnapshot? {
+        val retroGameView = retroGameView.retroGameView ?: return null
+        val sramState = retroGameView.serializeSRAM(useEmulationThread)
+        val autoSaveState = if (isAutoSaveEnabled()) getCurrentSaveState(useEmulationThread) else null
+        return SaveSnapshot(sramState, autoSaveState)
     }
 
     // On some cores unserialize fails with no reason. So we need to try multiple times.
@@ -96,16 +89,16 @@ class GameViewModelSaves(
         }
     }
 
-    private fun getCurrentSaveState(): SaveState? {
+    private fun getCurrentSaveState(useEmulationThread: Boolean = true): SaveState? {
         val retroGameView = retroGameView.retroGameView ?: return null
         val currentDisk =
             if (system.hasMultiDiskSupport) {
-                retroGameView.getCurrentDisk()
+                retroGameView.getCurrentDisk(useEmulationThread)
             } else {
                 0
             }
         return SaveState(
-            retroGameView.serializeState(),
+            retroGameView.serializeState(useEmulationThread),
             SaveState.Metadata(currentDisk, systemCoreConfig.statesVersion),
         )
     }

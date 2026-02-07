@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Isto pode levar alguns minutos</string>
     <string name="save_sync_notification_title">Sincronização em andamento para salvar na nuvem</string>
     <string name="save_sync_notification_message">Isto pode levar alguns minutos</string>
-    <string name="game_running_notification_title">%1$s está em execução</string>
     <string name="game_running_notification_title_alternative">O jogo está em execução</string>
     <string name="game_running_notification_message">Certifique-se de salvar o seu progresso</string>
     <string name="game_loader_error_gl_incompatible">Este Núcleo requer uma versão OpenGL ES que não é suportada pelo seu dispositivo.</string>

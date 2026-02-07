@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Dit kan een paar minuten duren</string>
     <string name="save_sync_notification_title">Cloud opslag wordt gesynchroniseerd</string>
     <string name="save_sync_notification_message">Dit kan een paar minuten duren</string>
-    <string name="game_running_notification_title">%1$s is actief</string>
     <string name="game_running_notification_title_alternative">Game is actief</string>
     <string name="game_running_notification_message">Zorg ervoor dat je je voortgang opslaat</string>
     <string name="game_loader_error_gl_incompatible">Deze Core heeft een OpenGL ES versie nodig die je apparaat niet ondersteund.</string>

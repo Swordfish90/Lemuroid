@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">몇 분 정도 걸립니다</string>
     <string name="save_sync_notification_title">클라우드 동기화 진행 중</string>
     <string name="save_sync_notification_message">몇 분 정도 걸립니다</string>
-    <string name="game_running_notification_title">%1$s 실행 중</string>
     <string name="game_running_notification_title_alternative">게임 실행 중</string>
     <string name="game_running_notification_message">진행 상황 저장을 잊지 마세요</string>
     <string name="game_loader_error_gl_incompatible">이 장치에서는 이 코어가 요구하는 OpenGL ES 버전이 지원되지 않습니다.</string>

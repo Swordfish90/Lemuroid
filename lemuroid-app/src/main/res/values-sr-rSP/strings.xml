@@ -111,7 +111,6 @@
     <string name="library_index_notification_message">Ово може потрајати до неколико минута</string>
     <string name="save_sync_notification_title">Синхронизација чувања на облаку у току</string>
     <string name="save_sync_notification_message">Ово може потрајати до неколико минута</string>
-    <string name="game_running_notification_title">%1$s је у току</string>
     <string name="game_running_notification_title_alternative">Игра је у току</string>
     <string name="game_running_notification_message">Обавезно сачувајте свој напредак</string>
     <string name="game_loader_error_gl_incompatible">Ово језгро захтева OpenGL ES верзију која није подржана на Вашем уређају.</string>

@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
+import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.shared.game.saves.AutoSaveCoordinator
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.ImmersiveActivity
 import com.swordfish.lemuroid.app.shared.coreoptions.CoreOption
@@ -24,7 +26,6 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.tv.game.TVGameActivity
-import com.swordfish.lemuroid.common.animationDuration
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
@@ -35,14 +36,12 @@ import com.swordfish.lemuroid.lib.library.ExposedSetting
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
-import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import dagger.Lazy
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -63,8 +62,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject
     lateinit var statesPreviewManager: StatesPreviewManager
 
-    @Inject
-    lateinit var legacySavesManager: SavesManager
 
     @Inject
     lateinit var coreVariablesManager: CoreVariablesManager
@@ -84,14 +81,17 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject
     lateinit var sharedPreferences: Lazy<SharedPreferences>
 
+    @Inject
+    lateinit var autoSaveCoordinator: AutoSaveCoordinator
+
     private lateinit var baseGameScreenViewModel: BaseGameScreenViewModel
 
     private val startGameTime = System.currentTimeMillis()
+    private var finishTriggered = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpExceptionsHandler()
-
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
         system = GameSystem.findById(game.systemId)
@@ -100,6 +100,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             BaseGameScreenViewModel.Factory(
                 applicationContext,
                 game,
+                autoSaveCoordinator,
                 settingsManager,
                 inputDeviceManager,
                 controllerConfigsManager,
@@ -108,7 +109,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 sharedPreferences.get(),
                 statesManager,
                 statesPreviewManager,
-                legacySavesManager,
                 coreVariablesManager,
                 rumbleManager,
             )
@@ -145,6 +145,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             },
         )
 
+        startGameService()
         initialiseFlows()
     }
 
@@ -330,15 +331,28 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun finishAndExitProcess() {
         onFinishTriggered()
-        GlobalScope.launch {
-            delay(animationDuration().toLong())
-            exitProcess(0)
-        }
         finish()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
-    open fun onFinishTriggered() {}
+    open fun onFinishTriggered() {
+        finishTriggered = true
+    }
+
+    override fun onStop() {
+        if (!finishTriggered && !isFinishing && !isChangingConfigurations) {
+            baseGameScreenViewModel.requestBackgroundSave()
+        }
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        if (!isChangingConfigurations) {
+            autoSaveCoordinator.requestStop()
+            GameService.startService(applicationContext)
+        }
+        super.onDestroy()
+    }
 
     override fun onActivityResult(
         requestCode: Int,
@@ -397,6 +411,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 baseGameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
             }
         }
+    }
+
+    private fun startGameService() {
+        GameService.startService(applicationContext)
     }
 
     companion object {

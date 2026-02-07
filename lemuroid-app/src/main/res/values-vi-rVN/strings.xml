@@ -108,7 +108,6 @@
     <string name="library_index_notification_message">Việc này có thể mất tối đa vài phút</string>
     <string name="save_sync_notification_title">Đang đồng bộ bản lưu trên đám mây</string>
     <string name="save_sync_notification_message">Việc này có thể mất tối đa vài phút</string>
-    <string name="game_running_notification_title">%1$s đang chạy</string>
     <string name="game_running_notification_title_alternative">Trò chơi đang chạy</string>
     <string name="game_running_notification_message">Hãy bảo đảm rằng bạn lưu tiến trình của bạn</string>
     <string name="game_loader_error_gl_incompatible">Lõi này yêu cầu một phiên bản OpenGL ES không được thiết bị của bạn hỗ trợ.</string>

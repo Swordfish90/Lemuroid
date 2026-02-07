@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Może to zająć do kilku minut</string>
     <string name="save_sync_notification_title">Synchronizacja zapisu w Chmurze</string>
     <string name="save_sync_notification_message">Może to zająć do kilku minut</string>
-    <string name="game_running_notification_title">%1$s jest uruchomione</string>
     <string name="game_running_notification_title_alternative">Gra jest uruchomiona</string>
     <string name="game_running_notification_message">Upewnij się, że zapisałeś swoje postępy</string>
     <string name="game_loader_error_gl_incompatible">Ten rdzeń wymaga wersji OpenGL ES, która nie jest obsługiwana przez Twoje urządzenie.</string>
