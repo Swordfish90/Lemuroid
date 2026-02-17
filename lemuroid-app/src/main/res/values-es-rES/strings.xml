@@ -155,6 +155,7 @@
     <string name="tv_game_message_missing_gamepad">Se requiere un mando para jugar. Por favor, conecta uno.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecta el mando para editar los controles táctiles</string>
     <string name="game_interactory_busy">Espera a que se completen las operaciones pendientes</string>
+    <string name="game_interactor_notification_permission_required">Por favor, activa las notificaciones de Inicio para continuar</string>
     <string name="mobile_settings_help">Ayuda</string>
     <string name="mobile_settings_support">Soporte</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;¿Cómo usar Lemuroid?</b><br/>
