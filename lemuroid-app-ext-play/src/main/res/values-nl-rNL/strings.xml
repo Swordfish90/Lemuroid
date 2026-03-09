@@ -20,7 +20,7 @@
 <resources>
     <string name="gdrive_sign_in_failed">Google login mislukt: %s (%s)</string>
     <string name="gdrive_sign_in_success">Ingelogd bij Google als %s</string>
-    <string name="gdrive_sign_out_success">Uigelogd van Google</string>
+    <string name="gdrive_sign_out_success">Uitgelogd bij Google</string>
     <string name="gdrive_missing_play_services">Google Drive heeft Google Play Services nodig, wat jouw apparaat niet ondersteund</string>
     <string name="gdrive_connected_summary">Gekoppeld aan %s</string>
     <string name="gdrive_connected_none_summary">Niet geconfigureerd</string>
