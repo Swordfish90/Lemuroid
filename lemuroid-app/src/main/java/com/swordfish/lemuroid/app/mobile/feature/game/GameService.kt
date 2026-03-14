@@ -6,28 +6,33 @@ import android.content.pm.ServiceInfo
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
-import com.swordfish.lemuroid.app.shared.game.saves.AutoSaveCoordinator
 import dagger.android.DaggerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import kotlin.system.exitProcess
 
 class GameService : DaggerService() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
-    @Inject
-    lateinit var autoSaveCoordinator: AutoSaveCoordinator
 
     override fun onBind(intent: Intent?) = null
 
     override fun onCreate() {
         super.onCreate()
         displayNotification()
+        serviceScope.launch {
+            awaitTermination()
+            withContext(Dispatchers.Main) {
+                ServiceCompat.stopForeground(this@GameService, ServiceCompat.STOP_FOREGROUND_REMOVE)
+                stopSelf()
+                exitProcess(0)
+            }
+        }
     }
 
     override fun onStartCommand(
@@ -35,9 +40,6 @@ class GameService : DaggerService() {
         flags: Int,
         startId: Int,
     ): Int {
-        serviceScope.launch {
-            processPending()
-        }
         return START_NOT_STICKY
     }
 
@@ -61,29 +63,37 @@ class GameService : DaggerService() {
         hideNotification()
     }
 
-    private suspend fun processPending() {
-        val payload = autoSaveCoordinator.popPending()
-        if (payload != null) {
-            autoSaveCoordinator.write(payload)
-        }
-        finishServiceIfNeeded()
-    }
-
-    private suspend fun finishServiceIfNeeded() {
-        if (!autoSaveCoordinator.shouldStop() || autoSaveCoordinator.hasPending()) {
-            return
-        }
-
-        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-        hideNotification()
-        delay(500)
-        stopSelf()
-        exitProcess(0)
-    }
-
     companion object {
+        private data class GameProcessTask(
+            val task: suspend () -> Unit = {},
+            val terminate: Boolean = false,
+        )
+
+        private val tasks = Channel<GameProcessTask>(capacity = Channel.BUFFERED)
+
         fun startService(context: Context) {
             context.startService(Intent(context, GameService::class.java))
+        }
+
+        fun schedule(task: suspend () -> Unit) {
+            val result = tasks.trySend(GameProcessTask(task = task))
+            Timber.i("GameService.schedule sent=%s", result.isSuccess)
+        }
+
+        fun requestTermination() {
+            val result = tasks.trySend(GameProcessTask(terminate = true))
+            Timber.i("GameService.requestTermination sent=%s", result.isSuccess)
+        }
+
+        private suspend fun awaitTermination() {
+            for (task in tasks) {
+                runCatching { task.task() }
+                    .onFailure { Timber.e(it, "GameService task failed") }
+
+                if (task.terminate) {
+                    return
+                }
+            }
         }
     }
 }

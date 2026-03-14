@@ -196,6 +196,8 @@
     <string name="game_interactory_busy">Wait for the pending operations to complete</string>
     <string name="game_interactor_notification_permission_required">Please enable notifications from Home to continue</string>
 
+    <string name="game_process_another_game_running">Please close the current game before starting another</string>
+
     <string name="mobile_settings_help">Help</string>
     <string name="mobile_settings_support">Support</string>
     <string name="lemuroid_help_content"><![CDATA[

@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.IncompatibleStateException
 import com.swordfish.lemuroid.lib.saves.SaveState
+import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.libretrodroid.GLRetroView
@@ -26,6 +27,7 @@ class GameViewModelSaves(
     private val systemCoreConfig: SystemCoreConfig,
     private val retroGameView: GameViewModelRetroGameView,
     private val settingsManager: SettingsManager,
+    private val savesManager: SavesManager,
     private val statesManager: StatesManager,
     private val statesPreviewManager: StatesPreviewManager,
     private val sideEffects: GameViewModelSideEffects,
@@ -73,6 +75,19 @@ class GameViewModelSaves(
         val sramState = retroGameView.serializeSRAM(useEmulationThread)
         val autoSaveState = if (isAutoSaveEnabled()) getCurrentSaveState(useEmulationThread) else null
         return SaveSnapshot(sramState, autoSaveState)
+    }
+
+    suspend fun writeSaveSnapshot(snapshot: SaveSnapshot?) {
+        if (snapshot == null) return
+        Timber.i(
+            "GameViewModelSaves.write game=%s core=%s writingSram=%s writingAutoSave=%s",
+            game.id,
+            systemCoreConfig.coreID,
+            true,
+            snapshot.autoSave != null,
+        )
+        savesManager.setSaveRAM(game, snapshot.sram)
+        snapshot.autoSave?.let { statesManager.setAutoSave(game, systemCoreConfig.coreID, it) }
     }
 
     // On some cores unserialize fails with no reason. So we need to try multiple times.

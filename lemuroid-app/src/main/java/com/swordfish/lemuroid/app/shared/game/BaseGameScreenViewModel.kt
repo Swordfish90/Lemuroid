@@ -13,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
-import com.swordfish.lemuroid.app.shared.game.saves.AutoSaveCoordinator
-import com.swordfish.lemuroid.app.shared.game.saves.AutoSavePayload
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelInput
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelSaves
@@ -48,14 +46,14 @@ import timber.log.Timber
 
 class BaseGameScreenViewModel(
     private val appContext: Context,
-    private val game: Game,
-    private val autoSaveCoordinator: AutoSaveCoordinator,
+    game: Game,
     settingsManager: SettingsManager,
     inputDeviceManager: InputDeviceManager,
     controllerConfigsManager: ControllerConfigsManager,
     system: GameSystem,
-    private val systemCoreConfig: SystemCoreConfig,
+    systemCoreConfig: SystemCoreConfig,
     sharedPreferences: SharedPreferences,
+    savesManager: SavesManager,
     statesManager: StatesManager,
     statesPreviewManager: StatesPreviewManager,
     coreVariablesManager: CoreVariablesManager,
@@ -64,13 +62,13 @@ class BaseGameScreenViewModel(
     class Factory(
         private val appContext: Context,
         private val game: Game,
-        private val autoSaveCoordinator: AutoSaveCoordinator,
         private val settingsManager: SettingsManager,
         private val inputDeviceManager: InputDeviceManager,
         private val controllerConfigsManager: ControllerConfigsManager,
         private val system: GameSystem,
         private val systemCoreConfig: SystemCoreConfig,
         private val sharedPreferences: SharedPreferences,
+        private val savesManager: SavesManager,
         private val statesManager: StatesManager,
         private val statesPreviewManager: StatesPreviewManager,
         private val coreVariablesManager: CoreVariablesManager,
@@ -80,13 +78,13 @@ class BaseGameScreenViewModel(
             return BaseGameScreenViewModel(
                 appContext,
                 game,
-                autoSaveCoordinator,
                 settingsManager,
                 inputDeviceManager,
                 controllerConfigsManager,
                 system,
                 systemCoreConfig,
                 sharedPreferences,
+                savesManager,
                 statesManager,
                 statesPreviewManager,
                 coreVariablesManager,
@@ -138,6 +136,7 @@ class BaseGameScreenViewModel(
             systemCoreConfig,
             retroGameView,
             settingsManager,
+            savesManager,
             statesManager,
             statesPreviewManager,
             sideEffects,
@@ -290,14 +289,7 @@ class BaseGameScreenViewModel(
         viewModelScope.launch {
             withLoading {
                 val snapshot = saves.captureSaveSnapshot(true) ?: return@launch
-                autoSaveCoordinator.write(
-                    AutoSavePayload(
-                        game = game,
-                        coreID = systemCoreConfig.coreID,
-                        sram = snapshot.sram,
-                        autoSave = snapshot.autoSave,
-                    ),
-                )
+                saves.writeSaveSnapshot(snapshot)
                 sideEffects.requestSuccessfulFinish()
             }
         }
@@ -305,17 +297,9 @@ class BaseGameScreenViewModel(
 
     fun requestBackgroundSave() {
         if (loadingState.value) return
-        viewModelScope.launch {
-            val snapshot = saves.captureSaveSnapshot(false) ?: return@launch
-            autoSaveCoordinator.setPending(
-                AutoSavePayload(
-                    game = game,
-                    coreID = systemCoreConfig.coreID,
-                    sram = snapshot.sram,
-                    autoSave = snapshot.autoSave,
-                ),
-            )
-            GameService.startService(appContext)
+        GameService.schedule {
+            val snapshot = saves.captureSaveSnapshot(false)
+            saves.writeSaveSnapshot(snapshot)
         }
     }
 
