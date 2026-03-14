@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Cela peut prendre quelques minutes</string>
     <string name="save_sync_notification_title">Synchronisation des sauvegardes dans le Nuage en cours</string>
     <string name="save_sync_notification_message">Cela peut prendre quelques minutes</string>
-    <string name="game_running_notification_title">%1$s est en cours d\'exécution</string>
     <string name="game_running_notification_title_alternative">Un jeu est en marche</string>
     <string name="game_running_notification_message">N\'oubliez pas de sauvegarder votre progression</string>
     <string name="game_loader_error_gl_incompatible">Ce Cœur nécessite une version d\'OpenGL ES qui n\'est pas prise en charge par votre appareil.</string>
