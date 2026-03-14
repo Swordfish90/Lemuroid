@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">قد يستغرق ذلك بضع دقائق</string>
     <string name="save_sync_notification_title">يتم مزامنة الحفظ السحابي</string>
     <string name="save_sync_notification_message">قد يستغرق ذلك بضع دقائق</string>
-    <string name="game_running_notification_title">%1$s قيد التشغيل</string>
     <string name="game_running_notification_title_alternative">اللعبة قيد التشغيل</string>
     <string name="game_running_notification_message">تأكد من حفظ التقدم الخاص بك</string>
     <string name="game_loader_error_gl_incompatible">تتطلب هذا النواة إصدار OpenGL ES الذي لا يدعمه جهازك.</string>
