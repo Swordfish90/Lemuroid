@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Det kan ta några minuter</string>
     <string name="save_sync_notification_title">Molnbackup pågår</string>
     <string name="save_sync_notification_message">Det kan ta några minuter</string>
-    <string name="game_running_notification_title">%1$s körs</string>
     <string name="game_running_notification_title_alternative">Spelet körs fortfarande</string>
     <string name="game_running_notification_message">Se till att spara dina framsteg</string>
     <string name="game_loader_error_gl_incompatible">Denna kärna kräver en OpenGL ES-version som inte stöds av din enhet.</string>
