@@ -155,6 +155,7 @@
     <string name="game_edit_touch_controls_error_not_visible">Koppel je pad los om je aanraakbesturingselementen te bewerken</string>
     <string name="game_interactory_busy">Wacht tot de lopende opdrachten zijn voltooid</string>
     <string name="game_interactor_notification_permission_required">Schakel meldingen van Start in om door te gaan</string>
+    <string name="game_process_another_game_running">Sluit het huidige spel voor je een andere begint</string>
     <string name="mobile_settings_help">Help</string>
     <string name="mobile_settings_support">Ondersteuning</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hoe gebruik ik Lemuroid?</b><br/>
