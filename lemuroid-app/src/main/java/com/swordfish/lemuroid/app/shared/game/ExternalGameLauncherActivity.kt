@@ -91,12 +91,16 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
         delay(animationDuration().toLong())
 
-        gameLauncher.launchGameAsync(
+        val gameLaunchSuccessful = gameLauncher.launchGameAsync(
             this,
             game,
             true,
             TVHelper.isTV(applicationContext),
         )
+
+        if (!gameLaunchSuccessful) {
+            finish()
+        }
     }
 
     private suspend fun waitPendingOperations() {

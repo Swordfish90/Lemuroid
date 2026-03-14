@@ -108,7 +108,6 @@
     <string name="library_index_notification_message">Bu birkaç dakika sürebilir</string>
     <string name="save_sync_notification_title">Bulut kayıt senkronizasyonu devam ediyor</string>
     <string name="save_sync_notification_message">Bu birkaç dakika sürebilir</string>
-    <string name="game_running_notification_title">%1$s çalışıyor</string>
     <string name="game_running_notification_title_alternative">Oyun çalışıyor</string>
     <string name="game_running_notification_message">Oyunu kaydettiğinizden emin olun</string>
     <string name="game_loader_error_gl_incompatible">Bu çekirdek cihazınız tarafından desteklenmeyen bir OpenGL ES versiyonunu gerektiriyor.</string>

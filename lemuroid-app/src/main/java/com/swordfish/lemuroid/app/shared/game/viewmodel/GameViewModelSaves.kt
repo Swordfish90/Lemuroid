@@ -34,6 +34,11 @@ class GameViewModelSaves(
 ) {
     private var currentQuickSave: SaveState? = null
 
+    data class SaveSnapshot(
+        val sram: ByteArray,
+        val autoSave: SaveState?,
+    )
+
     suspend fun saveSlot(index: Int) {
         getCurrentSaveState()?.let {
             statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index)
@@ -65,21 +70,24 @@ class GameViewModelSaves(
         }
     }
 
-    suspend fun saveSRAM(game: Game) {
-        val retroGameView = retroGameView.retroGameView ?: return
-        val sramState = retroGameView.serializeSRAM()
-        savesManager.setSaveRAM(game, sramState)
-        Timber.i("Stored sram file with size: ${sramState.size}")
+    suspend fun captureSaveSnapshot(useEmulationThread: Boolean): SaveSnapshot? {
+        val retroGameView = retroGameView.retroGameView ?: return null
+        val sramState = retroGameView.serializeSRAM(useEmulationThread)
+        val autoSaveState = if (isAutoSaveEnabled()) getCurrentSaveState(useEmulationThread) else null
+        return SaveSnapshot(sramState, autoSaveState)
     }
 
-    suspend fun saveAutoSave(game: Game) {
-        if (!isAutoSaveEnabled()) return
-        val state = getCurrentSaveState()
-
-        if (state != null) {
-            statesManager.setAutoSave(game, systemCoreConfig.coreID, state)
-            Timber.i("Stored autosave file with size: ${state?.state?.size}")
-        }
+    suspend fun writeSaveSnapshot(snapshot: SaveSnapshot?) {
+        if (snapshot == null) return
+        Timber.i(
+            "GameViewModelSaves.write game=%s core=%s writingSram=%s writingAutoSave=%s",
+            game.id,
+            systemCoreConfig.coreID,
+            true,
+            snapshot.autoSave != null,
+        )
+        savesManager.setSaveRAM(game, snapshot.sram)
+        snapshot.autoSave?.let { statesManager.setAutoSave(game, systemCoreConfig.coreID, it) }
     }
 
     // On some cores unserialize fails with no reason. So we need to try multiple times.
@@ -96,16 +104,16 @@ class GameViewModelSaves(
         }
     }
 
-    private fun getCurrentSaveState(): SaveState? {
+    private fun getCurrentSaveState(useEmulationThread: Boolean = true): SaveState? {
         val retroGameView = retroGameView.retroGameView ?: return null
         val currentDisk =
             if (system.hasMultiDiskSupport) {
-                retroGameView.getCurrentDisk()
+                retroGameView.getCurrentDisk(useEmulationThread)
             } else {
                 0
             }
         return SaveState(
-            retroGameView.serializeState(),
+            retroGameView.serializeState(useEmulationThread),
             SaveState.Metadata(currentDisk, systemCoreConfig.statesVersion),
         )
     }

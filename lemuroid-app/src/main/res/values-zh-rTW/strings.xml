@@ -111,7 +111,6 @@
     <string name="library_index_notification_message">這可能需要幾分鐘的時間。</string>
     <string name="save_sync_notification_title">遊戲存檔雲端同步中</string>
     <string name="save_sync_notification_message">這可能需要幾分鐘的時間。</string>
-    <string name="game_running_notification_title">%1$s 運行中。</string>
     <string name="game_running_notification_title_alternative">遊戲運行中</string>
     <string name="game_running_notification_message">請記得儲存您的遊戲進度。</string>
     <string name="game_loader_error_gl_incompatible">此核心需要 OpenGL ES ，您的設備不支援。</string>

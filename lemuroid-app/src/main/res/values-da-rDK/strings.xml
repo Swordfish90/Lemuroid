@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Dette kan tage nogle minutter</string>
     <string name="save_sync_notification_title">Cloud synkronisering i gang</string>
     <string name="save_sync_notification_message">Dette kan tage nogle minutter</string>
-    <string name="game_running_notification_title">%1$s kører</string>
     <string name="game_running_notification_title_alternative">Spillet kører</string>
     <string name="game_running_notification_message">Sørg for at gemme dine fremskridt</string>
     <string name="game_loader_error_gl_incompatible">Denne system kræver en OpenGL ES version, som ikke understøttes af din enhed.</string>

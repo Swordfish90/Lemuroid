@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
+import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
 import com.swordfish.lemuroid.app.shared.GameMenuContract
@@ -46,7 +47,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.system.exitProcess
 
 @OptIn(DelicateCoroutinesApi::class)
 abstract class BaseGameActivity : ImmersiveActivity() {
@@ -61,10 +61,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     lateinit var statesManager: StatesManager
 
     @Inject
-    lateinit var statesPreviewManager: StatesPreviewManager
+    lateinit var savesManager: SavesManager
 
     @Inject
-    lateinit var legacySavesManager: SavesManager
+    lateinit var statesPreviewManager: StatesPreviewManager
 
     @Inject
     lateinit var coreVariablesManager: CoreVariablesManager
@@ -87,11 +87,12 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private lateinit var baseGameScreenViewModel: BaseGameScreenViewModel
 
     private val startGameTime = System.currentTimeMillis()
+    private var finishTriggered = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpExceptionsHandler()
-
+        GameService.startService(applicationContext)
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
         system = GameSystem.findById(game.systemId)
@@ -106,9 +107,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 system,
                 systemCoreConfig,
                 sharedPreferences.get(),
+                savesManager,
                 statesManager,
                 statesPreviewManager,
-                legacySavesManager,
                 coreVariablesManager,
                 rumbleManager,
             )
@@ -303,7 +304,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
             }
 
-        setResult(Activity.RESULT_OK, resultIntent)
+        setResult(RESULT_OK, resultIntent)
         finishAndExitProcess()
     }
 
@@ -332,13 +333,29 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         onFinishTriggered()
         GlobalScope.launch {
             delay(animationDuration().toLong())
-            exitProcess(0)
+            GameService.requestTermination()
         }
         finish()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
-    open fun onFinishTriggered() {}
+    open fun onFinishTriggered() {
+        finishTriggered = true
+    }
+
+    override fun onStop() {
+        if (!finishTriggered && !isFinishing && !isChangingConfigurations) {
+            baseGameScreenViewModel.requestBackgroundSave()
+        }
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        if (!isChangingConfigurations) {
+            GameService.requestTermination()
+        }
+        super.onDestroy()
+    }
 
     override fun onActivityResult(
         requestCode: Int,

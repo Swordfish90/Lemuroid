@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelInput
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
@@ -45,16 +46,16 @@ import timber.log.Timber
 
 class BaseGameScreenViewModel(
     private val appContext: Context,
-    private val game: Game,
+    game: Game,
     settingsManager: SettingsManager,
     inputDeviceManager: InputDeviceManager,
     controllerConfigsManager: ControllerConfigsManager,
     system: GameSystem,
     systemCoreConfig: SystemCoreConfig,
     sharedPreferences: SharedPreferences,
+    savesManager: SavesManager,
     statesManager: StatesManager,
     statesPreviewManager: StatesPreviewManager,
-    savesManager: SavesManager,
     coreVariablesManager: CoreVariablesManager,
     rumbleManager: RumbleManager,
 ) : ViewModel(), DefaultLifecycleObserver {
@@ -67,9 +68,9 @@ class BaseGameScreenViewModel(
         private val system: GameSystem,
         private val systemCoreConfig: SystemCoreConfig,
         private val sharedPreferences: SharedPreferences,
+        private val savesManager: SavesManager,
         private val statesManager: StatesManager,
         private val statesPreviewManager: StatesPreviewManager,
-        private val legacySavesManager: SavesManager,
         private val coreVariablesManager: CoreVariablesManager,
         private val rumbleManager: RumbleManager,
     ) : ViewModelProvider.Factory {
@@ -83,9 +84,9 @@ class BaseGameScreenViewModel(
                 system,
                 systemCoreConfig,
                 sharedPreferences,
+                savesManager,
                 statesManager,
                 statesPreviewManager,
-                legacySavesManager,
                 coreVariablesManager,
                 rumbleManager,
             ) as T
@@ -287,10 +288,18 @@ class BaseGameScreenViewModel(
         if (loadingState.value) return
         viewModelScope.launch {
             withLoading {
-                saves.saveSRAM(game)
-                saves.saveAutoSave(game)
+                val snapshot = saves.captureSaveSnapshot(true) ?: return@launch
+                saves.writeSaveSnapshot(snapshot)
                 sideEffects.requestSuccessfulFinish()
             }
+        }
+    }
+
+    fun requestBackgroundSave() {
+        if (loadingState.value) return
+        GameService.schedule {
+            val snapshot = saves.captureSaveSnapshot(false)
+            saves.writeSaveSnapshot(snapshot)
         }
     }
 

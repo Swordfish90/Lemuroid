@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.lib.saves
 
 import com.swordfish.lemuroid.common.kotlin.runCatchingWithRetry
+import com.swordfish.lemuroid.common.kotlin.writeBytesAtomic
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.migrators.getSavesMigrator
@@ -41,7 +42,7 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
                     }
 
                     val saveFile = getSaveFile(getSaveRAMFileName(game))
-                    saveFile.writeBytes(data)
+                    saveFile.writeBytesAtomic(data)
                 }
             result.getOrNull()
         }
