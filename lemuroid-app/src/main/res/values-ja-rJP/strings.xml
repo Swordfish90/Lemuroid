@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">これは数分かかることがあります</string>
     <string name="save_sync_notification_title">クラウドセーブ同期中</string>
     <string name="save_sync_notification_message">これは数分かかることがあります</string>
-    <string name="game_running_notification_title">%1$s が実行されています</string>
     <string name="game_running_notification_title_alternative">ゲームを実行しています</string>
     <string name="game_running_notification_message">進捗状況を保存してください</string>
     <string name="game_loader_error_gl_incompatible">このコアはお使いのデバイスでサポートされていないOpenGL ESバージョンが必要です。</string>
