@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Může to trvat několik minut</string>
     <string name="save_sync_notification_title">Záloha do cloudu probíhá</string>
     <string name="save_sync_notification_message">Může to trvat několik minut</string>
-    <string name="game_running_notification_title">Běží %1$s</string>
     <string name="game_running_notification_title_alternative">Hra běží</string>
     <string name="game_running_notification_message">Ujistěte se, že jste uložili svůj postup</string>
     <string name="game_loader_error_gl_incompatible">Toto jádro vyžaduje verzi OpenGL ES, která není podporována vaším zařízením.</string>
