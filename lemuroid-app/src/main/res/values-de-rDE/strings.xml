@@ -120,7 +120,6 @@
     <string name="library_index_notification_message">Dies kann einige Minuten dauern</string>
     <string name="save_sync_notification_title">Cloud-Speichern Synchronisation läuft</string>
     <string name="save_sync_notification_message">Dies kann einige Minuten dauern</string>
-    <string name="game_running_notification_title">%1$s läuft</string>
     <string name="game_running_notification_title_alternative">Spiel läuft</string>
     <string name="game_running_notification_message">Achten Sie darauf, Ihren Fortschritt zu sichern</string>
     <string name="game_loader_error_gl_incompatible">Dieser Core benötigt eine OpenGL ES Version, die von Ihrem Gerät nicht unterstützt wird.</string>
