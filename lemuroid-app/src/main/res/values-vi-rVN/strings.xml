@@ -161,4 +161,5 @@
     <string name="haptic_feedback_mode_names_none">Không</string>
     <string name="haptic_feedback_mode_names_press">Nhấn</string>
     <string name="haptic_feedback_mode_names_press_release">Nhấn &amp; thả</string>
+    <string name="tilt_configuration_analog_left">Analog Trái</string>
 </resources>

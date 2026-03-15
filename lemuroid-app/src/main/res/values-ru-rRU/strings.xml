@@ -154,6 +154,8 @@
     <string name="tv_game_message_missing_gamepad">Для игры необходимы контроллеры. Пожалуйста, подключите один.</string>
     <string name="game_edit_touch_controls_error_not_visible">Отключите геймпад для настройки экранного управления</string>
     <string name="game_interactory_busy">Дождитесь завершения текущих операций</string>
+    <string name="game_interactor_notification_permission_required">Для продолжения включите уведомления на главном экране</string>
+    <string name="game_process_another_game_running">Пожалуйста, закройте текущую игру перед запуском новой</string>
     <string name="mobile_settings_help">Помощь</string>
     <string name="mobile_settings_support">Поддержка</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Как пользоваться Lemuroid?</b><br/>

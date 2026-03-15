@@ -21,14 +21,15 @@
     <string name="gdrive_sign_in_failed">Google ile oturum açma başarısız: %s (%s)</string>
     <string name="gdrive_sign_in_success">%s olarak Google\'a giriş yapıldı</string>
     <string name="gdrive_sign_out_success">Google\'dan çıkış yapıldı</string>
-    <string name="gdrive_missing_play_services">Google Drive cihazınız tarafından desteklenmeyen Google Play hizmetleri olmadan çalışmayacaktır</string>
-    <string name="gdrive_connected_summary">%s\'e bağlanıldı</string>
+    <string name="gdrive_missing_play_services">Google Drive, Google Play Hizmetleri\'ne ihtiyaç duyuyor ancak cihazınız bu hizmetleri desteklemiyor. Lütfen Google Play Hizmetleri\'ni yüklemeyi veya güncellemeyi deneyin</string>
+    <string name="gdrive_connected_summary">%s bağlanıldı</string>
     <string name="gdrive_connected_none_summary">Ayarlanmamış</string>
-    <string name="gdrive_last_sync_completed">Son senkronize: %s</string>
+    <string name="gdrive_last_sync_completed">Son eşitleme: %s</string>
     <string name="game_loading_download_core">Çekirdek İndiriliyor…</string>
     <string name="installing_core_notification_title">Çekirdekler Google Play ile Güncelleniyor</string>
     <string name="installing_core_notification_message">Şu anki duruma bakmak için Play Store\'a bakın</string>
-    <string name="game_loader_error_load_core">\u2022 Oyunları tekrar taramak için internete bağlanın
-\u2022 Play Store\'un açık ve yüklü olduğunu kontrol edin
-\u2022 Play Store\'daki işlemlerin tamamlanmasını bekleyin</string>
+    <string name="game_loader_error_load_core">Libretro çekirdeği yüklenmedi. Lütfen aşağıdakileri deneyin:\n
+        \n\u2022 Oyunları tekrar taramak için internete bağlanın
+        \n\u2022 Play Store\'un açık ve yüklü olduğunu kontrol edin
+        \n\u2022 Play Store\'daki işlemlerin tamamlanmasını bekleyin</string>
 </resources>
