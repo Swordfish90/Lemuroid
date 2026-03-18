@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
+import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonFastForward
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.padkit.PadKitScope
 import gg.padkit.layouts.radial.LayoutRadial
@@ -62,7 +63,10 @@ fun BaseLayoutRight(
                 )
                 .padding(LocalLemuroidPadTheme.current.padding),
         primaryDial = primaryDial,
-        secondaryDials = secondaryDials,
+        secondaryDials = {
+            secondaryDials()
+            SecondaryButtonFastForward()
+        },
         primaryDialMaxSize =
             160.dp *
                 lerp(
