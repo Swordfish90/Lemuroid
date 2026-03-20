@@ -55,7 +55,7 @@
     <string name="setting_fbneo_cpu_speed_adjust">CPU speed</string>
     <string name="setting_desmume_screens_layout">Screens layout</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
-    <string name="setting_nds_firmware_language">Firmware Language</string>
+    <string name="setting_nds_firmware_language">Firmware Language (restart required)</string>
     <string name="setting_melonds_screen_layout">Screens layout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamic recompiler</string>
