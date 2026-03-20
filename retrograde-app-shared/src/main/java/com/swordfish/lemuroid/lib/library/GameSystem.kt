@@ -994,6 +994,19 @@ data class GameSystem(
                                             ),
                                         ),
                                     ),
+                                    ExposedSetting(
+                                        "melonds_firmware_language",
+                                        R.string.setting_nds_firmware_language,
+                                        arrayListOf(
+                                            ExposedSetting.Value("auto", R.string.value_nds_language_auto),
+                                            ExposedSetting.Value("en", R.string.value_nds_language_english),
+                                            ExposedSetting.Value("ja", R.string.value_nds_language_japanese),
+                                            ExposedSetting.Value("fr", R.string.value_nds_language_french),
+                                            ExposedSetting.Value("de", R.string.value_nds_language_german),
+                                            ExposedSetting.Value("it", R.string.value_nds_language_italian),
+                                            ExposedSetting.Value("es", R.string.value_nds_language_spanish),
+                                        ),
+                                    ),
                                 ),
                             exposedAdvancedSettings =
                                 listOf(

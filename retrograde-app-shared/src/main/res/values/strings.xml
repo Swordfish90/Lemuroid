@@ -55,6 +55,7 @@
     <string name="setting_fbneo_cpu_speed_adjust">CPU speed</string>
     <string name="setting_desmume_screens_layout">Screens layout</string>
     <string name="setting_desmume_frameskip">Frameskip</string>
+    <string name="setting_nds_firmware_language">Firmware Language (restart required)</string>
     <string name="setting_melonds_screen_layout">Screens layout</string>
     <string name="setting_melonds_threaded_renderer">Threaded renderer</string>
     <string name="setting_melonds_jit_enable">Dynamic recompiler</string>
@@ -129,6 +130,14 @@
 
     <string name="value_desmume_screens_layout_topbottom">Top - Bottom</string>
     <string name="value_desmume_screens_layout_leftright">Left - Right</string>
+
+    <string name="value_nds_language_auto">Auto (Device Language)</string>
+    <string name="value_nds_language_english">English</string>
+    <string name="value_nds_language_french">French</string>
+    <string name="value_nds_language_german">German</string>
+    <string name="value_nds_language_italian">Italian</string>
+    <string name="value_nds_language_japanese">Japanese</string>
+    <string name="value_nds_language_spanish">Spanish</string>
 
     <string name="value_ppsspp_cpu_core_jit">JIT</string>
     <string name="value_ppsspp_cpu_core_irjit">IR JIT</string>
