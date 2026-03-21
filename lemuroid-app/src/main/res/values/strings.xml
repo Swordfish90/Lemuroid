@@ -142,6 +142,19 @@
 
     <string name="game_menu_title">Game menu</string>
 
+    <string name="game_menu_patch_codes">Patch Codes</string>
+    <string name="patch_codes_add">Add code</string>
+    <string name="patch_codes_add_title">Add Patch Code</string>
+    <string name="patch_codes_description_hint">Description (e.g. Infinite Lives)</string>
+    <string name="patch_codes_code_hint">Code (e.g. 007E1940:63)</string>
+    <string name="patch_codes_code_error">Code cannot be empty</string>
+    <string name="patch_codes_add_confirm">Add</string>
+    <string name="patch_codes_cancel">Cancel</string>
+    <string name="patch_codes_delete">Delete code</string>
+    <string name="patch_codes_empty_title">No patch codes yet</string>
+    <string name="patch_codes_empty_subtitle">Tap + to add a Game Genie, Action Replay, or raw memory patch code</string>
+    <string name="patch_codes_no_description">Unnamed code</string>
+
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning in progress</string>
     <string name="library_index_notification_message">This can take up to a few minutes</string>
