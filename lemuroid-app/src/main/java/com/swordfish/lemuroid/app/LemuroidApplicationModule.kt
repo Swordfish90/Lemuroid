@@ -136,7 +136,7 @@ abstract class LemuroidApplicationModule {
         fun retrogradeDb(app: LemuroidApplication) =
             Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
                 .addCallback(GameSearchDao.CALLBACK)
-                .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9)
+                .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9, Migrations.VERSION_9_10)
                 .fallbackToDestructiveMigration()
                 .build()
 
@@ -231,6 +231,11 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun savesManager(directoriesManager: DirectoriesManager) = SavesManager(directoriesManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun patchCodesManager(db: RetrogradeDatabase) = com.swordfish.lemuroid.lib.cheats.PatchCodesManager(db)
 
         @Provides
         @PerApp
