@@ -11,6 +11,9 @@ class PatchCodesManager @Inject constructor(
     fun getCodesForGame(gameId: Int): Flow<List<PatchCode>> =
         retrogradeDatabase.patchCodeDao().getCodesForGame(gameId)
 
+    suspend fun getAllCodesForGame(gameId: Int): List<PatchCode> =
+        retrogradeDatabase.patchCodeDao().getAllCodesForGame(gameId)
+
     suspend fun getEnabledCodesForGame(gameId: Int): List<PatchCode> =
         retrogradeDatabase.patchCodeDao().getEnabledCodesForGame(gameId)
 
