@@ -419,10 +419,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             if (data?.getBooleanExtra(GameMenuContract.RESULT_PATCH_CODES_CHANGED, false) == true) {
                 GlobalScope.launch {
                     val retroView = baseGameScreenViewModel.retroGameView.retroGameView ?: return@launch
-                    val codes = patchCodesManager.getEnabledCodesForGame(game.id)
-                    retroView.resetCheat()
-                    codes.forEachIndexed { index, patch ->
-                        retroView.sendCheat(index, true, patch.code)
+                    val allCodes = patchCodesManager.getAllCodesForGame(game.id)
+                    allCodes.forEachIndexed { index, patch ->
+                        retroView.setCheat(index, patch.enabled, patch.code)
                     }
                 }
             }
