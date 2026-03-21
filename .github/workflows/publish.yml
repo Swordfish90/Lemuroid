@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build Debug APK
+    name: Build Release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -20,14 +20,26 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Generate release keystore
+        run: |
+          keytool -genkeypair \
+            -keystore release.jks \
+            -alias lemuroid \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass lemuroid \
+            -keypass lemuroid \
+            -dname "CN=Lemuroid, O=Lemuroid, C=US"
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew :lemuroid-app:assembleFreeDynamicDebug
+      - name: Build Release APK
+        run: ./gradlew :lemuroid-app:assembleFreeDynamicRelease
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: lemuroid-debug
-          path: lemuroid-app/build/outputs/apk/freeDynamic/debug/lemuroid-app-free-dynamic-debug.apk
+          name: lemuroid-release
+          path: lemuroid-app/build/outputs/apk/freeDynamic/release/lemuroid-app-free-dynamic-release.apk
