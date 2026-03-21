@@ -44,6 +44,11 @@ enum class GameMenuRoute(
         titleId = R.string.game_menu_settings,
         parent = HOME,
     ),
+    PATCH_CODES(
+        route = "patch_codes",
+        titleId = R.string.game_menu_patch_codes,
+        parent = HOME,
+    ),
     ;
 
     fun canGoBack(): Boolean {
