@@ -48,12 +48,16 @@ class GameLaunchTaskHandler(
     private fun cancelBackgroundWork(context: Context) {
         SaveSyncWork.cancelAutoWork(context)
         SaveSyncWork.cancelManualWork(context)
+        // Also cancel local syncs
+        androidx.work.WorkManager.getInstance(context).cancelUniqueWork(com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.UNIQUE_PERIODIC_WORK_ID)
+        androidx.work.WorkManager.getInstance(context).cancelUniqueWork(com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.UNIQUE_WORK_ID)
         CacheCleanerWork.cancelCleanCacheLRU(context)
     }
 
     private fun rescheduleBackgroundWork(context: Context) {
         // Let's slightly delay the sync. Maybe the user wants to play another game.
         SaveSyncWork.enqueueAutoWork(context, 5)
+        com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.enqueueAutoWork(context)
         CacheCleanerWork.enqueueCleanCacheLRU(context)
     }
 

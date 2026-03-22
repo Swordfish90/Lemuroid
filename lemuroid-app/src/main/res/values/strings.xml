@@ -234,4 +234,13 @@
     <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
     <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 
+    <string name="settings_title_local_save_sync">Local Save Directory</string>
+    <string name="settings_description_local_save_sync">Select custom folder to backup saves and states</string>
+    <string name="local_save_sync_sync_now">Sync Now</string>
+    <string name="local_save_sync_sync_now_description">Copy saves and states to external directory</string>
+
+    <string name="settings_title_local_save_sync_export_extension">Export Saves As</string>
+    <string name="export_extension_default">Original (.srm, .dsv)</string>
+    <string name="export_extension_sav">Raw Save (.sav)</string>
+
 </resources>
