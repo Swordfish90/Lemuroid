@@ -80,6 +80,10 @@ class GameLaunchTaskHandler(
         val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
 
         updateGamePlayedTimestamp(game)
+        
+        // Push internal saves instantaneously backwards to the user's external SAF directory
+        com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.performSync(activity.applicationContext)
+
         if (enableRatingFlow) {
             displayReviewRequest(activity, duration)
         }
