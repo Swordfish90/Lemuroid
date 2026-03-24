@@ -14,6 +14,9 @@ interface PatchCodeDao {
     @Query("SELECT * FROM patch_codes WHERE gameId = :gameId ORDER BY id ASC")
     fun getCodesForGame(gameId: Int): Flow<List<PatchCode>>
 
+    @Query("SELECT * FROM patch_codes WHERE gameId = :gameId ORDER BY id ASC")
+    suspend fun getAllCodesForGame(gameId: Int): List<PatchCode>
+
     @Query("SELECT * FROM patch_codes WHERE gameId = :gameId AND enabled = 1 ORDER BY id ASC")
     suspend fun getEnabledCodesForGame(gameId: Int): List<PatchCode>
 
