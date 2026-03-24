@@ -1,19 +1,26 @@
 package com.swordfish.lemuroid.app.mobile.feature.gamemenu.patchcodes
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -22,10 +29,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -45,40 +57,98 @@ fun GameMenuPatchCodesScreen(
     viewModel: GameMenuPatchCodesViewModel,
     onCodesChanged: () -> Unit,
 ) {
+    val context = LocalContext.current
     val codes by viewModel.codes.collectAsState()
+    val importState by viewModel.importState.collectAsState()
     var showAddDialog by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(viewModel) {
+        viewModel.operationComplete.collect {
+            onCodesChanged()
+        }
+    }
+
+    LaunchedEffect(importState) {
+        when (val state = importState) {
+            is GameMenuPatchCodesViewModel.ImportState.Success -> {
+                snackbarHostState.showSnackbar(
+                    context.resources.getQuantityString(
+                        R.plurals.patch_codes_import_success,
+                        state.count,
+                        state.count,
+                    ),
+                )
+                viewModel.clearImportState()
+            }
+            is GameMenuPatchCodesViewModel.ImportState.Error -> {
+                snackbarHostState.showSnackbar(
+                    context.getString(R.string.patch_codes_import_error, state.message),
+                )
+                viewModel.clearImportState()
+            }
+            else -> Unit
+        }
+    }
+
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+    ) { uri ->
+        uri?.let { viewModel.importFromFile(context, it) }
+    }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.patch_codes_add),
-                )
+            Column(horizontalAlignment = Alignment.End) {
+                
+                SmallFloatingActionButton(
+                    onClick = {
+                        filePickerLauncher.launch(
+                            
+                            arrayOf("*/*"),
+                        )
+                    },
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FileOpen,
+                        contentDescription = stringResource(R.string.patch_codes_import_from_file),
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                FloatingActionButton(onClick = { showAddDialog = true }) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.patch_codes_add),
+                    )
+                }
             }
         },
     ) { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState()),
+                .fillMaxSize()
+                .padding(paddingValues),
         ) {
-            if (codes.isEmpty()) {
-                EmptyCodesHint()
+            if (importState is GameMenuPatchCodesViewModel.ImportState.Loading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else if (codes.isEmpty()) {
+                EmptyCodesHint(
+                    modifier = Modifier.align(Alignment.Center),
+                )
             } else {
-                codes.forEach { patch ->
-                    PatchCodeItem(
-                        patch = patch,
-                        onToggle = {
-                            viewModel.toggleCode(patch)
-                            onCodesChanged()
-                        },
-                        onDelete = {
-                            viewModel.deleteCode(patch)
-                            onCodesChanged()
-                        },
-                    )
-                    Divider()
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    codes.forEach { patch ->
+                        PatchCodeItem(
+                            patch = patch,
+                            
+                            onToggle = { viewModel.toggleCode(patch) },
+                            onDelete = { viewModel.deleteCode(patch) },
+                        )
+                        Divider()
+                    }
                 }
             }
         }
@@ -88,7 +158,6 @@ fun GameMenuPatchCodesScreen(
         AddPatchCodeDialog(
             onConfirm = { description, code ->
                 viewModel.addCode(description, code)
-                onCodesChanged()
                 showAddDialog = false
             },
             onDismiss = { showAddDialog = false },
@@ -97,9 +166,9 @@ fun GameMenuPatchCodesScreen(
 }
 
 @Composable
-private fun EmptyCodesHint() {
+private fun EmptyCodesHint(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
