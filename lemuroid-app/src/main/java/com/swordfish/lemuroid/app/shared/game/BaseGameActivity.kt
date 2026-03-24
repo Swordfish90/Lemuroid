@@ -84,6 +84,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     @Inject
     lateinit var sharedPreferences: Lazy<SharedPreferences>
 
+    @Inject
+    lateinit var patchCodesManager: com.swordfish.lemuroid.lib.cheats.PatchCodesManager
+
     private lateinit var baseGameScreenViewModel: BaseGameScreenViewModel
 
     private val startGameTime = System.currentTimeMillis()
@@ -412,6 +415,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_TILT_CONFIG) == true) {
                 val tiltConfig = data.serializable<TiltConfiguration>(GameMenuContract.RESULT_CHANGE_TILT_CONFIG)
                 baseGameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
+            }
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_PATCH_CODES_CHANGED, false) == true) {
+                GlobalScope.launch {
+                    val retroView = baseGameScreenViewModel.retroGameView.retroGameView ?: return@launch
+                    val codes = patchCodesManager.getEnabledCodesForGame(game.id)
+                    patchCodesManager.applyToRetroView(codes, retroView)
+                }
             }
         }
     }
