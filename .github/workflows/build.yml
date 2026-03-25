@@ -53,14 +53,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # freeBundleRelease: 'free' (open-source) + 'bundle' (cores bundled in APK)
-      # This produces a fully self-contained APK ready to install.
+      # freeDynamicRelease: 'free' (open-source) + 'dynamic' (cores downloaded at runtime).
+      # Matches what publish.yml uses; avoids bundling compiled .so core files which require
+      # the lemuroid-cores submodule to be fully built.
       - name: Build release APK
-        run: ./gradlew assembleFreeBundleRelease
+        run: ./gradlew assembleFreeDynamicRelease
 
       - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
           name: lemuroid-release-${{ github.sha }}
-          path: lemuroid-app/build/outputs/apk/freeBundle/release/lemuroid-app-free-bundle-release.apk
+          path: lemuroid-app/build/outputs/apk/freeDynamic/release/lemuroid-app-free-dynamic-release.apk
           retention-days: 30

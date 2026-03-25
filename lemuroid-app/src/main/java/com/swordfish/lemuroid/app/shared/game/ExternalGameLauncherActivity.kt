@@ -116,14 +116,14 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
         // Fall back to filename match (handles scheme differences between launchers and indexer)
         if (game == null) {
             val fileName = uri.lastPathSegment
-                ?.substringAfterLast('/')
                 ?: throw IllegalArgumentException("Cannot determine filename from URI: $uriString")
             game = retrogradeDatabase.gameDao().selectByFileName(fileName)
         }
 
-        game ?: throw IllegalArgumentException("ROM not found in library. Please scan your library first: $uriString")
+        val resolvedGame = game
+            ?: throw IllegalArgumentException("ROM not found in library. Please scan your library first.")
 
-        launchGame(game)
+        launchGame(resolvedGame)
     }
 
     private suspend fun launchGame(game: Game) {
