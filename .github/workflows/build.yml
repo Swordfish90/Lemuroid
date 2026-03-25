@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    name: Build Debug APK
+    name: Build Release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -28,15 +28,39 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      # Use the official release keystore if the secret is available,
+      # otherwise generate a keystore using the hardcoded credentials from
+      # build.gradle.kts so the release build type can sign the APK.
+      - name: Create release keystore from secret
+        if: ${{ secrets.RELEASE_KEYSTORE != '' }}
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
+          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch release.keystore.asc > release.jks
+
+      - name: Generate release keystore (CI fallback)
+        if: ${{ secrets.RELEASE_KEYSTORE == '' }}
+        run: |
+          keytool -genkeypair -v \
+            -keystore release.jks \
+            -alias lemuroid \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass lemuroid \
+            -keypass lemuroid \
+            -dname "CN=Lemuroid CI, O=Lemuroid, C=US"
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build debug APK
-        run: ./gradlew assembleFreeDebug
+      # freeBundleRelease: 'free' (open-source) + 'bundle' (cores bundled in APK)
+      # This produces a fully self-contained APK ready to install.
+      - name: Build release APK
+        run: ./gradlew assembleFreeBundleRelease
 
-      - name: Upload debug APK
+      - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
-          name: lemuroid-debug-${{ github.sha }}
-          path: lemuroid-app/build/outputs/apk/free/debug/lemuroid-app-free-debug.apk
-          retention-days: 14
+          name: lemuroid-release-${{ github.sha }}
+          path: lemuroid-app/build/outputs/apk/freeBundle/release/lemuroid-app-free-bundle-release.apk
+          retention-days: 30
