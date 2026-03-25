@@ -52,6 +52,7 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
             android:exported="true"
             android:theme="@style/LemuroidMaterialTheme.Game">
+            <!-- Internal deep link: lemuroid://packageName/play-game/id/{gameId} -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -59,6 +60,23 @@
                     android:host="${applicationId}"
                     android:pathPattern="/play-game/id/.*"
                     android:scheme="lemuroid" />
+            </intent-filter>
+            <!-- Direct ROM launch via content:// URIs (ES-DE, Beacon, file managers) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" android:mimeType="application/octet-stream" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" android:mimeType="*/*" />
+            </intent-filter>
+            <!-- Direct ROM launch via file:// URIs (legacy launchers) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" android:mimeType="*/*" android:host="*" />
             </intent-filter>
         </activity>
 

@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.shared.game
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -19,6 +20,7 @@ import com.swordfish.lemuroid.common.coroutines.safeLaunch
 import com.swordfish.lemuroid.common.longAnimationDuration
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -34,6 +36,10 @@ import javax.inject.Inject
  * This activity is used as an entry point when launching games from external shortcuts. This activity
  * still runs in the main process so it can peek into background job status and wait for them to
  * complete.
+ *
+ * Supports the following intent types:
+ * - Internal deep link: lemuroid://packageName/play-game/id/{gameId}
+ * - Direct ROM file launch via content:// or file:// URI (ES-DE, Beacon, file managers)
  */
 @OptIn(FlowPreview::class)
 class ExternalGameLauncherActivity : ImmersiveActivity() {
@@ -56,12 +62,19 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
-            val gameId = intent.data?.pathSegments?.let { it[it.size - 1].toInt() }!!
+            val uri = intent.data
 
             lifecycleScope.launch {
                 loadingState.value = true
                 try {
-                    loadGame(gameId)
+                    when (uri?.scheme) {
+                        "lemuroid" -> {
+                            val gameId = uri.pathSegments?.let { it[it.size - 1].toInt() }!!
+                            loadGameById(gameId)
+                        }
+                        "file", "content" -> loadGameByFileUri(uri)
+                        else -> throw IllegalArgumentException("Unsupported URI scheme: ${uri?.scheme}")
+                    }
                 } catch (e: Throwable) {
                     displayErrorMessage()
                 }
@@ -82,13 +95,38 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
             }
     }
 
-    private suspend fun loadGame(gameId: Int) {
+    private suspend fun loadGameById(gameId: Int) {
         waitPendingOperations()
 
         val game =
             retrogradeDatabase.gameDao().selectById(gameId)
                 ?: throw IllegalArgumentException("Game not found: $gameId")
 
+        launchGame(game)
+    }
+
+    private suspend fun loadGameByFileUri(uri: Uri) {
+        waitPendingOperations()
+
+        val uriString = uri.toString()
+
+        // Try exact URI match first
+        var game: Game? = retrogradeDatabase.gameDao().selectByFileUri(uriString)
+
+        // Fall back to filename match (handles scheme differences between launchers and indexer)
+        if (game == null) {
+            val fileName = uri.lastPathSegment
+                ?: throw IllegalArgumentException("Cannot determine filename from URI: $uriString")
+            game = retrogradeDatabase.gameDao().selectByFileName(fileName)
+        }
+
+        val resolvedGame = game
+            ?: throw IllegalArgumentException("ROM not found in library. Please scan your library first.")
+
+        launchGame(resolvedGame)
+    }
+
+    private suspend fun launchGame(game: Game) {
         delay(animationDuration().toLong())
 
         val gameLaunchSuccessful = gameLauncher.launchGameAsync(
