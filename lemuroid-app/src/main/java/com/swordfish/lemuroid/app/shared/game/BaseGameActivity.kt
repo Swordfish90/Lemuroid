@@ -41,14 +41,11 @@ import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import dagger.Lazy
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-@OptIn(DelicateCoroutinesApi::class)
 abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var game: Game
     private lateinit var system: GameSystem
@@ -158,6 +155,22 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun initialiseFlows() {
         launchOnState(Lifecycle.State.CREATED) {
             initializeViewModelsEffectsFlow()
+        }
+        launchOnState(Lifecycle.State.RESUMED) {
+            initializePatchCodesOnStart()
+        }
+    }
+
+    private suspend fun initializePatchCodesOnStart() {
+        try {
+            baseGameScreenViewModel.retroGameView.waitRetroGameViewInitialized()
+            val retroView = baseGameScreenViewModel.retroGameView.retroGameView ?: return
+            val allCodes = patchCodesManager.getAllCodesForGame(game.id)
+            allCodes.forEachIndexed { index, patch ->
+                retroView.setCheat(index, patch.enabled, patch.code)
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to apply patch codes on start")
         }
     }
 
@@ -417,7 +430,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 baseGameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
             }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_PATCH_CODES_CHANGED, false) == true) {
-                GlobalScope.launch {
+                lifecycleScope.launch {
                     val retroView = baseGameScreenViewModel.retroGameView.retroGameView ?: return@launch
                     val allCodes = patchCodesManager.getAllCodesForGame(game.id)
                     allCodes.forEachIndexed { index, patch ->
