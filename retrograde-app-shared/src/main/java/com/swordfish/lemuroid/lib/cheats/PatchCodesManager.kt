@@ -98,7 +98,7 @@ class PatchCodesManager @Inject constructor(
                             gameId = gameId,
                             description = pendingDesc,
                             code = trimmed.uppercase(),
-                            enabled = true,
+                            enabled = false,
                         ),
                     )
                     pendingDesc = ""
