@@ -31,9 +31,9 @@ class PatchCodesManager @Inject constructor(
         if (existing != null) {
             retrogradeDatabase.patchCodeDao().update(existing.copy(
                 description = normalized.description,
-                enabled = normalized.enabled
+                // Preserve the existing enabled state — don't overwrite with imported value
             ))
-            existing.id
+            existing.id.toLong()
         } else {
             retrogradeDatabase.patchCodeDao().insert(normalized)
         }
@@ -119,7 +119,7 @@ class PatchCodesManager @Inject constructor(
                 gameId = gameId,
                 description = props["cheat${i}_desc"]?.trim() ?: "",
                 code = code,
-                enabled = props["cheat${i}_enable"]?.lowercase() == "true",
+                enabled = false,
             )
         }
     }
@@ -138,7 +138,7 @@ class PatchCodesManager @Inject constructor(
                             gameId = gameId,
                             description = pendingDesc,
                             code = trimmed,
-                            enabled = true,
+                            enabled = false,
                         ),
                     )
                     pendingDesc = ""
