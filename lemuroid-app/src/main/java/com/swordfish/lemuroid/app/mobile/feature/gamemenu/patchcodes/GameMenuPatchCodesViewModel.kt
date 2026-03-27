@@ -40,7 +40,7 @@ class GameMenuPatchCodesViewModel(
                     gameId = gameId,
                     description = description.trim(),
                     code = code.trim().uppercase(),
-                    enabled = true,
+                    enabled = false, // Start disabled — user enables via toggle
                 ),
             )
             _operationComplete.emit(Unit)
