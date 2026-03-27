@@ -74,12 +74,13 @@ class PatchCodesManager @Inject constructor(
             val code = props["cheat${i}_code"] ?: return@mapNotNull null
             if (code.isBlank()) return@mapNotNull null
             val desc = props["cheat${i}_desc"] ?: ""
-            val enabled = props["cheat${i}_enable"]?.lowercase() == "true"
+            // Always import as disabled — user must explicitly enable via UI toggle.
+            // Ignoring the file's enable flag prevents all cheats from activating on import.
             PatchCode(
                 gameId = gameId,
                 description = desc.trim(),
                 code = code.trim().uppercase(),
-                enabled = enabled,
+                enabled = false,
             )
         }
     }
