@@ -41,9 +41,12 @@ import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import dagger.Lazy
+import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -158,6 +161,44 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun initialiseFlows() {
         launchOnState(Lifecycle.State.CREATED) {
             initializeViewModelsEffectsFlow()
+        }
+        launchOnState(Lifecycle.State.CREATED) {
+            initializePatchCodesOnGameReady()
+        }
+    }
+
+    /**
+     * Applies all enabled cheat codes once the RetroView is ready.
+     * Without this, cheats enabled before closing the game would not
+     * be active when the game is reopened.
+     */
+    private suspend fun initializePatchCodesOnGameReady() {
+        baseGameScreenViewModel.getGameState()
+            .filterIsInstance<GameViewModelRetroGameView.GameState.Ready>()
+            .first()
+
+        val retroView = baseGameScreenViewModel.retroGameView.retroGameView ?: return
+        applyPatchCodesToEmulator(retroView)
+    }
+
+    /**
+     * Applies patch codes to the emulator.
+     *
+     * Many libretro cores (mGBA, VBA-M, etc.) ignore the [enabled] flag in retro_cheat_set
+     * and activate ANY cheat that is passed in, regardless of its enabled state.
+     *
+     * The correct approach (same as RetroArch) is:
+     *   1. Only pass cheats that the user has toggled ON.
+     *   2. Re-index them starting from 0 so slot numbers are contiguous.
+     *
+     * Cheats toggled OFF are simply never sent to the core, which guarantees
+     * they cannot be activated by the core inadvertently.
+     */
+    private suspend fun applyPatchCodesToEmulator(retroView: com.swordfish.libretrodroid.GLRetroView) {
+        val allCodes = patchCodesManager.getAllCodesForGame(game.id)
+        val enabledCodes = allCodes.filter { it.enabled }
+        enabledCodes.forEachIndexed { index, patch ->
+            retroView.setCheat(index, true, patch.code)
         }
     }
 
@@ -417,12 +458,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 baseGameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
             }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_PATCH_CODES_CHANGED, false) == true) {
-                GlobalScope.launch {
+                lifecycleScope.launch {
                     val retroView = baseGameScreenViewModel.retroGameView.retroGameView ?: return@launch
-                    val allCodes = patchCodesManager.getAllCodesForGame(game.id)
-                    allCodes.forEachIndexed { index, patch ->
-                        retroView.setCheat(index, patch.enabled, patch.code)
-                    }
+                    applyPatchCodesToEmulator(retroView)
                 }
             }
         }

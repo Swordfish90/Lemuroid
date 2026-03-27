@@ -155,6 +155,12 @@
     <string name="patch_codes_empty_title">No patch codes yet</string>
     <string name="patch_codes_empty_subtitle">Tap + to add a Game Genie, Action Replay, or raw memory patch code</string>
     <string name="patch_codes_no_description">Unnamed code</string>
+    <string name="patch_codes_import_from_file">Import from file (.cht / .txt)</string>
+    <string name="patch_codes_import_error">Import failed: %1$s</string>
+    <plurals name="patch_codes_import_success">
+        <item quantity="one">Imported 1 code</item>
+        <item quantity="other">Imported %1$d codes</item>
+    </plurals>
 
     <string name="notification_channel_name">All notifications</string>
     <string name="library_index_notification_title">ROMs scanning in progress</string>
