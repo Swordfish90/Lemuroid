@@ -21,10 +21,8 @@ package com.swordfish.lemuroid.ext.feature.core
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Build
 import com.swordfish.lemuroid.common.files.safeDelete
-import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -37,17 +35,34 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.io.File
+import java.util.zip.ZipInputStream
 
+/**
+ * Downloads libretro cores from the official RetroArch nightly buildbot.
+ *
+ * URL format:
+ *   https://buildbot.libretro.com/nightly/android/latest/{ABI}/{coreName}_libretro_android.so.zip
+ *
+ * Each zip contains a single .so file named "{coreName}_libretro_android.so".
+ * After extraction it is stored as "lib{coreName}_libretro_android.so" so that
+ * GameLoader can find it via CoreID.libretroFileName.
+ */
 class CoreUpdaterImpl(
     private val directoriesManager: DirectoriesManager,
     retrofit: Retrofit,
 ) : CoreUpdater {
-    // This is the last tagged versions of cores.
-    companion object {
-        private const val CORES_VERSION = "1.17.0"
-    }
 
-    private val baseUri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
+    companion object {
+        /**
+         * Sub-directory name inside the cores cache folder.
+         * Change this string to force a fresh download of all cores;
+         * old directories are cleaned up automatically.
+         */
+        private const val CORES_CACHE_DIR = "retroarch-nightly"
+
+        private const val BUILDBOT_BASE_URL =
+            "https://buildbot.libretro.com/nightly/android/latest"
+    }
 
     private val api = retrofit.create(CoreUpdater.CoreManagerApi::class.java)
 
@@ -55,19 +70,18 @@ class CoreUpdaterImpl(
         context: Context,
         coreIDs: List<CoreID>,
     ) {
-        val sharedPreferences = SharedPreferencesHelper.getSharedPreferences(context.applicationContext)
+        val sharedPreferences =
+            SharedPreferencesHelper.getSharedPreferences(context.applicationContext)
+
         coreIDs.asFlow()
             .onEach { retrieveAssets(it, sharedPreferences) }
-            .onEach { retrieveFile(context, it) }
+            .onEach { retrieveCore(context, it) }
             .collect()
     }
 
-    private suspend fun retrieveFile(
-        context: Context,
-        coreID: CoreID,
-    ) {
-        findBundledLibrary(context, coreID) ?: downloadCoreFromGithub(coreID)
-    }
+    // -------------------------------------------------------------------------
+    // Asset retrieval (e.g. PPSSPP shaders / system files)
+    // -------------------------------------------------------------------------
 
     private suspend fun retrieveAssets(
         coreID: CoreID,
@@ -77,54 +91,22 @@ class CoreUpdaterImpl(
             .retrieveAssetsIfNeeded(api, directoriesManager, sharedPreferences)
     }
 
-    private suspend fun downloadCoreFromGithub(coreID: CoreID): File {
-        Timber.i("Downloading core $coreID from github")
+    // -------------------------------------------------------------------------
+    // Core (.so) retrieval
+    // -------------------------------------------------------------------------
 
-        val mainCoresDirectory = directoriesManager.getCoresDirectory()
-        val coresDirectory =
-            File(mainCoresDirectory, CORES_VERSION).apply {
-                mkdirs()
-            }
-
-        val libFileName = coreID.libretroFileName
-        val destFile = File(coresDirectory, libFileName)
-
-        if (destFile.exists()) {
-            return destFile
-        }
-
-        runCatching {
-            deleteOutdatedCores(mainCoresDirectory, CORES_VERSION)
-        }
-
-        val uri =
-            baseUri.buildUpon()
-                .appendEncodedPath("raw/$CORES_VERSION/lemuroid_core_${coreID.coreName}/src/main/jniLibs/")
-                .appendPath(Build.SUPPORTED_ABIS.first())
-                .appendPath(libFileName)
-                .build()
-
-        try {
-            downloadFile(uri, destFile)
-            return destFile
-        } catch (e: Throwable) {
-            destFile.safeDelete()
-            throw e
-        }
-    }
-
-    private suspend fun downloadFile(
-        uri: Uri,
-        destFile: File,
+    private suspend fun retrieveCore(
+        context: Context,
+        coreID: CoreID,
     ) {
-        val response = api.downloadFile(uri.toString())
-
-        if (!response.isSuccessful) {
-            Timber.e("Download core response was unsuccessful")
-            throw Exception(response.errorBody()?.string() ?: "Download error")
+        // 1. Prefer a .so already bundled inside the APK / split APK.
+        findBundledLibrary(context, coreID)?.let {
+            Timber.d("Core ${coreID.coreName} found bundled at ${it.absolutePath}")
+            return
         }
 
-        response.body()?.writeToFile(destFile)
+        // 2. Otherwise download from the official RetroArch buildbot.
+        downloadCoreFromBuildbot(coreID)
     }
 
     private suspend fun findBundledLibrary(
@@ -137,12 +119,100 @@ class CoreUpdaterImpl(
                 .firstOrNull { it.name == coreID.libretroFileName }
         }
 
-    private fun deleteOutdatedCores(
-        mainCoresDirectory: File,
-        applicationVersion: String,
-    ) {
+    private suspend fun downloadCoreFromBuildbot(coreID: CoreID) {
+        val mainCoresDirectory = directoriesManager.getCoresDirectory()
+
+        // Remove stale cache directories to free storage.
+        runCatching { evictOutdatedCaches(mainCoresDirectory, CORES_CACHE_DIR) }
+
+        val coresDirectory = File(mainCoresDirectory, CORES_CACHE_DIR).apply { mkdirs() }
+
+        // Lemuroid expects the file named "lib{coreName}_libretro_android.so".
+        val destFile = File(coresDirectory, coreID.libretroFileName)
+
+        if (destFile.exists()) {
+            Timber.d("Core ${coreID.coreName} already cached: ${destFile.absolutePath}")
+            return
+        }
+
+        val abi = selectBestAbi()
+        // Buildbot archives are named "{coreName}_libretro_android.so.zip" (no "lib" prefix).
+        val zipFileName = "${coreID.coreName}_libretro_android.so.zip"
+        val url = "$BUILDBOT_BASE_URL/$abi/$zipFileName"
+
+        Timber.i("Downloading ${coreID.coreName} from RetroArch buildbot: $url")
+
+        try {
+            downloadAndExtractZip(url, destFile)
+        } catch (e: Throwable) {
+            destFile.safeDelete()
+            Timber.e(e, "Failed to download core ${coreID.coreName}")
+            throw e
+        }
+    }
+
+    /**
+     * Downloads a .so.zip from the buildbot, extracts the first .so entry inside,
+     * and writes it to [destFile].
+     *
+     * The stored filename uses the "lib" prefix ([CoreID.libretroFileName]) regardless
+     * of what is inside the zip, because that is what Lemuroid's GameLoader looks for.
+     */
+    private suspend fun downloadAndExtractZip(url: String, destFile: File) {
+        val response = api.downloadZip(url)
+
+        if (!response.isSuccessful) {
+            val msg = response.errorBody()?.string() ?: "HTTP ${response.code()}"
+            throw Exception("Buildbot download failed: $msg")
+        }
+
+        val zip: ZipInputStream = response.body()
+            ?: throw Exception("Empty response body for $url")
+
+        withContext(Dispatchers.IO) {
+            zip.use { zis ->
+                while (true) {
+                    val entry = zis.nextEntry ?: break
+                    if (!entry.isDirectory && entry.name.endsWith(".so")) {
+                        Timber.d("Extracting '${entry.name}' -> '${destFile.name}'")
+                        destFile.outputStream().use { out -> zis.copyTo(out) }
+                        break
+                    }
+                    zis.closeEntry()
+                }
+            }
+        }
+
+        check(destFile.exists() && destFile.length() > 0L) {
+            "Extracted file is missing or empty for ${destFile.name}"
+        }
+
+        Timber.i("Core saved: ${destFile.absolutePath} (${destFile.length()} bytes)")
+    }
+
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns the best ABI string understood by the RetroArch buildbot.
+     * Buildbot directory names match Android ABI names exactly:
+     * arm64-v8a, armeabi-v7a, x86_64, x86.
+     */
+    private fun selectBestAbi(): String {
+        val supported = Build.SUPPORTED_ABIS.toList()
+        val preferenceOrder = listOf("arm64-v8a", "x86_64", "armeabi-v7a", "x86")
+        return preferenceOrder.firstOrNull { it in supported }
+            ?: supported.first()
+    }
+
+    /** Deletes every cores sub-directory that is not [currentCacheDir]. */
+    private fun evictOutdatedCaches(mainCoresDirectory: File, currentCacheDir: String) {
         mainCoresDirectory.listFiles()
-            ?.filter { it.name != applicationVersion }
-            ?.forEach { it.deleteRecursively() }
+            ?.filter { it.isDirectory && it.name != currentCacheDir }
+            ?.forEach {
+                Timber.d("Evicting outdated cores cache: ${it.absolutePath}")
+                it.deleteRecursively()
+            }
     }
 }
