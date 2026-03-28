@@ -24,7 +24,6 @@ class GameService : DaggerService() {
 
     override fun onCreate() {
         super.onCreate()
-        displayNotification()
         serviceScope.launch {
             awaitTermination()
             withContext(Dispatchers.Main) {
@@ -40,11 +39,15 @@ class GameService : DaggerService() {
         flags: Int,
         startId: Int,
     ): Int {
+        displayNotification(intent)
         return START_NOT_STICKY
     }
 
-    private fun displayNotification() {
-        val notification = NotificationsManager(applicationContext).gameRunningNotification()
+    private fun displayNotification(intent: Intent) {
+        val gameIntent =
+            intent.getParcelableExtra<Intent>(EXTRA_GAME_ACTIVITY_INTENT)
+                ?: return
+        val notification = NotificationsManager(applicationContext).gameRunningNotification(gameIntent)
         ServiceCompat.startForeground(
             this,
             NotificationsManager.GAME_RUNNING_NOTIFICATION_ID,
@@ -64,6 +67,8 @@ class GameService : DaggerService() {
     }
 
     companion object {
+        private const val EXTRA_GAME_ACTIVITY_INTENT = "EXTRA_GAME_ACTIVITY_INTENT"
+
         private data class GameProcessTask(
             val task: suspend () -> Unit = {},
             val terminate: Boolean = false,
@@ -71,8 +76,15 @@ class GameService : DaggerService() {
 
         private val tasks = Channel<GameProcessTask>(capacity = Channel.BUFFERED)
 
-        fun startService(context: Context) {
-            context.startService(Intent(context, GameService::class.java))
+        fun startService(
+            context: Context,
+            gameActivityIntent: Intent,
+        ) {
+            context.startService(
+                Intent(context, GameService::class.java).apply {
+                    putExtra(EXTRA_GAME_ACTIVITY_INTENT, gameActivityIntent)
+                },
+            )
         }
 
         fun schedule(task: suspend () -> Unit) {
