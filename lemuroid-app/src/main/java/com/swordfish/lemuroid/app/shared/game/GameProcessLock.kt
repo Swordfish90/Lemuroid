@@ -11,6 +11,7 @@ object GameProcessLock {
 
     @Volatile
     private var channel: FileChannel? = null
+
     @Volatile
     private var lock: FileLock? = null
 
