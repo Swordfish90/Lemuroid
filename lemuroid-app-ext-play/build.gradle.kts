@@ -16,8 +16,10 @@ dependencies {
     implementation(project(":retrograde-app-shared"))
 
     implementation(deps.libs.retrofit)
-    implementation(deps.libs.play.featureDelivery)
-    implementation(deps.libs.play.featureDeliveryKtx)
+
+    // Play Feature Delivery (SplitInstallManager) has been removed.
+    // Cores are now downloaded directly from the RetroArch buildbot.
+    // Keep Play review/rating and Google Drive save-sync dependencies below.
     implementation(deps.libs.play.review)
     implementation(deps.libs.play.reviewKtx)
 
