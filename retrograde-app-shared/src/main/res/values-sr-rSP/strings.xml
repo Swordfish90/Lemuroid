@@ -80,7 +80,7 @@
     <string name="value_stella_filter_composite">Композитно</string>
     <string name="value_stella_filter_svideo">S-Video</string>
     <string name="value_stella_filter_rgb">RGB</string>
-    <string name="value_stella_filter_badlyadjusted">Лоше подешено</string>
+    <string name="value_stella_filter_badlyadjusted">Лоше прилагођено</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_disabled">Онемогућено</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_monochrome">Монохромно</string>
     <string name="value_genesis_plus_gx_blargg_ntsc_filter_composite">Композитно</string>

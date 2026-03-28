@@ -154,6 +154,8 @@
     <string name="tv_game_message_missing_gamepad">게임패드가 필요합니다. 게임패드를 연결해주세요.</string>
     <string name="game_edit_touch_controls_error_not_visible">터치 컨트롤을 변경하려면 게임패드 연결을 해제해주세요</string>
     <string name="game_interactory_busy">현재 작업이 완료될 때까지 기다려주세요</string>
+    <string name="game_interactor_notification_permission_required">계속하려면 홈에서 알림 사용을 허용해주세요</string>
+    <string name="game_process_another_game_running">다른 게임을 시작하려면 먼저 실행중인 게임을 종료해주세요</string>
     <string name="mobile_settings_help">도움말</string>
     <string name="mobile_settings_support">지원</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroid는 어떻게 사용하나요?</b><br/>

@@ -154,6 +154,7 @@
     <string name="tv_game_message_missing_gamepad">I controller sono necessari per giocare. Si prega di collegarne uno.</string>
     <string name="game_edit_touch_controls_error_not_visible">Disconnetti il tuo controller per modificare i controlli touch</string>
     <string name="game_interactory_busy">Attendere che le operazioni in sospeso siano completate</string>
+    <string name="game_interactor_notification_permission_required">Abilita le notifiche da Home per continuare</string>
     <string name="mobile_settings_help">Aiuto</string>
     <string name="mobile_settings_support">Supporta</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Come si usa Lemuroid?</b><br/>
