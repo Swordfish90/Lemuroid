@@ -116,6 +116,10 @@ abstract class LemuroidApplicationModule {
     abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
 
     @PerActivity
+    @ContributesAndroidInjector
+    abstract fun localSaveSyncPickerLauncher(): com.swordfish.lemuroid.app.shared.settings.LocalSaveSyncPickerLauncher
+
+    @PerActivity
     @ContributesAndroidInjector(modules = [GamePadBindingActivity.Module::class])
     abstract fun gamepadBindingActivity(): GamePadBindingActivity
 

@@ -26,6 +26,18 @@
     <string name="pref_key_save_sync_configure" translatable="false">save_sync_configure</string>
     <string name="pref_key_save_sync_cores" translatable="false">save_sync_cores</string>
 
+    <string name="pref_key_local_save_sync_export_extension" translatable="false">local_save_sync_export_extension</string>
+
+    <string-array translatable="false" name="pref_key_local_save_sync_export_extension_values">
+        <item>default</item>
+        <item>sav</item>
+    </string-array>
+
+    <string-array translatable="false" name="pref_key_local_save_sync_export_extension_display_names">
+        <item>@string/export_extension_default</item>
+        <item>@string/export_extension_sav</item>
+    </string-array>
+
     <string name="pref_key_shader_filter" translatable="false">shader_filter_0</string>
     <string name="pref_key_hd_mode" translatable="false">hd_mode</string>
 
