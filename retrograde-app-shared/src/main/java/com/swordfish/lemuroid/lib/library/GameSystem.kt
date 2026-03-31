@@ -736,7 +736,7 @@ data class GameSystem(
                     R.string.game_system_abbr_psx,
                     listOf(
                         SystemCoreConfig(
-                            CoreID.SWANSTATION,
+                            CoreID.PCSX_REARMED,
                             controllerConfigs =
                                 hashMapOf(
                                     0 to
@@ -1246,23 +1246,23 @@ data class GameSystem(
                     R.string.game_system_abbr_3ds,
                     listOf(
                         SystemCoreConfig(
-                            CoreID.AZAHAR,
+                            CoreID.CITRA,
                             controllerConfigs =
                                 hashMapOf(
                                     0 to arrayListOf(ControllerConfigs.NINTENDO_3DS),
                                 ),
                             defaultSettings =
                                 listOf(
-                                    CoreVariable("azahar_use_acc_mul", "disabled"),
-                                    CoreVariable("azahar_touch_touchscreen", "enabled"),
-                                    CoreVariable("azahar_mouse_touchscreen", "disabled"),
-                                    CoreVariable("azahar_render_touchscreen", "disabled"),
-                                    CoreVariable("azahar_use_hw_shader_cache", "disabled"),
+                                    CoreVariable("citra_use_acc_mul", "disabled"),
+                                    CoreVariable("citra_touch_touchscreen", "enabled"),
+                                    CoreVariable("citra_mouse_touchscreen", "disabled"),
+                                    CoreVariable("citra_render_touchscreen", "disabled"),
+                                    CoreVariable("citra_use_hw_shader_cache", "disabled"),
                                 ),
                             exposedSettings =
                                 listOf(
                                     ExposedSetting(
-                                        "azahar_layout_option",
+                                        "citra_layout_option",
                                         R.string.setting_citra_layout_option,
                                         arrayListOf(
                                             ExposedSetting.Value(
@@ -1276,15 +1276,15 @@ data class GameSystem(
                                         ),
                                     ),
                                     ExposedSetting(
-                                        "azahar_resolution_factor",
+                                        "citra_resolution_factor",
                                         R.string.setting_citra_resolution_factor,
                                     ),
                                     ExposedSetting(
-                                        "azahar_use_acc_mul",
+                                        "citra_use_acc_mul",
                                         R.string.setting_citra_use_acc_mul,
                                     ),
                                     ExposedSetting(
-                                        "azahar_use_acc_geo_shaders",
+                                        "citra_use_acc_geo_shaders",
                                         R.string.setting_citra_use_acc_geo_shaders,
                                     ),
                                 ),
