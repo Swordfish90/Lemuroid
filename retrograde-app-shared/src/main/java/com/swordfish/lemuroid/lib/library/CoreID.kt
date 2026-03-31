@@ -46,10 +46,10 @@ enum class CoreID(
         "Mupen64Plus",
         "libmupen64plus_next_gles3_libretro_android.so",
     ),
-    SWANSTATION(
-        "swanstation",
-        "Swanstation",
-        "libswanstation_libretro_android.so",
+    PCSX_REARMED(
+        "pcsx_rearmed",
+        "PCSXReARMed",
+        "libpcsx_rearmed_libretro_android.so",
     ),
     PPSSPP(
         "ppsspp",
@@ -101,10 +101,10 @@ enum class CoreID(
         "Beetle Cygne",
         "libmednafen_wswan_libretro_android.so",
     ),
-    AZAHAR(
-        "azahar",
-        "azahar",
-        "libazahar_libretro_android.so",
+    CITRA(
+        "citra",
+        "Citra",
+        "libcitra_libretro_android.so",
     ),
     DOSBOX_PURE(
         "dosbox_pure",
