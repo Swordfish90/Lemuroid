@@ -46,7 +46,7 @@ enum class CoreID(
         "Mupen64Plus",
         "libmupen64plus_next_gles3_libretro_android.so",
     ),
-    PCSX_REARMED(
+    SWANSTATION(
         "swanstation",
         "Swanstation",
         "libswanstation_libretro_android.so",
