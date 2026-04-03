@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">تقليل تأخير الصوت على الأجهزة المدعومة. قد يؤدي ذلك إلى زيادة اخطاء في الصوت.</string>
   <string name="settings_title_direct_game_load">Direct game load</string>
   <string name="settings_description_direct_game_load">(تجريبي) تقليل وقت التحميل واستخدام ذاكرة التخزين المؤقت على وحدات التحكم المدعومة.</string>
+  <string name="settings_category_experimental">تجريبي</string>
+  <string name="settings_title_citra_experimental_save_states">حالات حفظ 3DS (تجريبي)</string>
+  <string name="settings_description_citra_experimental_save_states">(تجريبي) تفعيل حالات الحفظ والتحميل اليدوي لألعاب Nintendo 3DS. الحفظ التلقائي غير مدعوم. قد تكون الحالات غير مستقرة أو تستخدم مساحة تخزين كبيرة.</string>
   <string name="settings_title_enable_rumble">الاهتزاز</string>
   <string name="settings_description_enable_rumble">تمكين الاهتزاز في الألعاب المدعومة والتحكم</string>
   <string name="settings_title_enable_device_rumble">اهتزاز الجهاز</string>

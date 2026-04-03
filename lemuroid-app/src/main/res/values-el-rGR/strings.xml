@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Μείωση καθυστέρησης ήχου σε υποστηριζόμενες συσκευές. Μπορεί να αυξήσει τα glitches στον ήχο.</string>
   <string name="settings_title_direct_game_load">Άμεση φόρτωση παιχνιδιού</string>
   <string name="settings_description_direct_game_load">(Πειραματικό) Μειώστε το χρόνο φόρτωσης και τη χρήση cache σε υποστηριζόμενες κονσόλες.</string>
+  <string name="settings_category_experimental">Πειραματικό</string>
+  <string name="settings_title_citra_experimental_save_states">3DS Αποθηκευμένες καταστάσεις (Πειραματικό)</string>
+  <string name="settings_description_citra_experimental_save_states">(Πειραματικό) Ενεργοποίηση χειροκίνητης αποθήκευσης και φόρτωσης καταστάσεων για παιχνίδια Nintendo 3DS. Η αυτόματη αποθήκευση δεν υποστηρίζεται. Οι καταστάσεις μπορεί να είναι ασταθείς ή να χρησιμοποιούν σημαντικό χώρο αποθήκευσης.</string>
   <string name="settings_title_enable_rumble">Δόνηση</string>
   <string name="settings_description_enable_rumble">Ενεργοποίηση δόνησης σε υποστηριζόμενα παιχνίδια και χειριστήρια</string>
   <string name="settings_title_enable_device_rumble">Δόνηση συσκευής</string>

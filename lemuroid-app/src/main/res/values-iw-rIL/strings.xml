@@ -48,6 +48,9 @@
   <string name="settings_description_low_latency_audio">הפחת השהיית שמע במכשירים נתמכים. עשוי להגביר את השיבושים בשמע.</string>
   <string name="settings_title_direct_game_load">טעינת משחק ישירה</string>
   <string name="settings_description_direct_game_load">(נסיוני) הפחת זמן טעינה וניצול מטמון בקונסולות נתמכות.</string>
+  <string name="settings_category_experimental">ניסיוני</string>
+  <string name="settings_title_citra_experimental_save_states">מצבי שמירה של 3DS (ניסיוני)</string>
+  <string name="settings_description_citra_experimental_save_states">(ניסיוני) הפעלת שמירה וטעינה ידנית של מצבים למשחקי Nintendo 3DS. שמירה אוטומטית אינה נתמכת. המצבים עלולים להיות בלתי יציבים או לתפוס שטח אחסון משמעותי.</string>
   <string name="settings_title_enable_rumble">רטט</string>
   <string name="settings_description_enable_rumble">הפעל רטט במשחקים ובקרים המאפשרים זאת</string>
   <string name="settings_title_enable_device_rumble">רטט מכשיר</string>

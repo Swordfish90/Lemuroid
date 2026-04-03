@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">지원되는 기기에서 오디오 레이턴시를 줄입니다. 오디오 문제가 발생할 수 있습니다.</string>
   <string name="settings_title_direct_game_load">게임 직접 불러오기</string>
   <string name="settings_description_direct_game_load">(실험적 기능) 지원되는 콘솔에 대해 로딩 시간과 캐시 사용량을 감소시킵니다.</string>
+  <string name="settings_category_experimental">실험적 기능</string>
+  <string name="settings_title_citra_experimental_save_states">3DS 저장 상태 (실험적 기능)</string>
+  <string name="settings_description_citra_experimental_save_states">(실험적 기능) Nintendo 3DS 게임의 수동 저장 및 불러오기 상태를 활성화합니다. 자동 저장은 지원되지 않습니다. 상태가 불안정하거나 상당한 저장 공간을 사용할 수 있습니다.</string>
   <string name="settings_title_enable_rumble">진동</string>
   <string name="settings_description_enable_rumble">지원되는 게임과 컨트롤러에서 진동을 사용합니다</string>
   <string name="settings_title_enable_device_rumble">장치 진동</string>

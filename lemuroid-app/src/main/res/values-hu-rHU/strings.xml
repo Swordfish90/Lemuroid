@@ -93,4 +93,7 @@
   <string name="string_pro_price">%d/ élethosszig %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 új emulátor, köztük a Nintendo 3DS\n✓ HD mód a játékok hatékony feljavításához\n✓ 7z archívum támogatás\n✓ Exkluzív hozzáférés a közelgő funkciókhoz</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_experimental">Kísérleti</string>
+  <string name="settings_title_citra_experimental_save_states">3DS mentési állapotok (Kísérleti)</string>
+  <string name="settings_description_citra_experimental_save_states">(Kísérleti) Kézi mentési és betöltési állapotok engedélyezése Nintendo 3DS játékokhoz. Az automatikus mentés nem támogatott. Az állapotok instabilak lehetnek, vagy jelentős tárhelyet foglalhatnak.</string>
 </resources>

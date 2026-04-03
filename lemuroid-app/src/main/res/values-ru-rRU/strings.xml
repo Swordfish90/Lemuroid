@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Снижает задержку звука на поддерживаемых устройствах. Может увеличить искажения звука.</string>
   <string name="settings_title_direct_game_load">Прямая загрузка игры</string>
   <string name="settings_description_direct_game_load">(Экспериментально) Уменьшает время загрузки и использование кэша для поддерживаемых консолей.</string>
+  <string name="settings_category_experimental">Экспериментально</string>
+  <string name="settings_title_citra_experimental_save_states">Состояния сохранения 3DS (Экспериментально)</string>
+  <string name="settings_description_citra_experimental_save_states">(Экспериментально) Включает ручное сохранение и загрузку состояний для игр Nintendo 3DS. Автосохранение не поддерживается. Состояния могут быть нестабильными или занимать значительный объём памяти.</string>
   <string name="settings_title_enable_rumble">Вибрация</string>
   <string name="settings_description_enable_rumble">Включить отдачу для поддерживаемых игр и контроллеров</string>
   <string name="settings_title_enable_device_rumble">Вибрация устройства</string>

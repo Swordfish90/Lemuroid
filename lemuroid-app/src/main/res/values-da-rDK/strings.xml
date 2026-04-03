@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Reducer latency på understøttede enheder. Kan øge antallet af lydfejl.</string>
   <string name="settings_title_direct_game_load">Direkte spil indlæsning</string>
   <string name="settings_description_direct_game_load">(Eksperimentel) Reducer indlæsningstiden og cacheforbruget på understøttede konsoller.</string>
+  <string name="settings_category_experimental">Eksperimentel</string>
+  <string name="settings_title_citra_experimental_save_states">3DS gemte tilstande (Eksperimentel)</string>
+  <string name="settings_description_citra_experimental_save_states">(Eksperimentel) Aktiver manuel gem og indlæs tilstande for Nintendo 3DS-spil. Auto-gem understøttes ikke. Tilstande kan være ustabile eller bruge meget lagerplads.</string>
   <string name="settings_title_enable_rumble">Rumble</string>
   <string name="settings_description_enable_rumble">Aktiver rumble i understøttede spil og controllere</string>
   <string name="settings_title_enable_device_rumble">Enhedens rumble</string>

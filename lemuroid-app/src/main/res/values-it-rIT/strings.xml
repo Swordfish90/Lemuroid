@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Riduce la latenza audio sui dispositivi supportati. Potrebbe causare piccoli glitch sonori.</string>
   <string name="settings_title_direct_game_load">Caricamento diretto del gioco</string>
   <string name="settings_description_direct_game_load">(Sperimentale) Riduce il tempo di caricamento e l\'utilizzo della cache sulle console supportate.</string>
+  <string name="settings_category_experimental">Sperimentale</string>
+  <string name="settings_title_citra_experimental_save_states">Stati di salvataggio 3DS (Sperimentale)</string>
+  <string name="settings_description_citra_experimental_save_states">(Sperimentale) Abilita il salvataggio e il caricamento manuale degli stati per i giochi Nintendo 3DS. Il salvataggio automatico non è supportato. Gli stati potrebbero essere instabili o occupare molto spazio di archiviazione.</string>
   <string name="settings_title_enable_rumble">Vibrazione</string>
   <string name="settings_description_enable_rumble">Abilita vibrazione per giochi e controller supportati</string>
   <string name="settings_title_enable_device_rumble">Vibrazione dispositivo</string>

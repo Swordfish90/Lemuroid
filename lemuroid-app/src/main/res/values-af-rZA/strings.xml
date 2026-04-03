@@ -55,4 +55,7 @@
   <string name="string_pro_price">%d/ lewenslank %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nuwe emulators, insluitend Nintendo 3DS\n✓ HD-modus om speletjies doeltreffend op te skaal\n✓ Ondersteuning vir 7z-argiewe\n✓ Eksklusiewe toegang tot toekomstige funksies</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_experimental">Eksperimenteel</string>
+  <string name="settings_title_citra_experimental_save_states">3DS Stoorstate (Eksperimenteel)</string>
+  <string name="settings_description_citra_experimental_save_states">(Eksperimenteel) Aktiveer handmatige stoor- en laai-state vir Nintendo 3DS-speletjies. Outostoor word nie ondersteun nie. State kan onstabiel wees of baie stoorspasie gebruik.</string>
 </resources>

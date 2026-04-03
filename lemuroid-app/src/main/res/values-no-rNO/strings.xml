@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Reduser lydforsinkelse på støttede enheter. Kan øke lydfeil.</string>
   <string name="settings_title_direct_game_load">Direkte spillinnlasting</string>
   <string name="settings_description_direct_game_load">(Eksperimentell) Reduser lastetiden og bruk av bufferminne på støttede konsoller.</string>
+  <string name="settings_category_experimental">Eksperimentell</string>
+  <string name="settings_title_citra_experimental_save_states">3DS lagrede tilstander (Eksperimentell)</string>
+  <string name="settings_description_citra_experimental_save_states">(Eksperimentell) Aktiver manuell lagring og lasting av tilstander for Nintendo 3DS-spill. Automatisk lagring støttes ikke. Tilstander kan være ustabile eller bruke mye lagringsplass.</string>
   <string name="settings_title_enable_rumble">Vibrasjon</string>
   <string name="settings_description_enable_rumble">Aktiver vibrasjon på støttede spill og kontrollere</string>
   <string name="settings_title_enable_device_rumble">Enhets vibrasjon</string>

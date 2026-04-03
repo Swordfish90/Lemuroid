@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">在支持的设备上减少音频延迟。可能会增加音频闪烁。</string>
   <string name="settings_title_direct_game_load">直接加载游戏</string>
   <string name="settings_description_direct_game_load">(实验性) 在支持的平台上减少加载时间和缓存使用量。</string>
+  <string name="settings_category_experimental">实验性</string>
+  <string name="settings_title_citra_experimental_save_states">3DS 存档状态（实验性）</string>
+  <string name="settings_description_citra_experimental_save_states">（实验性）为 Nintendo 3DS 游戏启用手动存档和读档功能。不支持自动存档。存档状态可能不稳定或占用大量存储空间。</string>
   <string name="settings_title_enable_rumble">振动</string>
   <string name="settings_description_enable_rumble">在支持的游戏和控制器中启用振动。</string>
   <string name="settings_title_enable_device_rumble">设备振动</string>

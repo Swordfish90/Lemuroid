@@ -55,4 +55,7 @@
   <string name="string_pro_price">%d/ seumur hidup %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 emulator baru, termasuk Nintendo 3DS\n✓ Mode HD untuk meningkatkan kualitas game\n✓ Dukungan arsip 7z\n✓ Akses eksklusif ke fitur mendatang</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_experimental">Eksperimental</string>
+  <string name="settings_title_citra_experimental_save_states">Status Simpan 3DS (Eksperimental)</string>
+  <string name="settings_description_citra_experimental_save_states">(Eksperimental) Aktifkan penyimpanan dan pemuatan status manual untuk game Nintendo 3DS. Penyimpanan otomatis tidak didukung. Status mungkin tidak stabil atau menggunakan penyimpanan yang signifikan.</string>
 </resources>

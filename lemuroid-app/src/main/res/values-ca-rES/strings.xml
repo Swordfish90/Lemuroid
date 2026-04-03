@@ -142,4 +142,7 @@
   <string name="string_pro_price">%d/ de per vida %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nous emuladors, incloent Nintendo 3DS\n✓ Mode HD per millorar la qualitat dels jocs\n✓ Suport per a arxius 7z\n✓ Accés exclusiu a funcions futures</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_experimental">Experimental</string>
+  <string name="settings_title_citra_experimental_save_states">Estats de conservació 3DS (Experimental)</string>
+  <string name="settings_description_citra_experimental_save_states">(Experimental) Activa els estats de conservació i càrrega manuals per a jocs de Nintendo 3DS. La conservació automàtica no és compatible. Els estats poden ser inestables o usar molt d\'emmagatzematge.</string>
 </resources>

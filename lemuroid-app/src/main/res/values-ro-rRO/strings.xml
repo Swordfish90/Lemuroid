@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Reduceți latența audio pe dispozitivele acceptate. Poate crește numărul de glitch-uri.</string>
   <string name="settings_title_direct_game_load">Încărcare directă a jocului</string>
   <string name="settings_description_direct_game_load">(Experimental) Reduce timpul de încărcare şi utilizarea cache-ului pe consolele suportate.</string>
+  <string name="settings_category_experimental">Experimental</string>
+  <string name="settings_title_citra_experimental_save_states">Stări de salvare 3DS (Experimental)</string>
+  <string name="settings_description_citra_experimental_save_states">(Experimental) Activează salvarea şi încărcarea manuală a stărilor pentru jocurile Nintendo 3DS. Salvarea automată nu este acceptată. Stările pot fi instabile sau pot utiliza spaţiu de stocare semnificativ.</string>
   <string name="settings_title_enable_rumble">Vibrație de Controler</string>
   <string name="settings_description_enable_rumble">Activează vibrarea in jocurile și controlerele care suporta</string>
   <string name="settings_title_enable_device_rumble">Vibrare dispozitiv</string>

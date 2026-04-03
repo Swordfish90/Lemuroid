@@ -55,6 +55,9 @@
   <string name="settings_description_low_latency_audio">Desteklenen cihazlarda ses gecikmesini azaltın. Ses aksaklıkları artabilir.</string>
   <string name="settings_title_direct_game_load">Direkt oyun yükle</string>
   <string name="settings_description_direct_game_load">(Deneyimsel) Desteklenen konsollarda yükleme zamanını ve önbellek kullanımını azalt.</string>
+  <string name="settings_category_experimental">Deneysel</string>
+  <string name="settings_title_citra_experimental_save_states">3DS Kayıt Durumları (Deneysel)</string>
+  <string name="settings_description_citra_experimental_save_states">(Deneysel) Nintendo 3DS oyunları için manuel kayıt ve yükleme durumlarını etkinleştirir. Otomatik kayıt desteklenmez. Durumlar kararsız olabilir veya önemli miktarda depolama alanı kullanabilir.</string>
   <string name="settings_title_enable_rumble">Titreşim</string>
   <string name="settings_description_enable_rumble">Destekleyen oyunlar ve kontrolcülerde titreşimi aç</string>
   <string name="settings_title_enable_device_rumble">Cihaz titreşimi</string>

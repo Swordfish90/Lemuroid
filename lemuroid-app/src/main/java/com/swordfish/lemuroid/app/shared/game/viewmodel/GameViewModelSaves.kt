@@ -5,6 +5,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -111,6 +112,7 @@ class GameViewModelSaves(
     }
 
     private suspend fun isAutoSaveEnabled(): Boolean {
+        if (systemCoreConfig.coreID == CoreID.CITRA) return false
         return systemCoreConfig.statesSupported && settingsManager.autoSave()
     }
 

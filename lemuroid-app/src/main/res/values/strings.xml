@@ -68,6 +68,10 @@
     <string name="settings_title_direct_game_load">Direct game load</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>
 
+    <string name="settings_category_experimental">Experimental</string>
+    <string name="settings_title_citra_experimental_save_states">3DS Save States (Experimental)</string>
+    <string name="settings_description_citra_experimental_save_states">(Experimental) Enable manual save and load states for Nintendo 3DS games. Auto-save is not supported. States may be unstable or use significant storage.</string>
+
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Enable rumble in supported games and controllers</string>
 

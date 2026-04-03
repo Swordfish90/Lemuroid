@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.appextension.isProVersion
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
@@ -45,6 +46,9 @@ fun AdvancedSettingsScreen(
 
         InputSettings()
         GeneralSettings(uiState.cache, viewModel, navController)
+        if (isProVersion()) {
+            ExperimentalSettings()
+        }
     }
 }
 
@@ -119,6 +123,19 @@ private fun GeneralSettings(
 
     if (factoryResetDialogState.value) {
         FactoryResetDialog(factoryResetDialogState, viewModel, navController)
+    }
+}
+
+@Composable
+private fun ExperimentalSettings() {
+    LemuroidCardSettingsGroup(
+        title = { Text(text = stringResource(id = R.string.settings_category_experimental)) },
+    ) {
+        LemuroidSettingsSwitch(
+            state = booleanPreferenceState(R.string.pref_key_citra_experimental_save_states, false),
+            title = { Text(text = stringResource(id = R.string.settings_title_citra_experimental_save_states)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_citra_experimental_save_states)) },
+        )
     }
 }
 
