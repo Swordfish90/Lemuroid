@@ -55,6 +55,7 @@
   <string name="game_context_menu_restart">Reinicia</string>
   <string name="home_empty_title">Seleccionar directori de ROMs</string>
   <string name="home_empty_action">Seleccioneu la carpeta</string>
+  <string name="home_empty_local_path">O col·loca els fitxers ROM directament a:\n%1$s</string>
   <string name="game_menu_save">Desar</string>
   <string name="game_menu_load">Carrega</string>
   <string name="game_menu_restart">Reinicia</string>

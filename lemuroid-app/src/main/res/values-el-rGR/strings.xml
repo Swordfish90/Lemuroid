@@ -89,6 +89,7 @@
   <string name="home_empty_title">Επιλέξτε ένα ευρετήριο με ROMs</string>
   <string name="home_empty_message">Το Fulldroid χρειάζεται να σαρώσει έναν φάκελο οπού περιέχει ROMs.\nΑυτό μπορεί να διαρκέσει μερικά λεπτά.</string>
   <string name="home_empty_action">Επιλογή φακέλου</string>
+  <string name="home_empty_local_path">Ή τοποθετήστε αρχεία ROM απευθείας στο:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME αποσύρθηκε σύντομα</string>
   <string name="home_notification_desmume_deprecated_message">Αποθηκεύστε σε-παιχνίδι, μεταβείτε στο melonDS, και η πρόοδός σας θα φέρει πάνω.</string>
   <string name="home_notification_desmume_deprecated_action">Εναλλαγή σε melonDS</string>

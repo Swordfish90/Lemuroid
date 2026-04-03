@@ -86,6 +86,7 @@
   <string name="home_empty_title">Изаберите директоријум са ROM-овима</string>
   <string name="home_empty_message">Fulldroid мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
   <string name="home_empty_action">Изаберите директоријум</string>
+  <string name="home_empty_local_path">Или поставите ROM датотеке директно у:\n%1$s</string>
   <string name="game_menu_save">Сачувај</string>
   <string name="game_menu_load">Учитај</string>
   <string name="game_menu_restart">Рестартуј</string>

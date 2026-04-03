@@ -89,6 +89,7 @@
   <string name="home_empty_title">Valitse ROMien hakemisto</string>
   <string name="home_empty_message">Fulldroid tarvitsee skannata ROM -tiedostoja sisältävän hakemiston.\nTämä saattaa kestää jopa muutaman minuutin.</string>
   <string name="home_empty_action">Valitse Hakemisto</string>
+  <string name="home_empty_local_path">Tai sijoita ROM-tiedostot suoraan kansioon:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME eläkkeellä pian</string>
   <string name="home_notification_desmume_deprecated_message">Tallenna pelissä vaihtaaksesi melonDS:ään, ja edistymisesi siirtyy eteenpäin. Tallenna valtiot pysyvät sidottuna DeSmuMEen.</string>
   <string name="home_notification_desmume_deprecated_action">Vaihda melonDS:ään</string>

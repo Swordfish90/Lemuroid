@@ -86,6 +86,7 @@
   <string name="home_empty_title">選擇 ROMs 資料夾</string>
   <string name="home_empty_message">Fulldroid 需要掃描整個 ROM 檔案資料夾。\n這可能需要幾分鐘的時間。</string>
   <string name="home_empty_action">選擇資料夾</string>
+  <string name="home_empty_local_path">或直接將ROM檔案放入:\n%1$s</string>
   <string name="game_menu_save">儲存進度</string>
   <string name="game_menu_load">讀取進度</string>
   <string name="game_menu_restart">重新啟動</string>

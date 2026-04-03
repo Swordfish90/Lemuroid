@@ -89,6 +89,7 @@
   <string name="home_empty_title">Zvolit složku s ROMkami</string>
   <string name="home_empty_message">Fulldroid potřebuje naskenovat složku obsahující ROM soubory.\nTo může trvat až několik minut.</string>
   <string name="home_empty_action">Vybrat adresář</string>
+  <string name="home_empty_local_path">Nebo umístěte soubory ROM přímo do:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME brzy odejde</string>
   <string name="home_notification_desmume_deprecated_message">Uložte hru, přepněte se na melonDS, a váš postup bude pokračovat. Uložte stavy zůstávají vázány na DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Přepnout na melonDS</string>

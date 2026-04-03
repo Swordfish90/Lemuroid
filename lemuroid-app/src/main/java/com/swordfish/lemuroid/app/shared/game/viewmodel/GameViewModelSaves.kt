@@ -127,7 +127,9 @@ class GameViewModelSaves(
     private suspend fun restoreQuickSave(saveState: SaveState) {
         var times = 10
 
-        while (!loadSaveState(saveState) && times > 0) {
+        while (times > 0) {
+            val loaded = withContext(Dispatchers.IO) { loadSaveState(saveState) }
+            if (loaded) break
             delay(200)
             times--
         }

@@ -89,6 +89,7 @@
   <string name="home_empty_title">Alege directorul de ROM-uri</string>
   <string name="home_empty_message">Fulldroid trebuie să scaneze un director care conține fișiere ROM.\nAcest lucru ar putea dura până la câteva minute.</string>
   <string name="home_empty_action">Selectare director</string>
+  <string name="home_empty_local_path">Sau plasați fișierele ROM direct în:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME se pensionează în curând</string>
   <string name="home_notification_desmume_deprecated_message">Salvați în joc, comutați la melonDS, iar progresul dvs. va continua. Salvați statele rămân legate pe DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Comutați la melonDS</string>

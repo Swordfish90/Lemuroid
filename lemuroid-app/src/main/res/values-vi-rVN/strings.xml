@@ -83,6 +83,7 @@
   <string name="home_empty_title">Chọn thư mục chứa ROM</string>
   <string name="home_empty_message">Fulldroid cần quét một thư mục chứa các tệp ROM.\nViệc này có thể sẽ mất tối đa một vài phút.</string>
   <string name="home_empty_action">Chọn thư mục</string>
+  <string name="home_empty_local_path">Hoặc đặt tệp ROM trực tiếp vào:\n%1$s</string>
   <string name="game_menu_save">Lưu</string>
   <string name="game_menu_load">Tải</string>
   <string name="game_menu_restart">Bắt đầu lại</string>

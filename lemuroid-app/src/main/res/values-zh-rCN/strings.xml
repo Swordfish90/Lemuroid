@@ -89,6 +89,7 @@
   <string name="home_empty_title">选择 ROM 目录</string>
   <string name="home_empty_message">Fulldroid 需要扫描一个包含 ROM 文件的目录。\n这可能需要几分钟的时间。</string>
   <string name="home_empty_action">选择目录</string>
+  <string name="home_empty_local_path">或直接将ROM文件放入:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">Désmume 即将退出</string>
   <string name="home_notification_desmume_deprecated_message">在游戏中保存，切换到melondDS，进度将会传输。保存状态将保持与 DeSmuME 的绑定。</string>
   <string name="home_notification_desmume_deprecated_action">切换到熔化</string>

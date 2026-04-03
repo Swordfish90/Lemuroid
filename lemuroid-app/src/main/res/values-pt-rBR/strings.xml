@@ -89,6 +89,7 @@
   <string name="home_empty_title">Selecionar diretório das ROMs</string>
   <string name="home_empty_message">Fulldroid precisa verificar um diretório contendo arquivos da ROM.\nIsto pode levar alguns minutos.</string>
   <string name="home_empty_action">Selecione o diretório</string>
+  <string name="home_empty_local_path">Ou coloque os arquivos ROM diretamente em:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME se aposentando em breve</string>
   <string name="home_notification_desmume_deprecated_message">Salve no jogo, mude para melonDS, e seu progresso será transferido. Salve os estados permanecem vinculados ao DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Alternar para melonDS</string>

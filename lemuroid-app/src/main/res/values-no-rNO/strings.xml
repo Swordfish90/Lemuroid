@@ -89,6 +89,7 @@
   <string name="home_empty_title">Velg ROM-katalog</string>
   <string name="home_empty_message">Fulldroid trenger å skanne en mappe som inneholder ROM-filer.\nDette kan ta opptil noen få minutter.</string>
   <string name="home_empty_action">Velg mappe</string>
+  <string name="home_empty_local_path">Eller plasser ROM-filer direkte i:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME injeksjonsvæske snart</string>
   <string name="home_notification_desmume_deprecated_message">Lagre i spillet, bytt til melonDS, og fremgangen din vil fortsette. Lagre stater forblir knyttet til DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Bytt til melonDS</string>

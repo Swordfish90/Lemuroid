@@ -95,6 +95,7 @@
     <string name="home_empty_title">Select ROMs directory</string>
     <string name="home_empty_message">Roid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
     <string name="home_empty_action">Select Directory</string>
+    <string name="home_empty_local_path">Or place ROM files directly in:\n%1$s</string>
 
     <string name="home_notification_desmume_deprecated_title">DeSmuME is being retired</string>
     <string name="home_notification_desmume_deprecated_message">Save in-game, then switch to melonDS to keep your progress. Save states won\'t transfer and will remain usable only in DeSmuME.</string>

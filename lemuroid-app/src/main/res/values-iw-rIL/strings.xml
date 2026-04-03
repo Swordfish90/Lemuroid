@@ -73,6 +73,7 @@
   <string name="home_empty_title">בחר את תיקיית היעד בה נמצאים קבצי ה-ROM</string>
   <string name="home_empty_message">Fulldroid צריך לסרוק תיקייה המכילה קבצי ROM. \nפעולה זו עשויה לארוך מספר דקות.</string>
   <string name="home_empty_action">בחירת תיקייה</string>
+  <string name="home_empty_local_path">או הנח קבצי ROM ישירות ב:\n%1$s</string>
   <string name="game_menu_save">שמור</string>
   <string name="game_menu_load">טען</string>
   <string name="game_menu_restart">הפעל מחדש</string>

@@ -83,6 +83,7 @@
   <string name="home_empty_title">ROMların konumunu seç</string>
   <string name="home_empty_message">Fulldroid\'in ROM dosyalarını içeren bir dizini taraması gerekiyor.\n Bu birkaç dakika sürebilir.</string>
   <string name="home_empty_action">Konum seç</string>
+  <string name="home_empty_local_path">Veya ROM dosyalarını doğrudan buraya koyun:\n%1$s</string>
   <string name="game_menu_save">Kaydet</string>
   <string name="game_menu_load">Yükle</string>
   <string name="game_menu_restart">Yeniden başlat</string>

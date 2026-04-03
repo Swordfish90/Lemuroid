@@ -89,6 +89,7 @@
   <string name="home_empty_title">Виберіть каталог ROM</string>
   <string name="home_empty_message">Лемуроїд повинен сканувати каталог, що містить ROM файли.\nЦе може зайняти до декількох хвилин.</string>
   <string name="home_empty_action">Виберіть каталог</string>
+  <string name="home_empty_local_path">Або помістіть ROM-файли безпосередньо у:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DSmuME незабаром вийшло на пенсію</string>
   <string name="home_notification_desmume_deprecated_message">Заощаджуйте в грі, перемикайтесь на melonDS, і ваш прогрес буде перенесений. Економна держава, яка залишиться прив\'язаною до DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Перемкнути на динарії</string>

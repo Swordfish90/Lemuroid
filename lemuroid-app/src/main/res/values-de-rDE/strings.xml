@@ -89,6 +89,7 @@
   <string name="home_empty_title">ROMs Verzeichnis wählen</string>
   <string name="home_empty_message">Fulldroid muss ein Verzeichnis mit ROM Dateien scannen.\nDies kann einige Minuten dauern.</string>
   <string name="home_empty_action">Verzeichnis wählen</string>
+  <string name="home_empty_local_path">Oder ROM-Dateien direkt ablegen in:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME wird bald ausscheiden</string>
   <string name="home_notification_desmume_deprecated_message">Sparen Sie im Spiel, wechseln Sie zu MelonDS und Ihr Fortschritt wird übertragen. Spart Staaten bleiben an DeSmuME gebunden.</string>
   <string name="home_notification_desmume_deprecated_action">Zu MelonDS wechseln</string>

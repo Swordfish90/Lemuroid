@@ -89,6 +89,7 @@
   <string name="home_empty_title">Välj ROM-katalog</string>
   <string name="home_empty_message">Fulldroid behöver söka igenom en katalog som innehåller ROM-filer.\nDetta kan ta några minuter.</string>
   <string name="home_empty_action">Välj katalog</string>
+  <string name="home_empty_local_path">Eller placera ROM-filer direkt i:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME tas snart bort</string>
   <string name="home_notification_desmume_deprecated_message">Spara i spelet, byt till melonDS, så kommer dina framsteg att överföras. Sparade tillstånd förblir kopplade till DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Byt till melonDS</string>

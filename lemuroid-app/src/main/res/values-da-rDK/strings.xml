@@ -89,6 +89,7 @@
   <string name="home_empty_title">Vælg ROMs-mappe</string>
   <string name="home_empty_message">Fulldroid skanner mappen med ROM-filer.\nDette kan tage op til et par minutter.</string>
   <string name="home_empty_action">Vælg mappe</string>
+  <string name="home_empty_local_path">Eller placer ROM-filer direkte i:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME går snart på pension</string>
   <string name="home_notification_desmume_deprecated_message">Gem i spil, skift til melonDS, og dine fremskridt vil bære. Gem stater forblive bundet til DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Skift til melonDS</string>

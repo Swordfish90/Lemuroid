@@ -89,6 +89,7 @@
   <string name="home_empty_title">حدد مجلد ROM</string>
   <string name="home_empty_message">يحتاج Fulldroid إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
   <string name="home_empty_action">حدد المجلد</string>
+  <string name="home_empty_local_path">أو ضع ملفات ROM مباشرةً في:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">يتقاعد DSmuME قريباً</string>
   <string name="home_notification_desmume_deprecated_message">حفظ داخل اللعبة، التبديل إلى melonDS، والتقدم الذي أحرزتمونه. حفظ الدول يبقى مرتبطا بـ DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">التبديل إلى melonDS</string>
