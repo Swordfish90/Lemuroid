@@ -24,7 +24,7 @@ fun LemuroidGameTexts(
             GameUtils.getGameSubtitle(context, game)
         }
 
-    LemuroidTexts(modifier, game.title, subtitle)
+    LemuroidTexts(modifier, game.displayName(), subtitle)
 }
 
 @Composable

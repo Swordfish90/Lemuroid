@@ -45,20 +45,20 @@ class GameSearchDao(private val internalDao: Internal) {
             database.execSQL(
                 """
                 CREATE TRIGGER games_au AFTER UPDATE ON games BEGIN
-                  INSERT INTO fts_games(docid, title) VALUES(new.id, new.title);
+                  INSERT INTO fts_games(docid, title) VALUES(new.id, COALESCE(new.customName, new.title));
                 END;
                 """,
             )
             database.execSQL(
                 """
                 CREATE TRIGGER games_ai AFTER INSERT ON games BEGIN
-                  INSERT INTO fts_games(docid, title) VALUES(new.id, new.title);
+                  INSERT INTO fts_games(docid, title) VALUES(new.id, COALESCE(new.customName, new.title));
                 END;
                 """,
             )
             database.execSQL(
                 """
-                INSERT INTO fts_games(docid, title) SELECT id, title FROM games;
+                INSERT INTO fts_games(docid, title) SELECT id, COALESCE(customName, title) FROM games;
                 """,
             )
         }

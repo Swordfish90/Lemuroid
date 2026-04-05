@@ -60,6 +60,30 @@ class GameInteractor(
         return shortcutsGenerator.supportShortcuts()
     }
 
+    fun onSetCustomName(game: Game, customName: String) {
+        GlobalScope.launch {
+            retrogradeDb.gameDao().update(game.copy(customName = customName))
+        }
+    }
+
+    fun onClearCustomName(game: Game) {
+        GlobalScope.launch {
+            retrogradeDb.gameDao().update(game.copy(customName = null))
+        }
+    }
+
+    fun onSetCustomCoverUri(game: Game, uri: String) {
+        GlobalScope.launch {
+            retrogradeDb.gameDao().update(game.copy(customCoverUri = uri))
+        }
+    }
+
+    fun onClearCustomCoverUri(game: Game) {
+        GlobalScope.launch {
+            retrogradeDb.gameDao().update(game.copy(customCoverUri = null))
+        }
+    }
+
     private fun ensureNotificationsPermissionAvailable(): Boolean {
         if (useLeanback || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             return true

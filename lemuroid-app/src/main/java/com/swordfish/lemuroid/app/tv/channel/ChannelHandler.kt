@@ -154,15 +154,16 @@ class ChannelHandler(
         val preview =
             PreviewProgram.Builder()
                 .setChannelId(channelId)
-                .setTitle(game.title)
+                .setTitle(game.displayName())
                 .setDescription(game.developer)
                 .setIntent(intent)
                 .setStartTimeUtcMillis(game.lastPlayedAt ?: 0)
                 .setType(TvContractCompat.PreviewPrograms.TYPE_GAME)
                 .setPosterArtAspectRatio(TvContractCompat.PreviewProgramColumns.ASPECT_RATIO_1_1)
 
-        if (game.coverFrontUrl != null && thumbnailExists) {
-            preview.setPosterArtUri(Uri.parse(game.coverFrontUrl))
+        val coverUrl = game.displayCoverUrl()
+        if (coverUrl != null && (game.customCoverUri != null || thumbnailExists)) {
+            preview.setPosterArtUri(Uri.parse(coverUrl))
         } else {
             preview.setPosterArtUri(Uri.parse(CoverUtils.getFallbackRemoteUrl(game)))
         }
