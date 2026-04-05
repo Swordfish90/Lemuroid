@@ -30,6 +30,7 @@ import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
+import com.swordfish.lemuroid.lib.library.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -129,7 +130,8 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
                 retrogradeDb: RetrogradeDatabase,
                 shortcutsGenerator: ShortcutsGenerator,
                 gameLauncher: GameLauncher,
-            ) = GameInteractor(activity, retrogradeDb, true, shortcutsGenerator, gameLauncher)
+                customCoverManager: CustomCoverManager,
+            ) = GameInteractor(activity, retrogradeDb, true, shortcutsGenerator, gameLauncher, customCoverManager)
         }
     }
 }

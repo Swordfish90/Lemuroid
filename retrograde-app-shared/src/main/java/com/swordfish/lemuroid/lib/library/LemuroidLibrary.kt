@@ -49,6 +49,7 @@ class LemuroidLibrary(
     private val storageProviderRegistry: Lazy<StorageProviderRegistry>,
     private val gameMetadataProvider: Lazy<GameMetadataProvider>,
     private val biosManager: BiosManager,
+    private val customCoverManager: CustomCoverManager,
 ) {
     suspend fun indexLibrary() {
         val startedAtMs = System.currentTimeMillis()
@@ -315,6 +316,10 @@ class LemuroidLibrary(
     private fun removeDeletedGames(startedAtMs: Long) {
         Timber.d("Deleting games from db before: $startedAtMs")
         val games = retrogradedb.gameDao().selectByLastIndexedAtLessThan(startedAtMs)
+
+        // Clean up custom cover files before removing the database rows
+        customCoverManager.deleteCoversForGames(games)
+
         retrogradedb.gameDao().delete(games)
     }
 
