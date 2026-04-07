@@ -96,4 +96,20 @@
   <string name="settings_category_experimental">Kísérleti</string>
   <string name="settings_title_citra_experimental_save_states">3DS mentési állapotok (Kísérleti)</string>
   <string name="settings_description_citra_experimental_save_states">(Kísérleti) Kézi mentési és betöltési állapotok engedélyezése Nintendo 3DS játékokhoz. Az automatikus mentés nem támogatott. Az állapotok instabilak lehetnek, vagy jelentős tárhelyet foglalhatnak.</string>
+  <string name="settings_category_citra_keys">3DS visszafejtési kulcsok</string>
+  <string name="settings_title_citra_keys_status">Állapot</string>
+  <string name="settings_value_citra_keys_present">Kulcsok jelen vannak</string>
+  <string name="settings_value_citra_keys_absent">Kulcsok nem találhatók</string>
+  <string name="settings_title_citra_keys_load_file">Betöltés fájlból</string>
+  <string name="settings_description_citra_keys_load_file">Válasszon ki egy keys.txt fájlt a tárolóból</string>
+  <string name="settings_title_citra_keys_load_url">Letöltés URL-ről</string>
+  <string name="settings_description_citra_keys_load_url">Töltsön le egy keys.txt fájlt az Ön által megadott URL-ről</string>
+  <string name="settings_title_citra_keys_delete">Kulcsok törlése</string>
+  <string name="settings_description_citra_keys_delete">A visszafejtési kulcsfájl eltávolítása az eszközről</string>
+  <string name="settings_citra_keys_disclaimer">Ezek a kulcsok kizárólag a legálisan megszerzett 3DS szoftverrel való együttműködési célokat szolgálnak. Kizárólag Ön felelős annak biztosításáért, hogy jogosult azok használatára.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Visszafejtési kulcsok törlése?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Ez eltávolítja a keys.txt fájlt. A titkosított 3DS ROM-ok nem töltődnek be, amíg új kulcsokat nem adnak meg.</string>
+  <string name="settings_citra_keys_error_title">Kulcshiba</string>
+  <string name="settings_citra_keys_downloading">Kulcsok letöltése…</string>
 </resources>

@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ levenslang %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nieuwe emulators, inclusief Nintendo 3DS\n✓ HD-modus voor efficiënte opschaling van games\n✓ Ondersteuning voor 7z-archieven\n✓ Exclusieve toegang tot toekomstige functies</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS-decoderingssleutels</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Sleutels aanwezig</string>
+  <string name="settings_value_citra_keys_absent">Sleutels niet gevonden</string>
+  <string name="settings_title_citra_keys_load_file">Laden uit bestand</string>
+  <string name="settings_description_citra_keys_load_file">Selecteer een keys.txt-bestand uit de opslag</string>
+  <string name="settings_title_citra_keys_load_url">Downloaden van URL</string>
+  <string name="settings_description_citra_keys_load_url">Download een keys.txt van een URL die u opgeeft</string>
+  <string name="settings_title_citra_keys_delete">Sleutels verwijderen</string>
+  <string name="settings_description_citra_keys_delete">Verwijder het decoderingssleutelbestand van het apparaat</string>
+  <string name="settings_citra_keys_disclaimer">Deze sleutels zijn uitsluitend bedoeld voor interoperabiliteit met uw legaal verkregen 3DS-software. U bent als enige verantwoordelijk voor het waarborgen van uw recht om ze te gebruiken.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Decoderingssleutels verwijderen?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Hiermee wordt het keys.txt-bestand verwijderd. Versleutelde 3DS ROM\'s worden niet meer geladen totdat nieuwe sleutels zijn opgegeven.</string>
+  <string name="settings_citra_keys_error_title">Sleutelfout</string>
+  <string name="settings_citra_keys_downloading">Sleutels downloaden…</string>
 </resources>

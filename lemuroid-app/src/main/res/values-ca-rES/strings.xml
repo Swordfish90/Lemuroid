@@ -145,4 +145,20 @@
   <string name="settings_category_experimental">Experimental</string>
   <string name="settings_title_citra_experimental_save_states">Estats de conservació 3DS (Experimental)</string>
   <string name="settings_description_citra_experimental_save_states">(Experimental) Activa els estats de conservació i càrrega manuals per a jocs de Nintendo 3DS. La conservació automàtica no és compatible. Els estats poden ser inestables o usar molt d\'emmagatzematge.</string>
+  <string name="settings_category_citra_keys">Claus de desxifrat 3DS</string>
+  <string name="settings_title_citra_keys_status">Estat</string>
+  <string name="settings_value_citra_keys_present">Claus presents</string>
+  <string name="settings_value_citra_keys_absent">Claus no trobades</string>
+  <string name="settings_title_citra_keys_load_file">Carrega des d\'un fitxer</string>
+  <string name="settings_description_citra_keys_load_file">Selecciona un fitxer keys.txt de l\'emmagatzematge</string>
+  <string name="settings_title_citra_keys_load_url">Descarrega des d\'URL</string>
+  <string name="settings_description_citra_keys_load_url">Descarrega un fitxer keys.txt des d\'una URL que proporcionis</string>
+  <string name="settings_title_citra_keys_delete">Elimina les claus</string>
+  <string name="settings_description_citra_keys_delete">Elimina el fitxer de claus de desxifrat del dispositiu</string>
+  <string name="settings_citra_keys_disclaimer">Aquestes claus són únicament per a la interoperabilitat amb el programari 3DS obtingut legalment. Ets l\'únic responsable d\'assegurar-te que tens el dret d\'usar-les.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Eliminar les claus de desxifrat?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Això eliminarà el fitxer keys.txt. Els ROMs 3DS xifrats ja no es carregaran fins que es proporcionin noves claus.</string>
+  <string name="settings_citra_keys_error_title">Error de claus</string>
+  <string name="settings_citra_keys_downloading">Descarregant claus…</string>
 </resources>

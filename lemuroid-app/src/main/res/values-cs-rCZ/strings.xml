@@ -238,4 +238,20 @@
   <string name="string_pro_price">%d/ doživotní %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nových emulátorů, včetně Nintendo 3DS\n✓ HD režim pro efektivní zvýšení kvality her\n✓ Podpora archivů 7z\n✓ Exkluzivní přístup k nadcházejícím funkcím</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Dešifrovací klíče 3DS</string>
+  <string name="settings_title_citra_keys_status">Stav</string>
+  <string name="settings_value_citra_keys_present">Klíče jsou přítomny</string>
+  <string name="settings_value_citra_keys_absent">Klíče nenalezeny</string>
+  <string name="settings_title_citra_keys_load_file">Načíst ze souboru</string>
+  <string name="settings_description_citra_keys_load_file">Vyberte soubor keys.txt z úložiště</string>
+  <string name="settings_title_citra_keys_load_url">Stáhnout z URL</string>
+  <string name="settings_description_citra_keys_load_url">Stáhněte soubor keys.txt z vámi zadané URL</string>
+  <string name="settings_title_citra_keys_delete">Smazat klíče</string>
+  <string name="settings_description_citra_keys_delete">Odeberte soubor dešifrovacích klíčů ze zařízení</string>
+  <string name="settings_citra_keys_disclaimer">Tyto klíče jsou určeny výhradně pro interoperabilitu s legálně získaným softwarem 3DS. Jste výhradně zodpovědní za zajištění práva jejich použití.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Smazat dešifrovací klíče?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Tím se odstraní soubor keys.txt. Šifrované 3DS ROM se nebudou načítat, dokud nebudou zadány nové klíče.</string>
+  <string name="settings_citra_keys_error_title">Chyba klíčů</string>
+  <string name="settings_citra_keys_downloading">Stahování klíčů…</string>
 </resources>

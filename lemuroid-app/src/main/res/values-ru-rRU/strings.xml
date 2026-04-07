@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ пожизненно %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 новых эмуляторов, включая Nintendo 3DS\n✓ HD режим для эффективного улучшения графики игр\n✓ Поддержка архивов 7z\n✓ Эксклюзивный доступ к будущим функциям</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Ключи дешифрования 3DS</string>
+  <string name="settings_title_citra_keys_status">Статус</string>
+  <string name="settings_value_citra_keys_present">Ключи присутствуют</string>
+  <string name="settings_value_citra_keys_absent">Ключи не найдены</string>
+  <string name="settings_title_citra_keys_load_file">Загрузить из файла</string>
+  <string name="settings_description_citra_keys_load_file">Выберите файл keys.txt из хранилища</string>
+  <string name="settings_title_citra_keys_load_url">Скачать по URL</string>
+  <string name="settings_description_citra_keys_load_url">Скачайте keys.txt по указанному вами URL</string>
+  <string name="settings_title_citra_keys_delete">Удалить ключи</string>
+  <string name="settings_description_citra_keys_delete">Удалить файл ключей дешифрования с устройства</string>
+  <string name="settings_citra_keys_disclaimer">Эти ключи предназначены исключительно для обеспечения совместимости с легально приобретённым программным обеспечением 3DS. Вы несёте единоличную ответственность за соблюдение своих прав на их использование.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Удалить ключи дешифрования?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Это удалит файл keys.txt. Зашифрованные ROM-файлы 3DS больше не будут загружаться до тех пор, пока не будут предоставлены новые ключи.</string>
+  <string name="settings_citra_keys_error_title">Ошибка ключей</string>
+  <string name="settings_citra_keys_downloading">Загрузка ключей…</string>
 </resources>

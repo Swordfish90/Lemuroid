@@ -221,4 +221,20 @@
   <string name="string_pro_price">%d/ доживотно %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 нових емулатора, укључујући Nintendo 3DS\n✓ HD режим за ефикасно побољшање игара\n✓ Подршка за 7z архиве\n✓ Ексклузиван приступ будућим функцијама</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Кључеви за дешифровање 3DS</string>
+  <string name="settings_title_citra_keys_status">Статус</string>
+  <string name="settings_value_citra_keys_present">Кључеви су присутни</string>
+  <string name="settings_value_citra_keys_absent">Кључеви нису пронађени</string>
+  <string name="settings_title_citra_keys_load_file">Учитај из датотеке</string>
+  <string name="settings_description_citra_keys_load_file">Изаберите датотеку keys.txt из складишта</string>
+  <string name="settings_title_citra_keys_load_url">Преузми са URL</string>
+  <string name="settings_description_citra_keys_load_url">Преузмите keys.txt са URL адресе коју наведете</string>
+  <string name="settings_title_citra_keys_delete">Избриши кључеве</string>
+  <string name="settings_description_citra_keys_delete">Уклоните датотеку кључева за дешифровање са уређаја</string>
+  <string name="settings_citra_keys_disclaimer">Ови кључеви су искључиво за интероперабилност са законито набављеним 3DS софтвером. Ви сте једини одговорни за обезбеђивање права на коришћење.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Избрисати кључеве за дешифровање?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Ово ће уклонити датотеку keys.txt. Шифровани 3DS ROM-ови се више неће учитавати до испоруке нових кључева.</string>
+  <string name="settings_citra_keys_error_title">Грешка кључева</string>
+  <string name="settings_citra_keys_downloading">Преузимање кључева…</string>
 </resources>

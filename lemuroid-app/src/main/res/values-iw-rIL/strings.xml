@@ -179,4 +179,20 @@
   <string name="string_pro_price">%d/ לכל החיים %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 אמולטורים חדשים, כולל Nintendo 3DS\n✓ מצב HD לשיפור יעיל של משחקים\n✓ תמיכה בארכיון 7z\n✓ גישה בלעדית לתכונות עתידיות</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">מפתחות פענוח 3DS</string>
+  <string name="settings_title_citra_keys_status">סטטוס</string>
+  <string name="settings_value_citra_keys_present">מפתחות קיימים</string>
+  <string name="settings_value_citra_keys_absent">מפתחות לא נמצאו</string>
+  <string name="settings_title_citra_keys_load_file">טען מקובץ</string>
+  <string name="settings_description_citra_keys_load_file">בחר קובץ keys.txt מהאחסון</string>
+  <string name="settings_title_citra_keys_load_url">הורד מ-URL</string>
+  <string name="settings_description_citra_keys_load_url">הורד keys.txt מ-URL שתספק</string>
+  <string name="settings_title_citra_keys_delete">מחק מפתחות</string>
+  <string name="settings_description_citra_keys_delete">הסר את קובץ מפתחות הפענוח מהמכשיר</string>
+  <string name="settings_citra_keys_disclaimer">מפתחות אלה מיועדים אך ורק לאינטרופרביליות עם תוכנת 3DS שהשגת באופן חוקי. אתה האחראי הבלעדי להבטחת זכותך להשתמש בהם.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">למחוק את מפתחות הפענוח?</string>
+  <string name="settings_citra_keys_delete_confirm_body">פעולה זו תסיר את קובץ keys.txt. ROMs מוצפנות של 3DS לא יטענו עוד עד שיסופקו מפתחות חדשים.</string>
+  <string name="settings_citra_keys_error_title">שגיאת מפתחות</string>
+  <string name="settings_citra_keys_downloading">מוריד מפתחות…</string>
 </resources>

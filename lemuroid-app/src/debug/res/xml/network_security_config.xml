@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <!-- Preserve main-source-set entry so cover art loads in debug -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">thumbnails.libretro.com</domain>
+    </domain-config>
+    <!-- localhost only — for UI test case 4 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+</network-security-config>

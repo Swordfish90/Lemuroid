@@ -58,4 +58,20 @@
   <string name="settings_category_experimental">प्रायोगिक</string>
   <string name="settings_title_citra_experimental_save_states">3DS सेव स्टेट्स (प्रायोगिक)</string>
   <string name="settings_description_citra_experimental_save_states">(प्रायोगिक) Nintendo 3DS गेम्स के लिए मैन्युअल सेव और लोड स्टेट्स सक्षम करें। ऑटो-सेव समर्थित नहीं है। स्टेट्स अस्थिर हो सकते हैं या महत्वपूर्ण स्टोरेज उपयोग कर सकते हैं।</string>
+  <string name="settings_category_citra_keys">3DS डिक्रिप्शन कुंजियाँ</string>
+  <string name="settings_title_citra_keys_status">स्थिति</string>
+  <string name="settings_value_citra_keys_present">कुंजियाँ मौजूद हैं</string>
+  <string name="settings_value_citra_keys_absent">कुंजियाँ नहीं मिलीं</string>
+  <string name="settings_title_citra_keys_load_file">फ़ाइल से लोड करें</string>
+  <string name="settings_description_citra_keys_load_file">स्टोरेज से keys.txt फ़ाइल चुनें</string>
+  <string name="settings_title_citra_keys_load_url">URL से डाउनलोड करें</string>
+  <string name="settings_description_citra_keys_load_url">आपके द्वारा दिए गए URL से keys.txt डाउनलोड करें</string>
+  <string name="settings_title_citra_keys_delete">कुंजियाँ हटाएं</string>
+  <string name="settings_description_citra_keys_delete">डिवाइस से डिक्रिप्शन कुंजी फ़ाइल हटाएं</string>
+  <string name="settings_citra_keys_disclaimer">ये कुंजियाँ केवल आपके कानूनी रूप से प्राप्त 3DS सॉफ़्टवेयर के साथ अंतरसंचालनीयता के लिए हैं। इनका उपयोग करने का अधिकार सुनिश्चित करना पूरी तरह आपकी जिम्मेदारी है।</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">डिक्रिप्शन कुंजियाँ हटाएं?</string>
+  <string name="settings_citra_keys_delete_confirm_body">इससे keys.txt फ़ाइल हट जाएगी। एन्क्रिप्टेड 3DS ROMs तब तक लोड नहीं होंगे जब तक नई कुंजियाँ नहीं दी जातीं।</string>
+  <string name="settings_citra_keys_error_title">कुंजी त्रुटि</string>
+  <string name="settings_citra_keys_downloading">कुंजियाँ डाउनलोड हो रही हैं…</string>
 </resources>

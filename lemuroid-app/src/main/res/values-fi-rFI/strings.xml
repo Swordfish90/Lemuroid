@@ -237,4 +237,20 @@
   <string name="string_pro_price">%d/ elinikäinen %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 uutta emulaattoria, mukaan lukien Nintendo 3DS\n✓ HD-tila pelien tehokkaaseen skaalaamiseen\n✓ 7z-arkistotuki\n✓ Yksinoikeudellinen pääsy tuleviin ominaisuuksiin</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS-salauksen purkuavaimet</string>
+  <string name="settings_title_citra_keys_status">Tila</string>
+  <string name="settings_value_citra_keys_present">Avaimet löydetty</string>
+  <string name="settings_value_citra_keys_absent">Avaimia ei löydy</string>
+  <string name="settings_title_citra_keys_load_file">Lataa tiedostosta</string>
+  <string name="settings_description_citra_keys_load_file">Valitse keys.txt-tiedosto tallennustilasta</string>
+  <string name="settings_title_citra_keys_load_url">Lataa URL-osoitteesta</string>
+  <string name="settings_description_citra_keys_load_url">Lataa keys.txt antamastasi URL-osoitteesta</string>
+  <string name="settings_title_citra_keys_delete">Poista avaimet</string>
+  <string name="settings_description_citra_keys_delete">Poista salauksen purkuavaintiedosto laitteelta</string>
+  <string name="settings_citra_keys_disclaimer">Nämä avaimet ovat tarkoitettu vain laillisesti hankitun 3DS-ohjelmiston yhteentoimivuuteen. Olet yksin vastuussa siitä, että sinulla on oikeus käyttää niitä.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Poistetaanko salauksen purkuavaimet?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Tämä poistaa keys.txt-tiedoston. Salatut 3DS-ROM-tiedostot eivät enää lataudu, ennen kuin uudet avaimet on annettu.</string>
+  <string name="settings_citra_keys_error_title">Avainvirhe</string>
+  <string name="settings_citra_keys_downloading">Ladataan avaimia…</string>
 </resources>

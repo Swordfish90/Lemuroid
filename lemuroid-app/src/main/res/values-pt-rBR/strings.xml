@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ vitalício %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 novos emuladores, incluindo Nintendo 3DS\n✓ Modo HD para melhorar a qualidade dos jogos\n✓ Suporte a arquivos 7z\n✓ Acesso exclusivo a recursos futuros</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Chaves de descriptografia 3DS</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Chaves presentes</string>
+  <string name="settings_value_citra_keys_absent">Chaves não encontradas</string>
+  <string name="settings_title_citra_keys_load_file">Carregar de arquivo</string>
+  <string name="settings_description_citra_keys_load_file">Selecione um arquivo keys.txt do armazenamento</string>
+  <string name="settings_title_citra_keys_load_url">Baixar de URL</string>
+  <string name="settings_description_citra_keys_load_url">Baixe um keys.txt de uma URL que você fornecer</string>
+  <string name="settings_title_citra_keys_delete">Excluir chaves</string>
+  <string name="settings_description_citra_keys_delete">Remover o arquivo de chaves de descriptografia do dispositivo</string>
+  <string name="settings_citra_keys_disclaimer">Essas chaves são apenas para interoperabilidade com o software 3DS obtido legalmente. Você é o único responsável por garantir que tem o direito de usá-las.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Excluir chaves de descriptografia?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Isso removerá o arquivo keys.txt. ROMs 3DS criptografadas não serão mais carregadas até que novas chaves sejam fornecidas.</string>
+  <string name="settings_citra_keys_error_title">Erro de chaves</string>
+  <string name="settings_citra_keys_downloading">Baixando chaves…</string>
 </resources>
