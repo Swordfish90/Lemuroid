@@ -1305,7 +1305,7 @@ data class GameSystem(
                                 supportedOnlyArchitectures = setOf("arm64-v8a"),
                             ),
                         ),
-                        uniqueExtensions = listOf("3ds"),
+                        uniqueExtensions = listOf("3ds", "cci", "zcci", "3dsx", "z3dsx", "cxi", "zcxi"),
                         hasTouchScreen = true,
                         proOnly = true,
                     ),

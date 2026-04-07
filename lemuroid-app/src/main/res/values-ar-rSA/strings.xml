@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ مدى الحياة %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 محاكيات جديدة، بما في ذلك Nintendo 3DS\n✓ وضع HD لتحسين جودة الألعاب بكفاءة\n✓ دعم أرشيف 7z\n✓ وصول حصري إلى الميزات القادمة</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">مفاتيح فك تشفير 3DS</string>
+  <string name="settings_title_citra_keys_status">الحالة</string>
+  <string name="settings_value_citra_keys_present">المفاتيح موجودة</string>
+  <string name="settings_value_citra_keys_absent">لم يتم العثور على مفاتيح</string>
+  <string name="settings_title_citra_keys_load_file">تحميل من ملف</string>
+  <string name="settings_description_citra_keys_load_file">حدد ملف keys.txt من التخزين</string>
+  <string name="settings_title_citra_keys_load_url">تنزيل من URL</string>
+  <string name="settings_description_citra_keys_load_url">قم بتنزيل ملف keys.txt من عنوان URL تقدمه</string>
+  <string name="settings_title_citra_keys_delete">حذف المفاتيح</string>
+  <string name="settings_description_citra_keys_delete">إزالة ملف مفاتيح فك التشفير من الجهاز</string>
+  <string name="settings_citra_keys_disclaimer">هذه المفاتيح مخصصة فقط للتشغيل المتبادل مع برامج 3DS التي حصلت عليها بشكل قانوني. أنت المسؤول الوحيد عن ضمان حقك في استخدامها.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">حذف مفاتيح فك التشفير؟</string>
+  <string name="settings_citra_keys_delete_confirm_body">سيؤدي هذا إلى إزالة ملف keys.txt. لن تعمل ROMs 3DS المشفرة حتى يتم توفير مفاتيح جديدة.</string>
+  <string name="settings_citra_keys_error_title">خطأ في المفاتيح</string>
+  <string name="settings_citra_keys_downloading">جاري تنزيل المفاتيح…</string>
 </resources>

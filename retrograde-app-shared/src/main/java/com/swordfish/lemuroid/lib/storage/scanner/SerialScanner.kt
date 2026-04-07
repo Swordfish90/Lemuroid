@@ -172,7 +172,8 @@ object SerialScanner {
             return when (FileUtils.extractExtension(fileName)) {
                 "pbp" -> extractInfoForPBP(it)
                 "iso", "bin" -> standardExtractInfo(it)
-                "3ds" -> extractInfoFor3DS(it)
+                "3ds", "cci", "zcci" -> extractInfoFor3DS(it)
+                "3dsx", "z3dsx", "cxi", "zcxi" -> DiskInfo(null, SystemID.NINTENDO_3DS)
                 else -> DiskInfo(null, null)
             }
         }

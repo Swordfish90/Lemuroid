@@ -227,4 +227,20 @@
   <string name="string_pro_price">%d/ pe viață %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 emulatoare noi, inclusiv Nintendo 3DS\n✓ Mod HD pentru a îmbunătăți eficient jocurile\n✓ Suport pentru arhive 7z\n✓ Acces exclusiv la funcții viitoare</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Chei de decriptare 3DS</string>
+  <string name="settings_title_citra_keys_status">Stare</string>
+  <string name="settings_value_citra_keys_present">Cheile sunt prezente</string>
+  <string name="settings_value_citra_keys_absent">Cheile nu au fost găsite</string>
+  <string name="settings_title_citra_keys_load_file">Încarcă din fișier</string>
+  <string name="settings_description_citra_keys_load_file">Selectați un fișier keys.txt din stocare</string>
+  <string name="settings_title_citra_keys_load_url">Descarcă de la URL</string>
+  <string name="settings_description_citra_keys_load_url">Descărcați un keys.txt de la un URL pe care îl furnizați</string>
+  <string name="settings_title_citra_keys_delete">Șterge cheile</string>
+  <string name="settings_description_citra_keys_delete">Eliminați fișierul cu chei de decriptare de pe dispozitiv</string>
+  <string name="settings_citra_keys_disclaimer">Aceste chei sunt exclusiv pentru interoperabilitate cu software-ul 3DS obținut în mod legal. Sunteți singurul responsabil pentru a vă asigura că aveți dreptul de a le utiliza.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Ștergeți cheile de decriptare?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Aceasta va elimina fișierul keys.txt. ROM-urile 3DS criptate nu se vor mai încărca până când nu sunt furnizate chei noi.</string>
+  <string name="settings_citra_keys_error_title">Eroare chei</string>
+  <string name="settings_citra_keys_downloading">Se descarcă cheile…</string>
 </resources>

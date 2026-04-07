@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ vitalício %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 novos emuladores, incluindo Nintendo 3DS\n✓ Modo HD para melhorar a qualidade dos jogos\n✓ Suporte para arquivos 7z\n✓ Acesso exclusivo a funcionalidades futuras</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Chaves de desencriptação 3DS</string>
+  <string name="settings_title_citra_keys_status">Estado</string>
+  <string name="settings_value_citra_keys_present">Chaves presentes</string>
+  <string name="settings_value_citra_keys_absent">Chaves não encontradas</string>
+  <string name="settings_title_citra_keys_load_file">Carregar de ficheiro</string>
+  <string name="settings_description_citra_keys_load_file">Selecione um ficheiro keys.txt do armazenamento</string>
+  <string name="settings_title_citra_keys_load_url">Transferir de URL</string>
+  <string name="settings_description_citra_keys_load_url">Transfira um keys.txt de um URL que fornecer</string>
+  <string name="settings_title_citra_keys_delete">Eliminar chaves</string>
+  <string name="settings_description_citra_keys_delete">Remover o ficheiro de chaves de desencriptação do dispositivo</string>
+  <string name="settings_citra_keys_disclaimer">Estas chaves destinam-se apenas à interoperabilidade com o software 3DS obtido legalmente. É da sua exclusiva responsabilidade garantir que tem o direito de as utilizar.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Eliminar chaves de desencriptação?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Isto irá remover o ficheiro keys.txt. As ROMs 3DS encriptadas não serão carregadas até que sejam fornecidas novas chaves.</string>
+  <string name="settings_citra_keys_error_title">Erro de chaves</string>
+  <string name="settings_citra_keys_downloading">A transferir chaves…</string>
 </resources>

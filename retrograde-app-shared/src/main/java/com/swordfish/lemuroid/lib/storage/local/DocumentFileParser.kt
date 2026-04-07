@@ -150,7 +150,10 @@ object DocumentFileParser {
         // Check if filename contains a known extension
         val lowerName = fileName.lowercase()
         return when {
-            lowerName.endsWith(".3ds") || lowerName.endsWith(".cci") -> SystemID.NINTENDO_3DS
+            lowerName.endsWith(".3ds") || lowerName.endsWith(".cci") ||
+            lowerName.endsWith(".zcci") || lowerName.endsWith(".3dsx") ||
+            lowerName.endsWith(".z3dsx") || lowerName.endsWith(".cxi") ||
+            lowerName.endsWith(".zcxi") -> SystemID.NINTENDO_3DS
             lowerName.endsWith(".nds") -> SystemID.NDS
             lowerName.endsWith(".gba") -> SystemID.GBA
             lowerName.endsWith(".gbc") -> SystemID.GBC

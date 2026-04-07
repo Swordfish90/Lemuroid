@@ -238,4 +238,20 @@
   <string name="string_pro_price">%d/ 终身 %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 个新模拟器，包括 Nintendo 3DS\n✓ 高清模式高效提升游戏画质\n✓ 支持 7z 压缩档案\n✓ 独家访问即将推出的功能</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS 解密密钥</string>
+  <string name="settings_title_citra_keys_status">状态</string>
+  <string name="settings_value_citra_keys_present">密钥已存在</string>
+  <string name="settings_value_citra_keys_absent">未找到密钥</string>
+  <string name="settings_title_citra_keys_load_file">从文件加载</string>
+  <string name="settings_description_citra_keys_load_file">从存储中选择 keys.txt 文件</string>
+  <string name="settings_title_citra_keys_load_url">从 URL 下载</string>
+  <string name="settings_description_citra_keys_load_url">从您提供的 URL 下载 keys.txt</string>
+  <string name="settings_title_citra_keys_delete">删除密钥</string>
+  <string name="settings_description_citra_keys_delete">从设备中移除解密密钥文件</string>
+  <string name="settings_citra_keys_disclaimer">这些密钥仅用于与您合法获取的 3DS 软件的互操作性。您须自行负责确保您有权使用它们。</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">删除解密密钥？</string>
+  <string name="settings_citra_keys_delete_confirm_body">这将删除 keys.txt 文件。在提供新密钥之前，加密的 3DS ROM 将无法加载。</string>
+  <string name="settings_citra_keys_error_title">密钥错误</string>
+  <string name="settings_citra_keys_downloading">正在下载密钥…</string>
 </resources>

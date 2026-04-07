@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ εφ\' όρου ζωής %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 νέοι εξομοιωτές, συμπεριλαμβανομένου του Nintendo 3DS\n✓ Λειτουργία HD για αποτελεσματική αναβάθμιση παιχνιδιών\n✓ Υποστήριξη αρχείων 7z\n✓ Αποκλειστική πρόσβαση σε μελλοντικές δυνατότητες</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Κλειδιά αποκρυπτογράφησης 3DS</string>
+  <string name="settings_title_citra_keys_status">Κατάσταση</string>
+  <string name="settings_value_citra_keys_present">Τα κλειδιά υπάρχουν</string>
+  <string name="settings_value_citra_keys_absent">Τα κλειδιά δεν βρέθηκαν</string>
+  <string name="settings_title_citra_keys_load_file">Φόρτωση από αρχείο</string>
+  <string name="settings_description_citra_keys_load_file">Επιλέξτε ένα αρχείο keys.txt από τον χώρο αποθήκευσης</string>
+  <string name="settings_title_citra_keys_load_url">Λήψη από URL</string>
+  <string name="settings_description_citra_keys_load_url">Κατεβάστε ένα keys.txt από URL που παρέχετε εσείς</string>
+  <string name="settings_title_citra_keys_delete">Διαγραφή κλειδιών</string>
+  <string name="settings_description_citra_keys_delete">Αφαιρέστε το αρχείο κλειδιών αποκρυπτογράφησης από τη συσκευή</string>
+  <string name="settings_citra_keys_disclaimer">Αυτά τα κλειδιά προορίζονται μόνο για διαλειτουργικότητα με νομίμως αποκτηθέν λογισμικό 3DS. Είστε αποκλειστικά υπεύθυνοι για τη διασφάλιση ότι έχετε το δικαίωμα να τα χρησιμοποιείτε.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Διαγραφή κλειδιών αποκρυπτογράφησης;</string>
+  <string name="settings_citra_keys_delete_confirm_body">Αυτό θα αφαιρέσει το αρχείο keys.txt. Τα κρυπτογραφημένα 3DS ROM δεν θα φορτώνουν πλέον μέχρι να παρασχεθούν νέα κλειδιά.</string>
+  <string name="settings_citra_keys_error_title">Σφάλμα κλειδιών</string>
+  <string name="settings_citra_keys_downloading">Λήψη κλειδιών…</string>
 </resources>

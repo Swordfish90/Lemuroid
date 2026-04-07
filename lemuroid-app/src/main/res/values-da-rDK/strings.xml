@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ livstid %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nye emulatorer, inklusive Nintendo 3DS\n✓ HD-tilstand til effektiv opskalering af spil\n✓ Understøttelse af 7z-arkiver\n✓ Eksklusiv adgang til kommende funktioner</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS-dekrypteringsnøgler</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Nøgler til stede</string>
+  <string name="settings_value_citra_keys_absent">Nøgler ikke fundet</string>
+  <string name="settings_title_citra_keys_load_file">Indlæs fra fil</string>
+  <string name="settings_description_citra_keys_load_file">Vælg en keys.txt-fil fra lageret</string>
+  <string name="settings_title_citra_keys_load_url">Download fra URL</string>
+  <string name="settings_description_citra_keys_load_url">Download en keys.txt fra en URL du angiver</string>
+  <string name="settings_title_citra_keys_delete">Slet nøgler</string>
+  <string name="settings_description_citra_keys_delete">Fjern dekrypteringsnøglefilen fra enheden</string>
+  <string name="settings_citra_keys_disclaimer">Disse nøgler er kun til interoperabilitet med din lovligt erhvervede 3DS-software. Du er udelukkende ansvarlig for at sikre, at du har ret til at bruge dem.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Slet dekrypteringsnøgler?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Dette vil fjerne keys.txt-filen. Krypterede 3DS ROM\'er vil ikke længere indlæses, indtil nye nøgler er angivet.</string>
+  <string name="settings_citra_keys_error_title">Nøglefejl</string>
+  <string name="settings_citra_keys_downloading">Downloader nøgler…</string>
 </resources>

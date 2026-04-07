@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ dożywotnio %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nowych emulatorów, w tym Nintendo 3DS\n✓ Tryb HD do efektywnego podnoszenia jakości gier\n✓ Obsługa archiwów 7z\n✓ Ekskluzywny dostęp do nadchodzących funkcji</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Klucze deszyfrowania 3DS</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Klucze są obecne</string>
+  <string name="settings_value_citra_keys_absent">Nie znaleziono kluczy</string>
+  <string name="settings_title_citra_keys_load_file">Wczytaj z pliku</string>
+  <string name="settings_description_citra_keys_load_file">Wybierz plik keys.txt z pamięci</string>
+  <string name="settings_title_citra_keys_load_url">Pobierz z URL</string>
+  <string name="settings_description_citra_keys_load_url">Pobierz plik keys.txt z podanego przez Ciebie URL</string>
+  <string name="settings_title_citra_keys_delete">Usuń klucze</string>
+  <string name="settings_description_citra_keys_delete">Usuń plik kluczy deszyfrowania z urządzenia</string>
+  <string name="settings_citra_keys_disclaimer">Te klucze służą wyłącznie do interoperacyjności z legalnie nabytym oprogramowaniem 3DS. Wyłącznie Ty jesteś odpowiedzialny za zapewnienie sobie prawa do ich używania.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Usunąć klucze deszyfrowania?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Spowoduje to usunięcie pliku keys.txt. Zaszyfrowane ROM-y 3DS nie będą się ładować, dopóki nie zostaną podane nowe klucze.</string>
+  <string name="settings_citra_keys_error_title">Błąd kluczy</string>
+  <string name="settings_citra_keys_downloading">Pobieranie kluczy…</string>
 </resources>

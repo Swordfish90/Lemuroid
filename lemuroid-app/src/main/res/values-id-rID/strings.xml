@@ -58,4 +58,20 @@
   <string name="settings_category_experimental">Eksperimental</string>
   <string name="settings_title_citra_experimental_save_states">Status Simpan 3DS (Eksperimental)</string>
   <string name="settings_description_citra_experimental_save_states">(Eksperimental) Aktifkan penyimpanan dan pemuatan status manual untuk game Nintendo 3DS. Penyimpanan otomatis tidak didukung. Status mungkin tidak stabil atau menggunakan penyimpanan yang signifikan.</string>
+  <string name="settings_category_citra_keys">Kunci Dekripsi 3DS</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Kunci ada</string>
+  <string name="settings_value_citra_keys_absent">Kunci tidak ditemukan</string>
+  <string name="settings_title_citra_keys_load_file">Muat dari file</string>
+  <string name="settings_description_citra_keys_load_file">Pilih file keys.txt dari penyimpanan</string>
+  <string name="settings_title_citra_keys_load_url">Unduh dari URL</string>
+  <string name="settings_description_citra_keys_load_url">Unduh keys.txt dari URL yang Anda berikan</string>
+  <string name="settings_title_citra_keys_delete">Hapus kunci</string>
+  <string name="settings_description_citra_keys_delete">Hapus file kunci dekripsi dari perangkat</string>
+  <string name="settings_citra_keys_disclaimer">Kunci-kunci ini hanya untuk interoperabilitas dengan perangkat lunak 3DS yang Anda peroleh secara legal. Anda sepenuhnya bertanggung jawab untuk memastikan Anda memiliki hak untuk menggunakannya.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Hapus kunci dekripsi?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Ini akan menghapus file keys.txt. ROM 3DS terenkripsi tidak akan dapat dimuat lagi sampai kunci baru disediakan.</string>
+  <string name="settings_citra_keys_error_title">Kesalahan kunci</string>
+  <string name="settings_citra_keys_downloading">Mengunduh kunci…</string>
 </resources>

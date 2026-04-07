@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ livstid %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nya emulatorer, inklusive Nintendo 3DS\n✓ HD-läge för effektiv uppskalning av spel\n✓ Stöd för 7z-arkiv\n✓ Exklusiv tillgång till kommande funktioner</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS-dekrypteringsnycklar</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Nycklar finns</string>
+  <string name="settings_value_citra_keys_absent">Nycklar hittades inte</string>
+  <string name="settings_title_citra_keys_load_file">Läs in från fil</string>
+  <string name="settings_description_citra_keys_load_file">Välj en keys.txt-fil från lagringen</string>
+  <string name="settings_title_citra_keys_load_url">Hämta från URL</string>
+  <string name="settings_description_citra_keys_load_url">Hämta en keys.txt från en URL du anger</string>
+  <string name="settings_title_citra_keys_delete">Ta bort nycklar</string>
+  <string name="settings_description_citra_keys_delete">Ta bort dekrypteringsnyckelsfilen från enheten</string>
+  <string name="settings_citra_keys_disclaimer">Dessa nycklar är enbart avsedda för interoperabilitet med din lagligt anskaffade 3DS-programvara. Du är ensam ansvarig för att säkerställa att du har rätt att använda dem.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Ta bort dekrypteringsnycklar?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Detta tar bort keys.txt-filen. Krypterade 3DS ROM:er kommer inte längre att läsas in tills nya nycklar tillhandahålls.</string>
+  <string name="settings_citra_keys_error_title">Nyckelfel</string>
+  <string name="settings_citra_keys_downloading">Hämtar nycklar…</string>
 </resources>

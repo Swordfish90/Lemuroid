@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ 평생 %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6개의 새로운 에뮬레이터, Nintendo 3DS 포함\n✓ 게임을 효율적으로 업스케일하는 HD 모드\n✓ 7z 아카이브 지원\n✓ 향후 기능에 대한 독점 액세스</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS 복호화 키</string>
+  <string name="settings_title_citra_keys_status">상태</string>
+  <string name="settings_value_citra_keys_present">키가 있습니다</string>
+  <string name="settings_value_citra_keys_absent">키를 찾을 수 없습니다</string>
+  <string name="settings_title_citra_keys_load_file">파일에서 불러오기</string>
+  <string name="settings_description_citra_keys_load_file">저장소에서 keys.txt 파일을 선택하세요</string>
+  <string name="settings_title_citra_keys_load_url">URL에서 다운로드</string>
+  <string name="settings_description_citra_keys_load_url">제공한 URL에서 keys.txt를 다운로드합니다</string>
+  <string name="settings_title_citra_keys_delete">키 삭제</string>
+  <string name="settings_description_citra_keys_delete">장치에서 복호화 키 파일을 제거합니다</string>
+  <string name="settings_citra_keys_disclaimer">이 키는 합법적으로 취득한 3DS 소프트웨어와의 상호 운용성을 위해서만 사용됩니다. 사용 권한이 있는지 확인하는 것은 전적으로 사용자의 책임입니다.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">복호화 키를 삭제하시겠습니까?</string>
+  <string name="settings_citra_keys_delete_confirm_body">keys.txt 파일이 제거됩니다. 새 키가 제공될 때까지 암호화된 3DS ROM은 더 이상 로드되지 않습니다.</string>
+  <string name="settings_citra_keys_error_title">키 오류</string>
+  <string name="settings_citra_keys_downloading">키 다운로드 중…</string>
 </resources>

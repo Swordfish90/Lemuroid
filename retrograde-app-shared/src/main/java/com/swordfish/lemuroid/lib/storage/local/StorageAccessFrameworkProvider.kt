@@ -182,10 +182,16 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
         val isZipped = originalDocument.isZipped() && originalDocument.name != game.fileName
         val is7Zipped = originalDocument.is7Zipped() && originalDocument.name != game.fileName
 
+        // Homebrew formats (.3dsx, .cxi, .zcxi, etc.) need a real file path on disk —
+        // VFS virtual path causes the Azahar core to load but render a black screen.
+        val requiresRealPath = EXTENSIONS_REQUIRING_REAL_PATH.any {
+            game.fileName.endsWith(it, ignoreCase = true)
+        }
+
         return when {
             isZipped && dataFiles.isEmpty() -> getGameRomFilesZipped(game, originalDocument)
             is7Zipped && dataFiles.isEmpty() -> getGameRomFiles7z(game, originalDocument)
-            allowVirtualFiles -> getGameRomFilesVirtual(game, dataFiles)
+            allowVirtualFiles && !requiresRealPath -> getGameRomFilesVirtual(game, dataFiles)
             else -> getGameRomFilesStandard(game, dataFiles, originalDocument)
         }
     }
@@ -308,5 +314,12 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
         const val VIRTUAL_FILE_PATH = "/virtual/file/path"
+
+        // These extensions need a real file path because the Azahar/Citra libretro core
+        // accesses them internally (SD card mounting, SMDH lookup) and VFS virtual paths
+        // cause a black screen even though retro_load_game succeeds.
+        private val EXTENSIONS_REQUIRING_REAL_PATH = setOf(
+            ".3dsx", ".z3dsx", ".cxi", ".zcxi"
+        )
     }
 }

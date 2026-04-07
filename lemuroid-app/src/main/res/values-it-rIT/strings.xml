@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ a vita %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nuovi emulatori, incluso Nintendo 3DS\n✓ Modalità HD per migliorare efficacemente i giochi\n✓ Supporto per archivi 7z\n✓ Accesso esclusivo alle funzionalità future</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Chiavi di decrittografia 3DS</string>
+  <string name="settings_title_citra_keys_status">Stato</string>
+  <string name="settings_value_citra_keys_present">Chiavi presenti</string>
+  <string name="settings_value_citra_keys_absent">Chiavi non trovate</string>
+  <string name="settings_title_citra_keys_load_file">Carica da file</string>
+  <string name="settings_description_citra_keys_load_file">Seleziona un file keys.txt dalla memoria</string>
+  <string name="settings_title_citra_keys_load_url">Scarica da URL</string>
+  <string name="settings_description_citra_keys_load_url">Scarica un keys.txt da un URL che fornisci</string>
+  <string name="settings_title_citra_keys_delete">Elimina chiavi</string>
+  <string name="settings_description_citra_keys_delete">Rimuovi il file delle chiavi di decrittografia dal dispositivo</string>
+  <string name="settings_citra_keys_disclaimer">Queste chiavi sono esclusivamente per l\'interoperabilità con il software 3DS ottenuto legalmente. Sei l\'unico responsabile di garantire di avere il diritto di utilizzarle.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Eliminare le chiavi di decrittografia?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Questo rimuoverà il file keys.txt. Le ROM 3DS crittografate non si caricheranno più finché non verranno fornite nuove chiavi.</string>
+  <string name="settings_citra_keys_error_title">Errore chiavi</string>
+  <string name="settings_citra_keys_downloading">Download chiavi…</string>
 </resources>

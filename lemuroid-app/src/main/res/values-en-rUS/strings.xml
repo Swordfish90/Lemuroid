@@ -4,4 +4,20 @@
     <string name="settings_category_experimental">Experimental</string>
     <string name="settings_title_citra_experimental_save_states">3DS Save States (Experimental)</string>
     <string name="settings_description_citra_experimental_save_states">(Experimental) Enable manual save and load states for Nintendo 3DS games. Auto-save is not supported. States may be unstable or use significant storage.</string>
+    <string name="settings_category_citra_keys">3DS Decryption Keys</string>
+    <string name="settings_title_citra_keys_status">Status</string>
+    <string name="settings_value_citra_keys_present">Keys present</string>
+    <string name="settings_value_citra_keys_absent">Keys not found</string>
+    <string name="settings_title_citra_keys_load_file">Load from file</string>
+    <string name="settings_description_citra_keys_load_file">Select a keys.txt file from storage</string>
+    <string name="settings_title_citra_keys_load_url">Download from URL</string>
+    <string name="settings_description_citra_keys_load_url">Download a keys.txt from a URL you provide</string>
+    <string name="settings_title_citra_keys_delete">Delete keys</string>
+    <string name="settings_description_citra_keys_delete">Remove the decryption keys file from the device</string>
+    <string name="settings_citra_keys_disclaimer">These keys are for interoperability with your legally obtained 3DS software only. You are solely responsible for ensuring you have the right to use them.</string>
+    <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+    <string name="settings_citra_keys_delete_confirm_title">Delete decryption keys?</string>
+    <string name="settings_citra_keys_delete_confirm_body">This will remove the keys.txt file. Encrypted 3DS ROMs will no longer load until new keys are provided.</string>
+    <string name="settings_citra_keys_error_title">Keys error</string>
+    <string name="settings_citra_keys_downloading">Downloading keys…</string>
 </resources>
