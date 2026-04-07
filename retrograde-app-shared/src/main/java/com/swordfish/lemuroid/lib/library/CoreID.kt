@@ -103,7 +103,7 @@ enum class CoreID(
     ),
     CITRA(
         "citra",
-        "Citra",
+        "Azahar",
         "libcitra_libretro_android.so",
     ),
     DOSBOX_PURE(

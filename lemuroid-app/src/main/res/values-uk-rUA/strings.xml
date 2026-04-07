@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ довічно %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 нових емуляторів, включаючи Nintendo 3DS\n✓ HD режим для ефективного покращення графіки ігор\n✓ Підтримка архівів 7z\n✓ Ексклюзивний доступ до майбутніх функцій</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Ключі дешифрування 3DS</string>
+  <string name="settings_title_citra_keys_status">Статус</string>
+  <string name="settings_value_citra_keys_present">Ключі наявні</string>
+  <string name="settings_value_citra_keys_absent">Ключі не знайдено</string>
+  <string name="settings_title_citra_keys_load_file">Завантажити з файлу</string>
+  <string name="settings_description_citra_keys_load_file">Виберіть файл keys.txt зі сховища</string>
+  <string name="settings_title_citra_keys_load_url">Завантажити за URL</string>
+  <string name="settings_description_citra_keys_load_url">Завантажте keys.txt за вказаним вами URL</string>
+  <string name="settings_title_citra_keys_delete">Видалити ключі</string>
+  <string name="settings_description_citra_keys_delete">Видалити файл ключів дешифрування з пристрою</string>
+  <string name="settings_citra_keys_disclaimer">Ці ключі призначені виключно для забезпечення сумісності з легально придбаним програмним забезпеченням 3DS. Ви несете виключну відповідальність за дотримання свого права на їх використання.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Видалити ключі дешифрування?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Це видалить файл keys.txt. Зашифровані ROM-файли 3DS більше не завантажуватимуться, доки не будуть надані нові ключі.</string>
+  <string name="settings_citra_keys_error_title">Помилка ключів</string>
+  <string name="settings_citra_keys_downloading">Завантаження ключів…</string>
 </resources>

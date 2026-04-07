@@ -218,4 +218,20 @@
   <string name="string_pro_price">%d/ ömür boyu %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 yeni emülatör, Nintendo 3DS dahil\n✓ Oyunları verimli bir şekilde yükseltmek için HD modu\n✓ 7z arşiv desteği\n✓ Yaklaşan özelliklere özel erişim</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS Şifre Çözme Anahtarları</string>
+  <string name="settings_title_citra_keys_status">Durum</string>
+  <string name="settings_value_citra_keys_present">Anahtarlar mevcut</string>
+  <string name="settings_value_citra_keys_absent">Anahtarlar bulunamadı</string>
+  <string name="settings_title_citra_keys_load_file">Dosyadan yükle</string>
+  <string name="settings_description_citra_keys_load_file">Depolamadan bir keys.txt dosyası seçin</string>
+  <string name="settings_title_citra_keys_load_url">URL\'den indir</string>
+  <string name="settings_description_citra_keys_load_url">Belirttiğiniz URL\'den bir keys.txt indirin</string>
+  <string name="settings_title_citra_keys_delete">Anahtarları sil</string>
+  <string name="settings_description_citra_keys_delete">Şifre çözme anahtarı dosyasını cihazdan kaldırın</string>
+  <string name="settings_citra_keys_disclaimer">Bu anahtarlar yalnızca yasal olarak edinilmiş 3DS yazılımınızla birlikte çalışabilirlik içindir. Bu anahtarları kullanma hakkına sahip olduğunuzdan emin olmak tamamen sizin sorumluluğunuzdadır.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Şifre çözme anahtarları silinsin mi?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Bu işlem keys.txt dosyasını kaldıracak. Yeni anahtarlar sağlanana kadar şifreli 3DS ROM\'ları artık yüklenmeyecek.</string>
+  <string name="settings_citra_keys_error_title">Anahtar hatası</string>
+  <string name="settings_citra_keys_downloading">Anahtarlar indiriliyor…</string>
 </resources>

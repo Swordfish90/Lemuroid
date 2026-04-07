@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ lebenslang %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 neue Emulatoren, einschließlich Nintendo 3DS\n✓ HD-Modus zur effizienten Verbesserung der Spielgrafik\n✓ Unterstützung für 7z-Archive\n✓ Exklusiver Zugang zu kommenden Funktionen</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">3DS-Entschlüsselungsschlüssel</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Schlüssel vorhanden</string>
+  <string name="settings_value_citra_keys_absent">Schlüssel nicht gefunden</string>
+  <string name="settings_title_citra_keys_load_file">Aus Datei laden</string>
+  <string name="settings_description_citra_keys_load_file">Eine keys.txt-Datei aus dem Speicher auswählen</string>
+  <string name="settings_title_citra_keys_load_url">Von URL herunterladen</string>
+  <string name="settings_description_citra_keys_load_url">Eine keys.txt von einer von Ihnen angegebenen URL herunterladen</string>
+  <string name="settings_title_citra_keys_delete">Schlüssel löschen</string>
+  <string name="settings_description_citra_keys_delete">Die Entschlüsselungsschlüsseldatei vom Gerät entfernen</string>
+  <string name="settings_citra_keys_disclaimer">Diese Schlüssel dienen ausschließlich der Interoperabilität mit legal erworbener 3DS-Software. Sie sind allein dafür verantwortlich sicherzustellen, dass Sie das Recht haben, sie zu verwenden.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Entschlüsselungsschlüssel löschen?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Dadurch wird die keys.txt-Datei entfernt. Verschlüsselte 3DS-ROMs werden erst wieder geladen, wenn neue Schlüssel bereitgestellt werden.</string>
+  <string name="settings_citra_keys_error_title">Schlüsselfehler</string>
+  <string name="settings_citra_keys_downloading">Schlüssel werden heruntergeladen…</string>
 </resources>

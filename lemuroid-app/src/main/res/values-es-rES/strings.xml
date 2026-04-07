@@ -239,4 +239,20 @@
   <string name="string_pro_price">%d/ de por vida %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nuevos emuladores, incluyendo Nintendo 3DS\n✓ Modo HD para mejorar la calidad de los juegos\n✓ Soporte para archivos 7z\n✓ Acceso exclusivo a funciones futuras</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Claves de descifrado 3DS</string>
+  <string name="settings_title_citra_keys_status">Estado</string>
+  <string name="settings_value_citra_keys_present">Claves presentes</string>
+  <string name="settings_value_citra_keys_absent">Claves no encontradas</string>
+  <string name="settings_title_citra_keys_load_file">Cargar desde archivo</string>
+  <string name="settings_description_citra_keys_load_file">Selecciona un archivo keys.txt del almacenamiento</string>
+  <string name="settings_title_citra_keys_load_url">Descargar desde URL</string>
+  <string name="settings_description_citra_keys_load_url">Descarga un keys.txt desde una URL que proporciones</string>
+  <string name="settings_title_citra_keys_delete">Eliminar claves</string>
+  <string name="settings_description_citra_keys_delete">Eliminar el archivo de claves de descifrado del dispositivo</string>
+  <string name="settings_citra_keys_disclaimer">Estas claves son únicamente para la interoperabilidad con el software 3DS obtenido legalmente. Eres el único responsable de asegurarte de tener derecho a usarlas.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">¿Eliminar claves de descifrado?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Esto eliminará el archivo keys.txt. Los ROMs 3DS cifrados ya no se cargarán hasta que se proporcionen nuevas claves.</string>
+  <string name="settings_citra_keys_error_title">Error de claves</string>
+  <string name="settings_citra_keys_downloading">Descargando claves…</string>
 </resources>

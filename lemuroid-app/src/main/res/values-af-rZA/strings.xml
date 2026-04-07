@@ -58,4 +58,20 @@
   <string name="settings_category_experimental">Eksperimenteel</string>
   <string name="settings_title_citra_experimental_save_states">3DS Stoorstate (Eksperimenteel)</string>
   <string name="settings_description_citra_experimental_save_states">(Eksperimenteel) Aktiveer handmatige stoor- en laai-state vir Nintendo 3DS-speletjies. Outostoor word nie ondersteun nie. State kan onstabiel wees of baie stoorspasie gebruik.</string>
+  <string name="settings_category_citra_keys">3DS-dekripsiesleutels</string>
+  <string name="settings_title_citra_keys_status">Status</string>
+  <string name="settings_value_citra_keys_present">Sleutels teenwoordig</string>
+  <string name="settings_value_citra_keys_absent">Sleutels nie gevind nie</string>
+  <string name="settings_title_citra_keys_load_file">Laai vanaf lêer</string>
+  <string name="settings_description_citra_keys_load_file">Kies \'n keys.txt-lêer uit berging</string>
+  <string name="settings_title_citra_keys_load_url">Laai vanaf URL af</string>
+  <string name="settings_description_citra_keys_load_url">Laai \'n keys.txt af vanaf \'n URL wat jy verskaf</string>
+  <string name="settings_title_citra_keys_delete">Verwyder sleutels</string>
+  <string name="settings_description_citra_keys_delete">Verwyder die dekripsiesleutels-lêer van die toestel</string>
+  <string name="settings_citra_keys_disclaimer">Hierdie sleutels is slegs vir interoperabiliteit met jou wettig verkreë 3DS-sagteware. Jy is uitsluitlik verantwoordelik om te verseker dat jy die reg het om dit te gebruik.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Dekripsiesleutels verwyder?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Dit sal die keys.txt-lêer verwyder. Versleutelde 3DS-ROMs sal nie meer laai totdat nuwe sleutels verskaf word nie.</string>
+  <string name="settings_citra_keys_error_title">Sleutelfout</string>
+  <string name="settings_citra_keys_downloading">Sleutels word afgelaai…</string>
 </resources>

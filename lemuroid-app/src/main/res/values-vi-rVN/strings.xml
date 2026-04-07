@@ -217,4 +217,20 @@
   <string name="string_pro_price">%d/ trọn đời %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 trình giả lập mới, bao gồm Nintendo 3DS\n✓ Chế độ HD để nâng cao chất lượng trò chơi hiệu quả\n✓ Hỗ trợ tệp nén 7z\n✓ Truy cập độc quyền vào các tính năng sắp tới</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_citra_keys">Khóa giải mã 3DS</string>
+  <string name="settings_title_citra_keys_status">Trạng thái</string>
+  <string name="settings_value_citra_keys_present">Khóa có sẵn</string>
+  <string name="settings_value_citra_keys_absent">Không tìm thấy khóa</string>
+  <string name="settings_title_citra_keys_load_file">Tải từ tệp</string>
+  <string name="settings_description_citra_keys_load_file">Chọn tệp keys.txt từ bộ nhớ</string>
+  <string name="settings_title_citra_keys_load_url">Tải xuống từ URL</string>
+  <string name="settings_description_citra_keys_load_url">Tải xuống keys.txt từ URL bạn cung cấp</string>
+  <string name="settings_title_citra_keys_delete">Xóa khóa</string>
+  <string name="settings_description_citra_keys_delete">Xóa tệp khóa giải mã khỏi thiết bị</string>
+  <string name="settings_citra_keys_disclaimer">Các khóa này chỉ dành cho khả năng tương tác với phần mềm 3DS được bạn có được hợp pháp. Bạn hoàn toàn chịu trách nhiệm đảm bảo rằng bạn có quyền sử dụng chúng.</string>
+  <string name="settings_citra_keys_url_hint">https://example.com/keys.txt</string>
+  <string name="settings_citra_keys_delete_confirm_title">Xóa khóa giải mã?</string>
+  <string name="settings_citra_keys_delete_confirm_body">Thao tác này sẽ xóa tệp keys.txt. Các ROM 3DS được mã hóa sẽ không còn tải được cho đến khi có khóa mới.</string>
+  <string name="settings_citra_keys_error_title">Lỗi khóa</string>
+  <string name="settings_citra_keys_downloading">Đang tải khóa…</string>
 </resources>

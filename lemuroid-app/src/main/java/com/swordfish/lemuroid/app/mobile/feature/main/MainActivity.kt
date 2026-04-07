@@ -107,6 +107,7 @@ import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.citra.Citra3DSKeysManager
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.Provides
 import de.charlex.compose.material3.HtmlText
@@ -138,6 +139,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     @Inject
     lateinit var settingsInteractor: SettingsInteractor
+
+    @Inject
+    lateinit var citra3DSKeysManager: Citra3DSKeysManager
 
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
@@ -419,6 +423,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                         AdvancedSettingsViewModel.Factory(
                                             applicationContext,
                                             settingsInteractor,
+                                            citra3DSKeysManager,
                                         ),
                                 ),
                             navController = navController,
@@ -440,6 +445,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                         AdvancedSettingsViewModel.Factory(
                                             applicationContext,
                                             settingsInteractor,
+                                            citra3DSKeysManager,
                                         ),
                                 ),
                             navController = navController,
