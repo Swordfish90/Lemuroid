@@ -26,3 +26,4 @@ flurrykey.txt
 googlekey.txt
 **/__pycache__
 docs/
+**/.update_cache
