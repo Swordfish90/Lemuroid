@@ -5,10 +5,10 @@
 #
 # Usage:
 #   # From a remote URL:
-#   ./update.sh [--rename-from OLD_NAME --rename-to NEW_NAME] <url> <dest_path>
+#   ./update.sh [--rename-from OLD_NAME --rename-to NEW_NAME] [--force] <url> <dest_path>
 #
 #   # From a local zip file:
-#   ./update.sh --local <zip_path> [--rename-from OLD_NAME --rename-to NEW_NAME] <dest_path>
+#   ./update.sh --local <zip_path> [--rename-from OLD_NAME --rename-to NEW_NAME] [--force] <dest_path>
 #
 # Examples:
 #   ./update.sh \
@@ -25,6 +25,12 @@
 #   x86_64/libcitra_libretro_android.so
 #
 # A single top-level wrapper directory (e.g. "native-libs/") is stripped automatically.
+#
+# Cache:
+#   After a successful install a file "$DEST/.update_cache" is written containing
+#   the source URL (or local path), the SHA-256 of the zip, and the install
+#   timestamp.  On the next run the cache is checked and the install is skipped
+#   when the source and zip hash are unchanged.  Use --force to bypass the cache.
 
 set -euo pipefail
 
@@ -33,8 +39,19 @@ set -euo pipefail
 die() { echo "error: $*" >&2; exit 1; }
 
 usage() {
-    echo "Usage: $(basename "$0") [--local ZIP] [--rename-from OLD --rename-to NEW] <url|dest_path> [dest_path]" >&2
+    echo "Usage: $(basename "$0") [--local ZIP] [--rename-from OLD --rename-to NEW] [--force] <url|dest_path> [dest_path]" >&2
     exit 1
+}
+
+sha256_of() {
+    local file="$1"
+    if command -v sha256sum &>/dev/null; then
+        sha256sum "$file" | awk '{print $1}'
+    elif command -v shasum &>/dev/null; then
+        shasum -a 256 "$file" | awk '{print $1}'
+    else
+        die "neither sha256sum nor shasum found — cannot compute checksum"
+    fi
 }
 
 # ── arguments ────────────────────────────────────────────────────────────────
@@ -42,12 +59,14 @@ usage() {
 RENAME_FROM=""
 RENAME_TO=""
 LOCAL_ZIP=""
+FORCE=0
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --rename-from) RENAME_FROM="$2"; shift 2 ;;
         --rename-to)   RENAME_TO="$2";   shift 2 ;;
         --local)       LOCAL_ZIP="$2";   shift 2 ;;
+        --force)       FORCE=1;          shift   ;;
         *) break ;;
     esac
 done
@@ -67,6 +86,54 @@ else
 fi
 
 [[ -n "$DEST" ]] || die "dest_path must not be empty"
+
+# ── cache helpers ─────────────────────────────────────────────────────────────
+
+CACHE_FILE="$DEST/.update_cache"
+
+# For remote mode the cache key is the URL; for local mode it is the zip path.
+CACHE_KEY="${URL:-$LOCAL_ZIP}"
+
+cache_read() {
+    local field="$1"
+    [[ -f "$CACHE_FILE" ]] || return 1
+    grep "^${field}=" "$CACHE_FILE" | cut -d= -f2- | head -1
+}
+
+cache_matches() {
+    local cached_key cached_hash current_hash
+    cached_key="$(cache_read source 2>/dev/null)" || return 1
+    cached_hash="$(cache_read zip_sha256 2>/dev/null)" || return 1
+
+    [[ "$cached_key" == "$CACHE_KEY" ]] || return 1
+
+    if [[ -n "$LOCAL_ZIP" ]]; then
+        # For local zips verify that the zip itself has not changed.
+        current_hash="$(sha256_of "$LOCAL_ZIP")"
+        [[ "$cached_hash" == "$current_hash" ]] || return 1
+    fi
+    # For remote URLs: matching URL is sufficient (versioned release assets are immutable).
+    return 0
+}
+
+cache_write() {
+    local zip_file="$1"
+    local hash
+    hash="$(sha256_of "$zip_file")"
+    mkdir -p "$DEST"
+    cat > "$CACHE_FILE" <<EOF
+source=$CACHE_KEY
+zip_sha256=$hash
+installed_at=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+EOF
+}
+
+# ── early-exit if already up to date ─────────────────────────────────────────
+
+if [[ "$FORCE" -eq 0 ]] && cache_matches; then
+    echo "Already up to date (cache hit). Use --force to reinstall."
+    exit 0
+fi
 
 # ── temp workspace ───────────────────────────────────────────────────────────
 
@@ -147,3 +214,8 @@ for SO in "${SO_FILES[@]}"; do
 done
 
 echo "Done — $INSTALLED file(s) updated."
+
+# ── write cache ───────────────────────────────────────────────────────────────
+
+cache_write "$ZIP_FILE"
+echo "Cache saved: $CACHE_FILE"
