@@ -48,6 +48,9 @@
   <string name="settings_description_low_latency_audio">הפחת השהיית שמע במכשירים נתמכים. עשוי להגביר את השיבושים בשמע.</string>
   <string name="settings_title_direct_game_load">טעינת משחק ישירה</string>
   <string name="settings_description_direct_game_load">(נסיוני) הפחת זמן טעינה וניצול מטמון בקונסולות נתמכות.</string>
+  <string name="settings_category_experimental">ניסיוני</string>
+  <string name="settings_title_citra_experimental_save_states">מצבי שמירה של 3DS (ניסיוני)</string>
+  <string name="settings_description_citra_experimental_save_states">(ניסיוני) הפעלת שמירה וטעינה ידנית של מצבים למשחקי Nintendo 3DS. שמירה אוטומטית אינה נתמכת. המצבים עלולים להיות בלתי יציבים או לתפוס שטח אחסון משמעותי.</string>
   <string name="settings_title_enable_rumble">רטט</string>
   <string name="settings_description_enable_rumble">הפעל רטט במשחקים ובקרים המאפשרים זאת</string>
   <string name="settings_title_enable_device_rumble">רטט מכשיר</string>
@@ -73,6 +76,7 @@
   <string name="home_empty_title">בחר את תיקיית היעד בה נמצאים קבצי ה-ROM</string>
   <string name="home_empty_message">Fulldroid צריך לסרוק תיקייה המכילה קבצי ROM. \nפעולה זו עשויה לארוך מספר דקות.</string>
   <string name="home_empty_action">בחירת תיקייה</string>
+  <string name="home_empty_local_path">או הנח קבצי ROM ישירות ב:\n%1$s</string>
   <string name="game_menu_save">שמור</string>
   <string name="game_menu_load">טען</string>
   <string name="game_menu_restart">הפעל מחדש</string>

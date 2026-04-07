@@ -30,10 +30,12 @@ import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.kotlin.serializable
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.library.ExposedSetting
 import com.swordfish.lemuroid.lib.library.GameSystem
+import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
@@ -93,8 +95,31 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         super.onCreate(savedInstanceState)
         setUpExceptionsHandler()
 
-        game = intent.getSerializableExtra(EXTRA_GAME) as Game
-        systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
+        val extras = intent.extras
+        if (extras == null || !extras.containsKey(EXTRA_GAME) || !extras.containsKey(EXTRA_SYSTEM_CORE_CONFIG)) {
+            finish()
+            return
+        }
+
+        game = intent.getSerializableExtra(EXTRA_GAME) as? Game ?: run {
+            finish()
+            return
+        }
+        systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as? SystemCoreConfig ?: run {
+            finish()
+            return
+        }
+
+        // Experimental: enable manual save states for Citra if user opted in
+        if (systemCoreConfig.coreID == CoreID.CITRA) {
+            val experimentalSaveStates = sharedPreferences.get().getBoolean(
+                getString(R.string.pref_key_citra_experimental_save_states), false
+            )
+            if (experimentalSaveStates) {
+                systemCoreConfig = systemCoreConfig.copy(statesSupported = true)
+            }
+        }
+
         system = GameSystem.findById(game.systemId, isProVersion())
 
         val viewModel by viewModels<BaseGameScreenViewModel> {

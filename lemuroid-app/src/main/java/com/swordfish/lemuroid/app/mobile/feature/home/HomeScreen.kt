@@ -66,6 +66,7 @@ fun HomeScreen(
     HomeScreen(
         modifier,
         state.value,
+        viewModel.localRomsDirectory,
         onGameClick,
         onGameLongClick,
         onOpenCoreSelection,
@@ -85,6 +86,7 @@ fun HomeScreen(
 private fun HomeScreen(
     modifier: Modifier = Modifier,
     state: HomeViewModel.UIState,
+    localRomsDirectory: String,
     onGameClicked: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onOpenCoreSelection: () -> Unit,
@@ -114,6 +116,7 @@ private fun HomeScreen(
                 actionId = R.string.home_empty_action,
                 onAction = onSetDirectoryClicked,
                 enabled = !state.indexInProgress,
+                extraText = stringResource(R.string.home_empty_local_path, localRomsDirectory),
             )
         }
         // Microphone permission card removed - incomplete feature from merge
@@ -201,6 +204,7 @@ private fun HomeNotification(
     messageId: Int,
     actionId: Int,
     enabled: Boolean = true,
+    extraText: String? = null,
     onAction: () -> Unit = { },
 ) {
     ElevatedCard(
@@ -224,6 +228,13 @@ private fun HomeNotification(
                 text = stringResource(messageId),
                 style = MaterialTheme.typography.bodyMedium,
             )
+            if (extraText != null) {
+                Text(
+                    text = extraText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             OutlinedButton(
                 modifier = Modifier.align(Alignment.End),
                 onClick = onAction,

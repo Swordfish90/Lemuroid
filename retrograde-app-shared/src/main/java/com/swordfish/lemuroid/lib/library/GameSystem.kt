@@ -1269,7 +1269,7 @@ data class GameSystem(
                                     CoreVariable("citra_touch_touchscreen", "enabled"),
                                     CoreVariable("citra_mouse_touchscreen", "disabled"),
                                     CoreVariable("citra_render_touchscreen", "disabled"),
-                                    CoreVariable("citra_use_hw_shader_cache", "disabled"),
+                                    CoreVariable("citra_use_hw_shader_cache", "enabled"),
                                 ),
                                 exposedSettings =
                                 listOf(

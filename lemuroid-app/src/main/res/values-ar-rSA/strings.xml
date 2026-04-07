@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">تقليل تأخير الصوت على الأجهزة المدعومة. قد يؤدي ذلك إلى زيادة اخطاء في الصوت.</string>
   <string name="settings_title_direct_game_load">Direct game load</string>
   <string name="settings_description_direct_game_load">(تجريبي) تقليل وقت التحميل واستخدام ذاكرة التخزين المؤقت على وحدات التحكم المدعومة.</string>
+  <string name="settings_category_experimental">تجريبي</string>
+  <string name="settings_title_citra_experimental_save_states">حالات حفظ 3DS (تجريبي)</string>
+  <string name="settings_description_citra_experimental_save_states">(تجريبي) تفعيل حالات الحفظ والتحميل اليدوي لألعاب Nintendo 3DS. الحفظ التلقائي غير مدعوم. قد تكون الحالات غير مستقرة أو تستخدم مساحة تخزين كبيرة.</string>
   <string name="settings_title_enable_rumble">الاهتزاز</string>
   <string name="settings_description_enable_rumble">تمكين الاهتزاز في الألعاب المدعومة والتحكم</string>
   <string name="settings_title_enable_device_rumble">اهتزاز الجهاز</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">حدد مجلد ROM</string>
   <string name="home_empty_message">يحتاج Fulldroid إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
   <string name="home_empty_action">حدد المجلد</string>
+  <string name="home_empty_local_path">أو ضع ملفات ROM مباشرةً في:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">يتقاعد DSmuME قريباً</string>
   <string name="home_notification_desmume_deprecated_message">حفظ داخل اللعبة، التبديل إلى melonDS، والتقدم الذي أحرزتمونه. حفظ الدول يبقى مرتبطا بـ DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">التبديل إلى melonDS</string>

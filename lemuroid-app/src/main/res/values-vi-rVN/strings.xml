@@ -55,6 +55,9 @@
   <string name="settings_description_low_latency_audio">Giảm độ trễ âm thanh ở các thiết bị được hỗ trợ. Có thể làm tăng lỗi âm thanh.</string>
   <string name="settings_title_direct_game_load">Trực tiếp tải trò chơi</string>
   <string name="settings_description_direct_game_load">(Thử nghiệm) Giảm thời gian tải và sử dụng bộ nhớ cache trên bảng điều khiển được hỗ trợ.</string>
+  <string name="settings_category_experimental">Thử nghiệm</string>
+  <string name="settings_title_citra_experimental_save_states">Trạng thái lưu 3DS (Thử nghiệm)</string>
+  <string name="settings_description_citra_experimental_save_states">(Thử nghiệm) Bật lưu và tải trạng thái thủ công cho game Nintendo 3DS. Tự động lưu không được hỗ trợ. Các trạng thái có thể không ổn định hoặc sử dụng nhiều dung lượng lưu trữ.</string>
   <string name="settings_title_enable_rumble">Rumble</string>
   <string name="settings_description_enable_rumble">Bật rumble ở các trò chơi và tay cầm điều khiển được hỗ trợ</string>
   <string name="settings_title_enable_device_rumble">Rumble thiết bị</string>
@@ -83,6 +86,7 @@
   <string name="home_empty_title">Chọn thư mục chứa ROM</string>
   <string name="home_empty_message">Fulldroid cần quét một thư mục chứa các tệp ROM.\nViệc này có thể sẽ mất tối đa một vài phút.</string>
   <string name="home_empty_action">Chọn thư mục</string>
+  <string name="home_empty_local_path">Hoặc đặt tệp ROM trực tiếp vào:\n%1$s</string>
   <string name="game_menu_save">Lưu</string>
   <string name="game_menu_load">Tải</string>
   <string name="game_menu_restart">Bắt đầu lại</string>

@@ -55,4 +55,7 @@
   <string name="string_pro_price">%d/ जीवनभर %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 नए एमुलेटर, जिनमें Nintendo 3DS शामिल है\n✓ गेम्स को कुशलता से अपस्केल करने के लिए एचडी मोड\n✓ 7z आर्काइव समर्थन\n✓ आगामी फीचर्स का एक्सक्लूसिव एक्सेस</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_experimental">प्रायोगिक</string>
+  <string name="settings_title_citra_experimental_save_states">3DS सेव स्टेट्स (प्रायोगिक)</string>
+  <string name="settings_description_citra_experimental_save_states">(प्रायोगिक) Nintendo 3DS गेम्स के लिए मैन्युअल सेव और लोड स्टेट्स सक्षम करें। ऑटो-सेव समर्थित नहीं है। स्टेट्स अस्थिर हो सकते हैं या महत्वपूर्ण स्टोरेज उपयोग कर सकते हैं।</string>
 </resources>

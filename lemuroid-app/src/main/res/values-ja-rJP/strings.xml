@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">対応デバイスで音声の遅延を軽減します。音声の乱れが発生する場合があります。</string>
   <string name="settings_title_direct_game_load">ゲームの直接ロード</string>
   <string name="settings_description_direct_game_load">（実験的機能）対応しているコンソールで読み込み時間とキャッシュ使用量を削減します。</string>
+  <string name="settings_category_experimental">実験的機能</string>
+  <string name="settings_title_citra_experimental_save_states">3DS セーブステート（実験的機能）</string>
+  <string name="settings_description_citra_experimental_save_states">（実験的機能）Nintendo 3DS ゲームの手動セーブ・ロードステートを有効にします。オートセーブには対応していません。ステートが不安定になったり、大量のストレージを使用する場合があります。</string>
   <string name="settings_title_enable_rumble">振動</string>
   <string name="settings_description_enable_rumble">対応しているゲームおよびコントローラーで振動機能を有効にする</string>
   <string name="settings_title_enable_device_rumble">デバイスの振動</string>
@@ -90,6 +93,7 @@
   <string name="home_empty_message">FulldroidはROMファイルが入ったディレクトリをスキャンする必要があります。
 \nこれには数分かかる場合があります。</string>
   <string name="home_empty_action">ディレクトリを選択</string>
+  <string name="home_empty_local_path">またはROMファイルを直接配置:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME はすぐに引退します</string>
   <string name="home_notification_desmume_deprecated_message">ゲーム内で保存し、メロンDSに切り替えると、進行状況が引き継がれます。DeSmuMEに関連した状態を保存します。</string>
   <string name="home_notification_desmume_deprecated_action">メロンDSに切り替える</string>

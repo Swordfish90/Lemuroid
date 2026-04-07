@@ -1,5 +1,21 @@
 {
   "version": "2.0",
   "flavor": "app",
-  "metadata": {}
+  "metadata": {
+    "home_empty_local_path": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": true,
+        "specifiers": [
+          "%1$s"
+        ],
+        "html": false,
+        "emoji": false
+      }
+    }
+  }
 }

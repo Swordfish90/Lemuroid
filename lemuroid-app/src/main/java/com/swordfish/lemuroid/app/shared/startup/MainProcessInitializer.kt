@@ -12,6 +12,7 @@ class MainProcessInitializer : Initializer<Unit> {
         Timber.i("Requested initialization of main process tasks")
         SaveSyncWork.enqueueAutoWork(context, 0)
         LibraryIndexScheduler.scheduleCoreUpdate(context)
+        LibraryIndexScheduler.scheduleLibrarySync(context)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {

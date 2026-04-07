@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Зменшення затримки аудіо на підтримуваних пристроях. Може збільшити збої аудіо.</string>
   <string name="settings_title_direct_game_load">Пряме завантаження гри</string>
   <string name="settings_description_direct_game_load">(Експериментальне) Зменшує час завантаження та використання кешу на підтримуваних консолях.</string>
+  <string name="settings_category_experimental">Експериментальне</string>
+  <string name="settings_title_citra_experimental_save_states">Стани збереження 3DS (Експериментальне)</string>
+  <string name="settings_description_citra_experimental_save_states">(Експериментальне) Вмикає ручне збереження та завантаження станів для ігор Nintendo 3DS. Автозбереження не підтримується. Стани можуть бути нестабільними або займати значний обсяг пам\'яті.</string>
   <string name="settings_title_enable_rumble">Вібрація</string>
   <string name="settings_description_enable_rumble">Увімкнення вібрації для сумісних ігор та контролерів</string>
   <string name="settings_title_enable_device_rumble">Вібрація пристрою</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">Виберіть каталог ROM</string>
   <string name="home_empty_message">Лемуроїд повинен сканувати каталог, що містить ROM файли.\nЦе може зайняти до декількох хвилин.</string>
   <string name="home_empty_action">Виберіть каталог</string>
+  <string name="home_empty_local_path">Або помістіть ROM-файли безпосередньо у:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DSmuME незабаром вийшло на пенсію</string>
   <string name="home_notification_desmume_deprecated_message">Заощаджуйте в грі, перемикайтесь на melonDS, і ваш прогрес буде перенесений. Економна держава, яка залишиться прив\'язаною до DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Перемкнути на динарії</string>

@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Vermindert audiovertraging op ondersteunde apparaten, maar kan zorgen voor audio-glitches</string>
   <string name="settings_title_direct_game_load">Spel direct laden</string>
   <string name="settings_description_direct_game_load">Verminder laadtijd en cache-gebruik op ondersteunde consoles (experimenteel)</string>
+  <string name="settings_category_experimental">Experimenteel</string>
+  <string name="settings_title_citra_experimental_save_states">3DS opslagstaten (Experimenteel)</string>
+  <string name="settings_description_citra_experimental_save_states">(Experimenteel) Schakel handmatige opslaan en laden van staten in voor Nintendo 3DS-spellen. Automatisch opslaan wordt niet ondersteund. Staten kunnen onstabiel zijn of veel opslagruimte gebruiken.</string>
   <string name="settings_title_enable_rumble">Trilling</string>
   <string name="settings_description_enable_rumble">Schakel trilling in voor ondersteunde games en controllers</string>
   <string name="settings_title_enable_device_rumble">Trilling van apparaat</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">Selecteer ROM-map</string>
   <string name="home_empty_message">Fulldroid moet een map met ROM-bestanden scannen.\nDit kan enkele minuten duren.</string>
   <string name="home_empty_action">Selecteer map</string>
+  <string name="home_empty_local_path">Of plaats ROM-bestanden direct in:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME gaat binnenkort met pensioen</string>
   <string name="home_notification_desmume_deprecated_message">Sla in-game op, schakel over naar melonDS, en jouw voortgang zal overgedragen worden. Bespaar staten blijven gekoppeld aan DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Overschakelen naar melonDS</string>

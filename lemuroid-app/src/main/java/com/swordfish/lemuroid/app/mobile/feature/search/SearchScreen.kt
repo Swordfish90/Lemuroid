@@ -1,9 +1,6 @@
 package com.swordfish.lemuroid.app.mobile.feature.search
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,10 +40,9 @@ fun SearchScreen(
         viewModel.queryString.value = searchQuery
     }
 
-    AnimatedContent(
+    Crossfade(
         targetState = searchState.value,
         label = "SearchContent",
-        transitionSpec = { fadeIn() togetherWith fadeOut() },
     ) { state ->
         when {
             state == SearchViewModel.UIState.Idle -> {

@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Reducer latency på understøttede enheder. Kan øge antallet af lydfejl.</string>
   <string name="settings_title_direct_game_load">Direkte spil indlæsning</string>
   <string name="settings_description_direct_game_load">(Eksperimentel) Reducer indlæsningstiden og cacheforbruget på understøttede konsoller.</string>
+  <string name="settings_category_experimental">Eksperimentel</string>
+  <string name="settings_title_citra_experimental_save_states">3DS gemte tilstande (Eksperimentel)</string>
+  <string name="settings_description_citra_experimental_save_states">(Eksperimentel) Aktiver manuel gem og indlæs tilstande for Nintendo 3DS-spil. Auto-gem understøttes ikke. Tilstande kan være ustabile eller bruge meget lagerplads.</string>
   <string name="settings_title_enable_rumble">Rumble</string>
   <string name="settings_description_enable_rumble">Aktiver rumble i understøttede spil og controllere</string>
   <string name="settings_title_enable_device_rumble">Enhedens rumble</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">Vælg ROMs-mappe</string>
   <string name="home_empty_message">Fulldroid skanner mappen med ROM-filer.\nDette kan tage op til et par minutter.</string>
   <string name="home_empty_action">Vælg mappe</string>
+  <string name="home_empty_local_path">Eller placer ROM-filer direkte i:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME går snart på pension</string>
   <string name="home_notification_desmume_deprecated_message">Gem i spil, skift til melonDS, og dine fremskridt vil bære. Gem stater forblive bundet til DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Skift til melonDS</string>

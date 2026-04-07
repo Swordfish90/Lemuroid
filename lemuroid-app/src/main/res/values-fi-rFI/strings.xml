@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Vähentää äänilatenssia tuetuissa laitteissa. Voi lisätä ääniglitches.</string>
   <string name="settings_title_direct_game_load">Suora peli kuormitus</string>
   <string name="settings_description_direct_game_load">(Experimental) Vähentää latausaikaa ja välimuistin käyttöä tuetuilla konsoleilla.</string>
+  <string name="settings_category_experimental">Kokeellinen</string>
+  <string name="settings_title_citra_experimental_save_states">3DS tallennustilat (Kokeellinen)</string>
+  <string name="settings_description_citra_experimental_save_states">(Kokeellinen) Ota käyttöön manuaaliset tallennus- ja lataustilat Nintendo 3DS -peleille. Automaattitallennus ei ole tuettu. Tilat voivat olla epävakaita tai käyttää paljon tallennustilaa.</string>
   <string name="settings_title_enable_rumble">Kelaa</string>
   <string name="settings_description_enable_rumble">Ota rumble käyttöön tuetuissa peleissä ja ohjaimissa</string>
   <string name="settings_title_enable_device_rumble">Laitteen rumble</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">Valitse ROMien hakemisto</string>
   <string name="home_empty_message">Fulldroid tarvitsee skannata ROM -tiedostoja sisältävän hakemiston.\nTämä saattaa kestää jopa muutaman minuutin.</string>
   <string name="home_empty_action">Valitse Hakemisto</string>
+  <string name="home_empty_local_path">Tai sijoita ROM-tiedostot suoraan kansioon:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME eläkkeellä pian</string>
   <string name="home_notification_desmume_deprecated_message">Tallenna pelissä vaihtaaksesi melonDS:ään, ja edistymisesi siirtyy eteenpäin. Tallenna valtiot pysyvät sidottuna DeSmuMEen.</string>
   <string name="home_notification_desmume_deprecated_action">Vaihda melonDS:ään</string>

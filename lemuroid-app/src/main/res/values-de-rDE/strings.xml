@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Reduziert die Audio-Latenz auf unterstützten Geräten. Erhöht möglicherweise Audiofehler.</string>
   <string name="settings_title_direct_game_load">Spiele sofort laden</string>
   <string name="settings_description_direct_game_load">(Experimentell) Reduziert Ladezeit und Cache-Nutzung auf unterstützten Konsolen.</string>
+  <string name="settings_category_experimental">Experimentell</string>
+  <string name="settings_title_citra_experimental_save_states">3DS Spielstände (Experimentell)</string>
+  <string name="settings_description_citra_experimental_save_states">(Experimentell) Aktiviert manuelles Speichern und Laden von Spielständen für Nintendo-3DS-Spiele. Automatisches Speichern wird nicht unterstützt. Spielstände können instabil sein oder viel Speicherplatz beanspruchen.</string>
   <string name="settings_title_enable_rumble">Rumble</string>
   <string name="settings_description_enable_rumble">Rumble in unterstützten Spielen und Controllern aktivieren</string>
   <string name="settings_title_enable_device_rumble">Gerät-Rumble</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">ROMs Verzeichnis wählen</string>
   <string name="home_empty_message">Fulldroid muss ein Verzeichnis mit ROM Dateien scannen.\nDies kann einige Minuten dauern.</string>
   <string name="home_empty_action">Verzeichnis wählen</string>
+  <string name="home_empty_local_path">Oder ROM-Dateien direkt ablegen in:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME wird bald ausscheiden</string>
   <string name="home_notification_desmume_deprecated_message">Sparen Sie im Spiel, wechseln Sie zu MelonDS und Ihr Fortschritt wird übertragen. Spart Staaten bleiben an DeSmuME gebunden.</string>
   <string name="home_notification_desmume_deprecated_action">Zu MelonDS wechseln</string>

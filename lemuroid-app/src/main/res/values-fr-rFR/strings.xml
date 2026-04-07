@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Réduire la latence audio sur les périphériques supportés. Cela peut augmenter les bugs audio.</string>
   <string name="settings_title_direct_game_load">Chargement direct du jeu</string>
   <string name="settings_description_direct_game_load">(Expérimental) Réduire le temps de chargement et l\'utilisation du cache sur les consoles supportées.</string>
+  <string name="settings_category_experimental">Expérimental</string>
+  <string name="settings_title_citra_experimental_save_states">États de sauvegarde 3DS (Expérimental)</string>
+  <string name="settings_description_citra_experimental_save_states">(Expérimental) Active la sauvegarde et le chargement manuels d\'états pour les jeux Nintendo 3DS. La sauvegarde automatique n\'est pas prise en charge. Les états peuvent être instables ou utiliser un espace de stockage important.</string>
   <string name="settings_title_enable_rumble">Vibrations</string>
   <string name="settings_description_enable_rumble">Activer les vibrations dans les jeux et les contrôleurs pris en charge</string>
   <string name="settings_title_enable_device_rumble">Vibrations de l\'appareil</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">Sélectionnez le dossier contenant les ROMs</string>
   <string name="home_empty_message">Fulldroid a besoin de scanner un répertoire contenant des ROMs.\nCela peut prendre quelques minutes.</string>
   <string name="home_empty_action">Sélectionner un dossier</string>
+  <string name="home_empty_local_path">Ou placez les fichiers ROM directement dans:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME prend bientôt sa retraite</string>
   <string name="home_notification_desmume_deprecated_message">Sauvegardez dans le jeu, basculez sur melonDS, et votre progression sera transférée. Sauvegardez les états restent liés à DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Basculer vers melonDS</string>

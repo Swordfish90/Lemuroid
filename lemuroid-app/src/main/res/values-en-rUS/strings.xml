@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ok">OK</string>
+    <string name="settings_category_experimental">Experimental</string>
+    <string name="settings_title_citra_experimental_save_states">3DS Save States (Experimental)</string>
+    <string name="settings_description_citra_experimental_save_states">(Experimental) Enable manual save and load states for Nintendo 3DS games. Auto-save is not supported. States may be unstable or use significant storage.</string>
 </resources>

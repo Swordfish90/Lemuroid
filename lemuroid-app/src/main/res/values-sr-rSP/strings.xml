@@ -55,6 +55,9 @@
   <string name="settings_description_low_latency_audio">Смањи звучну латенцију на подржаним уређајима. Може повећати звучне кварове.</string>
   <string name="settings_title_direct_game_load">Директно учитавање игре</string>
   <string name="settings_description_direct_game_load">(Експериментално) Смањи време учитавања и употребу кеш меморије на подржаним конзолама.</string>
+  <string name="settings_category_experimental">Експериментално</string>
+  <string name="settings_title_citra_experimental_save_states">Стања чувања 3DS (Експериментално)</string>
+  <string name="settings_description_citra_experimental_save_states">(Експериментално) Омогућава ручно чување и учитавање стања за игре Nintendo 3DS. Аутоматско чување није подржано. Стања могу бити нестабилна или захтевати значајан простор за складиштење.</string>
   <string name="settings_title_enable_rumble">Тутњава</string>
   <string name="settings_description_enable_rumble">Омогући тутњаву на подржаним играма и контролерима</string>
   <string name="settings_title_enable_device_rumble">Тутњава уређаја</string>
@@ -86,6 +89,7 @@
   <string name="home_empty_title">Изаберите директоријум са ROM-овима</string>
   <string name="home_empty_message">Fulldroid мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
   <string name="home_empty_action">Изаберите директоријум</string>
+  <string name="home_empty_local_path">Или поставите ROM датотеке директно у:\n%1$s</string>
   <string name="game_menu_save">Сачувај</string>
   <string name="game_menu_load">Учитај</string>
   <string name="game_menu_restart">Рестартуј</string>

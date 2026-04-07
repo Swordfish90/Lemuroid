@@ -26,7 +26,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.DocumentsContract
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
@@ -49,6 +51,9 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
                     this.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     this.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
                     this.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                    if (needsInitialUri()) {
+                        this.putExtra(DocumentsContract.EXTRA_INITIAL_URI, buildDocumentsInitialUri())
+                    }
                 }
             try {
                 startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
@@ -108,6 +113,22 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
 
     private fun startLibraryIndexWork() {
         LibraryIndexScheduler.scheduleLibrarySync(applicationContext)
+    }
+
+    // Samsung restricts ACTION_OPEN_DOCUMENT_TREE on Android 10+ (scoped storage):
+    // the picker opens at a blocked root and shows no folders. Providing an initial
+    // URI pointing to Documents lets the user start from an accessible location.
+    // The same restriction appears on other OEMs starting from Android 16.
+    private fun needsInitialUri(): Boolean {
+        return Build.MANUFACTURER.equals("samsung", ignoreCase = true) ||
+            Build.VERSION.SDK_INT >= 36
+    }
+
+    private fun buildDocumentsInitialUri(): Uri {
+        return DocumentsContract.buildDocumentUri(
+            "com.android.externalstorage.documents",
+            "primary:Documents",
+        )
     }
 
     companion object {

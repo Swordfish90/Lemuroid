@@ -58,6 +58,9 @@
   <string name="settings_description_low_latency_audio">Snížit latenci zvuku na podporovaných zařízeních. Může způsobit nepříjemné zvuky.</string>
   <string name="settings_title_direct_game_load">Přímé načtení hry</string>
   <string name="settings_description_direct_game_load">(Experimentální) Sníží čas načítání a využití cache na podporovaných konzolích.</string>
+  <string name="settings_category_experimental">Experimentální</string>
+  <string name="settings_title_citra_experimental_save_states">3DS uložené stavy (Experimentální)</string>
+  <string name="settings_description_citra_experimental_save_states">(Experimentální) Povolí ruční ukládání a načítání stavů pro hry Nintendo 3DS. Automatické ukládání není podporováno. Stavy mohou být nestabilní nebo zabírat velké množství úložiště.</string>
   <string name="settings_title_enable_rumble">Vibrace</string>
   <string name="settings_description_enable_rumble">Povolit vybrace v podporovaných hrách a ovladačích</string>
   <string name="settings_title_enable_device_rumble">Vybrace zařízení</string>
@@ -89,6 +92,7 @@
   <string name="home_empty_title">Zvolit složku s ROMkami</string>
   <string name="home_empty_message">Fulldroid potřebuje naskenovat složku obsahující ROM soubory.\nTo může trvat až několik minut.</string>
   <string name="home_empty_action">Vybrat adresář</string>
+  <string name="home_empty_local_path">Nebo umístěte soubory ROM přímo do:\n%1$s</string>
   <string name="home_notification_desmume_deprecated_title">DeSmuME brzy odejde</string>
   <string name="home_notification_desmume_deprecated_message">Uložte hru, přepněte se na melonDS, a váš postup bude pokračovat. Uložte stavy zůstávají vázány na DeSmuME.</string>
   <string name="home_notification_desmume_deprecated_action">Přepnout na melonDS</string>

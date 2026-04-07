@@ -55,6 +55,7 @@
   <string name="game_context_menu_restart">Reinicia</string>
   <string name="home_empty_title">Seleccionar directori de ROMs</string>
   <string name="home_empty_action">Seleccioneu la carpeta</string>
+  <string name="home_empty_local_path">O col·loca els fitxers ROM directament a:\n%1$s</string>
   <string name="game_menu_save">Desar</string>
   <string name="game_menu_load">Carrega</string>
   <string name="game_menu_restart">Reinicia</string>
@@ -141,4 +142,7 @@
   <string name="string_pro_price">%d/ de per vida %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nous emuladors, incloent Nintendo 3DS\n✓ Mode HD per millorar la qualitat dels jocs\n✓ Suport per a arxius 7z\n✓ Accés exclusiu a funcions futures</string>
   <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="settings_category_experimental">Experimental</string>
+  <string name="settings_title_citra_experimental_save_states">Estats de conservació 3DS (Experimental)</string>
+  <string name="settings_description_citra_experimental_save_states">(Experimental) Activa els estats de conservació i càrrega manuals per a jocs de Nintendo 3DS. La conservació automàtica no és compatible. Els estats poden ser inestables o usar molt d\'emmagatzematge.</string>
 </resources>

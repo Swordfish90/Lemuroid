@@ -55,6 +55,9 @@
   <string name="settings_description_low_latency_audio">在支持的設備上減少音頻延遲。可能會增加音頻閃爍。</string>
   <string name="settings_title_direct_game_load">直接加載遊戲</string>
   <string name="settings_description_direct_game_load">減少支持的控制台上的加載時間和緩存使用。(實驗性質)</string>
+  <string name="settings_category_experimental">實驗性</string>
+  <string name="settings_title_citra_experimental_save_states">3DS 存檔狀態（實驗性）</string>
+  <string name="settings_description_citra_experimental_save_states">（實驗性）為 Nintendo 3DS 遊戲啟用手動存檔和讀檔功能。不支援自動存檔。存檔狀態可能不穩定或佔用大量儲存空間。</string>
   <string name="settings_title_enable_rumble">震動</string>
   <string name="settings_description_enable_rumble">在支援的遊戲和控制器中啟用振動</string>
   <string name="settings_title_enable_device_rumble">設備振動</string>
@@ -86,6 +89,7 @@
   <string name="home_empty_title">選擇 ROMs 資料夾</string>
   <string name="home_empty_message">Fulldroid 需要掃描整個 ROM 檔案資料夾。\n這可能需要幾分鐘的時間。</string>
   <string name="home_empty_action">選擇資料夾</string>
+  <string name="home_empty_local_path">或直接將ROM檔案放入:\n%1$s</string>
   <string name="game_menu_save">儲存進度</string>
   <string name="game_menu_load">讀取進度</string>
   <string name="game_menu_restart">重新啟動</string>

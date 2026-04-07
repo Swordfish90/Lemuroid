@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-02-05T13:26:41.982943",
+  "last_updated": "2026-04-02T21:11:22.778733",
   "system_info": {
     "created_by": "i18n_sync.py v2.0",
     "python_version": "3.10+",
@@ -14,7 +14,7 @@
       "metadata_file": "data/app.json",
       "locales_path": "lemuroid-app/src/main/res",
       "string_count": 223,
-      "last_scan": "2026-02-05T13:26:41.964154",
+      "last_scan": "2026-04-02T21:11:22.611715",
       "strings": {
         "title_home": {
           "text_hash": "8cf04a9734132302",
@@ -1042,12 +1042,6 @@
           "has_metadata": false,
           "is_translated": true
         },
-        "pref_key_open_pro_tutorial": {
-          "text_hash": "34e73b76a2ced25f",
-          "last_modified": "2026-02-05",
-          "has_metadata": false,
-          "is_translated": true
-        },
         "string_pro_tutorial_title": {
           "text_hash": "05693ab51ce11022",
           "last_modified": "2026-02-05",
@@ -1353,6 +1347,12 @@
           "last_modified": "2026-02-05",
           "has_metadata": false,
           "is_translated": true
+        },
+        "home_empty_local_path": {
+          "text_hash": "9923c2afe8d37beb",
+          "last_modified": "2026-04-02",
+          "has_metadata": true,
+          "is_translated": false
         }
       }
     },
