@@ -1,0 +1,50 @@
+{
+  "platforms": {
+    "3ds": [
+      {
+        "title": "Snake",
+        "file": "3ds/snake.3dsx",
+        "icon": "3ds/snake.png",
+        "description": "A simple Snake game for the 3DS, developed using C++ and the 3DS homebrew libraries. The game features classic snake gameplay with a modern twist, including power-ups and multiple levels. Players control a snake that grows longer as it eats food, while avoiding collisions with walls and itself. The game is designed to be easy to pick up and play, making it suitable for players of all ages.",
+        "link": "https://github.com/fulldiveVR/FullRoid.Games"
+      },
+      {
+        "title": "Number Slide",
+        "file": "3ds/numberslide.3dsx",
+        "icon": "3ds/numberslide.png",
+        "description": "A simple game for the 3DS, developed using C++ and the 3DS homebrew libraries. Players slide numbered tiles on a 4x4 grid, merging matching numbers to reach the 2048 tile. The game features smooth touch controls, score tracking, and addictive gameplay. Simple to learn but challenging to master.",
+        "link": "https://github.com/fulldiveVR/FullRoid.Games"
+      },
+      {
+        "title": "Lunar Runner",
+        "file": "3ds/lunarrunner.3dsx",
+        "icon": "3ds/lunarrunner.png",
+        "description": "A simple game for the 3DS, developed using C++ and the 3DS homebrew libraries. An endless runner set on the Moon. Control Rover-9, a lunar courier dodging craters, boulders, antennas, and meteor showers. Collect crystals to charge bonus abilities: Solar Battery (x2 score), Turbo (speed + invincibility), and Magnet (attract crystals). Features progressive difficulty, combo obstacles, and shield pickups. Supports English and Russian.",
+        "link": "https://github.com/fulldiveVR/FullRoid.Games"
+      }
+    ],
+    "nds": [
+      {
+        "title": "Snake",
+        "file": "nds/snake.nds",
+        "icon": "nds/snake.png",
+        "description": "A simple Snake game for the NDS, developed using C++ and the NDS homebrew libraries. The game features classic snake gameplay with a modern twist, including power-ups and multiple levels. Players control a snake that grows longer as it eats food, while avoiding collisions with walls and itself. The game is designed to be easy to pick up and play, making it suitable for players of all ages.",
+        "link": "https://github.com/fulldiveVR/FullRoid.Games"
+      },
+      {
+        "title": "Number Slide",
+        "file": "nds/numberslide.nds",
+        "icon": "nds/numberslide.png",
+        "description": "A simple game for the NDS, developed using C++ and the NDS homebrew libraries. Players slide numbered tiles on a 4x4 grid, merging matching numbers to reach the 2048 tile. The game features smooth touch controls, score tracking, and addictive gameplay. Simple to learn but challenging to master.",
+        "link": "https://github.com/fulldiveVR/FullRoid.Games"
+      },
+      {
+        "title": "Lunar Runner",
+        "file": "nds/lunarrunner.nds",
+        "icon": "nds/lunarrunner.png",
+        "description": "A simple game for the NDS, developed using C++ and the NDS homebrew libraries. An endless runner set on the Moon. Control Rover-9, a lunar courier dodging craters, boulders, antennas, and meteor showers. Collect crystals to charge bonus abilities: Solar Battery (x2 score), Turbo (speed + invincibility), and Magnet (attract crystals). Features progressive difficulty, combo obstacles, and shield pickups. Supports English and Russian.",
+        "link": "https://github.com/fulldiveVR/FullRoid.Games"
+      }
+    ]
+  }
+}

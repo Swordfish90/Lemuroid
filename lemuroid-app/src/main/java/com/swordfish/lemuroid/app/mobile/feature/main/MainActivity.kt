@@ -64,6 +64,7 @@ import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesScreen
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesViewModel
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesScreen
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesViewModel
+import com.swordfish.lemuroid.app.mobile.feature.catalog.CatalogDetailScreen
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeScreen
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeViewModel
 import com.swordfish.lemuroid.app.mobile.feature.proinfo.DiscordPopupLayout
@@ -84,6 +85,7 @@ import com.swordfish.lemuroid.app.mobile.feature.settings.inputdevices.InputDevi
 import com.swordfish.lemuroid.app.mobile.feature.settings.savesync.SaveSyncSettingsScreen
 import com.swordfish.lemuroid.app.mobile.feature.settings.savesync.SaveSyncSettingsViewModel
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
+import com.swordfish.lemuroid.app.shared.catalog.CatalogSyncWork
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsScreen
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
@@ -174,6 +176,8 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         GlobalScope.safeLaunch {
             reviewManager.initialize(applicationContext)
         }
+
+        CatalogSyncWork.schedule(applicationContext)
 
         setContent {
             val navController = rememberNavController()
@@ -296,6 +300,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
                             onOpenCoreSelection = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) },
+                            onCatalogGameClicked = { game ->
+                                navController.navigate("catalog/${game.id}")
+                            },
                         )
                         when {
                             isProPopupVisible.value -> {
@@ -497,6 +504,15 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                             saveSyncManager,
                                         ),
                                 ),
+                        )
+                    }
+                    composable(MainRoute.CATALOG_DETAIL) { entry ->
+                        val gameId = entry.arguments?.getInt("gameId") ?: return@composable
+                        CatalogDetailScreen(
+                            gameId = gameId,
+                            retrogradeDb = retrogradeDb,
+                            onPlayClicked = { game -> gameInteractor.onGamePlay(game) },
+                            onNavigateBack = { navController.popBackStack() },
                         )
                     }
                 }

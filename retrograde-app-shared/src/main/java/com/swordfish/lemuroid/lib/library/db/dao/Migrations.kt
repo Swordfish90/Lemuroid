@@ -79,6 +79,15 @@ object Migrations {
             }
         }
 
+    val VERSION_10_11: Migration =
+        object : Migration(10, 11) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE games ADD COLUMN isCatalogGame INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE games ADD COLUMN description TEXT")
+                database.execSQL("ALTER TABLE games ADD COLUMN catalogLink TEXT")
+            }
+        }
+
     val VERSION_8_9: Migration =
         object : Migration(8, 9) {
             override fun migrate(database: SupportSQLiteDatabase) {

@@ -19,6 +19,7 @@
 
 package com.swordfish.lemuroid.app
 
+import com.swordfish.lemuroid.app.shared.catalog.CatalogSyncWork
 import com.swordfish.lemuroid.app.shared.library.CoreUpdateWork
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexWork
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
@@ -36,6 +37,7 @@ import dagger.android.support.AndroidSupportInjectionModule
         AndroidSupportInjectionModule::class,
         AndroidWorkerInjectionModule::class,
         LemuroidApplicationModule::class,
+        CatalogSyncWork.Module::class,
         LibraryIndexWork.Module::class,
         SaveSyncWork.Module::class,
         ChannelUpdateWork.Module::class,

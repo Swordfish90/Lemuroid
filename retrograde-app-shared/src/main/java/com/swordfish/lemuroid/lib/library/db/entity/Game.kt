@@ -49,6 +49,9 @@ data class Game(
     val lastIndexedAt: Long,
     val lastPlayedAt: Long? = null,
     val isFavorite: Boolean = false,
+    val isCatalogGame: Boolean = false,
+    val description: String? = null,
+    val catalogLink: String? = null,
 ) : Serializable {
     companion object {
         val DIFF_CALLBACK =

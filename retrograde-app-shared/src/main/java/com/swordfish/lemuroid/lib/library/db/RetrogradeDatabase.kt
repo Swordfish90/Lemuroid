@@ -29,7 +29,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Database(
     entities = [Game::class, DataFile::class],
-    version = 10,
+    version = 11,
     exportSchema = true,
 )
 abstract class RetrogradeDatabase : RoomDatabase() {
