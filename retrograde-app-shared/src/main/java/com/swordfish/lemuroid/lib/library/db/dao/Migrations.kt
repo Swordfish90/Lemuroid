@@ -26,6 +26,59 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 object Migrations {
+    val VERSION_9_10: Migration =
+        object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Rebuild FTS index to include fileName column for improved search
+                database.execSQL("DROP TABLE IF EXISTS fts_games")
+                database.execSQL("DROP TRIGGER IF EXISTS games_bu")
+                database.execSQL("DROP TRIGGER IF EXISTS games_bd")
+                database.execSQL("DROP TRIGGER IF EXISTS games_au")
+                database.execSQL("DROP TRIGGER IF EXISTS games_ai")
+                database.execSQL(
+                    """
+                    CREATE VIRTUAL TABLE fts_games USING FTS4(
+                      tokenize=unicode61 "remove_diacritics=1",
+                      content="games",
+                      title, fileName)
+                    """,
+                )
+                database.execSQL(
+                    """
+                    CREATE TRIGGER games_bu BEFORE UPDATE ON games BEGIN
+                      DELETE FROM fts_games WHERE docid=old.id;
+                    END
+                    """,
+                )
+                database.execSQL(
+                    """
+                    CREATE TRIGGER games_bd BEFORE DELETE ON games BEGIN
+                      DELETE FROM fts_games WHERE docid=old.id;
+                    END
+                    """,
+                )
+                database.execSQL(
+                    """
+                    CREATE TRIGGER games_au AFTER UPDATE ON games BEGIN
+                      INSERT INTO fts_games(docid, title, fileName) VALUES(new.id, new.title, new.fileName);
+                    END
+                    """,
+                )
+                database.execSQL(
+                    """
+                    CREATE TRIGGER games_ai AFTER INSERT ON games BEGIN
+                      INSERT INTO fts_games(docid, title, fileName) VALUES(new.id, new.title, new.fileName);
+                    END
+                    """,
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO fts_games(docid, title, fileName) SELECT id, title, fileName FROM games
+                    """,
+                )
+            }
+        }
+
     val VERSION_8_9: Migration =
         object : Migration(8, 9) {
             override fun migrate(database: SupportSQLiteDatabase) {

@@ -1319,6 +1319,11 @@ data class GameSystem(
             return byIdCache.getValue(id)
         }
 
+        fun findByIdOrNull(id: String, isProVersion: Boolean): GameSystem? {
+            val byIdCache = mapOf(*getAvailableSystems(isProVersion).map { it.id.dbname to it }.toTypedArray())
+            return byIdCache[id]
+        }
+
         fun isSystemProOnly(systemId: String): Boolean {
             // Always use true to get full list of systems
             return getAvailableSystems(true).find { it.id.dbname == systemId }?.proOnly ?: false

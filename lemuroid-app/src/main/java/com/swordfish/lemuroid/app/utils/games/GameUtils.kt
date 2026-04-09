@@ -25,8 +25,8 @@ class GameUtils {
             context: Context,
             game: Game,
         ): String {
-            val systemTitleResource = GameSystem.findById(game.systemId, isProVersion()).shortTitleResId
-            return context.getString(systemTitleResource)
+            val system = GameSystem.findByIdOrNull(game.systemId, isProVersion()) ?: return game.systemId
+            return context.getString(system.shortTitleResId)
         }
     }
 }

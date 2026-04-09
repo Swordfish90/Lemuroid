@@ -27,7 +27,11 @@ class MetaSystemsViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context
             .map { systemCounts ->
                 systemCounts.asSequence()
                     .filter { (_, count) -> count > 0 }
-                    .map { (systemId, count) -> GameSystem.findById(systemId, isProVersion()).metaSystemID() to count }
+                    .mapNotNull { (systemId, count) ->
+                        // Always resolve with full system list so pro-only systems appear
+                        // in the free build too. Launch control is in GameInteractor.
+                        GameSystem.findByIdOrNull(systemId, isProVersion = true)?.metaSystemID()?.let { it to count }
+                    }
                     .groupBy { (metaSystemId, _) -> metaSystemId }
                     .map { (metaSystemId, counts) -> MetaSystemInfo(metaSystemId, counts.sumBy { it.second }) }
                     .sortedBy { it.getName(appContext) }
