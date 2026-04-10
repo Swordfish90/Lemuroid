@@ -21,6 +21,13 @@
         "icon": "3ds/lunarrunner.png",
         "description": "A simple game for the 3DS, developed using C++ and the 3DS homebrew libraries. An endless runner set on the Moon. Control Rover-9, a lunar courier dodging craters, boulders, antennas, and meteor showers. Collect crystals to charge bonus abilities: Solar Battery (x2 score), Turbo (speed + invincibility), and Magnet (attract crystals). Features progressive difficulty, combo obstacles, and shield pickups. Supports English and Russian.",
         "link": "https://github.com/fulldiveVR/FullRoid.Games"
+      },
+      {
+        "title": "Durio",
+        "file": "3ds/duperdurio.3dsx",
+        "icon": "3ds/duperdurio.png",
+        "description": "An infinite side-scrolling platformer for the 3DS set in deep space. Guide Durio, an alien explorer in a cyan helmet and purple suit, through an endless series of procedurally selected stages: staircases, pipe gauntlets, brick corridors, pits, and enemy patrols. Stomp crabs and snails, smash supply crates for nuts, and run as far as you can. 21 hand-crafted pattern blocks keep every run fresh. Features score tracking, high-score saving, lives system, and smooth coyote-time jumping.",
+        "link": "https://github.com/fulldiveVR/FullRoid.Games"
       }
     ],
     "nds": [
