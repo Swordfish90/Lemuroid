@@ -154,6 +154,7 @@
     <string name="tv_game_message_missing_gamepad">需要手柄才能玩。 请连接手柄。</string>
     <string name="game_edit_touch_controls_error_not_visible">您需要断开手柄来编辑您的触摸控制</string>
     <string name="game_interactory_busy">等待进行中的操作完成</string>
+    <string name="game_interactor_notification_permission_required">请​在首页启用通知权限以继续</string>
     <string name="mobile_settings_help">帮助</string>
     <string name="mobile_settings_support">支持</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;我如何使用 Lemuroid？</b><br/>
