@@ -123,6 +123,11 @@ class GameViewModelTouchControls(
             onMenuPressed((menuEvent as InputEvent.Button).pressed)
         }
 
+        val fastForwardEvent = events.firstOrNull { it is InputEvent.Button && it.id == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD }
+        if (fastForwardEvent != null && (fastForwardEvent as InputEvent.Button).pressed) {
+            sideEffects.toggleFastForward()
+        }
+
         events.forEach { event ->
             when (event) {
                 is InputEvent.Button -> {
