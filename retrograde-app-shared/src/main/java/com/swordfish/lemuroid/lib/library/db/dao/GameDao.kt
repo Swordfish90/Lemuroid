@@ -36,7 +36,7 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE fileUri = :fileUri")
     fun selectByFileUri(fileUri: String): Game?
 
-    @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
+    @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt AND isCatalogGame = 0")
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>
 
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY title ASC")
@@ -58,7 +58,7 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
     fun selectFirstFavorites(limit: Int): Flow<List<Game>>
 
-    @Query("SELECT * FROM games WHERE lastPlayedAt IS NULL LIMIT :limit")
+    @Query("SELECT * FROM games WHERE lastPlayedAt IS NULL ORDER BY lastIndexedAt DESC LIMIT :limit")
     fun selectFirstNotPlayed(limit: Int): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY title ASC, id DESC")
@@ -73,8 +73,17 @@ interface GameDao {
     @Query("SELECT count(*) count, systemId systemId FROM games GROUP BY systemId")
     fun selectSystemsWithCount(): Flow<List<SystemCount>>
 
+    @Query("SELECT * FROM games WHERE isCatalogGame = 1 ORDER BY systemId ASC, title ASC")
+    fun selectCatalogGames(): Flow<List<Game>>
+
+    @Query("DELETE FROM games WHERE isCatalogGame = 1 AND fileUri NOT LIKE 'file://%'")
+    suspend fun deleteLegacyCatalogGames()
+
     @Insert
     fun insert(games: List<Game>): List<Long>
+
+    @Insert
+    suspend fun insert(game: Game): Long
 
     @Delete
     fun delete(games: List<Game>)

@@ -103,6 +103,12 @@ enum class MainRoute(
         parent = SETTINGS,
         showBottomNavigation = false,
     ),
+    CATALOG_DETAIL(
+        route = "catalog/{gameId}",
+        titleId = R.string.catalog_title,
+        arguments = listOf(navArgument("gameId") { type = NavType.IntType }),
+        showBottomNavigation = false,
+    ),
     ;
 
     val root = root()

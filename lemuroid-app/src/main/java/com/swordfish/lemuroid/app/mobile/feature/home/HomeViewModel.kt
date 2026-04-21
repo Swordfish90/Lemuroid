@@ -60,6 +60,7 @@ class HomeViewModel(
         val favoritesGames: List<Game> = emptyList(),
         val recentGames: List<Game> = emptyList(),
         val discoveryGames: List<Game> = emptyList(),
+        val catalogGames: List<Game> = emptyList(),
         val indexInProgress: Boolean = true,
         val showNoNotificationPermissionCard: Boolean = false,
         val showNoMicrophonePermissionCard: Boolean = false,
@@ -116,6 +117,7 @@ class HomeViewModel(
         notificationsPermissionEnabled: Boolean,
         showMicrophoneCard: Boolean,
         showDesmumeWarning: Boolean,
+        catalogGames: List<Game>,
     ): UIState {
         val noGames = recentGames.isEmpty() && favoritesGames.isEmpty() && discoveryGames.isEmpty()
 
@@ -123,6 +125,7 @@ class HomeViewModel(
             favoritesGames = favoritesGames,
             recentGames = recentGames,
             discoveryGames = discoveryGames,
+            catalogGames = catalogGames,
             indexInProgress = indexInProgress,
             showNoNotificationPermissionCard = !notificationsPermissionEnabled,
             showNoMicrophonePermissionCard = showMicrophoneCard,
@@ -142,6 +145,7 @@ class HomeViewModel(
                     notificationsPermissionEnabledState,
                     microphoneNotification(retrogradeDb),
                     desmumeWarningNotification(),
+                    catalogGames(retrogradeDb),
                     ::buildViewState,
                 )
 
@@ -163,6 +167,9 @@ class HomeViewModel(
 
     private fun favoritesGames(retrogradeDb: RetrogradeDatabase) =
         retrogradeDb.gameDao().selectFirstFavorites(CAROUSEL_MAX_ITEMS)
+
+    private fun catalogGames(retrogradeDb: RetrogradeDatabase) =
+        retrogradeDb.gameDao().selectCatalogGames()
 
     private fun dsGamesCount(retrogradeDb: RetrogradeDatabase): Flow<Int> {
         return retrogradeDb.gameDao().selectSystemsWithCount()

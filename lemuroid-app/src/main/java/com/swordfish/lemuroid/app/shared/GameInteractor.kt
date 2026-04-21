@@ -52,6 +52,11 @@ class GameInteractor(
     }
 
     private fun ensureProFeaturesAvailable(game: Game): Boolean {
+        // Catalog games are always playable regardless of pro status or system restrictions
+        if (game.isCatalogGame) {
+            return true
+        }
+
         if (isProVersion()) {
             return true
         }

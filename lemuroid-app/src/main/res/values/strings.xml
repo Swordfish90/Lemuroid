@@ -278,4 +278,8 @@
     <string name="settings_citra_keys_delete_confirm_body">This will remove the keys.txt file. Encrypted 3DS ROMs will no longer load until new keys are provided.</string>
     <string name="settings_citra_keys_error_title">Keys error</string>
     <string name="settings_citra_keys_downloading">Downloading keys…</string>
+    <string name="catalog_title">Catalog</string>
+    <string name="catalog_read_more">Read more</string>
+    <string name="catalog_more_info">More info</string>
+    <string name="catalog_play">Play</string>
 </resources>

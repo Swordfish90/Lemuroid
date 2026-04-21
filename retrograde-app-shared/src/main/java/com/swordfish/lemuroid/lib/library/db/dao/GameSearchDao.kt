@@ -59,6 +59,7 @@ class GameSearchDao(private val internalDao: Internal) {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             MIGRATION.migrate(db)
+            Migrations.VERSION_9_10.migrate(db)
         }
     }
 
@@ -108,8 +109,14 @@ class GameSearchDao(private val internalDao: Internal) {
         }
     }
 
-    fun search(query: String): PagingSource<Int, Game> =
-        internalDao.rawSearch(
+    fun search(query: String): PagingSource<Int, Game> {
+        val ftsQuery = buildFtsQuery(query)
+        if (ftsQuery.isEmpty()) {
+            return internalDao.rawSearch(
+                SimpleSQLiteQuery("SELECT * FROM games WHERE id < 0"),
+            )
+        }
+        return internalDao.rawSearch(
             SimpleSQLiteQuery(
                 """
                 SELECT games.*
@@ -117,9 +124,19 @@ class GameSearchDao(private val internalDao: Internal) {
                     JOIN games ON games.id = fts_games.docid
                     WHERE fts_games MATCH ?
                 """,
-                arrayOf(query),
+                arrayOf(ftsQuery),
             ),
         )
+    }
+
+    private fun buildFtsQuery(query: String): String {
+        return query.trim()
+            .split(Regex("\\s+"))
+            .filter { it.isNotEmpty() }
+            .map { it.replace(Regex("[\"*^()\\-+]"), "") }
+            .filter { it.isNotEmpty() }
+            .joinToString(" ") { "$it*" }
+    }
 
     @Dao
     interface Internal {
