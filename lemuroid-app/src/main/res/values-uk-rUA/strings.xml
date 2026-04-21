@@ -12,8 +12,8 @@
     <string name="stop">Зупинити</string>
     <string name="none">Нiчого</string>
     <string name="directory">Каталог</string>
-    <string name="display_filter">Відобразити фільтр</string>
-    <string name="roms">Прошивки</string>
+    <string name="display_filter">Фільтр зображення</string>
+    <string name="roms">ROMs</string>
     <string name="ok">ОК</string>
     <string name="cancel">Скасувати</string>
     <string name="settings">Налаштування</string>
