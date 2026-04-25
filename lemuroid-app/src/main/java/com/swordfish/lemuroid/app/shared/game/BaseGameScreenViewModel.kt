@@ -270,7 +270,9 @@ class BaseGameScreenViewModel(
     fun toggleFastForward() {
         Timber.d("Loading quick save")
         retroGameView.retroGameView?.apply {
-            frameSpeed = if (frameSpeed == 1) 2 else 1
+            val speeds = listOf(1, 2, 4, 8, 16)
+            val currentIndex = speeds.indexOf(frameSpeed).let { if (it >= 0) it else 0 }
+            frameSpeed = speeds[(currentIndex + 1) % speeds.size]
         }
     }
 
