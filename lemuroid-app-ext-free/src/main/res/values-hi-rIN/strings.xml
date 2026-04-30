@@ -4,7 +4,7 @@
   <string name="gdrive_connected_summary">%s से जुड़ा हुआ</string>
   <string name="gdrive_last_sync_completed">अंतिम सिंक: %s</string>
   <string name="gdrive_missing_play_services">Google Drive को Google Play Services की आवश्यकता है जो आपके डिवाइस पर समर्थित नहीं हैं</string>
-  <string name="gdrive_sign_in_failed">Google साइन इन विफल: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google साइन इन विफल: %s (%s)</string>
   <string name="gdrive_sign_in_success">%s के रूप में Google में लॉग इन किया गया</string>
   <string name="gdrive_sign_out_success">Google से लॉग आउट हो गए</string>
 </resources>

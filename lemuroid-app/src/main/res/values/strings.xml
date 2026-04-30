@@ -117,6 +117,8 @@
     <string name="game_menu_fast_forward">Fast-Forward</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
     <string name="game_menu_tilt_sensor">Tilt Sensor</string>
+    <string name="game_menu_share">Share to Roomcord</string>
+    <string name="game_menu_share_title">Share</string>
 
     <string name="game_loading_preparing_game">Preparing game&#x2026;</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
@@ -189,7 +191,7 @@
     </string-array>
     <string name="string_pro_tutorial_disclamer">✓ + 6 new emulators, including Nintendo 3DS\n✓ HD mode to efficiently upscale games\n✓ 7z archive support\n✓ Exclusive access to upcoming features</string>
     <string name="string_pro_limited_deal">Limited deal</string>
-    <string name="string_pro_price">%d/ lifetime %d</string>
+    <string name="string_pro_price" formatted="false">%d/ lifetime %d</string>
     <string name="string_pro_buy_now">Buy Now</string>
     <string name="string_pro_popup_disclamer">Grab FullRoid X for less than a cup of coffee. Play WS and 3DS games!</string>
     <string name="string_pro_popup_title">Don\'t miss out on our SALE!</string>
@@ -208,9 +210,9 @@
     <string name="error_message_incompatible_state">This save state is not compatible with the current core version. Please load the latest in-game save or use a previous version.</string>
     <string name="settings_open_pro_tutorial">FullRoid X</string>
     <string name="pref_key_open_pro_tutorial" translatable="false">openprotutorial</string>
-    <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+    <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
     <string name="popup_more_games_title">Want to play more games?</string>
-    <string name="popup_more_games_description">Join our Discord community</string>
+    <string name="popup_more_games_description">Join our Roomcord community</string>
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>
     <string name="haptic_feedback_mode_names_press_release">Press &amp;amp; release</string>
@@ -227,12 +229,16 @@
     <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
     <string name="settings_title_legacy_hd_mode">Prefer legacy HD mode</string>
     <string name="settings_description_legacy_hd_mode">Always use legacy HD mode. Trades some quality for performances.</string>
-    <string name="game_context_menu_share">Share to Discord</string>
-    <string name="share_discord_text_title_part_1">%s is now playing the game \"%s\".</string>
+    <string name="game_context_menu_share">Share to Roomcord</string>
+    <string name="share_discord_text_title_part_1" formatted="false">**%s** is now playing the game **%s**.</string>
     <string name="share_discord_dialog_enter_name">Enter your name</string>
     <string name="share_discord_dialog_enter_download_link">Add download link (optional)</string>
     <string name="share_discord_dialog_enter_feedback">Enter your feedback</string>
     <string name="share_discord_button_title">Share</string>
+    <string name="share_success_title">Shared!</string>
+    <string name="share_success_message">Your feedback has been posted to the Roomcord community.</string>
+    <string name="share_success_ok">OK</string>
+    <string name="share_success_view">View in Roomcord</string>
     <string name="share_discord_popup_description">Do you like playing the games? Rate us and share your opinion!</string>
     <string name="share_discord_text_title_part_2">Download this game here %s</string>
     <string name="home_notification_title">Enable notifications</string>

@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Связано с %s</string>
   <string name="gdrive_last_sync_completed">Последняя синхронизация: %s</string>
   <string name="gdrive_missing_play_services">Google Drive требует Google Play Services, которые не поддерживаются на вашем устройстве</string>
-  <string name="gdrive_sign_in_failed">Ошибка входа в Google: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Ошибка входа в Google: %s (%s)</string>
   <string name="gdrive_sign_in_success">Вход в Google как %s</string>
   <string name="gdrive_sign_out_success">Вы вышли из Google</string>
 </resources>

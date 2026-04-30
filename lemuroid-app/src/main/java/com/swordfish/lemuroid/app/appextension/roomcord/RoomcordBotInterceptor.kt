@@ -14,22 +14,22 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.swordfish.lemuroid.app.appextension.discord
+package com.swordfish.lemuroid.app.appextension.roomcord
 
 import com.swordfish.lemuroid.app.appextension.remoteconfig.IRemoteConfigFetcher
-import com.swordfish.lemuroid.app.appextension.remoteconfig.getDiscordBotToken
+import com.swordfish.lemuroid.app.appextension.remoteconfig.getRoomcordBotToken
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 import javax.inject.Inject
 
-class DiscordBotInterceptor @Inject constructor(private val remoteConfig: IRemoteConfigFetcher) : Interceptor {
+class RoomcordBotInterceptor @Inject constructor(private val remoteConfig: IRemoteConfigFetcher) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val requestWithHeaders = originalRequest.newBuilder()
-            .header("Authorization", "Bot ${remoteConfig.getDiscordBotToken()}")
+            .header("Authorization", "Bearer ${remoteConfig.getRoomcordBotToken()}")
             .build()
         return chain.proceed(requestWithHeaders)
     }

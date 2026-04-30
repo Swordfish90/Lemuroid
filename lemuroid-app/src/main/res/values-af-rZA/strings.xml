@@ -2,7 +2,9 @@
 <resources>
   <string name="flat_pro_popup_title">Moenie ons UITVERKOPING misloop nie!</string>
   <string name="flat_pro_offer_top_bar_title">Pro-weergawe</string>
-  <string name="game_context_menu_share">Deel op Discord</string>
+  <string name="game_context_menu_share">Deel op Roomcord</string>
+  <string name="game_menu_share">Deel op Roomcord</string>
+  <string name="game_menu_share_title">Deel</string>
   <string name="game_interactor_notification_permission_required">Skakel asseblief kennisgewings van Home aan om voort te gaan</string>
   <string name="game_loader_error_load_core">Dit lyk asof die Libretro-kern nie gelaai is nie. Maak seker dat jou toestel aan die internet gekoppel is en probeer om jou biblioteek weer te skandeer. As die probleem voortduur, mag hierdie kern dalk nie op jou toestel ondersteun word nie.</string>
   <string name="install_browser_description">Kry feite-gekontroleerde nuus met KI-analise. Spot vals nuus, kry KI-samevattings, en weet watter bronne om te vertrou!</string>
@@ -13,7 +15,7 @@
   <string name="lemuroid_crash_message">Foutboodskap: %1$s</string>
   <string name="library_index_notification_action_cancel">Kanselleer</string>
   <string name="maybe_later">Miskien later</string>
-  <string name="popup_more_games_description">Sluit aan by ons Discord-gemeenskap</string>
+  <string name="popup_more_games_description">Sluit aan by ons Roomcord-gemeenskap</string>
   <string name="popup_more_games_title">Wil jy meer speletjies speel?</string>
   <string name="rate_cancel">Nie nou nie</string>
   <string name="rate_submit">Beoordeel</string>
@@ -46,15 +48,15 @@
   <string name="share_discord_dialog_enter_feedback">Voer jou terugvoer in</string>
   <string name="share_discord_dialog_enter_name">Voer jou naam in</string>
   <string name="share_discord_popup_description">Hou jy daarvan om die speletjies te speel? Gradeer ons en deel jou mening!</string>
-  <string name="share_discord_text_title_part_1">%s speel nou die speletjie \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** speel nou die speletjie **%s**.</string>
   <string name="share_discord_text_title_part_2">Laai hierdie speletjie hier af %s</string>
   <string name="string_pro_buy_now">Koop nou</string>
   <string name="string_pro_limited_deal">Beperkte aanbod</string>
   <string name="string_pro_popup_disclamer">Kry FullRoid X vir minder as \'n koppie koffie. Speel WS en 3DS speletjies!</string>
   <string name="string_pro_popup_title">Moenie ons UITVERKOPING misloop nie!</string>
-  <string name="string_pro_price">%d/ lewenslank %d</string>
+  <string name="string_pro_price" formatted="false">%d/ lewenslank %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nuwe emulators, insluitend Nintendo 3DS\n✓ HD-modus om speletjies doeltreffend op te skaal\n✓ Ondersteuning vir 7z-argiewe\n✓ Eksklusiewe toegang tot toekomstige funksies</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_experimental">Eksperimenteel</string>
   <string name="settings_title_citra_experimental_save_states">3DS Stoorstate (Eksperimenteel)</string>
   <string name="settings_description_citra_experimental_save_states">(Eksperimenteel) Aktiveer handmatige stoor- en laai-state vir Nintendo 3DS-speletjies. Outostoor word nie ondersteun nie. State kan onstabiel wees of baie stoorspasie gebruik.</string>
@@ -74,4 +76,9 @@
   <string name="settings_citra_keys_delete_confirm_body">Dit sal die keys.txt-lêer verwyder. Versleutelde 3DS-ROMs sal nie meer laai totdat nuwe sleutels verskaf word nie.</string>
   <string name="settings_citra_keys_error_title">Sleutelfout</string>
   <string name="settings_citra_keys_downloading">Sleutels word afgelaai…</string>
+
+  <string name="share_success_title">Gedeel!</string>
+  <string name="share_success_message">Jou terugvoer is aan die Roomcord-gemeenskap gepos.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Sien in Roomcord</string>
 </resources>

@@ -186,7 +186,9 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">세일을 놓치지 마세요!</string>
   <string name="flat_pro_offer_top_bar_title">프로 버전</string>
-  <string name="game_context_menu_share">Discord에 공유</string>
+  <string name="game_context_menu_share">Roomcord에 공유</string>
+  <string name="game_menu_share">Roomcord에 공유</string>
+  <string name="game_menu_share_title">공유</string>
   <string name="game_interactor_notification_permission_required">계속하려면 Home에서 알림을 활성화하세요</string>
   <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않은 것 같습니다. 기기가 인터넷에 연결되어 있는지 확인하고 라이브러리를 다시 스캔해 보세요. 문제가 계속되면 이 코어가 기기에서 지원되지 않을 수 있습니다.</string>
   <string name="install_browser_description">AI 분석으로 사실 확인된 뉴스를 받아보세요. 가짜 뉴스를 식별하고, AI 요약을 받고, 신뢰할 수 있는 출처를 알아보세요!</string>
@@ -197,7 +199,7 @@
   <string name="lemuroid_crash_message">오류 메시지: %1$s</string>
   <string name="library_index_notification_action_cancel">취소</string>
   <string name="maybe_later">나중에</string>
-  <string name="popup_more_games_description">우리 Discord 커뮤니티에 참여하세요</string>
+  <string name="popup_more_games_description">우리 Roomcord 커뮤니티에 참여하세요</string>
   <string name="popup_more_games_title">더 많은 게임을 하고 싶으신가요?</string>
   <string name="rate_cancel">지금은 안 함</string>
   <string name="rate_submit">평가</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">피드백을 입력하세요</string>
   <string name="share_discord_dialog_enter_name">이름을 입력하세요</string>
   <string name="share_discord_popup_description">게임을 좋아하시나요? 평가하고 의견을 공유해 주세요!</string>
-  <string name="share_discord_text_title_part_1">%s님이 \"%s\" 게임을 플레이 중입니다.</string>
+  <string name="share_discord_text_title_part_1" formatted="false">%s님이 **%s** 게임을 플레이 중입니다.</string>
   <string name="share_discord_text_title_part_2">이 게임을 여기에서 다운로드하세요 %s</string>
   <string name="string_pro_buy_now">지금 구매</string>
   <string name="string_pro_limited_deal">한정 거래</string>
   <string name="string_pro_popup_disclamer">커피 한 잔보다 저렴한 가격으로 FullRoid X를 잡아보세요. WS 및 3DS 게임을 플레이하세요!</string>
   <string name="string_pro_popup_title">세일을 놓치지 마세요!</string>
-  <string name="string_pro_price">%d/ 평생 %d</string>
+  <string name="string_pro_price" formatted="false">%d/ 평생 %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6개의 새로운 에뮬레이터, Nintendo 3DS 포함\n✓ 게임을 효율적으로 업스케일하는 HD 모드\n✓ 7z 아카이브 지원\n✓ 향후 기능에 대한 독점 액세스</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">3DS 복호화 키</string>
   <string name="settings_title_citra_keys_status">상태</string>
   <string name="settings_value_citra_keys_present">키가 있습니다</string>
@@ -255,4 +257,9 @@
   <string name="settings_citra_keys_delete_confirm_body">keys.txt 파일이 제거됩니다. 새 키가 제공될 때까지 암호화된 3DS ROM은 더 이상 로드되지 않습니다.</string>
   <string name="settings_citra_keys_error_title">키 오류</string>
   <string name="settings_citra_keys_downloading">키 다운로드 중…</string>
+
+  <string name="share_success_title">공유됨!</string>
+  <string name="share_success_message">피드백이 Roomcord 커뮤니티에 게시되었습니다.</string>
+  <string name="share_success_ok">확인</string>
+  <string name="share_success_view">Roomcord에서 보기</string>
 </resources>

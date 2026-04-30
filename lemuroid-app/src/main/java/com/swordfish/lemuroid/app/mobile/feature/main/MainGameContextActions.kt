@@ -59,7 +59,7 @@ fun MainGameContextActions(
     onGameRestart: (Game) -> Unit,
     onFavoriteToggle: (Game, Boolean) -> Unit,
     onCreateShortcut: (Game) -> Unit,
-    onShareDiscord: (Game) -> Unit,
+    onShareRoomcord: (Game) -> Unit,
 ) {
     val modalSheetState = rememberModalBottomSheetState(true)
     val haptic = LocalHapticFeedback.current
@@ -92,7 +92,7 @@ fun MainGameContextActions(
                 onFavoriteToggle = onFavoriteToggle,
                 shortcutSupported = shortcutSupported,
                 onCreateShortcut = onCreateShortcut,
-                onShareDiscord = onShareDiscord
+                onShareRoomcord = onShareRoomcord
             )
         }
     }
@@ -107,7 +107,7 @@ private fun ContextActionContent(
     onFavoriteToggle: (Game, Boolean) -> Unit,
     shortcutSupported: Boolean,
     onCreateShortcut: (Game) -> Unit,
-    onShareDiscord: (Game) -> Unit,
+    onShareRoomcord: (Game) -> Unit,
 ) {
     Column(
         modifier =
@@ -169,7 +169,7 @@ private fun ContextActionContent(
             label = stringResource(id = R.string.game_context_menu_share),
             icon = Icons.Default.Share,
             onClick = {
-                onShareDiscord.invoke(selectedGame)
+                onShareRoomcord.invoke(selectedGame)
                 selectedGameState.value = null
             },
         )

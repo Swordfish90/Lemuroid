@@ -186,7 +186,9 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">Non perdere la nostra OFFERTA!</string>
   <string name="flat_pro_offer_top_bar_title">Versione Pro</string>
-  <string name="game_context_menu_share">Condividi su Discord</string>
+  <string name="game_context_menu_share">Condividi su Roomcord</string>
+  <string name="game_menu_share">Condividi su Roomcord</string>
+  <string name="game_menu_share_title">Condividi</string>
   <string name="game_interactor_notification_permission_required">Si prega di abilitare le notifiche da Home per continuare</string>
   <string name="game_loader_error_load_core">Sembra che il core Libretro non sia stato caricato. Assicurati che il tuo dispositivo sia connesso a internet e prova a scansionare nuovamente la tua libreria. Se il problema persiste, è possibile che questo core non sia supportato sul tuo dispositivo.</string>
   <string name="install_browser_description">Ottieni notizie verificate con analisi AI. Riconosci le notizie false, ricevi riassunti AI e scopri quali fonti sono affidabili!</string>
@@ -197,7 +199,7 @@
   <string name="lemuroid_crash_message">Messaggio di errore: %1$s</string>
   <string name="library_index_notification_action_cancel">Annulla</string>
   <string name="maybe_later">Forse più tardi</string>
-  <string name="popup_more_games_description">Unisciti alla nostra community su Discord</string>
+  <string name="popup_more_games_description">Unisciti alla nostra community su Roomcord</string>
   <string name="popup_more_games_title">Vuoi giocare ad altri giochi?</string>
   <string name="rate_cancel">Non ora</string>
   <string name="rate_submit">Valuta</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">Inserisci il tuo feedback</string>
   <string name="share_discord_dialog_enter_name">Inserisci il tuo nome</string>
   <string name="share_discord_popup_description">Ti piace giocare ai giochi? Valutaci e condividi la tua opinione!</string>
-  <string name="share_discord_text_title_part_1">%s sta giocando al gioco \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** sta giocando al gioco **%s**.</string>
   <string name="share_discord_text_title_part_2">Scarica questo gioco qui %s</string>
   <string name="string_pro_buy_now">Acquista ora</string>
   <string name="string_pro_limited_deal">Offerta limitata</string>
   <string name="string_pro_popup_disclamer">Acquista FullRoid X per meno di una tazza di caffè. Gioca ai giochi WS e 3DS!</string>
   <string name="string_pro_popup_title">Non perdere la nostra OFFERTA!</string>
-  <string name="string_pro_price">%d/ a vita %d</string>
+  <string name="string_pro_price" formatted="false">%d/ a vita %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nuovi emulatori, incluso Nintendo 3DS\n✓ Modalità HD per migliorare efficacemente i giochi\n✓ Supporto per archivi 7z\n✓ Accesso esclusivo alle funzionalità future</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">Chiavi di decrittografia 3DS</string>
   <string name="settings_title_citra_keys_status">Stato</string>
   <string name="settings_value_citra_keys_present">Chiavi presenti</string>
@@ -255,4 +257,9 @@
   <string name="settings_citra_keys_delete_confirm_body">Questo rimuoverà il file keys.txt. Le ROM 3DS crittografate non si caricheranno più finché non verranno fornite nuove chiavi.</string>
   <string name="settings_citra_keys_error_title">Errore chiavi</string>
   <string name="settings_citra_keys_downloading">Download chiavi…</string>
+
+  <string name="share_success_title">Condiviso!</string>
+  <string name="share_success_message">Il tuo feedback è stato pubblicato nella community di Roomcord.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Visualizza in Roomcord</string>
 </resources>

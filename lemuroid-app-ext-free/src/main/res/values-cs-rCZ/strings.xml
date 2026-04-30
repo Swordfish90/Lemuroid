@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Připojeno k %s</string>
   <string name="gdrive_last_sync_completed">Poslední synchronizace: %s</string>
   <string name="gdrive_missing_play_services">Google Drive vyžaduje služby Google Play, které nejsou na vašem zařízení podporovány</string>
-  <string name="gdrive_sign_in_failed">Přihlášení k Google se nezdařilo: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Přihlášení k Google se nezdařilo: %s (%s)</string>
   <string name="gdrive_sign_in_success">Přihlášeno k Google jako %s</string>
   <string name="gdrive_sign_out_success">Odhlášeno z Google</string>
 </resources>

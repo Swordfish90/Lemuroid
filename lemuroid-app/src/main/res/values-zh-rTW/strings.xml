@@ -167,7 +167,9 @@
   <string name="haptic_feedback_mode_names_press_release">按下並鬆開</string>
   <string name="flat_pro_popup_title">不要錯過我們的促銷！</string>
   <string name="flat_pro_offer_top_bar_title">專業版</string>
-  <string name="game_context_menu_share">分享到 Discord</string>
+  <string name="game_context_menu_share">分享到 Roomcord</string>
+  <string name="game_menu_share">分享到 Roomcord</string>
+  <string name="game_menu_share_title">分享</string>
   <string name="game_interactor_notification_permission_required">請啟用來自Home的通知以繼續</string>
   <string name="game_loader_error_load_core">看起來 Libretro 核心沒有載入。請確保您的設備已連接到互聯網，並嘗試重新掃描您的資料庫。如果問題仍然存在，該核心可能不支援您的設備。</string>
   <string name="install_browser_description">獲取經過事實查證的新聞，搭配AI分析。識別假新聞，獲取AI摘要，了解哪些來源值得信賴！</string>
@@ -178,7 +180,7 @@
   <string name="lemuroid_crash_message">錯誤訊息：%1$s</string>
   <string name="library_index_notification_action_cancel">取消</string>
   <string name="maybe_later">稍後再說</string>
-  <string name="popup_more_games_description">加入我們的Discord社群</string>
+  <string name="popup_more_games_description">加入我們的Roomcord社群</string>
   <string name="popup_more_games_title">想玩更多遊戲嗎？</string>
   <string name="rate_cancel">暫不</string>
   <string name="rate_submit">評分</string>
@@ -211,15 +213,15 @@
   <string name="share_discord_dialog_enter_feedback">輸入您的反饋</string>
   <string name="share_discord_dialog_enter_name">輸入您的姓名</string>
   <string name="share_discord_popup_description">你喜歡玩這些遊戲嗎？給我們評分並分享你的看法！</string>
-  <string name="share_discord_text_title_part_1">%s 正在玩遊戲 \"%s\"。</string>
+  <string name="share_discord_text_title_part_1" formatted="false">%s 正在玩遊戲 **%s**。</string>
   <string name="share_discord_text_title_part_2">在這裡下載這個遊戲 %s</string>
   <string name="string_pro_buy_now">立即購買</string>
   <string name="string_pro_limited_deal">限時優惠</string>
   <string name="string_pro_popup_disclamer">以低於一杯咖啡的價格獲取 FullRoid X。暢玩 WS 和 3DS 遊戲！</string>
   <string name="string_pro_popup_title">不要錯過我們的促銷！</string>
-  <string name="string_pro_price">%d/ 終身 %d</string>
+  <string name="string_pro_price" formatted="false">%d/ 終身 %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 個新模擬器，包括 Nintendo 3DS\n✓ 高清模式有效提升遊戲畫質\n✓ 支援 7z 壓縮檔案\n✓ 獨家訪問即將推出的功能</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">3DS 解密金鑰</string>
   <string name="settings_title_citra_keys_status">狀態</string>
   <string name="settings_value_citra_keys_present">金鑰已存在</string>
@@ -236,4 +238,9 @@
   <string name="settings_citra_keys_delete_confirm_body">這將刪除 keys.txt 檔案。在提供新金鑰之前，加密的 3DS ROM 將無法載入。</string>
   <string name="settings_citra_keys_error_title">金鑰錯誤</string>
   <string name="settings_citra_keys_downloading">正在下載金鑰…</string>
+
+  <string name="share_success_title">已分享！</string>
+  <string name="share_success_message">您的反饋已發布到 Roomcord 社群。</string>
+  <string name="share_success_ok">好的</string>
+  <string name="share_success_view">在 Roomcord 中查看</string>
 </resources>

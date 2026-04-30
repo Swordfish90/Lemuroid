@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Συνδεδεμένο με %s</string>
   <string name="gdrive_last_sync_completed">Τελευταίος συγχρονισμός: %s</string>
   <string name="gdrive_missing_play_services">Το Google Drive απαιτεί τις Υπηρεσίες Google Play, οι οποίες δεν υποστηρίζονται στη συσκευή σας</string>
-  <string name="gdrive_sign_in_failed">Η σύνδεση Google απέτυχε: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Η σύνδεση Google απέτυχε: %s (%s)</string>
   <string name="gdrive_sign_in_success">Σύνδεση στο Google ως %s</string>
   <string name="gdrive_sign_out_success">Αποσυνδεθήκατε από το Google</string>
 </resources>

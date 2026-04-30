@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Conectat la %s</string>
   <string name="gdrive_last_sync_completed">Ultima sincronizare: %s</string>
   <string name="gdrive_missing_play_services">Google Drive necesită serviciile Google Play, care nu sunt acceptate pe dispozitivul dvs.</string>
-  <string name="gdrive_sign_in_failed">Conectarea la Google a eșuat: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Conectarea la Google a eșuat: %s (%s)</string>
   <string name="gdrive_sign_in_success">Conectat la Google ca %s</string>
   <string name="gdrive_sign_out_success">Deconectat de la Google</string>
 </resources>

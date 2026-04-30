@@ -2,7 +2,9 @@
 <resources>
   <string name="flat_pro_popup_title">हमारी बिक्री का लाभ उठाएं!</string>
   <string name="flat_pro_offer_top_bar_title">प्रो संस्करण</string>
-  <string name="game_context_menu_share">Discord पर साझा करें</string>
+  <string name="game_context_menu_share">Roomcord पर साझा करें</string>
+  <string name="game_menu_share">Roomcord पर साझा करें</string>
+  <string name="game_menu_share_title">साझा करें</string>
   <string name="game_interactor_notification_permission_required">कृपया जारी रखने के लिए Home से सूचनाएं सक्षम करें</string>
   <string name="game_loader_error_load_core">ऐसा लगता है कि Libretro कोर लोड नहीं हुआ है। सुनिश्चित करें कि आपका डिवाइस इंटरनेट से जुड़ा है और अपनी लाइब्रेरी को फिर से स्कैन करने का प्रयास करें। यदि समस्या बनी रहती है, तो यह कोर आपके डिवाइस पर समर्थित नहीं हो सकता है।</string>
   <string name="install_browser_description">एआई विश्लेषण के साथ तथ्य-जांच की गई खबरें प्राप्त करें। नकली खबरों को पहचानें, एआई सारांश प्राप्त करें, और जानें कि किन स्रोतों पर भरोसा किया जा सकता है!</string>
@@ -13,7 +15,7 @@
   <string name="lemuroid_crash_message">त्रुटि संदेश: %1$s</string>
   <string name="library_index_notification_action_cancel">रद्द करें</string>
   <string name="maybe_later">शायद बाद में</string>
-  <string name="popup_more_games_description">हमारे Discord समुदाय से जुड़ें</string>
+  <string name="popup_more_games_description">हमारे Roomcord समुदाय से जुड़ें</string>
   <string name="popup_more_games_title">क्या आप और खेल खेलना चाहते हैं?</string>
   <string name="rate_cancel">अभी नहीं</string>
   <string name="rate_submit">रेट करें</string>
@@ -46,15 +48,15 @@
   <string name="share_discord_dialog_enter_feedback">अपनी प्रतिक्रिया दर्ज करें</string>
   <string name="share_discord_dialog_enter_name">अपना नाम दर्ज करें</string>
   <string name="share_discord_popup_description">क्या आपको गेम खेलना पसंद है? हमें रेट करें और अपनी राय साझा करें!</string>
-  <string name="share_discord_text_title_part_1">%s अब गेम \"%s\" खेल रहा है।</string>
+  <string name="share_discord_text_title_part_1" formatted="false">%s अब गेम **%s** खेल रहा है।</string>
   <string name="share_discord_text_title_part_2">इस गेम को यहाँ डाउनलोड करें %s</string>
   <string name="string_pro_buy_now">अभी खरीदें</string>
   <string name="string_pro_limited_deal">सीमित सौदा</string>
   <string name="string_pro_popup_disclamer">एक कप कॉफी से भी कम में FullRoid X प्राप्त करें। WS और 3DS गेम खेलें!</string>
   <string name="string_pro_popup_title">हमारी बिक्री का लाभ उठाना न भूलें!</string>
-  <string name="string_pro_price">%d/ जीवनभर %d</string>
+  <string name="string_pro_price" formatted="false">%d/ जीवनभर %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 नए एमुलेटर, जिनमें Nintendo 3DS शामिल है\n✓ गेम्स को कुशलता से अपस्केल करने के लिए एचडी मोड\n✓ 7z आर्काइव समर्थन\n✓ आगामी फीचर्स का एक्सक्लूसिव एक्सेस</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_experimental">प्रायोगिक</string>
   <string name="settings_title_citra_experimental_save_states">3DS सेव स्टेट्स (प्रायोगिक)</string>
   <string name="settings_description_citra_experimental_save_states">(प्रायोगिक) Nintendo 3DS गेम्स के लिए मैन्युअल सेव और लोड स्टेट्स सक्षम करें। ऑटो-सेव समर्थित नहीं है। स्टेट्स अस्थिर हो सकते हैं या महत्वपूर्ण स्टोरेज उपयोग कर सकते हैं।</string>
@@ -74,4 +76,9 @@
   <string name="settings_citra_keys_delete_confirm_body">इससे keys.txt फ़ाइल हट जाएगी। एन्क्रिप्टेड 3DS ROMs तब तक लोड नहीं होंगे जब तक नई कुंजियाँ नहीं दी जातीं।</string>
   <string name="settings_citra_keys_error_title">कुंजी त्रुटि</string>
   <string name="settings_citra_keys_downloading">कुंजियाँ डाउनलोड हो रही हैं…</string>
+
+  <string name="share_success_title">साझा किया!</string>
+  <string name="share_success_message">आपकी प्रतिक्रिया Roomcord समुदाय में पोस्ट कर दी गई है।</string>
+  <string name="share_success_ok">ठीक है</string>
+  <string name="share_success_view">Roomcord में देखें</string>
 </resources>

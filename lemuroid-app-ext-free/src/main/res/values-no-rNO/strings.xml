@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Koblet til %s</string>
   <string name="gdrive_last_sync_completed">Siste synkronisering: %s</string>
   <string name="gdrive_missing_play_services">Google Drive krever Google Play-tjenester som ikke støttes på enheten din</string>
-  <string name="gdrive_sign_in_failed">Google-pålogging mislyktes: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google-pålogging mislyktes: %s (%s)</string>
   <string name="gdrive_sign_in_success">Logget inn på Google som %s</string>
   <string name="gdrive_sign_out_success">Logget ut fra Google</string>
 </resources>

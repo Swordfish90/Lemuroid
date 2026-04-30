@@ -4,7 +4,7 @@
   <string name="gdrive_connected_summary">Tertaut ke %s</string>
   <string name="gdrive_last_sync_completed">Sinkron terakhir: %s</string>
   <string name="gdrive_missing_play_services">Google Drive memerlukan Google Play Services yang tidak didukung di perangkat Anda</string>
-  <string name="gdrive_sign_in_failed">Gagal masuk Google: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Gagal masuk Google: %s (%s)</string>
   <string name="gdrive_sign_in_success">Masuk ke Google sebagai %s</string>
   <string name="gdrive_sign_out_success">Keluar dari Google</string>
 </resources>

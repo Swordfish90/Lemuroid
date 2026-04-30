@@ -4,7 +4,7 @@
   <string name="gdrive_connected_summary">Kapcsolódva: %s</string>
   <string name="gdrive_last_sync_completed">Utolsó szinkronizálás: %s</string>
   <string name="gdrive_missing_play_services">A Google Drive a Google Play Szolgáltatásokat igényli, amelyek nem támogatottak az eszközén</string>
-  <string name="gdrive_sign_in_failed">Google bejelentkezés sikertelen: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google bejelentkezés sikertelen: %s (%s)</string>
   <string name="gdrive_sign_in_success">Bejelentkezve a Google-ba mint %s</string>
   <string name="gdrive_sign_out_success">Kijelentkezett a Google-ból</string>
 </resources>

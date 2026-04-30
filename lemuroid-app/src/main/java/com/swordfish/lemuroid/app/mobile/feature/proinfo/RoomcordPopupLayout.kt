@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.sp
 import com.swordfish.lemuroid.R
 
 @Composable
-fun DiscordPopupLayout(
+fun RoomcordPopupLayout(
     bottomPadding: Dp,
     onClick: () -> Unit,
     onCloseClick: () -> Unit

@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Enllaçat a %s</string>
   <string name="gdrive_last_sync_completed">Darrera sincronització: %s</string>
   <string name="gdrive_missing_play_services">Google Drive requereix els serveis de Google Play, que no són compatibles amb el teu dispositiu</string>
-  <string name="gdrive_sign_in_failed">Error d\'inici de sessió de Google: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Error d\'inici de sessió de Google: %s (%s)</string>
   <string name="gdrive_sign_in_success">Iniciat sessió a Google com a %s</string>
   <string name="gdrive_sign_out_success">Tancat la sessió de Google</string>
 </resources>

@@ -186,7 +186,9 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">Μην χάσετε την ΠΡΟΣΦΟΡΑ μας!</string>
   <string name="flat_pro_offer_top_bar_title">Έκδοση Pro</string>
-  <string name="game_context_menu_share">Κοινοποίηση στο Discord</string>
+  <string name="game_context_menu_share">Κοινοποίηση στο Roomcord</string>
+  <string name="game_menu_share">Κοινοποίηση στο Roomcord</string>
+  <string name="game_menu_share_title">Κοινοποίηση</string>
   <string name="game_interactor_notification_permission_required">Παρακαλώ ενεργοποιήστε τις ειδοποιήσεις από το Home για να συνεχίσετε</string>
   <string name="game_loader_error_load_core">Φαίνεται ότι ο πυρήνας Libretro δεν φορτώθηκε. Βεβαιωθείτε ότι η συσκευή σας είναι συνδεδεμένη στο διαδίκτυο και προσπαθήστε να σαρώσετε ξανά τη βιβλιοθήκη σας. Αν το πρόβλημα παραμένει, αυτός ο πυρήνας μπορεί να μην υποστηρίζεται στη συσκευή σας.</string>
   <string name="install_browser_description">Λάβετε ειδήσεις με επαλήθευση γεγονότων και ανάλυση AI. Εντοπίστε ψευδείς ειδήσεις, λάβετε περιλήψεις AI και μάθετε ποιες πηγές είναι αξιόπιστες!</string>
@@ -197,7 +199,7 @@
   <string name="lemuroid_crash_message">Μήνυμα σφάλματος: %1$s</string>
   <string name="library_index_notification_action_cancel">Ακύρωση</string>
   <string name="maybe_later">Ίσως αργότερα</string>
-  <string name="popup_more_games_description">Γίνετε μέλος της κοινότητας Discord μας</string>
+  <string name="popup_more_games_description">Γίνετε μέλος της κοινότητας Roomcord μας</string>
   <string name="popup_more_games_title">Θέλετε να παίξετε περισσότερα παιχνίδια;</string>
   <string name="rate_cancel">Όχι τώρα</string>
   <string name="rate_submit">Αξιολόγηση</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">Εισαγάγετε τα σχόλιά σας</string>
   <string name="share_discord_dialog_enter_name">Εισαγάγετε το όνομά σας</string>
   <string name="share_discord_popup_description">Σας αρέσει να παίζετε τα παιχνίδια; Αξιολογήστε μας και μοιραστείτε τη γνώμη σας!</string>
-  <string name="share_discord_text_title_part_1">%s παίζει τώρα το παιχνίδι \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** παίζει τώρα το παιχνίδι **%s**.</string>
   <string name="share_discord_text_title_part_2">Κατεβάστε αυτό το παιχνίδι εδώ %s</string>
   <string name="string_pro_buy_now">Αγοράστε τώρα</string>
   <string name="string_pro_limited_deal">Περιορισμένη προσφορά</string>
   <string name="string_pro_popup_disclamer">Αποκτήστε το FullRoid X για λιγότερο από ένα φλιτζάνι καφέ. Παίξτε παιχνίδια WS και 3DS!</string>
   <string name="string_pro_popup_title">Μην χάσετε την ΠΡΟΣΦΟΡΑ μας!</string>
-  <string name="string_pro_price">%d/ εφ\' όρου ζωής %d</string>
+  <string name="string_pro_price" formatted="false">%d/ εφ\' όρου ζωής %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 νέοι εξομοιωτές, συμπεριλαμβανομένου του Nintendo 3DS\n✓ Λειτουργία HD για αποτελεσματική αναβάθμιση παιχνιδιών\n✓ Υποστήριξη αρχείων 7z\n✓ Αποκλειστική πρόσβαση σε μελλοντικές δυνατότητες</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">Κλειδιά αποκρυπτογράφησης 3DS</string>
   <string name="settings_title_citra_keys_status">Κατάσταση</string>
   <string name="settings_value_citra_keys_present">Τα κλειδιά υπάρχουν</string>
@@ -255,4 +257,9 @@
   <string name="settings_citra_keys_delete_confirm_body">Αυτό θα αφαιρέσει το αρχείο keys.txt. Τα κρυπτογραφημένα 3DS ROM δεν θα φορτώνουν πλέον μέχρι να παρασχεθούν νέα κλειδιά.</string>
   <string name="settings_citra_keys_error_title">Σφάλμα κλειδιών</string>
   <string name="settings_citra_keys_downloading">Λήψη κλειδιών…</string>
+
+  <string name="share_success_title">Κοινοποιήθηκε!</string>
+  <string name="share_success_message">Τα σχόλιά σου δημοσιεύτηκαν στην κοινότητα Roomcord.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Προβολή στο Roomcord</string>
 </resources>

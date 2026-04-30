@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">%s에 연결됨</string>
   <string name="gdrive_last_sync_completed">마지막 동기화: %s</string>
   <string name="gdrive_missing_play_services">Google Drive는 귀하의 기기에서 지원되지 않는 Google Play 서비스가 필요합니다</string>
-  <string name="gdrive_sign_in_failed">Google 로그인 실패: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google 로그인 실패: %s (%s)</string>
   <string name="gdrive_sign_in_success">%s로 Google에 로그인했습니다</string>
   <string name="gdrive_sign_out_success">Google에서 로그아웃되었습니다</string>
 </resources>

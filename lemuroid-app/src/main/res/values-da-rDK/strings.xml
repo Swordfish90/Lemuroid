@@ -186,7 +186,9 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">Gå ikke glip af vores TILBUD!</string>
   <string name="flat_pro_offer_top_bar_title">Pro-version</string>
-  <string name="game_context_menu_share">Del på Discord</string>
+  <string name="game_context_menu_share">Del på Roomcord</string>
+  <string name="game_menu_share">Del på Roomcord</string>
+  <string name="game_menu_share_title">Del</string>
   <string name="game_interactor_notification_permission_required">Aktivér venligst meddelelser fra Home for at fortsætte</string>
   <string name="game_loader_error_load_core">Det ser ud til, at Libretro-kernen ikke blev indlæst. Sørg for, at din enhed er forbundet til internettet, og prøv at scanne dit bibliotek igen. Hvis problemet fortsætter, understøttes denne kerne muligvis ikke på din enhed.</string>
   <string name="install_browser_description">Få faktatjekkede nyheder med AI-analyse. Spot falske nyheder, få AI-resuméer, og vid hvilke kilder der er troværdige!</string>
@@ -197,7 +199,7 @@
   <string name="lemuroid_crash_message">Fejlmeddelelse: %1$s</string>
   <string name="library_index_notification_action_cancel">Annuller</string>
   <string name="maybe_later">Måske senere</string>
-  <string name="popup_more_games_description">Deltag i vores Discord-fællesskab</string>
+  <string name="popup_more_games_description">Deltag i vores Roomcord-fællesskab</string>
   <string name="popup_more_games_title">Vil du spille flere spil?</string>
   <string name="rate_cancel">Ikke nu</string>
   <string name="rate_submit">Bedøm</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">Indtast din feedback</string>
   <string name="share_discord_dialog_enter_name">Indtast dit navn</string>
   <string name="share_discord_popup_description">Kan du lide at spille spillene? Bedøm os og del din mening!</string>
-  <string name="share_discord_text_title_part_1">%s spiller nu spillet \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** spiller nu spillet **%s**.</string>
   <string name="share_discord_text_title_part_2">Download dette spil her %s</string>
   <string name="string_pro_buy_now">Køb nu</string>
   <string name="string_pro_limited_deal">Begrænset tilbud</string>
   <string name="string_pro_popup_disclamer">Få FullRoid X for mindre end en kop kaffe. Spil WS- og 3DS-spil!</string>
   <string name="string_pro_popup_title">Gå ikke glip af vores UDSALG!</string>
-  <string name="string_pro_price">%d/ livstid %d</string>
+  <string name="string_pro_price" formatted="false">%d/ livstid %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nye emulatorer, inklusive Nintendo 3DS\n✓ HD-tilstand til effektiv opskalering af spil\n✓ Understøttelse af 7z-arkiver\n✓ Eksklusiv adgang til kommende funktioner</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">3DS-dekrypteringsnøgler</string>
   <string name="settings_title_citra_keys_status">Status</string>
   <string name="settings_value_citra_keys_present">Nøgler til stede</string>
@@ -255,4 +257,9 @@
   <string name="settings_citra_keys_delete_confirm_body">Dette vil fjerne keys.txt-filen. Krypterede 3DS ROM\'er vil ikke længere indlæses, indtil nye nøgler er angivet.</string>
   <string name="settings_citra_keys_error_title">Nøglefejl</string>
   <string name="settings_citra_keys_downloading">Downloader nøgler…</string>
+
+  <string name="share_success_title">Delt!</string>
+  <string name="share_success_message">Din feedback er postet i Roomcord-fællesskabet.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Se i Roomcord</string>
 </resources>

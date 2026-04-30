@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -173,6 +174,7 @@ private fun HomeScreen(
             title = stringResource(id = R.string.catalog_title),
             games = state.catalogGames,
             onGameClicked = onCatalogGameClicked,
+            onGameLongClick = onGameLongClick,
         )
     }
 }
@@ -223,6 +225,7 @@ private fun CatalogRow(
     title: String,
     games: List<Game>,
     onGameClicked: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit,
 ) {
     if (games.isEmpty()) return
 
@@ -255,21 +258,23 @@ private fun CatalogRow(
                     modifier = Modifier.widthIn(0.dp, 160.dp),
                     game = games[index],
                     onClick = { onGameClicked(games[index]) },
+                    onLongClick = { onGameLongClick(games[index]) },
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CatalogGameCard(
     modifier: Modifier = Modifier,
     game: Game,
     onClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null,
 ) {
     ElevatedCard(
-        modifier = modifier,
-        onClick = onClick,
+        modifier = modifier.combinedClickable(onClick = onClick, onLongClick = onLongClick),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
     ) {
         Column {

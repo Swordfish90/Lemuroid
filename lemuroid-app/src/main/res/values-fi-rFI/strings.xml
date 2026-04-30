@@ -184,7 +184,9 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 – R2</string>
   <string name="flat_pro_popup_title">Älä missaa ALEAMME!</string>
   <string name="flat_pro_offer_top_bar_title">Pro-versio</string>
-  <string name="game_context_menu_share">Jaa Discordiin</string>
+  <string name="game_context_menu_share">Jaa Roomcordiin</string>
+  <string name="game_menu_share">Jaa Roomcordiin</string>
+  <string name="game_menu_share_title">Jaa</string>
   <string name="game_interactor_notification_permission_required">Ota ilmoitukset käyttöön Home-sovelluksesta jatkaaksesi</string>
   <string name="game_loader_error_load_core">Näyttää siltä, että Libretro-ydintä ei ladattu. Varmista, että laitteesi on yhdistetty internetiin, ja yritä skannata kirjastosi uudelleen. Jos ongelma jatkuu, tämä ydin ei ehkä ole tuettu laitteellasi.</string>
   <string name="install_browser_description">Hanki faktantarkistettuja uutisia tekoälyanalyysillä. Tunnista valeuutiset, saa tekoälytiivistelmiä ja tiedä, mihin lähteisiin voit luottaa!</string>
@@ -195,7 +197,7 @@
   <string name="lemuroid_crash_message">Virheilmoitus: %1$s</string>
   <string name="library_index_notification_action_cancel">Peruuta</string>
   <string name="maybe_later">Ehkä myöhemmin</string>
-  <string name="popup_more_games_description">Liity Discord-yhteisöömme</string>
+  <string name="popup_more_games_description">Liity Roomcord-yhteisöömme</string>
   <string name="popup_more_games_title">Haluatko pelata lisää pelejä?</string>
   <string name="rate_cancel">Ei nyt</string>
   <string name="rate_submit">Arvostele</string>
@@ -228,15 +230,15 @@
   <string name="share_discord_dialog_enter_feedback">Anna palautteesi</string>
   <string name="share_discord_dialog_enter_name">Syötä nimesi</string>
   <string name="share_discord_popup_description">Pidätkö pelien pelaamisesta? Arvostele meidät ja jaa mielipiteesi!</string>
-  <string name="share_discord_text_title_part_1">%s pelaa nyt peliä \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** pelaa nyt peliä **%s**.</string>
   <string name="share_discord_text_title_part_2">Lataa tämä peli täältä %s</string>
   <string name="string_pro_buy_now">Osta nyt</string>
   <string name="string_pro_limited_deal">Rajoitettu tarjous</string>
   <string name="string_pro_popup_disclamer">Hanki FullRoid X halvemmalla kuin kupillinen kahvia. Pelaa WS- ja 3DS-pelejä!</string>
   <string name="string_pro_popup_title">Älä missaa ALEA!</string>
-  <string name="string_pro_price">%d/ elinikäinen %d</string>
+  <string name="string_pro_price" formatted="false">%d/ elinikäinen %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 uutta emulaattoria, mukaan lukien Nintendo 3DS\n✓ HD-tila pelien tehokkaaseen skaalaamiseen\n✓ 7z-arkistotuki\n✓ Yksinoikeudellinen pääsy tuleviin ominaisuuksiin</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">3DS-salauksen purkuavaimet</string>
   <string name="settings_title_citra_keys_status">Tila</string>
   <string name="settings_value_citra_keys_present">Avaimet löydetty</string>
@@ -253,4 +255,9 @@
   <string name="settings_citra_keys_delete_confirm_body">Tämä poistaa keys.txt-tiedoston. Salatut 3DS-ROM-tiedostot eivät enää lataudu, ennen kuin uudet avaimet on annettu.</string>
   <string name="settings_citra_keys_error_title">Avainvirhe</string>
   <string name="settings_citra_keys_downloading">Ladataan avaimia…</string>
+
+  <string name="share_success_title">Jaettu!</string>
+  <string name="share_success_message">Palautteesi on julkaistu Roomcord-yhteisössä.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Näytä Roomcordissa</string>
 </resources>

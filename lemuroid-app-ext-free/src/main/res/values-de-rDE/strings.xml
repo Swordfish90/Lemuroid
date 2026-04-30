@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Verbunden mit %s</string>
   <string name="gdrive_last_sync_completed">Letzte Synchronisierung: %s</string>
   <string name="gdrive_missing_play_services">Google Drive erfordert Google Play-Dienste, die auf Ihrem Gerät nicht unterstützt werden</string>
-  <string name="gdrive_sign_in_failed">Google-Anmeldung fehlgeschlagen: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google-Anmeldung fehlgeschlagen: %s (%s)</string>
   <string name="gdrive_sign_in_success">Angemeldet bei Google als %s</string>
   <string name="gdrive_sign_out_success">Von Google abgemeldet</string>
 </resources>

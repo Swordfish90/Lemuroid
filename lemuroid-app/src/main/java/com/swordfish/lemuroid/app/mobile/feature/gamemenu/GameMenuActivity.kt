@@ -42,6 +42,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.appextension.roomcord.ShareRoomcordTextGenerator
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.coreoptions.GameMenuCoreOptionsScreen
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.coreoptions.GameMenuCoreOptionsViewModel
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.states.GameMenuStatesScreen
@@ -69,6 +70,9 @@ class GameMenuActivity : RetrogradeComponentActivity() {
 
     @Inject
     lateinit var statesPreviewManager: StatesPreviewManager
+
+    @Inject
+    lateinit var shareRoomcordTextGenerator: ShareRoomcordTextGenerator
 
     data class GameMenuRequest(
         val coreOptions: List<LemuroidCoreOption>,
@@ -224,6 +228,14 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                                 factory = GameMenuCoreOptionsViewModel.Factory(inputDeviceManager),
                             ),
                             gameMenuRequest,
+                        )
+                    }
+                    composable(GameMenuRoute.SHARE) {
+                        GameMenuShareScreen(
+                            game = gameMenuRequest.game,
+                            shareGenerator = shareRoomcordTextGenerator,
+                            onShareComplete = { onResult { } },
+                            onNavigateBack = { navController.popBackStack() },
                         )
                     }
                 }
