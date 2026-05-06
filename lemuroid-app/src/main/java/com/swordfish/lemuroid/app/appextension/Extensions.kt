@@ -119,11 +119,7 @@ fun PackageManager.isFullRoidProInstalled(): Boolean {
 }
 
 fun Context.isRoomcordInstalled(): Boolean {
-    return try {
-        packageManager.getApplicationInfo(FulldiveConfigs.ROOMCORD_PACKAGE_NAME, 0).enabled
-    } catch (e: Exception) {
-        false
-    }
+    return packageManager.isPackageInstalled(FulldiveConfigs.ROOMCORD_PACKAGE_NAME)
 }
 
 fun isProVersion(): Boolean = BuildConfig.FLAVOR.contains("pro")

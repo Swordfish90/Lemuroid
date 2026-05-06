@@ -26,6 +26,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <queries>
+        <package android:name="com.feedai.mobile" />
+        <package android:name="com.fulldive.extension.fullroid.pro" />
+    </queries>
+
     <application
         android:name="com.swordfish.lemuroid.app.LemuroidApplication"
         android:allowBackup="true"
