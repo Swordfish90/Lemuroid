@@ -175,12 +175,12 @@
     <string name="lemuroid_crash_disclamer">It looks like Fullroid core has experienced an unexpected issue. If it\'s persistent please try the following:\n \n\u2022 Disable auto-save and re-run the game \n\u2022 Go into Android settings and clear the app cache \n\u2022 Go into Application settings and perform a Factory Reset \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.</string>
     <string name="lemuroid_crash_message">Error message: %1$s</string>
     <string name="rate_submit">Rate</string>
-    <string name="install_submit">Learn more</string>
+    <string name="install_submit">Join Roomcord</string>
     <string name="rate_cancel">Not now</string>
     <string name="maybe_later">Maybe Later</string>
     <string name="rate_us_title">Rate us</string>
-    <string name="install_browser_title">Try WizeUp News</string>
-    <string name="install_browser_description">Get fact-checked news with AI analysis. Spot fake news, get AI summaries, and know which sources to trust!</string>
+    <string name="install_browser_title">Try Roomcord</string>
+    <string name="install_browser_description">• Find ROMs and game links\n• Walkthroughs and tips from the community\n• Ask questions and get help\n• Connect with retro gaming fans</string>
     <string name="rate_us_description">Do you like FullRoid? We would love to hear your feedback and make the app better for you.</string>
     <string-array name="pref_key_shader_filter_names">
         <item>Auto</item>
@@ -213,6 +213,13 @@
     <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
     <string name="popup_more_games_title">Want to play more games?</string>
     <string name="popup_more_games_description">Join our Roomcord community</string>
+    <string name="settings_show_catalog_title">Show Catalog</string>
+    <string name="settings_show_catalog_description">Show built-in catalog of free games</string>
+    <string name="catalog_hide">Hide</string>
+    <string name="catalog_feature_locked_title">Premium Feature</string>
+    <string name="catalog_feature_locked_message">Hiding the catalog is available for Pro users or Roomcord community members</string>
+    <string name="catalog_feature_locked_buy_pro">Buy Pro</string>
+    <string name="catalog_feature_locked_join_roomcord">Join Roomcord</string>
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>
     <string name="haptic_feedback_mode_names_press_release">Press &amp;amp; release</string>

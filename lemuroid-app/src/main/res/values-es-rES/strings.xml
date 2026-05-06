@@ -191,9 +191,9 @@
   <string name="game_menu_share_title">Compartir</string>
   <string name="game_interactor_notification_permission_required">Por favor, habilita las notificaciones de Home para continuar</string>
   <string name="game_loader_error_load_core">Parece que el núcleo de Libretro no se cargó. Asegúrate de que tu dispositivo esté conectado a internet e intenta volver a escanear tu biblioteca. Si el problema persiste, es posible que este núcleo no sea compatible con tu dispositivo.</string>
-  <string name="install_browser_description">Obtén noticias verificadas con análisis de IA. Detecta noticias falsas, recibe resúmenes de IA y conoce qué fuentes son confiables.</string>
-  <string name="install_browser_title">Prueba WizeUp News</string>
-  <string name="install_submit">Más información</string>
+  <string name="install_browser_description">• Encuentra ROMs y enlaces de juegos\\n• Guías y consejos de la comunidad\\n• Haz preguntas y obtén ayuda\\n• Conéctate con fans de juegos retro</string>
+  <string name="install_browser_title">Prueba Roomcord</string>
+  <string name="install_submit">Unirse a Roomcord</string>
   <string name="installing_core_notification_message">Esto puede tardar unos minutos</string>
   <string name="installing_core_notification_title">Actualizando núcleos</string>
   <string name="lemuroid_crash_message">Mensaje de error: %1$s</string>
@@ -257,9 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Esto eliminará el archivo keys.txt. Los ROMs 3DS cifrados ya no se cargarán hasta que se proporcionen nuevas claves.</string>
   <string name="settings_citra_keys_error_title">Error de claves</string>
   <string name="settings_citra_keys_downloading">Descargando claves…</string>
-
   <string name="share_success_title">¡Compartido!</string>
   <string name="share_success_message">Tu opinión ha sido publicada en la comunidad de Roomcord.</string>
   <string name="share_success_ok">Aceptar</string>
   <string name="share_success_view">Ver en Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Comprar Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Unirse a Roomcord</string>
+  <string name="catalog_feature_locked_message">Ocultar el catálogo está disponible para usuarios Pro o miembros de la comunidad Roomcord</string>
+  <string name="catalog_feature_locked_title">Función Premium</string>
+  <string name="catalog_hide">Ocultar</string>
+  <string name="catalog_more_info">Más información</string>
+  <string name="catalog_play">Jugar</string>
+  <string name="catalog_read_more">Leer más</string>
+  <string name="catalog_title">Catálogo</string>
+  <string name="settings_show_catalog_description">Mostrar catálogo integrado de juegos gratis</string>
+  <string name="settings_show_catalog_title">Mostrar catálogo</string>
 </resources>

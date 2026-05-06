@@ -65,7 +65,7 @@ class PopupManager(private val context: Context) {
                 }
 
                 StartAppDialog.InstallBrowser -> {
-                    if (!isProVersion() && !installBrowserDone && !isBrowserInstalled()) {
+                    if (!isProVersion() && !installBrowserDone && !isRoomcordInstalled()) {
                         showInstallBrowserDialog(activity) {
                             onInstallAppPositiveClicked()
                         }
@@ -77,6 +77,8 @@ class PopupManager(private val context: Context) {
             }
         }
     }
+
+    private fun isRoomcordInstalled(): Boolean = context.isRoomcordInstalled()
 
     private fun isBrowserInstalled(): Boolean {
         val app = try {
@@ -100,7 +102,7 @@ class PopupManager(private val context: Context) {
     }
 
     private fun onInstallAppPositiveClicked() {
-        context.openAppInGooglePlay(BROWSER_PACKAGE_NAME)
+        context.openAppInGooglePlay(FulldiveConfigs.ROOMCORD_PACKAGE_NAME)
         sharedPreferences.setProperty(KEY_INSTALL_BROWSER_DONE, true)
     }
 
@@ -198,6 +200,7 @@ class PopupManager(private val context: Context) {
     }
 
     fun isRoomcordPopupVisible(): Boolean {
+        if (isProVersion() && isRoomcordInstalled()) return false
         val startCount = getCurrentStartCounter()
         return startCount % 2 == 1
     }

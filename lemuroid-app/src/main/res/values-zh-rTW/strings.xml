@@ -172,15 +172,15 @@
   <string name="game_menu_share_title">分享</string>
   <string name="game_interactor_notification_permission_required">請啟用來自Home的通知以繼續</string>
   <string name="game_loader_error_load_core">看起來 Libretro 核心沒有載入。請確保您的設備已連接到互聯網，並嘗試重新掃描您的資料庫。如果問題仍然存在，該核心可能不支援您的設備。</string>
-  <string name="install_browser_description">獲取經過事實查證的新聞，搭配AI分析。識別假新聞，獲取AI摘要，了解哪些來源值得信賴！</string>
-  <string name="install_browser_title">試試WizeUp News</string>
-  <string name="install_submit">了解更多</string>
+  <string name="install_browser_description">• 尋找ROM和遊戲連結\\n• 社群提供的攻略和提示\\n• 提問並獲得幫助\\n• 與懷舊遊戲迷交流</string>
+  <string name="install_browser_title">嘗試Roomcord</string>
+  <string name="install_submit">加入Roomcord</string>
   <string name="installing_core_notification_message">這可能需要幾分鐘</string>
   <string name="installing_core_notification_title">更新核心</string>
   <string name="lemuroid_crash_message">錯誤訊息：%1$s</string>
   <string name="library_index_notification_action_cancel">取消</string>
   <string name="maybe_later">稍後再說</string>
-  <string name="popup_more_games_description">加入我們的Roomcord社群</string>
+  <string name="popup_more_games_description">加入我們的Roomcord社區</string>
   <string name="popup_more_games_title">想玩更多遊戲嗎？</string>
   <string name="rate_cancel">暫不</string>
   <string name="rate_submit">評分</string>
@@ -238,9 +238,19 @@
   <string name="settings_citra_keys_delete_confirm_body">這將刪除 keys.txt 檔案。在提供新金鑰之前，加密的 3DS ROM 將無法載入。</string>
   <string name="settings_citra_keys_error_title">金鑰錯誤</string>
   <string name="settings_citra_keys_downloading">正在下載金鑰…</string>
-
   <string name="share_success_title">已分享！</string>
   <string name="share_success_message">您的反饋已發布到 Roomcord 社群。</string>
   <string name="share_success_ok">好的</string>
   <string name="share_success_view">在 Roomcord 中查看</string>
+  <string name="catalog_feature_locked_buy_pro">購買專業版</string>
+  <string name="catalog_feature_locked_join_roomcord">加入Roomcord</string>
+  <string name="catalog_feature_locked_message">隱藏目錄功能僅對專業用戶或Roomcord社區成員開放</string>
+  <string name="catalog_feature_locked_title">高級功能</string>
+  <string name="catalog_hide">隱藏</string>
+  <string name="catalog_more_info">更多資訊</string>
+  <string name="catalog_play">播放</string>
+  <string name="catalog_read_more">閱讀更多</string>
+  <string name="catalog_title">目錄</string>
+  <string name="settings_show_catalog_description">顯示內建的免費遊戲目錄</string>
+  <string name="settings_show_catalog_title">顯示目錄</string>
 </resources>

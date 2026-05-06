@@ -169,9 +169,9 @@
   <string name="game_menu_share_title">Chia sẻ</string>
   <string name="game_interactor_notification_permission_required">Vui lòng bật thông báo từ Home để tiếp tục</string>
   <string name="game_loader_error_load_core">Có vẻ như lõi Libretro chưa được tải. Hãy đảm bảo thiết bị của bạn đã kết nối internet và thử quét lại thư viện của bạn. Nếu vấn đề vẫn tiếp diễn, lõi này có thể không được hỗ trợ trên thiết bị của bạn.</string>
-  <string name="install_browser_description">Nhận tin tức đã được kiểm chứng với phân tích AI. Phát hiện tin tức giả, nhận tóm tắt AI và biết nguồn nào đáng tin cậy!</string>
-  <string name="install_browser_title">Thử WizeUp News</string>
-  <string name="install_submit">Tìm hiểu thêm</string>
+  <string name="install_browser_description">• Tìm ROM và liên kết trò chơi\\n• Hướng dẫn và mẹo từ cộng đồng\\n• Đặt câu hỏi và nhận trợ giúp\\n• Kết nối với người hâm mộ trò chơi retro</string>
+  <string name="install_browser_title">Thử Roomcord</string>
+  <string name="install_submit">Tham gia Roomcord</string>
   <string name="installing_core_notification_message">Điều này có thể mất vài phút</string>
   <string name="installing_core_notification_title">Đang cập nhật lõi</string>
   <string name="lemuroid_crash_message">Thông báo lỗi: %1$s</string>
@@ -235,9 +235,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Thao tác này sẽ xóa tệp keys.txt. Các ROM 3DS được mã hóa sẽ không còn tải được cho đến khi có khóa mới.</string>
   <string name="settings_citra_keys_error_title">Lỗi khóa</string>
   <string name="settings_citra_keys_downloading">Đang tải khóa…</string>
-
   <string name="share_success_title">Đã chia sẻ!</string>
   <string name="share_success_message">Phản hồi của bạn đã được đăng lên cộng đồng Roomcord.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Xem trên Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Mua bản Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Tham gia Roomcord</string>
+  <string name="catalog_feature_locked_message">Ẩn danh mục chỉ khả dụng cho người dùng Pro hoặc thành viên cộng đồng Roomcord</string>
+  <string name="catalog_feature_locked_title">Tính năng Cao cấp</string>
+  <string name="catalog_hide">Ẩn</string>
+  <string name="catalog_more_info">Thông tin thêm</string>
+  <string name="catalog_play">Chơi</string>
+  <string name="catalog_read_more">Đọc thêm</string>
+  <string name="catalog_title">Danh mục</string>
+  <string name="settings_show_catalog_description">Hiển thị danh mục trò chơi miễn phí tích hợp sẵn</string>
+  <string name="settings_show_catalog_title">Hiển thị danh mục</string>
 </resources>

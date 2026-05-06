@@ -7,9 +7,9 @@
   <string name="game_menu_share_title">साझा करें</string>
   <string name="game_interactor_notification_permission_required">कृपया जारी रखने के लिए Home से सूचनाएं सक्षम करें</string>
   <string name="game_loader_error_load_core">ऐसा लगता है कि Libretro कोर लोड नहीं हुआ है। सुनिश्चित करें कि आपका डिवाइस इंटरनेट से जुड़ा है और अपनी लाइब्रेरी को फिर से स्कैन करने का प्रयास करें। यदि समस्या बनी रहती है, तो यह कोर आपके डिवाइस पर समर्थित नहीं हो सकता है।</string>
-  <string name="install_browser_description">एआई विश्लेषण के साथ तथ्य-जांच की गई खबरें प्राप्त करें। नकली खबरों को पहचानें, एआई सारांश प्राप्त करें, और जानें कि किन स्रोतों पर भरोसा किया जा सकता है!</string>
-  <string name="install_browser_title">WizeUp News आज़माएं</string>
-  <string name="install_submit">और जानें</string>
+  <string name="install_browser_description">• ROMs और गेम लिंक खोजें\\n• समुदाय से वॉकथ्रू और सुझाव\\n• प्रश्न पूछें और सहायता प्राप्त करें\\n• रेट्रो गेमिंग प्रशंसकों से जुड़ें</string>
+  <string name="install_browser_title">Roomcord आज़माएं</string>
+  <string name="install_submit">Roomcord से जुड़ें</string>
   <string name="installing_core_notification_message">इसमें कुछ मिनट लग सकते हैं</string>
   <string name="installing_core_notification_title">कोर अपडेट हो रहे हैं</string>
   <string name="lemuroid_crash_message">त्रुटि संदेश: %1$s</string>
@@ -76,9 +76,19 @@
   <string name="settings_citra_keys_delete_confirm_body">इससे keys.txt फ़ाइल हट जाएगी। एन्क्रिप्टेड 3DS ROMs तब तक लोड नहीं होंगे जब तक नई कुंजियाँ नहीं दी जातीं।</string>
   <string name="settings_citra_keys_error_title">कुंजी त्रुटि</string>
   <string name="settings_citra_keys_downloading">कुंजियाँ डाउनलोड हो रही हैं…</string>
-
   <string name="share_success_title">साझा किया!</string>
   <string name="share_success_message">आपकी प्रतिक्रिया Roomcord समुदाय में पोस्ट कर दी गई है।</string>
   <string name="share_success_ok">ठीक है</string>
   <string name="share_success_view">Roomcord में देखें</string>
+  <string name="catalog_feature_locked_buy_pro">प्रो खरीदें</string>
+  <string name="catalog_feature_locked_join_roomcord">Roomcord से जुड़ें</string>
+  <string name="catalog_feature_locked_message">कैटलॉग छुपाना केवल प्रो उपयोगकर्ताओं या Roomcord समुदाय के सदस्यों के लिए उपलब्ध है</string>
+  <string name="catalog_feature_locked_title">प्रीमियम विशेषता</string>
+  <string name="catalog_hide">छिपाएं</string>
+  <string name="catalog_more_info">अधिक जानकारी</string>
+  <string name="catalog_play">चलाएं</string>
+  <string name="catalog_read_more">अधिक पढ़ें</string>
+  <string name="catalog_title">सूची</string>
+  <string name="settings_show_catalog_description">मुफ्त गेम्स की अंतर्निर्मित सूची दिखाएं</string>
+  <string name="settings_show_catalog_title">कैटलॉग दिखाएं</string>
 </resources>

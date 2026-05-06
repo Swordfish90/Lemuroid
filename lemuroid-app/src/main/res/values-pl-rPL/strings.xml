@@ -191,15 +191,15 @@
   <string name="game_menu_share_title">Udostępnij</string>
   <string name="game_interactor_notification_permission_required">Proszę włączyć powiadomienia z Home, aby kontynuować</string>
   <string name="game_loader_error_load_core">Wygląda na to, że rdzeń Libretro nie został załadowany. Upewnij się, że twoje urządzenie jest podłączone do internetu i spróbuj ponownie przeskanować swoją bibliotekę. Jeśli problem nadal występuje, ten rdzeń może nie być obsługiwany na twoim urządzeniu.</string>
-  <string name="install_browser_description">Otrzymuj sprawdzone wiadomości z analizą AI. Wykrywaj fałszywe wiadomości, otrzymuj podsumowania AI i dowiedz się, którym źródłom ufać!</string>
-  <string name="install_browser_title">Wypróbuj WizeUp News</string>
-  <string name="install_submit">Dowiedz się więcej</string>
+  <string name="install_browser_description">• Znajdź ROMy i linki do gier\\n• Poradniki i wskazówki od społeczności\\n• Zadawaj pytania i uzyskaj pomoc\\n• Połącz się z fanami retro gier</string>
+  <string name="install_browser_title">Wypróbuj Roomcord</string>
+  <string name="install_submit">Dołącz do Roomcord</string>
   <string name="installing_core_notification_message">To może zająć kilka minut</string>
   <string name="installing_core_notification_title">Aktualizacja rdzeni</string>
   <string name="lemuroid_crash_message">Komunikat o błędzie: %1$s</string>
   <string name="library_index_notification_action_cancel">Anuluj</string>
   <string name="maybe_later">Może później</string>
-  <string name="popup_more_games_description">Dołącz do naszej społeczności na Roomcordzie</string>
+  <string name="popup_more_games_description">Dołącz do naszej społeczności Roomcord</string>
   <string name="popup_more_games_title">Chcesz zagrać w więcej gier?</string>
   <string name="rate_cancel">Nie teraz</string>
   <string name="rate_submit">Oceń</string>
@@ -257,9 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Spowoduje to usunięcie pliku keys.txt. Zaszyfrowane ROM-y 3DS nie będą się ładować, dopóki nie zostaną podane nowe klucze.</string>
   <string name="settings_citra_keys_error_title">Błąd kluczy</string>
   <string name="settings_citra_keys_downloading">Pobieranie kluczy…</string>
-
   <string name="share_success_title">Udostępniono!</string>
   <string name="share_success_message">Twoja opinia została opublikowana w społeczności Roomcord.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Wyświetl w Roomcordzie</string>
+  <string name="catalog_feature_locked_buy_pro">Kup Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Dołącz do Roomcord</string>
+  <string name="catalog_feature_locked_message">Ukrywanie katalogu jest dostępne dla użytkowników Pro lub członków społeczności Roomcord</string>
+  <string name="catalog_feature_locked_title">Funkcja Premium</string>
+  <string name="catalog_hide">Ukryj</string>
+  <string name="catalog_more_info">Więcej informacji</string>
+  <string name="catalog_play">Graj</string>
+  <string name="catalog_read_more">Czytaj więcej</string>
+  <string name="catalog_title">Katalog</string>
+  <string name="settings_show_catalog_description">Pokaż wbudowany katalog darmowych gier</string>
+  <string name="settings_show_catalog_title">Pokaż katalog</string>
 </resources>

@@ -191,15 +191,15 @@
   <string name="game_menu_share_title">Κοινοποίηση</string>
   <string name="game_interactor_notification_permission_required">Παρακαλώ ενεργοποιήστε τις ειδοποιήσεις από το Home για να συνεχίσετε</string>
   <string name="game_loader_error_load_core">Φαίνεται ότι ο πυρήνας Libretro δεν φορτώθηκε. Βεβαιωθείτε ότι η συσκευή σας είναι συνδεδεμένη στο διαδίκτυο και προσπαθήστε να σαρώσετε ξανά τη βιβλιοθήκη σας. Αν το πρόβλημα παραμένει, αυτός ο πυρήνας μπορεί να μην υποστηρίζεται στη συσκευή σας.</string>
-  <string name="install_browser_description">Λάβετε ειδήσεις με επαλήθευση γεγονότων και ανάλυση AI. Εντοπίστε ψευδείς ειδήσεις, λάβετε περιλήψεις AI και μάθετε ποιες πηγές είναι αξιόπιστες!</string>
-  <string name="install_browser_title">Δοκιμάστε το WizeUp News</string>
-  <string name="install_submit">Μάθετε περισσότερα</string>
+  <string name="install_browser_description">• Βρείτε ROMs και συνδέσμους παιχνιδιών\\n• Οδηγίες και συμβουλές από την κοινότητα\\n• Κάντε ερωτήσεις και λάβετε βοήθεια\\n• Συνδεθείτε με λάτρεις των ρετρό παιχνιδιών</string>
+  <string name="install_browser_title">Δοκιμάστε το Roomcord</string>
+  <string name="install_submit">Συμμετοχή στο Roomcord</string>
   <string name="installing_core_notification_message">Αυτό μπορεί να διαρκέσει μερικά λεπτά</string>
   <string name="installing_core_notification_title">Ενημέρωση πυρήνων</string>
   <string name="lemuroid_crash_message">Μήνυμα σφάλματος: %1$s</string>
   <string name="library_index_notification_action_cancel">Ακύρωση</string>
   <string name="maybe_later">Ίσως αργότερα</string>
-  <string name="popup_more_games_description">Γίνετε μέλος της κοινότητας Roomcord μας</string>
+  <string name="popup_more_games_description">Γίνετε μέλος της κοινότητάς μας στο Roomcord</string>
   <string name="popup_more_games_title">Θέλετε να παίξετε περισσότερα παιχνίδια;</string>
   <string name="rate_cancel">Όχι τώρα</string>
   <string name="rate_submit">Αξιολόγηση</string>
@@ -257,9 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Αυτό θα αφαιρέσει το αρχείο keys.txt. Τα κρυπτογραφημένα 3DS ROM δεν θα φορτώνουν πλέον μέχρι να παρασχεθούν νέα κλειδιά.</string>
   <string name="settings_citra_keys_error_title">Σφάλμα κλειδιών</string>
   <string name="settings_citra_keys_downloading">Λήψη κλειδιών…</string>
-
   <string name="share_success_title">Κοινοποιήθηκε!</string>
   <string name="share_success_message">Τα σχόλιά σου δημοσιεύτηκαν στην κοινότητα Roomcord.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Προβολή στο Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Αγορά Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Συμμετοχή στο Roomcord</string>
+  <string name="catalog_feature_locked_message">Η απόκρυψη του καταλόγου είναι διαθέσιμη για χρήστες Pro ή μέλη της κοινότητας Roomcord</string>
+  <string name="catalog_feature_locked_title">Προνομιακή Λειτουργία</string>
+  <string name="catalog_hide">Απόκρυψη</string>
+  <string name="catalog_more_info">Περισσότερες πληροφορίες</string>
+  <string name="catalog_play">Παίξτε</string>
+  <string name="catalog_read_more">Διαβάστε περισσότερα</string>
+  <string name="catalog_title">Κατάλογος</string>
+  <string name="settings_show_catalog_description">Εμφάνιση ενσωματωμένου καταλόγου δωρεάν παιχνιδιών</string>
+  <string name="settings_show_catalog_title">Εμφάνιση καταλόγου</string>
 </resources>

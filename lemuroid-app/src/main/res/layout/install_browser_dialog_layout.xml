@@ -25,7 +25,7 @@
         android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_wizeup"/>
+        android:src="@drawable/ic_more_games"/>
 
     <TextView
         android:id="@+id/titleTextView"
@@ -48,5 +48,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="10dp"
+        android:gravity="start"
+        android:lineSpacingMultiplier="1.4"
         android:textSize="14sp" />
 </LinearLayout>

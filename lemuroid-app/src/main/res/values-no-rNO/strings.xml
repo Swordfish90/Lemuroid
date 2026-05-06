@@ -191,15 +191,15 @@
   <string name="game_menu_share_title">Del</string>
   <string name="game_interactor_notification_permission_required">Vennligst aktiver varsler fra Home for å fortsette</string>
   <string name="game_loader_error_load_core">Det ser ut som om Libretro-kjernen ikke ble lastet. Sørg for at enheten din er koblet til internett, og prøv å skanne biblioteket ditt på nytt. Hvis problemet vedvarer, støttes kanskje ikke denne kjernen på enheten din.</string>
-  <string name="install_browser_description">Få faktasjekkede nyheter med AI-analyse. Oppdag falske nyheter, få AI-sammendrag, og vit hvilke kilder du kan stole på!</string>
-  <string name="install_browser_title">Prøv WizeUp News</string>
-  <string name="install_submit">Lær mer</string>
+  <string name="install_browser_description">• Finn ROM-er og spilllenker\\n• Gjennomganger og tips fra fellesskapet\\n• Still spørsmål og få hjelp\\n• Koble til retro gaming-fans</string>
+  <string name="install_browser_title">Prøv Roomcord</string>
+  <string name="install_submit">Bli med i Roomcord</string>
   <string name="installing_core_notification_message">Dette kan ta opptil noen minutter</string>
   <string name="installing_core_notification_title">Oppdaterer kjerner</string>
   <string name="lemuroid_crash_message">Feilmelding: %1$s</string>
   <string name="library_index_notification_action_cancel">Avbryt</string>
   <string name="maybe_later">Kanskje senere</string>
-  <string name="popup_more_games_description">Bli med i vårt Roomcord-samfunn</string>
+  <string name="popup_more_games_description">Bli med i vårt Roomcord-fellesskap</string>
   <string name="popup_more_games_title">Vil du spille flere spill?</string>
   <string name="rate_cancel">Ikke nå</string>
   <string name="rate_submit">Vurder</string>
@@ -257,9 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Dette vil fjerne keys.txt-filen. Krypterte 3DS ROM-er vil ikke lenger lastes inn før nye nøkler er oppgitt.</string>
   <string name="settings_citra_keys_error_title">Nøkkelfeil</string>
   <string name="settings_citra_keys_downloading">Laster ned nøkler…</string>
-
   <string name="share_success_title">Delt!</string>
   <string name="share_success_message">Tilbakemeldingen din er lagt ut i Roomcord-fellesskapet.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Se i Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Kjøp Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Bli med i Roomcord</string>
+  <string name="catalog_feature_locked_message">Å skjule katalogen er tilgjengelig for Pro-brukere eller medlemmer av Roomcord-fellesskapet</string>
+  <string name="catalog_feature_locked_title">Premiumfunksjon</string>
+  <string name="catalog_hide">Skjul</string>
+  <string name="catalog_more_info">Mer info</string>
+  <string name="catalog_play">Spill</string>
+  <string name="catalog_read_more">Les mer</string>
+  <string name="catalog_title">Katalog</string>
+  <string name="settings_show_catalog_description">Vis innebygd katalog over gratis spill</string>
+  <string name="settings_show_catalog_title">Vis katalog</string>
 </resources>

@@ -191,16 +191,16 @@
   <string name="game_menu_share_title">Condividi</string>
   <string name="game_interactor_notification_permission_required">Si prega di abilitare le notifiche da Home per continuare</string>
   <string name="game_loader_error_load_core">Sembra che il core Libretro non sia stato caricato. Assicurati che il tuo dispositivo sia connesso a internet e prova a scansionare nuovamente la tua libreria. Se il problema persiste, è possibile che questo core non sia supportato sul tuo dispositivo.</string>
-  <string name="install_browser_description">Ottieni notizie verificate con analisi AI. Riconosci le notizie false, ricevi riassunti AI e scopri quali fonti sono affidabili!</string>
-  <string name="install_browser_title">Prova WizeUp News</string>
-  <string name="install_submit">Scopri di più</string>
+  <string name="install_browser_description">• Trova ROM e link di giochi\\n• Soluzioni e consigli dalla community\\n• Fai domande e ottieni aiuto\\n• Connettiti con i fan dei giochi retrò</string>
+  <string name="install_browser_title">Prova Roomcord</string>
+  <string name="install_submit">Unisciti a Roomcord</string>
   <string name="installing_core_notification_message">Questo può richiedere alcuni minuti</string>
   <string name="installing_core_notification_title">Aggiornamento dei core</string>
   <string name="lemuroid_crash_message">Messaggio di errore: %1$s</string>
   <string name="library_index_notification_action_cancel">Annulla</string>
   <string name="maybe_later">Forse più tardi</string>
-  <string name="popup_more_games_description">Unisciti alla nostra community su Roomcord</string>
-  <string name="popup_more_games_title">Vuoi giocare ad altri giochi?</string>
+  <string name="popup_more_games_description">Unisciti alla nostra comunità Roomcord</string>
+  <string name="popup_more_games_title">Vuoi giocare a più giochi?</string>
   <string name="rate_cancel">Non ora</string>
   <string name="rate_submit">Valuta</string>
   <string name="rate_us_description">Ti piace FullRoid? Ci piacerebbe ricevere il tuo feedback per migliorare l\'app per te.</string>
@@ -257,9 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Questo rimuoverà il file keys.txt. Le ROM 3DS crittografate non si caricheranno più finché non verranno fornite nuove chiavi.</string>
   <string name="settings_citra_keys_error_title">Errore chiavi</string>
   <string name="settings_citra_keys_downloading">Download chiavi…</string>
-
   <string name="share_success_title">Condiviso!</string>
   <string name="share_success_message">Il tuo feedback è stato pubblicato nella community di Roomcord.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Visualizza in Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Acquista Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Unisciti a Roomcord</string>
+  <string name="catalog_feature_locked_message">Nascondere il catalogo è disponibile per gli utenti Pro o i membri della comunità Roomcord</string>
+  <string name="catalog_feature_locked_title">Funzionalità Premium</string>
+  <string name="catalog_hide">Nascondi</string>
+  <string name="catalog_more_info">Maggiori informazioni</string>
+  <string name="catalog_play">Gioca</string>
+  <string name="catalog_read_more">Leggi di più</string>
+  <string name="catalog_title">Catalogo</string>
+  <string name="settings_show_catalog_description">Mostra il catalogo integrato dei giochi gratuiti</string>
+  <string name="settings_show_catalog_title">Mostra catalogo</string>
 </resources>

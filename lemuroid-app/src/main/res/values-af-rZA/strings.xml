@@ -7,9 +7,9 @@
   <string name="game_menu_share_title">Deel</string>
   <string name="game_interactor_notification_permission_required">Skakel asseblief kennisgewings van Home aan om voort te gaan</string>
   <string name="game_loader_error_load_core">Dit lyk asof die Libretro-kern nie gelaai is nie. Maak seker dat jou toestel aan die internet gekoppel is en probeer om jou biblioteek weer te skandeer. As die probleem voortduur, mag hierdie kern dalk nie op jou toestel ondersteun word nie.</string>
-  <string name="install_browser_description">Kry feite-gekontroleerde nuus met KI-analise. Spot vals nuus, kry KI-samevattings, en weet watter bronne om te vertrou!</string>
-  <string name="install_browser_title">Probeer WizeUp News</string>
-  <string name="install_submit">Leer meer</string>
+  <string name="install_browser_description">• Vind ROMs en speelskakels\\n• Deurloopgidse en wenke van die gemeenskap\\n• Vra vrae en kry hulp\\n• Skakel met retro speletjie-aanhangers</string>
+  <string name="install_browser_title">Probeer Roomcord</string>
+  <string name="install_submit">Sluit aan by Roomcord</string>
   <string name="installing_core_notification_message">Dit kan \'n paar minute neem</string>
   <string name="installing_core_notification_title">Opdateer Kerne</string>
   <string name="lemuroid_crash_message">Foutboodskap: %1$s</string>
@@ -76,9 +76,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Dit sal die keys.txt-lêer verwyder. Versleutelde 3DS-ROMs sal nie meer laai totdat nuwe sleutels verskaf word nie.</string>
   <string name="settings_citra_keys_error_title">Sleutelfout</string>
   <string name="settings_citra_keys_downloading">Sleutels word afgelaai…</string>
-
   <string name="share_success_title">Gedeel!</string>
   <string name="share_success_message">Jou terugvoer is aan die Roomcord-gemeenskap gepos.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Sien in Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Koop Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Sluit aan by Roomcord</string>
+  <string name="catalog_feature_locked_message">Die verberging van die katalogus is beskikbaar vir Pro-gebruikers of Roomcord-gemeenskapslede</string>
+  <string name="catalog_feature_locked_title">Premium-funksie</string>
+  <string name="catalog_hide">Versteek</string>
+  <string name="catalog_more_info">Meer inligting</string>
+  <string name="catalog_play">Speel</string>
+  <string name="catalog_read_more">Lees meer</string>
+  <string name="catalog_title">Katalogus</string>
+  <string name="settings_show_catalog_description">Wys ingeboude katalogus van gratis speletjies</string>
+  <string name="settings_show_catalog_title">Wys katalogus</string>
 </resources>

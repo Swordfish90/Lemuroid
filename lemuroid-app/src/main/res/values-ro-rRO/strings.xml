@@ -179,15 +179,15 @@
   <string name="game_menu_share_title">Partajează</string>
   <string name="game_interactor_notification_permission_required">Vă rugăm să activați notificările de la Home pentru a continua</string>
   <string name="game_loader_error_load_core">Se pare că nucleul Libretro nu a fost încărcat. Asigură-te că dispozitivul tău este conectat la internet și încearcă să scanezi din nou biblioteca. Dacă problema persistă, este posibil ca acest nucleu să nu fie compatibil cu dispozitivul tău.</string>
-  <string name="install_browser_description">Obțineți știri verificate cu analiza AI. Identificați știrile false, primiți rezumate AI și aflați care surse sunt de încredere!</string>
-  <string name="install_browser_title">Încearcă WizeUp News</string>
-  <string name="install_submit">Aflați mai multe</string>
+  <string name="install_browser_description">• Găsește ROM-uri și linkuri de jocuri\\n• Ghiduri și sfaturi de la comunitate\\n• Pune întrebări și primește ajutor\\n• Conectează-te cu fanii jocurilor retro</string>
+  <string name="install_browser_title">Încearcă Roomcord</string>
+  <string name="install_submit">Alătură-te Roomcord</string>
   <string name="installing_core_notification_message">Aceasta poate dura câteva minute</string>
   <string name="installing_core_notification_title">Actualizare nuclee</string>
   <string name="lemuroid_crash_message">Mesaj de eroare: %1$s</string>
   <string name="library_index_notification_action_cancel">Anulează</string>
   <string name="maybe_later">Poate mai târziu</string>
-  <string name="popup_more_games_description">Alătură-te comunității noastre pe Roomcord</string>
+  <string name="popup_more_games_description">Alăturați-vă comunității noastre Roomcord</string>
   <string name="popup_more_games_title">Vrei să joci mai multe jocuri?</string>
   <string name="rate_cancel">Nu acum</string>
   <string name="rate_submit">Evaluează</string>
@@ -245,9 +245,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Aceasta va elimina fișierul keys.txt. ROM-urile 3DS criptate nu se vor mai încărca până când nu sunt furnizate chei noi.</string>
   <string name="settings_citra_keys_error_title">Eroare chei</string>
   <string name="settings_citra_keys_downloading">Se descarcă cheile…</string>
-
   <string name="share_success_title">Distribuit!</string>
   <string name="share_success_message">Feedback-ul tău a fost postat în comunitatea Roomcord.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Vizualizează în Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Cumpără Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Alătură-te Roomcord</string>
+  <string name="catalog_feature_locked_message">Ascunderea catalogului este disponibilă pentru utilizatorii Pro sau membrii comunității Roomcord</string>
+  <string name="catalog_feature_locked_title">Funcție Premium</string>
+  <string name="catalog_hide">Ascunde</string>
+  <string name="catalog_more_info">Mai multe informații</string>
+  <string name="catalog_play">Joacă</string>
+  <string name="catalog_read_more">Citește mai mult</string>
+  <string name="catalog_title">Catalog</string>
+  <string name="settings_show_catalog_description">Afișează catalogul încorporat de jocuri gratuite</string>
+  <string name="settings_show_catalog_title">Afișează catalogul</string>
 </resources>

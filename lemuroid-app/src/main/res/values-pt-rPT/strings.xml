@@ -191,15 +191,15 @@
   <string name="game_menu_share_title">Partilhar</string>
   <string name="game_interactor_notification_permission_required">Por favor, ative as notificações do Home para continuar</string>
   <string name="game_loader_error_load_core">Parece que o núcleo Libretro não foi carregado. Certifique-se de que o seu dispositivo está conectado à internet e tente escanear a sua biblioteca novamente. Se o problema persistir, este núcleo pode não ser suportado no seu dispositivo.</string>
-  <string name="install_browser_description">Obtenha notícias verificadas com análise de IA. Identifique notícias falsas, obtenha resumos de IA e saiba em quais fontes confiar!</string>
-  <string name="install_browser_title">Experimente o WizeUp News</string>
-  <string name="install_submit">Saiba mais</string>
+  <string name="install_browser_description">• Encontre ROMs e links de jogos\\n• Dicas e walkthroughs da comunidade\\n• Faça perguntas e obtenha ajuda\\n• Conecte-se com fãs de jogos retro</string>
+  <string name="install_browser_title">Experimente o Roomcord</string>
+  <string name="install_submit">Juntar-se ao Roomcord</string>
   <string name="installing_core_notification_message">Isto pode demorar alguns minutos</string>
   <string name="installing_core_notification_title">Atualizar Núcleos</string>
   <string name="lemuroid_crash_message">Mensagem de erro: %1$s</string>
   <string name="library_index_notification_action_cancel">Cancelar</string>
   <string name="maybe_later">Talvez mais tarde</string>
-  <string name="popup_more_games_description">Junte-se à nossa comunidade no Roomcord</string>
+  <string name="popup_more_games_description">Junte-se à nossa comunidade Roomcord</string>
   <string name="popup_more_games_title">Quer jogar mais jogos?</string>
   <string name="rate_cancel">Agora não</string>
   <string name="rate_submit">Classificar</string>
@@ -257,9 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Isto irá remover o ficheiro keys.txt. As ROMs 3DS encriptadas não serão carregadas até que sejam fornecidas novas chaves.</string>
   <string name="settings_citra_keys_error_title">Erro de chaves</string>
   <string name="settings_citra_keys_downloading">A transferir chaves…</string>
-
   <string name="share_success_title">Partilhado!</string>
   <string name="share_success_message">O seu feedback foi publicado na comunidade Roomcord.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Ver no Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Comprar Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Entrar no Roomcord</string>
+  <string name="catalog_feature_locked_message">Ocultar o catálogo está disponível para utilizadores Pro ou membros da comunidade Roomcord</string>
+  <string name="catalog_feature_locked_title">Funcionalidade Premium</string>
+  <string name="catalog_hide">Ocultar</string>
+  <string name="catalog_more_info">Mais informações</string>
+  <string name="catalog_play">Jogar</string>
+  <string name="catalog_read_more">Ler mais</string>
+  <string name="catalog_title">Catálogo</string>
+  <string name="settings_show_catalog_description">Mostrar catálogo incorporado de jogos gratuitos</string>
+  <string name="settings_show_catalog_title">Mostrar Catálogo</string>
 </resources>

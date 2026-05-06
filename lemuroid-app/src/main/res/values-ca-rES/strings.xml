@@ -94,15 +94,15 @@
   <string name="game_menu_share_title">Compartir</string>
   <string name="game_interactor_notification_permission_required">Si us plau, habilita les notificacions de Home per continuar</string>
   <string name="game_loader_error_load_core">Sembla que el nucli Libretro no s\'ha carregat. Assegura\'t que el teu dispositiu està connectat a internet i intenta tornar a escanejar la teva biblioteca. Si el problema persisteix, és possible que aquest nucli no sigui compatible amb el teu dispositiu.</string>
-  <string name="install_browser_description">Obteniu notícies verificades amb anàlisi d\'IA. Detecteu notícies falses, rebeu resums d\'IA i sabeu quines fonts són de confiança!</string>
-  <string name="install_browser_title">Prova WizeUp News</string>
-  <string name="install_submit">Més informació</string>
+  <string name="install_browser_description">• Troba ROMs i enllaços de jocs\\n• Guies i consells de la comunitat\\n• Fes preguntes i obtén ajuda\\n• Connecta amb fans dels jocs retro</string>
+  <string name="install_browser_title">Prova Roomcord</string>
+  <string name="install_submit">Unir-se a Roomcord</string>
   <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
   <string name="installing_core_notification_title">Actualitzant nuclis</string>
   <string name="lemuroid_crash_message">Missatge d\'error: %1$s</string>
   <string name="library_index_notification_action_cancel">Cancel·lar</string>
   <string name="maybe_later">Potser més tard</string>
-  <string name="popup_more_games_description">Uneix-te a la nostra comunitat de Roomcord</string>
+  <string name="popup_more_games_description">Uneix-te a la nostra comunitat Roomcord</string>
   <string name="popup_more_games_title">Vols jugar a més jocs?</string>
   <string name="rate_cancel">Ara no</string>
   <string name="rate_submit">Valorar</string>
@@ -163,9 +163,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Això eliminarà el fitxer keys.txt. Els ROMs 3DS xifrats ja no es carregaran fins que es proporcionin noves claus.</string>
   <string name="settings_citra_keys_error_title">Error de claus</string>
   <string name="settings_citra_keys_downloading">Descarregant claus…</string>
-
   <string name="share_success_title">Compartit!</string>
   <string name="share_success_message">El teu comentari s\'ha publicat a la comunitat de Roomcord.</string>
   <string name="share_success_ok">D\'acord</string>
   <string name="share_success_view">Veure a Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Comprar Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Unir-se a Roomcord</string>
+  <string name="catalog_feature_locked_message">Amagar el catàleg està disponible per als usuaris Pro o membres de la comunitat Roomcord</string>
+  <string name="catalog_feature_locked_title">Funció Premium</string>
+  <string name="catalog_hide">Amagar</string>
+  <string name="catalog_more_info">Més informació</string>
+  <string name="catalog_play">Jugar</string>
+  <string name="catalog_read_more">Llegir més</string>
+  <string name="catalog_title">Catàleg</string>
+  <string name="settings_show_catalog_description">Mostra el catàleg integrat de jocs gratuïts</string>
+  <string name="settings_show_catalog_title">Mostra el catàleg</string>
 </resources>

@@ -191,15 +191,15 @@
   <string name="game_menu_share_title">공유</string>
   <string name="game_interactor_notification_permission_required">계속하려면 Home에서 알림을 활성화하세요</string>
   <string name="game_loader_error_load_core">Libretro 코어가 로드되지 않은 것 같습니다. 기기가 인터넷에 연결되어 있는지 확인하고 라이브러리를 다시 스캔해 보세요. 문제가 계속되면 이 코어가 기기에서 지원되지 않을 수 있습니다.</string>
-  <string name="install_browser_description">AI 분석으로 사실 확인된 뉴스를 받아보세요. 가짜 뉴스를 식별하고, AI 요약을 받고, 신뢰할 수 있는 출처를 알아보세요!</string>
-  <string name="install_browser_title">WizeUp News 시도하기</string>
-  <string name="install_submit">자세히 알아보기</string>
+  <string name="install_browser_description">• ROM 및 게임 링크 찾기\\n• 커뮤니티의 공략 및 팁\\n• 질문하고 도움 받기\\n• 레트로 게임 팬들과 연결</string>
+  <string name="install_browser_title">Roomcord 시도하기</string>
+  <string name="install_submit">Roomcord에 참여</string>
   <string name="installing_core_notification_message">몇 분 정도 걸릴 수 있습니다</string>
   <string name="installing_core_notification_title">코어 업데이트 중</string>
   <string name="lemuroid_crash_message">오류 메시지: %1$s</string>
   <string name="library_index_notification_action_cancel">취소</string>
   <string name="maybe_later">나중에</string>
-  <string name="popup_more_games_description">우리 Roomcord 커뮤니티에 참여하세요</string>
+  <string name="popup_more_games_description">우리 Roomcord 커뮤니티에 가입하세요</string>
   <string name="popup_more_games_title">더 많은 게임을 하고 싶으신가요?</string>
   <string name="rate_cancel">지금은 안 함</string>
   <string name="rate_submit">평가</string>
@@ -257,9 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">keys.txt 파일이 제거됩니다. 새 키가 제공될 때까지 암호화된 3DS ROM은 더 이상 로드되지 않습니다.</string>
   <string name="settings_citra_keys_error_title">키 오류</string>
   <string name="settings_citra_keys_downloading">키 다운로드 중…</string>
-
   <string name="share_success_title">공유됨!</string>
   <string name="share_success_message">피드백이 Roomcord 커뮤니티에 게시되었습니다.</string>
   <string name="share_success_ok">확인</string>
   <string name="share_success_view">Roomcord에서 보기</string>
+  <string name="catalog_feature_locked_buy_pro">프로 구매</string>
+  <string name="catalog_feature_locked_join_roomcord">Roomcord에 가입</string>
+  <string name="catalog_feature_locked_message">카탈로그 숨기기는 Pro 사용자 또는 Roomcord 커뮤니티 회원에게 제공됩니다</string>
+  <string name="catalog_feature_locked_title">프리미엄 기능</string>
+  <string name="catalog_hide">숨기기</string>
+  <string name="catalog_more_info">추가 정보</string>
+  <string name="catalog_play">재생</string>
+  <string name="catalog_read_more">더 읽기</string>
+  <string name="catalog_title">카탈로그</string>
+  <string name="settings_show_catalog_description">내장된 무료 게임 카탈로그 표시</string>
+  <string name="settings_show_catalog_title">카탈로그 표시</string>
 </resources>

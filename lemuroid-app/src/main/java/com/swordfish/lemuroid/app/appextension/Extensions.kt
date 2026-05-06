@@ -118,6 +118,14 @@ fun PackageManager.isFullRoidProInstalled(): Boolean {
     return isPackageInstalled(FulldiveConfigs.FULLROID_PRO_PACKAGE_NAME)
 }
 
+fun Context.isRoomcordInstalled(): Boolean {
+    return try {
+        packageManager.getApplicationInfo(FulldiveConfigs.ROOMCORD_PACKAGE_NAME, 0).enabled
+    } catch (e: Exception) {
+        false
+    }
+}
+
 fun isProVersion(): Boolean = BuildConfig.FLAVOR.contains("pro")
 
 fun fromHtmlToSpanned(html: String?): Spanned {

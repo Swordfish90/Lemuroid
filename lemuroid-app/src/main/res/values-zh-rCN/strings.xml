@@ -190,9 +190,9 @@
   <string name="game_menu_share_title">分享</string>
   <string name="game_interactor_notification_permission_required">请启用来自Home的通知以继续</string>
   <string name="game_loader_error_load_core">看起来 Libretro 内核没有加载。请确保您的设备已连接到互联网，并尝试重新扫描您的库。如果问题仍然存在，该内核可能不支持您的设备。</string>
-  <string name="install_browser_description">获取经过事实核查的新闻，配合AI分析。识别假新闻，获取AI摘要，了解哪些来源值得信赖！</string>
-  <string name="install_browser_title">试试WizeUp News</string>
-  <string name="install_submit">了解更多</string>
+  <string name="install_browser_description">• 查找ROM和游戏链接\\n• 社区提供的攻略和提示\\n• 提问并获得帮助\\n• 与复古游戏爱好者交流</string>
+  <string name="install_browser_title">尝试Roomcord</string>
+  <string name="install_submit">加入Roomcord</string>
   <string name="installing_core_notification_message">这可能需要几分钟</string>
   <string name="installing_core_notification_title">更新内核</string>
   <string name="lemuroid_crash_message">错误信息：%1$s</string>
@@ -256,9 +256,19 @@
   <string name="settings_citra_keys_delete_confirm_body">这将删除 keys.txt 文件。在提供新密钥之前，加密的 3DS ROM 将无法加载。</string>
   <string name="settings_citra_keys_error_title">密钥错误</string>
   <string name="settings_citra_keys_downloading">正在下载密钥…</string>
-
   <string name="share_success_title">已分享！</string>
   <string name="share_success_message">您的反馈已发布到 Roomcord 社区。</string>
   <string name="share_success_ok">好的</string>
   <string name="share_success_view">在 Roomcord 中查看</string>
+  <string name="catalog_feature_locked_buy_pro">购买专业版</string>
+  <string name="catalog_feature_locked_join_roomcord">加入Roomcord</string>
+  <string name="catalog_feature_locked_message">隐藏目录功能仅对专业用户或Roomcord社区成员开放</string>
+  <string name="catalog_feature_locked_title">高级功能</string>
+  <string name="catalog_hide">隐藏</string>
+  <string name="catalog_more_info">更多信息</string>
+  <string name="catalog_play">播放</string>
+  <string name="catalog_read_more">阅读更多</string>
+  <string name="catalog_title">目录</string>
+  <string name="settings_show_catalog_description">显示内置的免费游戏目录</string>
+  <string name="settings_show_catalog_title">显示目录</string>
 </resources>

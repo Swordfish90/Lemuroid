@@ -192,16 +192,16 @@
   <string name="game_menu_share_title">共有</string>
   <string name="game_interactor_notification_permission_required">続行するにはHomeからの通知を有効にしてください</string>
   <string name="game_loader_error_load_core">Libretroコアがロードされていないようです。デバイスがインターネットに接続されていることを確認し、ライブラリを再スキャンしてみてください。問題が続く場合、このコアはお使いのデバイスでサポートされていない可能性があります。</string>
-  <string name="install_browser_description">AI分析によるファクトチェック済みのニュースを入手。フェイクニュースを見破り、AI要約を取得し、信頼できる情報源を知りましょう！</string>
-  <string name="install_browser_title">WizeUp Newsを試す</string>
-  <string name="install_submit">詳細を確認する</string>
+  <string name="install_browser_description">• ROMやゲームリンクを探す\\n• コミュニティからの攻略情報とヒント\\n• 質問をして助けを得る\\n• レトロゲームファンとつながる</string>
+  <string name="install_browser_title">Roomcordを試す</string>
+  <string name="install_submit">Roomcordに参加</string>
   <string name="installing_core_notification_message">数分かかることがあります</string>
   <string name="installing_core_notification_title">コアを更新中</string>
   <string name="lemuroid_crash_message">エラーメッセージ: %1$s</string>
   <string name="library_index_notification_action_cancel">キャンセル</string>
   <string name="maybe_later">あとで</string>
-  <string name="popup_more_games_description">Roomcordコミュニティに参加する</string>
-  <string name="popup_more_games_title">もっとゲームをプレイしますか？</string>
+  <string name="popup_more_games_description">Roomcordコミュニティに参加しよう</string>
+  <string name="popup_more_games_title">もっとゲームを遊びたいですか？</string>
   <string name="rate_cancel">今はしない</string>
   <string name="rate_submit">評価</string>
   <string name="rate_us_description">FullRoidはお好きですか？ぜひご意見をお聞かせください。アプリをより良くしていきます。</string>
@@ -258,9 +258,19 @@
   <string name="settings_citra_keys_delete_confirm_body">keys.txt ファイルが削除されます。新しいキーが提供されるまで、暗号化された 3DS ROM は読み込まれなくなります。</string>
   <string name="settings_citra_keys_error_title">キーエラー</string>
   <string name="settings_citra_keys_downloading">キーをダウンロード中…</string>
-
   <string name="share_success_title">シェアしました！</string>
   <string name="share_success_message">あなたのフィードバックがRoomcordコミュニティに投稿されました。</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Roomcordで見る</string>
+  <string name="catalog_feature_locked_buy_pro">Proを購入</string>
+  <string name="catalog_feature_locked_join_roomcord">Roomcordに参加</string>
+  <string name="catalog_feature_locked_message">カタログの非表示は、ProユーザーまたはRoomcordコミュニティメンバー向けに利用可能です</string>
+  <string name="catalog_feature_locked_title">プレミアム機能</string>
+  <string name="catalog_hide">非表示</string>
+  <string name="catalog_more_info">詳細情報</string>
+  <string name="catalog_play">プレイ</string>
+  <string name="catalog_read_more">続きを読む</string>
+  <string name="catalog_title">カタログ</string>
+  <string name="settings_show_catalog_description">内蔵の無料ゲームカタログを表示</string>
+  <string name="settings_show_catalog_title">カタログを表示</string>
 </resources>

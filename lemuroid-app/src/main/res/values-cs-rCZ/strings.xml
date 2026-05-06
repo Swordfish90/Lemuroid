@@ -190,15 +190,15 @@
   <string name="game_menu_share_title">Sdílet</string>
   <string name="game_interactor_notification_permission_required">Prosím, povolte oznámení z Home, abyste mohli pokračovat</string>
   <string name="game_loader_error_load_core">Zdá se, že jádro Libretro nebylo načteno. Ujistěte se, že je vaše zařízení připojeno k internetu, a zkuste znovu prohledat svou knihovnu. Pokud problém přetrvává, toto jádro nemusí být na vašem zařízení podporováno.</string>
-  <string name="install_browser_description">Získejte ověřené zprávy s analýzou AI. Odhalte falešné zprávy, získejte AI souhrny a zjistěte, kterým zdrojům důvěřovat!</string>
-  <string name="install_browser_title">Vyzkoušejte WizeUp News</string>
-  <string name="install_submit">Zjistit více</string>
+  <string name="install_browser_description">• Najděte ROMy a odkazy na hry\\n• Návody a tipy od komunity\\n• Ptejte se a získejte pomoc\\n• Spojte se s fanoušky retro her</string>
+  <string name="install_browser_title">Vyzkoušejte Roomcord</string>
+  <string name="install_submit">Připojit se k Roomcord</string>
   <string name="installing_core_notification_message">To může trvat několik minut</string>
   <string name="installing_core_notification_title">Aktualizace jader</string>
   <string name="lemuroid_crash_message">Chybová zpráva: %1$s</string>
   <string name="library_index_notification_action_cancel">Zrušit</string>
   <string name="maybe_later">Možná později</string>
-  <string name="popup_more_games_description">Připojte se k naší komunitě na Roomcordu</string>
+  <string name="popup_more_games_description">Připojte se k naší komunitě Roomcord</string>
   <string name="popup_more_games_title">Chcete hrát více her?</string>
   <string name="rate_cancel">Teď ne</string>
   <string name="rate_submit">Ohodnotit</string>
@@ -256,9 +256,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Tím se odstraní soubor keys.txt. Šifrované 3DS ROM se nebudou načítat, dokud nebudou zadány nové klíče.</string>
   <string name="settings_citra_keys_error_title">Chyba klíčů</string>
   <string name="settings_citra_keys_downloading">Stahování klíčů…</string>
-
   <string name="share_success_title">Sdíleno!</string>
   <string name="share_success_message">Váš feedback byl zveřejněn v komunitě Roomcord.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Zobrazit v Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Koupit Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Připojit se k Roomcord</string>
+  <string name="catalog_feature_locked_message">Skrývání katalogu je k dispozici pro uživatele Pro nebo členy komunity Roomcord</string>
+  <string name="catalog_feature_locked_title">Prémiová funkce</string>
+  <string name="catalog_hide">Skrýt</string>
+  <string name="catalog_more_info">Více informací</string>
+  <string name="catalog_play">Hrát</string>
+  <string name="catalog_read_more">Číst více</string>
+  <string name="catalog_title">Katalog</string>
+  <string name="settings_show_catalog_description">Zobrazit vestavěný katalog bezplatných her</string>
+  <string name="settings_show_catalog_title">Zobrazit katalog</string>
 </resources>

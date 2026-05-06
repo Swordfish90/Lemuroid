@@ -173,16 +173,16 @@
   <string name="game_menu_share_title">Подели</string>
   <string name="game_interactor_notification_permission_required">Молимо вас да омогућите обавештења из Home да бисте наставили</string>
   <string name="game_loader_error_load_core">Изгледа да Libretro језгро није учитано. Уверите се да је ваш уређај повезан на интернет и покушајте поново да скенирате вашу библиотеку. Ако проблем и даље постоји, можда ово језгро није подржано на вашем уређају.</string>
-  <string name="install_browser_description">Добијте проверене вести са анализом вештачке интелигенције. Препознајте лажне вести, добијте резимее вештачке интелигенције и сазнајте којим изворима можете веровати!</string>
-  <string name="install_browser_title">Пробајте WizeUp News</string>
-  <string name="install_submit">Сазнајте више</string>
+  <string name="install_browser_description">• Пронађите ROM-ове и линкове за игре\\n• Упутства и савети из заједнице\\n• Поставите питања и добијте помоћ\\n• Повежите се са љубитељима ретро игара</string>
+  <string name="install_browser_title">Пробајте Roomcord</string>
+  <string name="install_submit">Придружи се Roomcord</string>
   <string name="installing_core_notification_message">Ово може потрајати неколико минута</string>
   <string name="installing_core_notification_title">Ажурирање језгара</string>
   <string name="lemuroid_crash_message">Порука о грешци: %1$s</string>
   <string name="library_index_notification_action_cancel">Откажи</string>
   <string name="maybe_later">Можда касније</string>
   <string name="popup_more_games_description">Придружите се нашој Roomcord заједници</string>
-  <string name="popup_more_games_title">Желите да играте више игара?</string>
+  <string name="popup_more_games_title">Желите ли да играте више игара?</string>
   <string name="rate_cancel">Не сада</string>
   <string name="rate_submit">Оцени</string>
   <string name="rate_us_description">Да ли вам се допада FullRoid? Волели бисмо да чујемо ваше повратне информације и побољшамо апликацију за вас.</string>
@@ -239,9 +239,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Ово ће уклонити датотеку keys.txt. Шифровани 3DS ROM-ови се више неће учитавати до испоруке нових кључева.</string>
   <string name="settings_citra_keys_error_title">Грешка кључева</string>
   <string name="settings_citra_keys_downloading">Преузимање кључева…</string>
-
   <string name="share_success_title">Подељено!</string>
   <string name="share_success_message">Ваш фидбек је објављен у Roomcord заједници.</string>
   <string name="share_success_ok">OK</string>
   <string name="share_success_view">Погледај у Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Купи Про</string>
+  <string name="catalog_feature_locked_join_roomcord">Придружи се Roomcord-у</string>
+  <string name="catalog_feature_locked_message">Скривање каталога је доступно за Про кориснике или чланове Roomcord заједнице</string>
+  <string name="catalog_feature_locked_title">Премиум функција</string>
+  <string name="catalog_hide">Сакриј</string>
+  <string name="catalog_more_info">Више информација</string>
+  <string name="catalog_play">Играј</string>
+  <string name="catalog_read_more">Прочитајте више</string>
+  <string name="catalog_title">Каталог</string>
+  <string name="settings_show_catalog_description">Прикажи уграђени каталог бесплатних игара</string>
+  <string name="settings_show_catalog_title">Прикажи каталог</string>
 </resources>

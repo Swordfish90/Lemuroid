@@ -1,10 +1,10 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-02T21:11:22.778733",
+  "last_updated": "2026-05-06T12:11:52.170268",
   "system_info": {
     "created_by": "i18n_sync.py v2.0",
     "python_version": "3.10+",
-    "total_tracked_strings": 361
+    "total_tracked_strings": 397
   },
   "flavors": {
     "app": {
@@ -13,8 +13,8 @@
       "source_path": "lemuroid-app/src/main/res/values/strings.xml",
       "metadata_file": "data/app.json",
       "locales_path": "lemuroid-app/src/main/res",
-      "string_count": 223,
-      "last_scan": "2026-04-02T21:11:22.611715",
+      "string_count": 259,
+      "last_scan": "2026-05-06T12:11:52.151505",
       "strings": {
         "title_home": {
           "text_hash": "8cf04a9734132302",
@@ -911,8 +911,8 @@
           "is_translated": true
         },
         "install_submit": {
-          "text_hash": "d59048f21fd887ad",
-          "last_modified": "2026-02-05",
+          "text_hash": "98f6772635d38bd7",
+          "last_modified": "2026-05-06",
           "has_metadata": false,
           "is_translated": true
         },
@@ -935,14 +935,14 @@
           "is_translated": true
         },
         "install_browser_title": {
-          "text_hash": "c556a24f9c18ba60",
-          "last_modified": "2026-02-05",
+          "text_hash": "fa5a80a1e7188687",
+          "last_modified": "2026-05-06",
           "has_metadata": false,
           "is_translated": true
         },
         "install_browser_description": {
-          "text_hash": "8d99bafaab5fc7c5",
-          "last_modified": "2026-02-05",
+          "text_hash": "a653ac70c03084f4",
+          "last_modified": "2026-05-06",
           "has_metadata": false,
           "is_translated": true
         },
@@ -1050,13 +1050,13 @@
         },
         "popup_more_games_title": {
           "text_hash": "fdf05a6d1f3e9d2e",
-          "last_modified": "2026-02-05",
+          "last_modified": "2026-05-06",
           "has_metadata": false,
           "is_translated": true
         },
         "popup_more_games_description": {
-          "text_hash": "8f028428e8619981",
-          "last_modified": "2026-02-05",
+          "text_hash": "089aae93a2be6e87",
+          "last_modified": "2026-05-06",
           "has_metadata": false,
           "is_translated": true
         },
@@ -1157,16 +1157,16 @@
           "is_translated": true
         },
         "game_context_menu_share": {
-          "text_hash": "190b2595b7689c1a",
-          "last_modified": "2026-02-05",
+          "text_hash": "a2d8a44aee1dcd6b",
+          "last_modified": "2026-05-06",
           "has_metadata": false,
-          "is_translated": true
+          "is_translated": false
         },
         "share_discord_text_title_part_1": {
-          "text_hash": "bc7a85471bb6ac8f",
-          "last_modified": "2026-02-05",
+          "text_hash": "6307f50736399f1d",
+          "last_modified": "2026-05-06",
           "has_metadata": false,
-          "is_translated": true
+          "is_translated": false
         },
         "share_discord_dialog_enter_name": {
           "text_hash": "fd2f820569d83784",
@@ -1353,6 +1353,222 @@
           "last_modified": "2026-04-02",
           "has_metadata": true,
           "is_translated": false
+        },
+        "catalog_feature_locked_buy_pro": {
+          "text_hash": "e2f974ea1ac97d76",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_feature_locked_join_roomcord": {
+          "text_hash": "98f6772635d38bd7",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_feature_locked_message": {
+          "text_hash": "47b11c36b6f42f30",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_feature_locked_title": {
+          "text_hash": "95275db7e3534c7c",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_hide": {
+          "text_hash": "62a5e490880a92ee",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_more_info": {
+          "text_hash": "71948aa4f6e12cda",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_play": {
+          "text_hash": "de3c731be5633838",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_read_more": {
+          "text_hash": "43340e6cc4e88197",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "catalog_title": {
+          "text_hash": "c32516babc5b6c47",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "game_menu_share": {
+          "text_hash": "a2d8a44aee1dcd6b",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "game_menu_share_title": {
+          "text_hash": "5a95a425f74314a9",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_category_citra_keys": {
+          "text_hash": "a8c98a1480edd168",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_category_experimental": {
+          "text_hash": "704b5561562b0544",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_citra_keys_delete_confirm_body": {
+          "text_hash": "1babdb24e6e2f57d",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_citra_keys_delete_confirm_title": {
+          "text_hash": "a2ec602583a3f606",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_citra_keys_disclaimer": {
+          "text_hash": "c84f5dd1e66ea79d",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_citra_keys_downloading": {
+          "text_hash": "0f847d2df08a1432",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_citra_keys_error_title": {
+          "text_hash": "925b60b9b2052c7b",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_citra_keys_url_hint": {
+          "text_hash": "4f1653d2196ffd8c",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_description_citra_experimental_save_states": {
+          "text_hash": "adedc94c882c5f6a",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_description_citra_keys_delete": {
+          "text_hash": "2ff0c15875c3d3a4",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_description_citra_keys_load_file": {
+          "text_hash": "06174925ea98532c",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_description_citra_keys_load_url": {
+          "text_hash": "7480e41740fa912a",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_show_catalog_description": {
+          "text_hash": "7c2028b899ebcdf7",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_show_catalog_title": {
+          "text_hash": "694971a255a30a56",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_title_citra_experimental_save_states": {
+          "text_hash": "3c8bf3a6340c0551",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_title_citra_keys_delete": {
+          "text_hash": "800ece7697f3c63b",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_title_citra_keys_load_file": {
+          "text_hash": "33667e67ffe55875",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_title_citra_keys_load_url": {
+          "text_hash": "b5d7fb8fde925c32",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_title_citra_keys_status": {
+          "text_hash": "ec53a8c4f07baed5",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_value_citra_keys_absent": {
+          "text_hash": "16ceb48f3df596e6",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "settings_value_citra_keys_present": {
+          "text_hash": "aa58febb62f4d603",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "share_success_message": {
+          "text_hash": "5c27b41d089b1c7a",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "share_success_ok": {
+          "text_hash": "e0aa021e21dddbd6",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "share_success_title": {
+          "text_hash": "f0d9d8c2c26ba17c",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
+        },
+        "share_success_view": {
+          "text_hash": "d3ca67a569281490",
+          "last_modified": "2026-05-06",
+          "has_metadata": true,
+          "is_translated": true
         }
       }
     },
