@@ -122,6 +122,11 @@ private fun HomeScreen(
     val canToggleCatalog = isProVersion() || context.isRoomcordInstalled()
     val showLockedDialog = remember { mutableStateOf(false) }
 
+    // If free user lost Roomcord access, restore catalog visibility
+    if (!canToggleCatalog && !showCatalogState.value) {
+        showCatalogState.value = true
+    }
+
     if (showLockedDialog.value) {
         CatalogLockedDialog(onDismiss = { showLockedDialog.value = false })
     }
