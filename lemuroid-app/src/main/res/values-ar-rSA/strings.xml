@@ -186,18 +186,20 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">لا تفوت عرضنا!</string>
   <string name="flat_pro_offer_top_bar_title">النسخة الاحترافية</string>
-  <string name="game_context_menu_share">مشاركة على Discord</string>
+  <string name="game_context_menu_share">مشاركة على Roomcord</string>
+  <string name="game_menu_share">مشاركة على Roomcord</string>
+  <string name="game_menu_share_title">مشاركة</string>
   <string name="game_interactor_notification_permission_required">يرجى تمكين الإشعارات من Home للمتابعة</string>
   <string name="game_loader_error_load_core">يبدو أن نواة Libretro لم يتم تحميلها. تأكد من أن جهازك متصل بالإنترنت وحاول إعادة فحص مكتبتك. إذا استمرت المشكلة، فقد لا يكون هذا النواة مدعومًا على جهازك.</string>
-  <string name="install_browser_description">احصل على أخبار موثوقة مع تحليل الذكاء الاصطناعي. اكتشف الأخبار الزائفة، واحصل على ملخصات الذكاء الاصطناعي، واعرف المصادر التي يمكنك الوثوق بها!</string>
-  <string name="install_browser_title">جرّب WizeUp News</string>
-  <string name="install_submit">تعرف على المزيد</string>
+  <string name="install_browser_description">• ابحث عن روابط ROMs والألعاب\\n• إرشادات ونصائح من المجتمع\\n• اطرح الأسئلة واحصل على المساعدة\\n• تواصل مع محبي الألعاب القديمة</string>
+  <string name="install_browser_title">جرّب Roomcord</string>
+  <string name="install_submit">انضم إلى Roomcord</string>
   <string name="installing_core_notification_message">قد يستغرق هذا بضع دقائق</string>
   <string name="installing_core_notification_title">تحديث النوى</string>
   <string name="lemuroid_crash_message">رسالة الخطأ: %1$s</string>
   <string name="library_index_notification_action_cancel">إلغاء</string>
   <string name="maybe_later">ربما لاحقًا</string>
-  <string name="popup_more_games_description">انضم إلى مجتمع Discord الخاص بنا</string>
+  <string name="popup_more_games_description">انضم إلى مجتمع Roomcord الخاص بنا</string>
   <string name="popup_more_games_title">هل تريد لعب المزيد من الألعاب؟</string>
   <string name="rate_cancel">ليس الآن</string>
   <string name="rate_submit">تقييم</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">أدخل ملاحظاتك</string>
   <string name="share_discord_dialog_enter_name">أدخل اسمك</string>
   <string name="share_discord_popup_description">هل تحب لعب الألعاب؟ قيمنا وشارك رأيك!</string>
-  <string name="share_discord_text_title_part_1">%s يلعب الآن اللعبة \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** يلعب الآن اللعبة **%s**.</string>
   <string name="share_discord_text_title_part_2">قم بتنزيل هذه اللعبة هنا %s</string>
   <string name="string_pro_buy_now">اشترِ الآن</string>
   <string name="string_pro_limited_deal">عرض محدود</string>
   <string name="string_pro_popup_disclamer">احصل على FullRoid X بأقل من سعر فنجان قهوة. العب ألعاب WS و3DS!</string>
   <string name="string_pro_popup_title">لا تفوت عرضنا!</string>
-  <string name="string_pro_price">%d/ مدى الحياة %d</string>
+  <string name="string_pro_price" formatted="false">%d/ مدى الحياة %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 محاكيات جديدة، بما في ذلك Nintendo 3DS\n✓ وضع HD لتحسين جودة الألعاب بكفاءة\n✓ دعم أرشيف 7z\n✓ وصول حصري إلى الميزات القادمة</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">مفاتيح فك تشفير 3DS</string>
   <string name="settings_title_citra_keys_status">الحالة</string>
   <string name="settings_value_citra_keys_present">المفاتيح موجودة</string>
@@ -255,4 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">سيؤدي هذا إلى إزالة ملف keys.txt. لن تعمل ROMs 3DS المشفرة حتى يتم توفير مفاتيح جديدة.</string>
   <string name="settings_citra_keys_error_title">خطأ في المفاتيح</string>
   <string name="settings_citra_keys_downloading">جاري تنزيل المفاتيح…</string>
+  <string name="share_success_title">تمت المشاركة!</string>
+  <string name="share_success_message">تم نشر ملاحظتك في مجتمع Roomcord.</string>
+  <string name="share_success_ok">حسنًا</string>
+  <string name="share_success_view">عرض في Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">شراء النسخة الاحترافية</string>
+  <string name="catalog_feature_locked_join_roomcord">انضم إلى Roomcord</string>
+  <string name="catalog_feature_locked_message">إخفاء الكتالوج متاح للمستخدمين المحترفين أو أعضاء مجتمع Roomcord</string>
+  <string name="catalog_feature_locked_title">ميزة مميزة</string>
+  <string name="catalog_hide">إخفاء</string>
+  <string name="catalog_more_info">مزيد من المعلومات</string>
+  <string name="catalog_play">تشغيل</string>
+  <string name="catalog_read_more">اقرأ المزيد</string>
+  <string name="catalog_title">فهرس</string>
+  <string name="settings_show_catalog_description">عرض الكتالوج المدمج للألعاب المجانية</string>
+  <string name="settings_show_catalog_title">عرض الكتالوج</string>
 </resources>

@@ -164,18 +164,20 @@
   <string name="haptic_feedback_mode_names_press_release">Nhấn &amp; thả</string>
   <string name="flat_pro_popup_title">Đừng bỏ lỡ KHUYẾN MÃI của chúng tôi!</string>
   <string name="flat_pro_offer_top_bar_title">Phiên bản Pro</string>
-  <string name="game_context_menu_share">Chia sẻ lên Discord</string>
+  <string name="game_context_menu_share">Chia sẻ lên Roomcord</string>
+  <string name="game_menu_share">Chia sẻ lên Roomcord</string>
+  <string name="game_menu_share_title">Chia sẻ</string>
   <string name="game_interactor_notification_permission_required">Vui lòng bật thông báo từ Home để tiếp tục</string>
   <string name="game_loader_error_load_core">Có vẻ như lõi Libretro chưa được tải. Hãy đảm bảo thiết bị của bạn đã kết nối internet và thử quét lại thư viện của bạn. Nếu vấn đề vẫn tiếp diễn, lõi này có thể không được hỗ trợ trên thiết bị của bạn.</string>
-  <string name="install_browser_description">Nhận tin tức đã được kiểm chứng với phân tích AI. Phát hiện tin tức giả, nhận tóm tắt AI và biết nguồn nào đáng tin cậy!</string>
-  <string name="install_browser_title">Thử WizeUp News</string>
-  <string name="install_submit">Tìm hiểu thêm</string>
+  <string name="install_browser_description">• Tìm ROM và liên kết trò chơi\\n• Hướng dẫn và mẹo từ cộng đồng\\n• Đặt câu hỏi và nhận trợ giúp\\n• Kết nối với người hâm mộ trò chơi retro</string>
+  <string name="install_browser_title">Thử Roomcord</string>
+  <string name="install_submit">Tham gia Roomcord</string>
   <string name="installing_core_notification_message">Điều này có thể mất vài phút</string>
   <string name="installing_core_notification_title">Đang cập nhật lõi</string>
   <string name="lemuroid_crash_message">Thông báo lỗi: %1$s</string>
   <string name="library_index_notification_action_cancel">Hủy</string>
   <string name="maybe_later">Có thể sau</string>
-  <string name="popup_more_games_description">Tham gia cộng đồng Discord của chúng tôi</string>
+  <string name="popup_more_games_description">Tham gia cộng đồng Roomcord của chúng tôi</string>
   <string name="popup_more_games_title">Bạn có muốn chơi thêm trò chơi không?</string>
   <string name="rate_cancel">Không phải bây giờ</string>
   <string name="rate_submit">Đánh giá</string>
@@ -208,15 +210,15 @@
   <string name="share_discord_dialog_enter_feedback">Nhập phản hồi của bạn</string>
   <string name="share_discord_dialog_enter_name">Nhập tên của bạn</string>
   <string name="share_discord_popup_description">Bạn có thích chơi các trò chơi không? Đánh giá chúng tôi và chia sẻ ý kiến của bạn!</string>
-  <string name="share_discord_text_title_part_1">%s hiện đang chơi trò chơi \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** hiện đang chơi trò chơi **%s**.</string>
   <string name="share_discord_text_title_part_2">Tải trò chơi này tại đây %s</string>
   <string name="string_pro_buy_now">Mua ngay</string>
   <string name="string_pro_limited_deal">Ưu đãi có hạn</string>
   <string name="string_pro_popup_disclamer">Sở hữu FullRoid X với giá rẻ hơn một ly cà phê. Chơi các trò chơi WS và 3DS!</string>
   <string name="string_pro_popup_title">Đừng bỏ lỡ KHUYẾN MÃI của chúng tôi!</string>
-  <string name="string_pro_price">%d/ trọn đời %d</string>
+  <string name="string_pro_price" formatted="false">%d/ trọn đời %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 trình giả lập mới, bao gồm Nintendo 3DS\n✓ Chế độ HD để nâng cao chất lượng trò chơi hiệu quả\n✓ Hỗ trợ tệp nén 7z\n✓ Truy cập độc quyền vào các tính năng sắp tới</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">Khóa giải mã 3DS</string>
   <string name="settings_title_citra_keys_status">Trạng thái</string>
   <string name="settings_value_citra_keys_present">Khóa có sẵn</string>
@@ -233,4 +235,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Thao tác này sẽ xóa tệp keys.txt. Các ROM 3DS được mã hóa sẽ không còn tải được cho đến khi có khóa mới.</string>
   <string name="settings_citra_keys_error_title">Lỗi khóa</string>
   <string name="settings_citra_keys_downloading">Đang tải khóa…</string>
+  <string name="share_success_title">Đã chia sẻ!</string>
+  <string name="share_success_message">Phản hồi của bạn đã được đăng lên cộng đồng Roomcord.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Xem trên Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Mua bản Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Tham gia Roomcord</string>
+  <string name="catalog_feature_locked_message">Ẩn danh mục chỉ khả dụng cho người dùng Pro hoặc thành viên cộng đồng Roomcord</string>
+  <string name="catalog_feature_locked_title">Tính năng Cao cấp</string>
+  <string name="catalog_hide">Ẩn</string>
+  <string name="catalog_more_info">Thông tin thêm</string>
+  <string name="catalog_play">Chơi</string>
+  <string name="catalog_read_more">Đọc thêm</string>
+  <string name="catalog_title">Danh mục</string>
+  <string name="settings_show_catalog_description">Hiển thị danh mục trò chơi miễn phí tích hợp sẵn</string>
+  <string name="settings_show_catalog_title">Hiển thị danh mục</string>
 </resources>

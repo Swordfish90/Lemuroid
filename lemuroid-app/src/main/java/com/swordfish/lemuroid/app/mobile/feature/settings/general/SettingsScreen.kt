@@ -19,6 +19,9 @@ import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.navigateToRoute
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
 import com.swordfish.lemuroid.app.shared.settings.SavesBackupLauncher
+import com.swordfish.lemuroid.app.appextension.isProVersion
+import com.swordfish.lemuroid.app.appextension.isRoomcordInstalled
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.CatalogLockedDialog
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -207,6 +210,14 @@ private fun RomsSettings(
             }.getOrNull() ?: emptyDirectory
         }
 
+    val showCatalogState = booleanPreferenceState(R.string.pref_key_show_catalog, true)
+    val canToggleCatalog = isProVersion() || context.isRoomcordInstalled()
+    val showLockedDialog = remember { mutableStateOf(false) }
+
+    if (showLockedDialog.value) {
+        CatalogLockedDialog(onDismiss = { showLockedDialog.value = false })
+    }
+
     LemuroidCardSettingsGroup(title = { Text(text = stringResource(id = R.string.roms)) }) {
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.directory)) },
@@ -226,6 +237,17 @@ private fun RomsSettings(
                 enabled = !indexingInProgress,
             )
         }
+        LemuroidSettingsSwitch(
+            state = showCatalogState,
+            title = { Text(text = stringResource(R.string.settings_show_catalog_title)) },
+            subtitle = { Text(text = stringResource(R.string.settings_show_catalog_description)) },
+            onCheckedChange = { newValue ->
+                if (!canToggleCatalog) {
+                    showCatalogState.value = !newValue
+                    showLockedDialog.value = true
+                }
+            },
+        )
     }
 }
 

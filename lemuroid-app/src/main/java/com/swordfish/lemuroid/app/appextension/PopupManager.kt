@@ -65,7 +65,7 @@ class PopupManager(private val context: Context) {
                 }
 
                 StartAppDialog.InstallBrowser -> {
-                    if (!isProVersion() && !installBrowserDone && !isBrowserInstalled()) {
+                    if (!isProVersion() && !installBrowserDone && !isRoomcordInstalled()) {
                         showInstallBrowserDialog(activity) {
                             onInstallAppPositiveClicked()
                         }
@@ -77,6 +77,8 @@ class PopupManager(private val context: Context) {
             }
         }
     }
+
+    private fun isRoomcordInstalled(): Boolean = context.isRoomcordInstalled()
 
     private fun isBrowserInstalled(): Boolean {
         val app = try {
@@ -100,7 +102,7 @@ class PopupManager(private val context: Context) {
     }
 
     private fun onInstallAppPositiveClicked() {
-        context.openAppInGooglePlay(BROWSER_PACKAGE_NAME)
+        context.openAppInGooglePlay(FulldiveConfigs.ROOMCORD_PACKAGE_NAME)
         sharedPreferences.setProperty(KEY_INSTALL_BROWSER_DONE, true)
     }
 
@@ -167,12 +169,12 @@ class PopupManager(private val context: Context) {
         )
     }
 
-    fun setDiscordPopupClosed(isClosed: Boolean) {
-        sharedPreferences.setProperty(KEY_IS_DISCORD_POPUP_CLOSED, isClosed)
+    fun setRoomcordPopupClosed(isClosed: Boolean) {
+        sharedPreferences.setProperty(KEY_IS_ROOMCORD_POPUP_CLOSED, isClosed)
     }
 
-    private fun isDiscordPopupClosed(): Boolean {
-        return sharedPreferences.getProperty(KEY_IS_DISCORD_POPUP_CLOSED, false)
+    private fun isRoomcordPopupClosed(): Boolean {
+        return sharedPreferences.getProperty(KEY_IS_ROOMCORD_POPUP_CLOSED, false)
     }
 
     private fun getCurrentStartCounter(): Int {
@@ -197,13 +199,14 @@ class PopupManager(private val context: Context) {
         }
     }
 
-    fun isDiscordPopupVisible(): Boolean {
+    fun isRoomcordPopupVisible(): Boolean {
+        if (isProVersion() && isRoomcordInstalled()) return false
         val startCount = getCurrentStartCounter()
         return startCount % 2 == 1
     }
 
     companion object {
-        const val DISCORD_INVITATION = "https://discord.gg/PZfruqZSfU"
+        
         private const val INBOX_URL = "https://api.fdvr.co/v2/inbox"
         private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
         private const val KEY_IS_FIN_WIZE_CLOSED = "KEY_IS_FIN_WIZE_CLOSED"
@@ -211,7 +214,7 @@ class PopupManager(private val context: Context) {
         private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
 
         private const val KEY_IS_PRO_POPUP_CLOSED = "KEY_IS_PRO_POPUP_CLOSED"
-        private const val KEY_IS_DISCORD_POPUP_CLOSED = "KEY_IS_DISCORD_POPUP_CLOSED"
+        private const val KEY_IS_ROOMCORD_POPUP_CLOSED = "KEY_IS_ROOMCORD_POPUP_CLOSED"
         private const val KEY_IS_PRO_POPUP_CLOSED_START_COUNTER =
             "KEY_IS_PRO_POPUP_CLOSED_START_COUNTER"
 

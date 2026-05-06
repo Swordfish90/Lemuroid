@@ -27,3 +27,4 @@ googlekey.txt
 **/__pycache__
 docs/
 **/.update_cache
+.kotlin/errors

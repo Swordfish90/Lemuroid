@@ -23,8 +23,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.swordfish.lemuroid.app.appextension.PopupManager
-import com.swordfish.lemuroid.app.appextension.discord.DiscordApiImpl
-import com.swordfish.lemuroid.app.appextension.discord.DiscordManager
+import com.swordfish.lemuroid.app.appextension.roomcord.RoomcordApiImpl
+import com.swordfish.lemuroid.app.appextension.roomcord.RoomcordImageUploader
+import com.swordfish.lemuroid.app.appextension.roomcord.RoomcordManager
+import com.swordfish.lemuroid.app.appextension.roomcord.ShareRoomcordTextGenerator
 import com.swordfish.lemuroid.app.appextension.remoteconfig.FirebaseConfigurationFetcher
 import com.swordfish.lemuroid.app.appextension.remoteconfig.IRemoteConfigFetcher
 import com.swordfish.lemuroid.app.fulldive.analytics.FulldiveActionTracker
@@ -439,11 +441,24 @@ abstract class LemuroidApplicationModule {
         @Provides
         @PerApp
         @JvmStatic
-        fun discordApiImpl(remoteConfig: IRemoteConfigFetcher): DiscordApiImpl = DiscordApiImpl(remoteConfig)
+        fun roomcordApiImpl(remoteConfig: IRemoteConfigFetcher): RoomcordApiImpl = RoomcordApiImpl(remoteConfig)
 
         @Provides
         @PerApp
         @JvmStatic
-        fun discordManager(discordApiImpl: DiscordApiImpl): DiscordManager = DiscordManager(discordApiImpl)
+        fun roomcordManager(roomcordApiImpl: RoomcordApiImpl, remoteConfig: IRemoteConfigFetcher): RoomcordManager =
+            RoomcordManager(roomcordApiImpl, remoteConfig)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun roomcordImageUploader(roomcordApiImpl: RoomcordApiImpl, remoteConfig: IRemoteConfigFetcher): RoomcordImageUploader =
+            RoomcordImageUploader(roomcordApiImpl, remoteConfig)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun shareRoomcordTextGenerator(roomcordManager: RoomcordManager, roomcordImageUploader: RoomcordImageUploader): ShareRoomcordTextGenerator =
+            ShareRoomcordTextGenerator(roomcordManager, roomcordImageUploader)
     }
 }

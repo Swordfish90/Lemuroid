@@ -44,6 +44,11 @@ enum class GameMenuRoute(
         titleId = R.string.game_menu_settings,
         parent = HOME,
     ),
+    SHARE(
+        route = "share",
+        titleId = R.string.game_menu_share_title,
+        parent = HOME,
+    ),
     ;
 
     fun canGoBack(): Boolean {

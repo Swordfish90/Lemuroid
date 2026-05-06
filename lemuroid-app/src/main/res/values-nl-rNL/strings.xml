@@ -186,18 +186,20 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">Mis onze UITVERKOOP niet!</string>
   <string name="flat_pro_offer_top_bar_title">Pro-versie</string>
-  <string name="game_context_menu_share">Delen op Discord</string>
+  <string name="game_context_menu_share">Delen op Roomcord</string>
+  <string name="game_menu_share">Delen op Roomcord</string>
+  <string name="game_menu_share_title">Delen</string>
   <string name="game_interactor_notification_permission_required">Schakel meldingen van Home in om door te gaan</string>
   <string name="game_loader_error_load_core">Het lijkt erop dat de Libretro-kern niet is geladen. Zorg ervoor dat je apparaat met internet is verbonden en probeer je bibliotheek opnieuw te scannen. Als het probleem aanhoudt, wordt deze kern mogelijk niet ondersteund op je apparaat.</string>
-  <string name="install_browser_description">Ontvang feiten gecontroleerd nieuws met AI-analyse. Spot nepnieuws, ontvang AI-samenvattingen en weet welke bronnen betrouwbaar zijn!</string>
-  <string name="install_browser_title">Probeer WizeUp News</string>
-  <string name="install_submit">Meer informatie</string>
+  <string name="install_browser_description">• Vind ROMs en spel-links\\n• Walkthroughs en tips van de community\\n• Stel vragen en krijg hulp\\n• Verbind met retro gaming fans</string>
+  <string name="install_browser_title">Probeer Roomcord</string>
+  <string name="install_submit">Deelnemen aan Roomcord</string>
   <string name="installing_core_notification_message">Dit kan enkele minuten duren</string>
   <string name="installing_core_notification_title">Kernen bijwerken</string>
   <string name="lemuroid_crash_message">Foutmelding: %1$s</string>
   <string name="library_index_notification_action_cancel">Annuleren</string>
   <string name="maybe_later">Misschien later</string>
-  <string name="popup_more_games_description">Word lid van onze Discord-community</string>
+  <string name="popup_more_games_description">Word lid van onze Roomcord-gemeenschap</string>
   <string name="popup_more_games_title">Wil je meer spellen spelen?</string>
   <string name="rate_cancel">Niet nu</string>
   <string name="rate_submit">Beoordeel</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">Voer uw feedback in</string>
   <string name="share_discord_dialog_enter_name">Voer je naam in</string>
   <string name="share_discord_popup_description">Vind je het leuk om de spellen te spelen? Beoordeel ons en deel je mening!</string>
-  <string name="share_discord_text_title_part_1">%s speelt nu het spel \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** speelt nu het spel **%s**.</string>
   <string name="share_discord_text_title_part_2">Download dit spel hier %s</string>
   <string name="string_pro_buy_now">Nu kopen</string>
   <string name="string_pro_limited_deal">Beperkte aanbieding</string>
   <string name="string_pro_popup_disclamer">Pak FullRoid X voor minder dan een kop koffie. Speel WS- en 3DS-spellen!</string>
   <string name="string_pro_popup_title">Mis onze UITVERKOOP niet!</string>
-  <string name="string_pro_price">%d/ levenslang %d</string>
+  <string name="string_pro_price" formatted="false">%d/ levenslang %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nieuwe emulators, inclusief Nintendo 3DS\n✓ HD-modus voor efficiënte opschaling van games\n✓ Ondersteuning voor 7z-archieven\n✓ Exclusieve toegang tot toekomstige functies</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">3DS-decoderingssleutels</string>
   <string name="settings_title_citra_keys_status">Status</string>
   <string name="settings_value_citra_keys_present">Sleutels aanwezig</string>
@@ -255,4 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Hiermee wordt het keys.txt-bestand verwijderd. Versleutelde 3DS ROM\'s worden niet meer geladen totdat nieuwe sleutels zijn opgegeven.</string>
   <string name="settings_citra_keys_error_title">Sleutelfout</string>
   <string name="settings_citra_keys_downloading">Sleutels downloaden…</string>
+  <string name="share_success_title">Gedeeld!</string>
+  <string name="share_success_message">Je feedback is geplaatst in de Roomcord-gemeenschap.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Bekijken in Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Koop Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Deelnemen aan Roomcord</string>
+  <string name="catalog_feature_locked_message">Het verbergen van de catalogus is beschikbaar voor Pro-gebruikers of leden van de Roomcord-gemeenschap</string>
+  <string name="catalog_feature_locked_title">Premiumfunctie</string>
+  <string name="catalog_hide">Verbergen</string>
+  <string name="catalog_more_info">Meer info</string>
+  <string name="catalog_play">Spelen</string>
+  <string name="catalog_read_more">Lees meer</string>
+  <string name="catalog_title">Catalogus</string>
+  <string name="settings_show_catalog_description">Toon ingebouwde catalogus van gratis spellen</string>
+  <string name="settings_show_catalog_title">Catalogus weergeven</string>
 </resources>

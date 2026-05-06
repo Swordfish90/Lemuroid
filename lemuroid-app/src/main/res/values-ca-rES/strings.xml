@@ -89,18 +89,20 @@
   <string name="mobile_settings_support">Assistència</string>
   <string name="flat_pro_popup_title">No et perdis la nostra OFERTA!</string>
   <string name="flat_pro_offer_top_bar_title">Versió Pro</string>
-  <string name="game_context_menu_share">Compartir a Discord</string>
+  <string name="game_context_menu_share">Compartir a Roomcord</string>
+  <string name="game_menu_share">Compartir a Roomcord</string>
+  <string name="game_menu_share_title">Compartir</string>
   <string name="game_interactor_notification_permission_required">Si us plau, habilita les notificacions de Home per continuar</string>
   <string name="game_loader_error_load_core">Sembla que el nucli Libretro no s\'ha carregat. Assegura\'t que el teu dispositiu està connectat a internet i intenta tornar a escanejar la teva biblioteca. Si el problema persisteix, és possible que aquest nucli no sigui compatible amb el teu dispositiu.</string>
-  <string name="install_browser_description">Obteniu notícies verificades amb anàlisi d\'IA. Detecteu notícies falses, rebeu resums d\'IA i sabeu quines fonts són de confiança!</string>
-  <string name="install_browser_title">Prova WizeUp News</string>
-  <string name="install_submit">Més informació</string>
+  <string name="install_browser_description">• Troba ROMs i enllaços de jocs\\n• Guies i consells de la comunitat\\n• Fes preguntes i obtén ajuda\\n• Connecta amb fans dels jocs retro</string>
+  <string name="install_browser_title">Prova Roomcord</string>
+  <string name="install_submit">Unir-se a Roomcord</string>
   <string name="installing_core_notification_message">Això pot trigar uns minuts</string>
   <string name="installing_core_notification_title">Actualitzant nuclis</string>
   <string name="lemuroid_crash_message">Missatge d\'error: %1$s</string>
   <string name="library_index_notification_action_cancel">Cancel·lar</string>
   <string name="maybe_later">Potser més tard</string>
-  <string name="popup_more_games_description">Uneix-te a la nostra comunitat de Discord</string>
+  <string name="popup_more_games_description">Uneix-te a la nostra comunitat Roomcord</string>
   <string name="popup_more_games_title">Vols jugar a més jocs?</string>
   <string name="rate_cancel">Ara no</string>
   <string name="rate_submit">Valorar</string>
@@ -133,15 +135,15 @@
   <string name="share_discord_dialog_enter_feedback">Introdueix els teus comentaris</string>
   <string name="share_discord_dialog_enter_name">Introdueix el teu nom</string>
   <string name="share_discord_popup_description">T\'agrada jugar als jocs? Valora\'ns i comparteix la teva opinió!</string>
-  <string name="share_discord_text_title_part_1">%s està jugant al joc \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** està jugant al joc **%s**.</string>
   <string name="share_discord_text_title_part_2">Descarrega aquest joc aquí %s</string>
   <string name="string_pro_buy_now">Compra ara</string>
   <string name="string_pro_limited_deal">Oferta limitada</string>
   <string name="string_pro_popup_disclamer">Aconsegueix FullRoid X per menys del que costa un cafè. Juga a jocs de WS i 3DS!</string>
   <string name="string_pro_popup_title">No et perdis la nostra OFERTA!</string>
-  <string name="string_pro_price">%d/ de per vida %d</string>
+  <string name="string_pro_price" formatted="false">%d/ de per vida %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 nous emuladors, incloent Nintendo 3DS\n✓ Mode HD per millorar la qualitat dels jocs\n✓ Suport per a arxius 7z\n✓ Accés exclusiu a funcions futures</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_experimental">Experimental</string>
   <string name="settings_title_citra_experimental_save_states">Estats de conservació 3DS (Experimental)</string>
   <string name="settings_description_citra_experimental_save_states">(Experimental) Activa els estats de conservació i càrrega manuals per a jocs de Nintendo 3DS. La conservació automàtica no és compatible. Els estats poden ser inestables o usar molt d\'emmagatzematge.</string>
@@ -161,4 +163,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Això eliminarà el fitxer keys.txt. Els ROMs 3DS xifrats ja no es carregaran fins que es proporcionin noves claus.</string>
   <string name="settings_citra_keys_error_title">Error de claus</string>
   <string name="settings_citra_keys_downloading">Descarregant claus…</string>
+  <string name="share_success_title">Compartit!</string>
+  <string name="share_success_message">El teu comentari s\'ha publicat a la comunitat de Roomcord.</string>
+  <string name="share_success_ok">D\'acord</string>
+  <string name="share_success_view">Veure a Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Comprar Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Unir-se a Roomcord</string>
+  <string name="catalog_feature_locked_message">Amagar el catàleg està disponible per als usuaris Pro o membres de la comunitat Roomcord</string>
+  <string name="catalog_feature_locked_title">Funció Premium</string>
+  <string name="catalog_hide">Amagar</string>
+  <string name="catalog_more_info">Més informació</string>
+  <string name="catalog_play">Jugar</string>
+  <string name="catalog_read_more">Llegir més</string>
+  <string name="catalog_title">Catàleg</string>
+  <string name="settings_show_catalog_description">Mostra el catàleg integrat de jocs gratuïts</string>
+  <string name="settings_show_catalog_title">Mostra el catàleg</string>
 </resources>

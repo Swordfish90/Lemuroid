@@ -1,5 +1,6 @@
-package com.swordfish.lemuroid.app.appextension.discord
+package com.swordfish.lemuroid.app.appextension.roomcord
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -17,15 +18,19 @@ import com.swordfish.lemuroid.R
 import androidx.compose.material3.TextField
 import androidx.compose.ui.graphics.Color
 
+private const val PREFS_NAME = "roomcord_share_prefs"
+private const val KEY_USER_NAME = "user_name"
+
 @ExperimentalMaterial3Api
 @Composable
 fun ShowShareDialog(
     game: Game,
-    onPositiveClicked: (String, String) -> Unit,
+    onPositiveClicked: (Game, String) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     val context = LocalContext.current
-    val name = remember { mutableStateOf("") }
+    val prefs = remember { context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) }
+    val name = remember { mutableStateOf(prefs.getString(KEY_USER_NAME, "") ?: "") }
     val feedback = remember { mutableStateOf("") }
 
     Dialog(onDismissRequest = onDismissRequest) {
@@ -85,20 +90,17 @@ fun ShowShareDialog(
                         onClick = {
                             if (name.value.isEmpty()) {
                                 Toast.makeText(context, "Enter your name!", Toast.LENGTH_SHORT).show()
-                            } else if (feedback.value.isEmpty()) {
-                                Toast.makeText(context, "Enter your feedback!", Toast.LENGTH_SHORT).show()
                             } else {
+                                prefs.edit().putString(KEY_USER_NAME, name.value.trim()).apply()
+
                                 val shareTextPart1 = context.getString(
                                     R.string.share_discord_text_title_part_1,
-                                    name.value,
+                                    name.value.trim(),
                                     game.title
                                 )
 
-                                val shareText = "$shareTextPart1 ${feedback.value}"
-                                onPositiveClicked(
-                                    shareText,
-                                    game.coverFrontUrl?.replace(" ", "%20").orEmpty()
-                                )
+                                val shareText = if (feedback.value.isNotBlank()) "$shareTextPart1 ${feedback.value.trim()}" else shareTextPart1
+                                onPositiveClicked(game, shareText)
                                 onDismissRequest()
                             }
                         },

@@ -22,6 +22,7 @@
     <string name="pref_key_citra_experimental_save_states" translatable="false">citra_experimental_save_states</string>
     <string name="pref_key_enable_ambient_mode" translatable="false">enable_ambient_mode</string>
     <string name="pref_key_enable_immersive_mode" translatable="false">enable_immersive_mode</string>
+    <string name="pref_key_show_catalog" translatable="false">show_catalog</string>
 
     <string name="pref_key_save_sync_auto" translatable="false">save_sync_auto</string>
     <string name="pref_key_save_sync_enable" translatable="false">save_sync_enable</string>

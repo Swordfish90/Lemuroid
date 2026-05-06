@@ -186,18 +186,20 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">Verpassen Sie nicht unseren SALE!</string>
   <string name="flat_pro_offer_top_bar_title">Pro-Version</string>
-  <string name="game_context_menu_share">Auf Discord teilen</string>
+  <string name="game_context_menu_share">Auf Roomcord teilen</string>
+  <string name="game_menu_share">Auf Roomcord teilen</string>
+  <string name="game_menu_share_title">Teilen</string>
   <string name="game_interactor_notification_permission_required">Bitte aktivieren Sie Benachrichtigungen von Home, um fortzufahren</string>
   <string name="game_loader_error_load_core">Es scheint, dass der Libretro-Kern nicht geladen wurde. Stellen Sie sicher, dass Ihr Gerät mit dem Internet verbunden ist, und versuchen Sie, Ihre Bibliothek erneut zu scannen. Wenn das Problem weiterhin besteht, wird dieser Kern möglicherweise auf Ihrem Gerät nicht unterstützt.</string>
-  <string name="install_browser_description">Erhalten Sie faktengeprüfte Nachrichten mit KI-Analyse. Erkennen Sie Fake News, erhalten Sie KI-Zusammenfassungen und wissen Sie, welchen Quellen Sie vertrauen können!</string>
-  <string name="install_browser_title">Probieren Sie WizeUp News aus</string>
-  <string name="install_submit">Mehr erfahren</string>
+  <string name="install_browser_description">• Finde ROMs und Spiel-Links\\n• Anleitungen und Tipps aus der Community\\n• Stelle Fragen und erhalte Hilfe\\n• Vernetze dich mit Retro-Gaming-Fans</string>
+  <string name="install_browser_title">Probieren Sie Roomcord aus</string>
+  <string name="install_submit">Roomcord beitreten</string>
   <string name="installing_core_notification_message">Dies kann einige Minuten dauern</string>
   <string name="installing_core_notification_title">Kerne werden aktualisiert</string>
   <string name="lemuroid_crash_message">Fehlermeldung: %1$s</string>
   <string name="library_index_notification_action_cancel">Abbrechen</string>
   <string name="maybe_later">Vielleicht später</string>
-  <string name="popup_more_games_description">Treten Sie unserer Discord-Community bei</string>
+  <string name="popup_more_games_description">Tritt unserer Roomcord-Community bei</string>
   <string name="popup_more_games_title">Möchten Sie mehr Spiele spielen?</string>
   <string name="rate_cancel">Nicht jetzt</string>
   <string name="rate_submit">Bewerten</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">Geben Sie Ihr Feedback ein</string>
   <string name="share_discord_dialog_enter_name">Geben Sie Ihren Namen ein</string>
   <string name="share_discord_popup_description">Spielst du gerne die Spiele? Bewerte uns und teile deine Meinung!</string>
-  <string name="share_discord_text_title_part_1">%s spielt jetzt das Spiel \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** spielt jetzt das Spiel **%s**.</string>
   <string name="share_discord_text_title_part_2">Lade dieses Spiel hier herunter %s</string>
   <string name="string_pro_buy_now">Jetzt kaufen</string>
   <string name="string_pro_limited_deal">Begrenztes Angebot</string>
   <string name="string_pro_popup_disclamer">Hol dir FullRoid X für weniger als eine Tasse Kaffee. Spiele WS- und 3DS-Spiele!</string>
   <string name="string_pro_popup_title">Verpassen Sie nicht unseren SALE!</string>
-  <string name="string_pro_price">%d/ lebenslang %d</string>
+  <string name="string_pro_price" formatted="false">%d/ lebenslang %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 neue Emulatoren, einschließlich Nintendo 3DS\n✓ HD-Modus zur effizienten Verbesserung der Spielgrafik\n✓ Unterstützung für 7z-Archive\n✓ Exklusiver Zugang zu kommenden Funktionen</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">3DS-Entschlüsselungsschlüssel</string>
   <string name="settings_title_citra_keys_status">Status</string>
   <string name="settings_value_citra_keys_present">Schlüssel vorhanden</string>
@@ -255,4 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Dadurch wird die keys.txt-Datei entfernt. Verschlüsselte 3DS-ROMs werden erst wieder geladen, wenn neue Schlüssel bereitgestellt werden.</string>
   <string name="settings_citra_keys_error_title">Schlüsselfehler</string>
   <string name="settings_citra_keys_downloading">Schlüssel werden heruntergeladen…</string>
+  <string name="share_success_title">Geteilt!</string>
+  <string name="share_success_message">Dein Feedback wurde in der Roomcord-Community gepostet.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">In Roomcord ansehen</string>
+  <string name="catalog_feature_locked_buy_pro">Pro kaufen</string>
+  <string name="catalog_feature_locked_join_roomcord">Roomcord beitreten</string>
+  <string name="catalog_feature_locked_message">Das Verbergen des Katalogs ist für Pro-Benutzer oder Mitglieder der Roomcord-Community verfügbar</string>
+  <string name="catalog_feature_locked_title">Premium-Funktion</string>
+  <string name="catalog_hide">Verbergen</string>
+  <string name="catalog_more_info">Mehr Infos</string>
+  <string name="catalog_play">Spielen</string>
+  <string name="catalog_read_more">Mehr lesen</string>
+  <string name="catalog_title">Katalog</string>
+  <string name="settings_show_catalog_description">Integrierten Katalog kostenloser Spiele anzeigen</string>
+  <string name="settings_show_catalog_title">Katalog anzeigen</string>
 </resources>

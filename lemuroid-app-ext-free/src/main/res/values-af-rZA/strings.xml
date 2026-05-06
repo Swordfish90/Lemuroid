@@ -4,7 +4,7 @@
   <string name="gdrive_connected_summary">Gekoppel aan %s</string>
   <string name="gdrive_last_sync_completed">Laaste sinkronisering: %s</string>
   <string name="gdrive_missing_play_services">Google Drive vereis Google Play-dienste wat nie op jou toestel ondersteun word nie</string>
-  <string name="gdrive_sign_in_failed">Google-aanmelding het misluk: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google-aanmelding het misluk: %s (%s)</string>
   <string name="gdrive_sign_in_success">Aangemeld by Google as %s</string>
   <string name="gdrive_sign_out_success">Uitgeteken van Google</string>
 </resources>

@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">已連結到 %s</string>
   <string name="gdrive_last_sync_completed">上次同步：%s</string>
   <string name="gdrive_missing_play_services">Google Drive 需要 Google Play 服務，而您的設備不支援這些服務</string>
-  <string name="gdrive_sign_in_failed">Google 登入失敗：%s（%s）</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google 登入失敗：%s（%s）</string>
   <string name="gdrive_sign_in_success">以 %s 的身份登入 Google</string>
   <string name="gdrive_sign_out_success">已登出 Google</string>
 </resources>

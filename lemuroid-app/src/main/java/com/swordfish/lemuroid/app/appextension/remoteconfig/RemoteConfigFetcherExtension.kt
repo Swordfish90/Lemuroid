@@ -16,5 +16,8 @@
 
 package com.swordfish.lemuroid.app.appextension.remoteconfig
 
-fun IRemoteConfigFetcher.getDiscordBotToken() =
-    getRemoteString("fullroid_discord_bot_token")
+fun IRemoteConfigFetcher.getRoomcordBotToken() =
+    getRemoteString("game_maker_story")
+
+fun IRemoteConfigFetcher.getRoomcordRoomId() =
+    getRemoteString("game_maker_story_room_id")

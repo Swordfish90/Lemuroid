@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">%s ile bağlantılı</string>
   <string name="gdrive_last_sync_completed">Son senkronizasyon: %s</string>
   <string name="gdrive_missing_play_services">Google Drive, cihazınızda desteklenmeyen Google Play Hizmetleri gerektirir</string>
-  <string name="gdrive_sign_in_failed">Google Girişi başarısız: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Google Girişi başarısız: %s (%s)</string>
   <string name="gdrive_sign_in_success">Google\'a %s olarak giriş yapıldı</string>
   <string name="gdrive_sign_out_success">Google\'dan çıkış yapıldı</string>
 </resources>

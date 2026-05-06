@@ -8,7 +8,7 @@
   <string name="gdrive_connected_summary">Повезано са %s</string>
   <string name="gdrive_last_sync_completed">Последња синхронизација: %s</string>
   <string name="gdrive_missing_play_services">Google Drive zahteva Google Play usluge koje nisu podržane na vašem uređaju</string>
-  <string name="gdrive_sign_in_failed">Неуспешно пријављивање на Google: %s (%s)</string>
+  <string name="gdrive_sign_in_failed" formatted="false">Неуспешно пријављивање на Google: %s (%s)</string>
   <string name="gdrive_sign_in_success">Пријављени сте на Google као %s</string>
   <string name="gdrive_sign_out_success">Одјављени сте са Google-а</string>
 </resources>

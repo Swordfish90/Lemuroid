@@ -16,6 +16,7 @@
 
 package com.swordfish.lemuroid.app.appextension.remoteconfig
 
+import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.swordfish.lemuroid.R
@@ -23,31 +24,45 @@ import com.swordfish.lemuroid.app.appextension.or
 
 class FirebaseConfigurationFetcher : IRemoteConfigFetcher {
 
-    private var remoteConfig: FirebaseRemoteConfig? = null
-
     override fun fetch(force: Boolean) {
         try {
-            remoteConfig = FirebaseRemoteConfig.getInstance()
-                .apply {
-                    setDefaultsAsync(R.xml.config_defaults)
-                }
-            val remoteConfigSettings = FirebaseRemoteConfigSettings
-                .Builder()
-                .setFetchTimeoutInSeconds(if (force) 0L else 3600L)
+            val instance = FirebaseRemoteConfig.getInstance()
+
+            val settings = FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(if (force) 0L else 3600L)
                 .build()
 
-            remoteConfig?.setConfigSettingsAsync(remoteConfigSettings)
-
-            remoteConfig?.fetchAndActivate()
+            instance.setConfigSettingsAsync(settings).addOnCompleteListener {
+                instance.setDefaultsAsync(R.xml.config_defaults).addOnCompleteListener {
+                    instance.fetchAndActivate()
+                        .addOnSuccessListener { updated ->
+                            Log.d(TAG, "Remote config fetched successfully, updated=$updated")
+                            Log.d(TAG, "game_maker_story empty=${instance.getString("game_maker_story").isEmpty()}")
+                            Log.d(TAG, "game_maker_story_room_id empty=${instance.getString("game_maker_story_room_id").isEmpty()}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e(TAG, "Remote config fetch failed", e)
+                        }
+                }
+            }
         } catch (ex: Exception) {
+            Log.e(TAG, "Remote config init failed", ex)
         }
     }
 
-    override fun getRemoteBoolean(value: String) = remoteConfig?.getBoolean(value).or { false }
+    override fun getRemoteBoolean(value: String) =
+        FirebaseRemoteConfig.getInstance().getBoolean(value)
 
-    override fun getRemoteString(value: String) = remoteConfig?.getString(value).or { "" }
+    override fun getRemoteString(value: String) =
+        FirebaseRemoteConfig.getInstance().getString(value)
 
-    override fun getRemoteLong(value: String) = remoteConfig?.getLong(value).or { 0L }
+    override fun getRemoteLong(value: String) =
+        FirebaseRemoteConfig.getInstance().getLong(value)
 
-    override fun getRemoteDouble(value: String) = remoteConfig?.getDouble(value).or { 0.0 }
+    override fun getRemoteDouble(value: String) =
+        FirebaseRemoteConfig.getInstance().getDouble(value)
+
+    companion object {
+        private const val TAG = "FirebaseRemoteConfig"
+    }
 }

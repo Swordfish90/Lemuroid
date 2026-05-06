@@ -165,18 +165,20 @@
   <string name="haptic_feedback_mode_names_press_release">Bas &amp; bırak</string>
   <string name="flat_pro_popup_title">FIRSATIMIZI kaçırmayın!</string>
   <string name="flat_pro_offer_top_bar_title">Pro Sürüm</string>
-  <string name="game_context_menu_share">Discord\'a Paylaş</string>
+  <string name="game_context_menu_share">Roomcord\'a Paylaş</string>
+  <string name="game_menu_share">Roomcord\'a Paylaş</string>
+  <string name="game_menu_share_title">Paylaş</string>
   <string name="game_interactor_notification_permission_required">Devam etmek için Home\'dan bildirimleri etkinleştirin</string>
   <string name="game_loader_error_load_core">Libretro çekirdeği yüklenmemiş gibi görünüyor. Cihazınızın internete bağlı olduğundan emin olun ve kütüphanenizi yeniden taramayı deneyin. Sorun devam ederse, bu çekirdek cihazınızda desteklenmiyor olabilir.</string>
-  <string name="install_browser_description">AI analizi ile doğrulanmış haberleri alın. Sahte haberleri tespit edin, AI özetleri alın ve hangi kaynaklara güveneceğinizi bilin!</string>
-  <string name="install_browser_title">WizeUp News\'u Deneyin</string>
-  <string name="install_submit">Daha fazla bilgi edin</string>
+  <string name="install_browser_description">• ROM\'lar ve oyun bağlantılarını bulun\\n• Topluluktan ipuçları ve rehberler\\n• Sorular sorun ve yardım alın\\n• Retro oyun hayranlarıyla bağlantı kurun</string>
+  <string name="install_browser_title">Roomcord\'u Deneyin</string>
+  <string name="install_submit">Roomcord\'a Katıl</string>
   <string name="installing_core_notification_message">Bu birkaç dakika sürebilir</string>
   <string name="installing_core_notification_title">Çekirdekler Güncelleniyor</string>
   <string name="lemuroid_crash_message">Hata mesajı: %1$s</string>
   <string name="library_index_notification_action_cancel">İptal</string>
   <string name="maybe_later">Belki sonra</string>
-  <string name="popup_more_games_description">Discord topluluğumuza katılın</string>
+  <string name="popup_more_games_description">Roomcord topluluğumuza katılın</string>
   <string name="popup_more_games_title">Daha fazla oyun oynamak ister misiniz?</string>
   <string name="rate_cancel">Şimdi değil</string>
   <string name="rate_submit">Değerlendir</string>
@@ -209,15 +211,15 @@
   <string name="share_discord_dialog_enter_feedback">Geri bildiriminizi girin</string>
   <string name="share_discord_dialog_enter_name">Adınızı girin</string>
   <string name="share_discord_popup_description">Oyunları oynamayı seviyor musunuz? Bizi değerlendirin ve görüşlerinizi paylaşın!</string>
-  <string name="share_discord_text_title_part_1">%s şu anda \"%s\" oyununu oynuyor.</string>
+  <string name="share_discord_text_title_part_1" formatted="false">%s şu anda **%s** oyununu oynuyor.</string>
   <string name="share_discord_text_title_part_2">Bu oyunu buradan indir %s</string>
   <string name="string_pro_buy_now">Şimdi satın al</string>
   <string name="string_pro_limited_deal">Sınırlı teklif</string>
   <string name="string_pro_popup_disclamer">Bir fincan kahveden daha ucuza FullRoid X\'i kap. WS ve 3DS oyunları oyna!</string>
   <string name="string_pro_popup_title">FIRSATIMIZI kaçırmayın!</string>
-  <string name="string_pro_price">%d/ ömür boyu %d</string>
+  <string name="string_pro_price" formatted="false">%d/ ömür boyu %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 yeni emülatör, Nintendo 3DS dahil\n✓ Oyunları verimli bir şekilde yükseltmek için HD modu\n✓ 7z arşiv desteği\n✓ Yaklaşan özelliklere özel erişim</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">3DS Şifre Çözme Anahtarları</string>
   <string name="settings_title_citra_keys_status">Durum</string>
   <string name="settings_value_citra_keys_present">Anahtarlar mevcut</string>
@@ -234,4 +236,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Bu işlem keys.txt dosyasını kaldıracak. Yeni anahtarlar sağlanana kadar şifreli 3DS ROM\'ları artık yüklenmeyecek.</string>
   <string name="settings_citra_keys_error_title">Anahtar hatası</string>
   <string name="settings_citra_keys_downloading">Anahtarlar indiriliyor…</string>
+  <string name="share_success_title">Paylaşıldı!</string>
+  <string name="share_success_message">Geri bildiriminiz Roomcord topluluğuna gönderildi.</string>
+  <string name="share_success_ok">Tamam</string>
+  <string name="share_success_view">Roomcord\'ta görüntüle</string>
+  <string name="catalog_feature_locked_buy_pro">Pro Satın Al</string>
+  <string name="catalog_feature_locked_join_roomcord">Roomcord\'a Katıl</string>
+  <string name="catalog_feature_locked_message">Kataloğu gizleme, Pro kullanıcılar veya Roomcord topluluğu üyeleri için mevcuttur</string>
+  <string name="catalog_feature_locked_title">Premium Özellik</string>
+  <string name="catalog_hide">Gizle</string>
+  <string name="catalog_more_info">Daha fazla bilgi</string>
+  <string name="catalog_play">Oyna</string>
+  <string name="catalog_read_more">Daha fazla oku</string>
+  <string name="catalog_title">Katalog</string>
+  <string name="settings_show_catalog_description">Yerleşik ücretsiz oyun kataloğunu göster</string>
+  <string name="settings_show_catalog_title">Kataloğu Göster</string>
 </resources>

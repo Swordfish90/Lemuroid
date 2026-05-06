@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,8 +30,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,9 +43,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.appextension.isProVersion
+import com.swordfish.lemuroid.app.appextension.isRoomcordInstalled
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.CatalogLockedDialog
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameImage
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
+import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
@@ -109,6 +117,15 @@ private fun HomeScreen(
     onEnableMicrophoneClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val showCatalogState = booleanPreferenceState(R.string.pref_key_show_catalog, true)
+    val canToggleCatalog = isProVersion() || context.isRoomcordInstalled()
+    val showLockedDialog = remember { mutableStateOf(false) }
+
+    if (showLockedDialog.value) {
+        CatalogLockedDialog(onDismiss = { showLockedDialog.value = false })
+    }
+
     Column(
         modifier =
             modifier
@@ -169,11 +186,21 @@ private fun HomeScreen(
             onGameClicked,
             onGameLongClick,
         )
-        CatalogRow(
-            title = stringResource(id = R.string.catalog_title),
-            games = state.catalogGames,
-            onGameClicked = onCatalogGameClicked,
-        )
+        if (showCatalogState.value) {
+            CatalogRow(
+                title = stringResource(id = R.string.catalog_title),
+                games = state.catalogGames,
+                onGameClicked = onCatalogGameClicked,
+                onGameLongClick = onGameLongClick,
+                onHideClicked = {
+                    if (canToggleCatalog) {
+                        showCatalogState.value = false
+                    } else {
+                        showLockedDialog.value = true
+                    }
+                },
+            )
+        }
     }
 }
 
@@ -223,14 +250,17 @@ private fun CatalogRow(
     title: String,
     games: List<Game>,
     onGameClicked: (Game) -> Unit,
+    onGameLongClick: (Game) -> Unit,
+    onHideClicked: () -> Unit,
 ) {
     if (games.isEmpty()) return
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Icon(
                 imageVector = Icons.Outlined.LocalActivity,
@@ -242,7 +272,16 @@ private fun CatalogRow(
                 text = title,
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp),
             )
+            TextButton(onClick = onHideClicked) {
+                Text(
+                    text = stringResource(R.string.catalog_hide),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow(
@@ -255,21 +294,23 @@ private fun CatalogRow(
                     modifier = Modifier.widthIn(0.dp, 160.dp),
                     game = games[index],
                     onClick = { onGameClicked(games[index]) },
+                    onLongClick = { onGameLongClick(games[index]) },
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CatalogGameCard(
     modifier: Modifier = Modifier,
     game: Game,
     onClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null,
 ) {
     ElevatedCard(
-        modifier = modifier,
-        onClick = onClick,
+        modifier = modifier.combinedClickable(onClick = onClick, onLongClick = onLongClick),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
     ) {
         Column {

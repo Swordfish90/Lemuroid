@@ -16,6 +16,474 @@
         "html": false,
         "emoji": false
       }
+    },
+    "catalog_feature_locked_buy_pro": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_feature_locked_join_roomcord": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_feature_locked_message": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_feature_locked_title": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_hide": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_more_info": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_play": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_read_more": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "catalog_title": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "game_menu_share": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "game_menu_share_title": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_category_citra_keys": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_category_experimental": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_citra_keys_delete_confirm_body": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_citra_keys_delete_confirm_title": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_citra_keys_disclaimer": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_citra_keys_downloading": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_citra_keys_error_title": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_citra_keys_url_hint": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_description_citra_experimental_save_states": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_description_citra_keys_delete": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_description_citra_keys_load_file": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_description_citra_keys_load_url": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_show_catalog_description": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_show_catalog_title": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_title_citra_experimental_save_states": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_title_citra_keys_delete": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_title_citra_keys_load_file": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_title_citra_keys_load_url": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_title_citra_keys_status": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_value_citra_keys_absent": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "settings_value_citra_keys_present": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "share_success_message": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "share_success_ok": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "share_success_title": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
+    },
+    "share_success_view": {
+      "category": "general",
+      "ui_context": "N/A",
+      "purpose": "",
+      "max_length": null,
+      "tone": "technical",
+      "technical": {
+        "format_specifiers": false,
+        "specifiers": [],
+        "html": false,
+        "emoji": false
+      }
     }
   }
 }

@@ -40,18 +40,20 @@
   <string name="haptic_feedback_mode_names_press">Nyomd</string>
   <string name="flat_pro_popup_title">Ne hagyja ki az AKCIÓNKAT!</string>
   <string name="flat_pro_offer_top_bar_title">Pro verzió</string>
-  <string name="game_context_menu_share">Megosztás Discordon</string>
+  <string name="game_context_menu_share">Megosztás Roomcordon</string>
+  <string name="game_menu_share">Megosztás Roomcordon</string>
+  <string name="game_menu_share_title">Megosztás</string>
   <string name="game_interactor_notification_permission_required">Kérjük, engedélyezze az értesítéseket a Home-tól a folytatáshoz</string>
   <string name="game_loader_error_load_core">Úgy tűnik, hogy a Libretro mag nem lett betöltve. Győződjön meg róla, hogy az eszköze csatlakozik az internethez, és próbálja meg újra átvizsgálni a könyvtárát. Ha a probléma továbbra is fennáll, ez a mag nem támogatott az eszközén.</string>
-  <string name="install_browser_description">Szerezzen tényellenőrzött híreket AI elemzéssel. Ismerje fel a hamis híreket, kapjon AI összefoglalókat, és tudja, mely forrásokban bízhat!</string>
-  <string name="install_browser_title">Próbálja ki a WizeUp News-t</string>
-  <string name="install_submit">Tudj meg többet</string>
+  <string name="install_browser_description">• Találj ROM-okat és játék linkeket\\n• Közösségi végigjátszások és tippek\\n• Tegyél fel kérdéseket és kapj segítséget\\n• Kapcsolódj retro játék rajongókkal</string>
+  <string name="install_browser_title">Próbálja ki a Roomcordot</string>
+  <string name="install_submit">Csatlakozás a Roomcordhoz</string>
   <string name="installing_core_notification_message">Ez eltarthat néhány percig</string>
   <string name="installing_core_notification_title">Magok frissítése</string>
   <string name="lemuroid_crash_message">Hibaüzenet: %1$s</string>
   <string name="library_index_notification_action_cancel">Mégse</string>
   <string name="maybe_later">Talán később</string>
-  <string name="popup_more_games_description">Csatlakozz a Discord közösségünkhöz</string>
+  <string name="popup_more_games_description">Csatlakozz a Roomcord közösségünkhöz</string>
   <string name="popup_more_games_title">Szeretnél több játékot játszani?</string>
   <string name="rate_cancel">Most nem</string>
   <string name="rate_submit">Értékelés</string>
@@ -84,15 +86,15 @@
   <string name="share_discord_dialog_enter_feedback">Adja meg visszajelzését</string>
   <string name="share_discord_dialog_enter_name">Írja be a nevét</string>
   <string name="share_discord_popup_description">Szeretsz játszani a játékokkal? Értékelj minket és oszd meg a véleményed!</string>
-  <string name="share_discord_text_title_part_1">%s most játszik a(z) \"%s\" játékkal.</string>
+  <string name="share_discord_text_title_part_1" formatted="false">%s most játszik a(z) **%s** játékkal.</string>
   <string name="share_discord_text_title_part_2">Töltsd le ezt a játékot itt %s</string>
   <string name="string_pro_buy_now">Vásároljon most</string>
   <string name="string_pro_limited_deal">Korlátozott ajánlat</string>
   <string name="string_pro_popup_disclamer">Szerezd meg a FullRoid X-et kevesebbért, mint egy csésze kávé. Játssz WS és 3DS játékokkal!</string>
   <string name="string_pro_popup_title">Ne hagyja ki az AKCIÓNKAT!</string>
-  <string name="string_pro_price">%d/ élethosszig %d</string>
+  <string name="string_pro_price" formatted="false">%d/ élethosszig %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 új emulátor, köztük a Nintendo 3DS\n✓ HD mód a játékok hatékony feljavításához\n✓ 7z archívum támogatás\n✓ Exkluzív hozzáférés a közelgő funkciókhoz</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_experimental">Kísérleti</string>
   <string name="settings_title_citra_experimental_save_states">3DS mentési állapotok (Kísérleti)</string>
   <string name="settings_description_citra_experimental_save_states">(Kísérleti) Kézi mentési és betöltési állapotok engedélyezése Nintendo 3DS játékokhoz. Az automatikus mentés nem támogatott. Az állapotok instabilak lehetnek, vagy jelentős tárhelyet foglalhatnak.</string>
@@ -112,4 +114,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Ez eltávolítja a keys.txt fájlt. A titkosított 3DS ROM-ok nem töltődnek be, amíg új kulcsokat nem adnak meg.</string>
   <string name="settings_citra_keys_error_title">Kulcshiba</string>
   <string name="settings_citra_keys_downloading">Kulcsok letöltése…</string>
+  <string name="share_success_title">Megosztva!</string>
+  <string name="share_success_message">A visszajelzésed megjelent a Roomcord közösségben.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Megnyitás Roomcordban</string>
+  <string name="catalog_feature_locked_buy_pro">Pro vásárlása</string>
+  <string name="catalog_feature_locked_join_roomcord">Csatlakozás a Roomcordhoz</string>
+  <string name="catalog_feature_locked_message">A katalógus elrejtése a Pro felhasználók vagy a Roomcord közösség tagjai számára érhető el</string>
+  <string name="catalog_feature_locked_title">Prémium funkció</string>
+  <string name="catalog_hide">Elrejtés</string>
+  <string name="catalog_more_info">További információk</string>
+  <string name="catalog_play">Lejátszás</string>
+  <string name="catalog_read_more">Olvass tovább</string>
+  <string name="catalog_title">Katalógus</string>
+  <string name="settings_show_catalog_description">Mutassa a beépített ingyenes játékok katalógusát</string>
+  <string name="settings_show_catalog_title">Katalógus megjelenítése</string>
 </resources>

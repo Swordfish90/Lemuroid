@@ -1,287 +1,223 @@
 <en-US>
 What's New:
 
-• Save Management: Export and import your game saves - backup your progress or transfer between devices
-• 7z Archive Support: Extract 7z archives directly in the app (Pro version)
-• Emulator Core Updates: Improved performance and stability of emulation cores
-• UI & Translation Improvements: Enhanced interface and updated localizations
+• Emulator Core Updates: Updated and improved emulation cores for better performance and compatibility
+• Free Games Catalog: Browse and play free games directly from the app
 </en-US>
 
 <zh-CN>
 更新内容：
 
-• 存档管理：导出和导入游戏存档 - 备份您的进度或在设备之间转移
-• 7z 压缩包支持：在应用内直接解压 7z 压缩包（专业版）
-• 模拟器核心更新：提高模拟核心的性能和稳定性
-• 用户界面和翻译改进：增强界面并更新本地化
+• 模拟器核心更新：更新并改进了模拟核心，提升性能和兼容性
+• 免费游戏目录：直接在应用内浏览和游玩免费游戏
 </zh-CN>
 
 <zh-TW>
 更新內容：
 
-• 存檔管理：匯出和匯入遊戲存檔 - 備份您的進度或在設備之間轉移
-• 7z 壓縮包支援：在應用內直接解壓 7z 壓縮包（專業版）
-• 模擬器核心更新：提高模擬核心的性能和穩定性
-• 使用者介面和翻譯改進：增強介面並更新本地化
+• 模擬器核心更新：更新並改進了模擬核心，提升效能和相容性
+• 免費遊戲目錄：直接在應用內瀏覽並遊玩免費遊戲
 </zh-TW>
 
 <hi-IN>
 नया क्या है:
 
-• सेव प्रबंधन: अपने गेम सेव को निर्यात और आयात करें - अपनी प्रगति का बैकअप लें या उपकरणों के बीच स्थानांतरित करें
-• 7z आर्काइव समर्थन: ऐप में सीधे 7z आर्काइव निकालें (प्रो संस्करण)
-• एमुलेटर कोर अपडेट्स: एमुलेशन कोर के प्रदर्शन और स्थिरता में सुधार
-• यूआई और अनुवाद सुधार: इंटरफ़ेस को बेहतर बनाया गया और स्थानीयकरण अपडेट किया गया
+• एमुलेटर कोर अपडेट्स: बेहतर प्रदर्शन और संगतता के लिए एमुलेशन कोर को अपडेट और बेहतर बनाया गया
+• मुफ्त गेम्स कैटलॉग: ऐप से सीधे मुफ्त गेम्स ब्राउज़ करें और खेलें
 </hi-IN>
 
 <es-ES>
 Novedades:
 
-• Gestión de Guardados: Exporta e importa tus guardados de juegos - haz una copia de seguridad de tu progreso o transfiere entre dispositivos
-• Soporte para Archivos 7z: Extrae archivos 7z directamente en la aplicación (versión Pro)
-• Actualizaciones del Núcleo del Emulador: Mejorado el rendimiento y la estabilidad de los núcleos de emulación
-• Mejoras en la Interfaz y Traducciones: Interfaz mejorada y localizaciones actualizadas
+• Actualizaciones del Núcleo del Emulador: Núcleos de emulación actualizados y mejorados para mejor rendimiento y compatibilidad
+• Catálogo de Juegos Gratuitos: Explora y juega juegos gratuitos directamente desde la aplicación
 </es-ES>
 
 <ar>
 ما الجديد:
 
-• إدارة الحفظ: تصدير واستيراد حفظ الألعاب - نسخ تقدمك احتياطيًا أو النقل بين الأجهزة
-• دعم أرشيف 7z: استخراج أرشيفات 7z مباشرة في التطبيق (الإصدار المحترف)
-• تحديثات نواة المحاكي: تحسين الأداء واستقرار نوى المحاكاة
-• تحسينات واجهة المستخدم والترجمة: تحسين الواجهة وتحديث الترجمات
+• تحديثات نواة المحاكي: تحديث وتحسين نوى المحاكاة لأداء وتوافق أفضل
+• كتالوج الألعاب المجانية: تصفح وألعب الألعاب المجانية مباشرة من التطبيق
 </ar>
 
 <pt-BR>
 Novidades:
 
-• Gerenciamento de Salvamentos: Exporte e importe seus salvamentos de jogos - faça backup do seu progresso ou transfira entre dispositivos
-• Suporte a Arquivos 7z: Extraia arquivos 7z diretamente no aplicativo (versão Pro)
-• Atualizações dos Núcleos do Emulador: Melhor desempenho e estabilidade dos núcleos de emulação
-• Melhorias na Interface e Tradução: Interface aprimorada e localizações atualizadas
+• Atualizações dos Núcleos do Emulador: Núcleos de emulação atualizados e melhorados para melhor desempenho e compatibilidade
+• Catálogo de Jogos Gratuitos: Navegue e jogue jogos gratuitos diretamente no aplicativo
 </pt-BR>
 
 <id>
 Apa yang Baru:
 
-• Manajemen Simpanan: Ekspor dan impor simpanan game Anda - cadangkan kemajuan Anda atau transfer antar perangkat
-• Dukungan Arsip 7z: Ekstrak arsip 7z langsung di aplikasi (versi Pro)
-• Pembaruan Inti Emulator: Peningkatan kinerja dan stabilitas inti emulasi
-• Peningkatan UI & Terjemahan: Antarmuka yang ditingkatkan dan lokalisasi yang diperbarui
+• Pembaruan Inti Emulator: Inti emulasi diperbarui dan ditingkatkan untuk performa dan kompatibilitas yang lebih baik
+• Katalog Game Gratis: Jelajahi dan mainkan game gratis langsung dari aplikasi
 </id>
 
 <ru-RU>
 Что нового:
 
-• Управление сохранениями: Экспорт и импорт ваших сохранений игр - создавайте резервные копии вашего прогресса или переносите между устройствами
-• Поддержка архивов 7z: Извлечение архивов 7z непосредственно в приложении (версия Pro)
-• Обновления ядер эмулятора: Улучшена производительность и стабильность ядер эмуляции
-• Улучшения интерфейса и перевода: Улучшенный интерфейс и обновленные локализации
+• Обновления ядер эмулятора: Обновлены и улучшены ядра эмуляции для лучшей производительности и совместимости
+• Каталог бесплатных игр: Просматривайте и играйте в бесплатные игры прямо из приложения
 </ru-RU>
 
 <ja-JP>
 新機能:
 
-• セーブ管理: ゲームのセーブデータをエクスポートおよびインポート - 進行状況をバックアップするか、デバイス間で転送
-• 7zアーカイブサポート: アプリ内で7zアーカイブを直接抽出（プロバージョン）
-• エミュレーターコアの更新: エミュレーションコアのパフォーマンスと安定性を向上
-• UIと翻訳の改善: インターフェースを強化し、ローカライズを更新
+• エミュレーターコアの更新: パフォーマンスと互換性向上のためエミュレーションコアを更新・改善
+• 無料ゲームカタログ: アプリから直接無料ゲームを閲覧してプレイ
 </ja-JP>
 
 <de-DE>
 Neues:
 
-• Speicherverwaltung: Exportieren und importieren Sie Ihre Spielstände - sichern Sie Ihren Fortschritt oder übertragen Sie zwischen Geräten
-• 7z-Archivunterstützung: Extrahieren Sie 7z-Archive direkt in der App (Pro-Version)
-• Emulator-Kern-Updates: Verbesserte Leistung und Stabilität der Emulationskerne
-• UI- und Übersetzungsverbesserungen: Verbesserte Benutzeroberfläche und aktualisierte Lokalisierungen
+• Emulator-Kern-Updates: Emulationskerne für bessere Leistung und Kompatibilität aktualisiert und verbessert
+• Kostenloser Spielekatalog: Kostenlose Spiele direkt in der App durchsuchen und spielen
 </de-DE>
 
 <fr-FR>
 Nouveautés :
 
-• Gestion des Sauvegardes : Exportez et importez vos sauvegardes de jeux - sauvegardez votre progression ou transférez entre appareils
-• Prise en Charge des Archives 7z : Extrayez les archives 7z directement dans l'application (version Pro)
-• Mises à Jour des Cœurs de l'Émulateur : Amélioration des performances et de la stabilité des cœurs d'émulation
-• Améliorations de l'Interface et des Traductions : Interface améliorée et localisations mises à jour
+• Mises à Jour des Cœurs de l'Émulateur : Cœurs d'émulation mis à jour et améliorés pour de meilleures performances et compatibilité
+• Catalogue de Jeux Gratuits : Parcourez et jouez à des jeux gratuits directement depuis l'application
 </fr-FR>
 
 <ko-KR>
 새로운 기능:
 
-• 저장 관리: 게임 저장 데이터를 내보내고 가져오기 - 진행 상황을 백업하거나 장치 간 전송
-• 7z 아카이브 지원: 앱에서 직접 7z 아카이브 추출 (프로 버전)
-• 에뮬레이터 코어 업데이트: 에뮬레이션 코어의 성능 및 안정성 향상
-• UI 및 번역 개선: 인터페이스 개선 및 현지화 업데이트
+• 에뮬레이터 코어 업데이트: 더 나은 성능과 호환성을 위해 에뮬레이션 코어 업데이트 및 개선
+• 무료 게임 카탈로그: 앱에서 직접 무료 게임을 탐색하고 플레이
 </ko-KR>
 
 <tr-TR>
 Yenilikler:
 
-• Kayıt Yönetimi: Oyun kayıtlarınızı dışa aktarın ve içe aktarın - ilerlemenizi yedekleyin veya cihazlar arasında transfer edin
-• 7z Arşiv Desteği: Uygulama içinde 7z arşivlerini doğrudan çıkarın (Pro sürümü)
-• Emülatör Çekirdek Güncellemeleri: Emülasyon çekirdeklerinin performansı ve kararlılığı artırıldı
-• Arayüz ve Çeviri İyileştirmeleri: Geliştirilmiş arayüz ve güncellenmiş yerelleştirmeler
+• Emülatör Çekirdek Güncellemeleri: Daha iyi performans ve uyumluluk için emülasyon çekirdekleri güncellendi ve iyileştirildi
+• Ücretsiz Oyun Kataloğu: Doğrudan uygulamadan ücretsiz oyunlara göz atın ve oynayın
 </tr-TR>
 
 <vi>
 Có gì mới:
 
-• Quản lý Lưu trữ: Xuất và nhập lưu trữ trò chơi của bạn - sao lưu tiến trình của bạn hoặc chuyển giữa các thiết bị
-• Hỗ trợ Tệp nén 7z: Trích xuất tệp nén 7z trực tiếp trong ứng dụng (phiên bản Pro)
-• Cập nhật Lõi Giả lập: Cải thiện hiệu suất và độ ổn định của lõi giả lập
-• Cải tiến Giao diện & Dịch thuật: Giao diện được cải thiện và cập nhật bản địa hóa
+• Cập nhật Lõi Giả lập: Cập nhật và cải tiến các lõi giả lập để hiệu suất và khả năng tương thích tốt hơn
+• Danh mục Game Miễn phí: Duyệt và chơi các game miễn phí trực tiếp từ ứng dụng
 </vi>
 
 <it-IT>
 Novità:
 
-• Gestione dei Salvataggi: Esporta e importa i tuoi salvataggi di gioco - fai il backup dei tuoi progressi o trasferisci tra dispositivi
-• Supporto Archivi 7z: Estrai archivi 7z direttamente nell'app (versione Pro)
-• Aggiornamenti del Core dell'Emulatore: Migliorate le prestazioni e la stabilità dei core di emulazione
-• Miglioramenti dell'Interfaccia e delle Traduzioni: Interfaccia migliorata e localizzazioni aggiornate
+• Aggiornamenti del Core dell'Emulatore: Core di emulazione aggiornati e migliorati per migliori prestazioni e compatibilità
+• Catalogo Giochi Gratuiti: Sfoglia e gioca ai giochi gratuiti direttamente dall'app
 </it-IT>
 
 <pl-PL>
 Co nowego:
 
-• Zarządzanie zapisami: Eksportuj i importuj swoje zapisy gier - wykonaj kopię zapasową postępów lub przenieś między urządzeniami
-• Obsługa archiwów 7z: Rozpakuj archiwa 7z bezpośrednio w aplikacji (wersja Pro)
-• Aktualizacje rdzeni emulatora: Poprawiona wydajność i stabilność rdzeni emulacji
-• Ulepszenia interfejsu i tłumaczeń: Ulepszony interfejs i zaktualizowane lokalizacje
+• Aktualizacje rdzeni emulatora: Zaktualizowane i ulepszone rdzenie emulacji dla lepszej wydajności i kompatybilności
+• Katalog darmowych gier: Przeglądaj i graj w darmowe gry bezpośrednio z aplikacji
 </pl-PL>
 
 <uk>
 Що нового:
 
-• Управління збереженнями: Експортуйте та імпортуйте свої збереження ігор - створюйте резервні копії свого прогресу або переносьте між пристроями
-• Підтримка архівів 7z: Витяг архівів 7z безпосередньо в додатку (Pro версія)
-• Оновлення ядер емулятора: Покращена продуктивність та стабільність ядер емуляції
-• Покращення інтерфейсу та перекладу: Покращений інтерфейс та оновлені локалізації
+• Оновлення ядер емулятора: Оновлено та покращено ядра емуляції для кращої продуктивності та сумісності
+• Каталог безкоштовних ігор: Переглядайте та грайте в безкоштовні ігри прямо з додатку
 </uk>
 
 <cs-CZ>
 Co je nového:
 
-• Správa uložených her: Exportujte a importujte své uložené hry - zálohujte svůj postup nebo přenášejte mezi zařízeními
-• Podpora archivu 7z: Extrahujte archivy 7z přímo v aplikaci (verze Pro)
-• Aktualizace jader emulátoru: Zlepšený výkon a stabilita emulačních jader
-• Vylepšení uživatelského rozhraní a překladu: Vylepšené rozhraní a aktualizované lokalizace
+• Aktualizace jader emulátoru: Jádra emulace aktualizována a vylepšena pro lepší výkon a kompatibilitu
+• Katalog bezplatných her: Procházejte a hrajte bezplatné hry přímo z aplikace
 </cs-CZ>
 
 <da-DK>
 Hvad er nyt:
 
-• Gem Management: Eksporter og importer dine spilgemmer - sikkerhedskopier dine fremskridt eller overfør mellem enheder
-• 7z Arkivstøtte: Udpak 7z arkiver direkte i appen (Pro version)
-• Emulator Kerneopdateringer: Forbedret ydeevne og stabilitet af emulationskerner
-• UI & Oversættelsesforbedringer: Forbedret interface og opdaterede lokalisationer
+• Emulator Kerneopdateringer: Emulationskerner opdateret og forbedret for bedre ydeevne og kompatibilitet
+• Gratis Spilkatalog: Gennemse og spil gratis spil direkte fra appen
 </da-DK>
 
 <el-GR>
 Τι νέο υπάρχει:
 
-• Διαχείριση Αποθηκεύσεων: Εξαγωγή και εισαγωγή των αποθηκεύσεών σας - δημιουργήστε αντίγραφα ασφαλείας της προόδου σας ή μεταφέρετε μεταξύ συσκευών
-• Υποστήριξη Αρχείων 7z: Εξαγωγή αρχείων 7z απευθείας στην εφαρμογή (έκδοση Pro)
-• Ενημερώσεις Πυρήνα Εξομοιωτή: Βελτιωμένη απόδοση και σταθερότητα των πυρήνων εξομοίωσης
-• Βελτιώσεις Διεπαφής & Μετάφρασης: Βελτιωμένη διεπαφή και ενημερωμένες τοπικοποιήσεις
+• Ενημερώσεις Πυρήνα Εξομοιωτή: Ενημερωμένοι και βελτιωμένοι πυρήνες εξομοίωσης για καλύτερη απόδοση και συμβατότητα
+• Κατάλογος Δωρεάν Παιχνιδιών: Περιηγηθείτε και παίξτε δωρεάν παιχνίδια απευθείας από την εφαρμογή
 </el-GR>
 
 <fi-FI>
 Mitä uutta:
 
-• Tallennusten Hallinta: Vie ja tuo pelitallennuksesi - varmuuskopioi edistymisesi tai siirrä laitteiden välillä
-• 7z Arkistotuki: Pura 7z-arkistot suoraan sovelluksessa (Pro-versio)
-• Emulaattorin Ydinten Päivitykset: Parannettu emulaattoriydinten suorituskyky ja vakaus
-• Käyttöliittymän ja Käännösten Parannukset: Parannettu käyttöliittymä ja päivitetyt lokalisaatiot
+• Emulaattorin Ydinten Päivitykset: Emulaattoriytimet päivitetty ja parannettu paremman suorituskyvyn ja yhteensopivuuden vuoksi
+• Ilmaisten Pelien Luettelo: Selaa ja pelaa ilmaisia pelejä suoraan sovelluksesta
 </fi-FI>
 
 <hu-HU>
 Újdonságok:
 
-• Mentéskezelés: Exportálja és importálja játékmenéseit - készítsen biztonsági másolatot előrehaladásáról vagy vigye át eszközök között
-• 7z Archívum Támogatás: 7z archívumok közvetlen kibontása az alkalmazásban (Pro verzió)
-• Emulátor Magfrissítések: Javított teljesítmény és stabilitás az emulációs magokban
-• Felhasználói Felület és Fordítási Javítások: Fejlesztett felület és frissített lokalizációk
+• Emulátor Magfrissítések: Az emulációs magok frissítve és javítva a jobb teljesítmény és kompatibilitás érdekében
+• Ingyenes Játékok Katalógusa: Böngésszen és játsszon ingyenes játékokkal közvetlenül az alkalmazásból
 </hu-HU>
 
 <iw-IL>
 מה חדש:
 
-• ניהול שמירות: ייצוא וייבוא של שמירות המשחק שלך - גיבוי ההתקדמות שלך או העברה בין מכשירים
-• תמיכה בארכיוני 7z: חילוץ ארכיוני 7z ישירות באפליקציה (גרסת Pro)
-• עדכוני ליבת האמולטור: שיפור ביצועים ויציבות של ליבות האמולציה
-• שיפורי ממשק ותרגום: ממשק משופר ועדכוני לוקליזציה
+• עדכוני ליבת האמולטור: ליבות האמולציה עודכנו ושופרו לביצועים ותאימות טובים יותר
+• קטלוג משחקים חינמיים: עיין ושחק במשחקים חינמיים ישירות מהאפליקציה
 </iw-IL>
 
 <nl-NL>
 Wat is nieuw:
 
-• Opslagbeheer: Exporteer en importeer je spelopslag - maak een back-up van je voortgang of verplaats tussen apparaten
-• 7z Archiefondersteuning: Pak 7z-archieven direct in de app uit (Pro-versie)
-• Emulator Kernupdates: Verbeterde prestaties en stabiliteit van emulatiekernen
-• Verbeteringen in UI & Vertaling: Verbeterde interface en bijgewerkte localisaties
+• Emulator Kernupdates: Emulatiekernen bijgewerkt en verbeterd voor betere prestaties en compatibiliteit
+• Gratis Spelencatalogus: Blader door en speel gratis spellen direct vanuit de app
 </nl-NL>
 
 <no-NO>
 Hva er nytt:
 
-• Lagre Administrasjon: Eksporter og importer spillfilene dine - sikkerhetskopier fremdriften din eller overfør mellom enheter
-• 7z Arkivstøtte: Pakk ut 7z-arkiver direkte i appen (Pro-versjon)
-• Oppdateringer av Emulator Kjerner: Forbedret ytelse og stabilitet i emulatorkjerner
-• Forbedringer i Brukergrensesnitt og Oversettelse: Forbedret grensesnitt og oppdaterte lokaliseringer
+• Oppdateringer av Emulator Kjerner: Emulatorkjerner oppdatert og forbedret for bedre ytelse og kompatibilitet
+• Gratis Spillkatalog: Bla gjennom og spill gratis spill direkte fra appen
 </no-NO>
 
 <pt-PT>
 Novidades:
 
-• Gestão de Guardados: Exporte e importe os seus guardados de jogos - faça backup do seu progresso ou transfira entre dispositivos
-• Suporte a Arquivos 7z: Extraia arquivos 7z diretamente na aplicação (versão Pro)
-• Atualizações dos Núcleos do Emulador: Melhor desempenho e estabilidade dos núcleos de emulação
-• Melhorias na Interface e Tradução: Interface aprimorada e localizações atualizadas
+• Atualizações dos Núcleos do Emulador: Núcleos de emulação atualizados e melhorados para melhor desempenho e compatibilidade
+• Catálogo de Jogos Gratuitos: Navegue e jogue jogos gratuitos diretamente na aplicação
 </pt-PT>
 
 <ro>
 Ce este nou:
 
-• Gestionarea Salvărilor: Exportă și importă salvările tale de joc - fă backup progresului tău sau transferă între dispozitive
-• Suport pentru Arhive 7z: Extrage arhive 7z direct în aplicație (versiunea Pro)
-• Actualizări ale Nucleului Emulatorului: Performanță și stabilitate îmbunătățite ale nucleelor de emulare
-• Îmbunătățiri ale Interfeței și Traducerii: Interfață îmbunătățită și localizări actualizate
+• Actualizări ale Nucleului Emulatorului: Nuclee de emulare actualizate și îmbunătățite pentru performanță și compatibilitate mai bune
+• Catalog de Jocuri Gratuite: Răsfoiți și jucați jocuri gratuite direct din aplicație
 </ro>
 
 <sr>
 Шта је ново:
 
-• Управљање сачуваним играма: Извоз и увоз сачуваних игара - направите резервну копију напретка или пренесите између уређаја
-• Подршка за 7z архиве: Извлачите 7z архиве директно у апликацији (Професионална верзија)
-• Ажурирања језгра емулатора: Побољшане перформансе и стабилност језгара емулације
-• Побољшања интерфејса и превода: Побољшан интерфејс и ажуриране локализације
+• Ажурирања језгра емулатора: Ажурирана и побољшана језгра емулације за боље перформансе и компатибилност
+• Каталог бесплатних игара: Прегледајте и играјте бесплатне игре директно из апликације
 </sr>
 
 <sv-SE>
 Nyheter:
 
-• Spara Hantering: Exportera och importera dina spelsparningar - säkerhetskopiera dina framsteg eller överför mellan enheter
-• 7z Arkivstöd: Extrahera 7z-arkiv direkt i appen (Pro-version)
-• Emulator Kärnuppdateringar: Förbättrad prestanda och stabilitet hos emuleringskärnor
-• Förbättringar av UI & Översättning: Förbättrat gränssnitt och uppdaterade lokaliseringar
+• Emulator Kärnuppdateringar: Emuleringskärnor uppdaterade och förbättrade för bättre prestanda och kompatibilitet
+• Gratis Spelkatalog: Bläddra och spela gratis spel direkt från appen
 </sv-SE>
 
 <af>
 Wat is nuut:
 
-• Stoorbestuur: Voer jou speletjies se stoorlêers uit en in - rugsteun jou vordering of oordra tussen toestelle
-• 7z Argiefondersteuning: Onttrek 7z-argiewe direk in die toepassing (Pro-weergawe)
-• Emulator Kernopdaterings: Verbeterde werkverrigting en stabiliteit van emulasiekerns
-• UI & Vertaling Verbeterings: Verbeterde koppelvlak en opgedateerde lokaliserings
+• Emulator Kernopdaterings: Emulasiekerns opgedateer en verbeter vir beter werkverrigting en kompatibiliteit
+• Gratis Speletjies Katalogus: Blaai deur en speel gratis speletjies direk vanuit die toepassing
 </af>
 
 <ca>
 Novetats:
 
-• Gestió de Guardats: Exporta i importa els teus guardats de jocs - fes una còpia de seguretat del teu progrés o transfereix entre dispositius
-• Suport d'Arxius 7z: Extreu arxius 7z directament a l'aplicació (versió Pro)
-• Actualitzacions del Nucli de l'Emulador: Millora del rendiment i estabilitat dels nuclis d'emulació
-• Millores en la Interfície i Traducció: Interfície millorada i localitzacions actualitzades
+• Actualitzacions del Nucli de l'Emulador: Nuclis d'emulació actualitzats i millorats per a millor rendiment i compatibilitat
+• Catàleg de Jocs Gratuïts: Navegueu i jugueu a jocs gratuïts directament des de l'aplicació
 </ca>

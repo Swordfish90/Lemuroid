@@ -52,8 +52,9 @@ import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.appextension.FulldiveConfigs
 import com.swordfish.lemuroid.app.appextension.PopupManager
-import com.swordfish.lemuroid.app.appextension.discord.ShareDiscordTextGenerator
-import com.swordfish.lemuroid.app.appextension.discord.ShowShareDialog
+import com.swordfish.lemuroid.app.appextension.roomcord.ShareRoomcordTextGenerator
+import com.swordfish.lemuroid.app.appextension.roomcord.ShareSuccessDialog
+import com.swordfish.lemuroid.app.appextension.roomcord.ShowShareDialog
 import com.swordfish.lemuroid.app.appextension.isFullRoidProInstalled
 import com.swordfish.lemuroid.app.appextension.isProVersion
 import com.swordfish.lemuroid.app.appextension.launchApp
@@ -67,7 +68,7 @@ import com.swordfish.lemuroid.app.mobile.feature.games.GamesViewModel
 import com.swordfish.lemuroid.app.mobile.feature.catalog.CatalogDetailScreen
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeScreen
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeViewModel
-import com.swordfish.lemuroid.app.mobile.feature.proinfo.DiscordPopupLayout
+import com.swordfish.lemuroid.app.mobile.feature.proinfo.RoomcordPopupLayout
 import com.swordfish.lemuroid.app.mobile.feature.proinfo.ProPopupLayout
 import com.swordfish.lemuroid.app.mobile.feature.proinfo.tutorial.ProTutorialScreen
 import com.swordfish.lemuroid.app.mobile.feature.search.SearchScreen
@@ -152,7 +153,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     lateinit var actionTracker: IActionTracker
 
     @Inject
-    lateinit var shareDiscordTextGenerator: ShareDiscordTextGenerator
+    lateinit var shareRoomcordTextGenerator: ShareRoomcordTextGenerator
 
     @Inject
     lateinit var popupManager: PopupManager
@@ -199,16 +200,16 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
             val isProPopupVisible = remember {
                 mutableStateOf(false)
             }
-            val isDiscordPopupVisible = remember {
+            val isRoomcordPopupVisible = remember {
                 mutableStateOf(false)
             }
             if (currentRoute == MainRoute.HOME) {
                 popupManager.onAppStarted(this@MainActivity)
                 isProPopupVisible.value = popupManager.isProPopupVisible()
-                isDiscordPopupVisible.value = popupManager.isDiscordPopupVisible()
+                isRoomcordPopupVisible.value = popupManager.isRoomcordPopupVisible()
             } else {
                 isProPopupVisible.value = false
-                isDiscordPopupVisible.value = false
+                isRoomcordPopupVisible.value = false
             }
 
             val infoDialogDisplayed =
@@ -216,9 +217,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     mutableStateOf(false)
                 }
 
-            val shareDiscordDialogDisplayed =
+            val shareRoomcordDialogDisplayed =
                 remember {
                     mutableStateOf<Game?>(null)
+                }
+
+            val shareSuccessVisible =
+                remember {
+                    mutableStateOf(false)
                 }
 
             LaunchedEffect(currentRoute) {
@@ -321,20 +327,20 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 )
                             }
 
-                            isDiscordPopupVisible.value  && !isProPopupVisible.value -> {
-                                actionTracker.logAction(TrackerConstants.EVENT_DISCORD_POPUP_SHOWN)
-                                DiscordPopupLayout(
+                            isRoomcordPopupVisible.value  && !isProPopupVisible.value -> {
+                                actionTracker.logAction(TrackerConstants.EVENT_ROOMCORD_POPUP_SHOWN)
+                                RoomcordPopupLayout(
                                     bottomPadding = padding.calculateBottomPadding(),
                                     onClick = {
-                                        actionTracker.logAction(TrackerConstants.EVENT_DISCORD_POPUP_CLICKED)
+                                        actionTracker.logAction(TrackerConstants.EVENT_ROOMCORD_POPUP_CLICKED)
                                         startActivity(Intent(Intent.ACTION_VIEW).apply {
-                                            data = Uri.parse(PopupManager.DISCORD_INVITATION)
+                                            data = Uri.parse(FulldiveConfigs.ROOMCORD_ROOM_URL_GAMES)
                                         })
-                                        isDiscordPopupVisible.value = false
+                                        isRoomcordPopupVisible.value = false
                                     },
                                     onCloseClick = {
-                                        actionTracker.logAction(TrackerConstants.EVENT_DISCORD_POPUP_CLOSED)
-                                        isDiscordPopupVisible.value = false
+                                        actionTracker.logAction(TrackerConstants.EVENT_ROOMCORD_POPUP_CLOSED)
+                                        isRoomcordPopupVisible.value = false
                                     }
                                 )
                             }
@@ -526,28 +532,31 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         gameInteractor.onFavoriteToggle(game, isFavorite)
                     },
                     onCreateShortcut = { gameInteractor.onCreateShortcut(it) },
-                    onShareDiscord = { shareDiscordDialogDisplayed.value = it }
+                    onShareRoomcord = { shareRoomcordDialogDisplayed.value = it }
                 )
 
-                val game = shareDiscordDialogDisplayed.value
+                val game = shareRoomcordDialogDisplayed.value
                 if (game != null) {
                     ShowShareDialog(
                         game = game,
-                        onPositiveClicked = { content, imageUrl ->
-                            shareDiscordTextGenerator.shareGame(
-                                content,
-                                imageUrl,
+                        onPositiveClicked = { sharedGame, content ->
+                            shareRoomcordTextGenerator.shareGame(
+                                game = sharedGame,
+                                content = content,
                                 onSuccess = {
-                                    Toast.makeText(this, "Feedback is successfully shared!", Toast.LENGTH_SHORT)
-                                        .show()
+                                    shareSuccessVisible.value = true
                                 },
-                                onError = {
-                                    Toast.makeText(this, "Error while share  feedback!", Toast.LENGTH_SHORT).show()
+                                onError = { msg ->
+                                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
                                 }
                             )
                         },
-                        onDismissRequest = { shareDiscordDialogDisplayed.value = null }
+                        onDismissRequest = { shareRoomcordDialogDisplayed.value = null }
                     )
+                }
+
+                if (shareSuccessVisible.value) {
+                    ShareSuccessDialog(onDismiss = { shareSuccessVisible.value = false })
                 }
 
                 if (infoDialogDisplayed.value) {

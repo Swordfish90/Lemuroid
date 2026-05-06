@@ -2,18 +2,20 @@
 <resources>
   <string name="flat_pro_popup_title">Jangan lewatkan PROMO kami!</string>
   <string name="flat_pro_offer_top_bar_title">Versi Pro</string>
-  <string name="game_context_menu_share">Bagikan ke Discord</string>
+  <string name="game_context_menu_share">Bagikan ke Roomcord</string>
+  <string name="game_menu_share">Bagikan ke Roomcord</string>
+  <string name="game_menu_share_title">Bagikan</string>
   <string name="game_interactor_notification_permission_required">Silakan aktifkan notifikasi dari Home untuk melanjutkan</string>
   <string name="game_loader_error_load_core">Sepertinya inti Libretro tidak dimuat. Pastikan perangkat Anda terhubung ke internet dan coba pindai ulang perpustakaan Anda. Jika masalah berlanjut, inti ini mungkin tidak didukung di perangkat Anda.</string>
-  <string name="install_browser_description">Dapatkan berita yang telah diverifikasi dengan analisis AI. Temukan berita palsu, dapatkan ringkasan AI, dan ketahui sumber mana yang dapat dipercaya!</string>
-  <string name="install_browser_title">Coba WizeUp News</string>
-  <string name="install_submit">Pelajari lebih lanjut</string>
+  <string name="install_browser_description">• Temukan ROM dan tautan game\\n• Panduan dan tips dari komunitas\\n• Ajukan pertanyaan dan dapatkan bantuan\\n• Terhubung dengan penggemar game retro</string>
+  <string name="install_browser_title">Coba Roomcord</string>
+  <string name="install_submit">Bergabung dengan Roomcord</string>
   <string name="installing_core_notification_message">Ini bisa memakan waktu beberapa menit</string>
   <string name="installing_core_notification_title">Memperbarui Inti</string>
   <string name="lemuroid_crash_message">Pesan kesalahan: %1$s</string>
   <string name="library_index_notification_action_cancel">Batal</string>
   <string name="maybe_later">Mungkin nanti</string>
-  <string name="popup_more_games_description">Bergabunglah dengan komunitas Discord kami</string>
+  <string name="popup_more_games_description">Bergabunglah dengan komunitas Roomcord kami</string>
   <string name="popup_more_games_title">Ingin bermain lebih banyak game?</string>
   <string name="rate_cancel">Tidak sekarang</string>
   <string name="rate_submit">Beri Nilai</string>
@@ -46,15 +48,15 @@
   <string name="share_discord_dialog_enter_feedback">Masukkan umpan balik Anda</string>
   <string name="share_discord_dialog_enter_name">Masukkan nama Anda</string>
   <string name="share_discord_popup_description">Apakah Anda suka bermain game? Beri kami penilaian dan bagikan pendapat Anda!</string>
-  <string name="share_discord_text_title_part_1">%s sedang bermain game \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** sedang bermain game **%s**.</string>
   <string name="share_discord_text_title_part_2">Unduh game ini di sini %s</string>
   <string name="string_pro_buy_now">Beli sekarang</string>
   <string name="string_pro_limited_deal">Penawaran terbatas</string>
   <string name="string_pro_popup_disclamer">Dapatkan FullRoid X dengan harga lebih murah dari secangkir kopi. Mainkan game WS dan 3DS!</string>
   <string name="string_pro_popup_title">Jangan lewatkan PENJUALAN kami!</string>
-  <string name="string_pro_price">%d/ seumur hidup %d</string>
+  <string name="string_pro_price" formatted="false">%d/ seumur hidup %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 emulator baru, termasuk Nintendo 3DS\n✓ Mode HD untuk meningkatkan kualitas game\n✓ Dukungan arsip 7z\n✓ Akses eksklusif ke fitur mendatang</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_experimental">Eksperimental</string>
   <string name="settings_title_citra_experimental_save_states">Status Simpan 3DS (Eksperimental)</string>
   <string name="settings_description_citra_experimental_save_states">(Eksperimental) Aktifkan penyimpanan dan pemuatan status manual untuk game Nintendo 3DS. Penyimpanan otomatis tidak didukung. Status mungkin tidak stabil atau menggunakan penyimpanan yang signifikan.</string>
@@ -74,4 +76,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Ini akan menghapus file keys.txt. ROM 3DS terenkripsi tidak akan dapat dimuat lagi sampai kunci baru disediakan.</string>
   <string name="settings_citra_keys_error_title">Kesalahan kunci</string>
   <string name="settings_citra_keys_downloading">Mengunduh kunci…</string>
+  <string name="share_success_title">Dibagikan!</string>
+  <string name="share_success_message">Ulasan Anda telah diposting ke komunitas Roomcord.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Lihat di Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Beli Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Bergabung dengan Roomcord</string>
+  <string name="catalog_feature_locked_message">Menyembunyikan katalog tersedia untuk pengguna Pro atau anggota komunitas Roomcord</string>
+  <string name="catalog_feature_locked_title">Fitur Premium</string>
+  <string name="catalog_hide">Sembunyikan</string>
+  <string name="catalog_more_info">Info lebih lanjut</string>
+  <string name="catalog_play">Mainkan</string>
+  <string name="catalog_read_more">Baca lebih lanjut</string>
+  <string name="catalog_title">Katalog</string>
+  <string name="settings_show_catalog_description">Tampilkan katalog bawaan dari game gratis</string>
+  <string name="settings_show_catalog_title">Tampilkan Katalog</string>
 </resources>

@@ -186,18 +186,20 @@
   <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
   <string name="flat_pro_popup_title">Не пропустите нашу РАСПРОДАЖУ!</string>
   <string name="flat_pro_offer_top_bar_title">Профессиональная версия</string>
-  <string name="game_context_menu_share">Поделиться в Discord</string>
+  <string name="game_context_menu_share">Поделиться в Roomcord</string>
+  <string name="game_menu_share">Поделиться в Roomcord</string>
+  <string name="game_menu_share_title">Поделиться</string>
   <string name="game_interactor_notification_permission_required">Пожалуйста, включите уведомления от Home, чтобы продолжить</string>
   <string name="game_loader_error_load_core">Похоже, ядро Libretro не было загружено. Убедитесь, что ваше устройство подключено к интернету, и попробуйте повторно просканировать вашу библиотеку. Если проблема сохраняется, возможно, это ядро не поддерживается на вашем устройстве.</string>
-  <string name="install_browser_description">Получайте проверенные новости с анализом ИИ. Обнаруживайте фейковые новости, получайте краткие обзоры от ИИ и узнавайте, каким источникам можно доверять!</string>
-  <string name="install_browser_title">Попробуйте WizeUp News</string>
-  <string name="install_submit">Узнать больше</string>
+  <string name="install_browser_description">• Найдите ROM и ссылки на игры\\n• Прохождения и советы от сообщества\\n• Задавайте вопросы и получайте помощь\\n• Общайтесь с фанатами ретро-игр</string>
+  <string name="install_browser_title">Попробуйте Roomcord</string>
+  <string name="install_submit">Присоединиться к Roomcord</string>
   <string name="installing_core_notification_message">Это может занять несколько минут</string>
   <string name="installing_core_notification_title">Обновление ядер</string>
   <string name="lemuroid_crash_message">Сообщение об ошибке: %1$s</string>
   <string name="library_index_notification_action_cancel">Отмена</string>
   <string name="maybe_later">Может быть позже</string>
-  <string name="popup_more_games_description">Присоединяйтесь к нашему сообществу в Discord</string>
+  <string name="popup_more_games_description">Присоединяйтесь к нашему сообществу Roomcord</string>
   <string name="popup_more_games_title">Хотите сыграть в больше игр?</string>
   <string name="rate_cancel">Не сейчас</string>
   <string name="rate_submit">Оценить</string>
@@ -230,15 +232,15 @@
   <string name="share_discord_dialog_enter_feedback">Введите ваш отзыв</string>
   <string name="share_discord_dialog_enter_name">Введите ваше имя</string>
   <string name="share_discord_popup_description">Вам нравится играть в игры? Оцените нас и поделитесь своим мнением!</string>
-  <string name="share_discord_text_title_part_1">%s сейчас играет в игру \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** сейчас играет в игру **%s**.</string>
   <string name="share_discord_text_title_part_2">Скачайте эту игру здесь %s</string>
   <string name="string_pro_buy_now">Купить сейчас</string>
   <string name="string_pro_limited_deal">Ограниченное предложение</string>
   <string name="string_pro_popup_disclamer">Приобретите FullRoid X дешевле чашки кофе. Играйте в игры WS и 3DS!</string>
   <string name="string_pro_popup_title">Не пропустите нашу РАСПРОДАЖУ!</string>
-  <string name="string_pro_price">%d/ пожизненно %d</string>
+  <string name="string_pro_price" formatted="false">%d/ пожизненно %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 новых эмуляторов, включая Nintendo 3DS\n✓ HD режим для эффективного улучшения графики игр\n✓ Поддержка архивов 7z\n✓ Эксклюзивный доступ к будущим функциям</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">Ключи дешифрования 3DS</string>
   <string name="settings_title_citra_keys_status">Статус</string>
   <string name="settings_value_citra_keys_present">Ключи присутствуют</string>
@@ -255,4 +257,19 @@
   <string name="settings_citra_keys_delete_confirm_body">Это удалит файл keys.txt. Зашифрованные ROM-файлы 3DS больше не будут загружаться до тех пор, пока не будут предоставлены новые ключи.</string>
   <string name="settings_citra_keys_error_title">Ошибка ключей</string>
   <string name="settings_citra_keys_downloading">Загрузка ключей…</string>
+  <string name="share_success_title">Опубликовано!</string>
+  <string name="share_success_message">Ваш отзыв опубликован в сообществе Roomcord.</string>
+  <string name="share_success_ok">OK</string>
+  <string name="share_success_view">Открыть Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">Купить Pro</string>
+  <string name="catalog_feature_locked_join_roomcord">Присоединиться к Roomcord</string>
+  <string name="catalog_feature_locked_message">Скрытие каталога доступно для пользователей Pro или участников сообщества Roomcord</string>
+  <string name="catalog_feature_locked_title">Премиум функция</string>
+  <string name="catalog_hide">Скрыть</string>
+  <string name="catalog_more_info">Больше информации</string>
+  <string name="catalog_play">Играть</string>
+  <string name="catalog_read_more">Читать далее</string>
+  <string name="catalog_title">Каталог</string>
+  <string name="settings_show_catalog_description">Показать встроенный каталог бесплатных игр</string>
+  <string name="settings_show_catalog_title">Показать каталог</string>
 </resources>

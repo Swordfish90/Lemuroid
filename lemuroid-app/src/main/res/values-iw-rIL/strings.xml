@@ -126,18 +126,20 @@
   <string name="error_message_incompatible_state">מצב שמירה זה אינו נתמך על ידי גרסת הליבה הנוכחית. טען את השמירה האחרונה שבוצעה על ידי המשחק (in-game) או לחלופין, התקן גרסה ישנה יותר של Fulldroid.</string>
   <string name="flat_pro_popup_title">אל תפספסו את המבצע שלנו!</string>
   <string name="flat_pro_offer_top_bar_title">גרסת פרו</string>
-  <string name="game_context_menu_share">שתף ב-Discord</string>
+  <string name="game_context_menu_share">שתף ב-Roomcord</string>
+  <string name="game_menu_share">שתף ב-Roomcord</string>
+  <string name="game_menu_share_title">שתף</string>
   <string name="game_interactor_notification_permission_required">אנא הפעל התראות מ-Home כדי להמשיך</string>
   <string name="game_loader_error_load_core">נראה כי ליבת Libretro לא נטענה. ודא שהמכשיר שלך מחובר לאינטרנט ונסה לסרוק מחדש את הספרייה שלך. אם הבעיה נמשכת, ייתכן שהליבה הזו לא נתמכת במכשיר שלך.</string>
-  <string name="install_browser_description">קבל חדשות מאומתות עם ניתוח AI. זיהוי חדשות מזויפות, קבל סיכומי AI וידע אילו מקורות אמינים!</string>
-  <string name="install_browser_title">נסה את WizeUp News</string>
-  <string name="install_submit">למד עוד</string>
+  <string name="install_browser_description">• מצא ROMs וקישורי משחקים\\n• מדריכים וטיפים מהקהילה\\n• שאל שאלות וקבל עזרה\\n• התחבר עם חובבי משחקים רטרו</string>
+  <string name="install_browser_title">נסה את Roomcord</string>
+  <string name="install_submit">הצטרף ל-Roomcord</string>
   <string name="installing_core_notification_message">זה עלול לקחת מספר דקות</string>
   <string name="installing_core_notification_title">מעודכן ליבות</string>
   <string name="lemuroid_crash_message">הודעת שגיאה: %1$s</string>
   <string name="library_index_notification_action_cancel">ביטול</string>
   <string name="maybe_later">אולי מאוחר יותר</string>
-  <string name="popup_more_games_description">הצטרף לקהילת ה-Discord שלנו</string>
+  <string name="popup_more_games_description">הצטרף לקהילת Roomcord שלנו</string>
   <string name="popup_more_games_title">רוצה לשחק בעוד משחקים?</string>
   <string name="rate_cancel">לא עכשיו</string>
   <string name="rate_submit">דרג</string>
@@ -170,15 +172,15 @@
   <string name="share_discord_dialog_enter_feedback">הזן את המשוב שלך</string>
   <string name="share_discord_dialog_enter_name">הזן את שמך</string>
   <string name="share_discord_popup_description">האם אתה אוהב לשחק במשחקים? דרג אותנו ושתף את דעתך!</string>
-  <string name="share_discord_text_title_part_1">%s משחק כעת במשחק \"%s\".</string>
+  <string name="share_discord_text_title_part_1" formatted="false">**%s** משחק כעת במשחק **%s**.</string>
   <string name="share_discord_text_title_part_2">הורד את המשחק הזה כאן %s</string>
   <string name="string_pro_buy_now">קנה עכשיו</string>
   <string name="string_pro_limited_deal">עסקה מוגבלת</string>
   <string name="string_pro_popup_disclamer">קבלו את FullRoid X בפחות ממחיר כוס קפה. שחקו במשחקי WS ו-3DS!</string>
   <string name="string_pro_popup_title">אל תפספסו את המכירה שלנו!</string>
-  <string name="string_pro_price">%d/ לכל החיים %d</string>
+  <string name="string_pro_price" formatted="false">%d/ לכל החיים %d</string>
   <string name="string_pro_tutorial_disclamer">✓ + 6 אמולטורים חדשים, כולל Nintendo 3DS\n✓ מצב HD לשיפור יעיל של משחקים\n✓ תמיכה בארכיון 7z\n✓ גישה בלעדית לתכונות עתידיות</string>
-  <string name="string_pro_tutorial_title">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
+  <string name="string_pro_tutorial_title" formatted="false">FullRoid X &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="settings_category_citra_keys">מפתחות פענוח 3DS</string>
   <string name="settings_title_citra_keys_status">סטטוס</string>
   <string name="settings_value_citra_keys_present">מפתחות קיימים</string>
@@ -195,4 +197,19 @@
   <string name="settings_citra_keys_delete_confirm_body">פעולה זו תסיר את קובץ keys.txt. ROMs מוצפנות של 3DS לא יטענו עוד עד שיסופקו מפתחות חדשים.</string>
   <string name="settings_citra_keys_error_title">שגיאת מפתחות</string>
   <string name="settings_citra_keys_downloading">מוריד מפתחות…</string>
+  <string name="share_success_title">שותף!</string>
+  <string name="share_success_message">המשוב שלך פורסם בקהילת Roomcord.</string>
+  <string name="share_success_ok">אישור</string>
+  <string name="share_success_view">צפה ב-Roomcord</string>
+  <string name="catalog_feature_locked_buy_pro">קנה פרו</string>
+  <string name="catalog_feature_locked_join_roomcord">הצטרף ל-Roomcord</string>
+  <string name="catalog_feature_locked_message">הסתרת הקטלוג זמינה למשתמשי פרו או לחברי קהילת Roomcord</string>
+  <string name="catalog_feature_locked_title">תכונה פרימיום</string>
+  <string name="catalog_hide">הסתר</string>
+  <string name="catalog_more_info">מידע נוסף</string>
+  <string name="catalog_play">נגן</string>
+  <string name="catalog_read_more">קרא עוד</string>
+  <string name="catalog_title">קטלוג</string>
+  <string name="settings_show_catalog_description">הצג קטלוג מובנה של משחקים חינמיים</string>
+  <string name="settings_show_catalog_title">הצג קטלוג</string>
 </resources>
