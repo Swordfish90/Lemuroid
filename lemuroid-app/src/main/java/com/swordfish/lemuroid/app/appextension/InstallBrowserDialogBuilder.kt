@@ -19,6 +19,7 @@ package com.swordfish.lemuroid.app.appextension
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.swordfish.lemuroid.R
 
@@ -29,6 +30,10 @@ object InstallBrowserDialogBuilder {
 	fun show(context: Context, onPositiveClicked: () -> Unit) {
 		val view = LayoutInflater.from(context)
 			.inflate(R.layout.install_browser_dialog_layout, null)
+
+		view.findViewById<TextView>(R.id.descriptionTextView).text =
+			context.getString(R.string.install_browser_description).replace("\\n", "\n")
+
 		val dialog = AlertDialog
 			.Builder(context)
 			.setView(view)
