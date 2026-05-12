@@ -151,6 +151,12 @@ android {
     namespace = "com.swordfish.lemuroid"
 }
 
+androidComponents {
+    onVariants(selector().withFlavor("opensource" to "free")) { variant ->
+        variant.packaging.jniLibs.excludes.add("**/libppsspp_libretro_android.so")
+    }
+}
+
 dependencies {
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
