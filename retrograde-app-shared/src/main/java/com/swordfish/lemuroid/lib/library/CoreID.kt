@@ -124,6 +124,7 @@ enum class CoreID(
 
     interface AssetsManager {
         suspend fun retrieveAssetsIfNeeded(
+            context: android.content.Context,
             coreUpdaterApi: CoreUpdater.CoreManagerApi,
             directoriesManager: DirectoriesManager,
             sharedPreferences: SharedPreferences,

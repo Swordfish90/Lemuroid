@@ -22,6 +22,7 @@
 
 package com.swordfish.lemuroid.lib.core.assetsmanager
 
+import android.content.Context
 import android.content.SharedPreferences
 import com.swordfish.lemuroid.lib.core.CoreUpdater
 import com.swordfish.lemuroid.lib.library.CoreID
@@ -31,6 +32,7 @@ class NoAssetsManager : CoreID.AssetsManager {
     override suspend fun clearAssets(directoriesManager: DirectoriesManager) {}
 
     override suspend fun retrieveAssetsIfNeeded(
+        context: Context,
         coreUpdaterApi: CoreUpdater.CoreManagerApi,
         directoriesManager: DirectoriesManager,
         sharedPreferences: SharedPreferences,
