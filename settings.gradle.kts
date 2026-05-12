@@ -21,4 +21,4 @@ include(
 )
 
 project(":bundled-cores").projectDir = File("lemuroid-cores/bundled-cores")
-project(":bundled-cores-pro").projectDir = File("lemuroid-cores/bundled-cores-pro")
+project(":bundled-cores-pro").projectDir = File("bundled-cores-pro")
