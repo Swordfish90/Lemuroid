@@ -27,7 +27,7 @@ buildscript {
 android {
     val versionMajor = 1
     val versionMinor = 10
-    val versionPatch = 0
+    val versionPatch = 1
 
     namespace = "com.swordfish.lemuroid"
     buildFeatures.buildConfig = true
@@ -49,37 +49,7 @@ android {
             mappingFileUploadEnabled = false
         }
     }
-    flavorDimensions += listOf("opensource", "cores")
-
-    if (usePlayDynamicFeatures()) {
-        println("Building Google Play version. Bundling dynamic features.")
-        dynamicFeatures.addAll(
-            setOf(
-                ":lemuroid_core_desmume",
-                ":lemuroid_core_dosbox_pure",
-                ":lemuroid_core_fbneo",
-                ":lemuroid_core_fceumm",
-                ":lemuroid_core_gambatte",
-                ":lemuroid_core_genesis_plus_gx",
-                ":lemuroid_core_handy",
-                ":lemuroid_core_mame2003_plus",
-                ":lemuroid_core_mednafen_ngp",
-                ":lemuroid_core_mednafen_pce_fast",
-                ":lemuroid_core_mednafen_wswan",
-                ":lemuroid_core_melonds",
-                ":lemuroid_core_mgba",
-                ":lemuroid_core_mupen64plus_next_gles3",
-                ":lemuroid_core_pcsx_rearmed",
-                ":lemuroid_core_ppsspp",
-                ":lemuroid_core_prosystem",
-                ":lemuroid_core_snes9x",
-                ":lemuroid_core_stella",
-                ":lemuroid_core_citra",
-            ),
-        )
-    }
-
-    // Since some dependencies are closed source we make a completely free as in free speech variant.
+    flavorDimensions += listOf("opensource")
 
     productFlavors {
 
@@ -93,22 +63,6 @@ android {
             dimension = "opensource"
             applicationId = "com.fulldive.extension.fullroid.pro"
             resValue("string", "lemuroid_name", "FullRoid X")
-        }
-
-        create("play") {
-            dimension = "opensource"
-            applicationId = "com.fulldive.extension.fullroid.play"
-            resValue("string", "lemuroid_name", "PLAY Full Roid")
-        }
-
-        // Include cores in the final apk
-        create("bundle") {
-            dimension = "cores"
-        }
-
-        // Download cores on demand (from GooglePlay or GitHub)
-        create("dynamic") {
-            dimension = "cores"
         }
     }
 
@@ -206,11 +160,11 @@ dependencies {
     "baselineProfile"(project(":baselineprofile"))
     implementation(deps.libs.androidx.profileInstaller)
 
-    "bundleImplementation"(project(":bundled-cores"))
+    implementation(project(":bundled-cores"))
+    "proImplementation"(project(":bundled-cores-pro"))
 
     "freeImplementation"(project(":lemuroid-app-ext-free"))
     "proImplementation"(project(":lemuroid-app-ext-free"))
-    "playImplementation"(project(":lemuroid-app-ext-play"))
 
     implementation(deps.libs.androidx.navigation.navigationFragment)
     implementation(deps.libs.androidx.navigation.navigationUi)
@@ -308,7 +262,3 @@ dependencies {
     implementation(deps.libs.retrofitGsonConverter)
 }
 
-fun usePlayDynamicFeatures(): Boolean {
-    val task = gradle.startParameter.taskRequests.toString()
-    return task.contains("Play") && task.contains("Dynamic")
-}

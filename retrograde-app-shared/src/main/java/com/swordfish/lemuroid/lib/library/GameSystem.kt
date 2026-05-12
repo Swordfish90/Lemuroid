@@ -858,6 +858,7 @@ data class GameSystem(
                         scanByUniqueExtension = false,
                         scanByPathAndSupportedExtensions = true,
                     ),
+                    proOnly = true,
                 ),
                 GameSystem(
                     SystemID.FBNEO,
