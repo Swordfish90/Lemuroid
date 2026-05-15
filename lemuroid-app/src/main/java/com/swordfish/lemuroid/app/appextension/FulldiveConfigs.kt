@@ -21,4 +21,5 @@ object FulldiveConfigs {
     const val ROOMCORD_PACKAGE_NAME = "com.feedai.mobile"
     const val ROOMCORD_ROOM_URL_STORY = "https://web.roomcord.com/join/i-94CWFM"
     const val ROOMCORD_ROOM_URL_GAMES = "https://web.roomcord.com/join/i-HMKC7Z"
+    const val ROOMCORD_ATTRIBUTION_URL = "https://rooms-api.wizeup.app/api/v1/attribution/install"
 }
