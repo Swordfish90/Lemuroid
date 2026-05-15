@@ -133,6 +133,7 @@ data class GameSystem(
                             controllerConfigs =
                                 hashMapOf(
                                     0 to arrayListOf(ControllerConfigs.SNES),
+                                    1 to arrayListOf(ControllerConfigs.SNES),
                                 ),
                         ),
                     ),
