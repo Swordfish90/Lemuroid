@@ -180,7 +180,7 @@
     <string name="haptic_feedback_mode_names_press_release">Pressione &amp; liberar</string>
     <string name="tilt_configuration_disabled">Desabilitado</string>
     <string name="tilt_configuration_cross">DPAD</string>
-    <string name="tilt_configuration_analog_left">Analógico esquerdo</string>
+    <string name="tilt_configuration_analog_left">Analógico Esquerdo</string>
     <string name="tilt_configuration_analog_right">Analógico Direito</string>
     <string name="tilt_configuration_buttons_l_r">L - R</string>
     <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
