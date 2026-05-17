@@ -25,7 +25,7 @@
     <string name="settings_category_general">Geral</string>
     <string name="settings_category_input">Entrada</string>
     <string name="settings_category_misc">Outras configurações</string>
-    <string name="settings_title_enable_autosave">Estado de salvamento automático</string>
+    <string name="settings_title_enable_autosave">Salvar estado automaticamente</string>
     <string name="settings_description_enable_autosave">Salvar estado quando sair pelo menu do jogo</string>
     <string name="settings_title_enable_touch_feedback">Vibrar no toque</string>
     <string name="settings_title_tilt_sensitivity">Sensibilidade do sensor de inclinação</string>
@@ -154,6 +154,8 @@
     <string name="tv_game_message_missing_gamepad">Controles são necessários para jogar. Por favor, conecte um.</string>
     <string name="game_edit_touch_controls_error_not_visible">Desconecte seu controle para editar seus controles de toque</string>
     <string name="game_interactory_busy">Aguarde a conclusão das operações pendentes</string>
+    <string name="game_interactor_notification_permission_required">Por favor, ative as notificações da tela inicial para continuar</string>
+    <string name="game_process_another_game_running">Por favor, feche o jogo atual antes de iniciar outro</string>
     <string name="mobile_settings_help">Ajuda</string>
     <string name="mobile_settings_support">Apoie-nos</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Como eu uso o Lemuroid?</b><br/>
