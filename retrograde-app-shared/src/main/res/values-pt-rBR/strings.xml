@@ -11,13 +11,13 @@
     <string name="controller_landscape">Paisagem</string>
     <string name="controller_portrait">Retrato</string>
     <string name="controller_dos_auto">Auto</string>
-    <string name="controller_dos_mouse_left">Mouse com Stick Esquerdo</string>
-    <string name="controller_dos_mouse_right">Mouse com Stick Direito</string>
+    <string name="controller_dos_mouse_left">Mouse com Analógico Esquerdo</string>
+    <string name="controller_dos_mouse_right">Mouse com Analógico Direito</string>
     <!-- Core settings titles -->
     <string name="setting_stella_filter">Efeito de TV</string>
-    <string name="setting_stella_crop_hoverscan">Overscan de corte horizontal</string>
-    <string name="setting_fceumm_overscan_h">Overscan de corte horizontal</string>
-    <string name="setting_fceumm_overscan_v">Overscan de corte vertical</string>
+    <string name="setting_stella_crop_hoverscan">Corte das bordas horizontais</string>
+    <string name="setting_fceumm_overscan_h">Corte das bordas horizontais</string>
+    <string name="setting_fceumm_overscan_v">Corte das bordas verticais</string>
     <string name="setting_fceumm_nospritelimit">Sem limite de sprite</string>
     <string name="setting_genesis_plus_gx_blargg_ntsc_filter">Efeito de TV</string>
     <string name="setting_genesis_plus_gx_overscan">Bordas</string>
@@ -44,7 +44,7 @@
     <string name="setting_ppsspp_cpu_core">Recompilador dinâmico</string>
     <string name="setting_ppsspp_internal_resolution">Resolução</string>
     <string name="setting_ppsspp_texture_scaling_level">Nível de escala da textura</string>
-    <string name="setting_ppsspp_texture_scaling_type">Tipo escalamento da textura</string>
+    <string name="setting_ppsspp_texture_scaling_type">Tipo da escala da textura</string>
     <string name="setting_ppsspp_texture_filtering">Filtragem da textura</string>
     <string name="setting_fbneo_frameskip">Frameskip</string>
     <string name="setting_fbneo_cpu_speed_adjust">Velocidade da CPU</string>
