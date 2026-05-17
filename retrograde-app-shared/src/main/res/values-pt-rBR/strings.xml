@@ -53,7 +53,7 @@
     <string name="setting_melonds_screen_layout">Layout de tela</string>
     <string name="setting_melonds_threaded_renderer">Renderizador de thread</string>
     <string name="setting_melonds_jit_enable">Recompilador dinâmico</string>
-    <string name="setting_melonds_mic_input">Modo microfone</string>
+    <string name="setting_melonds_mic_input">Modo do microfone</string>
     <string name="setting_wswan_rotate_display">Orientação</string>
     <string name="setting_wswan_mono_palette">Colorização</string>
     <string name="setting_handy_rot">Rotação da tela</string>
@@ -64,14 +64,14 @@
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Desabilitado</string>
     <string name="value_gambatte_mix_frames_mix">Simples</string>
-    <string name="value_gambatte_mix_frames_lcd_ghosting">LCD Ghosting (preciso)</string>
-    <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD Ghosting (rápido)</string>
+    <string name="value_gambatte_mix_frames_lcd_ghosting">LCD Ghosting (Preciso)</string>
+    <string name="value_gambatte_mix_frames_lcd_ghosting_fast">LCD Ghosting (Rápido)</string>
     <string name="value_gambatte_gbc_color_correction_always">Habilitado</string>
     <string name="value_gambatte_gbc_color_correction_disabled">Desabilitado</string>
     <string name="value_mgba_interframe_blending_off">Desabilitado</string>
     <string name="value_mgba_interframe_blending_mix">Simples</string>
     <string name="value_mgba_interframe_blending_lcd_ghosting">LCD Ghosting (preciso)</string>
-    <string name="value_mgba_interframe_blending_lcd_ghosting_fast">LCD Ghosting (rápido)</string>
+    <string name="value_mgba_interframe_blending_lcd_ghosting_fast">LCD Ghosting (Rápido)</string>
     <string name="value_mgba_frameskip_disabled">Desabilitado</string>
     <string name="value_mgba_frameskip_auto">Automático</string>
     <string name="value_mgba_color_correction_off">Desabilitado</string>
