@@ -27,7 +27,7 @@ buildscript {
 android {
     val versionMajor = 1
     val versionMinor = 10
-    val versionPatch = 1
+    val versionPatch = 2
 
     namespace = "com.swordfish.lemuroid"
     buildFeatures.buildConfig = true
@@ -44,6 +44,8 @@ android {
         applicationId = "com.fulldive.extension.fullroid"
         buildConfigField("String", "FLURRY_API_KEY", file("../flurrykey.txt").readText())
         buildConfigField("String", "SERVER_CLIENT_ID", file("../googlekey.txt").readText())
+        buildConfigField("String", "ONE_EMULATOR_ATTRIBUTION_SECRET", "\"${System.getenv("ONE_EMULATOR_ATTRIBUTION_SECRET") ?: ""}\"")
+
 
         firebaseCrashlytics {
             mappingFileUploadEnabled = false
@@ -266,5 +268,7 @@ dependencies {
     implementation(deps.libs.retrofitLogging)
     implementation(deps.libs.gsonAnnotations)
     implementation(deps.libs.retrofitGsonConverter)
+
+    implementation("com.android.installreferrer:installreferrer:2.2")
 }
 

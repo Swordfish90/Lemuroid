@@ -59,6 +59,7 @@ import com.swordfish.lemuroid.app.appextension.isFullRoidProInstalled
 import com.swordfish.lemuroid.app.appextension.isProVersion
 import com.swordfish.lemuroid.app.appextension.launchApp
 import com.swordfish.lemuroid.app.appextension.openAppInGooglePlay
+import com.swordfish.lemuroid.app.appextension.attribution.InstallAttributionReporter
 import com.swordfish.lemuroid.app.fulldive.analytics.IActionTracker
 import com.swordfish.lemuroid.app.fulldive.analytics.TrackerConstants
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesScreen
@@ -177,6 +178,8 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         GlobalScope.safeLaunch {
             reviewManager.initialize(applicationContext)
         }
+
+        InstallAttributionReporter.reportIfNeeded(applicationContext, GlobalScope)
 
         CatalogSyncWork.schedule(applicationContext)
 
@@ -539,15 +542,17 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 if (game != null) {
                     ShowShareDialog(
                         game = game,
-                        onPositiveClicked = { sharedGame, content ->
+                        onShare = { sharedGame, content, onSuccess, onError ->
                             shareRoomcordTextGenerator.shareGame(
                                 game = sharedGame,
                                 content = content,
                                 onSuccess = {
                                     shareSuccessVisible.value = true
+                                    onSuccess()
                                 },
                                 onError = { msg ->
                                     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+                                    onError(msg)
                                 }
                             )
                         },

@@ -25,13 +25,14 @@ private const val KEY_USER_NAME = "user_name"
 @Composable
 fun ShowShareDialog(
     game: Game,
-    onPositiveClicked: (Game, String) -> Unit,
+    onShare: (Game, String, () -> Unit, (String) -> Unit) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) }
     val name = remember { mutableStateOf(prefs.getString(KEY_USER_NAME, "") ?: "") }
     val feedback = remember { mutableStateOf("") }
+    val isLoading = remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(
@@ -100,18 +101,35 @@ fun ShowShareDialog(
                                 )
 
                                 val shareText = if (feedback.value.isNotBlank()) "$shareTextPart1 ${feedback.value.trim()}" else shareTextPart1
-                                onPositiveClicked(game, shareText)
-                                onDismissRequest()
+                                isLoading.value = true
+                                onShare(
+                                    game,
+                                    shareText,
+                                    { onDismissRequest() },
+                                    { msg ->
+                                        isLoading.value = false
+                                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                                    }
+                                )
                             }
                         },
+                        enabled = !isLoading.value,
                         modifier = Modifier
                             .padding(top = 16.dp, bottom = 0.dp)
                             .width(150.dp)
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.share_discord_button_title),
-                            color = colorResource(id = R.color.textColorPrimary)
-                        )
+                        if (isLoading.value) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                strokeWidth = 2.dp,
+                                color = colorResource(id = R.color.textColorPrimary)
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(id = R.string.share_discord_button_title),
+                                color = colorResource(id = R.color.textColorPrimary)
+                            )
+                        }
                     }
                 }
             }

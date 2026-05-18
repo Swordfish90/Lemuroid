@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -40,6 +42,7 @@ fun GameMenuShareScreen(
     val name = remember { mutableStateOf(prefs.getString(KEY_USER_NAME, "") ?: "") }
     val feedback = remember { mutableStateOf("") }
     val showSuccessDialog = remember { mutableStateOf(false) }
+    val isLoading = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -72,6 +75,7 @@ fun GameMenuShareScreen(
 
         Button(
             modifier = Modifier.fillMaxWidth(),
+            enabled = !isLoading.value,
             onClick = {
                 when {
                     name.value.isBlank() -> Toast.makeText(context, "Enter your name!", Toast.LENGTH_SHORT).show()
@@ -85,13 +89,16 @@ fun GameMenuShareScreen(
                         )
                         val content = if (feedback.value.isNotBlank()) "$shareTextPart1 ${feedback.value.trim()}" else shareTextPart1
 
+                        isLoading.value = true
                         shareGenerator.shareGame(
                             game = game,
                             content = content,
                             onSuccess = {
+                                isLoading.value = false
                                 showSuccessDialog.value = true
                             },
                             onError = { msg ->
+                                isLoading.value = false
                                 Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                             }
                         )
@@ -99,7 +106,14 @@ fun GameMenuShareScreen(
                 }
             }
         ) {
-            Text(text = stringResource(id = R.string.share_discord_button_title))
+            if (isLoading.value) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp
+                )
+            } else {
+                Text(text = stringResource(id = R.string.share_discord_button_title))
+            }
         }
     }
 
