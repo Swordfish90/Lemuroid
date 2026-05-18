@@ -542,15 +542,17 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 if (game != null) {
                     ShowShareDialog(
                         game = game,
-                        onPositiveClicked = { sharedGame, content ->
+                        onShare = { sharedGame, content, onSuccess, onError ->
                             shareRoomcordTextGenerator.shareGame(
                                 game = sharedGame,
                                 content = content,
                                 onSuccess = {
                                     shareSuccessVisible.value = true
+                                    onSuccess()
                                 },
                                 onError = { msg ->
                                     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+                                    onError(msg)
                                 }
                             )
                         },
