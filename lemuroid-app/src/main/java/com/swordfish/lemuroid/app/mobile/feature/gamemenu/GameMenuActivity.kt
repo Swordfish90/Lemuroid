@@ -234,6 +234,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                         GameMenuShareScreen(
                             game = gameMenuRequest.game,
                             shareGenerator = shareRoomcordTextGenerator,
+                            screenshotPath = intent.getStringExtra(GameMenuContract.EXTRA_SCREENSHOT_PATH),
                             onShareComplete = { onResult { } },
                             onNavigateBack = { navController.popBackStack() },
                         )

@@ -33,6 +33,7 @@ private const val KEY_USER_NAME = "user_name"
 fun GameMenuShareScreen(
     game: Game,
     shareGenerator: ShareRoomcordTextGenerator,
+    screenshotPath: String?,
     onShareComplete: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -93,6 +94,7 @@ fun GameMenuShareScreen(
                         shareGenerator.shareGame(
                             game = game,
                             content = content,
+                            screenshotPath = screenshotPath,
                             onSuccess = {
                                 isLoading.value = false
                                 showSuccessDialog.value = true

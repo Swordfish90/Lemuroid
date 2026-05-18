@@ -28,30 +28,41 @@ class ShareRoomcordTextGenerator @Inject constructor(
     private val roomcordImageUploader: RoomcordImageUploader
 ) {
 
-    fun shareGame(game: Game, content: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun shareGame(
+        game: Game,
+        content: String,
+        screenshotPath: String? = null,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
         GlobalScope.launch {
             try {
-                val bucketUrl = roomcordImageUploader.uploadGameImage(game)
-
-                val request = if (bucketUrl != null) {
+                val urls = buildAttachmentUrls(game, screenshotPath)
+                val request = if (urls.isNotEmpty()) {
                     RoomcordMessageRequest(
                         content = content,
                         type = "image",
-                        attachmentUrl = bucketUrl,
-                        attachmentUrls = listOf(bucketUrl)
+                        attachmentUrl = urls.first(),
+                        attachmentUrls = urls,
                     )
                 } else {
-                    RoomcordMessageRequest(
-                        content = content,
-                        type = "text"
-                    )
+                    RoomcordMessageRequest(content = content, type = "text")
                 }
-
                 roomcordManager.sendMessage(request)
                 withContext(Dispatchers.Main) { onSuccess.invoke() }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) { onError.invoke(e.message ?: "Unknown error") }
             }
+        }
+    }
+
+    private suspend fun buildAttachmentUrls(game: Game, screenshotPath: String?): List<String> {
+        val (screenshotUrl, coverUrl) = roomcordImageUploader.uploadForShare(game, screenshotPath)
+        return when {
+            screenshotUrl != null && coverUrl != null -> listOf(coverUrl, screenshotUrl)
+            screenshotUrl != null -> listOf(screenshotUrl)
+            coverUrl != null -> listOf(coverUrl)
+            else -> listOfNotNull(roomcordImageUploader.uploadGameImage(game))
         }
     }
 }

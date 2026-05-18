@@ -36,6 +36,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
+import java.io.File
 import javax.inject.Inject
 
 class RoomcordImageUploader @Inject constructor(
@@ -45,6 +46,38 @@ class RoomcordImageUploader @Inject constructor(
 
     private val downloadClient = OkHttpClient()
     private val gson = Gson()
+
+    data class ShareImages(val screenshotUrl: String?, val coverUrl: String?)
+
+    suspend fun uploadForShare(game: Game, screenshotPath: String?): ShareImages = withContext(Dispatchers.IO) {
+        val roomId = remoteConfig.getRoomcordRoomId()
+        if (roomId.isEmpty()) return@withContext ShareImages(null, null)
+
+        val screenshotUrl = if (screenshotPath != null) {
+            try {
+                val file = File(screenshotPath)
+                val bytes = file.readBytes()
+                file.delete()
+                uploadBytes(roomId, bytes)
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to upload screenshot: ${e.message}")
+                null
+            }
+        } else null
+
+        val coverFrontUrl = game.coverFrontUrl
+        val coverUrl = if (!coverFrontUrl.isNullOrEmpty()) {
+            try {
+                val bytes = readImageBytes(coverFrontUrl)
+                if (bytes != null && bytes.isNotEmpty()) uploadBytes(roomId, bytes) else null
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to upload cover: ${e.message}")
+                null
+            }
+        } else null
+
+        ShareImages(screenshotUrl, coverUrl)
+    }
 
     suspend fun uploadGameImage(game: Game): String? = withContext(Dispatchers.IO) {
         val roomId = remoteConfig.getRoomcordRoomId()
