@@ -31,6 +31,7 @@ import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.kotlin.serializable
 import android.graphics.Bitmap
+import com.swordfish.lemuroid.common.bitmap.cropToViewport
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
@@ -225,8 +226,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         lifecycleScope.launch {
             val screenshotPath = try {
-                baseGameScreenViewModel.retroGameView.retroGameView
-                    ?.takeScreenshot(maxResolution = 1280, retries = 3)
+                val retroView = baseGameScreenViewModel.retroGameView.retroGameView
+                retroView?.takeScreenshot(maxResolution = 1280, retries = 3)
+                    ?.cropToViewport(retroView.viewport)
                     ?.saveToShareFile(cacheDir)
             } catch (e: Exception) {
                 Timber.w(e, "Failed to take screenshot for share")
