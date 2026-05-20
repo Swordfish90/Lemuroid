@@ -30,6 +30,8 @@ import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.kotlin.serializable
+import android.graphics.Bitmap
+import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -47,6 +49,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 import kotlin.system.exitProcess
 import dagger.Lazy
@@ -56,6 +60,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     protected lateinit var game: Game
     private lateinit var system: GameSystem
     protected lateinit var systemCoreConfig: SystemCoreConfig
+    private var isMenuLaunching = false
 
     @Inject
     lateinit var settingsManager: SettingsManager
@@ -202,9 +207,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         currentTiltConfiguration: TiltConfiguration,
         tiltConfigurations: List<TiltConfiguration>,
     ) {
-        if (baseGameScreenViewModel.loadingState.value) {
+        if (baseGameScreenViewModel.loadingState.value || isMenuLaunching) {
             return
         }
+
+        isMenuLaunching = true
 
         val coreOptions = getCoreOptions()
 
@@ -216,35 +223,63 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             systemCoreConfig.exposedAdvancedSettings
                 .mapNotNull { transformExposedSetting(it, coreOptions) }
 
-        val intent =
-            Intent(this, getDialogClass()).apply {
-                this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
-                this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
-                this.putExtra(
-                    GameMenuContract.EXTRA_CURRENT_DISK,
-                    baseGameScreenViewModel.retroGameView.retroGameView?.getCurrentDisk() ?: 0,
-                )
-                this.putExtra(
-                    GameMenuContract.EXTRA_DISKS,
-                    baseGameScreenViewModel.retroGameView.retroGameView?.getAvailableDisks() ?: 0,
-                )
-                this.putExtra(GameMenuContract.EXTRA_GAME, game)
-                this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
-                this.putExtra(
-                    GameMenuContract.EXTRA_AUDIO_ENABLED,
-                    baseGameScreenViewModel.retroGameView.retroGameView?.audioEnabled,
-                )
-                this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
-                this.putExtra(
-                    GameMenuContract.EXTRA_FAST_FORWARD,
-                    (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1,
-                )
-                this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
-                // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
-                this.putExtra(GameMenuContract.EXTRA_TILT_ALL_CONFIGS, tiltConfigurations.toTypedArray())
+        lifecycleScope.launch {
+            val screenshotPath = try {
+                baseGameScreenViewModel.retroGameView.retroGameView
+                    ?.takeScreenshot(maxResolution = 1280, retries = 3)
+                    ?.saveToShareFile(cacheDir)
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to take screenshot for share")
+                null
             }
-        startActivityForResult(intent, DIALOG_REQUEST)
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+
+            val intent =
+                Intent(this@BaseGameActivity, getDialogClass()).apply {
+                    this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
+                    this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
+                    this.putExtra(
+                        GameMenuContract.EXTRA_CURRENT_DISK,
+                        baseGameScreenViewModel.retroGameView.retroGameView?.getCurrentDisk() ?: 0,
+                    )
+                    this.putExtra(
+                        GameMenuContract.EXTRA_DISKS,
+                        baseGameScreenViewModel.retroGameView.retroGameView?.getAvailableDisks() ?: 0,
+                    )
+                    this.putExtra(GameMenuContract.EXTRA_GAME, game)
+                    this.putExtra(GameMenuContract.EXTRA_SYSTEM_CORE_CONFIG, systemCoreConfig)
+                    this.putExtra(
+                        GameMenuContract.EXTRA_AUDIO_ENABLED,
+                        baseGameScreenViewModel.retroGameView.retroGameView?.audioEnabled,
+                    )
+                    this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
+                    this.putExtra(
+                        GameMenuContract.EXTRA_FAST_FORWARD,
+                        (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1,
+                    )
+                    this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
+                    // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
+                    this.putExtra(GameMenuContract.EXTRA_TILT_ALL_CONFIGS, tiltConfigurations.toTypedArray())
+                    screenshotPath?.let { putExtra(GameMenuContract.EXTRA_SCREENSHOT_PATH, it) }
+                }
+            isMenuLaunching = false
+            startActivityForResult(intent, DIALOG_REQUEST)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+    }
+
+    private fun Bitmap.saveToShareFile(cacheDir: File): String? = try {
+        val file = File(cacheDir, "share_screenshot_${System.currentTimeMillis()}.jpg")
+        FileOutputStream(file).use { compress(Bitmap.CompressFormat.JPEG, 90, it) }
+        recycle()
+        file.absolutePath
+    } catch (e: Exception) {
+        Timber.w(e, "Failed to save screenshot to file")
+        null
+    }
+
+    private fun cleanUpShareScreenshots() {
+        cacheDir.listFiles { f -> f.name.startsWith("share_screenshot_") && f.name.endsWith(".jpg") }
+            ?.forEach { it.delete() }
     }
 
     protected abstract fun getDialogClass(): Class<out Activity>
@@ -374,6 +409,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == DIALOG_REQUEST) {
             Timber.i("Game menu dialog response: ${data?.extras.dump()}")
+            cleanUpShareScreenshots()
             if (data?.getBooleanExtra(GameMenuContract.RESULT_RESET, false) == true) {
                 GlobalScope.launch {
                     baseGameScreenViewModel.reset()
