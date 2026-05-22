@@ -55,6 +55,12 @@ fun SettingsScreen(
         )
         GeneralSettings()
         InputSettings(navController = navController)
+        val viewContext = androidx.compose.ui.platform.LocalContext.current
+        LocalSaveSyncSettings(
+            state = state,
+            onChangeFolder = { viewModel.changeLocalSaveSyncFolder(viewContext) },
+            onSyncNow = { viewModel.syncLocalSaveSyncFolderManually(viewContext) }
+        )
         MiscSettings(
             indexingInProgress = indexingInProgress,
             isSaveSyncSupported = state.isSaveSyncSupported,
@@ -220,5 +226,56 @@ private fun RomsSettings(
                 enabled = !indexingInProgress,
             )
         }
+    }
+}
+
+@Composable
+private fun LocalSaveSyncSettings(
+    state: SettingsViewModel.State,
+    onChangeFolder: () -> Unit,
+    onSyncNow: () -> Unit,
+) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+
+    val currentDirectory = state.localSaveDirectory ?: ""
+    val emptyDirectory = androidx.compose.ui.res.stringResource(com.swordfish.lemuroid.R.string.none)
+
+    val currentDirectoryName =
+        androidx.compose.runtime.remember(state.localSaveDirectory) {
+            runCatching {
+                if (currentDirectory.isNotEmpty()) {
+                    androidx.documentfile.provider.DocumentFile.fromTreeUri(context, android.net.Uri.parse(currentDirectory))?.name
+                } else null
+            }.getOrNull() ?: emptyDirectory
+        }
+
+    com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup(title = { androidx.compose.material3.Text(text = androidx.compose.ui.res.stringResource(id = com.swordfish.lemuroid.R.string.settings_title_local_save_sync)) }) {
+        com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink(
+            title = { androidx.compose.material3.Text(text = androidx.compose.ui.res.stringResource(id = com.swordfish.lemuroid.R.string.directory)) },
+            subtitle = { androidx.compose.material3.Text(text = currentDirectoryName) },
+            onClick = { onChangeFolder() }
+        )
+        val extensionValues = androidx.compose.ui.res.stringArrayResource(id = com.swordfish.lemuroid.R.array.pref_key_local_save_sync_export_extension_values).toList()
+        val extensionDisplayNames = androidx.compose.ui.res.stringArrayResource(id = com.swordfish.lemuroid.R.array.pref_key_local_save_sync_export_extension_display_names).toList()
+        
+        val extensionState = com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState(
+            id = com.swordfish.lemuroid.R.string.pref_key_local_save_sync_export_extension,
+            default = "default",
+            values = extensionValues
+        )
+        
+        com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList(
+            state = extensionState,
+            title = { androidx.compose.material3.Text(text = androidx.compose.ui.res.stringResource(id = com.swordfish.lemuroid.R.string.settings_title_local_save_sync_export_extension)) },
+            items = extensionDisplayNames,
+            enabled = currentDirectory.isNotEmpty()
+        )
+
+        com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink(
+            title = { androidx.compose.material3.Text(text = androidx.compose.ui.res.stringResource(id = com.swordfish.lemuroid.R.string.local_save_sync_sync_now)) },
+            subtitle = { androidx.compose.material3.Text(text = androidx.compose.ui.res.stringResource(id = com.swordfish.lemuroid.R.string.local_save_sync_sync_now_description)) },
+            onClick = { onSyncNow() },
+            enabled = currentDirectory.isNotEmpty()
+        )
     }
 }

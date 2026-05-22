@@ -38,6 +38,7 @@ import dagger.android.support.AndroidSupportInjectionModule
         LemuroidApplicationModule::class,
         LibraryIndexWork.Module::class,
         SaveSyncWork.Module::class,
+        com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.Module::class,
         ChannelUpdateWork.Module::class,
         CoreUpdateWork.Module::class,
         CacheCleanerWork.Module::class,
