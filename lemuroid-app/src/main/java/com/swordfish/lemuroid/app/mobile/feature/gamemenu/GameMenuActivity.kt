@@ -77,7 +77,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
         val coreConfig: SystemCoreConfig,
         val audioEnabled: Boolean,
         val fastForwardSupported: Boolean,
-        val fastForwardEnabled: Boolean,
+        val frameSpeed: Int,
         val numDisks: Int,
         val currentDisk: Int,
         val currentTiltConfiguration: TiltConfiguration,
@@ -93,6 +93,12 @@ class GameMenuActivity : RetrogradeComponentActivity() {
         )
 
         val extras = intent.extras
+        val legacyFastForwardEnabled = extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false
+        val frameSpeed =
+            extras?.getInt(
+                GameMenuContract.EXTRA_FRAME_SPEED,
+                if (legacyFastForwardEnabled) 2 else 1,
+            ) ?: 1
 
         val gameMenuRequest =
             GameMenuRequest(
@@ -114,8 +120,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                     extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED, false) ?: false,
                 fastForwardSupported =
                     extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, false) ?: false,
-                fastForwardEnabled =
-                    extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD, false) ?: false,
+                frameSpeed = frameSpeed,
                 numDisks =
                     extras?.getInt(GameMenuContract.EXTRA_DISKS, 0) ?: 0,
                 currentDisk =

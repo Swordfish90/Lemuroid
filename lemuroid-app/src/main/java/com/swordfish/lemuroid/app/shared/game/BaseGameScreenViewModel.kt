@@ -24,6 +24,7 @@ import com.swordfish.lemuroid.app.shared.rumble.RumbleManager
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.common.longAnimationDuration
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -52,7 +53,7 @@ class BaseGameScreenViewModel(
     controllerConfigsManager: ControllerConfigsManager,
     system: GameSystem,
     systemCoreConfig: SystemCoreConfig,
-    sharedPreferences: SharedPreferences,
+    private val sharedPreferences: SharedPreferences,
     savesManager: SavesManager,
     statesManager: StatesManager,
     statesPreviewManager: StatesPreviewManager,
@@ -270,8 +271,40 @@ class BaseGameScreenViewModel(
     fun toggleFastForward() {
         Timber.d("Loading quick save")
         retroGameView.retroGameView?.apply {
-            frameSpeed = if (frameSpeed == 1) 2 else 1
+            val speeds = getFastForwardCycleSpeeds()
+            val currentIndex = speeds.indexOf(frameSpeed).let { if (it >= 0) it else 0 }
+            frameSpeed = speeds[(currentIndex + 1) % speeds.size]
         }
+    }
+
+    private fun getFastForwardCycleSpeeds(): List<Int> {
+        val key = appContext.getString(R.string.pref_key_fast_forward_cycle_speeds)
+        val raw =
+            sharedPreferences.getStringSet(
+                key,
+                DEFAULT_FAST_FORWARD_CYCLE_SPEEDS.map { it.toString() }.toSet(),
+            ) ?: emptySet()
+
+        val parsed =
+            raw.mapNotNull { it.toIntOrNull() }
+                .filter { it >= 1 }
+                .distinct()
+                .sorted()
+                .toMutableList()
+
+        if (parsed.isEmpty()) {
+            return DEFAULT_FAST_FORWARD_CYCLE_SPEEDS
+        }
+
+        if (!parsed.contains(1)) {
+            parsed.add(0, 1)
+        }
+
+        return parsed
+    }
+
+    companion object {
+        private val DEFAULT_FAST_FORWARD_CYCLE_SPEEDS = listOf(1, 2, 4, 8, 16)
     }
 
     suspend fun reset() =

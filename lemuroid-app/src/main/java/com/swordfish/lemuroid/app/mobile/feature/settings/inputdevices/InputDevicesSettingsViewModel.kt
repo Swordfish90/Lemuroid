@@ -10,6 +10,7 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.shared.settings.GameShortcut
+import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.common.kotlin.reverseLookup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,7 +40,12 @@ class InputDevicesSettingsViewModel(
 
     data class BindingsView(
         val keys: Map<RetroKey, InputKey> = emptyMap(),
-        val shortcuts: List<GameShortcut> = emptyList(),
+        val shortcuts: List<ShortcutView> = emptyList(),
+    )
+
+    data class ShortcutView(
+        val type: GameShortcutType,
+        val shortcut: GameShortcut?,
     )
 
     data class State(
@@ -86,10 +92,16 @@ class InputDevicesSettingsViewModel(
 
         return combine(devicesFlow, bindingsFlow, shortcutsFlow) { devices, allBindings, allShortcuts ->
             devices.associateWith { device ->
+                val supportedShortcutTypes = device.getLemuroidInputDevice().getSupportedShortcuts()
+                val configuredShortcutsByType = (allShortcuts[device] ?: emptyList()).associateBy { it.type }
+
                 val shortcuts =
-                    allShortcuts[device]?.filter {
-                        it.type in device.getLemuroidInputDevice().getSupportedShortcuts()
-                    } ?: emptyList()
+                    supportedShortcutTypes.map { type ->
+                        ShortcutView(
+                            type = type,
+                            shortcut = configuredShortcutsByType[type],
+                        )
+                    }
                 val keys = allBindings(device).reverseLookup()
 
                 BindingsView(keys, shortcuts)
