@@ -272,4 +272,8 @@
   <string name="catalog_title">Catalogue</string>
   <string name="settings_show_catalog_description">Afficher le catalogue intégré de jeux gratuits</string>
   <string name="settings_show_catalog_title">Afficher le catalogue</string>
+  <string name="webview_load_error">Impossible de charger la page. Vérifiez votre connexion et réessayez.</string>
+  <string name="webview_reload">Recharger</string>
+  <string name="webview_open_roomcord">Ouvrir Roomcord</string>
+  <string name="webview_launch_roomcord">Lancer Roomcord</string>
 </resources>

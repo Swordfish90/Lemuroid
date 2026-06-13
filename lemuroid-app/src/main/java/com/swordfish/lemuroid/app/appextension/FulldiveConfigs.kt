@@ -19,7 +19,7 @@ package com.swordfish.lemuroid.app.appextension
 object FulldiveConfigs {
     const val FULLROID_PRO_PACKAGE_NAME = "com.fulldive.extension.fullroid.pro"
     const val ROOMCORD_PACKAGE_NAME = "com.feedai.mobile"
-    const val ROOMCORD_ROOM_URL_STORY = "https://web.roomcord.com/join/i-94CWFM"
-    const val ROOMCORD_ROOM_URL_GAMES = "https://web.roomcord.com/join/i-HMKC7Z"
+    const val ROOMCORD_ROOM_URL_STORY = "https://web.roomcord.com/join/i-94CWFM?aj=1"
+    const val ROOMCORD_ROOM_URL_GAMES = "https://web.roomcord.com/join/i-HMKC7Z?aj=1"
     const val ROOMCORD_ATTRIBUTION_URL = "https://rooms-api.wizeup.app/api/v1/attribution/install"
 }

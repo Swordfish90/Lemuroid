@@ -272,4 +272,8 @@
   <string name="catalog_title">카탈로그</string>
   <string name="settings_show_catalog_description">내장된 무료 게임 카탈로그 표시</string>
   <string name="settings_show_catalog_title">카탈로그 표시</string>
+  <string name="webview_load_error">페이지를 불러올 수 없습니다. 연결 상태를 확인한 후 다시 시도하세요.</string>
+  <string name="webview_reload">새로고침</string>
+  <string name="webview_open_roomcord">Roomcord 열기</string>
+  <string name="webview_launch_roomcord">Roomcord 실행</string>
 </resources>

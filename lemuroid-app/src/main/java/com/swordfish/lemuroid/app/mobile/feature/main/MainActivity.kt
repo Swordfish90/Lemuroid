@@ -25,7 +25,6 @@ package com.swordfish.lemuroid.app.mobile.feature.main
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.SystemBarStyle
@@ -34,8 +33,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,6 +46,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -67,6 +71,7 @@ import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesViewModel
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesScreen
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesViewModel
 import com.swordfish.lemuroid.app.mobile.feature.catalog.CatalogDetailScreen
+import com.swordfish.lemuroid.app.mobile.feature.webview.WebViewActivity
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeScreen
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeViewModel
 import com.swordfish.lemuroid.app.mobile.feature.proinfo.RoomcordPopupLayout
@@ -206,13 +211,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
             val isRoomcordPopupVisible = remember {
                 mutableStateOf(false)
             }
-            if (currentRoute == MainRoute.HOME) {
+            // Evaluate popup visibility once per launch. onAppStarted() increments a persisted
+            // start counter and popup visibility is derived from its parity, so it must NOT run
+            // on every recomposition (that races the counter and hides the banner unpredictably).
+            LaunchedEffect(Unit) {
                 popupManager.onAppStarted(this@MainActivity)
                 isProPopupVisible.value = popupManager.isProPopupVisible()
                 isRoomcordPopupVisible.value = popupManager.isRoomcordPopupVisible()
-            } else {
-                isProPopupVisible.value = false
-                isRoomcordPopupVisible.value = false
             }
 
             val infoDialogDisplayed =
@@ -288,6 +293,32 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     )
                 },
                 bottomBar = { MainNavigationBar(currentRoute, navController) },
+                floatingActionButton = {
+                    // Compact, always-available entry to Roomcord on Home, shown only when the
+                    // bottom promo banners are not occupying the screen.
+                    if (currentRoute == MainRoute.HOME &&
+                        !isProPopupVisible.value &&
+                        !isRoomcordPopupVisible.value
+                    ) {
+                        FloatingActionButton(
+                            onClick = {
+                                actionTracker.logAction(TrackerConstants.EVENT_ROOMCORD_FAB_CLICKED)
+                                startActivity(
+                                    WebViewActivity.newIntent(
+                                        context = this@MainActivity,
+                                        url = FulldiveConfigs.ROOMCORD_ROOM_URL_GAMES,
+                                        title = getString(R.string.roomcord_webview_title),
+                                    ),
+                                )
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.SportsEsports,
+                                contentDescription = stringResource(R.string.popup_more_games_title),
+                            )
+                        }
+                    }
+                },
             ) { padding ->
                 NavHost(
                     modifier = Modifier.fillMaxSize(),
@@ -336,9 +367,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                     bottomPadding = padding.calculateBottomPadding(),
                                     onClick = {
                                         actionTracker.logAction(TrackerConstants.EVENT_ROOMCORD_POPUP_CLICKED)
-                                        startActivity(Intent(Intent.ACTION_VIEW).apply {
-                                            data = Uri.parse(FulldiveConfigs.ROOMCORD_ROOM_URL_GAMES)
-                                        })
+                                        startActivity(
+                                            WebViewActivity.newIntent(
+                                                context = this@MainActivity,
+                                                url = FulldiveConfigs.ROOMCORD_ROOM_URL_GAMES,
+                                                title = getString(R.string.roomcord_webview_title),
+                                            )
+                                        )
                                         isRoomcordPopupVisible.value = false
                                     },
                                     onCloseClick = {

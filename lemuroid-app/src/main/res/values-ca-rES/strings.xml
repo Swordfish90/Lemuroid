@@ -178,4 +178,8 @@
   <string name="catalog_title">Catàleg</string>
   <string name="settings_show_catalog_description">Mostra el catàleg integrat de jocs gratuïts</string>
   <string name="settings_show_catalog_title">Mostra el catàleg</string>
+  <string name="webview_load_error">No s\'ha pogut carregar la pàgina. Comprova la connexió i torna-ho a provar.</string>
+  <string name="webview_reload">Torna a carregar</string>
+  <string name="webview_open_roomcord">Obre Roomcord</string>
+  <string name="webview_launch_roomcord">Inicia Roomcord</string>
 </resources>

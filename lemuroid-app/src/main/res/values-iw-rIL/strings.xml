@@ -212,4 +212,8 @@
   <string name="catalog_title">קטלוג</string>
   <string name="settings_show_catalog_description">הצג קטלוג מובנה של משחקים חינמיים</string>
   <string name="settings_show_catalog_title">הצג קטלוג</string>
+  <string name="webview_load_error">לא ניתן היה לטעון את הדף. בדוק את החיבור ונסה שוב.</string>
+  <string name="webview_reload">טען מחדש</string>
+  <string name="webview_open_roomcord">פתח את Roomcord</string>
+  <string name="webview_launch_roomcord">הפעל את Roomcord</string>
 </resources>

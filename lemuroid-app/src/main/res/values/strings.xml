@@ -246,6 +246,11 @@
     <string name="share_success_message">Your feedback has been posted to the Roomcord community.</string>
     <string name="share_success_ok">OK</string>
     <string name="share_success_view">View in Roomcord</string>
+    <string name="roomcord_webview_title" translatable="false">Roomcord</string>
+    <string name="webview_load_error">The page couldn\'t be loaded. Please check your connection and try again.</string>
+    <string name="webview_reload">Reload</string>
+    <string name="webview_open_roomcord">Open Roomcord</string>
+    <string name="webview_launch_roomcord">Launch Roomcord</string>
     <string name="share_discord_popup_description">Do you like playing the games? Rate us and share your opinion!</string>
     <string name="share_discord_text_title_part_2">Download this game here %s</string>
     <string name="home_notification_title">Enable notifications</string>
