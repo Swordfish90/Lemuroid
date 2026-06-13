@@ -91,4 +91,8 @@
   <string name="catalog_title">Katalog</string>
   <string name="settings_show_catalog_description">Tampilkan katalog bawaan dari game gratis</string>
   <string name="settings_show_catalog_title">Tampilkan Katalog</string>
+  <string name="webview_load_error">Halaman tidak dapat dimuat. Periksa koneksi Anda dan coba lagi.</string>
+  <string name="webview_reload">Muat ulang</string>
+  <string name="webview_open_roomcord">Buka Roomcord</string>
+  <string name="webview_launch_roomcord">Jalankan Roomcord</string>
 </resources>

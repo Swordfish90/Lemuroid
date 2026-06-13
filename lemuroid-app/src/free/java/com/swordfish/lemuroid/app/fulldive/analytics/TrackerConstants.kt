@@ -36,4 +36,5 @@ object TrackerConstants {
     const val EVENT_ROOMCORD_POPUP_SHOWN = "roomcord_popup_shown"
     const val EVENT_ROOMCORD_POPUP_CLOSED = "roomcord_popup_closed"
     const val EVENT_ROOMCORD_POPUP_CLICKED = "roomcord_popup_clicked"
+    const val EVENT_ROOMCORD_FAB_CLICKED = "roomcord_fab_clicked"
 }

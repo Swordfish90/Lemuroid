@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.shared.game.viewmodel
 import android.content.Context
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.common.bitmap.cropToViewport
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.lib.library.CoreID
@@ -119,7 +120,9 @@ class GameViewModelSaves(
     private suspend fun takeScreenshotPreview(index: Int) {
         val sizeInDp = StatesPreviewManager.PREVIEW_SIZE_DP
         val previewSize = GraphicsUtils.convertDpToPixel(sizeInDp, appContext).roundToInt()
-        val preview = retroGameView.retroGameView?.takeScreenshot(previewSize, 3)
+        val view = retroGameView.retroGameView ?: return
+        val preview = view.takeScreenshot(previewSize, 3)
+            ?.cropToViewport(view.viewport)
         if (preview != null) {
             statesPreviewManager.setPreviewForSlot(game, preview, systemCoreConfig.coreID, index)
         }

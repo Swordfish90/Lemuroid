@@ -251,4 +251,8 @@
   <string name="catalog_title">Katalog</string>
   <string name="settings_show_catalog_description">Yerleşik ücretsiz oyun kataloğunu göster</string>
   <string name="settings_show_catalog_title">Kataloğu Göster</string>
+  <string name="webview_load_error">Sayfa yüklenemedi. Lütfen bağlantını kontrol edip tekrar dene.</string>
+  <string name="webview_reload">Yeniden yükle</string>
+  <string name="webview_open_roomcord">Roomcord\'u aç</string>
+  <string name="webview_launch_roomcord">Roomcord\'u başlat</string>
 </resources>

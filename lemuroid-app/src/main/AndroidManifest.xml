@@ -53,6 +53,10 @@
         </activity>
 
         <activity
+            android:name="com.swordfish.lemuroid.app.mobile.feature.webview.WebViewActivity"
+            android:theme="@style/LemuroidMaterialTheme" />
+
+        <activity
             android:name="com.swordfish.lemuroid.app.shared.game.ExternalGameLauncherActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
             android:exported="true"

@@ -129,4 +129,8 @@
   <string name="catalog_title">Katalógus</string>
   <string name="settings_show_catalog_description">Mutassa a beépített ingyenes játékok katalógusát</string>
   <string name="settings_show_catalog_title">Katalógus megjelenítése</string>
+  <string name="webview_load_error">Az oldalt nem sikerült betölteni. Ellenőrizd a kapcsolatot, és próbáld újra.</string>
+  <string name="webview_reload">Újratöltés</string>
+  <string name="webview_open_roomcord">Roomcord megnyitása</string>
+  <string name="webview_launch_roomcord">Roomcord indítása</string>
 </resources>

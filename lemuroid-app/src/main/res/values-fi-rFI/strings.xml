@@ -270,4 +270,8 @@
   <string name="catalog_title">Luettelo</string>
   <string name="settings_show_catalog_description">Näytä sisäänrakennettu ilmaispelejä sisältävä luettelo</string>
   <string name="settings_show_catalog_title">Näytä luettelo</string>
+  <string name="webview_load_error">Sivua ei voitu ladata. Tarkista yhteytesi ja yritä uudelleen.</string>
+  <string name="webview_reload">Lataa uudelleen</string>
+  <string name="webview_open_roomcord">Avaa Roomcord</string>
+  <string name="webview_launch_roomcord">Käynnistä Roomcord</string>
 </resources>

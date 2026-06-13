@@ -250,4 +250,8 @@
   <string name="catalog_title">Danh mục</string>
   <string name="settings_show_catalog_description">Hiển thị danh mục trò chơi miễn phí tích hợp sẵn</string>
   <string name="settings_show_catalog_title">Hiển thị danh mục</string>
+  <string name="webview_load_error">Không thể tải trang. Vui lòng kiểm tra kết nối và thử lại.</string>
+  <string name="webview_reload">Tải lại</string>
+  <string name="webview_open_roomcord">Mở Roomcord</string>
+  <string name="webview_launch_roomcord">Khởi chạy Roomcord</string>
 </resources>

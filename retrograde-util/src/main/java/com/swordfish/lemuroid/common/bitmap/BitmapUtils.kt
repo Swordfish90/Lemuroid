@@ -24,7 +24,18 @@ package com.swordfish.lemuroid.common.bitmap
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import kotlin.math.roundToInt
+
+fun Bitmap.cropToViewport(viewport: RectF): Bitmap {
+    val x = (viewport.left * width).roundToInt().coerceIn(0, width - 1)
+    val y = (viewport.top * height).roundToInt().coerceIn(0, height - 1)
+    val w = ((viewport.right - viewport.left) * width).roundToInt().coerceIn(1, width - x)
+    val h = ((viewport.bottom - viewport.top) * height).roundToInt().coerceIn(1, height - y)
+    if (x == 0 && y == 0 && w == width && h == height) return this
+    return Bitmap.createBitmap(this, x, y, w, h)
+}
 
 fun Bitmap.cropToSquare(): Bitmap {
     val newWidth = if (height > width) width else height
