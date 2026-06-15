@@ -134,6 +134,7 @@ data class GameSystem(
                             controllerConfigs =
                             hashMapOf(
                                 0 to arrayListOf(ControllerConfigs.SNES),
+                                1 to arrayListOf(ControllerConfigs.SNES),
                             ),
                         ),
                     ),
@@ -1264,41 +1265,135 @@ data class GameSystem(
                                 hashMapOf(
                                     0 to arrayListOf(ControllerConfigs.NINTENDO_3DS),
                                 ),
+                                // Option keys follow azahar's `citra_<setting>` scheme (2125.x).
                                 defaultSettings =
                                 listOf(
-                                    CoreVariable("citra_use_acc_mul", "disabled"),
-                                    CoreVariable("citra_touch_touchscreen", "enabled"),
-                                    CoreVariable("citra_mouse_touchscreen", "disabled"),
-                                    CoreVariable("citra_render_touchscreen", "disabled"),
-                                    CoreVariable("citra_use_hw_shader_cache", "enabled"),
+                                    // Accurate shader multiplication is costly on mobile; keep it off by default.
+                                    CoreVariable("citra_shaders_accurate_mul", "disabled"),
+                                    CoreVariable("citra_use_disk_shader_cache", "enabled"),
+                                    CoreVariable("citra_enable_touch_touchscreen", "enabled"),
+                                    CoreVariable("citra_enable_mouse_touchscreen", "disabled"),
                                 ),
                                 exposedSettings =
                                 listOf(
-                                    ExposedSetting(
-                                        "citra_layout_option",
-                                        R.string.setting_citra_layout_option,
-                                        arrayListOf(
-                                            ExposedSetting.Value(
-                                                "Default Top-Bottom Screen",
-                                                R.string.value_citra_layout_option_topbottom,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "Side by Side",
-                                                R.string.value_citra_layout_option_sidebyside,
-                                            ),
-                                        ),
-                                    ),
+                                    // Graphics
                                     ExposedSetting(
                                         "citra_resolution_factor",
                                         R.string.setting_citra_resolution_factor,
                                     ),
                                     ExposedSetting(
-                                        "citra_use_acc_mul",
+                                        "citra_graphics_api",
+                                        R.string.setting_citra_graphics_api,
+                                        arrayListOf(
+                                            ExposedSetting.Value("Auto", R.string.value_citra_graphics_api_auto),
+                                            ExposedSetting.Value("Vulkan", R.string.value_citra_graphics_api_vulkan),
+                                            ExposedSetting.Value("OpenGL", R.string.value_citra_graphics_api_opengl),
+                                            ExposedSetting.Value("Software", R.string.value_citra_graphics_api_software),
+                                        ),
+                                    ),
+                                    ExposedSetting(
+                                        "citra_use_hw_shader",
+                                        R.string.setting_citra_use_hw_shader,
+                                    ),
+                                    ExposedSetting(
+                                        "citra_shaders_accurate_mul",
                                         R.string.setting_citra_use_acc_mul,
                                     ),
                                     ExposedSetting(
-                                        "citra_use_acc_geo_shaders",
-                                        R.string.setting_citra_use_acc_geo_shaders,
+                                        "citra_use_disk_shader_cache",
+                                        R.string.setting_citra_use_disk_shader_cache,
+                                    ),
+                                    ExposedSetting(
+                                        "citra_texture_filter",
+                                        R.string.setting_citra_texture_filter,
+                                    ),
+                                    // System
+                                    ExposedSetting(
+                                        "citra_is_new_3ds",
+                                        R.string.setting_citra_is_new_3ds,
+                                    ),
+                                    ExposedSetting(
+                                        "citra_region_value",
+                                        R.string.setting_citra_region_value,
+                                        arrayListOf(
+                                            ExposedSetting.Value("Auto", R.string.value_citra_region_auto),
+                                            ExposedSetting.Value("Japan", R.string.value_citra_region_japan),
+                                            ExposedSetting.Value("USA", R.string.value_citra_region_usa),
+                                            ExposedSetting.Value("Europe", R.string.value_citra_region_europe),
+                                            ExposedSetting.Value("Australia", R.string.value_citra_region_australia),
+                                            ExposedSetting.Value("China", R.string.value_citra_region_china),
+                                            ExposedSetting.Value("Korea", R.string.value_citra_region_korea),
+                                            ExposedSetting.Value("Taiwan", R.string.value_citra_region_taiwan),
+                                        ),
+                                    ),
+                                    ExposedSetting(
+                                        "citra_language_value",
+                                        R.string.setting_citra_language_value,
+                                        arrayListOf(
+                                            ExposedSetting.Value("English", R.string.value_citra_language_english),
+                                            ExposedSetting.Value("Japanese", R.string.value_citra_language_japanese),
+                                            ExposedSetting.Value("French", R.string.value_citra_language_french),
+                                            ExposedSetting.Value("Spanish", R.string.value_citra_language_spanish),
+                                            ExposedSetting.Value("German", R.string.value_citra_language_german),
+                                            ExposedSetting.Value("Italian", R.string.value_citra_language_italian),
+                                            ExposedSetting.Value("Dutch", R.string.value_citra_language_dutch),
+                                            ExposedSetting.Value("Portuguese", R.string.value_citra_language_portuguese),
+                                            ExposedSetting.Value("Russian", R.string.value_citra_language_russian),
+                                            ExposedSetting.Value("Korean", R.string.value_citra_language_korean),
+                                            ExposedSetting.Value(
+                                                "Traditional Chinese",
+                                                R.string.value_citra_language_traditional_chinese,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "Simplified Chinese",
+                                                R.string.value_citra_language_simplified_chinese,
+                                            ),
+                                        ),
+                                    ),
+                                    ExposedSetting(
+                                        "citra_cpu_clock_percentage",
+                                        R.string.setting_citra_cpu_clock_percentage,
+                                    ),
+                                    // Audio
+                                    ExposedSetting(
+                                        "citra_audio_emulation",
+                                        R.string.setting_citra_audio_emulation,
+                                        arrayListOf(
+                                            ExposedSetting.Value("hle", R.string.value_citra_audio_emulation_hle),
+                                            ExposedSetting.Value("lle", R.string.value_citra_audio_emulation_lle),
+                                            ExposedSetting.Value(
+                                                "lle_multithread",
+                                                R.string.value_citra_audio_emulation_lle_multithread,
+                                            ),
+                                        ),
+                                    ),
+                                    // Layout
+                                    ExposedSetting(
+                                        "citra_layout_option",
+                                        R.string.setting_citra_layout_option,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "default",
+                                                R.string.value_citra_layout_option_topbottom,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "side_by_side",
+                                                R.string.value_citra_layout_option_sidebyside,
+                                            ),
+                                        ),
+                                    ),
+                                    ExposedSetting(
+                                        "citra_swap_screen",
+                                        R.string.setting_citra_swap_screen,
+                                    ),
+                                    // Input
+                                    ExposedSetting(
+                                        "citra_analog_function",
+                                        R.string.setting_citra_analog_function,
+                                    ),
+                                    ExposedSetting(
+                                        "citra_enable_motion",
+                                        R.string.setting_citra_enable_motion,
                                     ),
                                 ),
                                 statesSupported = false,
