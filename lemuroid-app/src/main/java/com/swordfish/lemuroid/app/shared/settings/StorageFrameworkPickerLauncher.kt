@@ -31,6 +31,8 @@ import android.os.Bundle
 import android.provider.DocumentsContract
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
+import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
+import com.swordfish.lemuroid.app.tv.shared.TVHelper
 import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -58,7 +60,14 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
             try {
                 startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
             } catch (e: Exception) {
-                showStorageAccessFrameworkNotSupportedDialog()
+                // The SAF DocumentsUI is missing (common on some Android TVs). Fall back to the
+                // built-in TV folder picker instead of leaving the user with a dead-end dialog.
+                if (TVHelper.isTV(this)) {
+                    TVFolderPickerLauncher.pickFolder(this)
+                    finish()
+                } else {
+                    showStorageAccessFrameworkNotSupportedDialog()
+                }
             }
         }
     }

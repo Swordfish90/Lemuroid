@@ -276,4 +276,5 @@
   <string name="webview_reload">Recharger</string>
   <string name="webview_open_roomcord">Ouvrir Roomcord</string>
   <string name="webview_launch_roomcord">Lancer Roomcord</string>
+    <string name="game_menu_game_speed">Vitesse du jeu</string>
 </resources>

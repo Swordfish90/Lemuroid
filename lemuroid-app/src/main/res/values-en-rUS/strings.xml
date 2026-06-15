@@ -29,4 +29,5 @@
   <string name="webview_reload">Reload</string>
   <string name="webview_open_roomcord">Open Roomcord</string>
   <string name="webview_launch_roomcord">Launch Roomcord</string>
+    <string name="game_menu_game_speed">Game speed</string>
 </resources>

@@ -22,9 +22,11 @@
 
 package com.swordfish.lemuroid.lib.saves
 
-import com.swordfish.lemuroid.common.kotlin.readBytesUncompressed
+import com.swordfish.lemuroid.common.kotlin.readBytesUncompressedAtomic
+import com.swordfish.lemuroid.common.kotlin.readTextAtomic
 import com.swordfish.lemuroid.common.kotlin.runCatchingWithRetry
-import com.swordfish.lemuroid.common.kotlin.writeBytesCompressed
+import com.swordfish.lemuroid.common.kotlin.writeBytesCompressedAtomic
+import com.swordfish.lemuroid.common.kotlin.writeTextAtomic
 import com.swordfish.lemuroid.lib.library.CoreID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
@@ -101,12 +103,12 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
             val saveFile = getStateFileOrDeprecated(fileName, coreName)
             val metadataFile = getMetadataStateFile(fileName, coreName)
             if (saveFile.exists()) {
-                val byteArray = saveFile.readBytesUncompressed()
+                val byteArray = saveFile.readBytesUncompressedAtomic()
                 val stateMetadata =
                     runCatching {
                         Json.Default.decodeFromString(
                             SaveState.Metadata.serializer(),
-                            metadataFile.readText(),
+                            metadataFile.readTextAtomic(),
                         )
                     }
                 SaveState(byteArray, stateMetadata.getOrNull() ?: SaveState.Metadata())
@@ -133,7 +135,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         metadata: SaveState.Metadata,
     ) {
         val metadataFile = getMetadataStateFile(fileName, coreName)
-        metadataFile.writeText(Json.encodeToString(SaveState.Metadata.serializer(), metadata))
+        metadataFile.writeTextAtomic(Json.encodeToString(SaveState.Metadata.serializer(), metadata))
     }
 
     private fun writeStateToDisk(
@@ -142,7 +144,7 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         stateArray: ByteArray,
     ) {
         val saveFile = getStateFile(fileName, coreName)
-        saveFile.writeBytesCompressed(stateArray)
+        saveFile.writeBytesCompressedAtomic(stateArray)
     }
 
     @Deprecated("Using this folder collisions might happen across different systems.")

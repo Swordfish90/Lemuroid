@@ -9,4 +9,41 @@
     <string name="controller_standard">Tiêu chuẩn</string>
     <!-- Core settings titles -->
     <!-- Core settings values. Duplicated here to ease the translation process. -->
+    <string name="setting_citra_graphics_api">Graphics API</string>
+    <string name="setting_citra_use_hw_shader">Hardware shaders</string>
+    <string name="setting_citra_use_disk_shader_cache">Shader cache</string>
+    <string name="setting_citra_texture_filter">Texture filter</string>
+    <string name="setting_citra_is_new_3ds">Console model</string>
+    <string name="setting_citra_region_value">System region</string>
+    <string name="setting_citra_language_value">System language</string>
+    <string name="setting_citra_cpu_clock_percentage">CPU clock speed</string>
+    <string name="setting_citra_audio_emulation">Audio emulation</string>
+    <string name="setting_citra_swap_screen">Prominent screen</string>
+    <string name="setting_citra_analog_function">Right stick function</string>
+    <string name="setting_citra_enable_motion">Motion controls</string>
+    <string name="value_citra_audio_emulation_hle">HLE (fast)</string>
+    <string name="value_citra_audio_emulation_lle">LLE (accurate)</string>
+    <string name="value_citra_audio_emulation_lle_multithread">LLE multithreaded</string>
+    <string name="value_citra_graphics_api_auto">Auto</string>
+    <string name="value_citra_graphics_api_software">Software</string>
+    <string name="value_citra_region_auto">Auto</string>
+    <string name="value_citra_region_japan">Japan</string>
+    <string name="value_citra_region_usa">USA</string>
+    <string name="value_citra_region_europe">Europe</string>
+    <string name="value_citra_region_australia">Australia</string>
+    <string name="value_citra_region_china">China</string>
+    <string name="value_citra_region_korea">Korea</string>
+    <string name="value_citra_region_taiwan">Taiwan</string>
+    <string name="value_citra_language_english">English</string>
+    <string name="value_citra_language_japanese">Japanese</string>
+    <string name="value_citra_language_french">French</string>
+    <string name="value_citra_language_spanish">Spanish</string>
+    <string name="value_citra_language_german">German</string>
+    <string name="value_citra_language_italian">Italian</string>
+    <string name="value_citra_language_dutch">Dutch</string>
+    <string name="value_citra_language_portuguese">Portuguese</string>
+    <string name="value_citra_language_russian">Russian</string>
+    <string name="value_citra_language_korean">Korean</string>
+    <string name="value_citra_language_traditional_chinese">Traditional Chinese</string>
+    <string name="value_citra_language_simplified_chinese">Simplified Chinese</string>
 </resources>

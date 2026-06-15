@@ -23,6 +23,7 @@
 package com.swordfish.lemuroid.app.tv.shared
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Environment
 
@@ -40,7 +41,15 @@ object TVHelper {
         val isNotLegacyStorage =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Environment.isExternalStorageLegacy()
 
-        return isStandardHardware || isNotLegacyStorage
+        // Many Android TV devices ship without the Storage Access Framework DocumentsUI,
+        // so ACTION_OPEN_DOCUMENT_TREE cannot be launched at all. Without this check we would
+        // route to the SAF picker, hit an ActivityNotFoundException and leave the user unable
+        // to pick a games folder. When no document picker is present, treat SAF as unsupported
+        // so the built-in TV folder picker is used instead.
+        val isDocumentTreePickerAvailable =
+            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).resolveActivity(packageManager) != null
+
+        return isDocumentTreePickerAvailable && (isStandardHardware || isNotLegacyStorage)
     }
 
     fun isTV(context: Context): Boolean {

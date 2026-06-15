@@ -255,4 +255,5 @@
   <string name="webview_reload">Yeniden yükle</string>
   <string name="webview_open_roomcord">Roomcord\'u aç</string>
   <string name="webview_launch_roomcord">Roomcord\'u başlat</string>
+    <string name="game_menu_game_speed">Oyun hızı</string>
 </resources>

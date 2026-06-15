@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Emulation speed multipliers (frameSpeed). Display labels are universal, values map 1:1. -->
+    <string-array name="game_speed_entries" translatable="false">
+        <item>1x</item>
+        <item>2x</item>
+        <item>4x</item>
+        <item>8x</item>
+    </string-array>
+    <string-array name="game_speed_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+    </string-array>
+</resources>

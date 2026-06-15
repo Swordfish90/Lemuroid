@@ -8,8 +8,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Sensors
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,7 +28,11 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import kotlin.math.roundToInt
 import kotlin.reflect.KFunction1
+
+/** Selectable emulation speeds (frameSpeed multipliers) for the in-game speed slider. */
+private val GAME_SPEEDS = listOf(1, 2, 4, 8)
 
 @Composable
 fun GameMenuHomeScreen(
@@ -96,17 +106,38 @@ fun GameMenuHomeScreen(
         )
 
         if (gameMenuRequest.fastForwardSupported) {
-            LemuroidSettingsSwitch(
-                title = { Text(text = stringResource(id = R.string.game_menu_fast_forward)) },
-                icon = {
+            // Discrete game-speed slider (1x / 2x / 4x / 8x). The slider position is an index
+            // into GAME_SPEEDS; the actual frameSpeed is applied on release (onValueChangeFinished)
+            // because committing a result closes the menu — applying per drag-tick would close it
+            // mid-drag.
+            val initialIndex =
+                GAME_SPEEDS.indexOf(gameMenuRequest.fastForwardSpeed).coerceAtLeast(0)
+            var speedIndex by remember { mutableFloatStateOf(initialIndex.toFloat()) }
+            val currentSpeed = GAME_SPEEDS[speedIndex.roundToInt().coerceIn(0, GAME_SPEEDS.lastIndex)]
+
+            ListItem(
+                leadingContent = {
                     Icon(
                         painterResource(R.drawable.ic_menu_fast_forward),
-                        contentDescription = stringResource(id = R.string.game_menu_fast_forward),
+                        contentDescription = stringResource(id = R.string.game_menu_game_speed),
                     )
                 },
-                state = rememberMemoryBooleanSettingState(gameMenuRequest.fastForwardEnabled),
-                onCheckedChange = {
-                    onResult { putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, it) }
+                headlineContent = { Text(text = stringResource(id = R.string.game_menu_game_speed)) },
+                supportingContent = {
+                    Column {
+                        Text(text = "${currentSpeed}x")
+                        Slider(
+                            value = speedIndex,
+                            onValueChange = { speedIndex = it },
+                            valueRange = 0f..GAME_SPEEDS.lastIndex.toFloat(),
+                            steps = GAME_SPEEDS.size - 2,
+                            onValueChangeFinished = {
+                                val speed =
+                                    GAME_SPEEDS[speedIndex.roundToInt().coerceIn(0, GAME_SPEEDS.lastIndex)]
+                                onResult { putExtra(GameMenuContract.RESULT_FAST_FORWARD_SPEED, speed) }
+                            },
+                        )
+                    }
                 },
             )
         }

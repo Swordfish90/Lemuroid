@@ -258,6 +258,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         GameMenuContract.EXTRA_FAST_FORWARD,
                         (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1,
                     )
+                    this.putExtra(
+                        GameMenuContract.EXTRA_FAST_FORWARD_SPEED,
+                        baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1,
+                    )
                     this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
                     // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
                     this.putExtra(GameMenuContract.EXTRA_TILT_ALL_CONFIGS, tiltConfigurations.toTypedArray())
@@ -451,6 +455,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                             false,
                         )
                     this.frameSpeed = if (fastForwardEnabled) 2 else 1
+                }
+            }
+            if (data?.hasExtra(GameMenuContract.RESULT_FAST_FORWARD_SPEED) == true) {
+                val speed =
+                    data.getIntExtra(GameMenuContract.RESULT_FAST_FORWARD_SPEED, 1).coerceIn(1, 8)
+                baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed = speed
+                // Remember the chosen speed (>1) so the fast-forward shortcut toggles to it.
+                if (speed > 1) {
+                    baseGameScreenViewModel.lastFastForwardSpeed = speed
                 }
             }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
