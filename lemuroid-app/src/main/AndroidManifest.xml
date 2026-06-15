@@ -29,6 +29,10 @@
     <queries>
         <package android:name="com.feedai.mobile" />
         <package android:name="com.fulldive.extension.fullroid.pro" />
+        <!-- Needed so resolveActivity() can detect the SAF document picker on Android 11+ -->
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
+        </intent>
     </queries>
 
     <application
