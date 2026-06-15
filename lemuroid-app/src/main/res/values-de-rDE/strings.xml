@@ -276,4 +276,5 @@
   <string name="webview_reload">Neu laden</string>
   <string name="webview_open_roomcord">Roomcord öffnen</string>
   <string name="webview_launch_roomcord">Roomcord starten</string>
+    <string name="game_menu_game_speed">Spielgeschwindigkeit</string>
 </resources>

@@ -276,4 +276,5 @@
   <string name="webview_reload">إعادة التحميل</string>
   <string name="webview_open_roomcord">فتح Roomcord</string>
   <string name="webview_launch_roomcord">تشغيل Roomcord</string>
+    <string name="game_menu_game_speed">سرعة اللعبة</string>
 </resources>

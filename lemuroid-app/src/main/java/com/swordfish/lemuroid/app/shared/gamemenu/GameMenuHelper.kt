@@ -61,6 +61,26 @@ object GameMenuHelper {
         preference?.isVisible = fastForwardSupported
     }
 
+    fun setupGameSpeedOption(
+        activity: Activity?,
+        screen: PreferenceScreen,
+        fastForwardSpeed: Int,
+        fastForwardSupported: Boolean,
+    ) {
+        val preference = screen.findPreference<ListPreference>(GAME_SPEED) ?: return
+        preference.isVisible = fastForwardSupported
+        preference.value = fastForwardSpeed.toString()
+        preference.setOnPreferenceChangeListener { _, newValue ->
+            val speed = (newValue as? String)?.toIntOrNull() ?: 1
+            val resultIntent =
+                Intent().apply {
+                    putExtra(GameMenuContract.RESULT_FAST_FORWARD_SPEED, speed)
+                }
+            setResultAndFinish(activity, resultIntent)
+            true
+        }
+    }
+
     fun setupSaveOption(
         screen: PreferenceScreen,
         systemCoreConfig: SystemCoreConfig,
@@ -266,6 +286,7 @@ object GameMenuHelper {
     }
 
     const val FAST_FORWARD = "pref_game_fast_forward"
+    const val GAME_SPEED = "pref_game_speed"
     const val MUTE = "pref_game_mute"
     const val SECTION_CORE_OPTIONS = "pref_game_section_core_options"
     const val SECTION_CHANGE_DISK = "pref_game_section_change_disk"

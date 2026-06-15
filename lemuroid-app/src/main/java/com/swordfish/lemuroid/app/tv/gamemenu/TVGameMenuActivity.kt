@@ -82,9 +82,8 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 intent.extras?.getBoolean(GameMenuContract.EXTRA_AUDIO_ENABLED)
                     ?: throw InvalidParameterException("Missing EXTRA_AUDIO_ENABLED")
 
-            val fastForwardEnabled =
-                intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD)
-                    ?: throw InvalidParameterException("Missing EXTRA_FAST_FORWARD")
+            val fastForwardSpeed =
+                intent.extras?.getInt(GameMenuContract.EXTRA_FAST_FORWARD_SPEED, 1) ?: 1
 
             val fastForwardSupported =
                 intent.extras?.getBoolean(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED)
@@ -102,7 +101,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                     numDisks,
                     currentDisk,
                     audioEnabled,
-                    fastForwardEnabled,
+                    fastForwardSpeed,
                     fastForwardSupported,
                 )
             supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment)
@@ -126,7 +125,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         private val numDisks: Int,
         private val currentDisk: Int,
         private val audioEnabled: Boolean,
-        private val fastForwardEnabled: Boolean,
+        private val fastForwardSpeed: Int,
         private val fastForwardSupported: Boolean,
     ) : BaseSettingsFragmentWrapper() {
         override fun createFragment(): Fragment {
@@ -141,7 +140,7 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 numDisks,
                 currentDisk,
                 audioEnabled,
-                fastForwardEnabled,
+                fastForwardSpeed,
                 fastForwardSupported,
             )
         }

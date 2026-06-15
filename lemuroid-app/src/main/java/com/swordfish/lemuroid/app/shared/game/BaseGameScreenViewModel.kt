@@ -104,6 +104,11 @@ class BaseGameScreenViewModel(
             rumbleManager,
             viewModelScope,
         )
+
+    // Last game speed (>1) chosen via the speed slider. The fast-forward shortcut toggles
+    // between 1x and this value (defaults to 2x until the user picks something else).
+    var lastFastForwardSpeed: Int = 2
+
     private val tilt = GameViewModelTilt(appContext, settingsManager)
     private val inputs =
         GameViewModelInput(
@@ -267,9 +272,9 @@ class BaseGameScreenViewModel(
     }
 
     fun toggleFastForward() {
-        Timber.d("Loading quick save")
         retroGameView.retroGameView?.apply {
-            frameSpeed = if (frameSpeed == 1) 2 else 1
+            // Toggle between normal speed and the last speed chosen via the slider.
+            frameSpeed = if (frameSpeed == 1) lastFastForwardSpeed else 1
         }
     }
 

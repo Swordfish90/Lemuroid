@@ -133,4 +133,5 @@
   <string name="webview_reload">Újratöltés</string>
   <string name="webview_open_roomcord">Roomcord megnyitása</string>
   <string name="webview_launch_roomcord">Roomcord indítása</string>
+    <string name="game_menu_game_speed">Játéksebesség</string>
 </resources>

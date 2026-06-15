@@ -216,4 +216,5 @@
   <string name="webview_reload">טען מחדש</string>
   <string name="webview_open_roomcord">פתח את Roomcord</string>
   <string name="webview_launch_roomcord">הפעל את Roomcord</string>
+    <string name="game_menu_game_speed">מהירות המשחק</string>
 </resources>

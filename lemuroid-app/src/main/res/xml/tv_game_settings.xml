@@ -50,10 +50,13 @@
         android:title="@string/game_menu_mute_audio"
         app:icon="@drawable/ic_menu_mute"/>
 
-    <SwitchPreference
-        android:key="pref_game_fast_forward"
-        android:title="@string/game_menu_fast_forward"
-        app:icon="@drawable/ic_menu_fast_forward"/>
+    <ListPreference
+        android:key="pref_game_speed"
+        android:title="@string/game_menu_game_speed"
+        android:entries="@array/game_speed_entries"
+        android:entryValues="@array/game_speed_values"
+        app:icon="@drawable/ic_menu_fast_forward"
+        app:useSimpleSummaryProvider="true"/>
 
     <ListPreference
         android:key="pref_game_section_change_disk"

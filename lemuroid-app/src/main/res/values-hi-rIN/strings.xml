@@ -95,4 +95,5 @@
   <string name="webview_reload">फिर से लोड करें</string>
   <string name="webview_open_roomcord">Roomcord खोलें</string>
   <string name="webview_launch_roomcord">Roomcord लॉन्च करें</string>
+    <string name="game_menu_game_speed">गेम स्पीड</string>
 </resources>

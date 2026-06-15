@@ -274,4 +274,5 @@
   <string name="webview_reload">Lataa uudelleen</string>
   <string name="webview_open_roomcord">Avaa Roomcord</string>
   <string name="webview_launch_roomcord">Käynnistä Roomcord</string>
+    <string name="game_menu_game_speed">Pelin nopeus</string>
 </resources>

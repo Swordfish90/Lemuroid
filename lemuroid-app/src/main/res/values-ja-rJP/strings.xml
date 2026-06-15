@@ -277,4 +277,5 @@
   <string name="webview_reload">再読み込み</string>
   <string name="webview_open_roomcord">Roomcord を開く</string>
   <string name="webview_launch_roomcord">Roomcord を起動</string>
+    <string name="game_menu_game_speed">ゲーム速度</string>
 </resources>

@@ -95,4 +95,5 @@
   <string name="webview_reload">Herlaai</string>
   <string name="webview_open_roomcord">Maak Roomcord oop</string>
   <string name="webview_launch_roomcord">Begin Roomcord</string>
+    <string name="game_menu_game_speed">Spelspoed</string>
 </resources>
