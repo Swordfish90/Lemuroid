@@ -1,4 +1,7 @@
 What's New:
 
-• Emulator Core Updates: Updated and improved emulation cores for better performance and compatibility
-• Free Games Catalog: Browse and play free games directly from the app
+• Game Speed Control: Speed up gameplay with selectable 1x / 2x / 4x / 8x, from the in-game menu or a gamepad shortcut
+• Updated N3DS Emulation: Newer core with better performance and compatibility
+• More 3DS Settings: Resolution, graphics API, region & language, screen layout, audio mode and more
+• Android TV Fix: Adding a games folder now works on devices without a system file picker
+• Various bug fixes and stability improvements

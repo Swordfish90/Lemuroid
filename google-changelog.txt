@@ -1,223 +1,312 @@
 <en-US>
 What's New:
 
-• Emulator Core Updates: Updated and improved emulation cores for better performance and compatibility
-• Free Games Catalog: Browse and play free games directly from the app
+• Game Speed Control: Speed up gameplay with selectable 1x / 2x / 4x / 8x, from the in-game menu or a gamepad shortcut
+• Updated N3DS Emulation: Newer core with better performance and compatibility
+• More 3DS Settings: Resolution, graphics API, region & language, screen layout, audio mode and more
+• Android TV Fix: Adding a games folder now works on devices without a system file picker
+• Various bug fixes and stability improvements
 </en-US>
 
 <zh-CN>
 更新内容：
 
-• 模拟器核心更新：更新并改进了模拟核心，提升性能和兼容性
-• 免费游戏目录：直接在应用内浏览和游玩免费游戏
+• 游戏速度控制：可选 1x / 2x / 4x / 8x 加速，支持游戏内菜单或手柄快捷键
+• 更新任天堂 3DS 模拟：更新核心，性能与兼容性更佳
+• 更多 3DS 设置：分辨率、图形 API、地区与语言、屏幕布局、音频模式等
+• Android TV 修复：在没有系统文件选择器的设备上现可添加游戏文件夹
+• 多项错误修复和稳定性改进
 </zh-CN>
 
 <zh-TW>
 更新內容：
 
-• 模擬器核心更新：更新並改進了模擬核心，提升效能和相容性
-• 免費遊戲目錄：直接在應用內瀏覽並遊玩免費遊戲
+• 遊戲速度控制：可選 1x / 2x / 4x / 8x 加速，支援遊戲內選單或手把快捷鍵
+• 更新任天堂 3DS 模擬：更新核心，效能與相容性更佳
+• 更多 3DS 設定：解析度、圖形 API、地區與語言、螢幕版面、音訊模式等
+• Android TV 修正：在沒有系統檔案選擇器的裝置上現可新增遊戲資料夾
+• 多項錯誤修正與穩定性改進
 </zh-TW>
 
 <hi-IN>
 नया क्या है:
 
-• एमुलेटर कोर अपडेट्स: बेहतर प्रदर्शन और संगतता के लिए एमुलेशन कोर को अपडेट और बेहतर बनाया गया
-• मुफ्त गेम्स कैटलॉग: ऐप से सीधे मुफ्त गेम्स ब्राउज़ करें और खेलें
+• गेम स्पीड कंट्रोल: इन-गेम मेनू या गेमपैड शॉर्टकट से 1x / 2x / 4x / 8x गति चुनें
+• अपडेटेड N3DS एमुलेशन: बेहतर प्रदर्शन और संगतता वाला नया कोर
+• अधिक 3DS सेटिंग्स: रिज़ॉल्यूशन, ग्राफिक्स API, क्षेत्र और भाषा, स्क्रीन लेआउट, ऑडियो मोड और बहुत कुछ
+• Android TV फिक्स: अब सिस्टम फ़ाइल पिकर के बिना डिवाइस पर भी गेम्स फ़ोल्डर जोड़ा जा सकता है
+• विभिन्न बग फिक्स और स्थिरता सुधार
 </hi-IN>
 
 <es-ES>
 Novedades:
 
-• Actualizaciones del Núcleo del Emulador: Núcleos de emulación actualizados y mejorados para mejor rendimiento y compatibilidad
-• Catálogo de Juegos Gratuitos: Explora y juega juegos gratuitos directamente desde la aplicación
+• Control de velocidad del juego: Acelera la partida con 1x / 2x / 4x / 8x desde el menú del juego o un atajo del mando
+• Emulación de N3DS actualizada: Núcleo más reciente con mejor rendimiento y compatibilidad
+• Más ajustes de 3DS: Resolución, API de gráficos, región e idioma, disposición de pantalla, modo de audio y más
+• Corrección para Android TV: Añadir una carpeta de juegos ahora funciona en dispositivos sin selector de archivos del sistema
 </es-ES>
 
 <ar>
 ما الجديد:
 
-• تحديثات نواة المحاكي: تحديث وتحسين نوى المحاكاة لأداء وتوافق أفضل
-• كتالوج الألعاب المجانية: تصفح وألعب الألعاب المجانية مباشرة من التطبيق
+• التحكم في سرعة اللعبة: تسريع اللعب بسرعات 1x / 2x / 4x / 8x من قائمة اللعبة أو اختصار ذراع التحكم
+• تحديث محاكاة N3DS: نواة أحدث بأداء وتوافق أفضل
+• المزيد من إعدادات 3DS: الدقة وواجهة الرسومات والمنطقة واللغة وتخطيط الشاشة ووضع الصوت والمزيد
+• إصلاح Android TV: إضافة مجلد الألعاب تعمل الآن على الأجهزة التي لا تحتوي على منتقي ملفات النظام
+• إصلاحات متنوعة للأخطاء وتحسينات في الاستقرار
 </ar>
 
 <pt-BR>
 Novidades:
 
-• Atualizações dos Núcleos do Emulador: Núcleos de emulação atualizados e melhorados para melhor desempenho e compatibilidade
-• Catálogo de Jogos Gratuitos: Navegue e jogue jogos gratuitos diretamente no aplicativo
+• Controle de velocidade do jogo: Acelere a jogabilidade com 1x / 2x / 4x / 8x pelo menu do jogo ou atalho do controle
+• Emulação de N3DS atualizada: Núcleo mais recente com melhor desempenho e compatibilidade
+• Mais configurações de 3DS: Resolução, API gráfica, região e idioma, layout da tela, modo de áudio e mais
+• Correção para Android TV: Adicionar uma pasta de jogos agora funciona em dispositivos sem seletor de arquivos do sistema
 </pt-BR>
 
 <id>
 Apa yang Baru:
 
-• Pembaruan Inti Emulator: Inti emulasi diperbarui dan ditingkatkan untuk performa dan kompatibilitas yang lebih baik
-• Katalog Game Gratis: Jelajahi dan mainkan game gratis langsung dari aplikasi
+• Kontrol Kecepatan Game: Percepat permainan dengan pilihan 1x / 2x / 4x / 8x dari menu dalam game atau pintasan gamepad
+• Emulasi N3DS Diperbarui: Inti lebih baru dengan performa dan kompatibilitas lebih baik
+• Lebih Banyak Pengaturan 3DS: Resolusi, API grafis, wilayah & bahasa, tata letak layar, mode audio, dan lainnya
+• Perbaikan Android TV: Menambahkan folder game kini berfungsi di perangkat tanpa pemilih file sistem
+• Berbagai perbaikan bug dan peningkatan stabilitas
 </id>
 
 <ru-RU>
 Что нового:
 
-• Обновления ядер эмулятора: Обновлены и улучшены ядра эмуляции для лучшей производительности и совместимости
-• Каталог бесплатных игр: Просматривайте и играйте в бесплатные игры прямо из приложения
+• Управление скоростью игры: ускорение 1x / 2x / 4x / 8x из игрового меню или по кнопке геймпада
+• Обновлённая эмуляция N3DS: новое ядро с лучшей производительностью и совместимостью
+• Больше настроек 3DS: разрешение, графический API, регион и язык, раскладка экранов, режим звука и другое
+• Исправление для Android TV: добавление папки с играми теперь работает на устройствах без системного выбора файлов
+• Различные исправления ошибок и улучшения стабильности
 </ru-RU>
 
 <ja-JP>
 新機能:
 
-• エミュレーターコアの更新: パフォーマンスと互換性向上のためエミュレーションコアを更新・改善
-• 無料ゲームカタログ: アプリから直接無料ゲームを閲覧してプレイ
+• ゲーム速度コントロール: ゲーム内メニューまたはゲームパッドのショートカットで 1x / 2x / 4x / 8x の倍速を選択
+• N3DS エミュレーションを更新: 新しいコアでパフォーマンスと互換性が向上
+• 3DS 設定の追加: 解像度、グラフィックAPI、地域と言語、画面レイアウト、オーディオモードなど
+• Android TV の修正: システムのファイル選択ツールがない端末でもゲームフォルダーを追加可能に
+• 各種バグ修正と安定性の改善
 </ja-JP>
 
 <de-DE>
 Neues:
 
-• Emulator-Kern-Updates: Emulationskerne für bessere Leistung und Kompatibilität aktualisiert und verbessert
-• Kostenloser Spielekatalog: Kostenlose Spiele direkt in der App durchsuchen und spielen
+• Spielgeschwindigkeit: Beschleunige das Spiel mit 1x / 2x / 4x / 8x über das Spielmenü oder eine Gamepad-Verknüpfung
+• Aktualisierte N3DS-Emulation: Neuerer Kern mit besserer Leistung und Kompatibilität
+• Mehr 3DS-Einstellungen: Auflösung, Grafik-API, Region & Sprache, Bildschirmlayout, Audiomodus und mehr
+• Android TV-Korrektur: Das Hinzufügen eines Spieleordners funktioniert jetzt auf Geräten ohne System-Dateiauswahl
+• Verschiedene Fehlerbehebungen und Stabilitätsverbesserungen
 </de-DE>
 
 <fr-FR>
 Nouveautés :
 
-• Mises à Jour des Cœurs de l'Émulateur : Cœurs d'émulation mis à jour et améliorés pour de meilleures performances et compatibilité
-• Catalogue de Jeux Gratuits : Parcourez et jouez à des jeux gratuits directement depuis l'application
+• Contrôle de la vitesse du jeu : Accélérez le jeu avec 1x / 2x / 4x / 8x depuis le menu du jeu ou un raccourci manette
+• Émulation N3DS mise à jour : Cœur plus récent avec de meilleures performances et compatibilité
+• Plus de paramètres 3DS : Résolution, API graphique, région et langue, disposition de l'écran, mode audio et plus
+• Correctif Android TV : L'ajout d'un dossier de jeux fonctionne désormais sur les appareils sans sélecteur de fichiers système
 </fr-FR>
 
 <ko-KR>
 새로운 기능:
 
-• 에뮬레이터 코어 업데이트: 더 나은 성능과 호환성을 위해 에뮬레이션 코어 업데이트 및 개선
-• 무료 게임 카탈로그: 앱에서 직접 무료 게임을 탐색하고 플레이
+• 게임 속도 조절: 게임 내 메뉴 또는 게임패드 단축키로 1x / 2x / 4x / 8x 속도 선택
+• N3DS 에뮬레이션 업데이트: 더 나은 성능과 호환성을 갖춘 최신 코어
+• 더 많은 3DS 설정: 해상도, 그래픽 API, 지역 및 언어, 화면 레이아웃, 오디오 모드 등
+• Android TV 수정: 시스템 파일 선택기가 없는 기기에서도 게임 폴더 추가 가능
+• 다양한 버그 수정 및 안정성 개선
 </ko-KR>
 
 <tr-TR>
 Yenilikler:
 
-• Emülatör Çekirdek Güncellemeleri: Daha iyi performans ve uyumluluk için emülasyon çekirdekleri güncellendi ve iyileştirildi
-• Ücretsiz Oyun Kataloğu: Doğrudan uygulamadan ücretsiz oyunlara göz atın ve oynayın
+• Oyun Hızı Kontrolü: Oyun içi menü veya gamepad kısayolu ile 1x / 2x / 4x / 8x hız seçin
+• Güncellenmiş N3DS Emülasyonu: Daha iyi performans ve uyumluluk için yeni çekirdek
+• Daha Fazla 3DS Ayarı: Çözünürlük, grafik API'si, bölge ve dil, ekran düzeni, ses modu ve daha fazlası
+• Android TV Düzeltmesi: Oyun klasörü ekleme artık sistem dosya seçici olmayan cihazlarda da çalışıyor
+• Çeşitli hata düzeltmeleri ve kararlılık iyileştirmeleri
 </tr-TR>
 
 <vi>
 Có gì mới:
 
-• Cập nhật Lõi Giả lập: Cập nhật và cải tiến các lõi giả lập để hiệu suất và khả năng tương thích tốt hơn
-• Danh mục Game Miễn phí: Duyệt và chơi các game miễn phí trực tiếp từ ứng dụng
+• Điều khiển tốc độ game: Tăng tốc với 1x / 2x / 4x / 8x từ menu trong game hoặc phím tắt tay cầm
+• Cập nhật giả lập N3DS: Lõi mới hơn với hiệu suất và khả năng tương thích tốt hơn
+• Thêm cài đặt 3DS: Độ phân giải, API đồ họa, khu vực & ngôn ngữ, bố cục màn hình, chế độ âm thanh và hơn thế
+• Sửa lỗi Android TV: Thêm thư mục game giờ đã hoạt động trên thiết bị không có trình chọn tệp hệ thống
+• Nhiều sửa lỗi và cải thiện độ ổn định
 </vi>
 
 <it-IT>
 Novità:
 
-• Aggiornamenti del Core dell'Emulatore: Core di emulazione aggiornati e migliorati per migliori prestazioni e compatibilità
-• Catalogo Giochi Gratuiti: Sfoglia e gioca ai giochi gratuiti direttamente dall'app
+• Controllo velocità di gioco: Accelera il gioco con 1x / 2x / 4x / 8x dal menu di gioco o da una scorciatoia del gamepad
+• Emulazione N3DS aggiornata: Core più recente con prestazioni e compatibilità migliori
+• Più impostazioni 3DS: Risoluzione, API grafica, regione e lingua, layout schermo, modalità audio e altro
+• Correzione Android TV: L'aggiunta di una cartella di giochi ora funziona su dispositivi senza selettore file di sistema
 </it-IT>
 
 <pl-PL>
 Co nowego:
 
-• Aktualizacje rdzeni emulatora: Zaktualizowane i ulepszone rdzenie emulacji dla lepszej wydajności i kompatybilności
-• Katalog darmowych gier: Przeglądaj i graj w darmowe gry bezpośrednio z aplikacji
+• Kontrola prędkości gry: Przyspiesz grę z opcją 1x / 2x / 4x / 8x z menu gry lub skrótu na padzie
+• Zaktualizowana emulacja N3DS: Nowszy rdzeń z lepszą wydajnością i kompatybilnością
+• Więcej ustawień 3DS: Rozdzielczość, API graficzne, region i język, układ ekranu, tryb dźwięku i więcej
+• Poprawka dla Android TV: Dodawanie folderu z grami działa teraz na urządzeniach bez systemowego wyboru plików
+• Różne poprawki błędów i usprawnienia stabilności
 </pl-PL>
 
 <uk>
 Що нового:
 
-• Оновлення ядер емулятора: Оновлено та покращено ядра емуляції для кращої продуктивності та сумісності
-• Каталог безкоштовних ігор: Переглядайте та грайте в безкоштовні ігри прямо з додатку
+• Керування швидкістю гри: прискорення 1x / 2x / 4x / 8x з ігрового меню або кнопкою геймпада
+• Оновлена емуляція N3DS: новіше ядро з кращою продуктивністю та сумісністю
+• Більше налаштувань 3DS: роздільна здатність, графічний API, регіон і мова, розкладка екранів, режим звуку тощо
+• Виправлення для Android TV: додавання папки з іграми тепер працює на пристроях без системного вибору файлів
+• Різні виправлення помилок і покращення стабільності
 </uk>
 
 <cs-CZ>
 Co je nového:
 
-• Aktualizace jader emulátoru: Jádra emulace aktualizována a vylepšena pro lepší výkon a kompatibilitu
-• Katalog bezplatných her: Procházejte a hrajte bezplatné hry přímo z aplikace
+• Ovládání rychlosti hry: Zrychlete hru pomocí 1x / 2x / 4x / 8x z herního menu nebo zkratky na gamepadu
+• Aktualizovaná emulace N3DS: Novější jádro s lepším výkonem a kompatibilitou
+• Více nastavení 3DS: Rozlišení, grafické API, region a jazyk, rozložení obrazovky, režim zvuku a další
+• Oprava pro Android TV: Přidání složky s hrami nyní funguje na zařízeních bez systémového výběru souborů
+• Různé opravy chyb a vylepšení stability
 </cs-CZ>
 
 <da-DK>
 Hvad er nyt:
 
-• Emulator Kerneopdateringer: Emulationskerner opdateret og forbedret for bedre ydeevne og kompatibilitet
-• Gratis Spilkatalog: Gennemse og spil gratis spil direkte fra appen
+• Spilhastighedskontrol: Sæt farten op med 1x / 2x / 4x / 8x fra spilmenuen eller en gamepad-genvej
+• Opdateret N3DS-emulering: Nyere kerne med bedre ydeevne og kompatibilitet
+• Flere 3DS-indstillinger: Opløsning, grafik-API, region og sprog, skærmlayout, lydtilstand og mere
+• Android TV-rettelse: Tilføjelse af en spilmappe virker nu på enheder uden en systemfilvælger
+• Diverse fejlrettelser og stabilitetsforbedringer
 </da-DK>
 
 <el-GR>
 Τι νέο υπάρχει:
 
-• Ενημερώσεις Πυρήνα Εξομοιωτή: Ενημερωμένοι και βελτιωμένοι πυρήνες εξομοίωσης για καλύτερη απόδοση και συμβατότητα
-• Κατάλογος Δωρεάν Παιχνιδιών: Περιηγηθείτε και παίξτε δωρεάν παιχνίδια απευθείας από την εφαρμογή
+• Έλεγχος ταχύτητας παιχνιδιού: Επιταχύνετε το παιχνίδι με 1x / 2x / 4x / 8x από το μενού του παιχνιδιού ή συντόμευση χειριστηρίου
+• Ενημερωμένη εξομοίωση N3DS: Νεότερος πυρήνας με καλύτερη απόδοση και συμβατότητα
+• Περισσότερες ρυθμίσεις 3DS: Ανάλυση, γραφικό API, περιοχή και γλώσσα, διάταξη οθόνης, λειτουργία ήχου και άλλα
+• Διόρθωση για Android TV: Η προσθήκη φακέλου παιχνιδιών λειτουργεί τώρα σε συσκευές χωρίς επιλογέα αρχείων συστήματος
 </el-GR>
 
 <fi-FI>
 Mitä uutta:
 
-• Emulaattorin Ydinten Päivitykset: Emulaattoriytimet päivitetty ja parannettu paremman suorituskyvyn ja yhteensopivuuden vuoksi
-• Ilmaisten Pelien Luettelo: Selaa ja pelaa ilmaisia pelejä suoraan sovelluksesta
+• Pelinopeuden hallinta: Nopeuta peliä valinnoilla 1x / 2x / 4x / 8x pelin valikosta tai ohjaimen pikanäppäimellä
+• Päivitetty N3DS -emulointi: Uudempi ydin paremmalla suorituskyvyllä ja yhteensopivuudella
+• Lisää 3DS-asetuksia: Tarkkuus, grafiikka-API, alue ja kieli, näytön asettelu, äänitila ja muuta
+• Android TV -korjaus: Pelikansion lisääminen toimii nyt laitteilla, joilla ei ole järjestelmän tiedostonvalitsinta
+• Erilaisia virhekorjauksia ja vakausparannuksia
 </fi-FI>
 
 <hu-HU>
 Újdonságok:
 
-• Emulátor Magfrissítések: Az emulációs magok frissítve és javítva a jobb teljesítmény és kompatibilitás érdekében
-• Ingyenes Játékok Katalógusa: Böngésszen és játsszon ingyenes játékokkal közvetlenül az alkalmazásból
+• Játéksebesség-vezérlés: Gyorsítsd a játékot 1x / 2x / 4x / 8x sebességgel a játékmenüből vagy gamepad-gyorsbillentyűvel
+• Frissített N3DS-emuláció: Újabb mag jobb teljesítménnyel és kompatibilitással
+• Több 3DS-beállítás: Felbontás, grafikus API, régió és nyelv, képernyőelrendezés, hangmód és további
+• Android TV-javítás: A játékmappa hozzáadása most már működik rendszerfájl-választó nélküli eszközökön is
+• Különféle hibajavítások és stabilitási fejlesztések
 </hu-HU>
 
 <iw-IL>
 מה חדש:
 
-• עדכוני ליבת האמולטור: ליבות האמולציה עודכנו ושופרו לביצועים ותאימות טובים יותר
-• קטלוג משחקים חינמיים: עיין ושחק במשחקים חינמיים ישירות מהאפליקציה
+• בקרת מהירות המשחק: האיצו את המשחק עם 1x / 2x / 4x / 8x מתפריט המשחק או קיצור בשלט
+• אמולציית N3DS מעודכנת: ליבה חדשה יותר עם ביצועים ותאימות טובים יותר
+• עוד הגדרות 3DS: רזולוציה, API גרפי, אזור ושפה, פריסת מסך, מצב שמע ועוד
+• תיקון ל-Android TV: הוספת תיקיית משחקים פועלת כעת גם במכשירים ללא בורר קבצים של המערכת
+• תיקוני באגים שונים ושיפורי יציבות
 </iw-IL>
 
 <nl-NL>
 Wat is nieuw:
 
-• Emulator Kernupdates: Emulatiekernen bijgewerkt en verbeterd voor betere prestaties en compatibiliteit
-• Gratis Spelencatalogus: Blader door en speel gratis spellen direct vanuit de app
+• Spelsnelheidsregeling: Versnel het spel met 1x / 2x / 4x / 8x via het spelmenu of een gamepad-snelkoppeling
+• Bijgewerkte N3DS-emulatie: Nieuwere core met betere prestaties en compatibiliteit
+• Meer 3DS-instellingen: Resolutie, grafische API, regio en taal, schermindeling, audiomodus en meer
+• Android TV-fix: Een spelmap toevoegen werkt nu op apparaten zonder systeembestandskiezer
+• Diverse bugfixes en stabiliteitsverbeteringen
 </nl-NL>
 
 <no-NO>
 Hva er nytt:
 
-• Oppdateringer av Emulator Kjerner: Emulatorkjerner oppdatert og forbedret for bedre ytelse og kompatibilitet
-• Gratis Spillkatalog: Bla gjennom og spill gratis spill direkte fra appen
+• Spillhastighetskontroll: Øk hastigheten med 1x / 2x / 4x / 8x fra spillmenyen eller en gamepad-snarvei
+• Oppdatert N3DS-emulering: Nyere kjerne med bedre ytelse og kompatibilitet
+• Flere 3DS-innstillinger: Oppløsning, grafikk-API, region og språk, skjermoppsett, lydmodus og mer
+• Android TV-rettelse: Å legge til en spillmappe fungerer nå på enheter uten systemfilvelger
+• Diverse feilrettinger og stabilitetsforbedringer
 </no-NO>
 
 <pt-PT>
 Novidades:
 
-• Atualizações dos Núcleos do Emulador: Núcleos de emulação atualizados e melhorados para melhor desempenho e compatibilidade
-• Catálogo de Jogos Gratuitos: Navegue e jogue jogos gratuitos diretamente na aplicação
+• Controlo de velocidade do jogo: Acelere a jogabilidade com 1x / 2x / 4x / 8x a partir do menu do jogo ou de um atalho do comando
+• Emulação N3DS atualizada: Núcleo mais recente com melhor desempenho e compatibilidade
+• Mais definições 3DS: Resolução, API gráfica, região e idioma, disposição do ecrã, modo de áudio e mais
+• Correção para Android TV: Adicionar uma pasta de jogos funciona agora em dispositivos sem seletor de ficheiros do sistema
 </pt-PT>
 
 <ro>
 Ce este nou:
 
-• Actualizări ale Nucleului Emulatorului: Nuclee de emulare actualizate și îmbunătățite pentru performanță și compatibilitate mai bune
-• Catalog de Jocuri Gratuite: Răsfoiți și jucați jocuri gratuite direct din aplicație
+• Control al vitezei jocului: Accelerează jocul cu 1x / 2x / 4x / 8x din meniul jocului sau o scurtătură de gamepad
+• Emulare N3DS actualizată: Nucleu mai nou cu performanță și compatibilitate mai bune
+• Mai multe setări 3DS: Rezoluție, API grafic, regiune și limbă, aspect ecran, mod audio și altele
+• Remediere Android TV: Adăugarea unui folder de jocuri funcționează acum pe dispozitive fără selector de fișiere de sistem
+• Diverse remedieri de erori și îmbunătățiri de stabilitate
 </ro>
 
 <sr>
 Шта је ново:
 
-• Ажурирања језгра емулатора: Ажурирана и побољшана језгра емулације за боље перформансе и компатибилност
-• Каталог бесплатних игара: Прегледајте и играјте бесплатне игре директно из апликације
+• Контрола брзине игре: Убрзајте игру са 1x / 2x / 4x / 8x из менија игре или пречицом на џојстику
+• Ажурирана N3DS емулација: Новије језгро са бољим перформансама и компатибилношћу
+• Више 3DS подешавања: Резолуција, графички API, регион и језик, распоред екрана, режим звука и више
+• Исправка за Android TV: Додавање фасцикле са играма сада ради на уређајима без системског бирача датотека
+• Разне исправке грешака и побољшања стабилности
 </sr>
 
 <sv-SE>
 Nyheter:
 
-• Emulator Kärnuppdateringar: Emuleringskärnor uppdaterade och förbättrade för bättre prestanda och kompatibilitet
-• Gratis Spelkatalog: Bläddra och spela gratis spel direkt från appen
+• Spelhastighetskontroll: Snabba upp spelet med 1x / 2x / 4x / 8x från spelmenyn eller en gamepad-genväg
+• Uppdaterad N3DS-emulering: Nyare kärna med bättre prestanda och kompatibilitet
+• Fler 3DS-inställningar: Upplösning, grafik-API, region och språk, skärmlayout, ljudläge och mer
+• Android TV-fix: Att lägga till en spelmapp fungerar nu på enheter utan systemfilväljare
+• Diverse buggfixar och stabilitetsförbättringar
 </sv-SE>
 
 <af>
 Wat is nuut:
 
-• Emulator Kernopdaterings: Emulasiekerns opgedateer en verbeter vir beter werkverrigting en kompatibiliteit
-• Gratis Speletjies Katalogus: Blaai deur en speel gratis speletjies direk vanuit die toepassing
+• Spelspoedbeheer: Versnel die speletjie met 1x / 2x / 4x / 8x vanaf die speletjie-kieslys of 'n speelstok-kortpad
+• Bygewerkte N3DS-emulasie: Nuwer kern met beter werkverrigting en versoenbaarheid
+• Meer 3DS-instellings: Resolusie, grafika-API, streek en taal, skermuitleg, oudiomodus en meer
+• Android TV-regstelling: Om 'n speletjiegids by te voeg werk nou op toestelle sonder 'n stelsellêerkieser
+• Verskeie foutregstellings en stabiliteitsverbeterings
 </af>
 
 <ca>
 Novetats:
 
-• Actualitzacions del Nucli de l'Emulador: Nuclis d'emulació actualitzats i millorats per a millor rendiment i compatibilitat
-• Catàleg de Jocs Gratuïts: Navegueu i jugueu a jocs gratuïts directament des de l'aplicació
+• Control de velocitat del joc: Accelera la partida amb 1x / 2x / 4x / 8x des del menú del joc o una drecera del comandament
+• Emulació de N3DS actualitzada: Nucli més recent amb millor rendiment i compatibilitat
+• Més opcions de 3DS: Resolució, API gràfica, regió i idioma, disposició de pantalla, mode d'àudio i més
+• Correcció per a Android TV: Afegir una carpeta de jocs ara funciona en dispositius sense selector de fitxers del sistema
 </ca>
