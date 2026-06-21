@@ -30,11 +30,15 @@ import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.common.dump
 import com.swordfish.lemuroid.common.kotlin.serializable
+import com.swordfish.lemuroid.lib.cheats.CheatEntry
+import com.swordfish.lemuroid.lib.cheats.CheatsManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
+import com.swordfish.libretrodroid.LibretroDroid
 import com.swordfish.lemuroid.lib.library.ExposedSetting
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -68,6 +72,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     @Inject
     lateinit var coreVariablesManager: CoreVariablesManager
+
+    @Inject
+    lateinit var cheatsManager: CheatsManager
 
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
@@ -135,6 +142,16 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 gameLoader,
                 intent.getBooleanExtra(EXTRA_LOAD_SAVE, false),
             )
+        }
+
+        if (system.id == SystemID.SNES) {
+            lifecycleScope.launch {
+                baseGameScreenViewModel.retroGameView.retroGameViewFlow()
+                val savedCheats = cheatsManager.loadGameCheats(game.id)
+                savedCheats.filter { it.enabled }.forEachIndexed { index, cheat ->
+                    baseGameScreenViewModel.retroGameView.retroGameView?.setCheat(index, true, cheat.code)
+                }
+            }
         }
 
         onBackPressedDispatcher.addCallback(
@@ -217,6 +234,13 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
                 // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
                 this.putExtra(GameMenuContract.EXTRA_TILT_ALL_CONFIGS, tiltConfigurations.toTypedArray())
+                this.putExtra(GameMenuContract.EXTRA_CHEATS_SUPPORTED, system.id == SystemID.SNES)
+                if (system.id == SystemID.SNES) {
+                    this.putExtra(
+                        GameMenuContract.EXTRA_CHEATS,
+                        ArrayList(cheatsManager.loadGameCheats(game.id)),
+                    )
+                }
             }
         startActivityForResult(intent, DIALOG_REQUEST)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -413,6 +437,19 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                 val tiltConfig = data.serializable<TiltConfiguration>(GameMenuContract.RESULT_CHANGE_TILT_CONFIG)
                 baseGameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
             }
+            if (data?.hasExtra(GameMenuContract.RESULT_CHEATS) == true) {
+                val cheats = data.serializable<ArrayList<CheatEntry>>(GameMenuContract.RESULT_CHEATS) ?: arrayListOf()
+                cheatsManager.saveGameCheats(game.id, cheats)
+                applyCheatList(cheats)
+            }
+        }
+    }
+
+    private fun applyCheatList(cheats: List<CheatEntry>) {
+        val retroView = baseGameScreenViewModel.retroGameView.retroGameView ?: return
+        LibretroDroid.resetCheat()
+        cheats.filter { it.enabled }.forEachIndexed { index, cheat ->
+            retroView.setCheat(index, true, cheat.code, useEmulationThread = false)
         }
     }
 

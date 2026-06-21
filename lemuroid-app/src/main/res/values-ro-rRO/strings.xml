@@ -104,6 +104,11 @@
     <string name="game_menu_fast_forward">Derulați rapid înainte</string>
     <string name="game_menu_change_disk_disk">Discul %1$s</string>
     <string name="game_menu_tilt_sensor">Senzor de înclinare</string>
+    <string name="game_menu_cheats">Cheat-uri</string>
+    <string name="game_menu_cheats_code_hint">Cod (ex. D43C-6DAE)</string>
+    <string name="game_menu_cheats_desc_hint">Descriere (opțional)</string>
+    <string name="game_menu_cheats_add">Adaugă cheat</string>
+    <string name="game_menu_cheats_empty">Nu există cheat-uri adăugate</string>
     <string name="game_loading_preparing_game">Se pregătește jocul…</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad detectat. Acces la meniul Setări cu %1$s.</string>
     <string name="game_toast_load_state_failed">Nu se poate încărca această stare</string>

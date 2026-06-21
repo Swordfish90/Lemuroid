@@ -45,6 +45,7 @@ import com.swordfish.lemuroid.ext.feature.review.ReviewManager
 import com.swordfish.lemuroid.ext.feature.savesync.SaveSyncManagerImpl
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoreUpdater
+import com.swordfish.lemuroid.lib.cheats.CheatsManager
 import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
@@ -249,6 +250,11 @@ abstract class LemuroidApplicationModule {
         @PerApp
         @JvmStatic
         fun coreVariablesManager(sharedPreferences: Lazy<SharedPreferences>) = CoreVariablesManager(sharedPreferences)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun cheatsManager(sharedPreferences: Lazy<SharedPreferences>) = CheatsManager(sharedPreferences)
 
         @Provides
         @PerApp

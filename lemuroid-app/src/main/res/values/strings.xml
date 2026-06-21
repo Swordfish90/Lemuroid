@@ -125,6 +125,11 @@
     <string name="game_menu_fast_forward">Fast-Forward</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
     <string name="game_menu_tilt_sensor">Tilt Sensor</string>
+    <string name="game_menu_cheats">Cheats</string>
+    <string name="game_menu_cheats_code_hint">Code (e.g. D43C-6DAE)</string>
+    <string name="game_menu_cheats_desc_hint">Description (optional)</string>
+    <string name="game_menu_cheats_add">Add cheat</string>
+    <string name="game_menu_cheats_empty">No cheats added yet</string>
 
     <string name="game_loading_preparing_game">Preparing game…</string>
 
