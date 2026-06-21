@@ -104,6 +104,12 @@
     <string name="game_menu_fast_forward">Derulați rapid înainte</string>
     <string name="game_menu_change_disk_disk">Discul %1$s</string>
     <string name="game_menu_tilt_sensor">Senzor de înclinare</string>
+    <string name="game_menu_saves_manager">Gestionare salvări</string>
+    <string name="game_menu_saves_export">Exportă salvările</string>
+    <string name="game_menu_saves_import">Importă salvările</string>
+    <string name="game_menu_saves_success">Salvările au fost transferate cu succes (%d fișiere)</string>
+    <string name="game_menu_saves_error">Eroare: %s</string>
+    <string name="game_menu_saves_working">Se procesează…</string>
     <string name="game_loading_preparing_game">Se pregătește jocul…</string>
     <string name="game_toast_settings_button_using_gamepad">Gamepad detectat. Acces la meniul Setări cu %1$s.</string>
     <string name="game_toast_load_state_failed">Nu se poate încărca această stare</string>

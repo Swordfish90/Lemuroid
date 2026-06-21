@@ -125,6 +125,12 @@
     <string name="game_menu_fast_forward">Fast-Forward</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
     <string name="game_menu_tilt_sensor">Tilt Sensor</string>
+    <string name="game_menu_saves_manager">Manage Saves</string>
+    <string name="game_menu_saves_export">Export saves</string>
+    <string name="game_menu_saves_import">Import saves</string>
+    <string name="game_menu_saves_success">Saves transferred successfully (%d files)</string>
+    <string name="game_menu_saves_error">Error: %s</string>
+    <string name="game_menu_saves_working">Working…</string>
 
     <string name="game_loading_preparing_game">Preparing game…</string>
 
