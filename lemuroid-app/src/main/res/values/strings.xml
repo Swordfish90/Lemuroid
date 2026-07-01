@@ -37,6 +37,8 @@
     <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
     <string name="settings_description_hd_quality">Adjust the quality of HD mode</string>
 
+    <string name="settings_title_viewport_alignment">Viewport alignment</string>
+
     <string name="settings_title_immersive_mode">Immersive mode</string>
     <string name="settings_description_immersive_mode">Dynamically colors the background based on game visuals</string>
 
@@ -221,6 +223,10 @@
     <string name="shader_filter_names_smooth">Smooth</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+
+    <string name="viewport_alignment_names_top">Top</string>
+    <string name="viewport_alignment_names_center">Center</string>
+    <string name="viewport_alignment_names_bottom">Bottom</string>
 
     <string name="haptic_feedback_mode_names_none">None</string>
     <string name="haptic_feedback_mode_names_press">Press</string>

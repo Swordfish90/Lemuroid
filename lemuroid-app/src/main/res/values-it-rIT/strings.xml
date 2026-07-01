@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">Modalità HD</string>
     <string name="settings_description_hd_mode">Applica filtro di upscaling post-elaborazione</string>
     <string name="settings_description_hd_quality">Regola la qualità della modalità HD</string>
+    <string name="settings_title_viewport_alignment">Allineamento schermo</string>
     <string name="settings_title_immersive_mode">Modalità immersiva</string>
     <string name="settings_description_immersive_mode">Colora dinamicamente lo sfondo in base alle immagini del gioco</string>
     <string name="settings_title_gamepad_settings">Dispositivi esterni</string>
@@ -174,6 +175,9 @@
     <string name="shader_filter_names_smooth">Lineare</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+    <string name="viewport_alignment_names_top">Alto</string>
+    <string name="viewport_alignment_names_center">Centro</string>
+    <string name="viewport_alignment_names_bottom">Basso</string>
     <string name="haptic_feedback_mode_names_none">Nessuno</string>
     <string name="haptic_feedback_mode_names_press">Pressione</string>
     <string name="haptic_feedback_mode_names_press_release">Pressione &amp; rilascio</string>
