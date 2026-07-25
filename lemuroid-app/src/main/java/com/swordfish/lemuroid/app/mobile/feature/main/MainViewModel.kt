@@ -6,19 +6,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncManager) : ViewModel() {
+class MainViewModel(
+    appContext: Context,
+    private val saveSyncManager: SaveSyncManager,
+    private val settingsManager: SettingsManager
+) : ViewModel() {
     class Factory(
         private val appContext: Context,
         private val saveSyncManager: SaveSyncManager,
+        private val settingsManager: SettingsManager
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MainViewModel(appContext, saveSyncManager) as T
+            return MainViewModel(appContext, saveSyncManager, settingsManager) as T
         }
     }
 
@@ -27,6 +33,7 @@ class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncMa
         val saveSyncEnabled: Boolean = false,
         val displaySearch: Boolean = false,
         val searchQuery: String = "",
+        val themeMode: String = "system"
     )
 
     private val currentRouteFlow = MutableStateFlow(MainRoute.HOME)
@@ -43,12 +50,14 @@ class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncMa
                 saveSyncEnabledFlow,
                 operationInProgressFlow,
                 searchQueryFlow,
-            ) { currentRoute, saveSyncEnabled, operationInProgress, searchQuery ->
+                settingsManager.themeModeFlow()
+            ) { currentRoute, saveSyncEnabled, operationInProgress, searchQuery, themeMode ->
                 UiState(
                     operationInProgress = operationInProgress,
                     saveSyncEnabled = saveSyncEnabled,
                     displaySearch = currentRoute == MainRoute.SEARCH,
                     searchQuery = searchQuery,
+                    themeMode = themeMode
                 )
             }
 

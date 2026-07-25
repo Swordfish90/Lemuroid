@@ -13,6 +13,10 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.onGloballyPositioned
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.utils.android.settings.isAppInDarkTheme
+
+
+import androidx.compose.runtime.collectAsState
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.ShortcutBindingUpdater
 import com.swordfish.lemuroid.lib.android.RetrogradeActivity
@@ -23,6 +27,9 @@ class GamePadShortcutBindingActivity : RetrogradeActivity() {
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
 
+    @Inject
+    lateinit var settingsManager: com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+
     private lateinit var shortcutBindingUpdater: ShortcutBindingUpdater
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +38,11 @@ class GamePadShortcutBindingActivity : RetrogradeActivity() {
         shortcutBindingUpdater = ShortcutBindingUpdater(inputDeviceManager, intent)
 
         setContent {
-            AppTheme {
+            val themeModeFlow = remember { settingsManager.themeModeFlow() }
+            val themeMode = themeModeFlow.collectAsState(initial = "system").value
+            val isDarkTheme = isAppInDarkTheme(themeMode)
+
+            AppTheme(darkTheme = isDarkTheme) {
                 val focusRequester = remember { FocusRequester() }
 
                 AlertDialog(

@@ -47,6 +47,10 @@ import com.swordfish.lemuroid.app.mobile.feature.gamemenu.coreoptions.GameMenuCo
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.states.GameMenuStatesScreen
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.states.GameMenuStatesViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.utils.android.settings.isAppInDarkTheme
+
+
+import androidx.compose.runtime.collectAsState
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.shared.coreoptions.LemuroidCoreOption
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
@@ -63,6 +67,9 @@ import javax.inject.Inject
 class GameMenuActivity : RetrogradeComponentActivity() {
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
+
+    @Inject
+    lateinit var settingsManager: com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 
     @Inject
     lateinit var statesManager: StatesManager
@@ -130,14 +137,18 @@ class GameMenuActivity : RetrogradeComponentActivity() {
             )
 
         setContent {
-            GameMenuScreen(gameMenuRequest)
+            val themeModeFlow = remember { settingsManager.themeModeFlow() }
+            val themeMode = themeModeFlow.collectAsState(initial = "system").value
+            val isDarkTheme = isAppInDarkTheme(themeMode)
+
+            GameMenuScreen(gameMenuRequest, isDarkTheme)
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun GameMenuScreen(gameMenuRequest: GameMenuRequest) {
-        AppTheme {
+    private fun GameMenuScreen(gameMenuRequest: GameMenuRequest, isDarkTheme: Boolean) {
+        AppTheme(darkTheme = isDarkTheme) {
             val navController = rememberNavController()
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry.value?.destination

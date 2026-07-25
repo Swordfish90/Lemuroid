@@ -50,6 +50,8 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsScreen
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.utils.android.settings.isAppInDarkTheme
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
@@ -102,10 +104,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
 
+    @Inject
+    lateinit var settingsManager: com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+
     private val reviewManager = ReviewManager()
 
     private val mainViewModel: MainViewModel by viewModels {
-        MainViewModel.Factory(applicationContext, saveSyncManager)
+        MainViewModel.Factory(applicationContext, saveSyncManager, settingsManager)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,14 +126,17 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
         setContent {
             val navController = rememberNavController()
-            MainScreen(navController)
+            val state = mainViewModel.state.collectAsState().value
+            val isDarkTheme = isAppInDarkTheme(state.themeMode)
+
+            MainScreen(navController, isDarkTheme)
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun MainScreen(navController: NavHostController) {
-        AppTheme {
+    private fun MainScreen(navController: NavHostController, isDarkTheme: Boolean) {
+        AppTheme(darkTheme = isDarkTheme) {
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry.value?.destination
             val currentRoute =

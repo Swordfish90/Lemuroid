@@ -9,12 +9,13 @@ import com.swordfish.lemuroid.common.math.Fraction
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
 import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class SettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
-    private val sharedPreferences by lazy { FlowSharedPreferences(sharedPreferences.get()) }
+class SettingsManager(private val context: Context, private val _sharedPreferences: Lazy<SharedPreferences>) {
+    private val sharedPreferences by lazy { FlowSharedPreferences(_sharedPreferences.get()) }
 
     private fun getString(resId: Int) = context.getString(resId)
 
@@ -37,6 +38,10 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
     suspend fun tiltSensitivity() = floatPreference(R.string.pref_key_tilt_sensitivity_index, 10, 6)
 
     suspend fun autoSaveSync() = booleanPreference(R.string.pref_key_save_sync_auto, false)
+
+    suspend fun themeMode() = stringPreference(R.string.pref_key_theme_mode, "system")
+
+    fun themeModeFlow(): Flow<String> = sharedPreferences.getString(getString(R.string.pref_key_theme_mode), "system").asFlow()
 
     suspend fun syncSaves() = booleanPreference(R.string.pref_key_save_sync_enable, true)
 

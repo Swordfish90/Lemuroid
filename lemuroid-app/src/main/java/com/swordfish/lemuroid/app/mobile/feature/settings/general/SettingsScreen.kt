@@ -47,6 +47,7 @@ fun SettingsScreen(
             .value
 
     LemuroidSettingsPage(modifier = modifier) {
+        ThemeSettings()
         RomsSettings(
             state = state,
             onChangeFolder = { viewModel.changeLocalStorageFolder() },
@@ -220,5 +221,29 @@ private fun RomsSettings(
                 enabled = !indexingInProgress,
             )
         }
+    }
+}
+
+@Composable
+fun ThemeSettings(
+    modifier: Modifier = Modifier,
+) {
+    val themeValues = stringListResource(id = R.array.pref_key_theme_mode_values)
+    val themeEntries = stringListResource(id = R.array.pref_key_theme_mode_entries)
+
+    LemuroidCardSettingsGroup(
+        modifier = modifier,
+        title = { Text(text = stringResource(id = R.string.theme)) },
+    ) {
+        LemuroidSettingsList(
+            title = { Text(text = stringResource(id = R.string.theme)) },
+            subtitle = { Text(text = "") },
+            state = indexPreferenceState(
+                id = R.string.pref_key_theme_mode,
+                default = "system",
+                values = themeValues
+            ),
+            items = themeEntries
+        )
     }
 }
