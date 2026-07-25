@@ -33,6 +33,10 @@
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="elevationOverlayColor">?attr/colorOnSurface</item>
+
+        <!-- Expressive Component Overrides -->
+        <item name="shapeAppearanceMediumComponent">@style/LemuroidMaterialStyle.ShapeAppearance.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/LemuroidMaterialStyle.ShapeAppearance.Large</item>
     </style>
 
     <style name="LemuroidMaterialTheme.Invisible" parent="LemuroidMaterialTheme">
@@ -69,5 +73,16 @@
 
     <style name="LemuroidMaterialStyle.AlertDialogTheme" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
         <item name="android:colorBackground">?attr/colorSurface</item>
+    </style>
+
+    <!-- Material 3 Expressive Shapes -->
+    <style name="LemuroidMaterialStyle.ShapeAppearance.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <style name="LemuroidMaterialStyle.ShapeAppearance.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">32dp</item>
     </style>
 </resources>

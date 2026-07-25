@@ -89,7 +89,11 @@ fun AppTheme(
             else -> LightColorScheme
         }
 
-    MaterialTheme(colorScheme = colors) {
+    MaterialTheme(
+        colorScheme = colors,
+        shapes = LemuroidShapes,
+        typography = LemuroidTypography
+    ) {
         content()
     }
 }
