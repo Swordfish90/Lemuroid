@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.7.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.7.1)" variant="all" version="8.7.1">
+
+    <issue
+        id="ScopedStorage"
+        message="READ_EXTERNAL_STORAGE is deprecated (and is not granted) when targeting Android 13+. If you need to query or interact with MediaStore or media files on the shared storage, you should instead use one or more new storage permissions: `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO` or `READ_MEDIA_AUDIO`."
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; />"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="21"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `capitalize(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="            .capitalize()"
+        errorLine2="             ~~~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/shared/covers/CoverUtils.kt"
+            line="75"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `capitalize(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="            return coreOption.optionValues.map { it.capitalize() }"
+        errorLine2="                                                    ~~~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/shared/coreoptions/LemuroidCoreOption.kt"
+            line="21"
+            column="53"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 29 (current min is 23): `android.content.pm.ServiceInfo#FOREGROUND_SERVICE_TYPE_DATA_SYNC`"
+        errorLine1="            ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC,"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/mobile/feature/game/GameService.kt"
+            line="55"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="KotlinNullnessAnnotation"
+        message="Do not use `@NonNull` in Kotlin; the nullability is already implied by the Kotlin type `GuidanceStylist.Guidance` **not** ending with `?`"
+        errorLine1="    @NonNull"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/tv/folderpicker/TVFolderPickerFolderFragment.kt"
+            line="26"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="KotlinNullnessAnnotation"
+        message="Do not use `@NonNull` in Kotlin; the nullability is already implied by the Kotlin type `GuidanceStylist.Guidance` **not** ending with `?`"
+        errorLine1="    @NonNull"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/tv/folderpicker/TVFolderPickerStorageFragment.kt"
+            line="13"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="KotlinNullnessAnnotation"
+        message="Do not use `@NonNull` in Kotlin; the nullability is already implied by the Kotlin type `GuidanceStylist.Guidance` **not** ending with `?`"
+        errorLine1="    @NonNull"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/tv/input/TVGamePadBindingFragment.kt"
+            line="11"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="KotlinNullnessAnnotation"
+        message="Do not use `@NonNull` in Kotlin; the nullability is already implied by the Kotlin type `GuidanceStylist.Guidance` **not** ending with `?`"
+        errorLine1="    @NonNull"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/tv/settings/TVGamePadBindingFragment.kt"
+            line="14"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `networkSecurityConfig` is only used in API level 24 and higher (current min is 23)"
+        errorLine1="        android:networkSecurityConfig=&quot;@xml/network_security_config&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="36"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1="    &lt;fragment"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_empty_navigation.xml"
+            line="21"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1="    &lt;fragment"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_empty_navigation_overlay.xml"
+            line="23"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1="    &lt;fragment"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_tv_main.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `AppCompatResources.getDrawable()`"
+        errorLine1="        val drawable = context.getDrawable(resourceId)"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/tv/channel/ChannelHandler.kt"
+            line="80"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="StringFormatInvalid"
+        message="Format string &apos;`gamepad_binding_update_title`&apos; is not a valid format string so it should not be passed to `String.format`"
+        errorLine1="        return context.getString(R.string.gamepad_binding_update_title, keyName)"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/shared/input/InputBindingUpdater.kt"
+            line="20"
+            column="16"/>
+        <location
+            file="src/main/res/values-tr-rTR/strings.xml"
+            line="149"
+            column="5"
+            message="This definition does not require arguments"/>
+    </issue>
+
+    <issue
+        id="StringFormatInvalid"
+        message="Format string &apos;`settings_retropad_button_name`&apos; is not a valid format string so it should not be passed to `String.format`"
+        errorLine1="        return context.resources.getString("
+        errorLine2="               ^">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/shared/input/RetroKey.kt"
+            line="11"
+            column="16"/>
+        <location
+            file="src/main/res/values-hu-rHU/strings.xml"
+            line="31"
+            column="5"
+            message="This definition does not require arguments"/>
+    </issue>
+
+    <issue
+        id="StringFormatCount"
+        message="Inconsistent number of arguments in formatting string `settings_retropad_button_name`; found both 0 here and 1 in values/strings.xml"
+        errorLine1="    &lt;string name=&quot;settings_retropad_button_name&quot;>RetroPad&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-hu-rHU/strings.xml"
+            line="31"
+            column="5"/>
+        <location
+            file="src/main/res/values/strings.xml"
+            line="46"
+            column="5"
+            message="Conflicting number of arguments (1) here"/>
+    </issue>
+
+    <issue
+        id="StringFormatCount"
+        message="Inconsistent number of arguments in formatting string `gamepad_binding_update_title`; found both 0 here and 1 in values/strings.xml"
+        errorLine1="    &lt;string name=&quot;gamepad_binding_update_title&quot;>gamepad bağlama güncelleme başlığı&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-tr-rTR/strings.xml"
+            line="149"
+            column="5"/>
+        <location
+            file="src/main/res/values/strings.xml"
+            line="186"
+            column="5"
+            message="Conflicting number of arguments (1) here"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/activity_tv_main.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        errorLine1="    private var _value by mutableStateOf(preferences.safeGetInt(key, defaultValue))"
+        errorLine2="                          ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/swordfish/lemuroid/app/utils/settings/SafeIntPreferenceSettingValueState.kt"
+            line="34"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `#000` with a theme that also paints a background (inferred theme is `@style/LemuroidMaterialTheme_Game`)"
+        errorLine1="    android:background=&quot;#000&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_game.xml"
+            line="34"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_crash.xml"
+            line="14"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_game_long_press.xml"
+            line="26"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;4dp&quot;` to better support right-to-left layouts"
+        errorLine1="        android:layout_marginLeft=&quot;4dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_game.xml"
+            line="57"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;4dp&quot;` to better support right-to-left layouts"
+        errorLine1="        android:layout_marginRight=&quot;4dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_game.xml"
+            line="72"
+            column="9"/>
+    </issue>
+
+</issues>
