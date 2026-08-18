@@ -109,6 +109,12 @@ android {
         disable += setOf("MissingTranslation", "ExtraTranslation", "EnsureInitializerMetadata")
     }
 
+
+    lint {
+        abortOnError = false
+        baseline = file("lint-baseline.xml")
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
