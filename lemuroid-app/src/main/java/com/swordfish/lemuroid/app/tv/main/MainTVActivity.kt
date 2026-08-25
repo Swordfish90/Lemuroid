@@ -4,7 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -36,6 +39,7 @@ import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainTVActivity : BaseTVActivity(), BusyActivity {
@@ -82,24 +86,52 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
     }
 
     private fun ensureLegacyStoragePermissionsIfNeeded() {
-        if (TVHelper.isSAFSupported(this) || hasLegacyPermissions()) {
+        if (TVHelper.isSAFSupported(this)) {
             return
         }
 
-        val requestPermission = ActivityResultContracts.RequestPermission()
-        val requestPermissionLauncher =
-            registerForActivityResult(requestPermission) { isGranted ->
-                if (!isGranted) {
-                    finish()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            if (!hasLegacyPermissions()) {
+                val requestPermission = ActivityResultContracts.RequestPermission()
+                val requestPermissionLauncher =
+                    registerForActivityResult(requestPermission) { isGranted ->
+                        if (!isGranted) {
+                            finish()
+                        }
+                    }
+                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
+        else {
+            if (!hasManageStoragePermissions()) {
+                val manageStorageLauncher = registerForActivityResult(
+                    ActivityResultContracts.StartActivityForResult()
+                ) {
+                    if (!hasManageStoragePermissions()) {
+                        finish()
+                    }
+                }
+
+                try {
+                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                        data = "package:${packageName}".toUri()
+                    }
+                    manageStorageLauncher.launch(intent)
+                } catch (e: Exception) {
+                    val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                    manageStorageLauncher.launch(intent)
                 }
             }
-        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
     }
 
     private fun hasLegacyPermissions(): Boolean {
         val result = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         return result == PackageManager.PERMISSION_GRANTED
     }
+
+    private fun hasManageStoragePermissions(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+            && Environment.isExternalStorageManager()
 
     @dagger.Module
     abstract class Module {
