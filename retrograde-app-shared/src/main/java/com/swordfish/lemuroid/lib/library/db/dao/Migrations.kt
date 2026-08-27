@@ -45,4 +45,23 @@ object Migrations {
                 )
             }
         }
+
+    val VERSION_9_10: Migration =
+        object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                migrateGamesTableToVersion10(database)
+                GameSearchDao.migrateFtsForVersion10(database)
+            }
+        }
+
+    private fun migrateGamesTableToVersion10(
+        database: SupportSQLiteDatabase,
+    ) {
+        database.execSQL(
+            "ALTER TABLE games ADD COLUMN customName TEXT DEFAULT NULL",
+        )
+        database.execSQL(
+            "ALTER TABLE games ADD COLUMN customCoverUri TEXT DEFAULT NULL",
+        )
+    }
 }

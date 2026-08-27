@@ -21,6 +21,7 @@ package com.swordfish.lemuroid.lib.library
 
 import com.swordfish.lemuroid.common.coroutines.batchWithSizeAndTime
 import com.swordfish.lemuroid.lib.bios.BiosManager
+import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -49,6 +50,7 @@ class LemuroidLibrary(
     private val storageProviderRegistry: Lazy<StorageProviderRegistry>,
     private val gameMetadataProvider: Lazy<GameMetadataProvider>,
     private val biosManager: BiosManager,
+    private val customCoverManager: CustomCoverManager,
 ) {
     suspend fun indexLibrary() {
         val startedAtMs = System.currentTimeMillis()
@@ -56,7 +58,7 @@ class LemuroidLibrary(
         try {
             indexProviders(startedAtMs)
         } catch (e: Throwable) {
-            Timber.e("Library indexing stopped due to exception", e)
+            Timber.e(e, "Library indexing stopped due to exception")
         } finally {
             cleanUp(startedAtMs)
         }
@@ -315,6 +317,10 @@ class LemuroidLibrary(
     private fun removeDeletedGames(startedAtMs: Long) {
         Timber.d("Deleting games from db before: $startedAtMs")
         val games = retrogradedb.gameDao().selectByLastIndexedAtLessThan(startedAtMs)
+
+        // Clean up custom cover files before removing the database rows
+        customCoverManager.deleteCoversForGames(games)
+
         retrogradedb.gameDao().delete(games)
     }
 

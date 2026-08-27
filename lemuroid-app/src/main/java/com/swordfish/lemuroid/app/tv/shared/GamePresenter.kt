@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.GameContextMenuListener
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.covers.CoverUtils
@@ -23,7 +22,7 @@ class GamePresenter(
     ) {
         if (item == null || viewHolder !is ViewHolder) return
         val game = item as Game
-        viewHolder.mCardView.titleText = game.title
+        viewHolder.mCardView.titleText = game.displayName()
         viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.updateCardViewImage(game)

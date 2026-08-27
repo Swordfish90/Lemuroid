@@ -7,6 +7,7 @@ import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Build
 import com.swordfish.lemuroid.app.shared.covers.CoverUtils
 import com.swordfish.lemuroid.app.shared.deeplink.DeepLink
@@ -38,8 +39,8 @@ class ShortcutsGenerator(
 
         val shortcutInfo =
             ShortcutInfo.Builder(appContext, "game_${game.id}")
-                .setShortLabel(game.title)
-                .setLongLabel(game.title)
+                .setShortLabel(game.displayName())
+                .setLongLabel(game.displayName())
                 .setIntent(DeepLink.launchIntentForGame(appContext, game))
                 .setIcon(Icon.createWithBitmap(bitmap))
                 .build()
@@ -51,8 +52,15 @@ class ShortcutsGenerator(
         withContext(Dispatchers.IO) {
             val result =
                 runCatching {
-                    val response = thumbnailsApi.downloadThumbnail(game.coverFrontUrl!!)
-                    BitmapFactory.decodeStream(response.body()).cropToSquare()
+                    // Prefer custom cover URI (local file) if set
+                    if (game.customCoverUri != null) {
+                        val uri = Uri.parse(game.customCoverUri)
+                        val inputStream = appContext.contentResolver.openInputStream(uri)
+                        BitmapFactory.decodeStream(inputStream).cropToSquare()
+                    } else {
+                        val response = thumbnailsApi.downloadThumbnail(game.coverFrontUrl!!)
+                        BitmapFactory.decodeStream(response.body()).cropToSquare()
+                    }
                 }
             result.getOrElse { retrieveFallbackBitmap(game) }
         }
