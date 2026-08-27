@@ -21,6 +21,7 @@ package com.swordfish.lemuroid.lib.library
 
 import com.swordfish.lemuroid.common.coroutines.batchWithSizeAndTime
 import com.swordfish.lemuroid.lib.bios.BiosManager
+import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -57,7 +58,7 @@ class LemuroidLibrary(
         try {
             indexProviders(startedAtMs)
         } catch (e: Throwable) {
-            Timber.e("Library indexing stopped due to exception", e)
+            Timber.e(e, "Library indexing stopped due to exception")
         } finally {
             cleanUp(startedAtMs)
         }

@@ -10,7 +10,7 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.common.displayToast
-import com.swordfish.lemuroid.lib.library.CustomCoverManager
+import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.GlobalScope

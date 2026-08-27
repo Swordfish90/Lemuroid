@@ -63,7 +63,7 @@ import com.swordfish.lemuroid.lib.android.RetrogradeComponentActivity
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.injection.PerActivity
-import com.swordfish.lemuroid.lib.library.CustomCoverManager
+import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase

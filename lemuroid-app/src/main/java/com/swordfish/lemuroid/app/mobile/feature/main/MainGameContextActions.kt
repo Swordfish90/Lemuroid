@@ -61,6 +61,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameTexts
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSmallGameImage
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -135,8 +136,8 @@ private fun ContextActionContent(
                     uri,
                     android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION,
                 )
-            } catch (_: SecurityException) {
-
+            } catch (e: SecurityException) {
+                Timber.e(e, "Failed to persist read URI permission for custom cover")
             }
             onSetCustomCoverUri(selectedGame, uri.toString())
             selectedGameState.value = null
@@ -250,44 +251,6 @@ private fun ContextActionContent(
             },
         )
     }
-}
-
-@Composable
-private fun CustomNameDialog(
-    initialName: String,
-    onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit,
-) {
-    var text by remember { mutableStateOf(initialName) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(id = R.string.game_context_menu_custom_name_dialog_title)) },
-        text = {
-            OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    if (text.isNotBlank()) {
-                        onConfirm(text.trim())
-                    }
-                },
-            ) {
-                Text("OK")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        },
-    )
 }
 
 @Composable

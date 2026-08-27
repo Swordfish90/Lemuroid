@@ -1,4 +1,4 @@
-package com.swordfish.lemuroid.lib.library
+package com.swordfish.lemuroid.lib.library.covers
 
 import android.content.Context
 import android.net.Uri
