@@ -16,10 +16,26 @@ object GameProcessLock {
     private var lock: FileLock? = null
 
     fun acquire(appContext: Context) {
-        if (lock != null) return
+        if (lock?.isValid == true) return
+
+        release()
         val lockFile = File(appContext.filesDir, LOCK_FILE_NAME)
-        channel = RandomAccessFile(lockFile, "rw").channel
-        lock = channel?.tryLock()
+        val newChannel = RandomAccessFile(lockFile, "rw").channel
+        val newLock = runCatching { newChannel.tryLock() }.getOrNull()
+
+        if (newLock == null) {
+            newChannel.close()
+        } else {
+            channel = newChannel
+            lock = newLock
+        }
+    }
+
+    fun release() {
+        runCatching { lock?.release() }
+        runCatching { channel?.close() }
+        lock = null
+        channel = null
     }
 
     fun isHeldByAnotherProcess(appContext: Context): Boolean {

@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.SystemBarStyle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -12,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -104,6 +109,16 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     private val reviewManager = ReviewManager()
 
+    private var pendingCustomThumbnailGame: Game? = null
+    private val customThumbnailPicker: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            val game = pendingCustomThumbnailGame
+            pendingCustomThumbnailGame = null
+            if (uri != null && game != null) {
+                gameInteractor.onSetCustomThumbnail(game, uri)
+            }
+        }
+
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModel.Factory(applicationContext, saveSyncManager)
     }
@@ -140,6 +155,8 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 remember {
                     mutableStateOf(false)
                 }
+            val renameGameState = remember { mutableStateOf<Game?>(null) }
+            val renameValue = remember { mutableStateOf("") }
 
             LaunchedEffect(currentRoute) {
                 mainViewModel.changeRoute(currentRoute)
@@ -355,7 +372,43 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     gameInteractor.onFavoriteToggle(game, isFavorite)
                 },
                 onCreateShortcut = { gameInteractor.onCreateShortcut(it) },
+                onSetCustomThumbnail = { pickCustomThumbnail(it) },
+                onRemoveCustomThumbnail = { gameInteractor.onRemoveCustomThumbnail(it) },
+                onRenameGame = {
+                    renameValue.value = it.customDisplayName ?: it.title
+                    renameGameState.value = it
+                },
             )
+
+            renameGameState.value?.let { game ->
+                AlertDialog(
+                    onDismissRequest = { renameGameState.value = null },
+                    title = { androidx.compose.material3.Text(stringResource(R.string.game_rename_title)) },
+                    text = {
+                        OutlinedTextField(
+                            value = renameValue.value,
+                            onValueChange = { renameValue.value = it },
+                            singleLine = true,
+                            label = { androidx.compose.material3.Text(stringResource(R.string.game_rename_hint)) },
+                        )
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { renameGameState.value = null }) {
+                            androidx.compose.material3.Text(stringResource(R.string.game_rename_cancel))
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                gameInteractor.onRenameGame(game, renameValue.value)
+                                renameGameState.value = null
+                            },
+                        ) {
+                            androidx.compose.material3.Text(stringResource(R.string.game_rename_save))
+                        }
+                    },
+                )
+            }
 
             if (infoDialogDisplayed.value) {
                 val message =
@@ -375,6 +428,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 )
             }
         }
+    }
+
+    private fun pickCustomThumbnail(game: Game) {
+        pendingCustomThumbnailGame = game
+        customThumbnailPicker.launch("image/*")
     }
 
     override fun activity(): Activity = this

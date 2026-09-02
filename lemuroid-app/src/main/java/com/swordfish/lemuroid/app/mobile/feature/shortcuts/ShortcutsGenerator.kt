@@ -20,6 +20,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
+import java.io.File
 import java.io.InputStream
 
 class ShortcutsGenerator(
@@ -38,8 +39,8 @@ class ShortcutsGenerator(
 
         val shortcutInfo =
             ShortcutInfo.Builder(appContext, "game_${game.id}")
-                .setShortLabel(game.title)
-                .setLongLabel(game.title)
+                .setShortLabel(game.customDisplayName ?: game.title)
+                .setLongLabel(game.customDisplayName ?: game.title)
                 .setIntent(DeepLink.launchIntentForGame(appContext, game))
                 .setIcon(Icon.createWithBitmap(bitmap))
                 .build()
@@ -49,10 +50,22 @@ class ShortcutsGenerator(
 
     private suspend fun retrieveBitmap(game: Game): Bitmap =
         withContext(Dispatchers.IO) {
+            val customBitmap =
+                game.customCoverPath
+                    ?.let(::File)
+                    ?.takeIf { it.isFile }
+                    ?.let { BitmapFactory.decodeFile(it.absolutePath) }
+                    ?.cropToSquare()
+
+            if (customBitmap != null) {
+                return@withContext customBitmap
+            }
+
             val result =
                 runCatching {
-                    val response = thumbnailsApi.downloadThumbnail(game.coverFrontUrl!!)
-                    BitmapFactory.decodeStream(response.body()).cropToSquare()
+                    val coverUrl = requireNotNull(game.coverFrontUrl)
+                    val response = thumbnailsApi.downloadThumbnail(coverUrl)
+                    requireNotNull(response.body()).use { BitmapFactory.decodeStream(it) }.cropToSquare()
                 }
             result.getOrElse { retrieveFallbackBitmap(game) }
         }

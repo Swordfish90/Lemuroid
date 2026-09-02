@@ -22,8 +22,6 @@ import gg.padkit.inputevents.InputEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -49,8 +47,6 @@ class GameViewModelTouchControls(
     private val menuPressed = MutableStateFlow(false)
     private val showEditControls = MutableStateFlow(false)
     private val hapticFeedbackMode = MutableStateFlow(HapticFeedbackMode.NONE)
-
-    private var loadingMenuJob: Job? = null
 
     override fun onCreate(owner: LifecycleOwner) {
         owner.launchOnState(Lifecycle.State.CREATED) {
@@ -143,16 +139,10 @@ class GameViewModelTouchControls(
     private fun onMenuPressed(pressed: Boolean) {
         menuPressed.value = pressed
 
+        // A normal tap releases the button before the old 500 ms delay elapsed,
+        // which canceled the menu action. Open the menu on button-down instead.
         if (pressed) {
-            loadingMenuJob?.cancel()
-            loadingMenuJob =
-                scope.launch {
-                    delay(MENU_LOADING_ANIMATION_MILLIS.toLong())
-                    sideEffects.showMenu(tilt, inputs)
-                }
-        } else {
-            loadingMenuJob?.cancel()
-            loadingMenuJob = null
+            sideEffects.showMenu(tilt, inputs)
         }
     }
 

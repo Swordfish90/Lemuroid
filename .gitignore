@@ -17,3 +17,4 @@ project.properties
 .externalNativeBuild
 local.properties
 release.jks
+keystore.properties

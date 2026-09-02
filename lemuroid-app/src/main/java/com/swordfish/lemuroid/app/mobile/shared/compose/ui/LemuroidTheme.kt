@@ -7,7 +7,9 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 
 private val LightColorScheme =
     lightColorScheme(
@@ -75,14 +77,25 @@ private val DarkColorScheme =
         scrim = md_theme_dark_scrim,
     )
 
+private val AmoledColorScheme =
+    DarkColorScheme.copy(
+        background = Color.Black,
+        surface = Color.Black,
+        surfaceVariant = Color(0xFF101010),
+    )
+
 @Composable
 fun AppTheme(
     darkTheme: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val amoledTheme =
+        SharedPreferencesHelper.getSharedPreferences(LocalContext.current)
+            .getBoolean("amoled_theme", false)
     val colors =
         when {
+            darkTheme && amoledTheme -> AmoledColorScheme
             dynamicColor && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
             dynamicColor && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
             darkTheme -> DarkColorScheme

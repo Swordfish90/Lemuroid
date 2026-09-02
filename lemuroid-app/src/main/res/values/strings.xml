@@ -39,6 +39,8 @@
 
     <string name="settings_title_immersive_mode">Immersive mode</string>
     <string name="settings_description_immersive_mode">Dynamically colors the background based on game visuals</string>
+    <string name="settings_title_amoled_theme">AMOLED black theme</string>
+    <string name="settings_description_amoled_theme">Use true black backgrounds on OLED displays</string>
 
     <string name="settings_title_gamepad_settings">External devices</string>
     <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
@@ -96,6 +98,16 @@
     <string name="game_context_menu_resume">Resume</string>
     <string name="game_context_menu_restart">Restart</string>
     <string name="game_context_menu_create_shortcut">Pin to launcher</string>
+    <string name="game_context_menu_set_custom_thumbnail">Set custom thumbnail</string>
+    <string name="game_context_menu_change_thumbnail">Change thumbnail</string>
+    <string name="game_context_menu_remove_thumbnail">Remove thumbnail</string>
+    <string name="game_context_menu_rename">Rename game</string>
+    <string name="game_context_menu_reset_name">Reset name</string>
+    <string name="game_rename_title">Rename game</string>
+    <string name="game_rename_hint">Display name</string>
+    <string name="game_rename_save">Save</string>
+    <string name="game_rename_cancel">Cancel</string>
+    <string name="game_custom_thumbnail_error">Couldn\'t load that image</string>
 
     <string name="home_notification_title">Enable notifications</string>
     <string name="home_notification_message">Lemuroid uses notifications to let you know when a game or operation is running in background.</string>

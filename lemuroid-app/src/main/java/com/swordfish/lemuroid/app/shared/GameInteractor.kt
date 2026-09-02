@@ -2,17 +2,21 @@ package com.swordfish.lemuroid.app.shared
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
+import com.swordfish.lemuroid.app.shared.covers.CustomCoverManager
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.common.displayToast
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GameInteractor(
     private val activity: BusyActivity,
@@ -47,6 +51,37 @@ class GameInteractor(
     ) {
         GlobalScope.launch {
             retrogradeDb.gameDao().update(game.copy(isFavorite = isFavorite))
+        }
+    }
+
+    fun onSetCustomThumbnail(game: Game, uri: Uri) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val context = activity.activity().applicationContext
+            val path = CustomCoverManager.save(context, game.id, uri)
+            if (path == null) {
+                withContext(Dispatchers.Main) {
+                    activity.activity().displayToast(R.string.game_custom_thumbnail_error)
+                }
+                return@launch
+            }
+            if (game.customCoverPath != null && game.customCoverPath != path) {
+                CustomCoverManager.delete(game.customCoverPath)
+            }
+            retrogradeDb.gameDao().update(game.copy(customCoverPath = path))
+        }
+    }
+
+    fun onRemoveCustomThumbnail(game: Game) {
+        GlobalScope.launch(Dispatchers.IO) {
+            CustomCoverManager.delete(game.customCoverPath)
+            retrogradeDb.gameDao().update(game.copy(customCoverPath = null))
+        }
+    }
+
+    fun onRenameGame(game: Game, displayName: String?) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val normalizedName = displayName?.trim()?.takeIf { it.isNotEmpty() }
+            retrogradeDb.gameDao().update(game.copy(customDisplayName = normalizedName))
         }
     }
 

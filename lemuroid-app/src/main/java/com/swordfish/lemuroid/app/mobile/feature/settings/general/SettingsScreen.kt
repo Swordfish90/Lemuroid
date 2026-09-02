@@ -137,6 +137,7 @@ private fun InputSettings(navController: NavController) {
 private fun GeneralSettings() {
     val hdMode = booleanPreferenceState(R.string.pref_key_hd_mode, false)
     val immersiveMode = booleanPreferenceState(R.string.pref_key_enable_immersive_mode, false)
+    val amoledTheme = booleanPreferenceState(R.string.pref_key_amoled_theme, false)
 
     LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_general)) },
@@ -150,6 +151,11 @@ private fun GeneralSettings() {
             state = immersiveMode,
             title = { Text(text = stringResource(id = R.string.settings_title_immersive_mode)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_immersive_mode)) },
+        )
+        LemuroidSettingsSwitch(
+            state = amoledTheme,
+            title = { Text(text = stringResource(id = R.string.settings_title_amoled_theme)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_amoled_theme)) },
         )
         LemuroidSettingsSwitch(
             state = hdMode,

@@ -56,6 +56,21 @@ It originated from a rib of [Retrograde](https://github.com/retrograde/retrograd
 - Customizable touch controls (size and position)
 - Cloud save sync
 - HD mode
+- Custom per-game thumbnails for ROM hacks and homebrew
+
+### Custom thumbnails
+
+This fork supports assigning local artwork to individual games. It is useful for ROM hacks, homebrew, and other games that do not have cover art in the Libretro thumbnail database.
+
+To assign artwork, long-press a game tile from Home, Favorites, Systems, or Search. Select **Set custom thumbnail**, choose an image from the Android gallery or file picker, and wait briefly while Lemuroid creates a square thumbnail. The image is copied into Lemuroid’s private storage, so the original gallery or download location is not required afterward.
+
+For a game that already has custom artwork, long-press the tile and select **Change thumbnail** to replace it. Select **Remove thumbnail** to delete the custom image and return to the normal scraped artwork or generated placeholder. Images are center-cropped to a square and resized to a maximum of 512 × 512 pixels automatically.
+
+Custom thumbnails are stored as app-side metadata and persist across app restarts and library rescans. They are not embedded in ROM files, are not uploaded for cloud sync, and are removed when the app is uninstalled. If an image cannot be decoded, Lemuroid shows an error and keeps the existing artwork unchanged.
+
+### GitHub distribution
+
+The GitHub release uses the **dynamic-core** build to keep the APK small. Emulator cores are downloaded from GitHub on demand when a system is used for the first time, so internet access may be required initially.
 
 ### Languages:
 You can help translate Lemuroid in your native language by going here: https://crowdin.com/project/lemuroid

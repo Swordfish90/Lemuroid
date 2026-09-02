@@ -6,6 +6,7 @@ import android.content.pm.ServiceInfo
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
 import com.swordfish.lemuroid.app.mobile.shared.NotificationsManager
+import com.swordfish.lemuroid.app.shared.game.GameProcessLock
 import dagger.android.DaggerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,11 +27,8 @@ class GameService : DaggerService() {
         super.onCreate()
         serviceScope.launch {
             awaitTermination()
-            withContext(Dispatchers.Main) {
-                ServiceCompat.stopForeground(this@GameService, ServiceCompat.STOP_FOREGROUND_REMOVE)
-                stopSelf()
-                exitProcess(0)
-            }
+            terminateGameProcess()
+
         }
     }
 
@@ -60,8 +58,24 @@ class GameService : DaggerService() {
         NotificationManagerCompat.from(this).cancel(NotificationsManager.GAME_RUNNING_NOTIFICATION_ID)
     }
 
+    private suspend fun terminateGameProcess() {
+        withContext(Dispatchers.Main) {
+            ServiceCompat.stopForeground(this@GameService, ServiceCompat.STOP_FOREGROUND_REMOVE)
+            stopSelf()
+        }
+        GameProcessLock.release()
+        exitProcess(0)
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        Timber.i("GameService task removed; requesting game process termination")
+        requestTermination()
+        super.onTaskRemoved(rootIntent)
+    }
+
     override fun onDestroy() {
         serviceScope.cancel()
+        GameProcessLock.release()
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         hideNotification()
     }
