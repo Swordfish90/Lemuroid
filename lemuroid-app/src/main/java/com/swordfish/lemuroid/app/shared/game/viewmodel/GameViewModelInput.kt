@@ -302,7 +302,12 @@ class GameViewModelInput(
             .onCompletion { pressedKeys.clear() }
             .safeCollect { (shortcuts, ports, bindings, event) ->
                 val (device, action, keyCode) = event
-                val port = ports(device)
+                val port =
+                    if (device.name.contains("Joy-Con", ignoreCase = true)) {
+                        0
+                    } else {
+                        ports(device)
+                    }
                 val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
 
                 if (port == 0) {
@@ -346,7 +351,13 @@ class GameViewModelInput(
 
         events
             .mapNotNull { (ports, event) ->
-                ports(event.device)?.let { it to event }
+                val port =
+                    if (event.device.name.contains("Joy-Con", ignoreCase = true)) {
+                        0
+                    } else {
+                        ports(event.device)
+                    }
+                port?.let { it to event }
             }
             .map { (port, event) ->
                 val axes = event.device.getInputClass().getAxesMap().entries
@@ -380,7 +391,13 @@ class GameViewModelInput(
 
         events
             .safeCollect { (ports, event) ->
-                ports(event.device)?.let {
+                val port =
+                    if (event.device.name.contains("Joy-Con", ignoreCase = true)) {
+                        0
+                    } else {
+                        ports(event.device)
+                    }
+                port?.let {
                     sendStickMotions(event, it)
                 }
             }
