@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.RetroKey
+import com.swordfish.lemuroid.app.shared.input.TurboConfig
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.shared.settings.GameShortcut
 import com.swordfish.lemuroid.common.kotlin.reverseLookup
@@ -40,6 +41,7 @@ class InputDevicesSettingsViewModel(
     data class BindingsView(
         val keys: Map<RetroKey, InputKey> = emptyMap(),
         val shortcuts: List<GameShortcut> = emptyList(),
+        val turbo: TurboConfig = TurboConfig(),
     )
 
     data class State(
@@ -83,8 +85,9 @@ class InputDevicesSettingsViewModel(
         val devicesFlow = inputDeviceManager.getEnabledInputsObservable()
         val bindingsFlow = inputDeviceManager.getInputBindingsObservable()
         val shortcutsFlow = inputDeviceManager.getGameShortcutsObservable()
+        val turboFlow = inputDeviceManager.getTurboConfigsObservable()
 
-        return combine(devicesFlow, bindingsFlow, shortcutsFlow) { devices, allBindings, allShortcuts ->
+        return combine(devicesFlow, bindingsFlow, shortcutsFlow, turboFlow) { devices, allBindings, allShortcuts, allTurbo ->
             devices.associateWith { device ->
                 val shortcuts =
                     allShortcuts[device]?.filter {
@@ -92,7 +95,7 @@ class InputDevicesSettingsViewModel(
                     } ?: emptyList()
                 val keys = allBindings(device).reverseLookup()
 
-                BindingsView(keys, shortcuts)
+                BindingsView(keys, shortcuts, allTurbo(device))
             }
         }
     }

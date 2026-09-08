@@ -27,6 +27,7 @@ import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.input.GamePadShortcutBindingActivity
+import com.swordfish.lemuroid.app.mobile.feature.input.GamePadTurboBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
@@ -122,6 +123,10 @@ abstract class LemuroidApplicationModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [GamePadShortcutBindingActivity.Module::class])
     abstract fun gamepadShortcutBindingActivity(): GamePadShortcutBindingActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [GamePadTurboBindingActivity.Module::class])
+    abstract fun gamepadTurboBindingActivity(): GamePadTurboBindingActivity
 
     @Module
     companion object {

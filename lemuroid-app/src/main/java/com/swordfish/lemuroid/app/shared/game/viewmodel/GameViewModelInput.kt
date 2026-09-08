@@ -11,13 +11,14 @@ import androidx.lifecycle.LifecycleOwner
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.input.InputKey
+import com.swordfish.lemuroid.app.shared.input.TurboConfig
 import com.swordfish.lemuroid.app.shared.input.inputclass.getInputClass
 import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
 import com.swordfish.lemuroid.common.kotlin.NTuple2
-import com.swordfish.lemuroid.common.kotlin.NTuple4
+import com.swordfish.lemuroid.common.kotlin.NTuple5
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
 import com.swordfish.lemuroid.common.kotlin.toIndexedMap
 import com.swordfish.lemuroid.common.kotlin.zipOnKeys
@@ -63,6 +64,7 @@ class GameViewModelInput(
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
     private val keyEventsFlow: MutableSharedFlow<KeyEvent?> = MutableSharedFlow()
     private val motionEventsFlow: MutableSharedFlow<MotionEvent> = MutableSharedFlow()
+    private val turboScheduler = TurboScheduler(scope) { retroGameView.retroGameView }
 
     fun getAllTiltConfigurations(): List<TiltConfiguration> {
         return controllerConfigsState.value[0]
@@ -239,6 +241,12 @@ class GameViewModelInput(
             initializeGamePadKeysFlow()
         }
 
+        if (system.turboFireSupport) {
+            owner.launchOnState(Lifecycle.State.CREATED) {
+                initializeTurboDevicesGuard()
+            }
+        }
+
         owner.launchOnState(Lifecycle.State.CREATED) {
             initializeVirtualGamePadMotionsFlow()
         }
@@ -250,6 +258,12 @@ class GameViewModelInput(
         owner.launchOnState(Lifecycle.State.RESUMED) {
             initializeControllersConfigFlow()
         }
+    }
+
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
+        // Release every turbo button so a paused/backgrounded game can never keep firing.
+        turboScheduler.stopAll()
     }
 
     private suspend fun initializeControllerConfigsFlow() {
@@ -293,16 +307,23 @@ class GameViewModelInput(
                 inputDeviceManager.getGameShortcutsObservable(),
                 inputDeviceManager.getGamePadsPortMapperObservable(),
                 inputDeviceManager.getInputBindingsObservable(),
+                inputDeviceManager.getTurboConfigsObservable(),
                 filteredKeyEvents,
-                ::NTuple4,
+                ::NTuple5,
             )
 
         combinedObservable
             .onStart { pressedKeys.clear() }
             .onCompletion { pressedKeys.clear() }
-            .safeCollect { (shortcuts, ports, bindings, event) ->
+            .safeCollect { (shortcuts, ports, bindings, turboConfigs, event) ->
                 val (device, action, keyCode) = event
                 val port = ports(device)
+
+                if (port != null && system.turboFireSupport) {
+                    val turboHandled = handleTurboKey(turboConfigs(device), device, action, keyCode, port)
+                    if (turboHandled) return@safeCollect
+                }
+
                 val bindKeyCode = bindings(device)[InputKey(keyCode)]?.keyCode ?: keyCode
 
                 if (port == 0) {
@@ -334,6 +355,39 @@ class GameViewModelInput(
                     retroGameView.retroGameView?.sendKeyEvent(action, bindKeyCode, it)
                 }
             }
+    }
+
+    /**
+     * Consumes a physical key bound as a turbo trigger. On press it starts the rapid-fire loop for
+     * the mapped target button, on release it stops it. Returns true when the event was handled and
+     * must not be forwarded as a regular single-shot key injection.
+     */
+    private fun handleTurboKey(
+        turboConfig: TurboConfig,
+        device: InputDevice,
+        action: Int,
+        keyCode: Int,
+        port: Int,
+    ): Boolean {
+        val targetKeyCode = turboConfig.targetForTrigger(keyCode) ?: return false
+        when (action) {
+            KeyEvent.ACTION_DOWN ->
+                turboScheduler.start(device.id, keyCode, targetKeyCode, port, turboConfig.frequencyHz)
+            KeyEvent.ACTION_UP -> turboScheduler.stop(device.id, keyCode)
+        }
+        return true
+    }
+
+    /**
+     * Safety net for hot-unplug: when an enabled device disappears (e.g. a Bluetooth gamepad
+     * disconnects while its turbo trigger is held) no ACTION_UP ever arrives, so stop any turbo
+     * still running for devices that are no longer connected.
+     */
+    private suspend fun initializeTurboDevicesGuard() {
+        inputDeviceManager.getEnabledInputsObservable()
+            .map { devices -> devices.map { it.id }.toSet() }
+            .distinctUntilChanged()
+            .safeCollect { activeDeviceIds -> turboScheduler.retainDevices(activeDeviceIds) }
     }
 
     private suspend fun initializeVirtualGamePadMotionsFlow() {

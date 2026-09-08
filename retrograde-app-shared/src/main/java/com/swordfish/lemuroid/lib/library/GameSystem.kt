@@ -37,6 +37,7 @@ data class GameSystem(
     val supportedExtensions: List<String> = uniqueExtensions,
     val hasMultiDiskSupport: Boolean = false,
     val fastForwardSupport: Boolean = true,
+    val turboFireSupport: Boolean = false,
     val hasTouchScreen: Boolean = false,
 ) {
     companion object {
@@ -121,6 +122,7 @@ data class GameSystem(
                         ),
                     ),
                     uniqueExtensions = listOf("nes"),
+                    turboFireSupport = true,
                 ),
                 GameSystem(
                     SystemID.SNES,

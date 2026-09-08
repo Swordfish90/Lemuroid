@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.PairSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -45,6 +46,15 @@ class InputDeviceManager(
                 combine(allDeviceBindingsFlows) { it.toMap() }
             }
             .map { bindings -> { bindings[it] ?: mapOf() } }
+    }
+
+    fun getTurboConfigsObservable(): Flow<(InputDevice?) -> TurboConfig> {
+        return getEnabledInputsObservable()
+            .flatMapLatest { devices ->
+                val allTurboFlows = devices.map { device -> getTurboConfigFlow(device).map { device to it } }
+                combine(allTurboFlows) { it.toMap() }
+            }
+            .map { configs -> { configs[it] ?: TurboConfig() } }
     }
 
     fun getGameShortcutsObservable(): Flow<Map<InputDevice, List<GameShortcut>>> {
@@ -70,6 +80,23 @@ class InputDeviceManager(
             .asFlow()
             .map { parseBindingsPreference(it, inputDevice) }
             .flowOn(Dispatchers.IO)
+    }
+
+    private fun getTurboConfigFlow(inputDevice: InputDevice): Flow<TurboConfig> {
+        val enabledFlow =
+            flowSharedPreferences.getBoolean(computeTurboEnabledPreference(inputDevice), false).asFlow()
+        val frequencyFlow =
+            flowSharedPreferences
+                .getInt(computeTurboFrequencyPreference(inputDevice), TurboConfig.DEFAULT_FREQUENCY_HZ)
+                .asFlow()
+        val bindingsFlow =
+            flowSharedPreferences
+                .getString(computeTurboBindingsPreference(inputDevice))
+                .asFlow()
+                .map { parseTurboBindings(it) }
+        return combine(enabledFlow, frequencyFlow, bindingsFlow) { enabled, frequency, bindings ->
+            TurboConfig(enabled = enabled, frequencyHz = frequency, bindings = bindings)
+        }.flowOn(Dispatchers.IO)
     }
 
     private fun getShortcutBindingsFlow(device: InputDevice): Flow<List<GameShortcut>> {
@@ -120,6 +147,29 @@ class InputDeviceManager(
         }
     }
 
+    suspend fun getCurrentTurboConfig(inputDevice: InputDevice): TurboConfig {
+        return withContext(Dispatchers.IO) {
+            TurboConfig(
+                enabled = sharedPreferences.getBoolean(computeTurboEnabledPreference(inputDevice), false),
+                frequencyHz =
+                    sharedPreferences.getInt(
+                        computeTurboFrequencyPreference(inputDevice),
+                        TurboConfig.DEFAULT_FREQUENCY_HZ,
+                    ),
+                bindings =
+                    parseTurboBindings(
+                        sharedPreferences.getString(computeTurboBindingsPreference(inputDevice), ""),
+                    ),
+            )
+        }
+    }
+
+    private fun parseTurboBindings(preference: String?): Map<Int, Int> {
+        if (preference.isNullOrEmpty()) return TurboConfig.DEFAULT_BINDINGS
+        return runCatching { Json.decodeFromString(turboBindingsSerializer, preference) }
+            .getOrDefault(TurboConfig.DEFAULT_BINDINGS)
+    }
+
     private fun parseBindingsPreference(
         preference: String?,
         inputDevice: InputDevice,
@@ -164,11 +214,52 @@ class InputDeviceManager(
         }
     }
 
+    suspend fun updateTurboEnabled(
+        inputDevice: InputDevice,
+        enabled: Boolean,
+    ) = withContext(Dispatchers.IO) {
+        sharedPreferences.edit(commit = true) {
+            putBoolean(computeTurboEnabledPreference(inputDevice), enabled)
+        }
+    }
+
+    suspend fun updateTurboFrequency(
+        inputDevice: InputDevice,
+        frequencyHz: Int,
+    ) = withContext(Dispatchers.IO) {
+        sharedPreferences.edit(commit = true) {
+            putInt(computeTurboFrequencyPreference(inputDevice), frequencyHz)
+        }
+    }
+
+    suspend fun updateTurboBinding(
+        inputDevice: InputDevice,
+        targetKeyCode: Int,
+        triggerKeyCode: Int,
+    ) = withContext(Dispatchers.IO) {
+        val current =
+            parseTurboBindings(sharedPreferences.getString(computeTurboBindingsPreference(inputDevice), ""))
+        // Drop any previous trigger for this target and prevent one trigger from driving two targets.
+        val updated =
+            current
+                .filterKeys { it != targetKeyCode }
+                .filterValues { it != triggerKeyCode } + (targetKeyCode to triggerKeyCode)
+        sharedPreferences.edit(commit = true) {
+            putString(
+                computeTurboBindingsPreference(inputDevice),
+                Json.encodeToString(turboBindingsSerializer, updated),
+            )
+        }
+    }
+
     suspend fun resetAllBindings() =
         withContext(Dispatchers.IO) {
             sharedPreferences.edit(commit = true) {
                 sharedPreferences.all.keys
-                    .filter { it.startsWith(GAME_PAD_BINDING_PREFERENCE_BASE_KEY) }
+                    .filter {
+                        it.startsWith(GAME_PAD_BINDING_PREFERENCE_BASE_KEY) ||
+                            it.startsWith(GAME_PAD_TURBO_PREFERENCE_BASE_KEY)
+                    }
                     .forEach { remove(it) }
             }
         }
@@ -246,9 +337,11 @@ class InputDeviceManager(
     companion object {
         private const val GAME_PAD_BINDING_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding_key"
         private const val GAME_PAD_ENABLED_PREFERENCE_BASE_KEY = "pref_key_gamepad_enabled"
+        private const val GAME_PAD_TURBO_PREFERENCE_BASE_KEY = "pref_key_gamepad_turbo"
 
         private val bindingsMapSerializer = MapSerializer(InputKey.serializer(), RetroKey.serializer())
         private val bindingsComboSerializer = PairSerializer(InputKey.serializer(), InputKey.serializer())
+        private val turboBindingsSerializer = MapSerializer(Int.serializer(), Int.serializer())
 
         private fun getSharedPreferencesId(inputDevice: InputDevice) = inputDevice.descriptor
 
@@ -277,6 +370,15 @@ class InputDeviceManager(
             val keyCode = retroKey.keyCode
             return "${GAME_PAD_BINDING_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_$keyCode"
         }
+
+        fun computeTurboEnabledPreference(inputDevice: InputDevice) =
+            "${GAME_PAD_TURBO_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_enabled"
+
+        fun computeTurboFrequencyPreference(inputDevice: InputDevice) =
+            "${GAME_PAD_TURBO_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_frequency"
+
+        fun computeTurboBindingsPreference(inputDevice: InputDevice) =
+            "${GAME_PAD_TURBO_PREFERENCE_BASE_KEY}_${getSharedPreferencesId(inputDevice)}_bindings"
 
         val OUTPUT_KEYS: List<RetroKey> =
             retroKeysOf(
