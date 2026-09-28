@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -44,12 +45,16 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.swordfish.lemuroid.app.shared.game.BaseGameScreenViewModel
+import com.swordfish.lemuroid.R as LemuroidR
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelTouchControls.Companion.MENU_LOADING_ANIMATION_MILLIS
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
@@ -202,6 +207,46 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                             viewModel = viewModel,
                         )
                     }
+                }
+            }
+        }
+
+        // A Popup is rendered in a separate window, so it stays above the emulator's
+        // GLSurfaceView instead of being hidden behind it.
+        Popup(
+            alignment = Alignment.TopStart,
+            properties = PopupProperties(focusable = false, clippingEnabled = false),
+        ) {
+            Card(
+                modifier =
+                    Modifier
+                        .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top))
+                        .padding(start = 8.dp, top = 8.dp),
+            ) {
+                IconButton(onClick = viewModel::saveQuickSave) {
+                    Icon(
+                        painter = painterResource(LemuroidR.drawable.ic_menu_save),
+                        contentDescription = stringResource(LemuroidR.string.game_quick_save_button),
+                    )
+                }
+            }
+        }
+
+        Popup(
+            alignment = Alignment.TopEnd,
+            properties = PopupProperties(focusable = false, clippingEnabled = false),
+        ) {
+            Card(
+                modifier =
+                    Modifier
+                        .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top))
+                        .padding(end = 8.dp, top = 8.dp),
+            ) {
+                IconButton(onClick = viewModel::toggleFastForward) {
+                    Icon(
+                        painter = painterResource(LemuroidR.drawable.ic_menu_fast_forward),
+                        contentDescription = stringResource(LemuroidR.string.game_menu_fast_forward),
+                    )
                 }
             }
         }
