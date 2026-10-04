@@ -42,5 +42,27 @@ class GameContextMenuListener(
                 true
             }
         }
+
+        if (game.customName != null) {
+            menu.add(R.string.game_context_menu_remove_custom_name).setOnMenuItemClickListener {
+                gameInteractor.onClearCustomName(game)
+                true
+            }
+        } else {
+            menu.add(R.string.game_context_menu_add_custom_name).setOnMenuItemClickListener {
+                true
+            }
+        }
+
+        if (game.customCoverUri != null) {
+            menu.add(R.string.game_context_menu_remove_custom_artwork).setOnMenuItemClickListener {
+                gameInteractor.onClearCustomCoverUri(game)
+                true
+            }
+        } else {
+            menu.add(R.string.game_context_menu_add_custom_artwork).setOnMenuItemClickListener {
+                true
+            }
+        }
     }
 }

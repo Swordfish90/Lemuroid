@@ -21,7 +21,7 @@ object CoverUtils {
     ) {
         if (imageView == null) return
 
-        imageView.load(game.coverFrontUrl, imageView.context.imageLoader) {
+        imageView.load(game.displayCoverUrl(), imageView.context.imageLoader) {
             val fallbackDrawable = getFallbackDrawable(game)
             fallback(fallbackDrawable)
             error(fallbackDrawable)
@@ -64,14 +64,14 @@ object CoverUtils {
 
     private fun computeTitle(game: Game): String {
         val sanitizedName =
-            game.title
+            game.displayName()
                 .replace(Regex("\\(.*\\)"), "")
 
         return sanitizedName.asSequence()
             .filter { it.isDigit() or it.isUpperCase() or (it == '&') }
             .take(3)
             .joinToString("")
-            .ifBlank { game.title.first().toString() }
+            .ifBlank { game.displayName().first().toString() }
             .capitalize()
     }
 

@@ -32,9 +32,9 @@ fun LemuroidSmallGameImage(
     AsyncImage(
         model =
             ImageRequest.Builder(LocalContext.current)
-                .data(game.coverFrontUrl)
+                .data(game.displayCoverUrl())
                 .build(),
-        contentDescription = game.title,
+        contentDescription = game.displayName(),
         modifier =
             modifier
                 .fillMaxWidth()
