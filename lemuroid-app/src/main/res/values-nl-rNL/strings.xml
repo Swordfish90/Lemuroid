@@ -80,6 +80,11 @@
     <string name="game_context_menu_resume">Hervatten</string>
     <string name="game_context_menu_restart">Herstarten</string>
     <string name="game_context_menu_create_shortcut">Vastzetten aan launcher</string>
+    <string name="game_context_menu_add_custom_name">Aangepaste naam</string>
+    <string name="game_context_menu_remove_custom_name">Aangepaste naam verwijderen</string>
+    <string name="game_context_menu_add_custom_artwork">Aangepaste hoes</string>
+    <string name="game_context_menu_remove_custom_artwork">Aangepaste hoes verwijderen</string>
+    <string name="game_context_menu_custom_name_dialog_title">Aangepaste naam instellen</string>
     <string name="home_notification_title">Meldingen inschakelen</string>
     <string name="home_notification_message">Lemuroid gebruikt meldingen om je te laten weten wanneer een spel of bewerking op de achtergrond draait.</string>
     <string name="home_notification_action">Inschakelen</string>
