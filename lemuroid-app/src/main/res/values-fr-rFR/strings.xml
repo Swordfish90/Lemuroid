@@ -158,7 +158,8 @@
     <string name="game_process_another_game_running">Veuillez fermer la partie en cours avant de commencer une autre</string>
     <string name="mobile_settings_help">Aide</string>
     <string name="mobile_settings_support">Soutien</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Comment utiliser Lemuroid?</b><br/>
+    <string name="lemuroid_help_content"><![CDATA[
+        <b>&#8226;Comment utiliser Lemuroid?</b><br/>
         Copiez tous vos fichiers ROMs dans un dossier de votre appareil et sélectionnez-le dans l\'onglet \'paramètres\'. Ce dossier peut avoir des sous-dossiers. Une fois l\'analyse terminée, vous verrez vos jeux apparaître dans le menu.<br/><br/>
         <b>&#8226;Pourquoi mes jeux ne sont-ils pas détectés?</b><br/>
         Si vos jeux sont compressés, essayez de les décompresser. Si cela n\'aide pas, essayez de mettre les ROMs dans des dossiers séparés, un pour chaque console avec les noms suivants: $SYSTEMS.
