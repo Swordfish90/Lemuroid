@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">HD-läge</string>
     <string name="settings_description_hd_mode">Använd efterbehandlande uppskalningsfilter</string>
     <string name="settings_description_hd_quality">Justera kvaliteten för HD-läget</string>
+    <string name="settings_title_viewport_alignment">Justering av visningsporten</string>
     <string name="settings_title_immersive_mode">Omslutande läge</string>
     <string name="settings_description_immersive_mode">Färgar bakgrunden dynamiskt baserat på spelets grafik</string>
     <string name="settings_title_gamepad_settings">Externa enheter</string>
@@ -80,6 +81,11 @@
     <string name="game_context_menu_resume">Återuppta</string>
     <string name="game_context_menu_restart">Starta om</string>
     <string name="game_context_menu_create_shortcut">Fäst på startskärmen</string>
+    <string name="game_context_menu_add_custom_name">Lägg till eget namn</string>
+    <string name="game_context_menu_remove_custom_name">Ta bort eget namn</string>
+    <string name="game_context_menu_add_custom_artwork">Lägg till egen omslagsbild</string>
+    <string name="game_context_menu_remove_custom_artwork">Ta bort egen omslagsbild</string>
+    <string name="game_context_menu_custom_name_dialog_title">Ange eget namn</string>
     <string name="home_notification_title">Aktivera aviseringar</string>
     <string name="home_notification_message">Lemuroid använder aviseringar för att informera dig om när ett spel eller åtgärd körs i bakgrunden.</string>
     <string name="home_notification_action">Aktivera</string>
@@ -155,6 +161,7 @@
     <string name="game_edit_touch_controls_error_not_visible">Koppla ifrån din handkontroll för att ändra dina touchkontroller</string>
     <string name="game_interactory_busy">Vänta på att de pågående operationerna slutförs</string>
     <string name="game_interactor_notification_permission_required">Aktivera aviseringar från Hem för att fortsätta</string>
+    <string name="game_process_another_game_running">Stäng det aktuella spelet innan du startar ett annat</string>
     <string name="mobile_settings_help">Hjälp</string>
     <string name="mobile_settings_support">Support</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hur använder jag Lemuroid?</b><br/>
@@ -174,6 +181,9 @@
     <string name="shader_filter_names_smooth">Mjuk</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+    <string name="viewport_alignment_names_top">Överst</string>
+    <string name="viewport_alignment_names_center">Mitten</string>
+    <string name="viewport_alignment_names_bottom">Nederst</string>
     <string name="haptic_feedback_mode_names_none">Ingen</string>
     <string name="haptic_feedback_mode_names_press">Tryck</string>
     <string name="haptic_feedback_mode_names_press_release">Tryck &amp; släpp</string>
