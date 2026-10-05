@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">HD-Modus</string>
     <string name="settings_description_hd_mode">Hochskalierungsfilter nach Bearbeitung anwenden</string>
     <string name="settings_description_hd_quality">Qualität des HD-Modus anpassen</string>
+    <string name="settings_title_viewport_alignment">Viewport-Ausrichtung</string>
     <string name="settings_title_immersive_mode">Immersive-Modus</string>
     <string name="settings_description_immersive_mode">Dynamische Farben des Hintergrunds basierend auf Spielvisuellen</string>
     <string name="settings_title_gamepad_settings">Externe Geräte</string>
@@ -80,6 +81,11 @@
     <string name="game_context_menu_resume">Fortsetzen</string>
     <string name="game_context_menu_restart">Neustart</string>
     <string name="game_context_menu_create_shortcut">Zum Startbildschirm hinzufügen</string>
+    <string name="game_context_menu_add_custom_name">Eigenen Namen hinzufügen</string>
+    <string name="game_context_menu_remove_custom_name">Eigenen Namen entfernen</string>
+    <string name="game_context_menu_add_custom_artwork">Eigene Bild hinzufügen</string>
+    <string name="game_context_menu_remove_custom_artwork">Eigene Bild entfernen</string>
+    <string name="game_context_menu_custom_name_dialog_title">Eigenen Namen hinzufügen</string>
     <string name="home_notification_title">Alle Benachrichtigungen aktivieren</string>
     <string name="home_notification_message">Lemuroid verwendet Benachrichtigungen, um dich darüber zu informieren, wenn ein Spiel oder eine Operation im Hintergrund läuft.</string>
     <string name="home_notification_action">Aktivieren</string>
@@ -175,6 +181,9 @@
     <string name="shader_filter_names_smooth">Weichzeichnen</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+    <string name="viewport_alignment_names_top">Oben</string>
+    <string name="viewport_alignment_names_center">Mittig</string>
+    <string name="viewport_alignment_names_bottom">Unten</string>
     <string name="haptic_feedback_mode_names_none">Keine Vibration</string>
     <string name="haptic_feedback_mode_names_press">Drücken</string>
     <string name="haptic_feedback_mode_names_press_release">Drücken &amp; Loslassen</string>
