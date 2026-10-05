@@ -30,13 +30,38 @@ object GameMenuHelper {
     }
 
     fun setupFastForwardOption(
+        activity: Activity?,
         screen: PreferenceScreen,
-        fastForwardEnabled: Boolean,
+        frameSpeed: Int,
         fastForwardSupported: Boolean,
     ) {
-        val preference = screen.findPreference<SwitchPreference>(FAST_FORWARD)
-        preference?.isChecked = fastForwardEnabled
+        val preference = screen.findPreference<ListPreference>(FAST_FORWARD)
         preference?.isVisible = fastForwardSupported
+
+        val speedLabels = screen.context.resources.getStringArray(R.array.game_menu_fast_forward_speeds)
+        val speedValues = screen.context.resources.getStringArray(R.array.game_menu_fast_forward_speed_values)
+
+        preference?.entries = speedLabels
+        preference?.entryValues = speedValues
+
+        val selectedIndex =
+            speedValues.indexOf(frameSpeed.toString()).let { if (it >= 0) it else 0 }
+
+        preference?.setValueIndex(selectedIndex)
+        preference?.summary =
+            (speedLabels.getOrNull(selectedIndex) ?: "") +
+                " - " +
+                screen.context.getString(R.string.game_menu_fast_forward_note)
+        preference?.setOnPreferenceChangeListener { _, newValue ->
+            val speed = (newValue as? String)?.toIntOrNull() ?: 1
+            val resultIntent =
+                Intent().apply {
+                    putExtra(GameMenuContract.RESULT_SET_FRAME_SPEED, speed)
+                    putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, speed > 1)
+                }
+            setResultAndFinish(activity, resultIntent)
+            true
+        }
     }
 
     fun setupSaveOption(
@@ -148,15 +173,6 @@ object GameMenuHelper {
                 val resultIntent =
                     Intent().apply {
                         putExtra(GameMenuContract.RESULT_ENABLE_AUDIO, !currentValue)
-                    }
-                setResultAndFinish(activity, resultIntent)
-                true
-            }
-            "pref_game_fast_forward" -> {
-                val currentValue = (preference as SwitchPreference).isChecked
-                val resultIntent =
-                    Intent().apply {
-                        putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, currentValue)
                     }
                 setResultAndFinish(activity, resultIntent)
                 true

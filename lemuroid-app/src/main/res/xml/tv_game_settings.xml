@@ -28,7 +28,7 @@
         android:title="@string/game_menu_mute_audio"
         app:icon="@drawable/ic_menu_mute"/>
 
-    <SwitchPreference
+    <ListPreference
         android:key="pref_game_fast_forward"
         android:title="@string/game_menu_fast_forward"
         app:icon="@drawable/ic_menu_fast_forward"/>

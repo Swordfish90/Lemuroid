@@ -20,6 +20,7 @@
     <string name="pref_key_max_cache_size" translatable="false">max_cache_size_bytes</string>
     <string name="pref_key_allow_direct_game_load" translatable="false">allow_direct_game_load</string>
     <string name="pref_key_enable_immersive_mode" translatable="false">enable_immersive_mode</string>
+    <string name="pref_key_fast_forward_cycle_speeds" translatable="false">fast_forward_cycle_speeds</string>
 
     <string name="pref_key_save_sync_auto" translatable="false">save_sync_auto</string>
     <string name="pref_key_save_sync_enable" translatable="false">save_sync_enable</string>
