@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">HD-modus</string>
     <string name="settings_description_hd_mode">Pas achteraf een opschaalfilter toe</string>
     <string name="settings_description_hd_quality">De kwaliteit van HD-modus aanpassen</string>
+    <string name="settings_title_viewport_alignment">Viewport uitlijnen</string>
     <string name="settings_title_immersive_mode">Meeslepende modus</string>
     <string name="settings_description_immersive_mode">Dynamisch kleuren van de achtergrond gebaseerd op de spelvisuals</string>
     <string name="settings_title_gamepad_settings">Externe apparaten</string>
@@ -180,6 +181,9 @@
     <string name="shader_filter_names_smooth">Vloeiend</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+    <string name="viewport_alignment_names_top">Boven</string>
+    <string name="viewport_alignment_names_center">Midden</string>
+    <string name="viewport_alignment_names_bottom">Onder</string>
     <string name="haptic_feedback_mode_names_none">Geen</string>
     <string name="haptic_feedback_mode_names_press">Drukken</string>
     <string name="haptic_feedback_mode_names_press_release">Drukken en loslaten</string>
