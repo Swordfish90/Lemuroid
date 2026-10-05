@@ -219,6 +219,6 @@ class GameViewModelTouchControls(
     }
 
     companion object {
-        const val MENU_LOADING_ANIMATION_MILLIS = 500
+        const val MENU_LOADING_ANIMATION_MILLIS = 350
     }
 }
