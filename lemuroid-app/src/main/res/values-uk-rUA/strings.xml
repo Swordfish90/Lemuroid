@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">HD режим</string>
     <string name="settings_description_hd_mode">Застосувати фільтр пост-обробки масштабування</string>
     <string name="settings_description_hd_quality">Налаштування якості HD-режиму</string>
+    <string name="settings_title_viewport_alignment">Вирівнювання області перегляду</string>
     <string name="settings_title_immersive_mode">Режим занурення</string>
     <string name="settings_description_immersive_mode">Інтелектуальний фон на основі візуальних ефектів</string>
     <string name="settings_title_gamepad_settings">Зовнішні пристрої</string>
@@ -80,6 +81,11 @@
     <string name="game_context_menu_resume">Поновити</string>
     <string name="game_context_menu_restart">Перезапуск</string>
     <string name="game_context_menu_create_shortcut">Закріпити у лаунчері</string>
+    <string name="game_context_menu_add_custom_name">Додати власне ім\'я</string>
+    <string name="game_context_menu_remove_custom_name">Видалити власне ім’я</string>
+    <string name="game_context_menu_add_custom_artwork">Додати власне зображення</string>
+    <string name="game_context_menu_remove_custom_artwork">Видалити власне зображення</string>
+    <string name="game_context_menu_custom_name_dialog_title">Встановити власне ім\'я</string>
     <string name="home_notification_title">Увімкнути сповіщення</string>
     <string name="home_notification_message">Lemuroid використовує сповіщення, щоб повідомити, коли гра або операція працює у фоновому режимі.</string>
     <string name="home_notification_action">Увімкнути</string>
@@ -174,6 +180,9 @@
     <string name="shader_filter_names_smooth">Згладжений</string>
     <string name="shader_filter_names_crt">Ефект \"старого\" телевізора</string>
     <string name="shader_filter_names_lcd">LCD дисплей</string>
+    <string name="viewport_alignment_names_top">Вгорі</string>
+    <string name="viewport_alignment_names_center">Центр</string>
+    <string name="viewport_alignment_names_bottom">Знизу</string>
     <string name="haptic_feedback_mode_names_none">Відсутньо</string>
     <string name="haptic_feedback_mode_names_press">Натисніть</string>
     <string name="haptic_feedback_mode_names_press_release">Натисніть &amp; відпустіть</string>
