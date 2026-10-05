@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">HD-режим</string>
     <string name="settings_description_hd_mode">Применять для постобработки фильтр масштабирования</string>
     <string name="settings_description_hd_quality">Настройка качества HD-режима</string>
+    <string name="settings_title_viewport_alignment">Выравнивание области просмотра</string>
     <string name="settings_title_immersive_mode">Режим погружения</string>
     <string name="settings_description_immersive_mode">Динамически меняет цвет фона в соответствие с изображением игры</string>
     <string name="settings_title_gamepad_settings">Внешние устройства</string>
@@ -80,6 +81,11 @@
     <string name="game_context_menu_resume">Продолжить</string>
     <string name="game_context_menu_restart">Перезапустить</string>
     <string name="game_context_menu_create_shortcut">Закрепить в лаунчере</string>
+    <string name="game_context_menu_add_custom_name">Добавить собственное имя</string>
+    <string name="game_context_menu_remove_custom_name">Удалить пользовательское имя</string>
+    <string name="game_context_menu_add_custom_artwork">Добавить собственное изображение</string>
+    <string name="game_context_menu_remove_custom_artwork">Удалить пользовательское изображение</string>
+    <string name="game_context_menu_custom_name_dialog_title">Установить свое имя</string>
     <string name="home_notification_title">Включить уведомления</string>
     <string name="home_notification_message">Lemuroid использует уведомления, чтобы сообщить, когда игра или операция выполняется в фоновом режиме.</string>
     <string name="home_notification_action">Включить</string>
@@ -175,6 +181,9 @@
     <string name="shader_filter_names_smooth">Мягкий</string>
     <string name="shader_filter_names_crt">ЭЛТ</string>
     <string name="shader_filter_names_lcd">ЖК</string>
+    <string name="viewport_alignment_names_top">Вверху</string>
+    <string name="viewport_alignment_names_center">Центр</string>
+    <string name="viewport_alignment_names_bottom">Внизу</string>
     <string name="haptic_feedback_mode_names_none">Нет</string>
     <string name="haptic_feedback_mode_names_press">При нажатии</string>
     <string name="haptic_feedback_mode_names_press_release">При нажатии и отпускании</string>
