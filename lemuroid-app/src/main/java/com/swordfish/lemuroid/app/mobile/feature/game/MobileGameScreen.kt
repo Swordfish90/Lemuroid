@@ -18,12 +18,14 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Height
+import androidx.compose.material.icons.filled.InvertColors
 import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -170,7 +172,11 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                         touchControlsVisibleState.value
 
                 if (isVisible) {
-                    CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme()) {
+                    val padTheme =
+                        remember(touchControllerSettings.transparentBackground) {
+                            LemuroidPadTheme(touchControllerSettings.transparentBackground)
+                        }
+                    CompositionLocalProvider(LocalLemuroidPadTheme provides padTheme) {
                         if (!isLandscape) {
                             PadContainer(
                                 modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_BOTTOM_CONTAINER),
@@ -320,6 +326,16 @@ private fun MenuEditTouchControls(
                             },
                         )
                     }
+                }
+                MenuEditTouchControlRow(Icons.Default.InvertColors, "Transparent Background", 0f) {
+                    Switch(
+                        checked = touchControllerSettings.transparentBackground,
+                        onCheckedChange = {
+                            viewModel.updateTouchControllerSettings(
+                                touchControllerSettings.copy(transparentBackground = it),
+                            )
+                        },
+                    )
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
