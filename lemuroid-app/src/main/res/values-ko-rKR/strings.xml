@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">HD 모드</string>
     <string name="settings_description_hd_mode">업스케일링 후처리 필터를 적용합니다</string>
     <string name="settings_description_hd_quality">HD 모드의 품질을 설정합니다</string>
+    <string name="settings_title_viewport_alignment">뷰포트 정렬</string>
     <string name="settings_title_immersive_mode">몰입형 모드</string>
     <string name="settings_description_immersive_mode">게임 화면에 따라 배경 색상을 동적으로 변경합니다</string>
     <string name="settings_title_gamepad_settings">외장 장치</string>
@@ -80,6 +81,11 @@
     <string name="game_context_menu_resume">계속하기</string>
     <string name="game_context_menu_restart">다시 시작</string>
     <string name="game_context_menu_create_shortcut">런처에 고정</string>
+    <string name="game_context_menu_add_custom_name">사용자 지정 이름 추가</string>
+    <string name="game_context_menu_remove_custom_name">사용자 지정 이름 제거</string>
+    <string name="game_context_menu_add_custom_artwork">사용자 지정 아트워크 추가</string>
+    <string name="game_context_menu_remove_custom_artwork">사용자 지정 아트워크 제거</string>
+    <string name="game_context_menu_custom_name_dialog_title">사용자 지정 이름 설정</string>
     <string name="home_notification_title">알림 사용</string>
     <string name="home_notification_message">Lemuroid가 게임 또는 배경 작업을 실행 중일 때 알림을 표시합니다.</string>
     <string name="home_notification_action">활성화</string>
@@ -175,6 +181,9 @@
     <string name="shader_filter_names_smooth">부드럽게</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+    <string name="viewport_alignment_names_top">상단</string>
+    <string name="viewport_alignment_names_center">중단</string>
+    <string name="viewport_alignment_names_bottom">하단</string>
     <string name="haptic_feedback_mode_names_none">없음</string>
     <string name="haptic_feedback_mode_names_press">누를 때</string>
     <string name="haptic_feedback_mode_names_press_release">누를 때 &amp; 뗄 때</string>
