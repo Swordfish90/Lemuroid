@@ -30,6 +30,11 @@ class GameLauncher(
         GlobalScope.launch {
             val system = GameSystem.findById(game.systemId)
             val coreConfig = coresSelection.getCoreConfigForSystem(system)
+            
+            // Perform an immediate bidirectional local sync right before the Core launches.
+            // This ensures any newly placed manually copied .sav files are injected into Lemuroid!
+            com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.performSync(activity.applicationContext)
+
             gameLaunchTaskHandler.handleGameStart(activity.applicationContext)
             BaseGameActivity.launchGame(activity, coreConfig, game, loadSave, leanback)
         }

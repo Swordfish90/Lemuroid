@@ -11,6 +11,7 @@ class MainProcessInitializer : Initializer<Unit> {
     override fun create(context: Context) {
         Timber.i("Requested initialization of main process tasks")
         SaveSyncWork.enqueueAutoWork(context, 0)
+        com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.enqueueAutoWork(context)
         LibraryIndexScheduler.scheduleCoreUpdate(context)
     }
 
