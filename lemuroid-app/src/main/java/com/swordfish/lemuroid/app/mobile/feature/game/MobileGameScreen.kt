@@ -63,6 +63,10 @@ import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
 import gg.padkit.inputstate.InputState
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 
 @Composable
 fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
@@ -122,6 +126,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             val fullScreenPosition = remember { mutableStateOf<Rect?>(null) }
             val viewportPosition = remember { mutableStateOf<Rect?>(null) }
 
+            val gameDisplayLabel = stringResource(com.swordfish.lemuroid.R.string.game_display_accessibility_label)
             AndroidView(
                 modifier =
                     Modifier
@@ -204,6 +209,17 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                     }
                 }
             }
+
+            // Accessibility overlay to ensure the game display is always discoverable by TalkBack
+            // regardless of touch controls visibility.
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .semantics {
+                        contentDescription = gameDisplayLabel
+                        role = Role.Image
+                    }
+            )
         }
 
         val isLoading =
