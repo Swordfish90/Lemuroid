@@ -1,6 +1,8 @@
 package com.swordfish.lemuroid.app.mobile.feature.game
 
 import android.graphics.RectF
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -35,18 +38,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.swordfish.lemuroid.app.shared.game.BaseGameScreenViewModel
@@ -63,11 +70,20 @@ import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
 import gg.padkit.inputstate.InputState
+import kotlin.math.roundToInt
 
 @Composable
 fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
+
+        // Near-square portrait displays (foldable inner screens, tablets) with
+        // dual-screen systems: let the stacked frame fill the whole screen and
+        // overlay the pads on the lower half, 3DS-console style.
+        val usePortraitOverlay =
+            !isLandscape &&
+                viewModel.isTouchScreenSystem &&
+                constraints.maxHeight.toFloat() / constraints.maxWidth <= 1.5f
 
         LaunchedEffect(isLandscape) {
             val orientation =
@@ -81,6 +97,9 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
         val controllerConfigState = viewModel.getTouchControllerConfig().collectAsState(null)
         val touchControlsVisibleState = viewModel.isTouchControllerVisible().collectAsState(false)
+        val editControlsShown = viewModel.isEditControlShown().collectAsState(false)
+        val screenPxWidth = constraints.maxWidth
+        val screenPxHeight = constraints.maxHeight
         val touchControllerSettingsState =
             viewModel
                 .getTouchControlsSettings(LocalDensity.current, WindowInsets.displayCutout)
@@ -154,6 +173,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                     GameScreenLayout.buildConstraintSet(
                         isLandscape,
                         currentControllerConfig?.allowTouchOverlay ?: true,
+                        usePortraitOverlay,
                     ),
             ) {
                 Box(
@@ -171,7 +191,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
                 if (isVisible) {
                     CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme()) {
-                        if (!isLandscape) {
+                        if (!isLandscape && !usePortraitOverlay) {
                             PadContainer(
                                 modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_BOTTOM_CONTAINER),
                             )
@@ -186,23 +206,67 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
                         leftGamePad?.invoke(
                             this,
-                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_PAD),
+                            Modifier
+                                .layoutId(GameScreenLayout.CONSTRAINTS_LEFT_PAD)
+                                .offset {
+                                    val s = touchControllerSettingsState.value ?: return@offset IntOffset.Zero
+                                    IntOffset(
+                                        (screenPxWidth * s.leftOffsetX).roundToInt(),
+                                        (screenPxHeight * s.leftOffsetY).roundToInt(),
+                                    )
+                                }
+                                .alpha(if (editControlsShown.value) 0.7f else 1f)
+                                .movePadWhileEditing(editControlsShown.value) { dx, dy ->
+                                    val s = touchControllerSettingsState.value ?: return@movePadWhileEditing
+                                    viewModel.moveTouchControllerSettings(
+                                        s,
+                                        isLeft = true,
+                                        dxFraction = dx / screenPxWidth,
+                                        dyFraction = dy / screenPxHeight,
+                                    )
+                                },
                             touchControllerSettings,
                         )
                         rightGamePad?.invoke(
                             this,
-                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_PAD),
+                            Modifier
+                                .layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_PAD)
+                                .offset {
+                                    val s = touchControllerSettingsState.value ?: return@offset IntOffset.Zero
+                                    IntOffset(
+                                        (screenPxWidth * s.rightOffsetX).roundToInt(),
+                                        (screenPxHeight * s.rightOffsetY).roundToInt(),
+                                    )
+                                }
+                                .alpha(if (editControlsShown.value) 0.7f else 1f)
+                                .movePadWhileEditing(editControlsShown.value) { dx, dy ->
+                                    val s = touchControllerSettingsState.value ?: return@movePadWhileEditing
+                                    viewModel.moveTouchControllerSettings(
+                                        s,
+                                        isLeft = false,
+                                        dxFraction = dx / screenPxWidth,
+                                        dyFraction = dy / screenPxHeight,
+                                    )
+                                },
                             touchControllerSettings,
                         )
 
                         GameScreenRunningCentralMenu(
                             modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_GAME_CONTAINER),
-                            controllerConfig = currentControllerConfig,
-                            touchControllerSettings = touchControllerSettings,
                             viewModel = viewModel,
                         )
                     }
                 }
+            }
+
+            // Non-modal edit panel: while visible, pad groups can be dragged
+            // anywhere on screen (offsets persist per system + orientation).
+            if (editControlsShown.value && touchControllerSettings != null && currentControllerConfig != null) {
+                TouchControlsEditPanel(
+                    viewModel = viewModel,
+                    controllerConfig = currentControllerConfig,
+                    touchControllerSettings = touchControllerSettings,
+                )
             }
         }
 
@@ -238,8 +302,6 @@ private fun PadContainer(modifier: Modifier = Modifier) {
 private fun GameScreenRunningCentralMenu(
     modifier: Modifier = Modifier,
     viewModel: BaseGameScreenViewModel,
-    touchControllerSettings: TouchControllerSettingsManager.Settings,
-    controllerConfig: ControllerConfig,
 ) {
     val menuPressed = viewModel.isMenuPressed().collectAsState(false)
     Box(
@@ -251,20 +313,43 @@ private fun GameScreenRunningCentralMenu(
             animationDurationMillis = MENU_LOADING_ANIMATION_MILLIS,
             icon = R.drawable.button_menu,
         )
-        MenuEditTouchControls(viewModel, controllerConfig, touchControllerSettings)
     }
 }
 
+// Captures all pointer events in the Initial pass while editing, so an entire
+// pad group behaves as a single draggable surface (child buttons stay idle).
+private fun Modifier.movePadWhileEditing(
+    editing: Boolean,
+    onDelta: (Float, Float) -> Unit,
+): Modifier =
+    pointerInput(editing) {
+        if (!editing) return@pointerInput
+        awaitEachGesture {
+            val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+            down.consume()
+            var last = down.position
+            while (true) {
+                val event = awaitPointerEvent(PointerEventPass.Initial)
+                val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                val delta = change.position - last
+                last = change.position
+                if (delta != Offset.Zero) onDelta(delta.x, delta.y)
+                change.consume()
+                if (event.changes.all { !it.pressed }) break
+            }
+        }
+    }
+
 @Composable
-private fun MenuEditTouchControls(
+private fun TouchControlsEditPanel(
     viewModel: BaseGameScreenViewModel,
     controllerConfig: ControllerConfig,
     touchControllerSettings: TouchControllerSettingsManager.Settings,
 ) {
-    val showEditControls = viewModel.isEditControlShown().collectAsState(false)
-    if (!showEditControls.value) return
-
-    Dialog(onDismissRequest = { viewModel.showEditControls(false) }) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter,
+    ) {
         Card(
             modifier =
                 Modifier
@@ -279,6 +364,10 @@ private fun MenuEditTouchControls(
                         .padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
+                Text(
+                    text = "Drag a pad group to move it anywhere on screen",
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
                 MenuEditTouchControlRow(Icons.Default.OpenInFull, "Scale", 0f) {
                     Slider(
                         value = touchControllerSettings.scale,

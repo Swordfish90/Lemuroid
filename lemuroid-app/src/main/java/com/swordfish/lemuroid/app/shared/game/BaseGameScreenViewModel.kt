@@ -50,7 +50,7 @@ class BaseGameScreenViewModel(
     settingsManager: SettingsManager,
     inputDeviceManager: InputDeviceManager,
     controllerConfigsManager: ControllerConfigsManager,
-    system: GameSystem,
+    private val system: GameSystem,
     systemCoreConfig: SystemCoreConfig,
     sharedPreferences: SharedPreferences,
     savesManager: SavesManager,
@@ -213,6 +213,15 @@ class BaseGameScreenViewModel(
         touchControls.updateTouchControllerSettings(touchControllerSettings)
     }
 
+    fun moveTouchControllerSettings(
+        touchControllerSettings: TouchControllerSettingsManager.Settings,
+        isLeft: Boolean,
+        dxFraction: Float,
+        dyFraction: Float,
+    ) {
+        touchControls.moveTouchController(touchControllerSettings, isLeft, dxFraction, dyFraction)
+    }
+
     fun resetTouchControls() {
         touchControls.resetTouchControls()
     }
@@ -220,6 +229,9 @@ class BaseGameScreenViewModel(
     fun onScreenOrientationChanged(orientation: TouchControllerSettingsManager.Orientation) {
         touchControls.updateScreenOrientation(orientation)
     }
+
+    val isTouchScreenSystem: Boolean
+        get() = system.hasTouchScreen
 
     fun isTouchControllerVisible(): Flow<Boolean> {
         return touchControls.isTouchControllerVisible()

@@ -92,6 +92,29 @@ class GameViewModelTouchControls(
         }
     }
 
+    // Move an entire pad group (left or right) by a delta expressed as fractions
+    // of the screen size. Persisted per controller layout + orientation.
+    fun moveTouchController(
+        settings: TouchControllerSettingsManager.Settings,
+        isLeft: Boolean,
+        dxFraction: Float,
+        dyFraction: Float,
+    ) {
+        val updated =
+            if (isLeft) {
+                settings.copy(
+                    leftOffsetX = (settings.leftOffsetX + dxFraction).coerceIn(-1f, 1f),
+                    leftOffsetY = (settings.leftOffsetY + dyFraction).coerceIn(-1f, 1f),
+                )
+            } else {
+                settings.copy(
+                    rightOffsetX = (settings.rightOffsetX + dxFraction).coerceIn(-1f, 1f),
+                    rightOffsetY = (settings.rightOffsetY + dyFraction).coerceIn(-1f, 1f),
+                )
+            }
+        updateTouchControllerSettings(updated)
+    }
+
     fun resetTouchControls() {
         scope.launch {
             touchControllerSettingsManager.resetSettings(
