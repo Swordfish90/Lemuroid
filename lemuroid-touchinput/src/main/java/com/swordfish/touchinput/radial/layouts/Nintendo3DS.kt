@@ -49,13 +49,16 @@ fun PadKitScope.Nintendo3DSRight(
         settings = settings,
         modifier = modifier,
         primaryDial = {
+            // Slot order is [East, South, West, North]. Swapped A/B and X/Y vs the
+            // authentic Nintendo diamond to get the Xbox-style arrangement:
+            // B right, A bottom, X left, Y top.
             LemuroidControlFaceButtons(
                 ids =
                     persistentListOf(
-                        Id.Key(KeyEvent.KEYCODE_BUTTON_A),
                         Id.Key(KeyEvent.KEYCODE_BUTTON_B),
-                        Id.Key(KeyEvent.KEYCODE_BUTTON_Y),
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_A),
                         Id.Key(KeyEvent.KEYCODE_BUTTON_X),
+                        Id.Key(KeyEvent.KEYCODE_BUTTON_Y),
                     ),
                 idsForegrounds =
                     persistentMapOf<Id.Key, @Composable (State<Boolean>) -> Unit>(
