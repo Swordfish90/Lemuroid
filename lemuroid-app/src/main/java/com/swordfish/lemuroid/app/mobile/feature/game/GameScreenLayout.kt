@@ -16,11 +16,63 @@ object GameScreenLayout {
     fun buildConstraintSet(
         isLandscape: Boolean,
         allowTouchOverlay: Boolean,
+        portraitOverlay: Boolean = false,
     ): ConstraintSet {
         return when {
+            !isLandscape && portraitOverlay -> buildConstraintSetPortraitOverlay()
             !isLandscape -> buildConstraintSetPortrait()
             allowTouchOverlay -> buildConstraintSetLandscape()
             else -> buildConstraintSetLandscapeNoOverlay()
+        }
+    }
+
+    // Dual-screen systems (3DS, DS) on near-square portrait displays (foldables,
+    // tablets): the core's stacked dual-screen frame fills the whole screen and
+    // the pads overlay the lower half, flanking the bottom screen like a real
+    // handheld. Touch input keeps working because the bottom screen occupies
+    // the lower half of the frame and pointer coordinates map linearly to it.
+    private fun buildConstraintSetPortraitOverlay(): ConstraintSet {
+        return ConstraintSet {
+            val gameView = createRefFor(CONSTRAINTS_GAME_VIEW)
+            val leftPad = createRefFor(CONSTRAINTS_LEFT_PAD)
+            val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
+            val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
+            val lowerHalf = createGuidelineFromBottom(0.5f)
+
+            val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
+
+            constrain(gameView) {
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
+                top.linkTo(parent.top)
+                absoluteLeft.linkTo(parent.absoluteLeft)
+                absoluteRight.linkTo(parent.absoluteRight)
+                bottom.linkTo(parent.bottom)
+            }
+
+            constrain(gamePadChain) {
+                absoluteLeft.linkTo(parent.absoluteLeft)
+                absoluteRight.linkTo(parent.absoluteRight)
+            }
+
+            constrain(leftPad) {
+                width = Dimension.fillToConstraints
+                top.linkTo(lowerHalf)
+                bottom.linkTo(parent.bottom)
+            }
+
+            constrain(rightPad) {
+                width = Dimension.fillToConstraints
+                top.linkTo(lowerHalf)
+                bottom.linkTo(parent.bottom)
+            }
+
+            constrain(gameContainer) {
+                absoluteLeft.linkTo(gameView.absoluteLeft)
+                absoluteRight.linkTo(gameView.absoluteRight)
+                top.linkTo(gameView.top)
+                bottom.linkTo(gameView.bottom)
+            }
         }
     }
 
