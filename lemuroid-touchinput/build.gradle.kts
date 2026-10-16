@@ -20,10 +20,6 @@ android {
     buildFeatures {
         compose = true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = deps.versions.kotlinExtension
-    }
 }
 
 dependencies {
@@ -33,6 +29,7 @@ dependencies {
     implementation(deps.libs.androidx.compose.geometry)
     implementation(deps.libs.androidx.compose.runtime)
     implementation(deps.libs.androidx.compose.material3)
+    implementation(deps.libs.androidx.compose.extendedIcons)
 
     implementation(deps.libs.androidx.appcompat.constraintLayout)
     implementation(deps.libs.androidx.appcompat.appcompat)

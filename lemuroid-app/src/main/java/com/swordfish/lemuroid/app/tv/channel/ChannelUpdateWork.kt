@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.swordfish.lemuroid.lib.injection.AndroidWorkerInjection
+import com.swordfish.lemuroid.lib.injection.WorkerInjectorMap
 import com.swordfish.lemuroid.lib.injection.WorkerKey
 import dagger.Binds
 import dagger.android.AndroidInjector
@@ -52,6 +53,7 @@ class ChannelUpdateWork(context: Context, workerParams: WorkerParameters) :
     abstract class Module {
         @Binds
         @IntoMap
+        @WorkerInjectorMap
         @WorkerKey(ChannelUpdateWork::class)
         abstract fun bindMyWorkerFactory(builder: Subcomponent.Builder): AndroidInjector.Factory<out ListenableWorker>
     }

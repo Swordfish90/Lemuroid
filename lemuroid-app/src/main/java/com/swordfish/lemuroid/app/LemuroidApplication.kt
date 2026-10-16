@@ -13,14 +13,19 @@ import com.swordfish.lemuroid.app.shared.startup.MainProcessInitializer
 import com.swordfish.lemuroid.app.utils.android.isMainProcess
 import com.swordfish.lemuroid.ext.feature.context.ContextHandler
 import com.swordfish.lemuroid.lib.injection.HasWorkerInjector
+import com.swordfish.lemuroid.lib.injection.WorkerInjectorMap
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerApplication
 import javax.inject.Inject
 
 class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderFactory {
     @Inject
-    lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
+    @WorkerInjectorMap
+    lateinit var workerInjector:
+        Map<
+            Class<out ListenableWorker>,
+            @JvmSuppressWildcards AndroidInjector.Factory<out ListenableWorker>,
+        >
 
     @SuppressLint("CheckResult")
     override fun onCreate() {
@@ -47,7 +52,11 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderF
         return DaggerLemuroidApplicationComponent.builder().create(this)
     }
 
-    override fun workerInjector(): AndroidInjector<ListenableWorker> = workerInjector
+    override fun workerInjector():
+        Map<
+            Class<out ListenableWorker>,
+            @JvmSuppressWildcards AndroidInjector.Factory<out ListenableWorker>,
+        > = workerInjector
 
     override fun newImageLoader(): ImageLoader {
         return CoverUtils.buildImageLoader(applicationContext)

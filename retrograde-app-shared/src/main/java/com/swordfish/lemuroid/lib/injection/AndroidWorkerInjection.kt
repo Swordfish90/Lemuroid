@@ -12,8 +12,13 @@ object AndroidWorkerInjection {
                     "implement ${HasWorkerInjector::class.java.canonicalName}",
             )
         }
-        val workerInjector = (application as HasWorkerInjector).workerInjector()
-        checkNotNull(workerInjector) { "${application.javaClass}.workerInjector() return null" }
-        workerInjector.inject(worker)
+        val factory =
+            application.workerInjector()[worker.javaClass]
+                ?: throw IllegalArgumentException(
+                    "No injector factory bound for Class<${worker.javaClass.name}>",
+                )
+        @Suppress("UNCHECKED_CAST")
+        val injector = factory as dagger.android.AndroidInjector.Factory<ListenableWorker>
+        injector.create(worker).inject(worker)
     }
 }

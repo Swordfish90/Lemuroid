@@ -2,30 +2,29 @@
 object deps {
     object android {
         const val targetSdkVersion  = 35
-        const val compileSdkVersion = 35
+        const val compileSdkVersion = 37
         const val minSdkVersion     = 23
-        const val buildToolsVersion = "34.0.0"
+        const val buildToolsVersion = "36.0.0"
     }
 
     object versions {
-        const val dagger          = "2.19"
+        const val dagger          = "2.57.2"
         const val gms             = "17.0.0"
-        const val kotlin          = "2.0.21"
+        const val kotlin          = "2.2.10"
         const val okHttp          = "4.9.1"
         const val retrofit        = "2.9.0"
         const val work            = "2.9.0"
-        const val navigation      = "2.5.2"
+        const val navigation      = "2.9.8"
         const val lifecycle       = "2.6.1"
         const val leanback        = "1.1.0-rc01"
         const val googleApiClient = "1.32.1"
         const val paging          = "3.2.1"
-        const val room            = "2.6.1"
+        const val room            = "2.8.4"
         const val serialization   = "1.2.2"
         const val fragment        = "1.5.1"
         const val activity        = "1.7.2"
         const val libretrodroid   = "0.14.0"
-        const val composeBom      = "2024.02.02"
-        const val kotlinExtension = "1.4.6"
+        const val composeBom      = "2026.06.01"
         const val padkit          = "1.0.0-beta1"
 
         // Make sure this is compatible with current bom versions:
@@ -90,7 +89,8 @@ object deps {
             }
             object compose {
                 const val composeBom = "androidx.compose:compose-bom:${versions.composeBom}"
-                const val material3 = "androidx.compose.material3:material3"
+                const val material3 = "androidx.compose.material3:material3:1.5.0-alpha25"
+                const val material3AdaptiveNavigationSuite = "androidx.compose.material3:material3-adaptive-navigation-suite"
                 const val extendedIcons = "androidx.compose.material:material-icons-extended"
                 const val tooling = "androidx.compose.ui:ui-tooling"
                 const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
@@ -102,7 +102,6 @@ object deps {
 
                 object accompanist {
                     const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
-                    const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:${versions.accompanist}"
                     const val drawablePainter = "com.google.accompanist:accompanist-drawablepainter:${versions.accompanist}"
                 }
             }
@@ -159,7 +158,7 @@ object deps {
         const val retrofit                 = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
         const val flowPreferences          = "com.fredporciuncula:flow-preferences:1.8.0"
         const val timber                   = "com.jakewharton.timber:timber:5.0.1"
-        const val material                 = "com.google.android.material:material:1.6.1"
+        const val material                 = "com.google.android.material:material:1.14.0"
         const val guava                    = "com.google.guava:guava:30.1.1-android"
         const val harmony                  = "com.frybits.harmony:harmony:1.1.9"
         const val startup                  = "androidx.startup:startup-runtime:1.1.1"
@@ -171,7 +170,7 @@ object deps {
     }
 
     object plugins {
-        const val android = "com.android.tools.build:gradle:8.4.0"
+        const val android = "com.android.tools.build:gradle:9.1.1"
         const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
         const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }

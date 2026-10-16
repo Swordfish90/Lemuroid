@@ -18,7 +18,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -114,8 +113,6 @@ fun LemuroidTopAppBar(
         },
         actions = {
             LemuroidTopBarActions(
-                route = route,
-                navController = navController,
                 context = context,
                 saveSyncEnabled = mainUIState.saveSyncEnabled,
                 onHelpPressed = onHelpPressed,
@@ -127,8 +124,6 @@ fun LemuroidTopAppBar(
 
 @Composable
 fun LemuroidTopBarActions(
-    route: MainRoute,
-    navController: NavController,
     context: Context,
     saveSyncEnabled: Boolean,
     operationsInProgress: Boolean,
@@ -151,16 +146,6 @@ fun LemuroidTopBarActions(
                 Icon(
                     Icons.Outlined.CloudSync,
                     stringResource(R.string.save_sync),
-                )
-            }
-        }
-        if (route.showBottomNavigation) {
-            IconButton(
-                onClick = { navController.navigate(MainRoute.SETTINGS.route) },
-            ) {
-                Icon(
-                    Icons.Outlined.Settings,
-                    stringResource(R.string.settings),
                 )
             }
         }

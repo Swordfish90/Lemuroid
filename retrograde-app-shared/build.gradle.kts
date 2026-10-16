@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -63,7 +61,6 @@ android {
     }
     namespace = "com.swordfish.lemuroid.lib"
     kotlinOptions {
-        this as KotlinJvmOptions
         jvmTarget = "17"
     }
 }

@@ -7,9 +7,11 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.VideogameAsset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -38,7 +40,6 @@ enum class MainRoute(
     @StringRes val titleId: Int,
     val parent: MainRoute? = null,
     val arguments: List<NamedNavArgument> = emptyList(),
-    val showBottomNavigation: Boolean = true,
 ) {
     HOME(
         route = "home",
@@ -65,37 +66,31 @@ enum class MainRoute(
     SETTINGS(
         route = "settings/home",
         titleId = R.string.title_settings,
-        showBottomNavigation = false,
     ),
     SETTINGS_ADVANCED(
         route = "settings/advanced",
         titleId = R.string.settings_title_advanced_settings,
         parent = SETTINGS,
-        showBottomNavigation = false,
     ),
     SETTINGS_BIOS(
         route = "settings/bios",
         titleId = R.string.settings_title_display_bios_info,
         parent = SETTINGS,
-        showBottomNavigation = false,
     ),
     SETTINGS_CORES_SELECTION(
         route = "settings/cores",
         titleId = R.string.settings_title_open_cores_selection,
         parent = SETTINGS,
-        showBottomNavigation = false,
     ),
     SETTINGS_INPUT_DEVICES(
         route = "settings/inputdevices",
         titleId = R.string.settings_title_gamepad_settings,
         parent = SETTINGS,
-        showBottomNavigation = false,
     ),
     SETTINGS_SAVE_SYNC(
         route = "settings/savesync",
         titleId = R.string.settings_title_save_sync,
         parent = SETTINGS,
-        showBottomNavigation = false,
     ),
     ;
 
@@ -122,4 +117,5 @@ enum class MainNavigationRoutes(
     FAVORITES(MainRoute.FAVORITES, R.string.favorites, Icons.Filled.Favorite, Icons.Filled.FavoriteBorder),
     SYSTEMS(MainRoute.SYSTEMS, R.string.title_systems, Icons.Filled.VideogameAsset, Icons.Outlined.VideogameAsset),
     SEARCH(MainRoute.SEARCH, R.string.title_search, Icons.Filled.Search, Icons.Outlined.Search),
+    SETTINGS(MainRoute.SETTINGS, R.string.title_settings, Icons.Filled.Settings, Icons.Outlined.Settings),
 }

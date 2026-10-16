@@ -11,8 +11,6 @@ private typealias WorkerFactory = AndroidInjector.Factory<out ListenableWorker>
 @Module
 abstract class AndroidWorkerInjectionModule {
     @Multibinds
+    @WorkerInjectorMap
     abstract fun workerInjectorFactories(): Map<Worker, WorkerFactory>
-
-    @Multibinds
-    abstract fun workerInjectorFactoriesWithStringKeys(): Map<String, WorkerFactory>
 }
