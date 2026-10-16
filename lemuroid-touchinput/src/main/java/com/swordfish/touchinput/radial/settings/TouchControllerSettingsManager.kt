@@ -29,6 +29,7 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         val rotation: Float = DEFAULT_ROTATION,
         val marginX: Float = DEFAULT_MARGIN_X,
         val marginY: Float = DEFAULT_MARGIN_Y,
+        val transparentBackground: Boolean = DEFAULT_TRANSPARENT_BACKGROUND,
     )
 
     private fun computeInsetsPaddings(
@@ -123,6 +124,7 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         const val DEFAULT_ROTATION = 0.0f
         const val DEFAULT_MARGIN_X = 0.0f
         const val DEFAULT_MARGIN_Y = 0.0f
+        const val DEFAULT_TRANSPARENT_BACKGROUND = false
 
         const val MAX_ROTATION = 45f
         const val MIN_SCALE = 0.75f
