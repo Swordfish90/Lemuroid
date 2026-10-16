@@ -95,6 +95,10 @@
             android:name="com.swordfish.lemuroid.app.shared.settings.StorageFrameworkPickerLauncher"
             android:theme="@style/LemuroidMaterialTheme.Invisible" />
 
+        <activity
+            android:name="com.swordfish.lemuroid.app.shared.settings.LocalSaveSyncPickerLauncher"
+            android:theme="@style/LemuroidMaterialTheme.Invisible" />
+
         <!-- Leanback activities -->
         <activity
             android:name=".app.tv.main.MainTVActivity"

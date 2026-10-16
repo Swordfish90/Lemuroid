@@ -40,6 +40,7 @@ class SettingsViewModel(
     data class State(
         val currentDirectory: String = "",
         val isSaveSyncSupported: Boolean = false,
+        val localSaveDirectory: String = "",
     )
 
     val indexingInProgress = PendingOperationsMonitor(context).anyLibraryOperationInProgress()
@@ -47,13 +48,24 @@ class SettingsViewModel(
     val directoryScanInProgress = PendingOperationsMonitor(context).isDirectoryScanInProgress()
 
     val uiState =
-        sharedPreferences.getString(context.getString(com.swordfish.lemuroid.lib.R.string.pref_key_extenral_folder))
-            .asFlow()
+        kotlinx.coroutines.flow.combine(
+            sharedPreferences.getString(context.getString(com.swordfish.lemuroid.lib.R.string.pref_key_extenral_folder)).asFlow(),
+            sharedPreferences.getString(context.getString(com.swordfish.lemuroid.lib.R.string.pref_key_local_save_sync_folder)).asFlow()
+        ) { romsDir, localSavesDir ->
+            State(romsDir, saveSyncManager.isSupported(), localSavesDir)
+        }
             .flowOn(Dispatchers.IO)
-            .stateIn(viewModelScope, SharingStarted.Lazily, "")
-            .map { State(it, saveSyncManager.isSupported()) }
+            .stateIn(viewModelScope, SharingStarted.Lazily, State())
 
     fun changeLocalStorageFolder() {
         settingsInteractor.changeLocalStorageFolder()
+    }
+
+    fun changeLocalSaveSyncFolder(context: Context) {
+        com.swordfish.lemuroid.app.shared.settings.LocalSaveSyncPickerLauncher.pickFolder(context)
+    }
+
+    fun syncLocalSaveSyncFolderManually(context: Context) {
+        com.swordfish.lemuroid.app.shared.savesync.LocalSaveSyncWork.enqueueManualWork(context)
     }
 }
