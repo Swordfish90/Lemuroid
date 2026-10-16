@@ -52,13 +52,15 @@ class BaseGameScreenViewModel(
     controllerConfigsManager: ControllerConfigsManager,
     system: GameSystem,
     systemCoreConfig: SystemCoreConfig,
-    sharedPreferences: SharedPreferences,
+    private val sharedPreferences: SharedPreferences,
     savesManager: SavesManager,
     statesManager: StatesManager,
     statesPreviewManager: StatesPreviewManager,
     coreVariablesManager: CoreVariablesManager,
     rumbleManager: RumbleManager,
 ) : ViewModel(), DefaultLifecycleObserver {
+    private var audioEnabledBeforeFastForward: Boolean? = null
+
     class Factory(
         private val appContext: Context,
         private val game: Game,
@@ -268,9 +270,32 @@ class BaseGameScreenViewModel(
     }
 
     fun toggleFastForward() {
-        Timber.d("Loading quick save")
+        Timber.d("Toggling fast-forward")
+        setFastForwardEnabled(retroGameView.retroGameView?.frameSpeed == 1)
+    }
+
+    fun setFastForwardEnabled(enabled: Boolean) {
         retroGameView.retroGameView?.apply {
-            frameSpeed = if (frameSpeed == 1) 2 else 1
+            if (enabled) {
+                if (audioEnabledBeforeFastForward == null) {
+                    audioEnabledBeforeFastForward = audioEnabled
+                }
+
+                // Stop normal-speed audio before changing the emulation cadence.
+                // This prevents a queued audio buffer from being rendered at the
+                // accelerated rate and producing pops/crackles.
+                frameSpeed = 1
+                audioEnabled = false
+                frameSpeed = 2
+                // Keep this explicit after the speed change as some cores can
+                // produce one callback while switching cadence.
+                audioEnabled = false
+            } else {
+                audioEnabled = false
+                frameSpeed = 1
+                audioEnabled = audioEnabledBeforeFastForward ?: audioEnabled
+                audioEnabledBeforeFastForward = null
+            }
         }
     }
 
