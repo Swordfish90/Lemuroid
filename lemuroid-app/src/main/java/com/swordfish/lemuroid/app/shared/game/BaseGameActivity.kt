@@ -193,6 +193,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         val intent =
             Intent(this, getDialogClass()).apply {
+                val currentFrameSpeed = baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1
                 this.putExtra(GameMenuContract.EXTRA_CORE_OPTIONS, options.toTypedArray())
                 this.putExtra(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS, advancedOptions.toTypedArray())
                 this.putExtra(
@@ -210,9 +211,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     baseGameScreenViewModel.retroGameView.retroGameView?.audioEnabled,
                 )
                 this.putExtra(GameMenuContract.EXTRA_FAST_FORWARD_SUPPORTED, system.fastForwardSupport)
+                this.putExtra(GameMenuContract.EXTRA_FRAME_SPEED, currentFrameSpeed)
                 this.putExtra(
                     GameMenuContract.EXTRA_FAST_FORWARD,
-                    (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1,
+                    currentFrameSpeed > 1,
                 )
                 this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
                 // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
@@ -396,7 +398,18 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         )
                 }
             }
-            if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
+            val hasFrameSpeed = data?.hasExtra(GameMenuContract.RESULT_SET_FRAME_SPEED) == true
+            if (hasFrameSpeed) {
+                baseGameScreenViewModel.retroGameView.retroGameView?.apply {
+                    val frameSpeed =
+                        data.getIntExtra(
+                            GameMenuContract.RESULT_SET_FRAME_SPEED,
+                            1,
+                        )
+                    this.frameSpeed = frameSpeed
+                }
+            }
+            if (!hasFrameSpeed && data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
                 baseGameScreenViewModel.retroGameView.retroGameView?.apply {
                     val fastForwardEnabled =
                         data.getBooleanExtra(
