@@ -35,7 +35,7 @@ private fun MetaSystemsScreen(
     onSystemClicked: (MetaSystemInfo) -> Unit,
 ) {
     if (metaSystems.isEmpty()) {
-        LemuroidEmptyView()
+        LemuroidEmptyView(modifier = modifier)
         return
     }
 

@@ -22,7 +22,7 @@ fun GamesScreen(
     val games = viewModel.games.collectAsLazyPagingItems()
 
     if (games.itemCount == 0) {
-        LemuroidEmptyView()
+        LemuroidEmptyView(modifier = modifier)
         return
     }
 

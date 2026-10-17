@@ -25,7 +25,7 @@ fun FavoritesScreen(
     val games = viewModel.favorites.collectAsLazyPagingItems()
 
     if (games.itemCount == 0) {
-        LemuroidEmptyView()
+        LemuroidEmptyView(modifier = modifier)
         return
     }
 

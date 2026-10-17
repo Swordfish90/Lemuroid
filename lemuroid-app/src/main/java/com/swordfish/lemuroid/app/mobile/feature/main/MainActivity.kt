@@ -9,11 +9,17 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
@@ -22,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -54,6 +61,9 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsScreen
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.StatusBarProtection
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidOperationProgressIndicator
+import com.swordfish.lemuroid.app.mobile.shared.compose.utils.rememberSlideAwayTopBarScrollBehavior
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
@@ -126,83 +136,93 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
         setContent {
             val navController = rememberNavController()
-            MainScreen(navController)
+            AppTheme {
+                MainScreen(navController)
+            }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MainScreen(navController: NavHostController) {
-        AppTheme {
-            val navBackStackEntry = navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry.value?.destination
-            val currentRoute =
-                currentDestination?.route
-                    ?.let { MainRoute.findByRoute(it) }
-                    ?: MainRoute.HOME
+        val navBackStackEntry = navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry.value?.destination
+        val currentRoute =
+            currentDestination?.route
+                ?.let { MainRoute.findByRoute(it) }
+                ?: MainRoute.HOME
 
-            val infoDialogDisplayed =
-                remember {
-                    mutableStateOf(false)
-                }
-
-            LaunchedEffect(currentRoute) {
-                mainViewModel.changeRoute(currentRoute)
+        val infoDialogDisplayed =
+            remember {
+                mutableStateOf(false)
             }
 
-            val selectedGameState =
-                remember {
-                    mutableStateOf<Game?>(null)
-                }
-
-            val onGameLongClick = { game: Game ->
-                selectedGameState.value = game
+        val selectedGameState =
+            remember {
+                mutableStateOf<Game?>(null)
             }
 
-            val onGameClick = { game: Game ->
-                gameInteractor.onGamePlay(game)
+        val onGameLongClick = { game: Game ->
+            selectedGameState.value = game
+        }
+
+        val onGameClick = { game: Game ->
+            gameInteractor.onGamePlay(game)
+        }
+
+        val onGameFavoriteToggle = { game: Game, isFavorite: Boolean ->
+            gameInteractor.onFavoriteToggle(game, isFavorite)
+        }
+
+        val onHelpPressed = {
+            infoDialogDisplayed.value = true
+        }
+
+        val mainUIState =
+            mainViewModel.state
+                .collectAsState(MainViewModel.UiState())
+                .value
+
+        val topBarScrollBehavior = rememberSlideAwayTopBarScrollBehavior()
+
+        LaunchedEffect(currentRoute) {
+            mainViewModel.changeRoute(currentRoute)
+            topBarScrollBehavior.reset()
+        }
+
+        val navigationSuiteType =
+            when (LocalConfiguration.current.orientation) {
+                Configuration.ORIENTATION_LANDSCAPE -> NavigationSuiteType.NavigationRail
+                else -> NavigationSuiteType.NavigationBar
             }
 
-            val onGameFavoriteToggle = { game: Game, isFavorite: Boolean ->
-                gameInteractor.onFavoriteToggle(game, isFavorite)
-            }
-
-            val onHelpPressed = {
-                infoDialogDisplayed.value = true
-            }
-
-            val mainUIState =
-                mainViewModel.state
-                    .collectAsState(MainViewModel.UiState())
-                    .value
-
-            val navigationSuiteType =
-                when (LocalConfiguration.current.orientation) {
-                    Configuration.ORIENTATION_LANDSCAPE -> NavigationSuiteType.NavigationRail
-                    else -> NavigationSuiteType.NavigationBar
-                }
-
-            NavigationSuiteScaffold(
-                layoutType = navigationSuiteType,
-                navigationSuiteItems = {
-                    mainNavigationItems(
+        NavigationSuiteScaffold(
+            layoutType = navigationSuiteType,
+            navigationSuiteColors = NavigationSuiteDefaults.colors(
+                navigationBarContainerColor = BottomAppBarDefaults.containerColor,
+                navigationRailContainerColor = BottomAppBarDefaults.containerColor,
+            ),
+            navigationSuiteItems = {
+                mainNavigationItems(
+                    currentRoute = currentRoute,
+                    navController = navController,
+                )
+            },
+        ) {
+            Scaffold(
+                modifier = Modifier.nestedScroll(topBarScrollBehavior.nestedScrollConnection),
+                topBar = {
+                    MainTopBar(
                         currentRoute = currentRoute,
                         navController = navController,
-                        showLabels = navigationSuiteType == NavigationSuiteType.NavigationRail,
+                        onHelpPressed = onHelpPressed,
+                        mainUIState = mainUIState,
+                        onUpdateQueryString = { mainViewModel.changeQueryString(it) },
+                        modifier = with(topBarScrollBehavior) { Modifier.slideAwayTopBar() },
                     )
                 },
-            ) {
-                Scaffold(
-                    topBar = {
-                        MainTopBar(
-                            currentRoute = currentRoute,
-                            navController = navController,
-                            onHelpPressed = onHelpPressed,
-                            mainUIState = mainUIState,
-                            onUpdateQueryString = { mainViewModel.changeQueryString(it) },
-                        )
-                    },
-                ) { padding ->
+            ) { padding ->
+                Box(modifier = Modifier.fillMaxSize()) {
                     NavHost(
                         modifier = Modifier.fillMaxSize(),
                         navController = navController,
@@ -364,42 +384,53 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             )
                         }
                     }
+                    LemuroidOperationProgressIndicator(
+                        visible = mainUIState.operationInProgress,
+                        modifier = Modifier.padding(
+                            top = maxOf(
+                                padding.calculateTopPadding(),
+                                WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+                            ),
+                        ),
+                    )
                 }
             }
-
-            MainGameContextActions(
-                selectedGameState = selectedGameState,
-                shortcutSupported = gameInteractor.supportShortcuts(),
-                onGamePlay = { gameInteractor.onGamePlay(it) },
-                onGameRestart = { gameInteractor.onGameRestart(it) },
-                onFavoriteToggle = { game: Game, isFavorite: Boolean ->
-                    gameInteractor.onFavoriteToggle(game, isFavorite)
-                },
-                onCreateShortcut = { gameInteractor.onCreateShortcut(it) },
-                onSetCustomName = { game, name -> gameInteractor.onSetCustomName(game, name) },
-                onClearCustomName = { game -> gameInteractor.onClearCustomName(game) },
-                onSetCustomCoverUri = { game, uri -> gameInteractor.onSetCustomCoverUri(game, uri) },
-                onClearCustomCoverUri = { game -> gameInteractor.onClearCustomCoverUri(game) },
-            )
-
-            if (infoDialogDisplayed.value) {
-                val message =
-                    remember {
-                        val systemFolders =
-                            SystemID.values()
-                                .joinToString(", ") { "<i>${it.dbname}</i>" }
-
-                        getString(R.string.lemuroid_help_content)
-                            .replace("\$SYSTEMS", systemFolders)
-                    }
-
-                AlertDialog(
-                    text = { HtmlText(text = message) },
-                    onDismissRequest = { infoDialogDisplayed.value = false },
-                    confirmButton = { },
-                )
-            }
         }
+
+        MainGameContextActions(
+            selectedGameState = selectedGameState,
+            shortcutSupported = gameInteractor.supportShortcuts(),
+            onGamePlay = { gameInteractor.onGamePlay(it) },
+            onGameRestart = { gameInteractor.onGameRestart(it) },
+            onFavoriteToggle = { game: Game, isFavorite: Boolean ->
+                gameInteractor.onFavoriteToggle(game, isFavorite)
+            },
+            onCreateShortcut = { gameInteractor.onCreateShortcut(it) },
+            onSetCustomName = { game, name -> gameInteractor.onSetCustomName(game, name) },
+            onClearCustomName = { game -> gameInteractor.onClearCustomName(game) },
+            onSetCustomCoverUri = { game, uri -> gameInteractor.onSetCustomCoverUri(game, uri) },
+            onClearCustomCoverUri = { game -> gameInteractor.onClearCustomCoverUri(game) },
+        )
+
+        if (infoDialogDisplayed.value) {
+            val message =
+                remember {
+                    val systemFolders =
+                        SystemID.entries
+                            .joinToString(", ") { "<i>${it.dbname}</i>" }
+
+                    getString(R.string.lemuroid_help_content)
+                        .replace("\$SYSTEMS", systemFolders)
+                }
+
+            AlertDialog(
+                text = { HtmlText(text = message) },
+                onDismissRequest = { infoDialogDisplayed.value = false },
+                confirmButton = { },
+            )
+        }
+
+        StatusBarProtection()
     }
 
     override fun activity(): Activity = this

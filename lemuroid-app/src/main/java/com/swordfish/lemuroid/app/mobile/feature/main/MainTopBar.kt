@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,11 +17,10 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -42,64 +40,40 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopBar(
     currentRoute: MainRoute,
-    navController: NavHostController,
-    onHelpPressed: () -> Unit,
-    onUpdateQueryString: (String) -> Unit,
-    mainUIState: MainViewModel.UiState,
-) {
-    Column {
-        LemuroidTopAppBar(
-            route = currentRoute,
-            navController = navController,
-            mainUIState = mainUIState,
-            onHelpPressed = onHelpPressed,
-            onUpdateQueryString = onUpdateQueryString,
-        )
-
-        AnimatedVisibility(mainUIState.operationInProgress) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LemuroidTopAppBar(
-    route: MainRoute,
     navController: NavController,
-    mainUIState: MainViewModel.UiState,
     onHelpPressed: () -> Unit,
     onUpdateQueryString: (String) -> Unit,
+    mainUIState: MainViewModel.UiState,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val topBarColor = BottomAppBarDefaults.containerColor
 
     TopAppBar(
+        modifier = modifier,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = BottomAppBarDefaults.containerColor,
+            scrolledContainerColor = BottomAppBarDefaults.containerColor,
+        ),
         title = {
-            if (route == MainRoute.SEARCH) {
+            if (currentRoute == MainRoute.SEARCH) {
                 LemuroidSearchView(
                     mainUIState = mainUIState,
                     onUpdateQueryString = onUpdateQueryString,
                 )
             } else {
-                Text(text = stringResource(route.titleId))
+                Text(text = stringResource(currentRoute.titleId))
             }
         },
-        colors =
-            TopAppBarDefaults.topAppBarColors(
-                scrolledContainerColor = topBarColor,
-                containerColor = topBarColor,
-            ),
         navigationIcon = {
             AnimatedVisibility(
-                visible = route.parent != null,
+                visible = currentRoute.parent != null,
                 enter = fadeIn(),
                 exit = fadeOut(),
             ) {
