@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSegmentedSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
@@ -50,7 +50,8 @@ fun AdvancedSettingsScreen(
 
 @Composable
 private fun InputSettings() {
-    LemuroidCardSettingsGroup(
+    LemuroidSegmentedSettingsGroup(
+        itemCount = 3,
         title = { Text(text = stringResource(id = R.string.settings_category_input)) },
     ) {
         val rumbleEnabled = booleanPreferenceState(R.string.pref_key_enable_rumble, false)
@@ -60,12 +61,14 @@ private fun InputSettings() {
             subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_rumble)) },
         )
         LemuroidSettingsSwitch(
+            index = 1,
             enabled = rumbleEnabled.value,
             state = booleanPreferenceState(R.string.pref_key_enable_device_rumble, false),
             title = { Text(text = stringResource(id = R.string.settings_title_enable_device_rumble)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_device_rumble)) },
         )
         LemuroidSettingsSlider(
+            index = 2,
             state =
                 intPreferenceState(
                     key = stringResource(id = R.string.pref_key_tilt_sensitivity_index),
@@ -87,7 +90,8 @@ private fun GeneralSettings(
 ) {
     val factoryResetDialogState = remember { mutableStateOf(false) }
 
-    LemuroidCardSettingsGroup(
+    LemuroidSegmentedSettingsGroup(
+        itemCount = 4,
         title = { Text(text = stringResource(id = R.string.settings_category_general)) },
     ) {
         LemuroidSettingsSwitch(
@@ -96,6 +100,7 @@ private fun GeneralSettings(
             subtitle = { Text(text = stringResource(id = R.string.settings_description_low_latency_audio)) },
         )
         LemuroidSettingsList(
+            index = 1,
             title = { Text(text = stringResource(R.string.settings_title_maximum_cache_usage)) },
             items = cacheState.displayNames,
             state =
@@ -106,11 +111,13 @@ private fun GeneralSettings(
                 ),
         )
         LemuroidSettingsSwitch(
+            index = 2,
             state = booleanPreferenceState(R.string.pref_key_allow_direct_game_load, true),
             title = { Text(text = stringResource(id = R.string.settings_title_direct_game_load)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_direct_game_load)) },
         )
         LemuroidSettingsMenuLink(
+            index = 3,
             title = { Text(text = stringResource(id = R.string.settings_title_reset_settings)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_reset_settings)) },
             onClick = { factoryResetDialogState.value = true },

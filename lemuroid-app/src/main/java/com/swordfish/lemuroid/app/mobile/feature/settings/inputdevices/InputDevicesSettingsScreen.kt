@@ -19,7 +19,7 @@ import com.swordfish.lemuroid.app.shared.input.InputKey
 import com.swordfish.lemuroid.app.shared.input.ShortcutBindingUpdater
 import com.swordfish.lemuroid.app.shared.input.lemuroiddevice.getLemuroidInputDevice
 import com.swordfish.lemuroid.app.shared.settings.GameShortcut
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSegmentedSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
@@ -52,11 +52,15 @@ private fun DeviceBindingCategory(
     val context = LocalContext.current
     val customizableKeys = device.getLemuroidInputDevice().getCustomizableKeys()
 
-    LemuroidCardSettingsGroup(title = { Text(text = device.name) }) {
-        customizableKeys.forEach { retroKey ->
+    LemuroidSegmentedSettingsGroup(
+        itemCount = customizableKeys.size + bindings.shortcuts.size,
+        title = { Text(text = device.name) },
+    ) {
+        customizableKeys.forEachIndexed { index, retroKey ->
             val inputKey = bindings.keys[retroKey] ?: InputKey(KeyEvent.KEYCODE_UNKNOWN)
 
             LemuroidSettingsMenuLink(
+                index = index,
                 title = { Text(text = retroKey.displayName(LocalContext.current)) },
                 subtitle = { Text(text = inputKey.displayName()) },
                 onClick = {
@@ -70,8 +74,8 @@ private fun DeviceBindingCategory(
             )
         }
 
-        bindings.shortcuts.forEach {
-            DeviceShortcutBinding(context, device, it)
+        bindings.shortcuts.forEachIndexed { index, shortcut ->
+            DeviceShortcutBinding(context, device, shortcut, customizableKeys.size + index)
         }
     }
 }
@@ -81,8 +85,10 @@ private fun DeviceShortcutBinding(
     context: Context,
     device: InputDevice,
     shortcut: GameShortcut,
+    index: Int,
 ) {
     LemuroidSettingsMenuLink(
+        index = index,
         title = { Text(text = shortcut.type.displayName()) },
         subtitle = { Text(text = shortcut.name) },
         onClick = {
@@ -98,9 +104,13 @@ private fun DeviceShortcutBinding(
 
 @Composable
 private fun EnabledDeviceCategory(state: InputDevicesSettingsViewModel.State) {
-    LemuroidCardSettingsGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_enabled)) }) {
-        state.devices.forEach { device ->
+    LemuroidSegmentedSettingsGroup(
+        itemCount = state.devices.size,
+        title = { Text(text = stringResource(R.string.settings_gamepad_category_enabled)) },
+    ) {
+        state.devices.forEachIndexed { index, device ->
             LemuroidSettingsSwitch(
+                index = index,
                 state = booleanPreferenceState(key = device.key, default = device.enabledByDefault),
                 title = { Text(text = device.name) },
             )
@@ -110,7 +120,10 @@ private fun EnabledDeviceCategory(state: InputDevicesSettingsViewModel.State) {
 
 @Composable
 private fun GeneralOptionsCategory(viewModel: InputDevicesSettingsViewModel) {
-    LemuroidCardSettingsGroup(title = { Text(text = stringResource(R.string.settings_gamepad_category_general)) }) {
+    LemuroidSegmentedSettingsGroup(
+        itemCount = 1,
+        title = { Text(text = stringResource(R.string.settings_gamepad_category_general)) },
+    ) {
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(R.string.settings_gamepad_title_reset_bindings)) },
             onClick = { viewModel.resetAllBindings() },

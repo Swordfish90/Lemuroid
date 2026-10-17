@@ -28,6 +28,7 @@ import com.alorma.compose.settings.storage.base.SettingValueState
 
 @Composable
 fun LemuroidSettingsListMultiSelect(
+    index: Int = 0,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     state: SettingValueState<Set<String>>,
@@ -48,6 +49,7 @@ fun LemuroidSettingsListMultiSelect(
     val scrollState = rememberScrollState()
 
     LemuroidSettingsMenuLink(
+        index = index,
         enabled = enabled,
         icon = icon,
         title = title,

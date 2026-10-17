@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alorma.compose.settings.storage.memory.rememberMemoryIntSettingState
 import com.swordfish.lemuroid.R
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSegmentedSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
 
@@ -46,11 +46,12 @@ fun CoresSelectionScreen(
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
-        LemuroidCardSettingsGroup {
-            cores.forEach { (system, core) ->
+        LemuroidSegmentedSettingsGroup(itemCount = cores.size) {
+            cores.forEachIndexed { index, (system, core) ->
                 val state = rememberMemoryIntSettingState(system.systemCoreConfigs.indexOf(core))
 
                 LemuroidSettingsList(
+                    index = index,
                     state = state,
                     title = { Text(text = stringResource(system.titleResId)) },
                     items = system.systemCoreConfigs.map { it.coreID.coreDisplayName },

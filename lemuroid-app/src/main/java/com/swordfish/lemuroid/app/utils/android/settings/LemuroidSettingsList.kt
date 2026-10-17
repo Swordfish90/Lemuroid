@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LemuroidSettingsList(
+    index: Int = 0,
     enabled: Boolean = true,
     state: SettingValueState<Int>,
     title: @Composable () -> Unit,
@@ -57,6 +58,7 @@ fun LemuroidSettingsList(
         }
 
     LemuroidSettingsMenuLink(
+        index = index,
         enabled = enabled,
         icon = icon,
         title = title,
