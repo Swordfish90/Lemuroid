@@ -137,6 +137,7 @@ private fun InputSettings(navController: NavController) {
 private fun GeneralSettings() {
     val hdMode = booleanPreferenceState(R.string.pref_key_hd_mode, false)
     val immersiveMode = booleanPreferenceState(R.string.pref_key_enable_immersive_mode, false)
+    val portraitClearance = intPreferenceState(stringResource(R.string.pref_key_portrait_screen_clearance), 0)
 
     LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_general)) },
@@ -188,6 +189,22 @@ private fun GeneralSettings() {
                 ),
             title = { Text(text = stringResource(id = R.string.settings_title_viewport_alignment)) },
             items = stringListResource(R.array.pref_key_viewport_alignment_display_names),
+        )
+        LemuroidSettingsSlider(
+            state = portraitClearance,
+            steps = 9,
+            enabled = true,
+            valueRange = 0f..50f,
+            title = { Text(text = stringResource(R.string.settings_title_portrait_screen_clearance)) },
+            subtitle = {
+                Text(
+                    text =
+                        stringResource(
+                            R.string.settings_description_portrait_screen_clearance,
+                            portraitClearance.value,
+                        ),
+                )
+            },
         )
     }
 }

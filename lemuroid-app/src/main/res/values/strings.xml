@@ -38,6 +38,8 @@
     <string name="settings_description_hd_quality">Adjust the quality of HD mode</string>
 
     <string name="settings_title_viewport_alignment">Viewport alignment</string>
+    <string name="settings_title_portrait_screen_clearance">Portrait screen clearance</string>
+    <string name="settings_description_portrait_screen_clearance">Reserved bottom area: %1$d%%. Use when a controller covers the display and touch controls are hidden.</string>
 
     <string name="settings_title_immersive_mode">Immersive mode</string>
     <string name="settings_description_immersive_mode">Dynamically colors the background based on game visuals</string>

@@ -28,9 +28,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -53,6 +55,7 @@ import com.swordfish.lemuroid.app.shared.game.BaseGameScreenViewModel
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelTouchControls.Companion.MENU_LOADING_ANIMATION_MILLIS
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
 import com.swordfish.lemuroid.lib.controller.ControllerConfig
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.radial.LemuroidPadTheme
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
@@ -63,11 +66,29 @@ import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
 import gg.padkit.inputstate.InputState
+import com.swordfish.lemuroid.R as AppR
 
 @Composable
 fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
+        val context = LocalContext.current
+        val clearanceKey = stringResource(AppR.string.pref_key_portrait_screen_clearance)
+        val preferences = remember(context) { SharedPreferencesHelper.getSharedPreferences(context) }
+        val portraitClearance =
+            remember(preferences, clearanceKey) {
+                mutableIntStateOf(preferences.getInt(clearanceKey, 0).coerceIn(0, 50))
+            }
+        DisposableEffect(preferences, clearanceKey) {
+            val listener =
+                android.content.SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+                    if (key == clearanceKey) {
+                        portraitClearance.intValue = prefs.getInt(clearanceKey, 0).coerceIn(0, 50)
+                    }
+                }
+            preferences.registerOnSharedPreferenceChangeListener(listener)
+            onDispose { preferences.unregisterOnSharedPreferenceChangeListener(listener) }
+        }
 
         LaunchedEffect(isLandscape) {
             val orientation =
@@ -135,15 +156,27 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             val fullPos = fullScreenPosition.value
             val viewPos = viewportPosition.value
 
-            LaunchedEffect(fullPos, viewPos) {
+            LaunchedEffect(
+                fullPos,
+                viewPos,
+                portraitClearance.intValue,
+                touchControlsVisibleState.value,
+                isLandscape,
+            ) {
                 val gameView = viewModel.retroGameView.retroGameViewFlow()
                 if (fullPos == null || viewPos == null) return@LaunchedEffect
+                val visibleBottom =
+                    if (!isLandscape && !touchControlsVisibleState.value) {
+                        minOf(viewPos.bottom, fullPos.bottom - fullPos.height * portraitClearance.intValue / 100f)
+                    } else {
+                        viewPos.bottom
+                    }
                 val viewport =
                     RectF(
                         (viewPos.left - fullPos.left) / fullPos.width,
                         (viewPos.top - fullPos.top) / fullPos.height,
                         (viewPos.right - fullPos.left) / fullPos.width,
-                        (viewPos.bottom - fullPos.top) / fullPos.height,
+                        (visibleBottom.coerceAtLeast(viewPos.top + 1f) - fullPos.top) / fullPos.height,
                     )
                 gameView.viewport = viewport
             }

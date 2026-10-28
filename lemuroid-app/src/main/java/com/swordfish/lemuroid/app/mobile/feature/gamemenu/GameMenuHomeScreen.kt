@@ -20,7 +20,9 @@ import com.swordfish.lemuroid.app.mobile.feature.gamemenu.tilt.TiltConfiguration
 import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSlider
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import com.swordfish.lemuroid.app.utils.android.settings.intPreferenceState
 import kotlin.reflect.KFunction1
 
 @Composable
@@ -29,6 +31,7 @@ fun GameMenuHomeScreen(
     gameMenuRequest: GameMenuActivity.GameMenuRequest,
     onResult: KFunction1<Intent.() -> Unit, Unit>,
 ) {
+    val portraitClearance = intPreferenceState(stringResource(R.string.pref_key_portrait_screen_clearance), 0)
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         if (gameMenuRequest.coreConfig.statesSupported) {
             LemuroidSettingsMenuLink(
@@ -138,6 +141,23 @@ fun GameMenuHomeScreen(
             },
             onClick = {
                 onResult { putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true) }
+            },
+        )
+
+        LemuroidSettingsSlider(
+            state = portraitClearance,
+            steps = 9,
+            enabled = true,
+            valueRange = 0f..50f,
+            title = { Text(text = stringResource(R.string.settings_title_portrait_screen_clearance)) },
+            subtitle = {
+                Text(
+                    text =
+                        stringResource(
+                            R.string.settings_description_portrait_screen_clearance,
+                            portraitClearance.value,
+                        ),
+                )
             },
         )
 
