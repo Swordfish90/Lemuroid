@@ -3,4 +3,11 @@
     <string name="touch_customize_button_done">Fatto</string>
     <string name="touch_customize_button_reset">Reset</string>
     <string name="touch_customize_info">Trascina e pizzica i controlli per cambiare posizione e dimensione</string>
+    <string name="touch_customize_scale">Dimensione</string>
+    <string name="touch_customize_opacity">Opacità</string>
+    <string name="touch_customize_transparent_background">Sfondo dei pulsanti trasparente</string>
+    <string name="touch_customize_use_shared">Usa aspetto condiviso</string>
+    <string name="touch_customize_shared_title">Aspetto condiviso dei controlli touch</string>
+    <string name="touch_customize_shared_description">Usato dai sistemi con aspetto condiviso attivo in Modifica controlli. Posizione, margini e rotazione restano separati.</string>
+    <string name="touch_customize_reset_shared">Ripristina aspetto condiviso</string>
 </resources>

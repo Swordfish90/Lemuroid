@@ -16,14 +16,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Height
-import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -35,6 +37,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -49,6 +52,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.swordfish.lemuroid.app.mobile.shared.compose.TouchControlsAppearanceEditor
 import com.swordfish.lemuroid.app.shared.game.BaseGameScreenViewModel
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelTouchControls.Companion.MENU_LOADING_ANIMATION_MILLIS
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
@@ -58,6 +62,7 @@ import com.swordfish.touchinput.radial.LemuroidPadTheme
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.Appearance
 import com.swordfish.touchinput.radial.ui.GlassSurface
 import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
 import gg.padkit.PadKit
@@ -81,10 +86,10 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
         val controllerConfigState = viewModel.getTouchControllerConfig().collectAsState(null)
         val touchControlsVisibleState = viewModel.isTouchControllerVisible().collectAsState(false)
-        val touchControllerSettingsState =
-            viewModel
-                .getTouchControlsSettings(LocalDensity.current, WindowInsets.displayCutout)
-                .collectAsState(null)
+        val density = LocalDensity.current
+        val insets = WindowInsets.displayCutout
+        val settingsFlow = remember(viewModel, density, insets) { viewModel.getTouchControlsSettings(density, insets) }
+        val touchControllerSettingsState = settingsFlow.collectAsState(null)
 
         val touchControllerSettings = touchControllerSettingsState.value
         val currentControllerConfig = controllerConfigState.value
@@ -170,7 +175,11 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                         touchControlsVisibleState.value
 
                 if (isVisible) {
-                    CompositionLocalProvider(LocalLemuroidPadTheme provides LemuroidPadTheme()) {
+                    val theme =
+                        remember(touchControllerSettings.transparentBackground) {
+                            LemuroidPadTheme(touchControllerSettings.transparentBackground)
+                        }
+                    CompositionLocalProvider(LocalLemuroidPadTheme provides theme) {
                         if (!isLandscape) {
                             PadContainer(
                                 modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_BOTTOM_CONTAINER),
@@ -186,12 +195,16 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
                         leftGamePad?.invoke(
                             this,
-                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_PAD),
+                            Modifier.layoutId(
+                                GameScreenLayout.CONSTRAINTS_LEFT_PAD,
+                            ).alpha(touchControllerSettings.opacity.coerceIn(0.1f, 1f)),
                             touchControllerSettings,
                         )
                         rightGamePad?.invoke(
                             this,
-                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_PAD),
+                            Modifier.layoutId(
+                                GameScreenLayout.CONSTRAINTS_RIGHT_PAD,
+                            ).alpha(touchControllerSettings.opacity.coerceIn(0.1f, 1f)),
                             touchControllerSettings,
                         )
 
@@ -276,19 +289,38 @@ private fun MenuEditTouchControls(
                     Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
+                        .verticalScroll(rememberScrollState())
                         .padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                MenuEditTouchControlRow(Icons.Default.OpenInFull, "Scale", 0f) {
-                    Slider(
-                        value = touchControllerSettings.scale,
-                        onValueChange = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.touch_customize_use_shared), modifier = Modifier.weight(1f))
+                    Switch(
+                        checked = touchControllerSettings.useSharedAppearance,
+                        onCheckedChange = {
                             viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(scale = it),
+                                touchControllerSettings.copy(useSharedAppearance = it),
                             )
                         },
                     )
                 }
+                TouchControlsAppearanceEditor(
+                    Appearance(
+                        touchControllerSettings.scale,
+                        touchControllerSettings.opacity,
+                        touchControllerSettings.transparentBackground,
+                    ),
+                    onChange = {
+                        viewModel.updateTouchControllerSettings(
+                            touchControllerSettings.copy(
+                                scale = it.scale,
+                                opacity = it.opacity,
+                                transparentBackground = it.transparentBackground,
+                            ),
+                        )
+                    },
+                    enabled = !touchControllerSettings.useSharedAppearance,
+                )
                 MenuEditTouchControlRow(Icons.Default.Height, "Horizontal Margin", 90f) {
                     Slider(
                         value = touchControllerSettings.marginX,

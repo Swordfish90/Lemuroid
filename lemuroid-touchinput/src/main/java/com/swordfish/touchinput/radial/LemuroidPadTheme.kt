@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-class LemuroidPadTheme {
+class LemuroidPadTheme(private val transparentBackground: Boolean = false) {
     private fun gray(
         luminosity: Float,
         opacity: Float,
@@ -17,11 +17,11 @@ class LemuroidPadTheme {
     val foregroundPadding: Dp = 8.dp
     val padding: Dp = 4.dp
 
-    private val icons = gray(0.0f, 0.50f)
+    private val icons = gray(if (transparentBackground) 1.0f else 0.0f, 0.50f)
     private val iconsPressed = gray(1.0f, 0.50f)
 
-    private val level3Fill = gray(1.0f, 0.50f)
-    private val level3FillPressed = gray(0.0f, 0.50f)
+    private val level3Fill = gray(1.0f, if (transparentBackground) 0.20f else 0.50f)
+    private val level3FillPressed = gray(0.0f, if (transparentBackground) 0.20f else 0.50f)
     val level3Shadow = DefaultShadowColor.copy(0.05f)
     val level3ShadowWidth = 4.dp
 
