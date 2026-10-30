@@ -17,6 +17,10 @@ android {
     }
     namespace = "com.swordfish.touchinput.controller"
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
     buildFeatures {
         compose = true
     }
@@ -49,4 +53,7 @@ dependencies {
     implementation(kotlin(deps.libs.kotlin.stdlib))
 
     kapt(deps.libs.androidx.lifecycle.processor)
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.14.1")
 }
