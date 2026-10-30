@@ -3,4 +3,12 @@
     <string name="touch_customize_button_done">Done</string>
     <string name="touch_customize_button_reset">Reset</string>
     <string name="touch_customize_info">Drag and Pinch controls to change position and size</string>
+    <string name="touch_customize_title">Touch controls</string>
+    <string name="touch_customize_scale">Size</string>
+    <string name="touch_customize_horizontal_margin">Horizontal margin</string>
+    <string name="touch_customize_vertical_margin">Vertical margin</string>
+    <string name="touch_customize_rotation">Rotation</string>
+    <string name="touch_customize_drag_hint">Drag either group to move it.</string>
+    <string name="touch_customize_expand">Show adjustments</string>
+    <string name="touch_customize_collapse">Hide adjustments</string>
 </resources>
