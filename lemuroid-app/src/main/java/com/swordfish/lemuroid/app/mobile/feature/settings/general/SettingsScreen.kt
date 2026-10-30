@@ -55,6 +55,7 @@ fun SettingsScreen(
         )
         GeneralSettings()
         InputSettings(navController = navController)
+        TouchControlsSettings()
         MiscSettings(
             indexingInProgress = indexingInProgress,
             isSaveSyncSupported = state.isSaveSyncSupported,

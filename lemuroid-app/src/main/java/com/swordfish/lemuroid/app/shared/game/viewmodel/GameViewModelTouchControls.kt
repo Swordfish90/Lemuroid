@@ -83,20 +83,24 @@ class GameViewModelTouchControls(
     }
 
     fun updateTouchControllerSettings(touchControllerSettings: TouchControllerSettingsManager.Settings) {
+        val controller = touchControlId.value
+        val orientation = screenOrientation.value
         scope.launch {
             touchControllerSettingsManager.storeSettings(
-                touchControlId.value,
-                screenOrientation.value,
+                controller,
+                orientation,
                 touchControllerSettings,
             )
         }
     }
 
     fun resetTouchControls() {
+        val controller = touchControlId.value
+        val orientation = screenOrientation.value
         scope.launch {
             touchControllerSettingsManager.resetSettings(
-                touchControlId.value,
-                screenOrientation.value,
+                controller,
+                orientation,
             )
         }
     }

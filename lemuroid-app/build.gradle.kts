@@ -13,6 +13,7 @@ android {
         versionCode = 252
         versionName = "1.17.0" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     flavorDimensions += listOf("opensource", "cores")
 
@@ -187,6 +188,10 @@ dependencies {
     implementation(deps.libs.androidx.compose.material3)
     implementation(deps.libs.androidx.compose.constraintLayout)
     debugImplementation(deps.libs.androidx.compose.tooling)
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(platform(deps.libs.androidx.compose.composeBom))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.test:runner:1.5.2")
     implementation(deps.libs.androidx.compose.toolingPreview)
     implementation(deps.libs.androidx.compose.extendedIcons)
     implementation(deps.libs.androidx.compose.accompanist.systemUiController)

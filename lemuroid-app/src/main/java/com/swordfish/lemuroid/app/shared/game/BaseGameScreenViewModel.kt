@@ -121,7 +121,7 @@ class BaseGameScreenViewModel(
     private val touchControls =
         GameViewModelTouchControls(
             settingsManager,
-            TouchControllerSettingsManager(sharedPreferences),
+            TouchControllerSettingsManager(sharedPreferences, system.id.dbname),
             retroGameView,
             inputs,
             tilt,

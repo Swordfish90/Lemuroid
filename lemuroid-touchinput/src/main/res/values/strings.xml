@@ -3,4 +3,11 @@
     <string name="touch_customize_button_done">Done</string>
     <string name="touch_customize_button_reset">Reset</string>
     <string name="touch_customize_info">Drag and Pinch controls to change position and size</string>
+    <string name="touch_customize_scale">Size</string>
+    <string name="touch_customize_opacity">Opacity</string>
+    <string name="touch_customize_transparent_background">Transparent button backgrounds</string>
+    <string name="touch_customize_use_shared">Use shared appearance</string>
+    <string name="touch_customize_shared_title">Shared touch control appearance</string>
+    <string name="touch_customize_shared_description">Used by systems with shared appearance enabled in Edit controls. Position, margins and rotation stay separate.</string>
+    <string name="touch_customize_reset_shared">Reset shared appearance</string>
 </resources>
