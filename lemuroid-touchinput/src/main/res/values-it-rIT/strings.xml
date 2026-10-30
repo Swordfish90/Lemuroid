@@ -3,4 +3,6 @@
     <string name="touch_customize_button_done">Fatto</string>
     <string name="touch_customize_button_reset">Reset</string>
     <string name="touch_customize_info">Trascina e pizzica i controlli per cambiare posizione e dimensione</string>
+    <string name="touch_customize_left_scale">Dimensione gruppo sinistro</string>
+    <string name="touch_customize_right_scale">Dimensione gruppo destro</string>
 </resources>

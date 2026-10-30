@@ -31,6 +31,7 @@ object GameScreenLayout {
             val rightPad = createRefFor(CONSTRAINTS_RIGHT_PAD)
             val gameContainer = createRefFor(CONSTRAINTS_GAME_CONTAINER)
             val bottomContainer = createRefFor(CONSTRAINTS_BOTTOM_CONTAINER)
+            val padsTop = createTopBarrier(leftPad, rightPad)
 
             val gamePadChain = createHorizontalChain(leftPad, rightPad, chainStyle = ChainStyle.SpreadInside)
 
@@ -40,7 +41,7 @@ object GameScreenLayout {
                 top.linkTo(parent.top)
                 absoluteLeft.linkTo(parent.absoluteLeft)
                 absoluteRight.linkTo(parent.absoluteRight)
-                bottom.linkTo(leftPad.top)
+                bottom.linkTo(padsTop)
             }
 
             constrain(bottomContainer) {
@@ -48,7 +49,7 @@ object GameScreenLayout {
                 height = Dimension.fillToConstraints
                 absoluteLeft.linkTo(parent.absoluteLeft)
                 absoluteRight.linkTo(parent.absoluteRight)
-                top.linkTo(leftPad.top)
+                top.linkTo(padsTop)
                 bottom.linkTo(parent.bottom)
             }
 
