@@ -1,31 +1,16 @@
 package com.swordfish.lemuroid.app.mobile.feature.game
 
 import android.graphics.RectF
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Height
-import androidx.compose.material.icons.filled.OpenInFull
-import androidx.compose.material.icons.filled.RotateLeft
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -35,24 +20,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.swordfish.lemuroid.app.shared.game.BaseGameScreenViewModel
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelTouchControls.Companion.MENU_LOADING_ANIMATION_MILLIS
 import com.swordfish.lemuroid.app.shared.settings.HapticFeedbackMode
-import com.swordfish.lemuroid.lib.controller.ControllerConfig
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.radial.LemuroidPadTheme
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
@@ -79,12 +60,15 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             viewModel.onScreenOrientationChanged(orientation)
         }
 
+        val editing = viewModel.isEditControlShown().collectAsState(false).value
+        val viewport = Size(constraints.maxWidth.toFloat(), constraints.maxHeight.toFloat())
+
         val controllerConfigState = viewModel.getTouchControllerConfig().collectAsState(null)
         val touchControlsVisibleState = viewModel.isTouchControllerVisible().collectAsState(false)
-        val touchControllerSettingsState =
-            viewModel
-                .getTouchControlsSettings(LocalDensity.current, WindowInsets.displayCutout)
-                .collectAsState(null)
+        val density = LocalDensity.current
+        val insets = WindowInsets.displayCutout
+        val settingsFlow = remember(viewModel, density, insets) { viewModel.getTouchControlsSettings(density, insets) }
+        val touchControllerSettingsState = settingsFlow.collectAsState(null)
 
         val touchControllerSettings = touchControllerSettingsState.value
         val currentControllerConfig = controllerConfigState.value
@@ -111,7 +95,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
         PadKit(
             modifier = Modifier.fillMaxSize(),
-            onInputEvents = { viewModel.handleVirtualInputEvent(it) },
+            onInputEvents = { if (!editing) viewModel.handleVirtualInputEvent(it) },
             hapticFeedbackType = padHapticFeedback,
             simulatedState = tiltSimulatedStates,
             simulatedControlIds = tiltSimulatedControls,
@@ -186,24 +170,61 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
 
                         leftGamePad?.invoke(
                             this,
-                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_PAD),
+                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_PAD)
+                                .editableTouchPad(
+                                    editing = editing,
+                                    offset =
+                                        Offset(
+                                            touchControllerSettings.leftOffsetX,
+                                            touchControllerSettings.leftOffsetY,
+                                        ),
+                                    viewport = viewport,
+                                    onMoved = {
+                                        viewModel.updateTouchControllerSettings(
+                                            touchControllerSettings.copy(leftOffsetX = it.x, leftOffsetY = it.y),
+                                        )
+                                    },
+                                ),
                             touchControllerSettings,
                         )
                         rightGamePad?.invoke(
                             this,
-                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_PAD),
+                            Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_PAD)
+                                .editableTouchPad(
+                                    editing = editing,
+                                    offset =
+                                        Offset(
+                                            touchControllerSettings.rightOffsetX,
+                                            touchControllerSettings.rightOffsetY,
+                                        ),
+                                    viewport = viewport,
+                                    onMoved = {
+                                        viewModel.updateTouchControllerSettings(
+                                            touchControllerSettings.copy(rightOffsetX = it.x, rightOffsetY = it.y),
+                                        )
+                                    },
+                                ),
                             touchControllerSettings,
                         )
 
                         GameScreenRunningCentralMenu(
                             modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_GAME_CONTAINER),
-                            controllerConfig = currentControllerConfig,
-                            touchControllerSettings = touchControllerSettings,
                             viewModel = viewModel,
                         )
                     }
                 }
             }
+        }
+
+        if (editing && touchControllerSettings != null && currentControllerConfig != null) {
+            TouchControlsEditor(
+                settings = touchControllerSettings,
+                allowRotation = currentControllerConfig.allowTouchRotation,
+                maxHeight = maxHeight * 0.45f,
+                onChange = viewModel::updateTouchControllerSettings,
+                onReset = viewModel::resetTouchControls,
+                onDone = { viewModel.showEditControls(false) },
+            )
         }
 
         val isLoading =
@@ -238,8 +259,6 @@ private fun PadContainer(modifier: Modifier = Modifier) {
 private fun GameScreenRunningCentralMenu(
     modifier: Modifier = Modifier,
     viewModel: BaseGameScreenViewModel,
-    touchControllerSettings: TouchControllerSettingsManager.Settings,
-    controllerConfig: ControllerConfig,
 ) {
     val menuPressed = viewModel.isMenuPressed().collectAsState(false)
     Box(
@@ -251,115 +270,5 @@ private fun GameScreenRunningCentralMenu(
             animationDurationMillis = MENU_LOADING_ANIMATION_MILLIS,
             icon = R.drawable.button_menu,
         )
-        MenuEditTouchControls(viewModel, controllerConfig, touchControllerSettings)
-    }
-}
-
-@Composable
-private fun MenuEditTouchControls(
-    viewModel: BaseGameScreenViewModel,
-    controllerConfig: ControllerConfig,
-    touchControllerSettings: TouchControllerSettingsManager.Settings,
-) {
-    val showEditControls = viewModel.isEditControlShown().collectAsState(false)
-    if (!showEditControls.value) return
-
-    Dialog(onDismissRequest = { viewModel.showEditControls(false) }) {
-        Card(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-        ) {
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                MenuEditTouchControlRow(Icons.Default.OpenInFull, "Scale", 0f) {
-                    Slider(
-                        value = touchControllerSettings.scale,
-                        onValueChange = {
-                            viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(scale = it),
-                            )
-                        },
-                    )
-                }
-                MenuEditTouchControlRow(Icons.Default.Height, "Horizontal Margin", 90f) {
-                    Slider(
-                        value = touchControllerSettings.marginX,
-                        onValueChange = {
-                            viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(marginX = it),
-                            )
-                        },
-                    )
-                }
-                MenuEditTouchControlRow(Icons.Default.Height, "Vertical Margin", 0f) {
-                    Slider(
-                        value = touchControllerSettings.marginY,
-                        onValueChange = {
-                            viewModel.updateTouchControllerSettings(
-                                touchControllerSettings.copy(marginY = it),
-                            )
-                        },
-                    )
-                }
-                if (controllerConfig.allowTouchRotation) {
-                    MenuEditTouchControlRow(Icons.Default.RotateLeft, "Rotate", 0f) {
-                        Slider(
-                            value = touchControllerSettings.rotation,
-                            onValueChange = {
-                                viewModel.updateTouchControllerSettings(
-                                    touchControllerSettings.copy(rotation = it),
-                                )
-                            },
-                        )
-                    }
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    TextButton(
-                        onClick = { viewModel.resetTouchControls() },
-                        modifier = Modifier.padding(8.dp),
-                    ) {
-                        Text(text = stringResource(R.string.touch_customize_button_reset))
-                    }
-                    TextButton(
-                        onClick = { viewModel.showEditControls(false) },
-                        modifier = Modifier.padding(8.dp),
-                    ) {
-                        Text(text = stringResource(R.string.touch_customize_button_done))
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun MenuEditTouchControlRow(
-    icon: ImageVector,
-    label: String,
-    rotation: Float,
-    slider: @Composable () -> Unit,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Icon(
-            modifier = Modifier.rotate(rotation),
-            imageVector = icon,
-            contentDescription = label,
-        )
-        slider()
     }
 }
