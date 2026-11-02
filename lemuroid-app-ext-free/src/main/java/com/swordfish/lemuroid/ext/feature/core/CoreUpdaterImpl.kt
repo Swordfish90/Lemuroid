@@ -98,11 +98,18 @@ class CoreUpdaterImpl(
         }
 
         val uri =
-            baseUri.buildUpon()
-                .appendEncodedPath("raw/$CORES_VERSION/lemuroid_core_${coreID.coreName}/src/main/jniLibs/")
-                .appendPath(Build.SUPPORTED_ABIS.first())
-                .appendPath(libFileName)
-                .build()
+            if (coreID == CoreID.ARMSX2) {
+                Uri.parse(
+                    "https://raw.githubusercontent.com/dimmstz/LemuroidCores/integration/armsx2-cores/" +
+                        "lemuroid_core_armsx2/src/main/jniLibs/${Build.SUPPORTED_ABIS.first()}/$libFileName",
+                )
+            } else {
+                baseUri.buildUpon()
+                    .appendEncodedPath("raw/$CORES_VERSION/lemuroid_core_${coreID.coreName}/src/main/jniLibs/")
+                    .appendPath(Build.SUPPORTED_ABIS.first())
+                    .appendPath(libFileName)
+                    .build()
+            }
 
         try {
             downloadFile(uri, destFile)
