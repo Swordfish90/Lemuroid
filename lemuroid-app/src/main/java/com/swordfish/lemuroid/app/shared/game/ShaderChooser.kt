@@ -55,6 +55,7 @@ object ShaderChooser {
             SystemID.GG -> ShaderConfig.LCD
             SystemID.ATARI2600 -> ShaderConfig.CRT
             SystemID.PSX -> ShaderConfig.CRT
+            SystemID.PS2 -> ShaderConfig.CRT
             SystemID.MAME2003PLUS -> ShaderConfig.CRT
             SystemID.ATARI7800 -> ShaderConfig.CRT
             SystemID.PC_ENGINE -> ShaderConfig.CRT
@@ -278,6 +279,7 @@ object ShaderChooser {
             SystemID.GG -> upscale8BitsMobile
             SystemID.ATARI2600 -> upscale8Bits
             SystemID.PSX -> upscale32Bits
+            SystemID.PS2 -> upscale32Bits
             SystemID.MAME2003PLUS -> upscale32Bits
             SystemID.ATARI7800 -> upscale8Bits
             SystemID.PC_ENGINE -> upscale16Bits
