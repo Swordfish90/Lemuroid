@@ -60,6 +60,11 @@
     <string name="settings_description_display_bios_info">Display detected and supported BIOS files</string>
     <string name="settings_bios_category_detected">Detected</string>
     <string name="settings_bios_category_not_detected">Supported</string>
+    <string name="settings_bios_ps2_title">PlayStation 2</string>
+    <string name="settings_bios_ps2_import">Import BIOS and resources</string>
+    <string name="settings_bios_ps2_description">Select the folder containing the BIOS and resources folders</string>
+    <string name="settings_bios_ps2_import_success">PS2 BIOS and resources imported</string>
+    <string name="settings_bios_ps2_import_error">Folder must contain both bios and resources folders</string>
 
     <string name="settings_title_reset_settings">Factory reset</string>
     <string name="settings_description_reset_settings">Reset Lemuroid to its factory settings</string>
