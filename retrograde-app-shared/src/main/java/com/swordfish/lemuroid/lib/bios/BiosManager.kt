@@ -8,6 +8,8 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageFile
+import android.content.ContentResolver
+import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -87,6 +89,41 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
             inputStream.writeToFile(biosFile)
         }
         return true
+    }
+
+
+    suspend fun importPs2Folders(
+        root: DocumentFile,
+        contentResolver: ContentResolver,
+    ): Boolean = withContext(Dispatchers.IO) {
+        val biosFolder = root.findFile("bios")?.takeIf { it.isDirectory }
+        val resourcesFolder = root.findFile("resources")?.takeIf { it.isDirectory }
+        if (biosFolder == null || resourcesFolder == null) return@withContext false
+
+        val ps2Directory = File(directoriesManager.getSystemDirectory(), "pcsx2")
+        val targetBios = File(ps2Directory, "bios")
+        val targetResources = File(ps2Directory, "resources")
+        targetBios.mkdirs()
+        targetResources.mkdirs()
+
+        fun copyTree(source: DocumentFile, destination: File) {
+            source.listFiles().forEach { child ->
+                val target = File(destination, child.name ?: return@forEach)
+                if (child.isDirectory) {
+                    target.mkdirs()
+                    copyTree(child, target)
+                } else if (child.isFile) {
+                    contentResolver.openInputStream(child.uri)?.use { input ->
+                        target.parentFile?.mkdirs()
+                        target.outputStream().use { output -> input.copyTo(output) }
+                    }
+                }
+            }
+        }
+
+        copyTree(biosFolder, targetBios)
+        copyTree(resourcesFolder, targetResources)
+        true
     }
 
     private fun findByCRC(storageFile: StorageFile): Bios? {
