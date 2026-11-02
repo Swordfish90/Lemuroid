@@ -813,7 +813,7 @@ data class GameSystem(
                                 listOf(
                                     CoreVariable("armsx2_renderer", "OpenGL"),
                                 ),
-                            requiredBIOSFiles = listOf("pcsx2/bios"),
+                            requiredBIOSFiles = listOf("pcsx2/bios", "pcsx2/resources"),
                             supportsLibretroVFS = false,
                             skipDuplicateFrames = false,
                             supportedOnlyArchitectures = setOf("arm64-v8a"),
