@@ -1,0 +1,68 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - integration/armsx2-lemuroid
+    paths:
+      - "**/*.kt"
+      - "**/*.kts"
+      - "**/*.java"
+      - "**/*.cpp"
+      - "**/*.h"
+      - "**/*.xml"
+      - ".github/workflows/build-apk.yml"
+      - ".gitmodules"
+      - "gradle.properties"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build free ARM64-compatible APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v4
+        with:
+          ref: integration/armsx2-lemuroid
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android build tools
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;34.0.0" "cmake;3.22.1" "ndk;27.2.12479018"
+
+      - name: Verify submodules
+        run: |
+          git submodule status --recursive
+          test -f lemuroid-cores/lemuroid_core_armsx2/build.gradle.kts
+          test -f lemuroid-cores/lemuroid_core_armsx2/src/main/jniLibs/arm64-v8a/libarmsx2_libretro_android.so
+
+      - name: Build installable debug APK
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon --stacktrace :lemuroid-app:assembleFreeDynamicDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lemuroid-PS2-ARM64-debug
+          path: lemuroid-app/build/outputs/apk/freeDynamic/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
