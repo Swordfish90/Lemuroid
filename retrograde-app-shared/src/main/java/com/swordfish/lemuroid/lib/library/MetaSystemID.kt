@@ -136,6 +136,7 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
                 SystemID.NES -> NES
                 SystemID.PSP -> PSP
                 SystemID.PSX -> PSX
+                SystemID.PS2 -> PSX
                 SystemID.SMS -> SMS
                 SystemID.SNES -> SNES
                 SystemID.PC_ENGINE -> PC_ENGINE
