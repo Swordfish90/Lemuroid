@@ -795,6 +795,45 @@ data class GameSystem(
                     hasMultiDiskSupport = true,
                 ),
                 GameSystem(
+                    SystemID.PS2,
+                    "Sony - PlayStation 2",
+                    R.string.game_system_title_ps2,
+                    R.string.game_system_abbr_ps2,
+                    listOf(
+                        SystemCoreConfig(
+                            CoreID.ARMSX2,
+                            controllerConfigs =
+                                hashMapOf(
+                                    0 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                    1 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                    2 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                    3 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                ),
+                            defaultSettings =
+                                listOf(
+                                    CoreVariable("armsx2_renderer", "OpenGL"),
+                                ),
+                            requiredBIOSFiles = listOf("pcsx2/bios"),
+                            supportsLibretroVFS = false,
+                            skipDuplicateFrames = false,
+                            supportedOnlyArchitectures = setOf("arm64-v8a"),
+                        ),
+                    ),
+                    uniqueExtensions = listOf(),
+                    supportedExtensions =
+                        listOf(
+                            "elf", "iso", "ciso", "chd", "cso", "zso", "bin",
+                            "mdf", "nrg", "dump", "gz", "img", "irx", "m3u",
+                        ),
+                    scanOptions =
+                        ScanOptions(
+                            scanByFilename = false,
+                            scanByUniqueExtension = false,
+                            scanByPathAndSupportedExtensions = true,
+                        ),
+                    hasMultiDiskSupport = true,
+                ),
+                GameSystem(
                     SystemID.PSP,
                     "Sony - PlayStation Portable",
                     R.string.game_system_title_psp,
