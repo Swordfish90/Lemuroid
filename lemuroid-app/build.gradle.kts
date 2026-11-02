@@ -40,6 +40,7 @@ android {
                 ":lemuroid_core_snes9x",
                 ":lemuroid_core_stella",
                 ":lemuroid_core_citra",
+                ":lemuroid_core_armsx2",
             ),
         )
     }
