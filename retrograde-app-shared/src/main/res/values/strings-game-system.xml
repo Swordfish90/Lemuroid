@@ -30,6 +30,7 @@
     <string name="game_system_abbr_gba">GBA</string>
     <string name="game_system_abbr_n64">N64</string>
     <string name="game_system_abbr_psx">PSX</string>
+    <string name="game_system_abbr_ps2">PS2</string>
     <string name="game_system_abbr_nds">NDS</string>
     <string name="game_system_abbr_sms">SMS</string>
     <string name="game_system_abbr_psp">PSP</string>
