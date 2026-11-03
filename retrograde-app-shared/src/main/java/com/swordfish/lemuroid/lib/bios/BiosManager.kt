@@ -92,6 +92,22 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
     }
 
 
+    suspend fun importPs2File(
+        file: DocumentFile,
+        contentResolver: ContentResolver,
+    ): Boolean = withContext(Dispatchers.IO) {
+        if (!file.isFile) return@withContext false
+        val name = file.name ?: return@withContext false
+        if (!name.endsWith(".bin", ignoreCase = true)) return@withContext false
+        val target = File(directoriesManager.getSystemDirectory(), "pcsx2/bios/$name")
+        val copied = contentResolver.openInputStream(file.uri)?.use { input ->
+            target.parentFile?.mkdirs()
+            target.outputStream().use { output -> input.copyTo(output) }
+            true
+        } ?: false
+        copied
+    }
+
     suspend fun importPs2Folders(
         root: DocumentFile,
         contentResolver: ContentResolver,
@@ -154,6 +170,13 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
     companion object {
         private val SUPPORTED_BIOS =
             listOf(
+                Bios(
+                    "pcsx2/bios/scph10000.bin",
+                    "",
+                    "PlayStation 2 BIOS",
+                    SystemID.PS2,
+                    externalName = "scph10000.bin",
+                ),
                 Bios(
                     "scph101.bin",
                     "6E3735FF4C7DC899EE98981385F6F3D0",
