@@ -46,7 +46,7 @@ class RumbleManager(
             .map { getVibrators(it) }
             .flatMapLatest { vibrators ->
                 rumbleEventsObservable
-                    .onEach { kotlin.runCatching { vibrate(vibrators[it.port], it) } }
+                    .onEach { kotlin.runCatching { vibrate(vibrators.forPort(it.port), it) } }
                     .onStart { stopAllVibrators(vibrators) }
                     .onCompletion { stopAllVibrators(vibrators) }
                     .flowOn(rumbleContext)
@@ -54,21 +54,56 @@ class RumbleManager(
             .safeCollect { }
     }
 
-    private fun stopAllVibrators(vibrators: List<Vibrator>) {
-        vibrators.forEach {
+    private fun stopAllVibrators(vibrators: RumbleVibrators) {
+        vibrators.all().forEach {
             kotlin.runCatching { it.cancel() }
         }
     }
 
-    private suspend fun getVibrators(gamePads: List<InputDevice>): List<Vibrator> {
-        val enableDeviceRumble = settingsManager.enableDeviceRumble()
-
-        return if (gamePads.isEmpty() && enableDeviceRumble) {
-            listOf(deviceVibrator)
+    private suspend fun getVibrators(gamePads: List<InputDevice>): RumbleVibrators {
+        val destination = settingsManager.rumbleDestination()
+        val systemVibrator = deviceVibrator.takeIf { it.hasVibrator() }
+        val controllerVibrators = if (destination == RumbleDestination.DEVICE) {
+            emptyList()
         } else {
-            gamePads.map { it.vibrator }
+            gamePads.map { it.getSupportedVibrator() }
         }
+
+        return RumbleVibrators(destination, controllerVibrators, systemVibrator)
     }
+
+    private data class RumbleVibrators(
+        private val destination: RumbleDestination,
+        private val controllerVibrators: List<Vibrator?>,
+        private val deviceVibrator: Vibrator?,
+    ) {
+        fun forPort(port: Int): Vibrator? = when (destination) {
+            RumbleDestination.AUTO -> controllerVibrators.getOrNull(port) ?: deviceVibrator
+            RumbleDestination.CONTROLLER -> controllerVibrators.getOrNull(port)
+            RumbleDestination.DEVICE -> deviceVibrator
+        }
+
+        fun all(): List<Vibrator> = when (destination) {
+            RumbleDestination.AUTO -> controllerVibrators + deviceVibrator
+            RumbleDestination.CONTROLLER -> controllerVibrators
+            RumbleDestination.DEVICE -> listOf(deviceVibrator)
+        }.filterNotNull().distinct()
+    }
+
+    private fun InputDevice.getSupportedVibrator(): Vibrator? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager = vibratorManager
+            return vibratorManager.defaultVibrator.takeIf {
+                vibratorManager.vibratorIds.isNotEmpty()
+            }
+        }
+
+        return getLegacySupportedVibrator()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun InputDevice.getLegacySupportedVibrator(): Vibrator? =
+        vibrator.takeIf { it.hasVibrator() }
 
     private fun vibrate(
         vibrator: Vibrator?,

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.shared.rumble.RumbleDestination
 import com.swordfish.lemuroid.app.shared.settings.HDModeQuality
 import com.swordfish.lemuroid.common.math.Fraction
 import com.swordfish.lemuroid.lib.storage.cache.CacheCleaner
@@ -47,6 +48,17 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
     suspend fun enableRumble() = booleanPreference(R.string.pref_key_enable_rumble, false)
 
     suspend fun enableDeviceRumble() = booleanPreference(R.string.pref_key_enable_device_rumble, false)
+
+    suspend fun rumbleDestination(): RumbleDestination {
+        val legacyDefault =
+            if (enableDeviceRumble()) RumbleDestination.AUTO else RumbleDestination.CONTROLLER
+        val value =
+            stringPreference(
+                R.string.pref_key_rumble_destination,
+                legacyDefault.preferenceValue,
+            )
+        return RumbleDestination.fromPreferenceValue(value)
+    }
 
     suspend fun enableImmersiveMode() = booleanPreference(R.string.pref_key_enable_immersive_mode, false)
 

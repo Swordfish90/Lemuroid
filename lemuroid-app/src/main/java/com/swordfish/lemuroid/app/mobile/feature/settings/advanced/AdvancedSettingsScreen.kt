@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
+import com.swordfish.lemuroid.app.shared.rumble.RumbleDestination
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -59,11 +60,32 @@ private fun InputSettings() {
             title = { Text(text = stringResource(id = R.string.settings_title_enable_rumble)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_rumble)) },
         )
-        LemuroidSettingsSwitch(
+        val legacyDeviceRumble =
+            booleanPreferenceState(R.string.pref_key_enable_device_rumble, false)
+        val destinationValues = RumbleDestination.entries.map { it.preferenceValue }
+        LemuroidSettingsList(
             enabled = rumbleEnabled.value,
-            state = booleanPreferenceState(R.string.pref_key_enable_device_rumble, false),
-            title = { Text(text = stringResource(id = R.string.settings_title_enable_device_rumble)) },
-            subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_device_rumble)) },
+            state =
+                indexPreferenceState(
+                    R.string.pref_key_rumble_destination,
+                    if (legacyDeviceRumble.value) {
+                        RumbleDestination.AUTO.preferenceValue
+                    } else {
+                        RumbleDestination.CONTROLLER.preferenceValue
+                    },
+                    destinationValues,
+                ),
+            title = { Text(text = stringResource(R.string.settings_title_rumble_destination)) },
+            items =
+                listOf(
+                    stringResource(R.string.settings_rumble_destination_auto),
+                    stringResource(R.string.settings_rumble_destination_controller),
+                    stringResource(R.string.settings_rumble_destination_device),
+                ),
+            useSelectedValueAsSubtitle = true,
+            subtitle = {
+                Text(text = stringResource(R.string.settings_description_rumble_destination))
+            },
         )
         LemuroidSettingsSlider(
             state =
