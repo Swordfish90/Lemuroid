@@ -52,11 +52,26 @@ class TVFolderPickerStorageFragment : GuidedStepSupportFragment() {
     }
 
     private fun retrieveStorageRoots(): List<File> {
-        return requireContext().getExternalFilesDirs(null)
-            .filterNotNull()
-            .map { it.absolutePath }
-            .map { File(it.substring(0, it.indexOf("/Android/data/"))) }
-            .filter { it.exists() }
+        val roots =
+            requireContext().getExternalFilesDirs(null)
+                .filterNotNull()
+                .mapNotNull { file ->
+                    val path = file.absolutePath
+                    val dataIndex = path.indexOf("/Android/data/")
+                    if (dataIndex != -1) {
+                        File(path.substring(0, dataIndex))
+                    } else {
+                        null
+                    }
+                }
+                .filter { it.exists() }
+                .distinct()
+
+        return if (roots.isNotEmpty()) {
+            roots
+        } else {
+            listOf(Environment.getExternalStorageDirectory())
+        }
     }
 
     override fun onGuidedActionClicked(action: GuidedAction) {

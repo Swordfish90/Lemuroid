@@ -59,6 +59,7 @@ class TVFolderPickerFolderFragment : GuidedStepSupportFragment() {
 
         directory.listFiles()
             ?.filter { it.isDirectory }
+            ?.sortedBy { it.name.lowercase() }
             ?.forEach {
                 addAction(actions, ACTION_NAVIGATE, it.name, it.absolutePath)
             }
