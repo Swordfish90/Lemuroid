@@ -9,11 +9,13 @@
 
 ## Description
 
-OMINOY is an open-source Android emulation project based on Libretro, focused exclusively on Nintendo Game Boy, Game Boy Color, and Game Boy Advance. Its goal is to combine easy setup, Android integration, and a polished play experience.
+OMINOY is an open-source Android emulation project based on Libretro, focused exclusively on Nintendo Game Boy, Game Boy Color, and Game Boy Advance. These are the only systems targeted by this project; support for other consoles or handhelds is not planned. Its goal is to combine easy setup, Android integration, and a polished play experience.
 
 It originated from a branch of [Retrograde](https://github.com/retrograde/retrograde-android) and integrates [LibretroDroid](https://github.com/Swordfish90/LibretroDroid).
 
 ### Supported systems
+
+OMINOY targets exactly these three systems and no others:
 
 - Game Boy (GB) — mGBA
 - Game Boy Color (GBC) — mGBA

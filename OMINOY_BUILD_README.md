@@ -2,6 +2,10 @@
 
 This source tree is the updated OMINOY Android app. The visible app name is **OMINOY** and the supplied launcher/TV icon assets have been applied. The application ID remains `come.asg.lemudroid` so existing installations and app data remain compatible.
 
+## Product scope
+
+OMINOY targets only Nintendo Game Boy (GB), Game Boy Color (GBC), and Game Boy Advance (GBA). Other consoles and handheld systems are outside the project scope and are not planned targets.
+
 ## Signed release build
 
 Requirements: JDK 21, Android SDK platform 35, and Android build-tools 34.0.0.
