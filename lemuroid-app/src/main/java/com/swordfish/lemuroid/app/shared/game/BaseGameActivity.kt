@@ -310,9 +310,15 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun performUnexpectedErrorFinish(exception: Throwable) {
         Timber.e(exception, "Handling java exception in BaseGameActivity")
+        val diagnosticDetails = buildString {
+            appendLine("Tipo: ${exception.javaClass.name}")
+            appendLine("Thread: ${Thread.currentThread().name}")
+            appendLine()
+            append(exception.stackTraceToString())
+        }
         val resultIntent =
             Intent().apply {
-                putExtra(PLAY_GAME_RESULT_ERROR, exception.message)
+                putExtra(PLAY_GAME_RESULT_ERROR, diagnosticDetails)
             }
 
         setResult(RESULT_UNEXPECTED_ERROR, resultIntent)
