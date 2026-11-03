@@ -35,6 +35,10 @@ class LemuroidApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderF
 
         AppInitializer.getInstance(this).initializeComponent(initializeComponent)
 
+        if (isMainProcess()) {
+            com.swordfish.lemuroid.app.shared.gamecrash.GameProcessCrashHistory.collect(this)
+        }
+
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
