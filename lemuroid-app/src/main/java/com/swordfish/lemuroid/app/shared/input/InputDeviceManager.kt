@@ -42,7 +42,11 @@ class InputDeviceManager(
         return getEnabledInputsObservable()
             .flatMapLatest { devices ->
                 val allDeviceBindingsFlows = devices.map { device -> getBindingsFlow(device).map { device to it } }
-                combine(allDeviceBindingsFlows) { it.toMap() }
+                if (allDeviceBindingsFlows.isEmpty()) {
+                    flowOf(emptyMap<InputDevice, Map<InputKey, RetroKey>>())
+                } else {
+                    combine(allDeviceBindingsFlows) { it.toMap() }
+                }
             }
             .map { bindings -> { bindings[it] ?: mapOf() } }
     }
@@ -51,7 +55,11 @@ class InputDeviceManager(
         return getEnabledInputsObservable()
             .flatMapLatest { devices ->
                 val allShortcutFlows = devices.map { device -> getShortcutBindingsFlow(device).map { device to it } }
-                combine(allShortcutFlows) { it.toMap() }
+                if (allShortcutFlows.isEmpty()) {
+                    flowOf(emptyMap<InputDevice, List<GameShortcut>>())
+                } else {
+                    combine(allShortcutFlows) { it.toMap() }
+                }
             }
     }
 
