@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AspectRatio
 import androidx.compose.material.icons.filled.Sensors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -138,6 +139,19 @@ fun GameMenuHomeScreen(
             },
             onClick = {
                 onResult { putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true) }
+            },
+        )
+
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.game_menu_adjust_screen)) },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.AspectRatio,
+                    contentDescription = stringResource(id = R.string.game_menu_adjust_screen),
+                )
+            },
+            onClick = {
+                onResult { putExtra(GameMenuContract.RESULT_ADJUST_SCREEN, true) }
             },
         )
 

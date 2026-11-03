@@ -409,6 +409,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
                 baseGameScreenViewModel.showEditControls(true)
             }
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_ADJUST_SCREEN, false) == true) {
+                baseGameScreenViewModel.showScreenAdjust(true)
+            }
             if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_TILT_CONFIG) == true) {
                 val tiltConfig = data.serializable<TiltConfiguration>(GameMenuContract.RESULT_CHANGE_TILT_CONFIG)
                 baseGameScreenViewModel.changeTiltConfiguration(tiltConfig!!)
