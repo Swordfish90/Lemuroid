@@ -49,6 +49,15 @@ fun BiosScreen(
             .value
 
     LemuroidSettingsPage(modifier = modifier.fillMaxSize()) {
+        LemuroidCardSettingsGroup(
+            title = { Text(text = stringResource(id = R.string.settings_bios_ps2_title)) },
+        ) {
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.settings_bios_ps2_import)) },
+                subtitle = { Text(text = stringResource(id = R.string.settings_bios_ps2_description)) },
+                onClick = { folderPicker.launch(null) },
+            )
+        }
         if (uiState.detected.isNotEmpty()) {
             DetectedEntries(uiState.detected)
         }
