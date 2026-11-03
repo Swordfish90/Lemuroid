@@ -137,7 +137,20 @@ class LemuroidLibrary(
     ) {
         val updatedGames =
             entries
-                .map { it.game.copy(lastIndexedAt = startedAtMs) }
+                .map { entry ->
+                    val path = entry.file.primaryFile.path.orEmpty()
+                    val isPs2Folder = path.contains("ps2", ignoreCase = true)
+                    val correctedSystemId =
+                        if (isPs2Folder && entry.game.systemId == SystemID.PSX.dbname) {
+                            SystemID.PS2.dbname
+                        } else {
+                            entry.game.systemId
+                        }
+                    entry.game.copy(
+                        systemId = correctedSystemId,
+                        lastIndexedAt = startedAtMs,
+                    )
+                }
 
         updatedGames
             .forEach { Timber.d("Updating game: $it") }
