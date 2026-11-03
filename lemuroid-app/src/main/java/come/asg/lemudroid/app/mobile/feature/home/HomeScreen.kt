@@ -95,6 +95,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 import kotlin.math.min
+import java.util.Date
 
 @Composable
 fun HomeScreen(
@@ -111,7 +112,9 @@ fun HomeScreen(
     val applicationContext = context.applicationContext
 
     ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_RESUME) viewModel.updatePermissions(applicationContext)
+        if (event == Lifecycle.Event.ON_RESUME) {
+            viewModel.updatePermissions(applicationContext)
+        }
     }
 
     val permissionsLauncher =
@@ -164,6 +167,11 @@ private fun HomeScreen(
     val selectedGame = games.firstOrNull { it.id == selectedGameId } ?: games.firstOrNull()
     val context = LocalContext.current
     var statsGame by remember { mutableStateOf<Game?>(null) }
+    var statsRefreshToken by remember { mutableStateOf(0) }
+    val openStats = { game: Game ->
+        statsGame = game
+        statsRefreshToken++
+    }
     var artworkColor by remember(selectedGame?.id) { mutableStateOf(fallbackArtworkColor(selectedGame)) }
     val animatedArtworkColor by animateColorAsState(
         targetValue = artworkColor,
@@ -229,7 +237,7 @@ private fun HomeScreen(
             }
             Surface(shape = CircleShape, color = Color(0xFF8AEBDD), modifier = Modifier.padding(start = 4.dp)) {
                 IconButton(onClick = onHelpPressed, modifier = Modifier.size(44.dp)) {
-                    Icon(Icons.Filled.Info, contentDescription = "Help and app information", tint = Color(0xFF10131A))
+                    Icon(Icons.Filled.Info, contentDescription = "Updates", tint = Color(0xFF10131A))
                 }
             }
         }
@@ -313,7 +321,7 @@ private fun HomeScreen(
                             color = Color.Black.copy(alpha = 0.52f),
                         ) {
                             IconButton(
-                                onClick = { statsGame = game },
+                                onClick = { openStats(game) },
                                 modifier = Modifier.size(38.dp),
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                             ) {
@@ -400,14 +408,21 @@ private fun HomeScreen(
             }
         }
 
-        HomeRow("Recently played", state.recentGames, onGameClicked, onGameLongClick) { statsGame = it }
-        HomeRow("Favorites", state.favoritesGames, onGameClicked, onGameLongClick) { statsGame = it }
-        HomeRow("Discover", state.discoveryGames, onGameClicked, onGameLongClick) { statsGame = it }
+        HomeRow("Recently played", state.recentGames, onGameClicked, onGameLongClick) { openStats(it) }
+        HomeRow("Favorites", state.favoritesGames, onGameClicked, onGameLongClick) { openStats(it) }
+        HomeRow("Discover", state.discoveryGames, onGameClicked, onGameLongClick) { openStats(it) }
         Spacer(Modifier.height(8.dp))
         }
         statsGame?.let { game ->
-            val totalMs = GamePlaytimeStats.totalMs(context, game.id)
-            val totalMinutes = totalMs / 60_000L
+            // The token changes whenever the dialog opens, forcing a fresh read of
+            // SharedPreferences after a game session has been recorded.
+            val playStats = remember(game.id, statsRefreshToken) {
+                val totalMs = GamePlaytimeStats.totalMs(context, game.id)
+                val recordedLastPlayed = GamePlaytimeStats.lastPlayed(context, game.id)
+                val lastPlayed = recordedLastPlayed.takeIf { it > 0L }?.let(::Date) ?: game.lastPlayedAt
+                Triple(totalMs, GamePlaytimeStats.sessions(context, game.id), lastPlayed)
+            }
+            val totalMinutes = playStats.first / 60_000L
             val played = if (totalMinutes >= 60) "${totalMinutes / 60} hr ${totalMinutes % 60} min" else "$totalMinutes min"
             AlertDialog(
                 onDismissRequest = { statsGame = null },
@@ -415,8 +430,8 @@ private fun HomeScreen(
                 text = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text("Total playtime  ·  $played")
-                        Text("Sessions  ·  ${GamePlaytimeStats.sessions(context, game.id)}")
-                        Text(if (game.lastPlayedAt != null) "Last opened  ·  ${android.text.format.DateFormat.getMediumDateFormat(context).format(game.lastPlayedAt)}" else "Not played yet")
+                        Text("Sessions  ·  ${playStats.second}")
+                        Text(if (playStats.third != null) "Last opened  ·  ${android.text.format.DateFormat.getMediumDateFormat(context).format(playStats.third)}" else "Not played yet")
                     }
                 },
                 confirmButton = { TextButton(onClick = { statsGame = null }) { Text("Done") } },

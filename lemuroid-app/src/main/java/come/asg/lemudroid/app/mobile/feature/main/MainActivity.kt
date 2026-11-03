@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.net.Uri
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -90,6 +92,8 @@ import de.charlex.compose.material3.HtmlText
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import javax.inject.Inject
+
+private const val OMINOY_GITHUB_URL = "https://github.com/Amarthya-sg/OMINOY"
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : RetrogradeComponentActivity(), BusyActivity {
@@ -436,20 +440,26 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 val message =
                     remember {
                         val systemFolders =
-                            SystemID.values()
-                                .joinToString(", ") { "<i>${it.dbname}</i>" }
+                            "<i>Game Boy (GB)</i>, <i>Game Boy Color (GBC)</i>, and <i>Game Boy Advance (GBA)</i>"
 
                         getString(R.string.lemuroid_help_content)
                             .replace("\$SYSTEMS", systemFolders)
                     }
 
                 AlertDialog(
-                    title = { Text(text = "How to use OMINOY") },
+                    title = { Text(text = "Help & updates") },
                     text = { HtmlText(text = message) },
                     onDismissRequest = { infoDialogDisplayed.value = false },
                     confirmButton = {
-                        TextButton(onClick = { infoDialogDisplayed.value = false }) {
-                            Text(text = getString(android.R.string.ok))
+                        Row {
+                            TextButton(onClick = {
+                                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(OMINOY_GITHUB_URL)))
+                            }) {
+                                Text(text = "GitHub updates")
+                            }
+                            TextButton(onClick = { infoDialogDisplayed.value = false }) {
+                                Text(text = getString(android.R.string.ok))
+                            }
                         }
                     },
                     shape = RoundedCornerShape(28.dp),
