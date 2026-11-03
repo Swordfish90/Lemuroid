@@ -51,6 +51,8 @@ import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsScreen
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
 import com.swordfish.lemuroid.app.shared.GameInteractor
+import com.swordfish.lemuroid.app.shared.gamecrash.GameCrashActivity
+import com.swordfish.lemuroid.app.shared.gamecrash.GameProcessCrashHistory
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
@@ -123,6 +125,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         setContent {
             val navController = rememberNavController()
             MainScreen(navController)
+        }
+
+        GameProcessCrashHistory.consumePendingDetail(this)?.let { detail ->
+            GameCrashActivity.launch(
+                this,
+                "O Android detectou que o processo do emulador foi encerrado inesperadamente. Os detalhes da falha anterior estão abaixo.",
+                detail,
+            )
         }
     }
 
