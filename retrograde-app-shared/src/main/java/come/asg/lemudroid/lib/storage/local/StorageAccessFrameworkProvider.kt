@@ -102,6 +102,7 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
                 val documentSize = it.getLong(2)
                 val mimeType = it.getString(3)
 
+                if (documentName.isNullOrBlank() || documentName.startsWith(".")) continue
                 if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
                     resultDirectories.add(documentId)
                 } else {
@@ -156,7 +157,7 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
         game: Game,
         originalDocument: DocumentFile,
     ): RomFiles {
-        val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
+        val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game, sourceMetadata(originalDocument))
         if (cacheFile.exists()) {
             return RomFiles.Standard(listOf(cacheFile))
         }
@@ -217,7 +218,7 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
         game: Game,
         originalDocument: DocumentFile,
     ): File {
-        val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
+        val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game, sourceMetadata(originalDocument))
 
         if (cacheFile.exists()) {
             return cacheFile
@@ -231,6 +232,8 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
     override fun getInputStream(uri: Uri): InputStream? {
         return context.contentResolver.openInputStream(uri)
     }
+
+    private fun sourceMetadata(document: DocumentFile): String = "${document.length()}:${document.lastModified()}"
 
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"

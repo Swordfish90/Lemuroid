@@ -56,7 +56,11 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
-            val gameId = intent.data?.pathSegments?.let { it[it.size - 1].toInt() }!!
+            val gameId = parseGameId(intent)
+            if (gameId == null) {
+                displayErrorMessage()
+                return
+            }
 
             lifecycleScope.launch {
                 loadingState.value = true
@@ -72,6 +76,14 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
                 initializeLoadingFlow(loadingState)
             }
         }
+    }
+
+    private fun parseGameId(launchIntent: Intent): Int? {
+        val uri = launchIntent.data ?: return null
+        if (launchIntent.action != Intent.ACTION_VIEW || uri.scheme != "lemuroid" || uri.host != packageName) return null
+        val segments = uri.pathSegments
+        if (segments.size != 3 || segments[0] != "play-game" || segments[1] != "id") return null
+        return segments[2].toIntOrNull()?.takeIf { it > 0 }
     }
 
     private suspend fun initializeLoadingFlow(loadingSubject: MutableStateFlow<Boolean>) {

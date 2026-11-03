@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
-import come.asg.lemudroid.app.shared.library.LibraryIndexScheduler
 import come.asg.lemudroid.lib.core.CoresSelection
 import come.asg.lemudroid.lib.library.GameSystem
 
@@ -40,11 +39,6 @@ class CoresSelectionPreferences {
             system.systemCoreConfigs
                 .map { it.coreID.coreName }
                 .toTypedArray()
-
-        preference.setOnPreferenceChangeListener { _, _ ->
-            LibraryIndexScheduler.scheduleCoreUpdate(context.applicationContext)
-            true
-        }
 
         return preference
     }

@@ -3,13 +3,10 @@ package come.asg.lemudroid.app.mobile.feature.settings.inputdevices
 import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -33,8 +30,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -49,22 +44,21 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import come.asg.lemudroid.app.mobile.feature.game.GameScreenLayout
-import come.asg.lemudroid.app.mobile.feature.game.PadContainer
-import come.asg.lemudroid.app.mobile.feature.game.TouchControlEditorPanel
-import come.asg.lemudroid.app.utils.android.settings.rememberTouchButtonAppearanceTheme
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.settings.LocalTouchControlEditor
 import com.swordfish.touchinput.radial.settings.LocalTouchControllerSettings
 import com.swordfish.touchinput.radial.settings.TouchControlEditorState
 import com.swordfish.touchinput.radial.settings.TouchControllerID
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import come.asg.lemudroid.app.mobile.feature.game.GameScreenLayout
+import come.asg.lemudroid.app.mobile.feature.game.PadContainer
+import come.asg.lemudroid.app.mobile.feature.game.TouchControlEditorPanel
+import come.asg.lemudroid.app.utils.android.settings.rememberTouchButtonAppearanceTheme
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
 import gg.padkit.inputevents.InputEvent
@@ -79,6 +73,7 @@ import kotlinx.coroutines.launch
 fun TouchLayoutEditorScreen(
     modifier: Modifier = Modifier,
     settingsManager: TouchControllerSettingsManager,
+    viewportAlignment: String = "center",
     allowTouchOverlay: (TouchControllerID) -> Boolean = { true },
     initialControllerId: TouchControllerID? = null,
     onClose: (() -> Unit)? = null,
@@ -87,14 +82,15 @@ fun TouchLayoutEditorScreen(
     // Same orientation rule as the game (width > height), so both always pick the same layout bucket,
     // including split-screen and foldables.
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
-            TouchLayoutEditorContent(
-                isLandscape = constraints.maxWidth > constraints.maxHeight,
-                settingsManager = settingsManager,
-                allowTouchOverlay = allowTouchOverlay,
-                initialControllerId = initialControllerId,
-                onClose = onClose,
-                onMenuPressed = onMenuPressed,
-            )
+        TouchLayoutEditorContent(
+            isLandscape = constraints.maxWidth > constraints.maxHeight,
+            settingsManager = settingsManager,
+            viewportAlignment = viewportAlignment,
+            allowTouchOverlay = allowTouchOverlay,
+            initialControllerId = initialControllerId,
+            onClose = onClose,
+            onMenuPressed = onMenuPressed,
+        )
     }
 }
 
@@ -102,6 +98,7 @@ fun TouchLayoutEditorScreen(
 private fun TouchLayoutEditorContent(
     isLandscape: Boolean,
     settingsManager: TouchControllerSettingsManager,
+    viewportAlignment: String,
     allowTouchOverlay: (TouchControllerID) -> Boolean,
     initialControllerId: TouchControllerID?,
     onClose: (() -> Unit)?,
@@ -196,7 +193,9 @@ private fun TouchLayoutEditorContent(
                                     .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
                         )
                         if (!isLandscape) {
-                            PadContainer(modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_BOTTOM_CONTAINER))
+                            Box(
+                                modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_BOTTOM_CONTAINER),
+                            )
                         } else if (!overlay) {
                             PadContainer(modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_LEFT_CONTAINER))
                             PadContainer(modifier = Modifier.layoutId(GameScreenLayout.CONSTRAINTS_RIGHT_CONTAINER))
@@ -232,14 +231,17 @@ private fun TouchLayoutEditorContent(
             ) {
                 val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
                 IconButton(onClick = { onClose?.invoke() ?: backDispatcher?.onBackPressed() }) {
-                    Icon(Icons.Filled.Close, contentDescription = "Close editor")
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_close),
+                    )
                 }
                 Box {
                     TextButton(onClick = { layoutMenuExpanded = true }) {
                         Text(controllerId.displayLabel(), maxLines = 1)
                     }
                     DropdownMenu(expanded = layoutMenuExpanded, onDismissRequest = { layoutMenuExpanded = false }) {
-                        TouchControllerID.values().forEach { item ->
+                        listOf(TouchControllerID.GB, TouchControllerID.GBC, TouchControllerID.GBA).forEach { item ->
                             DropdownMenuItem(
                                 text = { Text(item.displayLabel()) },
                                 onClick = {
@@ -251,10 +253,16 @@ private fun TouchLayoutEditorContent(
                     }
                 }
                 IconButton(onClick = { confirmReset = true }) {
-                    Icon(Icons.Filled.Refresh, contentDescription = "Reset layout")
+                    Icon(
+                        Icons.Filled.Refresh,
+                        contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_reset_layout),
+                    )
                 }
                 IconButton(onClick = { persist() }) {
-                    Icon(Icons.Filled.Save, contentDescription = "Save layout")
+                    Icon(
+                        Icons.Filled.Save,
+                        contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_save_layout),
+                    )
                 }
             }
         }
@@ -267,7 +275,7 @@ private fun TouchLayoutEditorContent(
                         .padding(top = 68.dp),
             ) {
                 Text(
-                    "Tap to select · drag to move",
+                    stringResource(come.asg.lemudroid.R.string.touch_editor_select_hint),
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     style = MaterialTheme.typography.labelMedium,
                 )
@@ -279,7 +287,9 @@ private fun TouchLayoutEditorContent(
             Box(
                 modifier =
                     Modifier.align(Alignment.TopCenter).fillMaxWidth().widthIn(max = 760.dp)
-                        .windowInsetsPadding(safeDrawingInsets.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
+                        .windowInsetsPadding(
+                            safeDrawingInsets.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+                        )
                         .padding(top = 64.dp),
             ) {
                 TouchControlEditorPanel(
@@ -299,8 +309,22 @@ private fun TouchLayoutEditorContent(
         if (confirmReset) {
             AlertDialog(
                 onDismissRequest = { confirmReset = false },
-                title = { Text("Reset ${orientation.name.lowercase()} layout?") },
-                text = { Text("This resets only this console's ${orientation.name.lowercase()} touch layout.") },
+                title = {
+                    Text(
+                        stringResource(
+                            come.asg.lemudroid.R.string.touch_editor_reset_orientation_title,
+                            orientation.name.lowercase(),
+                        ),
+                    )
+                },
+                text = {
+                    Text(
+                        stringResource(
+                            come.asg.lemudroid.R.string.touch_editor_reset_orientation_message,
+                            orientation.name.lowercase(),
+                        ),
+                    )
+                },
                 confirmButton = {
                     TextButton(
                         onClick = {
@@ -308,39 +332,47 @@ private fun TouchLayoutEditorContent(
                             selectedControlKey = null
                             confirmReset = false
                         },
-                    ) { Text("Reset") }
+                    ) { Text(stringResource(come.asg.lemudroid.R.string.touch_editor_reset)) }
                 },
-                dismissButton = { TextButton(onClick = { confirmReset = false }) { Text("Cancel") } },
+                dismissButton = {
+                    TextButton(onClick = {
+                        confirmReset = false
+                    }) { Text(stringResource(come.asg.lemudroid.R.string.touch_editor_cancel)) }
+                },
             )
         }
     }
 }
 
+@Composable
 private fun TouchControllerID.displayLabel(): String =
-    when (this) {
-        TouchControllerID.GB -> "Game Boy"
-        TouchControllerID.NES -> "NES"
-        TouchControllerID.DESMUME -> "Nintendo DS"
-        TouchControllerID.MELONDS -> "Nintendo DS (melonDS)"
-        TouchControllerID.PSX -> "PlayStation"
-        TouchControllerID.PSX_DUALSHOCK -> "PlayStation (DualShock)"
-        TouchControllerID.N64 -> "Nintendo 64"
-        TouchControllerID.PSP -> "PSP"
-        TouchControllerID.SNES -> "SNES"
-        TouchControllerID.GBA -> "Game Boy Advance"
-        TouchControllerID.GENESIS_3 -> "Genesis (3-button)"
-        TouchControllerID.GENESIS_6 -> "Genesis (6-button)"
-        TouchControllerID.ATARI2600 -> "Atari 2600"
-        TouchControllerID.ATARI7800 -> "Atari 7800"
-        TouchControllerID.SMS -> "Master System"
-        TouchControllerID.GG -> "Game Gear"
-        TouchControllerID.ARCADE_4 -> "Arcade (4-button)"
-        TouchControllerID.ARCADE_6 -> "Arcade (6-button)"
-        TouchControllerID.LYNX -> "Atari Lynx"
-        TouchControllerID.PCE -> "PC Engine"
-        TouchControllerID.NGP -> "Neo Geo Pocket"
-        TouchControllerID.DOS -> "DOS"
-        TouchControllerID.WS_LANDSCAPE -> "WonderSwan (landscape)"
-        TouchControllerID.WS_PORTRAIT -> "WonderSwan (portrait)"
-        TouchControllerID.NINTENDO_3DS -> "Nintendo 3DS"
-    }
+    stringResource(
+        when (this) {
+            TouchControllerID.GB -> come.asg.lemudroid.R.string.touch_editor_game_boy
+            TouchControllerID.GBC -> come.asg.lemudroid.R.string.touch_editor_game_boy_color
+            TouchControllerID.NES -> come.asg.lemudroid.R.string.touch_editor_nes
+            TouchControllerID.DESMUME -> come.asg.lemudroid.R.string.touch_editor_nintendo_ds
+            TouchControllerID.MELONDS -> come.asg.lemudroid.R.string.touch_editor_nintendo_ds_melonds
+            TouchControllerID.PSX -> come.asg.lemudroid.R.string.touch_editor_playstation
+            TouchControllerID.PSX_DUALSHOCK -> come.asg.lemudroid.R.string.touch_editor_playstation_dualshock
+            TouchControllerID.N64 -> come.asg.lemudroid.R.string.touch_editor_nintendo_64
+            TouchControllerID.PSP -> come.asg.lemudroid.R.string.touch_editor_psp
+            TouchControllerID.SNES -> come.asg.lemudroid.R.string.touch_editor_snes
+            TouchControllerID.GBA -> come.asg.lemudroid.R.string.touch_editor_game_boy_advance
+            TouchControllerID.GENESIS_3 -> come.asg.lemudroid.R.string.touch_editor_genesis_3
+            TouchControllerID.GENESIS_6 -> come.asg.lemudroid.R.string.touch_editor_genesis_6
+            TouchControllerID.ATARI2600 -> come.asg.lemudroid.R.string.touch_editor_atari_2600
+            TouchControllerID.ATARI7800 -> come.asg.lemudroid.R.string.touch_editor_atari_7800
+            TouchControllerID.SMS -> come.asg.lemudroid.R.string.touch_editor_master_system
+            TouchControllerID.GG -> come.asg.lemudroid.R.string.touch_editor_game_gear
+            TouchControllerID.ARCADE_4 -> come.asg.lemudroid.R.string.touch_editor_arcade_4
+            TouchControllerID.ARCADE_6 -> come.asg.lemudroid.R.string.touch_editor_arcade_6
+            TouchControllerID.LYNX -> come.asg.lemudroid.R.string.touch_editor_atari_lynx
+            TouchControllerID.PCE -> come.asg.lemudroid.R.string.touch_editor_pc_engine
+            TouchControllerID.NGP -> come.asg.lemudroid.R.string.touch_editor_neo_geo_pocket
+            TouchControllerID.DOS -> come.asg.lemudroid.R.string.touch_editor_dos
+            TouchControllerID.WS_LANDSCAPE -> come.asg.lemudroid.R.string.touch_editor_wonderswan_landscape
+            TouchControllerID.WS_PORTRAIT -> come.asg.lemudroid.R.string.touch_editor_wonderswan_portrait
+            TouchControllerID.NINTENDO_3DS -> come.asg.lemudroid.R.string.touch_editor_nintendo_3ds
+        },
+    )

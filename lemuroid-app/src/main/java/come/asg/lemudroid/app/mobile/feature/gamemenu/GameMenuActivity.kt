@@ -237,6 +237,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                         GameCheatsScreen(
                             gameId = gameMenuRequest.game.id,
                             gameName = gameMenuRequest.game.displayName(),
+                            systemId = gameMenuRequest.game.systemId,
                             gameCheatDao = retrogradeDb.gameCheatDao(),
                             modifier = Modifier.fillMaxSize(),
                             onCheatsChanged = { cheatsChanged = true },

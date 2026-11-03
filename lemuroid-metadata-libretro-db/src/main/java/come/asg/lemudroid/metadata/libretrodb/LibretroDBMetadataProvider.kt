@@ -49,7 +49,9 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     }
 
     private fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
-        val system = GameSystem.findById(rom.system!!)
+        val systemId = rom.system ?: throw IllegalArgumentException("Metadata row has no system")
+        val system = GameSystem.findByIdOrNull(systemId)
+            ?: throw IllegalArgumentException("Metadata row has unsupported system: $systemId")
         return GameMetadata(
             name = rom.name,
             romName = rom.romName,
@@ -64,7 +66,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         file: StorageFile,
     ): GameMetadata? {
         return db.gameDao().findByFileName(file.name)
-            .filterNullable { extractGameSystem(it).scanOptions.scanByFilename }
+            .filterNullable { extractGameSystem(it)?.scanOptions?.scanByFilename == true }
             ?.let { convertToGameMetadata(it) }
     }
 
@@ -73,8 +75,8 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         file: StorageFile,
     ): GameMetadata? {
         return db.gameDao().findByFileName(file.name)
-            .filterNullable { extractGameSystem(it).scanOptions.scanByPathAndFilename }
-            .filterNullable { parentContainsSystem(file.path, extractGameSystem(it).id.dbname) }
+            .filterNullable { extractGameSystem(it)?.scanOptions?.scanByPathAndFilename == true }
+            .filterNullable { extractGameSystem(it)?.let { system -> parentContainsSystem(file.path, system.id.dbname) } == true }
             ?.let { convertToGameMetadata(it) }
     }
 
@@ -82,7 +84,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         val system =
             sortedSystemIds
                 .filter { parentContainsSystem(file.path, it) }
-                .map { GameSystem.findById(it) }
+                .mapNotNull { GameSystem.findByIdOrNull(it) }
                 .filter { it.scanOptions.scanByPathAndSupportedExtensions }
                 .firstOrNull { it.supportedExtensions.contains(file.extension) }
 
@@ -155,8 +157,8 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         return result
     }
 
-    private fun extractGameSystem(rom: LibretroRom): GameSystem {
-        return GameSystem.findById(rom.system!!)
+    private fun extractGameSystem(rom: LibretroRom): GameSystem? {
+        return rom.system?.let(GameSystem::findByIdOrNull)
     }
 
     private fun computeCoverUrl(

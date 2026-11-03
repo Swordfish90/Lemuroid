@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 
 class SaveSyncManagerImpl(
@@ -219,13 +220,9 @@ class SaveSyncManagerImpl(
         drive: Drive,
     ) {
         Timber.i("Remote only file detected $remoteFile")
-        val outputFile =
-            File(
-                localParentFolder,
-                remoteFile.appProperties[GDRIVE_PROPERTY_LOCAL_PATH]!!,
-            ).apply {
-                parentFile?.mkdirs()
-            }
+        val relativePath = remoteFile.appProperties[GDRIVE_PROPERTY_LOCAL_PATH]
+            ?: throw IOException("Google Drive file has no local path")
+        val outputFile = resolveSafeRelativeFile(localParentFolder, relativePath).apply { parentFile?.mkdirs() }
         downloadToLocal(drive, remoteFile, outputFile)
     }
 
@@ -245,10 +242,32 @@ class SaveSyncManagerImpl(
     ) {
         if (remoteFile.size == 0) return
         Timber.i("Downloading file to $localFile")
-        drive.files()
-            .get(remoteFile.id)
-            .executeMediaAndDownloadTo(localFile.outputStream())
-        localFile.setLastModified(remoteFile.modifiedTime.value)
+        val parent = localFile.parentFile ?: throw IOException("Download target has no parent")
+        parent.mkdirs()
+        val temporaryFile = File.createTempFile(".${localFile.name}.", ".download", parent)
+        try {
+            temporaryFile.outputStream().use { output ->
+                drive.files().get(remoteFile.id).executeMediaAndDownloadTo(output)
+            }
+            if (!temporaryFile.renameTo(localFile)) {
+                throw IOException("Unable to atomically install downloaded file: $localFile")
+            }
+            localFile.setLastModified(remoteFile.modifiedTime.value)
+        } finally {
+            temporaryFile.delete()
+        }
+    }
+
+    private fun resolveSafeRelativeFile(parent: File, relativePath: String): File {
+        if (relativePath.isBlank() || relativePath.startsWith('/') || relativePath.startsWith('\\')) {
+            throw IOException("Invalid Google Drive relative path")
+        }
+        val root = parent.canonicalFile
+        val candidate = File(root, relativePath).canonicalFile
+        if (candidate != root && !candidate.path.startsWith(root.path + File.separator)) {
+            throw IOException("Google Drive path traversal rejected")
+        }
+        return candidate
     }
 
     private fun buildRemoteFileMap(

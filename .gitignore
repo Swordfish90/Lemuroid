@@ -18,3 +18,10 @@ project.properties
 local.properties
 release.jks
 keystore.properties
+
+# Local signing material and generated outputs
+*.jks
+*.keystore
+keystore.properties
+**/build/
+.gradle/

@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Havaittu</string>
     <string name="settings_bios_category_not_detected">Tuettu</string>
     <string name="settings_title_reset_settings">Tehdasasetusten palautus</string>
-    <string name="settings_description_reset_settings">Nollaa Lemuroid tehdasasetuksiinsa</string>
+    <string name="settings_description_reset_settings">Nollaa OMINOY tehdasasetuksiinsa</string>
     <string name="settings_title_advanced_settings">Edistyneet asetukset</string>
     <string name="settings_description_advanced_settings">Näytä lisäasetukset</string>
     <string name="settings_title_low_latency_audio">Suosi alhaisen latenssin ääntä</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Laitteen rumble</string>
     <string name="settings_description_enable_device_rumble">Kun ohjainta ei ole kytketty, värise laite sen sijaan</string>
     <string name="reset_settings_warning_message_title">Oletko varma?</string>
-    <string name="reset_settings_warning_message_description">Tämä palauttaa Lemuroidin tehdasasetuksiinsa. Tallennukset ja valtiot säilyvät.</string>
+    <string name="reset_settings_warning_message_description">Tämä palauttaa OMINOYin tehdasasetuksiinsa. Tallennukset ja valtiot säilyvät.</string>
     <string name="settings_title_save_sync">Pilvi tallentaa</string>
     <string name="settings_description_save_sync">Varmuuskopioi ja synkronoi tallenteet pilvessä</string>
     <string name="settings_save_sync_refresh">Manuaalinen Synkronointi</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Käynnistä Uudelleen</string>
     <string name="game_context_menu_create_shortcut">Kiinnitä käynnistettäväksi</string>
     <string name="home_notification_title">Ota ilmoitukset käyttöön</string>
-    <string name="home_notification_message">Lemuroid käyttää ilmoituksia ilmoittaakseen sinulle, milloin peli tai operaatio on käynnissä taustalla.</string>
+    <string name="home_notification_message">OMINOY käyttää ilmoituksia ilmoittaakseen sinulle, milloin peli tai operaatio on käynnissä taustalla.</string>
     <string name="home_notification_action">Aktivoi</string>
     <string name="home_microphone_title">Ota mikrofoni käyttöön</string>
     <string name="home_microphone_message">Nintendo DS -pelit voivat käyttää mikrofonia tarjotakseen joitakin toimintoja.</string>
     <string name="home_microphone_action">Aktivoi</string>
     <string name="home_empty_title">Valitse ROMien hakemisto</string>
-    <string name="home_empty_message">Lemuroid tarvitsee skannata ROM -tiedostoja sisältävän hakemiston.\nTämä saattaa kestää jopa muutaman minuutin.</string>
+    <string name="home_empty_message">OMINOY tarvitsee skannata ROM -tiedostoja sisältävän hakemiston.\nTämä saattaa kestää jopa muutaman minuutin.</string>
     <string name="home_empty_action">Valitse Hakemisto</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME eläkkeellä pian</string>
     <string name="home_notification_desmume_deprecated_message">Tallenna pelissä vaihtaaksesi melonDS:ään, ja edistymisesi siirtyy eteenpäin. Tallenna valtiot pysyvät sidottuna DeSmuMEen.</string>
@@ -122,13 +122,13 @@
     <string name="game_running_notification_title_alternative">Peli on käynnissä</string>
     <string name="game_running_notification_message">Varmista, että tallennat edistymisesi</string>
     <string name="game_loader_error_gl_incompatible">Tämä ydin vaatii OpenGL ES -version, jota laitteesi ei tue.</string>
-    <string name="game_loader_error_load_game">Jotain pahaa tapahtui ladattaessa peliäsi. Varmista, että ROM on Lemuroidin tukema ja käynnistä pelisi uudelleen.</string>
+    <string name="game_loader_error_load_game">Jotain pahaa tapahtui ladattaessa peliäsi. Varmista, että ROM on OMINOYin tukema ja käynnistä pelisi uudelleen.</string>
     <string name="game_loader_error_save">Jotain pahaa tapahtui tallennustiedostollasi. Jos ongelma jatkuu, yritä poistaa automaattinen tallennus käytöstä.</string>
     <string name="game_loader_error_unsupported_architecture">Laite ei tue tätä ydintä.</string>
     <string name="game_loader_error_generic">Jotain pahaa tapahtui. Kokeile seuraavia:\n
         \n\u2022 Poista automaattinen tallennus ja käynnistä peli
         \n\u2022 Mene Android-asetuksiin ja tyhjennä sovelluksen välimuisti
-        \n\u2022 Mene Lemuroidin asetuksiin ja suorita tehdaspalautus
+        \n\u2022 Mene OMINOYin asetuksiin ja suorita tehdaspalautus
         \n\nJos mikään yllämainituista ei toimi, saattaa olla mahdollista, että tämä laite ei tue tätä peliä/ydintä.
     </string>
     <string name="game_loader_error_missing_bios">Näyttää siltä, että sinulta puuttuu tarvittava BIOS, laita ne ROM-hakemistoosi ja rescan. Vaaditut tiedostot: %1$s</string>
@@ -158,10 +158,10 @@
     <string name="lemuroid_crash_disclamer">Näyttää siltä, että Libretro ydin on kokenut odottamattoman ongelman. Jos se on pysyvä, kokeile seuraavasti:\n
         \n\u2022 Poista automaattinen tallennus ja käynnistä peli
         \n\u2022 Mene Android-asetuksiin ja tyhjennä sovelluksen välimuisti
-        \n\u2022 Mene Lemuroidin asetuksiin ja suorita tehdas nollaus
+        \n\u2022 Mene OMINOYin asetuksiin ja suorita tehdas nollaus
         \n\n Jos mikään yllä olevista teoksista ei toimi, saattaa olla mahdollista, että tämä laite ei tue tätä peliä/ydintä.
     </string>
-    <string name="error_message_incompatible_state">Tallennustila ei ole yhteensopiva nykyisen ydinversion kanssa. Lataa uusin pelin sisäinen tallennus tai käytä aiempaa Lemuroid-versiota.</string>
+    <string name="error_message_incompatible_state">Tallennustila ei ole yhteensopiva nykyisen ydinversion kanssa. Lataa uusin pelin sisäinen tallennus tai käytä aiempaa OMINOY-versiota.</string>
     <string name="shader_filter_names_auto">Automaattinen</string>
     <string name="shader_filter_names_sharp">Terävä</string>
     <string name="shader_filter_names_smooth">Pehmeä</string>

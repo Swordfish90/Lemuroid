@@ -51,8 +51,8 @@ import come.asg.lemudroid.lib.core.CoresSelection
 import come.asg.lemudroid.lib.game.GameLoader
 import come.asg.lemudroid.lib.injection.PerActivity
 import come.asg.lemudroid.lib.injection.PerApp
-import come.asg.lemudroid.lib.library.covers.CustomCoverManager
 import come.asg.lemudroid.lib.library.LemuroidLibrary
+import come.asg.lemudroid.lib.library.covers.CustomCoverManager
 import come.asg.lemudroid.lib.library.db.RetrogradeDatabase
 import come.asg.lemudroid.lib.library.db.dao.GameSearchDao
 import come.asg.lemudroid.lib.library.db.dao.Migrations
@@ -131,7 +131,6 @@ abstract class LemuroidApplicationModule {
 
     @Module
     companion object {
-
         @Provides
         @PerApp
         @JvmStatic
@@ -147,14 +146,15 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun retrogradeDb(app: LemuroidApplication) =
             Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
+                .enableMultiInstanceInvalidation()
                 .addCallback(GameSearchDao.CALLBACK)
                 .addMigrations(
                     GameSearchDao.MIGRATION,
                     Migrations.VERSION_8_9,
                     Migrations.VERSION_9_10,
                     Migrations.VERSION_10_11,
+                    Migrations.VERSION_11_12,
                 )
-                .fallbackToDestructiveMigration()
                 .build()
 
         @Provides
@@ -276,6 +276,7 @@ abstract class LemuroidApplicationModule {
             statesManager: StatesManager,
             savesManager: SavesManager,
             coreVariablesManager: CoreVariablesManager,
+            coreUpdater: CoreUpdater,
             retrogradeDatabase: RetrogradeDatabase,
             savesCoherencyEngine: SavesCoherencyEngine,
             directoriesManager: DirectoriesManager,
@@ -286,6 +287,7 @@ abstract class LemuroidApplicationModule {
             statesManager,
             savesManager,
             coreVariablesManager,
+            coreUpdater,
             retrogradeDatabase,
             savesCoherencyEngine,
             directoriesManager,

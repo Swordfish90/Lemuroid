@@ -30,13 +30,15 @@
     <application
         android:name="come.asg.lemudroid.app.LemuroidApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:banner="@mipmap/ic_banner"
-        android:icon="@mipmap/lemuroid_launcher"
+        android:icon="@mipmap/ominoy_launcher"
         android:isGame="true"
         android:label="@string/lemuroid_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/lemuroid_launcher_round"
+        android:roundIcon="@mipmap/ominoy_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/LemuroidMaterialTheme">
         <activity

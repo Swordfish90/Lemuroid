@@ -45,8 +45,11 @@ class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
         result.exceptionOrNull()?.let {
             Timber.e("Library indexing work terminated with an exception:", it)
         }
-
-        LibraryIndexScheduler.scheduleCoreUpdate(applicationContext)
+        if (result.isSuccess) {
+            // Dynamic/free builds download cores on demand. Start that work after
+            // indexing so the first game launch does not usually pay the download cost.
+            LibraryIndexScheduler.scheduleCoreUpdate(applicationContext)
+        }
 
         return Result.success()
     }

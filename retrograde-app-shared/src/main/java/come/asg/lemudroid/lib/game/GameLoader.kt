@@ -22,6 +22,7 @@ package come.asg.lemudroid.lib.game
 import android.content.Context
 import android.os.Build
 import come.asg.lemudroid.lib.bios.BiosManager
+import come.asg.lemudroid.lib.core.CoreUpdater
 import come.asg.lemudroid.lib.core.CoreVariable
 import come.asg.lemudroid.lib.core.CoreVariablesManager
 import come.asg.lemudroid.lib.library.CoreID
@@ -47,6 +48,7 @@ class GameLoader(
     private val statesManager: StatesManager,
     private val savesManager: SavesManager,
     private val coreVariablesManager: CoreVariablesManager,
+    private val coreUpdater: CoreUpdater,
     private val retrogradeDatabase: RetrogradeDatabase,
     private val savesCoherencyEngine: SavesCoherencyEngine,
     private val directoriesManager: DirectoriesManager,
@@ -72,16 +74,22 @@ class GameLoader(
             try {
                 emit(LoadingState.LoadingCore)
 
-                val system = GameSystem.findById(game.systemId)
+                val system =
+                    GameSystem.findByIdOrNull(game.systemId)
+                        ?: throw GameLoaderException(GameLoaderError.Generic)
 
                 if (!isArchitectureSupported(systemCoreConfig)) {
                     throw GameLoaderException(GameLoaderError.UnsupportedArchitecture)
                 }
 
+                // Dynamic/free builds do not package emulator binaries in the APK.
+                // Ensure the selected core is present before GameLoader searches app storage.
+                coreUpdater.downloadCores(appContext, listOf(systemCoreConfig.coreID))
+
                 val coreLibrary =
-                    runCatching {
-                        findLibrary(appContext, systemCoreConfig.coreID)!!.absolutePath
-                    }.getOrElse { throw GameLoaderException(GameLoaderError.LoadCore) }
+                    findLibrary(appContext, systemCoreConfig.coreID)
+                        ?.absolutePath
+                        ?: throw GameLoaderException(GameLoaderError.LoadCore)
 
                 emit(LoadingState.LoadingGame)
 
@@ -165,9 +173,26 @@ class GameLoader(
                 context.filesDir,
             )
 
-        return files
-            .flatMap { it.walkBottomUp() }
-            .firstOrNull { it.name == coreID.libretroFileName }
+        val candidates =
+            files
+                .asSequence()
+                .filter { it.exists() }
+                .flatMap { it.walkBottomUp() }
+                .filter { it.isFile && it.name == coreID.libretroFileName }
+                .toList()
+
+        return candidates.firstOrNull { it.canRead() && it.length() > 0L }
+            .also { library ->
+                if (library == null) {
+                    Timber.e(
+                        "Libretro core unavailable: name=%s, nativeLibraryDir=%s, filesDir=%s, abis=%s",
+                        coreID.libretroFileName,
+                        context.applicationInfo.nativeLibraryDir,
+                        context.filesDir,
+                        Build.SUPPORTED_ABIS.contentToString(),
+                    )
+                }
+            }
     }
 
     @Suppress("ArrayInDataClass")

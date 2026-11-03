@@ -2,6 +2,7 @@ package come.asg.lemudroid.app.mobile.feature.main
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -55,14 +56,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import come.asg.lemudroid.R
 import come.asg.lemudroid.app.mobile.shared.compose.ui.LemuroidGameTexts
 import come.asg.lemudroid.app.mobile.shared.compose.ui.LemuroidSmallGameImage
 import come.asg.lemudroid.lib.library.db.entity.Game
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -128,24 +127,21 @@ private fun ContextActionContent(
     onSetCustomCoverUri: (Game, String) -> Unit,
     onClearCustomCoverUri: (Game) -> Unit,
 ) {
-    val context = LocalContext.current
     var showCustomNameDialog by remember { mutableStateOf(false) }
+    var artworkToEdit by remember { mutableStateOf<Uri?>(null) }
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
+        contract = ActivityResultContracts.PickVisualMedia(),
     ) { uri: Uri? ->
         if (uri != null) {
-            try {
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION,
-                )
-            } catch (e: SecurityException) {
-                Timber.e(e, "Failed to persist read URI permission for custom cover")
-            }
-            onSetCustomCoverUri(selectedGame, uri.toString())
-            selectedGameState.value = null
+            artworkToEdit = uri
         }
+    }
+
+    fun launchImagePicker() {
+        imagePickerLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+        )
     }
 
     Column(
@@ -213,6 +209,15 @@ private fun ContextActionContent(
             )
         }
 
+        ContextActionEntry(
+            label = stringResource(
+                if (selectedGame.customName != null) R.string.game_context_menu_edit_custom_name
+                else R.string.game_context_menu_add_custom_name,
+            ),
+            icon = Icons.Default.Edit,
+            onClick = { showCustomNameDialog = true },
+        )
+
         if (selectedGame.customName != null) {
             ContextActionEntry(
                 label = stringResource(id = R.string.game_context_menu_remove_custom_name),
@@ -222,17 +227,14 @@ private fun ContextActionContent(
                     selectedGameState.value = null
                 },
             )
-        } else {
-            ContextActionEntry(
-                label = stringResource(id = R.string.game_context_menu_add_custom_name),
-                icon = Icons.Default.Edit,
-                onClick = {
-                    showCustomNameDialog = true
-                },
-            )
         }
 
         if (selectedGame.customCoverUri != null) {
+            ContextActionEntry(
+                label = stringResource(id = R.string.game_context_menu_change_custom_artwork),
+                icon = Icons.Default.Image,
+                onClick = { launchImagePicker() },
+            )
             ContextActionEntry(
                 label = stringResource(id = R.string.game_context_menu_remove_custom_artwork),
                 icon = Icons.Default.Clear,
@@ -245,16 +247,26 @@ private fun ContextActionContent(
             ContextActionEntry(
                 label = stringResource(id = R.string.game_context_menu_add_custom_artwork),
                 icon = Icons.Default.Image,
-                onClick = {
-                    imagePickerLauncher.launch("image/*")
-                },
+                onClick = { launchImagePicker() },
             )
         }
     }
 
+    artworkToEdit?.let { sourceUri ->
+        ArtworkEditorDialog(
+            sourceUri = sourceUri,
+            onDismiss = { artworkToEdit = null },
+            onArtworkReady = { editedUri ->
+                onSetCustomCoverUri(selectedGame, editedUri.toString())
+                artworkToEdit = null
+                selectedGameState.value = null
+            },
+        )
+    }
+
     if (showCustomNameDialog) {
         CustomNameDialog(
-            initialName = selectedGame.fileName,
+            initialName = selectedGame.customName ?: selectedGame.fileName,
             onDismiss = { showCustomNameDialog = false },
             onConfirm = { newName ->
                 showCustomNameDialog = false

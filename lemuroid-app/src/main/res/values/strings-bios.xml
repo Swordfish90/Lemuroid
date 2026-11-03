@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bios_settings_help">BIOS files are optional; missing or incorrect files do not prevent games from launching. Place BIOS files in the app-private files/system/ folder. mGBA uses a verified BIOS when “Use BIOS file if found” is enabled (on by default); skipping the BIOS intro also requires a BIOS. Detection requires the expected filename and MD5. A valid file found under another name is copied using its canonical filename.</string>
+    <string name="bios_status_detected">Detected</string>
+    <string name="bios_status_not_found">Not found</string>
+    <string name="bios_status_checksum_mismatch">Found, checksum does not match</string>
+</resources>

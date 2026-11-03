@@ -1,6 +1,7 @@
 package come.asg.lemudroid.app.mobile.feature.game
 
 import android.graphics.RectF
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,13 +13,14 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -43,49 +45,54 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Save
-import come.asg.lemudroid.app.shared.game.BaseGameScreenViewModel
-import come.asg.lemudroid.app.shared.game.viewmodel.GameViewModelTouchControls.Companion.MENU_LOADING_ANIMATION_MILLIS
-import come.asg.lemudroid.app.mobile.feature.settings.inputdevices.TouchLayoutEditorScreen
-import come.asg.lemudroid.app.shared.settings.HapticFeedbackMode
-import come.asg.lemudroid.app.utils.android.settings.rememberTouchButtonAppearanceTheme
-import come.asg.lemudroid.lib.controller.ControllerConfig
 import com.swordfish.touchinput.controller.R
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
-import com.swordfish.touchinput.radial.settings.LocalTouchControllerSettings
 import com.swordfish.touchinput.radial.settings.LocalTouchControlEditor
+import com.swordfish.touchinput.radial.settings.LocalTouchControllerSettings
 import com.swordfish.touchinput.radial.settings.TouchControlEditorState
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.ControlSettings
 import com.swordfish.touchinput.radial.settings.applyStickSensitivity
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.GlassSurface
 import com.swordfish.touchinput.radial.ui.LemuroidButtonPressFeedback
+import come.asg.lemudroid.app.mobile.feature.settings.inputdevices.TouchLayoutEditorScreen
+import come.asg.lemudroid.app.shared.game.BaseGameScreenViewModel
+import come.asg.lemudroid.app.shared.game.viewmodel.GameViewModelTouchControls.Companion.MENU_LOADING_ANIMATION_MILLIS
+import come.asg.lemudroid.app.shared.settings.HapticFeedbackMode
+import come.asg.lemudroid.app.utils.android.settings.rememberTouchButtonAppearanceTheme
+import come.asg.lemudroid.lib.preferences.SharedPreferencesHelper
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
+import gg.padkit.ids.Id
 import gg.padkit.inputevents.InputEvent
 import gg.padkit.inputstate.InputState
-import gg.padkit.ids.Id
 import kotlin.math.roundToInt
 
 @Composable
 fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
-    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+    val appContext = LocalContext.current
+    val viewportAlignment =
+        remember(appContext) {
+            SharedPreferencesHelper.getLegacySharedPreferences(appContext)
+                .getString("viewport_alignment", "center") ?: "center"
+        }
+    BoxWithConstraints(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
 
         LaunchedEffect(isLandscape) {
@@ -304,6 +311,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             TouchLayoutEditorScreen(
                 modifier = Modifier.fillMaxSize(),
                 settingsManager = viewModel.getTouchControllerSettingsManager(),
+                viewportAlignment = viewportAlignment,
                 initialControllerId = editControllerId.value,
                 allowTouchOverlay = { currentControllerConfig?.allowTouchOverlay ?: true },
                 onClose = { viewModel.showEditControls(false) },
@@ -385,76 +393,145 @@ internal fun TouchControlEditorPanel(
                 },
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = if (compactLandscape) 5.dp else 8.dp),
+                modifier =
+                    Modifier.fillMaxWidth().padding(
+                        horizontal = 12.dp,
+                        vertical = if (compactLandscape) 5.dp else 8.dp,
+                    ),
                 verticalArrangement = Arrangement.spacedBy(if (compactLandscape) 2.dp else 6.dp),
             ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = selectedName?.let { "Editing $it" } ?: "Touch layout editor",
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier =
-                        Modifier.weight(1f).pointerInput(Unit) {
-                            detectDragGestures { change, dragAmount ->
-                                change.consume()
-                                panelOffset += dragAmount
-                            }
-                        },
-                )
-                if (compactLandscape) {
-                    Text(if (canHide) "Visible" else "Always visible", fontSize = 11.sp)
-                    Switch(
-                        checked = selectedSettings?.visible ?: true,
-                        enabled = selectedSettings != null && canHide,
-                        onCheckedChange = { visible ->
-                            updateSelectedControl { it.copy(visible = visible) }
-                            onPersist()
-                        },
-                    )
-                }
-                IconButton(onClick = onPersist) {
-                    Icon(Icons.Filled.Save, contentDescription = "Save layout")
-                }
-            }
-            if (!compactLandscape) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Text(if (canHide) "Visible" else "Always visible", fontSize = 12.sp)
-                    Switch(
-                        checked = selectedSettings?.visible ?: true,
-                        enabled = selectedSettings != null && canHide,
-                        onCheckedChange = { visible ->
-                            updateSelectedControl { it.copy(visible = visible) }
-                            onPersist()
-                        },
+                    Text(
+                        text =
+                            selectedName?.let {
+                                stringResource(come.asg.lemudroid.R.string.touch_control_editing, localizedTouchControlName(it))
+                            } ?: stringResource(come.asg.lemudroid.R.string.touch_control_layout_editor),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier =
+                            Modifier.weight(1f).pointerInput(Unit) {
+                                detectDragGestures { change, dragAmount ->
+                                    change.consume()
+                                    panelOffset += dragAmount
+                                }
+                            },
                     )
+                    if (compactLandscape) {
+                        Text(
+                            stringResource(
+                                if (canHide) come.asg.lemudroid.R.string.touch_control_visible else come.asg.lemudroid.R.string.touch_control_always_visible,
+                            ),
+                            fontSize = 11.sp,
+                        )
+                        Switch(
+                            checked = selectedSettings?.visible ?: true,
+                            enabled = selectedSettings != null && canHide,
+                            onCheckedChange = { visible ->
+                                updateSelectedControl { it.copy(visible = visible) }
+                                onPersist()
+                            },
+                        )
+                    }
+                    IconButton(onClick = onPersist) {
+                        Icon(
+                            Icons.Filled.Save,
+                            contentDescription =
+                                stringResource(
+                                    come.asg.lemudroid.R.string.touch_editor_save_layout,
+                                ),
+                        )
+                    }
                 }
-            }
-            Text("Tap a control, then drag to move", fontSize = 10.sp)
+                if (!compactLandscape) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            stringResource(
+                                if (canHide) come.asg.lemudroid.R.string.touch_control_visible else come.asg.lemudroid.R.string.touch_control_always_visible,
+                            ),
+                            fontSize = 12.sp,
+                        )
+                        Switch(
+                            checked = selectedSettings?.visible ?: true,
+                            enabled = selectedSettings != null && canHide,
+                            onCheckedChange = { visible ->
+                                updateSelectedControl { it.copy(visible = visible) }
+                                onPersist()
+                            },
+                        )
+                    }
+                }
+                Text(stringResource(come.asg.lemudroid.R.string.touch_control_move_hint), fontSize = 10.sp)
 
-            if (selectedSettings != null) {
-                if (compactLandscape) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text("Size ${(selectedSettings.scale * 100).toInt()}%", fontSize = 11.sp)
+                if (selectedSettings != null) {
+                    if (compactLandscape) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    stringResource(
+                                        come.asg.lemudroid.R.string.touch_control_size,
+                                        (selectedSettings.scale * 100).toInt(),
+                                    ),
+                                    fontSize = 11.sp,
+                                )
+                                Slider(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    value = selectedSettings.scale,
+                                    onValueChange = { scale -> updateSelectedControl { it.copy(scale = scale) } },
+                                    onValueChangeFinished = onPersist,
+                                    valueRange =
+                                        TouchControllerSettingsManager.MIN_CONTROL_SCALE..TouchControllerSettingsManager.MAX_CONTROL_SCALE,
+                                )
+                            }
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    stringResource(
+                                        come.asg.lemudroid.R.string.touch_control_opacity,
+                                        (selectedSettings.opacity * 100).toInt(),
+                                    ),
+                                    fontSize = 11.sp,
+                                )
+                                Slider(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    value = selectedSettings.opacity,
+                                    onValueChange = { opacity -> updateSelectedControl { it.copy(opacity = opacity) } },
+                                    onValueChangeFinished = onPersist,
+                                    valueRange = TouchControllerSettingsManager.MIN_CONTROL_OPACITY..1f,
+                                )
+                            }
+                        }
+                    } else {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                stringResource(
+                                    come.asg.lemudroid.R.string.touch_control_size,
+                                    (selectedSettings.scale * 100).toInt(),
+                                ),
+                                fontSize = 12.sp,
+                            )
                             Slider(
                                 modifier = Modifier.fillMaxWidth(),
                                 value = selectedSettings.scale,
                                 onValueChange = { scale -> updateSelectedControl { it.copy(scale = scale) } },
                                 onValueChangeFinished = onPersist,
                                 valueRange =
-                                    TouchControllerSettingsManager.MIN_CONTROL_SCALE..
-                                        TouchControllerSettingsManager.MAX_CONTROL_SCALE,
+                                    TouchControllerSettingsManager.MIN_CONTROL_SCALE..TouchControllerSettingsManager.MAX_CONTROL_SCALE,
                             )
                         }
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text("Opacity ${(selectedSettings.opacity * 100).toInt()}%", fontSize = 11.sp)
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                stringResource(
+                                    come.asg.lemudroid.R.string.touch_control_opacity,
+                                    (selectedSettings.opacity * 100).toInt(),
+                                ),
+                                fontSize = 12.sp,
+                            )
                             Slider(
                                 modifier = Modifier.fillMaxWidth(),
                                 value = selectedSettings.opacity,
@@ -464,71 +541,51 @@ internal fun TouchControlEditorPanel(
                             )
                         }
                     }
-                } else {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Text("Size ${(selectedSettings.scale * 100).toInt()}%", fontSize = 12.sp)
+                    if (selectedControlKey != null && TouchControllerSettingsManager.isStick(selectedControlKey)) {
+                        Text(
+                            stringResource(
+                                come.asg.lemudroid.R.string.touch_control_sensitivity,
+                                (selectedSettings.sensitivity * 100).toInt(),
+                            ),
+                            fontSize = 11.sp,
+                        )
                         Slider(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = selectedSettings.scale,
-                            onValueChange = { scale -> updateSelectedControl { it.copy(scale = scale) } },
+                            value = selectedSettings.sensitivity,
+                            onValueChange = { sensitivity ->
+                                updateSelectedControl { it.copy(sensitivity = sensitivity) }
+                            },
                             onValueChangeFinished = onPersist,
                             valueRange =
-                                TouchControllerSettingsManager.MIN_CONTROL_SCALE..
-                                    TouchControllerSettingsManager.MAX_CONTROL_SCALE,
-                        )
-                    }
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Text("Opacity ${(selectedSettings.opacity * 100).toInt()}%", fontSize = 12.sp)
-                        Slider(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = selectedSettings.opacity,
-                            onValueChange = { opacity -> updateSelectedControl { it.copy(opacity = opacity) } },
-                            onValueChangeFinished = onPersist,
-                            valueRange = TouchControllerSettingsManager.MIN_CONTROL_OPACITY..1f,
+                                TouchControllerSettingsManager.MIN_SENSITIVITY..TouchControllerSettingsManager.MAX_SENSITIVITY,
+                            steps = 8,
                         )
                     }
                 }
-                if (selectedControlKey != null && TouchControllerSettingsManager.isStick(selectedControlKey)) {
-                    Text(
-                        "Sensitivity ${(selectedSettings.sensitivity * 100).toInt()}% · higher responds more to small movements",
-                        fontSize = 11.sp,
-                    )
-                    Slider(
-                        value = selectedSettings.sensitivity,
-                        onValueChange = { sensitivity ->
-                            updateSelectedControl { it.copy(sensitivity = sensitivity) }
-                        },
-                        onValueChangeFinished = onPersist,
-                        valueRange =
-                            TouchControllerSettingsManager.MIN_SENSITIVITY..
-                                TouchControllerSettingsManager.MAX_SENSITIVITY,
-                        steps = 8,
-                    )
-                }
-            }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                TextButton(
-                    onClick = {
-                        updateSelectedControl { ControlSettings() }
-                        onPersist()
-                    },
-                    enabled = selectedSettings != null,
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
                 ) {
-                    Text("Reset control")
-                }
-                TextButton(onClick = { confirmResetAll = true }) { Text("Reset all") }
-                TextButton(
-                    onClick = {
-                        onPersist()
-                        onDone()
-                    },
-                ) {
-                    Text(stringResource(R.string.touch_customize_button_done))
-                }
+                    TextButton(
+                        onClick = {
+                            updateSelectedControl { ControlSettings() }
+                            onPersist()
+                        },
+                        enabled = selectedSettings != null,
+                    ) {
+                        Text(stringResource(come.asg.lemudroid.R.string.touch_control_reset_control))
+                    }
+                    TextButton(onClick = {
+                        confirmResetAll = true
+                    }) { Text(stringResource(come.asg.lemudroid.R.string.touch_control_reset_all)) }
+                    TextButton(
+                        onClick = {
+                            onPersist()
+                            onDone()
+                        },
+                    ) {
+                        Text(stringResource(R.string.touch_customize_button_done))
+                    }
                 }
             }
         }
@@ -537,17 +594,21 @@ internal fun TouchControlEditorPanel(
     if (confirmResetAll) {
         AlertDialog(
             onDismissRequest = { confirmResetAll = false },
-            title = { Text("Reset whole layout?") },
-            text = { Text("This resets every control for this console in the current orientation.") },
+            title = { Text(stringResource(come.asg.lemudroid.R.string.touch_control_reset_all_title)) },
+            text = { Text(stringResource(come.asg.lemudroid.R.string.touch_control_reset_all_message)) },
             confirmButton = {
                 TextButton(
                     onClick = {
                         onResetAll()
                         confirmResetAll = false
                     },
-                ) { Text("Reset all") }
+                ) { Text(stringResource(come.asg.lemudroid.R.string.touch_control_reset_all)) }
             },
-            dismissButton = { TextButton(onClick = { confirmResetAll = false }) { Text("Cancel") } },
+            dismissButton = {
+                TextButton(onClick = {
+                    confirmResetAll = false
+                }) { Text(stringResource(come.asg.lemudroid.R.string.touch_editor_cancel)) }
+            },
         )
     }
 }
@@ -561,4 +622,18 @@ private fun InputEvent.controlKey(): String? =
         is InputEvent.DiscreteDirection -> TouchControllerSettingsManager.controlKey(Id.DiscreteDirection(id))
         is InputEvent.ContinuousDirection -> TouchControllerSettingsManager.controlKey(Id.ContinuousDirection(id))
         else -> null
+    }
+
+@Composable
+private fun localizedTouchControlName(name: String): String =
+    when (name) {
+        "D-pad" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_dpad)
+        "Left stick" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_left_stick)
+        "Right stick" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_right_stick)
+        "D-pad + left stick" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_dpad_left_stick)
+        "Right D-pad" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_right_dpad)
+        "Start" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_start)
+        "Select" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_select)
+        "Menu" -> stringResource(come.asg.lemudroid.R.string.touch_control_name_menu)
+        else -> name // Letter/shoulder abbreviations are controller symbols, not prose.
     }

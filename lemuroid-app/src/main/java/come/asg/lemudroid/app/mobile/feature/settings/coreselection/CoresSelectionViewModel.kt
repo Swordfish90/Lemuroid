@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import come.asg.lemudroid.app.shared.library.LibraryIndexScheduler
 import come.asg.lemudroid.app.shared.library.PendingOperationsMonitor
 import come.asg.lemudroid.lib.core.CoresSelection
 import come.asg.lemudroid.lib.library.GameSystem
@@ -35,7 +34,6 @@ class CoresSelectionViewModel(
     ) {
         viewModelScope.launch {
             coresSelection.updateCoreConfigForSystem(system, coreConfig.coreID)
-            LibraryIndexScheduler.scheduleCoreUpdate(context)
         }
     }
 }

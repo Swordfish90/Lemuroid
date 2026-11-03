@@ -3,6 +3,8 @@ package come.asg.lemudroid.lib.saves
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
+import come.asg.lemudroid.common.kotlin.safeBasename
+import come.asg.lemudroid.common.kotlin.stableGameIdentity
 import come.asg.lemudroid.lib.library.CoreID
 import come.asg.lemudroid.lib.library.db.entity.Game
 import come.asg.lemudroid.lib.storage.DirectoriesManager
@@ -19,10 +21,10 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
         size: Int,
     ): Bitmap? =
         withContext(Dispatchers.IO) {
-            val screenshotName = getSlotScreenshotName(game, index)
-            val file = getPreviewFile(screenshotName, coreID.coreName)
-            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-            ThumbnailUtils.extractThumbnail(bitmap, size, size)
+            val file = getPreviewFile(getSlotScreenshotName(game, index), coreID.coreName)
+            val modernFile = getPreviewFile(getHashedSlotScreenshotName(game, coreID, index), coreID.coreName)
+            val bitmap = BitmapFactory.decodeFile((if (file.exists()) file else modernFile).absolutePath)
+            bitmap?.let { ThumbnailUtils.extractThumbnail(it, size, size) }
         }
 
     suspend fun setPreviewForSlot(
@@ -42,7 +44,7 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
         fileName: String,
         coreName: String,
     ): File {
-        val statesDirectories = File(directoriesManager.getStatesPreviewDirectory(), coreName)
+        val statesDirectories = File(directoriesManager.getStatesPreviewDirectory(), coreName.safeBasename())
         statesDirectories.mkdirs()
         return File(statesDirectories, fileName)
     }
@@ -50,7 +52,17 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
     private fun getSlotScreenshotName(
         game: Game,
         index: Int,
-    ) = "${game.fileName}.slot${index + 1}.jpg"
+    ) = "${game.fileName.safeBasename()}.slot${index + 1}.jpg"
+
+    private fun getHashedSlotScreenshotName(
+        game: Game,
+        coreID: CoreID,
+        index: Int,
+    ) = "${game.fileName.safeBasename()}-${stableGameIdentity(
+        game.fileUri,
+        game.systemId,
+        coreID.coreName,
+    )}.slot${index + 1}.jpg"
 
     companion object {
         val PREVIEW_SIZE_DP = 96f

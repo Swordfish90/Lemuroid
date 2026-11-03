@@ -76,6 +76,7 @@ class GameLaunchTaskHandler(
         val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as Game
 
         updateGamePlayedTimestamp(game)
+        GamePlaytimeStats.record(activity, game.id, duration)
         if (enableRatingFlow) {
             displayReviewRequest(activity, duration)
         }

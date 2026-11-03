@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Обнаружено</string>
     <string name="settings_bios_category_not_detected">Поддерживаемые</string>
     <string name="settings_title_reset_settings">Сбросить настройки</string>
-    <string name="settings_description_reset_settings">Сброс настроек Lemuroid к начальным значениям</string>
+    <string name="settings_description_reset_settings">Сброс настроек OMINOY к начальным значениям</string>
     <string name="settings_title_advanced_settings">Дополнительные настройки</string>
     <string name="settings_description_advanced_settings">Показать дополнительные параметры</string>
     <string name="settings_title_low_latency_audio">Звук с низкой задержкой</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Вибрация устройства</string>
     <string name="settings_description_enable_device_rumble">Если не подключены контроллеры перенаправлять вибрацию на устройство</string>
     <string name="reset_settings_warning_message_title">Вы уверены?</string>
-    <string name="reset_settings_warning_message_description">Данное действие сбросит настройки Lemuroid к начальным значениям. Файлы сохранений и состояний не будут затронуты.</string>
+    <string name="reset_settings_warning_message_description">Данное действие сбросит настройки OMINOY к начальным значениям. Файлы сохранений и состояний не будут затронуты.</string>
     <string name="settings_title_save_sync">Облачные сохранения</string>
     <string name="settings_description_save_sync">Резервирование и синхронизация ваших сохранений в облаке</string>
     <string name="settings_save_sync_refresh">Ручная синхронизация</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Перезапустить</string>
     <string name="game_context_menu_create_shortcut">Закрепить в лаунчере</string>
     <string name="home_notification_title">Включить уведомления</string>
-    <string name="home_notification_message">Lemuroid использует уведомления, чтобы сообщить, когда игра или операция выполняется в фоновом режиме.</string>
+    <string name="home_notification_message">OMINOY использует уведомления, чтобы сообщить, когда игра или операция выполняется в фоновом режиме.</string>
     <string name="home_notification_action">Включить</string>
     <string name="home_microphone_title">Включить микрофон</string>
     <string name="home_microphone_message">Игры Nintendo DS могут использовать микрофон для расширенных функций.</string>
     <string name="home_microphone_action">Включить</string>
     <string name="home_empty_title">Выберите каталог ROM-файлов</string>
-    <string name="home_empty_message">Lemuroid необходимо отсканировать каталог, содержащий ROM-файлы.\nЭто может занять несколько минут.</string>
+    <string name="home_empty_message">OMINOY необходимо отсканировать каталог, содержащий ROM-файлы.\nЭто может занять несколько минут.</string>
     <string name="home_empty_action">Выберите каталог</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME вскоре будет удалён</string>
     <string name="home_notification_desmume_deprecated_message">Сохранитесь в игре и переключитесь на melonDS, чтобы перенести прогресс. Быстрые сохранения останутся привязанными к DeSmuME.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">Игра запущена</string>
     <string name="game_running_notification_message">Обязательно сохраните свой прогресс</string>
     <string name="game_loader_error_gl_incompatible">Это ядро требует версию OpenGL ES, которая не поддерживается вашим устройством.</string>
-    <string name="game_loader_error_load_game">При загрузке игры произошла ошибка. Убедитесь, что ROM поддерживается Lemuroid и запустите повторное сканирование игр.</string>
+    <string name="game_loader_error_load_game">При загрузке игры произошла ошибка. Убедитесь, что ROM поддерживается OMINOY и запустите повторное сканирование игр.</string>
     <string name="game_loader_error_save">Произошла ошибка с вашим файлом сохранения. Если проблема не исчезает, попробуйте отключить автосохранение.</string>
     <string name="game_loader_error_unsupported_architecture">Это ядро не поддерживается вашим устройством.</string>
     <string name="game_loader_error_generic">Произошла ошибка. Попробуйте следующее:\n
         \n\u2022 Отключите автосохранение и перезапустите игру
         \n\u2022 Перейдите в настройки Android и очистите кэш приложения
-        \n\u2022 Перейдите в настройки Lemuroid и выполните сброс настроек
+        \n\u2022 Перейдите в настройки OMINOY и выполните сброс настроек
         \n\nЕсли ничего из вышеперечисленного не сработало, возможно, эта игра/ядро не поддерживается вашим устройством.
     </string>
     <string name="game_loader_error_missing_bios">Отсутствуют требуемые файлы BIOS, поместите их в каталог с ROM-файлами и пересканируйте. Требуемые файлы: %1$s</string>
@@ -158,18 +158,18 @@
     <string name="game_process_another_game_running">Пожалуйста, закройте текущую игру перед запуском новой</string>
     <string name="mobile_settings_help">Помощь</string>
     <string name="mobile_settings_support">Поддержка</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Как пользоваться Lemuroid?</b><br/>
-        Скопируйте ROM\'ы в каталог на устройстве и укажите его в Lemuroid. Данный каталог может содержать подкаталоги. После завершения сканирования игры будут представлены в виде списка.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Как пользоваться OMINOY?</b><br/>
+        Скопируйте ROM\'ы в каталог на устройстве и укажите его в OMINOY. Данный каталог может содержать подкаталоги. После завершения сканирования игры будут представлены в виде списка.<br/><br/>
         <b>&#8226;Почему игры не определяются?</b><br/>
         Если игры находятся в архивах, попробуйте их распаковать. Если это не помогло, попробуйте поместить ROM\'ы в отдельные каталоги для каждой системы, присвоив следующие имена: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Похоже, что ядро Libretro столкнулось с неожиданной проблемой. Если проблема не исчезает, пожалуйста, попробуйте следующее:\n
         \n\u2022 Отключите автосохранение и перезапустите игру
         \n\u2022 Перейдите в настройки Android и очистите кэш приложения
-        \n\u2022 Перейдите в настройки Lemuroid и выполните сброс настроек
+        \n\u2022 Перейдите в настройки OMINOY и выполните сброс настроек
         \n\n Если ничего из вышеперечисленного не работает, возможно, эта игра/ядро не поддерживается вашим устройством.
     </string>
-    <string name="error_message_incompatible_state">Это сохранение не совместимо с текущей версией ядра. Пожалуйста, загрузите последнюю версию сохранения в игре или воспользуйтесь предыдущей версией Lemuroid.</string>
+    <string name="error_message_incompatible_state">Это сохранение не совместимо с текущей версией ядра. Пожалуйста, загрузите последнюю версию сохранения в игре или воспользуйтесь предыдущей версией OMINOY.</string>
     <string name="shader_filter_names_auto">Автоматически</string>
     <string name="shader_filter_names_sharp">Резкий</string>
     <string name="shader_filter_names_smooth">Мягкий</string>

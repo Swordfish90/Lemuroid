@@ -1,8 +1,10 @@
 package come.asg.lemudroid.app.shared.game
 
-import come.asg.lemudroid.lib.library.db.entity.GameCheat
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.LibretroDroid
+import come.asg.lemudroid.app.mobile.feature.cheats.CheatCodeType
+import come.asg.lemudroid.app.mobile.feature.cheats.CheatCodeValidator
+import come.asg.lemudroid.lib.library.db.entity.GameCheat
 import timber.log.Timber
 
 object GameCheatApplier {
@@ -10,6 +12,7 @@ object GameCheatApplier {
         retroView: GLRetroView?,
         cheats: List<GameCheat>,
         resetEvenIfEmpty: Boolean = false,
+        systemId: String? = null,
     ) {
         if (retroView == null || (cheats.isEmpty() && !resetEvenIfEmpty)) return
 
@@ -17,9 +20,22 @@ object GameCheatApplier {
         retroView.queueEvent {
             runCatching { LibretroDroid.resetCheat() }
                 .onFailure { Timber.w(it, "Unable to reset cheats for the active core") }
-            orderedCheats.forEachIndexed { index, cheat ->
+            var nativeIndex = 0
+            orderedCheats.forEach { cheat ->
+                val codeType = CheatCodeType.fromPersistedValue(cheat.codeType)
+                val normalizedCode =
+                    if (codeType != null && systemId != null) {
+                        CheatCodeValidator.normalizeStored(cheat.code, codeType, systemId)
+                    } else {
+                        // Keep the pre-type format path for existing cheat rows from older app versions.
+                        CheatCodeFormatter.normalize(cheat.code)
+                    }
+                if (normalizedCode == null) {
+                    Timber.w("Skipping malformed cheat ${cheat.id}; it was not sent to the active core")
+                    return@forEach
+                }
                 runCatching {
-                    retroView.setCheat(index, cheat.enabled, cheat.code)
+                    retroView.setCheat(nativeIndex++, cheat.enabled, normalizedCode)
                 }
                     .onFailure { error ->
                         Timber.w(error, "Active core rejected cheat ${cheat.id}; continuing with remaining cheats")

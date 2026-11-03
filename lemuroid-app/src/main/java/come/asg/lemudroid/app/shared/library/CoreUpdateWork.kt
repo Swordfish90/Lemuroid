@@ -17,8 +17,10 @@ import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
+import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
 class CoreUpdateWork(context: Context, workerParams: WorkerParameters) :
@@ -51,17 +53,24 @@ class CoreUpdateWork(context: Context, workerParams: WorkerParameters) :
             val cores =
                 retrogradeDatabase.gameDao().selectSystems()
                     .asFlow()
-                    .map { GameSystem.findById(it) }
+                    .mapNotNull { GameSystem.findByIdOrNull(it) }
                     .map { coresSelection.getCoreConfigForSystem(it) }
                     .map { it.coreID }
                     .toList()
 
             coreUpdater.downloadCores(applicationContext, cores)
-        } catch (e: Throwable) {
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
             Timber.e(e, "Core update work failed with exception: ${e.message}")
+            return if (runAttemptCount < MAX_RETRY_ATTEMPTS) Result.retry() else Result.failure()
         }
 
         return Result.success()
+    }
+
+    private companion object {
+        const val MAX_RETRY_ATTEMPTS = 5
     }
 
     @dagger.Module(subcomponents = [Subcomponent::class])

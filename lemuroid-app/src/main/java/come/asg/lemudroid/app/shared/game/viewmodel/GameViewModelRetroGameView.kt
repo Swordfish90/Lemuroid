@@ -6,6 +6,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.libretrodroid.GLRetroViewData
+import com.swordfish.libretrodroid.ImmersiveMode
+import com.swordfish.libretrodroid.Variable
+import com.swordfish.libretrodroid.ViewportAlignment
+import com.swordfish.libretrodroid.VirtualFile
 import come.asg.lemudroid.BuildConfig
 import come.asg.lemudroid.R
 import come.asg.lemudroid.app.mobile.feature.settings.SettingsManager
@@ -24,12 +30,6 @@ import come.asg.lemudroid.lib.library.GameSystem
 import come.asg.lemudroid.lib.library.SystemCoreConfig
 import come.asg.lemudroid.lib.library.db.entity.Game
 import come.asg.lemudroid.lib.storage.RomFiles
-import com.swordfish.libretrodroid.GLRetroView
-import com.swordfish.libretrodroid.GLRetroViewData
-import com.swordfish.libretrodroid.ImmersiveMode
-import com.swordfish.libretrodroid.Variable
-import com.swordfish.libretrodroid.ViewportAlignment
-import com.swordfish.libretrodroid.VirtualFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -240,7 +240,7 @@ class GameViewModelRetroGameView(
                     hdMode,
                     hdModeQuality,
                     screenFilter,
-                    GameSystem.findById(gameData.game.systemId),
+                    system,
                 )
             viewportAlignment =
                 when (alignment) {

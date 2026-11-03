@@ -1,7 +1,9 @@
 package come.asg.lemudroid.app.shared.library
 
 import android.content.Context
+import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 
@@ -20,11 +22,17 @@ object LibraryIndexScheduler {
     }
 
     fun scheduleCoreUpdate(applicationContext: Context) {
+        val networkConstraint =
+            Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
         WorkManager.getInstance(applicationContext)
             .beginUniqueWork(
                 CORE_UPDATE_WORK_ID,
                 ExistingWorkPolicy.APPEND_OR_REPLACE,
-                OneTimeWorkRequestBuilder<CoreUpdateWork>().build(),
+                OneTimeWorkRequestBuilder<CoreUpdateWork>()
+                    .setConstraints(networkConstraint)
+                    .build(),
             )
             .enqueue()
     }

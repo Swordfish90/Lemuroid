@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Detectat</string>
     <string name="settings_bios_category_not_detected">Suportat</string>
     <string name="settings_title_reset_settings">Resetare la valorile din fabrică</string>
-    <string name="settings_description_reset_settings">Resetați Lemuroid la setările sale din fabrică</string>
+    <string name="settings_description_reset_settings">Resetați OMINOY la setările sale din fabrică</string>
     <string name="settings_title_advanced_settings">Setări avansate</string>
     <string name="settings_description_advanced_settings">Afișează setările avansate</string>
     <string name="settings_title_low_latency_audio">Preferă audio cu latență mică</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Vibrare dispozitiv</string>
     <string name="settings_description_enable_device_rumble">Când nu este conectat nici un controler, folosește vibrarea dispozitivului</string>
     <string name="reset_settings_warning_message_title">Ești sigur?</string>
-    <string name="reset_settings_warning_message_description">Acest lucru va reseta Lemuroid la setările din fabrică. Salvările și Statele vor fi păstrate.</string>
+    <string name="reset_settings_warning_message_description">Acest lucru va reseta OMINOY la setările din fabrică. Salvările și Statele vor fi păstrate.</string>
     <string name="settings_title_save_sync">Salvare în cloud</string>
     <string name="settings_description_save_sync">Fă o copie de rezervă și sincronizează salvările tale în cloud</string>
     <string name="settings_save_sync_refresh">Sincronizare manuală</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Reporniţi</string>
     <string name="game_context_menu_create_shortcut">Fixează în lansator</string>
     <string name="home_notification_title">Activați notificările</string>
-    <string name="home_notification_message">Lemuroid folosește notificări pentru a te anunța când un joc sau o activitate rulează în fundal.</string>
+    <string name="home_notification_message">OMINOY folosește notificări pentru a te anunța când un joc sau o activitate rulează în fundal.</string>
     <string name="home_notification_action">Activați</string>
     <string name="home_microphone_title">Activează microfonul</string>
     <string name="home_microphone_message">Jocurile Nintendo DS pot folosi microfonul pentru a oferi unele funcționalități.</string>
     <string name="home_microphone_action">Activare</string>
     <string name="home_empty_title">Alege directorul de ROM-uri</string>
-    <string name="home_empty_message">Lemuroid trebuie să scaneze un director care conține fișiere ROM.\nAcest lucru ar putea dura până la câteva minute.</string>
+    <string name="home_empty_message">OMINOY trebuie să scaneze un director care conține fișiere ROM.\nAcest lucru ar putea dura până la câteva minute.</string>
     <string name="home_empty_action">Selectare director</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME se pensionează în curând</string>
     <string name="home_notification_desmume_deprecated_message">Salvați în joc, comutați la melonDS, iar progresul dvs. va continua. Salvați statele rămân legate pe DeSmuME.</string>
@@ -123,7 +123,7 @@
     <string name="game_running_notification_title_alternative">Jocul rulează</string>
     <string name="game_running_notification_message">Asigură-te că îți salvezi progresul</string>
     <string name="game_loader_error_gl_incompatible">Acest Nucleu necesită o versiune OpenGL ES care nu este suportată de dispozitivul dvs.</string>
-    <string name="game_loader_error_load_game">Ceva rău s-a întâmplat în timpul încărcării jocului. Asigură-te că ROM-ul este sprijinit de Lemuroid și rescanează-ți jocurile.</string>
+    <string name="game_loader_error_load_game">Ceva rău s-a întâmplat în timpul încărcării jocului. Asigură-te că ROM-ul este sprijinit de OMINOY și rescanează-ți jocurile.</string>
     <string name="game_loader_error_save">Ceva rău s-a întâmplat cu fișierul de salvare. Dacă problema persistă, dezactivați salvarea automată.</string>
     <string name="game_loader_error_unsupported_architecture">Acest nucleu nu este acceptat de dispozitivul dvs.</string>
     <string name="game_loader_error_missing_bios">Se pare că nu ai BIOS necesar, pune-le în directorul ROM-uri și rescanează. Fișiere necesare: %1$s</string>
@@ -150,12 +150,12 @@
     <string name="game_interactory_busy">Așteptați ca operațiunile în așteptare să se finalizeze</string>
     <string name="mobile_settings_help">Ajutor</string>
     <string name="mobile_settings_support">Asistență</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Cum folosesc Lemuroid?</b><br/>
-        Copiază toate fișierele ROM-uri într-un director de pe dispozitivul tău și selectează-le în Lemuroid. Acest director are permisiunea de a avea subdirectoare. După ce scanarea se finalizează ar trebui să vezi jocurile tale.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Cum folosesc OMINOY?</b><br/>
+        Copiază toate fișierele ROM-uri într-un director de pe dispozitivul tău și selectează-le în OMINOY. Acest director are permisiunea de a avea subdirectoare. După ce scanarea se finalizează ar trebui să vezi jocurile tale.<br/><br/>
         <b>&#8226;De ce nu sunt detectate jocurile mele?</b><br/>
         Dacă jocurile sunt comprimate, încercaţi să le comprimaţi. Dacă nu funcționează, încercați să puneți ROM-urile în directoare separate, câte una pentru fiecare sistem cu următoarele nume: $SYSTEMS.
     ]]></string>
-    <string name="error_message_incompatible_state">Această stare de salvare nu este compatibilă cu versiunea de bază curentă. Vă rugăm să încărcați ultima salvare din joc sau să folosiți o versiune Lemuroid anterioară.</string>
+    <string name="error_message_incompatible_state">Această stare de salvare nu este compatibilă cu versiunea de bază curentă. Vă rugăm să încărcați ultima salvare din joc sau să folosiți o versiune OMINOY anterioară.</string>
     <string name="shader_filter_names_auto">Auto</string>
     <string name="shader_filter_names_sharp">Ascuţit</string>
     <string name="shader_filter_names_smooth">Netezit</string>

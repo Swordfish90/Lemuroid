@@ -4,22 +4,30 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -34,6 +42,8 @@ import come.asg.lemudroid.app.mobile.feature.games.GamesScreen
 import come.asg.lemudroid.app.mobile.feature.games.GamesViewModel
 import come.asg.lemudroid.app.mobile.feature.home.HomeScreen
 import come.asg.lemudroid.app.mobile.feature.home.HomeViewModel
+import come.asg.lemudroid.app.mobile.feature.library.LibraryScreen
+import come.asg.lemudroid.app.mobile.feature.library.LibraryViewModel
 import come.asg.lemudroid.app.mobile.feature.search.SearchScreen
 import come.asg.lemudroid.app.mobile.feature.search.SearchViewModel
 import come.asg.lemudroid.app.mobile.feature.settings.advanced.AdvancedSettingsScreen
@@ -114,11 +124,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         enableEdgeToEdge(
             SystemBarStyle.dark(Color.TRANSPARENT),
             SystemBarStyle.dark(Color.TRANSPARENT),
         )
-        super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
 
         GlobalScope.safeLaunch {
             reviewManager.initialize(applicationContext)
@@ -180,8 +193,14 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     .value
 
             Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = androidx.compose.ui.graphics.Color.Transparent,
+                contentWindowInsets = WindowInsets(0.dp),
                 topBar = {
-                    if (currentRoute != MainRoute.SETTINGS_TOUCH_LAYOUT) {
+                    if (currentRoute != MainRoute.SETTINGS_TOUCH_LAYOUT &&
+                        currentRoute != MainRoute.HOME &&
+                        currentRoute != MainRoute.SYSTEMS
+                    ) {
                         MainTopBar(
                             currentRoute = currentRoute,
                             navController = navController,
@@ -191,17 +210,13 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         )
                     }
                 },
-                bottomBar = {
-                    if (currentRoute != MainRoute.SETTINGS_TOUCH_LAYOUT) {
-                        MainNavigationBar(currentRoute, navController)
-                    }
-                },
             ) { padding ->
-                NavHost(
-                    modifier = Modifier.fillMaxSize(),
-                    navController = navController,
-                    startDestination = MainRoute.HOME.route,
-                ) {
+                Box(Modifier.fillMaxSize()) {
+                    NavHost(
+                        modifier = Modifier.fillMaxSize(),
+                        navController = navController,
+                        startDestination = MainRoute.HOME.route,
+                    ) {
                     composable(MainRoute.HOME) {
                         HomeScreen(
                             modifier = Modifier.padding(padding),
@@ -216,8 +231,10 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                 ),
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
+                            onGameFavoriteToggle = onGameFavoriteToggle,
                             onOpenCoreSelection = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) },
                             onOpenSearch = { navController.navigateToRoute(MainRoute.SEARCH) },
+                            onHelpPressed = onHelpPressed,
                         )
                     }
                     composable(MainRoute.FAVORITES) {
@@ -246,17 +263,15 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         )
                     }
                     composable(MainRoute.SYSTEMS) {
-                        MetaSystemsScreen(
+                        LibraryScreen(
                             modifier = Modifier.padding(padding),
-                            navController = navController,
                             viewModel =
                                 viewModel(
-                                    factory =
-                                        MetaSystemsViewModel.Factory(
-                                            retrogradeDb,
-                                            applicationContext,
-                                        ),
+                                    factory = LibraryViewModel.Factory(retrogradeDb),
                                 ),
+                            onGameClick = onGameClick,
+                            onGameLongClick = onGameLongClick,
+                            onGameFavoriteToggle = onGameFavoriteToggle,
                         )
                     }
                     composable(MainRoute.SYSTEM_GAMES) { entry ->
@@ -355,6 +370,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                         TouchLayoutEditorScreen(
                             modifier = Modifier.fillMaxSize(),
                             settingsManager = touchSettingsManager,
+                            viewportAlignment =
+                                SharedPreferencesHelper.getLegacySharedPreferences(applicationContext)
+                                    .getString("viewport_alignment", "center") ?: "center",
                         )
                     }
                     composable(MainRoute.SETTINGS_SAVE_SYNC) {
@@ -372,11 +390,21 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     }
                     composable(MainRoute.GAME_CHEATS) { entry ->
                         val gameId = entry.arguments?.getInt("gameId") ?: return@composable
+                        val systemId = entry.arguments?.getString("systemId") ?: return@composable
                         GameCheatsScreen(
                             gameId = gameId,
+                            systemId = systemId,
                             gameName = "",
                             gameCheatDao = retrogradeDb.gameCheatDao(),
                             modifier = Modifier.padding(padding),
+                        )
+                    }
+                    }
+                    if (currentRoute.showBottomNavigation && currentRoute != MainRoute.SETTINGS_TOUCH_LAYOUT) {
+                        MainNavigationBar(
+                            currentRoute = currentRoute,
+                            navController = navController,
+                            modifier = Modifier.align(Alignment.BottomCenter),
                         )
                     }
                 }
@@ -387,7 +415,11 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 shortcutSupported = gameInteractor.supportShortcuts(),
                 onGamePlay = { gameInteractor.onGamePlay(it) },
                 onOpenCheats = { game ->
-                    navController.navigate(MainRoute.GAME_CHEATS.route.replace("{gameId}", game.id.toString()))
+                    navController.navigate(
+                        MainRoute.GAME_CHEATS.route
+                            .replace("{gameId}", game.id.toString())
+                            .replace("{systemId}", game.systemId),
+                    )
                 },
                 onGameRestart = { gameInteractor.onGameRestart(it) },
                 onFavoriteToggle = { game: Game, isFavorite: Boolean ->
@@ -412,9 +444,15 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                     }
 
                 AlertDialog(
+                    title = { Text(text = "How to use OMINOY") },
                     text = { HtmlText(text = message) },
                     onDismissRequest = { infoDialogDisplayed.value = false },
-                    confirmButton = { },
+                    confirmButton = {
+                        TextButton(onClick = { infoDialogDisplayed.value = false }) {
+                            Text(text = getString(android.R.string.ok))
+                        }
+                    },
+                    shape = RoundedCornerShape(28.dp),
                 )
             }
         }

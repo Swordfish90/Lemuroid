@@ -12,6 +12,8 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import come.asg.lemudroid.app.mobile.feature.game.GameActivity
 import come.asg.lemudroid.app.mobile.feature.game.GameService
 import come.asg.lemudroid.app.mobile.feature.settings.SettingsManager
@@ -40,11 +42,9 @@ import come.asg.lemudroid.lib.library.db.entity.Game
 import come.asg.lemudroid.lib.saves.SavesManager
 import come.asg.lemudroid.lib.saves.StatesManager
 import come.asg.lemudroid.lib.saves.StatesPreviewManager
-import com.swordfish.libretrodroid.GLRetroView
-import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import dagger.Lazy
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -101,7 +101,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         GameService.startService(applicationContext, intent)
         game = intent.getSerializableExtra(EXTRA_GAME) as Game
         systemCoreConfig = intent.getSerializableExtra(EXTRA_SYSTEM_CORE_CONFIG) as SystemCoreConfig
-        system = GameSystem.findById(game.systemId)
+        system = GameSystem.findByIdOrNull(game.systemId) ?: run {
+            finish()
+            return
+        }
 
         val viewModel by viewModels<BaseGameScreenViewModel> {
             BaseGameScreenViewModel.Factory(
@@ -147,7 +150,11 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             runCatching {
                 baseGameScreenViewModel.retroGameView.waitGLEvent<GLRetroView.GLRetroEvents.FrameRendered>()
                 val cheats = retrogradeDb.gameCheatDao().selectForGame(game.id)
-                GameCheatApplier.apply(baseGameScreenViewModel.retroGameView.retroGameView, cheats)
+                GameCheatApplier.apply(
+                    baseGameScreenViewModel.retroGameView.retroGameView,
+                    cheats,
+                    systemId = game.systemId,
+                )
             }.onFailure { Timber.w(it, "Could not load saved cheats for game ${game.id}") }
         }
 
@@ -435,6 +442,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                             baseGameScreenViewModel.retroGameView.retroGameView,
                             cheats,
                             resetEvenIfEmpty = true,
+                            systemId = game.systemId,
                         )
                     }.onFailure { Timber.w(it, "Could not apply updated cheats for game ${game.id}") }
                 }

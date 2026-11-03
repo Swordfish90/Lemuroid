@@ -81,6 +81,9 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         }
 
         launchOnState(Lifecycle.State.RESUMED) {
+            getBiosInfoPreferenceScreen()?.let { screen -> biosPreferences.refreshBiosPreferences(screen) }
+        }
+        launchOnState(Lifecycle.State.RESUMED) {
             getSaveSyncScreen()?.let { screen ->
                 PendingOperationsMonitor(requireContext())
                     .anySaveOperationInProgress()
@@ -101,10 +104,6 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
 
         getCoresSelectionScreen()?.let {
             coresSelectionPreferences.addCoresSelectionPreferences(it)
-        }
-
-        getBiosInfoPreferenceScreen()?.let {
-            biosPreferences.addBiosPreferences(it)
         }
 
         getAdvancedSettingsPreferenceScreen()?.let {

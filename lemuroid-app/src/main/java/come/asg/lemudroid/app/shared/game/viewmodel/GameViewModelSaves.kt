@@ -1,6 +1,7 @@
 package come.asg.lemudroid.app.shared.game.viewmodel
 
 import android.content.Context
+import com.swordfish.libretrodroid.GLRetroView
 import come.asg.lemudroid.R
 import come.asg.lemudroid.app.mobile.feature.settings.SettingsManager
 import come.asg.lemudroid.common.graphics.GraphicsUtils
@@ -13,7 +14,6 @@ import come.asg.lemudroid.lib.saves.SaveState
 import come.asg.lemudroid.lib.saves.SavesManager
 import come.asg.lemudroid.lib.saves.StatesManager
 import come.asg.lemudroid.lib.saves.StatesPreviewManager
-import com.swordfish.libretrodroid.GLRetroView
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -86,8 +86,8 @@ class GameViewModelSaves(
         return SaveSnapshot(sramState, autoSaveState)
     }
 
-    suspend fun writeSaveSnapshot(snapshot: SaveSnapshot?) {
-        if (snapshot == null) return
+    suspend fun writeSaveSnapshot(snapshot: SaveSnapshot?): Boolean {
+        if (snapshot == null) return true
         Timber.i(
             "GameViewModelSaves.write game=%s core=%s writingSram=%s writingAutoSave=%s",
             game.id,
@@ -95,8 +95,18 @@ class GameViewModelSaves(
             true,
             snapshot.autoSave != null,
         )
-        savesManager.setSaveRAM(game, snapshot.sram)
-        snapshot.autoSave?.let { statesManager.setAutoSave(game, systemCoreConfig.coreID, it) }
+        return try {
+            savesManager.setSaveRAM(game, snapshot.sram)
+            snapshot.autoSave?.let { statesManager.setAutoSave(game, systemCoreConfig.coreID, it) }
+            true
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Timber.e(e, "Could not persist save data for game %s", game.id)
+            val reason = (e.localizedMessage ?: e.javaClass.simpleName).take(100)
+            sideEffects.showToast(appContext.getString(R.string.game_toast_save_state_failed_detail, reason))
+            false
+        }
     }
 
     // On some cores unserialize fails with no reason. So we need to try multiple times.

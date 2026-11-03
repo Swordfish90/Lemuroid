@@ -18,6 +18,7 @@ import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonR1
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonR2
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonSelect
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonStart
+import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonFastForward
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.LemuroidButtonForeground
 import gg.padkit.PadKitScope
@@ -83,6 +84,7 @@ fun PadKitScope.DOSRight(
             SecondaryButtonStart(position = 2)
             SecondaryAnalogRight()
             SecondaryButtonMenu(settings)
+            SecondaryButtonFastForward(settings)
         },
     )
 }

@@ -1,6 +1,8 @@
 package come.asg.lemudroid.lib.saves
 
 import come.asg.lemudroid.common.kotlin.runCatchingWithRetry
+import come.asg.lemudroid.common.kotlin.safeBasename
+import come.asg.lemudroid.common.kotlin.stableGameIdentity
 import come.asg.lemudroid.common.kotlin.writeBytesAtomic
 import come.asg.lemudroid.lib.library.SystemCoreConfig
 import come.asg.lemudroid.lib.library.db.entity.Game
@@ -16,17 +18,19 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         systemCoreConfig: SystemCoreConfig,
     ): ByteArray? {
         return withContext(Dispatchers.IO) {
-            val result =
-                runCatchingWithRetry(FILE_ACCESS_RETRIES) {
-                    val saveFile = getSaveFile(getSaveRAMFileName(game))
-                    if (saveFile.exists() && saveFile.length() > 0) {
-                        saveFile.readBytes()
-                    } else {
-                        val savesMigrator = systemCoreConfig.getSavesMigrator()
-                        savesMigrator?.loadPreviousSaveForGame(game, directoriesManager)
-                    }
+            runCatchingWithRetry(FILE_ACCESS_RETRIES) {
+                val legacyFile = getSaveFile(getSaveRAMFileName(game))
+                val modernFile = getSaveFile(getHashedSaveRAMFileName(game))
+                val saveFile =
+                    listOf(legacyFile, modernFile)
+                        .filter { it.isFile && it.length() > 0 }
+                        .maxByOrNull(File::lastModified)
+                if (saveFile != null) {
+                    saveFile.readBytes()
+                } else {
+                    systemCoreConfig.getSavesMigrator()?.loadPreviousSaveForGame(game, directoriesManager)
                 }
-            result.getOrNull()
+            }.getOrThrow()
         }
     }
 
@@ -35,36 +39,37 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         data: ByteArray,
     ) {
         withContext(Dispatchers.IO) {
-            val result =
-                runCatchingWithRetry(FILE_ACCESS_RETRIES) {
-                    if (data.isEmpty()) {
-                        return@runCatchingWithRetry
-                    }
-
-                    val saveFile = getSaveFile(getSaveRAMFileName(game))
-                    saveFile.writeBytesAtomic(data)
-                }
-            result.getOrNull()
+            runCatchingWithRetry(FILE_ACCESS_RETRIES) {
+                if (data.isEmpty()) return@runCatchingWithRetry
+                getSaveFile(getSaveRAMFileName(game)).writeBytesAtomic(data)
+            }.getOrThrow()
         }
     }
 
     suspend fun getSaveRAMInfo(game: Game): SaveInfo {
         return withContext(Dispatchers.IO) {
-            val saveFile = getSaveFile(getSaveRAMFileName(game))
-            val fileExists = saveFile.exists() && saveFile.length() > 0
-            SaveInfo(fileExists, saveFile.lastModified())
+            val candidates =
+                listOf(getSaveRAMFileName(game), getHashedSaveRAMFileName(game))
+                    .map { getSaveFile(it) }
+            val existing = candidates.filter { it.isFile && it.length() > 0 }.maxByOrNull(File::lastModified)
+            SaveInfo(existing != null, existing?.lastModified() ?: 0L)
         }
     }
 
     private suspend fun getSaveFile(fileName: String): File {
         return withContext(Dispatchers.IO) {
-            val savesDirectory = directoriesManager.getSavesDirectory()
-            File(savesDirectory, fileName)
+            File(directoriesManager.getSavesDirectory(), fileName)
         }
     }
 
-    /** This name should make it compatible with RetroArch so that users can freely sync saves across the two application. */
-    private fun getSaveRAMFileName(game: Game) = "${game.fileName.substringBeforeLast(".")}.srm"
+    /** Prefer the historical basename for RetroArch and move-stable compatibility. */
+    private fun getSaveRAMFileName(game: Game): String = "${game.fileName.substringBeforeLast(".").safeBasename()}.srm"
+
+    /** Newer URI-keyed names remain readable for installations created by newer builds. */
+    private fun getHashedSaveRAMFileName(game: Game): String {
+        val baseName = game.fileName.substringBeforeLast(".").safeBasename()
+        return "$baseName-${stableGameIdentity(game.fileUri, game.systemId)}.srm"
+    }
 
     companion object {
         private const val FILE_ACCESS_RETRIES = 3

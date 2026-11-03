@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">تم الكشف</string>
     <string name="settings_bios_category_not_detected">مدعومة</string>
     <string name="settings_title_reset_settings">إعادة تعيين جميع الإعدادات</string>
-    <string name="settings_description_reset_settings">إعادة تعيين Lemuroid إلى إعدادات المصنع</string>
+    <string name="settings_description_reset_settings">إعادة تعيين OMINOY إلى إعدادات المصنع</string>
     <string name="settings_title_advanced_settings">إعدادات متقدمة</string>
     <string name="settings_description_advanced_settings">عرض الإعدادات المتقدمة</string>
     <string name="settings_title_low_latency_audio">تفضيل صوت مباشر</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">إعادة التشغيل</string>
     <string name="game_context_menu_create_shortcut">تثبيت على الشاشة الرئيسية</string>
     <string name="home_notification_title">تمكين الإشعارات</string>
-    <string name="home_notification_message">يستخدم Lemuroid الإشعارات لإعلامك عندما تكون اللعبة أو العملية قيد التشغيل في الخلفية.</string>
+    <string name="home_notification_message">يستخدم OMINOY الإشعارات لإعلامك عندما تكون اللعبة أو العملية قيد التشغيل في الخلفية.</string>
     <string name="home_notification_action">تمكين</string>
     <string name="home_microphone_title">تفعيل لاقط الصوت</string>
     <string name="home_microphone_message">ألعاب Nintendo DS يمكنها استعمال لاقط الصوت لتوفير بعض الوظائف.</string>
     <string name="home_microphone_action">تفعيل</string>
     <string name="home_empty_title">حدد مجلد ROM</string>
-    <string name="home_empty_message">يحتاج Lemuroid إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
+    <string name="home_empty_message">يحتاج OMINOY إلى فحص المجلد الذي يحتوي على ملفات ROM.\nقد يستغرق ذلك بضع دقائق.</string>
     <string name="home_empty_action">حدد المجلد</string>
     <string name="home_notification_desmume_deprecated_title">يتقاعد DSmuME قريباً</string>
     <string name="home_notification_desmume_deprecated_message">حفظ داخل اللعبة، التبديل إلى melonDS، والتقدم الذي أحرزتمونه. حفظ الدول يبقى مرتبطا بـ DeSmuME.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">اللعبة قيد التشغيل</string>
     <string name="game_running_notification_message">تأكد من حفظ التقدم الخاص بك</string>
     <string name="game_loader_error_gl_incompatible">تتطلب هذا النواة إصدار OpenGL ES الذي لا يدعمه جهازك.</string>
-    <string name="game_loader_error_load_game">حدث شيء سيئ أثناء تحميل لعبتك. تأكد من أن الروم مدعوم من Lemuroid وإعادة فحص ألعابك.</string>
+    <string name="game_loader_error_load_game">حدث شيء سيئ أثناء تحميل لعبتك. تأكد من أن الروم مدعوم من OMINOY وإعادة فحص ألعابك.</string>
     <string name="game_loader_error_save">حدث شيء سيئ مع حفظ الملف الخاص بك. إذا استمرت المشكلة، حاول تعطيل الحفظ التلقائي.</string>
     <string name="game_loader_error_unsupported_architecture">هذا النواة غير مدعومة من قبل جهازك.</string>
     <string name="game_loader_error_generic">حدث شيء سيئ. جرب ما يلي:\n
         \n\u2022 تعطيل الحفظ التلقائي وإعادة تشغيل اللعبة
         \n\u2022 انتقل إلى إعدادات أندرويد ومسح ذاكرة التخزين المؤقت للتطبيق
-        \n\u2022 انتقل إلى إعدادات Lemuroid وأجري إعادة ضبط للمصنع
+        \n\u2022 انتقل إلى إعدادات OMINOY وأجري إعادة ضبط للمصنع
         \n\nإذا لم تعمل أي من الخطوات المذكورة أعلاه، قد يكون من الممكن أن تكون هذه اللعبة/النواة غير مدعومة على هذا الجهاز.
     </string>
     <string name="game_loader_error_missing_bios">يبدو أنك فقدت BIOS المطلوب، ضعهم في مجلد ROMs الخاص بك وإعادة الفحص. الملفات المطلوبة: %1$s</string>
@@ -156,17 +156,17 @@
     <string name="game_interactory_busy">انتظر حتى تكتمل العمليات المعلقة</string>
     <string name="mobile_settings_help">مساعدة</string>
     <string name="mobile_settings_support">الدعم</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;كيف أستخدم Lemuroid؟</b><br/>
-        نسخ جميع ملفات الالعاب الخاصة بك في مجلد على جهازك واختيارها داخل تطبيق Lemuroid. يسمح لهذا المجلد بأن يحتوي على دلائل فرعية. بعد الانتهاء من الفحص، لابد ان ترى ألعابك.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;كيف أستخدم OMINOY؟</b><br/>
+        نسخ جميع ملفات الالعاب الخاصة بك في مجلد على جهازك واختيارها داخل تطبيق OMINOY. يسمح لهذا المجلد بأن يحتوي على دلائل فرعية. بعد الانتهاء من الفحص، لابد ان ترى ألعابك.<br/><br/>
         <b>&#8226;لماذا لم يتم اكتشاف ألعابي؟</b><br/>
         إذا كانت ألعابك بصيغة مضغوطة قم بأستخراجها.و في حال لم يتم العثور عليها قم بوضعها في مجلدات منفصلة حسب تسميات النظم التالية: $SYSTEMS.    ]]></string>
     <string name="lemuroid_crash_disclamer">يبدو أن نواة ليبرترو قد واجهة مشكلة غير متوقعة. إذا كان الأمر مستمرا الرجاء محاولة ما يلي:\n
         \n\u2022 تعطيل الحفظ التلقائي وإعادة تشغيل اللعبة
         \n\u2022 اذهب إلى إعدادات أندرويد ومسح ذاكرة التخزين المؤقت للتطبيق
-        \n\u2022 اذهب إلى إعدادات Lemuroid وأجري إعادة تعيين المصنع
+        \n\u2022 اذهب إلى إعدادات OMINOY وأجري إعادة تعيين المصنع
         \n\n إذا لم يعمل أي من التطبيقات المذكورة أعلاه، قد يكون من الممكن أن تكون هذه اللعبة/النواة غير مدعومة من هذا الجهاز.
     </string>
-    <string name="error_message_incompatible_state">حالة الحفظ هذه غير متوافقة مع الإصدار الأساسي الحالي. الرجاء تحميل أحدث نسخة احتياطية في اللعبة أو استخدام إصدار محاكي Lemuroid السابق.</string>
+    <string name="error_message_incompatible_state">حالة الحفظ هذه غير متوافقة مع الإصدار الأساسي الحالي. الرجاء تحميل أحدث نسخة احتياطية في اللعبة أو استخدام إصدار محاكي OMINOY السابق.</string>
     <string name="shader_filter_names_auto">تلقائي</string>
     <string name="shader_filter_names_sharp">حاد</string>
     <string name="shader_filter_names_smooth">ناعم</string>

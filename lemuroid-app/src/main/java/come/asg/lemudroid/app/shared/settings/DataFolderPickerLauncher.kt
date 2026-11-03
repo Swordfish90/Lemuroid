@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import androidx.documentfile.provider.DocumentFile
+import come.asg.lemudroid.app.shared.library.LibraryIndexScheduler
 import come.asg.lemudroid.app.utils.android.displayErrorDialog
 import come.asg.lemudroid.R
 import come.asg.lemudroid.lib.android.RetrogradeActivity
@@ -121,6 +122,8 @@ class DataFolderPickerLauncher : RetrogradeActivity() {
                 runCatching { source.copyRecursively(File(newRoot, source.name), overwrite = false) }
             }
         }
+
+        LibraryIndexScheduler.scheduleLibrarySync(applicationContext)
     }
 
     private fun resultFlags(): Int =

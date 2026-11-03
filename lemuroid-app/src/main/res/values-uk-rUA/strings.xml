@@ -81,7 +81,7 @@
     <string name="game_context_menu_restart">Перезапуск</string>
     <string name="game_context_menu_create_shortcut">Закріпити у лаунчері</string>
     <string name="home_notification_title">Увімкнути сповіщення</string>
-    <string name="home_notification_message">Lemuroid використовує сповіщення, щоб повідомити, коли гра або операція працює у фоновому режимі.</string>
+    <string name="home_notification_message">OMINOY використовує сповіщення, щоб повідомити, коли гра або операція працює у фоновому режимі.</string>
     <string name="home_notification_action">Увімкнути</string>
     <string name="home_microphone_title">Увімкнути мікрофон</string>
     <string name="home_microphone_message">Ігри для Nintendo DS можуть використовувати мікрофон для надання деяких функцій.</string>
@@ -158,7 +158,7 @@
     <string name="mobile_settings_help">Допомога</string>
     <string name="mobile_settings_support">Підтримка</string>
     <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Як я використовую Лемуроїд?</b><br/>
-        Скопіюйте всі файли ROM в каталог на вашому пристрої і виберіть його в Lemuroid. Цей каталог може містити підкаталоги. Після того, як сканування завершиться, ви повинні побачити свої ігри.<br/><br/>,        <b>&#8226;Чому не виявлено моїх ігор?</b><br/>
+        Скопіюйте всі файли ROM в каталог на вашому пристрої і виберіть його в OMINOY. Цей каталог може містити підкаталоги. Після того, як сканування завершиться, ви повинні побачити свої ігри.<br/><br/>,        <b>&#8226;Чому не виявлено моїх ігор?</b><br/>
         Якщо ваші ігри стиснуті, спробуйте розпакувати їх. Якщо це не спрацює, спробуйте покласти прошивки в окремі каталоги, одну для кожної системи з такими іменами: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Схоже що ядро Libretro отримала неочікувану помилку. Якщо помилка залишається, спробуйте зробити наступне:\n

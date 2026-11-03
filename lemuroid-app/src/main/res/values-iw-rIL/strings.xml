@@ -41,7 +41,7 @@
     <string name="settings_bios_category_detected">זוהה</string>
     <string name="settings_bios_category_not_detected">נתמך</string>
     <string name="settings_title_reset_settings">איפוס להגדרות היצרן</string>
-    <string name="settings_description_reset_settings">אפס את Lemuroid להגדרות היצרן</string>
+    <string name="settings_description_reset_settings">אפס את OMINOY להגדרות היצרן</string>
     <string name="settings_title_advanced_settings">הגדרות מתקדמות</string>
     <string name="settings_description_advanced_settings">הצג הגדרות מתקדמות</string>
     <string name="settings_title_low_latency_audio">תעדף שמע מופחת השהייה (Low-latency)</string>
@@ -53,7 +53,7 @@
     <string name="settings_title_enable_device_rumble">רטט מכשיר</string>
     <string name="settings_description_enable_device_rumble">הפעל רטט ישירות דרך הטלפון כאשר בקר חיצוני אינו מחובר</string>
     <string name="reset_settings_warning_message_title">האם אתה בטוח?</string>
-    <string name="reset_settings_warning_message_description">פעולה זו תאפס את Lemuroid אל הגדרות היצרן. שמירות ומצבי משחק יישמרו.</string>
+    <string name="reset_settings_warning_message_description">פעולה זו תאפס את OMINOY אל הגדרות היצרן. שמירות ומצבי משחק יישמרו.</string>
     <string name="settings_title_save_sync">שמירות בענן</string>
     <string name="settings_description_save_sync">גבה וסנכרן את השמירות שלך אל הענן</string>
     <string name="settings_save_sync_refresh">סנכרון ידני</string>
@@ -71,7 +71,7 @@
     <string name="game_context_menu_restart">הפעל מחדש</string>
     <string name="game_context_menu_create_shortcut">הצמד למסך הבית</string>
     <string name="home_empty_title">בחר את תיקיית היעד בה נמצאים קבצי ה-ROM</string>
-    <string name="home_empty_message">Lemuroid צריך לסרוק תיקייה המכילה קבצי ROM. \nפעולה זו עשויה לארוך מספר דקות.</string>
+    <string name="home_empty_message">OMINOY צריך לסרוק תיקייה המכילה קבצי ROM. \nפעולה זו עשויה לארוך מספר דקות.</string>
     <string name="home_empty_action">בחירת תיקייה</string>
     <string name="game_menu_save">שמור</string>
     <string name="game_menu_load">טען</string>
@@ -111,7 +111,7 @@
     <string name="tv_home_section_favorites">אהובים</string>
     <string name="mobile_settings_help">עזרה</string>
     <string name="mobile_settings_support">תמיכה</string>
-    <string name="lemuroid_help_content"><![CDATA[&#8226;כיצד להשתמש ב-Lemuroid?</b><br/>
+    <string name="lemuroid_help_content"><![CDATA[&#8226;כיצד להשתמש ב-OMINOY?</b><br/>
         העתק את כל קבצי ה-ROM שלך אל תיקייה לבחירתך במכשיר ובחר אותה מתוך הגדרות האפליקציה. ניתן ליצור תיקיות משנה (לקונסולות ספציפיות למשל) באותה תיקייה ראשית. לאחר השלמת הסריקה המשחקים אמורים להופיע.<br/><br/>
         <b>&#8226;למה המשחקים שלי לא מזוהים?</b><br/>
 אם המשחקים כווצו (Compressed), נסה להחזיר אותם למצבם המקורי. אם המשחקים עדיין לא מזוהים נסה לשים את קבצי ה-ROM בתיקיות נפרדות, אחת לכל קונסולה, ושנה את שמן בהתאם: $SYSTEMS.
@@ -122,5 +122,5 @@
         \n\u2022 כנס אל הגדרות האפליקציה ובצע איפוס להגדרות היצרן
         \n\n אם אף אחד מהפתרונות לא עזר, ייתכן שהמשחק/הליבה אינם נתמכים במכשיר זה.
     </string>
-    <string name="error_message_incompatible_state">מצב שמירה זה אינו נתמך על ידי גרסת הליבה הנוכחית. טען את השמירה האחרונה שבוצעה על ידי המשחק (in-game) או לחלופין, התקן גרסה ישנה יותר של Lemuroid.</string>
+    <string name="error_message_incompatible_state">מצב שמירה זה אינו נתמך על ידי גרסת הליבה הנוכחית. טען את השמירה האחרונה שבוצעה על ידי המשחק (in-game) או לחלופין, התקן גרסה ישנה יותר של OMINOY.</string>
 </resources>

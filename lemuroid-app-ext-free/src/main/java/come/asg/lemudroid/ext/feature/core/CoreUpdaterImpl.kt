@@ -37,6 +37,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
 
 class CoreUpdaterImpl(
     private val directoriesManager: DirectoriesManager,
@@ -47,7 +48,7 @@ class CoreUpdaterImpl(
         private const val CORES_VERSION = "1.17.0"
     }
 
-    private val baseUri = Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
+    private val baseUri = Uri.parse("https://github.com/Swordfish90/OMINOYCores/")
 
     private val api = retrofit.create(CoreUpdater.CoreManagerApi::class.java)
 
@@ -89,23 +90,35 @@ class CoreUpdaterImpl(
         val libFileName = coreID.libretroFileName
         val destFile = File(coresDirectory, libFileName)
 
-        if (destFile.exists()) {
+        if (destFile.isFile && destFile.length() > 0L) {
             return destFile
         }
+        destFile.safeDelete()
 
         runCatching {
             deleteOutdatedCores(mainCoresDirectory, CORES_VERSION)
         }
 
-        val uri =
-            baseUri.buildUpon()
-                .appendEncodedPath("raw/$CORES_VERSION/lemuroid_core_${coreID.coreName}/src/main/jniLibs/")
-                .appendPath(Build.SUPPORTED_ABIS.first())
-                .appendPath(libFileName)
-                .build()
-
         try {
-            downloadFile(uri, destFile)
+            var lastError: Throwable? = null
+            for (abi in Build.SUPPORTED_ABIS) {
+                val uri =
+                    baseUri.buildUpon()
+                        .appendEncodedPath("raw/$CORES_VERSION/lemuroid_core_${coreID.coreName}/src/main/jniLibs/")
+                        .appendPath(abi)
+                        .appendPath(libFileName)
+                        .build()
+                try {
+                    downloadFile(uri, destFile)
+                    if (destFile.isFile && destFile.length() > 0L) break
+                } catch (e: Throwable) {
+                    lastError = e
+                    destFile.safeDelete()
+                }
+            }
+            if (!destFile.isFile || destFile.length() == 0L) {
+                throw lastError ?: IOException("Downloaded core is empty: $libFileName")
+            }
             return destFile
         } catch (e: Throwable) {
             destFile.safeDelete()
@@ -124,7 +137,11 @@ class CoreUpdaterImpl(
             throw Exception(response.errorBody()?.string() ?: "Download error")
         }
 
-        response.body()?.writeToFile(destFile)
+        val body = response.body() ?: throw IOException("Core response has no body: $uri")
+        body.writeToFile(destFile)
+        if (!destFile.isFile || destFile.length() == 0L) {
+            throw IOException("Downloaded core is empty: $uri")
+        }
     }
 
     private suspend fun findBundledLibrary(
@@ -133,8 +150,11 @@ class CoreUpdaterImpl(
     ): File? =
         withContext(Dispatchers.IO) {
             File(context.applicationInfo.nativeLibraryDir)
-                .walkBottomUp()
-                .firstOrNull { it.name == coreID.libretroFileName }
+                .takeIf { it.exists() }
+                ?.walkBottomUp()
+                ?.firstOrNull {
+                    it.isFile && it.name == coreID.libretroFileName && it.canRead() && it.length() > 0L
+                }
         }
 
     private fun deleteOutdatedCores(

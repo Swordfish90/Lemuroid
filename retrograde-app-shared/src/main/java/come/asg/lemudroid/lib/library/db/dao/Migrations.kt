@@ -4,6 +4,13 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 object Migrations {
+    val VERSION_11_12: Migration =
+        object : Migration(11, 12) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE game_cheats ADD COLUMN codeType TEXT")
+            }
+        }
+
     val VERSION_10_11: Migration =
         object : Migration(10, 11) {
             override fun migrate(database: SupportSQLiteDatabase) {

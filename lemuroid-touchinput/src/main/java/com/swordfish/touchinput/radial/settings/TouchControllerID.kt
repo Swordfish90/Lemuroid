@@ -56,6 +56,7 @@ import gg.padkit.PadKitScope
 
 enum class TouchControllerID {
     GB,
+    GBC,
     NES,
     DESMUME,
     MELONDS,
@@ -97,6 +98,12 @@ enum class TouchControllerID {
         fun getConfig(id: TouchControllerID): Config {
             return when (id) {
                 GB ->
+                    Config(
+                        { modifier, settings -> GBLeft(modifier, settings) },
+                        { modifier, settings -> GBRight(modifier, settings) },
+                    )
+
+                GBC ->
                     Config(
                         { modifier, settings -> GBLeft(modifier, settings) },
                         { modifier, settings -> GBRight(modifier, settings) },

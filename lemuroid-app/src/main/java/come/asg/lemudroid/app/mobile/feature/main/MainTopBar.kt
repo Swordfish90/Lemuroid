@@ -160,7 +160,7 @@ fun LemuroidTopBarActions(
                 )
             }
         }
-        if (route.showBottomNavigation) {
+        if (route.showBottomNavigation && route.root != MainRoute.SETTINGS) {
             IconButton(
                 onClick = { navController.navigate(MainRoute.SETTINGS.route) },
             ) {

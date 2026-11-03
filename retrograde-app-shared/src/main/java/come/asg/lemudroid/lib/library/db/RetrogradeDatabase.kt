@@ -31,7 +31,7 @@ import come.asg.lemudroid.lib.library.db.entity.Game
 
 @Database(
     entities = [Game::class, DataFile::class, GameCheat::class],
-    version = 11,
+    version = 12,
     exportSchema = true,
 )
 abstract class RetrogradeDatabase : RoomDatabase() {

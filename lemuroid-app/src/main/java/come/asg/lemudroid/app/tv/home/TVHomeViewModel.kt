@@ -99,7 +99,10 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         .map { systemCounts ->
             systemCounts.asSequence()
                 .filter { (_, count) -> count > 0 }
-                .map { (systemId, count) -> GameSystem.findById(systemId).metaSystemID() to count }
+                .mapNotNull {
+                        (systemId, count) ->
+                    GameSystem.findByIdOrNull(systemId)?.metaSystemID()?.let { it to count }
+                }
                 .groupBy { (metaSystemId, _) -> metaSystemId }
                 .map { (metaSystemId, counts) -> MetaSystemInfo(metaSystemId, counts.sumBy { it.second }) }
                 .sortedBy { it.getName(appContext) }

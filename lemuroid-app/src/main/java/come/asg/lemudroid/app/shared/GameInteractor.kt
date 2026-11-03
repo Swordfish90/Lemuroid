@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import come.asg.lemudroid.R
 import come.asg.lemudroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import come.asg.lemudroid.app.shared.game.GameLauncher
@@ -13,8 +15,12 @@ import come.asg.lemudroid.common.displayToast
 import come.asg.lemudroid.lib.library.covers.CustomCoverManager
 import come.asg.lemudroid.lib.library.db.RetrogradeDatabase
 import come.asg.lemudroid.lib.library.db.entity.Game
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class GameInteractor(
     private val activity: BusyActivity,
@@ -81,9 +87,26 @@ class GameInteractor(
      * app restarts regardless of where the user picked the file from.
      */
     fun onSetCustomCoverUri(game: Game, sourceUri: String) {
-        GlobalScope.launch {
-            val localUri = customCoverManager.importCover(game.id, Uri.parse(sourceUri))
-            retrogradeDb.gameDao().update(game.copy(customCoverUri = localUri))
+        val hostActivity = activity.activity()
+        val owner = hostActivity as? LifecycleOwner
+        val scope = owner?.lifecycleScope ?: GlobalScope
+        scope.launch {
+            try {
+                val localUri =
+                    withContext(Dispatchers.IO) {
+                        customCoverManager.importCover(game.id, Uri.parse(sourceUri))
+                    }
+                retrogradeDb.gameDao().update(game.copy(customCoverUri = localUri))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to set custom artwork for game ${game.id}")
+                withContext(Dispatchers.Main.immediate) {
+                    if (!hostActivity.isFinishing && !hostActivity.isDestroyed) {
+                        hostActivity.displayToast(R.string.custom_artwork_import_failed)
+                    }
+                }
+            }
         }
     }
 

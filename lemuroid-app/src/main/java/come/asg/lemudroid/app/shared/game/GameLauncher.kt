@@ -28,7 +28,11 @@ class GameLauncher(
         }
 
         GlobalScope.launch {
-            val system = GameSystem.findById(game.systemId)
+            val system = GameSystem.findByIdOrNull(game.systemId)
+            if (system == null) {
+                activity.displayToast(R.string.game_loader_error_generic)
+                return@launch
+            }
             val coreConfig = coresSelection.getCoreConfigForSystem(system)
             gameLaunchTaskHandler.handleGameStart(activity.applicationContext)
             BaseGameActivity.launchGame(activity, coreConfig, game, loadSave, leanback)

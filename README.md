@@ -1,4 +1,4 @@
-# Lemuroid
+# OMINOY
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
@@ -9,68 +9,74 @@
 
 ## Description
 
-Lemuroid is an open-source emulation project for Android based on Libretro. Its main goal is ease of use, good Android integration and a great user experience.
+OMINOY is an open-source Android emulation project based on Libretro, focused exclusively on Nintendo Game Boy, Game Boy Color, and Game Boy Advance. Its goal is to combine easy setup, Android integration, and a polished play experience.
 
-It originated from a rib of [Retrograde](https://github.com/retrograde/retrograde-android), but graduated to a standalone project integrating [LibretroDroid](https://github.com/Swordfish90/LibretroDroid).
+It originated from a branch of [Retrograde](https://github.com/retrograde/retrograde-android) and integrates [LibretroDroid](https://github.com/Swordfish90/LibretroDroid).
 
-|Screen 1|Screen 2|Screen 3|
-|---|---|---|
-|![Screen1](https://github.com/Swordfish90/Lemuroid/blob/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg)|![Screen2](https://github.com/Swordfish90/Lemuroid/blob/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg)|![Screen3](https://github.com/Swordfish90/Lemuroid/blob/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg)|
+### Supported systems
 
-### Supported Systems:
-- Atari 2600 (A26) ([stella](https://docs.libretro.com/library/stella/))
-- Atari 7800 (A78) ([prosystem](https://docs.libretro.com/library/prosystem/))
-- Atari Lynx (Lynx) ([handy](https://docs.libretro.com/library/handy/))
-- Nintendo (NES) ([fceumm](https://docs.libretro.com/library/fceumm/))
-- Super Nintendo (SNES) ([snes9x](https://docs.libretro.com/library/snes9x/))
-- Game Boy (GB) ([gambatte](https://docs.libretro.com/library/gambatte/))
-- Game Boy Color (GBC) ([gambatte](https://docs.libretro.com/library/gambatte/))
-- Game Boy Advance (GBA) ([mgba](https://docs.libretro.com/library/mgba/))
-- Sega Genesis (aka Megadrive) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
-- Sega CD (aka Mega CD) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
-- Sega Master System (SMS) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
-- Sega Game Gear (GG) ([genesis_plus_gx](https://docs.libretro.com/library/genesis_plus_gx/))
-- Nintendo 64 (N64) ([mupen64plus](https://docs.libretro.com/library/mupen64plus/))
-- PlayStation (PSX) ([PCSX-ReARMed](https://docs.libretro.com/library/pcsx_rearmed/))
-- PlayStation Portable (PSP) ([ppsspp](https://docs.libretro.com/library/ppsspp/))
-- FinalBurn Neo (Arcade) ([fbneo](https://github.com/libretro/FBNeo/))
-- Nintendo DS (NDS) ([desmume](https://docs.libretro.com/library/desmume/)/[MelonDS](https://docs.libretro.com/library/melonds/))
-- NEC PC Engine (PCE) ([beetle_pce_fast](https://docs.libretro.com/library/beetle_pce_fast/))
-- Neo Geo Pocket (NGP) ([mednafen_ngp](https://docs.libretro.com/library/beetle_neopop/))
-- Neo Geo Pocket Color (NGC) ([mednafen_ngp](https://docs.libretro.com/library/beetle_neopop/))
-- WonderSwan (WS) ([beetle_cygne](https://docs.libretro.com/library/beetle_cygne/))
-- WonderSwan Color (WSC) ([beetle_cygne](https://docs.libretro.com/library/beetle_cygne/))
-- Nintendo 3DS (3DS) ([citra](https://docs.libretro.com/library/citra/))
+- Game Boy (GB) — mGBA
+- Game Boy Color (GBC) — mGBA
+- Game Boy Advance (GBA) — mGBA
 
-### Features:
-- Android TV support
-- Automatically save and restore game states.
-- ROMs scanning and indexing
-- Optimized touch controls
-- Quick save/load
-- Support for Zipped ROMs
-- Display simulation (LCD/CRT)
-- Gamepad support
-- Local multiplayer
+### Features
+
+- Android phone and Android TV support
+- Automatic save-RAM and save-state handling
+- ROM scanning and library indexing
+- Optimized, customizable touch controls
+- Quick save/load slots
+- ZIP-compressed ROM support
+- LCD/CRT display simulation
+- Gamepad and local multiplayer support
 - Tilt input
-- Customizable touch controls (size and position)
-- Cloud save sync
-- HD mode
+- Cloud save sync in supported builds
 - Custom per-game thumbnails for ROM hacks and homebrew
 
 ### Custom thumbnails
 
-This fork supports assigning local artwork to individual games. It is useful for ROM hacks, homebrew, and other games that do not have cover art in the Libretro thumbnail database.
+Assign local artwork to individual games that do not have cover art in the Libretro thumbnail database. Long-press a game tile and choose **Set custom thumbnail**; choose an image from the Android gallery or file picker. OMINOY center-crops the image to a square, resizes it to a maximum of 512 × 512 pixels, and stores a private app copy. For existing artwork, choose **Change thumbnail** or **Remove thumbnail** from the same context menu.
 
-To assign artwork, long-press a game tile from Home, Favorites, Systems, or Search. Select **Set custom thumbnail**, choose an image from the Android gallery or file picker, and wait briefly while Lemuroid creates a square thumbnail. The image is copied into Lemuroid’s private storage, so the original gallery or download location is not required afterward.
+Custom thumbnails are stored as app-side metadata and persist across restarts and library rescans. They are not embedded in ROM files or uploaded for cloud sync, and they are removed when the app is uninstalled.
 
-For a game that already has custom artwork, long-press the tile and select **Change thumbnail** to replace it. Select **Remove thumbnail** to delete the custom image and return to the normal scraped artwork or generated placeholder. Images are center-cropped to a square and resized to a maximum of 512 × 512 pixels automatically.
+### Security and reliability
 
-Custom thumbnails are stored as app-side metadata and persist across app restarts and library rescans. They are not embedded in ROM files, are not uploaded for cloud sync, and are removed when the app is uninstalled. If an image cannot be decoded, Lemuroid shows an error and keeps the existing artwork unchanged.
+- ZIP extraction rejects absolute and traversal paths and applies entry-count, output-size, per-entry-size, and compression-ratio limits.
+- Core assets are extracted into a validated temporary directory before installation.
+- Downloaded core files, extracted data, and synchronized files use atomic writes where applicable.
+- Save, state, preview, and cache filenames are sanitized; cache locations include a SHA-256 source identity derived from the URI, filename, and system.
+- Library cleanup runs only after a complete successful provider scan, preserving existing entries when a provider fails or becomes unavailable.
+- Google Drive relative paths are validated before local file construction, and Room multi-instance invalidation is enabled for the shared database.
 
-### GitHub distribution
+### Current OMINOY build
 
-The GitHub release uses the **dynamic-core** build to keep the APK small. Emulator cores are downloaded from GitHub on demand when a system is used for the first time, so internet access may be required initially.
+This repository contains the OMINOY Android build with the following available functionality:
 
-### Languages:
-You can help translate Lemuroid in your native language by going here: https://crowdin.com/project/lemuroid
+- GB, GBC, and GBA emulation through the mGBA Libretro core
+- ROM library scanning, indexing, ZIP support, and per-game thumbnails
+- Save RAM, save states, quick save/load slots, and safe library cleanup
+- Customizable touch controls, gamepad input, tilt input, and local multiplayer
+- Android phone and Android TV support with LCD/CRT display simulation
+- Optional cloud-save synchronization in supported builds
+- Hardened ZIP/core extraction, filename sanitization, atomic writes, and validated cloud paths
+
+The release APK is published from the GitHub Releases page for this repository.
+
+### Building
+
+Requirements: JDK 21, Android SDK Platform 35, Android Build Tools 34.0.0, and the repository submodules.
+
+The project expects a root-level debug keystore for local debug builds. Generate a throwaway debug-only key (do not use it for production signing), then build the Free Dynamic debug APK:
+
+```bash
+keytool -genkeypair -noprompt -keystore debug.keystore \
+  -storepass android -alias androiddebugkey -keypass android \
+  -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
+./gradlew assembleFreeDynamicDebug
+```
+
+The debug APK uses a `.debug` application ID suffix and installs separately from a production release. Free Dynamic keeps the APK small; mGBA is downloaded on demand when first needed, so internet access may be required. For a release build, create an ignored `keystore.properties` file with `storeFile`, `keyAlias`, `storePassword`, and `keyPassword` entries. Never commit a production keystore or its password.
+
+### Languages
+
+Translations are managed through [Crowdin](https://crowdin.com/project/lemuroid).

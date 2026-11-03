@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Detekováno</string>
     <string name="settings_bios_category_not_detected">Podporováno</string>
     <string name="settings_title_reset_settings">Obnovení továrního nastavení</string>
-    <string name="settings_description_reset_settings">Resetovat Lemuroid do továrního nastavení</string>
+    <string name="settings_description_reset_settings">Resetovat OMINOY do továrního nastavení</string>
     <string name="settings_title_advanced_settings">Pokročilé nastavení</string>
     <string name="settings_description_advanced_settings">Zobrazit pokročilé nastavení</string>
     <string name="settings_title_low_latency_audio">Preferovat zvuk s nízkou latencí</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Vybrace zařízení</string>
     <string name="settings_description_enable_device_rumble">Pokud není připojen žádný ovladač, vibrujte tímto zařízením</string>
     <string name="reset_settings_warning_message_title">Jste si jisti?</string>
-    <string name="reset_settings_warning_message_description">Tohle vyresetuje Lemuroid do továrního nastavení, Savy a Stavu budou zachovány.</string>
+    <string name="reset_settings_warning_message_description">Tohle vyresetuje OMINOY do továrního nastavení, Savy a Stavu budou zachovány.</string>
     <string name="settings_title_save_sync">Ukládání do cloudu</string>
     <string name="settings_description_save_sync">Zálohovat a synchronizovat vaše uložené pozice na cloudu</string>
     <string name="settings_save_sync_refresh">Manuální synchronizace</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Restartovat</string>
     <string name="game_context_menu_create_shortcut">Připnout do launcheru</string>
     <string name="home_notification_title">Povolit oznámení</string>
-    <string name="home_notification_message">Lemuroid používá oznámení, aby informoval, zda hra nebo operace běží v pozadí.</string>
+    <string name="home_notification_message">OMINOY používá oznámení, aby informoval, zda hra nebo operace běží v pozadí.</string>
     <string name="home_notification_action">Povolit</string>
     <string name="home_microphone_title">Povolit mikrofon</string>
     <string name="home_microphone_message">Nintendo DS hry mohou používat mikrofon k poskytování některých funkcí.</string>
     <string name="home_microphone_action">Povolit</string>
     <string name="home_empty_title">Zvolit složku s ROMkami</string>
-    <string name="home_empty_message">Lemuroid potřebuje naskenovat složku obsahující ROM soubory.\nTo může trvat až několik minut.</string>
+    <string name="home_empty_message">OMINOY potřebuje naskenovat složku obsahující ROM soubory.\nTo může trvat až několik minut.</string>
     <string name="home_empty_action">Vybrat adresář</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME brzy odejde</string>
     <string name="home_notification_desmume_deprecated_message">Uložte hru, přepněte se na melonDS, a váš postup bude pokračovat. Uložte stavy zůstávají vázány na DeSmuME.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">Hra běží</string>
     <string name="game_running_notification_message">Ujistěte se, že jste uložili svůj postup</string>
     <string name="game_loader_error_gl_incompatible">Toto jádro vyžaduje verzi OpenGL ES, která není podporována vaším zařízením.</string>
-    <string name="game_loader_error_load_game">Stalo se něco zlého při načítání vaší hry. Ujistěte se, že ROM je podporováná Lemuroidem a znovu naskenujte vaše hry.</string>
+    <string name="game_loader_error_load_game">Stalo se něco zlého při načítání vaší hry. Ujistěte se, že ROM je podporováná OMINOYem a znovu naskenujte vaše hry.</string>
     <string name="game_loader_error_save">Stalo se něco závažného s vaším savem. Pokud problémy přetrvávají, zkuste vypnout automatické ukládání.</string>
     <string name="game_loader_error_unsupported_architecture">Tohle jádro není podporované vaším zařízením.</string>
     <string name="game_loader_error_generic">Došlo k něčemu špatného. Zkuste následující:\n
         \n\u2022 Vypněte automatické ukládání a znovu spusťte hru
         \n\u2022 Přejděte do nastavení Androidu a vyčistěte mezipaměť aplikace
-        \n\u2022 Přejděte do nastavení Lemuroid a proveďte reset do továrního nastavení
+        \n\u2022 Přejděte do nastavení OMINOY a proveďte reset do továrního nastavení
         \n\nPokud nic z výše uvedeného nepomůže, je možné, že tato hra/jádro není podporováno vaším zařízením.
     </string>
     <string name="game_loader_error_missing_bios">Vypadá to, že vám chybí požadované BIOS soubory. Vložte je do složky s ROMkami a znovu naskenujte. Vyžadouvané soubory: %1$s</string>
@@ -156,17 +156,17 @@
     <string name="game_interactory_busy">Vyčkejte pro dokončení zbývajících operací</string>
     <string name="mobile_settings_help">Nápověda</string>
     <string name="mobile_settings_support">Podpora</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Jak se používá Lemuroid</b><br/>
-        Zkopírujte veškeré vaše ROM soubory do složky na vašem zařízení a vyberte ji v Lemuroidu. Tahle složka může mít podsložky. Až sken zkončí, měli by jste vidět vaše hry.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Jak se používá OMINOY</b><br/>
+        Zkopírujte veškeré vaše ROM soubory do složky na vašem zařízení a vyberte ji v OMINOYu. Tahle složka může mít podsložky. Až sken zkončí, měli by jste vidět vaše hry.<br/><br/>
         <b>&#8226;Proč to nenašlo žádné hry?</b><br/>
         Pokud jsou vaše ROMky komprimované, zkuste je rozbalit. Pokud to nepomůže, zkuste vložit ROMky každé do složek zvlášť podle systému. Názvy systémů jsou: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Vypadá to, že jádro od Libretro narazylo na nečekaný problém. Pokud přetrvává zkuste následující:\n
         \n\u2022 Vypněte automatické ukládání a znovu spusťte hru
         \n\u2022 Přejděte do nastavení Androidu a vyčistěte mezipaměť aplikace
-        \n\u2022 Přejděte do nastavení Lemuroidu a proveďte reset do továrního nastavení
+        \n\u2022 Přejděte do nastavení OMINOYu a proveďte reset do továrního nastavení
         \n\u2022Pokud niz z výše uvedeného nepomůže, je možné, že tato hra/jádro není podporováno vaším zařízením.    </string>
-    <string name="error_message_incompatible_state">Tento save state není kompatibilní se současnou verzí jádra. Prosím načtěte nejnovější save nebo použijte předchozí verzi Lemuroidu.</string>
+    <string name="error_message_incompatible_state">Tento save state není kompatibilní se současnou verzí jádra. Prosím načtěte nejnovější save nebo použijte předchozí verzi OMINOYu.</string>
     <string name="shader_filter_names_auto">Automatický</string>
     <string name="shader_filter_names_sharp">Ostrý</string>
     <string name="shader_filter_names_smooth">Hladký</string>

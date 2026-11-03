@@ -30,7 +30,7 @@ fun PadKitScope.GBALeft(
         modifier = modifier,
         primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
         secondaryDials = {
-            SecondaryButtonL()
+            SecondaryButtonL(gbaStyle = true)
             SecondaryButtonSelect(position = 2)
             SecondaryButtonMenuPlaceholder(settings)
         },
@@ -47,7 +47,8 @@ fun PadKitScope.GBARight(
         modifier = modifier,
         primaryDial = {
             LemuroidControlFaceButtons(
-                rotationInDegrees = -30f,
+                // A sits higher on the right while B sits lower on the left, matching the GBA layout.
+                rotationInDegrees = -18f,
                 ids =
                     persistentListOf(
                         Id.Key(KeyEvent.KEYCODE_BUTTON_A),
@@ -61,7 +62,7 @@ fun PadKitScope.GBARight(
             )
         },
         secondaryDials = {
-            SecondaryButtonR()
+            SecondaryButtonR(gbaStyle = true)
             SecondaryButtonStart(position = 2)
             SecondaryButtonMenu(settings)
         },

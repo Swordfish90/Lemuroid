@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Upptäckta</string>
     <string name="settings_bios_category_not_detected">Supporterade</string>
     <string name="settings_title_reset_settings">Fabriksåterställning</string>
-    <string name="settings_description_reset_settings">Återställ Lemuroid till fabriksinställningarna</string>
+    <string name="settings_description_reset_settings">Återställ OMINOY till fabriksinställningarna</string>
     <string name="settings_title_advanced_settings">Avancerade inställningar</string>
     <string name="settings_description_advanced_settings">Visa avancerade inställningar</string>
     <string name="settings_title_low_latency_audio">Föredra ljud med låg fördröjning</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Enhetsvibration</string>
     <string name="settings_description_enable_device_rumble">När ingen styrenhet är ansluten vibrera enheten istället</string>
     <string name="reset_settings_warning_message_title">Är du säker?</string>
-    <string name="reset_settings_warning_message_description">Detta kommer att återställa Lemuroid till dess fabriksinställningar. Sparningar och lägen kommer att bevaras.</string>
+    <string name="reset_settings_warning_message_description">Detta kommer att återställa OMINOY till dess fabriksinställningar. Sparningar och lägen kommer att bevaras.</string>
     <string name="settings_title_save_sync">Spara till molnet</string>
     <string name="settings_description_save_sync">Säkerhetskopiera och synkronisera dina sparningar i molnet</string>
     <string name="settings_save_sync_refresh">Manuell synkronisering</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Starta om</string>
     <string name="game_context_menu_create_shortcut">Fäst på startskärmen</string>
     <string name="home_notification_title">Aktivera aviseringar</string>
-    <string name="home_notification_message">Lemuroid använder aviseringar för att informera dig om när ett spel eller åtgärd körs i bakgrunden.</string>
+    <string name="home_notification_message">OMINOY använder aviseringar för att informera dig om när ett spel eller åtgärd körs i bakgrunden.</string>
     <string name="home_notification_action">Aktivera</string>
     <string name="home_microphone_title">Aktivera mikrofon</string>
     <string name="home_microphone_message">Nintendo DS-spel kan använda mikrofonen för att tillhandahålla viss funktionalitet.</string>
     <string name="home_microphone_action">Aktivera</string>
     <string name="home_empty_title">Välj ROM-katalog</string>
-    <string name="home_empty_message">Lemuroid behöver söka igenom en katalog som innehåller ROM-filer.\nDetta kan ta några minuter.</string>
+    <string name="home_empty_message">OMINOY behöver söka igenom en katalog som innehåller ROM-filer.\nDetta kan ta några minuter.</string>
     <string name="home_empty_action">Välj katalog</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME tas snart bort</string>
     <string name="home_notification_desmume_deprecated_message">Spara i spelet, byt till melonDS, så kommer dina framsteg att överföras. Sparade tillstånd förblir kopplade till DeSmuME.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">Spelet körs fortfarande</string>
     <string name="game_running_notification_message">Se till att spara dina framsteg</string>
     <string name="game_loader_error_gl_incompatible">Denna kärna kräver en OpenGL ES-version som inte stöds av din enhet.</string>
-    <string name="game_loader_error_load_game">Något hände vid inläsningen av ditt spel. Säkerställ att ROMen är supporterad av Lemuroid och utför en ny sökning efter spel.</string>
+    <string name="game_loader_error_load_game">Något hände vid inläsningen av ditt spel. Säkerställ att ROMen är supporterad av OMINOY och utför en ny sökning efter spel.</string>
     <string name="game_loader_error_save">Något gick fel med din sparning. Om problemet kvarstår, försök inaktivera automatisk sparning.</string>
     <string name="game_loader_error_unsupported_architecture">Den här kärna stöds inte av din enhet.</string>
     <string name="game_loader_error_generic">Något dåligt hände. Prova följande:\n
         \n\u2022 Inaktivera automatisk sparning och köra om spelet
         \n\u2022 Gå till Android-inställningarna och rensa app-cachen
-        \n\u2022 Gå in i Lemuroid-inställningarna och utför en fabriksåterställning
+        \n\u2022 Gå in i OMINOY-inställningarna och utför en fabriksåterställning
         \n\nOm inget av ovanstående fungerar, det kan vara möjligt att detta spel/kärna inte stöds av den här enheten.
     </string>
     <string name="game_loader_error_missing_bios">Det verkar som om du saknar de nödvändiga BIOS, lägg dem i din ROM-katalog och sök igenom igen. Nödvändiga filer: %1$s</string>
@@ -157,18 +157,18 @@
     <string name="game_interactor_notification_permission_required">Aktivera aviseringar från Hem för att fortsätta</string>
     <string name="mobile_settings_help">Hjälp</string>
     <string name="mobile_settings_support">Support</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hur använder jag Lemuroid?</b><br/>
-        Kopiera alla dina ROM-filer till en katalog på din enhet och välj den i Lemuroid. Denna katalog tillåts att ha underkataloger. Efter genomsökningen är färdig bör du se dina spel.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hur använder jag OMINOY?</b><br/>
+        Kopiera alla dina ROM-filer till en katalog på din enhet och välj den i OMINOY. Denna katalog tillåts att ha underkataloger. Efter genomsökningen är färdig bör du se dina spel.<br/><br/>
         <b>&#8226;Varför hittas inte mina spel?</b><br/>
         Om dina spel är komprimerade, prova att packa upp dem. Om detta inte fungerar så prova att lägga ROM-filer i separata kataloger, en för varje system med följande namn: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Det ser ut som om Libretro kärnan har upplevt ett oväntat problem. Om det är ihållande, vänligen prova följande:\n
         \n\u2022 Inaktivera automatisk sparning och åter köra spelet
         \n\u2022 Gå till Android-inställningar och rensa app-cachen
-        \n\u2022 Gå till Lemuroid-inställningarna och utför en fabriksåterställning
+        \n\u2022 Gå till OMINOY-inställningarna och utför en fabriksåterställning
         \n\n Om inget av ovanstående fungerar, det kan vara möjligt att detta spel/kärna inte stöds av den här enheten.
     </string>
-    <string name="error_message_incompatible_state">Detta sparläge är inte kompatibelt med den aktuella kärnversionen. Ladda in den senaste sparningen i spelet eller använd en tidigare Lemuroidversion.</string>
+    <string name="error_message_incompatible_state">Detta sparläge är inte kompatibelt med den aktuella kärnversionen. Ladda in den senaste sparningen i spelet eller använd en tidigare OMINOYversion.</string>
     <string name="shader_filter_names_auto">Automatisk</string>
     <string name="shader_filter_names_sharp">Skarp</string>
     <string name="shader_filter_names_smooth">Mjuk</string>

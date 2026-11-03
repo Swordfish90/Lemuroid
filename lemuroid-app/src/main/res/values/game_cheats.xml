@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_cheats_type_label">Code type</string>
+    <string name="game_cheats_type_not_set">Type not set</string>
+    <string name="game_cheats_type_select_required">Choose a code type before saving.</string>
+    <string name="game_cheats_type_unsupported_system">Cheat code types are available for Game Boy, Game Boy Color, and Game Boy Advance games.</string>
+    <string name="game_cheats_type_game_shark">GameShark</string>
+    <string name="game_cheats_type_game_genie">Game Genie</string>
+    <string name="game_cheats_type_action_replay">Action Replay</string>
+    <string name="game_cheats_type_code_breaker">CodeBreaker</string>
+    <string name="game_cheats_error_gb_gameshark">GameShark needs 8 hexadecimal digits per code, for example 01A2B3C4. Enter up to 8 lines, with 24 characters per trimmed line.</string>
+    <string name="game_cheats_error_game_genie">Game Genie needs 6 or 9 hexadecimal digits after removing dashes, for example ABC-DEF or ABC-DEF-012. Enter up to 8 lines, with 24 characters per trimmed line.</string>
+    <string name="game_cheats_error_gba_gameshark">GBA GameShark needs two 8-digit hexadecimal groups, for example 01234567 89ABCDEF. Enter up to 8 lines, with 24 characters per trimmed line.</string>
+    <string name="game_cheats_error_action_replay">Action Replay needs two 8-digit hexadecimal groups, for example 01234567 89ABCDEF. Enter up to 8 lines, with 24 characters per trimmed line.</string>
+    <string name="game_cheats_error_code_breaker">CodeBreaker needs an 8-digit group and a 4-digit group, for example 32028642 00FE. Enter up to 8 lines, with 24 characters per trimmed line.</string>
+    <string name="game_cheats_gba_enable_hint">Some GBA games require the master/enable code as the first line.</string>
+    <string name="game_cheats_save_failed">Could not save this cheat. Check available storage and try again; your changes are still here.</string>
+</resources>

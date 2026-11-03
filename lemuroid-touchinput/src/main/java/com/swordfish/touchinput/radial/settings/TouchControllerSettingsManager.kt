@@ -208,6 +208,7 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
                 ControlPreset(controlKey(Id.Key(KeyEvent.KEYCODE_BUTTON_START)), "Start"),
                 ControlPreset(controlKey(Id.Key(KeyEvent.KEYCODE_BUTTON_SELECT)), "Select"),
                 ControlPreset(controlKey(Id.Key(KeyEvent.KEYCODE_BUTTON_MODE)), "Menu"),
+                ControlPreset(controlKey(Id.Key(1001)), "Fast forward"),
             )
 
         /** The menu button is the only touch way into the in-game menu, so it can never be hidden. */

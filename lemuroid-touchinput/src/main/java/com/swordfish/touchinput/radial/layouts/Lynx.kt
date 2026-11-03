@@ -9,6 +9,7 @@ import com.swordfish.touchinput.radial.controls.LemuroidControlCross
 import com.swordfish.touchinput.radial.controls.LemuroidControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
+import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonFastForward
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonStart
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.LemuroidButtonForeground
@@ -67,6 +68,7 @@ fun PadKitScope.LynxRight(
         secondaryDials = {
             SecondaryButtonStart()
             SecondaryButtonMenu(settings)
+            SecondaryButtonFastForward(settings)
         },
     )
 }

@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Gedetecteerd</string>
     <string name="settings_bios_category_not_detected">Ondersteund</string>
     <string name="settings_title_reset_settings">Fabrieksinstellingen herstellen</string>
-    <string name="settings_description_reset_settings">Lemuroid terugzetten naar fabrieksinstellingen</string>
+    <string name="settings_description_reset_settings">OMINOY terugzetten naar fabrieksinstellingen</string>
     <string name="settings_title_advanced_settings">Geavanceerde instellingen</string>
     <string name="settings_description_advanced_settings">Geavanceerde en experimentele instellingen</string>
     <string name="settings_title_low_latency_audio">Audio met lage latentie</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Trilling van apparaat</string>
     <string name="settings_description_enable_device_rumble">Gebruik apparaattrilling indien er geen controller is aangesloten</string>
     <string name="reset_settings_warning_message_title">Weet u het zeker?</string>
-    <string name="reset_settings_warning_message_description">Dit zal Lemuroid terugzetten naar de fabrieksinstellingen. Saves en states zullen behouden blijven.</string>
+    <string name="reset_settings_warning_message_description">Dit zal OMINOY terugzetten naar de fabrieksinstellingen. Saves en states zullen behouden blijven.</string>
     <string name="settings_title_save_sync">Cloud-saves</string>
     <string name="settings_description_save_sync">Maak een back-up en synchroniseer uw saves in de cloud</string>
     <string name="settings_save_sync_refresh">Handmatig synchroniseren</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Herstarten</string>
     <string name="game_context_menu_create_shortcut">Vastzetten aan launcher</string>
     <string name="home_notification_title">Meldingen inschakelen</string>
-    <string name="home_notification_message">Lemuroid gebruikt meldingen om je te laten weten wanneer een spel of bewerking op de achtergrond draait.</string>
+    <string name="home_notification_message">OMINOY gebruikt meldingen om je te laten weten wanneer een spel of bewerking op de achtergrond draait.</string>
     <string name="home_notification_action">Inschakelen</string>
     <string name="home_microphone_title">Microfoon inschakelen</string>
     <string name="home_microphone_message">Nintendo DS spellen kunnen de microfoon gebruiken om enkele functies te bieden.</string>
     <string name="home_microphone_action">Inschakelen</string>
     <string name="home_empty_title">Selecteer ROM-map</string>
-    <string name="home_empty_message">Lemuroid moet een map met ROM-bestanden scannen.\nDit kan enkele minuten duren.</string>
+    <string name="home_empty_message">OMINOY moet een map met ROM-bestanden scannen.\nDit kan enkele minuten duren.</string>
     <string name="home_empty_action">Selecteer map</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME gaat binnenkort met pensioen</string>
     <string name="home_notification_desmume_deprecated_message">Sla in-game op, schakel over naar melonDS, en jouw voortgang zal overgedragen worden. Bespaar staten blijven gekoppeld aan DeSmuME.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">Game is actief</string>
     <string name="game_running_notification_message">Zorg ervoor dat je je voortgang opslaat</string>
     <string name="game_loader_error_gl_incompatible">Deze Core heeft een OpenGL ES versie nodig die je apparaat niet ondersteund.</string>
-    <string name="game_loader_error_load_game">Er is iets misgegaan tijdens het laden van je spel. Zorg ervoor dat de ROM wordt ondersteund door Lemuroid en rescan je games.</string>
+    <string name="game_loader_error_load_game">Er is iets misgegaan tijdens het laden van je spel. Zorg ervoor dat de ROM wordt ondersteund door OMINOY en rescan je games.</string>
     <string name="game_loader_error_save">Er is iets misgegaan met je opslagbestand. Als het probleem zich blijft voordoen, probeer dan auto-save uit te schakelen.</string>
     <string name="game_loader_error_unsupported_architecture">Deze core wordt niet ondersteund door uw apparaat.</string>
     <string name="game_loader_error_generic">Er is iets misgegaan. Probeer het volgende:\n
         \n\u2022 Schakel automatisch opslaan uit en herstart het spel
         \n\u2022 Ga naar Android instellingen en wis de app cache
-        \n\u2022 Ga naar Lemuroid instellingen en voer een reset uit
+        \n\u2022 Ga naar OMINOY instellingen en voer een reset uit
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
     <string name="game_loader_error_missing_bios">Het lijkt erop dat u de vereiste BIOS mist, plaats deze in uw ROM-map en herscan. Vereiste bestanden: %1$s</string>
@@ -158,18 +158,18 @@
     <string name="game_process_another_game_running">Sluit het huidige spel voor je een andere begint</string>
     <string name="mobile_settings_help">Help</string>
     <string name="mobile_settings_support">Ondersteuning</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hoe gebruik ik Lemuroid?</b><br/>
-        Kopieer al je ROM-bestanden in een map op je apparaat en selecteer ze in Lemuroid. Deze map kan submappen hebben. Nadat de scan voltooid is zou je je spellen moeten zien.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Hoe gebruik ik OMINOY?</b><br/>
+        Kopieer al je ROM-bestanden in een map op je apparaat en selecteer ze in OMINOY. Deze map kan submappen hebben. Nadat de scan voltooid is zou je je spellen moeten zien.<br/><br/>
         <b>&#8226;Waarom zijn mijn spellen niet gedetecteerd?</b><br/>
         Als je spellen zijn gecomprimeerd, probeer ze te decomprimeren. Als dit niet werkt, probeer dan ROMs in aparte mappen te plaatsen, één voor elk systeem met de volgende namen: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Er is iets misgegaan. Probeer het volgende:\n
         \n\u2022 Schakel automatisch opslaan uit en herstart het spel
         \n\u2022 Ga naar Android instellingen en wis de app cache
-        \n\u2022 Ga naar Lemuroid instellingen en voer een reset uit
+        \n\u2022 Ga naar OMINOY instellingen en voer een reset uit
         \n\nals geen van de bovenstaande werkt kan het zijn dat dit Spel/Core niet wordt ondersteund door dit apparaat.
     </string>
-    <string name="error_message_incompatible_state">Deze save state is niet compatibel met de huidige core-versie. Laad de laatste versie van het spel of gebruik een eerdere versie van Lemuroid.</string>
+    <string name="error_message_incompatible_state">Deze save state is niet compatibel met de huidige core-versie. Laad de laatste versie van het spel of gebruik een eerdere versie van OMINOY.</string>
     <string name="shader_filter_names_auto">Automatisch</string>
     <string name="shader_filter_names_sharp">Scherp</string>
     <string name="shader_filter_names_smooth">Vloeiend</string>

@@ -33,9 +33,10 @@ class CoresSelection(
     )
 
     fun getSelectedCores(): Flow<List<SelectedCore>> {
-        val configurableSystems =
-            GameSystem.all()
-                .filter { it.systemCoreConfigs.size > 1 }
+        // This build has one bundled mGBA core for GB, GBC, and GBA. Keep all
+        // supported systems visible to consumers even though there is no
+        // user-selectable core anymore.
+        val configurableSystems = GameSystem.all()
 
         val configurationFlows =
             configurableSystems.map { system ->
@@ -62,7 +63,8 @@ class CoresSelection(
     private fun getSelectedCoreConfigForSystem(system: GameSystem): Flow<SystemCoreConfig> {
         return getSelectedCoreNameForSystem(system)
             .map { coreName ->
-                system.systemCoreConfigs.first { it.coreID.coreName == coreName }
+                system.systemCoreConfigs.firstOrNull { it.coreID.coreName == coreName }
+                    ?: system.systemCoreConfigs.first()
             }
     }
 
@@ -97,7 +99,7 @@ class CoresSelection(
                 CoreID.MELONDS.coreName
             }
         }
-        return system.systemCoreConfigs.first().coreID.coreName
+        return system.systemCoreConfigs.firstOrNull()?.coreID?.coreName.orEmpty()
     }
 
     companion object {

@@ -140,7 +140,13 @@ class GameViewModelTouchControls(
         events.forEach { event ->
             when (event) {
                 is InputEvent.Button -> {
-                    handleVirtualInputButton(event)
+                    if (event.id == ComposeTouchLayouts.FAST_FORWARD_BUTTON_ID) {
+                        if (event.pressed) {
+                            sideEffects.toggleFastForward()
+                        }
+                    } else {
+                        handleVirtualInputButton(event)
+                    }
                 }
 
                 is InputEvent.DiscreteDirection -> {

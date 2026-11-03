@@ -11,6 +11,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
+import com.swordfish.touchinput.radial.settings.TouchControllerID
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import come.asg.lemudroid.app.mobile.feature.game.GameService
 import come.asg.lemudroid.app.mobile.feature.settings.SettingsManager
 import come.asg.lemudroid.app.shared.game.viewmodel.GameViewModelInput
@@ -33,10 +37,6 @@ import come.asg.lemudroid.lib.library.db.entity.Game
 import come.asg.lemudroid.lib.saves.SavesManager
 import come.asg.lemudroid.lib.saves.StatesManager
 import come.asg.lemudroid.lib.saves.StatesPreviewManager
-import com.swordfish.libretrodroid.GLRetroView
-import com.swordfish.touchinput.radial.sensors.TiltConfiguration
-import com.swordfish.touchinput.radial.settings.TouchControllerID
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.padkit.inputevents.InputEvent
 import gg.padkit.inputstate.InputState
 import kotlinx.coroutines.delay
@@ -309,8 +309,9 @@ class BaseGameScreenViewModel(
         viewModelScope.launch {
             withLoading {
                 val snapshot = saves.captureSaveSnapshot(true) ?: return@launch
-                saves.writeSaveSnapshot(snapshot)
-                sideEffects.requestSuccessfulFinish()
+                if (saves.writeSaveSnapshot(snapshot)) {
+                    sideEffects.requestSuccessfulFinish()
+                }
             }
         }
     }

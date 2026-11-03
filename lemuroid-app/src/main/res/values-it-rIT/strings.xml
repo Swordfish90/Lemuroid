@@ -52,7 +52,7 @@
     <string name="settings_bios_category_detected">Rilevato</string>
     <string name="settings_bios_category_not_detected">Supportato</string>
     <string name="settings_title_reset_settings">Ripristino impostazioni di fabbrica</string>
-    <string name="settings_description_reset_settings">Reimposta Lemuroid alle sue impostazioni di fabbrica</string>
+    <string name="settings_description_reset_settings">Reimposta OMINOY alle sue impostazioni di fabbrica</string>
     <string name="settings_title_advanced_settings">Impostazioni avanzate</string>
     <string name="settings_description_advanced_settings">Mostra impostazioni avanzate</string>
     <string name="settings_title_low_latency_audio">Preferisci audio a bassa latenza</string>
@@ -64,7 +64,7 @@
     <string name="settings_title_enable_device_rumble">Vibrazione dispositivo</string>
     <string name="settings_description_enable_device_rumble">Quando nessun controller è collegato fai vibrare il dispositivo</string>
     <string name="reset_settings_warning_message_title">Sei sicuro?</string>
-    <string name="reset_settings_warning_message_description">Questo ripristinerà Lemuroid alle sue impostazioni di fabbrica. Salvataggi e Stati saranno preservati.</string>
+    <string name="reset_settings_warning_message_description">Questo ripristinerà OMINOY alle sue impostazioni di fabbrica. Salvataggi e Stati saranno preservati.</string>
     <string name="settings_title_save_sync">Salvataggi Cloud</string>
     <string name="settings_description_save_sync">Backup e sincronizzazione dei tuoi salvataggi sul Cloud</string>
     <string name="settings_save_sync_refresh">Sincronizzazione Manuale</string>
@@ -82,13 +82,13 @@
     <string name="game_context_menu_restart">Riavvia</string>
     <string name="game_context_menu_create_shortcut">Aggiungi al launcher</string>
     <string name="home_notification_title">Attiva notifiche</string>
-    <string name="home_notification_message">Lemuroid utilizza le notifiche per farti sapere quando una gioco o un\'operazione sono in esecuzione in background.</string>
+    <string name="home_notification_message">OMINOY utilizza le notifiche per farti sapere quando una gioco o un\'operazione sono in esecuzione in background.</string>
     <string name="home_notification_action">Attiva</string>
     <string name="home_microphone_title">Abilita microfono</string>
     <string name="home_microphone_message">I giochi Nintendo DS possono utilizzare il microfono per fornire alcune funzionalità.</string>
     <string name="home_microphone_action">Abilita</string>
     <string name="home_empty_title">Seleziona directory ROM</string>
-    <string name="home_empty_message">Lemuroid deve scansionare una directory contenente ROM.\nQuesto potrebbe richiedere alcuni minuti.</string>
+    <string name="home_empty_message">OMINOY deve scansionare una directory contenente ROM.\nQuesto potrebbe richiedere alcuni minuti.</string>
     <string name="home_empty_action">Seleziona Cartella</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME in pensione presto</string>
     <string name="home_notification_desmume_deprecated_message">Salva in gioco, passa a melonDS e i tuoi progressi si riporteranno. Salva gli stati rimangono legati a DeSmuME.</string>
@@ -124,13 +124,13 @@
     <string name="game_running_notification_title_alternative">Il gioco è in esecuzione</string>
     <string name="game_running_notification_message">Assicurati di salvare i tuoi progressi</string>
     <string name="game_loader_error_gl_incompatible">Questo Core richiede una versione OpenGL ES che non è supportata dal tuo dispositivo.</string>
-    <string name="game_loader_error_load_game">Qualcosa non ha funzionato durante il caricamento del gioco. Assicurati che la ROM sia supportata da Lemuroid e scansiona nuovamente tuoi giochi.</string>
+    <string name="game_loader_error_load_game">Qualcosa non ha funzionato durante il caricamento del gioco. Assicurati che la ROM sia supportata da OMINOY e scansiona nuovamente tuoi giochi.</string>
     <string name="game_loader_error_save">Qualcosa non ha funzionato con il file di salvataggio. Se il problema persiste, prova a disabilitare il salvataggio automatico.</string>
     <string name="game_loader_error_unsupported_architecture">Questo Core non è supportato dal tuo dispositivo.</string>
     <string name="game_loader_error_generic">Qualcosa non ha funzionato. Se il problema persiste, prova quanto segue:\n
     \n\u2022 Disabilita il salvataggio automatico e riavvia il gioco
-    \n\u2022 Vai nelle impostazioni di Android e cancella la cache di Lemuroid
-    \n\u2022 Vai nelle impostazioni di Lemuroid e ripristina le impostazioni di fabbrica
+    \n\u2022 Vai nelle impostazioni di Android e cancella la cache di OMINOY
+    \n\u2022 Vai nelle impostazioni di OMINOY e ripristina le impostazioni di fabbrica
     \n\n Se niente di tutto ciò ha funzionato, questo Gioco/Core potrebbero non essere supportati da questo dispositivo.
     </string>
     <string name="game_loader_error_missing_bios">Sembra che manchi il BIOS richiesto, mettilo nella directory delle ROM e scansionala nuovamente. File necessari: %1$s</string>
@@ -158,18 +158,18 @@
     <string name="game_interactor_notification_permission_required">Abilita le notifiche da Home per continuare</string>
     <string name="mobile_settings_help">Aiuto</string>
     <string name="mobile_settings_support">Supporta</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Come si usa Lemuroid?</b><br/>
-        Copia tutte le ROM in una cartella sul dispositivo e selezionala all\'interno di Lemuroid. Questa cartella può avere sotto-cartelle. Una volta completata la scansione, dovresti vedere i tuoi giochi.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Come si usa OMINOY?</b><br/>
+        Copia tutte le ROM in una cartella sul dispositivo e selezionala all\'interno di OMINOY. Questa cartella può avere sotto-cartelle. Una volta completata la scansione, dovresti vedere i tuoi giochi.<br/><br/>
         <b>&#8226;Perché non vedo i miei giochi?</b><br/>
         Se i tuoi giochi sono compressi, prova a decomprimerli. Se questo non funziona, prova a mettere le ROM in directory separate, una per ogni sistema con i seguenti nomi: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Sembra che il Core Libretro si sia fermato. Se il problema persiste, prova quanto segue:\n
     \n\u2022 Disabilita il salvataggio automatico e riavvia il gioco
-    \n\u2022 Vai nelle impostazioni di Android e cancella la cache di Lemuroid
-    \n\u2022 Vai nelle impostazioni di Lemuroid e ripristina le impostazioni di fabbrica
+    \n\u2022 Vai nelle impostazioni di Android e cancella la cache di OMINOY
+    \n\u2022 Vai nelle impostazioni di OMINOY e ripristina le impostazioni di fabbrica
     \n\n Se niente di tutto ciò ha funzionato, questo Gioco/Core potrebbe non essere supportato da questo dispositivo.
     </string>
-    <string name="error_message_incompatible_state">Questo stato di salvataggio non è compatibile con la versione corrente del Core. Carica il salvataggio in gioco più recente o usa una versione precedente di Lemuroid.</string>
+    <string name="error_message_incompatible_state">Questo stato di salvataggio non è compatibile con la versione corrente del Core. Carica il salvataggio in gioco più recente o usa una versione precedente di OMINOY.</string>
     <string name="shader_filter_names_auto">Automatico</string>
     <string name="shader_filter_names_sharp">Nitido</string>
     <string name="shader_filter_names_smooth">Lineare</string>

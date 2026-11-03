@@ -71,7 +71,9 @@ class LemuroidPadTheme(
     val level1ShadowWidth = 4.dp
 
     val level0CornerRadius = 0.dp
-    val level0Fill = Color.White.copy(alpha = 0.05f)
+    // The controller panel must blend into the game letterbox/background.
+    // Keep button fills and outlines above this base layer unchanged.
+    val level0Fill = Color.Black
     val level0Shadow = if (isTransparent) Color.Black.copy(alpha = 0.06f) else DefaultShadowColor.copy(0.10f)
     val level0ShadowWidth = 2.dp
 
@@ -100,5 +102,5 @@ class LemuroidPadTheme(
 
 val LocalLemuroidPadTheme =
     compositionLocalOf<LemuroidPadTheme> {
-        error("LemuroidPadTheme is missing")
+        error("OMINOYPadTheme is missing")
     }

@@ -54,12 +54,15 @@ class LemuroidLibrary(
 ) {
     suspend fun indexLibrary() {
         val startedAtMs = System.currentTimeMillis()
+        var indexingCompleted = false
 
         try {
             indexProviders(startedAtMs)
+            indexingCompleted = true
         } catch (e: Throwable) {
             Timber.e(e, "Library indexing stopped due to exception")
-        } finally {
+        }
+        if (indexingCompleted) {
             cleanUp(startedAtMs)
         }
 
@@ -259,18 +262,11 @@ class LemuroidLibrary(
 
     private fun cleanUp(startedAtMs: Long) {
         kotlin.runCatching {
-            removeDeletedBios(startedAtMs)
-        }
-        kotlin.runCatching {
             removeDeletedGames(startedAtMs)
         }
         kotlin.runCatching {
             removeDeletedDataFiles(startedAtMs)
         }
-    }
-
-    private fun removeDeletedBios(startedAtMs: Long) {
-        biosManager.deleteBiosBefore(startedAtMs)
     }
 
     private fun sortedFilesForScanning(groupedStorageFile: GroupedStorageFiles): List<BaseStorageFile> {
@@ -287,7 +283,7 @@ class LemuroidLibrary(
             return null
         }
 
-        val gameSystem = GameSystem.findById(gameMetadata.system!!)
+        val gameSystem = GameSystem.findByIdOrNull(gameMetadata.system ?: return null) ?: return null
 
         // If the databased matched a data file (as with bin/cue) we force link the primary filename
         val fileName =

@@ -24,4 +24,5 @@ data class GameCheat(
     val name: String,
     val code: String,
     val enabled: Boolean = false,
+    val codeType: String? = null,
 )

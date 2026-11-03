@@ -11,7 +11,6 @@ class LibretroDBManager(private val context: Context) {
     val dbInstance: LibretroDatabase by lazy {
         Room.databaseBuilder(context, LibretroDatabase::class.java, DB_NAME)
             .createFromAsset("libretro-db.sqlite")
-            .fallbackToDestructiveMigration()
             .build()
     }
 }

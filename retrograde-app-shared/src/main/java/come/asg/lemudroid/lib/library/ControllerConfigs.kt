@@ -120,6 +120,19 @@ object ControllerConfigs {
                 ),
         )
 
+    val GBC =
+        ControllerConfig(
+            "default",
+            R.string.controller_default,
+            TouchControllerID.GBC,
+            mergeDPADAndLeftStickEvents = true,
+            tiltConfigurations =
+                listOf(
+                    TILT_CONFIGURATION_DISABLED,
+                    TILT_CONFIGURATION_CROSS,
+                ),
+        )
+
     val GBA =
         ControllerConfig(
             "default",

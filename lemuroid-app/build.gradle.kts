@@ -5,6 +5,8 @@ val keystorePropertiesFile = rootProject.file("keystore.properties")
 if (keystorePropertiesFile.exists()) {
     keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
 }
+val requiredSigningProperties = listOf("storeFile", "keyAlias", "storePassword", "keyPassword")
+val hasReleaseSigningProperties = requiredSigningProperties.all(keystoreProperties::containsKey)
 
 plugins {
     id("com.android.application")
@@ -91,25 +93,32 @@ android {
             storeFile = file("$rootDir/debug.keystore")
         }
 
-        maybeCreate("release").apply {
-            storeFile = keystoreProperties.getProperty("storeFile")?.let(::file) ?: file("$rootDir/release.jks")
-            keyAlias = keystoreProperties.getProperty("keyAlias") ?: "lemuroid"
-            storePassword = keystoreProperties.getProperty("storePassword") ?: "lemuroid"
-            keyPassword = keystoreProperties.getProperty("keyPassword") ?: "lemuroid"
+        if (hasReleaseSigningProperties) {
+            maybeCreate("release").apply {
+                storeFile = keystoreProperties.getProperty("storeFile")?.let(::file)
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
         }
     }
 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            signingConfig = signingConfigs["release"]
+            signingConfig =
+                if (hasReleaseSigningProperties) {
+                    signingConfigs["release"]
+                } else {
+                    null
+                }
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-            resValue("string", "lemuroid_name", "Lemuroid")
+            resValue("string", "lemuroid_name", "OMINOY")
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
-            resValue("string", "lemuroid_name", "LemuroiDebug")
+            resValue("string", "lemuroid_name", "OMINOY Debug")
         }
     }
 

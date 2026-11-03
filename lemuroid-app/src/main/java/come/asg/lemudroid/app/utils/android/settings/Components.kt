@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.alorma.compose.settings.storage.base.SettingValueState
 import com.alorma.compose.settings.ui.SettingsMenuLink
@@ -34,11 +36,12 @@ fun LemuroidSettingsPage(
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(top = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .background(Color.Black)
+                    .padding(top = 20.dp, bottom = 144.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         content()
     }
@@ -93,7 +96,7 @@ fun LemuroidSettingsGroup(
     title: @Composable (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Surface(color = MaterialTheme.colorScheme.background) {
+    Surface(color = Color.Black) {
         Column(
             modifier = modifier.fillMaxWidth(),
         ) {
@@ -111,7 +114,7 @@ fun LemuroidCardSettingsGroup(
     title: @Composable (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Surface(color = MaterialTheme.colorScheme.background) {
+    Surface(color = Color.Black) {
         Column(
             modifier =
                 modifier
@@ -119,7 +122,8 @@ fun LemuroidCardSettingsGroup(
                     .padding(start = 16.dp, end = 16.dp),
         ) {
             OutlinedCard(
-                shape = RoundedCornerShape(24.dp),
+                shape = RoundedCornerShape(28.dp),
+                elevation = CardDefaults.outlinedCardElevation(defaultElevation = 2.dp),
                 colors =
                     CardDefaults.outlinedCardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,

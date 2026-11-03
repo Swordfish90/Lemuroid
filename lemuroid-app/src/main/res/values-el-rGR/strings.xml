@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Ανιχνεύθηκαν</string>
     <string name="settings_bios_category_not_detected">Υποστηριζόμενο</string>
     <string name="settings_title_reset_settings">Επαναφορά εργοστασιακών ρυθμίσεων</string>
-    <string name="settings_description_reset_settings">Επαναφορά του Lemuroid στις εργοστασιακές του ρυθμίσεις</string>
+    <string name="settings_description_reset_settings">Επαναφορά του OMINOY στις εργοστασιακές του ρυθμίσεις</string>
     <string name="settings_title_advanced_settings">Σύνθετες ρυθμίσεις</string>
     <string name="settings_description_advanced_settings">Εμφάνιση σύνθετων ρυθμίσεων</string>
     <string name="settings_title_low_latency_audio">Προτιμήστε low-latency ήχο</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Δόνηση συσκευής</string>
     <string name="settings_description_enable_device_rumble">Όταν κανένας controller δεν είναι συνδεδεμένος, δονείται η συσκευή</string>
     <string name="reset_settings_warning_message_title">Είστε σίγουρος/η;</string>
-    <string name="reset_settings_warning_message_description">Αυτό θα επαναφέρει το Lemuroid στις εργοστασιακές του ρυθμίσεις. Τα saves και τα states θα διατηρηθούν.</string>
+    <string name="reset_settings_warning_message_description">Αυτό θα επαναφέρει το OMINOY στις εργοστασιακές του ρυθμίσεις. Τα saves και τα states θα διατηρηθούν.</string>
     <string name="settings_title_save_sync">Αποθηκευμένα στο Cloud</string>
     <string name="settings_description_save_sync">Δημιουργία αντίγραφου ασφαλείας και συγχρονισμός των saves στο cloud</string>
     <string name="settings_save_sync_refresh">Χειροκίνητος συγχρονισμός</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Επανεκκίνηση</string>
     <string name="game_context_menu_create_shortcut">Καρφίτσωμα στον launcher</string>
     <string name="home_notification_title">Ενεργοποίηση ειδοποιήσεων</string>
-    <string name="home_notification_message">Το Lemuroid χρησιμοποιεί ειδοποιήσεις για να σας ενημερώνει όταν ένα παιχνίδι ή μια λειτουργία τρέχει στο παρασκήνιο.</string>
+    <string name="home_notification_message">Το OMINOY χρησιμοποιεί ειδοποιήσεις για να σας ενημερώνει όταν ένα παιχνίδι ή μια λειτουργία τρέχει στο παρασκήνιο.</string>
     <string name="home_notification_action">Ενεργοποίηση</string>
     <string name="home_microphone_title">Ενεργοποίηση μικροφώνου</string>
     <string name="home_microphone_message">Τα παιχνίδια Nintendo DS μπορούν να χρησιμοποιήσουν το μικρόφωνο για να παρέχουν ορισμένες λειτουργίες.</string>
     <string name="home_microphone_action">Ενεργοποίηση</string>
     <string name="home_empty_title">Επιλέξτε ένα ευρετήριο με ROMs</string>
-    <string name="home_empty_message">Το Lemuroid χρειάζεται να σαρώσει έναν φάκελο οπού περιέχει ROMs.\nΑυτό μπορεί να διαρκέσει μερικά λεπτά.</string>
+    <string name="home_empty_message">Το OMINOY χρειάζεται να σαρώσει έναν φάκελο οπού περιέχει ROMs.\nΑυτό μπορεί να διαρκέσει μερικά λεπτά.</string>
     <string name="home_empty_action">Επιλογή φακέλου</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME αποσύρθηκε σύντομα</string>
     <string name="home_notification_desmume_deprecated_message">Αποθηκεύστε σε-παιχνίδι, μεταβείτε στο melonDS, και η πρόοδός σας θα φέρει πάνω.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">Το παιχνίδι τρέχει</string>
     <string name="game_running_notification_message">Βεβαιωθείτε ότι αποθηκεύσατε την πρόοδό σας</string>
     <string name="game_loader_error_gl_incompatible">Αυτός ο πυρήνας απαιτεί μια έκδοση OpenGL ES η οποία δεν υποστηρίζεται από τη συσκευή σας.</string>
-    <string name="game_loader_error_load_game">Κάτι κακό συνέβη κατά τη φόρτωση του παιχνιδιού σας. Βεβαιωθείτε ότι η ROM υποστηρίζεται από to Lemuroid και κάνετε σάρωση ξανά των παιχνιδιών σας.</string>
+    <string name="game_loader_error_load_game">Κάτι κακό συνέβη κατά τη φόρτωση του παιχνιδιού σας. Βεβαιωθείτε ότι η ROM υποστηρίζεται από to OMINOY και κάνετε σάρωση ξανά των παιχνιδιών σας.</string>
     <string name="game_loader_error_save">Κάτι κακό συνέβη με το αρχείο αποθήκευσης. Αν το πρόβλημα παραμένει, δοκιμάστε να απενεργοποιήσετε την αυτόματη αποθήκευση.</string>
     <string name="game_loader_error_unsupported_architecture">Αυτός ο πυρήνας δεν υποστηρίζεται από τη συσκευή σας.</string>
     <string name="game_loader_error_generic">Κάτι άσχημο συνέβη. Δοκιμάστε τα παρακάτω:\n
         \n\u2022 Απενεργοποιήστε την αυτόματη αποθήκευση και εκτελέστε ξανά το παιχνίδι
         \n\u2022 Μεταβείτε στις ρυθμίσεις του Android και καθαρίστε την προσωρινή μνήμη της εφαρμογής
-        \n\u2022 Μεταβείτε στις ρυθμίσεις Lemuroid και εκτελέστε Επαναφορά εργοστασιακών ρυθμίσεων
+        \n\u2022 Μεταβείτε στις ρυθμίσεις OMINOY και εκτελέστε Επαναφορά εργοστασιακών ρυθμίσεων
         \n\nΕάν δεν λειτουργήσει καμία από τις παραπάνω λύσεις, μπορεί να μην υποστηρίζεται αυτό το Παιχνίδι/Πυρήνας από αυτή τη συσκευή.
     </string>
     <string name="game_loader_error_missing_bios">Φαίνεται ότι λείπουν τα απαιτούμενα από το BIOS, παρακαλώ προσθέστε τα στον φάκελο με τις ROMs και κάνετε επανασάρωση. Απαιτούμενα αρχεία: %1$s</string>
@@ -156,18 +156,18 @@
     <string name="game_interactory_busy">Αναμονή για την ολοκλήρωση των εκκρεμών εργασιών</string>
     <string name="mobile_settings_help">Βοήθεια</string>
     <string name="mobile_settings_support">Υποστήριξη</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Πώς μπορώ να χρησιμοποιήσω το Lemuroid?</b><br/>
-        Αντιγράψτε όλα τα αρχεία ROMs σας σε έναν φάκελο στη συσκευή σας και επιλέξτε τον μέσω του Lemuroid. Αυτός ο φάκελος επιτρέπεται να έχει υποφακέλους. Μετά την ολοκλήρωση της σάρωσης θα πρέπει να μποείτε να δείτε τα παιχνίδια σας.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Πώς μπορώ να χρησιμοποιήσω το OMINOY?</b><br/>
+        Αντιγράψτε όλα τα αρχεία ROMs σας σε έναν φάκελο στη συσκευή σας και επιλέξτε τον μέσω του OMINOY. Αυτός ο φάκελος επιτρέπεται να έχει υποφακέλους. Μετά την ολοκλήρωση της σάρωσης θα πρέπει να μποείτε να δείτε τα παιχνίδια σας.<br/><br/>
         <b>&#8226;Γιατί δεν έχουν εντοπιστεί τα παιχνίδια μου?</b><br/>
         Αν τα παιχνίδια σας είναι συμπιεσμένα, δοκιμάστε να τα αποσυμπιέσετε. Αν αυτό δεν λειτουργήσει, δοκιμάστε να βάλετε τα ROMs σε ξεχωριστούς καταλόγους, ένα για κάθε σύστημα με τα ακόλουθα ονόματα: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Φαίνεται ότι ο πυρήνας του Libretro αντιμετωπίζει ένα απροσδόκητο πρόβλημα. Αν το πρόβλημα παραμείνει, δοκιμάστε τα εξής:\n
         \n\u2022 Απενεργοποιήστε την αυτόματη αποθήκευση και εκτελέστε ξανά το παιχνίδι
         \n\u2022 Πηγαίνετε στις ρυθμίσεις Android και καθαρίστε την μνήμη cache της εφαρμογής
-        \n\u2022 Πηγαίνετε στις ρυθμίσεις Lemuroid και εκτελέστε την Επαναφορά Εργοστασίων Ρυθμίσεων 
+        \n\u2022 Πηγαίνετε στις ρυθμίσεις OMINOY και εκτελέστε την Επαναφορά Εργοστασίων Ρυθμίσεων 
         \n\n Αν καμία από τις παραπάνω λειτουργίες δεν λειτουργήσει, τότε ενδεχομένως το παιχνίδι/πυρήνας δεν υποστηρίζεται από αυτήν τη συσκευή.
     </string>
-    <string name="error_message_incompatible_state">Αυτό το save state δεν είναι συμβατό με την τρέχουσα έκδοση του πυρήνα. Παρακαλώ φορτώστε προηγούμενο save του παιχνιδιού ή χρησιμοποιήστε μια προηγούμενη έκδοση Lemuroid.</string>
+    <string name="error_message_incompatible_state">Αυτό το save state δεν είναι συμβατό με την τρέχουσα έκδοση του πυρήνα. Παρακαλώ φορτώστε προηγούμενο save του παιχνιδιού ή χρησιμοποιήστε μια προηγούμενη έκδοση OMINOY.</string>
     <string name="shader_filter_names_auto">Αυτόματο</string>
     <string name="shader_filter_names_sharp">Κοφτερό</string>
     <string name="shader_filter_names_smooth">Ομαλό</string>

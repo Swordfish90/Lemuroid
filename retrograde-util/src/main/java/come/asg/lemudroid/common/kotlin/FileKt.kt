@@ -23,8 +23,9 @@ import android.util.AtomicFile
 import androidx.documentfile.provider.DocumentFile
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.FilterOutputStream
 import java.io.File
+import java.io.FilterOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.PushbackInputStream
@@ -37,6 +38,10 @@ import java.util.zip.ZipInputStream
 
 private const val CRC32_BYTE_ARRAY_SIZE = 16 * 1024
 private const val GZIP_INPUT_STREAM_BUFFER_SIZE = 8 * 1024
+private const val MAX_ZIP_ENTRIES = 10_000
+private const val MAX_ZIP_ENTRY_SIZE = 512L * 1024 * 1024
+private const val MAX_ZIP_TOTAL_SIZE = 1L * 1024 * 1024 * 1024
+private const val MAX_ZIP_COMPRESSION_RATIO = 1_000L
 
 private class NonClosingOutputStream(outputStream: OutputStream) : FilterOutputStream(outputStream) {
     override fun close() {
@@ -64,10 +69,16 @@ fun File.calculateMd5(): String {
 }
 
 fun InputStream.writeToFile(file: File) {
-    this.use { inputStream ->
-        file.outputStream().use { outputStream ->
-            inputStream.copyTo(outputStream)
+    val atomicFile = AtomicFile(file)
+    val outputStream = atomicFile.startWrite()
+    try {
+        this.use { inputStream ->
+            outputStream.use { inputStream.copyTo(it) }
         }
+        atomicFile.finishWrite(outputStream)
+    } catch (e: Throwable) {
+        atomicFile.failWrite(outputStream)
+        throw e
     }
 }
 
@@ -76,12 +87,106 @@ fun ZipInputStream.extractEntryToFile(
     gameFile: File,
 ) {
     this.use { inputStream ->
-        while (true) {
-            val entry = inputStream.nextEntry
-            if (entry.name == entryName) break
+        var entries = 0
+        var entry = inputStream.nextEntry
+        while (entry != null && entry.name != entryName) {
+            if (++entries > MAX_ZIP_ENTRIES) throw IOException("ZIP contains too many entries")
+            entry = inputStream.nextEntry
         }
-        inputStream.writeToFile(gameFile)
+        if (entry == null) throw IOException("ZIP entry not found: $entryName")
+        validateZipEntry(entry, 0)
+        inputStream.copyZipEntryToFile(gameFile, entry.size, 0)
     }
+}
+
+/** Extracts an archive while keeping every output path below [directory]. */
+fun ZipInputStream.extractEntriesToDirectory(directory: File) {
+    val canonicalDirectory = directory.canonicalFile
+    if (!canonicalDirectory.exists() && !canonicalDirectory.mkdirs()) {
+        throw IOException("Unable to create ZIP destination: $directory")
+    }
+    var entryCount = 0
+    var totalBytes = 0L
+    use { inputStream ->
+        while (true) {
+            val entry = inputStream.nextEntry ?: break
+            if (++entryCount > MAX_ZIP_ENTRIES) throw IOException("ZIP contains too many entries")
+            val destination = canonicalDirectory.resolveZipEntry(entry.name)
+            if (entry.isDirectory) {
+                if (!destination.exists() && !destination.mkdirs()) {
+                    throw IOException("Unable to create ZIP directory: ${entry.name}")
+                }
+                continue
+            }
+            validateZipEntry(entry, totalBytes)
+            destination.parentFile?.mkdirs()
+            val written = inputStream.copyZipEntryToFile(destination, entry.size, totalBytes)
+            totalBytes += written
+        }
+    }
+}
+
+private fun validateZipEntry(
+    entry: java.util.zip.ZipEntry,
+    totalBytes: Long,
+) {
+    if (entry.size > MAX_ZIP_ENTRY_SIZE || totalBytes > MAX_ZIP_TOTAL_SIZE) {
+        throw IOException("ZIP entry exceeds extraction limits: ${entry.name}")
+    }
+    if (entry.compressedSize > 0 && entry.size > entry.compressedSize * MAX_ZIP_COMPRESSION_RATIO) {
+        throw IOException("ZIP compression ratio is excessive: ${entry.name}")
+    }
+}
+
+private fun InputStream.copyZipEntryToFile(
+    file: File,
+    declaredSize: Long,
+    totalBytes: Long,
+): Long {
+    val atomicFile = AtomicFile(file)
+    val outputStream = atomicFile.startWrite()
+    var copied = 0L
+    try {
+        outputStream.use { output ->
+            val buffer = ByteArray(16 * 1024)
+            while (true) {
+                val count = read(buffer)
+                if (count < 0) break
+                copied += count
+                if (copied > MAX_ZIP_ENTRY_SIZE || totalBytes + copied > MAX_ZIP_TOTAL_SIZE) {
+                    throw IOException("ZIP extraction exceeds size limits")
+                }
+                output.write(buffer, 0, count)
+            }
+        }
+        if (declaredSize >= 0 && copied != declaredSize) throw IOException("Truncated ZIP entry")
+        atomicFile.finishWrite(outputStream)
+        return copied
+    } catch (e: Throwable) {
+        atomicFile.failWrite(outputStream)
+        throw e
+    }
+}
+
+private fun File.resolveZipEntry(entryName: String): File {
+    if (entryName.startsWith('/') || entryName.startsWith('\\')) {
+        throw IOException("Absolute ZIP entry rejected: $entryName")
+    }
+    val candidate = File(this, entryName).canonicalFile
+    val root = canonicalFile
+    if (candidate != root && !candidate.path.startsWith(root.path + File.separator)) {
+        throw IOException("ZIP path traversal rejected: $entryName")
+    }
+    return candidate
+}
+
+/** Returns a path-safe basename for data derived from an external provider. */
+fun String.safeBasename(fallback: String = "unnamed"): String {
+    val name = substringAfterLast('/').substringAfterLast('\\').trim()
+    // Unicode letters are valid filenames; retain them to avoid different scripts/names
+    // collapsing to the same underscore-only basename.
+    return name.takeIf { it.isNotEmpty() && it != "." && it != ".." }?.replace(Regex("[^\\p{L}\\p{N}._-]"), "_")
+        ?: fallback
 }
 
 fun File.isZipped() = extension == "zip"

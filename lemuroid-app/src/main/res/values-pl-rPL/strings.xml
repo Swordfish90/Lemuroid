@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Wykryte</string>
     <string name="settings_bios_category_not_detected">Obsługiwane</string>
     <string name="settings_title_reset_settings">Przywróć ustawienia fabryczne</string>
-    <string name="settings_description_reset_settings">Zresetuj Lemuroid do ustawień fabrycznych</string>
+    <string name="settings_description_reset_settings">Zresetuj OMINOY do ustawień fabrycznych</string>
     <string name="settings_title_advanced_settings">Ustawienia zaawansowane</string>
     <string name="settings_description_advanced_settings">Wyświetl ustawienia zaawansowane</string>
     <string name="settings_title_low_latency_audio">Preferuj dźwięk o niskim opóźnieniu</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Wibracje urządzenia</string>
     <string name="settings_description_enable_device_rumble">Jeśli kontroler nie jest podłączony, wibruj urządzeniem</string>
     <string name="reset_settings_warning_message_title">Jesteś pewien?</string>
-    <string name="reset_settings_warning_message_description">To zresetuje Lemuroid do ustawień fabrycznych. Zapisy i stany zostaną zachowane.</string>
+    <string name="reset_settings_warning_message_description">To zresetuje OMINOY do ustawień fabrycznych. Zapisy i stany zostaną zachowane.</string>
     <string name="settings_title_save_sync">Zapisy w chmurze</string>
     <string name="settings_description_save_sync">Utwórz kopię zapasową i zsynchronizuj swoje zapisy w chmurze</string>
     <string name="settings_save_sync_refresh">Ręczna synchronizacja</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Zrestartuj</string>
     <string name="game_context_menu_create_shortcut">Dodaj do launchera</string>
     <string name="home_notification_title">Włącz powiadomienia</string>
-    <string name="home_notification_message">Lemuroid używa powiadomień, aby dać Ci znać, gdy gra lub operacja działa w tle.</string>
+    <string name="home_notification_message">OMINOY używa powiadomień, aby dać Ci znać, gdy gra lub operacja działa w tle.</string>
     <string name="home_notification_action">Włącz</string>
     <string name="home_microphone_title">Włącz mikrofon</string>
     <string name="home_microphone_message">Gry Nintendo DS mogą korzystać z mikrofonu, aby zapewnić niektóre funkcje.</string>
     <string name="home_microphone_action">Włącz</string>
     <string name="home_empty_title">Wybierz katalog plików ROM</string>
-    <string name="home_empty_message">Lemuroid musi przeskanować katalog zawierający pliki ROM.\nMoże to potrwać do kilku minut.</string>
+    <string name="home_empty_message">OMINOY musi przeskanować katalog zawierający pliki ROM.\nMoże to potrwać do kilku minut.</string>
     <string name="home_empty_action">Wybierz katalog</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME wkrótce przechodzi na emeryturę</string>
     <string name="home_notification_desmume_deprecated_message">Zapisz w grze, przełącz się na melonDS, a Twoje postępy zostaną przeniesione. Zapisz stany są powiązane z DeSmuME.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">Gra jest uruchomiona</string>
     <string name="game_running_notification_message">Upewnij się, że zapisałeś swoje postępy</string>
     <string name="game_loader_error_gl_incompatible">Ten rdzeń wymaga wersji OpenGL ES, która nie jest obsługiwana przez Twoje urządzenie.</string>
-    <string name="game_loader_error_load_game">Podczas ładowania gry stało się coś złego. Upewnij się, że plik ROM jest obsługiwany przez Lemuroid i przeskanuj ponownie swoje gry.</string>
+    <string name="game_loader_error_load_game">Podczas ładowania gry stało się coś złego. Upewnij się, że plik ROM jest obsługiwany przez OMINOY i przeskanuj ponownie swoje gry.</string>
     <string name="game_loader_error_save">Z plikiem zapisu stało się coś złego. Jeśli problem nadal występuje, spróbuj wyłączyć auto-zapis.</string>
     <string name="game_loader_error_unsupported_architecture">Twoje urządzenie nie obsługuje tego rdzenia.</string>
     <string name="game_loader_error_generic">Stało się coś złego. Spróbuj wykonać następujące czynności:\n
         \n\u2022 Wyłącz auto-zapis i uruchom grę ponownie.
         \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji.
-        \n\u2022 Przejdź do ustawień Lemuroid i przywróć ustawienia fabryczne.
+        \n\u2022 Przejdź do ustawień OMINOY i przywróć ustawienia fabryczne.
         \n\nJeśli żaden z powyższych sposobów nie zadziała, możliwe, że ta gra/Rdzeń nie jest obsługiwany przez to urządzenie.
     </string>
     <string name="game_loader_error_missing_bios">Wygląda na to, że brakuje Ci wymaganych plików BIOS. Umieść je w katalogu Twoich plików ROM i przeskanuj ponownie. Wymagane pliki: %1$s</string>
@@ -156,18 +156,18 @@
     <string name="game_interactory_busy">Poczekaj na zakończenie trwających operacji</string>
     <string name="mobile_settings_help">Pomoc</string>
     <string name="mobile_settings_support">Wsparcie</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Jak korzystać z Lemuroid?</b><br/>
-        Skopiuj wszystkie pliki ROM do katalogu na swoim urządzeniu i wybierz go w Lemuroid. Katalog ten może mieć podkatalogi. Po zakończeniu skanowania powinieneś/powinnaś zobaczyć swoje gry.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Jak korzystać z OMINOY?</b><br/>
+        Skopiuj wszystkie pliki ROM do katalogu na swoim urządzeniu i wybierz go w OMINOY. Katalog ten może mieć podkatalogi. Po zakończeniu skanowania powinieneś/powinnaś zobaczyć swoje gry.<br/><br/>
         <b>&#8226;Dlaczego moje gry nie są wykrywane?</b><br/>
         Jeśli gry są skompresowane, spróbuj je rozpakować. Jeśli to nie zadziała, spróbuj umieścić pliki ROM w oddzielnych katalogach, po jednym dla każdego systemu, o następujących nazwach: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Wygląda na to, że rdzeń Libretro napotkał nieoczekiwany problem. Jeśli nie ustąpi, spróbuj wykonać następujące czynności:\n
         \n\u2022 Wyłącz auto-zapis i uruchom grę ponownie.
         \n\u2022 Przejdź do ustawień Androida i wyczyść pamięć podręczną aplikacji.
-        \n\u2022 Przejdź do ustawień Lemuroid i przywróć ustawienia fabryczne.
+        \n\u2022 Przejdź do ustawień OMINOY i przywróć ustawienia fabryczne.
         \n\n Jeśli żaden z powyższych sposobów nie zadziała, możliwe, że ta gra/rdzeń nie jest obsługiwany przez to urządzenie.
     </string>
-    <string name="error_message_incompatible_state">Ten stan zapisu nie jest kompatybilny z aktualną wersją rdzenia. Załaduj najnowszy zapis w grze lub użyj poprzedniej wersji Lemuroid.</string>
+    <string name="error_message_incompatible_state">Ten stan zapisu nie jest kompatybilny z aktualną wersją rdzenia. Załaduj najnowszy zapis w grze lub użyj poprzedniej wersji OMINOY.</string>
     <string name="shader_filter_names_auto">Automatyczny</string>
     <string name="shader_filter_names_sharp">Ostry</string>
     <string name="shader_filter_names_smooth">Gładki</string>

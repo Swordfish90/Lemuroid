@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">Детектовано</string>
     <string name="settings_bios_category_not_detected">Подржано</string>
     <string name="settings_title_reset_settings">Фабричко ресетовање</string>
-    <string name="settings_description_reset_settings">Ресетуј Lemuroid на фабричка подешавања</string>
+    <string name="settings_description_reset_settings">Ресетуј OMINOY на фабричка подешавања</string>
     <string name="settings_title_advanced_settings">Напредна подешавања</string>
     <string name="settings_description_advanced_settings">Прикажи напредна подешавања</string>
     <string name="settings_title_low_latency_audio">Преферирај звук ниске латенције</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">Тутњава уређаја</string>
     <string name="settings_description_enable_device_rumble">Када контролер није повезан уместо њега вибрирај уређај</string>
     <string name="reset_settings_warning_message_title">Јесте ли сигурни?</string>
-    <string name="reset_settings_warning_message_description">Ово ће ресетовати Lemuroid на фабричка подешавања. Сачуване игре и стања ће бити задржани.</string>
+    <string name="reset_settings_warning_message_description">Ово ће ресетовати OMINOY на фабричка подешавања. Сачуване игре и стања ће бити задржани.</string>
     <string name="settings_title_save_sync">Чувања на облаку</string>
     <string name="settings_description_save_sync">Прави и синхронизуј резервне копије чувања на облаку</string>
     <string name="settings_save_sync_refresh">Ручна синхронизација</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">Рестартуј</string>
     <string name="game_context_menu_create_shortcut">Закачи на покретач</string>
     <string name="home_notification_title">Омогући обавештења</string>
-    <string name="home_notification_message">Lemuroid користи обавештења да бисте знали када игра или операције ради у позадини.</string>
+    <string name="home_notification_message">OMINOY користи обавештења да бисте знали када игра или операције ради у позадини.</string>
     <string name="home_notification_action">Омогући</string>
     <string name="home_microphone_title">Омогући микрофон</string>
     <string name="home_microphone_message">Nintendo DS игре могу користити микрофон да би пружиле одређене функционалности.</string>
     <string name="home_microphone_action">Омогући</string>
     <string name="home_empty_title">Изаберите директоријум са ROM-овима</string>
-    <string name="home_empty_message">Lemuroid мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
+    <string name="home_empty_message">OMINOY мора да скенира директоријум са ROM датотекама.\nОво може потрајати до неколико минута.</string>
     <string name="home_empty_action">Изаберите директоријум</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME се пензионише</string>
     <string name="home_notification_desmume_deprecated_message">Сачувајте унутар игре па онда пређите на melonDS да задржите свој напредак. Стања чувања се неће пребацити и моћи ће да се користе само унутар DeSmuME-а.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">Игра је у току</string>
     <string name="game_running_notification_message">Обавезно сачувајте свој напредак</string>
     <string name="game_loader_error_gl_incompatible">Ово језгро захтева OpenGL ES верзију која није подржана на Вашем уређају.</string>
-    <string name="game_loader_error_load_game">Нешто се лоше догодило за време учитавања игре. Проверите да ли је ROM подржан од стране Lemuroid-а и поново скенирајте Ваше игре.</string>
+    <string name="game_loader_error_load_game">Нешто се лоше догодило за време учитавања игре. Проверите да ли је ROM подржан од стране OMINOY-а и поново скенирајте Ваше игре.</string>
     <string name="game_loader_error_save">Нешто лоше се догодило са Вашом датотеком чувања. Ако се овај проблем понaвља, покушајте да онемогућите аутоматско чување.</string>
     <string name="game_loader_error_unsupported_architecture">Ово језгро није подржано од стране Вашег уређаја.</string>
     <string name="game_loader_error_generic">Нешто лоше се догодило. Покушајте следеће:\n
         \n\u2022 Онемогућите аутоматско чување и поново покрените игру
         \n\u2022 Идите у Android подешавања и очистите кеш меморију апликације
-        \n\u2022 Идите у Lemuroid подешавања и извршите фабричко ресетовањe
+        \n\u2022 Идите у OMINOY подешавања и извршите фабричко ресетовањe
         \n\nАко ништа од овога не проради, постоји могућност да ова игра/језгро није подржана од стране овог уређаја.
     </string>
     <string name="game_loader_error_missing_bios">Делује као да Вам недостаје неопходни BIOS; ставите их у ваш ROM директоријум и поново скенирајте. Потребне датотеке: %1$s</string>
@@ -156,18 +156,18 @@
     <string name="game_interactory_busy">Сачекајте за текуће операције да се заврше</string>
     <string name="mobile_settings_help">Помоћ</string>
     <string name="mobile_settings_support">Подршка</string>
-    <string name="lemuroid_help_content"><![CDATA[<b>&#8226;Како да користим Lemuroid?</b><br/>
-        Копирајте све Ваше ROM датотеке у директоријум на Вашем уређају и изаберите га унутар Lemuroid-а. Овај директоријум може имати поддиректоријуме. Када се скенирање заврши треба да видите Ваше игре.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[<b>&#8226;Како да користим OMINOY?</b><br/>
+        Копирајте све Ваше ROM датотеке у директоријум на Вашем уређају и изаберите га унутар OMINOY-а. Овај директоријум може имати поддиректоријуме. Када се скенирање заврши треба да видите Ваше игре.<br/><br/>
         <b>&#8226;Зашто моје игре нису детектоване?</b><br/>
         Ако су ваше игре компримоване, покушајте да их декомпримујете. Ако ово не проради покушајте да ставите ROM-ове у одвојене директоријуме, по једну за сваки систем са следећим именима: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Делује као да је Libretro језгро наишло на неочекивани проблем. Ако се ово понавља покушајте следеће:\n
         \n\u2022 Онемогућите аутоматско чување и поново покрените игру
         \n\u2022 Идите у Android подешавања и очистите кеш меморију апликације
-        \n\u2022 Идите у Lemuroid подешавања и извршите фабричко ресетовање
+        \n\u2022 Идите у OMINOY подешавања и извршите фабричко ресетовање
         \n\nАко ништа од овога не проради, постоји могућност да ова игра/језгро није подржана од стране овог уређаја.
     </string>
-    <string name="error_message_incompatible_state">Ово стање чувања није компатибилно са тренутном верзијом језгра. Молимо Вас да учитате последње чување унутар игре или да користите старију Lemuroid верзију.</string>
+    <string name="error_message_incompatible_state">Ово стање чувања није компатибилно са тренутном верзијом језгра. Молимо Вас да учитате последње чување унутар игре или да користите старију OMINOY верзију.</string>
     <string name="shader_filter_names_auto">Аутоматско</string>
     <string name="shader_filter_names_sharp">Оштро</string>
     <string name="shader_filter_names_smooth">Глатко</string>

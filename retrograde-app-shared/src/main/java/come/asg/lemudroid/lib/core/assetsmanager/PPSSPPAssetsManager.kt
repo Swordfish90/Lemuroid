@@ -2,6 +2,7 @@ package come.asg.lemudroid.lib.core.assetsmanager
 
 import android.content.SharedPreferences
 import android.net.Uri
+import come.asg.lemudroid.common.kotlin.extractEntriesToDirectory
 import come.asg.lemudroid.lib.core.CoreUpdater
 import come.asg.lemudroid.lib.library.CoreID
 import come.asg.lemudroid.lib.storage.DirectoriesManager
@@ -30,7 +31,7 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
             val response = coreUpdaterApi.downloadZip(PPSSPP_ASSETS_URL.toString())
             handleSuccess(directoriesManager, response, sharedPreferences)
         } catch (e: Throwable) {
-            getAssetsDirectory(directoriesManager).deleteRecursively()
+            Timber.e(e, "Unable to update PPSSPP assets; keeping the existing installation")
         }
     }
 
@@ -40,24 +41,21 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
         sharedPreferences: SharedPreferences,
     ) {
         val coreAssetsDirectory = getAssetsDirectory(directoriesManager)
-        coreAssetsDirectory.deleteRecursively()
-        coreAssetsDirectory.mkdirs()
+        val temporaryDirectory = File(coreAssetsDirectory.parentFile, "${coreAssetsDirectory.name}.tmp")
+        temporaryDirectory.deleteRecursively()
+        temporaryDirectory.mkdirs()
 
-        response.body()?.use { zipInputStream ->
-            while (true) {
-                val entry = zipInputStream.nextEntry ?: break
-                Timber.d("Writing file: ${entry.name}")
-                val destFile =
-                    File(
-                        coreAssetsDirectory,
-                        entry.name,
-                    )
-                if (entry.isDirectory) {
-                    destFile.mkdirs()
-                } else {
-                    zipInputStream.copyTo(destFile.outputStream())
-                }
+        try {
+            response.body()?.use { zipInputStream ->
+                zipInputStream.extractEntriesToDirectory(temporaryDirectory)
+            } ?: throw IllegalStateException("Empty PPSSPP assets response")
+            coreAssetsDirectory.deleteRecursively()
+            if (!temporaryDirectory.renameTo(coreAssetsDirectory)) {
+                throw IllegalStateException("Unable to install PPSSPP assets")
             }
+        } catch (e: Throwable) {
+            temporaryDirectory.deleteRecursively()
+            throw e
         }
 
         sharedPreferences.edit()
@@ -88,7 +86,7 @@ class PPSSPPAssetsManager : CoreID.AssetsManager {
         const val PPSSPP_ASSETS_VERSION = "1.15"
 
         val PPSSPP_ASSETS_URL: Uri =
-            Uri.parse("https://github.com/Swordfish90/LemuroidCores/")
+            Uri.parse("https://github.com/Swordfish90/OMINOYCores/")
                 .buildUpon()
                 .appendEncodedPath("raw/$PPSSPP_ASSETS_VERSION/assets/ppsspp.zip")
                 .build()

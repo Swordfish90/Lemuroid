@@ -100,7 +100,7 @@ class LocalStorageProvider(
             return originalFile
         }
 
-        val cacheFile = GameCacheUtils.getCacheFileForGame(LOCAL_STORAGE_CACHE_SUBFOLDER, context, game)
+        val cacheFile = GameCacheUtils.getCacheFileForGame(LOCAL_STORAGE_CACHE_SUBFOLDER, context, game, "${originalFile.length()}:${originalFile.lastModified()}")
         if (cacheFile.exists()) {
             return cacheFile
         }

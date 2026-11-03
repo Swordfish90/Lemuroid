@@ -51,7 +51,7 @@
     <string name="settings_bios_category_detected">감지됨</string>
     <string name="settings_bios_category_not_detected">지원됨</string>
     <string name="settings_title_reset_settings">설정 초기화</string>
-    <string name="settings_description_reset_settings">Lemuroid를 초기 설정으로 되돌립니다</string>
+    <string name="settings_description_reset_settings">OMINOY를 초기 설정으로 되돌립니다</string>
     <string name="settings_title_advanced_settings">고급 설정</string>
     <string name="settings_description_advanced_settings">고급 설정 표시</string>
     <string name="settings_title_low_latency_audio">저지연 오디오 선호</string>
@@ -63,7 +63,7 @@
     <string name="settings_title_enable_device_rumble">장치 진동</string>
     <string name="settings_description_enable_device_rumble">연결된 컨트롤러가 없을 경우 장치를 진동합니다</string>
     <string name="reset_settings_warning_message_title">확실한가요?</string>
-    <string name="reset_settings_warning_message_description">Lemuroid 설정을 초기 설정으로 되돌립니다. 게임 세이브와 상태저장은 보존됩니다.</string>
+    <string name="reset_settings_warning_message_description">OMINOY 설정을 초기 설정으로 되돌립니다. 게임 세이브와 상태저장은 보존됩니다.</string>
     <string name="settings_title_save_sync">클라우드 저장</string>
     <string name="settings_description_save_sync">세이브 데이터를 클라우드에 백업 및 동기화합니다</string>
     <string name="settings_save_sync_refresh">수동 동기화</string>
@@ -81,13 +81,13 @@
     <string name="game_context_menu_restart">다시 시작</string>
     <string name="game_context_menu_create_shortcut">런처에 고정</string>
     <string name="home_notification_title">알림 사용</string>
-    <string name="home_notification_message">Lemuroid가 게임 또는 배경 작업을 실행 중일 때 알림을 표시합니다.</string>
+    <string name="home_notification_message">OMINOY가 게임 또는 배경 작업을 실행 중일 때 알림을 표시합니다.</string>
     <string name="home_notification_action">활성화</string>
     <string name="home_microphone_title">마이크 활성화</string>
     <string name="home_microphone_message">Nintendo DS 게임들의 마이크를 활용하는 기능을 사용할 수 있습니다.</string>
     <string name="home_microphone_action">활성화</string>
     <string name="home_empty_title">ROM 디렉토리 선택</string>
-    <string name="home_empty_message">Lemuroid가 검색할 ROM 파일이 담긴 디렉토리가 필요합니다.\n이 과정은 몇 분 정도 걸립니다.</string>
+    <string name="home_empty_message">OMINOY가 검색할 ROM 파일이 담긴 디렉토리가 필요합니다.\n이 과정은 몇 분 정도 걸립니다.</string>
     <string name="home_empty_action">디렉토리 선택</string>
     <string name="home_notification_desmume_deprecated_title">DeSmuME의 지원이 중단됩니다</string>
     <string name="home_notification_desmume_deprecated_message">게임 내에서 저장하고, melonDS로 갈아타 진행 상황을 보존하세요. 상태저장은 다른 코어로 가져갈 수 없으며 DeSmuME에서밖에 사용할 수 없습니다.</string>
@@ -123,13 +123,13 @@
     <string name="game_running_notification_title_alternative">게임 실행 중</string>
     <string name="game_running_notification_message">진행 상황 저장을 잊지 마세요</string>
     <string name="game_loader_error_gl_incompatible">이 장치에서는 이 코어가 요구하는 OpenGL ES 버전이 지원되지 않습니다.</string>
-    <string name="game_loader_error_load_game">게임을 불러오는 도중 문제가 발생했습니다. ROM 파일이 Lemuroid에서 지원되는 파일인지 확인한 뒤 게임을 다시 검색해주세요.</string>
+    <string name="game_loader_error_load_game">게임을 불러오는 도중 문제가 발생했습니다. ROM 파일이 OMINOY에서 지원되는 파일인지 확인한 뒤 게임을 다시 검색해주세요.</string>
     <string name="game_loader_error_save">세이브 파일에 문제가 발생했습니다. 문제가 지속될 경우 자동 저장을 비활성화하는 것이 좋습니다.</string>
     <string name="game_loader_error_unsupported_architecture">이 장치에서 지원되지 않는 코어입니다.</string>
     <string name="game_loader_error_generic">문제가 발생했습니다. 다음 조치를 취해보세요:\n
         \n\u2022 자동 저장을 비활성화하고 게임 다시 실행
         \n\u2022 안드로이드 설정에서 앱 캐시 초기화
-        \n\u2022 Lemuroid 설정에서 설정 초기화
+        \n\u2022 OMINOY 설정에서 설정 초기화
         \n\n이후에도 계속 문제가 발생할 경우, 이 장치에서 이 게임 또는 코어가 지원되지 않는 것일 수도 있습니다.
     </string>
     <string name="game_loader_error_missing_bios">필요한 BIOS 파일이 없는 것 같습니다. ROM 디렉토리에 필요한 파일을 추가한 뒤 게임을 다시 검색해주세요. 필요한 파일: %1$s</string>
@@ -158,18 +158,18 @@
     <string name="game_process_another_game_running">다른 게임을 시작하려면 먼저 실행중인 게임을 종료해주세요</string>
     <string name="mobile_settings_help">도움말</string>
     <string name="mobile_settings_support">지원</string>
-    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;Lemuroid는 어떻게 사용하나요?</b><br/>
-        ROM 파일들을 장치 내 디렉토리에 복사한 뒤 Lemuroid에서 해당 디렉토리를 선택합니다. 디렉토리 안에 디렉토리가 있어도 괜찮습니다. 검색이 끝나면 게임들을 보실 수 있습니다.<br/><br/>
+    <string name="lemuroid_help_content"><![CDATA[        <b>&#8226;OMINOY는 어떻게 사용하나요?</b><br/>
+        ROM 파일들을 장치 내 디렉토리에 복사한 뒤 OMINOY에서 해당 디렉토리를 선택합니다. 디렉토리 안에 디렉토리가 있어도 괜찮습니다. 검색이 끝나면 게임들을 보실 수 있습니다.<br/><br/>
         <b>&#8226;왜 제 게임이 감지되지 않는건가요?</b><br/>
         게임 파일이 압축되어 있다면, 압축을 해제해보세요. 그래도 안 된다면 ROM들을 아래와 같은 이름의 디렉토리를 만들어서 시스템별로 따로따로 배치해보세요: $SYSTEMS.
     ]]></string>
     <string name="lemuroid_crash_disclamer">Libretro 코어에서 예기치 못한 문제가 발생했습니다. 문제가 지속된다면 다음 조치를 취해보세요:\n
         \n\u2022 자동 저장을 비활성화하고 게임 다시 실행
         \n\u2022 안드로이드 설정에서 앱 캐시 초기화
-        \n\u2022 Lemuroid 설정에서 설정 초기화
+        \n\u2022 OMINOY 설정에서 설정 초기화
         \n\n 이후에도 계속 문제가 발생할 경우, 이 장치에서 이 게임 또는 코어가 지원되지 않는 것일 수도 있습니다.
     </string>
-    <string name="error_message_incompatible_state">이 상태저장은 현재 코어 버전과 호환되지 않습니다. 가장 최근의 인게임 세이브 데이터를 사용하거나 이전 버전의 Lemuroid를 사용하세요.</string>
+    <string name="error_message_incompatible_state">이 상태저장은 현재 코어 버전과 호환되지 않습니다. 가장 최근의 인게임 세이브 데이터를 사용하거나 이전 버전의 OMINOY를 사용하세요.</string>
     <string name="shader_filter_names_auto">자동</string>
     <string name="shader_filter_names_sharp">선명하게</string>
     <string name="shader_filter_names_smooth">부드럽게</string>

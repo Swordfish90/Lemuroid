@@ -1,49 +1,22 @@
-Lemuroid is an open-source emulator based on Libretro. It's designed to work on a wide range of devices, from phones to TVs, and to provide the best user experience on Android. It's completely free and without ads.
+OMINOY is an open-source Android emulator based on Libretro, focused exclusively on Nintendo Game Boy, Game Boy Color, and Game Boy Advance. It is designed to provide a simple, integrated experience on phones and Android TV. It is free and has no ads.
 
-
-Supported Systems:
-
-- Atari 2600 (A26)
-- Atari 7800 (A78)
-- Atari Lynx (Lynx)
-- Nintendo (NES)
-- Super Nintendo (SNES)
+Supported systems:
 - Game Boy (GB)
 - Game Boy Color (GBC)
 - Game Boy Advance (GBA)
-- Sega Genesis (aka Megadrive)
-- Sega CD (aka Mega CD)
-- Sega Master System (SMS)
-- Sega Game Gear (GG)
-- Nintendo 64 (N64)
-- PlayStation (PSX)
-- PlayStation Portable (PSP)
-- FinalBurn Neo (Arcade)
-- Nintendo DS (NDS)
-- NEC PC Engine (PCE)
-- Neo Geo Pocket (NGP)
-- Neo Geo Pocket Color (NGC)
-- WonderSwan (WS)
-- WonderSwan Color (WSC)
-- Nintendo 3DS (3DS)
-
 
 Features:
-
-- Automatically save and restore game states
-- ROMs scanning and indexing
-- Optimized touch controls
+- Automatically save and restore game saves and states
+- ROM scanning and library indexing
+- Optimized, customizable touch controls
 - Quick save/load with slots
-- Support for zipped ROMs
-- Display simulation (LCD/CRT)
+- Support for ZIP-compressed ROMs
+- LCD/CRT display simulation
 - Fast-forward support
-- Gamepad support
-- Tilt to stick support
-- Touch control customization (size and position)
-- Cloud save sync
+- Gamepad support and local multiplayer
+- Tilt input
+- Cloud save sync in supported builds
+- Custom per-game thumbnails for ROM hacks and homebrew
 - No ads
-- Local multiplayer (connect multiple gamepads to the same device)
-
-Keep in mind not every device can emulate every console. A very powerful one is required for more recent systems such as PSP and DS and 3DS.
 
 This application does not contain any games. You need to provide your own legally owned ROM files.
