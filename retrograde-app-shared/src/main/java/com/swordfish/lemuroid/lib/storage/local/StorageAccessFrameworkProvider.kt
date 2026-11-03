@@ -303,5 +303,6 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
     companion object {
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
         const val VIRTUAL_FILE_PATH = "/virtual/file/path"
+        private const val COPY_BUFFER_SIZE = 1024 * 1024
     }
 }
