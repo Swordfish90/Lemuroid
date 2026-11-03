@@ -115,7 +115,9 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
                             name = documentName,
                             size = documentSize,
                             uri = documentUri,
-                            path = documentUri.path,
+                            // SAF Uri.path contains an opaque document URI, not the parent folders.
+                            // The document ID retains the provider's relative directory hierarchy.
+                            path = documentId,
                         ),
                     )
                 }
