@@ -25,6 +25,13 @@ fun BiosScreen(
 ) {
     val context = LocalContext.current
     val importResult = viewModel.importResult.collectAsState().value
+    val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) {
+            DocumentFile.fromSingleUri(context, uri)?.let { file ->
+                viewModel.importPs2File(file, context.contentResolver)
+            }
+        }
+    }
     val folderPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
         if (uri != null) {
             DocumentFile.fromTreeUri(context, uri)?.let { folder ->
@@ -55,7 +62,7 @@ fun BiosScreen(
             LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.settings_bios_ps2_import)) },
                 subtitle = { Text(text = stringResource(id = R.string.settings_bios_ps2_description)) },
-                onClick = { folderPicker.launch(null) },
+                onClick = { filePicker.launch(arrayOf("*/*")) },
             )
         }
         if (uiState.detected.isNotEmpty()) {
