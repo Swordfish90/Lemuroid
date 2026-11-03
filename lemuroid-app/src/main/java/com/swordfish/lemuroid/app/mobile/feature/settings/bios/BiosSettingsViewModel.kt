@@ -29,6 +29,14 @@ class BiosSettingsViewModel(private val biosManager: BiosManager) : ViewModel() 
         refresh()
     }
 
+    fun importPs2File(file: DocumentFile, contentResolver: ContentResolver) {
+        viewModelScope.launch {
+            val imported = biosManager.importPs2File(file, contentResolver)
+            refresh()
+            importResult.value = imported
+        }
+    }
+
     fun importPs2Folders(root: DocumentFile, contentResolver: ContentResolver) {
         viewModelScope.launch {
             val imported = biosManager.importPs2Folders(root, contentResolver)
