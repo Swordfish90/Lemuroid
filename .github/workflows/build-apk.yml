@@ -1,35 +1,28 @@
-name: Build Android APK
+name: Android CI and Releases
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - integration/armsx2-lemuroid
-    paths:
-      - "**/*.kt"
-      - "**/*.kts"
-      - "**/*.java"
-      - "**/*.cpp"
-      - "**/*.h"
-      - "**/*.xml"
-      - ".github/workflows/build-apk.yml"
-      - ".gitmodules"
-      - "gradle.properties"
+      - "**"
+    tags:
+      - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
-    name: Build free ARM64-compatible APK
+    name: Build Android APK and AAB
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
+    env:
+      HAS_RELEASE_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE != '' && secrets.RELEASE_KEYSTORE_PASSPHRASE != '' }}
 
     steps:
       - name: Checkout repository and submodules
         uses: actions/checkout@v4
         with:
-          ref: integration/armsx2-lemuroid
           submodules: recursive
           fetch-depth: 0
 
@@ -52,21 +45,93 @@ jobs:
           yes | "$SDKMANAGER" --licenses
           "$SDKMANAGER" "platform-tools" "platforms;android-35" "build-tools;34.0.0" "cmake;3.22.1" "ndk;27.2.12479018"
 
-      - name: Verify submodules
+      - name: Verify PS2 core submodule
         run: |
           git submodule status --recursive
           test -f lemuroid-cores/lemuroid_core_armsx2/build.gradle.kts
           test -f lemuroid-cores/lemuroid_core_armsx2/src/main/jniLibs/arm64-v8a/libarmsx2_libretro_android.so
 
-      - name: Build installable debug APK
+      - name: Calculate app version
+        id: version
+        shell: bash
+        run: |
+          VERSION_CODE=$((252 + GITHUB_RUN_NUMBER))
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION_NAME="${GITHUB_REF_NAME#v}"
+            PRERELEASE=false
+          else
+            VERSION_NAME="1.18.0-dev.${GITHUB_RUN_NUMBER}"
+            PRERELEASE=true
+          fi
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+          echo "version_name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+          echo "Building Lemuroid $VERSION_NAME (versionCode $VERSION_CODE)"
+
+      - name: Build debug APK (available on every push)
+        env:
+          VERSION_CODE: ${{ steps.version.outputs.version_code }}
+          VERSION_NAME: ${{ steps.version.outputs.version_name }}
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon --stacktrace :lemuroid-app:assembleFreeDynamicDebug
 
-      - name: Upload APK
+      - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: Lemuroid-PS2-ARM64-debug
+          name: Lemuroid-${{ steps.version.outputs.version_name }}-debug
           path: lemuroid-app/build/outputs/apk/freeDynamic/debug/*.apk
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
+
+      - name: Restore release signing key
+        if: env.HAS_RELEASE_KEYSTORE == 'true'
+        env:
+          RELEASE_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
+          RELEASE_KEYSTORE_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}
+        run: |
+          printf '%s' "$RELEASE_KEYSTORE" > release.keystore.asc
+          gpg --batch --yes --decrypt --passphrase "$RELEASE_KEYSTORE_PASSPHRASE" release.keystore.asc > release.jks
+          test -s release.jks
+
+      - name: Build signed release APK and AAB
+        if: env.HAS_RELEASE_KEYSTORE == 'true'
+        env:
+          VERSION_CODE: ${{ steps.version.outputs.version_code }}
+          VERSION_NAME: ${{ steps.version.outputs.version_name }}
+        run: |
+          ./gradlew --no-daemon --stacktrace \
+            :lemuroid-app:assembleFreeDynamicRelease \
+            :lemuroid-app:bundleFreeDynamicRelease
+          mkdir -p release-assets
+          cp lemuroid-app/build/outputs/apk/freeDynamic/release/*.apk "release-assets/Lemuroid-${VERSION_NAME}-release.apk"
+          cp lemuroid-app/build/outputs/bundle/freeDynamicRelease/*.aab "release-assets/Lemuroid-${VERSION_NAME}.aab"
+          sha256sum release-assets/* > release-assets/SHA256SUMS.txt
+
+      - name: Upload signed release APK and AAB
+        if: env.HAS_RELEASE_KEYSTORE == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lemuroid-${{ steps.version.outputs.version_name }}-release
+          path: release-assets/*
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Publish versioned GitHub Release
+        if: env.HAS_RELEASE_KEYSTORE == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('v1.18.0-dev.{0}', github.run_number) }}
+          target_commitish: ${{ github.sha }}
+          name: Lemuroid ${{ steps.version.outputs.version_name }}
+          prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
+          generate_release_notes: true
+          files: release-assets/*
+
+      - name: Explain missing release signing key
+        if: env.HAS_RELEASE_KEYSTORE != 'true'
+        run: |
+          {
+            echo "### Release APK/AAB not published"
+            echo "The debug APK was built and uploaded. Add the repository Actions secrets RELEASE_KEYSTORE and RELEASE_KEYSTORE_PASSPHRASE to enable signed release APK/AAB files and versioned GitHub Releases."
+          } >> "$GITHUB_STEP_SUMMARY"
