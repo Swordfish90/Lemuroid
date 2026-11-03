@@ -26,7 +26,7 @@ object GameProcessCrashHistory {
 
         val exits =
             try {
-                activityManager.getHistoricalProcessExitReasons(context.packageName, null, 20)
+                activityManager.getHistoricalProcessExitReasons(context.packageName, 0, 20)
             } catch (_: RuntimeException) {
                 return
             }
