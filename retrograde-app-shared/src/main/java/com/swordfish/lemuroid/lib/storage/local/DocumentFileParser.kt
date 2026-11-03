@@ -60,7 +60,7 @@ object DocumentFileParser {
             entry.crc.toStringCRC32(),
             diskInfo.serial,
             baseStorageFile.uri,
-            baseStorageFile.uri.path,
+            baseStorageFile.path ?: baseStorageFile.uri.path,
             diskInfo.systemID,
         )
     }
@@ -88,7 +88,7 @@ object DocumentFileParser {
             crc32,
             diskInfo?.serial,
             baseStorageFile.uri,
-            baseStorageFile.uri.path,
+            baseStorageFile.path ?: baseStorageFile.uri.path,
             diskInfo?.systemID,
         )
     }
