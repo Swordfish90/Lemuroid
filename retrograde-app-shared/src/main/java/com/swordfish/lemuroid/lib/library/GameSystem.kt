@@ -811,7 +811,7 @@ data class GameSystem(
                                 ),
                             defaultSettings =
                                 listOf(
-                                    CoreVariable("armsx2_renderer", "OpenGL"),
+                                    CoreVariable("armsx2_renderer", "Vulkan"),
                                 ),
                             requiredBIOSFiles = listOf("pcsx2/bios", "pcsx2/resources"),
                             supportsLibretroVFS = false,
