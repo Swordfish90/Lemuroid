@@ -96,33 +96,46 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
         root: DocumentFile,
         contentResolver: ContentResolver,
     ): Boolean = withContext(Dispatchers.IO) {
-        val biosFolder = root.findFile("bios")?.takeIf { it.isDirectory }
+        val biosFolder =
+            root.findFile("bios")?.takeIf { it.isDirectory }
+                ?: root.takeIf { it.isDirectory && it.listFiles().any { child -> child.isFile } }
+                ?: return@withContext false
         val resourcesFolder = root.findFile("resources")?.takeIf { it.isDirectory }
-        if (biosFolder == null || resourcesFolder == null) return@withContext false
 
         val ps2Directory = File(directoriesManager.getSystemDirectory(), "pcsx2")
         val targetBios = File(ps2Directory, "bios")
         val targetResources = File(ps2Directory, "resources")
-        targetBios.mkdirs()
-        targetResources.mkdirs()
+        if (!targetBios.mkdirs() && !targetBios.isDirectory) return@withContext false
+        if (!targetResources.mkdirs() && !targetResources.isDirectory) return@withContext false
 
-        fun copyTree(source: DocumentFile, destination: File) {
+        fun copyTree(source: DocumentFile, destination: File): Int {
+            var copiedFiles = 0
             source.listFiles().forEach { child ->
-                val target = File(destination, child.name ?: return@forEach)
+                val name = child.name ?: return@forEach
+                val target = File(destination, name)
                 if (child.isDirectory) {
-                    target.mkdirs()
-                    copyTree(child, target)
-                } else if (child.isFile) {
-                    contentResolver.openInputStream(child.uri)?.use { input ->
-                        target.parentFile?.mkdirs()
-                        target.outputStream().use { output -> input.copyTo(output) }
+                    if (target.mkdirs() || target.isDirectory) {
+                        copiedFiles += copyTree(child, target)
                     }
+                } else if (child.isFile) {
+                    val copied =
+                        contentResolver.openInputStream(child.uri)?.use { input ->
+                            target.parentFile?.mkdirs()
+                            target.outputStream().use { output -> input.copyTo(output) }
+                            true
+                        } ?: false
+                    if (copied) copiedFiles++
                 }
             }
+            return copiedFiles
         }
 
-        copyTree(biosFolder, targetBios)
-        copyTree(resourcesFolder, targetResources)
+        val copiedBiosFiles = copyTree(biosFolder, targetBios)
+        if (copiedBiosFiles == 0) return@withContext false
+
+        if (resourcesFolder != null) {
+            copyTree(resourcesFolder, targetResources)
+        }
         true
     }
 
