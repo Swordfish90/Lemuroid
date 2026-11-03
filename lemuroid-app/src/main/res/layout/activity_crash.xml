@@ -24,6 +24,14 @@
             android:text="@string/lemuroid_crash_disclamer" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/diagnostics_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Diagnóstico técnico completo"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
