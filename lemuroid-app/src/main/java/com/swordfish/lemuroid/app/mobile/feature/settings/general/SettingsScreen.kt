@@ -1,10 +1,17 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.general
 
 import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -14,6 +21,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.navigateToRoute
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
+import com.swordfish.lemuroid.app.shared.saves.SavesImportExportManager
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
@@ -24,6 +32,8 @@ import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import com.swordfish.lemuroid.app.utils.android.settings.indexPreferenceState
 import com.swordfish.lemuroid.app.utils.android.settings.intPreferenceState
 import com.swordfish.lemuroid.app.utils.android.stringListResource
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun SettingsScreen(
@@ -59,6 +69,127 @@ fun SettingsScreen(
             indexingInProgress = indexingInProgress,
             isSaveSyncSupported = state.isSaveSyncSupported,
             navController = navController,
+        )
+        SavesImportExportSettings(viewModel = viewModel)
+    }
+}
+
+@Composable
+private fun SavesImportExportSettings(viewModel: SettingsViewModel) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    val exportLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.CreateDocument("application/zip"),
+        ) { uri ->
+            if (uri == null) return@rememberLauncherForActivityResult
+            scope.launch {
+                val message =
+                    runCatching {
+                        viewModel.exportSaves(uri)
+                        context.getString(R.string.saves_backup_export_success)
+                    }.getOrElse {
+                        Timber.e(it, "Failed to export saves")
+                        context.getString(R.string.saves_backup_export_failure)
+                    }
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        }
+
+    val importFileLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.OpenDocument(),
+        ) { uri ->
+            if (uri == null) return@rememberLauncherForActivityResult
+            scope.launch {
+                val message =
+                    runCatching {
+                        val name = viewModel.importSaveFile(uri)
+                        context.getString(R.string.saves_backup_import_file_success, name)
+                    }.getOrElse {
+                        Timber.e(it, "Failed to import save file")
+                        context.getString(R.string.saves_backup_import_failure)
+                    }
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        }
+
+    val importZipLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.OpenDocument(),
+        ) { uri ->
+            if (uri == null) return@rememberLauncherForActivityResult
+            scope.launch {
+                val message =
+                    runCatching {
+                        viewModel.importSaves(uri)
+                        context.getString(R.string.saves_backup_import_success)
+                    }.getOrElse {
+                        Timber.e(it, "Failed to import saves")
+                        context.getString(R.string.saves_backup_import_failure)
+                    }
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        }
+
+    val showZipInfo = remember { mutableStateOf(false) }
+
+    if (showZipInfo.value) {
+        AlertDialog(
+            onDismissRequest = { showZipInfo.value = false },
+            title = { Text(text = stringResource(id = R.string.saves_backup_zip_structure_title)) },
+            text = { Text(text = stringResource(id = R.string.saves_backup_zip_structure_message)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showZipInfo.value = false
+                        importZipLauncher.launch(
+                            arrayOf(
+                                "application/zip",
+                                "application/octet-stream",
+                                "application/x-zip-compressed",
+                            ),
+                        )
+                    },
+                ) {
+                    Text(text = stringResource(id = R.string.saves_backup_action_continue))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showZipInfo.value = false }) {
+                    Text(text = stringResource(id = R.string.saves_backup_action_cancel))
+                }
+            },
+        )
+    }
+
+    LemuroidCardSettingsGroup(
+        title = { Text(text = stringResource(id = R.string.settings_category_saves_backup)) },
+    ) {
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.settings_title_export_saves)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_export_saves)) },
+            onClick = {
+                scope.launch {
+                    if (viewModel.hasSavesToExport()) {
+                        exportLauncher.launch(SavesImportExportManager.defaultExportFileName())
+                    } else {
+                        val message = context.getString(R.string.saves_backup_export_empty)
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                    }
+                }
+            },
+        )
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.settings_title_import_save_file)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_import_save_file)) },
+            onClick = { importFileLauncher.launch(arrayOf("*/*")) },
+        )
+        LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.settings_title_import_saves)) },
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_import_saves)) },
+            onClick = { showZipInfo.value = true },
         )
     }
 }

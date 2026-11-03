@@ -56,6 +56,7 @@ import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
+import com.swordfish.lemuroid.app.shared.saves.SavesImportExportManager
 import com.swordfish.lemuroid.app.shared.settings.SettingsInteractor
 import com.swordfish.lemuroid.common.coroutines.safeLaunch
 import com.swordfish.lemuroid.ext.feature.review.ReviewManager
@@ -99,6 +100,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     @Inject
     lateinit var settingsInteractor: SettingsInteractor
+
+    @Inject
+    lateinit var savesImportExportManager: SavesImportExportManager
 
     @Inject
     lateinit var inputDeviceManager: InputDeviceManager
@@ -272,6 +276,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                             applicationContext,
                                             settingsInteractor,
                                             saveSyncManager,
+                                            savesImportExportManager,
                                             FlowSharedPreferences(
                                                 SharedPreferencesHelper.getLegacySharedPreferences(
                                                     applicationContext,

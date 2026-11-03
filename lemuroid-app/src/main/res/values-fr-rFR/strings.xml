@@ -183,4 +183,22 @@
     <string name="tilt_configuration_buttons_l_r">L - R</string>
     <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
     <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+    <!-- Sauvegarde des données de jeu (import/export) -->
+    <string name="settings_category_saves_backup">Sauvegarde des données</string>
+    <string name="settings_title_export_saves">Exporter les sauvegardes</string>
+    <string name="settings_description_export_saves">Enregistrer toutes vos sauvegardes et états de sauvegarde dans un fichier zip</string>
+    <string name="settings_title_import_saves">Importer depuis un zip</string>
+    <string name="settings_description_import_saves">Restaurer les sauvegardes et états depuis une archive zip</string>
+    <string name="settings_title_import_save_file">Importer un fichier de sauvegarde</string>
+    <string name="settings_description_import_save_file">Charger un seul fichier de sauvegarde (SRAM)</string>
+    <string name="saves_backup_export_success">Données exportées</string>
+    <string name="saves_backup_export_empty">Aucune donnée de sauvegarde à exporter</string>
+    <string name="saves_backup_export_failure">Échec de l\'export</string>
+    <string name="saves_backup_import_success">Données importées</string>
+    <string name="saves_backup_import_failure">Échec de l\'import</string>
+    <string name="saves_backup_import_file_success">%1$s importé</string>
+    <string name="saves_backup_zip_structure_title">Importer depuis un zip</string>
+    <string name="saves_backup_zip_structure_message">Le zip doit conserver la structure de l\'export :\n• saves/ — sauvegardes en jeu (SRAM)\n• states/&lt;core&gt;/ — états de sauvegarde\n• state-previews/&lt;core&gt;/ — aperçus</string>
+    <string name="saves_backup_action_continue">Continuer</string>
+    <string name="saves_backup_action_cancel">Annuler</string>
 </resources>

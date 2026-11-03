@@ -246,4 +246,22 @@
     <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
     <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 
+    <!-- Save data backup (import/export) -->
+    <string name="settings_category_saves_backup">Save data backup</string>
+    <string name="settings_title_export_saves">Export saves</string>
+    <string name="settings_description_export_saves">Save all your in-game saves and save states to a zip file</string>
+    <string name="settings_title_import_saves">Import from zip</string>
+    <string name="settings_description_import_saves">Restore in-game saves and save states from a zip backup</string>
+    <string name="settings_title_import_save_file">Import a save file</string>
+    <string name="settings_description_import_save_file">Load a single in-game (SRAM) save file</string>
+    <string name="saves_backup_export_success">Save data exported</string>
+    <string name="saves_backup_export_empty">There is no save data to export yet</string>
+    <string name="saves_backup_export_failure">Export failed</string>
+    <string name="saves_backup_import_success">Save data imported</string>
+    <string name="saves_backup_import_failure">Import failed</string>
+    <string name="saves_backup_import_file_success">Imported %1$s</string>
+    <string name="saves_backup_zip_structure_title">Import from zip</string>
+    <string name="saves_backup_zip_structure_message">The zip must keep the same layout as the export:\n• saves/ — in-game (SRAM) saves\n• states/&lt;core&gt;/ — save states\n• state-previews/&lt;core&gt;/ — previews</string>
+    <string name="saves_backup_action_continue">Continue</string>
+    <string name="saves_backup_action_cancel">Cancel</string>
 </resources>
