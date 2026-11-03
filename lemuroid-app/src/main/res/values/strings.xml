@@ -73,7 +73,13 @@
     <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>
 
     <string name="settings_title_enable_rumble">Rumble</string>
-    <string name="settings_description_enable_rumble">Enable rumble in supported games and controllers</string>
+    <string name="settings_description_enable_rumble">Enable rumble in supported games</string>
+
+    <string name="settings_title_rumble_destination">Rumble destination</string>
+    <string name="settings_description_rumble_destination">Automatic uses controller rumble when available; otherwise, it uses device vibration</string>
+    <string name="settings_rumble_destination_auto">Automatic</string>
+    <string name="settings_rumble_destination_controller">Controller only</string>
+    <string name="settings_rumble_destination_device">Device vibration</string>
 
     <string name="settings_title_enable_device_rumble">Device rumble</string>
     <string name="settings_description_enable_device_rumble">When no controller is connected vibrate the device instead</string>
