@@ -20,7 +20,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 
@@ -225,9 +229,71 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
             return cacheFile
         }
 
-        val stream = context.contentResolver.openInputStream(originalDocument.uri)!!
-        stream.writeToFile(cacheFile)
+        copyDocumentToCache(originalDocument.uri, cacheFile, originalDocument.length())
         return cacheFile
+    }
+
+    /**
+     * Copy SAF documents atomically. A killed/interrupted copy must never be mistaken
+     * for a complete ROM on the next launch.
+     */
+    private fun copyDocumentToCache(
+        uri: Uri,
+        cacheFile: File,
+        expectedSize: Long,
+    ) {
+        if (cacheFile.exists()) {
+            if (expectedSize <= 0L || cacheFile.length() == expectedSize) {
+                return
+            }
+            Timber.w(
+                "Removing incomplete cached ROM: %s (%d/%d bytes)",
+                cacheFile.name,
+                cacheFile.length(),
+                expectedSize,
+            )
+            cacheFile.delete()
+        }
+
+        val temporaryFile = File(cacheFile.parentFile, "${cacheFile.name}.part")
+        if (temporaryFile.exists()) temporaryFile.delete()
+
+        try {
+            val availableSpace = cacheFile.parentFile?.usableSpace ?: 0L
+            if (expectedSize > 0L && availableSpace > 0L && availableSpace < expectedSize) {
+                throw IOException(
+                    "Not enough cache space for ${cacheFile.name}: need $expectedSize bytes, have $availableSpace",
+                )
+            }
+
+            val input = context.contentResolver.openInputStream(uri)
+                ?: throw IOException("Unable to open ROM document: $uri")
+            input.use { source ->
+                BufferedInputStream(source).use { bufferedSource ->
+                    FileOutputStream(temporaryFile).use { fileOutput ->
+                        BufferedOutputStream(fileOutput, COPY_BUFFER_SIZE).use { output ->
+                            bufferedSource.copyTo(output, COPY_BUFFER_SIZE)
+                            output.flush()
+                            fileOutput.fd.sync()
+                        }
+                    }
+                }
+            }
+
+            if (expectedSize > 0L && temporaryFile.length() != expectedSize) {
+                throw IOException(
+                    "Incomplete ROM copy for ${cacheFile.name}: ${temporaryFile.length()}/$expectedSize bytes",
+                )
+            }
+
+            if (!temporaryFile.renameTo(cacheFile)) {
+                throw IOException("Unable to finalize cached ROM: ${cacheFile.name}")
+            }
+            Timber.i("Cached ROM ready: %s (%d bytes)", cacheFile.name, cacheFile.length())
+        } catch (error: Exception) {
+            temporaryFile.delete()
+            throw error
+        }
     }
 
     override fun getInputStream(uri: Uri): InputStream? {
