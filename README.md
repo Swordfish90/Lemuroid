@@ -2,70 +2,47 @@
 
 <p align="center"><img src="docs/ominoy-icon.png" alt="OMINOY app icon" width="160"></p>
 
-
-
 ## Description
 
-OMINOY is an open-source Android emulation project based on Libretro, focused exclusively on Nintendo Game Boy, Game Boy Color, and Game Boy Advance. These are the only systems targeted by this project; support for other consoles or handhelds is not planned. Its goal is to combine easy setup, Android integration, and a polished play experience.
+OMINOY is an open-source Android emulation app built on Libretro. It focuses exclusively on Nintendo Game Boy, Game Boy Color, and Game Boy Advance; other systems are not supported.
 
 It originated from a branch of [Retrograde](https://github.com/retrograde/retrograde-android) and integrates [LibretroDroid](https://github.com/Swordfish90/LibretroDroid).
 
-### Supported systems
-
-OMINOY targets exactly these three systems and no others:
+## Supported systems
 
 - Game Boy (GB) — mGBA
 - Game Boy Color (GBC) — mGBA
 - Game Boy Advance (GBA) — mGBA
 
-### Features
+## Features
 
-- Android phone and Android TV support
-- Automatic save-RAM and save-state handling
-- ROM scanning and library indexing
-- Optimized, customizable touch controls
-- Quick save/load slots
+- ROM scanning and library indexing, with in-app search and favorites
 - ZIP-compressed ROM support
-- LCD/CRT display simulation
-- Gamepad and local multiplayer support
-- Tilt input
-- Cloud save sync in supported builds
-- Custom per-game thumbnails for ROM hacks and homebrew
+- Automatic save-RAM and save-state handling, plus quick save/load slots
+- Per-game cheat-code management for supported systems and code types
+- Custom per-game thumbnails: choose artwork from the Android gallery or file picker, then change or remove it later
+- Customizable on-screen controls, gamepad input, tilt input, and local multiplayer
+- Screen filters, HD display options, LCD/CRT simulation, and viewport alignment (center, top, bottom, or custom)
+- Android phone and Android TV support
+- Per-game playtime, session-count, and last-played information
+- An in-app link to OMINOY's GitHub updates
 
 ### Custom thumbnails
 
-Assign local artwork to individual games that do not have cover art in the Libretro thumbnail database. Long-press a game tile and choose **Set custom thumbnail**; choose an image from the Android gallery or file picker. OMINOY center-crops the image to a square, resizes it to a maximum of 512 × 512 pixels, and stores a private app copy. For existing artwork, choose **Change thumbnail** or **Remove thumbnail** from the same context menu.
+Long-press a game tile and choose **Set custom thumbnail** to select artwork from the Android gallery or file picker. OMINOY center-crops the image to a square, resizes it to a maximum of 512 × 512 pixels, and stores a private app copy. Use **Change thumbnail** or **Remove thumbnail** from the same context menu to manage existing artwork. Custom thumbnails persist across restarts and library rescans; they are not embedded in ROM files and are removed when the app is uninstalled.
 
-Custom thumbnails are stored as app-side metadata and persist across restarts and library rescans. They are not embedded in ROM files or uploaded for cloud sync, and they are removed when the app is uninstalled.
-
-### Security and reliability
+### Reliability
 
 - ZIP extraction rejects absolute and traversal paths and applies entry-count, output-size, per-entry-size, and compression-ratio limits.
 - Core assets are extracted into a validated temporary directory before installation.
-- Downloaded core files, extracted data, and synchronized files use atomic writes where applicable.
-- Save, state, preview, and cache filenames are sanitized; cache locations include a SHA-256 source identity derived from the URI, filename, and system.
+- Save, state, preview, and cache filenames are sanitized; applicable file writes are atomic.
 - Library cleanup runs only after a complete successful provider scan, preserving existing entries when a provider fails or becomes unavailable.
-- Google Drive relative paths are validated before local file construction, and Room multi-instance invalidation is enabled for the shared database.
 
-### Current OMINOY build
-
-This repository contains the OMINOY Android build with the following available functionality:
-
-- GB, GBC, and GBA emulation through the mGBA Libretro core
-- ROM library scanning, indexing, ZIP support, and per-game thumbnails
-- Save RAM, save states, quick save/load slots, and safe library cleanup
-- Customizable touch controls, gamepad input, tilt input, and local multiplayer
-- Android phone and Android TV support with LCD/CRT display simulation
-- Optional cloud-save synchronization in supported builds
-- Hardened ZIP/core extraction, filename sanitization, atomic writes, and validated cloud paths
-
-The release APK is published from the GitHub Releases page for this repository.
-
-### Building
+## Building
 
 Requirements: JDK 21, Android SDK Platform 35, Android Build Tools 34.0.0, and the repository submodules.
 
-The project expects a root-level debug keystore for local debug builds. Generate a throwaway debug-only key (do not use it for production signing), then build the Free Dynamic debug APK:
+To build the Free Dynamic debug APK, create a throwaway debug-only keystore (do not use it for a production release) and run:
 
 ```bash
 keytool -genkeypair -noprompt -keystore debug.keystore \
@@ -74,8 +51,8 @@ keytool -genkeypair -noprompt -keystore debug.keystore \
 ./gradlew assembleFreeDynamicDebug
 ```
 
-The debug APK uses a `.debug` application ID suffix and installs separately from a production release. Free Dynamic keeps the APK small; mGBA is downloaded on demand when first needed, so internet access may be required. For a release build, create an ignored `keystore.properties` file with `storeFile`, `keyAlias`, `storePassword`, and `keyPassword` entries. Never commit a production keystore or its password.
+The debug APK uses a `.debug` application ID suffix and installs separately from a production release. In the Free Dynamic build, mGBA is downloaded on demand when first needed, so internet access may be required. For a release build, create an ignored `keystore.properties` file with `storeFile`, `keyAlias`, `storePassword`, and `keyPassword` entries. Never commit a production keystore or its password.
 
-### Languages
+## Languages
 
 Translations are managed through [Crowdin](https://crowdin.com/project/lemuroid).
