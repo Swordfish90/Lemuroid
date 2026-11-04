@@ -136,6 +136,22 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+
+        // The main process often survives a crash in the isolated :game process.
+        // Collect its exit record when returning from the game, not only at app startup.
+        GameProcessCrashHistory.collect(this)
+        GameProcessCrashHistory.consumePendingDetail(this)?.let { detail ->
+            GameCrashActivity.launch(
+                this,
+                "O Android detectou que o processo do emulador foi encerrado inesperadamente. Os detalhes da falha anterior estão abaixo.",
+                detail,
+            )
+        }
+    }
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MainScreen(navController: NavHostController) {
