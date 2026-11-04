@@ -17,6 +17,7 @@
     <string name="controller_dos_auto">Auto</string>
     <string name="controller_dos_mouse_left">Mouse with Left Stick</string>
     <string name="controller_dos_mouse_right">Mouse with Right Stick</string>
+    <string name="controller_nes_zapper">NES Zapper</string>
 
     <!-- Core settings titles -->
     <string name="setting_stella_filter">TV effect</string>
@@ -24,6 +25,9 @@
     <string name="setting_fceumm_overscan_h">Crop horizontal overscan</string>
     <string name="setting_fceumm_overscan_v">Crop vertical overscan</string>
     <string name="setting_fceumm_nospritelimit">No sprite limit</string>
+    <string name="setting_fceumm_zapper_mode">Zapper mode</string>
+    <string name="setting_fceumm_show_crosshair">Show Zapper crosshair</string>
+    <string name="setting_fceumm_zapper_tolerance">Zapper tolerance</string>
     <string name="setting_genesis_plus_gx_blargg_ntsc_filter">TV effect</string>
     <string name="setting_genesis_plus_gx_overscan">Borders</string>
     <string name="setting_genesis_plus_gx_lcd_filter">LCD ghosting</string>
@@ -102,6 +106,10 @@
     <string name="value_genesis_plus_gx_overscan_topbottom">Top/Bottom</string>
     <string name="value_genesis_plus_gx_overscan_leftright">Left/Right</string>
     <string name="value_genesis_plus_gx_overscan_full">Full</string>
+
+    <string name="value_fceumm_zapper_mode_touchscreen">Touchscreen</string>
+    <string name="value_fceumm_zapper_mode_lightgun">Lightgun</string>
+    <string name="value_fceumm_zapper_mode_mouse">Mouse</string>
 
     <string name="value_mupen64plus_cpucore_dynamicrecompiler">Dynamic recompiler</string>
     <string name="value_mupen64plus_cpucore_pureinterpreter">Pure interpreter</string>

@@ -141,7 +141,11 @@ fun GameMenuHomeScreen(
             },
         )
 
-        if (gameMenuRequest.advancedCoreOptions.isNotEmpty() || gameMenuRequest.coreOptions.isNotEmpty()) {
+        if (
+            gameMenuRequest.advancedCoreOptions.isNotEmpty() ||
+            gameMenuRequest.coreOptions.isNotEmpty() ||
+            gameMenuRequest.coreConfig.controllerConfigs.values.any { it.size > 1 }
+        ) {
             LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.game_menu_settings)) },
                 icon = {

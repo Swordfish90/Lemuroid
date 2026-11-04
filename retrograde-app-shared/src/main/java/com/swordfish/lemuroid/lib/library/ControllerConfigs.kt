@@ -39,6 +39,17 @@ object ControllerConfigs {
                 ),
         )
 
+    val NES_ZAPPER =
+        ControllerConfig(
+            "zapper",
+            R.string.controller_nes_zapper,
+            TouchControllerID.NES,
+            allowTouchOverlay = false,
+            mergeDPADAndLeftStickEvents = true,
+            libretroDescriptor = "Zapper",
+            libretroId = 258,
+        )
+
     val SNES =
         ControllerConfig(
             "default",

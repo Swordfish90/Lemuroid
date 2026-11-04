@@ -2,6 +2,8 @@ package com.swordfish.lemuroid.app.shared.game.viewmodel
 
 import android.content.Context
 import android.graphics.PointF
+import android.graphics.RectF
+import android.os.SystemClock
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -16,6 +18,7 @@ import com.swordfish.lemuroid.app.shared.settings.ControllerConfigsManager
 import com.swordfish.lemuroid.app.shared.settings.GameShortcutType
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.common.coroutines.safeCollect
+import com.swordfish.lemuroid.common.view.disableTouchEvents
 import com.swordfish.lemuroid.common.kotlin.NTuple2
 import com.swordfish.lemuroid.common.kotlin.NTuple4
 import com.swordfish.lemuroid.common.kotlin.filterNotNullValues
@@ -29,8 +32,12 @@ import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
+import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_POINTER
+import com.swordfish.libretrodroid.ViewportAlignment
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,6 +70,10 @@ class GameViewModelInput(
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
     private val keyEventsFlow: MutableSharedFlow<KeyEvent?> = MutableSharedFlow()
     private val motionEventsFlow: MutableSharedFlow<MotionEvent> = MutableSharedFlow()
+    private var zapperReleaseJob: Job? = null
+    private var zapperLastTouchDownTime = 0L
+    private var zapperLastRelX = 0.501f
+    private var zapperLastRelY = 0.501f
 
     fun getAllTiltConfigurations(): List<TiltConfiguration> {
         return controllerConfigsState.value[0]
@@ -201,14 +212,137 @@ class GameViewModelInput(
     }
 
     private fun updateControllers(controllers: Map<Int, ControllerConfig>) {
-        retroGameView.retroGameView
-            ?.getControllers()?.toIndexedMap()
-            ?.zipOnKeys(controllers, this::findControllerId)
-            ?.filterNotNullValues()
-            ?.forEach { (port, controllerId) ->
+        val gameView = retroGameView.retroGameView ?: return
+        gameView
+            .getControllers().toIndexedMap()
+            .zipOnKeys(controllers, this::findControllerId)
+            .filterNotNullValues()
+            .forEach { (port, controllerId) ->
                 Timber.i("Controls setting $port to $controllerId")
-                retroGameView.retroGameView?.setControllerType(port, controllerId)
+                gameView.setControllerType(port, controllerId)
             }
+
+        val zapperPorts = controllers.filter { it.value.libretroDescriptor == "Zapper" }.keys
+        if (zapperPorts.isNotEmpty()) {
+            setupZapperTouchListener(gameView, zapperPorts)
+        } else {
+            zapperReleaseJob?.cancel()
+            zapperReleaseJob = null
+            if (!system.hasTouchScreen) {
+                gameView.disableTouchEvents()
+            } else {
+                gameView.setOnTouchListener(null)
+            }
+        }
+    }
+
+    private fun computeReleasedCoordinate(rel: Float): Float {
+        val clamped = rel.coerceIn(0.001f, 0.999f)
+        val valOrig = ((2.0 * clamped - 1.0) * 32767.0).toInt()
+        val valNew = valOrig - 65536
+        return ((valNew.toDouble() / 32767.0 + 1.0) / 2.0).toFloat()
+    }
+
+    private fun setupZapperTouchListener(
+        glView: GLRetroView,
+        zapperPorts: Set<Int>,
+    ) {
+        glView.setOnTouchListener { _, event ->
+            val viewport = glView.viewport ?: RectF(0f, 0f, 1f, 1f)
+            val viewW = glView.width.toFloat()
+            val viewH = glView.height.toFloat()
+
+            val vpLeft = viewport.left * viewW
+            val vpTop = viewport.top * viewH
+            val vpWidth = (viewport.right - viewport.left) * viewW
+            val vpHeight = (viewport.bottom - viewport.top) * viewH
+
+            if (vpWidth <= 0f || vpHeight <= 0f) {
+                return@setOnTouchListener false
+            }
+
+            val aspectVar = glView.getVariables()?.firstOrNull { it.key == "fceumm_aspect" }?.value
+            val gameAspect = when (aspectVar) {
+                "4:3" -> 4f / 3f
+                "16:15" -> 16f / 15f
+                else -> (256f * (8f / 7f)) / 240f
+            }
+
+            val boxWidth: Float
+            val boxHeight: Float
+            if (vpHeight > 0f && vpWidth / vpHeight > gameAspect) {
+                boxHeight = vpHeight
+                boxWidth = vpHeight * gameAspect
+            } else {
+                boxWidth = vpWidth
+                boxHeight = if (gameAspect > 0f) vpWidth / gameAspect else vpHeight
+            }
+
+            val gameLeft = vpLeft + (vpWidth - boxWidth) / 2f
+            val gameTop = when (glView.viewportAlignment) {
+                ViewportAlignment.TOP -> vpTop
+                ViewportAlignment.BOTTOM -> vpTop + vpHeight - boxHeight
+                else -> vpTop + (vpHeight - boxHeight) / 2f
+            }
+
+            var relX = if (boxWidth > 0f) (event.x - gameLeft) / boxWidth else -10f
+            var relY = if (boxHeight > 0f) (event.y - gameTop) / boxHeight else -10f
+
+            // FCEUmm zeroes coordinates if pointer_x | pointer_y == 0 (which happens at rel == 0.5f).
+            // Nudge slightly away from 0.5f to ensure the photodiode check never drops to (0, 0).
+            if (abs(relX - 0.5f) < 0.001f) {
+                relX = 0.501f
+            }
+            if (abs(relY - 0.5f) < 0.001f) {
+                relY = 0.501f
+            }
+
+            val isInside = relX in 0f..1f && relY in 0f..1f
+
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    zapperReleaseJob?.cancel()
+                    if (!isInside) {
+                        return@setOnTouchListener false
+                    }
+                    zapperLastTouchDownTime = SystemClock.uptimeMillis()
+                    zapperLastRelX = relX
+                    zapperLastRelY = relY
+                    zapperPorts.forEach { port ->
+                        glView.sendMotionEvent(MOTION_SOURCE_POINTER, relX, relY, port)
+                    }
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (isInside) {
+                        zapperLastRelX = relX
+                        zapperLastRelY = relY
+                        zapperPorts.forEach { port ->
+                            glView.sendMotionEvent(MOTION_SOURCE_POINTER, relX, relY, port)
+                        }
+                    }
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    val elapsed = SystemClock.uptimeMillis() - zapperLastTouchDownTime
+                    val minHoldTime = 100L
+                    val remainingDelay = (minHoldTime - elapsed).coerceAtLeast(0L)
+                    zapperReleaseJob?.cancel()
+                    zapperReleaseJob = scope.launch {
+                        if (remainingDelay > 0) {
+                            delay(remainingDelay)
+                        }
+                        val releasedX = computeReleasedCoordinate(zapperLastRelX)
+                        val releasedY = computeReleasedCoordinate(zapperLastRelY)
+                        zapperPorts.forEach { port ->
+                            glView.sendMotionEvent(MOTION_SOURCE_POINTER, releasedX, releasedY, port)
+                        }
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun findControllerId(
@@ -250,6 +384,12 @@ class GameViewModelInput(
         owner.launchOnState(Lifecycle.State.RESUMED) {
             initializeControllersConfigFlow()
         }
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        zapperReleaseJob?.cancel()
+        zapperReleaseJob = null
+        super.onDestroy(owner)
     }
 
     private suspend fun initializeControllerConfigsFlow() {
