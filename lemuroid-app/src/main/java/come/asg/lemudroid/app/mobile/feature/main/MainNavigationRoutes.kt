@@ -124,6 +124,12 @@ enum class MainRoute(
         parent = SETTINGS,
         showBottomNavigation = false,
     ),
+    SETTINGS_VIEWPORT_ALIGNMENT(
+        route = "settings/viewport-alignment",
+        titleId = R.string.settings_title_viewport_alignment,
+        parent = SETTINGS,
+        showBottomNavigation = false,
+    ),
     SETTINGS_SAVE_SYNC(
         route = "settings/savesync",
         titleId = R.string.settings_title_save_sync,

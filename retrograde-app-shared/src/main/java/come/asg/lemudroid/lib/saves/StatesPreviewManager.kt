@@ -21,9 +21,8 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
         size: Int,
     ): Bitmap? =
         withContext(Dispatchers.IO) {
-            val file = getPreviewFile(getSlotScreenshotName(game, index), coreID.coreName)
-            val modernFile = getPreviewFile(getHashedSlotScreenshotName(game, coreID, index), coreID.coreName)
-            val bitmap = BitmapFactory.decodeFile((if (file.exists()) file else modernFile).absolutePath)
+            migrateLegacyPreview(game, coreID, index)
+            val bitmap = BitmapFactory.decodeFile(previewFile(game, coreID, index).absolutePath)
             bitmap?.let { ThumbnailUtils.extractThumbnail(it, size, size) }
         }
 
@@ -33,36 +32,36 @@ class StatesPreviewManager(private val directoriesManager: DirectoriesManager) {
         coreID: CoreID,
         index: Int,
     ) = withContext(Dispatchers.IO) {
-        val screenshotName = getSlotScreenshotName(game, index)
-        val file = getPreviewFile(screenshotName, coreID.coreName)
+        migrateLegacyPreview(game, coreID, index)
+        val file = previewFile(game, coreID, index)
+        file.parentFile?.mkdirs()
         FileOutputStream(file).use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, it)
         }
     }
 
-    private fun getPreviewFile(
-        fileName: String,
-        coreName: String,
-    ): File {
-        val statesDirectories = File(directoriesManager.getStatesPreviewDirectory(), coreName.safeBasename())
-        statesDirectories.mkdirs()
-        return File(statesDirectories, fileName)
+    private fun migrateLegacyPreview(game: Game, coreID: CoreID, index: Int) {
+        val legacyDirectory = File(directoriesManager.getStatesPreviewDirectory(), coreID.coreName.safeBasename()).apply { mkdirs() }
+        val baseName = game.fileName.safeBasename()
+        val hashedBaseName = "${baseName}-${stableGameIdentity(game.fileUri, game.systemId, coreID.coreName)}"
+        SaveStoragePaths.migrateNewestIfMissing(
+            listOf(
+                File(legacyDirectory, "$baseName.slot${index + 1}.jpg"),
+                File(legacyDirectory, "$hashedBaseName.slot${index + 1}.jpg"),
+            ),
+            previewFile(game, coreID, index),
+        )
     }
 
-    private fun getSlotScreenshotName(
-        game: Game,
-        index: Int,
-    ) = "${game.fileName.safeBasename()}.slot${index + 1}.jpg"
+    private fun previewDirectory(game: Game, coreID: CoreID): File =
+        SaveStoragePaths.gameDirectory(
+            File(directoriesManager.getStatesPreviewDirectory(), coreID.coreName.safeBasename()).apply { mkdirs() },
+            game,
+            "state:${coreID.coreName}",
+        )
 
-    private fun getHashedSlotScreenshotName(
-        game: Game,
-        coreID: CoreID,
-        index: Int,
-    ) = "${game.fileName.safeBasename()}-${stableGameIdentity(
-        game.fileUri,
-        game.systemId,
-        coreID.coreName,
-    )}.slot${index + 1}.jpg"
+    private fun previewFile(game: Game, coreID: CoreID, index: Int): File =
+        File(previewDirectory(game, coreID), "slot${index + 1}.jpg")
 
     companion object {
         val PREVIEW_SIZE_DP = 96f

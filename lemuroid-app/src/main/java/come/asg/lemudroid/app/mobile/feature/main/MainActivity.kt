@@ -56,6 +56,7 @@ import come.asg.lemudroid.app.mobile.feature.settings.coreselection.CoresSelecti
 import come.asg.lemudroid.app.mobile.feature.settings.coreselection.CoresSelectionViewModel
 import come.asg.lemudroid.app.mobile.feature.settings.general.SettingsScreen
 import come.asg.lemudroid.app.mobile.feature.settings.general.SettingsViewModel
+import come.asg.lemudroid.app.mobile.feature.settings.general.ViewportAlignmentScreen
 import come.asg.lemudroid.app.mobile.feature.settings.inputdevices.InputDevicesSettingsScreen
 import come.asg.lemudroid.app.mobile.feature.settings.inputdevices.InputDevicesSettingsViewModel
 import come.asg.lemudroid.app.mobile.feature.settings.inputdevices.TouchLayoutEditorScreen
@@ -202,6 +203,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 contentWindowInsets = WindowInsets(0.dp),
                 topBar = {
                     if (currentRoute != MainRoute.SETTINGS_TOUCH_LAYOUT &&
+                        currentRoute != MainRoute.SETTINGS_VIEWPORT_ALIGNMENT &&
                         currentRoute != MainRoute.HOME &&
                         currentRoute != MainRoute.SYSTEMS
                     ) {
@@ -377,6 +379,19 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             viewportAlignment =
                                 SharedPreferencesHelper.getLegacySharedPreferences(applicationContext)
                                     .getString("viewport_alignment", "center") ?: "center",
+                        )
+                    }
+                    composable(MainRoute.SETTINGS_VIEWPORT_ALIGNMENT) {
+                        val touchSettingsManager =
+                            remember(applicationContext) {
+                                TouchControllerSettingsManager(
+                                    SharedPreferencesHelper.getLegacySharedPreferences(applicationContext),
+                                )
+                            }
+                        ViewportAlignmentScreen(
+                            modifier = Modifier.fillMaxSize(),
+                            preferences = SharedPreferencesHelper.getLegacySharedPreferences(applicationContext),
+                            settingsManager = touchSettingsManager,
                         )
                     }
                     composable(MainRoute.SETTINGS_SAVE_SYNC) {

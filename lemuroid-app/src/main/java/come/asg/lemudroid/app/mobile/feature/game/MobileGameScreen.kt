@@ -77,6 +77,7 @@ import come.asg.lemudroid.app.shared.game.viewmodel.GameViewModelTouchControls.C
 import come.asg.lemudroid.app.shared.settings.HapticFeedbackMode
 import come.asg.lemudroid.app.utils.android.settings.rememberTouchButtonAppearanceTheme
 import come.asg.lemudroid.lib.preferences.SharedPreferencesHelper
+import come.asg.lemudroid.lib.library.SystemID
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
 import gg.padkit.ids.Id
@@ -92,6 +93,13 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             SharedPreferencesHelper.getLegacySharedPreferences(appContext)
                 .getString("viewport_alignment", "center") ?: "center"
         }
+    val customViewportPosition =
+        remember(appContext) {
+            SharedPreferencesHelper.getLegacySharedPreferences(appContext)
+                .getInt("viewport_custom_position", 500)
+                .coerceIn(0, 1000) / 1000f
+        }
+    val gameSystemId = viewModel.getGameSystemId()
     BoxWithConstraints(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         val isLandscape = constraints.maxWidth > constraints.maxHeight
 
@@ -223,12 +231,30 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                 val gameView = viewModel.retroGameView.retroGameViewFlow()
                 if (fullPos == null || viewPos == null) return@LaunchedEffect
                 val viewport =
-                    RectF(
-                        (viewPos.left - fullPos.left) / fullPos.width,
-                        (viewPos.top - fullPos.top) / fullPos.height,
-                        (viewPos.right - fullPos.left) / fullPos.width,
-                        (viewPos.bottom - fullPos.top) / fullPos.height,
-                    )
+                    if (viewportAlignment == "custom") {
+                        val aspectRatio =
+                            if (gameSystemId == SystemID.GBA) {
+                                240f / 160f
+                            } else {
+                                160f / 144f
+                            }
+                        val contentHeight = (viewPos.width / aspectRatio).coerceAtMost(viewPos.height)
+                        val maxTop = (viewPos.height - contentHeight).coerceAtLeast(0f)
+                        val top = viewPos.top + maxTop * customViewportPosition
+                        RectF(
+                            (viewPos.left - fullPos.left) / fullPos.width,
+                            (top - fullPos.top) / fullPos.height,
+                            (viewPos.right - fullPos.left) / fullPos.width,
+                            (top + contentHeight - fullPos.top) / fullPos.height,
+                        )
+                    } else {
+                        RectF(
+                            (viewPos.left - fullPos.left) / fullPos.width,
+                            (viewPos.top - fullPos.top) / fullPos.height,
+                            (viewPos.right - fullPos.left) / fullPos.width,
+                            (viewPos.bottom - fullPos.top) / fullPos.height,
+                        )
+                    }
                 gameView.viewport = viewport
             }
 

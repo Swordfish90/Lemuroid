@@ -23,11 +23,8 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
     ): SaveState? =
         withContext(Dispatchers.IO) {
             require(index in 0 until MAX_STATES) { "State slot index must be in 0 until $MAX_STATES" }
-            getSaveState(
-                getSlotSaveFileName(game, index),
-                coreID.coreName,
-                getHashedSlotSaveFileName(game, coreID, index),
-            )
+            migrateLegacyFiles(game, coreID)
+            readSaveState(stateFile(game, coreID, index), metadataFile(game, coreID, index))
         }
 
     suspend fun setSlotSave(
@@ -37,7 +34,8 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         index: Int,
     ) = withContext(Dispatchers.IO) {
         require(index in 0 until MAX_STATES) { "State slot index must be in 0 until $MAX_STATES" }
-        setSaveState(getSlotSaveFileName(game, index), coreID.coreName, saveState)
+        migrateLegacyFiles(game, coreID)
+        writeSaveState(stateFile(game, coreID, index), metadataFile(game, coreID, index), saveState)
     }
 
     suspend fun getAutoSaveInfo(
@@ -45,30 +43,27 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         coreID: CoreID,
     ): SaveInfo =
         withContext(Dispatchers.IO) {
-            val legacyFile = getStateFile(getAutoSaveFileName(game), coreID.coreName)
-            val modernFile = getStateFile(getHashedAutoSaveFileName(game, coreID), coreID.coreName)
-            val autoSaveFile =
-                listOf(legacyFile, modernFile)
-                    .filter { it.isFile && it.length() > 0 }
-                    .maxByOrNull(File::lastModified)
-                    ?: if (legacyFile.exists()) legacyFile else modernFile
-            val autoSaveHasData = autoSaveFile.length() > 0
-            SaveInfo(autoSaveFile.exists() && autoSaveHasData, autoSaveFile.lastModified())
+            migrateLegacyFiles(game, coreID)
+            val file = stateFile(game, coreID, AUTO_SLOT)
+            SaveInfo(file.isFile && file.length() > 0, file.lastModified())
         }
 
     suspend fun getAutoSave(
         game: Game,
         coreID: CoreID,
-    ) = withContext(Dispatchers.IO) {
-        getSaveState(getAutoSaveFileName(game), coreID.coreName, getHashedAutoSaveFileName(game, coreID))
-    }
+    ): SaveState? =
+        withContext(Dispatchers.IO) {
+            migrateLegacyFiles(game, coreID)
+            readSaveState(stateFile(game, coreID, AUTO_SLOT), metadataFile(game, coreID, AUTO_SLOT))
+        }
 
     suspend fun setAutoSave(
         game: Game,
         coreID: CoreID,
         saveState: SaveState,
     ) = withContext(Dispatchers.IO) {
-        setSaveState(getAutoSaveFileName(game), coreID.coreName, saveState)
+        migrateLegacyFiles(game, coreID)
+        writeSaveState(stateFile(game, coreID, AUTO_SLOT), metadataFile(game, coreID, AUTO_SLOT), saveState)
     }
 
     suspend fun getSavedSlotsInfo(
@@ -76,132 +71,96 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         coreID: CoreID,
     ): List<SaveInfo> =
         withContext(Dispatchers.IO) {
-            (0 until MAX_STATES)
-                .map { index ->
-                    val legacy = getStateFile(getSlotSaveFileName(game, index), coreID.coreName)
-                    val modern = getStateFile(getHashedSlotSaveFileName(game, coreID, index), coreID.coreName)
-                    val file =
-                        listOf(legacy, modern)
-                            .filter { it.isFile && it.length() > 0 }
-                            .maxByOrNull(File::lastModified)
-                            ?: if (legacy.exists()) legacy else modern
-                    SaveInfo(file.exists(), file.lastModified())
-                }
-                .toList()
+            migrateLegacyFiles(game, coreID)
+            (0 until MAX_STATES).map { index ->
+                val file = stateFile(game, coreID, index)
+                SaveInfo(file.isFile && file.length() > 0, file.lastModified())
+            }
         }
 
-    private suspend fun getSaveState(
-        fileName: String,
-        coreName: String,
-        legacyFileName: String? = null,
-    ): SaveState? {
+    private suspend fun readSaveState(stateFile: File, metadataFile: File): SaveState? {
         return runCatchingWithRetry(FILE_ACCESS_RETRIES) {
-            val currentSaveFile = getStateFile(fileName, coreName)
-            val legacySaveFile = legacyFileName?.let { getStateFile(it, coreName) }
-            val selectedFile =
-                listOfNotNull(currentSaveFile, legacySaveFile)
-                    .filter { it.isFile && it.length() > 0 }
-                    .maxByOrNull(File::lastModified)
-                    ?: if (currentSaveFile.exists()) {
-                        currentSaveFile
-                    } else {
-                        legacySaveFile
-                            ?: currentSaveFile
-                    }
-            val effectiveFileName = if (selectedFile == currentSaveFile) fileName else legacyFileName ?: fileName
-            val saveFile = selectedFile
-            val metadataFile = getMetadataStateFile(effectiveFileName, coreName)
-            if (saveFile.exists()) {
-                val byteArray = saveFile.readBytesUncompressedAtomic()
-                val stateMetadata =
-                    runCatching {
-                        Json.Default.decodeFromString(
-                            SaveState.Metadata.serializer(),
-                            metadataFile.readTextAtomic(),
-                        )
-                    }
-                SaveState(byteArray, stateMetadata.getOrNull() ?: SaveState.Metadata())
-            } else {
-                null
-            }
+            if (!stateFile.isFile || stateFile.length() <= 0) return@runCatchingWithRetry null
+            val metadata = runCatching {
+                Json.Default.decodeFromString(
+                    SaveState.Metadata.serializer(),
+                    metadataFile.readTextAtomic(),
+                )
+            }.getOrNull() ?: SaveState.Metadata()
+            SaveState(stateFile.readBytesUncompressedAtomic(), metadata)
         }.getOrThrow()
     }
 
-    private suspend fun setSaveState(
-        fileName: String,
-        coreName: String,
+    private suspend fun writeSaveState(
+        stateFile: File,
+        metadataFile: File,
         saveState: SaveState,
     ) {
         runCatchingWithRetry(FILE_ACCESS_RETRIES) {
-            writeStateToDisk(fileName, coreName, saveState.state)
-            writeMetadataToDisk(fileName, coreName, saveState.metadata)
+            stateFile.parentFile?.mkdirs()
+            stateFile.writeBytesCompressedAtomic(saveState.state)
+            metadataFile.writeTextAtomic(Json.encodeToString(SaveState.Metadata.serializer(), saveState.metadata))
         }.getOrThrow()
     }
 
-    private fun writeMetadataToDisk(
-        fileName: String,
-        coreName: String,
-        metadata: SaveState.Metadata,
+    private fun migrateLegacyFiles(game: Game, coreID: CoreID) {
+        val legacyDirectory = legacyCoreDirectory(coreID.coreName)
+        val directory = gameStateDirectory(game, coreID)
+        val baseName = game.fileName.safeBasename()
+        val hashedBaseName = "${baseName}-${stableGameIdentity(game.fileUri, game.systemId, coreID.coreName)}"
+
+        migratePair(
+            listOf("$baseName.state", "$hashedBaseName.state"),
+            File(directory, "autosave.state"),
+            legacyDirectory,
+        )
+        migratePair(
+            listOf("$baseName.state.metadata", "$hashedBaseName.state.metadata"),
+            File(directory, "autosave.state.metadata"),
+            legacyDirectory,
+        )
+        (0 until MAX_STATES).forEach { index ->
+            val slot = index + 1
+            migratePair(
+                listOf("$baseName.slot$slot", "$hashedBaseName.slot$slot"),
+                File(directory, "slot$slot.state"),
+                legacyDirectory,
+            )
+            migratePair(
+                listOf("$baseName.slot$slot.metadata", "$hashedBaseName.slot$slot.metadata"),
+                File(directory, "slot$slot.state.metadata"),
+                legacyDirectory,
+            )
+        }
+    }
+
+    private fun migratePair(
+        legacyNames: List<String>,
+        destination: File,
+        legacyDirectory: File,
     ) {
-        val metadataFile = getMetadataStateFile(fileName, coreName)
-        metadataFile.writeTextAtomic(Json.encodeToString(SaveState.Metadata.serializer(), metadata))
+        SaveStoragePaths.migrateNewestIfMissing(legacyNames.map { File(legacyDirectory, it) }, destination)
     }
 
-    private fun writeStateToDisk(
-        fileName: String,
-        coreName: String,
-        stateArray: ByteArray,
-    ) {
-        val saveFile = getStateFile(fileName, coreName)
-        saveFile.writeBytesCompressedAtomic(stateArray)
-    }
+    private fun legacyCoreDirectory(coreName: String): File =
+        File(directoriesManager.getStatesDirectory(), coreName.safeBasename()).apply { mkdirs() }
 
-    private fun getStateFile(
-        fileName: String,
-        coreName: String,
-    ): File {
-        val statesDirectories = File(directoriesManager.getStatesDirectory(), coreName.safeBasename())
-        statesDirectories.mkdirs()
-        return File(statesDirectories, fileName.safeBasename("state"))
-    }
+    private fun gameStateDirectory(game: Game, coreID: CoreID): File =
+        SaveStoragePaths.gameDirectory(
+            legacyCoreDirectory(coreID.coreName),
+            game,
+            "state:${coreID.coreName}",
+        )
 
-    private fun getMetadataStateFile(
-        stateFileName: String,
-        coreName: String,
-    ): File {
-        val statesDirectories = File(directoriesManager.getStatesDirectory(), coreName.safeBasename())
-        statesDirectories.mkdirs()
-        return File(statesDirectories, "${stateFileName.safeBasename("state")}.metadata")
-    }
+    private fun stateFile(game: Game, coreID: CoreID, index: Int): File =
+        File(gameStateDirectory(game, coreID), if (index == AUTO_SLOT) "autosave.state" else "slot${index + 1}.state")
 
-    private fun getAutoSaveFileName(game: Game) = "${game.fileName.safeBasename()}.state"
-
-    private fun getHashedAutoSaveFileName(
-        game: Game,
-        coreID: CoreID,
-    ) = "${game.fileName.safeBasename()}-${stableGameIdentity(
-        game.fileUri,
-        game.systemId,
-        coreID.coreName,
-    )}.state"
-
-    private fun getSlotSaveFileName(
-        game: Game,
-        index: Int,
-    ) = "${game.fileName.safeBasename()}.slot${index + 1}"
-
-    private fun getHashedSlotSaveFileName(
-        game: Game,
-        coreID: CoreID,
-        index: Int,
-    ) = "${game.fileName.safeBasename()}-${stableGameIdentity(
-        game.fileUri,
-        game.systemId,
-        coreID.coreName,
-    )}.slot${index + 1}"
+    private fun metadataFile(game: Game, coreID: CoreID, index: Int): File =
+        File(gameStateDirectory(game, coreID), if (index == AUTO_SLOT) "autosave.state.metadata" else "slot${index + 1}.state.metadata")
 
     companion object {
         const val MAX_STATES = 4
+        private const val AUTO_SLOT = -1
         private const val FILE_ACCESS_RETRIES = 3
     }
 }

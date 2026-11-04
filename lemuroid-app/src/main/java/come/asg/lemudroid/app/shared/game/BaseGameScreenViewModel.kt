@@ -32,6 +32,7 @@ import come.asg.lemudroid.lib.controller.ControllerConfig
 import come.asg.lemudroid.lib.core.CoreVariablesManager
 import come.asg.lemudroid.lib.game.GameLoader
 import come.asg.lemudroid.lib.library.GameSystem
+import come.asg.lemudroid.lib.library.SystemID
 import come.asg.lemudroid.lib.library.SystemCoreConfig
 import come.asg.lemudroid.lib.library.db.entity.Game
 import come.asg.lemudroid.lib.saves.SavesManager
@@ -51,7 +52,7 @@ class BaseGameScreenViewModel(
     settingsManager: SettingsManager,
     inputDeviceManager: InputDeviceManager,
     controllerConfigsManager: ControllerConfigsManager,
-    system: GameSystem,
+    private val system: GameSystem,
     systemCoreConfig: SystemCoreConfig,
     sharedPreferences: SharedPreferences,
     savesManager: SavesManager,
@@ -154,6 +155,8 @@ class BaseGameScreenViewModel(
     fun getGameState(): Flow<GameViewModelRetroGameView.GameState> {
         return retroGameView.getGameState()
     }
+
+    fun getGameSystemId(): SystemID = system.id
 
     fun getSideEffects(): Flow<GameViewModelSideEffects.UiEffect> {
         return sideEffects.getUiEffects()

@@ -18,14 +18,10 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         systemCoreConfig: SystemCoreConfig,
     ): ByteArray? {
         return withContext(Dispatchers.IO) {
+            migrateLegacyFile(game)
             runCatchingWithRetry(FILE_ACCESS_RETRIES) {
-                val legacyFile = getSaveFile(getSaveRAMFileName(game))
-                val modernFile = getSaveFile(getHashedSaveRAMFileName(game))
-                val saveFile =
-                    listOf(legacyFile, modernFile)
-                        .filter { it.isFile && it.length() > 0 }
-                        .maxByOrNull(File::lastModified)
-                if (saveFile != null) {
+                val saveFile = saveFile(game)
+                if (saveFile.isFile && saveFile.length() > 0) {
                     saveFile.readBytes()
                 } else {
                     systemCoreConfig.getSavesMigrator()?.loadPreviousSaveForGame(game, directoriesManager)
@@ -39,37 +35,42 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         data: ByteArray,
     ) {
         withContext(Dispatchers.IO) {
+            migrateLegacyFile(game)
             runCatchingWithRetry(FILE_ACCESS_RETRIES) {
                 if (data.isEmpty()) return@runCatchingWithRetry
-                getSaveFile(getSaveRAMFileName(game)).writeBytesAtomic(data)
+                saveFile(game).writeBytesAtomic(data)
             }.getOrThrow()
         }
     }
 
     suspend fun getSaveRAMInfo(game: Game): SaveInfo {
         return withContext(Dispatchers.IO) {
-            val candidates =
-                listOf(getSaveRAMFileName(game), getHashedSaveRAMFileName(game))
-                    .map { getSaveFile(it) }
-            val existing = candidates.filter { it.isFile && it.length() > 0 }.maxByOrNull(File::lastModified)
-            SaveInfo(existing != null, existing?.lastModified() ?: 0L)
+            migrateLegacyFile(game)
+            val file = saveFile(game)
+            SaveInfo(file.isFile && file.length() > 0, file.lastModified())
         }
     }
 
-    private suspend fun getSaveFile(fileName: String): File {
-        return withContext(Dispatchers.IO) {
-            File(directoriesManager.getSavesDirectory(), fileName)
-        }
+    private fun migrateLegacyFile(game: Game) {
+        val baseName = game.fileName.substringBeforeLast(".").safeBasename("game")
+        val hashedBaseName = "$baseName-${stableGameIdentity(game.fileUri, game.systemId)}"
+        SaveStoragePaths.migrateNewestIfMissing(
+            listOf(
+                File(directoriesManager.getSavesDirectory(), "$baseName.srm"),
+                File(directoriesManager.getSavesDirectory(), "$hashedBaseName.srm"),
+            ),
+            saveFile(game),
+        )
     }
 
-    /** Prefer the historical basename for RetroArch and move-stable compatibility. */
-    private fun getSaveRAMFileName(game: Game): String = "${game.fileName.substringBeforeLast(".").safeBasename()}.srm"
+    private fun saveDirectory(game: Game): File =
+        SaveStoragePaths.gameDirectory(
+            directoriesManager.getSavesDirectory(),
+            game,
+            "save-ram",
+        )
 
-    /** Newer URI-keyed names remain readable for installations created by newer builds. */
-    private fun getHashedSaveRAMFileName(game: Game): String {
-        val baseName = game.fileName.substringBeforeLast(".").safeBasename()
-        return "$baseName-${stableGameIdentity(game.fileUri, game.systemId)}.srm"
-    }
+    private fun saveFile(game: Game): File = File(saveDirectory(game), "save.srm")
 
     companion object {
         private const val FILE_ACCESS_RETRIES = 3

@@ -53,7 +53,10 @@ class PendingOperationsMonitor(private val appContext: Context) {
     private fun isJobRunning(workInfos: List<WorkInfo>): Boolean {
         return workInfos
             .map { it.state }
-            .any { it in listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED) }
+            // ENQUEUED can mean that WorkManager is waiting for a constraint,
+            // such as network availability. Waiting work must not prevent the
+            // user from launching a game.
+            .any { it == WorkInfo.State.RUNNING }
     }
 
     private fun isPeriodicJobRunning(workInfos: List<WorkInfo>): Boolean {

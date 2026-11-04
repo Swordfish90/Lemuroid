@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -16,10 +17,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
@@ -220,25 +224,35 @@ private fun TouchLayoutEditorContent(
             modifier =
                 Modifier.align(Alignment.TopCenter).widthIn(max = 760.dp)
                     .windowInsetsPadding(safeDrawingInsets.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                    .padding(horizontal = 8.dp, vertical = 2.dp),
         ) {
             Row(
                 modifier =
                     Modifier.horizontalScroll(rememberScrollState())
-                        .padding(horizontal = 8.dp, vertical = 2.dp),
+                        .padding(horizontal = 6.dp, vertical = 0.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-                IconButton(onClick = { onClose?.invoke() ?: backDispatcher?.onBackPressed() }) {
+                IconButton(
+                    modifier = Modifier.size(40.dp),
+                    onClick = { onClose?.invoke() ?: backDispatcher?.onBackPressed() },
+                ) {
                     Icon(
                         Icons.Filled.Close,
                         contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_close),
                     )
                 }
                 Box {
-                    TextButton(onClick = { layoutMenuExpanded = true }) {
-                        Text(controllerId.displayLabel(), maxLines = 1)
+                    TextButton(
+                        modifier = Modifier.height(36.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                        onClick = { layoutMenuExpanded = true },
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(controllerId.displayLabel(), maxLines = 1)
+                            Icon(Icons.Filled.ArrowDropDown, contentDescription = "Open controller dropdown")
+                        }
                     }
                     DropdownMenu(expanded = layoutMenuExpanded, onDismissRequest = { layoutMenuExpanded = false }) {
                         listOf(TouchControllerID.GB, TouchControllerID.GBC, TouchControllerID.GBA).forEach { item ->
@@ -252,13 +266,13 @@ private fun TouchLayoutEditorContent(
                         }
                     }
                 }
-                IconButton(onClick = { confirmReset = true }) {
+                IconButton(modifier = Modifier.size(40.dp), onClick = { confirmReset = true }) {
                     Icon(
                         Icons.Filled.Refresh,
                         contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_reset_layout),
                     )
                 }
-                IconButton(onClick = { persist() }) {
+                IconButton(modifier = Modifier.size(40.dp), onClick = { persist() }) {
                     Icon(
                         Icons.Filled.Save,
                         contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_save_layout),

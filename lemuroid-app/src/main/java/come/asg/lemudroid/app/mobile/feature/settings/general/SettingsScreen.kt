@@ -55,7 +55,7 @@ fun SettingsScreen(
             indexingInProgress = indexingInProgress,
             scanInProgress = scanInProgress,
         )
-        GeneralSettings()
+        GeneralSettings(navController = navController)
         InputSettings(navController = navController)
         MiscSettings(
             isSaveSyncSupported = state.isSaveSyncSupported,
@@ -125,7 +125,7 @@ private fun InputSettings(navController: NavController) {
 }
 
 @Composable
-private fun GeneralSettings() {
+private fun GeneralSettings(navController: NavController) {
     val hdMode = booleanPreferenceState(R.string.pref_key_hd_mode, false)
     val immersiveMode = booleanPreferenceState(R.string.pref_key_enable_immersive_mode, false)
     val amoledTheme = booleanPreferenceState(R.string.pref_key_amoled_theme, false)
@@ -176,15 +176,10 @@ private fun GeneralSettings() {
             title = { Text(text = stringResource(id = R.string.display_filter)) },
             items = stringListResource(R.array.pref_key_shader_filter_display_names),
         )
-        LemuroidSettingsList(
-            state =
-                indexPreferenceState(
-                    R.string.pref_key_viewport_alignment,
-                    "center",
-                    stringListResource(R.array.pref_key_viewport_alignment_values).toList(),
-                ),
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_viewport_alignment)) },
-            items = stringListResource(R.array.pref_key_viewport_alignment_display_names),
+            subtitle = { Text(text = stringResource(id = R.string.settings_description_viewport_alignment)) },
+            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_VIEWPORT_ALIGNMENT) },
         )
     }
 }
