@@ -20,7 +20,7 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
 
         data object SuccessfulFinish : UiEffect
 
-        data class FailureFinish(val message: String) : UiEffect
+        data class FailureFinish(val message: String, val messageDetail: String? = null) : UiEffect
 
         data object LoadQuickSave : UiEffect
 
@@ -73,10 +73,10 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
         }
     }
 
-    fun requestFailureFinish(message: String) {
+    fun requestFailureFinish(message: String, messageDetail: String? = null) {
         scope.launch {
             withContext(Dispatchers.Main) {
-                uiEffects.emit(UiEffect.FailureFinish(message))
+                uiEffects.emit(UiEffect.FailureFinish(message, messageDetail))
             }
         }
     }
