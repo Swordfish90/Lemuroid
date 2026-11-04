@@ -32,20 +32,19 @@ It originated from a branch of [Retrograde](https://github.com/retrograde/retrog
 | Game Boy Color (GBC) | mGBA |
 | Game Boy Advance (GBA) | mGBA |
 
-## 🚀 Features
+## ✅ Completed feature checklist
 
-| | |
-| :-- | :-- |
-| 📚 **Library** | ROM scanning and indexing, in-app search, and favorites |
-| 🗜️ **ZIP support** | Play ZIP-compressed ROMs directly |
-| 💾 **Saves** | Automatic save-RAM and save-state handling, plus quick save/load slots |
-| 🧪 **Cheats** | Per-game cheat-code management for supported systems and code types |
-| 🖼️ **Artwork** | Custom per-game thumbnails from the Android gallery or file picker |
-| 🕹️ **Input** | Customizable on-screen controls, gamepad input, tilt input, and local multiplayer |
-| 📺 **Display** | Screen filters, HD display options, LCD/CRT simulation, and viewport alignment (center, top, bottom, or custom) |
-| 📱 **Devices** | Android phone and Android TV support |
-| ⏱️ **Stats** | Per-game playtime, session count, and last-played information |
-| 🔗 **Updates** | An in-app link to OMINOY's GitHub updates |
+- [x] Game Boy (GB), Game Boy Color (GBC), and Game Boy Advance (GBA) emulation using mGBA
+- [x] ROM scanning and indexing, in-app search, and favorites
+- [x] ZIP-compressed ROM support
+- [x] Automatic save-RAM and save-state handling, with quick save/load slots
+- [x] Per-game cheat-code management for supported systems and code types
+- [x] Custom per-game thumbnails from the Android gallery or file picker
+- [x] Customizable on-screen controls, gamepad input, tilt input, and local multiplayer
+- [x] Screen filters, HD display options, LCD/CRT simulation, and viewport alignment (center, top, bottom, or custom)
+- [x] Android phone and Android TV support
+- [x] Per-game playtime, session count, and last-played information
+- [x] In-app link to OMINOY's GitHub updates
 
 ## 🖼️ Custom thumbnails
 
