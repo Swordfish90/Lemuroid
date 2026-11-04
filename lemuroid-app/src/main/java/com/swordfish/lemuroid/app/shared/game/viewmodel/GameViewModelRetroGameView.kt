@@ -2,6 +2,7 @@ package com.swordfish.lemuroid.app.shared.game.viewmodel
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -349,7 +350,28 @@ class GameViewModelRetroGameView(
                 else -> GameLoaderError.Generic
             }
 
-        sideEffects.requestFailureFinish(getErrorMessage(gameLoaderError))
+        val gameData = (gameState.value as? GameState.Loaded)?.gameData
+        val diagnostics =
+            buildString {
+                appendLine("Origem: GLRetroView.getGLRetroErrors()")
+                appendLine("Código bruto do erro: $errorCode")
+                appendLine("Sistema: ${system.id.name}")
+                appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
+                appendLine("Biblioteca nativa: ${gameData?.coreLibrary ?: "indisponível"}")
+                appendLine("Arquiteturas do dispositivo: ${Build.SUPPORTED_ABIS.joinToString()}")
+                appendLine("Android API: ${Build.VERSION.SDK_INT}")
+                appendLine("Renderer configurado: ${gameData?.coreVariables?.firstOrNull { it.key == "armsx2_renderer" }?.value ?: "padrão/não informado"}")
+                appendLine("Diretório do sistema: ${gameData?.systemDirectory?.absolutePath ?: "indisponível"}")
+                appendLine("ROM: ${gameData?.gameFiles?.let { files ->
+                    when (files) {
+                        is RomFiles.Standard -> files.files.firstOrNull()?.absolutePath
+                        is RomFiles.Virtual -> files.files.firstOrNull()?.filePath
+                    }
+                } ?: "indisponível"}")
+                appendLine("Jogo: ${gameData?.game?.fileName ?: "indisponível"}")
+            }
+        Timber.e("Libretro error diagnostics:\n$diagnostics")
+        sideEffects.requestFailureFinish(getErrorMessage(gameLoaderError), diagnostics)
     }
 
     private fun getErrorMessage(gameError: GameLoaderError): String {
