@@ -46,6 +46,12 @@ It originated from a branch of [Retrograde](https://github.com/retrograde/retrog
 - [x] Per-game playtime, session count, and last-played information
 - [x] In-app link to OMINOY's GitHub updates
 
+## Planned features
+
+- [ ] More shader options and presets
+- [ ] RetroAchievements integration
+- [ ] Additional app themes
+
 ## 🖼️ Custom thumbnails
 
 Long-press a game tile and choose **Set custom thumbnail** to select artwork from the Android gallery or file picker.
