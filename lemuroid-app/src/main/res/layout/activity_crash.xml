@@ -32,10 +32,19 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text2"
+            android:id="@+id/diagnostics_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:text="Detalhes técnicos"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:fontFamily="monospace"
             android:textIsSelectable="true"
             android:textSize="12sp"
