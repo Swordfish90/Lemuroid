@@ -39,7 +39,8 @@ class GameLaunchTaskHandler(
             BaseGameActivity.RESULT_UNEXPECTED_ERROR ->
                 handleUnsuccessfulGameFinish(
                     activity,
-                    activity.getString(R.string.lemuroid_crash_disclamer),
+                    data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR_MESSAGE)
+                        ?: activity.getString(R.string.lemuroid_crash_disclamer),
                     data?.getStringExtra(BaseGameActivity.PLAY_GAME_RESULT_ERROR),
                 )
         }
