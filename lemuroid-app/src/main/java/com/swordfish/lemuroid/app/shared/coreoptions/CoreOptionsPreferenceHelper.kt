@@ -43,9 +43,10 @@ object CoreOptionsPreferenceHelper {
         controllers: Map<Int, List<ControllerConfig>>,
     ) {
         val visibleControllers =
-            (0 until connectedGamePads)
-                .map { it to controllers[it] }
-                .filter { (_, controllers) -> controllers != null && controllers.size >= 2 }
+            controllers.entries
+                .filter { (_, configs) -> configs.size >= 2 }
+                .map { it.key to it.value }
+                .sortedBy { it.first }
 
         if (visibleControllers.isEmpty()) {
             return
@@ -57,7 +58,7 @@ object CoreOptionsPreferenceHelper {
 
         visibleControllers
             .forEach { (port, controllers) ->
-                val preference = buildControllerPreference(context, systemID, coreID, port, controllers!!)
+                val preference = buildControllerPreference(context, systemID, coreID, port, controllers)
                 category.addPreference(preference)
             }
     }

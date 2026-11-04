@@ -99,6 +99,28 @@ data class GameSystem(
                             exposedSettings =
                                 listOf(
                                     ExposedSetting(
+                                        "fceumm_zapper_mode",
+                                        R.string.setting_fceumm_zapper_mode,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "touchscreen",
+                                                R.string.value_fceumm_zapper_mode_touchscreen,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "clightgun",
+                                                R.string.value_fceumm_zapper_mode_lightgun,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "mouse",
+                                                R.string.value_fceumm_zapper_mode_mouse,
+                                            ),
+                                        ),
+                                    ),
+                                    ExposedSetting(
+                                        "fceumm_show_crosshair",
+                                        R.string.setting_fceumm_show_crosshair,
+                                    ),
+                                    ExposedSetting(
                                         "fceumm_overscan_h",
                                         R.string.setting_fceumm_overscan_h,
                                     ),
@@ -113,14 +135,33 @@ data class GameSystem(
                                         "fceumm_nospritelimit",
                                         R.string.setting_fceumm_nospritelimit,
                                     ),
+                                    ExposedSetting(
+                                        "fceumm_zapper_tolerance",
+                                        R.string.setting_fceumm_zapper_tolerance,
+                                    ),
+                                ),
+                            defaultSettings =
+                                listOf(
+                                    CoreVariable("fceumm_zapper_mode", "touchscreen"),
+                                    CoreVariable("fceumm_show_crosshair", "enabled"),
                                 ),
                             controllerConfigs =
                                 hashMapOf(
-                                    0 to arrayListOf(ControllerConfigs.NES),
+                                    0 to
+                                        arrayListOf(
+                                            ControllerConfigs.NES,
+                                            ControllerConfigs.NES_ZAPPER,
+                                        ),
+                                    1 to
+                                        arrayListOf(
+                                            ControllerConfigs.NES_ZAPPER,
+                                            ControllerConfigs.NES,
+                                        ),
                                 ),
                         ),
                     ),
                     uniqueExtensions = listOf("nes"),
+                    hasTouchScreen = true,
                 ),
                 GameSystem(
                     SystemID.SNES,

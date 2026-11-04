@@ -54,27 +54,31 @@ private fun CoreOptions(
         return
     }
 
-    for (coreOption in coreOptions) {
-        if (coreOption.getEntriesValues().toSet() == CoreOptionsPreferenceHelper.BOOLEAN_SET) {
-            LemuroidSettingsSwitch(
-                state =
-                    booleanPreferenceState(
-                        CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
-                        coreOption.getCurrentValue() == "enabled",
-                    ),
-                title = { Text(text = coreOption.getDisplayName(context)) },
-            )
-        } else {
-            LemuroidSettingsList(
-                title = { Text(text = coreOption.getDisplayName(context)) },
-                items = coreOption.getEntries(context),
-                state =
-                    indexPreferenceState(
-                        CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
-                        coreOption.getEntriesValues().first(),
-                        coreOption.getEntriesValues(),
-                    ),
-            )
+    LemuroidSettingsGroup(
+        title = { Text(text = stringResource(R.string.core_settings_category_preferences)) },
+    ) {
+        for (coreOption in coreOptions) {
+            if (coreOption.getEntriesValues().toSet() == CoreOptionsPreferenceHelper.BOOLEAN_SET) {
+                LemuroidSettingsSwitch(
+                    state =
+                        booleanPreferenceState(
+                            CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
+                            coreOption.getCurrentValue() == "enabled",
+                        ),
+                    title = { Text(text = coreOption.getDisplayName(context)) },
+                )
+            } else {
+                LemuroidSettingsList(
+                    title = { Text(text = coreOption.getDisplayName(context)) },
+                    items = coreOption.getEntries(context),
+                    state =
+                        indexPreferenceState(
+                            CoreVariablesManager.computeSharedPreferenceKey(coreOption.getKey(), systemID),
+                            coreOption.getEntriesValues().first(),
+                            coreOption.getEntriesValues(),
+                        ),
+                )
+            }
         }
     }
 }
@@ -88,9 +92,10 @@ private fun ControllersOptions(
     val controllers = gameMenuRequest.coreConfig.controllerConfigs
 
     val visibleControllers =
-        (0 until connectedGamePads)
-            .map { it to controllers[it] }
-            .filter { (_, controllers) -> controllers != null && controllers.size >= 2 }
+        controllers.entries
+            .filter { (_, configs) -> configs.size >= 2 }
+            .map { it.key to it.value }
+            .sortedBy { it.first }
 
     if (visibleControllers.isEmpty()) {
         return
@@ -102,7 +107,7 @@ private fun ControllersOptions(
         visibleControllers.forEach { (port, controllerConfigs) ->
             LemuroidSettingsList(
                 title = { Text(text = context.getString(R.string.core_settings_controller, (port + 1).toString())) },
-                items = controllerConfigs!!.map { stringResource(id = it.displayName) },
+                items = controllerConfigs.map { stringResource(id = it.displayName) },
                 state =
                     indexPreferenceState(
                         ControllerConfigsManager.getSharedPreferencesId(
