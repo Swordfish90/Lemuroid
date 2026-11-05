@@ -1,6 +1,8 @@
 package com.swordfish.lemuroid.app.shared.game.viewmodel
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.RectF
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
@@ -123,12 +125,33 @@ class GameViewModelSaves(
     }
 
     private suspend fun takeScreenshotPreview(index: Int) {
+        val gameView = retroGameView.retroGameView ?: return
         val sizeInDp = StatesPreviewManager.PREVIEW_SIZE_DP
         val previewSize = GraphicsUtils.convertDpToPixel(sizeInDp, appContext).roundToInt()
-        val preview = retroGameView.retroGameView?.takeScreenshot(previewSize, 3)
-        if (preview != null) {
-            statesPreviewManager.setPreviewForSlot(game, preview, systemCoreConfig.coreID, index)
-        }
+
+        // The game is only drawn inside the viewport, which may be a small or off-center part of the
+        // surface (touch controls, user defined position and size). Capture at a higher resolution
+        // and crop to it, so the preview shows the game and not the empty part of the screen.
+        val viewport = RectF(gameView.viewport)
+        viewport.intersect(0f, 0f, 1f, 1f)
+        val viewportFraction = maxOf(viewport.width(), viewport.height()).coerceIn(MIN_VIEWPORT_FRACTION, 1f)
+        val captureSize = (previewSize / viewportFraction).roundToInt()
+
+        val screenshot = gameView.takeScreenshot(captureSize, 3) ?: return
+        val preview = cropToViewport(screenshot, viewport)
+        statesPreviewManager.setPreviewForSlot(game, preview, systemCoreConfig.coreID, index)
+    }
+
+    private fun cropToViewport(
+        bitmap: Bitmap,
+        viewport: RectF,
+    ): Bitmap {
+        val left = (viewport.left * bitmap.width).roundToInt().coerceIn(0, bitmap.width - 1)
+        val top = (viewport.top * bitmap.height).roundToInt().coerceIn(0, bitmap.height - 1)
+        val right = (viewport.right * bitmap.width).roundToInt().coerceIn(left + 1, bitmap.width)
+        val bottom = (viewport.bottom * bitmap.height).roundToInt().coerceIn(top + 1, bitmap.height)
+        if (left == 0 && top == 0 && right == bitmap.width && bottom == bitmap.height) return bitmap
+        return Bitmap.createBitmap(bitmap, left, top, right - left, bottom - top)
     }
 
     // Now that we wait for the first rendered frame this is probably no longer needed, but we'll keep it just to be sure
@@ -168,3 +191,6 @@ class GameViewModelSaves(
         sideEffects.showToast(appContext.getString(R.string.game_toast_quick_save_loaded))
     }
 }
+
+// Avoids capturing huge screenshots when the game is shrunk to a tiny viewport.
+private const val MIN_VIEWPORT_FRACTION = 0.25f

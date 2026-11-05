@@ -35,12 +35,15 @@ import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
+import com.swordfish.touchinput.radial.settings.GameScreenSettingsManager
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.padkit.inputevents.InputEvent
 import gg.padkit.inputstate.InputState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -142,6 +145,11 @@ class BaseGameScreenViewModel(
             sideEffects,
         )
 
+    private val gameScreenSettingsManager = GameScreenSettingsManager(sharedPreferences)
+    private val screenOrientation =
+        MutableStateFlow(TouchControllerSettingsManager.Orientation.PORTRAIT)
+    private val screenAdjustShown = MutableStateFlow(false)
+
     val loadingState = MutableStateFlow(false)
 
     private inline fun withLoading(block: () -> Unit) {
@@ -219,6 +227,32 @@ class BaseGameScreenViewModel(
 
     fun onScreenOrientationChanged(orientation: TouchControllerSettingsManager.Orientation) {
         touchControls.updateScreenOrientation(orientation)
+        screenOrientation.value = orientation
+    }
+
+    fun isScreenAdjustShown(): Flow<Boolean> {
+        return screenAdjustShown
+    }
+
+    fun showScreenAdjust(show: Boolean) {
+        screenAdjustShown.value = show
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getGameScreenSettings(): Flow<GameScreenSettingsManager.Settings> {
+        return screenOrientation.flatMapLatest { gameScreenSettingsManager.observeSettings(it) }
+    }
+
+    fun updateGameScreenSettings(settings: GameScreenSettingsManager.Settings) {
+        viewModelScope.launch {
+            gameScreenSettingsManager.storeSettings(screenOrientation.value, settings)
+        }
+    }
+
+    fun resetGameScreenSettings() {
+        viewModelScope.launch {
+            gameScreenSettingsManager.resetSettings(screenOrientation.value)
+        }
     }
 
     fun isTouchControllerVisible(): Flow<Boolean> {

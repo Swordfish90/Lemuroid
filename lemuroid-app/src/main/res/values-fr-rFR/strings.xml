@@ -100,6 +100,7 @@
     <string name="game_menu_state">Sauvegarde Instantanée %1$s</string>
     <string name="game_menu_change_disk_button">Changer de disque</string>
     <string name="game_menu_edit_touch_controls">Modifier les contrôles</string>
+    <string name="game_menu_adjust_screen">Ajuster l\'écran</string>
     <string name="game_menu_mute_audio">Silence</string>
     <string name="game_menu_fast_forward">Avance rapide</string>
     <string name="game_menu_change_disk_disk">Disque %1$s</string>
