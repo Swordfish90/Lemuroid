@@ -39,6 +39,9 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>
 
+    @Query("SELECT * FROM games ORDER BY lastPlayedAt DESC, COALESCE(customName, title) ASC, id ASC")
+    fun selectByLastPlayed(): PagingSource<Int, Game>
+
     @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY COALESCE(customName, title) ASC")
     fun selectFavorites(): PagingSource<Int, Game>
 
@@ -54,12 +57,6 @@ interface GameDao {
 
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
     suspend fun asyncSelectFirstRecents(limit: Int): List<Game>
-
-    @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY lastPlayedAt DESC LIMIT :limit")
-    fun selectFirstFavorites(limit: Int): Flow<List<Game>>
-
-    @Query("SELECT * FROM games WHERE lastPlayedAt IS NULL LIMIT :limit")
-    fun selectFirstNotPlayed(limit: Int): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY COALESCE(customName, title) ASC, id DESC")
     fun selectBySystem(systemId: String): PagingSource<Int, Game>

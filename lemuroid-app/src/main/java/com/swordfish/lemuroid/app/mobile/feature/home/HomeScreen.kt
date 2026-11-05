@@ -4,17 +4,16 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -27,6 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
@@ -66,6 +68,7 @@ fun HomeScreen(
     HomeScreen(
         modifier,
         state.value,
+        viewModel.games.collectAsLazyPagingItems(),
         onGameClick,
         onGameLongClick,
         onOpenCoreSelection,
@@ -81,10 +84,12 @@ fun HomeScreen(
     ) // TODO COMPOSE We need to understand what's going to happen here.
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeScreen(
     modifier: Modifier = Modifier,
     state: HomeViewModel.UIState,
+    games: LazyPagingItems<Game>,
     onGameClicked: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onOpenCoreSelection: () -> Unit,
@@ -92,104 +97,62 @@ private fun HomeScreen(
     onEnableMicrophoneClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
 ) {
-    Column(
-        modifier =
-            modifier
-                .verticalScroll(rememberScrollState())
-                .padding(top = 16.dp, bottom = 16.dp),
+    LazyVerticalGrid(
+        modifier = modifier.fillMaxSize(),
+        columns = GridCells.Adaptive(144.dp),
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        AnimatedVisibility(state.showNoNotificationPermissionCard) {
-            HomeNotification(
-                titleId = R.string.home_notification_title,
-                messageId = R.string.home_notification_message,
-                actionId = R.string.home_notification_action,
-                onAction = onEnableNotificationsClicked,
-            )
-        }
-        AnimatedVisibility(state.showNoGamesCard) {
-            HomeNotification(
-                titleId = R.string.home_empty_title,
-                messageId = R.string.home_empty_message,
-                actionId = R.string.home_empty_action,
-                onAction = onSetDirectoryClicked,
-                enabled = !state.indexInProgress,
-            )
-        }
-        AnimatedVisibility(state.showNoMicrophonePermissionCard) {
-            HomeNotification(
-                titleId = R.string.home_microphone_title,
-                messageId = R.string.home_microphone_message,
-                actionId = R.string.home_microphone_action,
-                onAction = onEnableMicrophoneClicked,
-            )
-        }
-        AnimatedVisibility(state.showDesmumeDeprecatedCard) {
-            HomeNotification(
-                titleId = R.string.home_notification_desmume_deprecated_title,
-                messageId = R.string.home_notification_desmume_deprecated_message,
-                actionId = R.string.home_notification_desmume_deprecated_action,
-                onAction = onOpenCoreSelection,
-            )
-        }
-        HomeRow(
-            stringResource(id = R.string.recent),
-            state.recentGames,
-            onGameClicked,
-            onGameLongClick,
-        )
-        HomeRow(
-            stringResource(id = R.string.favorites),
-            state.favoritesGames,
-            onGameClicked,
-            onGameLongClick,
-        )
-        HomeRow(
-            stringResource(id = R.string.discover),
-            state.discoveryGames,
-            onGameClicked,
-            onGameLongClick,
-        )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun HomeRow(
-    title: String,
-    games: List<Game>,
-    onGameClicked: (Game) -> Unit,
-    onGameLongClick: (Game) -> Unit,
-) {
-    if (games.isEmpty()) {
-        return
-    }
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-        )
-        LazyRow(
-            modifier =
-                Modifier
-                    .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            items(games.size, key = { games[it].id }) { index ->
-                val game = games[index]
-                LemuroidGameCard(
-                    modifier =
-                        Modifier
-                            .widthIn(0.dp, 144.dp)
-                            .animateItem(),
-                    game = game,
-                    onClick = { onGameClicked(game) },
-                    onLongClick = { onGameLongClick(game) },
+        if (state.showNoNotificationPermissionCard) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                HomeNotification(
+                    titleId = R.string.home_notification_title,
+                    messageId = R.string.home_notification_message,
+                    actionId = R.string.home_notification_action,
+                    onAction = onEnableNotificationsClicked,
                 )
             }
+        }
+        if (state.showNoGamesCard) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                HomeNotification(
+                    titleId = R.string.home_empty_title,
+                    messageId = R.string.home_empty_message,
+                    actionId = R.string.home_empty_action,
+                    onAction = onSetDirectoryClicked,
+                    enabled = !state.indexInProgress,
+                )
+            }
+        }
+        if (state.showNoMicrophonePermissionCard) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                HomeNotification(
+                    titleId = R.string.home_microphone_title,
+                    messageId = R.string.home_microphone_message,
+                    actionId = R.string.home_microphone_action,
+                    onAction = onEnableMicrophoneClicked,
+                )
+            }
+        }
+        if (state.showDesmumeDeprecatedCard) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                HomeNotification(
+                    titleId = R.string.home_notification_desmume_deprecated_title,
+                    messageId = R.string.home_notification_desmume_deprecated_message,
+                    actionId = R.string.home_notification_desmume_deprecated_action,
+                    onAction = onOpenCoreSelection,
+                )
+            }
+        }
+        items(games.itemCount, key = games.itemKey { it.id }) { index ->
+            val game = games[index] ?: return@items
+            LemuroidGameCard(
+                modifier = Modifier.animateItem(),
+                game = game,
+                onClick = { onGameClicked(game) },
+                onLongClick = { onGameLongClick(game) },
+            )
         }
     }
 }
@@ -203,10 +166,7 @@ private fun HomeNotification(
     onAction: () -> Unit = { },
 ) {
     ElevatedCard(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
             modifier =
