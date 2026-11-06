@@ -125,6 +125,7 @@ android {
 }
 
 dependencies {
+    testImplementation("junit:junit:4.13.2")
     implementation(project(":retrograde-util"))
     implementation(project(":retrograde-app-shared"))
     implementation(project(":lemuroid-metadata-libretro-db"))
