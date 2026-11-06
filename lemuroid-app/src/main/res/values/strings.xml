@@ -122,6 +122,17 @@
     <string name="home_empty_message">Lemuroid needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
     <string name="home_empty_action">Select Directory</string>
     <string name="home_ps2_bios_title">PlayStation 2 BIOS</string>
+    <string name="home_ps2_bios_message">Import or verify your PS2 BIOS directly without opening ROM library settings.</string>
+    <string name="home_ps2_bios_action">Manage PS2 BIOS</string>
+    <string name="settings_bios_ps2_import_folder">Import BIOS folder</string>
+    <string name="settings_bios_ps2_import_folder_description">Select a folder containing scph10000.bin or a bios folder. The resources folder is optional.</string>
+    <string name="diagnostics_title">Diagnostic logs</string>
+    <string name="diagnostics_description">View, refresh, clear, and export app and emulator errors.</string>
+    <string name="diagnostics_refresh">Refresh</string>
+    <string name="diagnostics_share">Export</string>
+    <string name="diagnostics_clear">Clear</string>
+    <string name="diagnostics_cleared">Diagnostic log cleared</string>
+    <string name="home_ps2_bios_title">PlayStation 2 BIOS</string>
     <string name="home_ps2_bios_message">Import or verify your PS2 BIOS directly without opening the ROM library settings.</string>
     <string name="home_ps2_bios_action">Manage PS2 BIOS</string>
     <string name="settings_bios_ps2_import_folder">Import BIOS folder</string>
