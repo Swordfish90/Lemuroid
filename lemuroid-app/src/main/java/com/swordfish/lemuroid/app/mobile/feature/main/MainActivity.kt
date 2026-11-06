@@ -230,6 +230,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             onGameClick = onGameClick,
                             onGameLongClick = onGameLongClick,
                             onOpenCoreSelection = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) },
+                            onOpenPs2Bios = { navController.navigateToRoute(MainRoute.SETTINGS_BIOS) },
                         )
                     }
                     composable(MainRoute.FAVORITES) {
