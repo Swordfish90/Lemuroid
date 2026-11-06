@@ -64,6 +64,11 @@ fun BiosScreen(
                 subtitle = { Text(text = stringResource(id = R.string.settings_bios_ps2_description)) },
                 onClick = { filePicker.launch(arrayOf("*/*")) },
             )
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.settings_bios_ps2_import_folder)) },
+                subtitle = { Text(text = stringResource(id = R.string.settings_bios_ps2_import_folder_description)) },
+                onClick = { folderPicker.launch(null) },
+            )
         }
         if (uiState.detected.isNotEmpty()) {
             DetectedEntries(uiState.detected)
