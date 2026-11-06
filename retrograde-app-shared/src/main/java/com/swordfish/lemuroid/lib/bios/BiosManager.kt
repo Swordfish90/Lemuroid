@@ -98,7 +98,10 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
     ): Boolean = withContext(Dispatchers.IO) {
         if (!file.isFile) return@withContext false
         val name = file.name ?: return@withContext false
-        if (!name.endsWith(".bin", ignoreCase = true)) return@withContext false
+        if (!name.equals("scph10000.bin", ignoreCase = true)) {
+            Timber.w("Rejected PS2 BIOS file with unexpected name: $name")
+            return@withContext false
+        }
         val ps2Directory = File(directoriesManager.getSystemDirectory(), "pcsx2")
         val targetBiosDirectory = File(ps2Directory, "bios")
         val targetResourcesDirectory = File(ps2Directory, "resources")
@@ -157,7 +160,10 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
         }
 
         val copiedBiosFiles = copyTree(biosFolder, targetBios)
-        if (copiedBiosFiles == 0) return@withContext false
+        if (copiedBiosFiles == 0 || !File(targetBios, "scph10000.bin").let { it.isFile && it.length() > 0L }) {
+            Timber.w("PS2 BIOS folder import did not contain scph10000.bin")
+            return@withContext false
+        }
 
         if (resourcesFolder != null) {
             copyTree(resourcesFolder, targetResources)
