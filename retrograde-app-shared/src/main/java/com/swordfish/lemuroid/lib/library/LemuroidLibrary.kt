@@ -312,7 +312,7 @@ class LemuroidLibrary(
         // directory is a stronger signal and must win for newly indexed games too.
         val gameSystem = if (isPs2Folder) {
             Timber.i("Overriding metadata system ${metadataSystem.id} to PS2 based on ROM folder: $normalizedPath")
-            GameSystem.findById(SystemID.PS2)
+            GameSystem.findById(SystemID.PS2.dbname)
         } else {
             metadataSystem
         }
