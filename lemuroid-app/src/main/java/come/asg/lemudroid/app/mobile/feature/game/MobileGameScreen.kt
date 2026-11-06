@@ -385,7 +385,7 @@ internal fun TouchControlEditorPanel(
     selectedControlKey: String?,
     settings: TouchControllerSettingsManager.Settings,
     onUpdateControl: (String, (ControlSettings) -> ControlSettings) -> Unit,
-    onPersist: () -> Unit,
+    onSave: () -> Unit,
     onResetAll: () -> Unit,
     onDone: () -> Unit,
 ) {
@@ -457,11 +457,10 @@ internal fun TouchControlEditorPanel(
                             enabled = selectedSettings != null && canHide,
                             onCheckedChange = { visible ->
                                 updateSelectedControl { it.copy(visible = visible) }
-                                onPersist()
                             },
                         )
                     }
-                    IconButton(onClick = onPersist) {
+                    IconButton(onClick = onSave) {
                         Icon(
                             Icons.Filled.Save,
                             contentDescription =
@@ -488,7 +487,6 @@ internal fun TouchControlEditorPanel(
                             enabled = selectedSettings != null && canHide,
                             onCheckedChange = { visible ->
                                 updateSelectedControl { it.copy(visible = visible) }
-                                onPersist()
                             },
                         )
                     }
@@ -510,7 +508,6 @@ internal fun TouchControlEditorPanel(
                                     modifier = Modifier.fillMaxWidth(),
                                     value = selectedSettings.scale,
                                     onValueChange = { scale -> updateSelectedControl { it.copy(scale = scale) } },
-                                    onValueChangeFinished = onPersist,
                                     valueRange =
                                         TouchControllerSettingsManager.MIN_CONTROL_SCALE..TouchControllerSettingsManager.MAX_CONTROL_SCALE,
                                 )
@@ -527,7 +524,6 @@ internal fun TouchControlEditorPanel(
                                     modifier = Modifier.fillMaxWidth(),
                                     value = selectedSettings.opacity,
                                     onValueChange = { opacity -> updateSelectedControl { it.copy(opacity = opacity) } },
-                                    onValueChangeFinished = onPersist,
                                     valueRange = TouchControllerSettingsManager.MIN_CONTROL_OPACITY..1f,
                                 )
                             }
@@ -545,7 +541,6 @@ internal fun TouchControlEditorPanel(
                                 modifier = Modifier.fillMaxWidth(),
                                 value = selectedSettings.scale,
                                 onValueChange = { scale -> updateSelectedControl { it.copy(scale = scale) } },
-                                onValueChangeFinished = onPersist,
                                 valueRange =
                                     TouchControllerSettingsManager.MIN_CONTROL_SCALE..TouchControllerSettingsManager.MAX_CONTROL_SCALE,
                             )
@@ -562,7 +557,6 @@ internal fun TouchControlEditorPanel(
                                 modifier = Modifier.fillMaxWidth(),
                                 value = selectedSettings.opacity,
                                 onValueChange = { opacity -> updateSelectedControl { it.copy(opacity = opacity) } },
-                                onValueChangeFinished = onPersist,
                                 valueRange = TouchControllerSettingsManager.MIN_CONTROL_OPACITY..1f,
                             )
                         }
@@ -580,7 +574,6 @@ internal fun TouchControlEditorPanel(
                             onValueChange = { sensitivity ->
                                 updateSelectedControl { it.copy(sensitivity = sensitivity) }
                             },
-                            onValueChangeFinished = onPersist,
                             valueRange =
                                 TouchControllerSettingsManager.MIN_SENSITIVITY..TouchControllerSettingsManager.MAX_SENSITIVITY,
                             steps = 8,
@@ -595,7 +588,6 @@ internal fun TouchControlEditorPanel(
                     TextButton(
                         onClick = {
                             updateSelectedControl { ControlSettings() }
-                            onPersist()
                         },
                         enabled = selectedSettings != null,
                     ) {
@@ -606,7 +598,6 @@ internal fun TouchControlEditorPanel(
                     }) { Text(stringResource(come.asg.lemudroid.R.string.touch_control_reset_all)) }
                     TextButton(
                         onClick = {
-                            onPersist()
                             onDone()
                         },
                     ) {

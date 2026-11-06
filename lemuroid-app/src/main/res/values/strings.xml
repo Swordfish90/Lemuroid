@@ -310,6 +310,7 @@
     <string name="touch_editor_close">Close editor</string>
     <string name="touch_editor_reset_layout">Reset layout</string>
     <string name="touch_editor_save_layout">Save layout</string>
+    <string name="touch_editor_changes_saved">Changes saved</string>
     <string name="touch_editor_select_hint">Tap to select · drag to move</string>
     <string name="touch_editor_reset_orientation_title">Reset %1$s layout?</string>
     <string name="touch_editor_reset_orientation_message">This resets only this console\'s %1$s touch layout.</string>

@@ -1,6 +1,7 @@
 package come.asg.lemudroid.app.mobile.feature.settings.inputdevices
 
 import android.view.KeyEvent
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.horizontalScroll
@@ -43,12 +44,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -66,7 +67,6 @@ import come.asg.lemudroid.app.utils.android.settings.rememberTouchButtonAppearan
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
 import gg.padkit.inputevents.InputEvent
-import kotlinx.coroutines.launch
 
 /**
  * @param allowTouchOverlay whether the given console draws its pads over the game in landscape. The game
@@ -129,7 +129,7 @@ private fun TouchLayoutEditorContent(
         }
     // Null until the real settings arrive, so nothing renders (or gets saved) with zero margins.
     val settings = settingsFlow.collectAsState(null).value
-    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     val padConfig = remember(controllerId) { TouchControllerID.getConfig(controllerId) }
 
     fun updateControl(
@@ -137,10 +137,17 @@ private fun TouchLayoutEditorContent(
         transform: (TouchControllerSettingsManager.ControlSettings) -> TouchControllerSettingsManager.ControlSettings,
     ) = settingsManager.updateControl(controllerId, orientation, key, transform)
 
-    fun persist() = settingsManager.persist(controllerId, orientation)
+    fun save() {
+        settingsManager.persist(controllerId, orientation)
+        Toast.makeText(
+            context,
+            context.getString(come.asg.lemudroid.R.string.touch_editor_changes_saved),
+            Toast.LENGTH_SHORT,
+        ).show()
+    }
 
     DisposableEffect(controllerId, orientation, settingsManager) {
-        onDispose { settingsManager.persist(controllerId, orientation) }
+        onDispose { settingsManager.discardChanges(controllerId, orientation) }
     }
 
     val maxOffset = TouchControllerSettingsManager.MAX_CONTROL_OFFSET
@@ -161,7 +168,6 @@ private fun TouchLayoutEditorContent(
                         )
                     }
                 }
-                persist()
             },
         )
 
@@ -272,7 +278,7 @@ private fun TouchLayoutEditorContent(
                         contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_reset_layout),
                     )
                 }
-                IconButton(modifier = Modifier.size(40.dp), onClick = { persist() }) {
+                IconButton(modifier = Modifier.size(40.dp), onClick = { save() }) {
                     Icon(
                         Icons.Filled.Save,
                         contentDescription = stringResource(come.asg.lemudroid.R.string.touch_editor_save_layout),
@@ -310,9 +316,9 @@ private fun TouchLayoutEditorContent(
                     selectedControlKey = selectedControlKey,
                     settings = settings,
                     onUpdateControl = { key, update -> updateControl(key, update) },
-                    onPersist = { persist() },
+                    onSave = { save() },
                     onResetAll = {
-                        coroutineScope.launch { settingsManager.resetSettings(controllerId, orientation) }
+                        settingsManager.resetDraftSettings(controllerId, orientation)
                         selectedControlKey = null
                     },
                     onDone = { selectedControlKey = null },
@@ -342,7 +348,7 @@ private fun TouchLayoutEditorContent(
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            coroutineScope.launch { settingsManager.resetSettings(controllerId, orientation) }
+                            settingsManager.resetDraftSettings(controllerId, orientation)
                             selectedControlKey = null
                             confirmReset = false
                         },
