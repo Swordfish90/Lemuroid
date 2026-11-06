@@ -99,12 +99,22 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
         if (!file.isFile) return@withContext false
         val name = file.name ?: return@withContext false
         if (!name.endsWith(".bin", ignoreCase = true)) return@withContext false
-        val target = File(directoriesManager.getSystemDirectory(), "pcsx2/bios/$name")
+        val ps2Directory = File(directoriesManager.getSystemDirectory(), "pcsx2")
+        val targetBiosDirectory = File(ps2Directory, "bios")
+        val targetResourcesDirectory = File(ps2Directory, "resources")
+        if ((!targetBiosDirectory.mkdirs() && !targetBiosDirectory.isDirectory) ||
+            (!targetResourcesDirectory.mkdirs() && !targetResourcesDirectory.isDirectory)
+        ) {
+            Timber.e("Unable to prepare PS2 BIOS/resources directories")
+            return@withContext false
+        }
+
+        val target = File(targetBiosDirectory, name)
         val copied = contentResolver.openInputStream(file.uri)?.use { input ->
-            target.parentFile?.mkdirs()
             target.outputStream().use { output -> input.copyTo(output) }
-            true
+            target.length() > 0L
         } ?: false
+        Timber.i("PS2 BIOS import result: copied=$copied, file=${target.name}, bytes=${target.length()}")
         copied
     }
 
