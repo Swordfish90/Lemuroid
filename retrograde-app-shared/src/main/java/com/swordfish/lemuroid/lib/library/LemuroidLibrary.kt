@@ -303,7 +303,7 @@ class LemuroidLibrary(
 
         val metadataSystem = GameSystem.findById(gameMetadata.system!!)
         val normalizedPath = groupedStorageFile.primaryFile.path.orEmpty()
-            .replace('\\\\', '/')
+            .replace('\\', '/')
             .lowercase()
         val isPs2Folder = normalizedPath.split('/').any { segment ->
             segment == "ps2" || segment == "playstation 2" || segment == "playstation2"
