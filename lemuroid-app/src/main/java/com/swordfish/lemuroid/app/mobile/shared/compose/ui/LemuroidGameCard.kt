@@ -16,6 +16,8 @@ fun LemuroidGameCard(
     game: Game,
     onClick: () -> Unit = { },
     onLongClick: () -> Unit = { },
+    coverFrameAspectRatio: Float? = null,
+    onCoverAspectRatioChanged: (Float) -> Unit = {},
 ) {
     ElevatedCard(
         modifier = modifier,
@@ -29,7 +31,11 @@ fun LemuroidGameCard(
                         onLongClick = onLongClick,
                     ),
         ) {
-            LemuroidGameImage(game = game)
+            LemuroidGameImage(
+                game = game,
+                frameAspectRatio = coverFrameAspectRatio,
+                onAspectRatioChanged = onCoverAspectRatioChanged,
+            )
             LemuroidGameTexts(game = game)
         }
     }

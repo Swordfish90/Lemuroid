@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.shared.covers
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import coil.ImageLoader
 import coil.disk.DiskCache
@@ -18,6 +19,7 @@ object CoverUtils {
     fun loadCover(
         game: Game,
         imageView: ImageView?,
+        onSuccess: (Drawable) -> Unit = {},
     ) {
         if (imageView == null) return
 
@@ -25,6 +27,7 @@ object CoverUtils {
             val fallbackDrawable = getFallbackDrawable(game)
             fallback(fallbackDrawable)
             error(fallbackDrawable)
+            listener(onSuccess = { _, result -> onSuccess(result.drawable) })
         }
     }
 
