@@ -71,6 +71,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -181,6 +182,8 @@ private fun HomeScreen(
         animationSpec = tween(durationMillis = 720),
         label = "artworkBackgroundColor",
     )
+    val vibrantArtworkColor = energizeArtworkColor(animatedArtworkColor)
+    val artworkAccentColor = shiftArtworkHue(vibrantArtworkColor, 42f)
 
     LaunchedEffect(selectedGame?.id, selectedGame?.displayCoverUrl()) {
         val game = selectedGame ?: return@LaunchedEffect
@@ -208,20 +211,33 @@ private fun HomeScreen(
         if (selectedGame != null) {
             LemuroidGameImage(
                 game = selectedGame,
-                modifier = Modifier.fillMaxSize().blur(42.dp).graphicsLayer { alpha = 0.30f },
+                modifier = Modifier.fillMaxSize().blur(42.dp).graphicsLayer { alpha = 0.40f },
             )
         }
         Box(
             modifier = Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
                     listOf(
-                        animatedArtworkColor.copy(alpha = 0.36f),
-                        animatedArtworkColor.copy(alpha = 0.14f),
-                        MaterialTheme.colorScheme.background,
+                        vibrantArtworkColor.copy(alpha = 0.48f),
+                        artworkAccentColor.copy(alpha = 0.24f),
+                        MaterialTheme.colorScheme.background.copy(alpha = 0.88f),
                         MaterialTheme.colorScheme.background,
                     ),
                 ),
             ),
+        )
+        Box(
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().height(700.dp)
+                .background(
+                    Brush.radialGradient(
+                        colors = listOf(
+                            vibrantArtworkColor.copy(alpha = 0.42f),
+                            artworkAccentColor.copy(alpha = 0.18f),
+                            Color.Transparent,
+                        ),
+                        radius = 1050f,
+                    ),
+                ),
         )
         Column(
             modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 144.dp),
@@ -507,6 +523,26 @@ private fun HomeNotification(
             }
         }
     }
+}
+
+private fun energizeArtworkColor(color: Color): Color {
+    val hsv = FloatArray(3)
+    android.graphics.Color.colorToHSV(color.toArgb(), hsv)
+    hsv[1] = hsv[1].coerceIn(0.66f, 0.92f)
+    hsv[2] = hsv[2].coerceIn(0.74f, 0.96f)
+    return Color(android.graphics.Color.HSVToColor(hsv))
+}
+
+private fun shiftArtworkHue(
+    color: Color,
+    hueShift: Float,
+): Color {
+    val hsv = FloatArray(3)
+    android.graphics.Color.colorToHSV(color.toArgb(), hsv)
+    hsv[0] = (hsv[0] + hueShift) % 360f
+    hsv[1] = hsv[1].coerceIn(0.70f, 0.90f)
+    hsv[2] = hsv[2].coerceIn(0.78f, 0.94f)
+    return Color(android.graphics.Color.HSVToColor(hsv))
 }
 
 private fun fallbackArtworkColor(game: Game?): Color =
