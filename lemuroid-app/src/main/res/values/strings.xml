@@ -132,11 +132,6 @@
     <string name="diagnostics_share">Export</string>
     <string name="diagnostics_clear">Clear</string>
     <string name="diagnostics_cleared">Diagnostic log cleared</string>
-    <string name="home_ps2_bios_title">PlayStation 2 BIOS</string>
-    <string name="home_ps2_bios_message">Import or verify your PS2 BIOS directly without opening the ROM library settings.</string>
-    <string name="home_ps2_bios_action">Manage PS2 BIOS</string>
-    <string name="settings_bios_ps2_import_folder">Import BIOS folder</string>
-    <string name="settings_bios_ps2_import_folder_description">Select a folder containing scph10000.bin or a bios folder. The resources folder is optional.</string>
 
     <string name="home_notification_desmume_deprecated_title">DeSmuME is being retired</string>
     <string name="home_notification_desmume_deprecated_message">Save in-game, then switch to melonDS to keep your progress. Save states won\’t transfer and will remain usable only in DeSmuME.</string>
