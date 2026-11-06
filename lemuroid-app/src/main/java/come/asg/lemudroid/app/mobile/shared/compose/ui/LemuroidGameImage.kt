@@ -31,6 +31,7 @@ fun LemuroidGameImage(
                 .data(game.displayCoverUrl())
                 .build(),
         contentDescription = game.displayName(),
+        placeholder = fallbackPainter,
         modifier =
             modifier
                 .fillMaxWidth()

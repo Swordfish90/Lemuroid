@@ -130,7 +130,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
         setContent {
             AppTheme {
-                BaseGameScreen(viewModel = baseGameScreenViewModel) {
+                BaseGameScreen(viewModel = baseGameScreenViewModel, game = game) {
                     GameScreen(viewModel)
                 }
             }
