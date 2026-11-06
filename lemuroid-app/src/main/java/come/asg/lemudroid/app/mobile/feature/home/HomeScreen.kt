@@ -17,6 +17,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -69,6 +71,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,6 +96,7 @@ import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import java.util.Date
@@ -178,6 +182,8 @@ private fun HomeScreen(
         animationSpec = tween(durationMillis = 720),
         label = "artworkBackgroundColor",
     )
+    val vibrantArtworkColor = energizeArtworkColor(animatedArtworkColor)
+    val artworkAccentColor = shiftArtworkHue(vibrantArtworkColor, 42f)
 
     LaunchedEffect(selectedGame?.id, selectedGame?.displayCoverUrl()) {
         val game = selectedGame ?: return@LaunchedEffect
@@ -188,8 +194,14 @@ private fun HomeScreen(
     }
 
     LaunchedEffect(carouselState, games) {
-        snapshotFlow { carouselState.firstVisibleItemIndex }
-            .map { games.getOrNull(it)?.id }
+        snapshotFlow {
+            val layoutInfo = carouselState.layoutInfo
+            val viewportCenter = layoutInfo.viewportSize.width / 2
+            layoutInfo.visibleItemsInfo
+                .minByOrNull { item -> abs(item.offset + item.size / 2 - viewportCenter) }
+                ?.index
+        }
+            .map { index -> index?.let { games.getOrNull(it)?.id } }
             .filterNotNull()
             .distinctUntilChanged()
             .collect { selectedGameId = it }
@@ -199,20 +211,33 @@ private fun HomeScreen(
         if (selectedGame != null) {
             LemuroidGameImage(
                 game = selectedGame,
-                modifier = Modifier.fillMaxSize().blur(42.dp).graphicsLayer { alpha = 0.30f },
+                modifier = Modifier.fillMaxSize().blur(42.dp).graphicsLayer { alpha = 0.40f },
             )
         }
         Box(
             modifier = Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
                     listOf(
-                        animatedArtworkColor.copy(alpha = 0.36f),
-                        animatedArtworkColor.copy(alpha = 0.14f),
-                        MaterialTheme.colorScheme.background,
+                        vibrantArtworkColor.copy(alpha = 0.48f),
+                        artworkAccentColor.copy(alpha = 0.24f),
+                        MaterialTheme.colorScheme.background.copy(alpha = 0.88f),
                         MaterialTheme.colorScheme.background,
                     ),
                 ),
             ),
+        )
+        Box(
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().height(700.dp)
+                .background(
+                    Brush.radialGradient(
+                        colors = listOf(
+                            vibrantArtworkColor.copy(alpha = 0.42f),
+                            artworkAccentColor.copy(alpha = 0.18f),
+                            Color.Transparent,
+                        ),
+                        radius = 1050f,
+                    ),
+                ),
         )
         Column(
             modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 144.dp),
@@ -281,51 +306,55 @@ private fun HomeScreen(
 
         if (selectedGame != null) {
             val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
-            LazyRow(
-                state = carouselState,
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 56.dp),
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
-            ) {
-                itemsIndexed(games, key = { _, game -> game.id }) { index, game ->
-                    val selected = selectedGame.id == game.id
-                    val scale by animateFloatAsState(if (selected) 1f else 0.92f, tween(240), label = "coverScale")
-                    val opacity by animateFloatAsState(if (selected) 1f else 0.76f, tween(240), label = "coverOpacity")
-                    Box(
-                        modifier = Modifier.width(250.dp).height(250.dp)
-                            .graphicsLayer { scaleX = scale; scaleY = scale; alpha = opacity }
-                            .clip(RoundedCornerShape(28.dp))
-                            .background(
-                                Brush.linearGradient(
-                                    listOf(Color(0xFF342A4A), Color(0xFF17131F), Color(0xFF271A29)),
+            BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                val sidePadding = ((maxWidth - 250.dp) / 2).coerceAtLeast(0.dp)
+                LazyRow(
+                    state = carouselState,
+                    flingBehavior = rememberSnapFlingBehavior(lazyListState = carouselState),
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = sidePadding),
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                ) {
+                    itemsIndexed(games, key = { _, game -> game.id }) { index, game ->
+                        val selected = selectedGame.id == game.id
+                        val scale by animateFloatAsState(if (selected) 1f else 0.92f, tween(240), label = "coverScale")
+                        val opacity by animateFloatAsState(if (selected) 1f else 0.76f, tween(240), label = "coverOpacity")
+                        Box(
+                            modifier = Modifier.width(250.dp).height(250.dp)
+                                .graphicsLayer { scaleX = scale; scaleY = scale; alpha = opacity }
+                                .clip(RoundedCornerShape(28.dp))
+                                .background(
+                                    Brush.linearGradient(
+                                        listOf(Color(0xFF342A4A), Color(0xFF17131F), Color(0xFF271A29)),
+                                    ),
+                                )
+                                .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(28.dp))
+                                .combinedClickable(
+                                    onClick = {
+                                        selectedGameId = game.id
+                                        coroutineScope.launch { carouselState.animateScrollToItem(index) }
+                                        onGameClicked(game)
+                                    },
+                                    onLongClick = { onGameLongClick(game) },
                                 ),
-                            )
-                            .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(28.dp))
-                            .combinedClickable(
-                                onClick = {
-                                    selectedGameId = game.id
-                                    coroutineScope.launch { carouselState.animateScrollToItem(index) }
-                                    onGameClicked(game)
-                                },
-                                onLongClick = { onGameLongClick(game) },
-                            ),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        LemuroidGameImage(
-                            game = game,
-                            modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(28.dp)),
-                        )
-                        Surface(
-                            modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
-                            shape = CircleShape,
-                            color = Color.Black.copy(alpha = 0.52f),
+                            contentAlignment = Alignment.Center,
                         ) {
-                            IconButton(
-                                onClick = { openStats(game) },
-                                modifier = Modifier.size(38.dp),
-                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                            LemuroidGameImage(
+                                game = game,
+                                modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(28.dp)),
+                            )
+                            Surface(
+                                modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
+                                shape = CircleShape,
+                                color = Color.Black.copy(alpha = 0.52f),
                             ) {
-                                Icon(Icons.Filled.Info, contentDescription = "${game.displayName()} play statistics")
+                                IconButton(
+                                    onClick = { openStats(game) },
+                                    modifier = Modifier.size(38.dp),
+                                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                                ) {
+                                    Icon(Icons.Filled.Info, contentDescription = "${game.displayName()} play statistics")
+                                }
                             }
                         }
                     }
@@ -494,6 +523,26 @@ private fun HomeNotification(
             }
         }
     }
+}
+
+private fun energizeArtworkColor(color: Color): Color {
+    val hsv = FloatArray(3)
+    android.graphics.Color.colorToHSV(color.toArgb(), hsv)
+    hsv[1] = hsv[1].coerceIn(0.66f, 0.92f)
+    hsv[2] = hsv[2].coerceIn(0.74f, 0.96f)
+    return Color(android.graphics.Color.HSVToColor(hsv))
+}
+
+private fun shiftArtworkHue(
+    color: Color,
+    hueShift: Float,
+): Color {
+    val hsv = FloatArray(3)
+    android.graphics.Color.colorToHSV(color.toArgb(), hsv)
+    hsv[0] = (hsv[0] + hueShift) % 360f
+    hsv[1] = hsv[1].coerceIn(0.70f, 0.90f)
+    hsv[2] = hsv[2].coerceIn(0.78f, 0.94f)
+    return Color(android.graphics.Color.HSVToColor(hsv))
 }
 
 private fun fallbackArtworkColor(game: Game?): Color =

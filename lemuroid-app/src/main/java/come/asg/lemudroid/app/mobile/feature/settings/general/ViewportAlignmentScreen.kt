@@ -1,6 +1,7 @@
 package come.asg.lemudroid.app.mobile.feature.settings.general
 
 import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -50,12 +51,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.layout.layoutId
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.swordfish.touchinput.radial.LocalLemuroidPadTheme
 import com.swordfish.touchinput.radial.settings.LocalTouchControllerSettings
 import com.swordfish.touchinput.radial.settings.TouchControllerID
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import come.asg.lemudroid.R
 import come.asg.lemudroid.app.mobile.feature.game.GameScreenLayout
 import come.asg.lemudroid.app.mobile.feature.game.PadContainer
 import come.asg.lemudroid.app.utils.android.settings.rememberTouchButtonAppearanceTheme
@@ -78,6 +81,7 @@ fun ViewportAlignmentScreen(
     settingsManager: TouchControllerSettingsManager,
 ) {
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val context = LocalContext.current
     val density = LocalDensity.current
     var controllerId by rememberSaveable { mutableStateOf(TouchControllerID.GBA.name) }
     val initialPosition = preferences.getString("viewport_alignment", "center") ?: "center"
@@ -108,9 +112,8 @@ fun ViewportAlignmentScreen(
     val selectedControllerId = TouchControllerID.valueOf(controllerId)
     val padConfig = remember(selectedControllerId) { TouchControllerID.getConfig(selectedControllerId) }
 
-    fun savePosition(position: ViewportPosition) {
+    fun selectPosition(position: ViewportPosition) {
         selectedPosition = position.name
-        preferences.edit().putString("viewport_alignment", position.preferenceValue).apply()
         positionMenuExpanded = false
     }
 
@@ -119,6 +122,11 @@ fun ViewportAlignmentScreen(
             .putString("viewport_alignment", viewportPosition.preferenceValue)
             .putInt(CUSTOM_POSITION_KEY, (customPosition * 1000f).toInt())
             .apply()
+        Toast.makeText(
+            context,
+            context.getString(R.string.touch_editor_changes_saved),
+            Toast.LENGTH_SHORT,
+        ).show()
         backDispatcher?.onBackPressed()
     }
 
@@ -175,10 +183,6 @@ fun ViewportAlignmentScreen(
                                                         if (availablePx > 0f) {
                                                             customPosition =
                                                                 (customPosition + dragAmount.y / availablePx).coerceIn(0f, 1f)
-                                                            preferences.edit()
-                                                                .putInt(CUSTOM_POSITION_KEY, (customPosition * 1000f).toInt())
-                                                                .putString("viewport_alignment", "custom")
-                                                                .apply()
                                                         }
                                                     }
                                                 }
@@ -271,7 +275,7 @@ fun ViewportAlignmentScreen(
                         ViewportPosition.values().forEach { position ->
                             DropdownMenuItem(
                                 text = { Text(position.label) },
-                                onClick = { savePosition(position) },
+                                onClick = { selectPosition(position) },
                             )
                         }
                     }

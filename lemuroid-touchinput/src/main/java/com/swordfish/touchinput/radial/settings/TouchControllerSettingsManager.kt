@@ -87,8 +87,8 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
     }
 
     /**
-     * Atomically updates one control against the latest in-memory state (no stale snapshots, no disk
-     * write). Call [persist] when a gesture finishes.
+     * Atomically updates one control against the latest in-memory state (no stale snapshots or disk
+     * write). Call [persist] only after an explicit Save action.
      */
     fun updateControl(
         touchControllerID: TouchControllerID,
@@ -106,13 +106,30 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         }
     }
 
+    /** Resets the in-memory draft to defaults without changing the persisted layout. */
+    fun resetDraftSettings(
+        touchControllerID: TouchControllerID,
+        orientation: Orientation,
+    ) {
+        val settingsKey = getPreferenceString(touchControllerID, orientation)
+        cachedSettings.getOrPut(settingsKey) { MutableStateFlow(loadSettings(settingsKey)) }.value = null
+    }
+    /** Discards in-memory edits and restores the last persisted layout. */
+    fun discardChanges(
+        touchControllerID: TouchControllerID,
+        orientation: Orientation,
+    ) {
+        val settingsKey = getPreferenceString(touchControllerID, orientation)
+        val savedSettings = loadSettings(settingsKey)
+        cachedSettings.getOrPut(settingsKey) { MutableStateFlow(savedSettings) }.value = savedSettings
+    }
     /** Writes the current in-memory settings to disk (asynchronous apply). */
     fun persist(
         touchControllerID: TouchControllerID,
         orientation: Orientation,
     ) {
         val settingsKey = getPreferenceString(touchControllerID, orientation)
-        val settings = cachedSettings[settingsKey]?.value ?: return
+        val settings = cachedSettings[settingsKey]?.value ?: lastDefaults[settingsKey] ?: Settings()
         sharedPreferences.edit {
             putString(settingsKey, JSON.encodeToString(Settings.serializer(), settings))
         }
