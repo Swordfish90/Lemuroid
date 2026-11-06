@@ -41,7 +41,7 @@ fun HomeScreen(
     onGameLongClick: (Game) -> Unit,
     onOpenCoreSelection: () -> Unit,
     onOpenPs2Bios: () -> Unit,
-)
+) {
     val context = LocalContext.current
     val applicationContext = context.applicationContext
 
