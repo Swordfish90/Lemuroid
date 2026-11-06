@@ -1,6 +1,8 @@
 package com.swordfish.lemuroid.app.shared.game.viewmodel
 
+import android.os.SystemClock
 import android.view.KeyEvent
+import android.view.ViewConfiguration
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.unit.Density
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -51,6 +53,11 @@ class GameViewModelTouchControls(
     private val hapticFeedbackMode = MutableStateFlow(HapticFeedbackMode.NONE)
 
     private var loadingMenuJob: Job? = null
+    private val menuPressTracker =
+        MenuPressTracker(
+            doubleTapTimeoutMillis = ViewConfiguration.getDoubleTapTimeout().toLong(),
+            longPressTimeoutMillis = MENU_LOADING_ANIMATION_MILLIS.toLong(),
+        )
 
     override fun onCreate(owner: LifecycleOwner) {
         owner.launchOnState(Lifecycle.State.CREATED) {
@@ -118,10 +125,9 @@ class GameViewModelTouchControls(
     }
 
     fun handleVirtualInputEvent(events: List<InputEvent>) {
-        val menuEvent = events.firstOrNull { it is InputEvent.Button && it.id == KeyEvent.KEYCODE_BUTTON_MODE }
-        if (menuEvent != null) {
-            onMenuPressed((menuEvent as InputEvent.Button).pressed)
-        }
+        events.filterIsInstance<InputEvent.Button>()
+            .filter { it.id == KeyEvent.KEYCODE_BUTTON_MODE }
+            .forEach { onMenuPressed(it.pressed) }
 
         events.forEach { event ->
             when (event) {
@@ -140,19 +146,31 @@ class GameViewModelTouchControls(
         }
     }
 
-    private fun onMenuPressed(pressed: Boolean) {
-        menuPressed.value = pressed
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
+        loadingMenuJob?.cancel()
+        loadingMenuJob = null
+        menuPressed.value = false
+        menuPressTracker.reset()
+    }
 
+    private fun onMenuPressed(pressed: Boolean) {
+        if (menuPressed.value == pressed) return
+        menuPressed.value = pressed
+        loadingMenuJob?.cancel()
+        loadingMenuJob = null
+        val now = SystemClock.uptimeMillis()
         if (pressed) {
-            loadingMenuJob?.cancel()
+            if (!menuPressTracker.press(now)) return
             loadingMenuJob =
                 scope.launch {
                     delay(MENU_LOADING_ANIMATION_MILLIS.toLong())
-                    sideEffects.showMenu(tilt, inputs)
+                    if (menuPressTracker.longPress(SystemClock.uptimeMillis())) {
+                        sideEffects.showMenu(tilt, inputs)
+                    }
                 }
-        } else {
-            loadingMenuJob?.cancel()
-            loadingMenuJob = null
+        } else if (menuPressTracker.release(now)) {
+            sideEffects.showMenu(tilt, inputs)
         }
     }
 
