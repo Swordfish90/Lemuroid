@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.app.ApplicationExitInfo
 import android.content.Context
 import android.os.Build
+import com.swordfish.lemuroid.app.shared.diagnostics.AppDiagnosticLog
 import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 
@@ -66,6 +67,13 @@ object GameProcessCrashHistory {
                 append("O Android não disponibilizou um rastreamento detalhado para esta falha.")
             }
         }
+
+        AppDiagnosticLog.append(
+            context,
+            "NATIVE_CRASH",
+            "GameProcessCrashHistory",
+            detail,
+        )
 
         preferences.edit()
             .putLong(KEY_LAST_PROCESSED_TIMESTAMP, exitInfo.timestamp)
