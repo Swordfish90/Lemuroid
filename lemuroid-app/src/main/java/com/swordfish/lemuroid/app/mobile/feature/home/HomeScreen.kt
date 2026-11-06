@@ -21,6 +21,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
+import com.swordfish.lemuroid.app.shared.covers.CoverAspectRatio
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -165,6 +168,13 @@ private fun HomeRow(
         return
     }
 
+    val coverAspectRatios = remember(games) { mutableStateMapOf<Int, Float>() }
+    // At the same width, the smallest ratio gives the tallest cover in the entire row.
+    val coverFrameAspectRatio =
+        games.minOf { game ->
+            coverAspectRatios[game.id] ?: CoverAspectRatio.forSystem(game.systemId)
+        }
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = title,
@@ -186,6 +196,8 @@ private fun HomeRow(
                             .widthIn(0.dp, 144.dp)
                             .animateItem(),
                     game = game,
+                    coverFrameAspectRatio = coverFrameAspectRatio,
+                    onCoverAspectRatioChanged = { coverAspectRatios[game.id] = it },
                     onClick = { onGameClicked(game) },
                     onLongClick = { onGameLongClick(game) },
                 )
