@@ -11,6 +11,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.swordfish.lemuroid.app.shared.covers.CoverUtils
+import com.swordfish.lemuroid.lib.library.CoverArtPolicy
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
@@ -34,7 +35,7 @@ fun LemuroidGameImage(
         modifier =
             modifier
                 .fillMaxWidth()
-                .aspectRatio(1.0f),
+                .aspectRatio(CoverArtPolicy.aspectRatio(game)),
         fallback = fallbackPainter,
         error = fallbackPainter,
         contentScale = ContentScale.Crop,

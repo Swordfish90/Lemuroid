@@ -1,20 +1,21 @@
 package com.swordfish.lemuroid.app.mobile.feature.favorites
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
+import com.swordfish.lemuroid.app.mobile.shared.compose.layout.LazyWeightedVerticalGrid
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
+import com.swordfish.lemuroid.lib.library.CoverArtPolicy
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavoritesScreen(
     modifier: Modifier = Modifier,
@@ -29,15 +30,21 @@ fun FavoritesScreen(
         return
     }
 
-    LazyVerticalGrid(
+    LazyWeightedVerticalGrid(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
-        columns = GridCells.Adaptive(144.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        spacing = 16.dp,
     ) {
-        items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
-            val game = games[index] ?: return@items
+        items(
+            count = games.itemCount,
+            key = games.itemKey { it.id },
+            itemRowWeight = { index -> games.peek(index)?.let(CoverArtPolicy::aspectRatio) ?: 1f },
+        ) { index ->
+            val game = games[index]
+            if (game == null) {
+                Box(Modifier.fillMaxWidth().aspectRatio(1f))
+                return@items
+            }
             LemuroidGameCard(
                 modifier = Modifier.animateItem(),
                 game = game,

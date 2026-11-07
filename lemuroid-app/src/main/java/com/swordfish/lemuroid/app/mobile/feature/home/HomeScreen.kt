@@ -4,16 +4,15 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -28,11 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.shared.compose.layout.LazyWeightedVerticalGrid
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameCard
 import com.swordfish.lemuroid.app.utils.android.ComposableLifecycle
 import com.swordfish.lemuroid.common.displayDetailsSettingsScreen
+import com.swordfish.lemuroid.lib.library.CoverArtPolicy
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
 @Composable
@@ -84,7 +86,6 @@ fun HomeScreen(
     ) // TODO COMPOSE We need to understand what's going to happen here.
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -97,15 +98,17 @@ private fun HomeScreen(
     onEnableMicrophoneClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
 ) {
-    LazyVerticalGrid(
+    LazyWeightedVerticalGrid(
         modifier = modifier.fillMaxSize(),
-        columns = GridCells.Adaptive(144.dp),
         contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        spacing = 16.dp,
     ) {
         if (state.showNoNotificationPermissionCard) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
+            item(
+                key = "notice-notification-permission",
+                contentType = "notice",
+                span = { GridItemSpan(maxLineSpan) }
+            ) {
                 HomeNotification(
                     titleId = R.string.home_notification_title,
                     messageId = R.string.home_notification_message,
@@ -115,18 +118,26 @@ private fun HomeScreen(
             }
         }
         if (state.showNoGamesCard) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
+            item(
+                key = "notice-empty-library",
+                contentType = "notice",
+                span = { GridItemSpan(maxLineSpan) }
+            ) {
                 HomeNotification(
                     titleId = R.string.home_empty_title,
                     messageId = R.string.home_empty_message,
                     actionId = R.string.home_empty_action,
-                    onAction = onSetDirectoryClicked,
                     enabled = !state.indexInProgress,
+                    onAction = onSetDirectoryClicked,
                 )
             }
         }
         if (state.showNoMicrophonePermissionCard) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
+            item(
+                key = "notice-microphone-permission",
+                contentType = "notice",
+                span = { GridItemSpan(maxLineSpan) }
+            ) {
                 HomeNotification(
                     titleId = R.string.home_microphone_title,
                     messageId = R.string.home_microphone_message,
@@ -136,7 +147,11 @@ private fun HomeScreen(
             }
         }
         if (state.showDesmumeDeprecatedCard) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
+            item(
+                key = "notice-desmume-deprecated",
+                contentType = "notice",
+                span = { GridItemSpan(maxLineSpan) },
+            ) {
                 HomeNotification(
                     titleId = R.string.home_notification_desmume_deprecated_title,
                     messageId = R.string.home_notification_desmume_deprecated_message,
@@ -145,14 +160,27 @@ private fun HomeScreen(
                 )
             }
         }
-        items(games.itemCount, key = games.itemKey { it.id }) { index ->
-            val game = games[index] ?: return@items
-            LemuroidGameCard(
-                modifier = Modifier.animateItem(),
-                game = game,
-                onClick = { onGameClicked(game) },
-                onLongClick = { onGameLongClick(game) },
-            )
+        items(
+            count = games.itemCount,
+            key = games.itemKey { it.id },
+            contentType = games.itemContentType { "game" },
+            itemRowWeight = { index -> games.peek(index)?.let(CoverArtPolicy::aspectRatio) ?: 1f },
+        ) { index ->
+            val game = games[index]
+            if (game == null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
+                )
+            } else {
+                LemuroidGameCard(
+                    modifier = Modifier.animateItem(),
+                    game = game,
+                    onClick = { onGameClicked(game) },
+                    onLongClick = { onGameLongClick(game) },
+                )
+            }
         }
     }
 }

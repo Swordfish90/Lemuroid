@@ -181,6 +181,7 @@ dependencies {
     implementation(deps.libs.kotlin.serializationJson)
 
     implementation(platform(deps.libs.androidx.compose.composeBom))
+    implementation(deps.libs.androidx.compose.foundation)
     implementation(deps.libs.androidx.compose.material3)
     implementation(deps.libs.androidx.compose.material3AdaptiveNavigationSuite)
     implementation(deps.libs.androidx.compose.constraintLayout)
@@ -210,4 +211,22 @@ dependencies {
 fun usePlayDynamicFeatures(): Boolean {
     val task = gradle.startParameter.taskRequests.toString()
     return task.contains("Play") && task.contains("Dynamic")
+}
+
+// The adapted weighted grid uses Foundation internals. Friend access applies to the whole
+// app compilation; test tasks retain their normal friend paths. No Foundation version is pinned.
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    if (!name.contains("Test")) {
+        compilerOptions.freeCompilerArgs.addAll(
+            libraries.elements.map { files ->
+                val foundationJars = files.map { it.asFile }.filter {
+                    it.name.matches(Regex("(?:jetified-)?foundation(?:-android)?(?:-api)?\\.jar"))
+                }
+                check(foundationJars.size == 1) {
+                    "Expected one Foundation JAR for the adapted lazy grid; found: $foundationJars"
+                }
+                listOf("-Xfriend-paths=${foundationJars.single().absolutePath}")
+            },
+        )
+    }
 }
