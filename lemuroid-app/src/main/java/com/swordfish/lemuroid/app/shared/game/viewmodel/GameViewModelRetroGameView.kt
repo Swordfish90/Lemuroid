@@ -135,12 +135,21 @@ class GameViewModelRetroGameView(
                         appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
                         appendLine("Android API: ${Build.VERSION.SDK_INT}")
                         appendLine("Arquiteturas: ${Build.SUPPORTED_ABIS.joinToString()}")
-                        exception.cause?.let {
-                            appendLine("Causa raiz: ${it.javaClass.name}: ${it.message}")
+                        var rootCause = exception.cause
+                        var causeLevel = 1
+                        while (rootCause != null && causeLevel <= 10) {
+                            appendLine("Causa $causeLevel: ${rootCause.javaClass.name}: ${rootCause.message ?: "sem mensagem"}")
+                            rootCause = rootCause.cause
+                            causeLevel++
                         }
                         appendLine()
-                        appendLine("Stack trace:")
+                        appendLine("Stack trace da exceção:")
                         appendLine(exception.stackTraceToString())
+                        exception.cause?.let {
+                            appendLine()
+                            appendLine("Stack trace da causa original:")
+                            appendLine(it.stackTraceToString())
+                        }
                     }
                 Timber.e(exception, "GameLoader failed before Libretro initialization")
                 sideEffects.requestFailureFinish(message, diagnostics)
