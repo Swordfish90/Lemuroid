@@ -119,14 +119,31 @@ class GameViewModelRetroGameView(
 
         loadingStatesFlow
             .flowOn(Dispatchers.IO)
-            .catch {
+            .catch { exception ->
                 val message =
-                    if (it is GameLoaderException) {
-                        getErrorMessage(it.error)
+                    if (exception is GameLoaderException) {
+                        getErrorMessage(exception.error)
                     } else {
                         ""
                     }
-                sideEffects.requestFailureFinish(message)
+                val diagnostics =
+                    buildString {
+                        appendLine("Origem: GameLoader.load()")
+                        appendLine("Exceção: ${exception.javaClass.name}")
+                        appendLine("Mensagem: ${exception.message ?: "sem mensagem"}")
+                        appendLine("Sistema: ${system.id.name}")
+                        appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
+                        appendLine("Android API: ${Build.VERSION.SDK_INT}")
+                        appendLine("Arquiteturas: ${Build.SUPPORTED_ABIS.joinToString()}")
+                        exception.cause?.let {
+                            appendLine("Causa raiz: ${it.javaClass.name}: ${it.message}")
+                        }
+                        appendLine()
+                        appendLine("Stack trace:")
+                        appendLine(exception.stackTraceToString())
+                    }
+                Timber.e(exception, "GameLoader failed before Libretro initialization")
+                sideEffects.requestFailureFinish(message, diagnostics)
             }
             .debounce(200)
             .collect { loadingState ->
