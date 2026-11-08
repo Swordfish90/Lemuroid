@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -72,6 +73,7 @@ class GameViewModelRetroGameView(
     }
 
     private val gameState: MutableStateFlow<GameState> = MutableStateFlow(GameState.Uninitialized)
+    private val loadingTimeoutReported = AtomicBoolean(false)
 
     private val retroGameViewFlow = MutableStateFlow<GLRetroView?>(null)
     var retroGameView: GLRetroView? by MutableStateProperty(retroGameViewFlow)
@@ -116,6 +118,39 @@ class GameViewModelRetroGameView(
                 systemCoreConfig,
                 directLoad,
             )
+
+        // Report a useful failure instead of leaving the user on an endless
+        // "Preparing game" screen when GameLoader does not reach Ready in time.
+        scope.launch {
+            gameState.first { it is GameState.Loading }
+            delay(30.seconds)
+            val currentState = gameState.value
+            if (currentState is GameState.Loading &&
+                loadingTimeoutReported.compareAndSet(false, true)
+            ) {
+                val diagnostics =
+                    buildString {
+                        appendLine("Origem: GameLoader watchdog")
+                        appendLine("Motivo: o carregamento permaneceu ativo por mais de 30 segundos")
+                        appendLine("Etapa atual: ${currentState.message}")
+                        appendLine("Sistema: ${system.id.name}")
+                        appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
+                        appendLine("Jogo: ${game.fileName}")
+                        appendLine("Android API: ${Build.VERSION.SDK_INT}")
+                        appendLine("Arquiteturas: ${Build.SUPPORTED_ABIS.joinToString()}")
+                        appendLine("Cache: ${appContext.cacheDir.absolutePath}")
+                        appendLine("Espaço livre no cache: ${appContext.cacheDir.usableSpace} bytes")
+                        appendLine("Tamanho total do cache: ${appContext.cacheDir.totalSpace} bytes")
+                        appendLine()
+                        appendLine("O GameLoader não emitiu GameState.Loaded dentro do limite.")
+                    }
+                Timber.e("Game loading timeout after 30 seconds:\\n$diagnostics")
+                sideEffects.requestFailureFinish(
+                    "O jogo permaneceu carregando por mais de 30 segundos.",
+                    diagnostics,
+                )
+            }
+        }
 
         loadingStatesFlow
             .flowOn(Dispatchers.IO)
