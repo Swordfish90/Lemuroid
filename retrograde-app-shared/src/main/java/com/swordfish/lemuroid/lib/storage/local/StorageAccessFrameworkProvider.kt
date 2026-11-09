@@ -225,11 +225,25 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
     ): File {
         val cacheFile = GameCacheUtils.getCacheFileForGame(SAF_CACHE_SUBFOLDER, context, game)
 
+        val expectedSize = originalDocument.length()
         if (cacheFile.exists()) {
-            return cacheFile
+            if (expectedSize > 0L && cacheFile.length() == expectedSize) {
+                Timber.i("Using validated cached ROM: %s (%d bytes)", cacheFile.name, cacheFile.length())
+                return cacheFile
+            }
+
+            Timber.w(
+                "Cached ROM has invalid size; removing it: %s (%d/%d bytes)",
+                cacheFile.name,
+                cacheFile.length(),
+                expectedSize,
+            )
+            if (!cacheFile.delete()) {
+                throw IOException("Unable to remove invalid cached ROM: ${cacheFile.absolutePath}")
+            }
         }
 
-        copyDocumentToCache(originalDocument.uri, cacheFile, originalDocument.length())
+        copyDocumentToCache(originalDocument.uri, cacheFile, expectedSize)
         return cacheFile
     }
 
@@ -272,7 +286,38 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
                 BufferedInputStream(source).use { bufferedSource ->
                     FileOutputStream(temporaryFile).use { fileOutput ->
                         BufferedOutputStream(fileOutput, COPY_BUFFER_SIZE).use { output ->
-                            bufferedSource.copyTo(output, COPY_BUFFER_SIZE)
+                            val buffer = ByteArray(COPY_BUFFER_SIZE)
+                            var copiedBytes = 0L
+                            var lastLoggedBytes = 0L
+                            var read = bufferedSource.read(buffer)
+                            while (read >= 0) {
+                                if (read > 0) {
+                                    output.write(buffer, 0, read)
+                                    copiedBytes += read
+                                    if (copiedBytes - lastLoggedBytes >= COPY_PROGRESS_LOG_INTERVAL) {
+                                        val percent =
+                                            if (expectedSize > 0L) {
+                                                copiedBytes * 100 / expectedSize
+                                            } else {
+                                                -1L
+                                            }
+                                        Timber.i(
+                                            "SAF ROM copy progress: %s %d/%d bytes (%d%%)",
+                                            cacheFile.name,
+                                            copiedBytes,
+                                            expectedSize,
+                                            percent,
+                                        )
+                                        lastLoggedBytes = copiedBytes
+                                    }
+                                }
+                                read = bufferedSource.read(buffer)
+                            }
+                            Timber.i(
+                                "SAF ROM copy stream completed: %s (%d bytes)",
+                                cacheFile.name,
+                                copiedBytes,
+                            )
                             output.flush()
                             fileOutput.fd.sync()
                         }
@@ -304,5 +349,6 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
         const val SAF_CACHE_SUBFOLDER = "storage-framework-games"
         const val VIRTUAL_FILE_PATH = "/virtual/file/path"
         private const val COPY_BUFFER_SIZE = 1024 * 1024
+        private const val COPY_PROGRESS_LOG_INTERVAL = 64L * 1024L * 1024L
     }
 }
