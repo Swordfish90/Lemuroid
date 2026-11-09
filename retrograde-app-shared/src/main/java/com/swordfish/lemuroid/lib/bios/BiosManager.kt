@@ -49,6 +49,9 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
     fun deleteBiosBefore(timestampMs: Long) {
         Timber.i("Pruning old bios files")
         SUPPORTED_BIOS
+            // PS2 BIOS files are imported manually into pcsx2/bios and are not
+            // timestamped by the regular ROM scanner. Never prune them here.
+            .filterNot { it.systemID == SystemID.PS2 }
             .map { File(directoriesManager.getSystemDirectory(), it.libretroFileName) }
             .filter { it.lastModified() < normalizeTimestamp(timestampMs) }
             .forEach {
