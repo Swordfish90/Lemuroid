@@ -35,7 +35,7 @@ class CoresSelection(
     fun getSelectedCores(): Flow<List<SelectedCore>> {
         val configurableSystems =
             GameSystem.all()
-                .filter { it.systemCoreConfigs.size > 1 }
+                .filter { it.systemCoreConfigs.size > 1 || it.id == SystemID.PS2 }
 
         val configurationFlows =
             configurableSystems.map { system ->
