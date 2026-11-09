@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ARMSX2/ARMSX2
-          ref: f6df1e69255544241132d66441f2f1338fd90bfd
+          ref: ba6892742e357085897d0a151bd8e40485dda968
           path: armsx2-source
 
       - name: Bundle matching PS2 resources
@@ -41,7 +41,7 @@ jobs:
           mkdir -p lemuroid-app/src/main/assets/ps2-resources
           cp -a armsx2-source/bin/resources/. lemuroid-app/src/main/assets/ps2-resources/
           test -s lemuroid-app/src/main/assets/ps2-resources/GameIndex.yaml
-          echo "Bundled ARMSX2 resources from f6df1e69255544241132d66441f2f1338fd90bfd"
+          echo "Bundled ARMSX2 resources from ba6892742e357085897d0a151bd8e40485dda968"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
