@@ -818,6 +818,8 @@ data class GameSystem(
                                     ExposedSetting("armsx2_anisotropic_filtering", R.string.setting_armsx2_anisotropic_filtering),
                                     ExposedSetting("armsx2_dithering", R.string.setting_armsx2_dithering),
                                     ExposedSetting("armsx2_show_fps", R.string.setting_armsx2_show_fps),
+                                    ExposedSetting("armsx2_ee_cycle_rate", R.string.setting_armsx2_ee_cycle_rate),
+                                    ExposedSetting("armsx2_ee_cycle_skip", R.string.setting_armsx2_ee_cycle_skip),
                                 ),
                             controllerConfigs =
                                 hashMapOf(
@@ -829,13 +831,19 @@ data class GameSystem(
                             defaultSettings =
                                 listOf(
                                     CoreVariable("armsx2_renderer", "OpenGL"),
-                                    CoreVariable("armsx2_upscale", "1x"),
+                                    CoreVariable("armsx2_upscale", "0.5x"),
                                     CoreVariable("armsx2_blending_accuracy", "Minimum"),
-                                    CoreVariable("armsx2_ee_cycle_rate", "50%"),
-                                    CoreVariable("armsx2_ee_cycle_skip", "maximum"),
+                                    CoreVariable("armsx2_ee_cycle_rate", "100%"),
+                                    CoreVariable("armsx2_ee_cycle_skip", "disabled"),
                                     CoreVariable("armsx2_hw_download_mode", "Unsynchronized"),
                                     CoreVariable("armsx2_mtvu", "enabled"),
                                     CoreVariable("armsx2_instant_vu1", "enabled"),
+                                    CoreVariable("armsx2_texture_filtering", "Nearest"),
+                                    CoreVariable("armsx2_trilinear_filtering", "Off"),
+                                    CoreVariable("armsx2_mipmapping", "disabled"),
+                                    CoreVariable("armsx2_fxaa", "disabled"),
+                                    CoreVariable("armsx2_anisotropic_filtering", "0"),
+                                    CoreVariable("armsx2_dithering", "Off"),
                                     CoreVariable("armsx2_show_fps", "disabled"),
                                 ),
                             requiredBIOSFiles = listOf("pcsx2/bios", "pcsx2/resources"),
