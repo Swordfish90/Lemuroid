@@ -826,7 +826,7 @@ data class GameSystem(
                                     CoreVariable("armsx2_upscale", "1x (native)"),
                                     CoreVariable("armsx2_blending_accuracy", "Minimum"),
                                     CoreVariable("armsx2_ee_cycle_rate", "75%"),
-                                    CoreVariable("armsx2_ee_cycle_skip", "disabled"),
+                                    CoreVariable("armsx2_ee_cycle_skip", "mild"),
                                     CoreVariable("armsx2_hw_download_mode", "Accurate"),
                                     CoreVariable("armsx2_mtvu", "enabled"),
                                     CoreVariable("armsx2_instant_vu1", "enabled"),
