@@ -355,14 +355,26 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onStop() {
+        Timber.i(
+            "Game lifecycle onStop: system=${system.id.name}, finishing=$isFinishing, " +
+                "changingConfigurations=$isChangingConfigurations, finishTriggered=$finishTriggered, " +
+                "lifecycleState=${lifecycle.currentState}",
+        )
         if (!finishTriggered && !isFinishing && !isChangingConfigurations) {
+            Timber.i("Game lifecycle: requesting background save")
             baseGameScreenViewModel.requestBackgroundSave()
         }
         super.onStop()
     }
 
     override fun onDestroy() {
+        Timber.i(
+            "Game lifecycle onDestroy: system=${system.id.name}, finishing=$isFinishing, " +
+                "changingConfigurations=$isChangingConfigurations, finishTriggered=$finishTriggered, " +
+                "lifecycleState=${lifecycle.currentState}",
+        )
         if (!isChangingConfigurations) {
+            Timber.i("Game lifecycle: requesting GameService termination from onDestroy")
             GameService.requestTermination()
         }
         super.onDestroy()
