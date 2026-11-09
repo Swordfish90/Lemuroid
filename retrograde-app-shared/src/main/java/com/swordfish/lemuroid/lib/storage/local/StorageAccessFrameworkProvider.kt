@@ -227,7 +227,7 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
 
         val expectedSize = originalDocument.length()
         if (cacheFile.exists()) {
-            if (expectedSize > 0L && cacheFile.length() == expectedSize) {
+            if (expectedSize <= 0L || cacheFile.length() == expectedSize) {
                 Timber.i("Using validated cached ROM: %s (%d bytes)", cacheFile.name, cacheFile.length())
                 return cacheFile
             }
