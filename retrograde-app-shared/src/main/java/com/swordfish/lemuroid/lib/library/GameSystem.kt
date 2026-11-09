@@ -818,8 +818,6 @@ data class GameSystem(
                                     ExposedSetting("armsx2_anisotropic_filtering", R.string.setting_armsx2_anisotropic_filtering),
                                     ExposedSetting("armsx2_dithering", R.string.setting_armsx2_dithering),
                                     ExposedSetting("armsx2_show_fps", R.string.setting_armsx2_show_fps),
-                                    ExposedSetting("armsx2_ee_cycle_rate", R.string.setting_armsx2_ee_cycle_rate),
-                                    ExposedSetting("armsx2_ee_cycle_skip", R.string.setting_armsx2_ee_cycle_skip),
                                 ),
                             controllerConfigs =
                                 hashMapOf(
