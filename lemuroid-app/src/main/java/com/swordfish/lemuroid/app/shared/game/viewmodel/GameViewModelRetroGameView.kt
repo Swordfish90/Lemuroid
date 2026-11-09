@@ -123,32 +123,77 @@ class GameViewModelRetroGameView(
         // "Preparing game" screen when GameLoader does not reach Ready in time.
         scope.launch {
             gameState.first { it is GameState.Loading }
-            delay(30.seconds)
-            val currentState = gameState.value
-            if (currentState is GameState.Loading &&
-                loadingTimeoutReported.compareAndSet(false, true)
-            ) {
-                val diagnostics =
-                    buildString {
-                        appendLine("Origem: GameLoader watchdog")
-                        appendLine("Motivo: o carregamento permaneceu ativo por mais de 30 segundos")
-                        appendLine("Etapa atual: ${currentState.message}")
-                        appendLine("Sistema: ${system.id.name}")
-                        appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
-                        appendLine("Jogo: ${game.fileName}")
-                        appendLine("Android API: ${Build.VERSION.SDK_INT}")
-                        appendLine("Arquiteturas: ${Build.SUPPORTED_ABIS.joinToString()}")
-                        appendLine("Cache: ${appContext.cacheDir.absolutePath}")
-                        appendLine("Espaço livre no cache: ${appContext.cacheDir.usableSpace} bytes")
-                        appendLine("Tamanho total do cache: ${appContext.cacheDir.totalSpace} bytes")
-                        appendLine()
-                        appendLine("O GameLoader não emitiu GameState.Loaded dentro do limite.")
+            val loadingStartedAt = System.currentTimeMillis()
+            var lastProgressAt = loadingStartedAt
+            var lastCopiedBytes = -1L
+            var lastReportedThirtySeconds = false
+
+            // SAF may need several minutes to copy a multi-gigabyte PS2 ISO from an SD card.
+            // Do not treat elapsed time alone as a hang: monitor the temporary ROM file and
+            // only fail after a long period without byte progress, with a hard upper bound.
+            while (gameState.value is GameState.Loading) {
+                delay(5.seconds)
+                val now = System.currentTimeMillis()
+                val cacheRoot = File(appContext.cacheDir, "storage-framework-games")
+                val partialRom =
+                    if (cacheRoot.exists()) {
+                        cacheRoot.walkTopDown()
+                            .firstOrNull { it.isFile && it.name.endsWith(".part") }
+                    } else {
+                        null
                     }
-                Timber.e("Game loading timeout after 30 seconds:\\n$diagnostics")
-                sideEffects.requestFailureFinish(
-                    "O jogo permaneceu carregando por mais de 30 segundos.",
-                    diagnostics,
-                )
+                val copiedBytes = partialRom?.length() ?: -1L
+
+                if (copiedBytes > lastCopiedBytes) {
+                    lastCopiedBytes = copiedBytes
+                    lastProgressAt = now
+                }
+
+                val elapsedMs = now - loadingStartedAt
+                if (elapsedMs >= 30_000L && !lastReportedThirtySeconds) {
+                    Timber.w(
+                        "PS2/SAF loading still active after 30s; partial ROM=%s, copied=%d bytes",
+                        partialRom?.name ?: "not-created-or-copy-finished",
+                        copiedBytes,
+                    )
+                    lastReportedThirtySeconds = true
+                }
+
+                val stalledMs = now - lastProgressAt
+                val stalled = stalledMs >= 180_000L
+                val exceededMaximum = elapsedMs >= 900_000L
+                if ((stalled || exceededMaximum) &&
+                    gameState.value is GameState.Loading &&
+                    loadingTimeoutReported.compareAndSet(false, true)
+                ) {
+                    val currentState = gameState.value as GameState.Loading
+                    val diagnostics =
+                        buildString {
+                            appendLine("Origem: GameLoader SAF progress watchdog")
+                            appendLine("Motivo: ${if (exceededMaximum) "tempo máximo de 15 minutos excedido" else "sem progresso de leitura/cópia por 180 segundos"}")
+                            appendLine("Etapa atual: ${currentState.message}")
+                            appendLine("Sistema: ${system.id.name}")
+                            appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
+                            appendLine("Jogo: ${game.fileName}")
+                            appendLine("Android API: ${Build.VERSION.SDK_INT}")
+                            appendLine("Arquiteturas: ${Build.SUPPORTED_ABIS.joinToString()}")
+                            appendLine("Tempo total: ${elapsedMs / 1000} segundos")
+                            appendLine("Tempo sem progresso: ${stalledMs / 1000} segundos")
+                            appendLine("Arquivo temporário: ${partialRom?.absolutePath ?: "não encontrado"}")
+                            appendLine("Bytes copiados: ${copiedBytes.coerceAtLeast(0)}")
+                            appendLine("Cache: ${appContext.cacheDir.absolutePath}")
+                            appendLine("Espaço livre no cache: ${appContext.cacheDir.usableSpace} bytes")
+                            appendLine("Tamanho total do cache: ${appContext.cacheDir.totalSpace} bytes")
+                            appendLine()
+                            appendLine("O carregamento pode ter travado ao abrir ou ler o documento SAF do cartão SD.")
+                        }
+                    Timber.e("Game loading stalled:\\n$diagnostics")
+                    sideEffects.requestFailureFinish(
+                        "A leitura do jogo no cartão SD ficou sem progresso por muito tempo.",
+                        diagnostics,
+                    )
+                    break
+                }
             }
         }
 
