@@ -811,6 +811,12 @@ data class GameSystem(
                                     ExposedSetting("armsx2_hw_download_mode", R.string.setting_armsx2_hw_download_mode),
                                     ExposedSetting("armsx2_mtvu", R.string.setting_armsx2_mtvu),
                                     ExposedSetting("armsx2_instant_vu1", R.string.setting_armsx2_instant_vu1),
+                                    ExposedSetting("armsx2_texture_filtering", R.string.setting_armsx2_texture_filtering),
+                                    ExposedSetting("armsx2_trilinear_filtering", R.string.setting_armsx2_trilinear_filtering),
+                                    ExposedSetting("armsx2_mipmapping", R.string.setting_armsx2_mipmapping),
+                                    ExposedSetting("armsx2_fxaa", R.string.setting_armsx2_fxaa),
+                                    ExposedSetting("armsx2_anisotropic_filtering", R.string.setting_armsx2_anisotropic_filtering),
+                                    ExposedSetting("armsx2_dithering", R.string.setting_armsx2_dithering),
                                     ExposedSetting("armsx2_show_fps", R.string.setting_armsx2_show_fps),
                                 ),
                             controllerConfigs =
@@ -823,7 +829,7 @@ data class GameSystem(
                             defaultSettings =
                                 listOf(
                                     CoreVariable("armsx2_renderer", "OpenGL"),
-                                    CoreVariable("armsx2_upscale", "1x (native)"),
+                                    CoreVariable("armsx2_upscale", "1x"),
                                     CoreVariable("armsx2_blending_accuracy", "Minimum"),
                                     CoreVariable("armsx2_ee_cycle_rate", "50%"),
                                     CoreVariable("armsx2_ee_cycle_skip", "maximum"),

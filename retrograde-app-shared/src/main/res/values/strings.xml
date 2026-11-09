@@ -74,6 +74,12 @@
     <string name="setting_armsx2_hw_download_mode">Hardware download mode</string>
     <string name="setting_armsx2_mtvu">MTVU (multi-threaded VU1)</string>
     <string name="setting_armsx2_instant_vu1">Instant VU1</string>
+    <string name="setting_armsx2_texture_filtering">Texture filtering</string>
+    <string name="setting_armsx2_trilinear_filtering">Trilinear filtering</string>
+    <string name="setting_armsx2_mipmapping">Hardware mipmapping</string>
+    <string name="setting_armsx2_fxaa">FXAA anti-aliasing</string>
+    <string name="setting_armsx2_anisotropic_filtering">Anisotropic filtering</string>
+    <string name="setting_armsx2_dithering">Dithering</string>
     <string name="setting_armsx2_show_fps">Show FPS</string>
 
     <!-- Core settings values. Duplicated here to ease the translation process. -->
