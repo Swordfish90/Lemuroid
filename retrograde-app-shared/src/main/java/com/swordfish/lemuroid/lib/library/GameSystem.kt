@@ -805,6 +805,7 @@ data class GameSystem(
                             exposedSettings =
                                 listOf(
                                     ExposedSetting("armsx2_upscale", R.string.setting_armsx2_upscale),
+                                    ExposedSetting("armsx2_deinterlacing", R.string.setting_armsx2_deinterlacing),
                                     ExposedSetting("armsx2_blending_accuracy", R.string.setting_armsx2_blending_accuracy),
                                     ExposedSetting("armsx2_ee_cycle_rate", R.string.setting_armsx2_ee_cycle_rate),
                                     ExposedSetting("armsx2_ee_cycle_skip", R.string.setting_armsx2_ee_cycle_skip),
@@ -830,6 +831,7 @@ data class GameSystem(
                                 listOf(
                                     CoreVariable("armsx2_renderer", "OpenGL"),
                                     CoreVariable("armsx2_upscale", "0.5x"),
+                                    CoreVariable("armsx2_deinterlacing", "Automatic"),
                                     CoreVariable("armsx2_blending_accuracy", "Minimum"),
                                     CoreVariable("armsx2_ee_cycle_rate", "100%"),
                                     CoreVariable("armsx2_ee_cycle_skip", "disabled"),
