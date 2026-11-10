@@ -62,6 +62,7 @@
     <string name="setting_citra_use_acc_mul">Multiplicação precisa das sombras</string>
     <string name="setting_citra_use_acc_geo_shaders">Geometria precisa das sombras</string>
     <string name="setting_armsx2_upscale">Resolução interna</string>
+    <string name="setting_armsx2_deinterlacing">Desentrelaçamento (vídeos dos jogos)</string>
     <string name="setting_armsx2_blending_accuracy">Precisão de mesclagem</string>
     <string name="setting_armsx2_ee_cycle_rate">Frequência de ciclos EE</string>
     <string name="setting_armsx2_ee_cycle_skip">Pular ciclos EE</string>
