@@ -68,6 +68,7 @@
     <string name="setting_citra_use_acc_geo_shaders">Accurate geometry shaders</string>
 
     <string name="setting_armsx2_upscale">Internal resolution</string>
+    <string name="setting_armsx2_deinterlacing">Deinterlacing (game videos)</string>
     <string name="setting_armsx2_blending_accuracy">Blending accuracy</string>
     <string name="setting_armsx2_ee_cycle_rate">EE cycle rate</string>
     <string name="setting_armsx2_ee_cycle_skip">EE cycle skip</string>
