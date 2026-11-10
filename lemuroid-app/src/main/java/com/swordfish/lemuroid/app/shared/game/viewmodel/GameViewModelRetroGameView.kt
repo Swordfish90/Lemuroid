@@ -1,7 +1,9 @@
 package com.swordfish.lemuroid.app.shared.game.viewmodel
 
 import android.content.Context
+import java.io.File
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -44,6 +46,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -71,6 +74,7 @@ class GameViewModelRetroGameView(
     }
 
     private val gameState: MutableStateFlow<GameState> = MutableStateFlow(GameState.Uninitialized)
+    private val loadingTimeoutReported = AtomicBoolean(false)
 
     private val retroGameViewFlow = MutableStateFlow<GLRetroView?>(null)
     var retroGameView: GLRetroView? by MutableStateProperty(retroGameViewFlow)
@@ -116,16 +120,120 @@ class GameViewModelRetroGameView(
                 directLoad,
             )
 
+        // Report a useful failure instead of leaving the user on an endless
+        // "Preparing game" screen when GameLoader does not reach Ready in time.
+        scope.launch {
+            gameState.first { it is GameState.Loading }
+            val loadingStartedAt = System.currentTimeMillis()
+            var lastProgressAt = loadingStartedAt
+            var lastCopiedBytes = -1L
+            var lastReportedThirtySeconds = false
+
+            // SAF may need several minutes to copy a multi-gigabyte PS2 ISO from an SD card.
+            // Do not treat elapsed time alone as a hang: monitor the temporary ROM file and
+            // only fail after a long period without byte progress, with a hard upper bound.
+            while (gameState.value is GameState.Loading) {
+                delay(5.seconds)
+                val now = System.currentTimeMillis()
+                val cacheRoot = File(appContext.cacheDir, "storage-framework-games")
+                val partialRom =
+                    if (cacheRoot.exists()) {
+                        cacheRoot.walkTopDown()
+                            .firstOrNull { it.isFile && it.name.endsWith(".part") }
+                    } else {
+                        null
+                    }
+                val copiedBytes = partialRom?.length() ?: -1L
+
+                if (copiedBytes > lastCopiedBytes) {
+                    lastCopiedBytes = copiedBytes
+                    lastProgressAt = now
+                }
+
+                val elapsedMs = now - loadingStartedAt
+                if (elapsedMs >= 30_000L && !lastReportedThirtySeconds) {
+                    Timber.w(
+                        "PS2/SAF loading still active after 30s; partial ROM=%s, copied=%d bytes",
+                        partialRom?.name ?: "not-created-or-copy-finished",
+                        copiedBytes,
+                    )
+                    lastReportedThirtySeconds = true
+                }
+
+                val stalledMs = now - lastProgressAt
+                val stalled = stalledMs >= 180_000L
+                val exceededMaximum = elapsedMs >= 900_000L
+                if ((stalled || exceededMaximum) &&
+                    gameState.value is GameState.Loading &&
+                    loadingTimeoutReported.compareAndSet(false, true)
+                ) {
+                    val currentState = gameState.value as GameState.Loading
+                    val diagnostics =
+                        buildString {
+                            appendLine("Origem: GameLoader SAF progress watchdog")
+                            appendLine("Motivo: ${if (exceededMaximum) "tempo máximo de 15 minutos excedido" else "sem progresso de leitura/cópia por 180 segundos"}")
+                            appendLine("Etapa atual: ${currentState.message}")
+                            appendLine("Sistema: ${system.id.name}")
+                            appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
+                            appendLine("Jogo: ${game.fileName}")
+                            appendLine("Android API: ${Build.VERSION.SDK_INT}")
+                            appendLine("Arquiteturas: ${Build.SUPPORTED_ABIS.joinToString()}")
+                            appendLine("Tempo total: ${elapsedMs / 1000} segundos")
+                            appendLine("Tempo sem progresso: ${stalledMs / 1000} segundos")
+                            appendLine("Arquivo temporário: ${partialRom?.absolutePath ?: "não encontrado"}")
+                            appendLine("Bytes copiados: ${copiedBytes.coerceAtLeast(0)}")
+                            appendLine("Cache: ${appContext.cacheDir.absolutePath}")
+                            appendLine("Espaço livre no cache: ${appContext.cacheDir.usableSpace} bytes")
+                            appendLine("Tamanho total do cache: ${appContext.cacheDir.totalSpace} bytes")
+                            appendLine()
+                            appendLine("O carregamento pode ter travado ao abrir ou ler o documento SAF do cartão SD.")
+                        }
+                    Timber.e("Game loading stalled:\\n$diagnostics")
+                    sideEffects.requestFailureFinish(
+                        "A leitura do jogo no cartão SD ficou sem progresso por muito tempo.",
+                        diagnostics,
+                    )
+                    break
+                }
+            }
+        }
+
         loadingStatesFlow
             .flowOn(Dispatchers.IO)
-            .catch {
+            .catch { exception ->
                 val message =
-                    if (it is GameLoaderException) {
-                        getErrorMessage(it.error)
+                    if (exception is GameLoaderException) {
+                        getErrorMessage(exception.error)
                     } else {
                         ""
                     }
-                sideEffects.requestFailureFinish(message)
+                val diagnostics =
+                    buildString {
+                        appendLine("Origem: GameLoader.load()")
+                        appendLine("Exceção: ${exception.javaClass.name}")
+                        appendLine("Mensagem: ${exception.message ?: "sem mensagem"}")
+                        appendLine("Sistema: ${system.id.name}")
+                        appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
+                        appendLine("Android API: ${Build.VERSION.SDK_INT}")
+                        appendLine("Arquiteturas: ${Build.SUPPORTED_ABIS.joinToString()}")
+                        var rootCause = exception.cause
+                        var causeLevel = 1
+                        while (rootCause != null && causeLevel <= 10) {
+                            appendLine("Causa $causeLevel: ${rootCause.javaClass.name}: ${rootCause.message ?: "sem mensagem"}")
+                            rootCause = rootCause.cause
+                            causeLevel++
+                        }
+                        appendLine()
+                        appendLine("Stack trace da exceção:")
+                        appendLine(exception.stackTraceToString())
+                        exception.cause?.let {
+                            appendLine()
+                            appendLine("Stack trace da causa original:")
+                            appendLine(it.stackTraceToString())
+                        }
+                    }
+                Timber.e(exception, "GameLoader failed before Libretro initialization")
+                sideEffects.requestFailureFinish(message, diagnostics)
             }
             .debounce(200)
             .collect { loadingState ->
@@ -349,7 +457,28 @@ class GameViewModelRetroGameView(
                 else -> GameLoaderError.Generic
             }
 
-        sideEffects.requestFailureFinish(getErrorMessage(gameLoaderError))
+        val gameData = (gameState.value as? GameState.Loaded)?.gameData
+        val diagnostics =
+            buildString {
+                appendLine("Origem: GLRetroView.getGLRetroErrors()")
+                appendLine("Código bruto do erro: $errorCode")
+                appendLine("Sistema: ${system.id.name}")
+                appendLine("Núcleo: ${systemCoreConfig.coreID.coreName}")
+                appendLine("Biblioteca nativa: ${gameData?.coreLibrary ?: "indisponível"}")
+                appendLine("Arquiteturas do dispositivo: ${Build.SUPPORTED_ABIS.joinToString()}")
+                appendLine("Android API: ${Build.VERSION.SDK_INT}")
+                appendLine("Renderer configurado: ${gameData?.coreVariables?.firstOrNull { it.key == "armsx2_renderer" }?.value ?: "padrão/não informado"}")
+                appendLine("Diretório do sistema: ${gameData?.systemDirectory?.absolutePath ?: "indisponível"}")
+                appendLine("ROM: ${gameData?.gameFiles?.let { files ->
+                    when (files) {
+                        is RomFiles.Standard -> files.files.firstOrNull()?.absolutePath
+                        is RomFiles.Virtual -> files.files.firstOrNull()?.filePath
+                    }
+                } ?: "indisponível"}")
+                appendLine("Jogo: ${gameData?.game?.fileName ?: "indisponível"}")
+            }
+        Timber.e("Libretro error diagnostics:\n$diagnostics")
+        sideEffects.requestFailureFinish(getErrorMessage(gameLoaderError), diagnostics)
     }
 
     private fun getErrorMessage(gameError: GameLoaderError): String {

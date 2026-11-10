@@ -1,9 +1,15 @@
 package com.swordfish.lemuroid.app.mobile.feature.settings.bios
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.documentfile.provider.DocumentFile
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.swordfish.lemuroid.R
@@ -17,12 +23,53 @@ fun BiosScreen(
     modifier: Modifier = Modifier,
     viewModel: BiosSettingsViewModel,
 ) {
+    val context = LocalContext.current
+    val importResult = viewModel.importResult.collectAsState().value
+    val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) {
+            DocumentFile.fromSingleUri(context, uri)?.let { file ->
+                viewModel.importPs2File(file, context.contentResolver)
+            }
+        }
+    }
+    val folderPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+        if (uri != null) {
+            DocumentFile.fromTreeUri(context, uri)?.let { folder ->
+                viewModel.importPs2Folders(folder, context.contentResolver)
+            }
+        }
+    }
+    LaunchedEffect(importResult) {
+        importResult?.let {
+            Toast.makeText(
+                context,
+                context.getString(if (it) R.string.settings_bios_ps2_import_success else R.string.settings_bios_ps2_import_error),
+                Toast.LENGTH_LONG,
+            ).show()
+            viewModel.importResult.value = null
+        }
+    }
+
     val uiState =
         viewModel.uiState
             .collectAsState()
             .value
 
     LemuroidSettingsPage(modifier = modifier.fillMaxSize()) {
+        LemuroidCardSettingsGroup(
+            title = { Text(text = stringResource(id = R.string.settings_bios_ps2_title)) },
+        ) {
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.settings_bios_ps2_import)) },
+                subtitle = { Text(text = stringResource(id = R.string.settings_bios_ps2_description)) },
+                onClick = { filePicker.launch(arrayOf("*/*")) },
+            )
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.settings_bios_ps2_import_folder)) },
+                subtitle = { Text(text = stringResource(id = R.string.settings_bios_ps2_import_folder_description)) },
+                onClick = { folderPicker.launch(null) },
+            )
+        }
         if (uiState.detected.isNotEmpty()) {
             DetectedEntries(uiState.detected)
         }

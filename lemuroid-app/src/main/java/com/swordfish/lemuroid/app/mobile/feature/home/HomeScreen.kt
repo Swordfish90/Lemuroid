@@ -40,6 +40,7 @@ fun HomeScreen(
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onOpenCoreSelection: () -> Unit,
+    onOpenPs2Bios: () -> Unit,
 ) {
     val context = LocalContext.current
     val applicationContext = context.applicationContext
@@ -69,6 +70,7 @@ fun HomeScreen(
         onGameClick,
         onGameLongClick,
         onOpenCoreSelection,
+        onOpenPs2Bios,
         {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 return@HomeScreen
@@ -88,6 +90,7 @@ private fun HomeScreen(
     onGameClicked: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onOpenCoreSelection: () -> Unit,
+    onOpenPs2Bios: () -> Unit,
     onEnableNotificationsClicked: () -> Unit,
     onEnableMicrophoneClicked: () -> Unit,
     onSetDirectoryClicked: () -> Unit,
@@ -99,6 +102,12 @@ private fun HomeScreen(
                 .padding(top = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        HomeNotification(
+            titleId = R.string.home_ps2_bios_title,
+            messageId = R.string.home_ps2_bios_message,
+            actionId = R.string.home_ps2_bios_action,
+            onAction = onOpenPs2Bios,
+        )
         AnimatedVisibility(state.showNoNotificationPermissionCard) {
             HomeNotification(
                 titleId = R.string.home_notification_title,

@@ -51,6 +51,11 @@ enum class CoreID(
         "PCSXReARMed",
         "libpcsx_rearmed_libretro_android.so",
     ),
+    ARMSX2(
+        "armsx2",
+        "ARMSX2",
+        "libarmsx2_libretro_android.so",
+    ),
     PPSSPP(
         "ppsspp",
         "PPSSPP",

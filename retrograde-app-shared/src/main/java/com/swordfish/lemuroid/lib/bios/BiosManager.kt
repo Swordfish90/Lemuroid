@@ -8,6 +8,8 @@ import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import com.swordfish.lemuroid.lib.storage.StorageFile
+import android.content.ContentResolver
+import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -47,6 +49,9 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
     fun deleteBiosBefore(timestampMs: Long) {
         Timber.i("Pruning old bios files")
         SUPPORTED_BIOS
+            // PS2 BIOS files are imported manually into pcsx2/bios and are not
+            // timestamped by the regular ROM scanner. Never prune them here.
+            .filterNot { it.systemID == SystemID.PS2 }
             .map { File(directoriesManager.getSystemDirectory(), it.libretroFileName) }
             .filter { it.lastModified() < normalizeTimestamp(timestampMs) }
             .forEach {
@@ -89,6 +94,86 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
         return true
     }
 
+
+    suspend fun importPs2File(
+        file: DocumentFile,
+        contentResolver: ContentResolver,
+    ): Boolean = withContext(Dispatchers.IO) {
+        if (!file.isFile) return@withContext false
+        val name = file.name ?: return@withContext false
+        if (!name.equals("scph10000.bin", ignoreCase = true)) {
+            Timber.w("Rejected PS2 BIOS file with unexpected name: $name")
+            return@withContext false
+        }
+        val ps2Directory = File(directoriesManager.getSystemDirectory(), "pcsx2")
+        val targetBiosDirectory = File(ps2Directory, "bios")
+        val targetResourcesDirectory = File(ps2Directory, "resources")
+        if ((!targetBiosDirectory.mkdirs() && !targetBiosDirectory.isDirectory) ||
+            (!targetResourcesDirectory.mkdirs() && !targetResourcesDirectory.isDirectory)
+        ) {
+            Timber.e("Unable to prepare PS2 BIOS/resources directories")
+            return@withContext false
+        }
+
+        val target = File(targetBiosDirectory, name)
+        val copied = contentResolver.openInputStream(file.uri)?.use { input ->
+            target.outputStream().use { output -> input.copyTo(output) }
+            target.length() > 0L
+        } ?: false
+        Timber.i("PS2 BIOS import result: copied=$copied, file=${target.name}, bytes=${target.length()}")
+        copied
+    }
+
+    suspend fun importPs2Folders(
+        root: DocumentFile,
+        contentResolver: ContentResolver,
+    ): Boolean = withContext(Dispatchers.IO) {
+        val biosFolder =
+            root.findFile("bios")?.takeIf { it.isDirectory }
+                ?: root.takeIf { it.isDirectory && it.listFiles().any { child -> child.isFile } }
+                ?: return@withContext false
+        val resourcesFolder = root.findFile("resources")?.takeIf { it.isDirectory }
+
+        val ps2Directory = File(directoriesManager.getSystemDirectory(), "pcsx2")
+        val targetBios = File(ps2Directory, "bios")
+        val targetResources = File(ps2Directory, "resources")
+        if (!targetBios.mkdirs() && !targetBios.isDirectory) return@withContext false
+        if (!targetResources.mkdirs() && !targetResources.isDirectory) return@withContext false
+
+        fun copyTree(source: DocumentFile, destination: File): Int {
+            var copiedFiles = 0
+            source.listFiles().forEach { child ->
+                val name = child.name ?: return@forEach
+                val target = File(destination, name)
+                if (child.isDirectory) {
+                    if (target.mkdirs() || target.isDirectory) {
+                        copiedFiles += copyTree(child, target)
+                    }
+                } else if (child.isFile) {
+                    val copied =
+                        contentResolver.openInputStream(child.uri)?.use { input ->
+                            target.parentFile?.mkdirs()
+                            target.outputStream().use { output -> input.copyTo(output) }
+                            true
+                        } ?: false
+                    if (copied) copiedFiles++
+                }
+            }
+            return copiedFiles
+        }
+
+        val copiedBiosFiles = copyTree(biosFolder, targetBios)
+        if (copiedBiosFiles == 0 || !File(targetBios, "scph10000.bin").let { it.isFile && it.length() > 0L }) {
+            Timber.w("PS2 BIOS folder import did not contain scph10000.bin")
+            return@withContext false
+        }
+
+        if (resourcesFolder != null) {
+            copyTree(resourcesFolder, targetResources)
+        }
+        true
+    }
+
     private fun findByCRC(storageFile: StorageFile): Bios? {
         return crcLookup[storageFile.crc]
     }
@@ -104,6 +189,13 @@ class BiosManager(private val directoriesManager: DirectoriesManager) {
     companion object {
         private val SUPPORTED_BIOS =
             listOf(
+                Bios(
+                    "pcsx2/bios/scph10000.bin",
+                    "",
+                    "PlayStation 2 BIOS",
+                    SystemID.PS2,
+                    externalName = "scph10000.bin",
+                ),
                 Bios(
                     "scph101.bin",
                     "6E3735FF4C7DC899EE98981385F6F3D0",

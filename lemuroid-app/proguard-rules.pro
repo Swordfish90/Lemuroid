@@ -1,9 +1,6 @@
 ## Options
--dontoptimize
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
 -keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
 -keepattributes SourceFile,LineNumberTable,Signature,JavascriptInterface,Exceptions
--verbose
 
 ## Arch Components
 -keep class * implements android.arch.lifecycle.GeneratedAdapter {<init>(...);}

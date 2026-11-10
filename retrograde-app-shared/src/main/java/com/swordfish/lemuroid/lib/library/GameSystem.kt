@@ -795,6 +795,78 @@ data class GameSystem(
                     hasMultiDiskSupport = true,
                 ),
                 GameSystem(
+                    SystemID.PS2,
+                    "Sony - PlayStation 2",
+                    R.string.game_system_title_ps2,
+                    R.string.game_system_abbr_ps2,
+                    listOf(
+                        SystemCoreConfig(
+                            CoreID.ARMSX2,
+                            exposedSettings =
+                                listOf(
+                                    ExposedSetting("armsx2_upscale", R.string.setting_armsx2_upscale),
+                                    ExposedSetting("armsx2_deinterlacing", R.string.setting_armsx2_deinterlacing),
+                                    ExposedSetting("armsx2_blending_accuracy", R.string.setting_armsx2_blending_accuracy),
+                                    ExposedSetting("armsx2_ee_cycle_rate", R.string.setting_armsx2_ee_cycle_rate),
+                                    ExposedSetting("armsx2_ee_cycle_skip", R.string.setting_armsx2_ee_cycle_skip),
+                                    ExposedSetting("armsx2_hw_download_mode", R.string.setting_armsx2_hw_download_mode),
+                                    ExposedSetting("armsx2_mtvu", R.string.setting_armsx2_mtvu),
+                                    ExposedSetting("armsx2_instant_vu1", R.string.setting_armsx2_instant_vu1),
+                                    ExposedSetting("armsx2_texture_filtering", R.string.setting_armsx2_texture_filtering),
+                                    ExposedSetting("armsx2_trilinear_filtering", R.string.setting_armsx2_trilinear_filtering),
+                                    ExposedSetting("armsx2_mipmapping", R.string.setting_armsx2_mipmapping),
+                                    ExposedSetting("armsx2_fxaa", R.string.setting_armsx2_fxaa),
+                                    ExposedSetting("armsx2_anisotropic_filtering", R.string.setting_armsx2_anisotropic_filtering),
+                                    ExposedSetting("armsx2_dithering", R.string.setting_armsx2_dithering),
+                                    ExposedSetting("armsx2_show_fps", R.string.setting_armsx2_show_fps),
+                                ),
+                            controllerConfigs =
+                                hashMapOf(
+                                    0 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                    1 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                    2 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                    3 to arrayListOf(ControllerConfigs.PSX_DUALSHOCK),
+                                ),
+                            defaultSettings =
+                                listOf(
+                                    CoreVariable("armsx2_renderer", "OpenGL"),
+                                    CoreVariable("armsx2_upscale", "0.5x"),
+                                    CoreVariable("armsx2_deinterlacing", "Automatic"),
+                                    CoreVariable("armsx2_blending_accuracy", "Minimum"),
+                                    CoreVariable("armsx2_ee_cycle_rate", "100%"),
+                                    CoreVariable("armsx2_ee_cycle_skip", "disabled"),
+                                    CoreVariable("armsx2_hw_download_mode", "Unsynchronized"),
+                                    CoreVariable("armsx2_mtvu", "enabled"),
+                                    CoreVariable("armsx2_instant_vu1", "enabled"),
+                                    CoreVariable("armsx2_texture_filtering", "Nearest"),
+                                    CoreVariable("armsx2_trilinear_filtering", "Off"),
+                                    CoreVariable("armsx2_mipmapping", "disabled"),
+                                    CoreVariable("armsx2_fxaa", "disabled"),
+                                    CoreVariable("armsx2_anisotropic_filtering", "0"),
+                                    CoreVariable("armsx2_dithering", "Off"),
+                                    CoreVariable("armsx2_show_fps", "disabled"),
+                                ),
+                            requiredBIOSFiles = listOf("pcsx2/bios", "pcsx2/resources"),
+                            supportsLibretroVFS = false,
+                            skipDuplicateFrames = false,
+                            supportedOnlyArchitectures = setOf("arm64-v8a"),
+                        ),
+                    ),
+                    uniqueExtensions = listOf(),
+                    supportedExtensions =
+                        listOf(
+                            "elf", "iso", "ciso", "chd", "cso", "zso", "bin",
+                            "mdf", "nrg", "dump", "gz", "img", "irx", "m3u",
+                        ),
+                    scanOptions =
+                        ScanOptions(
+                            scanByFilename = false,
+                            scanByUniqueExtension = false,
+                            scanByPathAndSupportedExtensions = true,
+                        ),
+                    hasMultiDiskSupport = true,
+                ),
+                GameSystem(
                     SystemID.PSP,
                     "Sony - PlayStation Portable",
                     R.string.game_system_title_psp,

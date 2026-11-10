@@ -3,6 +3,10 @@ package com.swordfish.lemuroid.app.mobile.feature.settings.bios
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import android.content.ContentResolver
+import androidx.documentfile.provider.DocumentFile
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
@@ -18,11 +22,34 @@ class BiosSettingsViewModel(private val biosManager: BiosManager) : ViewModel() 
             }
         }
 
-    val uiState =
-        flow { emit(biosManager.getBiosInfoAsync()) }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.Lazily,
-                BiosManager.BiosInfo(emptyList(), emptyList()),
-            )
+    private val _uiState = MutableStateFlow(BiosManager.BiosInfo(emptyList(), emptyList()))
+    val uiState = _uiState
+
+    init {
+        refresh()
+    }
+
+    fun importPs2File(file: DocumentFile, contentResolver: ContentResolver) {
+        viewModelScope.launch {
+            val imported = biosManager.importPs2File(file, contentResolver)
+            refresh()
+            importResult.value = imported
+        }
+    }
+
+    fun importPs2Folders(root: DocumentFile, contentResolver: ContentResolver) {
+        viewModelScope.launch {
+            val imported = biosManager.importPs2Folders(root, contentResolver)
+            refresh()
+            importResult.value = imported
+        }
+    }
+
+    val importResult = MutableStateFlow<Boolean?>(null)
+
+    private fun refresh() {
+        viewModelScope.launch {
+            _uiState.value = biosManager.getBiosInfoAsync()
+        }
+    }
 }

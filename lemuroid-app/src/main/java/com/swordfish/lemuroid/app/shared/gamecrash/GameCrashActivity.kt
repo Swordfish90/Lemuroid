@@ -20,6 +20,8 @@ class GameCrashActivity : Activity() {
             text = message
         }
 
+        findViewById<TextView>(R.id.diagnostics_title).isVisible = !messageDetail.isNullOrEmpty()
+
         findViewById<TextView>(R.id.text2).apply {
             isVisible = !messageDetail.isNullOrEmpty()
             text = messageDetail

@@ -147,6 +147,11 @@
             android:name=".app.shared.gamecrash.GameCrashActivity"
             android:theme="@style/LemuroidMaterialTheme.Game" />
 
+        <activity
+            android:name=".app.shared.diagnostics.DiagnosticLogActivity"
+            android:exported="false"
+            android:theme="@style/LemuroidMaterialTheme.Game" />
+
         <receiver android:name=".app.shared.library.LibraryIndexBroadcastReceiver" />
         <receiver android:name=".app.shared.library.CoreUpdateBroadcastReceiver" />
 

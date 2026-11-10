@@ -31,7 +31,10 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
 
         val metadata =
             runCatching {
-                findByCRC(storageFile, db)
+                // A PS2 directory is authoritative for shared extensions such as ISO.
+                findByPathAndSupportedExtension(storageFile)
+                    ?.takeIf { it.system == SystemID.PS2.dbname }
+                    ?: findByCRC(storageFile, db)
                     ?: findBySerial(storageFile, db)
                     ?: findByFilename(db, storageFile)
                     ?: findByPathAndFilename(db, storageFile)

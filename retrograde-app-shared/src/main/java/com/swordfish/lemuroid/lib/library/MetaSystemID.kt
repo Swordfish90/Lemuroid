@@ -73,6 +73,11 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
         R.drawable.game_system_psx,
         listOf(SystemID.PSX),
     ),
+    PS2(
+        R.string.game_system_title_ps2,
+        R.drawable.game_system_psx,
+        listOf(SystemID.PS2),
+    ),
     ARCADE(
         R.string.game_system_title_arcade,
         R.drawable.game_system_arcade,
@@ -136,6 +141,7 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
                 SystemID.NES -> NES
                 SystemID.PSP -> PSP
                 SystemID.PSX -> PSX
+                SystemID.PS2 -> PS2
                 SystemID.SMS -> SMS
                 SystemID.SNES -> SNES
                 SystemID.PC_ENGINE -> PC_ENGINE

@@ -246,7 +246,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         )
                     is GameViewModelSideEffects.UiEffect.ShowToast -> displayToast(it.message)
                     is GameViewModelSideEffects.UiEffect.SuccessfulFinish -> performSuccessfulActivityFinish()
-                    is GameViewModelSideEffects.UiEffect.FailureFinish -> performErrorFinish(it.message)
+                    is GameViewModelSideEffects.UiEffect.FailureFinish -> performErrorFinish(it.message, it.messageDetail)
                     is GameViewModelSideEffects.UiEffect.SaveQuickSave -> performSaveQuickSave()
                     is GameViewModelSideEffects.UiEffect.LoadQuickSave -> performLoadQuickSave()
                     is GameViewModelSideEffects.UiEffect.ToggleFastForward -> performToggleFastForward()
@@ -310,22 +310,33 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun performUnexpectedErrorFinish(exception: Throwable) {
         Timber.e(exception, "Handling java exception in BaseGameActivity")
+        val diagnosticDetails = buildString {
+            appendLine("Tipo: ${exception.javaClass.name}")
+            appendLine("Thread: ${Thread.currentThread().name}")
+            appendLine()
+            append(exception.stackTraceToString())
+        }
         val resultIntent =
             Intent().apply {
-                putExtra(PLAY_GAME_RESULT_ERROR, exception.message)
+                putExtra(PLAY_GAME_RESULT_ERROR, diagnosticDetails)
             }
 
         setResult(RESULT_UNEXPECTED_ERROR, resultIntent)
         finishAndExitProcess()
     }
 
-    private fun performErrorFinish(message: String) {
+    private fun performErrorFinish(message: String, messageDetail: String? = null) {
         val resultIntent =
             Intent().apply {
-                putExtra(PLAY_GAME_RESULT_ERROR, message)
+                if (messageDetail.isNullOrBlank()) {
+                    putExtra(PLAY_GAME_RESULT_ERROR, message)
+                } else {
+                    putExtra(PLAY_GAME_RESULT_ERROR, messageDetail)
+                    putExtra(PLAY_GAME_RESULT_ERROR_MESSAGE, message)
+                }
             }
 
-        setResult(RESULT_ERROR, resultIntent)
+        setResult(if (messageDetail.isNullOrBlank()) RESULT_ERROR else RESULT_UNEXPECTED_ERROR, resultIntent)
         finishAndExitProcess()
     }
 
@@ -344,14 +355,26 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     override fun onStop() {
+        Timber.i(
+            "Game lifecycle onStop: system=${system.id.name}, finishing=$isFinishing, " +
+                "changingConfigurations=$isChangingConfigurations, finishTriggered=$finishTriggered, " +
+                "lifecycleState=${lifecycle.currentState}",
+        )
         if (!finishTriggered && !isFinishing && !isChangingConfigurations) {
+            Timber.i("Game lifecycle: requesting background save")
             baseGameScreenViewModel.requestBackgroundSave()
         }
         super.onStop()
     }
 
     override fun onDestroy() {
+        Timber.i(
+            "Game lifecycle onDestroy: system=${system.id.name}, finishing=$isFinishing, " +
+                "changingConfigurations=$isChangingConfigurations, finishTriggered=$finishTriggered, " +
+                "lifecycleState=${lifecycle.currentState}",
+        )
         if (!isChangingConfigurations) {
+            Timber.i("Game lifecycle: requesting GameService termination from onDestroy")
             GameService.requestTermination()
         }
         super.onDestroy()
@@ -429,6 +452,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
         const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
         const val PLAY_GAME_RESULT_ERROR = "PLAY_GAME_RESULT_ERROR"
+        const val PLAY_GAME_RESULT_ERROR_MESSAGE = "PLAY_GAME_RESULT_ERROR_MESSAGE"
 
         const val RESULT_ERROR = Activity.RESULT_FIRST_USER + 2
         const val RESULT_UNEXPECTED_ERROR = Activity.RESULT_FIRST_USER + 3

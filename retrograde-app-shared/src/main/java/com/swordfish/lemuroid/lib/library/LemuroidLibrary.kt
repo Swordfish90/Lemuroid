@@ -27,6 +27,7 @@ import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadataProvider
+import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.GroupedStorageFiles
 import com.swordfish.lemuroid.lib.storage.RomFiles
@@ -137,7 +138,20 @@ class LemuroidLibrary(
     ) {
         val updatedGames =
             entries
-                .map { it.game.copy(lastIndexedAt = startedAtMs) }
+                .map { entry ->
+                    val path = entry.file.primaryFile.path.orEmpty()
+                    val isPs2Folder = path.contains("ps2", ignoreCase = true)
+                    val correctedSystemId =
+                        if (isPs2Folder && entry.game.systemId == SystemID.PSX.dbname) {
+                            SystemID.PS2.dbname
+                        } else {
+                            entry.game.systemId
+                        }
+                    entry.game.copy(
+                        systemId = correctedSystemId,
+                        lastIndexedAt = startedAtMs,
+                    )
+                }
 
         updatedGames
             .forEach { Timber.d("Updating game: $it") }
@@ -287,7 +301,21 @@ class LemuroidLibrary(
             return null
         }
 
-        val gameSystem = GameSystem.findById(gameMetadata.system!!)
+        val metadataSystem = GameSystem.findById(gameMetadata.system!!)
+        val normalizedPath = groupedStorageFile.primaryFile.path.orEmpty()
+            .replace('\\', '/')
+            .lowercase()
+        val isPs2Folder = normalizedPath.split('/').any { segment ->
+            segment == "ps2" || segment == "playstation 2" || segment == "playstation2"
+        }
+        // Metadata databases may classify shared .iso files as PSX. An explicit PS2
+        // directory is a stronger signal and must win for newly indexed games too.
+        val gameSystem = if (isPs2Folder) {
+            Timber.i("Overriding metadata system ${metadataSystem.id} to PS2 based on ROM folder: $normalizedPath")
+            GameSystem.findById(SystemID.PS2.dbname)
+        } else {
+            metadataSystem
+        }
 
         // If the databased matched a data file (as with bin/cue) we force link the primary filename
         val fileName =

@@ -146,7 +146,7 @@ class GameLoader(
                 throw e
             } catch (e: Exception) {
                 Timber.e(e, "Error while preparing game")
-                throw GameLoaderException(GameLoaderError.Generic)
+                throw GameLoaderException(GameLoaderError.Generic, e)
             }
         }
 

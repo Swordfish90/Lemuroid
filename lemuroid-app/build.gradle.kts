@@ -10,8 +10,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 252
-        versionName = "1.17.0" // Always remember to update Cores Tag!
+        versionCode = System.getenv("VERSION_CODE")?.toIntOrNull() ?: 253
+        versionName = System.getenv("VERSION_NAME") ?: "1.18.0" // Keep in sync with release tags.
         applicationId = "com.swordfish.lemuroid"
     }
     flavorDimensions += listOf("opensource", "cores")
@@ -25,7 +25,6 @@ android {
                 ":lemuroid_core_fbneo",
                 ":lemuroid_core_fceumm",
                 ":lemuroid_core_gambatte",
-                ":lemuroid_core_genesis_plus_gx",
                 ":lemuroid_core_handy",
                 ":lemuroid_core_mame2003_plus",
                 ":lemuroid_core_mednafen_ngp",
@@ -40,6 +39,7 @@ android {
                 ":lemuroid_core_snes9x",
                 ":lemuroid_core_stella",
                 ":lemuroid_core_citra",
+                ":lemuroid_core_armsx2",
             ),
         )
     }
@@ -94,8 +94,9 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             signingConfig = signingConfigs["release"]
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             resValue("string", "lemuroid_name", "Lemuroid")
         }
         getByName("debug") {

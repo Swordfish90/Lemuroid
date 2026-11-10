@@ -61,6 +61,16 @@
     <string name="setting_citra_resolution_factor">Escala da resolução</string>
     <string name="setting_citra_use_acc_mul">Multiplicação precisa das sombras</string>
     <string name="setting_citra_use_acc_geo_shaders">Geometria precisa das sombras</string>
+    <string name="setting_armsx2_upscale">Resolução interna</string>
+    <string name="setting_armsx2_deinterlacing">Desentrelaçamento (vídeos dos jogos)</string>
+    <string name="setting_armsx2_blending_accuracy">Precisão de mesclagem</string>
+    <string name="setting_armsx2_ee_cycle_rate">Frequência de ciclos EE</string>
+    <string name="setting_armsx2_ee_cycle_skip">Pular ciclos EE</string>
+    <string name="setting_armsx2_hw_download_mode">Modo de transferência de hardware</string>
+    <string name="setting_armsx2_mtvu">MTVU (VU1 multithread)</string>
+    <string name="setting_armsx2_instant_vu1">VU1 instantâneo</string>
+    <string name="setting_armsx2_show_fps">Mostrar FPS</string>
+
     <!-- Core settings values. Duplicated here to ease the translation process. -->
     <string name="value_gambatte_mix_frames_disabled">Desabilitado</string>
     <string name="value_gambatte_mix_frames_mix">Simples</string>

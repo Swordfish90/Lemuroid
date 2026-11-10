@@ -23,11 +23,26 @@
             android:layout_marginTop="16dp"
             android:text="@string/lemuroid_crash_disclamer" />
 
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/diagnostics_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Detalhes técnicos"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp" />
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:textIsSelectable="true"
+            android:textSize="12sp"
+            android:lineSpacingExtra="2dp"
+            android:padding="12dp" />
 
     </LinearLayout>
 
