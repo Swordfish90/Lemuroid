@@ -405,7 +405,7 @@ data class GameSystem(
                     ),
                     scanOptions =
                         ScanOptions(
-                            scanByFilename = false,
+                            scanByFileName = false,
                             scanByUniqueExtension = false,
                             scanByPathAndSupportedExtensions = true,
                             scanBySimilarSerial = true,
@@ -788,7 +788,7 @@ data class GameSystem(
                     supportedExtensions = listOf("iso", "pbp", "chd", "cue", "m3u"),
                     scanOptions =
                         ScanOptions(
-                            scanByFilename = false,
+                            scanByFileName = false,
                             scanByUniqueExtension = false,
                             scanByPathAndSupportedExtensions = true,
                         ),
@@ -854,7 +854,7 @@ data class GameSystem(
                     supportedExtensions = listOf("iso", "cso", "pbp"),
                     scanOptions =
                         ScanOptions(
-                            scanByFilename = false,
+                            scanByFileName = false,
                             scanByUniqueExtension = false,
                             scanByPathAndSupportedExtensions = true,
                         ),
@@ -888,9 +888,9 @@ data class GameSystem(
                     supportedExtensions = listOf("zip"),
                     scanOptions =
                         ScanOptions(
-                            scanByFilename = false,
+                            scanByFileName = false,
                             scanByUniqueExtension = false,
-                            scanByPathAndFilename = true,
+                            scanByPathAndFileName = true,
                             scanByPathAndSupportedExtensions = false,
                         ),
                 ),
@@ -917,9 +917,9 @@ data class GameSystem(
                     supportedExtensions = listOf("zip"),
                     scanOptions =
                         ScanOptions(
-                            scanByFilename = false,
+                            scanByFileName = false,
                             scanByUniqueExtension = false,
-                            scanByPathAndFilename = true,
+                            scanByPathAndFileName = true,
                             scanByPathAndSupportedExtensions = false,
                         ),
                 ),
@@ -1234,9 +1234,9 @@ data class GameSystem(
                     uniqueExtensions = listOf("dosz"),
                     scanOptions =
                         ScanOptions(
-                            scanByFilename = false,
+                            scanByFileName = false,
                             scanByUniqueExtension = true,
-                            scanByPathAndFilename = false,
+                            scanByPathAndFileName = false,
                             scanByPathAndSupportedExtensions = true,
                         ),
                 ),
@@ -1326,9 +1326,9 @@ data class GameSystem(
             byExtensionCache[fileExtension.lowercase(Locale.US)]
 
         data class ScanOptions(
-            val scanByFilename: Boolean = true,
+            val scanByFileName: Boolean = true,
             val scanByUniqueExtension: Boolean = true,
-            val scanByPathAndFilename: Boolean = false,
+            val scanByPathAndFileName: Boolean = false,
             val scanByPathAndSupportedExtensions: Boolean = true,
             val scanBySimilarSerial: Boolean = false,
         )

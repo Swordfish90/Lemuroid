@@ -13,7 +13,7 @@ object CoverArtPolicy {
         mapOf(
             SystemID.ATARI2600 to Ratios(0.7350f),
             SystemID.ATARI7800 to Ratios(0.7150f),
-            SystemID.DOS to Ratios(0.8135f),
+            SystemID.DOS to Ratios(0.80f),
             SystemID.FBNEO to Ratios(0.7529f),
             SystemID.GB to Ratios(usa = 1.0000f, japanese = 0.7930f),
             SystemID.GBA to Ratios(usa = 1.0000f, japanese = 1.5924f),

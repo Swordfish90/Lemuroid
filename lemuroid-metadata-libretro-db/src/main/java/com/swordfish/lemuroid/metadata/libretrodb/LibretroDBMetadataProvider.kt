@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.metadata.libretrodb
 
 import androidx.paging.PagingSource
-import com.swordfish.lemuroid.common.kotlin.filterNullable
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.metadata.GameMetadata
@@ -13,75 +12,57 @@ import com.swordfish.lemuroid.metadata.libretrodb.db.entity.LibretroRom
 import timber.log.Timber
 import java.util.Locale
 
-class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
-    GameMetadataProvider {
-    companion object {
-        private val THUMB_REPLACE = Regex("[&*/:`<>?\\\\|]")
-    }
-
+class LibretroDBMetadataProvider(private val libretroDbManager: LibretroDBManager) : GameMetadataProvider {
+    private val artworkProvider = LibretroDBArtworkProvider(libretroDbManager)
     private val sortedSystemIds: List<String> by lazy {
-        SystemID.values()
+        SystemID.entries
             .map { it.dbname }
             .sortedByDescending { it.length }
     }
 
     override suspend fun retrieveMetadata(storageFile: StorageFile): GameMetadata? {
-        val db = ovgdbManager.dbInstance
+        val db = libretroDbManager.dbInstance
 
         Timber.d("Looking metadata for file: $storageFile")
 
-        val metadata =
-            runCatching {
-                findByCRC(storageFile, db)
-                    ?: findBySerial(storageFile, db)
-                    ?: findByFilename(db, storageFile)
-                    ?: findByPathAndFilename(db, storageFile)
-                    ?: findByUniqueExtension(storageFile)
-                    ?: findByKnownSystem(storageFile)
-                    ?: findByPathAndSupportedExtension(storageFile)
-            }.getOrElse {
-                Timber.e("Error in retrieving $storageFile metadata: $it... Skipping.")
-                null
-            }
+        val metadataResult = runCatching {
+            findByCRC(storageFile, db)
+                ?: findBySerial(storageFile, db)
+                ?: findByFileName(db, storageFile)
+                ?: findByGameName(db, storageFile)
+                ?: findByPathAndFileName(db, storageFile)
+                ?: findByUniqueExtension(storageFile)
+                ?: findByKnownSystem(storageFile)
+                ?: findByPathAndSupportedExtension(storageFile)
+        }
 
-        metadata?.let { Timber.d("Metadata retrieved for item: $it") }
+        metadataResult.onFailure {
+            Timber.e("Error in retrieving $storageFile metadata: $it... Skipping.")
+        }
 
-        return metadata
+        val metadata = metadataResult.getOrNull() ?: return null
+
+        return runCatching { artworkProvider.resolve(metadata) }
+            .onFailure { Timber.e(it, "Error retrieving artwork for $storageFile") }
+            .getOrElse { metadata }
     }
 
     fun searchGames(systemId: String, query: String): PagingSource<Int, LibretroRom> {
         val escaped = query.trim().replace("!", "!!").replace("%", "!%").replace("_", "!_")
-        return ovgdbManager.dbInstance.gameDao().searchArtwork(systemId, "%$escaped%")
+        return libretroDbManager.dbInstance.gameDao().searchGamesWithArtwork(systemId, "%$escaped%")
     }
 
     fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
-        val system = GameSystem.findById(rom.system!!)
+        val artworkName = rom.artwork?.ifEmpty { rom.name }
+        val thumbnail = artworkProvider.coverUrl(rom.system!!, artworkName)
+
         return GameMetadata(
             name = rom.name,
             romName = rom.romName,
-            thumbnail = computeCoverUrl(system, rom.name),
+            thumbnail = thumbnail,
             system = rom.system,
             developer = rom.developer,
         )
-    }
-
-    private suspend fun findByFilename(
-        db: LibretroDatabase,
-        file: StorageFile,
-    ): GameMetadata? {
-        return db.gameDao().findByFileName(file.name)
-            .filterNullable { extractGameSystem(it).scanOptions.scanByFilename }
-            ?.let { convertToGameMetadata(it) }
-    }
-
-    private suspend fun findByPathAndFilename(
-        db: LibretroDatabase,
-        file: StorageFile,
-    ): GameMetadata? {
-        return db.gameDao().findByFileName(file.name)
-            .filterNullable { extractGameSystem(it).scanOptions.scanByPathAndFilename }
-            .filterNullable { parentContainsSystem(file.path, extractGameSystem(it).id.dbname) }
-            ?.let { convertToGameMetadata(it) }
     }
 
     private fun findByPathAndSupportedExtension(file: StorageFile): GameMetadata? {
@@ -165,25 +146,39 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         return GameSystem.findById(rom.system!!)
     }
 
-    fun computeCoverUrl(
-        system: GameSystem,
-        name: String?,
-    ): String? {
-        var systemName = system.libretroFullName
+    private suspend fun findByFileName(
+        db: LibretroDatabase,
+        file: StorageFile,
+    ): GameMetadata? {
+        return db.gameDao().findByFileName(file.name)
+            .firstOrNull { extractGameSystem(it).scanOptions.scanByFileName }
+            ?.let { convertToGameMetadata(it) }
+    }
 
-        // Specific mame version don't have any thumbnails in Libretro database
-        if (system.id == SystemID.MAME2003PLUS) {
-            systemName = "MAME"
-        }
+    private suspend fun findByPathAndFileName(
+        db: LibretroDatabase,
+        file: StorageFile,
+    ): GameMetadata? {
+        return db.gameDao().findByFileName(file.name)
+            .firstOrNull {
+                val system = extractGameSystem(it)
+                system.scanOptions.scanByPathAndFileName && parentContainsSystem(file.path, system.id.dbname)
+            }
+            ?.let { convertToGameMetadata(it) }
+    }
 
-        if (name == null) {
-            return null
-        }
-
-        val imageType = "Named_Boxarts"
-
-        val thumbGameName = name.replace(THUMB_REPLACE, "_")
-
-        return "https://thumbnails.libretro.com/$systemName/$imageType/$thumbGameName.png"
+    private suspend fun findByGameName(
+        db: LibretroDatabase,
+        file: StorageFile,
+    ): GameMetadata? {
+        return db.gameDao().findByGameName(file.extensionlessName)
+            .firstOrNull {
+                val system = extractGameSystem(it)
+                val hasUniqueExtension = system.uniqueExtensions.any { extension ->
+                    extension.equals(file.extension, ignoreCase = true)
+                }
+                system.scanOptions.scanByFileName && hasUniqueExtension
+            }
+            ?.let { convertToGameMetadata(it) }
     }
 }

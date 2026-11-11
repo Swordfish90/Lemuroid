@@ -9,8 +9,10 @@ import androidx.room.PrimaryKey
     tableName = "games",
     indices = [
         Index("romName"),
+        Index("name"),
         Index("crc32"),
         Index("serial"),
+        Index(value = ["system", "normalizedName"]),
     ],
 )
 data class LibretroRom(
@@ -19,10 +21,14 @@ data class LibretroRom(
     val id: Int,
     @ColumnInfo(name = "name")
     val name: String?,
+    @ColumnInfo(name = "normalizedName")
+    val normalizedName: String,
     @ColumnInfo(name = "system")
     val system: String?,
     @ColumnInfo(name = "romName")
     val romName: String?,
+    @ColumnInfo(name = "artwork")
+    val artwork: String?,
     @ColumnInfo(name = "developer")
     val developer: String?,
     @ColumnInfo(name = "crc32")
