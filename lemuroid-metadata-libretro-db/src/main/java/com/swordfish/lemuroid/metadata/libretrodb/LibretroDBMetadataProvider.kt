@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.metadata.libretrodb
 
+import androidx.paging.PagingSource
 import com.swordfish.lemuroid.common.kotlin.filterNullable
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemID
@@ -48,7 +49,12 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         return metadata
     }
 
-    private fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
+    fun searchGames(systemId: String, query: String): PagingSource<Int, LibretroRom> {
+        val escaped = query.trim().replace("!", "!!").replace("%", "!%").replace("_", "!_")
+        return ovgdbManager.dbInstance.gameDao().searchArtwork(systemId, "%$escaped%")
+    }
+
+    fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
         val system = GameSystem.findById(rom.system!!)
         return GameMetadata(
             name = rom.name,
@@ -159,7 +165,7 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
         return GameSystem.findById(rom.system!!)
     }
 
-    private fun computeCoverUrl(
+    fun computeCoverUrl(
         system: GameSystem,
         name: String?,
     ): String? {
@@ -178,6 +184,6 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
 
         val thumbGameName = name.replace(THUMB_REPLACE, "_")
 
-        return "http://thumbnails.libretro.com/$systemName/$imageType/$thumbGameName.png"
+        return "https://thumbnails.libretro.com/$systemName/$imageType/$thumbGameName.png"
     }
 }

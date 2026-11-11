@@ -10,6 +10,7 @@ dependencies {
 
     implementation(deps.libs.androidx.room.runtime)
     implementation(deps.libs.androidx.room.ktx)
+    implementation(deps.libs.androidx.room.paging)
     implementation(deps.libs.dagger.core)
     implementation(deps.libs.kotlinxCoroutinesAndroid)
 

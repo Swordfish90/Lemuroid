@@ -1,5 +1,8 @@
 package com.swordfish.lemuroid.app.mobile.feature.main
 
+import android.net.Uri
+import kotlinx.serialization.json.Json
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.material.icons.Icons
@@ -15,12 +18,14 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.VideogameAsset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.swordfish.lemuroid.R
 
@@ -29,6 +34,27 @@ fun NavGraphBuilder.composable(
     content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
     this.composable(route = route.route, arguments = route.arguments, content = content)
+}
+
+fun NavGraphBuilder.dialog(
+    route: MainRoute,
+    content: @Composable (NavBackStackEntry) -> Unit,
+) {
+    dialog(
+        route = route.route,
+        arguments = route.arguments,
+        dialogProperties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+        ),
+        content = content,
+    )
+}
+
+fun NavController.navigateToEditGame(game: Game) {
+    val argument = Uri.encode(Json.encodeToString(Game.serializer(), game))
+    navigate(MainRoute.EDIT_GAME.route.replace("{game}", argument))
 }
 
 fun NavController.navigateToRoute(route: MainRoute) {
@@ -62,6 +88,12 @@ enum class MainRoute(
         titleId = R.string.title_games,
         parent = SYSTEMS,
         listOf(navArgument("metaSystemId") { type = NavType.StringType }),
+    ),
+    EDIT_GAME(
+        route = "games/edit/{game}",
+        titleId = R.string.game_context_menu_edit,
+        parent = HOME,
+        arguments = listOf(navArgument("game") { type = NavType.StringType }),
     ),
     SETTINGS(
         route = "settings/home",

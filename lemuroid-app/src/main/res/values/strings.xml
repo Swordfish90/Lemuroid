@@ -99,11 +99,6 @@
     <string name="game_context_menu_restart">Restart</string>
     <string name="game_context_menu_create_shortcut">Pin to launcher</string>
 
-    <string name="game_context_menu_add_custom_name">Add custom name</string>
-    <string name="game_context_menu_remove_custom_name">Remove custom name</string>
-    <string name="game_context_menu_add_custom_artwork">Add custom artwork</string>
-    <string name="game_context_menu_remove_custom_artwork">Remove custom artwork</string>
-    <string name="game_context_menu_custom_name_dialog_title">Set custom name</string>
 
     <string name="home_notification_title">Enable notifications</string>
     <string name="home_notification_message">Lemuroid uses notifications to let you know when a game or operation is running in background.</string>
@@ -246,4 +241,10 @@
     <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
     <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
 
+    <string name="game_context_menu_edit">Edit game</string>
+    <string name="game_edit_database">Choose from database</string>
+    <string name="game_edit_title">Title</string>
+    <string name="game_edit_pick_artwork">Choose image</string>
+    <string name="game_edit_restore">Restore defaults</string>
+    <string name="game_edit_save">Save</string>
 </resources>

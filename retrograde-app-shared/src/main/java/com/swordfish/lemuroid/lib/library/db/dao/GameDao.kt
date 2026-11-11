@@ -39,10 +39,10 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>
 
-    @Query("SELECT * FROM games ORDER BY lastPlayedAt DESC, COALESCE(customName, title) ASC, id ASC")
+    @Query("SELECT * FROM games ORDER BY lastPlayedAt DESC, title ASC, id ASC")
     fun selectByLastPlayed(): PagingSource<Int, Game>
 
-    @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY COALESCE(customName, title) ASC")
+    @Query("SELECT * FROM games WHERE isFavorite = 1 ORDER BY title ASC")
     fun selectFavorites(): PagingSource<Int, Game>
 
     @Query(
@@ -58,10 +58,10 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE lastPlayedAt IS NOT NULL ORDER BY lastPlayedAt DESC LIMIT :limit")
     suspend fun asyncSelectFirstRecents(limit: Int): List<Game>
 
-    @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY COALESCE(customName, title) ASC, id DESC")
+    @Query("SELECT * FROM games WHERE systemId = :systemId ORDER BY title ASC, id DESC")
     fun selectBySystem(systemId: String): PagingSource<Int, Game>
 
-    @Query("SELECT * FROM games WHERE systemId IN (:systemIds) ORDER BY COALESCE(customName, title) ASC, id DESC")
+    @Query("SELECT * FROM games WHERE systemId IN (:systemIds) ORDER BY title ASC, id DESC")
     fun selectBySystems(systemIds: List<String>): PagingSource<Int, Game>
 
     @Query("SELECT DISTINCT systemId FROM games ORDER BY systemId ASC")
@@ -75,6 +75,9 @@ interface GameDao {
 
     @Delete
     fun delete(games: List<Game>)
+
+    @Query("UPDATE games SET title = :title, coverFrontUrl = :coverUrl WHERE id = :gameId")
+    suspend fun updatePresentation(gameId: Int, title: String, coverUrl: String?)
 
     @Update
     suspend fun update(game: Game)

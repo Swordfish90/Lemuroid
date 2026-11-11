@@ -19,6 +19,9 @@
 
 package com.swordfish.lemuroid.lib.library
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import android.net.Uri
 import com.swordfish.lemuroid.common.coroutines.batchWithSizeAndTime
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
@@ -322,6 +325,29 @@ class LemuroidLibrary(
         customCoverManager.deleteCoversForGames(games)
 
         retrogradedb.gameDao().delete(games)
+    }
+
+    suspend fun updateGamePresentation(original: Game, draft: Game, pickedImage: Uri?) = withContext(Dispatchers.IO) {
+        val cover = pickedImage?.let { customCoverManager.importCover(original.id, it) } ?: draft.coverFrontUrl
+        try {
+            retrogradedb.gameDao().updatePresentation(original.id, draft.title.trim(), cover)
+        } catch (exception: Exception) {
+            if (pickedImage != null) customCoverManager.deleteCoverUri(cover)
+            throw exception
+        }
+        if (original.coverFrontUrl != cover) customCoverManager.deleteCoverUri(original.coverFrontUrl)
+    }
+
+    suspend fun resolveDefaultGame(game: Game): Game = withContext(Dispatchers.IO) {
+        val provider = storageProviderRegistry.get().getProvider(game)
+        val groupedFile = provider.listBaseStorageFiles()
+            .mapNotNull { files ->
+                StorageFilesMerger.mergeDataFiles(provider, files)
+                    .firstOrNull { it.primaryFile.uri.toString() == game.fileUri }
+            }
+            .firstOrNull() ?: error("Game file is no longer available")
+        val entry = buildEntryFromMetadata(groupedFile, provider, gameMetadataProvider.get(), game.lastIndexedAt)
+        (entry as? ScanEntry.GameFile)?.game ?: error("Could not identify game")
     }
 
     fun getGameFiles(

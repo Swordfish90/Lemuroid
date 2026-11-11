@@ -37,6 +37,7 @@ import java.io.Serializable
         Index("isFavorite"),
     ],
 )
+@kotlinx.serialization.Serializable
 data class Game(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
@@ -49,12 +50,8 @@ data class Game(
     val lastIndexedAt: Long,
     val lastPlayedAt: Long? = null,
     val isFavorite: Boolean = false,
-    val customName: String? = null,
-    val customCoverUri: String? = null,
 ) : Serializable {
 
-    fun displayName(): String = customName ?: title
-    fun displayCoverUrl(): String? = customCoverUri ?: coverFrontUrl
 
     companion object {
         val DIFF_CALLBACK =

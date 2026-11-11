@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -26,8 +25,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -40,6 +37,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopAppBar
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
 
@@ -55,16 +53,12 @@ fun MainTopBar(
 ) {
     val context = LocalContext.current
 
-    TopAppBar(
+    LemuroidTopAppBar(
         modifier = modifier,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = BottomAppBarDefaults.containerColor,
-            scrolledContainerColor = BottomAppBarDefaults.containerColor,
-        ),
         title = {
             if (currentRoute == MainRoute.SEARCH) {
                 LemuroidSearchView(
-                    mainUIState = mainUIState,
+                    query = mainUIState.searchQuery,
                     onUpdateQueryString = onUpdateQueryString,
                 )
             } else {
@@ -127,8 +121,8 @@ fun LemuroidTopBarActions(
 }
 
 @Composable
-private fun LemuroidSearchView(
-    mainUIState: MainViewModel.UiState,
+fun LemuroidSearchView(
+    query: String,
     onUpdateQueryString: (String) -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -154,14 +148,14 @@ private fun LemuroidSearchView(
         ) { }
 
         TextField(
-            value = mainUIState.searchQuery,
+            value = query,
             modifier =
                 Modifier
                     .fillMaxSize()
                     .focusRequester(focusRequester),
             textStyle = MaterialTheme.typography.bodyMedium,
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-            onValueChange = { onUpdateQueryString(it) },
+            onValueChange = onUpdateQueryString,
             singleLine = true,
             keyboardActions =
                 KeyboardActions(

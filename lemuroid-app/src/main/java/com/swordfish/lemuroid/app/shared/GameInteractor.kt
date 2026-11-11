@@ -10,7 +10,6 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.common.displayToast
-import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.GlobalScope
@@ -22,7 +21,6 @@ class GameInteractor(
     private val useLeanback: Boolean,
     private val shortcutsGenerator: ShortcutsGenerator,
     private val gameLauncher: GameLauncher,
-    private val customCoverManager: CustomCoverManager,
 ) {
     fun onGamePlay(game: Game) {
         if (!ensureNotBusy()) {
@@ -61,41 +59,6 @@ class GameInteractor(
 
     fun supportShortcuts(): Boolean {
         return shortcutsGenerator.supportShortcuts()
-    }
-
-    fun onSetCustomName(game: Game, customName: String) {
-        GlobalScope.launch {
-            retrogradeDb.gameDao().update(game.copy(customName = customName))
-        }
-    }
-
-    fun onClearCustomName(game: Game) {
-        GlobalScope.launch {
-            retrogradeDb.gameDao().update(game.copy(customName = null))
-        }
-    }
-
-    /**
-     * Copies the image at [sourceUri] into app-private storage, then stores
-     * the local file URI in the database.  This ensures the cover survives
-     * app restarts regardless of where the user picked the file from.
-     */
-    fun onSetCustomCoverUri(game: Game, sourceUri: String) {
-        GlobalScope.launch {
-            val localUri = customCoverManager.importCover(game.id, Uri.parse(sourceUri))
-            retrogradeDb.gameDao().update(game.copy(customCoverUri = localUri))
-        }
-    }
-
-    /**
-     * Removes the custom cover: deletes the file from private storage and
-     * clears the database field.
-     */
-    fun onClearCustomCoverUri(game: Game) {
-        GlobalScope.launch {
-            customCoverManager.deleteCover(game.id)
-            retrogradeDb.gameDao().update(game.copy(customCoverUri = null))
-        }
     }
 
     private fun ensureNotificationsPermissionAvailable(): Boolean {

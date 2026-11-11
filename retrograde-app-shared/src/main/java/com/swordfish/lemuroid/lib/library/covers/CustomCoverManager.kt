@@ -6,14 +6,14 @@ import android.webkit.MimeTypeMap
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
+import java.util.UUID
 
 /**
  * Manages custom cover artwork files stored in the app's private external storage.
  *
- * Images are copied into [getCoversDirectory] with a deterministic filename based on the
+ * Images are copied into [getCoversDirectory] with a unique filename prefixed by the
  * game's database id so that:
  *   - The URI never expires (it's a local file we own).
  *   - Cleanup is trivial: delete the file when the game or the custom artwork is removed.
@@ -21,7 +21,7 @@ import java.io.FileOutputStream
 class CustomCoverManager(private val appContext: Context) {
 
     /** Returns (and creates if necessary) the directory for custom covers. */
-    fun getCoversDirectory(): File =
+    private fun getCoversDirectory(): File =
         File(appContext.getExternalFilesDir(null), "custom-covers").apply {
             mkdirs()
         }
@@ -38,55 +38,32 @@ class CustomCoverManager(private val appContext: Context) {
 
     /** Build the cover file path for a given game id and extension. */
     private fun coverFileForGame(gameId: Int, extension: String): File =
-        File(getCoversDirectory(), "cover_$gameId.$extension")
+        File(getCoversDirectory(), "cover_${gameId}.${UUID.randomUUID()}.$extension")
 
-    /**
-     * Copies the image at [sourceUri] into private storage and returns the local
-     * file:// URI string that should be persisted in [Game.customCoverUri].
-     *
-     * Any previously stored cover for this game is deleted first so that
-     * switching from e.g. a .jpg to a .webp doesn't leave an orphan.
-     */
+    /** Copies to a new file so a failed edit preserves the previous cover. */
     suspend fun importCover(gameId: Int, sourceUri: Uri): String =
         withContext(Dispatchers.IO) {
-            // Remove any existing cover regardless of its extension
-            deleteCoversForGameId(gameId)
-
-            val ext = extensionForUri(sourceUri)
-            val destFile = coverFileForGame(gameId, ext)
-            appContext.contentResolver.openInputStream(sourceUri)?.use { input ->
-                FileOutputStream(destFile).use { output ->
-                    input.copyTo(output)
-                }
-            } ?: throw IllegalStateException("Cannot open input stream for $sourceUri")
-            Uri.fromFile(destFile).toString()
+            val destFile = coverFileForGame(gameId, extensionForUri(sourceUri))
+            try {
+                appContext.contentResolver.openInputStream(sourceUri)?.use { input ->
+                    FileOutputStream(destFile).use { output -> input.copyTo(output) }
+                } ?: error("Cannot open image")
+                Uri.fromFile(destFile).toString()
+            } catch (exception: Exception) {
+                destFile.delete()
+                throw exception
+            }
         }
 
-    /** Deletes the locally-stored cover for [gameId], regardless of extension. */
-    fun deleteCover(gameId: Int) {
-        deleteCoversForGameId(gameId)
+    /** Deletes only files owned by this manager. */
+    fun deleteCoverUri(uri: String?) {
+        if (uri == null || Uri.parse(uri).scheme != "file") return
+        val file = Uri.parse(uri).path?.let(::File) ?: return
+        if (file.parentFile?.canonicalFile == getCoversDirectory().canonicalFile) file.delete()
     }
 
-    /** Batch-deletes covers for a list of games. Called during library cleanup. */
+    /** Deletes the stored covers when games are removed from the library. */
     fun deleteCoversForGames(games: List<Game>) {
-        games.forEach { game ->
-            if (game.customCoverUri != null) {
-                deleteCoversForGameId(game.id)
-            }
-        }
-    }
-
-    /**
-     * Deletes any file matching cover_<gameId>.* in the covers directory.
-     * This ensures cleanup works regardless of which image format was used.
-     */
-    private fun deleteCoversForGameId(gameId: Int) {
-        val prefix = "cover_${gameId}."
-        getCoversDirectory().listFiles()
-            ?.filter { it.name.startsWith(prefix) }
-            ?.forEach { file ->
-                val deleted = file.delete()
-                Timber.d("Deleted custom cover ${file.name}: $deleted")
-            }
+        games.forEach { deleteCoverUri(it.coverFrontUrl) }
     }
 }

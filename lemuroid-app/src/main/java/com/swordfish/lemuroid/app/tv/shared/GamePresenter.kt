@@ -22,7 +22,7 @@ class GamePresenter(
     ) {
         if (item == null || viewHolder !is ViewHolder) return
         val game = item as Game
-        viewHolder.mCardView.titleText = game.displayName()
+        viewHolder.mCardView.titleText = game.title
         viewHolder.mCardView.contentText = GameUtils.getGameSubtitle(viewHolder.mCardView.context, game)
         viewHolder.mCardView.setMainImageDimensions(cardSize, cardSize)
         viewHolder.updateCardViewImage(game)

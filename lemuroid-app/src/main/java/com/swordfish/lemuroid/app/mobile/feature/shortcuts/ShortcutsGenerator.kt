@@ -39,8 +39,8 @@ class ShortcutsGenerator(
 
         val shortcutInfo =
             ShortcutInfo.Builder(appContext, "game_${game.id}")
-                .setShortLabel(game.displayName())
-                .setLongLabel(game.displayName())
+                .setShortLabel(game.title)
+                .setLongLabel(game.title)
                 .setIntent(DeepLink.launchIntentForGame(appContext, game))
                 .setIcon(Icon.createWithBitmap(bitmap))
                 .build()
@@ -53,8 +53,8 @@ class ShortcutsGenerator(
             val result =
                 runCatching {
                     // Prefer custom cover URI (local file) if set
-                    if (game.customCoverUri != null) {
-                        val uri = Uri.parse(game.customCoverUri)
+                    if (game.coverFrontUrl?.startsWith("file:") == true) {
+                        val uri = Uri.parse(game.coverFrontUrl)
                         val inputStream = appContext.contentResolver.openInputStream(uri)
                         BitmapFactory.decodeStream(inputStream).cropToSquare()
                     } else {

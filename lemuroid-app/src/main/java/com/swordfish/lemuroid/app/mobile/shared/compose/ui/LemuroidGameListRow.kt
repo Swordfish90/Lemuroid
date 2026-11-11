@@ -1,6 +1,5 @@
 package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,21 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LemuroidGameListRow(
     modifier: Modifier = Modifier,
     game: Game,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onFavoriteToggle: (Boolean) -> Unit,
+    onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
+    onFavoriteToggle: ((Boolean) -> Unit)? = null,
 ) {
     Surface(
         modifier =
             modifier
                 .wrapContentHeight()
                 .combinedClickable(
-                    onClick = onClick,
+                    enabled = onClick != null,
+                    onClick = { onClick?.invoke() },
                     onLongClick = onLongClick,
                 ),
     ) {
@@ -57,17 +56,19 @@ fun LemuroidGameListRow(
                         .padding(start = 8.dp),
                 game = game,
             )
-            Box(
-                modifier =
-                    Modifier
-                        .width(40.dp)
-                        .height(40.dp)
-                        .align(Alignment.CenterVertically),
-            ) {
-                FavoriteToggle(
-                    isToggled = game.isFavorite,
-                    onFavoriteToggle = onFavoriteToggle,
-                )
+            if (onFavoriteToggle != null) {
+                Box(
+                    modifier =
+                        Modifier
+                            .width(40.dp)
+                            .height(40.dp)
+                            .align(Alignment.CenterVertically),
+                ) {
+                    FavoriteToggle(
+                        isToggled = game.isFavorite,
+                        onFavoriteToggle = onFavoriteToggle,
+                    )
+                }
             }
         }
     }

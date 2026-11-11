@@ -143,15 +143,20 @@ abstract class LemuroidApplicationModule {
         fun retrogradeDb(app: LemuroidApplication) =
             Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
                 .addCallback(GameSearchDao.CALLBACK)
-                .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9, Migrations.VERSION_9_10)
+                .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9)
                 .fallbackToDestructiveMigration()
                 .build()
 
         @Provides
         @PerApp
         @JvmStatic
-        fun gameMetadataProvider(libretroDBManager: LibretroDBManager): GameMetadataProvider =
+        fun libretroDBMetadataProvider(libretroDBManager: LibretroDBManager): LibretroDBMetadataProvider =
             LibretroDBMetadataProvider(libretroDBManager)
+
+        @Provides
+        @PerApp
+        @JvmStatic
+        fun gameMetadataProvider(provider: LibretroDBMetadataProvider): GameMetadataProvider = provider
 
         @Provides
         @PerApp

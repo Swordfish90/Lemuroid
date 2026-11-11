@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
@@ -77,7 +76,6 @@ import com.swordfish.lemuroid.lib.android.RetrogradeComponentActivity
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.injection.PerActivity
-import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.SystemID
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
@@ -89,6 +87,10 @@ import dagger.Provides
 import de.charlex.compose.material3.HtmlText
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import com.swordfish.lemuroid.app.mobile.feature.editgame.EditGameScreen
+import com.swordfish.lemuroid.app.mobile.feature.editgame.EditGameViewModel
+import com.swordfish.lemuroid.app.shared.library.PendingOperationsMonitor
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -101,6 +103,12 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
 
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
+
+    @Inject
+    lateinit var lemuroidLibrary: com.swordfish.lemuroid.lib.library.LemuroidLibrary
+
+    @Inject
+    lateinit var libretroMetadataProvider: com.swordfish.lemuroid.metadata.libretrodb.LibretroDBMetadataProvider
 
     @Inject
     lateinit var gameInteractor: GameInteractor
@@ -142,7 +150,6 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MainScreen(navController: NavHostController) {
         val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -162,8 +169,16 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 mutableStateOf<Game?>(null)
             }
 
+        val scanInProgress =
+            remember {
+                PendingOperationsMonitor(applicationContext).isDirectoryScanInProgress()
+            }
+            .collectAsState(initial = true).value
+
         val onGameLongClick = { game: Game ->
-            selectedGameState.value = game
+            if (!scanInProgress) {
+                selectedGameState.value = game
+            }
         }
 
         val onGameClick = { game: Game ->
@@ -383,6 +398,22 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                                     ),
                             )
                         }
+                        dialog(MainRoute.EDIT_GAME) { entry ->
+                            EditGameScreen(
+                                viewModel = viewModel(
+                                    factory = EditGameViewModel.Factory(
+                                        savedState = entry.savedStateHandle,
+                                        game = Json.decodeFromString(
+                                            Game.serializer(),
+                                            checkNotNull(entry.arguments?.getString("game")),
+                                        ),
+                                        library = lemuroidLibrary,
+                                        provider = libretroMetadataProvider,
+                                    ),
+                                ),
+                                onDismiss = { navController.popBackStack() },
+                            )
+                        }
                     }
                     LemuroidOperationProgressIndicator(
                         visible = mainUIState.operationInProgress,
@@ -406,10 +437,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 gameInteractor.onFavoriteToggle(game, isFavorite)
             },
             onCreateShortcut = { gameInteractor.onCreateShortcut(it) },
-            onSetCustomName = { game, name -> gameInteractor.onSetCustomName(game, name) },
-            onClearCustomName = { game -> gameInteractor.onClearCustomName(game) },
-            onSetCustomCoverUri = { game, uri -> gameInteractor.onSetCustomCoverUri(game, uri) },
-            onClearCustomCoverUri = { game -> gameInteractor.onClearCustomCoverUri(game) },
+            onEditGame = { game ->
+                navController.navigateToEditGame(game)
+            },
         )
 
         if (infoDialogDisplayed.value) {
@@ -478,8 +508,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 retrogradeDb: RetrogradeDatabase,
                 shortcutsGenerator: ShortcutsGenerator,
                 gameLauncher: GameLauncher,
-                customCoverManager: CustomCoverManager,
-            ) = GameInteractor(activity, retrogradeDb, false, shortcutsGenerator, gameLauncher, customCoverManager)
+            ) = GameInteractor(activity, retrogradeDb, false, shortcutsGenerator, gameLauncher)
         }
     }
 }

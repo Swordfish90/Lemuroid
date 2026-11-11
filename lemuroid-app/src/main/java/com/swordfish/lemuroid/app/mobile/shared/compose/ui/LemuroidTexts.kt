@@ -20,11 +20,11 @@ fun LemuroidGameTexts(
 ) {
     val context = LocalContext.current
     val subtitle =
-        remember(game.id) {
+        remember(game) {
             GameUtils.getGameSubtitle(context, game)
         }
 
-    LemuroidTexts(modifier, game.displayName(), subtitle)
+    LemuroidTexts(modifier, game.title, subtitle)
 }
 
 @Composable
