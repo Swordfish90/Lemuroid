@@ -1,0 +1,2 @@
+-keep class com.swordfish.libretrodroid.LibretroDroid { native <methods>; }
+-keep class com.swordfish.libretrodroid.RetroAchievementsNativeBridge { *; }

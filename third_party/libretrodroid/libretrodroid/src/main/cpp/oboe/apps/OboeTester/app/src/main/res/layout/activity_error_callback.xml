@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestErrorCallbackActivity">
+
+    <GridLayout
+        android:id="@+id/buttonGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1">
+
+    <Button
+        android:id="@+id/buttonTestDeleteCrash"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:backgroundTint="@color/button_tint"
+        android:onClick="onTestDeleteCrash"
+        android:text="Delete Callback" />
+
+    <TextView
+        android:id="@+id/text_callback_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="monospace"
+        android:gravity="bottom"
+        android:text="@string/init_status"
+        />
+
+</GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

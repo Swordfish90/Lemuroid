@@ -25,3 +25,15 @@ keystore.properties
 keystore.properties
 **/build/
 .gradle/
+keystore.properties
+*.jks
+*.keystore
+debug.keystore
+local.properties
+.gradle/
+build/
+.cxx/
+*.apk
+*.aab
+.idea/
+.kotlin/

@@ -1,0 +1,6 @@
+glsm/
+*.[od]
+*.dll
+*.so
+*.dylib
+*.exe

@@ -1,0 +1,29 @@
+OMINOY GB/GBC/GBA Android build
+
+This source tree packages the mGBA Libretro core for Game Boy, Game Boy Color, and Game Boy Advance. The Android app ID is com.asg.ominoy and the deep-link scheme is ominoy://. Other emulator core plugin modules and runtime core downloading have been removed.
+
+Requirements:
+- JDK 21
+- Android SDK platform 35
+- Android Build Tools 35.0.0
+- Android NDK 27.2.12479018
+- CMake 3.22.1
+
+Set the Android SDK location in local.properties, then build the release APK:
+
+    ./gradlew :ominoy-app:assembleFreeBundleRelease
+
+To sign the APK locally, create keystore.properties in the project root with these properties (do not commit the file):
+
+    storeFile=/absolute/path/to/your-release-key.jks
+    keyAlias=YOUR_KEY_ALIAS
+    storePassword=YOUR_STORE_PASSWORD
+    keyPassword=YOUR_KEY_PASSWORD
+
+When all four properties are present, the release build uses that key. Otherwise, Gradle produces an unsigned release APK.
+
+Output:
+
+    ominoy-app/build/outputs/apk/free/bundle/release/ominoy-app-free-bundle-release.apk
+
+The APK includes mGBA's native library for arm64-v8a, armeabi-v7a, x86, and x86_64 under ominoy-app/src/main/jniLibs/.

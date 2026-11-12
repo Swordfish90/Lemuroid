@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Ladataan ydintä…</string>
+    <string name="game_loader_error_load_core">Libretro ydin ei ladattu. Varmista, että laitteesi on yhteydessä internetiin ja yritä palauttaa kirjastosi. Jos ongelma jatkuu, tätä ydintä ei ehkä tueta laitteessasi.</string>
+</resources>

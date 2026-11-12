@@ -1,0 +1,11 @@
+jdk:
+   - openjdk17
+
+before_install:
+   # Installing Java 8 because Android SDK manager needs XML Binds which not exists in JDK 17
+   - sdk install java 8.0.265-open
+   - sdk use java 8.0.265-open
+   - yes | sdkmanager "cmake;3.22.1"
+   # Install JDK 17 and using it for the rest of the build
+   - sdk install java 17.0.3-tem
+   - sdk use java 17.0.3-tem

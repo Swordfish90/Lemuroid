@@ -1,0 +1,380 @@
+<resources>
+    <string name="title_home">Home</string>
+    <string name="title_play">Play</string>
+    <string name="title_library">Library</string>
+    <string name="title_search">Search</string>
+    <string name="title_systems">Systems</string>
+    <string name="title_games">Games</string>
+    <string name="title_settings">Settings</string>
+    <string name="recent">Recents</string>
+    <string name="favorites">Favorites</string>
+    <string name="discover">Discover</string>
+    <string name="rescan">Rescan</string>
+    <string name="stop">Stop</string>
+    <string name="none">None</string>
+    <string name="directory">Directory</string>
+    <string name="display_filter">Display filter</string>
+    <string name="roms">ROMs</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="settings">Settings</string>
+    <string name="save_sync">Save Sync</string>
+    <string name="show_all">Show All</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+
+    <string name="game_page_search_suggestion">Search games</string>
+
+    <string name="settings_category_general">General</string>
+    <string name="settings_category_input">Input</string>
+    <string name="settings_category_misc">Miscellaneous</string>
+    <string name="settings_title_enable_autosave">Autosave state</string>
+    <string name="settings_description_enable_autosave">Save state when exiting via game menu</string>
+    <string name="settings_title_enable_touch_feedback">Vibrate on touch</string>
+    <string name="settings_title_touch_button_appearance">Touch button appearance</string>
+    <string name="settings_description_touch_button_appearance">Choose transparent, frosted white, or a custom color for on-screen controls</string>
+    <string name="touch_button_appearance_classic">Classic</string>
+    <string name="touch_button_appearance_transparent">Translucent</string>
+    <string name="touch_button_appearance_frosted_white">Frosted white</string>
+    <string name="touch_button_appearance_custom">Custom color</string>
+    <string name="touch_button_color_red">Red</string>
+    <string name="touch_button_color_green">Green</string>
+    <string name="touch_button_color_blue">Blue</string>
+    <string name="touch_button_color_opacity">Opacity</string>
+    <string name="touch_button_color_picker_title">Custom color</string>
+    <string name="touch_button_color_picker_hint">Drag the selector to choose a color</string>
+    <string name="touch_button_color_opacity_percent">%1$d%%</string>
+    <string name="settings_title_tilt_sensitivity">Tilt sensor sensitivity</string>
+    <string name="settings_title_hd_quality">HD mode quality</string>
+    <string name="settings_title_maximum_cache_usage">Cache size limit</string>
+
+    <string name="settings_title_hd_mode">HD mode</string>
+    <string name="settings_description_hd_mode">Apply post-processing upscaling filter</string>
+    <string name="settings_description_hd_quality">Adjust the quality of HD mode</string>
+
+    <string name="settings_title_viewport_alignment">Viewport alignment</string>
+    <string name="settings_description_viewport_alignment">Preview and position the GB, GBC, or GBA screen</string>
+
+    <string name="settings_title_immersive_mode">Immersive mode</string>
+    <string name="settings_description_immersive_mode">Dynamically colors the background based on game visuals</string>
+    <string name="pref_key_amoled_theme">amoled_theme</string>
+    <string name="settings_title_amoled_theme">AMOLED black theme</string>
+    <string name="settings_description_amoled_theme">Use true black backgrounds on OLED displays</string>
+
+    <string name="settings_title_gamepad_settings">External devices</string>
+    <string name="settings_description_gamepad_settings">Configure external gamepads and keyboards</string>
+    <string name="settings_title_touch_layout_editor">Touch layout editor</string>
+    <string name="settings_description_touch_layout_editor">Preview and customize on-screen controls outside a game</string>
+
+    <string name="settings_retropad_button_name">RetroPad %1$s</string>
+
+    <string name="settings_gamepad_category_enabled">Enabled devices</string>
+    <string name="settings_gamepad_category_general">General</string>
+    <string name="settings_gamepad_title_reset_bindings">Reset bindings</string>
+    <string name="settings_gamepad_title_game_menu">Menu</string>
+
+    <string name="settings_title_open_cores_selection">Change Cores</string>
+    <string name="settings_description_open_cores_selection">Select which core is associated to a system</string>
+    <string name="settings_core_selection_ds_info">DeSmuME is deprecated and will be removed in one of the next updates. Save your progress inside the game, then switch to melonDS. In-game saves will load automatically in melonDS, but save states can only be used with the core that created them.</string>
+
+    <string name="settings_title_display_bios_info">BIOS</string>
+    <string name="settings_description_display_bios_info">Display detected and supported BIOS files</string>
+    <string name="settings_bios_category_detected">Detected</string>
+    <string name="settings_bios_category_not_detected">Supported</string>
+
+    <string name="settings_title_reset_settings">Factory reset</string>
+    <string name="settings_description_reset_settings">Reset OMINOY to its factory settings</string>
+
+    <string name="settings_title_advanced_settings">Advanced settings</string>
+    <string name="settings_description_advanced_settings">Display advanced settings</string>
+    <string name="settings_title_retroachievements">RetroAchievements</string>
+    <string name="settings_description_retroachievements">Sign in and view your achievement profile</string>
+    <string name="settings_title_low_latency_audio">Prefer low-latency audio</string>
+    <string name="settings_description_low_latency_audio">Reduce audio latency on supported devices. Might increase audio glitches.</string>
+
+    <string name="settings_title_direct_game_load">Direct game load</string>
+    <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>
+
+    <string name="settings_title_enable_rumble">Rumble</string>
+    <string name="settings_description_enable_rumble">Enable rumble in supported games and controllers</string>
+
+    <string name="settings_title_enable_device_rumble">Device rumble</string>
+    <string name="settings_description_enable_device_rumble">When no controller is connected vibrate the device instead</string>
+
+    <string name="reset_settings_warning_message_title">Are you sure?</string>
+    <string name="reset_settings_warning_message_description">This will reset OMINOY to its factory settings. Saves and States will be preserved.</string>
+
+    <string name="settings_title_save_sync">Cloud saves</string>
+    <string name="settings_description_save_sync">Back up and Sync your saves on the cloud</string>
+    <string name="settings_save_sync_refresh">Manual Sync</string>
+    <string name="settings_save_sync_refresh_description">Perform a manual Sync now.\n%1$s</string>
+    <string name="settings_save_sync_enable_auto">Auto-Sync</string>
+    <string name="settings_save_sync_enable_auto_description">Automatically perform a Sync before and after a game session when connected to Wifi</string>
+    <string name="settings_save_sync_configure">Configure %1$s</string>
+    <string name="settings_save_sync_include_saves">Sync in-game saves</string>
+    <string name="settings_save_sync_include_saves_description">%1$s on device</string>
+    <string name="settings_save_sync_include_states">Sync states</string>
+    <string name="settings_save_sync_include_states_description">More convenient, but heavier and less reliable. Choose which cores/systems you want to sync</string>
+
+    <string name="game_context_menu_add_to_favorites">Add to favorites</string>
+    <string name="game_context_menu_remove_from_favorites">Remove from favorites</string>
+    <string name="game_context_menu_resume">Resume</string>
+    <string name="game_context_menu_restart">Restart</string>
+    <string name="game_context_menu_create_shortcut">Pin to launcher</string>
+    <string name="game_context_menu_set_custom_thumbnail">Set custom thumbnail</string>
+    <string name="game_context_menu_change_thumbnail">Change thumbnail</string>
+    <string name="game_context_menu_remove_thumbnail">Remove thumbnail</string>
+    <string name="game_context_menu_rename">Rename game</string>
+    <string name="game_context_menu_reset_name">Reset name</string>
+    <string name="game_rename_title">Rename game</string>
+    <string name="game_rename_hint">Display name</string>
+    <string name="game_rename_save">Save</string>
+    <string name="game_rename_cancel">Cancel</string>
+    <string name="game_custom_thumbnail_error">Couldn\'t load that image</string>
+
+    <string name="game_context_menu_add_custom_name">Add custom name</string>
+    <string name="game_context_menu_edit_custom_name">Edit custom name</string>
+    <string name="game_context_menu_remove_custom_name">Remove custom name</string>
+    <string name="game_context_menu_add_custom_artwork">Add custom artwork</string>
+    <string name="game_context_menu_change_custom_artwork">Change custom artwork</string>
+    <string name="game_context_menu_remove_custom_artwork">Remove custom artwork</string>
+    <string name="custom_artwork_import_failed">Could not save this artwork. Please choose another image and try again.</string>
+    <string name="game_context_menu_custom_name_dialog_title">Set custom name</string>
+
+    <string name="home_notification_title">Enable notifications</string>
+    <string name="home_notification_message">OMINOY uses notifications to let you know when a game or operation is running in background.</string>
+    <string name="home_notification_action">Enable</string>
+
+    <string name="home_microphone_title">Enable microphone</string>
+    <string name="home_microphone_message">Nintendo DS games can use the microphone to provide some functionalities.</string>
+    <string name="home_microphone_action">Enable</string>
+
+    <string name="home_empty_title">Select ROMs directory</string>
+    <string name="home_empty_message">OMINOY needs to scan a directory containing ROM files.\nThis might take up to a few minutes.</string>
+    <string name="home_empty_action">Select Directory</string>
+
+    <string name="home_notification_desmume_deprecated_title">DeSmuME is being retired</string>
+    <string name="home_notification_desmume_deprecated_message">Save in-game, then switch to melonDS to keep your progress. Save states won\’t transfer and will remain usable only in DeSmuME.</string>
+    <string name="home_notification_desmume_deprecated_action">Switch to melonDS</string>
+
+    <string name="game_menu_save">Save</string>
+    <string name="game_menu_load">Load</string>
+    <string name="game_menu_restart">Restart</string>
+    <string name="game_menu_quit">Quit</string>
+    <string name="game_menu_settings">Settings</string>
+    <string name="game_menu_cheats">Cheats</string>
+    <string name="game_menu_achievements">Achievements</string>
+    <string name="game_menu_achievements_subtitle">View this game’s RetroAchievements</string>
+    <string name="game_menu_achievements_empty">No cached achievements are available yet. Sign in to RetroAchievements and sync this game to populate the list.</string>
+    <string name="game_menu_achievements_progress">%1$d of %2$d achievements unlocked</string>
+    <string name="game_menu_achievement_points">%1$d pts</string>
+    <string name="game_menu_section_progress">Progress</string>
+    <string name="game_menu_section_gameplay">Gameplay</string>
+    <string name="game_menu_section_tools">Tools</string>
+    <string name="game_cheats_description">Cheats are saved for this game only. The selected code type is a label and validation choice; it is not sent to the emulator core and does not force how the core interprets the code. Changes take effect when you return to the game.</string>
+    <string name="game_cheats_add">Add cheat</string>
+    <string name="game_cheats_add_title">Add cheat</string>
+    <string name="game_cheats_edit_title">Edit cheat</string>
+    <string name="game_cheats_edit">Edit %1$s</string>
+    <string name="game_cheats_name">Name</string>
+    <string name="game_cheats_code">Cheat code</string>
+    <string name="game_cheats_invalid_code">Enter hexadecimal code groups, for example 32028642 00FE.</string>
+    <string name="game_cheats_empty">No cheats added for this game yet.</string>
+    <string name="game_cheats_delete">Delete %1$s</string>
+    <string name="game_cheats_save">Save</string>
+    <string name="game_menu_state">State %1$s</string>
+    <string name="game_menu_change_disk_button">Change Disk</string>
+    <string name="game_menu_edit_touch_controls">Edit Controls</string>
+    <string name="game_menu_mute_audio">Mute</string>
+    <string name="game_menu_fast_forward">Fast-Forward</string>
+    <string name="game_menu_change_disk_disk">Disk %1$s</string>
+    <string name="game_menu_tilt_sensor">Tilt Sensor</string>
+
+    <string name="game_loading_preparing_game">Preparing game…</string>
+
+    <string name="game_toast_settings_button_using_gamepad">Gamepad detected. Access settings menu with %1$s.</string>
+    <string name="game_toast_save_state_saved">Save state saved</string>
+    <string name="game_toast_save_state_failed">Couldn’t save this state</string>
+    <string name="game_toast_save_state_failed_detail">Save failed: %1$s</string>
+    <string name="game_toast_load_state_failed">Cannot load this state</string>
+    <string name="game_toast_quick_save_loaded">Quick loaded</string>
+    <string name="game_toast_quick_save_saved">Quick saved</string>
+
+    <string name="empty_view_default">No Items</string>
+
+    <string name="core_settings_title">Core Settings</string>
+    <string name="core_settings_category_preferences">Preferences</string>
+    <string name="core_settings_category_controllers">Controllers</string>
+    <string name="core_settings_controller">Controller %1$s</string>
+
+    <string name="game_menu_title">Game menu</string>
+
+    <string name="notification_channel_name">All notifications</string>
+    <string name="library_index_notification_title">ROMs scanning in progress</string>
+    <string name="library_index_notification_message">This can take up to a few minutes</string>
+
+    <string name="save_sync_notification_title">Cloud save Sync in progress</string>
+    <string name="save_sync_notification_message">This can take up to a few minutes</string>
+    <string name="game_running_notification_title_alternative">Game is running</string>
+    <string name="game_running_notification_message">Make sure to save your progress</string>
+
+    <string name="game_loader_error_gl_incompatible">This Core requires an OpenGL ES version which is not supported by your device.</string>
+    <string name="game_loader_error_load_game">Something bad happened while loading your game. Make sure the ROM is supported by OMINOY and rescan your games.</string>
+    <string name="game_loader_error_save">Something bad happened with your save file. If the issue persists, try disabling auto-save.</string>
+    <string name="game_loader_error_unsupported_architecture">This Core is not supported by your device.</string>
+
+    <string name="game_loader_error_generic">Something bad happened. Try the following:\n
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into OMINOY settings and perform a Factory Reset
+        \n\nIf none of the above works, it might be possible that this Game/Core is not supported by this device.
+    </string>
+
+    <string name="game_loader_error_missing_bios">It looks like you\'re missing the required BIOS, put them in your ROMs directory and rescan. Required files: %1$s</string>
+
+    <string name="game_shortcut_error">Something bad happened while loading your game. Please make sure this game still exists in your library.</string>
+
+    <string name="dialog_saf_not_found">This device does not support the StorageAccessFramework file picker. Please manually copy uncompressed ROM files into %1$s and hit Rescan.</string>
+
+    <string name="system_grid_details">%1$s games</string>
+
+    <string name="tv_folder_picker_title">Select ROMs Directory</string>
+    <string name="tv_folder_picker_action_choose">Select</string>
+    <string name="tv_folder_picker_action_cancel">Cancel</string>
+    <string name="tv_folder_storage_primary">Primary storage</string>
+    <string name="tv_folder_storage_secondary">Secondary storage %1$s</string>
+    <string name="tv_folder_storage_title">Choose storage</string>
+
+    <string name="tv_home_section_favorites">Favorites</string>
+    <string name="tv_home_section_recents">Recent</string>
+    <string name="tv_home_section_systems">Systems</string>
+    <string name="tv_home_section_settings">Settings</string>
+
+    <string name="gamepad_binding_update_title">Associate \"RetroPad %1$s\"</string>
+    <string name="gamepad_binding_update_description">Press a button on your \"%1$s\"</string>
+    <string name="shortcut_binding_update_title">Associate \"Shortcut %1$s\"</string>
+    <string name="shortcut_binding_update_description">Press the first, then second button to bind a combo on your \"%1$s\"</string>
+
+    <string name="tv_search_results">Games</string>
+    <string name="tv_game_message_missing_gamepad">Gamepads are required to play. Please connect one.</string>
+
+    <string name="game_edit_touch_controls_error_not_visible">Disconnect your pad to edit your touch controls</string>
+
+    <string name="game_interactory_busy">Wait for the pending operations to complete</string>
+    <string name="game_interactor_notification_permission_required">Please enable notifications from Home to continue</string>
+
+    <string name="game_process_another_game_running">Please close the current game before starting another</string>
+
+    <string name="mobile_settings_help">Updates</string>
+    <string name="mobile_settings_support">Support</string>
+    <string name="ominoy_help_content"><![CDATA[
+        <b>&#8226;How do I use OMINOY?</b><br/>
+        Copy all your ROMs files into a directory on your device and select it within OMINOY. This directory is allowed to have subdirectories. After the scan completes you should see your games.<br/><br/>
+        <b>&#8226;Why aren\'t my games detected?</b><br/>
+        If your games are compressed, try uncompressing them. If this doesn\'t work try putting ROMs into separate directories, one for each system with the following names: $SYSTEMS.
+    ]]></string>
+
+    <string name="ominoy_crash_disclamer">It looks like the Libretro core has experienced an unexpected issue. If it\'s persistent please try the following:\n
+        \n\u2022 Disable auto-save and re-run the game
+        \n\u2022 Go into Android settings and clear the app cache
+        \n\u2022 Go into OMINOY settings and perform a Factory Reset
+        \n\n If none of the above works, it might be possible that this Game/Core is not supported by this device.
+    </string>
+
+    <string name="error_message_incompatible_state">This save state is not compatible with the current core version. Please load the latest in-game save or use a previous OMINOY version.</string>
+
+    <string name="shader_filter_names_auto">Auto</string>
+    <string name="shader_filter_names_sharp">Sharp</string>
+    <string name="shader_filter_names_smooth">Smooth</string>
+    <string name="shader_filter_names_crt">CRT</string>
+    <string name="shader_filter_names_lcd">LCD</string>
+
+    <string name="viewport_alignment_names_top">Top</string>
+    <string name="viewport_alignment_names_center">Center</string>
+    <string name="viewport_alignment_names_bottom">Bottom</string>
+
+    <string name="haptic_feedback_mode_names_none">None</string>
+    <string name="haptic_feedback_mode_names_press">Press</string>
+    <string name="haptic_feedback_mode_names_press_release">Press &amp; release</string>
+
+    <string name="tilt_configuration_disabled">Disabled</string>
+    <string name="tilt_configuration_cross">DPAD</string>
+    <string name="tilt_configuration_analog_left">Left Analog</string>
+    <string name="tilt_configuration_analog_right">Right Analog</string>
+    <string name="tilt_configuration_buttons_l_r">L - R</string>
+    <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
+    <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+
+    <string name="settings_title_save_folder">Save folder</string>
+    <string name="settings_save_folder_default">Default</string>
+    <string name="settings_reset_save_folder">Reset save folder</string>
+    <string name="settings_title_data_folder">OMINOY data folder</string>
+    <string name="settings_description_data_folder">Choose where ROMs, saves, save states, and state previews are stored. Custom shared folders need All files access.</string>
+    <string name="data_folder_access_title">Allow access to manage files?</string>
+    <string name="data_folder_access_message">To use a custom data folder, Android requires All files access so the app can write data directly. Android grants broad access to shared storage; this app uses it only for the data folder you select. You can cancel and keep the current folder.</string>
+    <string name="data_folder_access_open_settings">Open Settings</string>
+    <string name="data_folder_access_denied">All files access was not enabled. The selected shared data folder may not be writable.</string>
+    <string name="data_folder_access_settings_unavailable">Could not open Android’s All files access settings.</string>
+    <string name="data_folder_setup_title">Choose a OMINOY data folder</string>
+    <string name="data_folder_setup_message">Choose a folder for ROMs, saves, save states, and state previews. Existing data will be copied there.</string>
+    <string name="data_folder_setup_action">Choose folder</string>
+
+
+    <string name="touch_editor_close">Close editor</string>
+    <string name="touch_editor_reset_layout">Reset layout</string>
+    <string name="touch_editor_save_layout">Save layout</string>
+    <string name="touch_editor_changes_saved">Changes saved</string>
+    <string name="touch_editor_select_hint">Tap to select · drag to move</string>
+    <string name="touch_editor_reset_orientation_title">Reset %1$s layout?</string>
+    <string name="touch_editor_reset_orientation_message">This resets only this console\'s %1$s touch layout.</string>
+    <string name="touch_editor_reset">Reset</string>
+    <string name="touch_editor_cancel">Cancel</string>
+    <string name="touch_editor_game_boy">Game Boy</string>
+    <string name="touch_editor_game_boy_color">Game Boy Color</string>
+    <string name="touch_editor_nes">NES</string>
+    <string name="touch_editor_nintendo_ds">Nintendo DS</string>
+    <string name="touch_editor_nintendo_ds_melonds">Nintendo DS (melonDS)</string>
+    <string name="touch_editor_playstation">PlayStation</string>
+    <string name="touch_editor_playstation_dualshock">PlayStation (DualShock)</string>
+    <string name="touch_editor_nintendo_64">Nintendo 64</string>
+    <string name="touch_editor_psp">PSP</string>
+    <string name="touch_editor_snes">SNES</string>
+    <string name="touch_editor_game_boy_advance">Game Boy Advance</string>
+    <string name="touch_editor_genesis_3">Genesis (3-button)</string>
+    <string name="touch_editor_genesis_6">Genesis (6-button)</string>
+    <string name="touch_editor_atari_2600">Atari 2600</string>
+    <string name="touch_editor_atari_7800">Atari 7800</string>
+    <string name="touch_editor_master_system">Master System</string>
+    <string name="touch_editor_game_gear">Game Gear</string>
+    <string name="touch_editor_arcade_4">Arcade (4-button)</string>
+    <string name="touch_editor_arcade_6">Arcade (6-button)</string>
+    <string name="touch_editor_atari_lynx">Atari Lynx</string>
+    <string name="touch_editor_pc_engine">PC Engine</string>
+    <string name="touch_editor_neo_geo_pocket">Neo Geo Pocket</string>
+    <string name="touch_editor_dos">DOS</string>
+    <string name="touch_editor_wonderswan_landscape">WonderSwan (landscape)</string>
+    <string name="touch_editor_wonderswan_portrait">WonderSwan (portrait)</string>
+    <string name="touch_editor_nintendo_3ds">Nintendo 3DS</string>
+
+    <string name="touch_control_editing">Editing %1$s</string>
+    <string name="touch_control_layout_editor">Touch layout editor</string>
+    <string name="touch_control_visible">Visible</string>
+    <string name="touch_control_always_visible">Always visible</string>
+    <string name="touch_control_move_hint">Tap a control, then drag to move</string>
+    <string name="touch_control_size">Size %1$d%%</string>
+    <string name="touch_control_opacity">Opacity %1$d%%</string>
+    <string name="touch_control_sensitivity">Sensitivity %1$d%% · higher responds more to small movements</string>
+    <string name="touch_control_reset_control">Reset control</string>
+    <string name="touch_control_reset_all">Reset all</string>
+    <string name="touch_control_reset_all_title">Reset whole layout?</string>
+    <string name="touch_control_reset_all_message">This resets every control for this console in the current orientation.</string>
+
+    <string name="touch_control_name_dpad">D-pad</string>
+    <string name="touch_control_name_left_stick">Left stick</string>
+    <string name="touch_control_name_right_stick">Right stick</string>
+    <string name="touch_control_name_dpad_left_stick">D-pad + left stick</string>
+    <string name="touch_control_name_right_dpad">Right D-pad</string>
+    <string name="touch_control_name_start">Start</string>
+    <string name="touch_control_name_select">Select</string>
+    <string name="touch_control_name_menu">Menu</string>
+</resources>

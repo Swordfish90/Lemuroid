@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "come.asg.lemudroid.baselineprofile"
+    namespace = "come.asg.ominoy.baselineprofile"
     compileSdk = deps.android.compileSdkVersion
 
     compileOptions {
@@ -24,14 +24,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    targetProjectPath = ":lemuroid-app"
+    targetProjectPath = ":ominoy-app"
 
     flavorDimensions += listOf("opensource", "cores")
     productFlavors {
         create("free") { dimension = "opensource" }
-        create("play") { dimension = "opensource" }
         create("bundle") { dimension = "cores" }
-        create("dynamic") { dimension = "cores" }
     }
 }
 

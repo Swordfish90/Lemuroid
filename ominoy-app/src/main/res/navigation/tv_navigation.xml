@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tv_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="come.asg.ominoy.app.tv.home.TVHomeFragment"
+        android:label="@string/title_home">
+
+        <action
+            android:id="@+id/action_navigation_systems_to_navigation_games"
+            app:destination="@id/navigation_games" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="come.asg.ominoy.app.tv.search.TVSearchFragment"
+        android:label="@string/title_search"/>
+
+    <fragment
+        android:id="@+id/navigation_games"
+        android:name="come.asg.ominoy.app.tv.games.TVGamesFragment"
+        android:label="@string/title_games">
+
+        <argument
+            android:name="meta_system_id"
+            app:argType="string"
+            app:nullable="false" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="come.asg.ominoy.app.tv.favorites.TVFavoritesFragment"
+        android:label="@string/favorites"/>
+
+</navigation>

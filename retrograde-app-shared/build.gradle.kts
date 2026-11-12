@@ -15,7 +15,7 @@ android {
 
 dependencies {
     implementation(project(":retrograde-util"))
-    implementation(project(":lemuroid-touchinput"))
+    implementation(project(":ominoy-touchinput"))
 
     api(deps.libs.androidx.lifecycle.commonJava8)
 
@@ -61,7 +61,7 @@ android {
             }
         }
     }
-    namespace = "come.asg.lemudroid.lib"
+    namespace = "come.asg.ominoy.lib"
     kotlinOptions {
         this as KotlinJvmOptions
         jvmTarget = "17"
