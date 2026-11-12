@@ -21,9 +21,19 @@ GB · GBC · GBA — powered by Libretro and mGBA.
 ## 📸 Screenshots
 
 <div align="center">
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Home screen" width="30%">
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" alt="In-game screen" width="30%">
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" alt="Game menu" width="30%">
+
+**Home · Library · Settings**
+
+<img src="photos/homescreen.jpg" alt="Home screen" width="30%">
+<img src="photos/library.jpg" alt="Library" width="30%">
+<img src="photos/settings.jpg" alt="Settings" width="30%">
+
+**RetroAchievements — Achievements · Earned · Profile**
+
+<img src="photos/achivements.jpg" alt="Achievements" width="30%">
+<img src="photos/earned achivements.jpg" alt="Earned achievements" width="30%">
+<img src="photos/retroachivements profile.jpg" alt="RetroAchievements profile" width="30%">
+
 </div>
 
 ---
@@ -59,7 +69,7 @@ It originated from a branch of [Retrograde](https://github.com/retrograde/retrog
 ## Planned features
 
 - [ ] More shader options and presets
-- [ ] RetroAchievements integration
+- [x] RetroAchievements integration (softcore)
 - [ ] Additional app themes
 
 ## 🖼️ Custom thumbnails
