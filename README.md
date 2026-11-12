@@ -70,7 +70,6 @@ It originated from a branch of [Retrograde](https://github.com/retrograde/retrog
 ## Planned features
 
 - [ ] More shader options and presets
-- [x] RetroAchievements integration (softcore)
 - [ ] Additional app themes
 - [ ] Custom UI skins and button layout themes
 
