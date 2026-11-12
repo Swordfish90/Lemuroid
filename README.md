@@ -12,8 +12,18 @@ GB · GBC · GBA — powered by Libretro and mGBA.
 ![Core](https://img.shields.io/badge/core-mGBA-E74C3C?style=for-the-badge)
 ![JDK](https://img.shields.io/badge/JDK-21-F89820?style=for-the-badge&logo=openjdk&logoColor=white)
 
-[Features](#-features) · [Supported systems](#-supported-systems) · [Custom thumbnails](#-custom-thumbnails) · [Reliability](#-reliability) · [Building](#-building)
+[Features](#-features) · [Supported systems](#-supported-systems) · [Screenshots](#-screenshots) · [Custom thumbnails](#-custom-thumbnails) · [Reliability](#-reliability) · [Building](#-building)
 
+</div>
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Home screen" width="30%">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" alt="In-game screen" width="30%">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" alt="Game menu" width="30%">
 </div>
 
 ---
