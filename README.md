@@ -65,12 +65,14 @@ It originated from a branch of [Retrograde](https://github.com/retrograde/retrog
 - [x] Android phone and Android TV support
 - [x] Per-game playtime, session count, and last-played information
 - [x] In-app link to OMINOY's GitHub updates
+- [x] RetroAchievements integration (softcore)
 
 ## Planned features
 
 - [ ] More shader options and presets
 - [x] RetroAchievements integration (softcore)
 - [ ] Additional app themes
+- [ ] Custom UI skins and button layout themes
 
 ## 🖼️ Custom thumbnails
 
