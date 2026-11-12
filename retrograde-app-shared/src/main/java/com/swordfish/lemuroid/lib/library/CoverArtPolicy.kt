@@ -38,18 +38,8 @@ object CoverArtPolicy {
             SystemID.WSC to Ratios(0.6900f),
         )
 
-    // TODO This should be probably migrated to the Game class directly.
-    private val tagsRegex = Regex("\\(([^()]*)\\)")
-
-    private fun isJapanese(title: String): Boolean {
-        return tagsRegex.findAll(title)
-            .any { match ->
-                match.groupValues[1].split(',').any { it.trim() == "Japan" }
-            }
-    }
-
     fun aspectRatio(game: Game): Float {
         val ratios = ratiosBySystem[GameSystem.findById(game.systemId).id] ?: return 1f
-        return if (isJapanese(game.title)) ratios.japanese else ratios.usa
+        return if ("Japan" in game.tags) ratios.japanese else ratios.usa
     }
 }

@@ -51,9 +51,20 @@ data class Game(
     val lastPlayedAt: Long? = null,
     val isFavorite: Boolean = false,
 ) : Serializable {
+    val titleWithoutTags: String
+        get() = WHITESPACE_REGEX.replace(TAGS_REGEX.replace(title, " "), " ").trim()
 
+    val tags: Set<String>
+        get() = TAGS_REGEX.findAll(title)
+            .flatMap { it.groupValues[1].splitToSequence(',') }
+            .map(String::trim)
+            .filter(String::isNotEmpty)
+            .toSet()
 
     companion object {
+        private val TAGS_REGEX = Regex("\\(([^()]*)\\)")
+        private val WHITESPACE_REGEX = Regex("\\s+")
+
         val DIFF_CALLBACK =
             object : DiffUtil.ItemCallback<Game>() {
                 override fun areItemsTheSame(

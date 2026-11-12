@@ -8,8 +8,10 @@ import coil.imageLoader
 import coil.load
 import coil.memory.MemoryCache
 import coil.request.CachePolicy
-import com.swordfish.lemuroid.common.drawable.TextDrawable
+import com.swordfish.lemuroid.common.drawable.CompactCoverPlaceholderDrawable
+import com.swordfish.lemuroid.common.drawable.DetailedCoverPlaceholderDrawable
 import com.swordfish.lemuroid.common.graphics.ColorUtils
+import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -54,7 +56,20 @@ object CoverUtils {
             .build()
     }
 
-    fun getFallbackDrawable(game: Game) = TextDrawable(computeTitle(game), computeColor(game))
+    fun getFallbackDrawable(game: Game) = CompactCoverPlaceholderDrawable(computeTitle(game), computeColor(game))
+
+    fun getDetailedFallbackDrawable(context: Context, game: Game) =
+        DetailedCoverPlaceholderDrawable(
+            title = game.titleWithoutTags,
+            platform = context.getString(GameSystem.findById(game.systemId).titleResId).uppercase(),
+            metadata = coverMetadata(game),
+            backgroundColor = computeColor(game),
+        )
+
+    private fun coverMetadata(game: Game): String {
+        val metadata = game.tags.asSequence() + sequenceOf(game.developer).filterNotNull().filter(String::isNotBlank)
+        return metadata.joinToString(" - ")
+    }
 
     fun getFallbackRemoteUrl(game: Game): String {
         val color = Integer.toHexString(computeColor(game)).substring(2)
