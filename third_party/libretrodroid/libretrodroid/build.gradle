@@ -1,0 +1,81 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+group='com.github.Swordfish90'
+
+android {
+    namespace = "com.swordfish.libretrodroid"
+    compileSdkVersion 33
+    buildToolsVersion "34.0.0"
+    ndkVersion "27.2.12479018"
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+
+        externalNativeBuild {
+            cmake {
+                // Available arguments are inside ${SDK}/cmake/.../android.toolchain.cmake file
+                arguments '-DANDROID_STL=c++_static'
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            version '3.22.1'
+            path 'src/main/cpp/CMakeLists.txt'
+        }
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.swordfish'
+            artifactId = 'libretrodroid'
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

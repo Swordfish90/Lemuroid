@@ -9,7 +9,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    namespace = "come.asg.lemudroid.common"
+    namespace = "come.asg.ominoy.common"
 
     buildFeatures {
         compose = true

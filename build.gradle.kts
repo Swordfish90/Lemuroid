@@ -53,7 +53,11 @@ subprojects {
     afterEvaluate {
         if (hasProperty("android")) {
             // BaseExtension is common parent for application, library and test modules
-            apply(plugin = "org.jlleitschuh.gradle.ktlint")
+            // Keep ktlint on project code without enforcing this repository's style on vendored libraries.
+            val isVendoredProject = project.projectDir.toPath().startsWith(rootProject.file("third_party").toPath())
+            if (!isVendoredProject) {
+                apply(plugin = "org.jlleitschuh.gradle.ktlint")
+            }
 
             extensions.configure(BaseExtension::class.java) {
                 compileSdkVersion(deps.android.compileSdkVersion)

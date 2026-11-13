@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: apk
-          path: lemuroid-app/build/outputs/apk/freeDynamic/release/lemuroid-app-free-dynamic-release.apk
+          path: ominoy-app/build/outputs/apk/freeDynamic/release/ominoy-app-free-dynamic-release.apk
 
   publish_apk:
     name: Publish APK on Github
@@ -57,4 +57,4 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
           title: "Pre-release"
-          files: lemuroid-app-free-dynamic-release.apk
+          files: ominoy-app-free-dynamic-release.apk

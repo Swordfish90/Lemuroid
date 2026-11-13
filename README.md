@@ -12,7 +12,27 @@ GB · GBC · GBA — powered by Libretro and mGBA.
 ![Core](https://img.shields.io/badge/core-mGBA-E74C3C?style=for-the-badge)
 ![JDK](https://img.shields.io/badge/JDK-21-F89820?style=for-the-badge&logo=openjdk&logoColor=white)
 
-[Features](#-features) · [Supported systems](#-supported-systems) · [Custom thumbnails](#-custom-thumbnails) · [Reliability](#-reliability) · [Building](#-building)
+[Features](#-features) · [Supported systems](#-supported-systems) · [Screenshots](#-screenshots) · [Custom thumbnails](#-custom-thumbnails) · [Reliability](#-reliability) · [Building](#-building)
+
+</div>
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+
+**Home · Library · Settings**
+
+<img src="photos/homescreen.jpg" alt="Home screen" width="30%">
+<img src="photos/library.jpg" alt="Library" width="30%">
+<img src="photos/settings.jpg" alt="Settings" width="30%">
+
+**RetroAchievements — Achievements · Earned · Profile**
+
+<img src="photos/achivements.jpg" alt="Achievements" width="30%">
+<img src="photos/earned achivements.jpg" alt="Earned achievements" width="30%">
+<img src="photos/retroachivements profile.jpg" alt="RetroAchievements profile" width="30%">
 
 </div>
 
@@ -45,12 +65,13 @@ It originated from a branch of [Retrograde](https://github.com/retrograde/retrog
 - [x] Android phone and Android TV support
 - [x] Per-game playtime, session count, and last-played information
 - [x] In-app link to OMINOY's GitHub updates
+- [x] RetroAchievements integration (softcore)
 
 ## Planned features
 
 - [ ] More shader options and presets
-- [ ] RetroAchievements integration
 - [ ] Additional app themes
+- [ ] Custom UI skins and button layout themes
 
 ## 🖼️ Custom thumbnails
 

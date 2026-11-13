@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ExtraTestsActivity">
+
+    <GridLayout
+        android:id="@+id/buttonGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2">
+
+        <Button
+            android:id="@+id/buttonBackToMain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchMainActivity"
+            android:text="Back to Main" />
+
+        <Button
+            android:id="@+id/buttonExternalTap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchExternalTapTest"
+            android:text="External Tap" />
+
+        <Button
+            android:id="@+id/buttonPlugLatency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchPlugLatencyTest"
+            android:text="Plug Latency" />
+
+        <Button
+            android:id="@+id/buttonErrorCallback"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchErrorCallbackTest"
+            android:text="Error Callback" />
+
+        <Button
+            android:id="@+id/buttonRouteDuringCallback"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchRouteDuringCallbackTest"
+            android:text="Routing Stress" />
+
+        <Button
+            android:id="@+id/buttonDynamicWorkload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchDynamicWorkloadTest"
+            android:text="CPU Load" />
+
+        <Button
+            android:id="@+id/buttonColdStartLatency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchColdStartLatencyTest"
+            android:text="Cold Start Latency" />
+
+        <Button
+            android:id="@+id/buttonRapidCycle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/button_tint"
+            android:onClick="onLaunchRapidCycleTest"
+            android:text="Rapid Cycle" />
+    </GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

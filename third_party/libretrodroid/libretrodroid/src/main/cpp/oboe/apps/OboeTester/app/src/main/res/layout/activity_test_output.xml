@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    tools:context="com.mobileer.oboetester.TestOutputActivity"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
+
+    <include layout="@layout/merge_audio_common"/>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/channelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Channels:" />
+
+            <CheckBox
+                android:id="@+id/channelBox0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="0" />
+
+            <CheckBox
+                android:id="@+id/channelBox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="1" />
+
+            <CheckBox
+                android:id="@+id/channelBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="2" />
+
+            <CheckBox
+                android:id="@+id/channelBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="3" />
+
+            <CheckBox
+                android:id="@+id/channelBox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="4" />
+
+            <CheckBox
+                android:id="@+id/channelBox5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="5" />
+
+            <CheckBox
+                android:id="@+id/channelBox6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="6" />
+
+            <CheckBox
+                android:id="@+id/channelBox7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="7" />
+
+            <CheckBox
+                android:id="@+id/channelBox8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="8" />
+
+            <CheckBox
+                android:id="@+id/channelBox9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="9" />
+
+            <CheckBox
+                android:id="@+id/channelBox10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="10" />
+
+            <CheckBox
+                android:id="@+id/channelBox11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="11" />
+
+            <CheckBox
+                android:id="@+id/channelBox12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="12" />
+
+            <CheckBox
+                android:id="@+id/channelBox13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="13" />
+
+            <CheckBox
+                android:id="@+id/channelBox14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="14" />
+
+            <CheckBox
+                android:id="@+id/channelBox15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onChannelBoxClicked"
+                android:text="15" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textVolumeSlider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volume(dB): 0.0" />
+
+        <SeekBar
+            android:id="@+id/faderVolumeSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="500"
+            android:progress="500" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Signal:" />
+        <Spinner
+            android:id="@+id/spinnerOutputSignal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/output_signals"
+            android:prompt="@string/output_signal_prompt" />
+        <CheckBox
+            android:id="@+id/enableSetStreamControlByAttributes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="VolumeByAttr" />
+    </LinearLayout>
+
+    <com.mobileer.oboetester.CommunicationDeviceView
+        android:id="@+id/comm_device_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+</LinearLayout>
+</ScrollView>

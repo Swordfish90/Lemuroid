@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.android.libretrodroid">
+  <uses-feature android:glEsVersion="0x00030000" android:required="true" />
+
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+  <application
+      android:allowBackup="false"
+      android:fullBackupContent="false"
+      android:icon="@mipmap/ic_launcher"
+      android:isGame="true"
+      android:label="@string/activity_title">
+    <activity
+        android:name="com.swordfish.libretrodroid.SampleActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:launchMode="singleTask"
+        android:exported="true"
+        android:configChanges="orientation|screenSize|keyboardHidden">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

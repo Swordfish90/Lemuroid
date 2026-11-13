@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_loading_download_core">Downloader kerne…</string>
+    <string name="game_loader_error_load_core">Libretro kernen blev ikke indlæst. Sørg for, at din enhed er tilsluttet internettet, og prøv at genskanne dit bibliotek. Hvis problemet fortsætter, understøttes denne kerne muligvis ikke på din enhed.</string>
+</resources>
