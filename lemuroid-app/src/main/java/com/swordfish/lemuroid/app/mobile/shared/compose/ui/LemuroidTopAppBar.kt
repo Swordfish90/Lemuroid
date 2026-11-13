@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.shared.compose.ui
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -13,15 +14,18 @@ fun LemuroidTopAppBar(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
+    loading: Boolean = false,
 ) {
-    TopAppBar(
-        title = title,
-        modifier = modifier,
-        navigationIcon = navigationIcon,
-        actions = actions,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = BottomAppBarDefaults.containerColor,
-            scrolledContainerColor = BottomAppBarDefaults.containerColor,
-        ),
-    )
+    Column(modifier = modifier) {
+        TopAppBar(
+            title = title,
+            navigationIcon = navigationIcon,
+            actions = actions,
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = BottomAppBarDefaults.containerColor,
+                scrolledContainerColor = BottomAppBarDefaults.containerColor,
+            ),
+        )
+        LemuroidOperationProgressIndicator(visible = loading)
+    }
 }

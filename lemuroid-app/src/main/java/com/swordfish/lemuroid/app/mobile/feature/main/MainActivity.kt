@@ -10,9 +10,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
@@ -60,8 +57,7 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsScreen
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.StatusBarProtection
-import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidOperationProgressIndicator
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.SystemBarProtection
 import com.swordfish.lemuroid.app.mobile.shared.compose.utils.rememberSlideAwayTopBarScrollBehavior
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
@@ -415,15 +411,6 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                             )
                         }
                     }
-                    LemuroidOperationProgressIndicator(
-                        visible = mainUIState.operationInProgress,
-                        modifier = Modifier.padding(
-                            top = maxOf(
-                                padding.calculateTopPadding(),
-                                WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
-                            ),
-                        ),
-                    )
                 }
             }
         }
@@ -460,7 +447,7 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
             )
         }
 
-        StatusBarProtection()
+        SystemBarProtection(protectNavigationBar = false)
     }
 
     override fun activity(): Activity = this

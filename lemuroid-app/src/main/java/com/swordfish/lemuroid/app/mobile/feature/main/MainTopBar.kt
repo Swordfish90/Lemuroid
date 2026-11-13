@@ -55,6 +55,7 @@ fun MainTopBar(
 
     LemuroidTopAppBar(
         modifier = modifier,
+        loading = mainUIState.operationInProgress,
         title = {
             if (currentRoute == MainRoute.SEARCH) {
                 LemuroidSearchView(

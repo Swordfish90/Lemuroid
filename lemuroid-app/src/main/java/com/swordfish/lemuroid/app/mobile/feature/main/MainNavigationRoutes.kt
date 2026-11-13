@@ -45,6 +45,7 @@ fun NavGraphBuilder.dialog(
         arguments = route.arguments,
         dialogProperties = DialogProperties(
             usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false,
             dismissOnBackPress = false,
             dismissOnClickOutside = false,
         ),
