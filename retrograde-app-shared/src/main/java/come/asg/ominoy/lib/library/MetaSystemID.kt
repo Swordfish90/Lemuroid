@@ -7,7 +7,11 @@ fun GameSystem.metaSystemID() = MetaSystemID.fromSystemID(id)
 
 /** Meta systems represents a collection of systems which appear the same to the user. It's currently
  *  only for Arcade (without separating FBNeo, MAME2000 or MAME2003). */
-enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs: List<SystemID>) {
+enum class MetaSystemID(
+    val titleResId: Int,
+    val imageResId: Int,
+    val systemIDs: List<SystemID>,
+) {
     NES(
         R.string.game_system_title_nes,
         R.drawable.game_system_nes,
@@ -115,13 +119,11 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
     ),
     ;
 
-    fun color(): Int {
-        return ColorUtils.color(ordinal.toFloat() / values().size)
-    }
+    fun color(): Int = ColorUtils.color(ordinal.toFloat() / values().size)
 
     companion object {
-        fun fromSystemID(systemID: SystemID): MetaSystemID {
-            return when (systemID) {
+        fun fromSystemID(systemID: SystemID): MetaSystemID =
+            when (systemID) {
                 SystemID.FBNEO -> ARCADE
                 SystemID.MAME2003PLUS -> ARCADE
                 SystemID.ATARI2600 -> ATARI2600
@@ -148,6 +150,5 @@ enum class MetaSystemID(val titleResId: Int, val imageResId: Int, val systemIDs:
                 SystemID.WSC -> WS
                 SystemID.NINTENDO_3DS -> NINTENDO_3DS
             }
-        }
     }
 }

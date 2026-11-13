@@ -12,9 +12,8 @@ interface SavesMigrator {
     ): ByteArray?
 }
 
-fun SystemCoreConfig.getSavesMigrator(): SavesMigrator? {
-    return when (this.coreID) {
+fun SystemCoreConfig.getSavesMigrator(): SavesMigrator? =
+    when (this.coreID) {
         CoreID.MELONDS -> MelonDsSavesMigrator
         else -> null
     }
-}

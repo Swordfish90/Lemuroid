@@ -58,7 +58,9 @@ class GameLoader(
 
         object LoadingGame : LoadingState()
 
-        class Ready(val gameData: GameData) : LoadingState()
+        class Ready(
+            val gameData: GameData,
+        ) : LoadingState()
     }
 
     fun load(
@@ -82,8 +84,9 @@ class GameLoader(
 
                 // Resolve the bundled mGBA native library; this app does not fetch cores.
                 val coreFile = findLibrary(appContext, systemCoreConfig.coreID)
-                val coreLibrary = coreFile?.absolutePath
-                    ?: throw GameLoaderException(GameLoaderError.LoadCore)
+                val coreLibrary =
+                    coreFile?.absolutePath
+                        ?: throw GameLoaderException(GameLoaderError.LoadCore)
 
                 emit(LoadingState.LoadingGame)
 
@@ -126,7 +129,8 @@ class GameLoader(
                     }.getOrElse { throw GameLoaderException(GameLoaderError.Saves) }
 
                 val coreVariables =
-                    coreVariablesManager.getOptionsForCore(system.id, systemCoreConfig)
+                    coreVariablesManager
+                        .getOptionsForCore(system.id, systemCoreConfig)
                         .toTypedArray()
 
                 val systemDirectory = directoriesManager.getSystemDirectory()
@@ -157,7 +161,10 @@ class GameLoader(
 
     private fun isArchitectureSupported(systemCoreConfig: SystemCoreConfig): Boolean {
         val supportedOnlyArchitectures = systemCoreConfig.supportedOnlyArchitectures ?: return true
-        return Build.SUPPORTED_ABIS.toSet().intersect(supportedOnlyArchitectures).isNotEmpty()
+        return Build.SUPPORTED_ABIS
+            .toSet()
+            .intersect(supportedOnlyArchitectures)
+            .isNotEmpty()
     }
 
     private fun findLibrary(
@@ -178,7 +185,8 @@ class GameLoader(
                 .filter { it.isFile && it.name == coreID.libretroFileName }
                 .toList()
 
-        return candidates.firstOrNull { it.canRead() && it.length() > 0L }
+        return candidates
+            .firstOrNull { it.canRead() && it.length() > 0L }
             .also { library ->
                 if (library == null) {
                     Timber.e(

@@ -12,7 +12,9 @@ import java.io.File
 import java.io.FileOutputStream
 
 /** Manages durable, processed custom cover artwork in app-private storage. */
-class CustomCoverManager(private val appContext: Context) {
+class CustomCoverManager(
+    private val appContext: Context,
+) {
     fun getCoversDirectory(): File {
         val parent = appContext.getExternalFilesDir(null) ?: appContext.filesDir
         return File(parent, "custom-covers").apply {
@@ -23,10 +25,14 @@ class CustomCoverManager(private val appContext: Context) {
     private fun coverFileForGame(gameId: Int): File = File(getCoversDirectory(), "cover_$gameId.jpg")
 
     /** Imports, center-crops, and scales artwork, returning a durable local URI. */
-    suspend fun importCover(gameId: Int, sourceUri: Uri): String =
+    suspend fun importCover(
+        gameId: Int,
+        sourceUri: Uri,
+    ): String =
         withContext(Dispatchers.IO) {
-            val source = decodeSampled(sourceUri)
-                ?: throw IllegalStateException("Cannot decode image for custom cover: $sourceUri")
+            val source =
+                decodeSampled(sourceUri)
+                    ?: throw IllegalStateException("Cannot decode image for custom cover: $sourceUri")
             val destination = coverFileForGame(gameId)
             val directory = destination.parentFile ?: throw IllegalStateException("Missing cover directory")
             val temporary = File(directory, "cover_$gameId.${System.nanoTime()}.tmp")
@@ -78,10 +84,11 @@ class CustomCoverManager(private val appContext: Context) {
 
         var sampleSize = 1
         while (maxOf(bounds.outWidth, bounds.outHeight) / sampleSize > MAX_DECODE_EDGE) sampleSize *= 2
-        val options = BitmapFactory.Options().apply {
-            inSampleSize = sampleSize
-            inPreferredConfig = Bitmap.Config.ARGB_8888
-        }
+        val options =
+            BitmapFactory.Options().apply {
+                inSampleSize = sampleSize
+                inPreferredConfig = Bitmap.Config.ARGB_8888
+            }
         return resolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, options) }
     }
 
@@ -98,9 +105,13 @@ class CustomCoverManager(private val appContext: Context) {
         deleteOtherCoversForGameId(gameId, keep = null)
     }
 
-    private fun deleteOtherCoversForGameId(gameId: Int, keep: File?) {
+    private fun deleteOtherCoversForGameId(
+        gameId: Int,
+        keep: File?,
+    ) {
         val prefix = "cover_$gameId."
-        getCoversDirectory().listFiles()
+        getCoversDirectory()
+            .listFiles()
             ?.filter { it != keep && it.name.startsWith(prefix) }
             ?.forEach { file -> Timber.d("Deleted custom cover ${file.name}: ${file.delete()}") }
     }

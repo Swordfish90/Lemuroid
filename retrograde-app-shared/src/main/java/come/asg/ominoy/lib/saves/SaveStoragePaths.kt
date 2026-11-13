@@ -13,7 +13,7 @@ internal object SaveStoragePaths {
     ): String {
         val baseName = game.fileName.substringBeforeLast(".").safeBasename("game")
         val identity = stableGameIdentity(game.fileUri, game.systemId, discriminator)
-        return "${baseName}__${identity}"
+        return "${baseName}__$identity"
     }
 
     fun gameDirectory(

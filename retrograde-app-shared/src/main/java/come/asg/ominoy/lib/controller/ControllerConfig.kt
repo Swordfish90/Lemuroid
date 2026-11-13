@@ -15,7 +15,5 @@ data class ControllerConfig(
     val libretroId: Int? = null,
     val tiltConfigurations: List<TiltConfiguration> = emptyList(),
 ) : Serializable {
-    fun getTouchControllerConfig(): TouchControllerID.Config {
-        return TouchControllerID.getConfig(touchControllerID)
-    }
+    fun getTouchControllerConfig(): TouchControllerID.Config = TouchControllerID.getConfig(touchControllerID)
 }

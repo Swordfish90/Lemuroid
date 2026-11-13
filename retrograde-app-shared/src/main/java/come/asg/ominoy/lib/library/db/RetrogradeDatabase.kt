@@ -26,8 +26,8 @@ import come.asg.ominoy.lib.library.db.dao.GameCheatDao
 import come.asg.ominoy.lib.library.db.dao.GameDao
 import come.asg.ominoy.lib.library.db.dao.GameSearchDao
 import come.asg.ominoy.lib.library.db.entity.DataFile
-import come.asg.ominoy.lib.library.db.entity.GameCheat
 import come.asg.ominoy.lib.library.db.entity.Game
+import come.asg.ominoy.lib.library.db.entity.GameCheat
 
 @Database(
     entities = [Game::class, DataFile::class, GameCheat::class],

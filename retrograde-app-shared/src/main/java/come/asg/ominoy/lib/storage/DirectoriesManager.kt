@@ -9,7 +9,9 @@ import come.asg.ominoy.lib.R
 import come.asg.ominoy.lib.preferences.SharedPreferencesHelper
 import java.io.File
 
-class DirectoriesManager(private val appContext: Context) {
+class DirectoriesManager(
+    private val appContext: Context,
+) {
     private val saveFolderMirror by lazy { SaveFolderMirror(appContext, this) }
     private val legacyPreferences: SharedPreferences by lazy {
         SharedPreferencesHelper.getLegacySharedPreferences(appContext)
@@ -42,8 +44,7 @@ class DirectoriesManager(private val appContext: Context) {
     fun getDataDirectory(): File =
         (getSelectedDataDirectory() ?: appContext.getExternalFilesDir(null)!!).apply { mkdirs() }
 
-    private fun getSelectedDataSubdirectory(name: String): File =
-        File(getDataDirectory(), name).apply { mkdirs() }
+    private fun getSelectedDataSubdirectory(name: String): File = File(getDataDirectory(), name).apply { mkdirs() }
 
     @Deprecated("Use the external states directory")
     fun getInternalStatesDirectory(): File =
@@ -61,18 +62,13 @@ class DirectoriesManager(private val appContext: Context) {
             mkdirs()
         }
 
-    fun getStatesDirectory(): File =
-        getSelectedDataSubdirectory("states")
+    fun getStatesDirectory(): File = getSelectedDataSubdirectory("states")
 
-    fun getStatesPreviewDirectory(): File =
-        getSelectedDataSubdirectory("state-previews")
+    fun getStatesPreviewDirectory(): File = getSelectedDataSubdirectory("state-previews")
 
-    fun getSavesDirectory(): File =
-        getSelectedDataSubdirectory("saves")
+    fun getSavesDirectory(): File = getSelectedDataSubdirectory("saves")
 
-    fun getAchievementsDirectory(): File =
-        getSelectedDataSubdirectory("achievements")
+    fun getAchievementsDirectory(): File = getSelectedDataSubdirectory("achievements")
 
-    fun getInternalRomsDirectory(): File =
-        getSelectedDataSubdirectory("roms")
+    fun getInternalRomsDirectory(): File = getSelectedDataSubdirectory("roms")
 }

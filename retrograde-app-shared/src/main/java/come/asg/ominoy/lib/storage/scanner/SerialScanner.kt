@@ -15,7 +15,10 @@ import kotlin.math.roundToInt
 object SerialScanner {
     private val READ_BUFFER_SIZE = 64.kiloBytes()
 
-    data class DiskInfo(val serial: String?, val systemID: SystemID?)
+    data class DiskInfo(
+        val serial: String?,
+        val systemID: SystemID?,
+    )
 
     @ExperimentalUnsignedTypes
     private val MAGIC_NUMBERS =
@@ -164,8 +167,7 @@ object SerialScanner {
             MAGIC_NUMBERS
                 .firstOrNull {
                     header.copyOfRange(it.offset, it.offset + it.numbers.size).contentEquals(it.numbers)
-                }
-                ?.systemID
+                }?.systemID
 
         Timber.d("SystemID detected via magic numbers: $detectedSystem")
 
@@ -283,17 +285,15 @@ object SerialScanner {
                     serial.startsWithAny(PSP_BASE_SERIALS) -> DiskInfo(serial, SystemID.PSP)
                     else -> DiskInfo(serial, null)
                 }
-            }
-            .firstOrNull() ?: DiskInfo(null, null)
+            }.firstOrNull() ?: DiskInfo(null, null)
     }
 
-    private fun parsePSXSerial(serial: String): String? {
-        return sequenceOf(
+    private fun parsePSXSerial(serial: String): String? =
+        sequenceOf(
             PS_SERIAL_REGEX.find(serial)?.groupValues?.let { "${it[1]}-${it[2]}" },
             PS_SERIAL_REGEX2.find(serial)?.groupValues?.let { "${it[1]}-${it[2]}${it[3]}" },
         ).filter { it != null }
             .firstOrNull()
-    }
 
     private fun textSearch(
         queries: List<String>,
@@ -308,16 +308,15 @@ object SerialScanner {
         return movingWidnowSequence(openedStream, windowSize, (skipSize).toLong())
             .take(ceil(streamSize.toDouble() / skipSize.toDouble()).roundToInt())
             .flatMap { serial ->
-                byteQueries.asSequence()
+                byteQueries
+                    .asSequence()
                     .map { serial.indexOf(it) }
                     .filter { it >= 0 }
                     .map { serial to it }
-            }
-            .map { (bytes, index) ->
+            }.map { (bytes, index) ->
                 val serialBytes = bytes.copyOfRange(index, index + resultSize)
                 String(serialBytes, charset)
-            }
-            .filterNotNull()
+            }.filterNotNull()
     }
 
     private fun movingWidnowSequence(

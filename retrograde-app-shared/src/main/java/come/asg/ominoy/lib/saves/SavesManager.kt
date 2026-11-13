@@ -12,12 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class SavesManager(private val directoriesManager: DirectoriesManager) {
+class SavesManager(
+    private val directoriesManager: DirectoriesManager,
+) {
     suspend fun getSaveRAM(
         game: Game,
         systemCoreConfig: SystemCoreConfig,
-    ): ByteArray? {
-        return withContext(Dispatchers.IO) {
+    ): ByteArray? =
+        withContext(Dispatchers.IO) {
             migrateLegacyFile(game)
             runCatchingWithRetry(FILE_ACCESS_RETRIES) {
                 val saveFile = saveFile(game)
@@ -28,7 +30,6 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
                 }
             }.getOrThrow()
         }
-    }
 
     suspend fun setSaveRAM(
         game: Game,
@@ -44,13 +45,12 @@ class SavesManager(private val directoriesManager: DirectoriesManager) {
         }
     }
 
-    suspend fun getSaveRAMInfo(game: Game): SaveInfo {
-        return withContext(Dispatchers.IO) {
+    suspend fun getSaveRAMInfo(game: Game): SaveInfo =
+        withContext(Dispatchers.IO) {
             migrateLegacyFile(game)
             val file = saveFile(game)
             SaveInfo(file.isFile && file.length() > 0, file.lastModified())
         }
-    }
 
     private fun migrateLegacyFile(game: Game) {
         val baseName = game.fileName.substringBeforeLast(".").safeBasename("game")

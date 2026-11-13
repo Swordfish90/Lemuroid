@@ -7,5 +7,8 @@ data class ExposedSetting(
     val titleId: Int,
     val values: ArrayList<Value> = arrayListOf(),
 ) : Serializable {
-    data class Value(val key: String, val titleId: Int) : Serializable
+    data class Value(
+        val key: String,
+        val titleId: Int,
+    ) : Serializable
 }

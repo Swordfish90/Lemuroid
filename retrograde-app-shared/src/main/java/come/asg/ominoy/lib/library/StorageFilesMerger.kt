@@ -125,11 +125,12 @@ object StorageFilesMerger {
     private fun extractBinFiles(
         storageProvider: StorageProvider,
         uri: Uri,
-    ): List<String> {
-        return runCatching {
-            storageProvider.getInputStream(uri)?.readLines()
+    ): List<String> =
+        runCatching {
+            storageProvider
+                .getInputStream(uri)
+                ?.readLines()
                 ?.mapNotNull { Regex("FILE \"(.*)\"").find(it)?.groupValues?.get(1) }
                 ?: listOf()
         }.getOrDefault(listOf())
-    }
 }

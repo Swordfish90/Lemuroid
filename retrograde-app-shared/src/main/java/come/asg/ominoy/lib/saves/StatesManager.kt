@@ -15,7 +15,9 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.File
 
-class StatesManager(private val directoriesManager: DirectoriesManager) {
+class StatesManager(
+    private val directoriesManager: DirectoriesManager,
+) {
     suspend fun getSlotSave(
         game: Game,
         coreID: CoreID,
@@ -80,15 +82,19 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
             }
         }
 
-    private suspend fun readSaveState(stateFile: File, metadataFile: File): SaveState? {
+    private suspend fun readSaveState(
+        stateFile: File,
+        metadataFile: File,
+    ): SaveState? {
         return runCatchingWithRetry(FILE_ACCESS_RETRIES) {
             if (!stateFile.isFile || stateFile.length() <= 0) return@runCatchingWithRetry null
-            val metadata = runCatching {
-                Json.Default.decodeFromString(
-                    SaveState.Metadata.serializer(),
-                    metadataFile.readTextAtomic(),
-                )
-            }.getOrNull() ?: SaveState.Metadata()
+            val metadata =
+                runCatching {
+                    Json.Default.decodeFromString(
+                        SaveState.Metadata.serializer(),
+                        metadataFile.readTextAtomic(),
+                    )
+                }.getOrNull() ?: SaveState.Metadata()
             SaveState(stateFile.readBytesUncompressedAtomic(), metadata)
         }.getOrThrow()
     }
@@ -105,11 +111,14 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
         }.getOrThrow()
     }
 
-    private fun migrateLegacyFiles(game: Game, coreID: CoreID) {
+    private fun migrateLegacyFiles(
+        game: Game,
+        coreID: CoreID,
+    ) {
         val legacyDirectory = legacyCoreDirectory(coreID.coreName)
         val directory = gameStateDirectory(game, coreID)
         val baseName = game.fileName.safeBasename()
-        val hashedBaseName = "${baseName}-${stableGameIdentity(game.fileUri, game.systemId, coreID.coreName)}"
+        val hashedBaseName = "$baseName-${stableGameIdentity(game.fileUri, game.systemId, coreID.coreName)}"
 
         migratePair(
             listOf("$baseName.state", "$hashedBaseName.state"),
@@ -147,18 +156,38 @@ class StatesManager(private val directoriesManager: DirectoriesManager) {
     private fun legacyCoreDirectory(coreName: String): File =
         File(directoriesManager.getStatesDirectory(), coreName.safeBasename()).apply { mkdirs() }
 
-    private fun gameStateDirectory(game: Game, coreID: CoreID): File =
+    private fun gameStateDirectory(
+        game: Game,
+        coreID: CoreID,
+    ): File =
         SaveStoragePaths.gameDirectory(
             legacyCoreDirectory(coreID.coreName),
             game,
             "state:${coreID.coreName}",
         )
 
-    private fun stateFile(game: Game, coreID: CoreID, index: Int): File =
+    private fun stateFile(
+        game: Game,
+        coreID: CoreID,
+        index: Int,
+    ): File =
         File(gameStateDirectory(game, coreID), if (index == AUTO_SLOT) "autosave.state" else "slot${index + 1}.state")
 
-    private fun metadataFile(game: Game, coreID: CoreID, index: Int): File =
-        File(gameStateDirectory(game, coreID), if (index == AUTO_SLOT) "autosave.state.metadata" else "slot${index + 1}.state.metadata")
+    private fun metadataFile(
+        game: Game,
+        coreID: CoreID,
+        index: Int,
+    ): File =
+        File(
+            gameStateDirectory(game, coreID),
+            if (index ==
+                AUTO_SLOT
+            ) {
+                "autosave.state.metadata"
+            } else {
+                "slot${index + 1}.state.metadata"
+            },
+        )
 
     companion object {
         const val MAX_STATES = 4

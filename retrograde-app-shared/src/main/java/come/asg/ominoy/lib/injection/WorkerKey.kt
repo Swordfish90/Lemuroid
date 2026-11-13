@@ -7,4 +7,6 @@ import kotlin.reflect.KClass
 @MapKey
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class WorkerKey(val value: KClass<out ListenableWorker>)
+annotation class WorkerKey(
+    val value: KClass<out ListenableWorker>,
+)

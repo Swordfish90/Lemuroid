@@ -18,15 +18,14 @@ object DocumentFileParser {
     fun parseDocumentFile(
         context: Context,
         baseStorageFile: BaseStorageFile,
-    ): StorageFile {
-        return if (baseStorageFile.extension == "zip") {
+    ): StorageFile =
+        if (baseStorageFile.extension == "zip") {
             Timber.d("Detected zip file. ${baseStorageFile.name}")
             parseZipFile(context, baseStorageFile)
         } else {
             Timber.d("Detected standard file. ${baseStorageFile.name}")
             parseStandardFile(context, baseStorageFile)
         }
-    }
 
     private fun parseZipFile(
         context: Context,
@@ -70,7 +69,8 @@ object DocumentFileParser {
         baseStorageFile: BaseStorageFile,
     ): StorageFile {
         val diskInfo =
-            context.contentResolver.openInputStream(baseStorageFile.uri)
+            context.contentResolver
+                .openInputStream(baseStorageFile.uri)
                 ?.let { inputStream -> SerialScanner.extractInfo(baseStorageFile.name, inputStream) }
 
         val crc32 =

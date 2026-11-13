@@ -1,6 +1,5 @@
 package come.asg.ominoy.lib.library
 
-
 enum class CoreID(
     val coreName: String,
     val coreDisplayName: String,
@@ -106,8 +105,6 @@ enum class CoreID(
         "DosBox Pure",
         "libdosbox_pure_libretro_android.so",
     ),
-    ;
-
 }
 
 fun findByName(query: String): CoreID? = CoreID.values().firstOrNull { it.coreName == query }

@@ -20,21 +20,19 @@ object CacheCleaner {
     private val MIN_CACHE_LIMIT = 64L.megaBytes()
     private val MAX_CACHE_LIMIT = 10L.gigaBytes()
 
-    fun getSupportedCacheLimits(): List<Long> {
-        return generateSequence(MIN_CACHE_LIMIT) { it * 2L }
+    fun getSupportedCacheLimits(): List<Long> =
+        generateSequence(MIN_CACHE_LIMIT) { it * 2L }
             .takeWhile { it <= MAX_CACHE_LIMIT }
             .toList()
-    }
 
     fun getDefaultCacheLimit(): Long {
         val defaultCacheSize = (getInternalMemorySize() * 0.01f).roundToLong()
         return getClosestCacheLimit(defaultCacheSize)
     }
 
-    private fun getClosestCacheLimit(size: Long): Long {
-        return getSupportedCacheLimits()
+    private fun getClosestCacheLimit(size: Long): Long =
+        getSupportedCacheLimits()
             .minByOrNull { abs(it - size) } ?: 0
-    }
 
     private fun getInternalMemorySize(): Long {
         val path: File = Environment.getDataDirectory()
@@ -63,7 +61,8 @@ object CacheCleaner {
                 )
 
             val cacheFiles =
-                cacheFoldersSequence.flatten()
+                cacheFoldersSequence
+                    .flatten()
                     .filter { it.isFile }
                     .sortedBy { retrieveLastAccess(it) }
                     .toMutableList()
@@ -93,9 +92,7 @@ object CacheCleaner {
     private fun printSize(
         appContext: Context,
         size: Long,
-    ): String {
-        return Formatter.formatFileSize(appContext, size)
-    }
+    ): String = Formatter.formatFileSize(appContext, size)
 
     private fun retrieveLastAccess(file: File) = Os.lstat(file.absolutePath).st_atime
 }

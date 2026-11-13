@@ -52,8 +52,8 @@ data class Game(
     val customName: String? = null,
     val customCoverUri: String? = null,
 ) : Serializable {
-
     fun displayName(): String = customName ?: title
+
     fun displayCoverUrl(): String? = customCoverUri ?: coverFrontUrl
 
     companion object {
@@ -62,16 +62,12 @@ data class Game(
                 override fun areItemsTheSame(
                     oldItem: Game,
                     newItem: Game,
-                ): Boolean {
-                    return oldItem.id == newItem.id
-                }
+                ): Boolean = oldItem.id == newItem.id
 
                 override fun areContentsTheSame(
                     oldItem: Game,
                     newItem: Game,
-                ): Boolean {
-                    return oldItem == newItem
-                }
+                ): Boolean = oldItem == newItem
             }
     }
 }

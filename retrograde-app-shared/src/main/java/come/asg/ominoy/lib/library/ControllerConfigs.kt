@@ -1,7 +1,5 @@
 package come.asg.ominoy.lib.library
 
-import come.asg.ominoy.lib.R
-import come.asg.ominoy.lib.controller.ControllerConfig
 import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_ANALOG_LEFT
 import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_ANALOG_RIGHT
 import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_CROSS
@@ -10,6 +8,8 @@ import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_L1_R1
 import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_L2_R2
 import com.swordfish.touchinput.radial.sensors.TILT_CONFIGURATION_L_R
 import com.swordfish.touchinput.radial.settings.TouchControllerID
+import come.asg.ominoy.lib.R
+import come.asg.ominoy.lib.controller.ControllerConfig
 
 // TODO PADS... Make sure the ids are correct.
 object ControllerConfigs {

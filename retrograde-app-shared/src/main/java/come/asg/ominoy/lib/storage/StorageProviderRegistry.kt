@@ -24,16 +24,21 @@ import android.content.SharedPreferences
 import android.net.Uri
 import come.asg.ominoy.lib.library.db.entity.Game
 
-class StorageProviderRegistry(context: Context, val providers: Set<StorageProvider>) {
+class StorageProviderRegistry(
+    context: Context,
+    val providers: Set<StorageProvider>,
+) {
     companion object {
         const val PREF_NAME = "storage_providers"
     }
 
     private val providersByScheme =
         mapOf(
-            *providers.map { provider ->
-                provider.uriSchemes.map { scheme -> scheme to provider }
-            }.flatten().toTypedArray(),
+            *providers
+                .map { provider ->
+                    provider.uriSchemes.map { scheme -> scheme to provider }
+                }.flatten()
+                .toTypedArray(),
         )
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

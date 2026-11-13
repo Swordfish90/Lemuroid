@@ -42,13 +42,11 @@ object GameCacheUtils {
         return gamesCacheDir
     }
 
-    private fun buildPath(vararg chunks: String): String {
-        return chunks.joinToString(separator = File.separator)
-    }
+    private fun buildPath(vararg chunks: String): String = chunks.joinToString(separator = File.separator)
 
-    private fun sha256(value: String): String {
-        return MessageDigest.getInstance("SHA-256")
+    private fun sha256(value: String): String =
+        MessageDigest
+            .getInstance("SHA-256")
             .digest(value.toByteArray(Charsets.UTF_8))
             .joinToString("") { "%02x".format(it) }
-    }
 }

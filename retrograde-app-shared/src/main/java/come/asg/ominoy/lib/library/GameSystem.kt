@@ -215,13 +215,14 @@ data class GameSystem(
 
         fun all() = SYSTEMS
 
-        fun getSupportedExtensions(): List<String> {
-            return SYSTEMS.flatMap { it.supportedExtensions }
-        }
+        fun getSupportedExtensions(): List<String> = SYSTEMS.flatMap { it.supportedExtensions }
 
-        fun findSystemForCore(coreID: CoreID): List<GameSystem> {
-            return all().filter { system -> system.systemCoreConfigs.any { it.coreID == coreID } }
-        }
+        fun findSystemForCore(coreID: CoreID): List<GameSystem> =
+            all().filter { system ->
+                system.systemCoreConfigs.any {
+                    it.coreID == coreID
+                }
+            }
 
         fun findByUniqueFileExtension(fileExtension: String): GameSystem? =
             byExtensionCache[fileExtension.toLowerCase(Locale.US)]

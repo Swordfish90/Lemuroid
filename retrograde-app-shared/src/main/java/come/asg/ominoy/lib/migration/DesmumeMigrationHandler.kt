@@ -33,11 +33,13 @@ class DesmumeMigrationHandler(
         }
     }
 
-    data class SaveDataResult(val data: ByteArray?, val timestampOverride: Long?)
+    data class SaveDataResult(
+        val data: ByteArray?,
+        val timestampOverride: Long?,
+    )
 
-    fun hasPendingDesmumeSaves(): Boolean {
-        return directoriesManager.getSavesDirectory().hasAnyFileWithExtension(DSV_EXTENSION)
-    }
+    fun hasPendingDesmumeSaves(): Boolean =
+        directoriesManager.getSavesDirectory().hasAnyFileWithExtension(DSV_EXTENSION)
 
     private data class SaveCandidate(
         val file: File,
@@ -71,21 +73,19 @@ class DesmumeMigrationHandler(
         return SaveDataResult(null, null)
     }
 
-    private fun File.readBytesSafely(): ByteArray? {
-        return runCatching { readBytes() }
+    private fun File.readBytesSafely(): ByteArray? =
+        runCatching { readBytes() }
             .getOrElse {
                 Timber.w(it, "Unable to read save file %s", absolutePath)
                 null
             }
-    }
 
-    private fun File.readBytesIfValid(): ByteArray? {
-        return if (exists() && length() > 0) {
+    private fun File.readBytesIfValid(): ByteArray? =
+        if (exists() && length() > 0) {
             readBytesSafely()
         } else {
             null
         }
-    }
 
     private fun convertDsvToRaw(data: ByteArray): ByteArray {
         val footerIndex = data.indexOfSubArray(DESMUME_FOOTER_PREFIX)

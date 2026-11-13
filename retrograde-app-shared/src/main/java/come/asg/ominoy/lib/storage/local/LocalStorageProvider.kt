@@ -57,9 +57,8 @@ class LocalStorageProvider(
     override fun listBaseStorageFiles(): Flow<List<BaseStorageFile>> =
         walkDirectory(getExternalFolder() ?: directoriesManager.getInternalRomsDirectory())
 
-    override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? {
-        return DocumentFileParser.parseDocumentFile(context, baseStorageFile)
-    }
+    override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? =
+        DocumentFileParser.parseDocumentFile(context, baseStorageFile)
 
     private fun getExternalFolder(): File? {
         val prefString = context.getString(R.string.pref_key_legacy_external_folder)
@@ -74,7 +73,8 @@ class LocalStorageProvider(
             while (directories.isNotEmpty()) {
                 val directory = directories.removeAt(0)
                 val groups =
-                    directory.listFiles()
+                    directory
+                        .listFiles()
                         ?.filterNot { it.name.startsWith(".") }
                         ?.groupBy { it.isDirectory } ?: mapOf()
 
@@ -100,7 +100,13 @@ class LocalStorageProvider(
             return originalFile
         }
 
-        val cacheFile = GameCacheUtils.getCacheFileForGame(LOCAL_STORAGE_CACHE_SUBFOLDER, context, game, "${originalFile.length()}:${originalFile.lastModified()}")
+        val cacheFile =
+            GameCacheUtils.getCacheFileForGame(
+                LOCAL_STORAGE_CACHE_SUBFOLDER,
+                context,
+                game,
+                "${originalFile.length()}:${originalFile.lastModified()}",
+            )
         if (cacheFile.exists()) {
             return cacheFile
         }
@@ -117,13 +123,9 @@ class LocalStorageProvider(
         game: Game,
         dataFiles: List<DataFile>,
         allowVirtualFiles: Boolean,
-    ): RomFiles {
-        return RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
-    }
+    ): RomFiles = RomFiles.Standard(listOf(getGameRom(game)) + dataFiles.map { getDataFile(it) })
 
-    override fun getInputStream(uri: Uri): InputStream {
-        return File(uri.path).inputStream()
-    }
+    override fun getInputStream(uri: Uri): InputStream = File(uri.path).inputStream()
 
     companion object {
         const val LOCAL_STORAGE_CACHE_SUBFOLDER = "local-storage-games"

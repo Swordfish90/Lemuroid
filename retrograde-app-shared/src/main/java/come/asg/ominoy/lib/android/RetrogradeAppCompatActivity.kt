@@ -10,7 +10,10 @@ import dagger.android.HasFragmentInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-abstract class RetrogradeAppCompatActivity : AppCompatActivity(), HasFragmentInjector, HasSupportFragmentInjector {
+abstract class RetrogradeAppCompatActivity :
+    AppCompatActivity(),
+    HasFragmentInjector,
+    HasSupportFragmentInjector {
     @Inject
     lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 

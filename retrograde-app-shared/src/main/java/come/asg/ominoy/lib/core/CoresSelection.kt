@@ -51,25 +51,24 @@ class CoresSelection(
         system: GameSystem,
         coreID: CoreID,
     ) = withContext(Dispatchers.IO) {
-        sharedPreferences.edit()
+        sharedPreferences
+            .edit()
             .putString(computeSystemPreferenceKey(system.id), coreID.coreName)
             .commit()
     }
 
-    suspend fun getCoreConfigForSystem(system: GameSystem): SystemCoreConfig {
-        return getSelectedCoreConfigForSystem(system).first()
-    }
+    suspend fun getCoreConfigForSystem(system: GameSystem): SystemCoreConfig =
+        getSelectedCoreConfigForSystem(system).first()
 
-    private fun getSelectedCoreConfigForSystem(system: GameSystem): Flow<SystemCoreConfig> {
-        return getSelectedCoreNameForSystem(system)
+    private fun getSelectedCoreConfigForSystem(system: GameSystem): Flow<SystemCoreConfig> =
+        getSelectedCoreNameForSystem(system)
             .map { coreName ->
                 system.systemCoreConfigs.firstOrNull { it.coreID.coreName == coreName }
                     ?: system.systemCoreConfigs.first()
             }
-    }
 
-    private fun getSelectedCoreNameForSystem(system: GameSystem): Flow<String> {
-        return flow {
+    private fun getSelectedCoreNameForSystem(system: GameSystem): Flow<String> =
+        flow {
             val preferenceKey = computeSystemPreferenceKey(system.id)
             val currentValue = flowSharedPreferences.sharedPreferences.getString(preferenceKey, null)
             var defaultValue = currentValue
@@ -88,7 +87,6 @@ class CoresSelection(
                 )
             emitAll(preference.asFlow())
         }.flowOn(Dispatchers.IO)
-    }
 
     // TODO Also get rid of this when desmume is gone
     private fun getDefaultCoreForSystem(system: GameSystem): String {
@@ -99,7 +97,11 @@ class CoresSelection(
                 CoreID.MELONDS.coreName
             }
         }
-        return system.systemCoreConfigs.firstOrNull()?.coreID?.coreName.orEmpty()
+        return system.systemCoreConfigs
+            .firstOrNull()
+            ?.coreID
+            ?.coreName
+            .orEmpty()
     }
 
     companion object {

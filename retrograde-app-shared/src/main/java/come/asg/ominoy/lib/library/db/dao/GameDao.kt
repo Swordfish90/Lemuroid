@@ -89,4 +89,7 @@ interface GameDao {
     fun update(games: List<Game>)
 }
 
-data class SystemCount(val systemId: String, val count: Int)
+data class SystemCount(
+    val systemId: String,
+    val count: Int,
+)

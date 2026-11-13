@@ -10,7 +10,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteQuery
 import come.asg.ominoy.lib.library.db.entity.Game
 
-class GameSearchDao(private val internalDao: Internal) {
+class GameSearchDao(
+    private val internalDao: Internal,
+) {
     object CALLBACK : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)

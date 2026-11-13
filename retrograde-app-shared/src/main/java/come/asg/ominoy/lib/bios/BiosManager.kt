@@ -15,7 +15,9 @@ import java.io.InputStream
 import java.security.MessageDigest
 import java.util.Locale
 
-class BiosManager(private val directoriesManager: DirectoriesManager) {
+class BiosManager(
+    private val directoriesManager: DirectoriesManager,
+) {
     private val biosByMd5 = SUPPORTED_BIOS.associateBy { it.md5.lowercase(Locale.US) }
     private val biosByName = SUPPORTED_BIOS.associateBy { it.libretroFileName }
 
