@@ -50,8 +50,9 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
 
     private fun convertToGameMetadata(rom: LibretroRom): GameMetadata {
         val systemId = rom.system ?: throw IllegalArgumentException("Metadata row has no system")
-        val system = GameSystem.findByIdOrNull(systemId)
-            ?: throw IllegalArgumentException("Metadata row has unsupported system: $systemId")
+        val system =
+            GameSystem.findByIdOrNull(systemId)
+                ?: throw IllegalArgumentException("Metadata row has unsupported system: $systemId")
         return GameMetadata(
             name = rom.name,
             romName = rom.romName,
@@ -76,7 +77,11 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
     ): GameMetadata? {
         return db.gameDao().findByFileName(file.name)
             .filterNullable { extractGameSystem(it)?.scanOptions?.scanByPathAndFilename == true }
-            .filterNullable { extractGameSystem(it)?.let { system -> parentContainsSystem(file.path, system.id.dbname) } == true }
+            .filterNullable { game ->
+                extractGameSystem(game)?.let { system ->
+                    parentContainsSystem(file.path, system.id.dbname)
+                } == true
+            }
             ?.let { convertToGameMetadata(it) }
     }
 
