@@ -56,10 +56,6 @@ android {
     }
 
     signingConfigs {
-        maybeCreate("debug").apply {
-            storeFile = file("$rootDir/debug.keystore")
-        }
-
         if (hasReleaseSigningProperties) {
             maybeCreate("release").apply {
                 storeFile = keystoreProperties.getProperty("storeFile")?.let(::file)
