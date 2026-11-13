@@ -11,6 +11,7 @@ import com.swordfish.touchinput.radial.controls.OminoyControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryAnalogLeft
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryAnalogRight
+import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonFastForward
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonL1
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonL2
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
@@ -18,7 +19,6 @@ import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonR1
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonR2
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonSelect
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonStart
-import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonFastForward
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.OminoyButtonForeground
 import gg.padkit.PadKitScope

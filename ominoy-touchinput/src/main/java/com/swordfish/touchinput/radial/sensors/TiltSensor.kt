@@ -19,7 +19,9 @@ import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.sign
 
-class TiltSensor(context: Context) : SensorEventListener {
+class TiltSensor(
+    context: Context,
+) : SensorEventListener {
     private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val primaryDisplay = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
 
@@ -79,9 +81,7 @@ class TiltSensor(context: Context) : SensorEventListener {
         Timber.d("Setting tilt sensitivity max angle: ${Math.toDegrees(maxRotation.toDouble())}")
     }
 
-    fun isAvailable(): Boolean {
-        return sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR) != null
-    }
+    fun isAvailable(): Boolean = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR) != null
 
     override fun onAccuracyChanged(
         sensor: Sensor?,
@@ -130,37 +130,31 @@ class TiltSensor(context: Context) : SensorEventListener {
         }
     }
 
-    private fun getAxisRemapForDisplayRotation(): Pair<Int, Int> {
-        return when (primaryDisplay.rotation) {
+    private fun getAxisRemapForDisplayRotation(): Pair<Int, Int> =
+        when (primaryDisplay.rotation) {
             Surface.ROTATION_0 -> SensorManager.AXIS_X to SensorManager.AXIS_Y
             Surface.ROTATION_90 -> SensorManager.AXIS_Y to SensorManager.AXIS_MINUS_X
             Surface.ROTATION_270 -> SensorManager.AXIS_MINUS_Y to SensorManager.AXIS_X
             Surface.ROTATION_180 -> SensorManager.AXIS_MINUS_X to SensorManager.AXIS_MINUS_Y
             else -> SensorManager.AXIS_X to SensorManager.AXIS_Y
         }
-    }
 
     private fun chooseBestAngleRepresentation(
         x: Float,
         offset: Float,
-    ): Float {
-        return sequenceOf(x, x + offset, x - offset).minByOrNull { abs(it) }!!
-    }
+    ): Float = sequenceOf(x, x + offset, x - offset).minByOrNull { abs(it) }!!
 
     private fun applyDeadZone(
         x: Float,
         deadzone: Float,
-    ): Float {
-        return if (abs(x) < deadzone) {
+    ): Float =
+        if (abs(x) < deadzone) {
             0f
         } else {
             x - sign(x) * deadzone
         }
-    }
 
-    private fun clamp(x: Float): Float {
-        return maxOf(minOf(x, 1f), -1f)
-    }
+    private fun clamp(x: Float): Float = maxOf(minOf(x, 1f), -1f)
 
     companion object {
         const val SKIPPED_MEASUREMENTS = 1

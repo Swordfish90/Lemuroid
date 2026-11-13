@@ -22,38 +22,37 @@ sealed interface TiltConfiguration : Serializable {
     fun controlIds(): Set<Id>
 
     data object Disabled : TiltConfiguration {
-        override fun process(values: FloatArray): InputState {
-            return InputState()
-        }
+        override fun process(values: FloatArray): InputState = InputState()
 
-        override fun controlIds(): Set<Id> {
-            return emptySet()
-        }
+        override fun controlIds(): Set<Id> = emptySet()
     }
 
-    data class Cross(val directionId: Int) : TiltConfiguration {
+    data class Cross(
+        val directionId: Int,
+    ) : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
             val offset = Offset(values[0], -values[1]).round()
             return InputState().setDiscreteDirection(Id.DiscreteDirection(directionId), offset.toOffset())
         }
 
-        override fun controlIds(): Set<Id> {
-            return setOf(Id.DiscreteDirection(directionId))
-        }
+        override fun controlIds(): Set<Id> = setOf(Id.DiscreteDirection(directionId))
     }
 
-    data class Analog(val directionId: Int) : TiltConfiguration {
+    data class Analog(
+        val directionId: Int,
+    ) : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
             val offset = Offset(values[0], -values[1])
             return InputState().setContinuousDirection(Id.ContinuousDirection(directionId), offset)
         }
 
-        override fun controlIds(): Set<Id> {
-            return setOf(Id.ContinuousDirection(directionId))
-        }
+        override fun controlIds(): Set<Id> = setOf(Id.ContinuousDirection(directionId))
     }
 
-    data class ButtonPair(val leftButtonId: Int, val rightButtonId: Int) : TiltConfiguration {
+    data class ButtonPair(
+        val leftButtonId: Int,
+        val rightButtonId: Int,
+    ) : TiltConfiguration {
         override fun process(values: FloatArray): InputState {
             val xTilt = values[0]
             val yTilt = values[1]
@@ -67,8 +66,6 @@ sealed interface TiltConfiguration : Serializable {
                 .setDigitalKey(Id.Key(rightButtonId), rightPressed || bothPressed)
         }
 
-        override fun controlIds(): Set<Id> {
-            return setOf(Id.Key(leftButtonId), Id.Key(rightButtonId))
-        }
+        override fun controlIds(): Set<Id> = setOf(Id.Key(leftButtonId), Id.Key(rightButtonId))
     }
 }

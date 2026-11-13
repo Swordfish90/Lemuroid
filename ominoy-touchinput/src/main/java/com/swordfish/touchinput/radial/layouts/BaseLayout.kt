@@ -36,8 +36,7 @@ fun BaseLayoutLeft(
                 .absolutePadding(
                     left = TouchControllerSettingsManager.MAX_MARGINS.dp * settings.marginX,
                     bottom = TouchControllerSettingsManager.MAX_MARGINS.dp * settings.marginY,
-                )
-                .padding(LocalOminoyPadTheme.current.padding),
+                ).padding(LocalOminoyPadTheme.current.padding),
         primaryDial = primaryDial,
         secondaryDials = secondaryDials,
         primaryDialMaxSize = 160.dp * interpolatedDialSize,
@@ -59,8 +58,7 @@ fun BaseLayoutRight(
                 .absolutePadding(
                     right = TouchControllerSettingsManager.MAX_MARGINS.dp * settings.marginX,
                     bottom = TouchControllerSettingsManager.MAX_MARGINS.dp * settings.marginY,
-                )
-                .padding(LocalOminoyPadTheme.current.padding),
+                ).padding(LocalOminoyPadTheme.current.padding),
         primaryDial = primaryDial,
         secondaryDials = secondaryDials,
         primaryDialMaxSize =

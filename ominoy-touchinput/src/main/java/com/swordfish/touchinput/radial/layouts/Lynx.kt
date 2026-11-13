@@ -8,8 +8,8 @@ import com.swordfish.touchinput.radial.controls.OminoyControlButton
 import com.swordfish.touchinput.radial.controls.OminoyControlCross
 import com.swordfish.touchinput.radial.controls.OminoyControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
-import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonFastForward
+import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonStart
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import com.swordfish.touchinput.radial.ui.OminoyButtonForeground

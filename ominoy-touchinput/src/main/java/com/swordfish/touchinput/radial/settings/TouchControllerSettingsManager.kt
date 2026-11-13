@@ -22,7 +22,9 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 
-class TouchControllerSettingsManager(private val sharedPreferences: SharedPreferences) {
+class TouchControllerSettingsManager(
+    private val sharedPreferences: SharedPreferences,
+) {
     enum class Orientation {
         PORTRAIT,
         LANDSCAPE,
@@ -50,14 +52,13 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
     private fun computeInsetsPaddings(
         density: Density,
         insets: WindowInsets,
-    ): PaddingValues {
-        return PaddingValues(
+    ): PaddingValues =
+        PaddingValues(
             insets.getLeft(density, layoutDirection = LayoutDirection.Ltr).pxToDp(density),
             insets.getTop(density).pxToDp(density),
             insets.getRight(density, layoutDirection = LayoutDirection.Ltr).pxToDp(density),
             insets.getBottom(density).pxToDp(density),
         )
-    }
 
     fun observeSettings(
         touchControllerID: TouchControllerID,
@@ -114,6 +115,7 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         val settingsKey = getPreferenceString(touchControllerID, orientation)
         cachedSettings.getOrPut(settingsKey) { MutableStateFlow(loadSettings(settingsKey)) }.value = null
     }
+
     /** Discards in-memory edits and restores the last persisted layout. */
     fun discardChanges(
         touchControllerID: TouchControllerID,
@@ -123,6 +125,7 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         val savedSettings = loadSettings(settingsKey)
         cachedSettings.getOrPut(settingsKey) { MutableStateFlow(savedSettings) }.value = savedSettings
     }
+
     /** Writes the current in-memory settings to disk (asynchronous apply). */
     fun persist(
         touchControllerID: TouchControllerID,
@@ -202,7 +205,10 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
     }
 
     companion object {
-        data class ControlPreset(val key: String, val label: String)
+        data class ControlPreset(
+            val key: String,
+            val label: String,
+        )
 
         /** Single place that defines how a control id maps to its persisted settings key. */
         fun controlKey(id: Id): String = id.toString()
@@ -274,9 +280,7 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
     private fun getPreferenceString(
         controllerID: TouchControllerID,
         orientation: Orientation,
-    ): String {
-        return "touch_controller_settings_${controllerID}_${orientation.ordinal}"
-    }
+    ): String = "touch_controller_settings_${controllerID}_${orientation.ordinal}"
 }
 
 val LocalTouchControllerSettings =

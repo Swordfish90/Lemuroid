@@ -81,8 +81,8 @@ fun PadKitScope.Genesis6Right(
 }
 
 @Composable
-private fun rememberCentralAnchorsForSixButtons(rotation: Float): PersistentList<Anchor<Id.Key>> {
-    return remember(rotation) {
+private fun rememberCentralAnchorsForSixButtons(rotation: Float): PersistentList<Anchor<Id.Key>> =
+    remember(rotation) {
         buildCentral6ButtonsAnchors(
             rotation,
             KeyEvent.KEYCODE_BUTTON_X,
@@ -91,4 +91,3 @@ private fun rememberCentralAnchorsForSixButtons(rotation: Float): PersistentList
             KeyEvent.KEYCODE_BUTTON_Y,
         )
     }
-}

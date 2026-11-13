@@ -8,8 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
@@ -129,8 +129,7 @@ fun Modifier.touchControlTransform(id: Id): Modifier {
                             liveDrag = Offset(dx, dy)
                         },
                     )
-                }
-                .pointerInput(key) {
+                }.pointerInput(key) {
                     detectTapGestures(
                         onPress = { onSelect(key) },
                         onDoubleTap = {
@@ -158,8 +157,7 @@ fun Modifier.touchControlTransform(id: Id): Modifier {
             // Without this, alpha < 1 renders into an offscreen layer clipped to the control's bounds,
             // which cut multi-part controls (D-pad, face-button clusters) down to a fragment.
             compositingStrategy = CompositingStrategy.ModulateAlpha
-        }
-        .onGloballyPositioned { frame.update(it) }
+        }.onGloballyPositioned { frame.update(it) }
         .drawWithContent {
             drawContent()
             if (isEditing && isSelected) {

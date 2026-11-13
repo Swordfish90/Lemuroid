@@ -95,8 +95,8 @@ enum class TouchControllerID {
     )
 
     companion object {
-        fun getConfig(id: TouchControllerID): Config {
-            return when (id) {
+        fun getConfig(id: TouchControllerID): Config =
+            when (id) {
                 GB ->
                     Config(
                         { modifier, settings -> GBLeft(modifier, settings) },
@@ -253,6 +253,5 @@ enum class TouchControllerID {
                         { modifier, settings -> Nintendo3DSRight(modifier, settings) },
                     )
             }
-        }
     }
 }

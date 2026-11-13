@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import come.asg.ominoy.common.compose.textUnit
 import com.swordfish.touchinput.radial.LocalOminoyPadTheme
+import come.asg.ominoy.common.compose.textUnit
 
 @Composable
 fun OminoyButtonForeground(

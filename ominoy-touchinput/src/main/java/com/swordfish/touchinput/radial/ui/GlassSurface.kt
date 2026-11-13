@@ -125,19 +125,21 @@ fun GlassSurface(
 
                     if (haloWidthPx > 0f && outlineHaloColor.alpha > 0f) {
                         val inset = haloWidthPx / 2f
-                        val innerSize = Size(
-                            (expandedSize.width - haloWidthPx).coerceAtLeast(0f),
-                            (expandedSize.height - haloWidthPx).coerceAtLeast(0f),
-                        )
+                        val innerSize =
+                            Size(
+                                (expandedSize.width - haloWidthPx).coerceAtLeast(0f),
+                                (expandedSize.height - haloWidthPx).coerceAtLeast(0f),
+                            )
                         if (innerSize.width > 0f && innerSize.height > 0f) {
                             drawRoundRect(
                                 color = outlineHaloColor,
                                 topLeft = Offset(inset, inset),
                                 size = innerSize,
-                                cornerRadius = CornerRadius(
-                                    (cornerRadiusPx - inset).coerceAtLeast(0f),
-                                    (cornerRadiusPx - inset).coerceAtLeast(0f),
-                                ),
+                                cornerRadius =
+                                    CornerRadius(
+                                        (cornerRadiusPx - inset).coerceAtLeast(0f),
+                                        (cornerRadiusPx - inset).coerceAtLeast(0f),
+                                    ),
                                 style = Stroke(width = haloWidthPx),
                             )
                         }
@@ -145,19 +147,21 @@ fun GlassSurface(
 
                     if (outlineWidthPx > 0f && outlineColor.alpha > 0f) {
                         val inset = haloWidthPx + outlineWidthPx / 2f
-                        val innerSize = Size(
-                            (expandedSize.width - inset * 2f).coerceAtLeast(0f),
-                            (expandedSize.height - inset * 2f).coerceAtLeast(0f),
-                        )
+                        val innerSize =
+                            Size(
+                                (expandedSize.width - inset * 2f).coerceAtLeast(0f),
+                                (expandedSize.height - inset * 2f).coerceAtLeast(0f),
+                            )
                         if (innerSize.width > 0f && innerSize.height > 0f) {
                             drawRoundRect(
                                 color = outlineColor,
                                 topLeft = Offset(inset, inset),
                                 size = innerSize,
-                                cornerRadius = CornerRadius(
-                                    (cornerRadiusPx - inset).coerceAtLeast(0f),
-                                    (cornerRadiusPx - inset).coerceAtLeast(0f),
-                                ),
+                                cornerRadius =
+                                    CornerRadius(
+                                        (cornerRadiusPx - inset).coerceAtLeast(0f),
+                                        (cornerRadiusPx - inset).coerceAtLeast(0f),
+                                    ),
                                 style = Stroke(width = outlineWidthPx),
                             )
                         }

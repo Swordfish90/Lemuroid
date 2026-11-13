@@ -1,9 +1,9 @@
 package com.swordfish.touchinput.radial.utils
 
 import androidx.compose.ui.geometry.Offset
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import come.asg.ominoy.common.graphics.GraphicsUtils.rotatePoint
 import come.asg.ominoy.common.math.computeSizeOfItemsAroundCircumference
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.padkit.anchors.Anchor
 import gg.padkit.ids.Id
 import kotlinx.collections.immutable.PersistentList
