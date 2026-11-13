@@ -27,7 +27,6 @@ android {
     }
     flavorDimensions += listOf("opensource", "cores")
 
-
     // Since some dependencies are closed source we make a completely free as in free speech variant.
 
     productFlavors {
@@ -36,12 +35,10 @@ android {
             dimension = "opensource"
         }
 
-
         // Include cores in the final apk
         create("bundle") {
             dimension = "cores"
         }
-
     }
 
     packagingOptions {
