@@ -34,7 +34,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -49,10 +48,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.swordfish.touchinput.radial.LocalOminoyPadTheme
 import com.swordfish.touchinput.radial.settings.LocalTouchControllerSettings
@@ -65,7 +64,10 @@ import come.asg.ominoy.app.utils.android.settings.rememberTouchButtonAppearanceT
 import gg.padkit.PadKit
 import gg.padkit.config.HapticFeedbackType
 
-private enum class ViewportPosition(val label: String, val preferenceValue: String) {
+private enum class ViewportPosition(
+    val label: String,
+    val preferenceValue: String,
+) {
     TOP("Top", "top"),
     CENTER("Center", "center"),
     BOTTOM("Bottom", "bottom"),
@@ -105,8 +107,7 @@ fun ViewportAlignmentScreen(
                 orientation,
                 androidx.compose.ui.platform.LocalDensity.current,
                 WindowInsets.displayCutout,
-            )
-            .collectAsState(null)
+            ).collectAsState(null)
             .value
     val viewportPosition = ViewportPosition.valueOf(selectedPosition)
     val selectedControllerId = TouchControllerID.valueOf(controllerId)
@@ -118,15 +119,17 @@ fun ViewportAlignmentScreen(
     }
 
     fun saveAndClose() {
-        preferences.edit()
+        preferences
+            .edit()
             .putString("viewport_alignment", viewportPosition.preferenceValue)
             .putInt(CUSTOM_POSITION_KEY, (customPosition * 1000f).toInt())
             .apply()
-        Toast.makeText(
-            context,
-            context.getString(R.string.touch_editor_changes_saved),
-            Toast.LENGTH_SHORT,
-        ).show()
+        Toast
+            .makeText(
+                context,
+                context.getString(R.string.touch_editor_changes_saved),
+                Toast.LENGTH_SHORT,
+            ).show()
         backDispatcher?.onBackPressed()
     }
 
@@ -144,12 +147,17 @@ fun ViewportAlignmentScreen(
                     val padKitScope = this
                     ConstraintLayout(
                         modifier = Modifier.fillMaxSize(),
-                        constraintSet = GameScreenLayout.buildConstraintSet(isLandscape = false, allowTouchOverlay = true),
+                        constraintSet =
+                            GameScreenLayout.buildConstraintSet(
+                                isLandscape = false,
+                                allowTouchOverlay = true,
+                            ),
                     ) {
                         Box(
-                            modifier = Modifier
-                                .layoutId(GameScreenLayout.CONSTRAINTS_GAME_VIEW)
-                                .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
+                            modifier =
+                                Modifier
+                                    .layoutId(GameScreenLayout.CONSTRAINTS_GAME_VIEW)
+                                    .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top)),
                         ) {
                             BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
                                 val screenAspectRatio =
@@ -168,29 +176,34 @@ fun ViewportAlignmentScreen(
                                         ViewportPosition.CUSTOM -> availableHeight * customPosition
                                     }
                                 Box(
-                                    modifier = Modifier
-                                        .width(maxWidth)
-                                        .height(screenHeight)
-                                        .offset(y = screenOffset)
-                                        .then(
-                                            if (viewportPosition == ViewportPosition.CUSTOM) {
-                                                Modifier.pointerInput(availableHeight) {
-                                                    detectDragGestures { change, dragAmount ->
-                                                        change.consume()
-                                                        val availablePx = with(density) {
-                                                            availableHeight.toPx()
-                                                        }
-                                                        if (availablePx > 0f) {
-                                                            customPosition =
-                                                                (customPosition + dragAmount.y / availablePx).coerceIn(0f, 1f)
+                                    modifier =
+                                        Modifier
+                                            .width(maxWidth)
+                                            .height(screenHeight)
+                                            .offset(y = screenOffset)
+                                            .then(
+                                                if (viewportPosition == ViewportPosition.CUSTOM) {
+                                                    Modifier.pointerInput(availableHeight) {
+                                                        detectDragGestures { change, dragAmount ->
+                                                            change.consume()
+                                                            val availablePx =
+                                                                with(density) {
+                                                                    availableHeight.toPx()
+                                                                }
+                                                            if (availablePx > 0f) {
+                                                                customPosition =
+                                                                    (customPosition + dragAmount.y / availablePx)
+                                                                        .coerceIn(
+                                                                            0f,
+                                                                            1f,
+                                                                        )
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            } else {
-                                                Modifier
-                                            },
-                                        )
-                                        .background(Color.White),
+                                                } else {
+                                                    Modifier
+                                                },
+                                            ).background(Color.White),
                                 )
                             }
                         }
@@ -212,16 +225,19 @@ fun ViewportAlignmentScreen(
         }
 
         Card(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .widthIn(max = 760.dp)
-                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
-                .padding(horizontal = 8.dp, vertical = 2.dp),
+            modifier =
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .widthIn(max = 760.dp)
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+                    ).padding(horizontal = 8.dp, vertical = 2.dp),
         ) {
             Row(
-                modifier = Modifier
-                    .horizontalScroll(rememberScrollState())
-                    .padding(horizontal = 6.dp, vertical = 0.dp),
+                modifier =
+                    Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 6.dp, vertical = 0.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {

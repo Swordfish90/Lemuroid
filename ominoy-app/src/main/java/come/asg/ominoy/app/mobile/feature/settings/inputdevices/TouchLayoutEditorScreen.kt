@@ -15,10 +15,10 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -139,11 +139,12 @@ private fun TouchLayoutEditorContent(
 
     fun save() {
         settingsManager.persist(controllerId, orientation)
-        Toast.makeText(
-            context,
-            context.getString(come.asg.ominoy.R.string.touch_editor_changes_saved),
-            Toast.LENGTH_SHORT,
-        ).show()
+        Toast
+            .makeText(
+                context,
+                context.getString(come.asg.ominoy.R.string.touch_editor_changes_saved),
+                Toast.LENGTH_SHORT,
+            ).show()
     }
 
     DisposableEffect(controllerId, orientation, settingsManager) {
@@ -182,7 +183,10 @@ private fun TouchLayoutEditorContent(
                 PadKit(
                     modifier = Modifier.fillMaxSize(),
                     onInputEvents = { events ->
-                        if (events.any { it is InputEvent.Button && it.id == KeyEvent.KEYCODE_BUTTON_MODE && it.pressed }) {
+                        if (events.any {
+                                it is InputEvent.Button && it.id == KeyEvent.KEYCODE_BUTTON_MODE && it.pressed
+                            }
+                        ) {
                             onMenuPressed?.invoke()
                         }
                     },
@@ -228,13 +232,16 @@ private fun TouchLayoutEditorContent(
 
         Card(
             modifier =
-                Modifier.align(Alignment.TopCenter).widthIn(max = 760.dp)
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .widthIn(max = 760.dp)
                     .windowInsetsPadding(safeDrawingInsets.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
                     .padding(horizontal = 8.dp, vertical = 2.dp),
         ) {
             Row(
                 modifier =
-                    Modifier.horizontalScroll(rememberScrollState())
+                    Modifier
+                        .horizontalScroll(rememberScrollState())
                         .padding(horizontal = 6.dp, vertical = 0.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -290,7 +297,8 @@ private fun TouchLayoutEditorContent(
         if (selectedControlKey == null) {
             Card(
                 modifier =
-                    Modifier.align(Alignment.TopCenter)
+                    Modifier
+                        .align(Alignment.TopCenter)
                         .windowInsetsPadding(safeDrawingInsets.only(WindowInsetsSides.Top))
                         .padding(top = 68.dp),
             ) {
@@ -306,11 +314,13 @@ private fun TouchLayoutEditorContent(
         if (settings != null && selectedControlKey != null) {
             Box(
                 modifier =
-                    Modifier.align(Alignment.TopCenter).fillMaxWidth().widthIn(max = 760.dp)
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .fillMaxWidth()
+                        .widthIn(max = 760.dp)
                         .windowInsetsPadding(
                             safeDrawingInsets.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
-                        )
-                        .padding(top = 64.dp),
+                        ).padding(top = 64.dp),
             ) {
                 TouchControlEditorPanel(
                     selectedControlKey = selectedControlKey,

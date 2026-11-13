@@ -2,22 +2,16 @@ package come.asg.ominoy.app.mobile.feature.main
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.core.tween
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VideogameAsset
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.PlayArrow
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.VideogameAsset
 import androidx.compose.runtime.Composable
@@ -83,10 +77,11 @@ enum class MainRoute(
         route = "game/{gameId}/{systemId}/cheats",
         titleId = R.string.game_menu_cheats,
         parent = HOME,
-        arguments = listOf(
-            navArgument("gameId") { type = NavType.IntType },
-            navArgument("systemId") { type = NavType.StringType },
-        ),
+        arguments =
+            listOf(
+                navArgument("gameId") { type = NavType.IntType },
+                navArgument("systemId") { type = NavType.StringType },
+            ),
         showBottomNavigation = false,
     ),
     SETTINGS(
@@ -146,14 +141,10 @@ enum class MainRoute(
 
     val root = root()
 
-    private fun root(): MainRoute {
-        return parent?.root() ?: this
-    }
+    private fun root(): MainRoute = parent?.root() ?: this
 
     companion object {
-        fun findByRoute(route: String): MainRoute {
-            return values().first { it.route == route }
-        }
+        fun findByRoute(route: String): MainRoute = values().first { it.route == route }
     }
 }
 

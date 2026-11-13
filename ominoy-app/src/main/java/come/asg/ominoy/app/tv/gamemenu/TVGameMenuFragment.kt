@@ -66,7 +66,8 @@ class TVGameMenuFragment(
     }
 
     private suspend fun initializeControllers() {
-        inputDeviceManager.getGamePadsObservable()
+        inputDeviceManager
+            .getGamePadsObservable()
             .safeCollect { setupCoreOptions(it.size) }
     }
 

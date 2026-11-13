@@ -10,13 +10,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BiosSettingsViewModel(private val biosManager: BiosManager) : ViewModel() {
+class BiosSettingsViewModel(
+    private val biosManager: BiosManager,
+) : ViewModel() {
     class Factory
         @Inject
-        constructor(private val biosManager: BiosManager) : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return BiosSettingsViewModel(biosManager) as T
-            }
+        constructor(
+            private val biosManager: BiosManager,
+        ) : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T = BiosSettingsViewModel(biosManager) as T
         }
 
     private val mutableUiState = MutableStateFlow(BiosManager.BiosInfo(emptyList(), emptyList()))

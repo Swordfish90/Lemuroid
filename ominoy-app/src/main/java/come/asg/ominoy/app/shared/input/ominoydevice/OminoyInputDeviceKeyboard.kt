@@ -10,24 +10,24 @@ import come.asg.ominoy.app.shared.input.inputKeysOf
 import come.asg.ominoy.app.shared.input.supportsAllKeys
 import come.asg.ominoy.app.shared.settings.GameShortcutType
 
-class OminoyInputDeviceKeyboard(private val device: InputDevice) : OminoyInputDevice {
+class OminoyInputDeviceKeyboard(
+    private val device: InputDevice,
+) : OminoyInputDevice {
     override fun getCustomizableKeys(): List<RetroKey> = InputDeviceManager.OUTPUT_KEYS
 
     override fun getDefaultBindings() = DEFAULT_BINDINGS
 
-    override fun isEnabledByDefault(appContext: Context): Boolean {
-        return !appContext.packageManager.hasSystemFeature("android.hardware.touchscreen")
-    }
+    override fun isEnabledByDefault(appContext: Context): Boolean =
+        !appContext.packageManager.hasSystemFeature("android.hardware.touchscreen")
 
     override fun getSupportedShortcuts(): List<GameShortcutType> = emptyList()
 
-    override fun isSupported(): Boolean {
-        return sequenceOf(
+    override fun isSupported(): Boolean =
+        sequenceOf(
             (device.sources and InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD,
             device.supportsAllKeys(MINIMAL_SUPPORTED_KEYS),
             device.isVirtual.not(),
         ).all { it }
-    }
 
     companion object {
         private val MINIMAL_SUPPORTED_KEYS =

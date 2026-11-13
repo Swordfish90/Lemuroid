@@ -20,9 +20,8 @@ class AdvancedSettingsViewModel(
         private val appContext: Context,
         private val settingsInteractor: SettingsInteractor,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AdvancedSettingsViewModel(appContext, settingsInteractor) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            AdvancedSettingsViewModel(appContext, settingsInteractor) as T
     }
 
     data class CacheState(
@@ -31,7 +30,9 @@ class AdvancedSettingsViewModel(
         val displayNames: List<String>,
     )
 
-    data class State(val cache: CacheState)
+    data class State(
+        val cache: CacheState,
+    )
 
     val uiState =
         initializeState(appContext)
@@ -57,9 +58,7 @@ class AdvancedSettingsViewModel(
     private fun getSizeLabel(
         appContext: Context,
         size: Long,
-    ): String {
-        return Formatter.formatShortFileSize(appContext, size)
-    }
+    ): String = Formatter.formatShortFileSize(appContext, size)
 
     fun resetAllSettings() {
         settingsInteractor.resetAllSettings()

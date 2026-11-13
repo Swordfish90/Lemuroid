@@ -43,12 +43,15 @@ fun GameMenuAchievementsScreen(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    var achievements by remember(game.id) { mutableStateOf<List<RetroAchievementsEarnedStore.Achievement>>(emptyList()) }
+    var achievements by remember(
+        game.id,
+    ) { mutableStateOf<List<RetroAchievementsEarnedStore.Achievement>>(emptyList()) }
 
     LaunchedEffect(game.id) {
-        achievements = withContext(Dispatchers.IO) {
-            RetroAchievementsEarnedStore.read(context, game.id)
-        }
+        achievements =
+            withContext(Dispatchers.IO) {
+                RetroAchievementsEarnedStore.read(context, game.id)
+            }
     }
 
     val earned = achievements.count { it.earned }
@@ -88,7 +91,11 @@ fun GameMenuAchievementsScreen(
 }
 
 @Composable
-private fun AchievementSummaryCard(gameTitle: String, earned: Int, total: Int) {
+private fun AchievementSummaryCard(
+    gameTitle: String,
+    earned: Int,
+    total: Int,
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,

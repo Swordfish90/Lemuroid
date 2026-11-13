@@ -32,8 +32,8 @@ import come.asg.ominoy.lib.controller.ControllerConfig
 import come.asg.ominoy.lib.core.CoreVariablesManager
 import come.asg.ominoy.lib.game.GameLoader
 import come.asg.ominoy.lib.library.GameSystem
-import come.asg.ominoy.lib.library.SystemID
 import come.asg.ominoy.lib.library.SystemCoreConfig
+import come.asg.ominoy.lib.library.SystemID
 import come.asg.ominoy.lib.library.db.entity.Game
 import come.asg.ominoy.lib.saves.SavesManager
 import come.asg.ominoy.lib.saves.StatesManager
@@ -60,7 +60,8 @@ class BaseGameScreenViewModel(
     statesPreviewManager: StatesPreviewManager,
     coreVariablesManager: CoreVariablesManager,
     rumbleManager: RumbleManager,
-) : ViewModel(), DefaultLifecycleObserver {
+) : ViewModel(),
+    DefaultLifecycleObserver {
     class Factory(
         private val appContext: Context,
         private val game: Game,
@@ -76,8 +77,8 @@ class BaseGameScreenViewModel(
         private val coreVariablesManager: CoreVariablesManager,
         private val rumbleManager: RumbleManager,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return BaseGameScreenViewModel(
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            BaseGameScreenViewModel(
                 appContext,
                 game,
                 settingsManager,
@@ -92,7 +93,6 @@ class BaseGameScreenViewModel(
                 coreVariablesManager,
                 rumbleManager,
             ) as T
-        }
     }
 
     private val sideEffects = GameViewModelSideEffects(viewModelScope)
@@ -152,42 +152,27 @@ class BaseGameScreenViewModel(
         loadingState.value = false
     }
 
-    fun getGameState(): Flow<GameViewModelRetroGameView.GameState> {
-        return retroGameView.getGameState()
-    }
+    fun getGameState(): Flow<GameViewModelRetroGameView.GameState> = retroGameView.getGameState()
 
     fun getGameSystemId(): SystemID = system.id
 
-    fun getSideEffects(): Flow<GameViewModelSideEffects.UiEffect> {
-        return sideEffects.getUiEffects()
-    }
+    fun getSideEffects(): Flow<GameViewModelSideEffects.UiEffect> = sideEffects.getUiEffects()
 
-    fun getTiltConfiguration(): Flow<TiltConfiguration> {
-        return tilt.getTiltConfiguration()
-    }
+    fun getTiltConfiguration(): Flow<TiltConfiguration> = tilt.getTiltConfiguration()
 
-    fun getSimulatedTiltEvents(): Flow<InputState> {
-        return tilt.getSimulatedTiltEvents()
-    }
+    fun getSimulatedTiltEvents(): Flow<InputState> = tilt.getSimulatedTiltEvents()
 
     fun getTouchControlsSettings(
         density: Density,
         insets: WindowInsets,
-    ): Flow<TouchControllerSettingsManager.Settings?> {
-        return touchControls.getTouchControlsSettings(density, insets)
-    }
+    ): Flow<TouchControllerSettingsManager.Settings?> = touchControls.getTouchControlsSettings(density, insets)
 
-    fun getTouchControllerSettingsManager(): TouchControllerSettingsManager {
-        return touchControls.getTouchControllerSettingsManager()
-    }
+    fun getTouchControllerSettingsManager(): TouchControllerSettingsManager =
+        touchControls.getTouchControllerSettingsManager()
 
-    fun getTouchControllerId(): Flow<TouchControllerID?> {
-        return touchControls.getTouchControllerId()
-    }
+    fun getTouchControllerId(): Flow<TouchControllerID?> = touchControls.getTouchControllerId()
 
-    fun getTouchHapticFeedbackMode(): Flow<HapticFeedbackMode> {
-        return touchControls.getTouchHapticFeedbackMode()
-    }
+    fun getTouchHapticFeedbackMode(): Flow<HapticFeedbackMode> = touchControls.getTouchHapticFeedbackMode()
 
     fun createRetroView(
         context: Context,
@@ -217,9 +202,7 @@ class BaseGameScreenViewModel(
         touchControls.showEditControls(show)
     }
 
-    fun isEditControlShown(): Flow<Boolean> {
-        return touchControls.isEditControlsShown()
-    }
+    fun isEditControlShown(): Flow<Boolean> = touchControls.isEditControlsShown()
 
     fun updateTouchControllerSettings(touchControllerSettings: TouchControllerSettingsManager.Settings) {
         touchControls.updateTouchControllerSettings(touchControllerSettings)
@@ -244,21 +227,15 @@ class BaseGameScreenViewModel(
         touchControls.updateScreenOrientation(orientation)
     }
 
-    fun isTouchControllerVisible(): Flow<Boolean> {
-        return touchControls.isTouchControllerVisible()
-    }
+    fun isTouchControllerVisible(): Flow<Boolean> = touchControls.isTouchControllerVisible()
 
-    fun getTouchControllerConfig(): Flow<ControllerConfig> {
-        return touchControls.getTouchControllerConfig()
-    }
+    fun getTouchControllerConfig(): Flow<ControllerConfig> = touchControls.getTouchControllerConfig()
 
     fun changeTiltConfiguration(tiltConfig: TiltConfiguration) {
         tilt.changeTiltConfiguration(tiltConfig)
     }
 
-    fun isMenuPressed(): Flow<Boolean> {
-        return touchControls.isMenuPressed()
-    }
+    fun isMenuPressed(): Flow<Boolean> = touchControls.isMenuPressed()
 
     suspend fun saveSlot(index: Int) {
         if (loadingState.value) return
@@ -347,11 +324,7 @@ class BaseGameScreenViewModel(
     fun sendKeyEvent(
         keyCode: Int,
         event: KeyEvent,
-    ): Boolean {
-        return inputs.sendKeyEvent(keyCode, event)
-    }
+    ): Boolean = inputs.sendKeyEvent(keyCode, event)
 
-    fun sendMotionEvent(event: MotionEvent): Boolean {
-        return inputs.sendMotionEvent(event)
-    }
+    fun sendMotionEvent(event: MotionEvent): Boolean = inputs.sendMotionEvent(event)
 }

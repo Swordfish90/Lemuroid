@@ -6,13 +6,9 @@ import come.asg.ominoy.app.shared.input.InputKey
 import come.asg.ominoy.app.shared.input.inputKeySetOf
 
 object InputClassGamePad : InputClass {
-    override fun getInputKeys(): Set<InputKey> {
-        return INPUT_KEYS
-    }
+    override fun getInputKeys(): Set<InputKey> = INPUT_KEYS
 
-    override fun getAxesMap(): Map<Int, Int> {
-        return AXES_MAP
-    }
+    override fun getAxesMap(): Map<Int, Int> = AXES_MAP
 
     private val AXES_MAP =
         mapOf(

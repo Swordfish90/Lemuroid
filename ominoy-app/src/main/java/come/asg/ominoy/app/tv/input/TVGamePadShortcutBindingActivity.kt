@@ -32,9 +32,7 @@ class TVGamePadShortcutBindingActivity : BaseTVActivity() {
     override fun onKeyDown(
         keyCode: Int,
         event: KeyEvent,
-    ): Boolean {
-        return shortcutBindingUpdater.handleKeyEvent(event)
-    }
+    ): Boolean = shortcutBindingUpdater.handleKeyEvent(event)
 
     override fun onKeyUp(
         keyCode: Int,

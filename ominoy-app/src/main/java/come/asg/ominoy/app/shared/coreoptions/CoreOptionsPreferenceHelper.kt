@@ -77,13 +77,12 @@ object CoreOptionsPreferenceHelper {
         context: Context,
         it: OminoyCoreOption,
         systemID: String,
-    ): Preference {
-        return if (it.getEntriesValues().toSet() == BOOLEAN_SET) {
+    ): Preference =
+        if (it.getEntriesValues().toSet() == BOOLEAN_SET) {
             buildSwitchPreference(context, it, systemID)
         } else {
             buildListPreference(context, it, systemID)
         }
-    }
 
     private fun buildListPreference(
         context: Context,

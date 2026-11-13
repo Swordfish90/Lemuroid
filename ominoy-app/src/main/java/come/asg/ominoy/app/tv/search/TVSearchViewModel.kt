@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 
-class TVSearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel() {
-    class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return TVSearchViewModel(retrogradeDb) as T
-        }
+class TVSearchViewModel(
+    private val retrogradeDb: RetrogradeDatabase,
+) : ViewModel() {
+    class Factory(
+        val retrogradeDb: RetrogradeDatabase,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = TVSearchViewModel(retrogradeDb) as T
     }
 
     val queryString = MutableStateFlow("")

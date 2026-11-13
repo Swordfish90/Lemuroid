@@ -12,7 +12,9 @@ import come.asg.ominoy.app.shared.savesync.SaveSyncWork
 import come.asg.ominoy.lib.library.GameSystem
 import come.asg.ominoy.lib.savesync.SaveSyncManager
 
-class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
+class SaveSyncPreferences(
+    private val saveSyncManager: SaveSyncManager,
+) {
     fun addSaveSyncPreferences(preferenceScreen: PreferenceScreen) {
         val context = preferenceScreen.context
 
@@ -107,7 +109,11 @@ class SaveSyncPreferences(private val saveSyncManager: SaveSyncManager) {
     }
 
     private fun supportedCoreIDs() =
-        GameSystem.all().flatMap { it.systemCoreConfigs }.map { it.coreID }.distinct()
+        GameSystem
+            .all()
+            .flatMap { it.systemCoreConfigs }
+            .map { it.coreID }
+            .distinct()
 
     fun onPreferenceTreeClick(
         activity: Activity?,

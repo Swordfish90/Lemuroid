@@ -6,9 +6,7 @@ import android.os.Build
 import android.os.Process
 import dagger.android.support.DaggerApplication
 
-fun Context.isMainProcess(): Boolean {
-    return retrieveProcessName(this) == this.packageName
-}
+fun Context.isMainProcess(): Boolean = retrieveProcessName(this) == this.packageName
 
 private fun retrieveProcessName(context: Context): String? {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

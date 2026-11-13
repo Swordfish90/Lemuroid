@@ -39,7 +39,9 @@ import kotlinx.coroutines.GlobalScope
 import javax.inject.Inject
 
 @OptIn(DelicateCoroutinesApi::class)
-class MainTVActivity : BaseTVActivity(), BusyActivity {
+class MainTVActivity :
+    BaseTVActivity(),
+    BusyActivity {
     @Inject
     lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
 

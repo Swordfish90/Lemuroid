@@ -28,7 +28,6 @@ class GameService : DaggerService() {
         serviceScope.launch {
             awaitTermination()
             terminateGameProcess()
-
         }
     }
 

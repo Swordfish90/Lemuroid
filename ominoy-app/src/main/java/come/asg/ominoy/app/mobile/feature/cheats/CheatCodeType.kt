@@ -3,7 +3,9 @@ package come.asg.ominoy.app.mobile.feature.cheats
 import come.asg.ominoy.lib.library.SystemID
 
 /** Cheat formats offered for the supported Game Boy families. The persisted value is metadata only. */
-enum class CheatCodeType(val persistedValue: String) {
+enum class CheatCodeType(
+    val persistedValue: String,
+) {
     GAME_SHARK("game_shark"),
     GAME_GENIE("game_genie"),
     ACTION_REPLAY("action_replay"),
@@ -58,7 +60,12 @@ object CheatCodeValidator {
         type: CheatCodeType,
         systemId: String,
     ): String? {
-        val lines = input.lineSequence().map(String::trim).filter(String::isNotEmpty).toList()
+        val lines =
+            input
+                .lineSequence()
+                .map(String::trim)
+                .filter(String::isNotEmpty)
+                .toList()
         if (lines.isEmpty() || lines.size > MAX_NON_EMPTY_LINES) return null
 
         val normalizedLines =

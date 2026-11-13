@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.Intent
 
 class RetroAchievementsSyncCancelReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent?) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent?,
+    ) {
         RetroAchievementsSyncWork.cancel(context.applicationContext)
     }
 }

@@ -50,12 +50,12 @@ import come.asg.ominoy.app.mobile.feature.settings.retroachievements.readGamepla
 import come.asg.ominoy.app.mobile.feature.settings.retroachievements.readWebApiCredentials
 import come.asg.ominoy.app.mobile.shared.compose.ui.OminoyGameCard
 import come.asg.ominoy.app.mobile.shared.compose.ui.OminoyGameListRow
-import come.asg.ominoy.app.shared.main.GamePlaytimeStats
 import come.asg.ominoy.app.shared.game.RetroAchievementsEarnedStore
+import come.asg.ominoy.app.shared.main.GamePlaytimeStats
 import come.asg.ominoy.lib.library.db.entity.Game
-import java.util.Date
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.Date
 
 private val libraryFilters = listOf("All", "Favorites", "GB", "GBC", "GBA")
 
@@ -130,11 +130,12 @@ fun LibraryScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = when (selectedFilter) {
-                    "All" -> "All games"
-                    "Favorites" -> "Favorites"
-                    else -> "$selectedFilter games"
-                },
+                text =
+                    when (selectedFilter) {
+                        "All" -> "All games"
+                        "Favorites" -> "Favorites"
+                        else -> "$selectedFilter games"
+                    },
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.labelLarge,
             )
@@ -153,11 +154,21 @@ fun LibraryScreen(
             }
             games.itemCount == 0 -> {
                 Box(Modifier.fillMaxWidth().weight(1f).padding(32.dp), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("Nothing here yet", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         Text(
-                            if (selectedFilter == "Favorites") "Tap the heart on a game to keep it here."
-                            else "Try another search, or add games from Settings.",
+                            "Nothing here yet",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Text(
+                            if (selectedFilter == "Favorites") {
+                                "Tap the heart on a game to keep it here."
+                            } else {
+                                "Try another search, or add games from Settings."
+                            },
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -203,22 +214,41 @@ fun LibraryScreen(
         }
 
         statsGame?.let { game ->
-            val playStats = remember(game.id, statsRefreshToken) {
-                val totalMs = GamePlaytimeStats.totalMs(context, game.id)
-                val recordedLastPlayed = GamePlaytimeStats.lastPlayed(context, game.id)
-                val lastPlayed = recordedLastPlayed.takeIf { it > 0L }?.let(::Date) ?: game.lastPlayedAt?.let(::Date)
-                Triple(totalMs, GamePlaytimeStats.sessions(context, game.id), lastPlayed)
-            }
+            val playStats =
+                remember(game.id, statsRefreshToken) {
+                    val totalMs = GamePlaytimeStats.totalMs(context, game.id)
+                    val recordedLastPlayed = GamePlaytimeStats.lastPlayed(context, game.id)
+                    val lastPlayed =
+                        recordedLastPlayed.takeIf { it > 0L }?.let(::Date) ?: game.lastPlayedAt?.let(::Date)
+                    Triple(totalMs, GamePlaytimeStats.sessions(context, game.id), lastPlayed)
+                }
             val totalMinutes = playStats.first / 60_000L
-            val played = if (totalMinutes >= 60) "${totalMinutes / 60} hr ${totalMinutes % 60} min" else "$totalMinutes min"
-            var cachedAchievements by remember(game.id, game.title, game.displayName(), game.fileName, statsRefreshToken) {
-                mutableStateOf(run {
-                    val directlyLinked = RetroAchievementsEarnedStore.read(context, game.id)
-                    val syncedByTitle = RetroAchievementsEarnedStore.readAll(context).filter { cached ->
-                        cached.localLibraryGameId == game.id || game.matchesCachedAchievementTitle(cached.gameTitle)
-                    }
-                    (directlyLinked + syncedByTitle).distinctBy { it.raGameId to it.id }
-                })
+            val played =
+                if (totalMinutes >=
+                    60
+                ) {
+                    "${totalMinutes / 60} hr ${totalMinutes % 60} min"
+                } else {
+                    "$totalMinutes min"
+                }
+            var cachedAchievements by remember(
+                game.id,
+                game.title,
+                game.displayName(),
+                game.fileName,
+                statsRefreshToken,
+            ) {
+                mutableStateOf(
+                    run {
+                        val directlyLinked = RetroAchievementsEarnedStore.read(context, game.id)
+                        val syncedByTitle =
+                            RetroAchievementsEarnedStore.readAll(context).filter { cached ->
+                                cached.localLibraryGameId == game.id ||
+                                    game.matchesCachedAchievementTitle(cached.gameTitle)
+                            }
+                        (directlyLinked + syncedByTitle).distinctBy { it.raGameId to it.id }
+                    },
+                )
             }
             val persistedAccount = remember(game.id, statsRefreshToken) { readGameplayCredentials(context) }
             val webApiCredentials = remember(game.id, statsRefreshToken) { readWebApiCredentials(context) }
@@ -239,13 +269,16 @@ fun LibraryScreen(
                             )
                         }
                     }
-                    cachedAchievements = withContext(Dispatchers.IO) {
-                        val direct = RetroAchievementsEarnedStore.read(context, game.id)
-                        val byTitle = RetroAchievementsEarnedStore.readAll(context).filter { cached ->
-                            cached.localLibraryGameId == game.id || game.matchesCachedAchievementTitle(cached.gameTitle)
+                    cachedAchievements =
+                        withContext(Dispatchers.IO) {
+                            val direct = RetroAchievementsEarnedStore.read(context, game.id)
+                            val byTitle =
+                                RetroAchievementsEarnedStore.readAll(context).filter { cached ->
+                                    cached.localLibraryGameId == game.id ||
+                                        game.matchesCachedAchievementTitle(cached.gameTitle)
+                                }
+                            (direct + byTitle).distinctBy { it.raGameId to it.id }
                         }
-                        (direct + byTitle).distinctBy { it.raGameId to it.id }
-                    }
                     achievementSyncing = false
                 }
             }

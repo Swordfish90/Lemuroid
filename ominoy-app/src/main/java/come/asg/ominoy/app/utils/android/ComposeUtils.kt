@@ -14,11 +14,10 @@ import androidx.lifecycle.LifecycleOwner
 @ReadOnlyComposable
 fun stringListResource(
     @ArrayRes id: Int,
-): List<String> {
-    return LocalContext.current.resources
+): List<String> =
+    LocalContext.current.resources
         .getStringArray(id)
         .toList()
-}
 
 @Composable
 fun ComposableLifecycle(

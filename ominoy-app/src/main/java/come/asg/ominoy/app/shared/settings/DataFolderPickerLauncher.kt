@@ -10,14 +10,14 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import androidx.documentfile.provider.DocumentFile
-import come.asg.ominoy.app.utils.android.displayErrorDialog
 import come.asg.ominoy.R
+import come.asg.ominoy.app.utils.android.displayErrorDialog
 import come.asg.ominoy.lib.android.RetrogradeActivity
 import come.asg.ominoy.lib.preferences.SharedPreferencesHelper
 import come.asg.ominoy.lib.storage.DirectoriesManager
-import come.asg.ominoy.lib.R as LibR
 import java.io.File
 import javax.inject.Inject
+import come.asg.ominoy.lib.R as LibR
 
 /** Selects the user-owned root for ROMs, saves, states, and state previews. */
 class DataFolderPickerLauncher : RetrogradeActivity() {
@@ -28,7 +28,8 @@ class DataFolderPickerLauncher : RetrogradeActivity() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-                AlertDialog.Builder(this)
+                AlertDialog
+                    .Builder(this)
                     .setTitle(R.string.data_folder_access_title)
                     .setMessage(R.string.data_folder_access_message)
                     .setPositiveButton(R.string.data_folder_access_open_settings) { _, _ -> requestAllFilesAccess() }
@@ -41,7 +42,11 @@ class DataFolderPickerLauncher : RetrogradeActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        resultData: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, resultData)
         when (requestCode) {
             REQUEST_CODE_ALL_FILES_ACCESS -> {
@@ -121,11 +126,9 @@ class DataFolderPickerLauncher : RetrogradeActivity() {
                 runCatching { source.copyRecursively(File(newRoot, source.name), overwrite = false) }
             }
         }
-
     }
 
-    private fun resultFlags(): Int =
-        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+    private fun resultFlags(): Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
     companion object {
         private const val REQUEST_CODE_PICK_FOLDER = 1

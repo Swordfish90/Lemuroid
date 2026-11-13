@@ -23,9 +23,8 @@ class GamesViewModel(
         private val retrogradeDb: RetrogradeDatabase,
         private val initialMetaSystem: MetaSystemID,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return GamesViewModel(retrogradeDb, initialMetaSystem) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            GamesViewModel(retrogradeDb, initialMetaSystem) as T
     }
 
     private val metaSystemId = MutableStateFlow(initialMetaSystem)

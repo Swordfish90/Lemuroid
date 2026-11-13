@@ -48,9 +48,8 @@ class HomeViewModel(
         val retrogradeDb: RetrogradeDatabase,
         val coresSelection: CoresSelection,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return HomeViewModel(appContext, retrogradeDb, coresSelection) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            HomeViewModel(appContext, retrogradeDb, coresSelection) as T
     }
 
     data class UIState(
@@ -72,9 +71,7 @@ class HomeViewModel(
     private val romFolderConfiguredState = MutableStateFlow(false)
     private val uiStates = MutableStateFlow(UIState())
 
-    fun getViewStates(): Flow<UIState> {
-        return uiStates
-    }
+    fun getViewStates(): Flow<UIState> = uiStates
 
     suspend fun loadAllGames(): List<Game> = withContext(Dispatchers.IO) { retrogradeDb.gameDao().selectAll() }
 
@@ -86,10 +83,12 @@ class HomeViewModel(
         notificationsPermissionEnabledState.value = isNotificationsPermissionGranted(context)
         microphonePermissionEnabledState.value = isMicrophonePermissionGranted(context)
         dataFolderConfiguredState.value =
-            SharedPreferencesHelper.getLegacySharedPreferences(context)
+            SharedPreferencesHelper
+                .getLegacySharedPreferences(context)
                 .getString(context.getString(come.asg.ominoy.lib.R.string.pref_key_app_data_folder), null) != null
         romFolderConfiguredState.value =
-            SharedPreferencesHelper.getLegacySharedPreferences(context)
+            SharedPreferencesHelper
+                .getLegacySharedPreferences(context)
                 .getString(context.getString(come.asg.ominoy.lib.R.string.pref_key_extenral_folder), null) != null
     }
 
@@ -153,7 +152,10 @@ class HomeViewModel(
                     notificationsPermissionEnabledState,
                     microphoneNotification(retrogradeDb),
                     combine(
-                        combine(dataFolderConfiguredState, desmumeWarningNotification()) { dataFolderConfigured, showDesmumeWarning ->
+                        combine(
+                            dataFolderConfiguredState,
+                            desmumeWarningNotification(),
+                        ) { dataFolderConfigured, showDesmumeWarning ->
                             dataFolderConfigured to showDesmumeWarning
                         },
                         romFolderConfiguredState,
@@ -182,20 +184,20 @@ class HomeViewModel(
     private fun favoritesGames(retrogradeDb: RetrogradeDatabase) =
         retrogradeDb.gameDao().selectFirstFavorites(CAROUSEL_MAX_ITEMS)
 
-    private fun dsGamesCount(retrogradeDb: RetrogradeDatabase): Flow<Int> {
-        return retrogradeDb.gameDao().selectSystemsWithCount()
+    private fun dsGamesCount(retrogradeDb: RetrogradeDatabase): Flow<Int> =
+        retrogradeDb
+            .gameDao()
+            .selectSystemsWithCount()
             .map { systems ->
                 systems
                     .firstOrNull { it.systemId == SystemID.NDS.dbname }
                     ?.count
                     ?: 0
-            }
-            .distinctUntilChanged()
-    }
+            }.distinctUntilChanged()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun microphoneNotification(db: RetrogradeDatabase): Flow<Boolean> {
-        return microphonePermissionEnabledState
+    private fun microphoneNotification(db: RetrogradeDatabase): Flow<Boolean> =
+        microphonePermissionEnabledState
             .flatMapLatest { isMicrophoneEnabled ->
                 if (isMicrophoneEnabled) {
                     flowOf(false)
@@ -207,14 +209,12 @@ class HomeViewModel(
                         cores.any { it.coreConfig.supportsMicrophone } &&
                             dsCount > 0
                     }
-                }
-                    .distinctUntilChanged()
+                }.distinctUntilChanged()
             }
-    }
 
-    private fun desmumeWarningNotification(): Flow<Boolean> {
-        return coresSelection.getSelectedCores()
+    private fun desmumeWarningNotification(): Flow<Boolean> =
+        coresSelection
+            .getSelectedCores()
             .map { cores -> cores.any { it.coreConfig.coreID == CoreID.DESMUME } }
             .distinctUntilChanged()
-    }
 }

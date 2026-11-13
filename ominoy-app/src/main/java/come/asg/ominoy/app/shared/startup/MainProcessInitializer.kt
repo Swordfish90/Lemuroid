@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.startup.Initializer
 import androidx.work.WorkManagerInitializer
 import come.asg.ominoy.app.shared.game.RetroAchievementsPendingUploadWork
-import come.asg.ominoy.app.shared.savesync.SaveSyncWork
 import come.asg.ominoy.app.shared.library.LibraryIndexScheduler
+import come.asg.ominoy.app.shared.savesync.SaveSyncWork
 import come.asg.ominoy.lib.preferences.SharedPreferencesHelper
 import timber.log.Timber
 
@@ -24,7 +24,6 @@ class MainProcessInitializer : Initializer<Unit> {
         }
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(WorkManagerInitializer::class.java, DebugInitializer::class.java)
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> =
+        listOf(WorkManagerInitializer::class.java, DebugInitializer::class.java)
 }

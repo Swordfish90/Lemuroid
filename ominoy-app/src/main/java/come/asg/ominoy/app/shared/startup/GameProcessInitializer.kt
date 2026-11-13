@@ -11,7 +11,5 @@ class GameProcessInitializer : Initializer<Unit> {
         GameProcessLock.acquire(context.applicationContext)
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(DebugInitializer::class.java)
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf(DebugInitializer::class.java)
 }

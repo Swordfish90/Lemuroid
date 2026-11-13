@@ -99,20 +99,22 @@ internal fun ArtworkEditorDialog(
     var saving by remember(sourceUri) { mutableStateOf(false) }
     var error by remember(sourceUri) { mutableStateOf<String?>(null) }
     val latestPreview by rememberUpdatedState(preview)
-    val previewDecodeEdgePx = remember(configuration.screenWidthDp, density.density) {
-        (configuration.screenWidthDp * density.density * 0.78f).toInt().coerceIn(512, MAX_PREVIEW_EDGE)
-    }
+    val previewDecodeEdgePx =
+        remember(configuration.screenWidthDp, density.density) {
+            (configuration.screenWidthDp * density.density * 0.78f).toInt().coerceIn(512, MAX_PREVIEW_EDGE)
+        }
     val previewImage = remember(preview) { preview?.bitmap?.asImageBitmap() }
 
     LaunchedEffect(sourceUri, previewDecodeEdgePx) {
         loading = true
-        preview = try {
-            withContext(Dispatchers.IO) { decodeArtworkPreview(context, sourceUri, previewDecodeEdgePx) }
-        } catch (e: CancellationException) {
-            throw e
-        } catch (_: Exception) {
-            null
-        }
+        preview =
+            try {
+                withContext(Dispatchers.IO) { decodeArtworkPreview(context, sourceUri, previewDecodeEdgePx) }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                null
+            }
         loading = false
         error = if (preview == null) "This image could not be opened. Choose a different image." else null
         preview?.let {
@@ -155,10 +157,11 @@ internal fun ArtworkEditorDialog(
                     val activePreview = preview
                     val sourceWidth = activePreview?.sourceWidth ?: 1
                     val sourceHeight = activePreview?.sourceHeight ?: 1
-                    val displayScale = activePreview?.let {
-                        CROP_WINDOW_FRACTION * max(it.bitmap.width, it.bitmap.height).toFloat() /
-                            max(1, min(it.bitmap.width, it.bitmap.height)).toFloat()
-                    } ?: 1f
+                    val displayScale =
+                        activePreview?.let {
+                            CROP_WINDOW_FRACTION * max(it.bitmap.width, it.bitmap.height).toFloat() /
+                                max(1, min(it.bitmap.width, it.bitmap.height)).toFloat()
+                        } ?: 1f
 
                     fun animateTransformTo(
                         requestedTarget: CropTransform,
@@ -171,47 +174,50 @@ internal fun ArtworkEditorDialog(
                         val startX = transformState.offsetX
                         val startY = transformState.offsetY
                         val startRotation = transformState.rotationDegrees
-                        val rotationDelta = if (shortestRotation) {
-                            shortestAngleDelta(startRotation, requestedTarget.rotationDegrees)
-                        } else {
-                            requestedTarget.rotationDegrees - startRotation
-                        }
+                        val rotationDelta =
+                            if (shortestRotation) {
+                                shortestAngleDelta(startRotation, requestedTarget.rotationDegrees)
+                            } else {
+                                requestedTarget.rotationDegrees - startRotation
+                            }
                         val endRotation = startRotation + rotationDelta
-                        val target = clampCropTransform(
-                            sourceWidth = loaded.sourceWidth,
-                            sourceHeight = loaded.sourceHeight,
-                            viewportSizePx = cropViewportPx,
-                            requested = requestedTarget.copy(rotationDegrees = endRotation),
-                        )
-                        val job = scope.launch {
-                            animationProgress.snapTo(0f)
-                            animationProgress.animateTo(
-                                targetValue = 1f,
-                                animationSpec = tween(durationMillis, easing = FastOutSlowInEasing),
-                            ) {
-                                val fraction = value
+                        val target =
+                            clampCropTransform(
+                                sourceWidth = loaded.sourceWidth,
+                                sourceHeight = loaded.sourceHeight,
+                                viewportSizePx = cropViewportPx,
+                                requested = requestedTarget.copy(rotationDegrees = endRotation),
+                            )
+                        val job =
+                            scope.launch {
+                                animationProgress.snapTo(0f)
+                                animationProgress.animateTo(
+                                    targetValue = 1f,
+                                    animationSpec = tween(durationMillis, easing = FastOutSlowInEasing),
+                                ) {
+                                    val fraction = value
+                                    clampCropTransformInto(
+                                        state = transformState,
+                                        sourceWidth = loaded.sourceWidth,
+                                        sourceHeight = loaded.sourceHeight,
+                                        viewportSizePx = cropViewportPx,
+                                        requestedScale = lerp(startScale, target.scale, fraction),
+                                        requestedOffsetX = lerp(startX, target.offsetX, fraction),
+                                        requestedOffsetY = lerp(startY, target.offsetY, fraction),
+                                        requestedRotationDegrees = startRotation + rotationDelta * fraction,
+                                    )
+                                }
                                 clampCropTransformInto(
                                     state = transformState,
                                     sourceWidth = loaded.sourceWidth,
                                     sourceHeight = loaded.sourceHeight,
                                     viewportSizePx = cropViewportPx,
-                                    requestedScale = lerp(startScale, target.scale, fraction),
-                                    requestedOffsetX = lerp(startX, target.offsetX, fraction),
-                                    requestedOffsetY = lerp(startY, target.offsetY, fraction),
-                                    requestedRotationDegrees = startRotation + rotationDelta * fraction,
+                                    requestedScale = target.scale,
+                                    requestedOffsetX = target.offsetX,
+                                    requestedOffsetY = target.offsetY,
+                                    requestedRotationDegrees = requestedTarget.rotationDegrees,
                                 )
                             }
-                            clampCropTransformInto(
-                                state = transformState,
-                                sourceWidth = loaded.sourceWidth,
-                                sourceHeight = loaded.sourceHeight,
-                                viewportSizePx = cropViewportPx,
-                                requestedScale = target.scale,
-                                requestedOffsetX = target.offsetX,
-                                requestedOffsetY = target.offsetY,
-                                requestedRotationDegrees = requestedTarget.rotationDegrees,
-                            )
-                        }
                         animationJob.set(job)
                     }
 
@@ -226,114 +232,139 @@ internal fun ArtworkEditorDialog(
                                 fontWeight = FontWeight.ExtraBold,
                             )
                             Text(
-                                "Frame the square cover directly. Pinch to zoom, drag to move, or twist two fingers to rotate.",
+                                "Frame the square cover directly. Pinch to zoom, drag to move, " +
+                                    "or twist two fingers to rotate.",
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 style = MaterialTheme.typography.bodyMedium,
                             )
 
                             BoxWithConstraints(
-                                modifier = Modifier.fillMaxWidth()
-                                    .aspectRatio(1f)
-                                    .clip(RoundedCornerShape(22.dp))
-                                    .background(Color(0xFF090A0D))
-                                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(22.dp))
-                                    .pointerInput(sourceUri, activePreview, saving, cropViewportPx) {
-                                        val loaded = activePreview
-                                        if (loaded != null && !saving) {
-                                            awaitEachGesture {
-                                                animationJob.getAndSet(null)?.cancel()
-                                                velocityTracker.resetTracking()
-                                                val firstDown = awaitFirstDown(requireUnconsumed = false)
-                                                velocityTracker.addPosition(firstDown.uptimeMillis, firstDown.position)
-                                                var previousPointerCount = 1
-                                                var pressedCount: Int
-                                                var hadMultiplePointers = false
-                                                var hitCropEdge = false
-                                                var eventTime = firstDown.uptimeMillis
-
-                                                do {
-                                                    val event = awaitPointerEvent()
-                                                    pressedCount = 0
-                                                    for (change in event.changes) {
-                                                        eventTime = change.uptimeMillis
-                                                        if (change.pressed) pressedCount += 1
-                                                    }
-
-                                                    if (pressedCount > 0) {
-                                                        if (pressedCount > 1) hadMultiplePointers = true
-                                                        val previousCentroid = event.calculateCentroid(useCurrent = false)
-                                                        val currentCentroid = event.calculateCentroid(useCurrent = true)
-                                                        if (pressedCount == previousPointerCount) {
-                                                            val centerX = size.width * 0.5f
-                                                            val centerY = size.height * 0.5f
-                                                            hitCropEdge = applyCropGestureInto(
-                                                                state = transformState,
-                                                                sourceWidth = loaded.sourceWidth,
-                                                                sourceHeight = loaded.sourceHeight,
-                                                                viewportSizePx = cropViewportPx,
-                                                                focalStartX = previousCentroid.x - centerX,
-                                                                focalStartY = previousCentroid.y - centerY,
-                                                                focalEndX = currentCentroid.x - centerX,
-                                                                focalEndY = currentCentroid.y - centerY,
-                                                                zoomChange = event.calculateZoom(),
-                                                                rotationChangeDegrees = event.calculateRotation(),
-                                                                edgeResistancePx = EDGE_RESISTANCE_PX,
-                                                            ) || hitCropEdge
-                                                            if (pressedCount == 1 && !hadMultiplePointers) {
-                                                                velocityTracker.addPosition(eventTime, currentCentroid)
-                                                            }
-                                                        }
-                                                        previousPointerCount = pressedCount
-                                                    }
-
-                                                    for (change in event.changes) {
-                                                        if (change.positionChanged()) change.consume()
-                                                    }
-                                                } while (pressedCount > 0)
-
-                                                if (hitCropEdge) {
-                                                    animateTransformTo(
-                                                        requestedTarget = settleCropTransformToNearestEdge(
-                                                            sourceWidth = loaded.sourceWidth,
-                                                            sourceHeight = loaded.sourceHeight,
-                                                            viewportSizePx = cropViewportPx,
-                                                            current = transformState.snapshot(),
-                                                        ),
-                                                        durationMillis = EDGE_SETTLE_ANIMATION_MS,
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(1f)
+                                        .clip(RoundedCornerShape(22.dp))
+                                        .background(Color(0xFF090A0D))
+                                        .border(
+                                            1.dp,
+                                            MaterialTheme.colorScheme.outlineVariant,
+                                            RoundedCornerShape(22.dp),
+                                        ).pointerInput(sourceUri, activePreview, saving, cropViewportPx) {
+                                            val loaded = activePreview
+                                            if (loaded != null && !saving) {
+                                                awaitEachGesture {
+                                                    animationJob.getAndSet(null)?.cancel()
+                                                    velocityTracker.resetTracking()
+                                                    val firstDown = awaitFirstDown(requireUnconsumed = false)
+                                                    velocityTracker.addPosition(
+                                                        firstDown.uptimeMillis,
+                                                        firstDown.position,
                                                     )
-                                                } else if (!hadMultiplePointers) {
-                                                    val velocity = velocityTracker.calculateVelocity()
-                                                    if (velocity.x * velocity.x + velocity.y * velocity.y > MIN_FLING_SPEED_SQUARED) {
-                                                        val job = scope.launch {
-                                                            flingCropTransform(
-                                                                state = transformState,
-                                                                sourceWidth = loaded.sourceWidth,
-                                                                sourceHeight = loaded.sourceHeight,
-                                                                viewportSizePx = cropViewportPx,
-                                                                velocityX = velocity.x,
-                                                                velocityY = velocity.y,
-                                                            )
+                                                    var previousPointerCount = 1
+                                                    var pressedCount: Int
+                                                    var hadMultiplePointers = false
+                                                    var hitCropEdge = false
+                                                    var eventTime = firstDown.uptimeMillis
+
+                                                    do {
+                                                        val event = awaitPointerEvent()
+                                                        pressedCount = 0
+                                                        for (change in event.changes) {
+                                                            eventTime = change.uptimeMillis
+                                                            if (change.pressed) pressedCount += 1
                                                         }
-                                                        animationJob.set(job)
+
+                                                        if (pressedCount > 0) {
+                                                            if (pressedCount > 1) hadMultiplePointers = true
+                                                            val previousCentroid =
+                                                                event.calculateCentroid(
+                                                                    useCurrent = false,
+                                                                )
+                                                            val currentCentroid =
+                                                                event.calculateCentroid(
+                                                                    useCurrent = true,
+                                                                )
+                                                            if (pressedCount == previousPointerCount) {
+                                                                val centerX = size.width * 0.5f
+                                                                val centerY = size.height * 0.5f
+                                                                hitCropEdge = applyCropGestureInto(
+                                                                    state = transformState,
+                                                                    sourceWidth = loaded.sourceWidth,
+                                                                    sourceHeight = loaded.sourceHeight,
+                                                                    viewportSizePx = cropViewportPx,
+                                                                    focalStartX = previousCentroid.x - centerX,
+                                                                    focalStartY = previousCentroid.y - centerY,
+                                                                    focalEndX = currentCentroid.x - centerX,
+                                                                    focalEndY = currentCentroid.y - centerY,
+                                                                    zoomChange = event.calculateZoom(),
+                                                                    rotationChangeDegrees = event.calculateRotation(),
+                                                                    edgeResistancePx = EDGE_RESISTANCE_PX,
+                                                                ) ||
+                                                                    hitCropEdge
+                                                                if (pressedCount == 1 && !hadMultiplePointers) {
+                                                                    velocityTracker.addPosition(
+                                                                        eventTime,
+                                                                        currentCentroid,
+                                                                    )
+                                                                }
+                                                            }
+                                                            previousPointerCount = pressedCount
+                                                        }
+
+                                                        for (change in event.changes) {
+                                                            if (change.positionChanged()) change.consume()
+                                                        }
+                                                    } while (pressedCount > 0)
+
+                                                    if (hitCropEdge) {
+                                                        animateTransformTo(
+                                                            requestedTarget =
+                                                                settleCropTransformToNearestEdge(
+                                                                    sourceWidth = loaded.sourceWidth,
+                                                                    sourceHeight = loaded.sourceHeight,
+                                                                    viewportSizePx = cropViewportPx,
+                                                                    current = transformState.snapshot(),
+                                                                ),
+                                                            durationMillis = EDGE_SETTLE_ANIMATION_MS,
+                                                        )
+                                                    } else if (!hadMultiplePointers) {
+                                                        val velocity = velocityTracker.calculateVelocity()
+                                                        if (velocity.x * velocity.x + velocity.y * velocity.y >
+                                                            MIN_FLING_SPEED_SQUARED
+                                                        ) {
+                                                            val job =
+                                                                scope.launch {
+                                                                    flingCropTransform(
+                                                                        state = transformState,
+                                                                        sourceWidth = loaded.sourceWidth,
+                                                                        sourceHeight = loaded.sourceHeight,
+                                                                        viewportSizePx = cropViewportPx,
+                                                                        velocityX = velocity.x,
+                                                                        velocityY = velocity.y,
+                                                                    )
+                                                                }
+                                                            animationJob.set(job)
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
-                                    },
+                                        },
                             ) {
                                 if (previewImage != null && activePreview != null) {
                                     Image(
                                         bitmap = previewImage,
                                         contentDescription = "Artwork under square crop frame",
-                                        modifier = Modifier.fillMaxSize().graphicsLayer {
-                                            // Reading this revision invalidates only the layer, not the composable/layout.
-                                            transformState.graphicsRevision
-                                            scaleX = displayScale * transformState.scale
-                                            scaleY = displayScale * transformState.scale
-                                            rotationZ = transformState.rotationDegrees
-                                            translationX = transformState.offsetX
-                                            translationY = transformState.offsetY
-                                        },
+                                        modifier =
+                                            Modifier.fillMaxSize().graphicsLayer {
+                                                // Reading this revision invalidates only the layer,
+                                                // not the composable/layout.
+                                                transformState.graphicsRevision
+                                                scaleX = displayScale * transformState.scale
+                                                scaleY = displayScale * transformState.scale
+                                                rotationZ = transformState.rotationDegrees
+                                                translationX = transformState.offsetX
+                                                translationY = transformState.offsetY
+                                            },
                                         contentScale = androidx.compose.ui.layout.ContentScale.Fit,
                                     )
                                 } else if (loading) {
@@ -350,16 +381,36 @@ internal fun ArtworkEditorDialog(
                                 val dimBand = (maxWidth - cropWindow) * 0.5f
                                 val scrim = Color.Black.copy(alpha = 0.58f)
                                 Box(
-                                    Modifier.align(Alignment.TopCenter).fillMaxWidth().height(dimBand).background(scrim),
+                                    Modifier
+                                        .align(
+                                            Alignment.TopCenter,
+                                        ).fillMaxWidth()
+                                        .height(dimBand)
+                                        .background(scrim),
                                 )
                                 Box(
-                                    Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(dimBand).background(scrim),
+                                    Modifier
+                                        .align(
+                                            Alignment.BottomCenter,
+                                        ).fillMaxWidth()
+                                        .height(dimBand)
+                                        .background(scrim),
                                 )
                                 Box(
-                                    Modifier.align(Alignment.CenterStart).width(dimBand).fillMaxHeight().background(scrim),
+                                    Modifier
+                                        .align(
+                                            Alignment.CenterStart,
+                                        ).width(dimBand)
+                                        .fillMaxHeight()
+                                        .background(scrim),
                                 )
                                 Box(
-                                    Modifier.align(Alignment.CenterEnd).width(dimBand).fillMaxHeight().background(scrim),
+                                    Modifier
+                                        .align(
+                                            Alignment.CenterEnd,
+                                        ).width(dimBand)
+                                        .fillMaxHeight()
+                                        .background(scrim),
                                 )
                                 androidx.compose.foundation.Canvas(
                                     modifier = Modifier.size(cropWindow).align(Alignment.Center),
@@ -367,13 +418,47 @@ internal fun ArtworkEditorDialog(
                                     val thirdX = size.width / 3f
                                     val thirdY = size.height / 3f
                                     val gridColor = Color.White.copy(alpha = 0.48f)
-                                    drawLine(gridColor, androidx.compose.ui.geometry.Offset(thirdX, 0f), androidx.compose.ui.geometry.Offset(thirdX, size.height), 1f)
-                                    drawLine(gridColor, androidx.compose.ui.geometry.Offset(thirdX * 2f, 0f), androidx.compose.ui.geometry.Offset(thirdX * 2f, size.height), 1f)
-                                    drawLine(gridColor, androidx.compose.ui.geometry.Offset(0f, thirdY), androidx.compose.ui.geometry.Offset(size.width, thirdY), 1f)
-                                    drawLine(gridColor, androidx.compose.ui.geometry.Offset(0f, thirdY * 2f), androidx.compose.ui.geometry.Offset(size.width, thirdY * 2f), 1f)
+                                    drawLine(
+                                        gridColor,
+                                        androidx.compose.ui.geometry
+                                            .Offset(thirdX, 0f),
+                                        androidx.compose.ui.geometry
+                                            .Offset(thirdX, size.height),
+                                        1f,
+                                    )
+                                    drawLine(
+                                        gridColor,
+                                        androidx.compose.ui.geometry
+                                            .Offset(thirdX * 2f, 0f),
+                                        androidx.compose.ui.geometry.Offset(
+                                            thirdX * 2f,
+                                            size.height,
+                                        ),
+                                        1f,
+                                    )
+                                    drawLine(
+                                        gridColor,
+                                        androidx.compose.ui.geometry
+                                            .Offset(0f, thirdY),
+                                        androidx.compose.ui.geometry
+                                            .Offset(size.width, thirdY),
+                                        1f,
+                                    )
+                                    drawLine(
+                                        gridColor,
+                                        androidx.compose.ui.geometry
+                                            .Offset(0f, thirdY * 2f),
+                                        androidx.compose.ui.geometry.Offset(
+                                            size.width,
+                                            thirdY * 2f,
+                                        ),
+                                        1f,
+                                    )
                                 }
                                 Box(
-                                    Modifier.size(cropWindow).align(Alignment.Center)
+                                    Modifier
+                                        .size(cropWindow)
+                                        .align(Alignment.Center)
                                         .border(1.5.dp, Color.White.copy(alpha = 0.94f), RoundedCornerShape(3.dp)),
                                 )
                             }
@@ -393,12 +478,16 @@ internal fun ArtworkEditorDialog(
                                     enabled = activePreview != null && !saving,
                                     onClick = {
                                         val current = transformState.snapshot()
-                                        val target = clampCropTransform(
-                                            sourceWidth = sourceWidth,
-                                            sourceHeight = sourceHeight,
-                                            viewportSizePx = cropViewportPx,
-                                            requested = current.copy(rotationDegrees = current.rotationDegrees - 90f),
-                                        )
+                                        val target =
+                                            clampCropTransform(
+                                                sourceWidth = sourceWidth,
+                                                sourceHeight = sourceHeight,
+                                                viewportSizePx = cropViewportPx,
+                                                requested =
+                                                    current.copy(
+                                                        rotationDegrees = current.rotationDegrees - 90f,
+                                                    ),
+                                            )
                                         animateTransformTo(target)
                                     },
                                 ) { Text("Rotate left") }
@@ -407,12 +496,16 @@ internal fun ArtworkEditorDialog(
                                     enabled = activePreview != null && !saving,
                                     onClick = {
                                         val current = transformState.snapshot()
-                                        val target = clampCropTransform(
-                                            sourceWidth = sourceWidth,
-                                            sourceHeight = sourceHeight,
-                                            viewportSizePx = cropViewportPx,
-                                            requested = current.copy(rotationDegrees = current.rotationDegrees + 90f),
-                                        )
+                                        val target =
+                                            clampCropTransform(
+                                                sourceWidth = sourceWidth,
+                                                sourceHeight = sourceHeight,
+                                                viewportSizePx = cropViewportPx,
+                                                requested =
+                                                    current.copy(
+                                                        rotationDegrees = current.rotationDegrees + 90f,
+                                                    ),
+                                            )
                                         animateTransformTo(target)
                                     },
                                 ) { Text("Rotate right") }
@@ -444,9 +537,10 @@ internal fun ArtworkEditorDialog(
                                     error = null
                                     scope.launch {
                                         try {
-                                            val savedUri = withContext(Dispatchers.IO) {
-                                                saveEditedArtwork(context, sourceUri, transform, cropViewportPx)
-                                            }
+                                            val savedUri =
+                                                withContext(Dispatchers.IO) {
+                                                    saveEditedArtwork(context, sourceUri, transform, cropViewportPx)
+                                                }
                                             saving = false
                                             onArtworkReady(savedUri)
                                         } catch (e: CancellationException) {
@@ -490,8 +584,9 @@ private suspend fun flingCropTransform(
             previousFrameNanos = frameNanos
             continue
         }
-        val deltaSeconds = ((frameNanos - previousFrameNanos).toFloat() / NANOS_PER_SECOND)
-            .coerceIn(0f, MAX_FLING_FRAME_SECONDS)
+        val deltaSeconds =
+            ((frameNanos - previousFrameNanos).toFloat() / NANOS_PER_SECOND)
+                .coerceIn(0f, MAX_FLING_FRAME_SECONDS)
         previousFrameNanos = frameNanos
         val oldX = state.offsetX
         val oldY = state.offsetY
@@ -516,14 +611,21 @@ private suspend fun flingCropTransform(
     }
 }
 
-private fun shortestAngleDelta(from: Float, to: Float): Float {
+private fun shortestAngleDelta(
+    from: Float,
+    to: Float,
+): Float {
     var delta = (to - from) % 360f
     if (delta > 180f) delta -= 360f
     if (delta < -180f) delta += 360f
     return delta
 }
 
-private fun lerp(start: Float, end: Float, fraction: Float): Float = start + (end - start) * fraction
+private fun lerp(
+    start: Float,
+    end: Float,
+    fraction: Float,
+): Float = start + (end - start) * fraction
 
 private data class ArtworkPreview(
     val bitmap: Bitmap,
@@ -531,7 +633,11 @@ private data class ArtworkPreview(
     val sourceHeight: Int,
 )
 
-private fun decodeArtworkPreview(context: Context, uri: Uri, targetEdgePx: Int): ArtworkPreview? {
+private fun decodeArtworkPreview(
+    context: Context,
+    uri: Uri,
+    targetEdgePx: Int,
+): ArtworkPreview? {
     val resolver = context.contentResolver
     val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
     val boundsStream = resolver.openInputStream(uri) ?: return null
@@ -540,16 +646,20 @@ private fun decodeArtworkPreview(context: Context, uri: Uri, targetEdgePx: Int):
 
     var sampleSize = 1
     while (max(bounds.outWidth, bounds.outHeight) / sampleSize > targetEdgePx) sampleSize *= 2
-    val options = BitmapFactory.Options().apply {
-        inSampleSize = sampleSize
-        inPreferredConfig = Bitmap.Config.ARGB_8888
-    }
+    val options =
+        BitmapFactory.Options().apply {
+            inSampleSize = sampleSize
+            inPreferredConfig = Bitmap.Config.ARGB_8888
+        }
     val bitmap = resolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, options) } ?: return null
     return ArtworkPreview(bitmap, bounds.outWidth, bounds.outHeight)
 }
 
 /** Decode full resolution only for export; the editor retains only its viewport-sized preview. */
-private fun decodeFullResolution(context: Context, uri: Uri): Bitmap {
+private fun decodeFullResolution(
+    context: Context,
+    uri: Uri,
+): Bitmap {
     val options = BitmapFactory.Options().apply { inPreferredConfig = Bitmap.Config.ARGB_8888 }
     return context.contentResolver.openInputStream(uri)?.use { stream ->
         BitmapFactory.decodeStream(stream, null, options)
@@ -591,11 +701,12 @@ private fun saveEditedArtwork(
     viewportSizePx: Float,
 ): Uri {
     val source = decodeFullResolution(context, sourceUri)
-    val processed = try {
-        exportSquareArtworkBitmap(source, transform, viewportSizePx)
-    } finally {
-        source.recycle()
-    }
+    val processed =
+        try {
+            exportSquareArtworkBitmap(source, transform, viewportSizePx)
+        } finally {
+            source.recycle()
+        }
     val directory = File(context.cacheDir, "artwork-editor").apply { check(mkdirs() || isDirectory) }
     val output = File(directory, "cover_${System.currentTimeMillis()}.jpg")
     val temporary = File(directory, "${output.name}.tmp")

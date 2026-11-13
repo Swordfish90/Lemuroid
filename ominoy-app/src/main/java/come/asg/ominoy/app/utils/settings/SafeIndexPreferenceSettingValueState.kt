@@ -17,11 +17,10 @@ fun rememberSafePreferenceIndexSettingState(
     values: List<String>,
     defaultValue: String,
     preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current),
-): SafeIndexPreferenceSettingValueState {
-    return remember {
+): SafeIndexPreferenceSettingValueState =
+    remember {
         SafeIndexPreferenceSettingValueState(preferences, key, values, defaultValue)
     }
-}
 
 class SafeIndexPreferenceSettingValueState(
     private val preferences: SharedPreferences,

@@ -389,7 +389,13 @@ private fun errorMessage(
 ): Int =
     when (type) {
         CheatCodeType.GAME_SHARK ->
-            if (systemId == SystemID.GBA.dbname) R.string.game_cheats_error_gba_gameshark else R.string.game_cheats_error_gb_gameshark
+            if (systemId ==
+                SystemID.GBA.dbname
+            ) {
+                R.string.game_cheats_error_gba_gameshark
+            } else {
+                R.string.game_cheats_error_gb_gameshark
+            }
         CheatCodeType.GAME_GENIE -> R.string.game_cheats_error_game_genie
         CheatCodeType.ACTION_REPLAY -> R.string.game_cheats_error_action_replay
         CheatCodeType.CODE_BREAKER -> R.string.game_cheats_error_code_breaker
@@ -401,7 +407,8 @@ private fun readLastType(
     options: List<CheatCodeType>,
 ): CheatCodeType? {
     val stored =
-        context.getSharedPreferences(CHEAT_TYPE_PREFERENCES, Context.MODE_PRIVATE)
+        context
+            .getSharedPreferences(CHEAT_TYPE_PREFERENCES, Context.MODE_PRIVATE)
             .getString(systemId, null)
     return CheatCodeType.fromPersistedValue(stored)?.takeIf(options::contains) ?: options.firstOrNull()
 }
@@ -411,7 +418,8 @@ private fun saveLastType(
     systemId: String,
     type: CheatCodeType,
 ) {
-    context.getSharedPreferences(CHEAT_TYPE_PREFERENCES, Context.MODE_PRIVATE)
+    context
+        .getSharedPreferences(CHEAT_TYPE_PREFERENCES, Context.MODE_PRIVATE)
         .edit()
         .putString(systemId, type.persistedValue)
         .apply()

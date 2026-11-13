@@ -137,9 +137,7 @@ class GameViewModelSaves(
         )
     }
 
-    private suspend fun isAutoSaveEnabled(): Boolean {
-        return systemCoreConfig.statesSupported && settingsManager.autoSave()
-    }
+    private suspend fun isAutoSaveEnabled(): Boolean = systemCoreConfig.statesSupported && settingsManager.autoSave()
 
     private suspend fun takeScreenshotPreview(index: Int) {
         val sizeInDp = StatesPreviewManager.PREVIEW_SIZE_DP
@@ -150,7 +148,8 @@ class GameViewModelSaves(
         }
     }
 
-    // Now that we wait for the first rendered frame this is probably no longer needed, but we'll keep it just to be sure
+    // Waiting for the first rendered frame may make this unnecessary,
+    // but we keep the delay to be safe.
     private suspend fun restoreQuickSave(saveState: SaveState) {
         var times = 10
 

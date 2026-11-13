@@ -18,8 +18,10 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class LibraryIndexWork(context: Context, workerParams: WorkerParameters) :
-    CoroutineWorker(context, workerParams) {
+class LibraryIndexWork(
+    context: Context,
+    workerParams: WorkerParameters,
+) : CoroutineWorker(context, workerParams) {
     @Inject
     lateinit var ominoyLibrary: OminoyLibrary
 

@@ -15,7 +15,18 @@ object RetroAchievementsSyncProgress {
         val complete: Boolean = false,
         val failed: Boolean = false,
     ) {
-        val fraction: Float get() = if (total <= 0) if (complete && !failed) 1f else 0f else (downloaded.toFloat() / total).coerceIn(0f, 1f)
+        val fraction: Float get() =
+            if (total <=
+                0
+            ) {
+                if (complete && !failed) {
+                    1f
+                } else {
+                    0f
+                }
+            } else {
+                (downloaded.toFloat() / total).coerceIn(0f, 1f)
+            }
     }
 
     data class Progress(
@@ -37,12 +48,18 @@ object RetroAchievementsSyncProgress {
 
     fun prepareWorker(games: List<Game>) {
         mutable.update { current ->
-            if (current.running && current.games.isNotEmpty()) current
-            else Progress(running = true, games = games.map { GameProgress(it) })
+            if (current.running && current.games.isNotEmpty()) {
+                current
+            } else {
+                Progress(running = true, games = games.map { GameProgress(it) })
+            }
         }
     }
 
-    fun update(gameId: Int, transform: (GameProgress) -> GameProgress) {
+    fun update(
+        gameId: Int,
+        transform: (GameProgress) -> GameProgress,
+    ) {
         mutable.update { current ->
             current.copy(games = current.games.map { if (it.game.id == gameId) transform(it) else it })
         }

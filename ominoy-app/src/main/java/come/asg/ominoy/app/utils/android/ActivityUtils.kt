@@ -17,7 +17,8 @@ fun Activity.displayErrorDialog(
     actionLabel: String,
     action: () -> Unit,
 ) {
-    AlertDialog.Builder(this)
+    AlertDialog
+        .Builder(this)
         .setMessage(message)
         .setPositiveButton(actionLabel) { _, _ -> action() }
         .setCancelable(false)

@@ -1,10 +1,13 @@
 package come.asg.ominoy.app.mobile.feature.gamemenu.tilt
 
 import android.view.KeyEvent
-import come.asg.ominoy.R
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
+import come.asg.ominoy.R
 
-enum class TiltConfigurationMenuEntry(val configuration: TiltConfiguration, val descriptionId: Int) {
+enum class TiltConfigurationMenuEntry(
+    val configuration: TiltConfiguration,
+    val descriptionId: Int,
+) {
     TILT_CONFIGURATION_DISABLED(
         TiltConfiguration.Disabled,
         R.string.tilt_configuration_disabled,
@@ -36,10 +39,9 @@ enum class TiltConfigurationMenuEntry(val configuration: TiltConfiguration, val 
     ;
 
     companion object {
-        fun fromTiltConfiguration(tiltConfiguration: TiltConfiguration): TiltConfigurationMenuEntry {
-            return TiltConfigurationMenuEntry.entries
+        fun fromTiltConfiguration(tiltConfiguration: TiltConfiguration): TiltConfigurationMenuEntry =
+            TiltConfigurationMenuEntry.entries
                 .firstOrNull { it.configuration == tiltConfiguration }
                 ?: TILT_CONFIGURATION_DISABLED
-        }
     }
 }

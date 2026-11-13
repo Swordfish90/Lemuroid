@@ -5,11 +5,11 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.InputDevice
+import com.swordfish.libretrodroid.RumbleEvent
 import come.asg.ominoy.app.mobile.feature.settings.SettingsManager
 import come.asg.ominoy.app.shared.input.InputDeviceManager
 import come.asg.ominoy.common.coroutines.safeCollect
 import come.asg.ominoy.lib.library.SystemCoreConfig
-import com.swordfish.libretrodroid.RumbleEvent
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -42,7 +42,8 @@ class RumbleManager(
             return
         }
 
-        inputDeviceManager.getEnabledInputsObservable()
+        inputDeviceManager
+            .getEnabledInputsObservable()
             .map { getVibrators(it) }
             .flatMapLatest { vibrators ->
                 rumbleEventsObservable
@@ -50,8 +51,7 @@ class RumbleManager(
                     .onStart { stopAllVibrators(vibrators) }
                     .onCompletion { stopAllVibrators(vibrators) }
                     .flowOn(rumbleContext)
-            }
-            .safeCollect { }
+            }.safeCollect { }
     }
 
     private fun stopAllVibrators(vibrators: List<Vibrator>) {

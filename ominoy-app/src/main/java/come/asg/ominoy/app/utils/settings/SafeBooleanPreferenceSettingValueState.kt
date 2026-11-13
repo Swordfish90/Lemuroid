@@ -16,15 +16,14 @@ fun rememberSafePreferenceBooleanSettingState(
     key: String,
     defaultValue: Boolean,
     preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current),
-): SafeBooleanPreferenceSettingValueState {
-    return remember {
+): SafeBooleanPreferenceSettingValueState =
+    remember {
         SafeBooleanPreferenceSettingValueState(
             preferences = preferences,
             key = key,
             defaultValue = defaultValue,
         )
     }
-}
 
 class SafeBooleanPreferenceSettingValueState(
     private val preferences: SharedPreferences,

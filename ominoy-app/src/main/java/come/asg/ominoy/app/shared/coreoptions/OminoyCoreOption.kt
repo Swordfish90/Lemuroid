@@ -8,13 +8,9 @@ data class OminoyCoreOption(
     private val exposedSetting: ExposedSetting,
     private val coreOption: CoreOption,
 ) : Serializable {
-    fun getKey(): String {
-        return exposedSetting.key
-    }
+    fun getKey(): String = exposedSetting.key
 
-    fun getDisplayName(context: Context): String {
-        return context.getString(exposedSetting.titleId)
-    }
+    fun getDisplayName(context: Context): String = context.getString(exposedSetting.titleId)
 
     fun getEntries(context: Context): List<String> {
         if (exposedSetting.values.isEmpty()) {
@@ -32,16 +28,11 @@ data class OminoyCoreOption(
         return getCorrectExposedSettings().map { it.key }
     }
 
-    fun getCurrentValue(): String {
-        return coreOption.variable.value
-    }
+    fun getCurrentValue(): String = coreOption.variable.value
 
-    fun getCurrentIndex(): Int {
-        return maxOf(getEntriesValues().indexOf(getCurrentValue()), 0)
-    }
+    fun getCurrentIndex(): Int = maxOf(getEntriesValues().indexOf(getCurrentValue()), 0)
 
-    private fun getCorrectExposedSettings(): List<ExposedSetting.Value> {
-        return exposedSetting.values
+    private fun getCorrectExposedSettings(): List<ExposedSetting.Value> =
+        exposedSetting.values
             .filter { it.key in coreOption.optionValues }
-    }
 }

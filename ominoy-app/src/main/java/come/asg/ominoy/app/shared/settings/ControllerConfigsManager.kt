@@ -9,7 +9,9 @@ import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ControllerConfigsManager(private val sharedPreferences: Lazy<SharedPreferences>) {
+class ControllerConfigsManager(
+    private val sharedPreferences: Lazy<SharedPreferences>,
+) {
     suspend fun getControllerConfigs(
         systemId: SystemID,
         systemCoreConfig: SystemCoreConfig,

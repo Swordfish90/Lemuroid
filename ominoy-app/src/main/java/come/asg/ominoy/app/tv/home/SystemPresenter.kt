@@ -10,7 +10,10 @@ import androidx.leanback.widget.Presenter
 import come.asg.ominoy.R
 import come.asg.ominoy.app.shared.systems.MetaSystemInfo
 
-class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) : Presenter() {
+class SystemPresenter(
+    private val cardSize: Int,
+    private val cardPadding: Int,
+) : Presenter() {
     override fun onBindViewHolder(
         viewHolder: Presenter.ViewHolder?,
         item: Any,
@@ -37,7 +40,9 @@ class SystemPresenter(private val cardSize: Int, private val cardPadding: Int) :
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder?) {}
 
-    class ViewHolder(view: ImageCardView) : Presenter.ViewHolder(view) {
+    class ViewHolder(
+        view: ImageCardView,
+    ) : Presenter.ViewHolder(view) {
         val mCardView: ImageCardView = view
     }
 }

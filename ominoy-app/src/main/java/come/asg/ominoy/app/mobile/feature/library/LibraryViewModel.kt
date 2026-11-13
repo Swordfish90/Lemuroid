@@ -18,8 +18,12 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-class LibraryViewModel(private val database: RetrogradeDatabase) : ViewModel() {
-    class Factory(private val database: RetrogradeDatabase) : ViewModelProvider.Factory {
+class LibraryViewModel(
+    private val database: RetrogradeDatabase,
+) : ViewModel() {
+    class Factory(
+        private val database: RetrogradeDatabase,
+    ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = LibraryViewModel(database) as T
     }
@@ -40,12 +44,25 @@ class LibraryViewModel(private val database: RetrogradeDatabase) : ViewModel() {
                 } else {
                     when (selectedFilter) {
                         "Favorites" -> buildFlowPaging(30, viewModelScope) { database.gameDao().selectFavorites() }
-                        "GB" -> buildFlowPaging(30, viewModelScope) { database.gameDao().selectBySystem(SystemID.GB.dbname) }
-                        "GBC" -> buildFlowPaging(30, viewModelScope) { database.gameDao().selectBySystem(SystemID.GBC.dbname) }
-                        "GBA" -> buildFlowPaging(30, viewModelScope) { database.gameDao().selectBySystem(SystemID.GBA.dbname) }
-                        else -> buildFlowPaging(30, viewModelScope) {
-                            database.gameDao().selectBySystems(SystemID.values().map { it.dbname })
-                        }
+                        "GB" ->
+                            buildFlowPaging(
+                                30,
+                                viewModelScope,
+                            ) { database.gameDao().selectBySystem(SystemID.GB.dbname) }
+                        "GBC" ->
+                            buildFlowPaging(
+                                30,
+                                viewModelScope,
+                            ) { database.gameDao().selectBySystem(SystemID.GBC.dbname) }
+                        "GBA" ->
+                            buildFlowPaging(
+                                30,
+                                viewModelScope,
+                            ) { database.gameDao().selectBySystem(SystemID.GBA.dbname) }
+                        else ->
+                            buildFlowPaging(30, viewModelScope) {
+                                database.gameDao().selectBySystems(SystemID.values().map { it.dbname })
+                            }
                     }
                 }
 

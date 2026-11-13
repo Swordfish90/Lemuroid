@@ -29,8 +29,10 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
-    CoroutineWorker(context, workerParams) {
+class SaveSyncWork(
+    context: Context,
+    workerParams: WorkerParameters,
+) : CoroutineWorker(context, workerParams) {
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
 
@@ -47,7 +49,8 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
         displayNotification()
 
         val coresToSync =
-            settingsManager.syncStatesCores()
+            settingsManager
+                .syncStatesCores()
                 .mapNotNull { findByName(it) }
                 .toSet()
 
@@ -117,12 +120,12 @@ class SaveSyncWork(context: Context, workerParams: WorkerParameters) :
                 ExistingPeriodicWorkPolicy.REPLACE,
                 PeriodicWorkRequestBuilder<SaveSyncWork>(3, TimeUnit.HOURS)
                     .setConstraints(
-                        Constraints.Builder()
+                        Constraints
+                            .Builder()
                             .setRequiredNetworkType(NetworkType.UNMETERED)
                             .setRequiresBatteryNotLow(true)
                             .build(),
-                    )
-                    .setInputData(inputData)
+                    ).setInputData(inputData)
                     .setInitialDelay(delayMinutes, TimeUnit.MINUTES)
                     .build(),
             )

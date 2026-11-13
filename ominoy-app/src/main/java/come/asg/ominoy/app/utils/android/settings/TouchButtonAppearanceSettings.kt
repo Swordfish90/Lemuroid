@@ -1,6 +1,5 @@
 package come.asg.ominoy.app.utils.android.settings
 
-import android.graphics.Color as AndroidColor
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,6 +43,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.sin
+import android.graphics.Color as AndroidColor
 
 @Composable
 fun TouchButtonAppearanceSettings() {
@@ -97,13 +97,14 @@ private fun CustomColorPickerCard(
     onColorChanged: (Color) -> Unit,
     onOpacityChanged: (Int) -> Unit,
 ) {
-    val rgbHex = remember(color) {
-        "#%02X%02X%02X".format(
-            (color.red * 255f).toInt(),
-            (color.green * 255f).toInt(),
-            (color.blue * 255f).toInt(),
-        )
-    }
+    val rgbHex =
+        remember(color) {
+            "#%02X%02X%02X".format(
+                (color.red * 255f).toInt(),
+                (color.green * 255f).toInt(),
+                (color.blue * 255f).toInt(),
+            )
+        }
     val previewTextColor = if (luminance(color) < 0.48f) Color.White else Color.Black
     val displayedColor = color.copy(alpha = opacity / 100f)
 
@@ -111,10 +112,11 @@ private fun CustomColorPickerCard(
         modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
         shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f),
-        ),
+        border =
+            androidx.compose.foundation.BorderStroke(
+                1.dp,
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f),
+            ),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -217,18 +219,22 @@ private fun ColorWheel(
     val latestColor = rememberUpdatedState(color)
     val latestOnColorChanged = rememberUpdatedState(onColorChanged)
     val wheelOutlineColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.28f)
-    val hsv = remember(color) {
-        FloatArray(3).also { values ->
-            AndroidColor.RGBToHSV(
-                (color.red * 255f).toInt(),
-                (color.green * 255f).toInt(),
-                (color.blue * 255f).toInt(),
-                values,
-            )
+    val hsv =
+        remember(color) {
+            FloatArray(3).also { values ->
+                AndroidColor.RGBToHSV(
+                    (color.red * 255f).toInt(),
+                    (color.green * 255f).toInt(),
+                    (color.blue * 255f).toInt(),
+                    values,
+                )
+            }
         }
-    }
 
-    fun update(offset: Offset, canvasSize: Size) {
+    fun update(
+        offset: Offset,
+        canvasSize: Size,
+    ) {
         val center = Offset(canvasSize.width / 2f, canvasSize.height / 2f)
         val radius = minOf(canvasSize.width, canvasSize.height) / 2f
         val vector = offset - center
@@ -268,8 +274,7 @@ private fun ColorWheel(
                 .semantics { contentDescription = "Hue and saturation color wheel" }
                 .pointerInput(Unit) {
                     detectTapGestures { update(it, Size(size.width.toFloat(), size.height.toFloat())) }
-                }
-                .pointerInput(Unit) {
+                }.pointerInput(Unit) {
                     detectDragGestures { change, _ ->
                         change.consume()
                         update(change.position, Size(size.width.toFloat(), size.height.toFloat()))
@@ -305,5 +310,4 @@ private fun ColorWheel(
     }
 }
 
-private fun luminance(color: Color): Float =
-    0.2126f * color.red + 0.7152f * color.green + 0.0722f * color.blue
+private fun luminance(color: Color): Float = 0.2126f * color.red + 0.7152f * color.green + 0.0722f * color.blue

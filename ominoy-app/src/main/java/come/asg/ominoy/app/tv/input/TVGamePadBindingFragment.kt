@@ -36,7 +36,8 @@ class TVGamePadBindingFragment : GuidedStepSupportFragment() {
         desc: String,
     ) {
         actions.add(
-            GuidedAction.Builder(activity)
+            GuidedAction
+                .Builder(activity)
                 .id(id)
                 .title(title)
                 .description(desc)
@@ -52,14 +53,13 @@ class TVGamePadBindingFragment : GuidedStepSupportFragment() {
         fun create(
             title: String,
             message: String,
-        ): TVGamePadBindingFragment {
-            return TVGamePadBindingFragment().apply {
+        ): TVGamePadBindingFragment =
+            TVGamePadBindingFragment().apply {
                 arguments =
                     Bundle(2).apply {
                         putString(EXTRA_TITLE, title)
                         putString(EXTRA_MESSAGE, message)
                     }
             }
-        }
     }
 }

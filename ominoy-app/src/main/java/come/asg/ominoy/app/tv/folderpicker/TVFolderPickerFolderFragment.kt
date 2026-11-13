@@ -57,7 +57,8 @@ class TVFolderPickerFolderFragment : GuidedStepSupportFragment() {
     ) {
         super.onCreateActions(actions, savedInstanceState)
 
-        directory.listFiles()
+        directory
+            .listFiles()
             ?.filter { it.isDirectory }
             ?.forEach {
                 addAction(actions, ACTION_NAVIGATE, it.name, it.absolutePath)
@@ -87,7 +88,8 @@ class TVFolderPickerFolderFragment : GuidedStepSupportFragment() {
         desc: String,
     ) {
         actions.add(
-            GuidedAction.Builder(activity)
+            GuidedAction
+                .Builder(activity)
                 .id(id)
                 .title(title)
                 .description(desc)

@@ -3,9 +3,9 @@ package come.asg.ominoy.app.shared.game.viewmodel
 import android.content.Context
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import come.asg.ominoy.app.mobile.feature.settings.SettingsManager
 import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import com.swordfish.touchinput.radial.sensors.TiltSensor
+import come.asg.ominoy.app.mobile.feature.settings.SettingsManager
 import gg.padkit.inputstate.InputState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.awaitCancellation
@@ -40,9 +40,7 @@ class GameViewModelTilt(
         tiltConfiguration.value = configuration
     }
 
-    fun getTiltConfiguration(): Flow<TiltConfiguration> {
-        return tiltConfiguration
-    }
+    fun getTiltConfiguration(): Flow<TiltConfiguration> = tiltConfiguration
 
     fun getSimulatedTiltEvents(): Flow<InputState> {
         return tiltConfiguration
@@ -52,7 +50,8 @@ class GameViewModelTilt(
                 }
 
                 tiltSensor.setSensitivity(settingsManager.tiltSensitivity())
-                tiltSensor.getTiltEvents()
+                tiltSensor
+                    .getTiltEvents()
                     .onStart { tiltSensor.shouldRun = true }
                     .onCompletion { tiltSensor.shouldRun = false }
                     .map { config.process(it) }

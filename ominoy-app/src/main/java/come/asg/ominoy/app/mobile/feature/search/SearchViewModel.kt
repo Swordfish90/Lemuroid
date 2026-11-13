@@ -20,11 +20,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-class SearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel() {
-    class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return SearchViewModel(retrogradeDb) as T
-        }
+class SearchViewModel(
+    private val retrogradeDb: RetrogradeDatabase,
+) : ViewModel() {
+    class Factory(
+        val retrogradeDb: RetrogradeDatabase,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = SearchViewModel(retrogradeDb) as T
     }
 
     val queryString = MutableStateFlow("")
@@ -38,8 +40,7 @@ class SearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel(
                 buildFlowPaging(20, viewModelScope) {
                     retrogradeDb.gameSearchDao().search(it)
                 }
-            }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
+            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
 
     val searchState: Flow<UIState> =
         queryString

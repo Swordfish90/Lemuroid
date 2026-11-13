@@ -21,9 +21,7 @@ class TVSettingsActivity : TVBaseSettingsActivity() {
     }
 
     class TVSettingsFragmentWrapper : BaseSettingsFragmentWrapper() {
-        override fun createFragment(): Fragment {
-            return TVSettingsFragment()
-        }
+        override fun createFragment(): Fragment = TVSettingsFragment()
     }
 
     @dagger.Module

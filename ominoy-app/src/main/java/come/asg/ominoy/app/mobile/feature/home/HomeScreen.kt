@@ -10,18 +10,21 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -34,20 +37,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -60,7 +62,6 @@ import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedCard
@@ -79,29 +80,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.request.ImageRequest
@@ -111,27 +110,26 @@ import come.asg.ominoy.app.mobile.feature.settings.retroachievements.readGamepla
 import come.asg.ominoy.app.mobile.feature.settings.retroachievements.readWebApiCredentials
 import come.asg.ominoy.app.mobile.shared.compose.ui.OminoyGameCard
 import come.asg.ominoy.app.mobile.shared.compose.ui.OminoyGameImage
-import come.asg.ominoy.app.mobile.shared.compose.ui.OminoyHomeColors as HomeColors
-import come.asg.ominoy.app.shared.main.GamePlaytimeStats
 import come.asg.ominoy.app.shared.game.RetroAchievementsEarnedStore
 import come.asg.ominoy.app.shared.game.RetroAchievementsSyncProgress
 import come.asg.ominoy.app.shared.game.RetroAchievementsSyncWork
+import come.asg.ominoy.app.shared.main.GamePlaytimeStats
 import come.asg.ominoy.app.shared.settings.DataFolderPickerLauncher
 import come.asg.ominoy.app.utils.android.ComposableLifecycle
 import come.asg.ominoy.common.displayDetailsSettingsScreen
 import come.asg.ominoy.lib.library.db.entity.Game
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import androidx.compose.runtime.snapshotFlow
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.Date
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
-import java.util.Date
-import java.io.File
+import come.asg.ominoy.app.mobile.shared.compose.ui.OminoyHomeColors as HomeColors
 
 @Composable
 fun HomeScreen(
@@ -244,9 +242,13 @@ private fun HomeScreen(
 ) {
     val retroAchievementsCredentials by RetroAchievementsAccountBridge.credentials.collectAsState()
     val retroAchievementsLoggedIn = retroAchievementsCredentials != null
-    val games = remember(state.recentGames, state.favoritesGames, state.discoveryGames) {
-        state.recentGames.take(10).ifEmpty { state.favoritesGames.take(10).ifEmpty { state.discoveryGames.take(10) } }
-    }
+    val games =
+        remember(state.recentGames, state.favoritesGames, state.discoveryGames) {
+            state.recentGames
+                .take(
+                    10,
+                ).ifEmpty { state.favoritesGames.take(10).ifEmpty { state.discoveryGames.take(10) } }
+        }
     var selectedGameId by remember(games) { mutableStateOf(games.firstOrNull()?.id) }
     val carouselState = rememberLazyListState()
     val selectedGame = games.firstOrNull { it.id == selectedGameId } ?: games.firstOrNull()
@@ -279,9 +281,12 @@ private fun HomeScreen(
     LaunchedEffect(selectedGame?.id, selectedGame?.displayCoverUrl()) {
         val game = selectedGame ?: return@LaunchedEffect
         val cover = game.displayCoverUrl()
-        artworkColor = if (cover == null) fallbackArtworkColor(game) else {
-            withContext(Dispatchers.IO) { loadArtworkColor(context, cover) } ?: fallbackArtworkColor(game)
-        }
+        artworkColor =
+            if (cover == null) {
+                fallbackArtworkColor(game)
+            } else {
+                withContext(Dispatchers.IO) { loadArtworkColor(context, cover) } ?: fallbackArtworkColor(game)
+            }
     }
 
     LaunchedEffect(carouselState, games) {
@@ -291,8 +296,7 @@ private fun HomeScreen(
             layoutInfo.visibleItemsInfo
                 .minByOrNull { item -> abs(item.offset + item.size / 2 - viewportCenter) }
                 ?.index
-        }
-            .map { index -> index?.let { games.getOrNull(it)?.id } }
+        }.map { index -> index?.let { games.getOrNull(it)?.id } }
             .filterNotNull()
             .distinctUntilChanged()
             .collect { selectedGameId = it }
@@ -306,282 +310,408 @@ private fun HomeScreen(
             )
         }
         Box(
-            modifier = Modifier.fillMaxSize().background(
-                Brush.verticalGradient(
-                    listOf(
-                        vibrantArtworkColor.copy(alpha = 0.48f),
-                        artworkAccentColor.copy(alpha = 0.24f),
-                        MaterialTheme.colorScheme.background.copy(alpha = 0.88f),
-                        MaterialTheme.colorScheme.background,
+            modifier =
+                Modifier.fillMaxSize().background(
+                    Brush.verticalGradient(
+                        listOf(
+                            vibrantArtworkColor.copy(alpha = 0.48f),
+                            artworkAccentColor.copy(alpha = 0.24f),
+                            MaterialTheme.colorScheme.background.copy(alpha = 0.88f),
+                            MaterialTheme.colorScheme.background,
+                        ),
                     ),
                 ),
-            ),
         )
         Box(
-            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().height(700.dp)
-                .background(
-                    Brush.radialGradient(
-                        colors = listOf(
-                            vibrantArtworkColor.copy(alpha = 0.42f),
-                            artworkAccentColor.copy(alpha = 0.18f),
-                            Color.Transparent,
+            modifier =
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .height(700.dp)
+                    .background(
+                        Brush.radialGradient(
+                            colors =
+                                listOf(
+                                    vibrantArtworkColor.copy(alpha = 0.42f),
+                                    artworkAccentColor.copy(alpha = 0.18f),
+                                    Color.Transparent,
+                                ),
+                            radius = 1050f,
                         ),
-                        radius = 1050f,
                     ),
-                ),
         )
         Column(
             modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 144.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(start = 24.dp, end = 16.dp, top = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "OMINOY",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = 1.4.sp,
-                )
-                Text("RETRO, READY.", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, letterSpacing = 2.sp)
-            }
-            IconButton(onClick = onOpenSearch) {
-                Icon(Icons.Filled.Search, contentDescription = "Search games", tint = MaterialTheme.colorScheme.onSurface)
-            }
-            Surface(shape = CircleShape, color = Color(0xFF8AEBDD), modifier = Modifier.padding(start = 4.dp)) {
-                IconButton(
-                    onClick = { if (syncProgress.running) showSyncProgress = true else onSyncAchievements() },
-                    modifier = Modifier.size(44.dp),
-                ) {
-                    Icon(
-                        Icons.Filled.Refresh,
-                        contentDescription = if (syncProgress.running) "Show achievement sync progress" else "Download achievements",
-                        tint = Color(0xFF10131A),
-                        modifier = Modifier.graphicsLayer { rotationZ = if (syncProgress.running) syncRotation else 0f },
+            Row(
+                modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(start = 24.dp, end = 16.dp, top = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "OMINOY",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 1.4.sp,
+                    )
+                    Text(
+                        "RETRO, READY.",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        letterSpacing = 2.sp,
                     )
                 }
+                IconButton(onClick = onOpenSearch) {
+                    Icon(
+                        Icons.Filled.Search,
+                        contentDescription = "Search games",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+                Surface(shape = CircleShape, color = Color(0xFF8AEBDD), modifier = Modifier.padding(start = 4.dp)) {
+                    IconButton(
+                        onClick = { if (syncProgress.running) showSyncProgress = true else onSyncAchievements() },
+                        modifier = Modifier.size(44.dp),
+                    ) {
+                        Icon(
+                            Icons.Filled.Refresh,
+                            contentDescription =
+                                if (syncProgress.running) {
+                                    "Show achievement sync progress"
+                                } else {
+                                    "Download achievements"
+                                },
+                            tint = Color(0xFF10131A),
+                            modifier =
+                                Modifier.graphicsLayer {
+                                    rotationZ = if (syncProgress.running) syncRotation else 0f
+                                },
+                        )
+                    }
+                }
             }
-        }
 
-        if (showSyncProgress) {
-            RetroAchievementsSyncSheet(
-                progress = syncProgress,
-                onClose = { showSyncProgress = false },
-                onRetryFailed = { onRetryFailedGames(syncProgress.failedGames.map { it.game.id }.toSet()) },
-            )
-        }
+            if (showSyncProgress) {
+                RetroAchievementsSyncSheet(
+                    progress = syncProgress,
+                    onClose = { showSyncProgress = false },
+                    onRetryFailed = { onRetryFailedGames(syncProgress.failedGames.map { it.game.id }.toSet()) },
+                )
+            }
 
-        AnimatedVisibility(state.showNoNotificationPermissionCard) {
-            HomeNotification(
-                R.string.home_notification_title,
-                R.string.home_notification_message,
-                R.string.home_notification_action,
-                onEnableNotificationsClicked,
-            )
-        }
-        AnimatedVisibility(state.showNoGamesCard) {
-            HomeNotification(
-                R.string.home_empty_title,
-                R.string.home_empty_message,
-                R.string.home_empty_action,
-                onSetDirectoryClicked,
-                enabled = !state.indexInProgress,
-            )
-        }
-        AnimatedVisibility(state.showNoDataFolderCard) {
-            HomeNotification(R.string.data_folder_setup_title, R.string.data_folder_setup_message, R.string.data_folder_setup_action, onSetDataFolderClicked)
-        }
-        AnimatedVisibility(state.showNoMicrophonePermissionCard) {
-            HomeNotification(R.string.home_microphone_title, R.string.home_microphone_message, R.string.home_microphone_action, onEnableMicrophoneClicked)
-        }
-        AnimatedVisibility(state.showDesmumeDeprecatedCard) {
-            HomeNotification(
-                R.string.home_notification_desmume_deprecated_title,
-                R.string.home_notification_desmume_deprecated_message,
-                R.string.home_notification_desmume_deprecated_action,
-                onOpenCoreSelection,
-            )
-        }
+            AnimatedVisibility(state.showNoNotificationPermissionCard) {
+                HomeNotification(
+                    R.string.home_notification_title,
+                    R.string.home_notification_message,
+                    R.string.home_notification_action,
+                    onEnableNotificationsClicked,
+                )
+            }
+            AnimatedVisibility(state.showNoGamesCard) {
+                HomeNotification(
+                    R.string.home_empty_title,
+                    R.string.home_empty_message,
+                    R.string.home_empty_action,
+                    onSetDirectoryClicked,
+                    enabled = !state.indexInProgress,
+                )
+            }
+            AnimatedVisibility(state.showNoDataFolderCard) {
+                HomeNotification(
+                    R.string.data_folder_setup_title,
+                    R.string.data_folder_setup_message,
+                    R.string.data_folder_setup_action,
+                    onSetDataFolderClicked,
+                )
+            }
+            AnimatedVisibility(state.showNoMicrophonePermissionCard) {
+                HomeNotification(
+                    R.string.home_microphone_title,
+                    R.string.home_microphone_message,
+                    R.string.home_microphone_action,
+                    onEnableMicrophoneClicked,
+                )
+            }
+            AnimatedVisibility(state.showDesmumeDeprecatedCard) {
+                HomeNotification(
+                    R.string.home_notification_desmume_deprecated_title,
+                    R.string.home_notification_desmume_deprecated_message,
+                    R.string.home_notification_desmume_deprecated_action,
+                    onOpenCoreSelection,
+                )
+            }
 
-        Text(
-            text = if (selectedGame?.lastPlayedAt != null) "Pick up where you left off" else "Your next adventure",
-            modifier = Modifier.padding(start = 24.dp, top = 4.dp, end = 24.dp),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 25.sp,
-            lineHeight = 29.sp,
-            fontWeight = FontWeight.ExtraBold,
-            letterSpacing = (-0.7).sp,
-        )
+            Text(
+                text = if (selectedGame?.lastPlayedAt != null) "Pick up where you left off" else "Your next adventure",
+                modifier = Modifier.padding(start = 24.dp, top = 4.dp, end = 24.dp),
+                color = MaterialTheme.colorScheme.onBackground,
+                fontSize = 25.sp,
+                lineHeight = 29.sp,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = (-0.7).sp,
+            )
 
-        if (selectedGame != null) {
-            val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
-            BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
-                val sidePadding = ((maxWidth - 250.dp) / 2).coerceAtLeast(0.dp)
-                LazyRow(
-                    state = carouselState,
-                    flingBehavior = rememberSnapFlingBehavior(lazyListState = carouselState),
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = sidePadding),
-                    horizontalArrangement = Arrangement.spacedBy(14.dp),
-                ) {
-                    itemsIndexed(games, key = { _, game -> game.id }) { index, game ->
-                        val selected = selectedGame.id == game.id
-                        val scale by animateFloatAsState(if (selected) 1f else 0.92f, tween(240), label = "coverScale")
-                        val opacity by animateFloatAsState(if (selected) 1f else 0.76f, tween(240), label = "coverOpacity")
-                        Box(
-                            modifier = Modifier.width(250.dp).height(250.dp)
-                                .graphicsLayer { scaleX = scale; scaleY = scale; alpha = opacity }
-                                .clip(RoundedCornerShape(28.dp))
-                                .background(
-                                    Brush.linearGradient(
-                                        listOf(Color(0xFF342A4A), Color(0xFF17131F), Color(0xFF271A29)),
-                                    ),
-                                )
-                                .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(28.dp))
-                                .combinedClickable(
-                                    onClick = {
-                                        selectedGameId = game.id
-                                        coroutineScope.launch { carouselState.animateScrollToItem(index) }
-                                        onGameClicked(game)
-                                    },
-                                    onLongClick = { onGameLongClick(game) },
-                                ),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            OminoyGameImage(
-                                game = game,
-                                modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(28.dp)),
+            if (selectedGame != null) {
+                val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
+                BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                    val sidePadding = ((maxWidth - 250.dp) / 2).coerceAtLeast(0.dp)
+                    LazyRow(
+                        state = carouselState,
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = carouselState),
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(horizontal = sidePadding),
+                        horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    ) {
+                        itemsIndexed(games, key = { _, game -> game.id }) { index, game ->
+                            val selected = selectedGame.id == game.id
+                            val scale by animateFloatAsState(
+                                if (selected) 1f else 0.92f,
+                                tween(240),
+                                label = "coverScale",
                             )
-                            Surface(
-                                modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
-                                shape = CircleShape,
-                                color = Color.Black.copy(alpha = 0.52f),
+                            val opacity by animateFloatAsState(
+                                if (selected) 1f else 0.76f,
+                                tween(240),
+                                label = "coverOpacity",
+                            )
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .width(250.dp)
+                                        .height(250.dp)
+                                        .graphicsLayer {
+                                            scaleX = scale
+                                            scaleY = scale
+                                            alpha = opacity
+                                        }.clip(RoundedCornerShape(28.dp))
+                                        .background(
+                                            Brush.linearGradient(
+                                                listOf(Color(0xFF342A4A), Color(0xFF17131F), Color(0xFF271A29)),
+                                            ),
+                                        ).border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(28.dp))
+                                        .combinedClickable(
+                                            onClick = {
+                                                selectedGameId = game.id
+                                                coroutineScope.launch { carouselState.animateScrollToItem(index) }
+                                                onGameClicked(game)
+                                            },
+                                            onLongClick = { onGameLongClick(game) },
+                                        ),
+                                contentAlignment = Alignment.Center,
                             ) {
-                                IconButton(
-                                    onClick = { openStats(game) },
-                                    modifier = Modifier.size(38.dp),
-                                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                                OminoyGameImage(
+                                    game = game,
+                                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(28.dp)),
+                                )
+                                Surface(
+                                    modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
+                                    shape = CircleShape,
+                                    color = Color.Black.copy(alpha = 0.52f),
                                 ) {
-                                    Icon(Icons.Filled.Info, contentDescription = "${game.displayName()} play statistics")
+                                    IconButton(
+                                        onClick = { openStats(game) },
+                                        modifier = Modifier.size(38.dp),
+                                        colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                                    ) {
+                                        Icon(
+                                            Icons.Filled.Info,
+                                            contentDescription = "${game.displayName()} play statistics",
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = selectedGame.displayName(),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = (-0.5).sp,
-                    maxLines = 2,
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = "${selectedGame.systemId.uppercase()}  ·  ${if (selectedGame.lastPlayedAt == null) "Not played yet" else "Recently played"}",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                Spacer(Modifier.height(14.dp))
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surfaceVariant) {
-                        IconButton(onClick = { onGameFavoriteToggle(selectedGame, !selectedGame.isFavorite) }) {
-                            Icon(
-                                imageVector = if (selectedGame.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                                contentDescription = if (selectedGame.isFavorite) "Remove favorite" else "Add favorite",
-                                tint = if (selectedGame.isFavorite) Color(0xFFFF83A8) else MaterialTheme.colorScheme.onSurface,
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = selectedGame.displayName(),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = (-0.5).sp,
+                        maxLines = 2,
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text =
+                            "${selectedGame.systemId.uppercase()}  ·  " +
+                                (
+                                    if (selectedGame.lastPlayedAt == null) {
+                                        "Not played yet"
+                                    } else {
+                                        "Recently played"
+                                    }
+                                ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    Spacer(Modifier.height(14.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surfaceVariant) {
+                            IconButton(onClick = { onGameFavoriteToggle(selectedGame, !selectedGame.isFavorite) }) {
+                                Icon(
+                                    imageVector =
+                                        if (selectedGame.isFavorite) {
+                                            Icons.Filled.Favorite
+                                        } else {
+                                            Icons.Filled.FavoriteBorder
+                                        },
+                                    contentDescription =
+                                        if (selectedGame.isFavorite) {
+                                            "Remove favorite"
+                                        } else {
+                                            "Add favorite"
+                                        },
+                                    tint =
+                                        if (selectedGame.isFavorite) {
+                                            Color(
+                                                0xFFFF83A8,
+                                            )
+                                        } else {
+                                            MaterialTheme.colorScheme.onSurface
+                                        },
+                                )
+                            }
+                        }
+                        Button(
+                            onClick = { onGameClicked(selectedGame) },
+                            shape = RoundedCornerShape(100.dp),
+                            contentPadding = PaddingValues(horizontal = 28.dp, vertical = 14.dp),
+                            colors =
+                                ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFF4F1F8),
+                                    contentColor = Color(0xFF0C0B10),
+                                ),
+                        ) {
+                            Icon(Icons.Filled.PlayArrow, contentDescription = null)
+                            Spacer(Modifier.width(6.dp))
+                            Text(
+                                if (selectedGame.lastPlayedAt ==
+                                    null
+                                ) {
+                                    "Play"
+                                } else {
+                                    "Resume"
+                                },
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surfaceVariant) {
+                            IconButton(onClick = { onGameLongClick(selectedGame) }) {
+                                Icon(
+                                    Icons.Filled.MoreHoriz,
+                                    contentDescription = "More game actions",
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                )
+                            }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.padding(top = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        repeat(minOf(games.size, 7)) { index ->
+                            Box(
+                                Modifier
+                                    .size(if (games[index].id == selectedGame.id) 18.dp else 5.dp, 5.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (games[index].id ==
+                                            selectedGame.id
+                                        ) {
+                                            Color(0xFF8AEBDD)
+                                        } else {
+                                            Color.White.copy(alpha = 0.24f)
+                                        },
+                                    ),
                             )
                         }
                     }
-                    Button(
-                        onClick = { onGameClicked(selectedGame) },
-                        shape = RoundedCornerShape(100.dp),
-                        contentPadding = PaddingValues(horizontal = 28.dp, vertical = 14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF4F1F8), contentColor = Color(0xFF0C0B10)),
-                    ) {
-                        Icon(Icons.Filled.PlayArrow, contentDescription = null)
-                        Spacer(Modifier.width(6.dp))
-                        Text(if (selectedGame.lastPlayedAt == null) "Play" else "Resume", fontWeight = FontWeight.Bold)
-                    }
-                    Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surfaceVariant) {
-                        IconButton(onClick = { onGameLongClick(selectedGame) }) {
-                            Icon(Icons.Filled.MoreHoriz, contentDescription = "More game actions", tint = MaterialTheme.colorScheme.onSurface)
-                        }
-                    }
                 }
-                Row(
-                    modifier = Modifier.padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+            } else {
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
                 ) {
-                    repeat(minOf(games.size, 7)) { index ->
-                        Box(
-                            Modifier.size(if (games[index].id == selectedGame.id) 18.dp else 5.dp, 5.dp)
-                                .clip(CircleShape)
-                                .background(if (games[index].id == selectedGame.id) Color(0xFF8AEBDD) else Color.White.copy(alpha = 0.24f)),
+                    Column(Modifier.padding(22.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Text(
+                            when {
+                                !state.romFolderConfigured -> "Start your library"
+                                state.indexInProgress -> "Scanning your ROM folder"
+                                else -> "No games found in this folder"
+                            },
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Text(
+                            when {
+                                !state.romFolderConfigured ->
+                                    "Choose a ROM folder using Select Directory above " +
+                                        "to bring your games here."
+                                state.indexInProgress -> "OMINOY is scanning the selected folder for games."
+                                else ->
+                                    "The folder is saved, but no supported games were found. " +
+                                        "Check that it contains .gb, .gbc, or .gba files, then rescan in Settings."
+                            },
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
             }
-        } else {
-            Surface(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-                shape = RoundedCornerShape(24.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant,
-            ) {
-                Column(Modifier.padding(22.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(
-                        when {
-                            !state.romFolderConfigured -> "Start your library"
-                            state.indexInProgress -> "Scanning your ROM folder"
-                            else -> "No games found in this folder"
-                        },
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        when {
-                            !state.romFolderConfigured -> "Choose a ROM folder using Select Directory above to bring your games here."
-                            state.indexInProgress -> "OMINOY is scanning the selected folder for games."
-                            else -> "The folder is saved, but no supported games were found. Check that it contains .gb, .gbc, or .gba files, then rescan in Settings."
-                        },
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-        }
 
-        HomeRow("Recently played", state.recentGames, onGameClicked, onGameLongClick) { openStats(it) }
-        HomeRow("Favorites", state.favoritesGames, onGameClicked, onGameLongClick) { openStats(it) }
-        HomeRow("Discover", state.discoveryGames, onGameClicked, onGameLongClick) { openStats(it) }
-        Spacer(Modifier.height(8.dp))
+            HomeRow("Recently played", state.recentGames, onGameClicked, onGameLongClick) { openStats(it) }
+            HomeRow("Favorites", state.favoritesGames, onGameClicked, onGameLongClick) { openStats(it) }
+            HomeRow("Discover", state.discoveryGames, onGameClicked, onGameLongClick) { openStats(it) }
+            Spacer(Modifier.height(8.dp))
         }
         statsGame?.let { game ->
-            val playStats = remember(game.id, statsRefreshToken) {
-                val totalMs = GamePlaytimeStats.totalMs(context, game.id)
-                val recordedLastPlayed = GamePlaytimeStats.lastPlayed(context, game.id)
-                val lastPlayed = recordedLastPlayed.takeIf { it > 0L }?.let(::Date) ?: game.lastPlayedAt?.let(::Date)
-                Triple(totalMs, GamePlaytimeStats.sessions(context, game.id), lastPlayed)
-            }
+            val playStats =
+                remember(game.id, statsRefreshToken) {
+                    val totalMs = GamePlaytimeStats.totalMs(context, game.id)
+                    val recordedLastPlayed = GamePlaytimeStats.lastPlayed(context, game.id)
+                    val lastPlayed =
+                        recordedLastPlayed.takeIf { it > 0L }?.let(::Date) ?: game.lastPlayedAt?.let(::Date)
+                    Triple(totalMs, GamePlaytimeStats.sessions(context, game.id), lastPlayed)
+                }
             val totalMinutes = playStats.first / 60_000L
-            val played = if (totalMinutes >= 60) "${totalMinutes / 60} hr ${totalMinutes % 60} min" else "$totalMinutes min"
-            var cachedAchievements by remember(game.id, game.title, game.displayName(), game.fileName, statsRefreshToken) {
-                mutableStateOf(run {
-                    val directlyLinked = RetroAchievementsEarnedStore.read(context, game.id)
-                    val syncedByTitle = RetroAchievementsEarnedStore.readAll(context).filter { cached ->
-                        cached.localLibraryGameId == game.id || game.matchesCachedAchievementTitle(cached.gameTitle)
-                    }
-                    (directlyLinked + syncedByTitle).distinctBy { it.raGameId to it.id }
-                })
+            val played =
+                if (totalMinutes >=
+                    60
+                ) {
+                    "${totalMinutes / 60} hr ${totalMinutes % 60} min"
+                } else {
+                    "$totalMinutes min"
+                }
+            var cachedAchievements by remember(
+                game.id,
+                game.title,
+                game.displayName(),
+                game.fileName,
+                statsRefreshToken,
+            ) {
+                mutableStateOf(
+                    run {
+                        val directlyLinked = RetroAchievementsEarnedStore.read(context, game.id)
+                        val syncedByTitle =
+                            RetroAchievementsEarnedStore.readAll(context).filter { cached ->
+                                cached.localLibraryGameId == game.id ||
+                                    game.matchesCachedAchievementTitle(cached.gameTitle)
+                            }
+                        (directlyLinked + syncedByTitle).distinctBy { it.raGameId to it.id }
+                    },
+                )
             }
             val persistedAccount = remember(game.id, statsRefreshToken) { readGameplayCredentials(context) }
             val webApiCredentials = remember(game.id, statsRefreshToken) { readWebApiCredentials(context) }
@@ -603,13 +733,16 @@ private fun HomeScreen(
                             )
                         }
                     }
-                    cachedAchievements = withContext(Dispatchers.IO) {
-                        val direct = RetroAchievementsEarnedStore.read(context, game.id)
-                        val byTitle = RetroAchievementsEarnedStore.readAll(context).filter { cached ->
-                            cached.localLibraryGameId == game.id || game.matchesCachedAchievementTitle(cached.gameTitle)
+                    cachedAchievements =
+                        withContext(Dispatchers.IO) {
+                            val direct = RetroAchievementsEarnedStore.read(context, game.id)
+                            val byTitle =
+                                RetroAchievementsEarnedStore.readAll(context).filter { cached ->
+                                    cached.localLibraryGameId == game.id ||
+                                        game.matchesCachedAchievementTitle(cached.gameTitle)
+                                }
+                            (direct + byTitle).distinctBy { it.raGameId to it.id }
                         }
-                        (direct + byTitle).distinctBy { it.raGameId to it.id }
-                    }
                     achievementSyncing = false
                 }
             }
@@ -629,14 +762,14 @@ private fun HomeScreen(
             val game = statsGame
             if (game != null) HomeAchievementDetailDialog(game, achievement) { statsAchievement = null }
         }
-
     }
 }
 
 fun Game.matchesCachedAchievementTitle(cachedTitle: String): Boolean {
-    val localNames = listOf(title, displayName(), fileName.substringBeforeLast('.', fileName))
-        .map(::normalizeHomeGameTitle)
-        .filter { it.length >= 4 }
+    val localNames =
+        listOf(title, displayName(), fileName.substringBeforeLast('.', fileName))
+            .map(::normalizeHomeGameTitle)
+            .filter { it.length >= 4 }
     val cached = normalizeHomeGameTitle(cachedTitle)
     if (cached.length < 4) return false
     return localNames.any { local ->
@@ -652,14 +785,17 @@ fun Game.matchesCachedAchievementTitle(cachedTitle: String): Boolean {
 }
 
 private fun normalizeHomeGameTitle(value: String): String {
-    val withoutTags = value
-        .replace(Regex("\\([^)]*\\)|\\[[^]]*]"), " ")
-        .replace(Regex("\\.(zip|7z|rar|nes|gb|gbc|gba|sfc|smc|bin|rom)$", RegexOption.IGNORE_CASE), " ")
-    val ascii = java.text.Normalizer.normalize(withoutTags, java.text.Normalizer.Form.NFD)
-        .replace(Regex("\\p{Mn}+"), "")
-        .lowercase()
-        .replace(Regex("[^a-z0-9]+"), " ")
-        .trim()
+    val withoutTags =
+        value
+            .replace(Regex("\\([^)]*\\)|\\[[^]]*]"), " ")
+            .replace(Regex("\\.(zip|7z|rar|nes|gb|gbc|gba|sfc|smc|bin|rom)$", RegexOption.IGNORE_CASE), " ")
+    val ascii =
+        java.text.Normalizer
+            .normalize(withoutTags, java.text.Normalizer.Form.NFD)
+            .replace(Regex("\\p{Mn}+"), "")
+            .lowercase()
+            .replace(Regex("[^a-z0-9]+"), " ")
+            .trim()
     val ignored = setOf("usa", "europe", "japan", "world", "rev", "revision", "version", "proto", "beta", "the", "and")
     return ascii.split(' ').filterNot { it in ignored }.joinToString(" ")
 }
@@ -680,39 +816,93 @@ fun HomeGameStatsDialog(
     val pending = achievements.filterNot { it.earned }
     val progress = if (achievements.isNotEmpty()) earned.size.toFloat() / achievements.size else 0f
     var achievementFilter by remember(game.id) { mutableStateOf(if (earned.isNotEmpty()) "Unlocked" else "Show all") }
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
+    Dialog(
+        onDismissRequest = onClose,
+        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
+    ) {
         BoxWithConstraints(
-            Modifier.fillMaxSize().background(Color.Black.copy(alpha = .72f)).pointerInput(onClose) { detectTapGestures(onTap = { onClose() }) },
+            Modifier.fillMaxSize().background(Color.Black.copy(alpha = .72f)).pointerInput(onClose) {
+                detectTapGestures(onTap = { onClose() })
+            },
             contentAlignment = Alignment.BottomCenter,
         ) {
             val interaction = remember { MutableInteractionSource() }
             Column(
-                Modifier.align(Alignment.BottomCenter).fillMaxWidth(.96f).widthIn(max = 520.dp)
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(.96f)
+                    .widthIn(max = 520.dp)
                     .heightIn(max = maxHeight * .9f)
-                    .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)).background(HomeColors.CardVariant)
+                    .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+                    .background(HomeColors.CardVariant)
                     .clickable(interactionSource = interaction, indication = null) { }
-                    .verticalScroll(rememberScrollState()).navigationBarsPadding().padding(horizontal = 18.dp, vertical = 16.dp),
+                    .verticalScroll(
+                        rememberScrollState(),
+                    ).navigationBarsPadding()
+                    .padding(horizontal = 18.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Box(Modifier.align(Alignment.CenterHorizontally).width(42.dp).height(4.dp).clip(CircleShape).background(Color.White.copy(alpha = .22f)))
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Box(
+                    Modifier
+                        .align(
+                            Alignment.CenterHorizontally,
+                        ).width(42.dp)
+                        .height(4.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = .22f)),
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
                     Box(Modifier.size(60.dp).clip(RoundedCornerShape(18.dp)).background(HomeColors.Surface)) {
                         OminoyGameImage(game = game, modifier = Modifier.fillMaxSize())
                     }
                     Column(Modifier.weight(1f)) {
-                        Text(game.displayName(), color = HomeColors.Text, fontSize = 20.sp, fontWeight = FontWeight.Black, maxLines = 2)
-                        Text("${game.systemId.uppercase()} · Last played ${lastPlayed?.let { android.text.format.DateFormat.getMediumDateFormat(androidx.compose.ui.platform.LocalContext.current).format(it) } ?: "Never"}", color = HomeColors.Muted, fontSize = 12.sp)
+                        Text(
+                            game.displayName(),
+                            color = HomeColors.Text,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Black,
+                            maxLines = 2,
+                        )
+                        Text(
+                            "${game.systemId.uppercase()} · Last played ${lastPlayed?.let {
+                                android.text.format.DateFormat
+                                    .getMediumDateFormat(
+                                        androidx.compose.ui.platform.LocalContext.current,
+                                    ).format(it)
+                            } ?: "Never"}",
+                            color = HomeColors.Muted,
+                            fontSize = 12.sp,
+                        )
                     }
-                    IconButton(onClick = onClose, modifier = Modifier.size(36.dp)) { Text("×", fontSize = 26.sp, color = HomeColors.Muted) }
+                    IconButton(
+                        onClick = onClose,
+                        modifier = Modifier.size(36.dp),
+                    ) { Text("×", fontSize = 26.sp, color = HomeColors.Muted) }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     HomeStatTile(played, "Time played", Modifier.weight(1f))
                     HomeStatTile(sessions.toString(), "Sessions", Modifier.weight(1f))
                 }
-                Surface(shape = RoundedCornerShape(22.dp), color = HomeColors.Card, border = androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Line)) {
+                Surface(
+                    shape = RoundedCornerShape(22.dp),
+                    color = HomeColors.Card,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Line),
+                ) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
-                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text("Achievements", color = HomeColors.Text, fontWeight = FontWeight.ExtraBold, fontSize = 15.sp)
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Text(
+                                "Achievements",
+                                color = HomeColors.Text,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 15.sp,
+                            )
                             Text(
                                 if (achievementSyncing) "Loading…" else "${earned.size} / ${achievements.size}",
                                 color = HomeColors.Mint,
@@ -722,55 +912,154 @@ fun HomeGameStatsDialog(
                         }
                         if (achievementSyncing) {
                             LinearProgressIndicator(Modifier.fillMaxWidth(), color = HomeColors.Mint)
-                            Text("Loading available achievements for this game…", color = HomeColors.Muted, fontSize = 13.sp)
-                        } else if (achievements.isEmpty()) {
-                            LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth().height(7.dp).clip(CircleShape), color = HomeColors.Mint, trackColor = Color.White.copy(alpha = .12f))
                             Text(
-                                if (accountAvailable) "Achievement details are not cached for this game yet. Launch it with RetroAchievements sync enabled to load them."
-                                else "Log in to RetroAchievements to see earned and pending achievements.",
-                                color = HomeColors.Muted, fontSize = 13.sp, lineHeight = 18.sp,
+                                "Loading available achievements for this game…",
+                                color = HomeColors.Muted,
+                                fontSize = 13.sp,
+                            )
+                        } else if (achievements.isEmpty()) {
+                            LinearProgressIndicator(
+                                progress = {
+                                    progress
+                                },
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(
+                                            7.dp,
+                                        ).clip(CircleShape),
+                                color = HomeColors.Mint,
+                                trackColor = Color.White.copy(alpha = .12f),
+                            )
+                            Text(
+                                if (accountAvailable) {
+                                    "Achievement details are not cached for this game yet. " +
+                                        "Launch it with RetroAchievements sync enabled to load them."
+                                } else {
+                                    "Log in to RetroAchievements to see earned and pending achievements."
+                                },
+                                color = HomeColors.Muted,
+                                fontSize = 13.sp,
+                                lineHeight = 18.sp,
                             )
                         } else {
-                            LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth().height(7.dp).clip(CircleShape), color = HomeColors.Mint, trackColor = Color.White.copy(alpha = .12f))
+                            LinearProgressIndicator(
+                                progress = {
+                                    progress
+                                },
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(
+                                            7.dp,
+                                        ).clip(CircleShape),
+                                color = HomeColors.Mint,
+                                trackColor = Color.White.copy(alpha = .12f),
+                            )
                             Row(
-                                Modifier.fillMaxWidth().clip(RoundedCornerShape(99.dp)).background(HomeColors.SurfaceVariant).padding(4.dp),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .clip(
+                                        RoundedCornerShape(99.dp),
+                                    ).background(HomeColors.SurfaceVariant)
+                                    .padding(4.dp),
                                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                             ) {
-                                listOf("Unlocked" to earned.size, "Locked" to pending.size, "Show all" to achievements.size).forEach { (label, count) ->
+                                listOf(
+                                    "Unlocked" to earned.size,
+                                    "Locked" to pending.size,
+                                    "Show all" to achievements.size,
+                                ).forEach { (label, count) ->
                                     TextButton(
                                         onClick = { achievementFilter = label },
                                         modifier = Modifier.weight(1f),
                                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-                                        colors = ButtonDefaults.textButtonColors(
-                                            containerColor = if (achievementFilter == label) HomeColors.Mint else Color.Transparent,
-                                            contentColor = if (achievementFilter == label) Color(0xFF10131A) else HomeColors.Muted,
-                                        ),
+                                        colors =
+                                            ButtonDefaults.textButtonColors(
+                                                containerColor =
+                                                    if (achievementFilter ==
+                                                        label
+                                                    ) {
+                                                        HomeColors.Mint
+                                                    } else {
+                                                        Color.Transparent
+                                                    },
+                                                contentColor =
+                                                    if (achievementFilter ==
+                                                        label
+                                                    ) {
+                                                        Color(0xFF10131A)
+                                                    } else {
+                                                        HomeColors.Muted
+                                                    },
+                                            ),
                                     ) {
-                                        Text("$label ($count)", fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                        Text(
+                                            "$label ($count)",
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            maxLines = 1,
+                                        )
                                     }
                                 }
                             }
                             when (achievementFilter) {
-                                "Unlocked" -> HomeAchievementGroup("UNLOCKED", earned, locked = false, onAchievement = onAchievement)
-                                "Locked" -> HomeAchievementGroup("LOCKED", pending, locked = true, onAchievement = onAchievement)
+                                "Unlocked" ->
+                                    HomeAchievementGroup(
+                                        "UNLOCKED",
+                                        earned,
+                                        locked = false,
+                                        onAchievement = onAchievement,
+                                    )
+                                "Locked" ->
+                                    HomeAchievementGroup(
+                                        "LOCKED",
+                                        pending,
+                                        locked = true,
+                                        onAchievement = onAchievement,
+                                    )
                                 else -> {
-                                    HomeAchievementGroup("UNLOCKED", earned, locked = false, onAchievement = onAchievement)
-                                    HomeAchievementGroup("LOCKED", pending, locked = true, onAchievement = onAchievement)
+                                    HomeAchievementGroup(
+                                        "UNLOCKED",
+                                        earned,
+                                        locked = false,
+                                        onAchievement = onAchievement,
+                                    )
+                                    HomeAchievementGroup(
+                                        "LOCKED",
+                                        pending,
+                                        locked = true,
+                                        onAchievement = onAchievement,
+                                    )
                                 }
                             }
                         }
                     }
                 }
-                TextButton(onClick = onClose, modifier = Modifier.align(Alignment.End)) { Text("Close", color = HomeColors.Mint, fontWeight = FontWeight.Bold) }
+                TextButton(onClick = onClose, modifier = Modifier.align(Alignment.End)) {
+                    Text("Close", color = HomeColors.Mint, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }
 }
 
 @Composable
-private fun HomeStatTile(value: String, label: String, modifier: Modifier = Modifier) {
-    Surface(modifier, shape = RoundedCornerShape(20.dp), color = HomeColors.Card, border = androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Line)) {
-        Column(Modifier.padding(horizontal = 14.dp, vertical = 11.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+private fun HomeStatTile(
+    value: String,
+    label: String,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier,
+        shape = RoundedCornerShape(20.dp),
+        color = HomeColors.Card,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Line),
+    ) {
+        Column(
+            Modifier.padding(horizontal = 14.dp, vertical = 11.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
             Text(value, color = HomeColors.Text, fontSize = 22.sp, fontWeight = FontWeight.Black, maxLines = 1)
             Text(label, color = HomeColors.Muted, fontSize = 12.sp)
         }
@@ -784,7 +1073,14 @@ private fun HomeAchievementGroup(
     locked: Boolean,
     onAchievement: (RetroAchievementsEarnedStore.Achievement) -> Unit,
 ) {
-    Text("$title (${achievements.size})", color = HomeColors.Muted, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.4.sp, modifier = Modifier.padding(top = 5.dp))
+    Text(
+        "$title (${achievements.size})",
+        color = HomeColors.Muted,
+        fontSize = 10.sp,
+        fontWeight = FontWeight.ExtraBold,
+        letterSpacing = 1.4.sp,
+        modifier = Modifier.padding(top = 5.dp),
+    )
     if (achievements.isEmpty()) {
         Text(if (locked) "All done!" else "Nothing earned yet", color = HomeColors.Muted, fontSize = 12.sp)
     } else {
@@ -792,25 +1088,57 @@ private fun HomeAchievementGroup(
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
             modifier = Modifier.fillMaxWidth().height((rows * 58 + (rows - 1) * 9).dp),
-            horizontalArrangement = Arrangement.spacedBy(9.dp), verticalArrangement = Arrangement.spacedBy(9.dp),
+            horizontalArrangement = Arrangement.spacedBy(9.dp),
+            verticalArrangement = Arrangement.spacedBy(9.dp),
             userScrollEnabled = false,
         ) {
             items(achievements, key = { it.id }) { achievement ->
-                val badgePath = if (locked) achievement.lockedBadgePath.ifBlank { achievement.badgePath } else achievement.badgePath
-                Surface(
-                    modifier = Modifier.size(58.dp).clip(RoundedCornerShape(13.dp)).combinedClickable(onClick = { onAchievement(achievement) }, onLongClick = null),
-                    color = HomeColors.SurfaceVariant,
-                    border = if (!locked) androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Gold.copy(alpha = .5f)) else null,
-                ) {
-                    val badgeBackground = if (locked) {
-                        Brush.linearGradient(listOf(Color.Gray.copy(alpha = .14f), Color.Gray.copy(alpha = .14f)))
+                val badgePath =
+                    if (locked) {
+                        achievement.lockedBadgePath.ifBlank {
+                            achievement.badgePath
+                        }
                     } else {
-                        Brush.linearGradient(listOf(HomeColors.Gold.copy(alpha = .38f), HomeColors.SurfaceVariant))
+                        achievement.badgePath
                     }
+                Surface(
+                    modifier =
+                        Modifier.size(58.dp).clip(RoundedCornerShape(13.dp)).combinedClickable(onClick = {
+                            onAchievement(achievement)
+                        }, onLongClick = null),
+                    color = HomeColors.SurfaceVariant,
+                    border =
+                        if (!locked) {
+                            androidx.compose.foundation.BorderStroke(
+                                1.dp,
+                                HomeColors.Gold.copy(alpha = .5f),
+                            )
+                        } else {
+                            null
+                        },
+                ) {
+                    val badgeBackground =
+                        if (locked) {
+                            Brush.linearGradient(listOf(Color.Gray.copy(alpha = .14f), Color.Gray.copy(alpha = .14f)))
+                        } else {
+                            Brush.linearGradient(listOf(HomeColors.Gold.copy(alpha = .38f), HomeColors.SurfaceVariant))
+                        }
                     Box(Modifier.fillMaxSize().background(badgeBackground), contentAlignment = Alignment.Center) {
                         if (badgePath.isNotBlank() && File(badgePath).isFile) {
-                            AsyncImage(model = File(badgePath), contentDescription = achievement.title, modifier = Modifier.fillMaxSize().padding(5.dp).clip(RoundedCornerShape(9.dp)), alpha = if (locked) .48f else 1f)
-                        } else Text(if (locked) "◇" else "★", fontSize = 22.sp, fontWeight = FontWeight.Black, color = if (locked) HomeColors.Muted else HomeColors.Gold)
+                            AsyncImage(
+                                model = File(badgePath),
+                                contentDescription = achievement.title,
+                                modifier = Modifier.fillMaxSize().padding(5.dp).clip(RoundedCornerShape(9.dp)),
+                                alpha = if (locked) .48f else 1f,
+                            )
+                        } else {
+                            Text(
+                                if (locked) "◇" else "★",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Black,
+                                color = if (locked) HomeColors.Muted else HomeColors.Gold,
+                            )
+                        }
                     }
                 }
             }
@@ -825,49 +1153,151 @@ fun HomeAchievementDetailDialog(
     onClose: () -> Unit,
 ) {
     val context = LocalContext.current
-    val path = if (achievement.earned) achievement.badgePath else achievement.lockedBadgePath.ifBlank { achievement.badgePath }
+    val path =
+        if (achievement.earned) {
+            achievement.badgePath
+        } else {
+            achievement.lockedBadgePath.ifBlank {
+                achievement.badgePath
+            }
+        }
     Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         BoxWithConstraints(
-            Modifier.fillMaxSize().background(Color.Black.copy(alpha = .78f)).pointerInput(onClose) { detectTapGestures(onTap = { onClose() }) },
+            Modifier.fillMaxSize().background(Color.Black.copy(alpha = .78f)).pointerInput(onClose) {
+                detectTapGestures(onTap = { onClose() })
+            },
             contentAlignment = Alignment.BottomCenter,
         ) {
             val interaction = remember { MutableInteractionSource() }
             Column(
-                Modifier.align(Alignment.BottomCenter).fillMaxWidth(.96f).widthIn(max = 680.dp).heightIn(max = maxHeight * .88f)
-                    .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)).background(HomeColors.CardVariant)
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(.96f)
+                    .widthIn(max = 680.dp)
+                    .heightIn(
+                        max =
+                            maxHeight * .88f,
+                    ).clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                    .background(HomeColors.CardVariant)
                     .clickable(interactionSource = interaction, indication = null) { }
-                    .verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 18.dp),
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp, vertical = 18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                Box(Modifier.width(40.dp).height(4.dp).clip(CircleShape).background(Color.White.copy(alpha = .22f)))
-                Box(Modifier.size(96.dp).clip(RoundedCornerShape(26.dp)).background(Brush.linearGradient(listOf(HomeColors.Gold.copy(alpha = .7f), HomeColors.SurfaceVariant))), contentAlignment = Alignment.Center) {
-                    if (path.isNotBlank() && File(path).isFile) AsyncImage(model = File(path), contentDescription = "${achievement.title} badge", modifier = Modifier.fillMaxSize().padding(4.dp).clip(RoundedCornerShape(22.dp)), alpha = if (achievement.earned) 1f else .48f) else Text(if (achievement.earned) "★" else "◇", color = HomeColors.Gold, fontSize = 38.sp)
+                Box(
+                    Modifier
+                        .width(40.dp)
+                        .height(4.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = .22f)),
+                )
+                Box(
+                    Modifier
+                        .size(
+                            96.dp,
+                        ).clip(
+                            RoundedCornerShape(26.dp),
+                        ).background(
+                            Brush.linearGradient(listOf(HomeColors.Gold.copy(alpha = .7f), HomeColors.SurfaceVariant)),
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    if (path.isNotBlank() &&
+                        File(path).isFile
+                    ) {
+                        AsyncImage(
+                            model = File(path),
+                            contentDescription = "${achievement.title} badge",
+                            modifier = Modifier.fillMaxSize().padding(4.dp).clip(RoundedCornerShape(22.dp)),
+                            alpha = if (achievement.earned) 1f else .48f,
+                        )
+                    } else {
+                        Text(if (achievement.earned) "★" else "◇", color = HomeColors.Gold, fontSize = 38.sp)
+                    }
                 }
-                Text(achievement.title, color = HomeColors.Text, fontSize = 22.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
-                Text("${game.displayName()} · ${game.systemId.uppercase()}", color = HomeColors.Muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+                Text(
+                    achievement.title,
+                    color = HomeColors.Text,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Black,
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    "${game.displayName()} · ${game.systemId.uppercase()}",
+                    color = HomeColors.Muted,
+                    fontSize = 13.sp,
+                    textAlign = TextAlign.Center,
+                )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     HomeChip("${achievement.points} pts", HomeColors.Gold)
-                    HomeChip(if (achievement.earned) "✓ Unlocked" else "Locked", if (achievement.earned) HomeColors.Mint else HomeColors.Muted)
+                    HomeChip(
+                        if (achievement.earned) "✓ Unlocked" else "Locked",
+                        if (achievement.earned) HomeColors.Mint else HomeColors.Muted,
+                    )
                     if (achievement.hardcoreEarnedAt > 0L) HomeChip("★ Hardcore", HomeColors.Gold)
                 }
-                HomeDetailSection("HOW TO EARN") { Text(achievement.description.ifBlank { "No description is available." }, color = HomeColors.Text, fontSize = 15.sp, lineHeight = 21.sp) }
+                HomeDetailSection("HOW TO EARN") {
+                    Text(
+                        achievement.description.ifBlank {
+                            "No description is available."
+                        },
+                        color = HomeColors.Text,
+                        fontSize = 15.sp,
+                        lineHeight = 21.sp,
+                    )
+                }
                 HomeDetailSection(if (achievement.earned) "UNLOCKED" else "STATUS") {
                     if (achievement.earned) {
-                        val date = if (achievement.earnedAt > 0L) android.text.format.DateFormat.getMediumDateFormat(context).format(Date(achievement.earnedAt)) else "Date unavailable"
-                        Text("$date · ${if (achievement.hardcoreEarnedAt > 0L) "Hardcore" else "Softcore"}", color = HomeColors.Text, fontSize = 14.sp)
-                    } else Text("Not unlocked yet. Keep playing to earn ${achievement.points} points.", color = HomeColors.Muted, fontSize = 14.sp)
+                        val date =
+                            if (achievement.earnedAt >
+                                0L
+                            ) {
+                                android.text.format.DateFormat
+                                    .getMediumDateFormat(
+                                        context,
+                                    ).format(Date(achievement.earnedAt))
+                            } else {
+                                "Date unavailable"
+                            }
+                        Text(
+                            "$date · ${if (achievement.hardcoreEarnedAt > 0L) "Hardcore" else "Softcore"}",
+                            color = HomeColors.Text,
+                            fontSize = 14.sp,
+                        )
+                    } else {
+                        Text(
+                            "Not unlocked yet. Keep playing to earn ${achievement.points} points.",
+                            color = HomeColors.Muted,
+                            fontSize = 14.sp,
+                        )
+                    }
                 }
-                OutlinedButton(onClick = onClose, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(99.dp)) { Text("Close") }
+                OutlinedButton(
+                    onClick = onClose,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(99.dp),
+                ) {
+                    Text("Close")
+                }
             }
         }
     }
 }
 
 @Composable
-private fun HomeChip(text: String, color: Color) {
+private fun HomeChip(
+    text: String,
+    color: Color,
+) {
     Surface(shape = RoundedCornerShape(99.dp), color = color.copy(alpha = .14f)) {
-        Text(text, modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp), color = color, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+            color = color,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+        )
     }
 }
 
@@ -886,24 +1316,54 @@ private fun RetroAchievementsSyncSheet(
         ) {
             val interaction = remember { MutableInteractionSource() }
             Column(
-                Modifier.align(Alignment.BottomCenter).fillMaxWidth(.97f).widthIn(max = 680.dp)
-                    .heightIn(max = 720.dp).clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(.97f)
+                    .widthIn(max = 680.dp)
+                    .heightIn(max = 720.dp)
+                    .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                     .background(HomeColors.CardVariant)
                     .clickable(interactionSource = interaction, indication = null) { }
                     .padding(horizontal = 18.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Box(Modifier.width(40.dp).height(4.dp).align(Alignment.CenterHorizontally).clip(CircleShape).background(Color.White.copy(alpha = .22f)))
+                Box(
+                    Modifier
+                        .width(
+                            40.dp,
+                        ).height(
+                            4.dp,
+                        ).align(Alignment.CenterHorizontally)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = .22f)),
+                )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text("RetroAchievements sync", color = HomeColors.Text, fontSize = 19.sp, fontWeight = FontWeight.Black)
                         Text(
-                            if (progress.running) "${progress.completeGames} / ${progress.games.size} games processed" else (progress.finishedMessage ?: "Sync status"),
+                            "RetroAchievements sync",
+                            color = HomeColors.Text,
+                            fontSize = 19.sp,
+                            fontWeight = FontWeight.Black,
+                        )
+                        Text(
+                            if (progress.running) {
+                                "${progress.completeGames} / ${progress.games.size} games processed"
+                            } else {
+                                (
+                                    progress.finishedMessage
+                                        ?: "Sync status"
+                                )
+                            },
                             color = HomeColors.Muted,
                             fontSize = 12.sp,
                         )
                     }
-                    Text("${(progress.fraction * 100).toInt()}%", color = HomeColors.Mint, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(
+                        "${(progress.fraction * 100).toInt()}%",
+                        color = HomeColors.Mint,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                    )
                 }
                 LinearProgressIndicator(
                     progress = { progress.fraction },
@@ -916,7 +1376,11 @@ private fun RetroAchievementsSyncSheet(
                     verticalArrangement = Arrangement.spacedBy(9.dp),
                 ) {
                     if (progress.games.isEmpty()) {
-                        Text("Preparing your library…", color = HomeColors.Muted, modifier = Modifier.padding(vertical = 12.dp))
+                        Text(
+                            "Preparing your library…",
+                            color = HomeColors.Muted,
+                            modifier = Modifier.padding(vertical = 12.dp),
+                        )
                     }
                     progress.games.forEach { item ->
                         Surface(
@@ -924,14 +1388,41 @@ private fun RetroAchievementsSyncSheet(
                             color = HomeColors.Card,
                             border = androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Line),
                         ) {
-                            Row(Modifier.fillMaxWidth().padding(11.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(11.dp)) {
-                                OminoyGameImage(game = item.game, modifier = Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)))
+                            Row(
+                                Modifier.fillMaxWidth().padding(11.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(11.dp),
+                            ) {
+                                OminoyGameImage(
+                                    game = item.game,
+                                    modifier = Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)),
+                                )
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Text(item.game.displayName(), Modifier.weight(1f), color = HomeColors.Text, fontSize = 13.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                                         Text(
-                                            if (item.total > 0) "${item.downloaded.coerceAtMost(item.total)} / ${item.total}" else "—",
-                                            color = if (item.failed) Color(0xFFFF8A80) else if (item.complete) HomeColors.Mint else HomeColors.Muted,
+                                            item.game.displayName(),
+                                            Modifier.weight(1f),
+                                            color = HomeColors.Text,
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            maxLines = 1,
+                                        )
+                                        Text(
+                                            if (item.total >
+                                                0
+                                            ) {
+                                                "${item.downloaded.coerceAtMost(item.total)} / ${item.total}"
+                                            } else {
+                                                "—"
+                                            },
+                                            color =
+                                                if (item.failed) {
+                                                    Color(0xFFFF8A80)
+                                                } else if (item.complete) {
+                                                    HomeColors.Mint
+                                                } else {
+                                                    HomeColors.Muted
+                                                },
                                             fontSize = 11.sp,
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 1,
@@ -955,11 +1446,23 @@ private fun RetroAchievementsSyncSheet(
                     }
                 }
                 if (!progress.running && progress.failedGames.isNotEmpty()) {
-                    OutlinedButton(onClick = onRetryFailed, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(99.dp)) {
-                        Text("Retry failed (${progress.failedGames.size})", color = HomeColors.Mint, fontWeight = FontWeight.Bold)
+                    OutlinedButton(
+                        onClick = onRetryFailed,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(99.dp),
+                    ) {
+                        Text(
+                            "Retry failed (${progress.failedGames.size})",
+                            color = HomeColors.Mint,
+                            fontWeight = FontWeight.Bold,
+                        )
                     }
                 }
-                OutlinedButton(onClick = onClose, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(99.dp)) {
+                OutlinedButton(
+                    onClick = onClose,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(99.dp),
+                ) {
                     Text("Close", color = HomeColors.Mint, fontWeight = FontWeight.Bold)
                 }
             }
@@ -968,10 +1471,24 @@ private fun RetroAchievementsSyncSheet(
 }
 
 @Composable
-private fun HomeDetailSection(title: String, content: @Composable () -> Unit) {
-    Surface(Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), color = HomeColors.Card, border = androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Line)) {
+private fun HomeDetailSection(
+    title: String,
+    content: @Composable () -> Unit,
+) {
+    Surface(
+        Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        color = HomeColors.Card,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeColors.Line),
+    ) {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(title, color = HomeColors.Muted, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.4.sp)
+            Text(
+                title,
+                color = HomeColors.Muted,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = 1.4.sp,
+            )
             content()
         }
     }
@@ -1024,13 +1541,35 @@ private fun HomeNotification(
     ElevatedCard(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         shape = RoundedCornerShape(22.dp),
-        colors = androidx.compose.material3.CardDefaults.elevatedCardColors(containerColor = HomeColors.SurfaceVariant.copy(alpha = .94f)),
+        colors =
+            androidx.compose.material3.CardDefaults.elevatedCardColors(
+                containerColor = HomeColors.SurfaceVariant.copy(alpha = .94f),
+            ),
     ) {
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(titleId), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.ExtraBold, color = HomeColors.Text)
-            Text(stringResource(messageId), style = MaterialTheme.typography.bodyMedium, color = HomeColors.Muted, lineHeight = 20.sp)
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
-                OutlinedButton(onClick = onAction, enabled = enabled, shape = RoundedCornerShape(99.dp), contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
+            Text(
+                stringResource(titleId),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.ExtraBold,
+                color = HomeColors.Text,
+            )
+            Text(
+                stringResource(messageId),
+                style = MaterialTheme.typography.bodyMedium,
+                color = HomeColors.Muted,
+                lineHeight = 20.sp,
+            )
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                OutlinedButton(
+                    onClick = onAction,
+                    enabled = enabled,
+                    shape = RoundedCornerShape(99.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                ) {
                     Text(stringResource(actionId), fontWeight = FontWeight.Bold)
                 }
             }
@@ -1068,9 +1607,17 @@ private fun fallbackArtworkColor(game: Game?): Color =
         else -> Color(0xFF51406F)
     }
 
-private suspend fun loadArtworkColor(context: Context, coverUrl: String): Color? =
+private suspend fun loadArtworkColor(
+    context: Context,
+    coverUrl: String,
+): Color? =
     runCatching {
-        val request = ImageRequest.Builder(context).data(coverUrl).allowHardware(false).build()
+        val request =
+            ImageRequest
+                .Builder(context)
+                .data(coverUrl)
+                .allowHardware(false)
+                .build()
         val drawable = context.imageLoader.execute(request).drawable ?: return@runCatching null
         val bitmap =
             (drawable as? BitmapDrawable)?.bitmap

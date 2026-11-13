@@ -12,7 +12,10 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 @OptIn(DelicateCoroutinesApi::class)
-class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, intent: Intent) {
+class InputBindingUpdater(
+    private val inputDeviceManager: InputDeviceManager,
+    intent: Intent,
+) {
     val extras = parseExtras(intent)
 
     fun getTitle(context: Context): String {
@@ -20,9 +23,8 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
         return context.getString(R.string.gamepad_binding_update_title, keyName)
     }
 
-    fun getMessage(context: Context): String {
-        return context.getString(R.string.gamepad_binding_update_description, extras.device.name)
-    }
+    fun getMessage(context: Context): String =
+        context.getString(R.string.gamepad_binding_update_description, extras.device.name)
 
     fun handleKeyEvent(event: KeyEvent): Boolean {
         Timber.d("Received input binding event: $event ${event.device}")
@@ -33,9 +35,7 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
         }
     }
 
-    private fun onKeyDown(event: KeyEvent): Boolean {
-        return isTargetedDevice(event.device)
-    }
+    private fun onKeyDown(event: KeyEvent): Boolean = isTargetedDevice(event.device)
 
     private fun onKeyUp(event: KeyEvent): Boolean {
         if (!isTargetedDevice(event.device)) return false
@@ -49,9 +49,7 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
         return true
     }
 
-    private fun isTargetedDevice(device: InputDevice?): Boolean {
-        return device != null && extras.device.name == device.name
-    }
+    private fun isTargetedDevice(device: InputDevice?): Boolean = device != null && extras.device.name == device.name
 
     private fun parseExtras(intent: Intent): IntentExtras {
         val device =
@@ -65,7 +63,10 @@ class InputBindingUpdater(private val inputDeviceManager: InputDeviceManager, in
         return IntentExtras(device, retroKey)
     }
 
-    data class IntentExtras(val device: InputDevice, val retroKey: Int)
+    data class IntentExtras(
+        val device: InputDevice,
+        val retroKey: Int,
+    )
 
     companion object {
         const val REQUEST_DEVICE = "REQUEST_DEVICE"

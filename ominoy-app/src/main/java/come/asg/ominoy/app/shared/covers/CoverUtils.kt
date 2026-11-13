@@ -28,31 +28,31 @@ object CoverUtils {
         }
     }
 
-    fun buildImageLoader(applicationContext: Context): ImageLoader {
-        return ImageLoader.Builder(applicationContext)
+    fun buildImageLoader(applicationContext: Context): ImageLoader =
+        ImageLoader
+            .Builder(applicationContext)
             .diskCache(
-                DiskCache.Builder()
+                DiskCache
+                    .Builder()
                     .directory(applicationContext.cacheDir.resolve("image_cache"))
                     .maxSizePercent(0.20)
                     .build(),
-            )
-            .memoryCache {
-                MemoryCache.Builder(applicationContext)
+            ).memoryCache {
+                MemoryCache
+                    .Builder(applicationContext)
                     .maxSizePercent(0.20)
                     .build()
-            }
-            .okHttpClient {
-                OkHttpClient.Builder()
+            }.okHttpClient {
+                OkHttpClient
+                    .Builder()
                     .addNetworkInterceptor(ThrottleFailedThumbnailsInterceptor)
                     .build()
-            }
-            .crossfade(true)
+            }.crossfade(true)
             .interceptorDispatcher(Dispatchers.IO)
             .diskCachePolicy(CachePolicy.ENABLED)
             .memoryCachePolicy(CachePolicy.ENABLED)
             .respectCacheHeaders(false)
             .build()
-    }
 
     fun getFallbackDrawable(game: Game) = TextDrawable(computeTitle(game), computeColor(game))
 
@@ -64,10 +64,12 @@ object CoverUtils {
 
     private fun computeTitle(game: Game): String {
         val sanitizedName =
-            game.displayName()
+            game
+                .displayName()
                 .replace(Regex("\\(.*\\)"), "")
 
-        return sanitizedName.asSequence()
+        return sanitizedName
+            .asSequence()
             .filter { it.isDigit() or it.isUpperCase() or (it == '&') }
             .take(3)
             .joinToString("")
@@ -75,7 +77,5 @@ object CoverUtils {
             .capitalize()
     }
 
-    private fun computeColor(game: Game): Int {
-        return ColorUtils.randomColor(game.title)
-    }
+    private fun computeColor(game: Game): Int = ColorUtils.randomColor(game.title)
 }

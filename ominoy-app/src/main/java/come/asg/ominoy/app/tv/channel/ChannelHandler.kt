@@ -50,7 +50,8 @@ class ChannelHandler(
         }
 
         val builder =
-            Channel.Builder()
+            Channel
+                .Builder()
                 .setType(TvContractCompat.Channels.TYPE_PREVIEW)
                 .setDisplayName(appName)
                 .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
@@ -97,14 +98,16 @@ class ChannelHandler(
         val recentGames = retrogradeDatabase.gameDao().asyncSelectFirstRecents(10)
 
         val channelEntries =
-            recentGames.asFlow()
+            recentGames
+                .asFlow()
                 .map { getChannelEntry(it) }
                 .toList()
 
         val channelId = getOrCreateChannelId() ?: return
 
         val channel = Channel.Builder()
-        channel.setDisplayName(appName)
+        channel
+            .setDisplayName(appName)
             .setType(TvContractCompat.Channels.TYPE_PREVIEW)
             .setAppLinkIntentUri(DeepLink.openLeanbackUri(appContext))
             .build()
@@ -152,7 +155,8 @@ class ChannelHandler(
         val intent = DeepLink.launchIntentForGame(appContext, game)
 
         val preview =
-            PreviewProgram.Builder()
+            PreviewProgram
+                .Builder()
                 .setChannelId(channelId)
                 .setTitle(game.displayName())
                 .setDescription(game.developer)
@@ -194,7 +198,10 @@ class ChannelHandler(
         return null
     }
 
-    private data class ChannelEntry(val game: Game, val hasThumbnail: Boolean)
+    private data class ChannelEntry(
+        val game: Game,
+        val hasThumbnail: Boolean,
+    )
 
     interface ThumbnailsApi {
         @HEAD

@@ -15,7 +15,10 @@ object RetroAchievementsWebSession {
     private const val PREFS = "retro_achievements_web_session"
     private const val ACCOUNT = "account_username"
 
-    fun prepareForAccount(context: Context, username: String) {
+    fun prepareForAccount(
+        context: Context,
+        username: String,
+    ) {
         val prefs = context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val previous = prefs.getString(ACCOUNT, null)
         if (!previous.equals(username, ignoreCase = true)) {
@@ -26,7 +29,11 @@ object RetroAchievementsWebSession {
 
     fun clearForLogout(context: Context) {
         clearWebData(context)
-        context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply()
+        context.applicationContext
+            .getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .apply()
     }
 
     private fun clearWebData(context: Context) {

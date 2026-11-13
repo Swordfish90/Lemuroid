@@ -83,7 +83,9 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                     fastForwardEnabled,
                     fastForwardSupported,
                 )
-            supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment)
+            supportFragmentManager
+                .beginTransaction()
+                .replace(android.R.id.content, fragment)
                 .commit()
         }
     }
@@ -107,8 +109,8 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
         private val fastForwardEnabled: Boolean,
         private val fastForwardSupported: Boolean,
     ) : BaseSettingsFragmentWrapper() {
-        override fun createFragment(): Fragment {
-            return TVGameMenuFragment(
+        override fun createFragment(): Fragment =
+            TVGameMenuFragment(
                 statesManager,
                 statesPreviewManager,
                 inputDeviceManager,
@@ -122,6 +124,5 @@ class TVGameMenuActivity : TVBaseSettingsActivity() {
                 fastForwardEnabled,
                 fastForwardSupported,
             )
-        }
     }
 }

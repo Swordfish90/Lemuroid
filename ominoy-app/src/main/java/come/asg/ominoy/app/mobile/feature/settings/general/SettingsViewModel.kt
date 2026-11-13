@@ -27,14 +27,13 @@ class SettingsViewModel(
         private val saveSyncManager: SaveSyncManager,
         private val sharedPreferences: FlowSharedPreferences,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return SettingsViewModel(
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            SettingsViewModel(
                 context,
                 settingsInteractor,
                 saveSyncManager,
                 sharedPreferences,
             ) as T
-        }
     }
 
     data class State(
@@ -47,17 +46,17 @@ class SettingsViewModel(
     val directoryScanInProgress = PendingOperationsMonitor(context).isDirectoryScanInProgress()
 
     private val currentDirectory =
-        sharedPreferences.getString(context.getString(come.asg.ominoy.lib.R.string.pref_key_extenral_folder))
+        sharedPreferences
+            .getString(context.getString(come.asg.ominoy.lib.R.string.pref_key_extenral_folder))
             .asFlow()
     val uiState =
-        currentDirectory.map { directory ->
-            State(directory, saveSyncManager.isSupported())
-        }
-            .flowOn(Dispatchers.IO)
+        currentDirectory
+            .map { directory ->
+                State(directory, saveSyncManager.isSupported())
+            }.flowOn(Dispatchers.IO)
             .stateIn(viewModelScope, SharingStarted.Lazily, State())
 
     fun changeLocalStorageFolder() {
         settingsInteractor.changeLocalStorageFolder()
     }
-
 }

@@ -21,7 +21,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
-class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : ViewModel() {
+class TVHomeViewModel(
+    retrogradeDb: RetrogradeDatabase,
+    appContext: Context,
+) : ViewModel() {
     companion object {
         const val CAROUSEL_MAX_ITEMS = 10
         const val DEBOUNCE_TIME = 100L
@@ -31,9 +34,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         val retrogradeDb: RetrogradeDatabase,
         val appContext: Context,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return TVHomeViewModel(retrogradeDb, appContext) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = TVHomeViewModel(retrogradeDb, appContext) as T
     }
 
     data class HomeViewState(
@@ -46,9 +47,7 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
 
     private val viewStates = MutableStateFlow(HomeViewState())
 
-    fun getViewStates(): Flow<HomeViewState> {
-        return viewStates
-    }
+    fun getViewStates(): Flow<HomeViewState> = viewStates
 
     private fun buildViewState(
         favoritesGames: List<Game>,
@@ -56,15 +55,14 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
         metaSystems: List<MetaSystemInfo>,
         indexInProgress: Boolean,
         scanInProgress: Boolean,
-    ): HomeViewState {
-        return HomeViewState(
+    ): HomeViewState =
+        HomeViewState(
             favoritesGames,
             recentGames,
             metaSystems,
             indexInProgress,
             scanInProgress,
         )
-    }
 
     init {
         viewModelScope.launch {
@@ -94,26 +92,28 @@ class TVHomeViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : V
     private fun availableSystems(
         retrogradeDb: RetrogradeDatabase,
         appContext: Context,
-    ) = retrogradeDb.gameDao()
+    ) = retrogradeDb
+        .gameDao()
         .selectSystemsWithCount()
         .map { systemCounts ->
-            systemCounts.asSequence()
+            systemCounts
+                .asSequence()
                 .filter { (_, count) -> count > 0 }
-                .mapNotNull {
-                        (systemId, count) ->
+                .mapNotNull { (systemId, count) ->
                     GameSystem.findByIdOrNull(systemId)?.metaSystemID()?.let { it to count }
-                }
-                .groupBy { (metaSystemId, _) -> metaSystemId }
+                }.groupBy { (metaSystemId, _) -> metaSystemId }
                 .map { (metaSystemId, counts) -> MetaSystemInfo(metaSystemId, counts.sumBy { it.second }) }
                 .sortedBy { it.getName(appContext) }
                 .toList()
         }
 
     private fun favoriteGames(retrogradeDb: RetrogradeDatabase) =
-        retrogradeDb.gameDao()
+        retrogradeDb
+            .gameDao()
             .selectFirstFavoritesRecents(CAROUSEL_MAX_ITEMS + 1)
 
     private fun recentGames(retrogradeDb: RetrogradeDatabase) =
-        retrogradeDb.gameDao()
+        retrogradeDb
+            .gameDao()
             .selectFirstUnfavoriteRecents(CAROUSEL_MAX_ITEMS)
 }

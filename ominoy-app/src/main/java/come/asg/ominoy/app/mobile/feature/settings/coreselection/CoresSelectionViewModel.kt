@@ -18,9 +18,8 @@ class CoresSelectionViewModel(
         val context: Context,
         val coresSelection: CoresSelection,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return CoresSelectionViewModel(context, coresSelection) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            CoresSelectionViewModel(context, coresSelection) as T
     }
 
     val indexingInProgress = PendingOperationsMonitor(context).anyLibraryOperationInProgress()

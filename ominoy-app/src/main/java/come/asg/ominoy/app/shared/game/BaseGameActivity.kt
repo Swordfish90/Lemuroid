@@ -188,11 +188,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     private fun transformExposedSetting(
         exposedSetting: ExposedSetting,
         coreOptions: List<CoreOption>,
-    ): OminoyCoreOption? {
-        return coreOptions
+    ): OminoyCoreOption? =
+        coreOptions
             .firstOrNull { it.variable.key == exposedSetting.key }
             ?.let { OminoyCoreOption(exposedSetting, it) }
-    }
 
     private fun displayOptionsDialog(
         currentTiltConfiguration: TiltConfiguration,
@@ -245,8 +244,9 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     protected abstract fun getDialogClass(): Class<out Activity>
 
-    private fun getCoreOptions(): List<CoreOption> {
-        return baseGameScreenViewModel.retroGameView.retroGameView?.getVariables()
+    private fun getCoreOptions(): List<CoreOption> =
+        baseGameScreenViewModel.retroGameView.retroGameView
+            ?.getVariables()
             ?.mapNotNull {
                 val coreOptionResult =
                     runCatching {
@@ -254,10 +254,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     }
                 coreOptionResult.getOrNull()
             } ?: listOf()
-    }
 
     private suspend fun initializeViewModelsEffectsFlow() {
-        baseGameScreenViewModel.getSideEffects()
+        baseGameScreenViewModel
+            .getSideEffects()
             .collect {
                 when (it) {
                     is GameViewModelSideEffects.UiEffect.ShowMenu ->

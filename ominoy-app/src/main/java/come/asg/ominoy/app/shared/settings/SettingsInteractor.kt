@@ -15,15 +15,24 @@ class SettingsInteractor(
     }
 
     fun resetAllSettings() {
-        SharedPreferencesHelper.getLegacySharedPreferences(context).edit().clear().apply()
-        SharedPreferencesHelper.getSharedPreferences(context).edit().clear().apply()
+        SharedPreferencesHelper
+            .getLegacySharedPreferences(context)
+            .edit()
+            .clear()
+            .apply()
+        SharedPreferencesHelper
+            .getSharedPreferences(context)
+            .edit()
+            .clear()
+            .apply()
         LibraryIndexScheduler.scheduleLibrarySync(context.applicationContext)
         CacheCleanerWork.enqueueCleanCacheAll(context.applicationContext)
         deleteDownloadedCores()
     }
 
     private fun deleteDownloadedCores() {
-        directoriesManager.getCoresDirectory()
+        directoriesManager
+            .getCoresDirectory()
             .listFiles()
             ?.forEach { runCatching { it.deleteRecursively() } }
     }

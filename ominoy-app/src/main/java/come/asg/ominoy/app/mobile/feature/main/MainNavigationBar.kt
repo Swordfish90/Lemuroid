@@ -20,17 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.VideogameAsset
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.VideogameAsset
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -76,22 +65,40 @@ fun MainNavigationBar(
                 ) {
                     MainNavigationRoutes.values().forEach { destination ->
                         val selected = currentRoute?.root == destination.route
-                        val itemBackground = animateColorAsState(
-                            targetValue = if (selected) Color(0xFF8AEBDD).copy(alpha = 0.96f) else Color.Transparent,
-                            label = "navigationPill",
-                        )
-                        val contentColor = if (selected) Color(0xFF10151A) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.84f)
+                        val itemBackground =
+                            animateColorAsState(
+                                targetValue =
+                                    if (selected) {
+                                        Color(
+                                            0xFF8AEBDD,
+                                        ).copy(alpha = 0.96f)
+                                    } else {
+                                        Color.Transparent
+                                    },
+                                label = "navigationPill",
+                            )
+                        val contentColor =
+                            if (selected) {
+                                Color(
+                                    0xFF10151A,
+                                )
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.84f)
+                            }
                         Column(
-                            modifier = Modifier.weight(1f).height(58.dp).clip(CircleShape)
-                                .background(itemBackground.value)
-                                .clickable {
-                                    navController.navigate(destination.route.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
-                                }
-                                .padding(horizontal = 4.dp, vertical = 6.dp),
+                            modifier =
+                                Modifier
+                                    .weight(1f)
+                                    .height(58.dp)
+                                    .clip(CircleShape)
+                                    .background(itemBackground.value)
+                                    .clickable {
+                                        navController.navigate(destination.route.route) {
+                                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
+                                    }.padding(horizontal = 4.dp, vertical = 6.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {

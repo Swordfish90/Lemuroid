@@ -23,7 +23,10 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class OminoyApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderFactory {
+class OminoyApplication :
+    DaggerApplication(),
+    HasWorkerInjector,
+    ImageLoaderFactory {
     @Inject
     lateinit var workerInjector: DispatchingAndroidInjector<ListenableWorker>
 
@@ -52,13 +55,10 @@ class OminoyApplication : DaggerApplication(), HasWorkerInjector, ImageLoaderFac
         ContextHandler.attachBaseContext(base)
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerOminoyApplicationComponent.builder().create(this)
-    }
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
+        DaggerOminoyApplicationComponent.builder().create(this)
 
     override fun workerInjector(): AndroidInjector<ListenableWorker> = workerInjector
 
-    override fun newImageLoader(): ImageLoader {
-        return CoverUtils.buildImageLoader(applicationContext)
-    }
+    override fun newImageLoader(): ImageLoader = CoverUtils.buildImageLoader(applicationContext)
 }

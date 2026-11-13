@@ -43,7 +43,9 @@ class GamePresenter(
         viewHolder.view.setOnCreateContextMenuListener(null)
     }
 
-    class ViewHolder(view: ImageCardView) : Presenter.ViewHolder(view) {
+    class ViewHolder(
+        view: ImageCardView,
+    ) : Presenter.ViewHolder(view) {
         val mCardView: ImageCardView = view
 
         fun updateCardViewImage(game: Game) {

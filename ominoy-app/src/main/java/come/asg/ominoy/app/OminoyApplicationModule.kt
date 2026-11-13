@@ -143,7 +143,8 @@ abstract class OminoyApplicationModule {
         @PerApp
         @JvmStatic
         fun retrogradeDb(app: OminoyApplication) =
-            Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
+            Room
+                .databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
                 .enableMultiInstanceInvalidation()
                 .addCallback(GameSearchDao.CALLBACK)
                 .addMigrations(
@@ -152,8 +153,7 @@ abstract class OminoyApplicationModule {
                     Migrations.VERSION_9_10,
                     Migrations.VERSION_10_11,
                     Migrations.VERSION_11_12,
-                )
-                .build()
+                ).build()
 
         @Provides
         @PerApp
@@ -199,7 +199,8 @@ abstract class OminoyApplicationModule {
         @PerApp
         @JvmStatic
         fun okHttpClient(): OkHttpClient =
-            OkHttpClient.Builder()
+            OkHttpClient
+                .Builder()
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build()
@@ -208,7 +209,8 @@ abstract class OminoyApplicationModule {
         @PerApp
         @JvmStatic
         fun retrofit(): Retrofit =
-            Retrofit.Builder()
+            Retrofit
+                .Builder()
                 .baseUrl("https://example.com")
                 .addConverterFactory(
                     object : Converter.Factory() {
@@ -230,8 +232,7 @@ abstract class OminoyApplicationModule {
                             return null
                         }
                     },
-                )
-                .build()
+                ).build()
 
         @Provides
         @PerApp
@@ -252,7 +253,6 @@ abstract class OminoyApplicationModule {
         @PerApp
         @JvmStatic
         fun statesPreviewManager(directoriesManager: DirectoriesManager) = StatesPreviewManager(directoriesManager)
-
 
         @Provides
         @PerApp

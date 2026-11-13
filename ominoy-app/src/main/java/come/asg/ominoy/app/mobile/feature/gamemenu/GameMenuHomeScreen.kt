@@ -41,10 +41,11 @@ fun GameMenuHomeScreen(
     onResult: KFunction1<Intent.() -> Unit, Unit>,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 12.dp, vertical = 12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 12.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         MenuSection(title = stringResource(R.string.game_menu_section_progress)) {
@@ -96,7 +97,12 @@ fun GameMenuHomeScreen(
             if (gameMenuRequest.fastForwardSupported) {
                 OminoySettingsSwitch(
                     title = { Text(stringResource(R.string.game_menu_fast_forward)) },
-                    icon = { MenuIcon(painterResource(R.drawable.ic_menu_fast_forward), R.string.game_menu_fast_forward) },
+                    icon = {
+                        MenuIcon(
+                            painterResource(R.drawable.ic_menu_fast_forward),
+                            R.string.game_menu_fast_forward,
+                        )
+                    },
                     state = rememberMemoryBooleanSettingState(gameMenuRequest.fastForwardEnabled),
                     onCheckedChange = { onResult { putExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD, it) } },
                 )
@@ -104,9 +110,20 @@ fun GameMenuHomeScreen(
             if (gameMenuRequest.numDisks > 1) {
                 OminoySettingsList(
                     title = { Text(stringResource(R.string.game_menu_change_disk_button)) },
-                    items = (1..gameMenuRequest.numDisks).map { stringResource(R.string.game_menu_change_disk_disk, it) },
+                    items =
+                        (1..gameMenuRequest.numDisks).map {
+                            stringResource(
+                                R.string.game_menu_change_disk_disk,
+                                it,
+                            )
+                        },
                     useSelectedValueAsSubtitle = false,
-                    icon = { MenuIcon(painterResource(R.drawable.ic_menu_disk), R.string.game_menu_change_disk_button) },
+                    icon = {
+                        MenuIcon(
+                            painterResource(R.drawable.ic_menu_disk),
+                            R.string.game_menu_change_disk_button,
+                        )
+                    },
                     state = rememberMemoryIntSettingState(gameMenuRequest.currentDisk),
                     onItemSelected = { index, _ -> onResult { putExtra(GameMenuContract.RESULT_CHANGE_DISK, index) } },
                 )
@@ -116,7 +133,12 @@ fun GameMenuHomeScreen(
         MenuSection(title = stringResource(R.string.game_menu_section_tools)) {
             OminoySettingsMenuLink(
                 title = { Text(stringResource(R.string.game_menu_edit_touch_controls)) },
-                icon = { MenuIcon(painterResource(R.drawable.ic_menu_controls), R.string.game_menu_edit_touch_controls) },
+                icon = {
+                    MenuIcon(
+                        painterResource(R.drawable.ic_menu_controls),
+                        R.string.game_menu_edit_touch_controls,
+                    )
+                },
                 onClick = { onResult { putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true) } },
             )
             OminoySettingsMenuLink(
@@ -132,8 +154,14 @@ fun GameMenuHomeScreen(
                 )
             }
             if (gameMenuRequest.allTiltConfigurations.isNotEmpty()) {
-                val tiltConfigurationEntries = gameMenuRequest.allTiltConfigurations.map { TiltConfigurationMenuEntry.fromTiltConfiguration(it) }
-                val selectedIndex = gameMenuRequest.allTiltConfigurations.indexOf(gameMenuRequest.currentTiltConfiguration)
+                val tiltConfigurationEntries =
+                    gameMenuRequest.allTiltConfigurations.map {
+                        TiltConfigurationMenuEntry.fromTiltConfiguration(it)
+                    }
+                val selectedIndex =
+                    gameMenuRequest.allTiltConfigurations.indexOf(
+                        gameMenuRequest.currentTiltConfiguration,
+                    )
                 OminoySettingsList(
                     title = { Text(stringResource(R.string.game_menu_tilt_sensor)) },
                     items = tiltConfigurationEntries.map { stringResource(it.descriptionId) },
@@ -141,7 +169,12 @@ fun GameMenuHomeScreen(
                     icon = { Icon(Icons.Default.Sensors, stringResource(R.string.game_menu_tilt_sensor)) },
                     state = rememberMemoryIntSettingState(selectedIndex),
                     onItemSelected = { index, _ ->
-                        onResult { putExtra(GameMenuContract.RESULT_CHANGE_TILT_CONFIG, tiltConfigurationEntries[index].configuration) }
+                        onResult {
+                            putExtra(
+                                GameMenuContract.RESULT_CHANGE_TILT_CONFIG,
+                                tiltConfigurationEntries[index].configuration,
+                            )
+                        }
                     },
                 )
             }
@@ -173,7 +206,10 @@ private fun MenuSection(
 }
 
 @Composable
-private fun MenuIcon(painter: androidx.compose.ui.graphics.painter.Painter, descriptionId: Int) {
+private fun MenuIcon(
+    painter: androidx.compose.ui.graphics.painter.Painter,
+    descriptionId: Int,
+) {
     Icon(
         painter = painter,
         contentDescription = stringResource(descriptionId),

@@ -15,8 +15,10 @@ import dagger.multibindings.IntoMap
 import timber.log.Timber
 import javax.inject.Inject
 
-class ChannelUpdateWork(context: Context, workerParams: WorkerParameters) :
-    CoroutineWorker(context, workerParams) {
+class ChannelUpdateWork(
+    context: Context,
+    workerParams: WorkerParameters,
+) : CoroutineWorker(context, workerParams) {
     @Inject
     lateinit var channelHandler: ChannelHandler
 

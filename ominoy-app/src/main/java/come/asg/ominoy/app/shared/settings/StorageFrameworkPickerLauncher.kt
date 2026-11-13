@@ -66,16 +66,25 @@ class StorageFrameworkPickerLauncher : RetrogradeActivity() {
                 // were copied into the folder later.
                 LibraryIndexScheduler.scheduleLibrarySync(applicationContext)
             } else if (newValue != null) {
-                Toast.makeText(this, "Could not access that folder. Please choose a readable ROM folder.", Toast.LENGTH_LONG).show()
+                Toast
+                    .makeText(
+                        this,
+                        "Could not access that folder. Please choose a readable ROM folder.",
+                        Toast.LENGTH_LONG,
+                    ).show()
             }
-
         }
         finish()
     }
 
-    private fun saveSelection(uri: Uri, resultFlags: Int, previousValue: String?): Boolean {
-        val permissionFlags = resultFlags and
-            (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+    private fun saveSelection(
+        uri: Uri,
+        resultFlags: Int,
+        previousValue: String?,
+    ): Boolean {
+        val permissionFlags =
+            resultFlags and
+                (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
         if (permissionFlags and Intent.FLAG_GRANT_READ_URI_PERMISSION == 0) return false
 
         var tookGrant = false

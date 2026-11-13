@@ -34,7 +34,5 @@ object AdvancedSettingsPreferences {
     private fun getSizeLabel(
         appContext: Context,
         size: Long,
-    ): String {
-        return Formatter.formatShortFileSize(appContext, size)
-    }
+    ): String = Formatter.formatShortFileSize(appContext, size)
 }

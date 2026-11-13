@@ -44,6 +44,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import come.asg.ominoy.R
 import come.asg.ominoy.app.mobile.feature.cheats.GameCheatsScreen
 import come.asg.ominoy.app.mobile.feature.gamemenu.coreoptions.GameMenuCoreOptionsScreen
@@ -61,7 +62,6 @@ import come.asg.ominoy.lib.library.db.RetrogradeDatabase
 import come.asg.ominoy.lib.library.db.entity.Game
 import come.asg.ominoy.lib.saves.StatesManager
 import come.asg.ominoy.lib.saves.StatesPreviewManager
-import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import java.security.InvalidParameterException
 import javax.inject.Inject
 
@@ -107,11 +107,13 @@ class GameMenuActivity : RetrogradeComponentActivity() {
         val gameMenuRequest =
             GameMenuRequest(
                 coreOptions =
-                    intent.serializable<Array<OminoyCoreOption>>(GameMenuContract.EXTRA_CORE_OPTIONS)
+                    intent
+                        .serializable<Array<OminoyCoreOption>>(GameMenuContract.EXTRA_CORE_OPTIONS)
                         ?.toList()
                         ?: throw InvalidParameterException("Missing EXTRA_CORE_OPTIONS"),
                 advancedCoreOptions =
-                    intent.serializable<Array<OminoyCoreOption>>(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS)
+                    intent
+                        .serializable<Array<OminoyCoreOption>>(GameMenuContract.EXTRA_ADVANCED_CORE_OPTIONS)
                         ?.toList()
                         ?: throw InvalidParameterException("Missing EXTRA_ADVANCED_CORE_OPTIONS"),
                 game =
@@ -134,7 +136,8 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                     intent.serializable<TiltConfiguration>(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG)
                         ?: TiltConfiguration.Disabled,
                 allTiltConfigurations =
-                    intent.serializable<Array<TiltConfiguration>>(GameMenuContract.EXTRA_TILT_ALL_CONFIGS)
+                    intent
+                        .serializable<Array<TiltConfiguration>>(GameMenuContract.EXTRA_TILT_ALL_CONFIGS)
                         ?.toList()
                         ?: emptyList(),
             )
@@ -153,7 +156,8 @@ class GameMenuActivity : RetrogradeComponentActivity() {
             val currentDestination = navBackStackEntry.value?.destination
 
             val currentRoute =
-                currentDestination?.route
+                currentDestination
+                    ?.route
                     ?.let { GameMenuRoute.findByRoute(it) }
                     ?: GameMenuRoute.HOME
 
@@ -172,10 +176,11 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                             )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        titleContentColor = MaterialTheme.colorScheme.onSurface,
-                    ),
+                    colors =
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            titleContentColor = MaterialTheme.colorScheme.onSurface,
+                        ),
                     windowInsets = WindowInsets(0.dp),
                     navigationIcon = {
                         AnimatedContent(targetState = currentRoute.canGoBack(), label = "Back") { canGoBack ->

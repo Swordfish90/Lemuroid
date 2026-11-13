@@ -25,7 +25,9 @@ import kotlinx.coroutines.flow.debounce
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
-class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
+class TVSearchFragment :
+    SearchSupportFragment(),
+    SearchSupportFragment.SearchResultProvider {
     @Inject
     lateinit var retrogradeDb: RetrogradeDatabase
 
@@ -68,7 +70,8 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         }
 
         launchOnState(Lifecycle.State.RESUMED) {
-            searchDebounce.debounce(1000)
+            searchDebounce
+                .debounce(1000)
                 .collect { searchViewModel.queryString.value = it }
         }
 
@@ -95,9 +98,7 @@ class TVSearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchRe
         return searchAdapter
     }
 
-    override fun getResultsAdapter(): ObjectAdapter {
-        return rowsAdapter
-    }
+    override fun getResultsAdapter(): ObjectAdapter = rowsAdapter
 
     override fun onQueryTextChange(query: String): Boolean {
         searchDebounce.value = query

@@ -19,7 +19,9 @@ import come.asg.ominoy.app.shared.settings.GameShortcutType
 import come.asg.ominoy.app.tv.input.TVGamePadBindingActivity
 import come.asg.ominoy.app.tv.input.TVGamePadShortcutBindingActivity
 
-class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManager) {
+class GamePadPreferencesHelper(
+    private val inputDeviceManager: InputDeviceManager,
+) {
     suspend fun addGamePadsPreferencesToScreen(
         context: Context,
         preferenceScreen: PreferenceScreen,
@@ -49,9 +51,8 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
             .forEach { refreshPreferenceCategoryForInputDevice(preferenceScreen, it) }
     }
 
-    private fun getDistinctGamePads(gamePads: List<InputDevice>): List<InputDevice> {
-        return gamePads.distinctBy { it.descriptor }
-    }
+    private fun getDistinctGamePads(gamePads: List<InputDevice>): List<InputDevice> =
+        gamePads.distinctBy { it.descriptor }
 
     private fun addEnabledCategory(
         context: Context,
@@ -106,7 +107,9 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         val category = createCategory(context, preferenceScreen, inputDevice.name)
         preferenceScreen.addPreference(category)
 
-        inputDevice.getOminoyInputDevice().getCustomizableKeys()
+        inputDevice
+            .getOminoyInputDevice()
+            .getCustomizableKeys()
             .map { buildKeyBindingPreference(context, inputDevice, it) }
             .forEach { category.addPreference(it) }
 
@@ -120,11 +123,14 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
         inputDevice: InputDevice,
     ) {
         val inverseBindings =
-            inputDeviceManager.getCurrentBindings(inputDevice)
+            inputDeviceManager
+                .getCurrentBindings(inputDevice)
                 .map { it.value to it.key }
                 .toMap()
 
-        inputDevice.getOminoyInputDevice().getCustomizableKeys()
+        inputDevice
+            .getOminoyInputDevice()
+            .getCustomizableKeys()
             .forEach { retroKey ->
                 val boundKey = inverseBindings[retroKey]?.keyCode ?: KeyEvent.KEYCODE_UNKNOWN
                 val preferenceKey = InputDeviceManager.computeKeyBindingRetroKeyPreference(inputDevice, retroKey)
@@ -136,7 +142,8 @@ class GamePadPreferencesHelper(private val inputDeviceManager: InputDeviceManage
             }
 
         val shortcuts =
-            inputDeviceManager.getCurrentShortcuts(inputDevice)
+            inputDeviceManager
+                .getCurrentShortcuts(inputDevice)
                 .associateBy { it.type }
 
         GameShortcutType.entries

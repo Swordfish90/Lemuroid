@@ -20,7 +20,10 @@ object CheatCodeFormatter {
         if (trimmed.isEmpty()) return null
         val dashedGameGenie = trimmed.replace("-", "")
         val raw =
-            if (trimmed.contains('-') && hexadecimal.matches(dashedGameGenie) && dashedGameGenie.length in setOf(6, 9)) {
+            if (trimmed.contains('-') &&
+                hexadecimal.matches(dashedGameGenie) &&
+                dashedGameGenie.length in setOf(6, 9)
+            ) {
                 dashedGameGenie
             } else {
                 trimmed.replace("-", " ")

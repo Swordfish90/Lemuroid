@@ -27,7 +27,8 @@ fun OminoyGameImage(
 
     AsyncImage(
         model =
-            ImageRequest.Builder(LocalContext.current)
+            ImageRequest
+                .Builder(LocalContext.current)
                 .data(game.displayCoverUrl())
                 .build(),
         contentDescription = game.displayName(),

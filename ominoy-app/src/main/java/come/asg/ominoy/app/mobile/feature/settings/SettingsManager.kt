@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class SettingsManager(private val context: Context, sharedPreferences: Lazy<SharedPreferences>) {
+class SettingsManager(
+    private val context: Context,
+    sharedPreferences: Lazy<SharedPreferences>,
+) {
     private val sharedPreferences by lazy { FlowSharedPreferences(sharedPreferences.get()) }
 
     private fun getString(resId: Int) = context.getString(resId)
@@ -72,7 +75,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
         default: Boolean,
     ): Boolean =
         withContext(Dispatchers.IO) {
-            sharedPreferences.getBoolean(getString(keyId), default)
+            sharedPreferences
+                .getBoolean(getString(keyId), default)
                 .asFlow()
                 .first()
         }
@@ -82,7 +86,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
         default: String,
     ): String =
         withContext(Dispatchers.IO) {
-            sharedPreferences.getString(getString(keyId), default)
+            sharedPreferences
+                .getString(getString(keyId), default)
                 .asFlow()
                 .first()
         }
@@ -92,7 +97,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
         default: Set<String>,
     ): Set<String> =
         withContext(Dispatchers.IO) {
-            sharedPreferences.getStringSet(getString(keyId), default)
+            sharedPreferences
+                .getStringSet(getString(keyId), default)
                 .asFlow()
                 .first()
         }
@@ -103,7 +109,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
         defaultNumerator: Int,
     ): Float =
         withContext(Dispatchers.IO) {
-            sharedPreferences.getInt(getString(keyId), defaultNumerator)
+            sharedPreferences
+                .getInt(getString(keyId), defaultNumerator)
                 .asFlow()
                 .map { Fraction(it, denominator).floatValue }
                 .first()
@@ -114,7 +121,8 @@ class SettingsManager(private val context: Context, sharedPreferences: Lazy<Shar
         default: Int,
     ): Int =
         withContext(Dispatchers.IO) {
-            sharedPreferences.getInt(getString(keyId), default)
+            sharedPreferences
+                .getInt(getString(keyId), default)
                 .asFlow()
                 .first()
         }

@@ -38,22 +38,19 @@ class InputDeviceManager(
 
     private val flowSharedPreferences by lazy { FlowSharedPreferences(sharedPreferences) }
 
-    fun getInputBindingsObservable(): Flow<(InputDevice?) -> Map<InputKey, RetroKey>> {
-        return getEnabledInputsObservable()
+    fun getInputBindingsObservable(): Flow<(InputDevice?) -> Map<InputKey, RetroKey>> =
+        getEnabledInputsObservable()
             .flatMapLatest { devices ->
                 val allDeviceBindingsFlows = devices.map { device -> getBindingsFlow(device).map { device to it } }
                 combine(allDeviceBindingsFlows) { it.toMap() }
-            }
-            .map { bindings -> { bindings[it] ?: mapOf() } }
-    }
+            }.map { bindings -> { bindings[it] ?: mapOf() } }
 
-    fun getGameShortcutsObservable(): Flow<Map<InputDevice, List<GameShortcut>>> {
-        return getEnabledInputsObservable()
+    fun getGameShortcutsObservable(): Flow<Map<InputDevice, List<GameShortcut>>> =
+        getEnabledInputsObservable()
             .flatMapLatest { devices ->
                 val allShortcutFlows = devices.map { device -> getShortcutBindingsFlow(device).map { device to it } }
                 combine(allShortcutFlows) { it.toMap() }
             }
-    }
 
     fun getGamePadsPortMapperObservable(): Flow<(InputDevice?) -> Int?> {
         return getEnabledInputsObservable().map { gamePads ->
@@ -65,17 +62,18 @@ class InputDeviceManager(
         }
     }
 
-    private fun getBindingsFlow(inputDevice: InputDevice): Flow<Map<InputKey, RetroKey>> {
-        return flowSharedPreferences.getString(computeKeyBindingGamePadPreference(inputDevice))
+    private fun getBindingsFlow(inputDevice: InputDevice): Flow<Map<InputKey, RetroKey>> =
+        flowSharedPreferences
+            .getString(computeKeyBindingGamePadPreference(inputDevice))
             .asFlow()
             .map { parseBindingsPreference(it, inputDevice) }
             .flowOn(Dispatchers.IO)
-    }
 
     private fun getShortcutBindingsFlow(device: InputDevice): Flow<List<GameShortcut>> {
         val flows =
             GameShortcutType.entries.map { type ->
-                flowSharedPreferences.getString(computeGameShortcutPreference(device, type))
+                flowSharedPreferences
+                    .getString(computeGameShortcutPreference(device, type))
                     .asFlow()
                     .map { parseShortcutPreference(it, device, type) }
             }
@@ -100,8 +98,8 @@ class InputDeviceManager(
         }
     }
 
-    suspend fun getCurrentBindings(inputDevice: InputDevice): Map<InputKey, RetroKey> {
-        return withContext(Dispatchers.IO) {
+    suspend fun getCurrentBindings(inputDevice: InputDevice): Map<InputKey, RetroKey> =
+        withContext(Dispatchers.IO) {
             val preference =
                 sharedPreferences.getString(
                     computeKeyBindingGamePadPreference(inputDevice),
@@ -109,16 +107,14 @@ class InputDeviceManager(
                 )
             parseBindingsPreference(preference, inputDevice)
         }
-    }
 
-    suspend fun getCurrentShortcuts(inputDevice: InputDevice): List<GameShortcut> {
-        return withContext(Dispatchers.IO) {
+    suspend fun getCurrentShortcuts(inputDevice: InputDevice): List<GameShortcut> =
+        withContext(Dispatchers.IO) {
             GameShortcutType.entries.mapNotNull { type ->
                 val preference = sharedPreferences.getString(computeGameShortcutPreference(inputDevice, type), "")
                 parseShortcutPreference(preference, inputDevice, type)
             }
         }
-    }
 
     private fun parseBindingsPreference(
         preference: String?,
@@ -139,7 +135,8 @@ class InputDeviceManager(
         inputKey: InputKey,
     ) = withContext(Dispatchers.IO) {
         val prevBindings =
-            getCurrentBindings(inputDevice).entries
+            getCurrentBindings(inputDevice)
+                .entries
                 .map { it.key to it.value }
                 .filter { (_, value) -> value != retroKey }
 
@@ -196,10 +193,9 @@ class InputDeviceManager(
             .onCompletion { inputManager.unregisterInputDeviceListener(listener) }
     }
 
-    fun getDistinctGamePadsObservable(): Flow<List<InputDevice>> {
-        return getGamePadsObservable()
+    fun getDistinctGamePadsObservable(): Flow<List<InputDevice>> =
+        getGamePadsObservable()
             .map { device -> device.distinctBy { it.descriptor } }
-    }
 
     fun getEnabledInputsObservable(): Flow<List<InputDevice>> {
         return getGamePadsObservable()
@@ -219,29 +215,32 @@ class InputDeviceManager(
 
     private fun getDeviceStatus(inputDevice: InputDevice): Flow<DeviceStatus> {
         val defaultValue = inputDevice.getOminoyInputDevice().isEnabledByDefault(context)
-        return flowSharedPreferences.getBoolean(computeEnabledGamePadPreference(inputDevice), defaultValue)
+        return flowSharedPreferences
+            .getBoolean(computeEnabledGamePadPreference(inputDevice), defaultValue)
             .asFlow()
             .map { isEnabled -> DeviceStatus(inputDevice, isEnabled) }
     }
 
-    private fun getDefaultBinding(inputDevice: InputDevice): Map<InputKey, RetroKey> {
-        return inputDevice
+    private fun getDefaultBinding(inputDevice: InputDevice): Map<InputKey, RetroKey> =
+        inputDevice
             .getOminoyInputDevice()
             .getDefaultBindings()
-    }
 
-    private fun getAllGamePads(): List<InputDevice> {
-        return runCatching {
-            InputDevice.getDeviceIds()
+    private fun getAllGamePads(): List<InputDevice> =
+        runCatching {
+            InputDevice
+                .getDeviceIds()
                 .map { InputDevice.getDevice(it) }
                 .filterNotNull()
                 .filter { it.getOminoyInputDevice().isSupported() }
                 .filter { it.name !in BLACKLISTED_DEVICES }
                 .sortedBy { it.controllerNumber }
         }.getOrNull() ?: listOf()
-    }
 
-    private data class DeviceStatus(val device: InputDevice, val enabled: Boolean)
+    private data class DeviceStatus(
+        val device: InputDevice,
+        val enabled: Boolean,
+    )
 
     companion object {
         private const val GAME_PAD_BINDING_PREFERENCE_BASE_KEY = "pref_key_gamepad_binding_key"

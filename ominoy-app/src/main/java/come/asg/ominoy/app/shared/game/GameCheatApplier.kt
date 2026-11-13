@@ -36,10 +36,9 @@ object GameCheatApplier {
                 }
                 runCatching {
                     retroView.setCheat(nativeIndex++, cheat.enabled, normalizedCode)
+                }.onFailure { error ->
+                    Timber.w(error, "Active core rejected cheat ${cheat.id}; continuing with remaining cheats")
                 }
-                    .onFailure { error ->
-                        Timber.w(error, "Active core rejected cheat ${cheat.id}; continuing with remaining cheats")
-                    }
             }
         }
     }

@@ -75,7 +75,8 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         }
 
         launchOnState(Lifecycle.State.RESUMED) {
-            inputDeviceManager.getEnabledInputsObservable()
+            inputDeviceManager
+                .getEnabledInputsObservable()
                 .distinctUntilChanged()
                 .collect { refreshGamePadBindingsScreen(it) }
         }
@@ -123,25 +124,20 @@ class TVSettingsFragment : LeanbackPreferenceFragmentCompat() {
         refreshSaveSyncScreen()
     }
 
-    private fun getGamePadPreferenceScreen(): PreferenceScreen? {
-        return findPreference(resources.getString(R.string.pref_key_open_gamepad_settings))
-    }
+    private fun getGamePadPreferenceScreen(): PreferenceScreen? =
+        findPreference(resources.getString(R.string.pref_key_open_gamepad_settings))
 
-    private fun getSaveSyncScreen(): PreferenceScreen? {
-        return findPreference(resources.getString(R.string.pref_key_open_save_sync_settings))
-    }
+    private fun getSaveSyncScreen(): PreferenceScreen? =
+        findPreference(resources.getString(R.string.pref_key_open_save_sync_settings))
 
-    private fun getCoresSelectionScreen(): PreferenceScreen? {
-        return findPreference(resources.getString(R.string.pref_key_open_cores_selection))
-    }
+    private fun getCoresSelectionScreen(): PreferenceScreen? =
+        findPreference(resources.getString(R.string.pref_key_open_cores_selection))
 
-    private fun getBiosInfoPreferenceScreen(): PreferenceScreen? {
-        return findPreference(resources.getString(R.string.pref_key_display_bios_info))
-    }
+    private fun getBiosInfoPreferenceScreen(): PreferenceScreen? =
+        findPreference(resources.getString(R.string.pref_key_display_bios_info))
 
-    private fun getAdvancedSettingsPreferenceScreen(): PreferenceScreen? {
-        return findPreference(resources.getString(R.string.pref_key_advanced_settings))
-    }
+    private fun getAdvancedSettingsPreferenceScreen(): PreferenceScreen? =
+        findPreference(resources.getString(R.string.pref_key_advanced_settings))
 
     private fun addGamePadBindingsScreen(
         gamePads: List<InputDevice>,

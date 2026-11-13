@@ -19,7 +19,9 @@ internal data class CropTransform(
 
 /** Mutable hot-path state; the revision is read only inside graphicsLayer, not by composition. */
 @Stable
-internal class CropTransformState(initial: CropTransform = CropTransform()) {
+internal class CropTransformState(
+    initial: CropTransform = CropTransform(),
+) {
     private val revisionState = mutableIntStateOf(0)
 
     var scale: Float = initial.scale
@@ -34,7 +36,12 @@ internal class CropTransformState(initial: CropTransform = CropTransform()) {
     val graphicsRevision: Int
         get() = revisionState.intValue
 
-    fun set(scale: Float, offsetX: Float, offsetY: Float, rotationDegrees: Float) {
+    fun set(
+        scale: Float,
+        offsetX: Float,
+        offsetY: Float,
+        rotationDegrees: Float,
+    ) {
         this.scale = scale
         this.offsetX = offsetX
         this.offsetY = offsetY
@@ -93,23 +100,28 @@ internal fun clampCropTransformInto(
     val clampedLocalX = localPanX.coerceIn(-localPanLimitX, localPanLimitX)
     val clampedLocalY = localPanY.coerceIn(-localPanLimitY, localPanLimitY)
     val resistance = if (edgeResistancePx.isFinite()) max(0f, edgeResistancePx) else 0f
-    val didResist = resistance > 0f &&
-        ((localPanX > localPanLimitX && localPanLimitX > 0f) ||
-            (localPanX < -localPanLimitX && localPanLimitX > 0f) ||
-            (localPanY > localPanLimitY && localPanLimitY > 0f) ||
-            (localPanY < -localPanLimitY && localPanLimitY > 0f))
-    val resistedLocalX = when {
-        resistance <= 0f || localPanLimitX <= 0f -> clampedLocalX
-        localPanX > localPanLimitX -> localPanLimitX - min(localPanLimitX, resistance)
-        localPanX < -localPanLimitX -> -localPanLimitX + min(localPanLimitX, resistance)
-        else -> clampedLocalX
-    }
-    val resistedLocalY = when {
-        resistance <= 0f || localPanLimitY <= 0f -> clampedLocalY
-        localPanY > localPanLimitY -> localPanLimitY - min(localPanLimitY, resistance)
-        localPanY < -localPanLimitY -> -localPanLimitY + min(localPanLimitY, resistance)
-        else -> clampedLocalY
-    }
+    val didResist =
+        resistance > 0f &&
+            (
+                (localPanX > localPanLimitX && localPanLimitX > 0f) ||
+                    (localPanX < -localPanLimitX && localPanLimitX > 0f) ||
+                    (localPanY > localPanLimitY && localPanLimitY > 0f) ||
+                    (localPanY < -localPanLimitY && localPanLimitY > 0f)
+            )
+    val resistedLocalX =
+        when {
+            resistance <= 0f || localPanLimitX <= 0f -> clampedLocalX
+            localPanX > localPanLimitX -> localPanLimitX - min(localPanLimitX, resistance)
+            localPanX < -localPanLimitX -> -localPanLimitX + min(localPanLimitX, resistance)
+            else -> clampedLocalX
+        }
+    val resistedLocalY =
+        when {
+            resistance <= 0f || localPanLimitY <= 0f -> clampedLocalY
+            localPanY > localPanLimitY -> localPanLimitY - min(localPanLimitY, resistance)
+            localPanY < -localPanLimitY -> -localPanLimitY + min(localPanLimitY, resistance)
+            else -> clampedLocalY
+        }
     val clampedOffsetX = cosine * resistedLocalX - sine * resistedLocalY
     val clampedOffsetY = sine * resistedLocalX + cosine * resistedLocalY
 
@@ -165,26 +177,29 @@ internal fun settleCropTransformToNearestEdge(
     val localPanX = cosine * current.offsetX + sine * current.offsetY
     val localPanY = -sine * current.offsetX + cosine * current.offsetY
     val settleDistance = if (settleDistancePx.isFinite()) max(0f, settleDistancePx) else 0f
-    val targetLocalX = when {
-        localPanX > 0f && panLimitX - abs(localPanX) <= settleDistance -> panLimitX
-        localPanX < 0f && panLimitX - abs(localPanX) <= settleDistance -> -panLimitX
-        else -> localPanX
-    }
-    val targetLocalY = when {
-        localPanY > 0f && panLimitY - abs(localPanY) <= settleDistance -> panLimitY
-        localPanY < 0f && panLimitY - abs(localPanY) <= settleDistance -> -panLimitY
-        else -> localPanY
-    }
+    val targetLocalX =
+        when {
+            localPanX > 0f && panLimitX - abs(localPanX) <= settleDistance -> panLimitX
+            localPanX < 0f && panLimitX - abs(localPanX) <= settleDistance -> -panLimitX
+            else -> localPanX
+        }
+    val targetLocalY =
+        when {
+            localPanY > 0f && panLimitY - abs(localPanY) <= settleDistance -> panLimitY
+            localPanY < 0f && panLimitY - abs(localPanY) <= settleDistance -> -panLimitY
+            else -> localPanY
+        }
     return clampCropTransform(
         sourceWidth = sourceWidth,
         sourceHeight = sourceHeight,
         viewportSizePx = viewport,
-        requested = CropTransform(
-            scale = scale,
-            offsetX = cosine * targetLocalX - sine * targetLocalY,
-            offsetY = sine * targetLocalX + cosine * targetLocalY,
-            rotationDegrees = current.rotationDegrees,
-        ),
+        requested =
+            CropTransform(
+                scale = scale,
+                offsetX = cosine * targetLocalX - sine * targetLocalY,
+                offsetY = sine * targetLocalX + cosine * targetLocalY,
+                rotationDegrees = current.rotationDegrees,
+            ),
     )
 }
 
@@ -196,17 +211,18 @@ internal fun mapViewportPointToSource(
     transform: CropTransform,
     viewportX: Float,
     viewportY: Float,
-): Offset = mapViewportPointToSource(
-    sourceWidth = sourceWidth,
-    sourceHeight = sourceHeight,
-    viewportSizePx = viewportSizePx,
-    scale = transform.scale,
-    offsetX = transform.offsetX,
-    offsetY = transform.offsetY,
-    rotationDegrees = transform.rotationDegrees,
-    viewportX = viewportX,
-    viewportY = viewportY,
-)
+): Offset =
+    mapViewportPointToSource(
+        sourceWidth = sourceWidth,
+        sourceHeight = sourceHeight,
+        viewportSizePx = viewportSizePx,
+        scale = transform.scale,
+        offsetX = transform.offsetX,
+        offsetY = transform.offsetY,
+        rotationDegrees = transform.rotationDegrees,
+        viewportX = viewportX,
+        viewportY = viewportY,
+    )
 
 private fun mapViewportPointToSource(
     sourceWidth: Int,
@@ -258,17 +274,18 @@ internal fun applyCropGestureInto(
     val oldOffsetX = state.offsetX
     val oldOffsetY = state.offsetY
     val oldRotation = state.rotationDegrees
-    val focalSource = mapViewportPointToSource(
-        sourceWidth = sourceWidth,
-        sourceHeight = sourceHeight,
-        viewportSizePx = viewport,
-        scale = oldScale,
-        offsetX = oldOffsetX,
-        offsetY = oldOffsetY,
-        rotationDegrees = oldRotation,
-        viewportX = focalStartX,
-        viewportY = focalStartY,
-    )
+    val focalSource =
+        mapViewportPointToSource(
+            sourceWidth = sourceWidth,
+            sourceHeight = sourceHeight,
+            viewportSizePx = viewport,
+            scale = oldScale,
+            offsetX = oldOffsetX,
+            offsetY = oldOffsetY,
+            rotationDegrees = oldRotation,
+            viewportX = focalStartX,
+            viewportY = focalStartY,
+        )
 
     val nextRotation = oldRotation + if (rotationChangeDegrees.isFinite()) rotationChangeDegrees else 0f
     val radians = Math.toRadians(nextRotation.toDouble())

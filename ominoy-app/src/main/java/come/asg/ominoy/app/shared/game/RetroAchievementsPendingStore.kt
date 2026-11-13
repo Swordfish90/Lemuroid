@@ -3,7 +3,6 @@ package come.asg.ominoy.app.shared.game
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import android.util.Base64
 import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
@@ -44,19 +43,23 @@ object RetroAchievementsPendingStore {
 
     private fun file(context: Context) = File(context.applicationContext.filesDir, FILE_NAME)
 
-    fun enqueue(context: Context, unlock: PendingUnlock) = synchronized(lock) {
+    fun enqueue(
+        context: Context,
+        unlock: PendingUnlock,
+    ) = synchronized(lock) {
         val values = readLocked(context).toMutableList()
         val index = values.indexOfFirst { it.key == unlock.key }
         if (index >= 0) {
             val existing = values[index]
-            values[index] = existing.copy(
-                rawRomMd5 = existing.rawRomMd5.ifBlank { unlock.rawRomMd5 },
-                raGameId = existing.raGameId.takeIf { it > 0 } ?: unlock.raGameId,
-                localLibraryGameId = existing.localLibraryGameId.takeIf { it > 0 } ?: unlock.localLibraryGameId,
-                gameTitle = existing.gameTitle.ifBlank { unlock.gameTitle },
-                unlockTimeMillis = minOf(existing.unlockTimeMillis, unlock.unlockTimeMillis),
-                state = if (existing.state == State.FAILED) State.PENDING else existing.state,
-            )
+            values[index] =
+                existing.copy(
+                    rawRomMd5 = existing.rawRomMd5.ifBlank { unlock.rawRomMd5 },
+                    raGameId = existing.raGameId.takeIf { it > 0 } ?: unlock.raGameId,
+                    localLibraryGameId = existing.localLibraryGameId.takeIf { it > 0 } ?: unlock.localLibraryGameId,
+                    gameTitle = existing.gameTitle.ifBlank { unlock.gameTitle },
+                    unlockTimeMillis = minOf(existing.unlockTimeMillis, unlock.unlockTimeMillis),
+                    state = if (existing.state == State.FAILED) State.PENDING else existing.state,
+                )
         } else {
             values += unlock
         }
@@ -65,7 +68,11 @@ object RetroAchievementsPendingStore {
 
     fun snapshot(context: Context): List<PendingUnlock> = synchronized(lock) { readLocked(context) }
 
-    fun update(context: Context, key: String, transform: (PendingUnlock) -> PendingUnlock) = synchronized(lock) {
+    fun update(
+        context: Context,
+        key: String,
+        transform: (PendingUnlock) -> PendingUnlock,
+    ) = synchronized(lock) {
         val values = readLocked(context).toMutableList()
         val index = values.indexOfFirst { it.key == key }
         if (index >= 0) {
@@ -74,7 +81,10 @@ object RetroAchievementsPendingStore {
         }
     }
 
-    fun remove(context: Context, key: String) = synchronized(lock) {
+    fun remove(
+        context: Context,
+        key: String,
+    ) = synchronized(lock) {
         val values = readLocked(context).filterNot { it.key == key }
         writeLocked(context, values)
     }
@@ -91,12 +101,18 @@ object RetroAchievementsPendingStore {
         }.getOrElse { error ->
             Timber.w(error, "Could not read pending RetroAchievements queue; preserving corrupt file")
             val backup = File(target.parentFile, "${target.name}.corrupt-${System.currentTimeMillis()}")
-            runCatching { target.copyTo(backup, overwrite = false); target.delete() }
+            runCatching {
+                target.copyTo(backup, overwrite = false)
+                target.delete()
+            }
             emptyList()
         }
     }
 
-    private fun writeLocked(context: Context, values: List<PendingUnlock>) {
+    private fun writeLocked(
+        context: Context,
+        values: List<PendingUnlock>,
+    ) {
         val text = JSONArray().apply { values.forEach { put(it.toJson()) } }.toString()
         val target = file(context)
         val temp = File(target.parentFile, ".${target.name}.tmp")
@@ -107,42 +123,49 @@ object RetroAchievementsPendingStore {
         }.onFailure { error -> Timber.e(error, "Could not persist pending RetroAchievements queue") }
     }
 
-    private fun PendingUnlock.toJson() = JSONObject().apply {
-        put("username", username)
-        put("achievementId", achievementId)
-        put("rawRomMd5", rawRomMd5)
-        put("raGameId", raGameId)
-        put("hardcore", hardcore)
-        put("unlockTimeMillis", unlockTimeMillis)
-        put("localLibraryGameId", localLibraryGameId)
-        put("gameTitle", gameTitle)
-        put("attemptCount", attemptCount)
-        put("lastError", lastError)
-        put("state", state.name)
-    }
+    private fun PendingUnlock.toJson() =
+        JSONObject().apply {
+            put("username", username)
+            put("achievementId", achievementId)
+            put("rawRomMd5", rawRomMd5)
+            put("raGameId", raGameId)
+            put("hardcore", hardcore)
+            put("unlockTimeMillis", unlockTimeMillis)
+            put("localLibraryGameId", localLibraryGameId)
+            put("gameTitle", gameTitle)
+            put("attemptCount", attemptCount)
+            put("lastError", lastError)
+            put("state", state.name)
+        }
 
-    private fun JSONObject.fromJson() = PendingUnlock(
-        username = optString("username"),
-        achievementId = optLong("achievementId"),
-        rawRomMd5 = optString("rawRomMd5"),
-        raGameId = optInt("raGameId"),
-        hardcore = optBoolean("hardcore"),
-        unlockTimeMillis = optLong("unlockTimeMillis"),
-        localLibraryGameId = optInt("localLibraryGameId"),
-        gameTitle = optString("gameTitle"),
-        attemptCount = optInt("attemptCount"),
-        lastError = optString("lastError"),
-        state = runCatching { State.valueOf(optString("state", State.PENDING.name)) }.getOrDefault(State.PENDING),
-    )
+    private fun JSONObject.fromJson() =
+        PendingUnlock(
+            username = optString("username"),
+            achievementId = optLong("achievementId"),
+            rawRomMd5 = optString("rawRomMd5"),
+            raGameId = optInt("raGameId"),
+            hardcore = optBoolean("hardcore"),
+            unlockTimeMillis = optLong("unlockTimeMillis"),
+            localLibraryGameId = optInt("localLibraryGameId"),
+            gameTitle = optString("gameTitle"),
+            attemptCount = optInt("attemptCount"),
+            lastError = optString("lastError"),
+            state = runCatching { State.valueOf(optString("state", State.PENDING.name)) }.getOrDefault(State.PENDING),
+        )
 
     private fun key(): SecretKey {
         val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
         (store.getKey(KEY_ALIAS, null) as? SecretKey)?.let { return it }
         val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
-        generator.init(KeyGenParameterSpec.Builder(KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
-            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-            .build())
+        generator.init(
+            KeyGenParameterSpec
+                .Builder(
+                    KEY_ALIAS,
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
+                ).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .build(),
+        )
         return generator.generateKey()
     }
 
@@ -159,7 +182,9 @@ object RetroAchievementsPendingStore {
         return cipher.doFinal(value.copyOfRange(IV_LENGTH, value.size))
     }
 
-    fun md5(value: String): String = MessageDigest.getInstance("MD5")
-        .digest(value.toByteArray(StandardCharsets.UTF_8))
-        .joinToString("") { "%02x".format(it) }
+    fun md5(value: String): String =
+        MessageDigest
+            .getInstance("MD5")
+            .digest(value.toByteArray(StandardCharsets.UTF_8))
+            .joinToString("") { "%02x".format(it) }
 }

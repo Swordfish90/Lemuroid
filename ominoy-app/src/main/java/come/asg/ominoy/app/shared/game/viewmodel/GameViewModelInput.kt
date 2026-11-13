@@ -8,6 +8,12 @@ import android.view.MotionEvent
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.swordfish.libretrodroid.Controller
+import com.swordfish.libretrodroid.GLRetroView
+import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
+import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
+import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
+import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import come.asg.ominoy.R
 import come.asg.ominoy.app.shared.input.InputDeviceManager
 import come.asg.ominoy.app.shared.input.InputKey
@@ -24,12 +30,6 @@ import come.asg.ominoy.common.kotlin.zipOnKeys
 import come.asg.ominoy.lib.controller.ControllerConfig
 import come.asg.ominoy.lib.library.GameSystem
 import come.asg.ominoy.lib.library.SystemCoreConfig
-import com.swordfish.libretrodroid.Controller
-import com.swordfish.libretrodroid.GLRetroView
-import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
-import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
-import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
-import com.swordfish.touchinput.radial.sensors.TiltConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -58,21 +58,23 @@ class GameViewModelInput(
     private val sideEffects: GameViewModelSideEffects,
     private val scope: CoroutineScope,
 ) : DefaultLifecycleObserver {
-    private data class SingleAxisEvent(val axis: Int, val action: Int, val keyCode: Int, val port: Int)
+    private data class SingleAxisEvent(
+        val axis: Int,
+        val action: Int,
+        val keyCode: Int,
+        val port: Int,
+    )
 
     private val controllerConfigsState = MutableStateFlow<Map<Int, ControllerConfig>>(mapOf())
     private val keyEventsFlow: MutableSharedFlow<KeyEvent?> = MutableSharedFlow()
     private val motionEventsFlow: MutableSharedFlow<MotionEvent> = MutableSharedFlow()
 
-    fun getAllTiltConfigurations(): List<TiltConfiguration> {
-        return controllerConfigsState.value[0]
+    fun getAllTiltConfigurations(): List<TiltConfiguration> =
+        controllerConfigsState.value[0]
             ?.tiltConfigurations
             ?: emptyList()
-    }
 
-    fun getControllerConfigState(): Flow<Map<Int, ControllerConfig>> {
-        return controllerConfigsState
-    }
+    fun getControllerConfigState(): Flow<Map<Int, ControllerConfig>> = controllerConfigsState
 
     private fun sendStickMotions(
         event: MotionEvent,
@@ -172,9 +174,7 @@ class GameViewModelInput(
         event: MotionEvent,
         xAxis: Int,
         yAxis: Int,
-    ): PointF {
-        return PointF(event.getAxisValue(xAxis), event.getAxisValue(yAxis))
-    }
+    ): PointF = PointF(event.getAxisValue(xAxis), event.getAxisValue(yAxis))
 
     fun sendKeyEvent(
         keyCode: Int,
@@ -196,13 +196,12 @@ class GameViewModelInput(
         return true
     }
 
-    fun getEnabledInputDevices(): Flow<List<InputDevice>> {
-        return inputDeviceManager.getEnabledInputsObservable()
-    }
+    fun getEnabledInputDevices(): Flow<List<InputDevice>> = inputDeviceManager.getEnabledInputsObservable()
 
     private fun updateControllers(controllers: Map<Int, ControllerConfig>) {
         retroGameView.retroGameView
-            ?.getControllers()?.toIndexedMap()
+            ?.getControllers()
+            ?.toIndexedMap()
             ?.zipOnKeys(controllers, this::findControllerId)
             ?.filterNotNullValues()
             ?.forEach { (port, controllerId) ->
@@ -214,15 +213,14 @@ class GameViewModelInput(
     private fun findControllerId(
         supported: Array<Controller>,
         controllerConfig: ControllerConfig,
-    ): Int? {
-        return supported
+    ): Int? =
+        supported
             .firstOrNull { controller ->
                 sequenceOf(
                     controller.id == controllerConfig.libretroId,
                     controller.description == controllerConfig.libretroDescriptor,
                 ).any { it }
             }?.id
-    }
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
@@ -260,14 +258,14 @@ class GameViewModelInput(
     }
 
     private suspend fun initializeGamePadShortcutsFlow() {
-        inputDeviceManager.getGameShortcutsObservable()
+        inputDeviceManager
+            .getGameShortcutsObservable()
             .distinctUntilChanged()
             .safeCollect { allShortcuts ->
                 allShortcuts.values
                     .firstNotNullOfOrNull { shortcuts ->
                         shortcuts.firstOrNull { it.type == GameShortcutType.MENU }
-                    }
-                    ?.let {
+                    }?.let {
                         val message =
                             appContext.resources.getString(
                                 R.string.game_toast_settings_button_using_gamepad,
@@ -347,27 +345,29 @@ class GameViewModelInput(
         events
             .mapNotNull { (ports, event) ->
                 ports(event.device)?.let { it to event }
-            }
-            .map { (port, event) ->
-                val axes = event.device.getInputClass().getAxesMap().entries
+            }.map { (port, event) ->
+                val axes =
+                    event.device
+                        .getInputClass()
+                        .getAxesMap()
+                        .entries
 
-                axes.map { (axis, button) ->
-                    val action =
-                        if (event.getAxisValue(axis) > 0.5) {
-                            KeyEvent.ACTION_DOWN
-                        } else {
-                            KeyEvent.ACTION_UP
-                        }
-                    SingleAxisEvent(axis, action, button, port)
-                }.toSet()
-            }
-            .scan(emptySet<SingleAxisEvent>()) { prev, next ->
+                axes
+                    .map { (axis, button) ->
+                        val action =
+                            if (event.getAxisValue(axis) > 0.5) {
+                                KeyEvent.ACTION_DOWN
+                            } else {
+                                KeyEvent.ACTION_UP
+                            }
+                        SingleAxisEvent(axis, action, button, port)
+                    }.toSet()
+            }.scan(emptySet<SingleAxisEvent>()) { prev, next ->
                 next.minus(prev).forEach {
                     retroGameView.retroGameView?.sendKeyEvent(it.action, it.keyCode, it.port)
                 }
                 next
-            }
-            .safeCollect { }
+            }.safeCollect { }
     }
 
     private suspend fun initializeGamePadMotionsFlow() {

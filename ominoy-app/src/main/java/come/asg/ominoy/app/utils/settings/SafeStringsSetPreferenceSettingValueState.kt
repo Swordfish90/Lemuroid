@@ -16,11 +16,10 @@ fun rememberSafePreferenceStringsSetSettingState(
     key: String,
     defaultValue: Set<String>,
     preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current),
-): SafeStringsSetPreferenceSettingValueState {
-    return remember {
+): SafeStringsSetPreferenceSettingValueState =
+    remember {
         SafeStringsSetPreferenceSettingValueState(preferences, key, defaultValue)
     }
-}
 
 class SafeStringsSetPreferenceSettingValueState(
     private val preferences: SharedPreferences,

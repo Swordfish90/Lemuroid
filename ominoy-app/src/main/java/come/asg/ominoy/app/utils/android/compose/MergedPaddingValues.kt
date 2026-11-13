@@ -8,7 +8,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-data class MergedPaddingValues(val paddings: List<PaddingValues>) {
+data class MergedPaddingValues(
+    val paddings: List<PaddingValues>,
+) {
     @Composable
     fun asPaddingValues(): PaddingValues {
         val direction = LocalLayoutDirection.current
@@ -21,20 +23,16 @@ data class MergedPaddingValues(val paddings: List<PaddingValues>) {
         )
     }
 
-    operator fun plus(other: MergedPaddingValues): MergedPaddingValues {
-        return MergedPaddingValues(this.paddings + other.paddings)
-    }
+    operator fun plus(other: MergedPaddingValues): MergedPaddingValues =
+        MergedPaddingValues(this.paddings + other.paddings)
 
-    operator fun plus(other: PaddingValues): MergedPaddingValues {
-        return MergedPaddingValues(this.paddings + listOf(other))
-    }
+    operator fun plus(other: PaddingValues): MergedPaddingValues = MergedPaddingValues(this.paddings + listOf(other))
 
-    private fun List<PaddingValues>.sumBy(paddings: (PaddingValues) -> Dp): Dp {
-        return this.map { paddings(it) }
+    private fun List<PaddingValues>.sumBy(paddings: (PaddingValues) -> Dp): Dp =
+        this
+            .map { paddings(it) }
             .fold(0.dp) { current, value -> current.plus(value) }
-    }
 }
 
-operator fun PaddingValues.plus(other: PaddingValues): MergedPaddingValues {
-    return MergedPaddingValues(listOf(this) + listOf(other))
-}
+operator fun PaddingValues.plus(other: PaddingValues): MergedPaddingValues =
+    MergedPaddingValues(listOf(this) + listOf(other))

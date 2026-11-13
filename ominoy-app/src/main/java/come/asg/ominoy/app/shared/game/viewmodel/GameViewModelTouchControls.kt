@@ -6,11 +6,6 @@ import androidx.compose.ui.unit.Density
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import come.asg.ominoy.app.mobile.feature.settings.SettingsManager
-import come.asg.ominoy.app.shared.settings.HapticFeedbackMode
-import come.asg.ominoy.common.coroutines.launchOnState
-import come.asg.ominoy.common.coroutines.safeCollect
-import come.asg.ominoy.lib.controller.ControllerConfig
 import com.swordfish.libretrodroid.GLRetroView
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LEFT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
@@ -18,6 +13,11 @@ import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
 import com.swordfish.touchinput.radial.settings.TouchControllerID
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import come.asg.ominoy.app.mobile.feature.settings.SettingsManager
+import come.asg.ominoy.app.shared.settings.HapticFeedbackMode
+import come.asg.ominoy.common.coroutines.launchOnState
+import come.asg.ominoy.common.coroutines.safeCollect
+import come.asg.ominoy.lib.controller.ControllerConfig
 import gg.padkit.inputevents.InputEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,21 +67,20 @@ class GameViewModelTouchControls(
     fun getTouchControlsSettings(
         density: Density,
         insets: WindowInsets,
-    ): Flow<TouchControllerSettingsManager.Settings?> {
-        return combine(
+    ): Flow<TouchControllerSettingsManager.Settings?> =
+        combine(
             touchControlId.filterNotNull(),
             screenOrientation.filterNotNull(),
         ) { touchControlId, orientation -> touchControlId to orientation }
             .flatMapLatest { (touchControlId, orientation) ->
                 touchControllerSettingsManager.observeSettings(touchControlId, orientation, density, insets)
             }
-    }
+
     fun getTouchControllerSettingsManager(): TouchControllerSettingsManager = touchControllerSettingsManager
+
     fun getTouchControllerId(): Flow<TouchControllerID?> = touchControlId
 
-    fun getTouchHapticFeedbackMode(): Flow<HapticFeedbackMode> {
-        return hapticFeedbackMode
-    }
+    fun getTouchHapticFeedbackMode(): Flow<HapticFeedbackMode> = hapticFeedbackMode
 
     fun updateTouchControllerSettings(touchControllerSettings: TouchControllerSettingsManager.Settings) {
         val id = touchControlId.value ?: return
@@ -119,17 +118,17 @@ class GameViewModelTouchControls(
         screenOrientation.value = orientation
     }
 
-    fun isTouchControllerVisible(): Flow<Boolean> {
-        return inputs.getEnabledInputDevices()
+    fun isTouchControllerVisible(): Flow<Boolean> =
+        inputs
+            .getEnabledInputDevices()
             .map { it.isEmpty() }
-    }
 
-    fun getTouchControllerConfig(): Flow<ControllerConfig> {
-        return inputs.getControllerConfigState()
+    fun getTouchControllerConfig(): Flow<ControllerConfig> =
+        inputs
+            .getControllerConfigState()
             .map { it[0] }
             .filterNotNull()
             .distinctUntilChanged()
-    }
 
     fun handleVirtualInputEvent(events: List<InputEvent>) {
         val menuEvent = events.firstOrNull { it is InputEvent.Button && it.id == KeyEvent.KEYCODE_BUTTON_MODE }
@@ -170,13 +169,9 @@ class GameViewModelTouchControls(
         }
     }
 
-    fun isMenuPressed(): Flow<Boolean> {
-        return menuPressed
-    }
+    fun isMenuPressed(): Flow<Boolean> = menuPressed
 
-    fun isEditControlsShown(): Flow<Boolean> {
-        return showEditControls
-    }
+    fun isEditControlsShown(): Flow<Boolean> = showEditControls
 
     fun showEditControls(show: Boolean) {
         if (show == showEditControls.value) return

@@ -10,30 +10,28 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.runBlocking
 
 @OptIn(DelicateCoroutinesApi::class)
-class ShortcutBindingUpdater(private val inputDeviceManager: InputDeviceManager, intent: Intent) {
+class ShortcutBindingUpdater(
+    private val inputDeviceManager: InputDeviceManager,
+    intent: Intent,
+) {
     val extras = parseExtras(intent)
 
     private var firstKeyCodeInCombo: Int? = null
 
-    fun getTitle(context: Context): String {
-        return context.getString(R.string.shortcut_binding_update_title, extras.shortcutType.displayName())
-    }
+    fun getTitle(context: Context): String =
+        context.getString(R.string.shortcut_binding_update_title, extras.shortcutType.displayName())
 
-    fun getMessage(context: Context): String {
-        return context.getString(R.string.shortcut_binding_update_description, extras.device.name)
-    }
+    fun getMessage(context: Context): String =
+        context.getString(R.string.shortcut_binding_update_description, extras.device.name)
 
-    fun handleKeyEvent(event: KeyEvent): Boolean {
-        return when (event.action) {
+    fun handleKeyEvent(event: KeyEvent): Boolean =
+        when (event.action) {
             KeyEvent.ACTION_DOWN -> onKeyDown(event)
             KeyEvent.ACTION_UP -> onKeyUp(event)
             else -> false
         }
-    }
 
-    private fun onKeyDown(event: KeyEvent): Boolean {
-        return isTargetedDevice(event.device)
-    }
+    private fun onKeyDown(event: KeyEvent): Boolean = isTargetedDevice(event.device)
 
     private fun onKeyUp(event: KeyEvent): Boolean {
         if (!isTargetedDevice(event.device)) return false
@@ -52,9 +50,7 @@ class ShortcutBindingUpdater(private val inputDeviceManager: InputDeviceManager,
         }
     }
 
-    private fun isTargetedDevice(device: InputDevice?): Boolean {
-        return device != null && extras.device.name == device.name
-    }
+    private fun isTargetedDevice(device: InputDevice?): Boolean = device != null && extras.device.name == device.name
 
     private fun parseExtras(intent: Intent): IntentExtras {
         val device =
@@ -68,7 +64,10 @@ class ShortcutBindingUpdater(private val inputDeviceManager: InputDeviceManager,
         return IntentExtras(device, GameShortcutType.valueOf(shortcutType))
     }
 
-    data class IntentExtras(val device: InputDevice, val shortcutType: GameShortcutType)
+    data class IntentExtras(
+        val device: InputDevice,
+        val shortcutType: GameShortcutType,
+    )
 
     companion object {
         const val REQUEST_DEVICE = "REQUEST_DEVICE"

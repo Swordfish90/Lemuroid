@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.alorma.compose.settings.storage.memory.rememberMemoryIntSettingState
-import come.asg.ominoy.R
 import come.asg.ominoy.app.utils.android.settings.OminoyCardSettingsGroup
 import come.asg.ominoy.app.utils.android.settings.OminoySettingsList
 import come.asg.ominoy.app.utils.android.settings.OminoySettingsPage

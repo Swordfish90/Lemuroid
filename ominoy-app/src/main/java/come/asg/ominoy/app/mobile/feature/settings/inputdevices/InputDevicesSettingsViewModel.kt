@@ -26,9 +26,8 @@ class InputDevicesSettingsViewModel(
         val appContext: Context,
         val inputDeviceManager: InputDeviceManager,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return InputDevicesSettingsViewModel(appContext, inputDeviceManager) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            InputDevicesSettingsViewModel(appContext, inputDeviceManager) as T
     }
 
     data class DeviceView(
@@ -63,21 +62,20 @@ class InputDevicesSettingsViewModel(
         return combine(devicesViews, bindingsViews, ::State)
     }
 
-    private fun getEnabledDevicesViews(context: Context): Flow<List<DeviceView>> {
-        return inputDeviceManager.getDistinctGamePadsObservable()
+    private fun getEnabledDevicesViews(context: Context): Flow<List<DeviceView>> =
+        inputDeviceManager
+            .getDistinctGamePadsObservable()
             .map { devices -> devices.map { buildDeviceView(context, it) } }
-    }
 
     private fun buildDeviceView(
         context: Context,
         device: InputDevice,
-    ): DeviceView {
-        return DeviceView(
+    ): DeviceView =
+        DeviceView(
             device.name,
             InputDeviceManager.computeEnabledGamePadPreference(device),
             device.getOminoyInputDevice().isEnabledByDefault(context),
         )
-    }
 
     private fun getDevicesBindingViews(): Flow<Map<InputDevice, BindingsView>> {
         val devicesFlow = inputDeviceManager.getEnabledInputsObservable()

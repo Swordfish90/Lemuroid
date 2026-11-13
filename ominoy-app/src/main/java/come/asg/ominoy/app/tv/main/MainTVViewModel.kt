@@ -8,11 +8,13 @@ import come.asg.ominoy.app.shared.library.PendingOperationsMonitor
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 
-class MainTVViewModel(appContext: Context) : ViewModel() {
-    class Factory(private val appContext: Context) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MainTVViewModel(appContext) as T
-        }
+class MainTVViewModel(
+    appContext: Context,
+) : ViewModel() {
+    class Factory(
+        private val appContext: Context,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = MainTVViewModel(appContext) as T
     }
 
     val inProgress =

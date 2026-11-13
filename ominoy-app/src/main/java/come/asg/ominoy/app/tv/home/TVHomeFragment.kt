@@ -110,7 +110,8 @@ class TVHomeFragment : BrowseSupportFragment() {
         val homeViewModel = ViewModelProvider(this, factory)[TVHomeViewModel::class.java]
 
         launchOnState(Lifecycle.State.RESUMED) {
-            homeViewModel.getViewStates()
+            homeViewModel
+                .getViewStates()
                 .collect { update(it) }
         }
     }
@@ -216,8 +217,8 @@ class TVHomeFragment : BrowseSupportFragment() {
     private fun buildSettingsRowItems(
         indexInProgress: Boolean,
         scanInProgress: Boolean,
-    ): List<TVSetting> {
-        return mutableListOf<TVSetting>().apply {
+    ): List<TVSetting> =
+        mutableListOf<TVSetting>().apply {
             if (saveSyncManager.isSupported() && saveSyncManager.isConfigured()) {
                 add(TVSetting(TVSettingType.SAVE_SYNC, !indexInProgress))
             }
@@ -230,7 +231,6 @@ class TVHomeFragment : BrowseSupportFragment() {
             add(TVSetting(TVSettingType.CHOOSE_DIRECTORY, !indexInProgress))
             add(TVSetting(TVSettingType.SETTINGS, !indexInProgress))
         }
-    }
 
     private fun launchFolderPicker() {
         if (TVHelper.isSAFSupported(requireContext())) {
@@ -259,8 +259,8 @@ class TVHomeFragment : BrowseSupportFragment() {
                 override fun areContentsTheSame(
                     oldItem: Any,
                     newItem: Any,
-                ): Boolean {
-                    return when {
+                ): Boolean =
+                    when {
                         (oldItem is Game && newItem is Game) -> {
                             LEANBACK_GAME_DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
                         }
@@ -269,13 +269,12 @@ class TVHomeFragment : BrowseSupportFragment() {
                         }
                         else -> false
                     }
-                }
 
                 override fun areItemsTheSame(
                     oldItem: Any,
                     newItem: Any,
-                ): Boolean {
-                    return when {
+                ): Boolean =
+                    when {
                         (oldItem is Game && newItem is Game) -> {
                             LEANBACK_GAME_DIFF_CALLBACK.areItemsTheSame(oldItem, newItem)
                         }
@@ -284,7 +283,6 @@ class TVHomeFragment : BrowseSupportFragment() {
                         }
                         else -> false
                     }
-                }
             }
 
         val LEANBACK_GAME_DIFF_CALLBACK =
@@ -292,16 +290,12 @@ class TVHomeFragment : BrowseSupportFragment() {
                 override fun areContentsTheSame(
                     oldItem: Game,
                     newItem: Game,
-                ): Boolean {
-                    return oldItem == newItem
-                }
+                ): Boolean = oldItem == newItem
 
                 override fun areItemsTheSame(
                     oldItem: Game,
                     newItem: Game,
-                ): Boolean {
-                    return oldItem.id == newItem.id
-                }
+                ): Boolean = oldItem.id == newItem.id
             }
 
         val LEANBACK_SYSTEM_DIFF_CALLBACK =
@@ -309,16 +303,12 @@ class TVHomeFragment : BrowseSupportFragment() {
                 override fun areContentsTheSame(
                     oldInfo: MetaSystemInfo,
                     newInfo: MetaSystemInfo,
-                ): Boolean {
-                    return oldInfo == newInfo
-                }
+                ): Boolean = oldInfo == newInfo
 
                 override fun areItemsTheSame(
                     oldInfo: MetaSystemInfo,
                     newInfo: MetaSystemInfo,
-                ): Boolean {
-                    return oldInfo.metaSystem.name == newInfo.metaSystem.name
-                }
+                ): Boolean = oldInfo.metaSystem.name == newInfo.metaSystem.name
             }
 
         val LEANBACK_SETTING_DIFF_CALLBACK =
@@ -326,16 +316,12 @@ class TVHomeFragment : BrowseSupportFragment() {
                 override fun areContentsTheSame(
                     oldItem: TVSetting,
                     newItem: TVSetting,
-                ): Boolean {
-                    return oldItem == newItem
-                }
+                ): Boolean = oldItem == newItem
 
                 override fun areItemsTheSame(
                     oldItem: TVSetting,
                     newItem: TVSetting,
-                ): Boolean {
-                    return oldItem.type == newItem.type
-                }
+                ): Boolean = oldItem.type == newItem.type
             }
     }
 

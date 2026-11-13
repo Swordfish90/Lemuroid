@@ -10,7 +10,9 @@ import come.asg.ominoy.lib.bios.BiosManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class BiosPreferences(private val biosManager: BiosManager) {
+class BiosPreferences(
+    private val biosManager: BiosManager,
+) {
     suspend fun refreshBiosPreferences(preferenceScreen: PreferenceScreen) {
         val biosInfo = withContext(Dispatchers.IO) { biosManager.getBiosInfoAsync() }
         val context = preferenceScreen.context

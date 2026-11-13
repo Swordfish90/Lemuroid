@@ -78,8 +78,7 @@ object GameMenuHelper {
                         R.string.game_menu_change_disk_disk,
                         (it + 1).toString(),
                     )
-                }
-                .toTypedArray()
+                }.toTypedArray()
 
         changeDiskPreference?.entryValues =
             (0 until numDisks)
@@ -133,8 +132,8 @@ object GameMenuHelper {
     fun onPreferenceTreeClicked(
         activity: Activity?,
         preference: Preference?,
-    ): Boolean {
-        return when (preference?.key) {
+    ): Boolean =
+        when (preference?.key) {
             "pref_game_save_0" -> handleSaveAction(activity, 0)
             "pref_game_save_1" -> handleSaveAction(activity, 1)
             "pref_game_save_2" -> handleSaveAction(activity, 2)
@@ -187,7 +186,6 @@ object GameMenuHelper {
             }
             else -> false
         }
-    }
 
     private fun handleSaveAction(
         activity: Activity?,

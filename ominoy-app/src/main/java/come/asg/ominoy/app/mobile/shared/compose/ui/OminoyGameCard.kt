@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CardDefaults
@@ -17,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.shape.RoundedCornerShape
 import come.asg.ominoy.lib.library.db.entity.Game
 
 @Composable
@@ -45,7 +45,11 @@ fun OminoyGameCard(
                         onClick = onInfoClick,
                         modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
                     ) {
-                        Icon(Icons.Filled.Info, contentDescription = "Game play statistics", tint = MaterialTheme.colorScheme.onSurface)
+                        Icon(
+                            Icons.Filled.Info,
+                            contentDescription = "Game play statistics",
+                            tint = MaterialTheme.colorScheme.onSurface,
+                        )
                     }
                 }
             }

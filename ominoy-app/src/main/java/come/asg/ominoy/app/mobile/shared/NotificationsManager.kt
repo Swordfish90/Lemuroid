@@ -10,10 +10,12 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import come.asg.ominoy.R
-import come.asg.ominoy.app.shared.library.LibraryIndexBroadcastReceiver
 import come.asg.ominoy.app.shared.game.RetroAchievementsSyncCancelReceiver
+import come.asg.ominoy.app.shared.library.LibraryIndexBroadcastReceiver
 
-class NotificationsManager(private val applicationContext: Context) {
+class NotificationsManager(
+    private val applicationContext: Context,
+) {
     fun gameRunningNotification(gameIntent: Intent): Notification {
         createDefaultNotificationChannel()
 
@@ -32,7 +34,8 @@ class NotificationsManager(private val applicationContext: Context) {
         val title = applicationContext.getString(R.string.game_running_notification_title_alternative)
 
         val builder =
-            NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+            NotificationCompat
+                .Builder(applicationContext, DEFAULT_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_ominoy_tiny)
                 .setContentTitle(title)
                 .setContentText(applicationContext.getString(R.string.game_running_notification_message))
@@ -58,7 +61,8 @@ class NotificationsManager(private val applicationContext: Context) {
             )
 
         val builder =
-            NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+            NotificationCompat
+                .Builder(applicationContext, DEFAULT_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_ominoy_tiny)
                 .setContentTitle(applicationContext.getString(R.string.library_index_notification_title))
                 .setContentText(applicationContext.getString(R.string.library_index_notification_message))
@@ -79,7 +83,8 @@ class NotificationsManager(private val applicationContext: Context) {
         createDefaultNotificationChannel()
 
         val builder =
-            NotificationCompat.Builder(applicationContext, DEFAULT_CHANNEL_ID)
+            NotificationCompat
+                .Builder(applicationContext, DEFAULT_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_ominoy_tiny)
                 .setContentTitle(applicationContext.getString(R.string.save_sync_notification_title))
                 .setContentText(applicationContext.getString(R.string.save_sync_notification_message))
@@ -97,19 +102,21 @@ class NotificationsManager(private val applicationContext: Context) {
         artworkTotal: Int = 0,
     ): Notification {
         createRetroAchievementsSyncChannel()
-        val cancelIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            0,
-            Intent(applicationContext, RetroAchievementsSyncCancelReceiver::class.java),
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-        )
+        val cancelIntent =
+            PendingIntent.getBroadcast(
+                applicationContext,
+                0,
+                Intent(applicationContext, RetroAchievementsSyncCancelReceiver::class.java),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
         val gameProgress = if (total > 0) "$completed of $total games" else "Preparing game list…"
         val currentGame = current.takeIf { it.isNotBlank() }?.let { " · $it" }.orEmpty()
         val artworkProgress = if (artworkTotal > 0) " · Artwork $artworkCompleted of $artworkTotal" else ""
         val text = "$gameProgress$currentGame$artworkProgress"
         val progressMax = if (artworkTotal > 0) artworkTotal else total.coerceAtLeast(1)
         val progressValue = if (artworkTotal > 0) artworkCompleted else completed
-        return NotificationCompat.Builder(applicationContext, RETRO_ACHIEVEMENTS_CHANNEL_ID)
+        return NotificationCompat
+            .Builder(applicationContext, RETRO_ACHIEVEMENTS_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_ominoy_tiny)
             .setContentTitle("RetroAchievements sync")
             .setContentText(text)
@@ -120,9 +127,13 @@ class NotificationsManager(private val applicationContext: Context) {
             .build()
     }
 
-    fun retroAchievementsCompleteNotification(synced: Int, skipped: Int): Notification {
+    fun retroAchievementsCompleteNotification(
+        synced: Int,
+        skipped: Int,
+    ): Notification {
         createRetroAchievementsSyncChannel()
-        return NotificationCompat.Builder(applicationContext, RETRO_ACHIEVEMENTS_CHANNEL_ID)
+        return NotificationCompat
+            .Builder(applicationContext, RETRO_ACHIEVEMENTS_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_ominoy_tiny)
             .setContentTitle("RetroAchievements sync complete")
             .setContentText("$synced games synced${if (skipped > 0) ", $skipped not found" else ""}")
@@ -132,7 +143,8 @@ class NotificationsManager(private val applicationContext: Context) {
     }
 
     fun showRetroAchievementsNotification(notification: Notification) {
-        ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+        ContextCompat
+            .getSystemService(applicationContext, NotificationManager::class.java)
             ?.notify(RETRO_ACHIEVEMENTS_NOTIFICATION_ID, notification)
     }
 
@@ -150,17 +162,19 @@ class NotificationsManager(private val applicationContext: Context) {
 
     private fun createRetroAchievementsSyncChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                RETRO_ACHIEVEMENTS_CHANNEL_ID,
-                "RetroAchievements sync",
-                NotificationManager.IMPORTANCE_LOW,
-            ).apply {
-                description = "Silent progress updates while syncing achievement data and artwork"
-                setSound(null, null)
-                enableVibration(false)
-                setShowBadge(false)
-            }
-            ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+            val channel =
+                NotificationChannel(
+                    RETRO_ACHIEVEMENTS_CHANNEL_ID,
+                    "RetroAchievements sync",
+                    NotificationManager.IMPORTANCE_LOW,
+                ).apply {
+                    description = "Silent progress updates while syncing achievement data and artwork"
+                    setSound(null, null)
+                    enableVibration(false)
+                    setShowBadge(false)
+                }
+            ContextCompat
+                .getSystemService(applicationContext, NotificationManager::class.java)
                 ?.createNotificationChannel(channel)
         }
     }

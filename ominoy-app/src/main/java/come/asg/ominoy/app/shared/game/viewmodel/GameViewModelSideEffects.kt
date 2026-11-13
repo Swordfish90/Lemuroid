@@ -9,18 +9,24 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class GameViewModelSideEffects(private val scope: CoroutineScope) {
+class GameViewModelSideEffects(
+    private val scope: CoroutineScope,
+) {
     sealed interface UiEffect {
         data class ShowMenu(
             val currentTiltConfiguration: TiltConfiguration,
             val tiltConfigurations: List<TiltConfiguration>,
         ) : UiEffect
 
-        data class ShowToast(val message: String) : UiEffect
+        data class ShowToast(
+            val message: String,
+        ) : UiEffect
 
         data object SuccessfulFinish : UiEffect
 
-        data class FailureFinish(val message: String) : UiEffect
+        data class FailureFinish(
+            val message: String,
+        ) : UiEffect
 
         data object LoadQuickSave : UiEffect
 
@@ -31,9 +37,7 @@ class GameViewModelSideEffects(private val scope: CoroutineScope) {
 
     private val uiEffects = MutableSharedFlow<UiEffect>()
 
-    fun getUiEffects(): Flow<UiEffect> {
-        return uiEffects
-    }
+    fun getUiEffects(): Flow<UiEffect> = uiEffects
 
     fun showToast(message: String) {
         scope.launch {

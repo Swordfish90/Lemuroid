@@ -126,9 +126,8 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
         displayErrorDialog(R.string.game_loader_error_load_game, R.string.ok) { finish() }
     }
 
-    private fun getLoadingLiveData(): Flow<Boolean> {
-        return PendingOperationsMonitor(applicationContext).anyOperationInProgress()
-    }
+    private fun getLoadingLiveData(): Flow<Boolean> =
+        PendingOperationsMonitor(applicationContext).anyOperationInProgress()
 
     override fun onActivityResult(
         requestCode: Int,

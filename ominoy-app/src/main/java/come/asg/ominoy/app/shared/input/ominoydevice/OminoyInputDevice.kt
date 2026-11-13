@@ -18,11 +18,10 @@ interface OminoyInputDevice {
     fun getSupportedShortcuts(): List<GameShortcutType>
 }
 
-fun InputDevice?.getOminoyInputDevice(): OminoyInputDevice {
-    return when {
+fun InputDevice?.getOminoyInputDevice(): OminoyInputDevice =
+    when {
         this == null -> OminoyInputDeviceUnknown
         (sources and InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD -> OminoyInputDeviceGamePad(this)
         (sources and InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD -> OminoyInputDeviceKeyboard(this)
         else -> OminoyInputDeviceUnknown
     }
-}

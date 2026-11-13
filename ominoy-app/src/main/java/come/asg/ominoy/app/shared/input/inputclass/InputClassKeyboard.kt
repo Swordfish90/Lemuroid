@@ -5,13 +5,9 @@ import come.asg.ominoy.app.shared.input.InputKey
 import come.asg.ominoy.app.shared.input.inputKeySetOf
 
 object InputClassKeyboard : InputClass {
-    override fun getInputKeys(): Set<InputKey> {
-        return INPUT_KEYS
-    }
+    override fun getInputKeys(): Set<InputKey> = INPUT_KEYS
 
-    override fun getAxesMap(): Map<Int, Int> {
-        return emptyMap()
-    }
+    override fun getAxesMap(): Map<Int, Int> = emptyMap()
 
     private val INPUT_KEYS =
         inputKeySetOf(

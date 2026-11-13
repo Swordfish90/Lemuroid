@@ -1,5 +1,6 @@
 package come.asg.ominoy.app.utils.android.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -36,11 +36,11 @@ fun OminoySettingsPage(
 ) {
     Column(
         modifier =
-                modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .background(Color.Black)
-                    .padding(top = 20.dp, bottom = 144.dp),
+            modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .background(Color.Black)
+                .padding(top = 20.dp, bottom = 144.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         content()

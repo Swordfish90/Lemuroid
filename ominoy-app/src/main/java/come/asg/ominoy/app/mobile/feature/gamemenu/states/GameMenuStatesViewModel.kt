@@ -25,15 +25,14 @@ class GameMenuStatesViewModel(
         private val disableMissingEntries: Boolean,
         private val statesPreviewManager: StatesPreviewManager,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return GameMenuStatesViewModel(
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            GameMenuStatesViewModel(
                 application,
                 gameMenuRequest,
                 statesManager,
                 disableMissingEntries,
                 statesPreviewManager,
             ) as T
-        }
     }
 
     data class StateEntry(
@@ -43,7 +42,9 @@ class GameMenuStatesViewModel(
         val preview: Bitmap?,
     )
 
-    data class State(val entries: List<StateEntry> = emptyList())
+    data class State(
+        val entries: List<StateEntry> = emptyList(),
+    )
 
     val uiStates =
         flow {

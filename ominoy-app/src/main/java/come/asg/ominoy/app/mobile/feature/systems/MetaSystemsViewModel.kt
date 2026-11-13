@@ -10,27 +10,29 @@ import come.asg.ominoy.lib.library.metaSystemID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MetaSystemsViewModel(retrogradeDb: RetrogradeDatabase, appContext: Context) : ViewModel() {
+class MetaSystemsViewModel(
+    retrogradeDb: RetrogradeDatabase,
+    appContext: Context,
+) : ViewModel() {
     class Factory(
         val retrogradeDb: RetrogradeDatabase,
         val appContext: Context,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MetaSystemsViewModel(retrogradeDb, appContext) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            MetaSystemsViewModel(retrogradeDb, appContext) as T
     }
 
     val availableMetaSystems: Flow<List<MetaSystemInfo>> =
-        retrogradeDb.gameDao()
+        retrogradeDb
+            .gameDao()
             .selectSystemsWithCount()
             .map { systemCounts ->
-                systemCounts.asSequence()
+                systemCounts
+                    .asSequence()
                     .filter { (_, count) -> count > 0 }
-                    .mapNotNull {
-                            (systemId, count) ->
+                    .mapNotNull { (systemId, count) ->
                         GameSystem.findByIdOrNull(systemId)?.metaSystemID()?.let { it to count }
-                    }
-                    .groupBy { (metaSystemId, _) -> metaSystemId }
+                    }.groupBy { (metaSystemId, _) -> metaSystemId }
                     .map { (metaSystemId, counts) -> MetaSystemInfo(metaSystemId, counts.sumBy { it.second }) }
                     .sortedBy { it.getName(appContext) }
                     .toList()

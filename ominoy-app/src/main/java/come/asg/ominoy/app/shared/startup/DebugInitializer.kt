@@ -16,14 +16,13 @@ class DebugInitializer : Initializer<Unit> {
 
     private fun enableStrictMode() {
         StrictMode.setThreadPolicy(
-            StrictMode.ThreadPolicy.Builder()
+            StrictMode.ThreadPolicy
+                .Builder()
                 .detectAll()
                 .penaltyLog()
                 .build(),
         )
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return emptyList()
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

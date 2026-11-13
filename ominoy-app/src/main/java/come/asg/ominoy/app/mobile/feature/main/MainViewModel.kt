@@ -12,14 +12,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class MainViewModel(appContext: Context, private val saveSyncManager: SaveSyncManager) : ViewModel() {
+class MainViewModel(
+    appContext: Context,
+    private val saveSyncManager: SaveSyncManager,
+) : ViewModel() {
     class Factory(
         private val appContext: Context,
         private val saveSyncManager: SaveSyncManager,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MainViewModel(appContext, saveSyncManager) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = MainViewModel(appContext, saveSyncManager) as T
     }
 
     data class UiState(

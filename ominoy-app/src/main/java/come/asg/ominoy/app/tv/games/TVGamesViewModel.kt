@@ -15,11 +15,13 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-class TVGamesViewModel(retrogradeDb: RetrogradeDatabase) : ViewModel() {
-    class Factory(val retrogradeDb: RetrogradeDatabase) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return TVGamesViewModel(retrogradeDb) as T
-        }
+class TVGamesViewModel(
+    retrogradeDb: RetrogradeDatabase,
+) : ViewModel() {
+    class Factory(
+        val retrogradeDb: RetrogradeDatabase,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = TVGamesViewModel(retrogradeDb) as T
     }
 
     val metaSystemId = MutableStateFlow<MetaSystemID?>(null)

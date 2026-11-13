@@ -15,10 +15,10 @@ import com.swordfish.libretrodroid.VirtualFile
 import come.asg.ominoy.BuildConfig
 import come.asg.ominoy.R
 import come.asg.ominoy.app.mobile.feature.settings.SettingsManager
-import come.asg.ominoy.app.shared.game.ShaderChooser
 import come.asg.ominoy.app.shared.game.RetroAchievementsGameState
 import come.asg.ominoy.app.shared.game.RetroAchievementsPendingUploadWork
 import come.asg.ominoy.app.shared.game.RetroAchievementsSession
+import come.asg.ominoy.app.shared.game.ShaderChooser
 import come.asg.ominoy.app.shared.rumble.RumbleManager
 import come.asg.ominoy.app.shared.settings.HDModeQuality
 import come.asg.ominoy.common.coroutines.MutableStateProperty
@@ -69,7 +69,9 @@ class GameViewModelRetroGameView(
     sealed interface GameState {
         data object Uninitialized : GameState
 
-        data class Loading(val message: String) : GameState
+        data class Loading(
+            val message: String,
+        ) : GameState
 
         data class Loaded(
             val gameData: GameLoader.GameData,
@@ -84,9 +86,7 @@ class GameViewModelRetroGameView(
     private val retroGameViewFlow = MutableStateFlow<GLRetroView?>(null)
     var retroGameView: GLRetroView? by MutableStateProperty(retroGameViewFlow)
 
-    fun getGameState(): Flow<GameState> {
-        return gameState.debounce(200)
-    }
+    fun getGameState(): Flow<GameState> = gameState.debounce(200)
 
     suspend fun initialize(
         applicationContext: Context,
@@ -135,8 +135,7 @@ class GameViewModelRetroGameView(
                         ""
                     }
                 sideEffects.requestFailureFinish(message)
-            }
-            .debounce(200)
+            }.debounce(200)
             .collect { loadingState ->
                 gameState.value =
                     if (loadingState is GameLoader.LoadingState.Ready) {
@@ -194,7 +193,8 @@ class GameViewModelRetroGameView(
             if (raConsoleId != 0) {
                 scope.launch {
                     runCatching {
-                        result.getGLRetroEvents()
+                        result
+                            .getGLRetroEvents()
                             .filterIsInstance<GLRetroView.GLRetroEvents.FrameRendered>()
                             .first()
                         val diagnostic = "RA_MEMORY_SPIKE ${result.getRaMemoryDiagnostics()}"
@@ -207,8 +207,11 @@ class GameViewModelRetroGameView(
         }
 
         retroGameViewFlow.value = result
-        val romPath = (currentState.gameData.gameFiles as? RomFiles.Standard)
-            ?.files?.firstOrNull()?.absolutePath
+        val romPath =
+            (currentState.gameData.gameFiles as? RomFiles.Standard)
+                ?.files
+                ?.firstOrNull()
+                ?.absolutePath
         retroAchievementsSession.start(
             appContext,
             currentState.retroViewData.retroAchievementsConsoleId,
@@ -232,7 +235,8 @@ class GameViewModelRetroGameView(
 
     suspend inline fun <reified T> waitGLEvent() {
         val retroView = retroGameViewFlow()
-        retroView.getGLRetroEvents()
+        retroView
+            .getGLRetroEvents()
             .filterIsInstance<T>()
             .first()
     }
@@ -249,8 +253,8 @@ class GameViewModelRetroGameView(
         requestRumble: Boolean,
         requestMicrophone: Boolean,
         enableImmersiveMode: Boolean,
-    ): GLRetroViewData {
-        return GLRetroViewData(appContext).apply {
+    ): GLRetroViewData =
+        GLRetroViewData(appContext).apply {
             coreFilePath = gameData.coreLibrary
             retroAchievementsConsoleId =
                 when (system.id) {
@@ -294,18 +298,16 @@ class GameViewModelRetroGameView(
             enableMicrophone = requestMicrophone
             immersiveMode = buildImmersiveModeConfiguration(enableImmersiveMode)
         }
-    }
 
-    private fun buildImmersiveModeConfiguration(enableImmersiveMode: Boolean): ImmersiveMode? {
-        return if (enableImmersiveMode) {
+    private fun buildImmersiveModeConfiguration(enableImmersiveMode: Boolean): ImmersiveMode? =
+        if (enableImmersiveMode) {
             ImmersiveMode(blendFactor = 0.05f)
         } else {
             null
         }
-    }
 
-    private fun getLoadingMessage(loadingState: GameLoader.LoadingState): String {
-        return when (loadingState) {
+    private fun getLoadingMessage(loadingState: GameLoader.LoadingState): String =
+        when (loadingState) {
             is GameLoader.LoadingState.LoadingCore -> {
                 appContext.getString(come.asg.ominoy.ext.R.string.game_loading_download_core)
             }
@@ -316,7 +318,6 @@ class GameViewModelRetroGameView(
 
             else -> ""
         }
-    }
 
     private fun printRetroVariables(retroGameView: GLRetroView) {
         scope.launch {
@@ -367,14 +368,16 @@ class GameViewModelRetroGameView(
     }
 
     private suspend fun initializeRetroGameViewErrorsFlow() {
-        retroGameViewFlow().getGLRetroErrors()
+        retroGameViewFlow()
+            .getGLRetroErrors()
             .catch { Timber.e(it, "Exception in GLRetroErrors. Ironic.") }
             .collect { handleRetroViewError(it) }
     }
 
     private fun updateCoreVariables(options: List<CoreVariable>) {
         val updatedVariables =
-            options.map { Variable(it.key, it.value) }
+            options
+                .map { Variable(it.key, it.value) }
                 .toTypedArray()
 
         updatedVariables.forEach {

@@ -39,7 +39,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -80,9 +79,11 @@ fun WebApiKeyDialog(
                 border = BorderStroke(1.dp, RaColors.Line),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(22.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .padding(22.dp),
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
                     Row(
@@ -91,8 +92,13 @@ fun WebApiKeyDialog(
                         horizontalArrangement = Arrangement.spacedBy(14.dp),
                     ) {
                         Box(
-                            modifier = Modifier.size(46.dp).clip(CircleShape)
-                                .background(if (hasSavedKey) RaColors.Mint.copy(alpha = 0.15f) else RaColors.CardVariant),
+                            modifier =
+                                Modifier
+                                    .size(46.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (hasSavedKey) RaColors.Mint.copy(alpha = 0.15f) else RaColors.CardVariant,
+                                    ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
@@ -112,9 +118,15 @@ fun WebApiKeyDialog(
                     }
 
                     if (hasSavedKey) {
-                        Text("API key is secured", color = RaColors.Mint, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         Text(
-                            "Your key is verified before it is saved, stored encrypted on this device, and never shown again after saving.",
+                            "API key is secured",
+                            color = RaColors.Mint,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Text(
+                            "Your key is verified before it is saved, stored encrypted on this device, " +
+                                "and never shown again after saving.",
                             color = RaColors.Muted,
                             fontSize = 13.sp,
                         )
@@ -133,7 +145,8 @@ fun WebApiKeyDialog(
                     } else {
                         Text("Connect your account with a Web API key.", color = RaColors.Muted, fontSize = 13.sp)
                         Text(
-                            "Your key is verified before it is saved, stored encrypted on this device, and never shown again after saving.",
+                            "Your key is verified before it is saved, stored encrypted on this device, " +
+                                "and never shown again after saving.",
                             color = RaColors.Muted,
                             fontSize = 13.sp,
                         )
@@ -145,12 +158,22 @@ fun WebApiKeyDialog(
                             placeholder = { Text("Paste your key") },
                             singleLine = true,
                             isError = !errorMessage.isNullOrBlank(),
-                            visualTransformation = if (isKeyVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                            visualTransformation =
+                                if (isKeyVisible) {
+                                    VisualTransformation.None
+                                } else {
+                                    PasswordVisualTransformation()
+                                },
                             trailingIcon = {
                                 IconButton(onClick = onToggleKeyVisibility) {
                                     Icon(
                                         if (isKeyVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                        contentDescription = if (isKeyVisible) "Hide Web API key" else "Show Web API key",
+                                        contentDescription =
+                                            if (isKeyVisible) {
+                                                "Hide Web API key"
+                                            } else {
+                                                "Show Web API key"
+                                            },
                                     )
                                 }
                             },
@@ -172,10 +195,18 @@ fun WebApiKeyDialog(
                             enabled = apiKey.isNotBlank() && !isVerifying,
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(99.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = RaColors.Mint, contentColor = RaColors.OnMint),
+                            colors =
+                                ButtonDefaults.buttonColors(
+                                    containerColor = RaColors.Mint,
+                                    contentColor = RaColors.OnMint,
+                                ),
                         ) {
                             if (isVerifying) {
-                                CircularProgressIndicator(modifier = Modifier.size(18.dp), color = RaColors.OnMint, strokeWidth = 2.dp)
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(18.dp),
+                                    color = RaColors.OnMint,
+                                    strokeWidth = 2.dp,
+                                )
                                 Spacer(Modifier.width(10.dp))
                             }
                             Text(if (isVerifying) "Verifying…" else "Save & verify")
