@@ -90,11 +90,11 @@ import com.swordfish.touchinput.radial.settings.LocalTouchControlEditor
 import com.swordfish.touchinput.radial.settings.LocalTouchControllerSettings
 import com.swordfish.touchinput.radial.settings.TouchControlEditorState
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.Companion.MAX_CONTROL_SCALE
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.Companion.MAX_SENSITIVITY
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.Companion.MIN_CONTROL_SCALE
+import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.Companion.MIN_SENSITIVITY
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.ControlSettings
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.MAX_CONTROL_SCALE
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.MAX_SENSITIVITY
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.MIN_CONTROL_SCALE
-import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager.MIN_SENSITIVITY
 import com.swordfish.touchinput.radial.settings.applyStickSensitivity
 import com.swordfish.touchinput.radial.ui.GlassSurface
 import com.swordfish.touchinput.radial.ui.OminoyButtonPressFeedback
