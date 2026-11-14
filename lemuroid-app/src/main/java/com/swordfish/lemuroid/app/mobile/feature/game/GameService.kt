@@ -28,8 +28,7 @@ class GameService : DaggerService() {
             awaitTermination()
             withContext(Dispatchers.Main) {
                 ServiceCompat.stopForeground(this@GameService, ServiceCompat.STOP_FOREGROUND_REMOVE)
-                stopSelf()
-                exitProcess(0)
+                stopServiceAndExitProcess(this@GameService)
             }
         }
     }
@@ -85,6 +84,14 @@ class GameService : DaggerService() {
                     putExtra(EXTRA_GAME_ACTIVITY_INTENT, gameActivityIntent)
                 },
             )
+        }
+
+        fun stopServiceAndExitProcess(context: Context, exitCode: Int = 0): Nothing {
+            try {
+                context.stopService(Intent(context, GameService::class.java))
+            } finally {
+                exitProcess(exitCode)
+            }
         }
 
         fun schedule(task: suspend () -> Unit) {

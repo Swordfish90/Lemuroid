@@ -159,8 +159,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
     }
 
     private fun setUpExceptionsHandler() {
-        Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
-            performUnexpectedErrorFinish(exception)
+        val appContext = applicationContext
+        Thread.setDefaultUncaughtExceptionHandler { _, exception ->
+            Timber.e(exception, "Handling java exception in BaseGameActivity")
+            GameService.stopServiceAndExitProcess(appContext, exitCode = 1)
         }
     }
 
@@ -305,17 +307,6 @@ abstract class BaseGameActivity : ImmersiveActivity() {
             }
 
         setResult(RESULT_OK, resultIntent)
-        finishAndExitProcess()
-    }
-
-    private fun performUnexpectedErrorFinish(exception: Throwable) {
-        Timber.e(exception, "Handling java exception in BaseGameActivity")
-        val resultIntent =
-            Intent().apply {
-                putExtra(PLAY_GAME_RESULT_ERROR, exception.message)
-            }
-
-        setResult(RESULT_UNEXPECTED_ERROR, resultIntent)
         finishAndExitProcess()
     }
 
