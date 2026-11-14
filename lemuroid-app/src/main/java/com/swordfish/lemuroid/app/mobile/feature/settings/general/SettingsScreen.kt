@@ -14,7 +14,7 @@ import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.main.MainRoute
 import com.swordfish.lemuroid.app.mobile.feature.main.navigateToRoute
 import com.swordfish.lemuroid.app.shared.library.LibraryIndexScheduler
-import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSegmentedSettingsGroup
+import com.swordfish.lemuroid.app.utils.android.settings.LemuroidCardSettingsGroup
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsPage
@@ -69,8 +69,7 @@ private fun MiscSettings(
     isSaveSyncSupported: Boolean,
     navController: NavController,
 ) {
-    LemuroidSegmentedSettingsGroup(
-        itemCount = if (isSaveSyncSupported) 4 else 3,
+    LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_misc)) },
     ) {
         if (isSaveSyncSupported) {
@@ -83,7 +82,6 @@ private fun MiscSettings(
             )
         }
         LemuroidSettingsMenuLink(
-            index = if (isSaveSyncSupported) 1 else 0,
             title = { Text(text = stringResource(id = R.string.settings_title_open_cores_selection)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_open_cores_selection))
@@ -91,7 +89,6 @@ private fun MiscSettings(
             onClick = { navController.navigateToRoute(MainRoute.SETTINGS_CORES_SELECTION) },
         )
         LemuroidSettingsMenuLink(
-            index = if (isSaveSyncSupported) 2 else 1,
             title = { Text(text = stringResource(id = R.string.settings_title_display_bios_info)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_display_bios_info))
@@ -100,7 +97,6 @@ private fun MiscSettings(
             onClick = { navController.navigateToRoute(MainRoute.SETTINGS_BIOS) },
         )
         LemuroidSettingsMenuLink(
-            index = if (isSaveSyncSupported) 3 else 2,
             title = { Text(text = stringResource(id = R.string.settings_title_advanced_settings)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_advanced_settings))
@@ -112,8 +108,7 @@ private fun MiscSettings(
 
 @Composable
 private fun InputSettings(navController: NavController) {
-    LemuroidSegmentedSettingsGroup(
-        itemCount = 2,
+    LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_input)) },
     ) {
         LemuroidSettingsList(
@@ -129,7 +124,6 @@ private fun InputSettings(navController: NavController) {
             items = stringListResource(R.array.pref_key_haptic_feedback_mode_display_names),
         )
         LemuroidSettingsMenuLink(
-            index = 1,
             title = { Text(text = stringResource(id = R.string.settings_title_gamepad_settings)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_gamepad_settings))
@@ -144,8 +138,7 @@ private fun GeneralSettings() {
     val hdMode = booleanPreferenceState(R.string.pref_key_hd_mode, false)
     val immersiveMode = booleanPreferenceState(R.string.pref_key_enable_immersive_mode, false)
 
-    LemuroidSegmentedSettingsGroup(
-        itemCount = 6,
+    LemuroidCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_general)) },
     ) {
         LemuroidSettingsSwitch(
@@ -154,19 +147,16 @@ private fun GeneralSettings() {
             subtitle = { Text(text = stringResource(id = R.string.settings_description_enable_autosave)) },
         )
         LemuroidSettingsSwitch(
-            index = 1,
             state = immersiveMode,
             title = { Text(text = stringResource(id = R.string.settings_title_immersive_mode)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_immersive_mode)) },
         )
         LemuroidSettingsSwitch(
-            index = 2,
             state = hdMode,
             title = { Text(text = stringResource(id = R.string.settings_title_hd_mode)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_hd_mode)) },
         )
         LemuroidSettingsSlider(
-            index = 3,
             enabled = hdMode.value,
             state =
                 intPreferenceState(
@@ -179,7 +169,6 @@ private fun GeneralSettings() {
             subtitle = { Text(text = stringResource(id = R.string.settings_description_hd_quality)) },
         )
         LemuroidSettingsList(
-            index = 4,
             enabled = !hdMode.value,
             state =
                 indexPreferenceState(
@@ -191,7 +180,6 @@ private fun GeneralSettings() {
             items = stringListResource(R.array.pref_key_shader_filter_display_names),
         )
         LemuroidSettingsList(
-            index = 5,
             state =
                 indexPreferenceState(
                     R.string.pref_key_viewport_alignment,
@@ -223,7 +211,7 @@ private fun RomsSettings(
             }.getOrNull() ?: emptyDirectory
         }
 
-    LemuroidSegmentedSettingsGroup(itemCount = 2, title = { Text(text = stringResource(id = R.string.roms)) }) {
+    LemuroidCardSettingsGroup(title = { Text(text = stringResource(id = R.string.roms)) }) {
         LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.directory)) },
             subtitle = { Text(text = currentDirectoryName) },
@@ -232,13 +220,11 @@ private fun RomsSettings(
         )
         if (scanInProgress) {
             LemuroidSettingsMenuLink(
-                index = 1,
                 title = { Text(text = stringResource(id = R.string.stop)) },
                 onClick = { LibraryIndexScheduler.cancelLibrarySync(context) },
             )
         } else {
             LemuroidSettingsMenuLink(
-                index = 1,
                 title = { Text(text = stringResource(id = R.string.rescan)) },
                 onClick = { LibraryIndexScheduler.scheduleLibrarySync(context) },
                 enabled = !indexingInProgress,
