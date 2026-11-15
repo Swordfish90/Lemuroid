@@ -286,9 +286,15 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                             (viewPos.right - fullPos.left) / fullPos.width,
                             (viewPos.bottom - fullPos.top) / fullPos.height,
                         )
-                    }
+                }
                 gameView.viewport = viewport
             }
+
+            val isVisible =
+                touchControllerSettings != null &&
+                    currentControllerConfig != null &&
+                    touchControlsVisibleState.value &&
+                    !editControls.value
 
             ConstraintLayout(
                 modifier = Modifier.fillMaxSize(),
@@ -296,6 +302,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                     GameScreenLayout.buildConstraintSet(
                         isLandscape,
                         currentControllerConfig?.allowTouchOverlay ?: true,
+                        isVisible,
                     ),
             ) {
                 Box(
@@ -305,12 +312,6 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                             .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top))
                             .onGloballyPositioned { viewportPosition.value = it.boundsInRoot() },
                 )
-
-                val isVisible =
-                    touchControllerSettings != null &&
-                        currentControllerConfig != null &&
-                        touchControlsVisibleState.value &&
-                        !editControls.value
 
                 if (isVisible) {
                     CompositionLocalProvider(

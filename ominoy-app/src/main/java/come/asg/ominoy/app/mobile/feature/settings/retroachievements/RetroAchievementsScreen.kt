@@ -1042,8 +1042,9 @@ fun RetroAchievementsScreen(
             selectedGameId = null
         }
     }
+    val libraryTitleMatcher = remember(libraryGames) { RetroAchievementsLibraryTitleMatcher(libraryGames) }
     val games =
-        remember(cachedAchievements, stats, libraryGames) {
+        remember(cachedAchievements, stats, libraryTitleMatcher) {
             val ownedIds = libraryGames.mapTo(mutableSetOf()) { it.id }
             val byCache = cachedAchievements.filter { it.raGameId > 0 }.groupBy { it.raGameId }
             // Keep the profile responsive even for unusually large accounts. The full
@@ -1082,7 +1083,7 @@ fun RetroAchievementsScreen(
                             .orEmpty()
                     val installed =
                         items.any { it.localLibraryGameId in ownedIds } ||
-                            libraryGames.any { it.matchesRetroAchievementsTitle(title) }
+                            libraryTitleMatcher.matches(title)
                     CachedGameAchievements(
                         gameId = id,
                         title = title,
@@ -2021,23 +2022,36 @@ private fun shortSystem(system: String): String =
         else -> system.ifBlank { "—" }
     }
 
-private fun Game.matchesRetroAchievementsTitle(raTitle: String): Boolean {
-    val localVariants =
-        listOf(title, displayName(), fileName.substringBeforeLast('.', fileName))
-            .map(::normalizeGameTitle)
+private class RetroAchievementsLibraryTitleMatcher(games: List<Game>) {
+    private data class NormalizedTitle(
+        val text: String,
+        val tokens: Set<String>,
+    )
+
+    private val localTitles =
+        games
+            .flatMap { game ->
+                listOf(game.title, game.displayName(), game.fileName.substringBeforeLast('.', game.fileName))
+            }.map(::normalizeGameTitle)
             .filter { it.length >= 4 }
-    val ra = normalizeGameTitle(raTitle)
-    if (ra.length < 4) return false
-    return localVariants.any { local ->
-        local == ra ||
-            (minOf(local.length, ra.length) >= 7 && (local.contains(ra) || ra.contains(local))) ||
-            run {
-                val localTokens = local.split(' ').filter { it.length > 2 }.toSet()
-                val raTokens = ra.split(' ').filter { it.length > 2 }.toSet()
-                val common = localTokens.intersect(raTokens).size
-                val smaller = minOf(localTokens.size, raTokens.size)
-                smaller > 0 && common.toFloat() / smaller >= 0.75f
+            .distinct()
+            .map { text ->
+                NormalizedTitle(text, text.split(' ').filter { it.length > 2 }.toSet())
             }
+
+    fun matches(raTitle: String): Boolean {
+        val ra = normalizeGameTitle(raTitle)
+        if (ra.length < 4) return false
+        val raTokens = ra.split(' ').filter { it.length > 2 }.toSet()
+        return localTitles.any { local ->
+            local.text == ra ||
+                (minOf(local.text.length, ra.length) >= 7 && (local.text.contains(ra) || ra.contains(local.text))) ||
+                run {
+                    val common = local.tokens.count(raTokens::contains)
+                    val smaller = minOf(local.tokens.size, raTokens.size)
+                    smaller > 0 && common.toFloat() / smaller >= 0.75f
+                }
+        }
     }
 }
 

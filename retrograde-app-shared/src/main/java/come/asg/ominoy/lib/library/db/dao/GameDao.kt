@@ -39,6 +39,9 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE fileUri = :fileUri")
     fun selectByFileUri(fileUri: String): Game?
 
+    @Query("SELECT * FROM games WHERE fileUri IN (:fileUris)")
+    fun selectByFileUris(fileUris: List<String>): List<Game>
+
     @Query("SELECT * FROM games WHERE lastIndexedAt < :lastIndexedAt")
     fun selectByLastIndexedAtLessThan(lastIndexedAt: Long): List<Game>
 

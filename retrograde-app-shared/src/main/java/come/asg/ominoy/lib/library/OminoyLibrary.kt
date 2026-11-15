@@ -98,7 +98,7 @@ class OminoyLibrary(
         startedAtMs: Long,
         gameMetadata: GameMetadataProvider,
     ) = flow<Unit> {
-        val entries = batch.map { fetchEntriesFromDatabase(it) }
+        val entries = fetchEntriesFromDatabase(batch)
 
         val existingEntries = entries.filterIsInstance<ScanEntry.GameFile>()
         handleExistingEntries(existingEntries, startedAtMs)
@@ -111,10 +111,17 @@ class OminoyLibrary(
         handleNewEntries(newEntries, startedAtMs, provider)
     }
 
-    private fun fetchEntriesFromDatabase(storageFile: GroupedStorageFiles): ScanEntry {
-        Timber.d("Retrieving scan entry for uri: ${storageFile.primaryFile}")
-        val game = retrogradedb.gameDao().selectByFileUri(storageFile.primaryFile.uri.toString())
-        return buildScanEntry(storageFile, game)
+    private fun fetchEntriesFromDatabase(storageFiles: List<GroupedStorageFiles>): List<ScanEntry> {
+        if (storageFiles.isEmpty()) return emptyList()
+        Timber.d("Retrieving scan entries for ${storageFiles.size} ROMs")
+        val gamesByUri =
+            retrogradedb
+                .gameDao()
+                .selectByFileUris(storageFiles.map { it.primaryFile.uri.toString() })
+                .associateBy(Game::fileUri)
+        return storageFiles.map { storageFile ->
+            buildScanEntry(storageFile, gamesByUri[storageFile.primaryFile.uri.toString()])
+        }
     }
 
     private fun buildScanEntry(
