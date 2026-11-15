@@ -330,7 +330,12 @@ class LemuroidLibrary(
     suspend fun updateGamePresentation(original: Game, draft: Game, pickedImage: Uri?) = withContext(Dispatchers.IO) {
         val cover = pickedImage?.let { customCoverManager.importCover(original.id, it) } ?: draft.coverFrontUrl
         try {
-            retrogradedb.gameDao().updatePresentation(original.id, draft.title.trim(), cover)
+            retrogradedb.gameDao().updatePresentation(
+                gameId = original.id,
+                title = draft.title.trim(),
+                developer = draft.developer?.trim()?.takeIf { it.isNotEmpty() },
+                coverUrl = cover,
+            )
         } catch (exception: Exception) {
             if (pickedImage != null) customCoverManager.deleteCoverUri(cover)
             throw exception

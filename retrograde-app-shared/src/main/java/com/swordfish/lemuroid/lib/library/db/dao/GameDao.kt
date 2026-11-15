@@ -76,8 +76,8 @@ interface GameDao {
     @Delete
     fun delete(games: List<Game>)
 
-    @Query("UPDATE games SET title = :title, coverFrontUrl = :coverUrl WHERE id = :gameId")
-    suspend fun updatePresentation(gameId: Int, title: String, coverUrl: String?)
+    @Query("UPDATE games SET title = :title, developer = :developer, coverFrontUrl = :coverUrl WHERE id = :gameId")
+    suspend fun updatePresentation(gameId: Int, title: String, developer: String?, coverUrl: String?)
 
     @Update
     suspend fun update(game: Game)

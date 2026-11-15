@@ -86,7 +86,7 @@ object CoverUtils {
             .filter { it.isDigit() or it.isUpperCase() or (it == '&') }
             .take(3)
             .joinToString("")
-            .ifBlank { game.title.first().toString() }
+            .ifBlank { game.title.take(1) }
             .capitalize()
     }
 

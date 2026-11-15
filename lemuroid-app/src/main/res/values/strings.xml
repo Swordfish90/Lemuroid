@@ -20,6 +20,10 @@
     <string name="show_all">Show All</string>
     <string name="back">Back</string>
     <string name="close">Close</string>
+    <string name="discard_unsaved_changes_title">Discard unsaved changes?</string>
+    <string name="discard_unsaved_changes_message">You have changes that won’t be saved if you close.</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="discard">Discard</string>
 
     <string name="game_page_search_suggestion">Search games</string>
 
@@ -244,6 +248,7 @@
     <string name="game_context_menu_edit">Edit game</string>
     <string name="game_edit_database">Choose from database</string>
     <string name="game_edit_title">Title</string>
+    <string name="game_edit_developer">Developer</string>
     <string name="game_edit_pick_artwork">Choose image</string>
     <string name="game_edit_restore">Restore defaults</string>
     <string name="game_edit_save">Save</string>
