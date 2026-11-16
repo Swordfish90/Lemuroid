@@ -29,7 +29,7 @@ fun GamesScreen(
     }
 
     LazyColumn(modifier = modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 144.dp)) {
-        items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
+        items(games.itemCount, key = { index -> games[index]?.let { "game:${it.id}" } ?: "placeholder:$index" }) { index ->
             val game = games[index] ?: return@items
 
             OminoyGameListRow(
