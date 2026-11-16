@@ -94,6 +94,11 @@
 
     <string name="settings_title_direct_game_load">Direct game load</string>
     <string name="settings_description_direct_game_load">(Experimental) Reduce loading time and cache usage on supported consoles.</string>
+    <string name="crash_log_export_title">Export latest crash report</string>
+    <string name="crash_log_export_description">Save the latest diagnostic report to share it. The report is stored privately on this device.</string>
+    <string name="crash_log_export_empty">No crash reports have been captured on this device.</string>
+    <string name="crash_log_export_success">Crash report exported</string>
+    <string name="crash_log_export_failed">Could not export crash report</string>
 
     <string name="settings_title_enable_rumble">Rumble</string>
     <string name="settings_description_enable_rumble">Enable rumble in supported games and controllers</string>

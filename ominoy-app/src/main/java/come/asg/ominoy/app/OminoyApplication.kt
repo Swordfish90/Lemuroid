@@ -8,6 +8,7 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.google.android.material.color.DynamicColors
 import come.asg.ominoy.app.shared.covers.CoverUtils
+import come.asg.ominoy.app.shared.diagnostics.CrashLogStore
 import come.asg.ominoy.app.shared.game.RetroAchievementsEarnedStore
 import come.asg.ominoy.app.shared.startup.GameProcessInitializer
 import come.asg.ominoy.app.shared.startup.MainProcessInitializer
@@ -33,6 +34,7 @@ class OminoyApplication :
     @SuppressLint("CheckResult")
     override fun onCreate() {
         super.onCreate()
+        CrashLogStore.install(applicationContext)
 
         val initializeComponent =
             if (isMainProcess()) {
