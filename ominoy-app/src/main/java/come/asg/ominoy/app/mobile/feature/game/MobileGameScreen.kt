@@ -608,6 +608,7 @@ private fun GameScreenRunningCentralMenu(
 internal fun TouchControlEditorPanel(
     selectedControlKey: String?,
     settings: TouchControllerSettingsManager.Settings,
+    panelPositionResetKey: Int = 0,
     onUpdateControl: (String, (ControlSettings) -> ControlSettings) -> Unit,
     onSave: () -> Unit,
     onResetAll: () -> Unit,
@@ -615,6 +616,9 @@ internal fun TouchControlEditorPanel(
 ) {
     var confirmResetAll by remember { mutableStateOf(false) }
     var panelOffset by remember { mutableStateOf(Offset.Zero) }
+    LaunchedEffect(panelPositionResetKey) {
+        panelOffset = Offset.Zero
+    }
     val selectedSettings =
         selectedControlKey?.let { key -> settings.controls[key] ?: ControlSettings() }
     val selectedName =

@@ -112,6 +112,8 @@ private fun TouchLayoutEditorContent(
     var controllerId by rememberSaveable { mutableStateOf(initialControllerId ?: TouchControllerID.GB) }
     var layoutMenuExpanded by remember { mutableStateOf(false) }
     var confirmReset by rememberSaveable { mutableStateOf(false) }
+    var editorPanelVisible by rememberSaveable { mutableStateOf(false) }
+    var panelPositionResetKey by remember { mutableStateOf(0) }
     val orientation =
         if (isLandscape) {
             TouchControllerSettingsManager.Orientation.LANDSCAPE
@@ -156,7 +158,11 @@ private fun TouchLayoutEditorContent(
         TouchControlEditorState(
             isEditing = true,
             selectedControlKey = selectedControlKey,
-            onSelect = { selectedControlKey = it },
+            onSelect = {
+                selectedControlKey = it
+                if (!editorPanelVisible) panelPositionResetKey++
+                editorPanelVisible = true
+            },
             // Dragging is rendered locally by touchControlTransform. Commit only once when the
             // gesture ends so pointer motion never waits on the settings StateFlow.
             onDrag = { _, _, _ -> },
@@ -285,6 +291,28 @@ private fun TouchLayoutEditorContent(
                         contentDescription = stringResource(come.asg.ominoy.R.string.touch_editor_reset_layout),
                     )
                 }
+                TextButton(
+                    modifier = Modifier.height(36.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                    onClick = {
+                        if (editorPanelVisible) {
+                            editorPanelVisible = false
+                        } else {
+                            panelPositionResetKey++
+                            editorPanelVisible = true
+                        }
+                    },
+                ) {
+                    Text(
+                        stringResource(
+                            if (editorPanelVisible) {
+                                come.asg.ominoy.R.string.touch_editor_hide_panel
+                            } else {
+                                come.asg.ominoy.R.string.touch_editor_show_panel
+                            },
+                        ),
+                    )
+                }
                 IconButton(modifier = Modifier.size(40.dp), onClick = { save() }) {
                     Icon(
                         Icons.Filled.Save,
@@ -310,28 +338,27 @@ private fun TouchLayoutEditorContent(
             }
         }
 
-        BackHandler(enabled = selectedControlKey != null) { selectedControlKey = null }
-        if (settings != null && selectedControlKey != null) {
+        BackHandler(enabled = editorPanelVisible) { editorPanelVisible = false }
+        if (settings != null && editorPanelVisible) {
             Box(
                 modifier =
                     Modifier
-                        .align(Alignment.TopCenter)
+                        .align(Alignment.Center)
                         .fillMaxWidth()
                         .widthIn(max = 760.dp)
-                        .windowInsetsPadding(
-                            safeDrawingInsets.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
-                        ).padding(top = 64.dp),
+                        .windowInsetsPadding(safeDrawingInsets.only(WindowInsetsSides.Horizontal)),
             ) {
                 TouchControlEditorPanel(
                     selectedControlKey = selectedControlKey,
                     settings = settings,
+                    panelPositionResetKey = panelPositionResetKey,
                     onUpdateControl = { key, update -> updateControl(key, update) },
                     onSave = { save() },
                     onResetAll = {
                         settingsManager.resetDraftSettings(controllerId, orientation)
                         selectedControlKey = null
                     },
-                    onDone = { selectedControlKey = null },
+                    onDone = { editorPanelVisible = false },
                 )
             }
         }
