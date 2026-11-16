@@ -1,5 +1,8 @@
 package come.asg.ominoy.app.mobile.feature.settings.advanced
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -10,11 +13,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import come.asg.ominoy.R
 import come.asg.ominoy.app.mobile.feature.main.MainRoute
+import come.asg.ominoy.app.shared.diagnostics.CrashLogStore
 import come.asg.ominoy.app.utils.android.settings.OminoyCardSettingsGroup
 import come.asg.ominoy.app.utils.android.settings.OminoySettingsList
 import come.asg.ominoy.app.utils.android.settings.OminoySettingsMenuLink
@@ -86,6 +91,23 @@ private fun GeneralSettings(
     navController: NavController,
 ) {
     val factoryResetDialogState = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val latestCrashReport = remember { CrashLogStore.latestReport(context) }
+    val exportCrashLog = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/plain"),
+    ) { destination ->
+        val exported = runCatching {
+            val report = latestCrashReport ?: error("No crash report available")
+            val output = destination?.let { context.contentResolver.openOutputStream(it) }
+                ?: error("Could not open export destination")
+            report.inputStream().use { input -> output.use { input.copyTo(it) } }
+        }.isSuccess
+        Toast.makeText(
+            context,
+            context.getString(if (exported) R.string.crash_log_export_success else R.string.crash_log_export_failed),
+            Toast.LENGTH_LONG,
+        ).show()
+    }
 
     OminoyCardSettingsGroup(
         title = { Text(text = stringResource(id = R.string.settings_category_general)) },
@@ -109,6 +131,19 @@ private fun GeneralSettings(
             state = booleanPreferenceState(R.string.pref_key_allow_direct_game_load, true),
             title = { Text(text = stringResource(id = R.string.settings_title_direct_game_load)) },
             subtitle = { Text(text = stringResource(id = R.string.settings_description_direct_game_load)) },
+        )
+        OminoySettingsMenuLink(
+            enabled = latestCrashReport != null,
+            title = { Text(text = stringResource(R.string.crash_log_export_title)) },
+            subtitle = {
+                Text(
+                    text = stringResource(
+                        if (latestCrashReport == null) R.string.crash_log_export_empty
+                        else R.string.crash_log_export_description,
+                    ),
+                )
+            },
+            onClick = { exportCrashLog.launch("ominoy-crash-log.txt") },
         )
         OminoySettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_reset_settings)) },

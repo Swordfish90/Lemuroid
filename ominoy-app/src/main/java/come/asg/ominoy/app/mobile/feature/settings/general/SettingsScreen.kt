@@ -1,6 +1,7 @@
 package come.asg.ominoy.app.mobile.feature.settings.general
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -76,10 +77,15 @@ fun SettingsScreen(
     val retroAchievementsAccount by RetroAchievementsAccountBridge.credentials.collectAsState()
     var selectedSection by rememberSaveable { mutableStateOf<String?>(null) }
 
+    BackHandler(enabled = selectedSection != null) {
+        selectedSection = null
+    }
+
     if (selectedSection == null) {
         SettingsOverview(
             modifier = modifier,
             onOpenRetroAchievements = { navController.navigateToRoute(MainRoute.SETTINGS_RETROACHIEVEMENTS) },
+            onOpenAdvanced = { navController.navigateToRoute(MainRoute.SETTINGS_ADVANCED) },
             onOpenSection = { selectedSection = it },
             retroAchievementsUsername = retroAchievementsAccount?.username,
         )
@@ -97,11 +103,6 @@ fun SettingsScreen(
                 "General" -> GeneralSettings(navController = navController)
                 "Display" -> DisplaySettings(navController = navController)
                 "Input" -> InputSettings(navController = navController)
-                "Advanced" ->
-                    MiscSettings(
-                        isSaveSyncSupported = state.isSaveSyncSupported,
-                        navController = navController,
-                    )
             }
         }
     }
@@ -111,6 +112,7 @@ fun SettingsScreen(
 private fun SettingsOverview(
     modifier: Modifier,
     onOpenRetroAchievements: () -> Unit,
+    onOpenAdvanced: () -> Unit,
     onOpenSection: (String) -> Unit,
     retroAchievementsUsername: String?,
 ) {
@@ -147,8 +149,8 @@ private fun SettingsOverview(
                     .fillMaxSize()
                     .verticalScroll(
                         rememberScrollState(),
-                    ).padding(start = 18.dp, end = 18.dp, top = 40.dp, bottom = 144.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ).padding(start = 18.dp, end = 18.dp, top = 28.dp, bottom = 132.dp),
+            verticalArrangement = Arrangement.spacedBy(13.dp),
         ) {
             Column(Modifier.padding(horizontal = 4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
@@ -161,12 +163,12 @@ private fun SettingsOverview(
                 Text(
                     "Settings",
                     color = HomeColors.Text,
-                    fontSize = 34.sp,
-                    lineHeight = 38.sp,
+                    fontSize = 32.sp,
+                    lineHeight = 36.sp,
                     fontWeight = FontWeight.Black,
-                    letterSpacing = (-1.2).sp,
+                    letterSpacing = (-1.1).sp,
                 )
-                Text("Tune your library, controls, and game experience.", color = HomeColors.Muted, fontSize = 14.sp)
+                Text("Tune your library, controls, and game experience.", color = HomeColors.Muted, fontSize = 13.sp)
             }
             SettingsFeatureCard(
                 title = "RetroAchievements",
@@ -176,7 +178,7 @@ private fun SettingsOverview(
                 connected = retroAchievementsUsername != null,
                 onClick = onOpenRetroAchievements,
             )
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
                 SettingsSectionLabel("YOUR SETUP")
                 SettingsCategoryGroup {
                     SettingsCategoryRow("Library", "ROMs, save files and folders") { onOpenSection("Library") }
@@ -188,13 +190,13 @@ private fun SettingsOverview(
                     SettingsCategoryRow("Input", "Touch controls and gamepads") { onOpenSection("Input") }
                 }
             }
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
                 SettingsSectionLabel("MORE")
                 SettingsCategoryGroup {
                     SettingsCategoryRow(
                         "Advanced",
                         "Storage, diagnostics and power-user options",
-                    ) { onOpenSection("Advanced") }
+                    ) { onOpenAdvanced() }
                 }
             }
             Text(
@@ -222,7 +224,7 @@ private fun SettingsFeatureCard(
             .clip(RoundedCornerShape(26.dp))
             .background(Brush.linearGradient(listOf(Color(0xFF2A1F45), Color(0xFF201A2B), Color(0xFF0F3A3D))))
             .clickable(onClick = onClick)
-            .padding(18.dp),
+            .padding(horizontal = 16.dp, vertical = 15.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp),
     ) {
@@ -275,6 +277,7 @@ private fun SettingsCategoryGroup(content: @Composable ColumnScope.() -> Unit) {
         shape = RoundedCornerShape(24.dp),
         color = HomeColors.CardVariant.copy(alpha = .96f),
         border = BorderStroke(1.dp, HomeColors.Line),
+        tonalElevation = 2.dp,
     ) {
         Column(content = content)
     }
@@ -287,15 +290,29 @@ private fun SettingsCategoryRow(
     onClick: () -> Unit,
 ) {
     Row(
-        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 13.dp),
+        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        Box(
+            Modifier
+                .size(width = 4.dp, height = 34.dp)
+                .clip(RoundedCornerShape(99.dp))
+                .background(
+                    when (title) {
+                        "Library" -> HomeColors.Mint
+                        "General" -> Color(0xFFB79CFF)
+                        "Display" -> Color(0xFFFFB86B)
+                        "Input" -> Color(0xFF72C8FF)
+                        else -> Color(0xFFF18BB5)
+                    },
+                ),
+        )
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(title, color = HomeColors.Text, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-            Text(subtitle, color = HomeColors.Muted, fontSize = 11.sp, lineHeight = 14.sp)
+            Text(title, color = HomeColors.Text, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(subtitle, color = HomeColors.Muted, fontSize = 12.sp, lineHeight = 15.sp)
         }
-        Text("›", color = HomeColors.Muted, fontSize = 24.sp)
+        Text("›", color = HomeColors.Text.copy(alpha = .62f), fontSize = 24.sp)
     }
 }
 
@@ -316,51 +333,33 @@ private fun SettingsDetailHeader(
     onBack: () -> Unit,
 ) {
     Row(
-        Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 16.dp),
+        Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(horizontal = 18.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Box(
             Modifier
-                .size(42.dp)
+                .size(40.dp)
                 .clip(CircleShape)
                 .background(HomeColors.SurfaceVariant)
                 .clickable(onClick = onBack),
             contentAlignment = Alignment.Center,
         ) {
-            Text("‹", color = HomeColors.Text, fontSize = 30.sp, lineHeight = 30.sp)
+            Text("←", color = HomeColors.Text, fontSize = 22.sp, lineHeight = 22.sp)
         }
-        Column {
+        Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
             Text(
-                "SETTINGS",
+                "SETTINGS  /  DETAIL",
                 color = HomeColors.Muted,
-                fontSize = 9.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.5.sp,
+                fontSize = 8.sp,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = 1.4.sp,
             )
-            Text(title, color = HomeColors.Text, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+            Text(title, color = HomeColors.Text, fontSize = 25.sp, fontWeight = FontWeight.Black, letterSpacing = (-.4).sp)
         }
-    }
-}
-
-@Composable
-private fun MiscSettings(
-    isSaveSyncSupported: Boolean,
-    navController: NavController,
-) {
-    OminoyCardSettingsGroup(title = { Text(text = stringResource(id = R.string.settings_category_misc)) }) {
-        if (isSaveSyncSupported) {
-            OminoySettingsMenuLink(
-                title = { Text(text = stringResource(id = R.string.settings_title_save_sync)) },
-                subtitle = { Text(text = stringResource(id = R.string.settings_description_save_sync)) },
-                onClick = { navController.navigateToRoute(MainRoute.SETTINGS_SAVE_SYNC) },
-            )
-        }
-        OminoySettingsMenuLink(
-            title = { Text(text = stringResource(id = R.string.settings_title_advanced_settings)) },
-            subtitle = { Text(text = stringResource(id = R.string.settings_description_advanced_settings)) },
-            onClick = { navController.navigateToRoute(MainRoute.SETTINGS_ADVANCED) },
-        )
     }
 }
 

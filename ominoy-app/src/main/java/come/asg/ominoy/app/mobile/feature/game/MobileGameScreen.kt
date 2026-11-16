@@ -286,9 +286,15 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                             (viewPos.right - fullPos.left) / fullPos.width,
                             (viewPos.bottom - fullPos.top) / fullPos.height,
                         )
-                    }
+                }
                 gameView.viewport = viewport
             }
+
+            val isVisible =
+                touchControllerSettings != null &&
+                    currentControllerConfig != null &&
+                    touchControlsVisibleState.value &&
+                    !editControls.value
 
             ConstraintLayout(
                 modifier = Modifier.fillMaxSize(),
@@ -296,6 +302,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                     GameScreenLayout.buildConstraintSet(
                         isLandscape,
                         currentControllerConfig?.allowTouchOverlay ?: true,
+                        isVisible,
                     ),
             ) {
                 Box(
@@ -305,12 +312,6 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                             .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top))
                             .onGloballyPositioned { viewportPosition.value = it.boundsInRoot() },
                 )
-
-                val isVisible =
-                    touchControllerSettings != null &&
-                        currentControllerConfig != null &&
-                        touchControlsVisibleState.value &&
-                        !editControls.value
 
                 if (isVisible) {
                     CompositionLocalProvider(
@@ -607,6 +608,7 @@ private fun GameScreenRunningCentralMenu(
 internal fun TouchControlEditorPanel(
     selectedControlKey: String?,
     settings: TouchControllerSettingsManager.Settings,
+    panelPositionResetKey: Int = 0,
     onUpdateControl: (String, (ControlSettings) -> ControlSettings) -> Unit,
     onSave: () -> Unit,
     onResetAll: () -> Unit,
@@ -614,6 +616,9 @@ internal fun TouchControlEditorPanel(
 ) {
     var confirmResetAll by remember { mutableStateOf(false) }
     var panelOffset by remember { mutableStateOf(Offset.Zero) }
+    LaunchedEffect(panelPositionResetKey) {
+        panelOffset = Offset.Zero
+    }
     val selectedSettings =
         selectedControlKey?.let { key -> settings.controls[key] ?: ControlSettings() }
     val selectedName =

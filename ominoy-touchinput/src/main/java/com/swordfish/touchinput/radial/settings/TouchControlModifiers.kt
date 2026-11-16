@@ -79,12 +79,23 @@ private class ControlFrame {
     fun clamp(
         dx: Float,
         dy: Float,
+        dragStartBounds: Rect = bounds,
     ): Pair<Float, Float> {
         if (root == IntSize.Zero) return dx to dy
-        val minX = if (bounds.left < 0f) 0f else -bounds.left
-        val maxX = if (bounds.right > root.width) 0f else root.width - bounds.right
-        val minY = if (bounds.top < 0f) 0f else -bounds.top
-        val maxY = if (bounds.bottom > root.height) 0f else root.height - bounds.bottom
+        val minX = if (dragStartBounds.left < 0f) 0f else -dragStartBounds.left
+        val maxX =
+            if (dragStartBounds.right > root.width) {
+                0f
+            } else {
+                root.width - dragStartBounds.right
+            }
+        val minY = if (dragStartBounds.top < 0f) 0f else -dragStartBounds.top
+        val maxY =
+            if (dragStartBounds.bottom > root.height) {
+                0f
+            } else {
+                root.height - dragStartBounds.bottom
+            }
         return dx.coerceIn(minX, maxX) to dy.coerceIn(minY, maxY)
     }
 }
@@ -107,6 +118,7 @@ fun Modifier.touchControlTransform(id: Id): Modifier {
     val hidden = !settings.visible && TouchControllerSettingsManager.isHideable(key)
     val frame = remember { ControlFrame() }
     var liveDrag by remember(key) { mutableStateOf(Offset.Zero) }
+    var dragStartBounds by remember(key) { mutableStateOf(Rect.Zero) }
 
     // Order matters: offset first so the touch target moves with the control, pointer input next so
     // drag deltas are in unscaled screen space, then the scale/alpha layer.
@@ -116,7 +128,11 @@ fun Modifier.touchControlTransform(id: Id): Modifier {
             result
                 .pointerInput(key, density) {
                     detectDragGestures(
-                        onDragStart = { onSelect(key) },
+                        onDragStart = {
+                            dragStartBounds = frame.bounds
+                            liveDrag = Offset.Zero
+                            onSelect(key)
+                        },
                         onDragEnd = {
                             onDragEnd(key, liveDrag.x / density, liveDrag.y / density)
                             liveDrag = Offset.Zero
@@ -125,7 +141,12 @@ fun Modifier.touchControlTransform(id: Id): Modifier {
                         onDrag = { change, dragAmount ->
                             change.consume()
                             val accumulated = liveDrag + dragAmount
-                            val (dx, dy) = frame.clamp(accumulated.x, accumulated.y)
+                            val (dx, dy) =
+                                frame.clamp(
+                                    accumulated.x,
+                                    accumulated.y,
+                                    dragStartBounds,
+                                )
                             liveDrag = Offset(dx, dy)
                         },
                     )

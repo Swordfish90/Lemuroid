@@ -182,7 +182,7 @@ fun LibraryScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
-                    items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
+                    items(games.itemCount, key = { index -> games[index]?.let { "game:${it.id}" } ?: "placeholder:$index" }) { index ->
                         val game = games[index] ?: return@items
                         OminoyGameCard(
                             modifier = Modifier.fillMaxWidth(),
@@ -199,7 +199,7 @@ fun LibraryScreen(
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(bottom = 144.dp),
                 ) {
-                    items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
+                    items(games.itemCount, key = { index -> games[index]?.let { "game:${it.id}" } ?: "placeholder:$index" }) { index ->
                         val game = games[index] ?: return@items
                         OminoyGameListRow(
                             game = game,

@@ -36,7 +36,7 @@ fun FavoritesScreen(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
+        items(games.itemCount, key = { index -> games[index]?.let { "game:${it.id}" } ?: "placeholder:$index" }) { index ->
             val game = games[index] ?: return@items
             OminoyGameCard(
                 modifier = Modifier.animateItem(),

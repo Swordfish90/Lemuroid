@@ -22,6 +22,7 @@ import come.asg.ominoy.app.shared.GameMenuContract
 import come.asg.ominoy.app.shared.ImmersiveActivity
 import come.asg.ominoy.app.shared.coreoptions.CoreOption
 import come.asg.ominoy.app.shared.coreoptions.OminoyCoreOption
+import come.asg.ominoy.app.shared.diagnostics.CrashLogStore
 import come.asg.ominoy.app.shared.game.viewmodel.GameViewModelSideEffects
 import come.asg.ominoy.app.shared.input.InputDeviceManager
 import come.asg.ominoy.app.shared.rumble.RumbleManager
@@ -181,6 +182,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
 
     private fun setUpExceptionsHandler() {
         Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
+            CrashLogStore.recordException(applicationContext, thread, exception, "game-process")
             performUnexpectedErrorFinish(exception)
         }
     }
