@@ -25,6 +25,7 @@ import androidx.room.Room
 import com.swordfish.lemuroid.app.mobile.feature.game.GameActivity
 import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameCheatsActivity
 import com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.input.GamePadShortcutBindingActivity
 import com.swordfish.lemuroid.app.mobile.feature.main.MainActivity
@@ -50,8 +51,8 @@ import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerApp
-import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.LemuroidLibrary
+import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.dao.GameSearchDao
 import com.swordfish.lemuroid.lib.library.db.dao.Migrations
@@ -114,6 +115,10 @@ abstract class LemuroidApplicationModule {
 
     @PerActivity
     @ContributesAndroidInjector
+    abstract fun gameCheatsActivity(): GameCheatsActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
     abstract fun storageFrameworkPickerLauncher(): StorageFrameworkPickerLauncher
 
     @PerActivity
@@ -126,7 +131,6 @@ abstract class LemuroidApplicationModule {
 
     @Module
     companion object {
-
         @Provides
         @PerApp
         @JvmStatic
@@ -143,7 +147,12 @@ abstract class LemuroidApplicationModule {
         fun retrogradeDb(app: LemuroidApplication) =
             Room.databaseBuilder(app, RetrogradeDatabase::class.java, RetrogradeDatabase.DB_NAME)
                 .addCallback(GameSearchDao.CALLBACK)
-                .addMigrations(GameSearchDao.MIGRATION, Migrations.VERSION_8_9, Migrations.VERSION_9_10)
+                .addMigrations(
+                    GameSearchDao.MIGRATION,
+                    Migrations.VERSION_8_9,
+                    Migrations.VERSION_9_10,
+                    Migrations.VERSION_10_11,
+                )
                 .fallbackToDestructiveMigration()
                 .build()
 

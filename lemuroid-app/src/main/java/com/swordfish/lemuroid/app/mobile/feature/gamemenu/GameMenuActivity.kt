@@ -42,6 +42,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameMenuCheatsScreen
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameMenuCheatsViewModel
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameMenuEditCheatScreen
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.coreoptions.GameMenuCoreOptionsScreen
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.coreoptions.GameMenuCoreOptionsViewModel
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.states.GameMenuStatesScreen
@@ -53,6 +56,7 @@ import com.swordfish.lemuroid.app.shared.input.InputDeviceManager
 import com.swordfish.lemuroid.common.kotlin.serializable
 import com.swordfish.lemuroid.lib.android.RetrogradeComponentActivity
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
@@ -69,6 +73,9 @@ class GameMenuActivity : RetrogradeComponentActivity() {
 
     @Inject
     lateinit var statesPreviewManager: StatesPreviewManager
+
+    @Inject
+    lateinit var retrogradeDb: RetrogradeDatabase
 
     data class GameMenuRequest(
         val coreOptions: List<LemuroidCoreOption>,
@@ -172,6 +179,13 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                     },
                 )
                 Divider(modifier = Modifier.fillMaxWidth())
+
+                val cheatsViewModel: GameMenuCheatsViewModel =
+                    viewModel(
+                        viewModelStoreOwner = this@GameMenuActivity,
+                        factory = GameMenuCheatsViewModel.Factory(gameMenuRequest, retrogradeDb.cheatDao()),
+                    )
+
                 NavHost(
                     modifier =
                         Modifier
@@ -224,6 +238,33 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                                 factory = GameMenuCoreOptionsViewModel.Factory(inputDeviceManager),
                             ),
                             gameMenuRequest,
+                        )
+                    }
+                    composable(GameMenuRoute.CHEATS) {
+                        GameMenuCheatsScreen(
+                            viewModel = cheatsViewModel,
+                            onAddCheatClicked = {
+                                cheatsViewModel.prepareAddCheat()
+                                navController.navigateToRoute(GameMenuRoute.ADD_CHEAT)
+                            },
+                            onEditCheatClicked = { cheat ->
+                                cheatsViewModel.prepareEditCheat(cheat)
+                                navController.navigateToRoute(GameMenuRoute.EDIT_CHEAT)
+                            },
+                        )
+                    }
+                    composable(GameMenuRoute.ADD_CHEAT) {
+                        GameMenuEditCheatScreen(
+                            viewModel = cheatsViewModel,
+                            systemId = gameMenuRequest.game.systemId,
+                            onSaved = { navController.popBackStack() },
+                        )
+                    }
+                    composable(GameMenuRoute.EDIT_CHEAT) {
+                        GameMenuEditCheatScreen(
+                            viewModel = cheatsViewModel,
+                            systemId = gameMenuRequest.game.systemId,
+                            onSaved = { navController.popBackStack() },
                         )
                     }
                 }

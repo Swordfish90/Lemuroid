@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.cheats.CheatManager
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelInput
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelSaves
@@ -29,6 +30,8 @@ import com.swordfish.lemuroid.lib.core.CoreVariablesManager
 import com.swordfish.lemuroid.lib.game.GameLoader
 import com.swordfish.lemuroid.lib.library.GameSystem
 import com.swordfish.lemuroid.lib.library.SystemCoreConfig
+import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.db.entity.Cheat
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
@@ -46,7 +49,7 @@ import timber.log.Timber
 
 class BaseGameScreenViewModel(
     private val appContext: Context,
-    game: Game,
+    private val game: Game,
     settingsManager: SettingsManager,
     inputDeviceManager: InputDeviceManager,
     controllerConfigsManager: ControllerConfigsManager,
@@ -58,6 +61,7 @@ class BaseGameScreenViewModel(
     statesPreviewManager: StatesPreviewManager,
     coreVariablesManager: CoreVariablesManager,
     rumbleManager: RumbleManager,
+    private val retrogradeDb: RetrogradeDatabase,
 ) : ViewModel(), DefaultLifecycleObserver {
     class Factory(
         private val appContext: Context,
@@ -73,6 +77,7 @@ class BaseGameScreenViewModel(
         private val statesPreviewManager: StatesPreviewManager,
         private val coreVariablesManager: CoreVariablesManager,
         private val rumbleManager: RumbleManager,
+        private val retrogradeDb: RetrogradeDatabase,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return BaseGameScreenViewModel(
@@ -89,6 +94,7 @@ class BaseGameScreenViewModel(
                 statesPreviewManager,
                 coreVariablesManager,
                 rumbleManager,
+                retrogradeDb,
             ) as T
         }
     }
@@ -128,6 +134,26 @@ class BaseGameScreenViewModel(
             sideEffects,
             viewModelScope,
         )
+    private var currentCheats: List<Cheat> = emptyList()
+
+    init {
+        viewModelScope.launch {
+            retrogradeDb.cheatDao().getCheatsForGame(game.id)
+                .collect { cheats ->
+                    currentCheats = cheats
+                    retroGameView.retroGameView?.let { view ->
+                        CheatManager.applyCheats(view, game.systemId, currentCheats)
+                    }
+                }
+        }
+    }
+
+    fun reapplyCheats() {
+        retroGameView.retroGameView?.let { view ->
+            CheatManager.applyCheats(view, game.systemId, currentCheats)
+        }
+    }
+
     private val saves =
         GameViewModelSaves(
             appContext,
@@ -140,6 +166,7 @@ class BaseGameScreenViewModel(
             statesManager,
             statesPreviewManager,
             sideEffects,
+            onSaveStateLoaded = { reapplyCheats() },
         )
 
     val loadingState = MutableStateFlow(false)
@@ -185,6 +212,14 @@ class BaseGameScreenViewModel(
         viewModelScope.launch {
             gameData.quickSaveData?.let {
                 saves.restoreAutoSaveAsync(it)
+            }
+        }
+        viewModelScope.launch {
+            try {
+                retroGameView.waitGLEvent<GLRetroView.GLRetroEvents.FrameRendered>()
+                CheatManager.applyCheats(result, game.systemId, currentCheats)
+            } catch (e: Throwable) {
+                Timber.e(e, "Error applying initial cheats")
             }
         }
         return result
@@ -314,6 +349,11 @@ class BaseGameScreenViewModel(
         owner.lifecycle.addObserver(inputs)
         owner.lifecycle.addObserver(retroGameView)
         owner.lifecycle.addObserver(touchControls)
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        CheatManager.clearCheats(retroGameView.retroGameView)
     }
 
     fun sendKeyEvent(

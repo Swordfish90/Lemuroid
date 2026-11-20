@@ -31,6 +31,7 @@ class GameViewModelSaves(
     private val statesManager: StatesManager,
     private val statesPreviewManager: StatesPreviewManager,
     private val sideEffects: GameViewModelSideEffects,
+    private val onSaveStateLoaded: () -> Unit = {},
 ) {
     private var currentQuickSave: SaveState? = null
 
@@ -155,7 +156,11 @@ class GameViewModelSaves(
             retroGameView.changeDisk(saveState.metadata.diskIndex)
         }
 
-        return retroGameView.unserializeState(saveState.state)
+        val result = retroGameView.unserializeState(saveState.state)
+        if (result) {
+            onSaveStateLoaded()
+        }
+        return result
     }
 
     fun saveQuickSave() {

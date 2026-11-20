@@ -21,6 +21,7 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import com.swordfish.lemuroid.lib.cheats.CheatSupport
 import kotlin.reflect.KFunction1
 
 @Composable
@@ -140,6 +141,19 @@ fun GameMenuHomeScreen(
                 onResult { putExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, true) }
             },
         )
+
+        if (CheatSupport.isSystemSupported(gameMenuRequest.game.systemId)) {
+            LemuroidSettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.game_menu_cheats)) },
+                icon = {
+                    Icon(
+                        painterResource(R.drawable.ic_menu_cheat),
+                        contentDescription = stringResource(id = R.string.game_menu_cheats),
+                    )
+                },
+                onClick = { navController.navigateToRoute(GameMenuRoute.CHEATS) },
+            )
+        }
 
         if (gameMenuRequest.advancedCoreOptions.isNotEmpty() || gameMenuRequest.coreOptions.isNotEmpty()) {
             LemuroidSettingsMenuLink(
