@@ -1,7 +1,6 @@
 package com.swordfish.lemuroid.lib.cheats
 
 object CheatFormatter {
-
     fun splitCodeLines(
         type: CheatType,
         rawCode: String,

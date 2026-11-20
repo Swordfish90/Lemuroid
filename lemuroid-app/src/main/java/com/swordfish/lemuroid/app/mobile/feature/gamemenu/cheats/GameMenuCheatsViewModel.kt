@@ -1,5 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats
 
+import android.content.ContentResolver
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -7,30 +9,183 @@ import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.lib.cheats.CheatType
 import com.swordfish.lemuroid.lib.cheats.CheatValidator
 import com.swordfish.lemuroid.lib.cheats.ValidationResult
+import com.swordfish.lemuroid.lib.cheats.cht.ChtExportManager
+import com.swordfish.lemuroid.lib.cheats.cht.ChtImportManager
+import com.swordfish.lemuroid.lib.cheats.cht.ImportMode
+import com.swordfish.lemuroid.lib.cheats.cht.ImportPreview
+import com.swordfish.lemuroid.lib.cheats.cht.ImportResult
 import com.swordfish.lemuroid.lib.library.db.dao.CheatDao
 import com.swordfish.lemuroid.lib.library.db.entity.Cheat
+import com.swordfish.lemuroid.lib.library.db.entity.Game
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.InputStream
+import java.io.OutputStream
 
 class GameMenuCheatsViewModel(
-    private val gameId: Int,
-    private val systemId: String,
+    val game: Game,
     private val cheatDao: CheatDao,
 ) : ViewModel() {
+    val gameId: Int get() = game.id
+    val systemId: String get() = game.systemId
+
     val cheats: StateFlow<List<Cheat>> =
-        cheatDao.getCheatsForGame(gameId)
+        cheatDao.getCheatsForGame(game.id)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val masterCodes: StateFlow<List<Cheat>> =
-        cheatDao.getMasterCodesForGame(gameId)
+        cheatDao.getMasterCodesForGame(game.id)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _editingCheat = MutableStateFlow<Cheat?>(null)
     val editingCheat: StateFlow<Cheat?> = _editingCheat.asStateFlow()
+
+    private val _importPreview = MutableStateFlow<ImportPreview?>(null)
+    val importPreview: StateFlow<ImportPreview?> = _importPreview.asStateFlow()
+
+    private val _importResult = MutableStateFlow<ImportResult?>(null)
+    val importResult: StateFlow<ImportResult?> = _importResult.asStateFlow()
+
+    private val _exportSuccess = MutableStateFlow<Int?>(null)
+    val exportSuccess: StateFlow<Int?> = _exportSuccess.asStateFlow()
+
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
+    private val _importTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val importTrigger: SharedFlow<Unit> = _importTrigger.asSharedFlow()
+
+    private val _exportTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val exportTrigger: SharedFlow<Unit> = _exportTrigger.asSharedFlow()
+
+    private val _clearAllTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val clearAllTrigger: SharedFlow<Unit> = _clearAllTrigger.asSharedFlow()
+
+    fun triggerImport() {
+        _importTrigger.tryEmit(Unit)
+    }
+
+    fun triggerExport() {
+        _exportTrigger.tryEmit(Unit)
+    }
+
+    fun triggerClearAll() {
+        _clearAllTrigger.tryEmit(Unit)
+    }
+
+    fun clearAllCheats() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                cheatDao.deleteCheatsForGame(game.id)
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to clear cheats: ${e.message}"
+            }
+        }
+    }
+
+    private val importManager = ChtImportManager(cheatDao)
+    private val exportManager = ChtExportManager()
+
+    fun loadChtContentForImport(
+        content: String,
+        fileName: String,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val existing = cheatDao.getCheatsForGameSync(game.id)
+                val preview = importManager.generatePreview(content.byteInputStream(Charsets.UTF_8), fileName, game, existing)
+                if (preview.candidates.isEmpty()) {
+                    _errorMessage.value = "No cheat entries found in this file"
+                } else {
+                    _importPreview.value = preview
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to parse cheat file: ${e.message}"
+            }
+        }
+    }
+
+    fun loadChtForImport(
+        inputStream: InputStream,
+        fileName: String,
+    ) {
+        try {
+            val content = inputStream.bufferedReader(Charsets.UTF_8).readText()
+            loadChtContentForImport(content, fileName)
+        } catch (e: Exception) {
+            _errorMessage.value = "Failed to parse cheat file: ${e.message}"
+        }
+    }
+
+    fun confirmImport(mode: ImportMode) {
+        val preview = _importPreview.value ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = importManager.executeImport(game, preview, mode)
+                _importResult.value = result
+                _importPreview.value = null
+            } catch (e: Exception) {
+                _errorMessage.value = "Import failed: ${e.message}"
+            }
+        }
+    }
+
+    fun dismissImportPreview() {
+        _importPreview.value = null
+    }
+
+    fun dismissImportResult() {
+        _importResult.value = null
+    }
+
+    fun dismissExportSuccess() {
+        _exportSuccess.value = null
+    }
+
+    fun dismissErrorMessage() {
+        _errorMessage.value = null
+    }
+
+    fun exportToUri(
+        uri: Uri,
+        contentResolver: ContentResolver,
+        cheatsToExport: List<Cheat>? = null,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val list = cheatsToExport ?: cheatDao.getCheatsForGameSync(game.id)
+                contentResolver.openOutputStream(uri)?.use { stream ->
+                    exportManager.export(stream, list)
+                } ?: throw java.io.IOException("Could not open destination file")
+                _exportSuccess.value = list.size
+            } catch (e: Exception) {
+                _errorMessage.value = "Export failed: ${e.message}"
+            }
+        }
+    }
+
+    fun exportCheats(
+        outputStream: OutputStream,
+        cheatsToExport: List<Cheat>? = null,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val list = cheatsToExport ?: cheatDao.getCheatsForGameSync(game.id)
+                exportManager.export(outputStream, list)
+                _exportSuccess.value = list.size
+            } catch (e: Exception) {
+                _errorMessage.value = "Export failed: ${e.message}"
+            }
+        }
+    }
 
     fun prepareAddCheat() {
         _editingCheat.value = null
@@ -93,10 +248,10 @@ class GameMenuCheatsViewModel(
                     )
                 } else {
                     Cheat(
-                        gameId = gameId,
+                        gameId = game.id,
                         title = trimmedTitle,
                         description = description?.trim()?.ifEmpty { null },
-                        systemId = systemId,
+                        systemId = game.systemId,
                         cheatType = cheatType.id,
                         code = code.trim(),
                         isMasterCode = isMasterCode,
@@ -117,16 +272,15 @@ class GameMenuCheatsViewModel(
     }
 
     class Factory(
-        private val gameId: Int,
-        private val systemId: String,
+        private val game: Game,
         private val cheatDao: CheatDao,
     ) : ViewModelProvider.Factory {
         constructor(gameMenuRequest: GameMenuActivity.GameMenuRequest, cheatDao: CheatDao) :
-            this(gameMenuRequest.game.id, gameMenuRequest.game.systemId, cheatDao)
+            this(gameMenuRequest.game, cheatDao)
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return GameMenuCheatsViewModel(gameId, systemId, cheatDao) as T
+            return GameMenuCheatsViewModel(game, cheatDao) as T
         }
     }
 }

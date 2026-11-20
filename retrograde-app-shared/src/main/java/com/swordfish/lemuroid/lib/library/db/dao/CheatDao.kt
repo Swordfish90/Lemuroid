@@ -44,6 +44,21 @@ interface CheatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCheat(cheat: Cheat): Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCheats(cheats: List<Cheat>): List<Long>
+
+    @Query("DELETE FROM cheats WHERE gameId = :gameId")
+    suspend fun deleteCheatsForGame(gameId: Int)
+
+    @androidx.room.Transaction
+    suspend fun replaceCheatsForGame(
+        gameId: Int,
+        cheats: List<Cheat>,
+    ) {
+        deleteCheatsForGame(gameId)
+        insertCheats(cheats)
+    }
+
     @Update
     suspend fun updateCheat(cheat: Cheat)
 

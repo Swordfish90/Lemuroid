@@ -159,6 +159,35 @@
     <string name="cheat_badge_requires">Requires: %1$s</string>
     <string name="cheat_error_title_empty">Name cannot be empty</string>
     <string name="cheat_error_invalid">Invalid code</string>
+    <string name="cheat_import">Import Cheats</string>
+    <string name="cheat_export">Export Cheats</string>
+    <string name="cheat_import_cht_file">Import (.cht)</string>
+    <string name="cheat_export_cht_file">Export (.cht)</string>
+    <string name="cheat_import_preview_title">Import Cheats</string>
+    <string name="cheat_import_file_label">File: %1$s</string>
+    <string name="cheat_import_system_label">System: %1$s</string>
+    <string name="cheat_import_summary">%1$d found: %2$d valid, %3$d duplicate, %4$d unsupported</string>
+    <string name="cheat_import_mode_merge">Merge</string>
+    <string name="cheat_import_mode_merge_desc">Add new cheats, keep existing</string>
+    <string name="cheat_import_mode_replace">Replace</string>
+    <string name="cheat_import_mode_replace_desc">Replace all existing cheats</string>
+    <string name="cheat_import_confirm_replace_title">Replace Cheats?</string>
+    <string name="cheat_import_confirm_replace_msg">This will delete all %1$d existing cheats for this game and replace them with the imported cheats.</string>
+    <string name="cheat_import_action">Import</string>
+    <string name="cheat_import_success">Successfully imported %1$d cheat(s)</string>
+    <string name="cheat_export_success">Exported %1$d cheat(s)</string>
+    <string name="cheat_import_error_empty">No cheat entries found in this file</string>
+    <string name="cheat_import_error_failed">Failed to read cheat file: %1$s</string>
+    <string name="cheat_status_valid">Valid</string>
+    <string name="cheat_status_duplicate">Duplicate (Skipped)</string>
+    <string name="cheat_status_unsupported">Unsupported</string>
+    <string name="cheat_status_invalid">Invalid</string>
+    <string name="cheat_disabled">Disabled</string>
+    <string name="cheat_clear_all">Clear all cheats</string>
+    <string name="cheat_clear_all_title">Clear all cheats?</string>
+    <string name="cheat_clear_all_message">Are you sure you want to delete all %1$d cheats for this game? This action cannot be undone.</string>
+    <string name="cheat_clear_all_action">Clear All</string>
+    <string name="cheat_menu_more">More options</string>
 
     <string name="game_loading_preparing_game">Preparing game…</string>
 

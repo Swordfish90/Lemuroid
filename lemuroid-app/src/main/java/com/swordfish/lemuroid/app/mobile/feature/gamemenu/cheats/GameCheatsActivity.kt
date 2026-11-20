@@ -91,7 +91,7 @@ class GameCheatsActivity : RetrogradeComponentActivity() {
             val cheatsViewModel: GameMenuCheatsViewModel =
                 viewModel(
                     viewModelStoreOwner = this@GameCheatsActivity,
-                    factory = GameMenuCheatsViewModel.Factory(game.id, game.systemId, retrogradeDb.cheatDao()),
+                    factory = GameMenuCheatsViewModel.Factory(game, retrogradeDb.cheatDao()),
                 )
 
             val canGoBack = navController.previousBackStackEntry != null
@@ -128,6 +128,11 @@ class GameCheatsActivity : RetrogradeComponentActivity() {
                                     Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = stringResource(R.string.back),
                                 )
+                            }
+                        },
+                        actions = {
+                            if (currentRoute == GameMenuRoute.CHEATS) {
+                                CheatsOverflowMenu(viewModel = cheatsViewModel)
                             }
                         },
                     )

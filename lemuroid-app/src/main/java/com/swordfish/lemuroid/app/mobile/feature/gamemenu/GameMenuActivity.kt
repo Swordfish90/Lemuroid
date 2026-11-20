@@ -42,6 +42,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.swordfish.lemuroid.R
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.CheatsOverflowMenu
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameMenuCheatsScreen
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameMenuCheatsViewModel
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameMenuEditCheatScreen
@@ -154,6 +155,12 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                     ?.let { GameMenuRoute.findByRoute(it) }
                     ?: GameMenuRoute.HOME
 
+            val cheatsViewModel: GameMenuCheatsViewModel =
+                viewModel(
+                    viewModelStoreOwner = this@GameMenuActivity,
+                    factory = GameMenuCheatsViewModel.Factory(gameMenuRequest, retrogradeDb.cheatDao()),
+                )
+
             SideMenu {
                 TopAppBar(
                     title = { Text(stringResource(currentRoute.titleId)) },
@@ -177,14 +184,13 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                             }
                         }
                     },
+                    actions = {
+                        if (currentRoute == GameMenuRoute.CHEATS) {
+                            CheatsOverflowMenu(viewModel = cheatsViewModel)
+                        }
+                    },
                 )
                 Divider(modifier = Modifier.fillMaxWidth())
-
-                val cheatsViewModel: GameMenuCheatsViewModel =
-                    viewModel(
-                        viewModelStoreOwner = this@GameMenuActivity,
-                        factory = GameMenuCheatsViewModel.Factory(gameMenuRequest, retrogradeDb.cheatDao()),
-                    )
 
                 NavHost(
                     modifier =
