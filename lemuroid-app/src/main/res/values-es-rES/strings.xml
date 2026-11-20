@@ -34,6 +34,7 @@
     <string name="settings_title_hd_mode">Modo HD</string>
     <string name="settings_description_hd_mode">Aplicar filtro de mejora de posprocesamiento</string>
     <string name="settings_description_hd_quality">Ajustar la calidad del modo HD</string>
+    <string name="settings_title_viewport_alignment">Alineación de la pantalla</string>
     <string name="settings_title_immersive_mode">Modo inmersivo</string>
     <string name="settings_description_immersive_mode">Dinámicamente colorea el fondo basado en visuales del juego</string>
     <string name="settings_title_gamepad_settings">Dispositivos externos</string>
@@ -80,6 +81,11 @@
     <string name="game_context_menu_resume">Continuar</string>
     <string name="game_context_menu_restart">Reiniciar</string>
     <string name="game_context_menu_create_shortcut">Fijar al lanzador</string>
+    <string name="game_context_menu_add_custom_name">Agregar nombre personalizado</string>
+    <string name="game_context_menu_remove_custom_name">Quitar nombre personalizado</string>
+    <string name="game_context_menu_add_custom_artwork">Agregar imagen personalizada</string>
+    <string name="game_context_menu_remove_custom_artwork">Quitar imagen personalizada</string>
+    <string name="game_context_menu_custom_name_dialog_title">Establecer nombre personalizado</string>
     <string name="home_notification_title">Habilitar notificaciones</string>
     <string name="home_notification_message">Lemuroid utiliza notificaciones para informarte cuando un juego u operación se está ejecutando en segundo plano.</string>
     <string name="home_notification_action">Habilitar</string>
@@ -175,6 +181,9 @@
     <string name="shader_filter_names_smooth">Suave</string>
     <string name="shader_filter_names_crt">CRT</string>
     <string name="shader_filter_names_lcd">LCD</string>
+    <string name="viewport_alignment_names_top">Arriba</string>
+    <string name="viewport_alignment_names_center">Centro</string>
+    <string name="viewport_alignment_names_bottom">Abajo</string>
     <string name="haptic_feedback_mode_names_none">Nada</string>
     <string name="haptic_feedback_mode_names_press">Presionar</string>
     <string name="haptic_feedback_mode_names_press_release">Presiona &amp; liberar</string>
