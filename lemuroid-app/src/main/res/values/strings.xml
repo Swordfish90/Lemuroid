@@ -133,6 +133,32 @@
     <string name="game_menu_fast_forward">Fast-Forward</string>
     <string name="game_menu_change_disk_disk">Disk %1$s</string>
     <string name="game_menu_tilt_sensor">Tilt Sensor</string>
+    
+    <string name="game_menu_cheats">Cheats</string>
+    <string name="game_menu_add_cheat">Add Cheat</string>
+    <string name="game_menu_edit_cheat">Edit Cheat</string>
+    <string name="game_menu_no_cheats">No cheats added for this game</string>
+    <string name="cheat_title">Cheat Name</string>
+    <string name="cheat_title_hint">e.g. Infinite Lives</string>
+    <string name="cheat_description">Description</string>
+    <string name="cheat_format">Cheat Format</string>
+    <string name="cheat_code">Code</string>
+    <string name="cheat_code_hint">Enter cheat code lines</string>
+    <string name="cheat_is_master_code">Master Code</string>
+    <string name="cheat_is_master_code_description">Prerequisite required by other cheats</string>
+    <string name="cheat_master_code_dependency">Prerequisite Master Code</string>
+    <string name="cheat_master_code_none">None</string>
+    <string name="cheat_enabled">Enabled</string>
+    <string name="cheat_save">Save</string>
+    <string name="cheat_delete">Delete</string>
+    <string name="cheat_delete_confirmation_title">Delete Cheat</string>
+    <string name="cheat_delete_confirmation_message">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="cheat_delete_master_warning">Deleting this Master Code will detach all dependent cheats.</string>
+    <string name="cheat_badge_master">Master Code</string>
+    <string name="cheat_badge_prerequisite_disabled">Prerequisite Disabled</string>
+    <string name="cheat_badge_requires">Requires: %1$s</string>
+    <string name="cheat_error_title_empty">Name cannot be empty</string>
+    <string name="cheat_error_invalid">Invalid code</string>
 
     <string name="game_loading_preparing_game">Preparing game…</string>
 

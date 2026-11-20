@@ -28,6 +28,7 @@ import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesScreen
 import com.swordfish.lemuroid.app.mobile.feature.favorites.FavoritesViewModel
+import com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameCheatsActivity
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesScreen
 import com.swordfish.lemuroid.app.mobile.feature.games.GamesViewModel
 import com.swordfish.lemuroid.app.mobile.feature.home.HomeScreen
@@ -63,9 +64,9 @@ import com.swordfish.lemuroid.lib.android.RetrogradeComponentActivity
 import com.swordfish.lemuroid.lib.bios.BiosManager
 import com.swordfish.lemuroid.lib.core.CoresSelection
 import com.swordfish.lemuroid.lib.injection.PerActivity
-import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.MetaSystemID
 import com.swordfish.lemuroid.lib.library.SystemID
+import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -352,6 +353,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 shortcutSupported = gameInteractor.supportShortcuts(),
                 onGamePlay = { gameInteractor.onGamePlay(it) },
                 onGameRestart = { gameInteractor.onGameRestart(it) },
+                onManageCheats = { game ->
+                    startActivity(GameCheatsActivity.newIntent(this@MainActivity, game))
+                },
                 onFavoriteToggle = { game: Game, isFavorite: Boolean ->
                     gameInteractor.onFavoriteToggle(game, isFavorite)
                 },

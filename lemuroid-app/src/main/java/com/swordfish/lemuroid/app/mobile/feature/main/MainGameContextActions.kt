@@ -32,17 +32,14 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RestartAlt
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,13 +50,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameTexts
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSmallGameImage
+import com.swordfish.lemuroid.lib.cheats.CheatSupport
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import timber.log.Timber
 
@@ -70,6 +70,7 @@ fun MainGameContextActions(
     shortcutSupported: Boolean,
     onGamePlay: (Game) -> Unit,
     onGameRestart: (Game) -> Unit,
+    onManageCheats: (Game) -> Unit,
     onFavoriteToggle: (Game, Boolean) -> Unit,
     onCreateShortcut: (Game) -> Unit,
     onSetCustomName: (Game, String) -> Unit,
@@ -98,6 +99,7 @@ fun MainGameContextActions(
                 onGamePlay = onGamePlay,
                 selectedGameState = selectedGameState,
                 onGameRestart = onGameRestart,
+                onManageCheats = onManageCheats,
                 onFavoriteToggle = onFavoriteToggle,
                 shortcutSupported = shortcutSupported,
                 onCreateShortcut = onCreateShortcut,
@@ -116,6 +118,7 @@ private fun ContextActionContent(
     onGamePlay: (Game) -> Unit,
     selectedGameState: MutableState<Game?>,
     onGameRestart: (Game) -> Unit,
+    onManageCheats: (Game) -> Unit,
     onFavoriteToggle: (Game, Boolean) -> Unit,
     shortcutSupported: Boolean,
     onCreateShortcut: (Game) -> Unit,
@@ -127,22 +130,23 @@ private fun ContextActionContent(
     val context = LocalContext.current
     var showCustomNameDialog by remember { mutableStateOf(false) }
 
-    val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-    ) { uri: Uri? ->
-        if (uri != null) {
-            try {
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION,
-                )
-            } catch (e: SecurityException) {
-                Timber.e(e, "Failed to persist read URI permission for custom cover")
+    val imagePickerLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent(),
+        ) { uri: Uri? ->
+            if (uri != null) {
+                try {
+                    context.contentResolver.takePersistableUriPermission(
+                        uri,
+                        android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION,
+                    )
+                } catch (e: SecurityException) {
+                    Timber.e(e, "Failed to persist read URI permission for custom cover")
+                }
+                onSetCustomCoverUri(selectedGame, uri.toString())
+                selectedGameState.value = null
             }
-            onSetCustomCoverUri(selectedGame, uri.toString())
-            selectedGameState.value = null
         }
-    }
 
     Column(
         modifier =
@@ -169,6 +173,17 @@ private fun ContextActionContent(
                 selectedGameState.value = null
             },
         )
+
+        if (CheatSupport.isSystemSupported(selectedGame.systemId)) {
+            ContextActionEntry(
+                label = stringResource(id = R.string.game_menu_cheats),
+                painter = painterResource(id = R.drawable.ic_menu_cheat),
+                onClick = {
+                    onManageCheats(selectedGame)
+                    selectedGameState.value = null
+                },
+            )
+        }
 
         if (selectedGame.isFavorite) {
             ContextActionEntry(
@@ -300,6 +315,33 @@ private fun ContextActionEntry(
         Icon(
             modifier = Modifier.padding(start = 16.dp),
             imageVector = icon,
+            contentDescription = label,
+        )
+        Text(
+            modifier = Modifier.padding(start = 16.dp),
+            text = label,
+        )
+    }
+}
+
+@Composable
+private fun ContextActionEntry(
+    modifier: Modifier = Modifier,
+    label: String,
+    painter: Painter,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .height(56.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            modifier = Modifier.padding(start = 16.dp),
+            painter = painter,
             contentDescription = label,
         )
         Text(
