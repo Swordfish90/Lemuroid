@@ -84,6 +84,9 @@
             android:theme="@style/LemuroidMaterialTheme.Menu" />
 
         <activity
+            android:name="com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats.GameCheatsActivity" />
+
+        <activity
             android:name="com.swordfish.lemuroid.app.mobile.feature.input.GamePadBindingActivity"
             android:theme="@style/LemuroidMaterialTheme.Invisible" />
 
