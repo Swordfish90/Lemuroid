@@ -78,7 +78,7 @@ fun ChtImportPreviewDialog(
                     contentDescription = null,
                     modifier = Modifier.padding(end = 8.dp),
                 )
-                Text(text = stringResource(R.string.cheat_import_preview_title))
+                Text(text = stringResource(R.string.cheat_import))
             }
         },
         text = {
@@ -106,20 +106,20 @@ fun ChtImportPreviewDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     StatBadge(
-                        label = "${preview.totalEntries} Total",
+                        label = stringResource(R.string.cheat_import_stat_total, preview.totalEntries),
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.weight(1f),
                     )
                     StatBadge(
-                        label = "${preview.validEntries.size} Valid",
+                        label = stringResource(R.string.cheat_import_stat_valid, preview.validEntries.size),
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.weight(1f),
                     )
                     if (preview.duplicateEntries.isNotEmpty()) {
                         StatBadge(
-                            label = "${preview.duplicateEntries.size} Dups",
+                            label = stringResource(R.string.cheat_import_stat_dups, preview.duplicateEntries.size),
                             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             modifier = Modifier.weight(1f),
@@ -128,7 +128,7 @@ fun ChtImportPreviewDialog(
                     val issuesCount = preview.unsupportedEntries.size + preview.invalidEntries.size
                     if (issuesCount > 0) {
                         StatBadge(
-                            label = "$issuesCount Issues",
+                            label = stringResource(R.string.cheat_import_stat_issues, issuesCount),
                             containerColor = MaterialTheme.colorScheme.errorContainer,
                             contentColor = MaterialTheme.colorScheme.onErrorContainer,
                             modifier = Modifier.weight(1f),
@@ -137,7 +137,7 @@ fun ChtImportPreviewDialog(
                 }
 
                 Text(
-                    text = "Import Mode",
+                    text = stringResource(R.string.cheat_import_mode_header),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -165,7 +165,7 @@ fun ChtImportPreviewDialog(
                 Divider()
 
                 Text(
-                    text = "Entries Preview",
+                    text = stringResource(R.string.cheat_import_entries_preview_header),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )

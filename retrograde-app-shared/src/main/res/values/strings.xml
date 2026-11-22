@@ -141,4 +141,7 @@
     <string name="value_handy_rot_90">90</string>
     <string name="value_handy_rot_270">270</string>
 
+    <string name="game_patch_invalid_header">Invalid IPS format (missing \'PATCH\' header)</string>
+    <string name="cheat_auto_discovered_desc">Auto-discovered from %1$s</string>
+
 </resources>

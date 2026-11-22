@@ -47,6 +47,69 @@ fun InputStream.calculateCrc32(): String =
         }
     }
 
+private val NON_ROM_ZIP_EXTENSIONS =
+    setOf(
+        "txt", "nfo", "md", "diz", "jpg", "jpeg", "png", "bmp", "gif", "xml", "pdf", "html", "htm",
+        "ips", "ups", "bps", "xdelta", "cht", "sav", "srm", "state", "url", "cue"
+    )
+
+fun InputStream.calculateRomCrc32(
+    fileName: String,
+    isArcadeZip: Boolean = false,
+    isZipArchive: Boolean = false,
+    targetEntryName: String? = null,
+): String {
+    val isZipped = isZipArchive || fileName.endsWith(".zip", ignoreCase = true)
+    if (isArcadeZip || !isZipped) {
+        return calculateCrc32().uppercase()
+    }
+
+    return this.use { rawStream ->
+        val buffer = ByteArray(CRC32_BYTE_ARRAY_SIZE)
+        var bestCrc: String? = null
+        var bestSize = -1L
+
+        ZipInputStream(rawStream).use { zipStream ->
+            var entry = zipStream.nextEntry
+            while (entry != null) {
+                val entryName = entry.name
+                val ext = entryName.substringAfterLast('.', "").lowercase()
+                val isIgnored =
+                    entry.isDirectory ||
+                        entryName.startsWith("__MACOSX/", ignoreCase = true) ||
+                        entryName.contains("/__MACOSX/", ignoreCase = true) ||
+                        ext in NON_ROM_ZIP_EXTENSIONS
+
+                if (!isIgnored) {
+                    val matchesTarget = targetEntryName != null &&
+                        (entryName == targetEntryName || entryName.substringAfterLast('/') == targetEntryName)
+
+                    val crc = CRC32()
+                    var entryBytes = 0L
+                    var read = zipStream.read(buffer)
+                    while (read != -1) {
+                        crc.update(buffer, 0, read)
+                        entryBytes += read
+                        read = zipStream.read(buffer)
+                    }
+
+                    if (matchesTarget) {
+                        return@use crc.value.toStringCRC32().uppercase()
+                    }
+
+                    if (entryBytes > bestSize) {
+                        bestSize = entryBytes
+                        bestCrc = crc.value.toStringCRC32().uppercase()
+                    }
+                }
+                zipStream.closeEntry()
+                entry = zipStream.nextEntry
+            }
+        }
+        bestCrc ?: ""
+    }
+}
+
 fun File.calculateMd5(): String {
     val bytes =
         MessageDigest
@@ -80,7 +143,6 @@ fun File.isZipped() = extension == "zip"
 
 fun DocumentFile.isZipped() = type == "application/zip"
 
-/** Returns the uncompressed input stream if gzip compressed. */
 private fun InputStream.uncompressedInputStream(): InputStream {
     val pb = PushbackInputStream(this, 2)
     val signature = ByteArray(2)
@@ -93,7 +155,6 @@ private fun InputStream.uncompressedInputStream(): InputStream {
     }
 }
 
-/** Read bytes from input stream. If the stream is compressed with GZIP the uncompressed data is returned.*/
 private fun readBytesUncompressedStream(inputStream: InputStream): ByteArray =
     inputStream.use { input ->
         val b = ByteArray(GZIP_INPUT_STREAM_BUFFER_SIZE)
@@ -107,7 +168,6 @@ private fun readBytesUncompressedStream(inputStream: InputStream): ByteArray =
         return os.toByteArray()
     }
 
-/** Write bytes to file using AtomicFile to prevent corruption. */
 fun File.writeBytesAtomic(data: ByteArray) {
     val atomicFile = AtomicFile(this)
     val outputStream = atomicFile.startWrite()
@@ -120,13 +180,11 @@ fun File.writeBytesAtomic(data: ByteArray) {
     }
 }
 
-/** Read text from file using AtomicFile. */
 fun File.readTextAtomic(): String {
     val atomicFile = AtomicFile(this)
     return atomicFile.openRead().bufferedReader().use { it.readText() }
 }
 
-/** Write text to file using AtomicFile. */
 fun File.writeTextAtomic(text: String) {
     val atomicFile = AtomicFile(this)
     val outputStream = atomicFile.startWrite()
@@ -139,7 +197,6 @@ fun File.writeTextAtomic(text: String) {
     }
 }
 
-/** Write bytes to file using GZIP compression via AtomicFile. */
 fun File.writeBytesCompressedAtomic(array: ByteArray) {
     val atomicFile = AtomicFile(this)
     val outputStream = atomicFile.startWrite()
@@ -156,7 +213,6 @@ fun File.writeBytesCompressedAtomic(array: ByteArray) {
     }
 }
 
-/** Read bytes using AtomicFile. If the file is compressed with GZIP the uncompressed data is returned. */
 fun File.readBytesUncompressedAtomic(): ByteArray {
     val atomicFile = AtomicFile(this)
     return atomicFile.openRead().use { input ->

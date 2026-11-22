@@ -67,6 +67,7 @@ fun LemuroidSettingsSwitch(
 
 @Composable
 fun LemuroidSettingsMenuLink(
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     icon: (@Composable () -> Unit)? = null,
     title: @Composable () -> Unit,
@@ -75,6 +76,7 @@ fun LemuroidSettingsMenuLink(
     onClick: () -> Unit,
 ) {
     SettingsMenuLink(
+        modifier = modifier,
         enabled = enabled,
         icon = icon,
         title = title,

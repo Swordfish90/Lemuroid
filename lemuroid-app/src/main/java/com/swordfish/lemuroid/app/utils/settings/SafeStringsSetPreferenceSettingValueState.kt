@@ -17,7 +17,7 @@ fun rememberSafePreferenceStringsSetSettingState(
     defaultValue: Set<String>,
     preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current),
 ): SafeStringsSetPreferenceSettingValueState {
-    return remember {
+    return remember(key, preferences) {
         SafeStringsSetPreferenceSettingValueState(preferences, key, defaultValue)
     }
 }
@@ -27,12 +27,34 @@ class SafeStringsSetPreferenceSettingValueState(
     val key: String,
     private val defaultValue: Set<String>,
 ) : SettingValueState<Set<String>> {
-    private var _value by mutableStateOf(preferences.safeGetStringSet(key, defaultValue)!!)
+    private var _value by mutableStateOf(readPreference())
+
+    private fun readPreference(): Set<String> {
+        if (!preferences.contains(key)) {
+            return defaultValue
+        }
+        val strVal = runCatching { preferences.getString(key, null) }.getOrNull()
+        if (strVal != null) {
+            return if (strVal.isEmpty() || strVal == "__NONE__") {
+                emptySet()
+            } else {
+                strVal.split(",").filter { it.isNotBlank() }.toSet()
+            }
+        }
+        val setVal = runCatching { preferences.getStringSet(key, null) }.getOrNull()
+        if (setVal != null) {
+            return setVal
+        }
+        return defaultValue
+    }
 
     override var value: Set<String>
-        set(index) {
-            _value = index
-            preferences.edit { putStringSet(key, _value) }
+        set(newSet) {
+            _value = newSet
+            val serialized = if (newSet.isEmpty()) "__NONE__" else newSet.joinToString(",")
+            preferences.edit {
+                putString(key, serialized)
+            }
         }
         get() = _value.toSet()
 

@@ -112,18 +112,43 @@ class GameSearchDao(private val internalDao: Internal) {
         }
     }
 
-    fun search(query: String): PagingSource<Int, Game> =
-        internalDao.rawSearch(
+    fun search(query: String): PagingSource<Int, Game> {
+        val trimmed = query.trim()
+        if (trimmed.isEmpty()) {
+            return internalDao.rawSearch(
+                SimpleSQLiteQuery("SELECT * FROM games WHERE 0"),
+            )
+        }
+        val likePattern = "%$trimmed%"
+        return internalDao.rawSearch(
             SimpleSQLiteQuery(
                 """
-                SELECT games.*
-                    FROM fts_games
-                    JOIN games ON games.id = fts_games.docid
-                    WHERE fts_games MATCH ?
-                """,
-                arrayOf(query),
+                SELECT g.*
+                FROM games g
+                LEFT JOIN game_details d ON g.id = d.gameId
+                WHERE COALESCE(g.customName, g.title) LIKE ?
+                   OR g.fileName LIKE ?
+                   OR g.developer LIKE ?
+                   OR d.publisher LIKE ?
+                   OR d.genres LIKE ?
+                   OR d.releaseDate LIKE ?
+                   OR d.crc32 LIKE ?
+                   OR d.synopsis LIKE ?
+                ORDER BY LOWER(COALESCE(g.customName, g.title)) ASC
+                """.trimIndent(),
+                arrayOf(
+                    likePattern,
+                    likePattern,
+                    likePattern,
+                    likePattern,
+                    likePattern,
+                    likePattern,
+                    likePattern,
+                    likePattern,
+                ),
             ),
         )
+    }
 
     @Dao
     interface Internal {

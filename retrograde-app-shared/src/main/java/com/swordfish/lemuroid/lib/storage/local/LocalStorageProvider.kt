@@ -40,6 +40,11 @@ import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 
+private val NON_GAME_EXTENSIONS = setOf(
+    "ips", "ups", "bps", "xdelta", "cht", "sav", "srm", "state",
+    "txt", "nfo", "xml", "diz", "jpg", "jpeg", "png", "bmp", "pdf", "html", "htm"
+)
+
 class LocalStorageProvider(
     private val context: Context,
     private val directoriesManager: DirectoriesManager,
@@ -79,7 +84,9 @@ class LocalStorageProvider(
                         ?.groupBy { it.isDirectory } ?: mapOf()
 
                 val newDirectories = groups[true] ?: listOf()
-                val newFiles = groups[false] ?: listOf()
+                val newFiles = (groups[false] ?: listOf()).filterNot {
+                    it.extension.lowercase() in NON_GAME_EXTENSIONS
+                }
 
                 directories.addAll(newDirectories)
                 emit((newFiles.map { BaseStorageFile(it.name, it.length(), it.toUri(), it.path) }))

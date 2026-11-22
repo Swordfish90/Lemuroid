@@ -11,9 +11,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.game.GameService
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
 import com.swordfish.lemuroid.app.shared.cheats.CheatManager
+import com.swordfish.lemuroid.lib.cheats.cht.ChtDiscoveryManager
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelInput
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelRetroGameView
 import com.swordfish.lemuroid.app.shared.game.viewmodel.GameViewModelSaves
@@ -33,6 +35,7 @@ import com.swordfish.lemuroid.lib.library.SystemCoreConfig
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Cheat
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.saves.SavesManager
 import com.swordfish.lemuroid.lib.saves.StatesManager
 import com.swordfish.lemuroid.lib.saves.StatesPreviewManager
@@ -137,6 +140,13 @@ class BaseGameScreenViewModel(
     private var currentCheats: List<Cheat> = emptyList()
 
     init {
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            runCatching {
+                ChtDiscoveryManager.syncDiscoveredCheats(appContext, game, retrogradeDb.cheatDao())
+            }.onFailure {
+                Timber.e(it, "Failed to auto-discover cheats on launch for ${game.id}")
+            }
+        }
         viewModelScope.launch {
             retrogradeDb.cheatDao().getCheatsForGame(game.id)
                 .collect { cheats ->
@@ -303,10 +313,28 @@ class BaseGameScreenViewModel(
     }
 
     fun toggleFastForward() {
-        Timber.d("Loading quick save")
+        val speed = getFastForwardSpeed()
         retroGameView.retroGameView?.apply {
-            frameSpeed = if (frameSpeed == 1) 2 else 1
+            frameSpeed = if (frameSpeed == 1) speed else 1
         }
+    }
+
+    fun setFastForwardSpeed(speed: Int) {
+        retroGameView.retroGameView?.apply {
+            if (frameSpeed > 1) {
+                frameSpeed = speed
+            }
+        }
+    }
+
+    fun getFastForwardSpeed(): Int {
+        val prefs = SharedPreferencesHelper.getSharedPreferences(appContext)
+        val prefKey = appContext.getString(R.string.pref_key_fast_forward_speed)
+        val asInt = runCatching { prefs.getInt(prefKey, 2) }.getOrNull()
+        if (asInt != null) return asInt.coerceIn(2, 5)
+        val asStr = runCatching { prefs.getString(prefKey, null) }.getOrNull()
+        val parsed = asStr?.toIntOrNull() ?: 2
+        return parsed.coerceIn(2, 5)
     }
 
     suspend fun reset() =

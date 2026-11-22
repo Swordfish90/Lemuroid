@@ -16,13 +16,14 @@ import com.swordfish.lemuroid.R
 
 @Composable
 fun FavoriteToggle(
+    modifier: Modifier = Modifier,
     isToggled: Boolean,
     onFavoriteToggle: (Boolean) -> Unit,
 ) {
     IconToggleButton(
         checked = isToggled,
         onCheckedChange = onFavoriteToggle,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
     ) {
         val image =
             if (isToggled) {

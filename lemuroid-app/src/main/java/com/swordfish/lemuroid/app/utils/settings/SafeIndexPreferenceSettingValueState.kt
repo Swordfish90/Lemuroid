@@ -42,3 +42,48 @@ class SafeIndexPreferenceSettingValueState(
         value = values.indexOf(defaultValue)
     }
 }
+
+@Composable
+fun rememberSafePreferenceIntIndexSettingState(
+    key: String,
+    values: List<Int>,
+    defaultValue: Int,
+    preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current),
+): SafeIntIndexPreferenceSettingValueState {
+    return remember {
+        SafeIntIndexPreferenceSettingValueState(preferences, key, values, defaultValue)
+    }
+}
+
+class SafeIntIndexPreferenceSettingValueState(
+    private val preferences: SharedPreferences,
+    val key: String,
+    private val values: List<Int>,
+    private val defaultValue: Int,
+) : SettingValueState<Int> {
+    private var _value by mutableStateOf(getStoredValue())
+
+    private fun getStoredValue(): Int {
+        val asInt = runCatching { preferences.getInt(key, defaultValue) }.getOrNull()
+        if (asInt != null && asInt in values) return asInt
+        val asStr = runCatching { preferences.getString(key, null) }.getOrNull()
+        val parsed = asStr?.toIntOrNull()
+        if (parsed != null && parsed in values) return parsed
+        return defaultValue
+    }
+
+    override var value: Int
+        set(index) {
+            val speed = values.getOrElse(index) { defaultValue }
+            _value = speed
+            preferences.edit { putInt(key, speed) }
+        }
+        get() {
+            val idx = values.indexOf(_value)
+            return if (idx >= 0) idx else values.indexOf(defaultValue)
+        }
+
+    override fun reset() {
+        value = values.indexOf(defaultValue)
+    }
+}

@@ -85,6 +85,27 @@ subprojects {
     }
 }
 
+// Redirect jniLibs to the actual .so files in each lemuroid_core_* submodule.
+
+project(":bundled-cores").afterEvaluate {
+    extensions.configure(com.android.build.gradle.LibraryExtension::class.java) {
+        sourceSets.named("main") {
+            val coresRoot = project.projectDir.parentFile
+            val coreDirs = coresRoot.listFiles()?.filter { dir ->
+                dir.isDirectory && dir.name.startsWith("lemuroid_core_")
+            } ?: emptyList()
+            val coreJniDirs = coreDirs.map { dir ->
+                File(dir, "src/main/jniLibs")
+            }.filter { dir ->
+                dir.exists()
+            }
+            if (coreJniDirs.isNotEmpty()) {
+                jniLibs.setSrcDirs(coreJniDirs)
+            }
+        }
+    }
+}
+
 tasks {
     "clean"(Delete::class) {
         delete(buildDir)

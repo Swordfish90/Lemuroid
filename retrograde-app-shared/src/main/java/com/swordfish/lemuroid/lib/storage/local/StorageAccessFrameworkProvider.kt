@@ -11,6 +11,9 @@ import com.swordfish.lemuroid.common.kotlin.writeToFile
 import com.swordfish.lemuroid.lib.R
 import com.swordfish.lemuroid.lib.library.db.entity.DataFile
 import com.swordfish.lemuroid.lib.library.db.entity.Game
+import com.swordfish.lemuroid.lib.patch.IpsPatcher
+import com.swordfish.lemuroid.lib.patch.PatchManager
+import com.swordfish.lemuroid.lib.patch.RomPatch
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
 import com.swordfish.lemuroid.lib.storage.BaseStorageFile
 import com.swordfish.lemuroid.lib.storage.RomFiles
@@ -24,6 +27,11 @@ import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 
+private val NON_GAME_EXTENSIONS = setOf(
+    "ips", "ups", "bps", "xdelta", "cht", "sav", "srm", "state",
+    "txt", "nfo", "xml", "diz", "jpg", "jpeg", "png", "bmp", "pdf", "html", "htm"
+)
+
 class StorageAccessFrameworkProvider(private val context: Context) : StorageProvider {
     override val id: String = "access_framework"
 
@@ -36,25 +44,60 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
     override val enabledByDefault = true
 
     override fun listBaseStorageFiles(): Flow<List<BaseStorageFile>> {
-        return getExternalFolder()?.let { folder ->
-            traverseDirectoryEntries(Uri.parse(folder))
-        } ?: emptyFlow()
+        val folders = getExternalFolders()
+        if (folders.isEmpty()) return emptyFlow()
+
+        return flow {
+            val seenDocIds = mutableSetOf<String>()
+            for (folder in folders) {
+                runCatching {
+                    val rootUri = Uri.parse(folder)
+                    traverseDirectoryEntries(rootUri).collect { files ->
+                        val deduped = files.filter { file ->
+                            val docId = runCatching { DocumentsContract.getDocumentId(file.uri) }.getOrNull()
+                                ?: file.uri.toString()
+                            seenDocIds.add(docId)
+                        }
+                        if (deduped.isNotEmpty()) {
+                            emit(deduped)
+                        }
+                    }
+                }.onFailure {
+                    Timber.e(it, "Error while scanning folder: $folder")
+                }
+            }
+        }
     }
 
     override fun getStorageFile(baseStorageFile: BaseStorageFile): StorageFile? {
         return DocumentFileParser.parseDocumentFile(context, baseStorageFile)
     }
 
-    private fun getExternalFolder(): String? {
-        val prefString = context.getString(R.string.pref_key_extenral_folder)
+    private fun getExternalFolders(): List<String> {
+        val prefString = context.getString(R.string.pref_key_external_folders)
         val preferenceManager = SharedPreferencesHelper.getLegacySharedPreferences(context)
-        return preferenceManager.getString(prefString, null)
+        val folders = preferenceManager.getStringSet(prefString, emptySet()) ?: emptySet()
+
+        if (folders.isEmpty()) {
+            val singleKey = context.getString(R.string.pref_key_extenral_folder)
+            val oldFolder = preferenceManager.getString(singleKey, null)
+            if (!oldFolder.isNullOrBlank()) {
+                val migrated = setOf(oldFolder)
+                preferenceManager.edit().putStringSet(prefString, migrated).apply()
+                return migrated.toList()
+            }
+        }
+        return folders.toList()
     }
 
     private fun traverseDirectoryEntries(rootUri: Uri): Flow<List<BaseStorageFile>> =
         flow {
             val directoryDocumentIds = mutableListOf<String>()
-            DocumentsContract.getTreeDocumentId(rootUri)?.let { directoryDocumentIds.add(it) }
+            runCatching {
+                DocumentsContract.getTreeDocumentId(rootUri)?.let { directoryDocumentIds.add(it) }
+            }.onFailure {
+                Timber.e(it, "Cannot get tree document id for: $rootUri")
+            }
 
             while (directoryDocumentIds.isNotEmpty()) {
                 val currentDirectoryDocumentId = directoryDocumentIds.removeAt(0)
@@ -105,6 +148,10 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
                 if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
                     resultDirectories.add(documentId)
                 } else {
+                    val ext = documentName.substringAfterLast('.', "").lowercase()
+                    if (ext in NON_GAME_EXTENSIONS) {
+                        continue
+                    }
                     val documentUri =
                         DocumentsContract.buildDocumentUriUsingTree(
                             treeUri,
@@ -135,11 +182,83 @@ class StorageAccessFrameworkProvider(private val context: Context) : StorageProv
 
         val isZipped = originalDocument.isZipped() && originalDocument.name != game.fileName
 
+        val availablePatches = PatchManager.discoverPatches(context, game)
+        val enabledPatchIds = PatchManager.getEnabledPatchIds(context, game.id, availablePatches)
+        val activePatches = availablePatches.filter { it.isValid && it.id in enabledPatchIds }
+
+        if (activePatches.isNotEmpty()) {
+            return getGameRomFilesPatched(game, originalDocument, isZipped, dataFiles, activePatches)
+        }
+
         return when {
             isZipped && dataFiles.isEmpty() -> getGameRomFilesZipped(game, originalDocument)
             allowVirtualFiles -> getGameRomFilesVirtual(game, dataFiles)
             else -> getGameRomFilesStandard(game, dataFiles, originalDocument)
         }
+    }
+
+    private fun getGameRomFilesPatched(
+        game: Game,
+        originalDocument: DocumentFile,
+        isZipped: Boolean,
+        dataFiles: List<DataFile>,
+        activePatches: List<RomPatch>,
+    ): RomFiles {
+        val patchesKey = activePatches.map { it.id }.sorted().joinToString(",").hashCode().let {
+            Integer.toHexString(it)
+        }
+        val cacheSubfolder = "$SAF_CACHE_SUBFOLDER-patched-$patchesKey"
+        val cacheFile = GameCacheUtils.getCacheFileForGame(cacheSubfolder, context, game)
+
+        if (!cacheFile.exists()) {
+            var romBytes: ByteArray? = null
+            if (isZipped) {
+                context.contentResolver.openInputStream(originalDocument.uri)?.use { input ->
+                    ZipInputStream(input).use { zip ->
+                        var entry = zip.nextEntry
+                        while (entry != null) {
+                            if (entry.name == game.fileName) {
+                                romBytes = zip.readBytes()
+                                break
+                            }
+                            entry = zip.nextEntry
+                        }
+                    }
+                }
+            } else {
+                romBytes = context.contentResolver.openInputStream(originalDocument.uri)?.use { it.readBytes() }
+            }
+
+            if (romBytes == null) {
+                return getGameRomFilesStandard(game, dataFiles, originalDocument)
+            }
+
+            var currentBytes = romBytes!!
+            for (patch in activePatches) {
+                val patchBytes = PatchManager.loadPatchBytes(context, game, patch)
+                if (patchBytes != null) {
+                    try {
+                        currentBytes = IpsPatcher.applyPatch(currentBytes, patchBytes)
+                    } catch (e: Exception) {
+                        Timber.e(e, "Failed to apply patch: ${patch.name}")
+                        PatchManager.disablePatch(context, game.id, patch.id)
+                        android.os.Handler(android.os.Looper.getMainLooper()).post {
+                            android.widget.Toast.makeText(
+                                context,
+                                "Patch '${patch.name}' is invalid or incompatible and was disabled.",
+                                android.widget.Toast.LENGTH_LONG,
+                            ).show()
+                        }
+                    }
+                }
+            }
+
+            cacheFile.parentFile?.mkdirs()
+            cacheFile.writeBytes(currentBytes)
+        }
+
+        val dataEntries = dataFiles.map { getDataFileStandard(game, it) }
+        return RomFiles.Standard(listOf(cacheFile) + dataEntries)
     }
 
     private fun getGameRomFilesStandard(

@@ -152,6 +152,12 @@ abstract class LemuroidApplicationModule {
                     Migrations.VERSION_8_9,
                     Migrations.VERSION_9_10,
                     Migrations.VERSION_10_11,
+                    Migrations.VERSION_11_12,
+                    Migrations.VERSION_12_13,
+                    Migrations.VERSION_13_14,
+                    Migrations.VERSION_14_15,
+                    Migrations.VERSION_15_16,
+                    Migrations.VERSION_16_17,
                 )
                 .fallbackToDestructiveMigration()
                 .build()
@@ -201,6 +207,12 @@ abstract class LemuroidApplicationModule {
         @JvmStatic
         fun okHttpClient(): OkHttpClient =
             OkHttpClient.Builder()
+                .addInterceptor { chain ->
+                    val request = chain.request().newBuilder()
+                        .header("User-Agent", "AlphaLemuroid")
+                        .build()
+                    chain.proceed(request)
+                }
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build()

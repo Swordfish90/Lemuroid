@@ -22,18 +22,27 @@ fun LemuroidSmallGameImage(
     modifier: Modifier = Modifier,
     game: Game,
 ) {
+    val context = LocalContext.current
+    val coverUrl = game.displayCoverUrl()
+
     val fallbackDrawable =
-        remember(game) {
+        remember(game.id, game.title) {
             CoverUtils.getFallbackDrawable(game)
         }
 
     val fallbackPainter = rememberDrawablePainter(fallbackDrawable)
 
+    val imageRequest =
+        remember(coverUrl) {
+            ImageRequest.Builder(context)
+                .data(coverUrl)
+                .size(128)
+                .crossfade(false)
+                .build()
+        }
+
     AsyncImage(
-        model =
-            ImageRequest.Builder(LocalContext.current)
-                .data(game.displayCoverUrl())
-                .build(),
+        model = imageRequest,
         contentDescription = game.displayName(),
         modifier =
             modifier

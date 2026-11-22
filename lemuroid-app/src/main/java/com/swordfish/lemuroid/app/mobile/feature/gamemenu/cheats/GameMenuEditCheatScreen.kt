@@ -84,6 +84,7 @@ fun GameMenuEditCheatScreen(
 
     var titleError by remember { mutableStateOf<String?>(null) }
     var codeError by remember { mutableStateOf<String?>(null) }
+    val emptyTitleError = stringResource(R.string.cheat_error_name_empty)
     var masterCodeDropdownExpanded by remember { mutableStateOf(false) }
 
     val otherMasterCodes =
@@ -283,7 +284,7 @@ fun GameMenuEditCheatScreen(
                 titleError = null
                 codeError = null
                 if (title.trim().isEmpty()) {
-                    titleError = "Cheat name cannot be empty"
+                    titleError = emptyTitleError
                     return@Button
                 }
                 val result =
@@ -300,7 +301,7 @@ fun GameMenuEditCheatScreen(
                     is ValidationResult.Valid -> onSaved()
                     is ValidationResult.Invalid -> {
                         if (result.message.contains("Cheat name", ignoreCase = true)) {
-                            titleError = result.message
+                            titleError = emptyTitleError
                         } else {
                             codeError = result.message
                         }
@@ -309,7 +310,7 @@ fun GameMenuEditCheatScreen(
             },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(stringResource(R.string.cheat_save))
+            Text(stringResource(R.string.game_menu_save))
         }
     }
 }

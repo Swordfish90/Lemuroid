@@ -11,13 +11,11 @@ class GameUtils {
             game: Game,
         ): String {
             val systemName = getSystemNameForGame(context, game)
-            val developerName =
-                if (game.developer?.isNotBlank() == true) {
-                    "- ${game.developer}"
-                } else {
-                    ""
-                }
-            return "$systemName $developerName"
+            return if (game.developer?.isNotBlank() == true) {
+                "$systemName • ${game.developer}"
+            } else {
+                systemName
+            }
         }
 
         private fun getSystemNameForGame(

@@ -33,12 +33,17 @@ fun NavController.navigateToRoute(route: MainRoute) {
     this.navigate(route.route)
 }
 
+fun NavController.navigateToGameDetails(gameId: Int) {
+    this.navigate("games/$gameId")
+}
+
 enum class MainRoute(
     val route: String,
     @StringRes val titleId: Int,
     val parent: MainRoute? = null,
     val arguments: List<NamedNavArgument> = emptyList(),
     val showBottomNavigation: Boolean = true,
+    val showTopBar: Boolean = true,
 ) {
     HOME(
         route = "home",
@@ -97,6 +102,13 @@ enum class MainRoute(
         parent = SETTINGS,
         showBottomNavigation = false,
     ),
+    GAME_DETAILS(
+        route = "games/{gameId}",
+        titleId = R.string.title_games,
+        arguments = listOf(navArgument("gameId") { type = NavType.IntType }),
+        showBottomNavigation = false,
+        showTopBar = false,
+    ),
     ;
 
     val root = root()
@@ -106,8 +118,11 @@ enum class MainRoute(
     }
 
     companion object {
-        fun findByRoute(route: String): MainRoute {
-            return values().first { it.route == route }
+        fun findByRoute(route: String?): MainRoute {
+            if (route == null) return HOME
+            return values().firstOrNull { 
+                it.route == route || (it.route.contains("{") && route.startsWith(it.route.substringBefore("{")))
+            } ?: HOME
         }
     }
 }

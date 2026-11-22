@@ -16,6 +16,7 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.shared.GameInteractor
 import com.swordfish.lemuroid.app.shared.game.BaseGameActivity
 import com.swordfish.lemuroid.app.shared.game.GameLauncher
+import com.swordfish.lemuroid.app.shared.game.GameProcessLock
 import com.swordfish.lemuroid.app.shared.main.BusyActivity
 import com.swordfish.lemuroid.app.shared.main.GameLaunchTaskHandler
 import com.swordfish.lemuroid.app.tv.channel.ChannelUpdateWork
@@ -32,16 +33,23 @@ import com.swordfish.lemuroid.lib.injection.PerActivity
 import com.swordfish.lemuroid.lib.injection.PerFragment
 import com.swordfish.lemuroid.lib.library.covers.CustomCoverManager
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
+import com.swordfish.lemuroid.lib.library.db.entity.Game
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainTVActivity : BaseTVActivity(), BusyActivity {
     @Inject
     lateinit var gameLaunchTaskHandler: GameLaunchTaskHandler
+
+    @Inject
+    lateinit var gameInteractor: GameInteractor
 
     var mainViewModel: MainTVViewModel? = null
 
@@ -74,9 +82,24 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
 
         when (requestCode) {
             BaseGameActivity.REQUEST_PLAY_GAME -> {
+                val isRestart = data?.extras?.getBoolean(BaseGameActivity.PLAY_GAME_RESULT_RESTART) == true
                 GlobalScope.safeLaunch {
                     gameLaunchTaskHandler.handleGameFinish(false, this@MainTVActivity, resultCode, data)
                     ChannelUpdateWork.enqueue(applicationContext)
+                    if (isRestart) {
+                        val game = data?.extras?.getSerializable(BaseGameActivity.PLAY_GAME_RESULT_GAME) as? Game
+                        if (game != null) {
+                            val isLeanback = data.extras?.getBoolean(BaseGameActivity.PLAY_GAME_RESULT_LEANBACK) == true
+                            var attempts = 0
+                            while (attempts < 25 && GameProcessLock.isHeldByAnotherProcess(applicationContext)) {
+                                delay(100)
+                                attempts++
+                            }
+                            withContext(Dispatchers.Main) {
+                                gameInteractor.onGameRestart(game)
+                            }
+                        }
+                    }
                 }
             }
         }

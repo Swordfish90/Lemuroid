@@ -91,7 +91,7 @@ class GameCheatsActivity : RetrogradeComponentActivity() {
             val cheatsViewModel: GameMenuCheatsViewModel =
                 viewModel(
                     viewModelStoreOwner = this@GameCheatsActivity,
-                    factory = GameMenuCheatsViewModel.Factory(game, retrogradeDb.cheatDao()),
+                    factory = GameMenuCheatsViewModel.Factory(applicationContext, game, retrogradeDb.cheatDao()),
                 )
 
             val canGoBack = navController.previousBackStackEntry != null

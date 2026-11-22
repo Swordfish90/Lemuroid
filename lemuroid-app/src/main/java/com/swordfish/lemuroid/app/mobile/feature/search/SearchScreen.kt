@@ -34,6 +34,7 @@ fun SearchScreen(
 ) {
     val searchState = viewModel.searchState.collectAsState(SearchViewModel.UIState.Idle)
     val searchGames = viewModel.searchResults.collectAsLazyPagingItems()
+    val ratingsByGameId = viewModel.ratingsByGameId.collectAsState().value
 
     LaunchedEffect(Unit) {
         onResetSearchQuery()
@@ -65,6 +66,7 @@ fun SearchScreen(
                 SearchResultsView(
                     modifier,
                     searchGames,
+                    ratingsByGameId,
                     onGameClick,
                     onGameLongClick,
                     onGameFavoriteToggle,
@@ -79,17 +81,19 @@ fun SearchScreen(
 private fun SearchResultsView(
     modifier: Modifier,
     games: LazyPagingItems<Game>,
+    ratingsByGameId: Map<Int, Float>,
     onGameClick: (Game) -> Unit,
     onGameLongClick: (Game) -> Unit,
     onGameFavoriteToggle: (Game, Boolean) -> Unit,
 ) {
     LazyColumn(modifier = modifier) {
-        items(games.itemCount, key = { games[it]?.id ?: it }) { index ->
+        items(games.itemCount, key = { index -> "${games[index]?.id}_$index" }) { index ->
             val game = games[index] ?: return@items
 
             LemuroidGameListRow(
                 modifier = Modifier.animateItem(),
                 game = game,
+                rating = ratingsByGameId[game.id],
                 onClick = { onGameClick(game) },
                 onLongClick = { onGameLongClick(game) },
                 onFavoriteToggle = { isFavorite ->

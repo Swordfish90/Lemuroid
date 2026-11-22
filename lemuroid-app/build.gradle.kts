@@ -14,7 +14,16 @@ android {
         versionName = "1.17.0" // Always remember to update Cores Tag!
         applicationId = "com.swordfish.lemuroid"
     }
-    flavorDimensions += listOf("opensource", "cores")
+
+    splits {
+        abi {
+            isEnable = useAbiSplits()
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            isUniversalApk = true
+        }
+    }
+    flavorDimensions += listOf("brand", "opensource", "cores")
 
     if (usePlayDynamicFeatures()) {
         println("Building Google Play version. Bundling dynamic features.")
@@ -47,6 +56,16 @@ android {
     // Since some dependencies are closed source we make a completely free as in free speech variant.
 
     productFlavors {
+
+        create("alpha") {
+            dimension = "brand"
+            applicationId = "com.bettercallshiv.alphalemuroid"
+        }
+
+        create("official") {
+            dimension = "brand"
+            applicationId = "com.swordfish.lemuroid"
+        }
 
         create("free") {
             dimension = "opensource"
@@ -94,14 +113,41 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            signingConfig = signingConfigs["release"]
+            signingConfig =
+                if (file("$rootDir/release.jks").exists()) {
+                    signingConfigs["release"]
+                } else {
+                    signingConfigs["debug"]
+                }
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-            resValue("string", "lemuroid_name", "Lemuroid")
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
-            resValue("string", "lemuroid_name", "LemuroiDebug")
+        }
+    }
+
+    applicationVariants.all {
+        val isAlpha = productFlavors.any { it.name == "alpha" }
+        val isDebug = buildType.name == "debug"
+        val appName =
+            when {
+                isAlpha && isDebug -> "AlphaLemuroid Debug"
+                isAlpha -> "Alpha Lemuroid"
+                isDebug -> "LemuroiDebug"
+                else -> "Lemuroid"
+            }
+        resValue("string", "lemuroid_name", appName)
+
+        if (isAlpha) {
+            outputs.all {
+                val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
+                if (output != null) {
+                    val abi = output.getFilter(com.android.build.VariantOutput.FilterType.ABI.name) ?: "universal"
+                    val suffix = if (isDebug) "" else "-$abi"
+                    output.outputFileName = "AlphaLemuroid-v$versionName$suffix.apk"
+                }
+            }
         }
     }
 
@@ -213,4 +259,14 @@ dependencies {
 fun usePlayDynamicFeatures(): Boolean {
     val task = gradle.startParameter.taskRequests.toString()
     return task.contains("Play") && task.contains("Dynamic")
+}
+
+fun isReleaseBuild(): Boolean {
+    val task = gradle.startParameter.taskRequests.toString()
+    return task.contains("Release")
+}
+
+fun useAbiSplits(): Boolean {
+    val task = gradle.startParameter.taskRequests.toString()
+    return task.contains("assemble", ignoreCase = true) && task.contains("Release")
 }

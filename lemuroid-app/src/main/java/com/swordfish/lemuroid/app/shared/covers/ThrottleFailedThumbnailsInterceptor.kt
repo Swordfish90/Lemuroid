@@ -17,7 +17,7 @@ object ThrottleFailedThumbnailsInterceptor : Interceptor {
 
         val response = chain.proceed(chain.request())
         if (!response.isSuccessful) {
-            failedThumbnailsStatusCode.put(chain.request().url.toString(), response.code)
+            failedThumbnailsStatusCode.put(requestUrl, response.code)
         }
 
         return response

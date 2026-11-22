@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.swordfish.lemuroid.app.shared.savesync.SaveSyncWork
+import com.swordfish.lemuroid.app.shared.scraper.BatchScraperScheduler
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -16,6 +17,7 @@ class PendingOperationsMonitor(private val appContext: Context) {
         CORE_UPDATE(LibraryIndexScheduler.CORE_UPDATE_WORK_ID, false),
         SAVES_SYNC_PERIODIC(SaveSyncWork.UNIQUE_PERIODIC_WORK_ID, true),
         SAVES_SYNC_ONE_SHOT(SaveSyncWork.UNIQUE_WORK_ID, false),
+        BATCH_SCRAPER(BatchScraperScheduler.BATCH_SCRAPER_WORK_ID, false),
     }
 
     fun anyOperationInProgress(): Flow<Boolean> {

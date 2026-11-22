@@ -37,6 +37,7 @@ fun LemuroidSettingsListMultiSelect(
     icon: @Composable (() -> Unit)? = null,
     confirmButton: String,
     subtitle: @Composable (() -> Unit)? = null,
+    showSubtitleInDialog: Boolean = false,
     onItemsSelected: ((List<String>) -> Unit)? = null,
     action: @Composable (() -> Unit)? = null,
 ) {
@@ -75,13 +76,13 @@ fun LemuroidSettingsListMultiSelect(
             Column(
                 modifier = Modifier.verticalScroll(scrollState),
             ) {
-                if (subtitle != null) {
+                if (showSubtitleInDialog && subtitle != null) {
                     subtitle()
                     Spacer(modifier = Modifier.size(8.dp))
                 }
 
                 entryValues.forEachIndexed { index, item ->
-                    val isSelected by rememberUpdatedState(newValue = state.value.contains(item))
+                    val isSelected = state.value.contains(item)
                     Row(
                         modifier =
                             Modifier
@@ -90,24 +91,25 @@ fun LemuroidSettingsListMultiSelect(
                                 .toggleable(
                                     role = Role.Checkbox,
                                     value = isSelected,
-                                    onValueChange = {
-                                        if (isSelected) {
-                                            onRemove(index)
-                                        } else {
+                                    onValueChange = { checked ->
+                                        if (checked) {
                                             onAdd(index)
+                                        } else {
+                                            onRemove(index)
                                         }
                                     },
                                 ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        Checkbox(
+                            checked = isSelected,
+                            onCheckedChange = null,
+                        )
+                        Spacer(modifier = Modifier.size(12.dp))
                         Text(
                             text = entries[index],
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.weight(1f),
-                        )
-                        Checkbox(
-                            checked = isSelected,
-                            onCheckedChange = null,
                         )
                     }
                 }

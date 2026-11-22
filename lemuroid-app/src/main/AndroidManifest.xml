@@ -152,6 +152,7 @@
 
         <receiver android:name=".app.shared.library.LibraryIndexBroadcastReceiver" />
         <receiver android:name=".app.shared.library.CoreUpdateBroadcastReceiver" />
+        <receiver android:name=".app.shared.scraper.BatchScraperBroadcastReceiver" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

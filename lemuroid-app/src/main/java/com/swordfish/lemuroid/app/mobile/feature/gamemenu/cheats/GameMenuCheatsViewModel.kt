@@ -1,6 +1,7 @@
 package com.swordfish.lemuroid.app.mobile.feature.gamemenu.cheats
 
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +10,7 @@ import com.swordfish.lemuroid.app.mobile.feature.gamemenu.GameMenuActivity
 import com.swordfish.lemuroid.lib.cheats.CheatType
 import com.swordfish.lemuroid.lib.cheats.CheatValidator
 import com.swordfish.lemuroid.lib.cheats.ValidationResult
+import com.swordfish.lemuroid.lib.cheats.cht.ChtDiscoveryManager
 import com.swordfish.lemuroid.lib.cheats.cht.ChtExportManager
 import com.swordfish.lemuroid.lib.cheats.cht.ChtImportManager
 import com.swordfish.lemuroid.lib.cheats.cht.ImportMode
@@ -31,11 +33,22 @@ import java.io.InputStream
 import java.io.OutputStream
 
 class GameMenuCheatsViewModel(
+    private val context: Context,
     val game: Game,
     private val cheatDao: CheatDao,
 ) : ViewModel() {
     val gameId: Int get() = game.id
     val systemId: String get() = game.systemId
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            runCatching {
+                ChtDiscoveryManager.syncDiscoveredCheats(context, game, cheatDao)
+            }.onFailure {
+                timber.log.Timber.e(it, "Failed to auto-discover cheats in GameMenuCheatsViewModel for ${game.id}")
+            }
+        }
+    }
 
     val cheats: StateFlow<List<Cheat>> =
         cheatDao.getCheatsForGame(game.id)
@@ -272,15 +285,16 @@ class GameMenuCheatsViewModel(
     }
 
     class Factory(
+        private val context: Context,
         private val game: Game,
         private val cheatDao: CheatDao,
     ) : ViewModelProvider.Factory {
-        constructor(gameMenuRequest: GameMenuActivity.GameMenuRequest, cheatDao: CheatDao) :
-            this(gameMenuRequest.game, cheatDao)
+        constructor(context: Context, gameMenuRequest: GameMenuActivity.GameMenuRequest, cheatDao: CheatDao) :
+            this(context, gameMenuRequest.game, cheatDao)
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return GameMenuCheatsViewModel(game, cheatDao) as T
+            return GameMenuCheatsViewModel(context, game, cheatDao) as T
         }
     }
 }

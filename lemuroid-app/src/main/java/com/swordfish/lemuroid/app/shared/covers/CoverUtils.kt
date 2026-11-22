@@ -43,6 +43,27 @@ object CoverUtils {
             }
             .okHttpClient {
                 OkHttpClient.Builder()
+                    .addInterceptor { chain ->
+                        val original = chain.request()
+                        val request = if (original.url.host.contains("screenscraper.fr", ignoreCase = true)) {
+                            original.newBuilder()
+                                .header("User-Agent", "AlphaLemuroid")
+                                .build()
+                        } else {
+                            original
+                        }
+                        val response = chain.proceed(request)
+                        if (original.url.host.contains("screenscraper.fr", ignoreCase = true) && response.isSuccessful) {
+                            val contentType = response.header("Content-Type")
+                            if (contentType != null && contentType.contains("text/html", ignoreCase = true)) {
+                                return@addInterceptor response.newBuilder()
+                                    .code(404)
+                                    .message("No media available")
+                                    .build()
+                            }
+                        }
+                        response
+                    }
                     .addNetworkInterceptor(ThrottleFailedThumbnailsInterceptor)
                     .build()
             }

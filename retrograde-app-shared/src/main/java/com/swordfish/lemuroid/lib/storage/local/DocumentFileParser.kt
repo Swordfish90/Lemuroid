@@ -11,9 +11,21 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 object DocumentFileParser {
-    private const val MAX_CHECKED_ENTRIES = 3
-    private const val SINGLE_ARCHIVE_THRESHOLD = 0.9
+    private const val MAX_CHECKED_ENTRIES = 50
     private const val MAX_SIZE_CRC32 = 1_000_000_000
+
+    private val NON_ROM_EXTENSIONS = setOf(
+        "ips", "ups", "bps", "xdelta", "cht", "txt", "nfo", "diz",
+        "xml", "htm", "html", "png", "jpg", "jpeg", "bmp", "gif",
+        "pdf", "sav", "srm", "state", "url", "zip", "rar", "7z", "tar", "gz"
+    )
+
+    private val KNOWN_ROM_EXTENSIONS = setOf(
+        "gb", "gbc", "gba", "nes", "sfc", "smc", "gen", "smd", "md",
+        "sms", "gg", "n64", "z64", "v64", "nds", "a26", "a78", "lnx",
+        "pce", "ngp", "ngc", "ws", "wsc", "dosz", "3ds", "iso", "cso",
+        "chd", "pbp", "cue", "bin"
+    )
 
     fun parseDocumentFile(
         context: Context,
@@ -93,10 +105,6 @@ object DocumentFileParser {
         )
     }
 
-    /* Finds a zip entry which we assume is a game. Lemuroid only supports single archive games,
-       so we are looking for an entry which occupies a large percentage of the archive space.
-       This is very fast heuristic to compute and avoids reading the whole stream in most
-       scenarios.*/
     fun findGameEntry(
         openedInputStream: ZipInputStream,
         fileSize: Long = -1,
@@ -113,7 +121,24 @@ object DocumentFileParser {
         entry: ZipEntry,
         fileSize: Long,
     ): Boolean {
-        if (fileSize <= 0 || entry.compressedSize <= 0) return false
-        return (entry.compressedSize.toFloat() / fileSize.toFloat()) > SINGLE_ARCHIVE_THRESHOLD
+        if (entry.isDirectory) return false
+        val name = entry.name
+        if (name.startsWith("__MACOSX/", ignoreCase = true) ||
+            name.contains("/__MACOSX/", ignoreCase = true) ||
+            name.substringAfterLast('/').startsWith("._")
+        ) {
+            return false
+        }
+        val ext = name.substringAfterLast('.', "").lowercase()
+        if (ext in NON_ROM_EXTENSIONS) {
+            return false
+        }
+        if (ext in KNOWN_ROM_EXTENSIONS) {
+            return true
+        }
+        if (fileSize > 0 && entry.compressedSize > 0) {
+            return (entry.compressedSize.toFloat() / fileSize.toFloat()) > 0.3f
+        }
+        return ext.isNotBlank()
     }
 }

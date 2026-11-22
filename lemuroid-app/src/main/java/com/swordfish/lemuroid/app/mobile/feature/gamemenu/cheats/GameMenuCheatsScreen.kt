@@ -109,10 +109,10 @@ fun GameMenuCheatsScreen(
                     if (content != null) {
                         viewModel.loadChtContentForImport(content, fileName)
                     } else {
-                        Toast.makeText(context, "Failed to read file", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.cheat_error_read_file), Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(context, "Failed to read file: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.cheat_error_read_file_detail, e.message.orEmpty()), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -148,7 +148,7 @@ fun GameMenuCheatsScreen(
     LaunchedEffect(importResult) {
         importResult?.let { res ->
             val msg = context.getString(R.string.cheat_import_success, res.importedCount)
-            val detail = if (res.skippedDuplicatesCount > 0) " (${res.skippedDuplicatesCount} skipped)" else ""
+            val detail = if (res.skippedDuplicatesCount > 0) context.getString(R.string.cheat_import_skipped_detail, res.skippedDuplicatesCount) else ""
             Toast.makeText(context, "$msg$detail", Toast.LENGTH_SHORT).show()
             viewModel.dismissImportResult()
         }
@@ -259,7 +259,7 @@ fun GameMenuCheatsScreen(
                             cheatToDelete = null
                         },
                     ) {
-                        Text(stringResource(R.string.cheat_delete), color = MaterialTheme.colorScheme.error)
+                        Text(stringResource(R.string.dialog_delete_rom_confirm), color = MaterialTheme.colorScheme.error)
                     }
                 },
                 dismissButton = {
@@ -472,7 +472,7 @@ private fun CheatItemCard(
                                     color = MaterialTheme.colorScheme.primaryContainer,
                                 ) {
                                     Text(
-                                        text = stringResource(R.string.cheat_badge_master),
+                                        text = stringResource(R.string.cheat_is_master_code),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
@@ -564,7 +564,7 @@ private fun CheatItemCard(
                             IconButton(onClick = onDelete) {
                                 Icon(
                                     Icons.Default.Delete,
-                                    contentDescription = stringResource(R.string.cheat_delete),
+                                    contentDescription = stringResource(R.string.dialog_delete_rom_confirm),
                                     tint = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                 )
                             }

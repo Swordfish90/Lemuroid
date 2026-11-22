@@ -26,8 +26,10 @@ android {
 
     targetProjectPath = ":lemuroid-app"
 
-    flavorDimensions += listOf("opensource", "cores")
+    flavorDimensions += listOf("brand", "opensource", "cores")
     productFlavors {
+        create("alpha") { dimension = "brand" }
+        create("official") { dimension = "brand" }
         create("free") { dimension = "opensource" }
         create("play") { dimension = "opensource" }
         create("bundle") { dimension = "cores" }

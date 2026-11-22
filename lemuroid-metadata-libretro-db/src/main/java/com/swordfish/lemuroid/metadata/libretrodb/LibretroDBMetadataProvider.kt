@@ -178,6 +178,6 @@ class LibretroDBMetadataProvider(private val ovgdbManager: LibretroDBManager) :
 
         val thumbGameName = name.replace(THUMB_REPLACE, "_")
 
-        return "http://thumbnails.libretro.com/$systemName/$imageType/$thumbGameName.png"
+        return "https://raw.githubusercontent.com/libretro/libretro-thumbnails/master/$systemName/$imageType/$thumbGameName.png"
     }
 }

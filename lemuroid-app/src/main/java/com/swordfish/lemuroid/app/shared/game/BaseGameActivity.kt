@@ -219,6 +219,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                     GameMenuContract.EXTRA_FAST_FORWARD,
                     (baseGameScreenViewModel.retroGameView.retroGameView?.frameSpeed ?: 1) > 1,
                 )
+                this.putExtra(
+                    GameMenuContract.EXTRA_FAST_FORWARD_SPEED,
+                    baseGameScreenViewModel.getFastForwardSpeed(),
+                )
                 this.putExtra(GameMenuContract.EXTRA_CURRENT_TILT_CONFIG, currentTiltConfiguration)
                 // TODO PADS... Make sure to avoid passing this if a physical pad is connected.
                 this.putExtra(GameMenuContract.EXTRA_TILT_ALL_CONFIGS, tiltConfigurations.toTypedArray())
@@ -344,6 +348,20 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
+    private fun performReloadGame() {
+        val resultIntent =
+            Intent().apply {
+                putExtra(PLAY_GAME_RESULT_SESSION_DURATION, System.currentTimeMillis() - startGameTime)
+                putExtra(PLAY_GAME_RESULT_GAME, intent.getSerializableExtra(EXTRA_GAME))
+                putExtra(PLAY_GAME_RESULT_LEANBACK, intent.getBooleanExtra(EXTRA_LEANBACK, false))
+                putExtra(PLAY_GAME_RESULT_RESTART, true)
+            }
+
+        setResult(RESULT_OK, resultIntent)
+        baseGameScreenViewModel.requestBackgroundSave()
+        finishAndExitProcess()
+    }
+
     open fun onFinishTriggered() {
         finishTriggered = true
     }
@@ -371,6 +389,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         if (requestCode == DIALOG_REQUEST) {
             Timber.i("Game menu dialog response: ${data?.extras.dump()}")
             baseGameScreenViewModel.reapplyCheats()
+            if (data?.getBooleanExtra(GameMenuContract.RESULT_RELOAD_GAME, false) == true) {
+                performReloadGame()
+                return
+            }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_RESET, false) == true) {
                 GlobalScope.launch {
                     baseGameScreenViewModel.reset()
@@ -402,6 +424,10 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                         )
                 }
             }
+            if (data?.hasExtra(GameMenuContract.RESULT_CHANGE_FAST_FORWARD_SPEED) == true) {
+                val newSpeed = data.getIntExtra(GameMenuContract.RESULT_CHANGE_FAST_FORWARD_SPEED, 2)
+                baseGameScreenViewModel.setFastForwardSpeed(newSpeed)
+            }
             if (data?.hasExtra(GameMenuContract.RESULT_ENABLE_FAST_FORWARD) == true) {
                 baseGameScreenViewModel.retroGameView.retroGameView?.apply {
                     val fastForwardEnabled =
@@ -409,7 +435,8 @@ abstract class BaseGameActivity : ImmersiveActivity() {
                             GameMenuContract.RESULT_ENABLE_FAST_FORWARD,
                             false,
                         )
-                    this.frameSpeed = if (fastForwardEnabled) 2 else 1
+                    val speed = baseGameScreenViewModel.getFastForwardSpeed()
+                    this.frameSpeed = if (fastForwardEnabled) speed else 1
                 }
             }
             if (data?.getBooleanExtra(GameMenuContract.RESULT_EDIT_TOUCH_CONTROLS, false) == true) {
@@ -434,6 +461,7 @@ abstract class BaseGameActivity : ImmersiveActivity() {
         const val PLAY_GAME_RESULT_SESSION_DURATION = "PLAY_GAME_RESULT_SESSION_DURATION"
         const val PLAY_GAME_RESULT_GAME = "PLAY_GAME_RESULT_GAME"
         const val PLAY_GAME_RESULT_LEANBACK = "PLAY_GAME_RESULT_LEANBACK"
+        const val PLAY_GAME_RESULT_RESTART = "PLAY_GAME_RESULT_RESTART"
         const val PLAY_GAME_RESULT_ERROR = "PLAY_GAME_RESULT_ERROR"
 
         const val RESULT_ERROR = Activity.RESULT_FIRST_USER + 2

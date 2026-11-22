@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidEmptyView
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSystemCard
@@ -24,7 +25,13 @@ fun MetaSystemsScreen(
     MetaSystemsScreen(
         modifier = modifier,
         metaSystems = metaSystems.value,
-        onSystemClicked = { navController.navigate("systems/${it.metaSystem.name}") },
+        onSystemClicked = {
+            if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+                navController.navigate("systems/${it.metaSystem.name}") {
+                    launchSingleTop = true
+                }
+            }
+        },
     )
 }
 

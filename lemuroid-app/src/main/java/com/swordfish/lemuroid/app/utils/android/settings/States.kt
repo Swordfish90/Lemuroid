@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceBooleanSettingState
 import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceIndexSettingState
+import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceIntIndexSettingState
 import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceIntSettingState
 import com.swordfish.lemuroid.app.utils.settings.rememberSafePreferenceStringsSetSettingState
 import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
@@ -46,6 +47,12 @@ fun indexPreferenceState(
 
 @Composable
 fun stringsSetPreferenceState(
+    id: Int,
+    default: Set<String>,
+) = stringsSetPreferenceState(stringResource(id = id), default)
+
+@Composable
+fun stringsSetPreferenceState(
     key: String,
     default: Set<String>,
 ) = rememberSafePreferenceStringsSetSettingState(
@@ -60,6 +67,25 @@ fun intPreferenceState(
     default: Int,
 ) = rememberSafePreferenceIntSettingState(
     key = key,
+    defaultValue = default,
+    preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
+)
+
+@Composable
+fun intIndexPreferenceState(
+    id: Int,
+    default: Int,
+    values: List<Int>,
+) = intIndexPreferenceState(stringResource(id), default, values)
+
+@Composable
+fun intIndexPreferenceState(
+    key: String,
+    default: Int,
+    values: List<Int>,
+) = rememberSafePreferenceIntIndexSettingState(
+    key = key,
+    values = values,
     defaultValue = default,
     preferences = SharedPreferencesHelper.getSharedPreferences(LocalContext.current),
 )

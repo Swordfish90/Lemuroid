@@ -10,7 +10,14 @@
     <string name="rescan">Rescan</string>
     <string name="stop">Stop</string>
     <string name="none">None</string>
-    <string name="directory">Directory</string>
+    <string name="directory">Directory</string>F
+    <string name="rom_folders">ROM folders</string>
+    <string name="rom_folders_count">ROM folders (%1$d)</string>
+    <string name="add_rom_folder">Add folder</string>
+    <string name="remove_rom_folder_title">Remove folder?</string>
+    <string name="remove_rom_folder_message">Remove \"%1$s\" from ROM folders? Your games and saves will not be deleted.</string>
+    <string name="remove_rom_folder_confirm">Remove</string>
+    <string name="no_rom_folders">No folders configured</string>
     <string name="display_filter">Display filter</string>
     <string name="roms">ROMs</string>
     <string name="ok">OK</string>
@@ -21,7 +28,7 @@
     <string name="back">Back</string>
     <string name="close">Close</string>
 
-    <string name="game_page_search_suggestion">Search games</string>
+    <string name="game_page_search_suggestion">Search using title, genre, developer, year or CRC32 hash</string>
 
     <string name="settings_category_general">General</string>
     <string name="settings_category_input">Input</string>
@@ -64,7 +71,7 @@
     <string name="settings_title_reset_settings">Factory reset</string>
     <string name="settings_description_reset_settings">Reset Lemuroid to its factory settings</string>
 
-    <string name="settings_title_advanced_settings">Advanced settings</string>
+    <string name="settings_title_advanced_settings">Advanced Settings</string>
     <string name="settings_description_advanced_settings">Display advanced settings</string>
     <string name="settings_title_low_latency_audio">Prefer low-latency audio</string>
     <string name="settings_description_low_latency_audio">Reduce audio latency on supported devices. Might increase audio glitches.</string>
@@ -97,12 +104,19 @@
     <string name="game_context_menu_remove_from_favorites">Remove from favorites</string>
     <string name="game_context_menu_resume">Resume</string>
     <string name="game_context_menu_restart">Restart</string>
+    <string name="game_context_menu_game_info">Game info</string>
     <string name="game_context_menu_create_shortcut">Pin to launcher</string>
 
     <string name="game_context_menu_add_custom_name">Add custom name</string>
     <string name="game_context_menu_remove_custom_name">Remove custom name</string>
     <string name="game_context_menu_add_custom_artwork">Add custom artwork</string>
     <string name="game_context_menu_remove_custom_artwork">Remove custom artwork</string>
+    <string name="game_context_menu_delete_rom">Delete ROM</string>
+    <string name="dialog_delete_rom_title">Delete ROM?</string>
+    <string name="dialog_delete_rom_message">Permanently delete \"%1$s\" (%2$s) from your device along with its saves, save states, cheats, and scraped media? This cannot be undone.</string>
+    <string name="dialog_delete_rom_confirm">Delete</string>
+    <string name="toast_delete_rom_success">Deleted %1$s</string>
+    <string name="toast_delete_rom_partial">Removed %1$s from library (ROM file could not be deleted from storage)</string>
     <string name="game_context_menu_custom_name_dialog_title">Set custom name</string>
 
     <string name="home_notification_title">Enable notifications</string>
@@ -149,12 +163,9 @@
     <string name="cheat_master_code_dependency">Prerequisite Master Code</string>
     <string name="cheat_master_code_none">None</string>
     <string name="cheat_enabled">Enabled</string>
-    <string name="cheat_save">Save</string>
-    <string name="cheat_delete">Delete</string>
     <string name="cheat_delete_confirmation_title">Delete Cheat</string>
     <string name="cheat_delete_confirmation_message">Are you sure you want to delete \"%1$s\"?</string>
     <string name="cheat_delete_master_warning">Deleting this Master Code will detach all dependent cheats.</string>
-    <string name="cheat_badge_master">Master Code</string>
     <string name="cheat_badge_prerequisite_disabled">Prerequisite Disabled</string>
     <string name="cheat_badge_requires">Requires: %1$s</string>
     <string name="cheat_error_title_empty">Name cannot be empty</string>
@@ -163,7 +174,6 @@
     <string name="cheat_export">Export Cheats</string>
     <string name="cheat_import_cht_file">Import (.cht)</string>
     <string name="cheat_export_cht_file">Export (.cht)</string>
-    <string name="cheat_import_preview_title">Import Cheats</string>
     <string name="cheat_import_file_label">File: %1$s</string>
     <string name="cheat_import_system_label">System: %1$s</string>
     <string name="cheat_import_summary">%1$d found: %2$d valid, %3$d duplicate, %4$d unsupported</string>
@@ -300,5 +310,184 @@
     <string name="tilt_configuration_buttons_l_r">L - R</string>
     <string name="tilt_configuration_buttons_l1_r1">L1 - R1</string>
     <string name="tilt_configuration_buttons_l2_r2">L2 - R2</string>
+
+    <!-- Game Details & Scraper -->
+    <string name="settings_title_direct_play_on_tap">Direct play on tap</string>
+    <string name="settings_description_direct_play_on_tap">Launch game immediately when tapped instead of showing the details page</string>
+    <string name="settings_category_scraper">Metadata &amp; scraper</string>
+    <string name="settings_title_scraper_priority">Metadata scraper</string>
+    <string name="settings_scraper_priority_screenscraper">ScreenScraper</string>
+    <string name="settings_scraper_priority_igdb">IGDB</string>
+    <string name="settings_scraper_priority_mixed">Mixed</string>
+    <string name="settings_title_screenscraper_account">ScreenScraper account</string>
+    <string name="settings_description_screenscraper_account">Configure ScreenScraper.fr account for higher download limits</string>
+    <string name="settings_screenscraper_username">Username</string>
+    <string name="settings_screenscraper_password">Password</string>
+    <string name="settings_title_box_art_format">Box art format</string>
+    <string name="settings_box_art_format_2d">2D box art</string>
+    <string name="settings_box_art_format_3d">3D box art</string>
+    <string name="settings_title_media_sources">Screenshots &amp; media</string>
+    <string name="settings_media_source_banner">Main banner</string>
+    <string name="settings_media_source_ss">Gameplay snapshots</string>
+    <string name="settings_media_source_sstitle">Title screens</string>
+    <string name="settings_media_source_video">Gameplay video</string>
+    <string name="settings_media_source_fanart">Fanarts</string>
+    <string name="settings_title_media_storage">Media storage</string>
+    <string name="settings_media_storage_empty">No cached media</string>
+    <string name="settings_media_storage_summary">%1$s • %2$d files</string>
+    <string name="settings_media_storage_clear_all">Clear all media</string>
+    <string name="settings_media_storage_clear_confirm_title">Clear all scraped media?</string>
+    <string name="settings_media_storage_clear_confirm_message">This will delete all downloaded box art, banners, screenshots, fanart, and videos (%1$s). Your ROMs, saves, and text metadata will not be affected.</string>
+    <string name="toast_media_cleared">Scraped media cleared</string>
+    <string name="game_details_play">Play game</string>
+    <string name="scrape_platform_games">Scrape console games</string>
+    <string name="scrape_all_platforms">Scrape all platforms</string>
+    <string name="dialog_scrape_platform_title">Scrape %1$s games</string>
+    <string name="dialog_scrape_platform_message">Download official metadata, box arts and screenshots for all %1$s games.</string>
+    <string name="dialog_scrape_all_message">Download official metadata, box arts and screenshots for all games across all systems.</string>
+    <string name="dialog_scrape_platform_overwrite">Overwrite already scraped games</string>
+    <string name="dialog_scrape_platform_start">Start scraping</string>
+    <string name="toast_scrape_started">Started scraping %1$s games…</string>
+    <string name="toast_scrape_finished">Finished scraping %1$s games (%2$d updated).</string>
+    <string name="toast_scrape_all_started">Started scraping all platforms…</string>
+    <string name="toast_scrape_all_finished">Finished scraping all platforms (%1$d updated).</string>
+    <string name="toast_scrape_cancelled">Scraping cancelled</string>
+    <string name="scraper_notification_channel_name">Metadata scraping</string>
+    <string name="scraper_notification_title">Scraping %1$s</string>
+    <string name="scraper_notification_all_platforms">Scraping all platforms</string>
+    <string name="scraper_notification_summary">Scraped: %1$d • Left: %2$d • Total: %3$d</string>
+    <string name="scraper_notification_expanded">Current: %1$s\nScraped: %2$d • Left: %3$d • Total: %4$d</string>
+    <string name="scraper_notification_expanded_dual">Current: %1$s\nScraped: %2$d • Left: %3$d • Total: %4$d\nOverall: %5$d of %6$d games (%7$d remaining)</string>
+    <string name="scraper_notification_complete_title">Scraping completed: %1$s</string>
+    <string name="scraper_notification_complete_message">Scraped %1$d of %2$d games.</string>
+    <string name="scraper_notification_complete_all_title">Scraping completed: All platforms</string>
+    <string name="scraper_notification_complete_all_message">Scraped %1$d of %2$d games across all platforms.</string>
+    <string name="game_details_about">About</string>
+    <string name="game_details_file_info">File information</string>
+    <string name="game_details_system">System</string>
+    <string name="game_details_filename">Filename</string>
+    <string name="game_details_rom_size">Size</string>
+    <string name="game_details_crc32">CRC32</string>
+    <string name="game_details_last_played">Last played</string>
+    <string name="game_details_last_played_never">Never</string>
+    <string name="game_details_playtime">Playtime</string>
+    <string name="game_details_read_more">Read more</string>
+    <string name="game_details_read_less">Read less</string>
+
+    <string name="menu_sort_by">Sort by</string>
+    <string name="menu_grid_view">Grid view</string>
+    <string name="menu_list_view">List view</string>
+    <string name="sort_order_name_asc">Name (A–Z)</string>
+    <string name="sort_order_name_desc">Name (Z–A)</string>
+    <string name="sort_order_rating_desc">Rating (high → low)</string>
+    <string name="sort_order_rating_asc">Rating (low → high)</string>
+    <string name="sort_order_most_rated">Most rated</string>
+    <string name="sort_order_recently_played">Recently played</string>
+    <string name="sort_order_most_played">Most played</string>
+    <string name="sort_order_favorites_first">Favorites first</string>
+    <string name="sort_order_release_date_desc">Release date (newest)</string>
+    <string name="sort_order_release_date_asc">Release date (oldest)</string>
+    <string name="sort_order_recently_added">Recently added</string>
+    <string name="sort_order_developer_asc">Developer (A–Z)</string>
+    <string name="filter_genre_all">All</string>
+    <string name="search_hint_games">Search title, genre, dev, year, or CRC32</string>
+    <string name="search_hint_game_or_genre">Search title, genre, year, or CRC32</string>
+
+    <string name="home_continue_playing">Continue playing</string>
+    <string name="home_continue_details">Details</string>
+    <string name="home_top_rated">Top rated</string>
+    <string name="home_collections">Collections</string>
+    <string name="home_collections_new">New</string>
+    <string name="home_collections_empty_title">Organize your library</string>
+    <string name="home_collections_empty_subtitle">Create custom playlists or pick a starter list below.</string>
+    <string name="home_collection_empty_hint">Long-press any game to add it to this collection.</string>
+    <string name="collection_create_title">New collection</string>
+    <string name="collection_rename_title">Rename collection</string>
+    <string name="collection_name_hint">Collection name</string>
+    <string name="collection_create_action">Create</string>
+    <string name="collection_rename_action">Rename</string>
+    <string name="collection_delete_title">Delete collection?</string>
+    <string name="collection_delete_message">Remove \"%1$s\"? Your games will not be deleted.</string>
+    <string name="game_context_menu_add_to_collection">Add to collection</string>
+    <string name="game_context_menu_customize">Customize</string>
+    <string name="dialog_customize_game_title">Customize game</string>
+    <string name="dialog_customize_name_label">Display name</string>
+    <string name="dialog_customize_artwork_label">Artwork</string>
+    <string name="dialog_customize_choose_artwork">Choose image</string>
+    <string name="dialog_customize_reset">Reset</string>
+    <string name="dialog_add_to_collection_empty">No collections yet. Create one below.</string>
+
+    <string name="home_library_stats">Library stats</string>
+    <string name="stats_played">Played</string>
+    <string name="stats_scraped">Scraped</string>
+    <string name="stats_games_played_progress">Games played</string>
+    <string name="stats_total_playtime">Total playtime</string>
+    <string name="stats_scraped_coverage">Metadata scraped</string>
+    <string name="stats_media_storage">Offline media</string>
+    <string name="stats_media_files_format">%1$s (%2$d files)</string>
+    <string name="stats_systems_breakdown">Games by system</string>
+
+    <string name="settings_title_fast_forward_speed">Fast-forward speed</string>
+    <string name="fast_forward_speed_2x">2x</string>
+    <string name="fast_forward_speed_3x">3x</string>
+    <string name="fast_forward_speed_4x">4x</string>
+    <string name="fast_forward_speed_5x">5x</string>
+
+    <!-- ROM Patches -->
+    <string name="game_menu_patches">Patches</string>
+    <string name="game_menu_patches_title">ROM Patches</string>
+    <string name="game_menu_patches_subtitle_format">%1$d of %2$d active</string>
+    <string name="game_menu_patches_restart_prompt">Restart game to apply patch changes.</string>
+    <string name="game_menu_patches_restart_action">Restart now</string>
+    <string name="game_menu_patches_source_zip">Inside ZIP</string>
+    <string name="game_menu_patches_source_folder">Folder</string>
+    <string name="game_menu_patches_invalid_patch">Invalid patch</string>
+
+    <!-- Game Details -->
+    <string name="game_details_media_screenshots_video">Screenshots &amp; Video (%1$d)</string>
+    <string name="game_details_media_screenshots">Screenshots (%1$d)</string>
+    <string name="game_details_loading_media">Loading media &amp; screenshots…</string>
+    <string name="game_details_source">Source</string>
+    <string name="game_details_last_updated">Last updated</string>
+    <string name="game_details_video_playing">● PLAYING</string>
+    <string name="game_details_video_retry">⚠ RETRY VIDEO</string>
+    <string name="game_details_video_gameplay">▶ GAMEPLAY VIDEO</string>
+
+    <!-- Content Descriptions -->
+    <string name="content_desc_rating">Rating</string>
+    <string name="content_desc_screenshot">Screenshot</string>
+    <string name="content_desc_favorite">Favorite</string>
+    <string name="content_desc_cancel_scraping">Cancel Scraping</string>
+    <string name="content_desc_refresh_metadata">Refresh Metadata</string>
+    <string name="content_desc_screenshot_counter">Screenshot %1$d of %2$d</string>
+    <string name="content_desc_unmute">Unmute</string>
+    <string name="content_desc_play_video">Play Video</string>
+
+    <!-- Cheats & Import UI -->
+    <string name="cheat_error_read_file">Failed to read file</string>
+    <string name="cheat_error_read_file_detail">Failed to read file: %1$s</string>
+    <string name="cheat_import_skipped_detail"> (%1$d skipped)</string>
+    <string name="cheat_import_stat_total">%1$d Total</string>
+    <string name="cheat_import_stat_valid">%1$d Valid</string>
+    <string name="cheat_import_stat_dups">%1$d Dups</string>
+    <string name="cheat_import_stat_issues">%1$d Issues</string>
+    <string name="cheat_import_mode_header">Import Mode</string>
+    <string name="cheat_import_entries_preview_header">Entries Preview</string>
+    <string name="cheat_error_name_empty">Cheat name cannot be empty</string>
+
+    <!-- Settings Media & Actions -->
+    <string name="media_type_boxart">Box art</string>
+    <string name="media_type_boxart_back">Box art (back)</string>
+    <string name="media_type_banners">Banners</string>
+    <string name="media_type_fanart">Fanart</string>
+    <string name="media_type_logos">Logos</string>
+    <string name="media_type_screenshots">Screenshots</string>
+    <string name="settings_screenscraper_dialog_description">Enter your ScreenScraper.fr account credentials for higher limits and threads.</string>
+    <string name="action_collapse">Collapse</string>
+    <string name="action_expand">Expand</string>
+
+    <!-- Starter Collections -->
+    <string name="starter_collection_playing">Playing</string>
+    <string name="starter_collection_completed">Completed</string>
 
 </resources>

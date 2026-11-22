@@ -12,10 +12,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -40,6 +42,12 @@ class SearchViewModel(private val retrogradeDb: RetrogradeDatabase) : ViewModel(
                 }
             }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
+
+    val ratingsByGameId: StateFlow<Map<Int, Float>> =
+        retrogradeDb.gameDetailsDao()
+            .getAllRatings()
+            .map { list -> list.associate { it.gameId to it.rating } }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
 
     val searchState: Flow<UIState> =
         queryString
