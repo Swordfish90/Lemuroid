@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,7 +84,16 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
     }
 
     private fun ensureLegacyStoragePermissionsIfNeeded() {
-        if (TVHelper.isSAFSupported(this) || hasLegacyPermissions()) {
+        if (TVHelper.isSAFSupported(this)) {
+            return
+        }
+
+        // On Android 11+ "All files access" is requested only when the built-in folder picker is opened.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return
+        }
+
+        if (hasLegacyPermissions()) {
             return
         }
 
