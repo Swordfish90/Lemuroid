@@ -10,8 +10,8 @@ plugins {
 
 android {
     defaultConfig {
-        versionCode = 252
-        versionName = "1.17.0" // Always remember to update Cores Tag!
+        versionCode = 100
+        versionName = "1.0.0"
         applicationId = "com.swordfish.lemuroid"
     }
 
@@ -60,6 +60,8 @@ android {
         create("alpha") {
             dimension = "brand"
             applicationId = "com.bettercallshiv.alphalemuroid"
+            versionCode = 100
+            versionName = "1.0.0"
         }
 
         create("official") {

@@ -11,13 +11,17 @@
 
 ## 📸 Screenshots
 
-| <!-- SCREENSHOT PLACEHOLDER 1: Home Screen with Continue Playing Card --> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270" alt="Home Screen"/> | <!-- SCREENSHOT PLACEHOLDER 2: Game Details Screen with Scraped Media & Badges --> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="270" alt="Game Details"/> | <!-- SCREENSHOT PLACEHOLDER 3: Expandable RetroAchievements Bottom Sheet --> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="270" alt="RetroAchievements"/> |
+| <img src="docs/screenshots/home_screen.jpg" width="270" alt="Home Screen"/> | <img src="docs/screenshots/system_grid_filters.jpg" width="270" alt="System Grid View"/> | <img src="docs/screenshots/favorites_screen.jpg" width="270" alt="Favorites Screen"/> |
 |:---:|:---:|:---:|
-| **Continue Playing & Home** | **Game Details & Achievements** | **RetroAchievements Sheet** |
+| **Continue Playing & Home** | **Grid View & Genre Filters** | **Favorites & Filter Chips** |
 
-| <!-- SCREENSHOT PLACEHOLDER 4: In-Game Pause Menu with Fast Forward & Hardcore disabled states --> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270" alt="In-Game Pause Menu"/> | <!-- SCREENSHOT PLACEHOLDER 5: System Games Grid View with Filter Chips --> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="270" alt="Grid View & Filters"/> | <!-- SCREENSHOT PLACEHOLDER 6: Library Stats Overview Dialog --> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="270" alt="Library Stats"/> |
+| <img src="docs/screenshots/game_details_top.jpg" width="270" alt="Game Details Top"/> | <img src="docs/screenshots/game_details_ra.jpg" width="270" alt="Game Details RA"/> | <img src="docs/screenshots/retroachievements_sheet.jpg" width="270" alt="RetroAchievements Sheet"/> |
 |:---:|:---:|:---:|
-| **In-Game Menu & Hardcore** | **Multi-Select Genre Filters** | **Library Statistics** |
+| **Rich Game Details & Media** | **RA Progress & File Info** | **Expandable Achievements Sheet** |
+
+| <img src="docs/screenshots/retroachievements_banner.jpg" width="200" alt="In-Game Unlock Banner"/> | <img src="docs/screenshots/retroachievements_modal.jpg" width="200" alt="Achievement Details Modal"/> | <img src="docs/screenshots/in_game_cheats.jpg" width="200" alt="In-Game Cheat Manager"/> | <img src="docs/screenshots/in_game_patches.jpg" width="200" alt="In-Game ROM Patch Manager"/> |
+|:---:|:---:|:---:|:---:|
+| **In-Game Unlock Banner** | **Achievement Details Modal** | **In-Game Cheat Manager** | **In-Game ROM Patches** |
 
 ---
 
