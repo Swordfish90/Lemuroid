@@ -982,6 +982,20 @@ data class GameSystem(
                                         ),
                                     ),
                                     ExposedSetting(
+                                        "melonds_start_time_mode",
+                                        R.string.setting_melonds_start_time_mode,
+                                        arrayListOf(
+                                            ExposedSetting.Value(
+                                                "real",
+                                                R.string.value_melonds_start_time_real,
+                                            ),
+                                            ExposedSetting.Value(
+                                                "sync",
+                                                R.string.value_melonds_start_time_sync,
+                                            ),
+                                        ),
+                                    ),
+                                    ExposedSetting(
                                         "melonds_mic_input",
                                         R.string.setting_melonds_mic_input,
                                         arrayListOf(
