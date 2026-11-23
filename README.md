@@ -197,6 +197,8 @@ Build the release APK:
 
 ---
 
-## 📄 License
+## 👨‍💻 Author
 
-AlphaLemuroid is distributed under the terms of the **GNU General Public License v3.0 (GPLv3)**. See the [LICENSE](LICENSE) file for details.
+**Shivam Raj** ([@BetterCallShiv](https://github.com/BetterCallShiv))
+- Email: [bettercallshiv@gmail.com](mailto:bettercallshiv@gmail.com)
+- GitHub: [github.com/BetterCallShiv](https://github.com/BetterCallShiv)
