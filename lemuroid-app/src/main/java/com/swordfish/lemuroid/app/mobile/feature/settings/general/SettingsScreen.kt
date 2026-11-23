@@ -123,6 +123,7 @@ fun SettingsScreen(
         )
         GeneralSettings()
         ScraperSettings()
+        RetroAchievementsSettings()
         InputSettings(navController = navController)
         MiscSettings(
             indexingInProgress = indexingInProgress,

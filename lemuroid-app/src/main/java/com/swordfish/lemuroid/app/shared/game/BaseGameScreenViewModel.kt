@@ -219,17 +219,40 @@ class BaseGameScreenViewModel(
         lifecycle: LifecycleOwner,
     ): GLRetroView {
         val (gameData, result) = retroGameView.createRetroView(context, lifecycle)
+        val raPrefs = com.swordfish.lemuroid.app.shared.retroachievements.RetroAchievementsPreferences(context)
+        val isHardcore = raPrefs.enabled && raPrefs.hardcore
         viewModelScope.launch {
-            gameData.quickSaveData?.let {
-                saves.restoreAutoSaveAsync(it)
+            if (!isHardcore) {
+                gameData.quickSaveData?.let {
+                    saves.restoreAutoSaveAsync(it)
+                }
             }
         }
         viewModelScope.launch {
             try {
                 retroGameView.waitGLEvent<GLRetroView.GLRetroEvents.FrameRendered>()
-                CheatManager.applyCheats(result, game.systemId, currentCheats)
+                if (!isHardcore) {
+                    CheatManager.applyCheats(result, game.systemId, currentCheats)
+                }
             } catch (e: Throwable) {
                 Timber.e(e, "Error applying initial cheats")
+            }
+        }
+        viewModelScope.launch {
+            try {
+                val firstFilePath = when (val files = gameData.gameFiles) {
+                    is com.swordfish.lemuroid.lib.storage.RomFiles.Standard -> files.files.firstOrNull()?.absolutePath ?: ""
+                    is com.swordfish.lemuroid.lib.storage.RomFiles.Virtual -> files.files.firstOrNull()?.filePath ?: ""
+                }
+                com.swordfish.lemuroid.app.shared.retroachievements.RetroAchievementsManager.onGameStart(
+                    context = context,
+                    systemId = game.systemId,
+                    gameTitle = game.title,
+                    gameFileName = game.fileName,
+                    gamePath = firstFilePath,
+                )
+            } catch (e: Throwable) {
+                Timber.e(e, "Error initializing RetroAchievements")
             }
         }
         return result

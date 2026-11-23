@@ -52,6 +52,7 @@ import com.alorma.compose.settings.storage.memory.rememberMemoryIntSettingState
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.gamemenu.tilt.TiltConfigurationMenuEntry
 import com.swordfish.lemuroid.app.shared.GameMenuContract
+import com.swordfish.lemuroid.app.shared.retroachievements.RetroAchievementsPreferences
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
@@ -84,28 +85,37 @@ fun GameMenuHomeScreen(
     }
     val patchesChanged = enabledPatchIds != initialPatchIds
 
+    val isHardcore = remember {
+        val prefs = RetroAchievementsPreferences(context)
+        prefs.enabled && prefs.hardcore
+    }
+
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         if (gameMenuRequest.coreConfig.statesSupported) {
             LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.game_menu_save)) },
+                subtitle = if (isHardcore) { { Text(text = stringResource(id = R.string.game_menu_disabled_in_hardcore)) } } else null,
+                enabled = !isHardcore,
                 icon = {
                     Icon(
                         painterResource(R.drawable.ic_menu_save),
                         contentDescription = stringResource(id = R.string.game_menu_save),
                     )
                 },
-                onClick = { navController.navigateToRoute(GameMenuRoute.SAVE) },
+                onClick = { if (!isHardcore) navController.navigateToRoute(GameMenuRoute.SAVE) },
             )
 
             LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.game_menu_load)) },
+                subtitle = if (isHardcore) { { Text(text = stringResource(id = R.string.game_menu_disabled_in_hardcore)) } } else null,
+                enabled = !isHardcore,
                 icon = {
                     Icon(
                         painterResource(R.drawable.ic_menu_load),
                         contentDescription = stringResource(id = R.string.game_menu_load),
                     )
                 },
-                onClick = { navController.navigateToRoute(GameMenuRoute.LOAD) },
+                onClick = { if (!isHardcore) navController.navigateToRoute(GameMenuRoute.LOAD) },
             )
         }
 
@@ -211,13 +221,15 @@ fun GameMenuHomeScreen(
         if (CheatSupport.isSystemSupported(gameMenuRequest.game.systemId)) {
             LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.game_menu_cheats)) },
+                subtitle = if (isHardcore) { { Text(text = stringResource(id = R.string.game_menu_disabled_in_hardcore)) } } else null,
+                enabled = !isHardcore,
                 icon = {
                     Icon(
                         painterResource(R.drawable.ic_menu_cheat),
                         contentDescription = stringResource(id = R.string.game_menu_cheats),
                     )
                 },
-                onClick = { navController.navigateToRoute(GameMenuRoute.CHEATS) },
+                onClick = { if (!isHardcore) navController.navigateToRoute(GameMenuRoute.CHEATS) },
             )
         }
 

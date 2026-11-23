@@ -19,6 +19,9 @@ import com.swordfish.lemuroid.lib.scraper.MediaStorageManager
 import com.swordfish.lemuroid.lib.scraper.ScreenScraperClient
 import com.swordfish.lemuroid.lib.scraper.ScreenScraperSystemMapper
 import com.swordfish.lemuroid.metadata.libretrodb.db.LibretroDBManager
+import com.swordfish.lemuroid.app.shared.retroachievements.AchievementsUiState
+import com.swordfish.lemuroid.app.shared.retroachievements.RetroAchievementsRepository
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -63,6 +66,11 @@ class GameDetailViewModel(
         val actualFileName: String? = null,
         val fileSizeFormatted: String? = null,
     )
+
+    private val retroAchievementsRepository = RetroAchievementsRepository(appContext)
+    private val _achievementsState = MutableStateFlow<AchievementsUiState>(AchievementsUiState.Disabled)
+    val achievementsState: StateFlow<AchievementsUiState> = _achievementsState.asStateFlow()
+    private var achievementsJob: Job? = null
 
     private val libretroDbManager by lazy { LibretroDBManager(appContext) }
     private val isScrapingFlow = MutableStateFlow(false)
@@ -169,6 +177,24 @@ class GameDetailViewModel(
             if (gameWithDetails != null && isNeverScraped && !hasAttemptedInitialScrape) {
                 hasAttemptedInitialScrape = true
                 scrapeGame(gameWithDetails.game, force = false)
+            }
+        }
+        achievementsJob = viewModelScope.launch(Dispatchers.IO) {
+            val game = gameWithDetailsFlow.first()?.game ?: return@launch
+            val crc = fileMetadataFlow.first().crc32
+            retroAchievementsRepository.getAchievementsFlow(game, crc).collect { state ->
+                _achievementsState.value = state
+            }
+        }
+    }
+
+    fun refreshAchievements() {
+        achievementsJob?.cancel()
+        achievementsJob = viewModelScope.launch(Dispatchers.IO) {
+            val game = gameWithDetailsFlow.first()?.game ?: return@launch
+            val crc = fileMetadataFlow.value.crc32
+            retroAchievementsRepository.getAchievementsFlow(game, crc).collect { state ->
+                _achievementsState.value = state
             }
         }
     }

@@ -27,6 +27,7 @@
     <string name="show_all">Show All</string>
     <string name="back">Back</string>
     <string name="close">Close</string>
+    <string name="retry">Retry</string>
 
     <string name="game_page_search_suggestion">Search using title, genre, developer, year or CRC32 hash</string>
 
@@ -489,5 +490,48 @@
     <!-- Starter Collections -->
     <string name="starter_collection_playing">Playing</string>
     <string name="starter_collection_completed">Completed</string>
+
+    <!-- RetroAchievements -->
+    <string name="settings_category_retroachievements">RetroAchievements</string>
+    <string name="settings_title_retroachievements_enable">Enable RetroAchievements</string>
+    <string name="settings_desc_retroachievements_enable">Earn achievements and track progress live while playing supported games</string>
+    <string name="settings_title_retroachievements_username">Username</string>
+    <string name="settings_title_retroachievements_hardcore">Hardcore Mode</string>
+    <string name="settings_desc_retroachievements_hardcore">Disables save states, rewind and cheats</string>
+    <string name="dialog_enter_username">Enter RetroAchievements Username</string>
+    <string name="ra_achievement_unlocked">ACHIEVEMENT UNLOCKED</string>
+    <string name="ra_banner_category">RETROACHIEVEMENTS</string>
+    <string name="ra_achievements_summary_unlocked">%1$d of %2$d Unlocked (%3$d/%4$d pts)</string>
+    <string name="ra_achievements_summary_available">%1$d Achievements Available (%2$d pts)</string>
+    <string name="ra_game_mastered">Mastery! All achievements completed!</string>
+    <string name="ra_settings_logged_in">Logged In</string>
+    <string name="ra_settings_account_format">Account: %1$s</string>
+    <string name="ra_settings_log_out">Log Out</string>
+    <string name="ra_settings_log_out_desc">Disconnect RetroAchievements account</string>
+    <string name="ra_settings_log_in">Log In to RetroAchievements</string>
+    <string name="ra_settings_log_in_desc">Sign in using your RetroAchievements username &amp; password</string>
+    <string name="ra_dialog_login_title">RetroAchievements Login</string>
+    <string name="ra_dialog_login_desc_password">Enter your username and password to login.</string>
+    <string name="ra_dialog_username_label">Username</string>
+    <string name="ra_dialog_password_label">Password</string>
+    <string name="ra_dialog_logging_in">Logging in…</string>
+    <string name="ra_dialog_login_button">Log In</string>
+    <string name="ra_toast_logged_in_as">Logged in as %1$s</string>
+    <string name="ra_toast_logged_out">Logged out</string>
+    <string name="ra_toast_login_failed">RA Login Failed: %1$s</string>
+    <string name="ra_game_details_header">RetroAchievements</string>
+    <string name="ra_game_details_hardcore">HARDCORE</string>
+    <string name="ra_game_details_softcore">SOFTCORE</string>
+    <string name="ra_game_details_progress">%1$d of %2$d Unlocked (%3$d/%4$d pts)</string>
+    <string name="ra_game_details_view_all">View All (%1$d)</string>
+    <string name="ra_game_details_unlocked_on">Unlocked %1$s</string>
+    <string name="ra_game_details_locked">Locked</string>
+    <string name="ra_game_details_checking">Checking achievements…</string>
+    <string name="ra_game_details_no_achievements">No achievements found for this game</string>
+    <string name="ra_game_details_filter_all">All (%1$d)</string>
+    <string name="ra_game_details_filter_unlocked">Unlocked (%1$d)</string>
+    <string name="ra_game_details_filter_locked">Locked (%1$d)</string>
+    <string name="ra_game_details_points_badge">+%1$d pts</string>
+    <string name="game_menu_disabled_in_hardcore">Disabled in Hardcore Mode</string>
 
 </resources>

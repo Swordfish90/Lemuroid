@@ -37,4 +37,6 @@ fun TVGameScreen(viewModel: BaseGameScreenViewModel) {
             CircularProgressIndicator()
         }
     }
+
+    com.swordfish.lemuroid.app.shared.retroachievements.AchievementPopupOverlay()
 }

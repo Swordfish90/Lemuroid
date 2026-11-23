@@ -3,6 +3,7 @@ package com.swordfish.lemuroid.app.shared.game.viewmodel
 import android.content.Context
 import com.swordfish.lemuroid.R
 import com.swordfish.lemuroid.app.mobile.feature.settings.SettingsManager
+import com.swordfish.lemuroid.app.shared.retroachievements.RetroAchievementsPreferences
 import com.swordfish.lemuroid.common.graphics.GraphicsUtils
 import com.swordfish.lemuroid.common.graphics.takeScreenshot
 import com.swordfish.lemuroid.lib.library.GameSystem
@@ -41,6 +42,11 @@ class GameViewModelSaves(
     )
 
     suspend fun saveSlot(index: Int) {
+        val raPrefs = RetroAchievementsPreferences(appContext)
+        if (raPrefs.enabled && raPrefs.hardcore) {
+            sideEffects.showToast(appContext.getString(R.string.game_menu_disabled_in_hardcore))
+            return
+        }
         getCurrentSaveState()?.let {
             statesManager.setSlotSave(game, it, systemCoreConfig.coreID, index)
             runCatching {
@@ -50,6 +56,11 @@ class GameViewModelSaves(
     }
 
     suspend fun loadSlot(index: Int) {
+        val raPrefs = RetroAchievementsPreferences(appContext)
+        if (raPrefs.enabled && raPrefs.hardcore) {
+            sideEffects.showToast(appContext.getString(R.string.game_menu_disabled_in_hardcore))
+            return
+        }
         try {
             statesManager.getSlotSave(game, systemCoreConfig.coreID, index)?.let {
                 val loaded =
@@ -120,6 +131,10 @@ class GameViewModelSaves(
     }
 
     private suspend fun isAutoSaveEnabled(): Boolean {
+        val raPrefs = RetroAchievementsPreferences(appContext)
+        if (raPrefs.enabled && raPrefs.hardcore) {
+            return false
+        }
         return systemCoreConfig.statesSupported && settingsManager.autoSave()
     }
 

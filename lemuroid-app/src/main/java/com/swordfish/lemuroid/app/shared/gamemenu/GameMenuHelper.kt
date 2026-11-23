@@ -43,11 +43,24 @@ object GameMenuHelper {
         screen: PreferenceScreen,
         systemCoreConfig: SystemCoreConfig,
     ) {
-        val savesOption = screen.findPreference<Preference>(SECTION_SAVE_GAME)
-        savesOption?.isVisible = systemCoreConfig.statesSupported
+        val raPrefs = com.swordfish.lemuroid.app.shared.retroachievements.RetroAchievementsPreferences(screen.context)
+        val isHardcore = raPrefs.enabled && raPrefs.hardcore
 
+        val savesOption = screen.findPreference<Preference>(SECTION_SAVE_GAME)
         val loadOption = screen.findPreference<Preference>(SECTION_LOAD_GAME)
-        loadOption?.isVisible = systemCoreConfig.statesSupported
+
+        if (isHardcore) {
+            savesOption?.isVisible = true
+            savesOption?.isEnabled = false
+            savesOption?.summary = screen.context.getString(R.string.game_menu_disabled_in_hardcore)
+
+            loadOption?.isVisible = true
+            loadOption?.isEnabled = false
+            loadOption?.summary = screen.context.getString(R.string.game_menu_disabled_in_hardcore)
+        } else {
+            savesOption?.isVisible = systemCoreConfig.statesSupported
+            loadOption?.isVisible = systemCoreConfig.statesSupported
+        }
     }
 
     fun setupSettingsOption(

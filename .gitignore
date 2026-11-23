@@ -18,3 +18,6 @@ project.properties
 local.properties
 release.jks
 lemuroid-app/alphaFreeBundle/
+
+.kotlin/
+*.salive

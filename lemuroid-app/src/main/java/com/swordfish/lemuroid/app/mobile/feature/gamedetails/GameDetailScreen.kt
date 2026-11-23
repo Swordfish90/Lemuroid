@@ -77,7 +77,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import com.swordfish.lemuroid.app.shared.retroachievements.AchievementsUiState
+import com.swordfish.lemuroid.app.shared.retroachievements.RetroAchievementsPreferences
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.swordfish.lemuroid.R
@@ -97,6 +98,9 @@ fun GameDetailScreen(
     onGenreClick: ((Game, String) -> Unit)? = null,
 ) {
     val state by viewModel.uiState.collectAsState()
+    val achievementsState by viewModel.achievementsState.collectAsState()
+    val context = LocalContext.current
+    val isHardcore = remember { RetroAchievementsPreferences(context).hardcore }
     val gameWithDetails = state.gameWithDetails
     val game = gameWithDetails?.game
 
@@ -487,6 +491,15 @@ fun GameDetailScreen(
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+
+            GameDetailAchievementsSection(
+                achievementsState = achievementsState,
+                isHardcore = isHardcore,
+                onRefresh = { viewModel.refreshAchievements() },
+            )
+            if (achievementsState is AchievementsUiState.Success || achievementsState is AchievementsUiState.Loading || achievementsState is AchievementsUiState.Error) {
                 Spacer(modifier = Modifier.height(20.dp))
             }
 

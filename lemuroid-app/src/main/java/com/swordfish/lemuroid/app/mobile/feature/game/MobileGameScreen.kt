@@ -219,6 +219,8 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
                 CircularProgressIndicator()
             }
         }
+
+        com.swordfish.lemuroid.app.shared.retroachievements.AchievementPopupOverlay()
     }
 }
 
