@@ -1012,6 +1012,7 @@ data class GameSystem(
                                     CoreVariable("melonds_number_of_screen_layouts", "1"),
                                     CoreVariable("melonds_touch_mode", "Touch"),
                                     CoreVariable("melonds_threaded_renderer", "enabled"),
+                                    CoreVariable("melonds_start_time_mode", "sync"),
                                 ),
                             controllerConfigs =
                                 hashMapOf(
