@@ -1,5 +1,6 @@
 package com.swordfish.lemuroid.app.tv.shared
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -37,5 +38,20 @@ object TVHelper {
     fun isTV(context: Context): Boolean {
         val packageManager = context.packageManager
         return packageManager.hasSystemFeature("android.hardware.type.television")
+    }
+
+    // Browsing arbitrary folders with the built-in picker needs "All files access" on Android 11+.
+    fun hasAllFilesAccess(): Boolean {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()
+    }
+
+    // Not every flavor declares MANAGE_EXTERNAL_STORAGE (it is restricted on Google Play).
+    fun isAllFilesAccessDeclared(context: Context): Boolean {
+        return runCatching {
+            context.packageManager
+                .getPackageInfo(context.packageName, PackageManager.GET_PERMISSIONS)
+                .requestedPermissions
+                ?.contains(Manifest.permission.MANAGE_EXTERNAL_STORAGE) == true
+        }.getOrDefault(false)
     }
 }

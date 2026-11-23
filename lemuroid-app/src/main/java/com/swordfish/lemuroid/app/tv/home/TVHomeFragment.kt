@@ -2,10 +2,13 @@ package com.swordfish.lemuroid.app.tv.home
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ClassPresenterSelector
@@ -28,10 +31,12 @@ import com.swordfish.lemuroid.app.tv.folderpicker.TVFolderPickerLauncher
 import com.swordfish.lemuroid.app.tv.settings.TVSettingsActivity
 import com.swordfish.lemuroid.app.tv.shared.GamePresenter
 import com.swordfish.lemuroid.app.tv.shared.TVHelper
+import com.swordfish.lemuroid.app.utils.android.displayErrorDialog
 import com.swordfish.lemuroid.common.coroutines.launchOnState
 import com.swordfish.lemuroid.lib.library.db.RetrogradeDatabase
 import com.swordfish.lemuroid.lib.library.db.entity.Game
 import com.swordfish.lemuroid.lib.savesync.SaveSyncManager
+import com.swordfish.lemuroid.lib.storage.DirectoriesManager
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -44,6 +49,9 @@ class TVHomeFragment : BrowseSupportFragment() {
 
     @Inject
     lateinit var saveSyncManager: SaveSyncManager
+
+    @Inject
+    lateinit var directoriesManager: DirectoriesManager
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -232,12 +240,44 @@ class TVHomeFragment : BrowseSupportFragment() {
         }
     }
 
-    private fun launchFolderPicker() {
-        if (TVHelper.isSAFSupported(requireContext())) {
-            StorageFrameworkPickerLauncher.pickFolder(requireContext())
-        } else {
-            TVFolderPickerLauncher.pickFolder(requireContext())
+    private val allFilesAccessLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (TVHelper.hasAllFilesAccess()) {
+                TVFolderPickerLauncher.pickFolder(requireContext())
+            }
         }
+
+    private fun launchFolderPicker() {
+        val context = requireContext()
+
+        if (TVHelper.isSAFSupported(context)) {
+            StorageFrameworkPickerLauncher.pickFolder(context)
+            return
+        }
+
+        if (TVHelper.hasAllFilesAccess()) {
+            TVFolderPickerLauncher.pickFolder(context)
+            return
+        }
+
+        if (!TVHelper.isAllFilesAccessDeclared(context)) {
+            showFolderPickerUnavailableDialog()
+            return
+        }
+
+        val intent =
+            Intent(
+                Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                Uri.parse("package:${context.packageName}"),
+            )
+        runCatching { allFilesAccessLauncher.launch(intent) }
+            .onFailure { showFolderPickerUnavailableDialog() }
+    }
+
+    // This device has no system folder picker and this build can't read arbitrary folders either.
+    private fun showFolderPickerUnavailableDialog() {
+        val message = getString(R.string.dialog_saf_not_found, directoriesManager.getInternalRomsDirectory())
+        requireActivity().displayErrorDialog(message, getString(R.string.ok)) { }
     }
 
     private fun launchTVSettings() {

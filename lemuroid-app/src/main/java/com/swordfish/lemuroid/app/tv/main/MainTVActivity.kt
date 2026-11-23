@@ -4,11 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -91,15 +88,8 @@ class MainTVActivity : BaseTVActivity(), BusyActivity {
             return
         }
 
-        // Browsing arbitrary folders with the built-in picker requires "All files access" on Android 11+.
+        // On Android 11+ "All files access" is requested only when the built-in folder picker is opened.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) return
-            val intent =
-                Intent(
-                    Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                    Uri.parse("package:$packageName"),
-                )
-            runCatching { startActivity(intent) }
             return
         }
 
