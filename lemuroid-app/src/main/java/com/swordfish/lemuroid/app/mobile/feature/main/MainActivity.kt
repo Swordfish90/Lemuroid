@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBarDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
@@ -57,6 +56,7 @@ import com.swordfish.lemuroid.app.mobile.feature.shortcuts.ShortcutsGenerator
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsScreen
 import com.swordfish.lemuroid.app.mobile.feature.systems.MetaSystemsViewModel
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.AppTheme
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidScaffold
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.SystemBarProtection
 import com.swordfish.lemuroid.app.mobile.shared.compose.utils.rememberSlideAwayTopBarScrollBehavior
 import com.swordfish.lemuroid.app.shared.GameInteractor
@@ -220,8 +220,9 @@ class MainActivity : RetrogradeComponentActivity(), BusyActivity {
                 )
             },
         ) {
-            Scaffold(
+            LemuroidScaffold(
                 modifier = Modifier.nestedScroll(topBarScrollBehavior.nestedScrollConnection),
+                loading = mainUIState.operationInProgress,
                 topBar = {
                     MainTopBar(
                         currentRoute = currentRoute,

@@ -54,6 +54,7 @@ import com.swordfish.lemuroid.app.mobile.shared.compose.ui.DiscardUnsavedChanges
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidGameListRow
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidSmallGameImage
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidTopAppBar
+import com.swordfish.lemuroid.app.mobile.shared.compose.ui.LemuroidScaffold
 import com.swordfish.lemuroid.app.mobile.shared.compose.ui.SystemBarProtection
 import com.swordfish.lemuroid.app.mobile.shared.compose.utils.rememberSlideAwayTopBarScrollBehavior
 import com.swordfish.lemuroid.lib.library.db.entity.Game
@@ -99,12 +100,12 @@ private fun EditGameScreenContent(
     val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let { viewModel.pickImage(it.toString()) }
     }
-    Scaffold(
+    LemuroidScaffold(
         modifier = Modifier.fillMaxSize(),
+        loading = state.busy,
         topBar = {
             LemuroidTopAppBar(
                 title = { Text(stringResource(R.string.game_context_menu_edit)) },
-                loading = state.busy,
                 navigationIcon = {
                     IconButton(onClick = onDismiss, enabled = !state.busy) {
                         Icon(Icons.Default.Close, stringResource(R.string.close))
