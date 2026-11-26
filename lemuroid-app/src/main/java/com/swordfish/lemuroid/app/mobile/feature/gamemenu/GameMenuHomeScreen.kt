@@ -21,6 +21,7 @@ import com.swordfish.lemuroid.app.shared.GameMenuContract
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsList
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsMenuLink
 import com.swordfish.lemuroid.app.utils.android.settings.LemuroidSettingsSwitch
+import com.swordfish.lemuroid.app.utils.android.settings.booleanPreferenceState
 import kotlin.reflect.KFunction1
 
 @Composable
@@ -141,7 +142,7 @@ fun GameMenuHomeScreen(
             },
         )
 
-        if (gameMenuRequest.advancedCoreOptions.isNotEmpty() || gameMenuRequest.coreOptions.isNotEmpty()) {
+        val hasCustomShaderMenu = gameMenuRequest.game.systemId.uppercase() in setOf("SNES", "GBA", "NES", "GB", "GBC", "NDS", "GENESIS", "MD"); if (gameMenuRequest.advancedCoreOptions.isNotEmpty() || gameMenuRequest.coreOptions.isNotEmpty() || hasCustomShaderMenu) {
             LemuroidSettingsMenuLink(
                 title = { Text(text = stringResource(id = R.string.game_menu_settings)) },
                 icon = {
@@ -184,5 +185,6 @@ fun GameMenuHomeScreen(
                 },
             )
         }
+        LemuroidSettingsSwitch(title = { Text(text = "Show Speed/FPS") }, icon = { Icon(painterResource(R.drawable.ic_menu_fast_forward), contentDescription = "Show Speed/FPS") }, state = booleanPreferenceState("pref_show_fps_overlay", false))
     }
 }

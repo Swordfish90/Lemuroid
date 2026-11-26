@@ -71,3 +71,6 @@ if (usePlayDynamicFeatures()) {
     project(":lemuroid_core_dosbox_pure").projectDir = File("lemuroid-cores/lemuroid_core_dosbox_pure")
     project(":lemuroid_core_citra").projectDir = File("lemuroid-cores/lemuroid_core_citra")
 }
+
+includeBuild("../LibretroDroid") { dependencySubstitution { substitute(module("com.github.Swordfish90:LibretroDroid")).using(project(":libretrodroid")); substitute(module("com.swordfish:libretrodroid")).using(project(":libretrodroid")) } }
+

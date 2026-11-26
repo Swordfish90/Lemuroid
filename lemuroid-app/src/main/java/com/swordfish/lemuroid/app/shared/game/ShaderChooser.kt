@@ -25,6 +25,8 @@ object ShaderChooser {
             } else {
                 HDModeQuality.LOW
             }
+        val custom = if (system.id in setOf(SystemID.SNES, SystemID.GBA, SystemID.NES, SystemID.GB, SystemID.GBC, SystemID.NDS, SystemID.GENESIS)) CustomShaderLoader.loadCustomShader(context) else null
+        if (custom != null) return custom
         return when {
             hdMode -> getHDShaderForSystem(system, hdModeQuality)
             else ->
@@ -291,3 +293,4 @@ object ShaderChooser {
         }
     }
 }
+

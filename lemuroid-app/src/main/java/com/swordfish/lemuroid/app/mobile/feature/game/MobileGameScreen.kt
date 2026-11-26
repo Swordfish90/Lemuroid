@@ -25,7 +25,21 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.geometry.Offset
+import android.content.SharedPreferences
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import com.swordfish.lemuroid.lib.preferences.SharedPreferencesHelper
+import com.swordfish.libretrodroid.GLRetroView
+import kotlin.math.roundToInt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -206,6 +220,7 @@ fun MobileGameScreen(viewModel: BaseGameScreenViewModel) {
             }
         }
 
+        val ctx = LocalContext.current; val prefs = remember(ctx) { SharedPreferencesHelper.getSharedPreferences(ctx) }; var showFps by remember { mutableStateOf(prefs.getBoolean("pref_show_fps_overlay", false)) }; DisposableEffect(prefs) { val l = SharedPreferences.OnSharedPreferenceChangeListener { _, k -> if (k == "pref_show_fps_overlay") showFps = prefs.getBoolean(k, false) }; prefs.registerOnSharedPreferenceChangeListener(l); onDispose { prefs.unregisterOnSharedPreferenceChangeListener(l) } }; if (showFps) { var fpsText by remember { mutableStateOf("-- FPS | --%") }; LaunchedEffect(Unit) { val rv = viewModel.retroGameView.retroGameViewFlow(); var f = 0; var t0 = System.nanoTime(); rv.getGLRetroEvents().collect { if (it is GLRetroView.GLRetroEvents.FrameRendered) { f++; val now = System.nanoTime(); val dt = now - t0; if (dt >= 500_000_000L) { val fps = f * 1_000_000_000.0 / dt; val spd = (fps / 60.0 * 100.0).roundToInt(); fpsText = String.format("%.1f FPS | %d%%", fps, spd); f = 0; t0 = now } } } }; Box(modifier = Modifier.align(Alignment.TopStart).windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Top + WindowInsetsSides.Start)).padding(8.dp).alpha(0.8f).background(Color.Black.copy(alpha = 0.55f), RoundedCornerShape(4.dp)).padding(horizontal = 6.dp, vertical = 2.dp)) { Text(text = fpsText, style = MaterialTheme.typography.bodyMedium.copy(shadow = Shadow(color = Color.Black, offset = Offset(1f, 1f), blurRadius = 2f)), color = Color.White) } }
         val isLoading =
             viewModel.loadingState
                 .collectAsState(true)

@@ -443,62 +443,12 @@ data class GameSystem(
                     ),
                     uniqueExtensions = listOf("gg"),
                 ),
-                GameSystem(
+                                GameSystem(
                     SystemID.GB,
                     "Nintendo - Game Boy",
                     R.string.game_system_title_gb,
                     R.string.game_system_abbr_gb,
-                    listOf(
-                        SystemCoreConfig(
-                            CoreID.GAMBATTE,
-                            exposedSettings =
-                                listOf(
-                                    ExposedSetting(
-                                        "gambatte_gb_colorization",
-                                        R.string.setting_gambatte_gb_colorization,
-                                    ),
-                                    ExposedSetting(
-                                        "gambatte_gb_internal_palette",
-                                        R.string.setting_gambatte_gb_internal_palette,
-                                    ),
-                                    ExposedSetting(
-                                        "gambatte_mix_frames",
-                                        R.string.setting_gambatte_mix_frames,
-                                        arrayListOf(
-                                            ExposedSetting.Value(
-                                                "disabled",
-                                                R.string.value_gambatte_mix_frames_disabled,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "mix",
-                                                R.string.value_gambatte_mix_frames_mix,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "lcd_ghosting",
-                                                R.string.value_gambatte_mix_frames_lcd_ghosting,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "lcd_ghosting_fast",
-                                                R.string.value_gambatte_mix_frames_lcd_ghosting_fast,
-                                            ),
-                                        ),
-                                    ),
-                                    ExposedSetting(
-                                        "gambatte_dark_filter_level",
-                                        R.string.setting_gambatte_dark_filter_level,
-                                    ),
-                                ),
-                            defaultSettings =
-                                listOf(
-                                    CoreVariable("gambatte_gb_colorization", "internal"),
-                                    CoreVariable("gambatte_gb_internal_palette", "GB - Pocket"),
-                                ),
-                            controllerConfigs =
-                                hashMapOf(
-                                    0 to arrayListOf(ControllerConfigs.GB),
-                                ),
-                        ),
-                    ),
+                    listOf(SystemCoreConfig(CoreID.MGBA, exposedSettings = listOf(ExposedSetting("mgba_gb_colors", R.string.setting_mgba_gb_colors), ExposedSetting("mgba_sgb_borders", R.string.setting_mgba_sgb_borders), ExposedSetting("mgba_gb_model", R.string.setting_mgba_gb_model), ExposedSetting("mgba_interframe_blending", R.string.setting_mgba_interframe_blending), ExposedSetting("mgba_frameskip", R.string.setting_mgba_frameskip), ExposedSetting("mgba_frameskip_threshold", R.string.setting_mgba_frameskip_threshold), ExposedSetting("mgba_frameskip_interval", R.string.setting_mgba_frameskip_interval), ExposedSetting("mgba_color_correction", R.string.setting_mgba_color_correction)), exposedAdvancedSettings = listOf(ExposedSetting("mgba_solar_sensor_level", R.string.setting_mgba_solar_sensor_level), ExposedSetting("mgba_audio_low_pass_filter", R.string.setting_mgba_audio_low_pass_filter), ExposedSetting("mgba_audio_low_pass_range", R.string.setting_mgba_audio_low_pass_range), ExposedSetting("mgba_idle_optimization", R.string.setting_mgba_idle_optimization)), rumbleSupported = true, controllerConfigs = hashMapOf(0 to arrayListOf(ControllerConfigs.GB)))),
                     uniqueExtensions = listOf("gb"),
                 ),
                 GameSystem(
@@ -506,63 +456,7 @@ data class GameSystem(
                     "Nintendo - Game Boy Color",
                     R.string.game_system_title_gbc,
                     R.string.game_system_abbr_gbc,
-                    listOf(
-                        SystemCoreConfig(
-                            CoreID.GAMBATTE,
-                            exposedSettings =
-                                listOf(
-                                    ExposedSetting(
-                                        "gambatte_mix_frames",
-                                        R.string.setting_gambatte_mix_frames,
-                                        arrayListOf(
-                                            ExposedSetting.Value(
-                                                "disabled",
-                                                R.string.value_gambatte_mix_frames_disabled,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "mix",
-                                                R.string.value_gambatte_mix_frames_mix,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "lcd_ghosting",
-                                                R.string.value_gambatte_mix_frames_lcd_ghosting,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "lcd_ghosting_fast",
-                                                R.string.value_gambatte_mix_frames_lcd_ghosting_fast,
-                                            ),
-                                        ),
-                                    ),
-                                    ExposedSetting(
-                                        "gambatte_gbc_color_correction",
-                                        R.string.setting_gambatte_gbc_color_correction,
-                                        arrayListOf(
-                                            ExposedSetting.Value(
-                                                "disabled",
-                                                R.string.value_gambatte_gbc_color_correction_disabled,
-                                            ),
-                                            ExposedSetting.Value(
-                                                "always",
-                                                R.string.value_gambatte_gbc_color_correction_always,
-                                            ),
-                                        ),
-                                    ),
-                                    ExposedSetting(
-                                        "gambatte_dark_filter_level",
-                                        R.string.setting_gambatte_dark_filter_level,
-                                    ),
-                                ),
-                            rumbleSupported = true,
-                            defaultSettings =
-                                listOf(
-                                    CoreVariable("gambatte_gbc_color_correction", "disabled"),
-                                ),
-                            controllerConfigs =
-                                hashMapOf(
-                                    0 to arrayListOf(ControllerConfigs.GB),
-                                ),
-                        ),
-                    ),
+                    listOf(SystemCoreConfig(CoreID.MGBA, exposedSettings = listOf(ExposedSetting("mgba_gb_colors", R.string.setting_mgba_gb_colors), ExposedSetting("mgba_gb_model", R.string.setting_mgba_gb_model), ExposedSetting("mgba_color_correction", R.string.setting_mgba_color_correction), ExposedSetting("mgba_interframe_blending", R.string.setting_mgba_interframe_blending), ExposedSetting("mgba_frameskip", R.string.setting_mgba_frameskip), ExposedSetting("mgba_frameskip_threshold", R.string.setting_mgba_frameskip_threshold), ExposedSetting("mgba_frameskip_interval", R.string.setting_mgba_frameskip_interval)), exposedAdvancedSettings = listOf(ExposedSetting("mgba_solar_sensor_level", R.string.setting_mgba_solar_sensor_level), ExposedSetting("mgba_audio_low_pass_filter", R.string.setting_mgba_audio_low_pass_filter), ExposedSetting("mgba_audio_low_pass_range", R.string.setting_mgba_audio_low_pass_range), ExposedSetting("mgba_idle_optimization", R.string.setting_mgba_idle_optimization)), rumbleSupported = true, controllerConfigs = hashMapOf(0 to arrayListOf(ControllerConfigs.GB)))),
                     uniqueExtensions = listOf("gbc"),
                 ),
                 GameSystem(
@@ -626,6 +520,17 @@ data class GameSystem(
                                             ),
                                         ),
                                     ),
+                                ),
+                            exposedAdvancedSettings =
+                                listOf(
+                                    ExposedSetting("mgba_audio_low_pass_filter", R.string.setting_mgba_audio_low_pass_filter),
+                                    ExposedSetting("mgba_audio_low_pass_range", R.string.setting_mgba_audio_low_pass_range),
+                                    
+                                    
+                                    
+                                    ExposedSetting("mgba_idle_optimization", R.string.setting_mgba_idle_optimization),
+                                    ExposedSetting("mgba_force_gbp", R.string.setting_mgba_force_gbp),
+                                                                         ExposedSetting("mgba_frameskip_threshold", R.string.setting_mgba_frameskip_threshold), ExposedSetting("mgba_frameskip_interval", R.string.setting_mgba_frameskip_interval),
                                 ),
                             rumbleSupported = true,
                             controllerConfigs =
@@ -1334,3 +1239,4 @@ data class GameSystem(
         )
     }
 }
+
