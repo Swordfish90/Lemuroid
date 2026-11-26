@@ -297,12 +297,15 @@ class GameViewModelRetroGameView(
 
         owner.launchOnState(Lifecycle.State.RESUMED) {
             initializeCoreVariablesFlow()
+            refreshShader()
         }
 
         owner.launchOnState(Lifecycle.State.RESUMED) {
             initializeRumbleFlow()
         }
     }
+
+    private suspend fun refreshShader() { try { waitRetroGameViewInitialized(); retroGameView?.shader = ShaderChooser.getShaderForSystem(appContext, settingsManager.hdMode(), settingsManager.hdModeQuality(), settingsManager.screenFilter(), system) } catch (e: Exception) { Timber.e(e) } }
 
     private suspend fun initializeCoreVariablesFlow() {
         try {
@@ -381,3 +384,4 @@ class GameViewModelRetroGameView(
         return message
     }
 }
+

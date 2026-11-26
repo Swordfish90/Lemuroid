@@ -141,4 +141,18 @@
     <string name="value_handy_rot_90">90</string>
     <string name="value_handy_rot_270">270</string>
 
+    <string name="setting_mgba_audio_low_pass_filter">Audio Low-Pass Filter</string>
+    <string name="setting_mgba_audio_low_pass_range">Audio Low-Pass Range</string>
+    <string name="setting_mgba_allow_opposing_directions">Allow Opposing Directions</string>
+    <string name="setting_mgba_use_bios">Use Official BIOS</string>
+    <string name="setting_mgba_skip_bios">Skip BIOS Intro</string>
+    <string name="setting_mgba_idle_optimization">Idle Loop Optimization</string>
+    <string name="setting_mgba_force_gbp">Force Game Boy Player Mode</string>
+    <string name="setting_mgba_gb_model">Game Boy Hardware Model</string>
+    <string name="setting_mgba_sgb_borders">Super Game Boy Borders</string>
+    <string name="setting_mgba_gb_colors">Game Boy Color Palette</string>
+    <string name="setting_mgba_gb_colors_preset">Game Boy Palette Preset</string>
+    <string name="setting_mgba_frameskip_threshold">Frameskip Threshold (%)</string>
+    <string name="setting_mgba_frameskip_interval">Frameskip Interval</string>
 </resources>
+

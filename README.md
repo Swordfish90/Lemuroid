@@ -1,3 +1,5 @@
+This is a modified version of Lemuroid. (NOTE: I am NOT the creator of Lemuroid, I just did a tiny little bitty edit.) It likely will not be upkept as it was a personal project, but I am leaving it on here in case anyone might appreciate the outcome of my experiments. More details will be under the release. https://github.com/jmc92/Lemuroid/releases/tag/v1.0.0
+
 # Lemuroid
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"

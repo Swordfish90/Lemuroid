@@ -224,6 +224,7 @@ class GameMenuActivity : RetrogradeComponentActivity() {
                                 factory = GameMenuCoreOptionsViewModel.Factory(inputDeviceManager),
                             ),
                             gameMenuRequest,
+                            ::onResult,
                         )
                     }
                 }
